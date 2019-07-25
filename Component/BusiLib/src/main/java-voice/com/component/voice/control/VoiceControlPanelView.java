@@ -23,17 +23,17 @@ import org.greenrobot.eventbus.ThreadMode;
 public class VoiceControlPanelView extends ScrollView {
     public final String TAG = "VoiceControlPanelView";
 
-    ExTextView mPeopleVoice;
-    SeekBar mPeopleVoiceSeekbar;
-    ExTextView mAccVoice;
-    SeekBar mMusicVoiceSeekbar;
+    protected ExTextView mPeopleVoice;
+    protected SeekBar mPeopleVoiceSeekbar;
+    protected ExTextView mAccVoice;
+    protected SeekBar mMusicVoiceSeekbar;
 
-    RadioGroup mScenesBtnGroup;
-    AppCompatRadioButton mDefaultSbtn;
-    AppCompatRadioButton mKtvSbtn;
-    AppCompatRadioButton mRockSbtn;
-    AppCompatRadioButton mDianyinSbtn;
-    AppCompatRadioButton mKonglingSbtn;
+    protected RadioGroup mScenesBtnGroup;
+    protected AppCompatRadioButton mDefaultSbtn;
+    protected AppCompatRadioButton mKtvSbtn;
+    protected AppCompatRadioButton mRockSbtn;
+    protected AppCompatRadioButton mDianyinSbtn;
+    protected AppCompatRadioButton mKonglingSbtn;
 
     // 记录值用来标记是否改变
     Params.AudioEffect mBeforeMode;
@@ -95,9 +95,11 @@ public class VoiceControlPanelView extends ScrollView {
         setMarginLeft(mDianyinSbtn, marginLeft);
         setMarginLeft(mKonglingSbtn, marginLeft);
 
-//        mPeopleVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
-//        mMusicVoiceSeekbar.getThumb().setColorFilter(Color.parseColor("#C7C7C7"), PorterDuff.Mode.SRC_ATOP);
+        mScenesBtnGroup = (RadioGroup) this.findViewById(R.id.scenes_btn_group);
+        setListener();
+    }
 
+    protected void setListener(){
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -134,7 +136,6 @@ public class VoiceControlPanelView extends ScrollView {
 
             }
         });
-        mScenesBtnGroup = (RadioGroup) this.findViewById(R.id.scenes_btn_group);
 
         mScenesBtnGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

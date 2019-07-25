@@ -10,6 +10,18 @@
             android:value="ConfigModule" />
 
         <activity
+            android:name=".detail.activity.FeedsDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".detail.activity.FeedsSecondCommentDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!--Feed制作-->
+        <activity
             android:name=".make.FeedsMakeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -22,14 +34,10 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".detail.activity.FeedsDetailActivity"
+            android:name=".make.publish.FeedsPublishActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".detail.activity.FeedsSecondCommentDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
 
 
     </application>

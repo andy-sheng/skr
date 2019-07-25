@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/feeds_make_bg">
+    android:background="@color/black">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title_bar"
@@ -32,8 +32,8 @@
         android:layout_marginTop="@dimen/view_21_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar"
-        app:src_selected_drawable="@drawable/gequ_zanting"
-        app:src_unSelected_drawable="@drawable/gequ_bofang" />
+        app:src_selected_drawable="@drawable/like_record_pause_icon"
+        app:src_unSelected_drawable="@drawable/like_record_play_icon" />
 
     <SeekBar
         android:id="@+id/seek_bar"
@@ -43,8 +43,8 @@
         android:layout_marginLeft="@dimen/view_14_dp"
         android:layout_marginRight="@dimen/view_18_dp"
         android:max="100"
-        android:maxHeight="@dimen/view_4_dp"
         android:min="0"
+        android:maxHeight="@dimen/view_4_dp"
         android:minHeight="@dimen/view_4_dp"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingRight="@dimen/view_10_dp"
@@ -112,7 +112,7 @@
         android:id="@+id/va_control_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_105_dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/menu_bg" />
     <!-- 下面是菜单栏 -->
     <View
@@ -127,10 +127,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_rensheng_selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/effect_iv"
-        app:src_selected_drawable="@drawable/editor_rensheng_selected"
         app:src_unSelected_drawable="@drawable/editor_rensheng" />
 
     <TextView
@@ -149,10 +149,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_effect_selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/rensheng_iv"
         app:layout_constraintRight_toLeftOf="@id/reset_iv"
-        app:src_selected_drawable="@drawable/editor_effect_selected"
         app:src_unSelected_drawable="@drawable/editor_effect" />
 
     <TextView
@@ -172,10 +172,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_reset_selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/effect_iv"
         app:layout_constraintRight_toLeftOf="@id/publish_iv"
-        app:src_selected_drawable="@drawable/editor_reset_selected"
         app:src_unSelected_drawable="@drawable/editor_reset" />
 
     <TextView
@@ -194,10 +194,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_publish_selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/reset_iv"
         app:layout_constraintRight_toRightOf="parent"
-        app:src_selected_drawable="@drawable/editor_publish_selected"
         app:src_unSelected_drawable="@drawable/editor_publish" />
 
     <TextView
@@ -215,5 +215,6 @@
         android:id="@+id/compose_progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 </android.support.constraint.ConstraintLayout>

@@ -93,7 +93,7 @@ class RadioView : ConstraintLayout {
         avatorAnimation?.repeatCount = INFINITE
     }
 
-    fun setAvator(url: String) {
+    fun setAvatar(url: String) {
         AvatarUtils.loadAvatarByUrl(avator, AvatarUtils.newParamsBuilder(url)
                 .setCircle(true)
                 .build())
@@ -126,8 +126,10 @@ class RadioView : ConstraintLayout {
         avatorAnimation?.pause()
     }
 
-    fun destroy() {
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
         avatorAnimation?.cancel()
         mRockerIv?.clearAnimation()
     }
+
 }

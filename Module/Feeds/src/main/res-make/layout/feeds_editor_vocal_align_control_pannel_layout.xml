@@ -9,10 +9,12 @@
     <com.common.view.ex.ExFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4C56AA"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_shape="rectangle" />
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#4C56AA"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/va_reset_tv"
@@ -23,7 +25,9 @@
         android:gravity="center"
         android:text="重置"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/info_tips_tv"
@@ -60,18 +64,21 @@
 
     <SeekBar
         android:id="@+id/va_seek_bar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_17_dp"
-        android:layout_marginRight="@dimen/view_17_dp"
-        android:maxHeight="@dimen/view_8_dp"
-        android:minHeight="@dimen/view_8_dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp"
-        android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
+        android:layout_marginLeft="@dimen/view_7_dp"
+        android:layout_marginRight="@dimen/view_7_dp"
+        android:max="100"
+        android:maxHeight="@dimen/view_5_dp"
+        android:min="0"
+        android:minHeight="@dimen/view_5_dp"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:progress="50"
+        android:progressDrawable="@drawable/feeds_make_va_seekbar_bg"
         app:layout_constraintBottom_toBottomOf="@+id/left_iv"
         app:layout_constraintLeft_toRightOf="@+id/left_iv"
-        app:layout_constraintRight_toRightOf="@+id/right_iv"
+        app:layout_constraintRight_toLeftOf="@+id/right_iv"
         app:layout_constraintTop_toTopOf="@+id/left_iv" />
 
 </merge>

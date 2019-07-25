@@ -280,7 +280,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         })
 
         mFeedsWatchModel?.user?.avatar?.let {
-            mRadioView?.setAvator(it)
+            mRadioView?.setAvatar(it)
         }
 
         mRadioView?.avatarContainer?.setDebounceViewClickListener {
@@ -384,7 +384,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun destroy() {
         super.destroy()
-        mRadioView?.destroy()
         mMyMediaPlayer.release()
         mFeedsCommonLyricView?.destroy()
     }

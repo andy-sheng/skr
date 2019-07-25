@@ -320,7 +320,9 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
         }
-        goNext()
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_EDITOR)
+                .withSerializable("feeds_make_model", mFeedsMakeModel)
+                .navigation()
     }
 
     private fun stopRecord() {
@@ -330,11 +332,6 @@ class FeedsMakeActivity : BaseActivity() {
         mCircleCountDownView?.visibility = View.GONE
     }
 
-    private fun goNext() {
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_EDITOR)
-                .withSerializable("feeds_make_model", mFeedsMakeModel)
-                .navigation()
-    }
 
     override fun onDestroy() {
         super.onDestroy()
