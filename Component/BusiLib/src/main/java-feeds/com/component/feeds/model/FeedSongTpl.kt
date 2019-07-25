@@ -13,7 +13,7 @@ class FeedSongTpl : Serializable {
     @JSONField(name = "cover")
     var cover: String? = null
     @JSONField(name = "createdAt")
-    var createdAt: String? = null
+    var createdAt: Long? = null
     @JSONField(name = "lrcTs")// 时间戳歌词
     var lrcTs: String? = null
     @JSONField(name = "lrcTxt")// 纯文本歌词
@@ -27,14 +27,5 @@ class FeedSongTpl : Serializable {
     @JSONField(name = "tplID")
     var tplID: Int? = null
     @JSONField(name = "uploader")
-    var uploader: FeedCommonUserSimpleInfo? = null
-}
-
-class FeedCommonUserSimpleInfo : Serializable {
-    @JSONField(name = "avatar")
-    var avatar: String? = null
-    @JSONField(name = "nickname")
-    var nickname: String? = null
-    @JSONField(name = "userID")
-    var userID: Long? = null
+    var uploader: FeedUserInfo? = null
 }

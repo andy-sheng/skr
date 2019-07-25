@@ -1,6 +1,7 @@
 package com.component.feeds.holder
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,9 +21,9 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
     private val mMoreIv: ImageView = itemView.findViewById(R.id.more_iv)
     private val mTagArea: ExConstraintLayout = itemView.findViewById(R.id.tag_area)
     private val mTagTv: TextView = itemView.findViewById(R.id.tag_tv)
-    private val mClassifySongTv: ExTextView = itemView.findViewById(R.id.classify_song_tv)
-    private val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
-    private val mRecordView: RecordAnimationView = itemView.findViewById(R.id.record_view)
+    //    private val mClassifySongTv: ExTextView = itemView.findViewById(R.id.classify_song_tv)
+    val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
+    val mRecordView: RecordAnimationView = itemView.findViewById(R.id.record_view)
     private val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
     private val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
 
@@ -49,10 +50,15 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
             }
         })
 
-
         mRecordView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickCDListener(model)
+            }
+        })
+
+        mTagArea.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onclickRankListener(model)
             }
         })
 
@@ -65,45 +71,41 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
 
     open fun bindData(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
-        if (watchModel != model) {
-            this.model = watchModel
-
-            model?.user?.let {
-                AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
-                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                        .setBlur(true)
-                        .build())
-                mRecordView.bindData(it.avatar)
-            }
+        if (watchModel.feedID != model?.feedID) {
+            // 全部初始化
             mLikeNumTv.text = watchModel.starCnt.toString()
             mCommentNumTv.text = watchModel.commentCnt.toString()
 
-            if (model?.rank != null) {
-                model?.rank?.let {
-                    when {
-                        it.rankType == 1 -> {
-                            mTagArea.visibility = View.VISIBLE
-                            mTagTv.text = it.rankDesc
-                            mClassifySongTv.visibility = View.VISIBLE
-                        }
-                        it.rankType == 2 -> {
-                            mTagArea.visibility = View.VISIBLE
-                            mTagTv.text = it.rankDesc
-                            mClassifySongTv.visibility = View.GONE
-                            // 展示分类
-                        }
-                        else -> {
-                            mTagArea.visibility = View.GONE
-                            mClassifySongTv.visibility = View.GONE
-                        }
-                    }
+            if (watchModel?.isLiked == true) {
+                mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_selected_icon), null, null, null)
+            } else {
+                mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_normal_icon), null, null, null)
+            }
+            if (watchModel?.rank != null) {
+                if (TextUtils.isEmpty(watchModel?.rank?.rankDesc)) {
+                    mTagArea.visibility = View.GONE
+                } else {
+                    mTagTv.text = watchModel?.rank?.rankDesc
+                    mTagArea.visibility = View.VISIBLE
                 }
             } else {
                 mTagArea.visibility = View.GONE
-                mClassifySongTv.visibility = View.GONE
             }
         } else {
-            // do noting
+            // do noting (对变化的部分重新设置 评论数，点赞数和点赞icon)
+            if (model?.starCnt != watchModel.starCnt) {
+                mLikeNumTv.text = watchModel.starCnt.toString()
+            }
+            if (model?.commentCnt != watchModel.commentCnt) {
+                mCommentNumTv.text = watchModel.commentCnt.toString()
+            }
+            if (model?.isLiked != watchModel?.isLiked) {
+                if (watchModel?.isLiked == true) {
+                    mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_selected_icon), null, null, null)
+                } else {
+                    mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_normal_icon), null, null, null)
+                }
+            }
         }
     }
 

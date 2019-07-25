@@ -14,6 +14,8 @@ class FeedsWatchModel : Serializable {
     var feedType: String? = null
     @JSONField(name = "hasFollow")
     var hasFollow: Boolean? = null
+    @JSONField(name = "isLiked")
+    var isLiked: Boolean? = null
     @JSONField(name = "rank")
     var rank: FeedRankModel? = null
     @JSONField(name = "feedSong")

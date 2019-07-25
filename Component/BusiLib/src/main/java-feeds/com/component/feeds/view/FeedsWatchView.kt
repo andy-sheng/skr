@@ -49,6 +49,10 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mRecyclerView = findViewById(R.id.recycler_view)
 
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
+            override fun onclickRankListener(watchModel: FeedsWatchModel?) {
+                // 排行
+            }
+
             override fun onClickLikeListener(watchModel: FeedsWatchModel?) {
                 // 喜欢
             }
@@ -186,7 +190,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             // 播放
             play(model)
         } else {
-            if (mAdapter.mCurrentModel == model) {
+            if (mAdapter.mCurrentModel?.feedID == model.feedID) {
                 // 停止播放
                 stop()
             } else {
@@ -215,7 +219,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 }
             }
         })
-        model?.song?.playURL?.let {
+        model.song?.playURL?.let {
             mMediaPlayer?.startPlay(it)
         }
     }

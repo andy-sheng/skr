@@ -8,6 +8,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.IPlayer
+import com.common.player.MyMediaPlayer
+import com.common.player.VideoPlayerAdapter
 import com.component.busilib.R
 import com.component.feeds.adapter.FeedsWallViewAdapter
 import com.component.feeds.listener.FeedsListener
@@ -32,6 +34,10 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
 
         mPersenter = FeedsWallViewPresenter(this, userInfoModel)
         mAdapter = FeedsWallViewAdapter(object : FeedsListener {
+            override fun onclickRankListener(watchModel: FeedsWatchModel?) {
+                // 排行
+            }
+
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
                 // 更多
             }
@@ -59,6 +65,7 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
             }
 
             override fun onClickCDListener(watchModel: FeedsWatchModel?) {
+                watchModel?.let { play(it, false) }
             }
 
         })
@@ -105,12 +112,49 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
     }
 
     fun stopPlay() {
+        mAdapter.mCurrentModel = null
+        mAdapter.notifyDataSetChanged()
+        mMediaPlayer?.reset()
+    }
 
+    fun play(model: FeedsWatchModel, isMustPlay: Boolean) {
+        if (isMustPlay) {
+            play(model)
+        } else {
+            if (mAdapter.mCurrentModel?.feedID != model.feedID) {
+                play(model)
+            } else {
+                stopPlay()
+            }
+        }
+    }
+
+    fun play(model: FeedsWatchModel) {
+        if (mAdapter.mCurrentModel != model) {
+            mAdapter.mCurrentModel = model
+            mAdapter.notifyDataSetChanged()
+        }
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MyMediaPlayer()
+        }
+        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 重复播放
+                model?.song?.playURL?.let {
+                    mMediaPlayer?.startPlay(it)
+                }
+            }
+        })
+        model.song?.playURL?.let {
+            mMediaPlayer?.startPlay(it)
+        }
     }
 
     fun destroy() {
         stopPlay()
         mPersenter.destroy()
+        mMediaPlayer?.release()
     }
 
 }

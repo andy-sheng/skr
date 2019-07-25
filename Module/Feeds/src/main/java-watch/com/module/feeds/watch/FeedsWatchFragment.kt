@@ -101,11 +101,6 @@ class FeedsWatchFragment : BaseFragment() {
             }
         }
 
-        mFeedVp.adapter = mTabPagerAdapter
-        mFeedTab.setViewPager(mFeedVp)
-        mTabPagerAdapter.notifyDataSetChanged()
-        mFeedVp.setCurrentItem(1, false)
-
         mFeedTab.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
@@ -120,6 +115,11 @@ class FeedsWatchFragment : BaseFragment() {
 
             }
         })
+
+        mFeedVp.adapter = mTabPagerAdapter
+        mFeedTab.setViewPager(mFeedVp)
+        mTabPagerAdapter.notifyDataSetChanged()
+        mFeedVp.setCurrentItem(1, false)
     }
 
     override fun onFragmentVisible() {

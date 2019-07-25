@@ -68,7 +68,8 @@
         app:bl_solid_color="#9ED7FF"
         app:layout_constraintBottom_toBottomOf="@id/tag_area"
         app:layout_constraintLeft_toRightOf="@id/tag_area"
-        app:layout_constraintTop_toTopOf="@id/tag_area" />
+        app:layout_constraintTop_toTopOf="@id/tag_area"
+        android:visibility="gone"/>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/song_area_bg"

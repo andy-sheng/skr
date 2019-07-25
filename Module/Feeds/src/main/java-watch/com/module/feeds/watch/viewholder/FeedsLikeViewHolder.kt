@@ -41,7 +41,8 @@ class FeedsLikeViewHolder(item: View, var onClickPlayListener: ((model: FeedsLik
                 AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                         .build())
-                mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+                mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userID
+                        ?: 0, it.nickname)
             }
         } else {
             // do nothing
