@@ -590,6 +590,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         @Override
         public void onError(int err, long msg) {
             MyLog.e(TAG, "FilePubListener onError err: " + err + " msg: " + msg);
+            EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_ERROR));
         }
     };
 
@@ -1433,12 +1434,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     /**
      * 开始客户端录音。
-     * <p>
-     * Agora SDK 支持通话过程中在客户端进行录音。该方法录制频道内所有用户的音频，并生成一个包含所有用户声音的录音文件，录音文件格式可以为：
-     * <p>
-     * .wav：文件大，音质保真度高
-     * .aac：文件小，有一定的音质保真度损失
-     * 请确保 App 里指定的目录存在且可写。
+     * 仅支持m4a格式。
      * 声网采集模式下，该接口需在加入频道之后调用，如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String path, final boolean recordHumanVoice) {
@@ -1509,7 +1505,8 @@ public class ZqEngineKit implements AgoraOutCallback {
     /**
      * 停止客户端录音。
      * <p>
-     * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
+     * 该方法停止录音。
+     * 声网采集模式下，该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
         if (mCustomHandlerThread != null && mConfig.isRecording()) {
@@ -1543,6 +1540,26 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             });
         }
+    }
+
+    /**
+     * TODO: 后面再实现
+     * 同步开始伴奏播放和录制。
+     *
+     * @param recordPath        录制文件输出地址
+     * @param musicPath         伴奏地址
+     * @param recordHumanVoice  是否仅录制人声
+     */
+    public void startAudioRecordWithMusic(final String recordPath, final String musicPath, final boolean recordHumanVoice) {
+
+    }
+
+    /**
+     * TODO: 后面再实现
+     * 停止录制以及伴奏播放。
+     */
+    public void stopAudioRecordAndMusic() {
+
     }
 
     public int getLineScore1() {
