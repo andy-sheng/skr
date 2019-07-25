@@ -105,6 +105,8 @@
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_88_dp"
+        app:leftBgPaintColor="@color/transparent"
+        app:rightBgPaintColor="@color/transparent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
     <!--正在唱的人的歌词-->

@@ -1,5 +1,6 @@
 package com.module.feeds.make
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -33,6 +34,7 @@ import com.component.toast.NoImageCommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.feeds.R
+import com.module.feeds.make.editor.FeedsEditorActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.trello.rxlifecycle2.android.ActivityEvent
@@ -131,6 +133,7 @@ class FeedsMakeActivity : BaseActivity() {
                             //因为一些资源的原因，录制还未真正开启
                         }
                     } else {
+                        mTitleBar?.rightCustomView?.visibility = View.GONE
                         startRecord()
                     }
                 }
@@ -284,6 +287,7 @@ class FeedsMakeActivity : BaseActivity() {
             lyricEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
             authorName = mFeedsMakeModel?.songModel?.songTpl?.uploader?.nickname
             accLoadOk = !withacc
+            needScore = false
         }
         configParams.manyLyricsView = mManyLyricsView
 
@@ -320,9 +324,16 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
         }
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_EDITOR)
-                .withSerializable("feeds_make_model", mFeedsMakeModel)
-                .navigation()
+        val intent = Intent(this,FeedsEditorActivity::class.java)
+        intent.putExtra("feeds_make_model", mFeedsMakeModel)
+        startActivityForResult(intent,100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==100){
+            startRecord()
+        }
     }
 
     private fun stopRecord() {

@@ -183,10 +183,10 @@ class LyricAndAccMatchManager {
         }
         mHasLauncher = true
         mUiHandler.removeMessages(MSG_ENSURE_LAUNCHER)
-        params?.manyLyricsView?.play(params?.accBeginTs ?: 0 + accPlayTs)
+        params?.manyLyricsView?.play((params?.accBeginTs ?: 0) + accPlayTs)
 
-        val lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, params?.accBeginTs ?: 0
-        + accPlayTs, params?.accEndTs ?: 0, null)
+        val lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, (params?.accBeginTs ?: 0)
+                + accPlayTs, params?.accEndTs ?: 0, null)
         if (mListener != null) {
             mListener!!.onLyricEventPost(lineNum)
         }
@@ -195,7 +195,6 @@ class LyricAndAccMatchManager {
             params?.voiceScaleView?.startWithData(mLyricsReader?.lyricsLineInfoList, params?.accBeginTs
                     ?: 0 + accPlayTs)
         }
-
     }
 
     /**
@@ -217,11 +216,10 @@ class LyricAndAccMatchManager {
                 params?.accLoadOk = true
                 if (params?.manyLyricsView?.visibility == View.VISIBLE) {
                     val ts1 = params?.manyLyricsView?.curPlayingTime ?: 0
-                    + (params?.manyLyricsView?.playerSpendTime ?: 0)
+                    +(params?.manyLyricsView?.playerSpendTime ?: 0)
                     val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
                     if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
-
                         params?.manyLyricsView?.seekto(ts2.toInt())
                     }
                 }
@@ -261,6 +259,9 @@ class LyricAndAccMatchManager {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LrcEvent.LineLineEndEvent) {
         MyLog.w(TAG, "LineLineEndEvent event=$event")
+        if(this.params?.needScore ==false){
+            return
+        }
         if (ScoreConfig.isMelp2Enable()) {
             ZqEngineKit.getInstance().getLineScore2(event.lineNum) { lineNum, score ->
                 MyLog.d(TAG, "melp2 onGetScore lineNum=$lineNum score=$score")
@@ -312,11 +313,9 @@ class LyricAndAccMatchManager {
         mMelp2Score = -1
     }
 
-
     fun setListener(l: Listener) {
         mListener = l
     }
-
 
     interface Listener {
         fun onLyricParseSuccess(reader: LyricsReader)
@@ -340,6 +339,7 @@ class LyricAndAccMatchManager {
         var accEndTs: Int = 0
         var authorName: String? = null
         var accLoadOk: Boolean = false
+        var needScore: Boolean = true
     }
 
     internal val MSG_ENSURE_LAUNCHER = 1

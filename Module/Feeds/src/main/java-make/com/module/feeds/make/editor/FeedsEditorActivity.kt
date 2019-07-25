@@ -1,9 +1,12 @@
 package com.module.feeds.make.editor
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.SeekBar
+import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -62,7 +65,9 @@ class FeedsEditorActivity : BaseActivity() {
 
     var mPlayProgressJob: Job? = null
 
-    var mComposeProgressbar:ProgressBar? = null
+    var mComposeProgressbarVG: ViewGroup? = null
+
+    var mProgressTipsTv: TextView? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_editor_activity_layout
@@ -84,11 +89,16 @@ class FeedsEditorActivity : BaseActivity() {
         mEffectIv = findViewById(R.id.effect_iv)
         mResetIv = findViewById(R.id.reset_iv)
         mPublishIv = findViewById(R.id.publish_iv)
-        mComposeProgressbar = findViewById(R.id.compose_progressbar)
+        mComposeProgressbarVG = findViewById(R.id.compose_progressbar_vg)
+        mProgressTipsTv = findViewById(R.id.progress_tips_tv)
+        mComposeProgressbarVG?.setOnClickListener {
+            // 吃掉点击事件
+        }
 
         mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.songTpl?.songName
         mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                setResult(Activity.RESULT_OK)
                 finish()
             }
         })
@@ -156,6 +166,7 @@ class FeedsEditorActivity : BaseActivity() {
 
         mResetIv?.setOnClickListener(object :DebounceViewClickListener(){
             override fun clickValid(v: View?) {
+                setResult(Activity.RESULT_OK)
                 finish()
             }
         })
@@ -163,7 +174,7 @@ class FeedsEditorActivity : BaseActivity() {
         mPublishIv?.setOnClickListener(object :DebounceViewClickListener(){
             override fun clickValid(v: View?) {
                 // 开始合成
-                mComposeProgressbar?.visibility = View.VISIBLE
+                mComposeProgressbarVG?.visibility = View.VISIBLE
                 mZqAudioEditorKit.startCompose()
 
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
@@ -208,13 +219,14 @@ class FeedsEditorActivity : BaseActivity() {
             startPreview()
             initWhenEngineReady()
         }
-        // 默认选中
     }
 
     private fun initWhenEngineReady(){
         mVoiceControlView?.bindData()
         mVaControlView?.bindData()
-        mEffectIv?.performClick()
+
+        mEffectIv?.isSelected = true
+        mVoiceControlView?.visibility = View.VISIBLE
     }
 
     private fun startPreview() {

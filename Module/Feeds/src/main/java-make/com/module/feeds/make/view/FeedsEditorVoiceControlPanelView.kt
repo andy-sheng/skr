@@ -4,22 +4,27 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.SeekBar
 import com.common.log.MyLog
-import com.component.busilib.R
 import com.component.voice.control.VoiceControlPanelView
 import com.engine.Params
+import com.module.feeds.R
 import com.zq.mediaengine.kit.ZqAudioEditorKit
 
 class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : VoiceControlPanelView(context, attrs) {
 
-    var mZqAudioEditorKit:ZqAudioEditorKit?=null
+    var mZqAudioEditorKit: ZqAudioEditorKit? = null
 
     var mPeopleVoiceIndex = 0
+
+
+    override fun getLayout(): Int {
+        return R.layout.feeds_editor_voice_control_panel_layout
+    }
 
     override fun setListener() {
         mPeopleVoiceSeekbar.max = 100
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                mZqAudioEditorKit?.setInputVolume(mPeopleVoiceIndex,progress.toFloat())
+                mZqAudioEditorKit?.setInputVolume(mPeopleVoiceIndex, progress.toFloat())
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -33,7 +38,7 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
         mMusicVoiceSeekbar.max = 100
         mMusicVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                mZqAudioEditorKit?.setInputVolume(0,progress.toFloat())
+                mZqAudioEditorKit?.setInputVolume(0, progress.toFloat())
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -48,7 +53,7 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
         mScenesBtnGroup.setOnCheckedChangeListener { group, checkedId ->
             MyLog.d(TAG, "onCheckedChanged group=$group checkedId=$checkedId")
             if (checkedId == R.id.default_sbtn) {
-                mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex,Params.AudioEffect.dianyin.ordinal)
+                mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.dianyin.ordinal)
             } else if (checkedId == R.id.ktv_sbtn) {
             } else if (checkedId == R.id.rock_sbtn) {
             } else if (checkedId == R.id.dianyin_sbtn) {
@@ -71,8 +76,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
             mScenesBtnGroup.check(R.id.default_sbtn)
         }
 
-        mPeopleVoiceSeekbar.progress = mZqAudioEditorKit?.getAudioEffect(mPeopleVoiceIndex)?:50
-        mMusicVoiceSeekbar.progress = mZqAudioEditorKit?.getAudioEffect(0)?:50
+        mPeopleVoiceSeekbar.progress = mZqAudioEditorKit?.getAudioEffect(mPeopleVoiceIndex) ?: 50
+        mMusicVoiceSeekbar.progress = mZqAudioEditorKit?.getAudioEffect(0) ?: 50
 
     }
 }
