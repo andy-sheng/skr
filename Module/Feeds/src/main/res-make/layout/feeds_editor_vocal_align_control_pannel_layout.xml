@@ -46,7 +46,7 @@
         android:layout_marginTop="@dimen/view_54_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:src_unPressed_drawable="@drawable/photo_back" />
+        app:src_unPressed_drawable="@drawable/gequ_left" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/right_iv"
@@ -56,7 +56,7 @@
         android:layout_marginRight="@dimen/view_21_dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:src_unPressed_drawable="@drawable/photo_back" />
+        app:src_unPressed_drawable="@drawable/gequ_right" />
 
     <SeekBar
         android:id="@+id/va_seek_bar"
