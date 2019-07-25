@@ -27,7 +27,7 @@ class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<F
     override fun onBindViewHolder(holder: FeedsWallViewHolder, position: Int) {
         holder.bindData(position, mDataList[position])
         if (mCurrentModel == mDataList[position]) {
-            holder.starPlay()
+            holder.startPlay()
         } else {
             holder.stopPlay()
         }

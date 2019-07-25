@@ -44,6 +44,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.feeds.view.PersonFeedsWallView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -121,6 +122,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     PagerAdapter mPersonTabAdapter;
 
     PhotoWallView mPhotoWallView;
+    PersonFeedsWallView mFeedsWallView;
     ProducationWallView mProducationWallView;
 
     DialogPlus mDialogPlus;
@@ -158,7 +160,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
             mPhotoWallView.getPhotos(false);
         }
-        if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+        if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+            mFeedsWallView.getFeeds(false);
+        }
+        if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
             mProducationWallView.getProducations(false);
         }
     }
@@ -168,6 +173,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         super.onFragmentInvisible();
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
+        }
+        if (mFeedsWallView != null) {
+            mFeedsWallView.stopPlay();
         }
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
@@ -206,7 +214,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getPhotos(true);
                 }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mFeedsWallView.getFeeds(true);
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
                     mProducationWallView.getProducations(true);
                 }
             }
@@ -217,7 +228,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getMorePhotos();
                 }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mFeedsWallView.getMoreFeeds();
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
                     mProducationWallView.getMoreProducations();
                 }
             }
@@ -443,6 +457,16 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     }
                     return mPhotoWallView;
                 } else if (position == 1) {
+                    // 神曲
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    if (mFeedsWallView == null) {
+                        mFeedsWallView = new PersonFeedsWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
+                    }
+                    if (container.indexOfChild(mFeedsWallView) == -1) {
+                        container.addView(mFeedsWallView);
+                    }
+                    return mFeedsWallView;
+                } else if (position == 2) {
                     // 作品
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
                     if (mProducationWallView == null) {
@@ -458,7 +482,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
 
             @Override
@@ -472,6 +496,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (position == 0) {
                     return "相册";
                 } else if (position == 1) {
+                    return "神曲";
+                } else if (position == 2) {
                     return "作品";
                 }
                 return "";
@@ -499,6 +525,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         mPhotoWallView.getPhotos(false);
                     }
                 } else if (position == 1) {
+                    if (mFeedsWallView != null) {
+                        mFeedsWallView.getFeeds(false);
+                    }
+                } else if (position == 2) {
                     if (mProducationWallView != null) {
                         mProducationWallView.getProducations(false);
                     }

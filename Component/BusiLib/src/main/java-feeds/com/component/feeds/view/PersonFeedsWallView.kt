@@ -99,5 +99,19 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         }
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        destroy()
+    }
+
+    fun stopPlay() {
+
+    }
+
+    fun destroy() {
+        stopPlay()
+        mPersenter.destroy()
+    }
+
 }
 
