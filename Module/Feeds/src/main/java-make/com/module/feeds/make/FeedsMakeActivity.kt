@@ -17,6 +17,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
+import com.common.utils.DeviceUtils
 import com.common.utils.HttpUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -62,7 +63,7 @@ class FeedsMakeActivity : BaseActivity() {
     internal var mLyricAndAccMatchManager = LyricAndAccMatchManager()
 
     val mVoiceControlPanelView by lazy {
-        VoiceControlPanelView(this)
+        VoiceControlPanelView(this).apply { bindData() }
     }
 
     val mVoiceControlPanelViewDialog by lazy {
@@ -105,7 +106,6 @@ class FeedsMakeActivity : BaseActivity() {
         }
         mFeedsMakeModel?.apply {
             mTitleBar?.centerTextView?.text = songModel.songTpl?.songName
-
         }
 
         mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
@@ -354,6 +354,23 @@ class FeedsMakeActivity : BaseActivity() {
                 val timeInfo = event.obj as EngineEvent.MixMusicTimeInfo
                 mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(timeInfo.current.toLong())
             }
+        }
+    }
+
+    @Subscribe
+    fun onEvent(event: DeviceUtils.HeadsetPlugEvent) {
+        // 清唱变伴奏
+        if (!U.getDeviceUtils().wiredHeadsetPlugOn && mFeedsMakeModel?.withBgm == true) {
+            U.getToastUtil().showShort("无耳机，自动切换为清唱模式")
+            // 是否插着有限耳机
+            mFeedsMakeModel?.withBgm = false
+            (mTitleBar?.rightCustomView as TextView).text = "清唱"
+            if(mFeedsMakeModel?.recording == true){
+                // 重新录制
+                startRecord()
+            }
+        } else {
+
         }
     }
 
