@@ -20,99 +20,72 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftImageResource="@drawable/ic_arrow_back"
         app:leftType="imageButton"
-        app:rightCustomView="@layout/feeds_make_title_right_layout"
-        app:rightType="customView"
         app:showBottomLine="false"
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />
 
-    <ImageView
-        android:id="@+id/reset_iv"
+    <com.common.view.ex.ExImageView
+        android:id="@+id/play_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/feeds_make_reset"
-        app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
+        android:layout_marginLeft="@dimen/view_32_dp"
+        android:layout_marginTop="@dimen/view_21_dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/begin_tv"
-        app:layout_constraintTop_toTopOf="@id/begin_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/title_bar"
+        app:src_selected_drawable="@drawable/like_record_pause_icon"
+        app:src_unSelected_drawable="@drawable/like_record_play_icon" />
 
-    <TextView
-        android:id="@+id/reset_tv"
-        android:layout_width="wrap_content"
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="重唱"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/view_12_dp"
-        app:layout_constraintLeft_toLeftOf="@+id/reset_iv"
-        app:layout_constraintRight_toRightOf="@+id/reset_iv"
-        app:layout_constraintTop_toBottomOf="@+id/reset_iv" />
+        android:layout_marginLeft="@dimen/view_24_dp"
+        android:layout_marginRight="@dimen/view_28_dp"
+        android:maxHeight="@dimen/view_4_dp"
+        android:minHeight="@dimen/view_4_dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/play_btn"
+        app:layout_constraintLeft_toRightOf="@+id/play_btn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
-    <com.common.view.countdown.CircleCountDownView
-        android:id="@+id/circle_count_down_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:inner_color="#FF8AB6"
-        app:inner_stroke_raduis="@dimen/view_42_dp"
-        app:inner_stroke_width="@dimen/view_4_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
-        app:layout_constraintLeft_toLeftOf="@+id/begin_tv"
-        app:layout_constraintRight_toRightOf="@+id/begin_tv"
-        app:layout_constraintTop_toTopOf="@+id/begin_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/begin_tv"
-        android:layout_width="@dimen/view_56_dp"
-        android:layout_height="@dimen/view_56_dp"
-        android:layout_marginBottom="@dimen/view_77_dp"
-        android:gravity="center"
-        android:text="开始"
-        android:textColor="#FF8AB6"
-        android:textSize="@dimen/view_16_dp"
-        app:bl_selected_drawable="#FF8AB6"
-        app:bl_selected_textColor="@color/black"
-        app:bl_shape="oval"
-        app:bl_stroke_color="#FF8AB6"
-        app:bl_stroke_width="@dimen/view_1_dp"
-        app:bl_unSelected_drawable="@color/transparent"
-        app:bl_unSelected_textColor="#FF8AB6"
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_bg"
+        android:layout_width="@dimen/view_320_dp"
+        android:layout_height="@dimen/view_400_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <ImageView
-        android:id="@+id/adjust_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/feeds_make_adjust"
-        app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
-        app:layout_constraintLeft_toRightOf="@+id/begin_tv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/begin_tv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/adjust_tv"
-        android:layout_width="wrap_content"
+    <com.module.feeds.detail.view.RadioView
+        android:id="@+id/radio_view"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="调音"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/view_12_dp"
-        app:layout_constraintLeft_toLeftOf="@+id/adjust_iv"
-        app:layout_constraintRight_toRightOf="@+id/adjust_iv"
-        app:layout_constraintTop_toBottomOf="@+id/adjust_iv" />
-
-    <com.component.lyrics.widget.VoiceScaleView
-        android:id="@+id/voice_scale_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_88_dp"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+        android:layout_marginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_bg"
+        app:layout_constraintRight_toRightOf="@+id/avatar_bg"
+        app:layout_constraintTop_toTopOf="@+id/avatar_bg"
+        app:panelDrawable="@drawable/radio_panel"
+        app:panelMarginTop="@dimen/view_30_dp"
+        app:panelWidth="@dimen/view_126_dp"
+        app:rockerDrawable="@drawable/gequxiangqing_caokonggan"
+        app:rockerHeight="@dimen/view_58_dp"
+        app:rockerWidth="@dimen/view_16_dp"
+        app:rockerXP="0.5"
+        app:rockerYP="0.1"
+        app:userIconMargin="@dimen/view_20_dp" />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:layout_constraintTop_toBottomOf="@+id/voice_scale_view"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_bg"
+        app:layout_constraintRight_toRightOf="@+id/avatar_bg"
+        app:layout_constraintTop_toBottomOf="@+id/radio_view"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#EF5E85"
@@ -129,8 +102,109 @@
         android:id="@+id/voice_control_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/menu_bg" />
+
+    <com.module.feeds.make.view.VocalAlignControlPannelView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_105_dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/menu_bg" />
+    <!-- 下面是菜单栏 -->
+    <View
+        android:id="@+id/menu_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_72_dp"
+        android:background="#404A9A"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/rensheng_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_rensheng_selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/effect_iv"
+        app:src_unSelected_drawable="@drawable/editor_rensheng" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:gravity="center"
+        android:text="人声对齐"
+        android:textColor="@color/white_trans_50"
+        app:layout_constraintLeft_toLeftOf="@+id/rensheng_iv"
+        app:layout_constraintRight_toRightOf="@+id/rensheng_iv"
+        app:layout_constraintTop_toBottomOf="@+id/rensheng_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/effect_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_effect_selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/rensheng_iv"
+        app:layout_constraintRight_toLeftOf="@id/reset_iv"
+        app:src_unSelected_drawable="@drawable/editor_effect" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:gravity="center"
+        android:text="调音"
+        android:textColor="@color/white_trans_50"
+        app:layout_constraintLeft_toLeftOf="@+id/effect_iv"
+        app:layout_constraintRight_toRightOf="@+id/effect_iv"
+        app:layout_constraintTop_toBottomOf="@+id/effect_iv" />
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/reset_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_reset_selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/effect_iv"
+        app:layout_constraintRight_toLeftOf="@id/publish_iv"
+        app:src_unSelected_drawable="@drawable/editor_reset" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:gravity="center"
+        android:text="重唱"
+        android:textColor="@color/white_trans_50"
+        app:layout_constraintLeft_toLeftOf="@+id/reset_iv"
+        app:layout_constraintRight_toRightOf="@+id/reset_iv"
+        app:layout_constraintTop_toBottomOf="@+id/reset_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/publish_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_32_dp"
+        app:bl_selected_drawable="@drawable/editor_publish_selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/reset_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:src_unSelected_drawable="@drawable/editor_publish" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:gravity="center"
+        android:text="发布"
+        android:textColor="@color/white_trans_50"
+        app:layout_constraintLeft_toLeftOf="@+id/publish_iv"
+        app:layout_constraintRight_toRightOf="@+id/publish_iv"
+        app:layout_constraintTop_toBottomOf="@+id/publish_iv" />
 
 </android.support.constraint.ConstraintLayout>

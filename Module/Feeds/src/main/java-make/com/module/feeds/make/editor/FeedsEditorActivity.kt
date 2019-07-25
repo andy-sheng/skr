@@ -20,22 +20,6 @@ class FeedsEditorActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        initEngine()
-    }
-
-    private fun initEngine() {
-        if (!ZqEngineKit.getInstance().isInit) {
-            // 不能每次都初始化,播放伴奏
-            val params = Params.getFromPref()
-            params.apply {
-                scene = Params.Scene.audiotest
-                isEnableVideo = false
-                isEnableAudio = true
-                isUseExternalAudio = true
-                isUseExternalAudioRecord = true
-            }
-            ZqEngineKit.getInstance().init("feeds_editor", params)
-        }
     }
 
     override fun onDestroy() {
