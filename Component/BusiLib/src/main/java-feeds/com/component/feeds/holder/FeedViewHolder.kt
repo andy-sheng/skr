@@ -62,7 +62,7 @@ open class FeedViewHolder(var item: View, var listener: FeedsListener?) : Recycl
             }
         })
 
-        itemView.setOnClickListener(object : DebounceViewClickListener() {
+        mSongAreaBg.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickDetailListener(model)
             }

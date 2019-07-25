@@ -8,10 +8,13 @@ import android.view.View
 import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.core.userinfo.UserInfoManager
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
+import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
+import com.component.dialog.FeedsMoreDialogView
 import com.component.feeds.presenter.FeedWatchViewPresenter
 import com.component.feeds.adapter.FeedsWatchViewAdapter
 import com.component.feeds.listener.FeedsListener
@@ -40,6 +43,8 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     private var mCurrentModel: FeedsWatchModel? = null  // 保存
 
     private var mMediaPlayer: IPlayer? = null
+
+    var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
@@ -89,6 +94,23 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
                 // 更多
+                watchModel?.let {
+                    if (fragment.activity != null) {
+                        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED)
+                                .apply {
+                                    setFollow(it.hasFollow == true)
+                                    mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                        override fun clickValid(v: View?) {
+                                            dismiss()
+                                            UserInfoManager.getInstance().mateRelation(it.user?.userID
+                                                    ?: 0, UserInfoManager.RA_BUILD, false)
+                                        }
+                                    })
+                                }
+                        mFeedsMoreDialogView?.showByDialog()
+                    }
+
+                }
             }
 
         })
