@@ -24,12 +24,12 @@ class ProducationAdapter(private var mIsSelf: Boolean) : DiffAdapter<Producation
     var mOnClickPlayListener: ((view: View, play: Boolean, position: Int, model: ProducationModel?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == TYPE_NORMAL) {
+        return if (viewType == TYPE_NORMAL) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.producation_item_view_layout, parent, false)
-            return ProducationHolder(view, mIsSelf, mOnClickDeleListener, mOnClickShareListener, mOnClickPlayListener)
+            ProducationHolder(view, mIsSelf, mOnClickDeleListener, mOnClickShareListener, mOnClickPlayListener)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.produacation_empty_view_layout, parent, false)
-            return EmptyProducationHolder(view)
+            EmptyProducationHolder(view)
         }
     }
 
@@ -70,8 +70,7 @@ class ProducationAdapter(private var mIsSelf: Boolean) : DiffAdapter<Producation
     }
 
     companion object {
-
-        private val TYPE_NORMAL = 1
-        private val TYPE_EMPTY = 2
+        const val TYPE_NORMAL = 1
+        const val TYPE_EMPTY = 2
     }
 }
