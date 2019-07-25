@@ -1,6 +1,5 @@
-package com.module.feeds.watch.view
+package com.component.feeds.view
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -13,7 +12,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.utils.U
-import com.module.feeds.R
+import com.component.busilib.R
 import com.facebook.drawee.view.SimpleDraweeView
 
 // 唱片动画的view

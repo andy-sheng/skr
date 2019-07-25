@@ -1,25 +1,25 @@
-package com.module.feeds.watch.view
+package com.component.feeds.view
 
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.*
 import android.view.View
-import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
-import com.module.RouterConstants
-import com.module.feeds.R
-import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
+import com.component.busilib.R
+import com.component.feeds.presenter.FeedWatchViewPresenter
+import com.component.feeds.adapter.FeedsWatchViewAdapter
 import com.component.feeds.model.FeedsWatchModel
-import com.module.feeds.watch.presenter.FeedWatchViewPresenter
+import com.module.RouterConstants
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+
 
 class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView {
 
@@ -47,7 +47,45 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mClassicsHeader = findViewById(R.id.classics_header)
         mRecyclerView = findViewById(R.id.recycler_view)
 
-        mAdapter = FeedsWatchViewAdapter()
+        mAdapter = FeedsWatchViewAdapter(object : FeedsWatchViewAdapter.FeedsListener {
+            override fun onClickLikeListener(watchModel: FeedsWatchModel?) {
+                // 喜欢
+            }
+
+            override fun onClickCommentListener(watchModel: FeedsWatchModel?) {
+                // 评论
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                        .withSerializable("feed_model", watchModel)
+                        .navigation()
+            }
+
+            override fun onClickHitListener(watchModel: FeedsWatchModel?) {
+                // 打榜
+                watchModel?.song?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+                            .withSerializable("song_model", it)
+                            .navigation()
+                }
+            }
+
+            override fun onClickDetailListener(watchModel: FeedsWatchModel?) {
+                // 详情
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                        .withSerializable("feed_model", watchModel)
+                        .navigation()
+            }
+
+            override fun onClickCDListener(watchModel: FeedsWatchModel?) {
+                // 播放
+                watchModel?.let { model -> play(model, false) }
+            }
+
+            override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
+                // 更多
+            }
+
+        })
+
         mPersenter = FeedWatchViewPresenter(this, type)
 
         mRefreshLayout.apply {
@@ -84,9 +122,9 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
-                    SCROLL_STATE_IDLE -> {
+                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
                         var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
-                        if (firstCompleteItem != NO_POSITION) {
+                        if (firstCompleteItem != RecyclerView.NO_POSITION) {
                             // 找到了
                             model = mAdapter.mDataList[firstCompleteItem]
                         } else {
@@ -129,52 +167,16 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                             play(it, true)
                         }
                     }
-                    SCROLL_STATE_DRAGGING -> {
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
 
                     }
-                    SCROLL_STATE_SETTLING -> {
+                    RecyclerView.SCROLL_STATE_SETTLING -> {
 
                     }
                 }
             }
         })
 
-        mAdapter.onClickMoreListener = {
-            // 更多
-        }
-
-        mAdapter.onClickLikeListener = {
-            // 喜欢
-        }
-
-        mAdapter.onClickCommentListener = {
-            // 评论
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                    .withSerializable("feed_model", it)
-                    .navigation()
-        }
-
-        mAdapter.onClickHitListener = {
-            // 打榜
-            it?.song?.let {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
-                        .withSerializable("song_model", it)
-                        .navigation()
-            }
-
-        }
-
-        mAdapter.onClickCDListener = {
-            // 播放
-            it?.let { model -> play(model, false) }
-        }
-
-        mAdapter.onClickDetailListener = {
-            // 详情
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                    .withSerializable("feed_model", it)
-                    .navigation()
-        }
 
     }
 

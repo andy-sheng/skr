@@ -13,10 +13,10 @@ import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.module.feeds.R
 import com.module.feeds.watch.view.FeedsLikeView
-import com.module.feeds.watch.view.FeedsWatchView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
+import com.component.feeds.view.FeedsWatchView
 
 class FeedsWatchFragment : BaseFragment() {
 

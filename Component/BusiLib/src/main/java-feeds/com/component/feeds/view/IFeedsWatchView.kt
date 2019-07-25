@@ -1,4 +1,4 @@
-package com.module.feeds.watch.view
+package com.component.feeds.view
 
 import com.component.feeds.model.FeedsWatchModel
 

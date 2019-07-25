@@ -150,7 +150,7 @@
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg" />
 
-    <com.module.feeds.watch.view.RecordAnimationView
+    <com.component.feeds.view.RecordAnimationView
         android:id="@+id/record_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

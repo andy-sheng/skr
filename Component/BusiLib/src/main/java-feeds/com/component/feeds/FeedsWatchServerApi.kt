@@ -1,4 +1,4 @@
-package com.module.feeds.watch
+package com.component.feeds
 
 import com.common.rxretrofit.ApiResult
 import io.reactivex.Observable
