@@ -11,9 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/input_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/view_10_dp"
-        android:paddingBottom="@dimen/view_10_dp"
+        android:layout_height="@dimen/view_54_dp"
         android:background="#FFFFFFFF"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -21,6 +19,12 @@
         app:layout_constraintBottom_toTopOf="@+id/place_holder_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFD4D4D4"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.ex.ExTextView
             android:layout_width="0dp"

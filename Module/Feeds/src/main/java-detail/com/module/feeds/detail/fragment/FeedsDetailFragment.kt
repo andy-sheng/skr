@@ -26,6 +26,9 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.detail.inter.IFeedsDetailView
+import com.module.feeds.detail.model.FirstLevelCommentModel
+import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
@@ -34,7 +37,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class FeedsDetailFragment : BaseFragment() {
+class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     val mTag = "FeedsDetailFragment"
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
@@ -63,6 +66,7 @@ class FeedsDetailFragment : BaseFragment() {
     var mFeedsCommentView: FeedsCommentView? = null
     var mRadioView: RadioView? = null
     var mCommonTitleBar: CommonTitleBar? = null
+    var mFeedsDetailPresenter: FeedsDetailPresenter? = null
 
     var mIsSongStart = false
 
@@ -157,11 +161,17 @@ class FeedsDetailFragment : BaseFragment() {
         mRadioView = rootView.findViewById(com.module.feeds.R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
         mFeedsCommentView = rootView.findViewById(com.module.feeds.R.id.feedsCommentView)
+        mFeedsDetailPresenter = FeedsDetailPresenter(this)
+        addPresent(mFeedsDetailPresenter)
 
-        mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!.feedID!!)
+        mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
         mFeedsWatchModel?.song?.songTpl?.songName?.let {
             mSongNameTv?.text = it
             mCommonTitleBar?.centerTextView?.text = "正在播放《${it}》"
+        }
+
+        mFeedsInputContainerView?.mSendCallBack = { s ->
+            mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
         }
 
         AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
@@ -287,6 +297,10 @@ class FeedsDetailFragment : BaseFragment() {
                 resumeSong()
             }
         }
+    }
+
+    override fun addCommentSuccess(model: FirstLevelCommentModel) {
+        mFeedsCommentView?.addSelfComment(model)
     }
 
     private fun playSong() {

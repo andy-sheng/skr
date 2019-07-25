@@ -22,7 +22,12 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".detail.FeedsDetailActivity"
+            android:name=".detail.activity.FeedsDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".detail.activity.FeedsSecondCommentDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 

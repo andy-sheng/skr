@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
@@ -14,6 +16,8 @@ import com.module.feeds.detail.model.FirstLevelCommentModel
 
 
 class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdapter.CommentHolder>() {
+    var mIFirstLevelCommentListener: IFirstLevelCommentListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsCommentAdapter.CommentHolder {
         val view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_comment_item_view_layout, parent, false)
         return CommentHolder(view)
@@ -24,10 +28,10 @@ class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdap
     }
 
     override fun onBindViewHolder(holder: FeedsCommentAdapter.CommentHolder, position: Int) {
-        holder.bindData(mDataList.get(position))
+        holder.bindData(mDataList.get(position), position)
     }
 
-    class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mCommenterAvaterIv: BaseImageView
         val mNameTv: ExTextView
         val mCommentTimeTv: ExTextView
@@ -35,6 +39,8 @@ class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdap
         val mLikeNum: ExTextView
         val mContentTv: ExTextView
         val mReplyNum: ExTextView
+        var mModel: FirstLevelCommentModel? = null
+        var mPosition: Int? = null
 
         init {
             mCommenterAvaterIv = itemView.findViewById(com.module.feeds.R.id.commenter_avater_iv)
@@ -46,13 +52,16 @@ class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdap
             mReplyNum = itemView.findViewById(com.module.feeds.R.id.reply_num)
         }
 
-        fun bindData(model: FirstLevelCommentModel) {
+        fun bindData(model: FirstLevelCommentModel, position: Int) {
+            mModel = model
+            mPosition = position
+
             AvatarUtils.loadAvatarByUrl(mCommenterAvaterIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
                     .setCircle(true)
                     .build())
 
             mNameTv.text = model.user?.nickname
-            mCommentTimeTv.text = model.comment.createdAt
+            mCommentTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(model.comment.createdAt, "MM-dd HH:mm")
             mLikeNum.text = model.comment.starCnt.toString()
             mContentTv.text = model.comment.content
             if (model.comment.subCommentCnt > 0) {
@@ -62,7 +71,39 @@ class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdap
                 mReplyNum.visibility = View.GONE
             }
 
-            mXinIv.isSelected = model.comment.isIsLiked
+            mXinIv.isSelected = model.comment.isLiked
+
+            mXinIv.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    mIFirstLevelCommentListener?.onClickLike(mModel!!, !v!!?.isSelected, mPosition!!)
+                }
+            })
+
+            mReplyNum.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    mIFirstLevelCommentListener?.onClickMoreComment(mModel!!)
+                }
+            })
+
+            mContentTv.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    mIFirstLevelCommentListener?.onClickMoreComment(mModel!!)
+                }
+            })
+
+            mCommenterAvaterIv.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    mModel!!.user?.userID?.let {
+                        mIFirstLevelCommentListener?.onClickIcon(mModel!!.user.userID)
+                    }
+                }
+            })
         }
+    }
+
+    interface IFirstLevelCommentListener {
+        fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int)
+        fun onClickMoreComment(firstLevelCommentModel: FirstLevelCommentModel)
+        fun onClickIcon(userID: Int)
     }
 }

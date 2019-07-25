@@ -14,6 +14,9 @@ public class FirstLevelCommentModel implements Serializable {
     private CommentBean comment;
     private FeedUserInfo user;
 
+    public FirstLevelCommentModel() {
+    }
+
     public CommentBean getComment() {
         return comment;
     }
@@ -44,12 +47,23 @@ public class FirstLevelCommentModel implements Serializable {
 
         private int commentID;
         private String content;
-        private String createdAt;
+        private Long createdAt;
         private boolean isLiked;
         private int replyUserID;
         private int starCnt;
         private int subCommentCnt;
         private int userID;
+
+        public CommentBean() {
+
+        }
+
+        public CommentBean(int commentID, String content, Long createdAt, int userID) {
+            this.commentID = commentID;
+            this.content = content;
+            this.createdAt = createdAt;
+            this.userID = userID;
+        }
 
         public int getCommentID() {
             return commentID;
@@ -67,20 +81,20 @@ public class FirstLevelCommentModel implements Serializable {
             this.content = content;
         }
 
-        public String getCreatedAt() {
+        public Long getCreatedAt() {
             return createdAt;
         }
 
-        public void setCreatedAt(String createdAt) {
+        public void setCreatedAt(Long createdAt) {
             this.createdAt = createdAt;
         }
 
-        public boolean isIsLiked() {
+        public boolean isLiked() {
             return isLiked;
         }
 
-        public void setIsLiked(boolean isLiked) {
-            this.isLiked = isLiked;
+        public void setLiked(boolean liked) {
+            isLiked = liked;
         }
 
         public int getReplyUserID() {

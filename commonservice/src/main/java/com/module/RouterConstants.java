@@ -65,6 +65,7 @@ public interface RouterConstants {
     String ACTIVITY_DOUBLE_MATCH = "/rankingmode/DoubleMatchActivity";
     String ACTIVITY_DOUBLE_END = "/rankingmode/DoubleEndActivity";
 
+    String ACTIVITY_FEEDS_SECOND_DETAIL = "/feeds/FeedsSecondCommentDetailActivity";
     String ACTIVITY_FEEDS_DETAIL = "/feeds/FeedsDetailActivity";
     String ACTIVITY_FEEDS_MAKE = "/feeds/FeedsMakeActivity";
     String ACTIVITY_FEEDS_EDITOR = "/feeds/FeedsEditorActivity";

@@ -6,6 +6,7 @@ import android.view.View
 import com.common.base.BaseFragment
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.component.feeds.model.FeedsWatchModel
 import com.module.feeds.R
 import com.module.feeds.detail.view.FeedsCommentView
 
@@ -14,12 +15,18 @@ class FeedsCommentDetailFragment : BaseFragment() {
     var mTitleComment: ConstraintLayout? = null
     var mTitlebar: CommonTitleBar? = null
     var mFeedCommentView: FeedsCommentView? = null
+    var mFeedsWatchModel: FeedsWatchModel? = null
 
     override fun initView(): Int {
         return com.module.feeds.R.layout.feeds_comment_detail_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        if (mFeedsWatchModel == null) {
+            activity?.finish()
+            return
+        }
+
         mTitlebar = rootView.findViewById(R.id.titlebar)
         mTitleComment = rootView.findViewById(R.id.title_comment)
         mFeedCommentView = rootView.findViewById(R.id.feed_comment_view)
@@ -27,7 +34,6 @@ class FeedsCommentDetailFragment : BaseFragment() {
         mTitlebar?.leftTextView?.setDebounceViewClickListener {
             activity?.finish()
         }
-
     }
 
     fun View.setDebounceViewClickListener(click: (view: View?) -> Unit) {
@@ -36,6 +42,12 @@ class FeedsCommentDetailFragment : BaseFragment() {
                 click(v)
             }
         })
+    }
+
+    override fun setData(type: Int, data: Any?) {
+        if (type == 0) {
+            mFeedsWatchModel = data as FeedsWatchModel
+        }
     }
 
     override fun useEventBus(): Boolean {
