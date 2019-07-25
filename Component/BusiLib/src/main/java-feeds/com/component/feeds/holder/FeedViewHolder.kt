@@ -71,36 +71,43 @@ open class FeedViewHolder(var item: View, var listener: FeedsListener?) : Recycl
 
     open fun bindData(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
-        if (watchModel.feedID != model?.feedID) {
-            // 不变的部分
-            if (watchModel?.rank != null) {
-                if (TextUtils.isEmpty(watchModel?.rank?.rankDesc)) {
-                    mTagArea.visibility = View.GONE
-                } else {
-                    mTagTv.text = watchModel?.rank?.rankDesc
-                    mTagArea.visibility = View.VISIBLE
-                }
-            } else {
+        this.model = watchModel
+
+        if (watchModel.rank != null) {
+            if (TextUtils.isEmpty(watchModel.rank?.rankDesc)) {
                 mTagArea.visibility = View.GONE
+            } else {
+                mTagTv.text = watchModel.rank?.rankDesc
+                mTagArea.visibility = View.VISIBLE
             }
+        } else {
+            mTagArea.visibility = View.GONE
         }
 
-        // 对可能变化的部分重新设置 评论数，点赞数和点赞icon
-        if (model?.starCnt != watchModel.starCnt) {
-            mLikeNumTv.text = watchModel.starCnt.toString()
-        }
-        if (model?.commentCnt != watchModel.commentCnt) {
-            mCommentNumTv.text = watchModel.commentCnt.toString()
-        }
+        refreshComment(position, watchModel)
+        refreshLike(position, watchModel)
+    }
 
-        if (watchModel.isLiked != model?.isLiked) {
-            var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
-            if (watchModel.isLiked == true) {
-                drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
-            }
-            drawble.setBounds(0, 0, 20.dp(), 18.dp())
-            mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
+    // 刷新喜欢图标和数字
+    fun refreshLike(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
+
+        var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
+        if (watchModel.isLiked == true) {
+            drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
         }
+        drawble.setBounds(0, 0, 20.dp(), 18.dp())
+        mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
+        mLikeNumTv.text = watchModel.starCnt.toString()
+    }
+
+    // 刷新评论数字
+    fun refreshComment(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
+        mCommentNumTv.text = watchModel.commentCnt.toString()
+
     }
 
     fun startPlay() {

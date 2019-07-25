@@ -282,7 +282,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         } else {
             model.starCnt = model.starCnt?.minus(1)
         }
-        mAdapter.update(position, model)
+        mAdapter.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
     }
 
     override fun onDetachedFromWindow() {

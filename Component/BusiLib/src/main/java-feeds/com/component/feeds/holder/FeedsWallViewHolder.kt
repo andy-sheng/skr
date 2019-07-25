@@ -9,16 +9,13 @@ import com.component.feeds.model.FeedsWatchModel
 
 class FeedsWallViewHolder(it: View, l: FeedsListener) : FeedViewHolder(it, l) {
 
-    init {
+    override fun bindData(position: Int, watchModel: FeedsWatchModel) {
+        super.bindData(position, watchModel)
         AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                 .setBlur(true)
                 .build())
         mRecordView.bindData(MyUserInfoManager.getInstance().avatar)
-    }
 
-    override fun bindData(position: Int, watchModel: FeedsWatchModel) {
-        super.bindData(position, watchModel)
-        this.model = watchModel
     }
 }

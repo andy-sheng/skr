@@ -24,29 +24,49 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: FeedsWatchViewHolder, position: Int) {
-        holder.bindData(position, mDataList[position])
-        if (mDataList[position] == mCurrentModel) {
-            holder.startPlay()
+    }
+
+    override fun onBindViewHolder(holder: FeedsWatchViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        if (payloads.isEmpty()) {
+            // 全部刷新的布局
+            holder.bindData(position, mDataList[position])
+            if (mDataList[position] == mCurrentModel) {
+                holder.startPlay()
+            } else {
+                holder.stopPlay()
+            }
         } else {
-            holder.stopPlay()
+            // 局部刷新
+            val type = payloads[0] as Int
+            if (type == REFRESH_TYPE_LIKE) {
+                holder.refreshLike(position, mDataList[position])
+            } else if (type == REFRESH_TYPE_COMMENT) {
+                holder.refreshComment(position, mDataList[position])
+            }
         }
     }
 
-    fun update(position: Int, model: FeedsWatchModel) {
+    fun update(position: Int, model: FeedsWatchModel, refreshType: Int) {
         if (model.feedID == mDataList[position].feedID) {
             // 位置是对的的
             mDataList[position] = model
-            notifyItemChanged(position)
+            notifyItemChanged(position, refreshType)
             return
         } else {
             // 位置是错的
             for (i in 0 until mDataList.size) {
                 if (mDataList[i].feedID == model.feedID) {
                     mDataList[i] = model
-                    notifyItemChanged(i)
+                    notifyItemChanged(i, refreshType)
                     return
                 }
             }
         }
+    }
+
+    companion object {
+        const val REFRESH_TYPE_LIKE = 0  // 局部刷新喜欢
+        const val REFRESH_TYPE_COMMENT = 1  // 局部刷新评论数
     }
 }

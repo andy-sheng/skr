@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
-import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -35,51 +34,45 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
 
     override fun bindData(position: Int, watchModel: FeedsWatchModel) {
         super.bindData(position, watchModel)
-        if (watchModel.feedID != model?.feedID) {
-            // 不变的部分
-            watchModel.user?.let {
-                AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
-                        .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                        .setBlur(true)
-                        .build())
-                mRecordView.bindData(it.avatar)
+        watchModel.user?.let {
+            AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                    .setBlur(true)
+                    .build())
+            mRecordView.bindData(it.avatar)
 
-                AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
-                        .setCircle(true)
-                        .build())
-                mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID
-                        ?: 0, it.nickname)
-            }
-
-            mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt
-                    ?: 0L, System.currentTimeMillis())
-            var recomendTag = ""
-            if (watchModel.song?.needRecommentTag == true) {
-                recomendTag = "#小编推荐# "
-            }
-            var songTag = watchModel.song?.tags?.get(0)?.tagDesc ?: ""
-            if (!TextUtils.isEmpty(songTag)) {
-                songTag = "#$songTag# "
-            }
-            val title = watchModel.song?.title ?: ""
-            if (TextUtils.isEmpty(recomendTag) && TextUtils.isEmpty(songTag) && TextUtils.isEmpty(title)) {
-                mContentTv.visibility = View.GONE
-            } else {
-                val stringBuilder = SpanUtils()
-                        .append(recomendTag).setForegroundColor(U.getColor(R.color.black_trans_50))
-                        .append(songTag).setForegroundColor(U.getColor(R.color.black_trans_50))
-                        .append(title).setForegroundColor(U.getColor(R.color.black_trans_80))
-                        .create()
-                mContentTv.visibility = View.VISIBLE
-                mContentTv.text = stringBuilder
-            }
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
+                    .setCircle(true)
+                    .build())
+            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID
+                    ?: 0, it.nickname)
         }
 
-        // 人数可能变化
-        if (watchModel.challengeCnt != model?.challengeCnt) {
-            mPeopleNumTv.setText(watchModel.challengeCnt.toString())
+        mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt
+                ?: 0L, System.currentTimeMillis())
+        var recomendTag = ""
+        if (watchModel.song?.needRecommentTag == true) {
+            recomendTag = "#小编推荐# "
         }
-        this.model = watchModel
+        var songTag = watchModel.song?.tags?.get(0)?.tagDesc ?: ""
+        if (!TextUtils.isEmpty(songTag)) {
+            songTag = "#$songTag# "
+        }
+        val title = watchModel.song?.title ?: ""
+        if (TextUtils.isEmpty(recomendTag) && TextUtils.isEmpty(songTag) && TextUtils.isEmpty(title)) {
+            mContentTv.visibility = View.GONE
+        } else {
+            val stringBuilder = SpanUtils()
+                    .append(recomendTag).setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append(songTag).setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append(title).setForegroundColor(U.getColor(R.color.black_trans_80))
+                    .create()
+            mContentTv.visibility = View.VISIBLE
+            mContentTv.text = stringBuilder
+        }
 
+        mPeopleNumTv.setText(watchModel.challengeCnt.toString())
     }
+
+
 }

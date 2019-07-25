@@ -8,7 +8,6 @@ import com.component.feeds.holder.EmptyFeedWallHolder
 import com.component.feeds.holder.FeedsWallViewHolder
 import com.component.feeds.listener.FeedsListener
 import com.component.feeds.model.FeedsWatchModel
-import com.component.feeds.presenter.FeedWatchViewPresenter
 
 class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -47,31 +46,53 @@ class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is FeedsWallViewHolder) {
-            holder.bindData(position, mDataList[position])
-            if (mCurrentModel == mDataList[position]) {
-                holder.startPlay()
-            } else {
-                holder.stopPlay()
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        if (payloads.isEmpty()) {
+            // 全部刷新的布局
+            if (holder is FeedsWallViewHolder) {
+                holder.bindData(position, mDataList[position])
+                if (mDataList[position] == mCurrentModel) {
+                    holder.startPlay()
+                } else {
+                    holder.stopPlay()
+                }
+            }
+        } else {
+            // 局部刷新
+            if (holder is FeedsWallViewHolder) {
+                val type = payloads[0] as Int
+                if (type == REFRESH_TYPE_LIKE) {
+                    holder.refreshLike(position, mDataList[position])
+                } else if (type == REFRESH_TYPE_COMMENT) {
+                    holder.refreshComment(position, mDataList[position])
+                }
             }
         }
     }
 
-    fun update(position: Int, model: FeedsWatchModel) {
+    fun update(position: Int, model: FeedsWatchModel, refreshType: Int) {
         if (model.feedID == mDataList[position].feedID) {
             // 位置是对的的
             mDataList[position] = model
-            notifyItemChanged(position)
+            notifyItemChanged(position, refreshType)
             return
         } else {
             // 位置是错的
             for (i in 0 until mDataList.size) {
                 if (mDataList[i].feedID == model.feedID) {
                     mDataList[i] = model
-                    notifyItemChanged(i)
+                    notifyItemChanged(i, refreshType)
                     return
                 }
             }
         }
+    }
+
+    companion object {
+        const val REFRESH_TYPE_LIKE = 0  // 局部刷新喜欢
+        const val REFRESH_TYPE_COMMENT = 1  // 局部刷新评论数
     }
 }

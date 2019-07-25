@@ -114,7 +114,7 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         } else {
             model.starCnt = model.starCnt?.minus(1)
         }
-        mAdapter.update(position, model)
+        mAdapter.update(position, model, FeedsWallViewAdapter.REFRESH_TYPE_LIKE)
     }
 
     override fun onDetachedFromWindow() {
