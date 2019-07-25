@@ -2608,10 +2608,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
-        int line = event.line;
-        int acrScore = event.acrScore;
-        int melpScore = event.melpScore;
-        String from = event.from;
+        int line = event.getLine();
+        int acrScore = event.getAcrScore();
+        int melpScore = event.getMelpScore();
+        String from = event.getFrom();
         if (acrScore > melpScore) {
             processScore(acrScore, line);
         } else {

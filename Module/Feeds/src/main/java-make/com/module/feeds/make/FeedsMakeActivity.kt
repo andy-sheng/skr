@@ -15,6 +15,9 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.log.MyLog
+import com.common.rx.RxRetryAssist
+import com.common.utils.HttpUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -22,6 +25,8 @@ import com.common.view.countdown.CircleCountDownView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.feeds.model.FeedSongModel
 import com.component.lyrics.LyricAndAccMatchManager
+import com.component.lyrics.LyricsManager
+import com.component.lyrics.LyricsReader
 import com.component.lyrics.utils.SongResUtils
 import com.component.toast.NoImageCommonToastView
 import com.engine.EngineEvent
@@ -29,13 +34,16 @@ import com.engine.Params
 import com.module.feeds.R
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.agora.rtc.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.File
+import java.util.HashSet
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_MAKE)
@@ -67,6 +75,8 @@ class FeedsMakeActivity : BaseActivity() {
                 .setGravity(Gravity.BOTTOM)
                 .create()
     }
+
+    var bgmFileJob: Deferred<File>? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_make_activity_layout
@@ -139,6 +149,82 @@ class FeedsMakeActivity : BaseActivity() {
         mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs
                 ?: 0L)
         initEngine()
+        // 加载歌词
+        LyricsManager.getLyricsManager(U.app())
+                .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
+                .subscribe({ lyricsReader ->
+                    MyLog.w(TAG, "onEventMainThread " + "play")
+                    mManyLyricsView?.visibility = View.VISIBLE
+                    mManyLyricsView?.initLrcData()
+                    mManyLyricsView?.lyricsReader = lyricsReader
+                    val set = HashSet<Int>()
+                    set.add(lyricsReader.getLineInfoIdByStartTs(0))
+                    mManyLyricsView?.needCountDownLine = set
+                    mManyLyricsView?.seekto(0)
+                    mManyLyricsView?.pause()
+                }, { throwable ->
+                    MyLog.e(TAG, throwable)
+                    MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                })
+        // 提前下载伴奏
+        bgmFileJob = async(Dispatchers.IO) {
+            val file = SongResUtils.getAccFileByUrl(mFeedsMakeModel?.songModel?.songTpl?.bgm)
+            if (file?.exists() == true) {
+                MyLog.d(TAG, "伴奏存在")
+                file
+            } else {
+                for (i in 1..10) {
+                    val r = U.getHttpUtils().downloadFileSync(mFeedsMakeModel?.songModel?.songTpl?.bgm, file, true, object : HttpUtils.OnDownloadProgress {
+                        override fun onCanceled() {
+                        }
+
+                        override fun onFailed() {
+                        }
+
+                        override fun onDownloaded(downloaded: Long, totalLength: Long) {
+                            mFeedsMakeModel?.bgmDownloadProgress = downloaded / totalLength.toFloat()
+                        }
+
+                        override fun onCompleted(localPath: String?) {
+                            mFeedsMakeModel?.bgmDownloadProgress = 1f
+                        }
+                    })
+                    if (r) {
+                        MyLog.d(TAG, "伴奏下载成功")
+                        break
+                    } else {
+                        delay(3000)
+                    }
+                }
+                file
+            }
+        }
+        if (mFeedsMakeModel?.withBgm == true) {
+            (mTitleBar?.rightCustomView as TextView).text = "伴奏"
+        } else {
+            (mTitleBar?.rightCustomView as TextView).text = "清唱"
+        }
+        mTitleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                if (mFeedsMakeModel?.withBgm == true) {
+                    mFeedsMakeModel?.withBgm = false
+                    (mTitleBar?.rightCustomView as TextView).text = "清唱"
+                } else {
+                    // 清唱变伴奏
+                    if (U.getDeviceUtils().getWiredHeadsetPlugOn()) {
+                        // 是否插着有限耳机
+                        mFeedsMakeModel?.withBgm = true
+                        (mTitleBar?.rightCustomView as TextView).text = "伴奏"
+                    } else {
+                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
+                    }
+                }
+            }
+        })
     }
 
     private fun initEngine() {
@@ -157,6 +243,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun startRecord() {
+        stopRecord()
         // 录制按钮没有点击
         mFeedsMakeModel?.recordingClick = true
         mBeginTv?.isSelected = true
@@ -167,17 +254,44 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun startRecordInner() {
-        stopRecord()
+
         mFeedsMakeModel?.recordingClick = true
-        playMusic()
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView, mFeedsMakeModel?.songModel?.songTpl?.lrcTs,
-                0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0,
-                0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0,
-                mFeedsMakeModel?.songModel?.songTpl?.uploadUserID?.toString() ?: "")
+        if (mFeedsMakeModel?.withBgm == true) {
+            // 如果开着伴奏
+            if (bgmFileJob?.isCompleted == false) {
+                U.getToastUtil().showShort("伴奏下载中 ${(mFeedsMakeModel?.bgmDownloadProgress
+                        ?: 0f) * 100}%")
+            }
+            runBlocking {
+                val bgmFile = bgmFileJob?.await()
+                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), bgmFile?.absolutePath, null, 0, false, false, 1)
+                goLyric(true)
+            }
+        } else {
+            goLyric(false)
+        }
+    }
+
+    private fun goLyric(withacc:Boolean) {
+        // 直接走
+        val configParams = LyricAndAccMatchManager.ConfigParams().apply {
+            manyLyricsView = mManyLyricsView
+            voiceScaleView = mVoiceScaleView
+            lyricUrl = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+            accBeginTs = 0
+            accEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
+            lyricBeginTs = 0
+            lyricEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
+            authorName = mFeedsMakeModel?.songModel?.songTpl?.uploader?.nickname
+            accLoadOk = !withacc
+        }
+        configParams.manyLyricsView = mManyLyricsView
+
+        mLyricAndAccMatchManager.setArgs(configParams)
 
         mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
-            override fun onLyricParseSuccess() {
-
+            override fun onLyricParseSuccess(reader: LyricsReader) {
+                
             }
 
             override fun onLyricParseFailed() {
@@ -193,23 +307,6 @@ class FeedsMakeActivity : BaseActivity() {
                         ?: 0)
             }
         })
-    }
-
-    private fun playMusic() {
-        //从bundle里面拿音乐相关数据，然后开始试唱
-        launch {
-            val bgmFileJob = async(Dispatchers.IO) {
-                val file = SongResUtils.getAccFileByUrl(mFeedsMakeModel?.songModel?.songTpl?.bgm)
-                if (file?.exists() == true) {
-                    file
-                } else {
-                    U.getHttpUtils().downloadFileSync(mFeedsMakeModel?.songModel?.songTpl?.bgm, file, true, null)
-                    file
-                }
-            }
-            val bgmFile = bgmFileJob.await()
-            ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), bgmFile.absolutePath, null, 0, false, false, 1)
-        }
     }
 
     private fun recordOk() {
@@ -229,6 +326,8 @@ class FeedsMakeActivity : BaseActivity() {
     private fun stopRecord() {
         ZqEngineKit.getInstance().stopAudioMixing()
         ZqEngineKit.getInstance().stopAudioRecording()
+        mLyricAndAccMatchManager.stop()
+        mCircleCountDownView?.visibility = View.GONE
     }
 
     private fun goNext() {

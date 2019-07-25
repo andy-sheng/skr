@@ -28,6 +28,7 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.component.busilib.manager.BgMusicManager;
+import com.component.lyrics.LyricsReader;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
@@ -1058,12 +1059,20 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
 
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                songModel.getLyric(), songModel.getRankLrcBeginT(), songModel.getRankLrcEndT(),
-                songModel.getBeginMs(), songModel.getEndMs(), songModel.getUploaderName());
+        LyricAndAccMatchManager.ConfigParams configParams = new LyricAndAccMatchManager.ConfigParams();
+        configParams.setManyLyricsView(mManyLyricsView);
+        configParams.setVoiceScaleView(mVoiceScaleView);
+        configParams.setLyricUrl(songModel.getLyric());
+        configParams.setLyricBeginTs( songModel.getRankLrcBeginT());
+        configParams.setLyricEndTs( songModel.getRankLrcEndT());
+        configParams.setAccBeginTs(songModel.getBeginMs());
+        configParams.setAccEndTs(songModel.getEndMs());
+        configParams.setAuthorName(songModel.getUploaderName());
+        mLyricAndAccMatchManager.setArgs(configParams);
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+
             @Override
-            public void onLyricParseSuccess() {
+            public void onLyricParseSuccess(LyricsReader reader) {
 
             }
 

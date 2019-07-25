@@ -18,7 +18,7 @@ class FeedSongTpl : Serializable {
     var lrcTs: String? = null
     @JSONField(name = "lrcTxt")// 纯文本歌词
     var lrcTxt: String? = null
-    @JSONField(name = "lrcType")// 纯文本歌词
+    @JSONField(name = "lrcType")// 纯文本歌词 0 1伴奏 2 纯文本
     var lrcType: Int? = null
     @JSONField(name = "lyricist")
     var lyricist: String? = null
@@ -26,6 +26,15 @@ class FeedSongTpl : Serializable {
     var songName: String? = null
     @JSONField(name = "tplID")
     var tplID: Int? = null
-    @JSONField(name = "uploadUserID")
-    var uploadUserID: Int? = null
+    @JSONField(name = "uploader")
+    var uploader: FeedCommonUserSimpleInfo? = null
+}
+
+class FeedCommonUserSimpleInfo : Serializable {
+    @JSONField(name = "avatar")
+    var avatar: String? = null
+    @JSONField(name = "nickname")
+    var nickname: String? = null
+    @JSONField(name = "userID")
+    var userID: Long? = null
 }

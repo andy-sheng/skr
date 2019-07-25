@@ -241,12 +241,20 @@ public class AuditionFragment extends BaseFragment {
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         }
 
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView, mSongModel.getLyric(),
-                mSongModel.getRankLrcBeginT(), mSongModel.getRankLrcEndT(),
-                mSongModel.getBeginMs(), mSongModel.getEndMs(), mSongModel.getUploaderName());
+        LyricAndAccMatchManager.ConfigParams configParams = new LyricAndAccMatchManager.ConfigParams();
+        configParams.setManyLyricsView(mManyLyricsView);
+        configParams.setVoiceScaleView(mVoiceScaleView);
+        configParams.setLyricUrl(mSongModel.getLyric());
+        configParams.setLyricBeginTs( mSongModel.getRankLrcBeginT());
+        configParams.setLyricEndTs( mSongModel.getRankLrcEndT());
+        configParams.setAccBeginTs(mSongModel.getBeginMs());
+        configParams.setAccEndTs(mSongModel.getEndMs());
+        configParams.setAuthorName(mSongModel.getUploaderName());
+        mLyricAndAccMatchManager.setArgs(configParams);
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+
             @Override
-            public void onLyricParseSuccess() {
+            public void onLyricParseSuccess(LyricsReader reader) {
 
             }
 
@@ -531,10 +539,10 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
-        int line = event.line;
-        int acrScore = event.acrScore;
-        int melpScore = event.melpScore;
-        String from = event.from;
+        int line = event.getLine();
+        int acrScore = event.getAcrScore();
+        int melpScore = event.getMelpScore();
+        String from = event.getFrom();
         if (MyLog.isDebugLogOpen()) {
             StringBuilder sb = new StringBuilder();
             sb.append("第").append(line).append("行,");
