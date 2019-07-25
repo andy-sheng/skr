@@ -164,6 +164,10 @@ class FeedsDetailFragment : BaseFragment() {
                 .setBlur(true)
                 .build())
 
+        mFeedsWatchModel?.song?.playDurMs?.let {
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+        }
+
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(95f)
             if (U.getDeviceUtils().hasNotch(U.app())) {
@@ -295,11 +299,14 @@ class FeedsDetailFragment : BaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PlayerEvent.TimeFly) {
-        mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.curPostion, "mm:ss")
-        mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
-        mSeekBar!!.max = event.totalDuration.toInt()
-        mSeekBar!!.progress = event.curPostion.toInt()
-        mFeedsCommonLyricView?.seekTo(event.curPostion.toInt())
+        //歌曲还没加载到的时候这个会返回1毫秒，无意义，do not care
+        if (event.totalDuration > 1000) {
+            mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.curPostion, "mm:ss")
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
+            mSeekBar!!.max = event.totalDuration.toInt()
+            mSeekBar!!.progress = event.curPostion.toInt()
+            mFeedsCommonLyricView?.seekTo(event.curPostion.toInt())
+        }
     }
 
     private fun pauseSong() {
@@ -316,7 +323,9 @@ class FeedsDetailFragment : BaseFragment() {
         mRadioView?.pause()
         mSeekBar!!.progress = 0
         mPassTimeTv?.text = "00:00"
-        mLastTimeTv?.text = "00:00"
+        mFeedsWatchModel?.song?.playDurMs?.let {
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+        }
         mFeedsCommonLyricView?.stop()
     }
 
