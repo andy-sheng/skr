@@ -11,32 +11,55 @@ import android.content.Context;
 public class ZqAudioEditorKit {
     public static final String TAG = "ZqAudioEditorKit";
 
+    public static final int STATE_IDLE = 0;
+    public static final int STATE_PREVIEW_PREPARING = 1;
+    public static final int STATE_PREVIEW_STARTED = 2;
+    public static final int STATE_PREVIEW_PAUSED = 3;
+    public static final int STATE_COMPOSING = 4;
+
     private Context mContext;
 
-    private OnPreviewStartedListener mOnPreviewStartedListener;
-    private OnPreviewCompletionListener mOnPreviewCompletionListener;
-    private OnComposeCompletionListener mOnComposeCompletionListener;
+    private OnPreviewInfoListener mOnPreviewInfoListener;
+    private OnComposeInfoListener mOnComposeInfoListener;
     private OnErrorListener mOnErrorListener;
 
     /**
-     * 音频合成预览开始的回调接口
+     * 音频合成预览的信息回调接口
      */
-    public interface OnPreviewStartedListener {
-        void onPreviewStarted();
+    public interface OnPreviewInfoListener {
+        /**
+         * 音频预览开始
+         */
+        void onStarted();
+
+        /**
+         * 音频预览结束
+         */
+        void onCompletion();
+
+        /**
+         * 音频预览循环播放模式下，每次重新播放会触发该回调
+         *
+         * @param count 当前是第几次loop，从1开始
+         */
+        void onLoopCount(int count);
     }
 
     /**
-     * 音频合成预览结束的回调接口
+     * 音频合成处理的信息回调接口
      */
-    public interface OnPreviewCompletionListener {
-        void onPreviewCompletion();
-    }
+    public interface OnComposeInfoListener {
+        /**
+         * 当前的合成进度回调
+         *
+         * @param progress 当前的进度，取值在[0, 1]范围内
+         */
+        void onProgress(float progress);
 
-    /**
-     * 音频合成已完成的回调接口。
-     */
-    public interface OnComposeCompletionListener {
-        void onComposeCompletion();
+        /**
+         * 音频合成完成回调
+         */
+        void onCompletion();
     }
 
     /**
@@ -50,16 +73,12 @@ public class ZqAudioEditorKit {
         mContext = context;
     }
 
-    public void setOnPreviewStartedListener(OnPreviewStartedListener listener) {
-        mOnPreviewStartedListener = listener;
+    public void setOnPreviewInfoListener(OnPreviewInfoListener listener) {
+        mOnPreviewInfoListener = listener;
     }
 
-    public void setOnPreviewCompletionListener(OnPreviewCompletionListener listener) {
-        mOnPreviewCompletionListener = listener;
-    }
-
-    public void setOnComposeCompletionListener(OnComposeCompletionListener listener) {
-        mOnComposeCompletionListener = listener;
+    public void setOnComposeInfoListener(OnComposeInfoListener listener) {
+        mOnComposeInfoListener = listener;
     }
 
     public void setOnErrorListener(OnErrorListener listener) {
@@ -67,7 +86,7 @@ public class ZqAudioEditorKit {
     }
 
     /**
-     * 重置当前实例，调用后当前实例的状态恢复到刚创建时的样子。
+     * 重置当前实例，调用后当前实例的状态恢复到刚创建时的样子，不过设置的回调会保留。
      *
      * 如果在合成过程中，则合成操作立即中断，中间文件均被删除。
      */
@@ -76,15 +95,18 @@ public class ZqAudioEditorKit {
     }
 
     /**
-     * 设置需要编辑合成的音频文件路径。
+     * 设置需要编辑合成的音频文件路径，并配置相应音频文件的实际区域。
      *
-     * idx为0的音频文件会作为基准，一般设置为伴奏的地址。
+     * idx为0的音频文件会作为基准，其有效长度会作为输出文件的长度，一般设置为伴奏的地址。
      * 注意均需要设置为本地文件地址，网络地址目前不能很好的支持。
      *
-     * @param idx   音频文件索引
-     * @param path  音频文件的绝对路径
+     * @param idx       音频文件索引
+     * @param path      音频文件的绝对路径
+     * @param offset    当前音频的实际开始位置，单位为ms, 可以小于0, 小于0是相当于在音频前面添加静音数据；
+     *                  不过需要注意，idx为0时该值不能小于0.
+     * @param end       当前音频的实际结束位置，单位为ms, 大于音频长度，或者小于0时，按实际长度计算。
      */
-    public void setDataSource(int idx, String path) {
+    public void setDataSource(int idx, String path, long offset, long end) {
 
     }
 
@@ -112,6 +134,10 @@ public class ZqAudioEditorKit {
      */
     public void stopPreview() {
 
+    }
+
+    public int getState() {
+        return STATE_IDLE;
     }
 
     /**
@@ -191,6 +217,7 @@ public class ZqAudioEditorKit {
      *
      * @param idx       待设置的音轨序号
      * @param delayInMs 延迟大小，单位为毫秒。小于0表示前移，大于0表示后移。
+     *                  注意，idx为0时设置该值无效。
      */
     public void setDelay(int idx, long delayInMs) {
 
