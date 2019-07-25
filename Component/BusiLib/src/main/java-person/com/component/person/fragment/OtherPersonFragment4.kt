@@ -59,6 +59,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import com.component.dialog.BusinessCardDialogView
+import com.component.feeds.view.PersonFeedsWallView
 import com.component.level.view.NormalLevelView2
 import com.zq.live.proto.Common.ESex
 import com.component.person.utils.StringFromatUtils
@@ -92,7 +93,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     internal var isAppbarCanSrcoll = true  // AppBarLayout是否可以滚动
 
-    internal var mUserInfoModel: UserInfoModel? = UserInfoModel()
+    internal var mUserInfoModel: UserInfoModel = UserInfoModel()
     internal var mUserId: Int = 0
 
     internal var mDialogPlus: DialogPlus? = null
@@ -126,7 +127,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonTabAdapter: PagerAdapter
 
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
-    internal var mProducationWallView: ProducationWallView? = null
+    internal var mFeedsWallView: PersonFeedsWallView? = null
+//    internal var mProducationWallView: ProducationWallView? = null
 
     lateinit var mFunctionArea: LinearLayout
     lateinit var mFollowIv: ExTextView
@@ -197,20 +199,18 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 mPresenter.getHomePage(mUserId)
-                if (mOtherPhotoWallView != null && mPersonVp.currentItem == 0) {
-                    mOtherPhotoWallView!!.getPhotos(true)
-                }
-                if (mProducationWallView != null && mPersonVp.currentItem == 1) {
-                    mProducationWallView!!.getProducations(true)
+                if (mPersonVp.currentItem == 0) {
+                    mOtherPhotoWallView?.getPhotos(true)
+                } else if (mPersonVp.currentItem == 1) {
+                    mFeedsWallView?.getFeeds(true)
                 }
             }
 
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                if (mOtherPhotoWallView != null && mPersonVp.currentItem == 0) {
-                    mOtherPhotoWallView!!.getMorePhotos()
-                }
-                if (mProducationWallView != null && mPersonVp.currentItem == 1) {
-                    mProducationWallView!!.getMoreProducations()
+                if (mPersonVp.currentItem == 0) {
+                    mOtherPhotoWallView?.getMorePhotos()
+                } else if (mPersonVp.currentItem == 1) {
+                    mFeedsWallView?.getMoreFeeds()
                 }
             }
 
@@ -480,14 +480,14 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     mOtherPhotoWallView!!.getPhotos(false)
                     return mOtherPhotoWallView!!
                 } else if (position == 1) {
-                    // 作品
-                    if (mProducationWallView == null) {
-                        mProducationWallView = ProducationWallView(this@OtherPersonFragment4, mUserInfoModel!!, this@OtherPersonFragment4)
+                    // 神曲
+                    if (mFeedsWallView == null) {
+                        mFeedsWallView = PersonFeedsWallView(this@OtherPersonFragment4, mUserInfoModel, this@OtherPersonFragment4)
                     }
-                    if (container.indexOfChild(mProducationWallView) == -1) {
-                        container.addView(mProducationWallView)
+                    if (container.indexOfChild(mFeedsWallView) == -1) {
+                        container.addView(mFeedsWallView)
                     }
-                    return mProducationWallView!!
+                    return mFeedsWallView!!
                 }
                 return super.instantiateItem(container, position)
             }
@@ -504,7 +504,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 if (position == 0) {
                     return "相册"
                 } else if (position == 1) {
-                    return "作品"
+                    return "神曲"
                 }
                 return ""
             }
@@ -524,13 +524,9 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
-                    if (mOtherPhotoWallView != null) {
-                        mOtherPhotoWallView!!.getPhotos(false)
-                    }
+                    mOtherPhotoWallView?.getPhotos(false)
                 } else if (position == 1) {
-                    if (mProducationWallView != null) {
-                        mProducationWallView!!.getProducations(false)
-                    }
+                    mFeedsWallView?.getFeeds(false)
                 }
             }
 
@@ -628,9 +624,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private fun showUserInfo(model: UserInfoModel) {
         this.mUserInfoModel = model
-        if (mProducationWallView != null) {
-            mProducationWallView!!.userInfoModel = model
-        }
+        mFeedsWallView?.userInfoModel = model
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(model.avatar)
                         .setBorderColor(Color.WHITE)
