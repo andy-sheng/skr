@@ -31,7 +31,6 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
-//import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
@@ -56,8 +55,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.agora.rtc.Constants;
-
 import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
@@ -65,10 +62,7 @@ public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
-
-    static final boolean RECORD_FOR_DEBUG = true;
     static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
-    static final String WAV_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.wav").getAbsolutePath();
 
     RankTopContainerView2 mRankTopView;
     LinearLayout mBottomContainer;
@@ -132,7 +126,8 @@ public class AuditionFragment extends BaseFragment {
             ZqEngineKit.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            ZqEngineKit.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
+            ZqEngineKit.getInstance().joinRoom("csm" + System.currentTimeMillis(),
+                    (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
         } else {
             ZqEngineKit.getInstance().resumeAudioMixing();
         }
@@ -261,12 +256,12 @@ public class AuditionFragment extends BaseFragment {
                 mTotalLineNum = lineNum;
                 mStartRecordTs = System.currentTimeMillis();
                 mCbScoreList.clear();
-                if (RECORD_FOR_DEBUG) {
+                if (ZqEngineKit.RECORD_FOR_DEBUG) {
                     mRecordPath = U.getAppInfoUtils().getMainDir().getAbsolutePath() + "/" + mSongModel.getItemName() + "_" + mSongModel.getOwner() + ".wav";
-                    ZqEngineKit.getInstance().startAudioRecording(mRecordPath, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
+                    ZqEngineKit.getInstance().startAudioRecording(mRecordPath, true);
                 } else {
                     mRecordPath = AAC_SAVE_PATH;
-                    ZqEngineKit.getInstance().startAudioRecording(mRecordPath, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+                    ZqEngineKit.getInstance().startAudioRecording(mRecordPath, false);
                 }
             }
         });
@@ -412,7 +407,7 @@ public class AuditionFragment extends BaseFragment {
 
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
-            if (RECORD_FOR_DEBUG) {
+            if (ZqEngineKit.RECORD_FOR_DEBUG) {
                 ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
             } else {
                 ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);

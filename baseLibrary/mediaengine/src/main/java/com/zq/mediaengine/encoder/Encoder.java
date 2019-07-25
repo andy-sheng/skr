@@ -360,10 +360,13 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
                         Log.d(TAG, "total dropped: " + mFrameDropped.get() +
                                 " total encoded: " + mFrameEncoded.get());
                     }
-                } else if (mLastFrame != null && !onFrameAvailable(mLastFrame)) {
-                    mLastFrame.pts = System.nanoTime() / 1000 / 1000;
-                    Message msg = mEncodeHandler.obtainMessage(MSG_REPEAT_LAST_FRAME, mLastFrame);
-                    mEncodeHandler.sendMessage(msg);
+                } else if (mLastFrame != null) {
+                    I frame = onFrameAvailable(mLastFrame);
+                    if (frame != null) {
+                        mLastFrame.pts = System.nanoTime() / 1000 / 1000;
+                        Message msg = mEncodeHandler.obtainMessage(MSG_REPEAT_LAST_FRAME, frame);
+                        mEncodeHandler.sendMessage(msg);
+                    }
                 }
             }
         }, delay, delay);
@@ -393,11 +396,11 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
     /**
      * Give child class a chance to handle onFrameAvailable
      *
-     * @param frame frame
-     * @return true if handled by child, and Encoder would ignore this frame, false otherwise.
+     * @param frame input frame
+     * @return frame handled by child, null means Encoder would ignore this frame.
      */
-    protected boolean onFrameAvailable(I frame) {
-        return false;
+    protected I onFrameAvailable(I frame) {
+        return frame;
     }
 
     /**
@@ -666,13 +669,14 @@ abstract public class Encoder<I extends AVFrameBase, O extends AVPacketBase> {
                 // do not cache video raw frame
                 isDropped = true;
             } else {
-                if (!Encoder.this.onFrameAvailable(frame)) {
+                I tmpFrame = Encoder.this.onFrameAvailable(frame);
+                if (tmpFrame != null) {
                     boolean toWait = getUseSyncMode() &&
                             (frame.flags & AVConst.FLAG_END_OF_STREAM) == 0;
                     if (toWait) {
                         mSig.close();
                     }
-                    Message msg = mEncodeHandler.obtainMessage(MSG_FRAME_AVAILABLE, frame);
+                    Message msg = mEncodeHandler.obtainMessage(MSG_FRAME_AVAILABLE, tmpFrame);
                     mEncodeHandler.sendMessage(msg);
                     if (toWait) {
                         mSig.block();

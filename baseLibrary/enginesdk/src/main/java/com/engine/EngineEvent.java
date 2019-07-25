@@ -22,6 +22,8 @@ public class EngineEvent {
     public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
     public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
 
+    public static final int TYPE_RECORD_FINISHED = 110; // 录制完成
+
     public static final int TYPE_CAMERA_OPENED = 200;// 相机打开
     public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;//相机首帧渲染
     public static final int TYPE_CAMERA_FACING_CHANGED = 202;// 摄像头切换
@@ -184,6 +186,8 @@ public class EngineEvent {
                 return "ENGINE_DESTROY";
             case TYPE_ENGINE_INITED:
                 return "ENGINE_INITED";
+            case TYPE_RECORD_FINISHED:
+                return "RECORD_FINISHED";
             case TYPE_CAMERA_OPENED:
                 return "CAMERA_OPENED";
             case TYPE_CAMERA_FIRST_FRAME_RENDERED:

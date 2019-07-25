@@ -574,7 +574,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (now != null && !now.isMiniGameRound()) {
                 String fileName = String.format("wm_%s_%s.aac", mRoomData.getGameId(), now.getRoundSeq());
                 String savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName);
-                ZqEngineKit.getInstance().startAudioRecording(savePath, Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                ZqEngineKit.getInstance().startAudioRecording(savePath, false);
             }
         }
 

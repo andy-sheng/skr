@@ -57,6 +57,7 @@ import com.zq.mediaengine.kit.filter.TbAudioAgcFilter;
 import com.zq.mediaengine.kit.filter.TbAudioEffectFilter;
 import com.zq.mediaengine.kit.log.LogRunnable;
 import com.zq.mediaengine.publisher.MediaMuxerPublisher;
+import com.zq.mediaengine.publisher.Publisher;
 import com.zq.mediaengine.publisher.RawFrameWriter;
 import com.zq.mediaengine.util.audio.AudioUtil;
 import com.zq.mediaengine.util.gles.GLRender;
@@ -105,6 +106,7 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     private static final boolean SCORE_DEBUG = false;
     private static final String SCORE_DEBUG_PATH = "/sdcard/tongzhuodeni.pcm";
+    public static final boolean RECORD_FOR_DEBUG = false;
 
     private Params mConfig = new Params(); // 为了防止崩溃
 
@@ -145,6 +147,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     // 自采集相关
     private AudioCapture mAudioCapture;
     private AudioPlayerCapture mAudioPlayerCapture;
+    private SrcPin<AudioBufFrame> mAudioLocalSrcPin;
     private SrcPin<AudioBufFrame> mAudioRemoteSrcPin;
     private AudioPreview mAudioPreview;
 
@@ -160,6 +163,10 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AudioMixer mRecordAudioMixer;
     private MediaCodecAudioEncoder mAudioEncoder;
     private MediaMuxerPublisher mFilePublisher;
+    // 对纯人声进行录制
+    private MediaCodecAudioEncoder mHumanVoiceAudioEncoder;
+    private MediaMuxerPublisher mHumanVoiceFilePublisher;
+    // debug录制用途
     private RawFrameWriter mRawFrameWriter;
     private RawFrameWriter mCapRawFrameWriter;
     private RawFrameWriter mBgmRawFrameWriter;
@@ -473,7 +480,6 @@ public class ZqEngineKit implements AgoraOutCallback {
         // 单mic数据PCM录制
         mRawFrameWriter = new RawFrameWriter();
 
-        SrcPin<AudioBufFrame> audioLocalSrcPin;
         if (mConfig.isUseExternalAudio()) {
             mAudioCapture = new AudioCapture(U.app().getApplicationContext());
             mAudioCapture.setSampleRate(mConfig.getAudioSampleRate());
@@ -481,15 +487,15 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioPreview = new AudioPreview(U.app().getApplicationContext());
             mAPMFilter = new APMFilter();
 
-            // 测试连接
+            // debug录制的相关连接
             mCapRawFrameWriter = new RawFrameWriter();
             mBgmRawFrameWriter = new RawFrameWriter();
             mAudioCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mCapRawFrameWriter.getSinkPin());
             mAudioPlayerCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mBgmRawFrameWriter.getSinkPin());
 
 //            mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
-//            audioLocalSrcPin = mAPMFilter.getSrcPin();
-            audioLocalSrcPin = mAudioCapture.getSrcPin();
+//            mAudioLocalSrcPin = mAPMFilter.getSrcPin();
+            mAudioLocalSrcPin = mAudioCapture.getSrcPin();
             // 自采集模式下，练歌房不需要声网SDK
             if (mConfig.getScene() != Params.Scene.audiotest) {
                 mRemoteAudioMixer = new AudioMixer();
@@ -497,15 +503,14 @@ public class ZqEngineKit implements AgoraOutCallback {
                 mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mAudioPreview.getSinkPin());
                 mAgoraRTCAdapter.getRemoteAudioSrcPin().connect(mRemoteAudioMixer.getSinkPin(0));
                 mAudioPlayerCapture.getSrcPin().connect(mRemoteAudioMixer.getSinkPin(1));
-                mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
+//                mRemoteAudioMixer.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
                 mAudioRemoteSrcPin = mRemoteAudioMixer.getSrcPin();
             } else {
-                mAudioPlayerCapture.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
+//                mAudioPlayerCapture.getSrcPin().connect(mAPMFilter.getReverseSinkPin());
                 mAudioRemoteSrcPin = mAudioPlayerCapture.getSrcPin();
             }
 
-            mAPMFilter.enableAEC(true);
-            mAPMFilter.setRoutingMode(APMFilter.AEC_ROUTING_MODE_SPEAKER_PHONE);
+            // 当前仅开启降噪模块
             mAPMFilter.enableNs(true);
             mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
 
@@ -516,20 +521,27 @@ public class ZqEngineKit implements AgoraOutCallback {
                 }
             });
         } else {
-            audioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
+            mAudioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
             mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();
         }
 
+        // 纯人声录制的连接
+        mHumanVoiceAudioEncoder = new MediaCodecAudioEncoder();
+        mHumanVoiceFilePublisher = new MediaMuxerPublisher();
+        mAudioLocalSrcPin.connect(mHumanVoiceAudioEncoder.getSinkPin());
+        mHumanVoiceAudioEncoder.getSrcPin().connect(mHumanVoiceFilePublisher.getAudioSink());
+        mHumanVoiceFilePublisher.setPubListener(mPubListener);
+
         if (SCORE_DEBUG) {
             mAudioDummyFilter = new AudioDummyFilter();
-            audioLocalSrcPin.connect(mAudioDummyFilter.getSinkPin());
+            mAudioLocalSrcPin.connect(mAudioDummyFilter.getSinkPin());
             mAudioDummyFilter.getSrcPin().connect(mCbAudioScorer.getSinkPin());
             mAudioDummyFilter.getSrcPin().connect(mAcrRecognizer.getSinkPin());
             mAudioDummyFilter.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
         } else {
-            audioLocalSrcPin.connect(mCbAudioScorer.getSinkPin());
-            audioLocalSrcPin.connect(mAcrRecognizer.getSinkPin());
-            audioLocalSrcPin.connect(mAudioFilterMgt.getSinkPin());
+            mAudioLocalSrcPin.connect(mCbAudioScorer.getSinkPin());
+            mAudioLocalSrcPin.connect(mAcrRecognizer.getSinkPin());
+            mAudioLocalSrcPin.connect(mAudioFilterMgt.getSinkPin());
         }
 
         if (mConfig.isUseExternalAudio() || mConfig.isUseExternalAudioRecord()) {
@@ -560,10 +572,26 @@ public class ZqEngineKit implements AgoraOutCallback {
             mFilePublisher = new MediaMuxerPublisher();
             mRecordAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
             mAudioEncoder.getSrcPin().connect(mFilePublisher.getAudioSink());
+            mFilePublisher.setPubListener(mPubListener);
         } else {
             mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
         }
     }
+
+    private Publisher.PubListener mPubListener = new Publisher.PubListener() {
+        @Override
+        public void onInfo(int type, long msg) {
+            MyLog.d(TAG, "FilePubListener onInfo type: " + type + " msg: " + msg);
+            if (type == Publisher.INFO_STOPPED) {
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
+            }
+        }
+
+        @Override
+        public void onError(int err, long msg) {
+            MyLog.e(TAG, "FilePubListener onError err: " + err + " msg: " + msg);
+        }
+    };
 
     private void connectRecord() {
         mAudioFilterMgt.getSrcPin().connect(mAudioResampleFilter.getSinkPin());
@@ -1411,13 +1439,14 @@ public class ZqEngineKit implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。
      * 声网采集模式下，该接口需在加入频道之后调用，如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
-    public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean recordForDebug) {
+    public void startAudioRecording(final String path, final boolean recordHumanVoice) {
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
-            mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh) {
+            mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
+                    " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel) {
                 @Override
                 public void realRun() {
-                    File file = new File(saveAudioForAiFilePath);
+                    File file = new File(path);
                     if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();
                     }
@@ -1425,55 +1454,54 @@ public class ZqEngineKit implements AgoraOutCallback {
                         file.delete();
                     }
 
-                    if (!mConfig.isUseExternalAudio()) {
+                    if (!mConfig.isUseExternalAudio() && !recordHumanVoice) {
                         // 用声网采集，需要录制的时候再连接
                         connectRecord();
                     }
-                    if (recordForDebug) {
-                        mConfig.setRecordingForDebugSavePath(saveAudioForAiFilePath);
-                        mRawFrameWriter.start(saveAudioForAiFilePath);
+                    if (RECORD_FOR_DEBUG) {
+                        mRawFrameWriter.start(path);
                         if (mConfig.isUseExternalAudio()) {
-                            String subfix = saveAudioForAiFilePath.substring(saveAudioForAiFilePath.lastIndexOf('.'));
-                            String name = saveAudioForAiFilePath.substring(0, saveAudioForAiFilePath.lastIndexOf('.'));
+                            String subfix = path.substring(path.lastIndexOf('.'));
+                            String name = path.substring(0, path.lastIndexOf('.'));
                             mCapRawFrameWriter.start(name + "_cap" + subfix);
                             mBgmRawFrameWriter.start(name + "_bgm" + subfix);
                         }
                     } else {
-                        if (mConfig.isUseExternalAudioRecord()) {
+                        if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
                             // 未加入房间时需要先开启音频采集
                             if (!mInChannel) {
                                 mAudioCapture.start();
                             }
+
                             AudioCodecFormat audioCodecFormat =
                                     new AudioCodecFormat(AVConst.CODEC_ID_AAC,
                                             AVConst.AV_SAMPLE_FMT_S16,
                                             mConfig.getAudioSampleRate(),
                                             mConfig.getAudioChannels(),
                                             mConfig.getAudioBitrate());
-                            mAudioEncoder.configure(audioCodecFormat);
-                            mFilePublisher.setAudioOnly(true);
-                            mFilePublisher.start(saveAudioForAiFilePath);
-                            mAudioEncoder.start();
+                            if (recordHumanVoice) {
+                                if (mConfig.isUseExternalAudio()) {
+                                    audioCodecFormat.sampleRate = mAudioCapture.getSampleRate();
+                                    audioCodecFormat.channels = mAudioCapture.getChannels();
+                                    audioCodecFormat.bitrate = 48000 * audioCodecFormat.channels;
+                                }
+                                mHumanVoiceAudioEncoder.configure(audioCodecFormat);
+                                mHumanVoiceFilePublisher.setAudioOnly(true);
+                                mHumanVoiceFilePublisher.start(path);
+                                mHumanVoiceAudioEncoder.start();
+                            } else {
+                                mAudioEncoder.configure(audioCodecFormat);
+                                mFilePublisher.setAudioOnly(true);
+                                mFilePublisher.start(path);
+                                mAudioEncoder.start();
+                            }
                         } else {
-                            mAgoraRTCAdapter.startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
+                            mAgoraRTCAdapter.startAudioRecording(path, Constants.AUDIO_RECORDING_QUALITY_HIGH);
                         }
                     }
                 }
             });
         }
-    }
-
-    /**
-     * 开始客户端录音。
-     * <p>
-     * Agora SDK 支持通话过程中在客户端进行录音。该方法录制频道内所有用户的音频，并生成一个包含所有用户声音的录音文件，录音文件格式可以为：
-     * <p>
-     * .wav：文件大，音质保真度高
-     * .aac：文件小，有一定的音质保真度损失
-     * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
-     */
-    public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh) {
-        startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh, false);
     }
 
     /**
@@ -1487,8 +1515,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("stopAudioRecording") {
                 @Override
                 public void realRun() {
-                    if (TextUtils.isEmpty(mConfig.getRecordingForDebugSavePath())) {
+                    if (!RECORD_FOR_DEBUG) {
                         if (mConfig.isUseExternalAudioRecord()) {
+                            mHumanVoiceAudioEncoder.stop();
                             mAudioEncoder.stop();
                             // 未加入房间时需要停止音频采集
                             if (!mInChannel) {
@@ -1499,11 +1528,11 @@ public class ZqEngineKit implements AgoraOutCallback {
                         }
                     } else {
                         mRawFrameWriter.stop();
+                        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_RECORD_FINISHED));
                         if (mConfig.isUseExternalAudio()) {
                             mCapRawFrameWriter.stop();
                             mBgmRawFrameWriter.stop();
                         }
-                        mConfig.setRecordingForDebugSavePath(null);
                     }
                     if (!mConfig.isUseExternalAudio()) {
                         // 用声网采集，录制完成断开连接

@@ -325,11 +325,11 @@ public class MediaCodecSurfaceEncoder extends MediaCodecEncoderBase<ImgTexFrame,
     }
 
     @Override
-    protected boolean onFrameAvailable(ImgTexFrame frame) {
+    protected ImgTexFrame onFrameAvailable(ImgTexFrame frame) {
         // We must do this on some Socs before render to encoder
         GLES20.glFinish();
         mGLRender.getFboManager().lock(frame.textureId);
-        return false;
+        return frame;
     }
 
     private void eglInit(EGLContext eglContext) {

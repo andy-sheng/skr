@@ -568,7 +568,6 @@ public class AgoraRTCAdapter {
             mRtcEngine = null;
 
             // 释放所有SrcPin
-            // TODO: remote video source pin 需要何时释放？
             mLocalAudioSrcPin.disconnect(true);
             mRemoteAudioSrcPin.disconnect(true);
             mLocalVideoSrcPin.disconnect(true);

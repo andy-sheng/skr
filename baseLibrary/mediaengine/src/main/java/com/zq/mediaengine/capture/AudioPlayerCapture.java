@@ -33,7 +33,7 @@ import java.nio.ShortBuffer;
  */
 public class AudioPlayerCapture {
     private final static String TAG = "AudioPlayerCapture";
-    private final static boolean VERBOSE = true;
+    private final static boolean VERBOSE = false;
 
     private static final long TIMEOUT_US = 10000;
     private static final int MAX_EOS_SPINS = 10;

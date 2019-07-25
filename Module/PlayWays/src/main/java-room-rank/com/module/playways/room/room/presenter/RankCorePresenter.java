@@ -1195,7 +1195,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     //开始录制声音
                     if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_CLASSIC_RANK)) {
                         // 需要上传音频伪装成机器人
-                        ZqEngineKit.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                        ZqEngineKit.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), false);
                     }
                     mRobotScoreHelper = new RobotScoreHelper();
                     //尝试再用融云通知对端

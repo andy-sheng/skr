@@ -90,20 +90,21 @@ public class MediaCodecAudioEncoder extends MediaCodecEncoderBase<AudioBufFrame,
     }
 
     @Override
-    protected boolean onFrameAvailable(AudioBufFrame frame) {
+    protected AudioBufFrame onFrameAvailable(AudioBufFrame frame) {
         if (frame == null || frame.buf == null) {
-            return false;
+            return frame;
         }
         ByteBuffer buffer = mAudioBufferCache.poll(frame.buf.limit());
         if (buffer == null) {
             Log.w(TAG, "Audio frame dropped, size=" + frame.buf.limit() + " pts=" + frame.pts);
-            return true;
+            return null;
         }
-        buffer.put(frame.buf);
+        AudioBufFrame outFrame = new AudioBufFrame(frame);
+        buffer.put(outFrame.buf);
         buffer.flip();
-        frame.buf.rewind();
-        frame.buf = buffer;
-        return false;
+        outFrame.buf.rewind();
+        outFrame.buf = buffer;
+        return outFrame;
     }
 
     @Override
