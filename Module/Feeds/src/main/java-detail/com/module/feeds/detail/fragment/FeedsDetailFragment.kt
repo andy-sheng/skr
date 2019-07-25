@@ -16,6 +16,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.player.event.PlayerEvent
@@ -102,10 +103,13 @@ class FeedsDetailFragment : BaseFragment() {
                 }
 
                 override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+                    MyLog.d(mTag, "onBufferingUpdate percent=$percent")
                     if (percent == 100) {
-                        mMyMediaPlayer.resume()
+                        if (mp!!.isPlaying) {
+                            mFeedsCommonLyricView!!.resume()
+                        }
                     } else {
-                        mMyMediaPlayer.pause()
+                        mFeedsCommonLyricView!!.pause()
                     }
                 }
             })
