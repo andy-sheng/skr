@@ -85,7 +85,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mAppbar: AppBarLayout
     lateinit var mToolbarLayout: CollapsingToolbarLayout
     lateinit var mUserInfoArea: ConstraintLayout
-    lateinit var mAvatarBg: ImageView
     lateinit var mAvatarIv: SimpleDraweeView
     lateinit var mMoreBtn: ExImageView
 
@@ -339,7 +338,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     private fun initUserInfo() {
         mUserInfoArea = this.findViewById<View>(R.id.user_info_area) as ConstraintLayout
-        mAvatarBg = this.findViewById<View>(R.id.avatar_bg) as ImageView
         mAvatarIv = this.findViewById<View>(R.id.avatar_iv) as SimpleDraweeView
         mMoreBtn = this.findViewById<View>(R.id.more_btn) as ExImageView
         mLevelView = this.findViewById<View>(R.id.level_view) as NormalLevelView2

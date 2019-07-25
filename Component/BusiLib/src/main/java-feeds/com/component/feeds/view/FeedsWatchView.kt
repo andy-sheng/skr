@@ -13,6 +13,7 @@ import com.common.player.VideoPlayerAdapter
 import com.component.busilib.R
 import com.component.feeds.presenter.FeedWatchViewPresenter
 import com.component.feeds.adapter.FeedsWatchViewAdapter
+import com.component.feeds.listener.FeedsListener
 import com.component.feeds.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -47,7 +48,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mClassicsHeader = findViewById(R.id.classics_header)
         mRecyclerView = findViewById(R.id.recycler_view)
 
-        mAdapter = FeedsWatchViewAdapter(object : FeedsWatchViewAdapter.FeedsListener {
+        mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onClickLikeListener(watchModel: FeedsWatchModel?) {
                 // 喜欢
             }
@@ -237,17 +238,24 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mMediaPlayer?.reset()
     }
 
-    override fun addWatchList(list: List<FeedsWatchModel>, isClear: Boolean) {
+    override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
         if (isClear) {
             mAdapter.mDataList.clear()
+            if (list != null && list.isNotEmpty()) {
+                mAdapter.mDataList.addAll(list)
+            }
+            if (mAdapter.mDataList.isNotEmpty()) {
+                play(mAdapter.mDataList[0], true)
+            }
+            mAdapter.notifyDataSetChanged()
+        } else {
+            if (list != null && list.isNotEmpty()) {
+                mAdapter.mDataList.addAll(list)
+                mAdapter.notifyDataSetChanged()
+            }
         }
-        mAdapter.mDataList.addAll(list)
-        if (isClear) {
-            play(mAdapter.mDataList[0], true)
-        }
-        mAdapter.notifyDataSetChanged()
     }
 
     // 请求时间太短，不向服务器请求，只需要恢复上次播放

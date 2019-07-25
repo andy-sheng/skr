@@ -14,11 +14,12 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.component.busilib.view.BitmapTextView
 import com.component.feeds.adapter.FeedsWatchViewAdapter
+import com.component.feeds.listener.FeedsListener
 import com.component.feeds.model.FeedsWatchModel
 import com.component.feeds.view.RecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 
-open class FeedsWatchViewHolder(var item: View, var listener: FeedsWatchViewAdapter.FeedsListener?) : RecyclerView.ViewHolder(item) {
+open class FeedsWatchViewHolder(var item: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(item) {
 
     val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
     private val mNicknameTv: TextView = itemView.findViewById(R.id.nickname_tv)

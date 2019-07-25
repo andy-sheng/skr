@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.component.busilib.R
 import com.component.feeds.holder.FeedsWatchViewHolder
+import com.component.feeds.listener.FeedsListener
 import com.component.feeds.model.FeedsWatchModel
 
 class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<FeedsWatchViewHolder>() {
@@ -29,14 +30,5 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
         } else {
             holder.stopPlay()
         }
-    }
-
-    interface FeedsListener {
-        fun onClickMoreListener(watchModel: FeedsWatchModel?)
-        fun onClickLikeListener(watchModel: FeedsWatchModel?)
-        fun onClickCommentListener(watchModel: FeedsWatchModel?)
-        fun onClickHitListener(watchModel: FeedsWatchModel?)
-        fun onClickDetailListener(watchModel: FeedsWatchModel?)
-        fun onClickCDListener(watchModel: FeedsWatchModel?)
     }
 }
