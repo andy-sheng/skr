@@ -6,3 +6,10 @@ package com.common.utils
 fun Float.dp(): Int =
         U.getDisplayUtils().dip2px(this)
 
+
+/**
+ * dp转px
+ */
+fun Int.dp(): Int =
+        U.getDisplayUtils().dip2px(this.toFloat())
+

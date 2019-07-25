@@ -35,6 +35,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     override fun bindData(position: Int, watchModel: FeedsWatchModel) {
         super.bindData(position, watchModel)
         if (watchModel.feedID != model?.feedID) {
+            // 不变的部分
             watchModel.user?.let {
                 AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
@@ -49,7 +50,6 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
                         ?: 0, it.nickname)
             }
 
-            mPeopleNumTv.setText(watchModel.challengeCnt.toString())
             mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt
                     ?: 0L, System.currentTimeMillis())
             var recomendTag = ""
@@ -72,11 +72,11 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
                 mContentTv.visibility = View.VISIBLE
                 mContentTv.text = stringBuilder
             }
-        } else {
-            // 人数可能变化
-            if (model?.challengeCnt != watchModel.challengeCnt) {
-                mPeopleNumTv.setText(watchModel.challengeCnt.toString())
-            }
+        }
+
+        // 人数可能变化
+        if (model?.challengeCnt != watchModel.challengeCnt) {
+            mPeopleNumTv.setText(watchModel.challengeCnt.toString())
         }
         this.model = watchModel
     }

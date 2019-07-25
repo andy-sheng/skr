@@ -1,5 +1,6 @@
 package com.component.feeds.holder
 
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
@@ -72,15 +74,7 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
     open fun bindData(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         if (watchModel.feedID != model?.feedID) {
-            // 全部初始化
-            mLikeNumTv.text = watchModel.starCnt.toString()
-            mCommentNumTv.text = watchModel.commentCnt.toString()
-
-            if (watchModel?.isLiked == true) {
-                mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_selected_icon), null, null, null)
-            } else {
-                mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_normal_icon), null, null, null)
-            }
+            // 不变的部分
             if (watchModel?.rank != null) {
                 if (TextUtils.isEmpty(watchModel?.rank?.rankDesc)) {
                     mTagArea.visibility = View.GONE
@@ -91,22 +85,24 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
             } else {
                 mTagArea.visibility = View.GONE
             }
-        } else {
-            // do noting (对变化的部分重新设置 评论数，点赞数和点赞icon)
-            if (model?.starCnt != watchModel.starCnt) {
-                mLikeNumTv.text = watchModel.starCnt.toString()
-            }
-            if (model?.commentCnt != watchModel.commentCnt) {
-                mCommentNumTv.text = watchModel.commentCnt.toString()
-            }
-            if (model?.isLiked != watchModel?.isLiked) {
-                if (watchModel?.isLiked == true) {
-                    mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_selected_icon), null, null, null)
-                } else {
-                    mLikeNumTv.setCompoundDrawables(U.getDrawable(R.drawable.feed_like_normal_icon), null, null, null)
-                }
-            }
         }
+
+        // 对可能变化的部分重新设置 评论数，点赞数和点赞icon
+        if (model?.starCnt != watchModel.starCnt) {
+            mLikeNumTv.text = watchModel.starCnt.toString()
+        }
+        if (model?.commentCnt != watchModel.commentCnt) {
+            mCommentNumTv.text = watchModel.commentCnt.toString()
+        }
+        if (model?.isLiked != watchModel?.isLiked) {
+            var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
+            if (watchModel?.isLiked == true) {
+                drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
+            }
+            drawble.setBounds(0, 0, 20.dp(), 18.dp())
+            mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
+        }
+
     }
 
     fun startPlay() {
