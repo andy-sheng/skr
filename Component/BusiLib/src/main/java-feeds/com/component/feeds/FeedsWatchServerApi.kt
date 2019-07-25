@@ -2,7 +2,10 @@ package com.component.feeds
 
 import com.common.rxretrofit.ApiResult
 import io.reactivex.Observable
+import okhttp3.RequestBody
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface FeedsWatchServerApi {
@@ -36,4 +39,14 @@ interface FeedsWatchServerApi {
                        @Query("cnt") cnt: Int,
                        @Query("userID") userID: Int,
                        @Query("feedSongType") feedSongType: Int): Observable<ApiResult>
+
+
+    /**
+     * 点赞/取消点赞feed
+     * feedID
+     * like ture/false
+     */
+    @PUT("/v1/feed/like")
+    fun feedLike(@Body body: RequestBody): Observable<ApiResult>
+
 }

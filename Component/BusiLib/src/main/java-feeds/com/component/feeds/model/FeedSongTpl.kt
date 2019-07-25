@@ -28,4 +28,9 @@ class FeedSongTpl : Serializable {
     var tplID: Int? = null
     @JSONField(name = "uploader")
     var uploader: FeedUserInfo? = null
+
+    override fun toString(): String {
+        return "FeedSongTpl(bgm=$bgm, bgmDurMs=$bgmDurMs, composer=$composer, cover=$cover, createdAt=$createdAt, lrcTs=$lrcTs, lrcTxt=$lrcTxt, lrcType=$lrcType, lyricist=$lyricist, songName=$songName, tplID=$tplID, uploader=$uploader)"
+    }
+
 }

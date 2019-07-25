@@ -8,9 +8,13 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.U
 import com.component.feeds.FeedsWatchServerApi
 import com.component.feeds.model.FeedsWatchModel
 import com.component.feeds.view.IFeedsWatchView
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.HashMap
 
 class FeedsWallViewPresenter(val view: IFeedsWatchView, val userInfoModel: UserInfoModel) : RxLifeCyclePresenter() {
 
@@ -65,9 +69,27 @@ class FeedsWallViewPresenter(val view: IFeedsWatchView, val userInfoModel: UserI
                 view.requestError()
             }
 
-        }, this)
-
+        }, this, ApiMethods.RequestControl("getFeeds", ApiMethods.ControlType.CancelThis))
     }
+
+    fun feedLike(position: Int, model: FeedsWatchModel) {
+        val map = HashMap<String, Any>()
+        map["feedID"] = model.feedID ?: 0
+        map["like"] = !((model.isLiked) ?: false)
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(mFeedServerApi.feedLike(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    view.feedLikeResult(position, model, !((model.isLiked) ?: false))
+                } else {
+                    U.getToastUtil().showShort("${obj?.errmsg}")
+                }
+            }
+
+        }, this, ApiMethods.RequestControl("feedLike", ApiMethods.ControlType.CancelThis))
+    }
+
 
     override fun destroy() {
         super.destroy()

@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -75,9 +76,10 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         }
 
         // 人数可能变化
-        if (model?.challengeCnt != watchModel.challengeCnt) {
+        if (watchModel.challengeCnt != model?.challengeCnt) {
             mPeopleNumTv.setText(watchModel.challengeCnt.toString())
         }
         this.model = watchModel
+
     }
 }

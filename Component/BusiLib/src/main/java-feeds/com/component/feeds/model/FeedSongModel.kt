@@ -26,4 +26,9 @@ class FeedSongModel : Serializable {
     var title: String? = null
     @JSONField(name = "userID")
     var userID: Int? = null
+
+    override fun toString(): String {
+        return "FeedSongModel(createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMs=$playDurMs, playURL=$playURL, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID)"
+    }
+
 }

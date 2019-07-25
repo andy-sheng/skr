@@ -42,8 +42,9 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                 // 更多
             }
 
-            override fun onClickLikeListener(watchModel: FeedsWatchModel?) {
+            override fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 喜欢
+                watchModel?.let { mPersenter.feedLike(position, it) }
             }
 
             override fun onClickCommentListener(watchModel: FeedsWatchModel?) {
@@ -104,6 +105,16 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                 mAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun feedLikeResult(position: Int, model: FeedsWatchModel, isLike: Boolean) {
+        model.isLiked = isLike
+        if (isLike) {
+            model.starCnt = model.starCnt?.plus(1)
+        } else {
+            model.starCnt = model.starCnt?.minus(1)
+        }
+        mAdapter.update(position, model)
     }
 
     override fun onDetachedFromWindow() {

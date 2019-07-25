@@ -31,4 +31,22 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
             holder.stopPlay()
         }
     }
+
+    fun update(position: Int, model: FeedsWatchModel) {
+        if (model.feedID == mDataList[position].feedID) {
+            // 位置是对的的
+            mDataList[position] = model
+            notifyItemChanged(position)
+            return
+        } else {
+            // 位置是错的
+            for (i in 0 until mDataList.size) {
+                if (mDataList[i].feedID == model.feedID) {
+                    mDataList[i] = model
+                    notifyItemChanged(i)
+                    return
+                }
+            }
+        }
+    }
 }

@@ -1,24 +1,22 @@
 package com.component.feeds.holder
 
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.core.avatar.AvatarUtils
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
-import com.common.view.ex.ExTextView
 import com.component.busilib.R
 import com.component.feeds.listener.FeedsListener
 import com.component.feeds.model.FeedsWatchModel
 import com.component.feeds.view.RecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 
-open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(item) {
+open class FeedViewHolder(var item: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(item) {
 
     private val mMoreIv: ImageView = itemView.findViewById(R.id.more_iv)
     private val mTagArea: ExConstraintLayout = itemView.findViewById(R.id.tag_area)
@@ -42,7 +40,7 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
 
         mLikeNumTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener?.onClickLikeListener(model)
+                listener?.onClickLikeListener(mPosition, model)
             }
         })
 
@@ -94,20 +92,22 @@ open abstract class FeedViewHolder(var item: View, var listener: FeedsListener?)
         if (model?.commentCnt != watchModel.commentCnt) {
             mCommentNumTv.text = watchModel.commentCnt.toString()
         }
-        if (model?.isLiked != watchModel?.isLiked) {
+
+        if (watchModel.isLiked != model?.isLiked) {
             var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
-            if (watchModel?.isLiked == true) {
+            if (watchModel.isLiked == true) {
                 drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
             }
             drawble.setBounds(0, 0, 20.dp(), 18.dp())
             mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
         }
-
     }
 
     fun startPlay() {
-        mIsPlaying = true
-        mRecordView.startAnimation()
+        if (!mIsPlaying) {
+            mIsPlaying = true
+            mRecordView.startAnimation()
+        }
     }
 
     fun stopPlay() {

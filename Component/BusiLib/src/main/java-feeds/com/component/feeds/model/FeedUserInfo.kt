@@ -10,4 +10,9 @@ class FeedUserInfo : Serializable {
     var nickname: String? = null
     @JSONField(name = "userID")
     var userID: Int? = null
+
+    override fun toString(): String {
+        return "FeedUserInfo(avatar=$avatar, nickname=$nickname, userID=$userID)"
+    }
+
 }

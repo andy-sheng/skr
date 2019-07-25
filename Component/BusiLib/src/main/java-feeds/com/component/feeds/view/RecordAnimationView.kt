@@ -43,6 +43,7 @@ class RecordAnimationView : ConstraintLayout {
     }
 
     fun bindData(avatar: String?) {
+
         AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(avatar)
                 .setCircle(true)
                 .build())

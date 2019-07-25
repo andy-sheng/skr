@@ -8,4 +8,6 @@ interface IFeedsWatchView {
     fun requestTimeShort()  // 请求时间间隔太短
 
     fun requestError()
+
+    fun feedLikeResult(position: Int, model: FeedsWatchModel, isLike: Boolean)
 }

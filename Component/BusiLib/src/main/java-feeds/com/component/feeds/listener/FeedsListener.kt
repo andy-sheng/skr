@@ -4,7 +4,7 @@ import com.component.feeds.model.FeedsWatchModel
 
 interface FeedsListener {
     fun onClickMoreListener(watchModel: FeedsWatchModel?)
-    fun onClickLikeListener(watchModel: FeedsWatchModel?)
+    fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?)
     fun onClickCommentListener(watchModel: FeedsWatchModel?)
     fun onClickHitListener(watchModel: FeedsWatchModel?)
     fun onClickDetailListener(watchModel: FeedsWatchModel?)

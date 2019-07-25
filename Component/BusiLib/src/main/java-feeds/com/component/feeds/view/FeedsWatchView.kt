@@ -3,6 +3,7 @@ package com.component.feeds.view
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
 import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
@@ -23,7 +24,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 
 
 class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView {
-
     companion object {
         const val TYPE_RECOMMEND = 1
         const val TYPE_FOLLOW = 2
@@ -48,13 +48,15 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mClassicsHeader = findViewById(R.id.classics_header)
         mRecyclerView = findViewById(R.id.recycler_view)
 
+        mPersenter = FeedWatchViewPresenter(this, type)
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
                 // 排行
             }
 
-            override fun onClickLikeListener(watchModel: FeedsWatchModel?) {
+            override fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 喜欢
+                watchModel?.let { mPersenter.feedLike(position, it) }
             }
 
             override fun onClickCommentListener(watchModel: FeedsWatchModel?) {
@@ -91,8 +93,6 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
         })
 
-        mPersenter = FeedWatchViewPresenter(this, type)
-
         mRefreshLayout.apply {
             setEnableRefresh(true)
             setEnableLoadMore(true)
@@ -110,6 +110,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         }
 
         mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        (mRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
@@ -272,6 +273,16 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     override fun requestError() {
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
+    }
+
+    override fun feedLikeResult(position: Int, model: FeedsWatchModel, isLike: Boolean) {
+        model.isLiked = isLike
+        if (isLike) {
+            model.starCnt = model.starCnt?.plus(1)
+        } else {
+            model.starCnt = model.starCnt?.minus(1)
+        }
+        mAdapter.update(position, model)
     }
 
     override fun onDetachedFromWindow() {
