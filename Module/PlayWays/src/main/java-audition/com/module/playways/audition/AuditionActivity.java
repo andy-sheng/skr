@@ -72,7 +72,7 @@ public class AuditionActivity extends BaseActivity {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    MyLog.d(TAG, "上报歌曲成功");
+                    MyLog.d(getTAG(), "上报歌曲成功");
                 }
             }
         }, this);

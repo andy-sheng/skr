@@ -64,12 +64,12 @@ public class WalletFragment extends BaseFragment implements IWalletView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mBalanceTv = (TextView) mRootView.findViewById(R.id.balance_tv);
-        mWithdrawTv = (TextView) mRootView.findViewById(R.id.withdraw_tv);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mBalanceTv = (TextView) getRootView().findViewById(R.id.balance_tv);
+        mWithdrawTv = (TextView) getRootView().findViewById(R.id.withdraw_tv);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
 
         initPresenter();
 
@@ -140,7 +140,7 @@ public class WalletFragment extends BaseFragment implements IWalletView {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 
     @Override

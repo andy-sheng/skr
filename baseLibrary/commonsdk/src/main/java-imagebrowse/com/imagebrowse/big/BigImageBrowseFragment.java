@@ -80,9 +80,9 @@ public class BigImageBrowseFragment extends BaseFragment {
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
 
-        mImagesVp = (ViewPager) mRootView.findViewById(R.id.images_vp);
+        mImagesVp = (ViewPager) getRootView().findViewById(R.id.images_vp);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -225,7 +225,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         finish();
         return true;
     }

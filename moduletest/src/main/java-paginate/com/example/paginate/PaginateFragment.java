@@ -202,7 +202,7 @@ public class PaginateFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         U.getFragmentUtils().popFragment(getActivity());
         return true;
     }

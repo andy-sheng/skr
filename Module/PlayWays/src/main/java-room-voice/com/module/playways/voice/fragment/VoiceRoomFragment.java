@@ -22,7 +22,7 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter;
 import com.module.playways.room.room.comment.listener.CommentViewItemListener;
-import com.zq.person.event.ShowPersonCardEvent;
+import com.component.person.event.ShowPersonCardEvent;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.fragment.RankResultFragment;
@@ -34,8 +34,8 @@ import com.module.playways.voice.view.VoiceRightOpView;
 import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.playways.R;
-import com.zq.dialog.PersonInfoDialog;
-import com.zq.report.fragment.QuickFeedbackFragment;
+import com.component.dialog.PersonInfoDialog;
+import com.component.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -88,7 +88,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         // 请保证从下面的view往上面的view开始初始化
-        mRankingContainer = mRootView.findViewById(R.id.ranking_container);
+        mRankingContainer = getRootView().findViewById(R.id.ranking_container);
         mRankingContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,12 +118,12 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     }
 
     private void initInputView() {
-        mInputContainerView = mRootView.findViewById(R.id.input_container_view);
+        mInputContainerView = getRootView().findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
     }
 
     private void initBottomView() {
-        mBottomContainerView = (VoiceBottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
+        mBottomContainerView = (VoiceBottomContainerView) getRootView().findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new VoiceBottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
@@ -137,7 +137,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     }
 
     private void initCommentView() {
-        mCommentView = mRootView.findViewById(R.id.comment_view);
+        mCommentView = getRootView().findViewById(R.id.comment_view);
         mCommentView.setListener(new CommentViewItemListener() {
             @Override
             public void clickAvatar(int userId) {
@@ -152,7 +152,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
 
     private void initTopView() {
-        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
+        mTopContainerView = getRootView().findViewById(R.id.top_container_view);
 
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
@@ -172,16 +172,16 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     }
 
     private void initUserStatusView() {
-        mUserStatusContainerView = mRootView.findViewById(R.id.user_status_container_view);
+        mUserStatusContainerView = getRootView().findViewById(R.id.user_status_container_view);
         mUserStatusContainerView.setRoomData(mRoomData);
     }
 
     private void initOpView() {
-        mVoiceRightOpView = mRootView.findViewById(R.id.voice_right_op_view);
+        mVoiceRightOpView = getRootView().findViewById(R.id.voice_right_op_view);
     }
 
     private void initResultView() {
-        mGameResultIv = (ExImageView) mRootView.findViewById(R.id.game_result_iv);
+        mGameResultIv = (ExImageView) getRootView().findViewById(R.id.game_result_iv);
         mGameResultIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -290,7 +290,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }

@@ -14,7 +14,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 import com.module.home.view.IPersonView;
 

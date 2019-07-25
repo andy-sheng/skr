@@ -1,9 +1,6 @@
 package com.module.home.game.view
 
 import android.content.Context
-import android.content.SyncContext
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -12,7 +9,6 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
@@ -34,11 +30,10 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.home.R
-import com.module.home.game.model.RecommendRoomModel
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.zq.dialog.InviteFriendDialog
+import com.component.dialog.InviteFriendDialog
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 

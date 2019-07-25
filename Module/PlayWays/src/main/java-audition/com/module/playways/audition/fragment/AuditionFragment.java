@@ -30,23 +30,23 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.component.voice.control.VoiceControlPanelView;
 import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
-import com.module.playways.others.LyricAndAccMatchManager;
+import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.view.VoiceControlPanelView;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
 import com.zq.mediaengine.kit.ZqEngineKit;
-import com.zq.toast.NoImageCommonToastView;
+import com.component.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+import static com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
@@ -132,20 +132,20 @@ public class AuditionFragment extends BaseFragment {
             ZqEngineKit.getInstance().resumeAudioMixing();
         }
 
-        mRankTopView = (RankTopContainerView2) mRootView.findViewById(R.id.rank_top_view);
-        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
-        mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
-        mAuditionArea = (RelativeLayout) mRootView.findViewById(R.id.audition_area);
-        mTiaoyinIv = (ImageView) mRootView.findViewById(R.id.tiaoyin_iv);
-        mTiaoyinTv = (ExTextView) mRootView.findViewById(R.id.tiaoyin_tv);
-        mResArea = (RelativeLayout) mRootView.findViewById(R.id.res_area);
-        mCompleArea = (RelativeLayout) mRootView.findViewById(R.id.comple_area);
-        mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
-        mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
-        mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
-        mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
-        mLogView = mRootView.findViewById(R.id.log_view);
-        View mLogViewScrollContainer = mRootView.findViewById(R.id.log_view_scroll_container);
+        mRankTopView = (RankTopContainerView2) getRootView().findViewById(R.id.rank_top_view);
+        mBottomContainer = (LinearLayout) getRootView().findViewById(R.id.bottom_container);
+        mBackArea = (RelativeLayout) getRootView().findViewById(R.id.back_area);
+        mAuditionArea = (RelativeLayout) getRootView().findViewById(R.id.audition_area);
+        mTiaoyinIv = (ImageView) getRootView().findViewById(R.id.tiaoyin_iv);
+        mTiaoyinTv = (ExTextView) getRootView().findViewById(R.id.tiaoyin_tv);
+        mResArea = (RelativeLayout) getRootView().findViewById(R.id.res_area);
+        mCompleArea = (RelativeLayout) getRootView().findViewById(R.id.comple_area);
+        mTvSongName = (ExTextView) getRootView().findViewById(R.id.tv_song_name);
+        mManyLyricsView = (ManyLyricsView) getRootView().findViewById(R.id.many_lyrics_view);
+        mVoiceControlView = (VoiceControlPanelView) getRootView().findViewById(R.id.voice_control_view);
+        mVoiceScaleView = (VoiceScaleView) getRootView().findViewById(R.id.voice_scale_view);
+        mLogView = getRootView().findViewById(R.id.log_view);
+        View mLogViewScrollContainer = getRootView().findViewById(R.id.log_view_scroll_container);
         if (MyLog.isDebugLogOpen()) {
             mLogViewScrollContainer.setVisibility(View.VISIBLE);
         } else {
@@ -237,12 +237,20 @@ public class AuditionFragment extends BaseFragment {
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         }
 
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView, mSongModel.getLyric(),
-                mSongModel.getRankLrcBeginT(), mSongModel.getRankLrcEndT(),
-                mSongModel.getBeginMs(), mSongModel.getEndMs(), mSongModel.getUploaderName());
+        LyricAndAccMatchManager.ConfigParams configParams = new LyricAndAccMatchManager.ConfigParams();
+        configParams.setManyLyricsView(mManyLyricsView);
+        configParams.setVoiceScaleView(mVoiceScaleView);
+        configParams.setLyricUrl(mSongModel.getLyric());
+        configParams.setLyricBeginTs( mSongModel.getRankLrcBeginT());
+        configParams.setLyricEndTs( mSongModel.getRankLrcEndT());
+        configParams.setAccBeginTs(mSongModel.getBeginMs());
+        configParams.setAccEndTs(mSongModel.getEndMs());
+        configParams.setAuthorName(mSongModel.getUploaderName());
+        mLyricAndAccMatchManager.setArgs(configParams);
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+
             @Override
-            public void onLyricParseSuccess() {
+            public void onLyricParseSuccess(LyricsReader reader) {
 
             }
 
@@ -519,7 +527,7 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         Params.save2Pref(ZqEngineKit.getInstance().getParams());
         Activity activity = getActivity();
         if (activity != null) {
@@ -530,10 +538,10 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
-        int line = event.line;
-        int acrScore = event.acrScore;
-        int melpScore = event.melpScore;
-        String from = event.from;
+        int line = event.getLine();
+        int acrScore = event.getAcrScore();
+        int melpScore = event.getMelpScore();
+        String from = event.getFrom();
         if (MyLog.isDebugLogOpen()) {
             StringBuilder sb = new StringBuilder();
             sb.append("第").append(line).append("行,");

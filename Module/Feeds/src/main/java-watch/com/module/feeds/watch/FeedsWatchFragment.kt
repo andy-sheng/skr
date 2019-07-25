@@ -9,13 +9,14 @@ import android.widget.ImageView
 import com.common.base.BaseFragment
 import com.common.log.MyLog
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.module.feeds.R
 import com.module.feeds.watch.view.FeedsLikeView
-import com.module.feeds.watch.view.FeedsWatchView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
+import com.component.feeds.view.FeedsWatchView
 
 class FeedsWatchFragment : BaseFragment() {
 
@@ -34,10 +35,10 @@ class FeedsWatchFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mNavigationBgIv = mRootView.findViewById(R.id.navigation_bg_iv)
-        mFeedTab = mRootView.findViewById(R.id.feed_tab)
-        mFeedChallengeTv = mRootView.findViewById(R.id.feed_challenge_tv)
-        mFeedVp = mRootView.findViewById(R.id.feed_vp)
+        mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
+        mFeedTab = rootView.findViewById(R.id.feed_tab)
+        mFeedChallengeTv = rootView.findViewById(R.id.feed_challenge_tv)
+        mFeedVp = rootView.findViewById(R.id.feed_vp)
 
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -45,15 +46,17 @@ class FeedsWatchFragment : BaseFragment() {
             }
         })
 
-        mFeedTab.setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
-        mFeedTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
-        mFeedTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
-        mFeedTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
-        mFeedTab.setTitleSize(14f)
-        mFeedTab.setSelectedTitleSize(24f)
-        mFeedTab.setIndicatorWidth(U.getDisplayUtils().dip2px(16f))
-        mFeedTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4f).toFloat())
-        mFeedTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2f).toFloat())
+        mFeedTab.apply {
+            setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
+            setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
+            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+            setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
+            setTitleSize(14f)
+            setSelectedTitleSize(24f)
+            setIndicatorWidth(16f.dp())
+            setSelectedIndicatorThickness(4f.dp().toFloat())
+            setIndicatorCornorRadius(2f.dp().toFloat())
+        }
 
         mTabPagerAdapter = object : PagerAdapter() {
 
@@ -98,6 +101,11 @@ class FeedsWatchFragment : BaseFragment() {
             }
         }
 
+        mFeedVp.adapter = mTabPagerAdapter
+        mFeedTab.setViewPager(mFeedVp)
+        mTabPagerAdapter.notifyDataSetChanged()
+        mFeedVp.setCurrentItem(1, false)
+
         mFeedTab.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
@@ -105,38 +113,47 @@ class FeedsWatchFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 mFeedTab.notifyDataChange()
-                when (position) {
-                    0 -> {
-                        mRecommendFeedsView.initData(false)
-                    }
-                    1 -> {
-                        mFollowFeesView.initData(false)
-                    }
-                    2 -> {
-                        mFeedsCollectView.initData(false)
-                    }
-                }
+                onViewSelected(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
 
             }
         })
-
-        mFeedVp.offscreenPageLimit = 2
-        mFeedVp.adapter = mTabPagerAdapter
-        mFeedTab.setViewPager(mFeedVp)
-        mTabPagerAdapter.notifyDataSetChanged()
-        mFeedVp.setCurrentItem(1, false)
     }
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
-        when {
-            mFeedVp.currentItem == 0 -> mRecommendFeedsView.initData(false)
-            mFeedVp.currentItem == 1 -> mFollowFeesView.initData(false)
-            mFeedVp.currentItem == 2 -> mFeedsCollectView.initData(false)
+        onViewSelected(mFeedVp.currentItem)
+    }
+
+    fun onViewSelected(pos:Int){
+        if(!this.fragmentVisible){
+            return
         }
+        when (pos) {
+            0 -> {
+                mFollowFeesView.stopPlay()
+                mFeedsCollectView.stopPlay()
+                mRecommendFeedsView.initData(false)
+            }
+            1 -> {
+                mRecommendFeedsView.stopPlay()
+                mFeedsCollectView.stopPlay()
+                mFollowFeesView.initData(false)
+            }
+            2 -> {
+                mFollowFeesView.stopPlay()
+                mRecommendFeedsView.stopPlay()
+                mFeedsCollectView.initData(false)
+            }
+        }
+    }
+    override fun onFragmentInvisible() {
+        super.onFragmentInvisible()
+        mFollowFeesView.stopPlay()
+        mRecommendFeedsView.stopPlay()
+        mFeedsCollectView.stopPlay()
     }
 
     override fun useEventBus(): Boolean {

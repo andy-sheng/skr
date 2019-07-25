@@ -55,8 +55,8 @@ public class GrabCreateSpecialFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mSpecialView = (SpecialSelectView) mRootView.findViewById(R.id.special_view);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mSpecialView = (SpecialSelectView) getRootView().findViewById(R.id.special_view);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -123,7 +123,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
      * 创建房间
      */
     private void createRoom(SpecialModel model) {
-        MyLog.d(TAG, "createRoom" + " model=" + model);
+        MyLog.d(getTAG(), "createRoom" + " model=" + model);
         GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomType", mRoomType);

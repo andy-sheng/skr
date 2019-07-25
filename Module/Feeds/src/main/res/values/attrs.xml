@@ -1,3 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="RadioView">
+        <!--位置-->
+        <attr name="panelDrawable" format="reference" />
+        <attr name="panelWidth" format="dimension" />
+        <attr name="panelMarginTop" format="dimension" />
+        <attr name="rockerDrawable" format="reference" />
+        <attr name="rockerWidth" format="dimension" />
+        <attr name="rockerHeight" format="dimension" />
+        <attr name="userIconMargin" format="dimension" />
+        <attr name="rockerXP" format="float" />
+        <attr name="rockerYP" format="float" />
+    </declare-styleable>
 </resources>

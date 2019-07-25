@@ -76,7 +76,7 @@ public class KitFloatPage extends BaseFloatPage {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         finish();
         return true;
     }

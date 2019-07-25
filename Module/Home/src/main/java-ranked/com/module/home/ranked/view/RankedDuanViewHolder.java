@@ -3,7 +3,6 @@ package com.module.home.ranked.view;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
@@ -13,8 +12,8 @@ import com.common.view.DebounceViewClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.ranked.model.RankDataModel;
-import com.zq.level.view.NormalLevelView2;
-import com.zq.person.event.ShowPersonCenterEvent;
+import com.component.level.view.NormalLevelView2;
+import com.component.person.event.ShowPersonCenterEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

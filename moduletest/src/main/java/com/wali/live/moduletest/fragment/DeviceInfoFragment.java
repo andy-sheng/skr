@@ -26,7 +26,7 @@ public class DeviceInfoFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mDescTv = (TextView) mRootView.findViewById(R.id.desc_tv);
+        mDescTv = (TextView) getRootView().findViewById(R.id.desc_tv);
         StringBuilder sb = new StringBuilder();
         sb.append("数据库调试地址:").append(U.getAppInfoUtils().getDebugDBAddressLog()).append("\n");
         sb.append("屏宽:").append(U.getDisplayUtils().getScreenWidth())
@@ -49,7 +49,7 @@ public class DeviceInfoFragment extends BaseFragment {
         sb.append("agora sdk version:").append(RtcEngine.getSdkVersion()).append("\n");
         sb.append("是否插着有线耳机:").append(U.getDeviceUtils().getWiredHeadsetPlugOn()).append("\n");
         sb.append("是否插着蓝牙耳机:").append(U.getDeviceUtils().getBlueToothHeadsetOn()).append("\n");
-        MyLog.w(TAG, "deviceId:" + U.getDeviceUtils().getDeviceID());
+        MyLog.w(getTAG(), "deviceId:" + U.getDeviceUtils().getDeviceID());
         mDescTv.setText(sb.toString());
     }
 

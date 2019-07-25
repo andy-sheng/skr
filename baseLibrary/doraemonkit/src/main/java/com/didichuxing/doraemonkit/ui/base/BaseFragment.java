@@ -95,7 +95,7 @@ public class BaseFragment extends Fragment {
         return mContainer;
     }
 
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         return false;
     }
 

@@ -40,7 +40,7 @@
         android:layout_marginRight="@dimen/view_12_dp"
         android:scrollbars="none">
 
-        <com.zq.report.view.FeedbackView
+        <com.component.report.view.FeedbackView
             android:id="@+id/feed_back_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

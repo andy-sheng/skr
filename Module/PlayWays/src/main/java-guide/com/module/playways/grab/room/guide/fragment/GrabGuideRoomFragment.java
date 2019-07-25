@@ -57,7 +57,7 @@ import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Room.EQRoundStatus;
+import com.component.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -865,7 +865,7 @@ public class GrabGuideRoomFragment extends BaseFragment implements IGrabGuideVie
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }

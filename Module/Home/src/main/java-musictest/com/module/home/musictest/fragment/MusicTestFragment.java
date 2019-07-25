@@ -89,7 +89,7 @@ public class MusicTestFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (getActivity() != null) {
             getActivity().finish();
         }

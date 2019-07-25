@@ -1,13 +1,11 @@
 package com.wali.live.moduletest.fragment;
 
-import android.content.ContextWrapper;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,18 +16,12 @@ import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.base.BuildConfig;
-import com.common.statistics.TimeStatistics;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExButton;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
-import com.common.view.titlebar.CommonTitleBar;
 import com.wali.live.moduletest.R;
 
 public class ShowTextViewFragment extends BaseFragment {
@@ -43,7 +35,7 @@ public class ShowTextViewFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         {
-            View mTvTest = mRootView.findViewById(R.id.tv_test1);
+            View mTvTest = getRootView().findViewById(R.id.tv_test1);
             Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                     .setGradientAngle(0)
                     .setGradientColor(Color.parseColor("#63B8FF"), Color.parseColor("#4F94CD"))
@@ -53,7 +45,7 @@ public class ShowTextViewFragment extends BaseFragment {
         }
 
         {
-            View mTvTest = mRootView.findViewById(R.id.tv_test2);
+            View mTvTest = getRootView().findViewById(R.id.tv_test2);
             Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                     .setShape(DrawableCreator.Shape.Rectangle)
                     .setPressedDrawable(new ColorDrawable(Color.parseColor("#7CCD7C")))
@@ -64,7 +56,7 @@ public class ShowTextViewFragment extends BaseFragment {
         }
 
         {
-            View mTvTest = mRootView.findViewById(R.id.tv_test3);
+            View mTvTest = getRootView().findViewById(R.id.tv_test3);
             Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                     .setShape(DrawableCreator.Shape.Rectangle)
                     .setPressedStrokeColor(Color.parseColor("#000000"), Color.parseColor("#ffcc0000"))
@@ -79,7 +71,7 @@ public class ShowTextViewFragment extends BaseFragment {
         }
 
         {
-            View mTvTest = mRootView.findViewById(R.id.tv_test4);
+            View mTvTest = getRootView().findViewById(R.id.tv_test4);
             Drawable drawable = new DrawableCreator.Builder()
                     .setPressedDrawable(ContextCompat.getDrawable(getContext(), R.drawable.circle_like_pressed))
                     .setUnPressedDrawable(ContextCompat.getDrawable(getContext(), R.drawable.circle_like_normal))
@@ -90,7 +82,7 @@ public class ShowTextViewFragment extends BaseFragment {
 
 
         {
-            View v = mRootView.findViewById(R.id.image_view_btn);
+            View v = getRootView().findViewById(R.id.image_view_btn);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,7 +92,7 @@ public class ShowTextViewFragment extends BaseFragment {
         }
 
         {
-            View v = mRootView.findViewById(R.id.image_button_btn);
+            View v = getRootView().findViewById(R.id.image_button_btn);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -111,7 +103,7 @@ public class ShowTextViewFragment extends BaseFragment {
 
         {
 
-            ExTextView v = mRootView.findViewById(R.id.span_test);
+            ExTextView v = getRootView().findViewById(R.id.span_test);
             int lineHeight = v.getLineHeight();
             float textSize = v.getTextSize();
             SpannableStringBuilder ssb = new SpanUtils()

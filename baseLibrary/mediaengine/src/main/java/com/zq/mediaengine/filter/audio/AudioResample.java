@@ -1,7 +1,5 @@
 package com.zq.mediaengine.filter.audio;
 
-import android.util.Log;
-
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.util.LibraryLoader;
 

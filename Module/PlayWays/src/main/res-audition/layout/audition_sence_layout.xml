@@ -126,7 +126,7 @@
             android:visibility="gone" />
 
         <!--正在唱的人的歌词-->
-        <com.zq.lyrics.widget.ManyLyricsView
+        <com.component.lyrics.widget.ManyLyricsView
             android:id="@+id/many_lyrics_view"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -144,7 +144,7 @@
             app:ly_paint_color_to="@color/white_trans_50"
             app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
-        <com.module.playways.view.VoiceControlPanelView
+        <com.component.voice.control.VoiceControlPanelView
             android:id="@+id/voice_control_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
             android:layout_marginBottom="-2dp"
             android:visibility="visible" />
 
-        <com.zq.lyrics.widget.VoiceScaleView
+        <com.component.lyrics.widget.VoiceScaleView
             android:id="@+id/voice_scale_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_61_dp"

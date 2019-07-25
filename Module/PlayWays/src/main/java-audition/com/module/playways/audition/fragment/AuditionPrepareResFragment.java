@@ -41,9 +41,9 @@ public class AuditionPrepareResFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
-        mTvResProgress = (ExTextView) mRootView.findViewById(R.id.tv_res_progress);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mTvSongName = (ExTextView) getRootView().findViewById(R.id.tv_song_name);
+        mTvResProgress = (ExTextView) getRootView().findViewById(R.id.tv_res_progress);
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -100,7 +100,7 @@ public class AuditionPrepareResFragment extends BaseFragment {
             @Override
             public void onFailed() {
                 U.getToastUtil().showShort("下载资源失败，请退出重试");
-                MyLog.w(TAG, "download song res failed");
+                MyLog.w(getTAG(), "download song res failed");
             }
         }, mPrepareData.getSongModel());
 
@@ -109,7 +109,7 @@ public class AuditionPrepareResFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         onBack();
         return true;
     }

@@ -28,7 +28,7 @@ import com.module.home.R
 import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.person.view.ConfirmMatchInfoView
+import com.component.person.view.ConfirmMatchInfoView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

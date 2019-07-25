@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -49,10 +48,10 @@ public class GrabCreateRoomFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mFriendsRoom = (ExImageView) mRootView.findViewById(R.id.friends_room);
-        mSecretRoom = (ExImageView) mRootView.findViewById(R.id.secret_room);
-        mPublicRoom = (ExImageView) mRootView.findViewById(R.id.public_room);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mFriendsRoom = (ExImageView) getRootView().findViewById(R.id.friends_room);
+        mSecretRoom = (ExImageView) getRootView().findViewById(R.id.secret_room);
+        mPublicRoom = (ExImageView) getRootView().findViewById(R.id.public_room);
         mSkrVerifyUtils = new SkrVerifyUtils();
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {

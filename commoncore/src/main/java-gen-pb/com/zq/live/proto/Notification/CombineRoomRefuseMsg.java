@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.UserInfo;
+
 import java.io.IOException;
 import java.lang.Object;
 import java.lang.Override;

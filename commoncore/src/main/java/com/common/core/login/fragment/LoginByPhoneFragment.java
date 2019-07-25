@@ -2,14 +2,12 @@ package com.common.core.login.fragment;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.callback.Callback;
 import com.common.core.R;
@@ -17,7 +15,6 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
 import com.common.core.account.event.LoginApiErrorEvent;
 import com.common.core.login.LoginActivity;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.log.MyLog;
@@ -32,8 +29,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
-import com.common.view.ex.drawable.DrawableCreator;
-import com.module.RouterConstants;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -67,13 +62,13 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = mRootView.findViewById(R.id.main_act_container);
-        mIvBack = mRootView.findViewById(R.id.iv_back);
-        mPhoneInputTv = mRootView.findViewById(R.id.phone_input_tv);
-        mCodeInputTv = mRootView.findViewById(R.id.code_input_tv);
-        mGetCodeTv = mRootView.findViewById(R.id.get_code_tv);
-        mErrorHint = mRootView.findViewById(R.id.error_hint);
-        mLoginIv = mRootView.findViewById(R.id.login_iv);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mIvBack = getRootView().findViewById(R.id.iv_back);
+        mPhoneInputTv = getRootView().findViewById(R.id.phone_input_tv);
+        mCodeInputTv = getRootView().findViewById(R.id.code_input_tv);
+        mGetCodeTv = getRootView().findViewById(R.id.get_code_tv);
+        mErrorHint = getRootView().findViewById(R.id.error_hint);
+        mLoginIv = getRootView().findViewById(R.id.login_iv);
 
         mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
 
@@ -158,7 +153,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LoginApiErrorEvent event) {
-        MyLog.d(TAG, "onEventMainThread" + " event=" + event);
+        MyLog.d(getTAG(), "onEventMainThread" + " event=" + event);
         setHintText(event.getErrmsg(), true);
     }
 
@@ -172,7 +167,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     }
 
     private void sendSmsVerifyCode(final String phoneNumber) {
-        MyLog.d(TAG, "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
+        MyLog.d(getTAG(), "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
         if (!U.getNetworkUtils().hasNetwork()) {
             setHintText("网络异常，请检查网络后重试!", true);
             return;
@@ -283,7 +278,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                 .setPopFragment(LoginByPhoneFragment.this)
                 .setHasAnimation(true)
@@ -293,7 +288,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     @Override
     public void onCallback(int r, Object obj) {
-        MyLog.d(TAG, "onCallback" + " r=" + r + " obj=" + obj);
+        MyLog.d(getTAG(), "onCallback" + " r=" + r + " obj=" + obj);
         if (r == 1) {
             final ApiResult apiResult = (ApiResult) obj;
             Activity activity = getActivity();

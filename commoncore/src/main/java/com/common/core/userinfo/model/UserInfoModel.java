@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
 import com.common.core.userinfo.UserInfoManager;

@@ -10,18 +10,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.audition.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
@@ -74,14 +70,14 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mSwipeView = (SwipeFlingAdapterView) mRootView.findViewById(R.id.swipe_view);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mSwipeView = (SwipeFlingAdapterView) getRootView().findViewById(R.id.swipe_view);
 
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mSelectBackIv = (ExTextView) mRootView.findViewById(R.id.select_back_iv);
-        mSelectClickedIv = (ExTextView) mRootView.findViewById(R.id.select_clicked_iv);
-        mSelectBack = (ExImageView) mRootView.findViewById(R.id.select_back);
-        mSelectSelect = (ExImageView) mRootView.findViewById(R.id.select_select);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mSelectBackIv = (ExTextView) getRootView().findViewById(R.id.select_back_iv);
+        mSelectClickedIv = (ExTextView) getRootView().findViewById(R.id.select_clicked_iv);
+        mSelectBack = (ExImageView) getRootView().findViewById(R.id.select_back);
+        mSelectSelect = (ExImageView) getRootView().findViewById(R.id.select_select);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -303,13 +299,13 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(View.VISIBLE);
+        getRootView().setVisibility(View.VISIBLE);
     }
 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-        mRootView.setVisibility(View.GONE);
+        getRootView().setVisibility(View.GONE);
     }
 
     @Override

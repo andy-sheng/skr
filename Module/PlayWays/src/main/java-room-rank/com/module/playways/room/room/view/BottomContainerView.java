@@ -1,25 +1,18 @@
 package com.module.playways.room.room.view;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.component.busilib.constans.GameModeType;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -30,7 +23,6 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.R;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.BaseRoomData;
-import com.module.playways.room.room.quickmsg.QuickMsgView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -42,8 +34,6 @@ import com.zq.live.proto.Room.SpecialEmojiMsgType;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.HashMap;
 
 /**
  * 一唱到底的看这个

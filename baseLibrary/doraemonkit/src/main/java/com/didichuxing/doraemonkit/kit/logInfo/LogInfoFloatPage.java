@@ -343,7 +343,7 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (U.getKeyBoardUtils().isSoftKeyboardShowing(U.getActivityUtils().getTopActivity())) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             return true;

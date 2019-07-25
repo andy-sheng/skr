@@ -1,7 +1,6 @@
 package com.zq.mediaengine.filter.audio;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;

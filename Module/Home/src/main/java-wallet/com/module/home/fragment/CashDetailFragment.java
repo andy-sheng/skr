@@ -51,10 +51,10 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mIvBg = (ExImageView)mRootView.findViewById(R.id.iv_bg);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
+        mIvBg = (ExImageView) getRootView().findViewById(R.id.iv_bg);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mWalletRecordAdapter = new WalletRecordAdapter();

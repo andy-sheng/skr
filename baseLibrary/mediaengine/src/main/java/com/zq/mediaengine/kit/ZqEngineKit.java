@@ -1039,7 +1039,9 @@ public class ZqEngineKit implements AgoraOutCallback {
 
         filters.add(new TbAudioAgcFilter(mConfig));
 
-        mAudioFilterMgt.setFilter(filters);
+        if (mAudioFilterMgt != null) {
+            mAudioFilterMgt.setFilter(filters);
+        }
     }
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
@@ -1146,8 +1148,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                         canGo = true;
                     } else {
                         UserStatus userStatus = mUserStatusMap.get(uid);
-                        if (userStatus == null) {
-                            MyLog.w(TAG, "该用户还未在频道中，播伴奏挂起");
+                        if (userStatus == null && !mConfig.isUseExternalAudio()) {
+                            MyLog.w(TAG, "该用户还未在频道中,且用得是声网的混音，播伴奏挂起");
                             canGo = false;
                         } else {
                             MyLog.w(TAG, "用户已经在频道中继续走起");

@@ -17,7 +17,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.BaseImage;
@@ -29,8 +28,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -52,8 +49,8 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.level.utils.LevelConfigUtils;
-import com.zq.level.view.LevelStarProgressBar;
+import com.component.level.utils.LevelConfigUtils;
+import com.component.level.view.LevelStarProgressBar;
 import com.zq.live.proto.Room.EExpWhy;
 import com.zq.live.proto.Room.EWinType;
 
@@ -97,16 +94,16 @@ public class RankLevelChangeFragment2 extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mBackgroundIv = (ImageView) mRootView.findViewById(R.id.background_iv);
-        mResultSvga = (SVGAImageView) mRootView.findViewById(R.id.result_svga);
-        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
-        mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
-        mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
-        mResultText = (ExTextView) mRootView.findViewById(R.id.result_text);
-        mResultNum = (ExTextView) mRootView.findViewById(R.id.result_num);
-        mExperTextTv = (ExTextView) mRootView.findViewById(R.id.exper_text_tv);
-        mExperNumTv = (ExTextView) mRootView.findViewById(R.id.exper_num_tv);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mBackgroundIv = (ImageView) getRootView().findViewById(R.id.background_iv);
+        mResultSvga = (SVGAImageView) getRootView().findViewById(R.id.result_svga);
+        mRankArea = (RelativeLayout) getRootView().findViewById(R.id.rank_area);
+        mLevelDescTv = (ExTextView) getRootView().findViewById(R.id.level_desc_tv);
+        mLevelProgress = (LevelStarProgressBar) getRootView().findViewById(R.id.level_progress);
+        mResultText = (ExTextView) getRootView().findViewById(R.id.result_text);
+        mResultNum = (ExTextView) getRootView().findViewById(R.id.result_num);
+        mExperTextTv = (ExTextView) getRootView().findViewById(R.id.exper_text_tv);
+        mExperNumTv = (ExTextView) getRootView().findViewById(R.id.exper_num_tv);
 
         mUiHanlder = new Handler();
 
@@ -379,7 +376,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         return true;
     }
 

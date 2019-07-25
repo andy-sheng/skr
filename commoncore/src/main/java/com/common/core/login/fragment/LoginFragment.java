@@ -94,16 +94,16 @@ public class LoginFragment extends BaseFragment implements Callback {
     public void initData(@Nullable Bundle savedInstanceState) {
         ShareManager.init();
 
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mPicture = (ImageView) mRootView.findViewById(R.id.picture);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mPicture = (ImageView) getRootView().findViewById(R.id.picture);
 
-        mDengluArea = (LinearLayout) mRootView.findViewById(R.id.denglu_area);
-        mWeixinLoginTv = (ExImageView) mRootView.findViewById(R.id.weixin_login_tv);
-        mPhoneLoginTv = (ExImageView) mRootView.findViewById(R.id.phone_login_tv);
-        mQqLoginTv = (ExImageView) mRootView.findViewById(R.id.qq_login_tv);
-        mLogoText = (TextView) mRootView.findViewById(R.id.logo_text);
-        mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
-        mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
+        mDengluArea = (LinearLayout) getRootView().findViewById(R.id.denglu_area);
+        mWeixinLoginTv = (ExImageView) getRootView().findViewById(R.id.weixin_login_tv);
+        mPhoneLoginTv = (ExImageView) getRootView().findViewById(R.id.phone_login_tv);
+        mQqLoginTv = (ExImageView) getRootView().findViewById(R.id.qq_login_tv);
+        mLogoText = (TextView) getRootView().findViewById(R.id.logo_text);
+        mTvUserAgree = (LinearLayout) getRootView().findViewById(R.id.tv_user_agree);
+        mProgressBar = (ProgressBar) getRootView().findViewById(R.id.progress_bar);
 
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -232,7 +232,7 @@ public class LoginFragment extends BaseFragment implements Callback {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            MyLog.d(TAG, "onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
+            MyLog.d(getTAG(), "onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
             showLoginingBar(false);
             final HashMap map = new HashMap();
             map.put("type", platform.toString());
@@ -252,7 +252,7 @@ public class LoginFragment extends BaseFragment implements Callback {
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            MyLog.d(TAG, "onError" + " platform=" + platform + " action=" + action + " t=" + t);
+            MyLog.d(getTAG(), "onError" + " platform=" + platform + " action=" + action + " t=" + t);
             showLoginingBar(false);
             final HashMap map = new HashMap();
             map.put("type", platform.toString());

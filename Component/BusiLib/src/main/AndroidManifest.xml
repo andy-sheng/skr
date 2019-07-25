@@ -7,7 +7,7 @@
             android:value="ConfigModule" />
 
         <activity
-            android:name="com.zq.relation.activity.RelationActivity"
+            android:name="com.component.relation.activity.RelationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -19,7 +19,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="com.zq.person.activity.OtherPersonActivity"
+            android:name="com.component.person.OtherPersonActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />

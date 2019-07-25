@@ -4,20 +4,11 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
-import com.module.playways.room.gift.event.UpdateMeiliEvent;
-import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.live.proto.Room.EWantSingType;
-import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
-import com.zq.live.proto.Room.QCHOInnerRoundInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QSPKInnerRoundInfo;
-import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.HashSet;

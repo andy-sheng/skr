@@ -107,6 +107,7 @@ public class AndroidMediaPlayer extends BasePlayer {
                     mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME,5000);
                 }
                 startTs = System.currentTimeMillis();
+                startMusicPlayTimeListener();
 
             }
         });
@@ -138,6 +139,12 @@ public class AndroidMediaPlayer extends BasePlayer {
                 if (null != mCallback) {
                     mCallback.onSeekComplete();
                 }
+            }
+        });
+        mPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                mCallback.onBufferingUpdate(mp, percent);
             }
         });
     }

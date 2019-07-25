@@ -41,9 +41,9 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
 
     override fun initData(savedInstanceState: Bundle?) {
 
-        mTitlebar = mRootView.findViewById(R.id.titlebar)
-        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout)
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view)
+        mTitlebar = rootView.findViewById(R.id.titlebar)
+        mRefreshLayout = rootView.findViewById(R.id.refreshLayout)
+        mRecyclerView = rootView.findViewById(R.id.recycler_view)
 
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mManageSongAdapter = ManageSongAdapter(SongManagerActivity.TYPE_FROM_DOUBLE)

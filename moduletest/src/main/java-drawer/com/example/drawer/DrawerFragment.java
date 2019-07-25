@@ -30,10 +30,10 @@ public class DrawerFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mDrawerLayout = (DrawerLayout) mRootView.findViewById(R.id.drawer_layout);
-        mDescTv = (TextView) mRootView.findViewById(R.id.desc_tv);
-        mNavigationView = (NavigationView) mRootView.findViewById(R.id.navigation_view);
-        mDescTv2 = (TextView) mRootView.findViewById(R.id.desc_tv2);
+        mDrawerLayout = (DrawerLayout) getRootView().findViewById(R.id.drawer_layout);
+        mDescTv = (TextView) getRootView().findViewById(R.id.desc_tv);
+        mNavigationView = (NavigationView) getRootView().findViewById(R.id.navigation_view);
+        mDescTv2 = (TextView) getRootView().findViewById(R.id.desc_tv2);
 
         /**
          * 也可以使用DrawerListener的子类SimpleDrawerListener,
@@ -74,7 +74,7 @@ public class DrawerFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
             return true;

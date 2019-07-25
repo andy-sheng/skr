@@ -23,7 +23,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.R
 import com.component.busilib.verify.SkrVerifyUtils
 import com.kingja.loadsir.core.LoadService
-import com.zq.dialog.InviteFriendDialog
+import com.component.dialog.InviteFriendDialog
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.common.view.titlebar.CommonTitleBar
@@ -66,10 +66,10 @@ class FriendMoreRoomFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mTitlebar = mRootView.findViewById(R.id.titlebar)
-        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout)
-        mClassicsHeader = mRootView.findViewById(R.id.classics_header)
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view)
+        mTitlebar = rootView.findViewById(R.id.titlebar)
+        mRefreshLayout = rootView.findViewById(R.id.refreshLayout)
+        mClassicsHeader = rootView.findViewById(R.id.classics_header)
+        mRecyclerView = rootView.findViewById(R.id.recycler_view)
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {

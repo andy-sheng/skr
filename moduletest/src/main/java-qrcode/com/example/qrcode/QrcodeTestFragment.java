@@ -30,8 +30,8 @@ public class QrcodeTestFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTestScanQrcode = (TextView) mRootView.findViewById(R.id.test_scan_qrcode);
-        mTestGenerateQrcode = (TextView) mRootView.findViewById(R.id.test_generate_qrcode);
+        mTestScanQrcode = (TextView) getRootView().findViewById(R.id.test_scan_qrcode);
+        mTestGenerateQrcode = (TextView) getRootView().findViewById(R.id.test_generate_qrcode);
         mTestScanQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

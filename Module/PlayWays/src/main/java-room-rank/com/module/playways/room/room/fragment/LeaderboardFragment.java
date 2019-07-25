@@ -33,9 +33,9 @@ import com.module.playways.room.room.view.ILeaderBoardView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.view.NormalLevelView2;
+import com.component.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.StringFromatUtils;
+import com.component.person.utils.StringFromatUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -91,37 +91,37 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
         mLeaderBoardAdapter = new LeaderBoardAdapter();
         mLeaderboardPresenter = new LeaderboardPresenter(this);
         addPresent(mLeaderboardPresenter);
         mRecyclerView.setAdapter(mLeaderBoardAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mOwnInfoItem = mRootView.findViewById(R.id.own_info_item);
+        mOwnInfoItem = getRootView().findViewById(R.id.own_info_item);
         mOwnInfoItem.setBackgroundColor(Color.parseColor("#6868A1"));
 
-        mSdvRightChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_right_champain_icon);
-        mTvRightChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_right_chanpain_name);
-        mRightChanpainLevelView = (NormalLevelView2) mRootView.findViewById(R.id.right_chanpain_level_view);
-        mRightChanpainLevelTv = (ExTextView) mRootView.findViewById(R.id.right_chanpain_level_tv);
+        mSdvRightChampainIcon = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_right_champain_icon);
+        mTvRightChanpainName = (ExTextView) getRootView().findViewById(R.id.tv_right_chanpain_name);
+        mRightChanpainLevelView = (NormalLevelView2) getRootView().findViewById(R.id.right_chanpain_level_view);
+        mRightChanpainLevelTv = (ExTextView) getRootView().findViewById(R.id.right_chanpain_level_tv);
 
-        mSdvLeftChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_left_champain_icon);
-        mTvLeftChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_left_chanpain_name);
-        mLeftChanpainLevelView = (NormalLevelView2) mRootView.findViewById(R.id.left_chanpain_level_view);
-        mLeftChanpainLevelTv = (ExTextView) mRootView.findViewById(R.id.left_chanpain_level_tv);
+        mSdvLeftChampainIcon = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_left_champain_icon);
+        mTvLeftChanpainName = (ExTextView) getRootView().findViewById(R.id.tv_left_chanpain_name);
+        mLeftChanpainLevelView = (NormalLevelView2) getRootView().findViewById(R.id.left_chanpain_level_view);
+        mLeftChanpainLevelTv = (ExTextView) getRootView().findViewById(R.id.left_chanpain_level_tv);
 
-        mSdvChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_champain_icon);
-        mTvChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_chanpain_name);
-        mChanpainLevelView = (NormalLevelView2) mRootView.findViewById(R.id.chanpain_level_view);
-        mChanpainLevelTv = (ExTextView) mRootView.findViewById(R.id.chanpain_level_tv);
+        mSdvChampainIcon = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_champain_icon);
+        mTvChanpainName = (ExTextView) getRootView().findViewById(R.id.tv_chanpain_name);
+        mChanpainLevelView = (NormalLevelView2) getRootView().findViewById(R.id.chanpain_level_view);
+        mChanpainLevelTv = (ExTextView) getRootView().findViewById(R.id.chanpain_level_tv);
 
-        mIvRankLeft = (ImageView) mRootView.findViewById(R.id.iv_rank_left);
-        mIvRank = (ImageView) mRootView.findViewById(R.id.iv_rank);
-        mIvRankRight = (ImageView) mRootView.findViewById(R.id.iv_rank_right);
-        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
-        mTvArea = (ExTextView) mRootView.findViewById(R.id.tv_area);
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mIvRankLeft = (ImageView) getRootView().findViewById(R.id.iv_rank_left);
+        mIvRank = (ImageView) getRootView().findViewById(R.id.iv_rank);
+        mIvRankRight = (ImageView) getRootView().findViewById(R.id.iv_rank_right);
+        mRefreshLayout = getRootView().findViewById(R.id.refreshLayout);
+        mTvArea = (ExTextView) getRootView().findViewById(R.id.tv_area);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 

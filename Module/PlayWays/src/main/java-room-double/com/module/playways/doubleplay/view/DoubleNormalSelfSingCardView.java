@@ -19,8 +19,8 @@ import com.module.playways.R;
 import com.module.playways.doubleplay.loadsir.LyricLoadErrorCallBack;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.model.LyricsLineInfo;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.model.LyricsLineInfo;
 
 import java.util.Iterator;
 
@@ -104,7 +104,7 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
 
         if (!TextUtils.isEmpty(mSongModel.getLyric())) {
             LyricsManager.getLyricsManager(U.app())
-                    .fetchAndLoadLyrics(mSongModel.getLyric())
+                    .loadStandardLyric(mSongModel.getLyric())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .retryWhen(new RxRetryAssist(5, ""))

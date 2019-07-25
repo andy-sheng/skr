@@ -1,7 +1,6 @@
 package com.module.playways.songmanager.fragment
 
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -73,10 +72,10 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
             return
         }
 
-        mCommonTitleBar = mRootView.findViewById<View>(R.id.titlebar) as CommonTitleBar
-        mSearchSongIv = mRootView.findViewById<View>(R.id.search_song_iv) as ExTextView
-        mTagTab = mRootView.findViewById<View>(R.id.tag_tab) as SlidingTabLayout
-        mViewpager = mRootView.findViewById<View>(R.id.viewpager) as ViewPager
+        mCommonTitleBar = rootView.findViewById<View>(R.id.titlebar) as CommonTitleBar
+        mSearchSongIv = rootView.findViewById<View>(R.id.search_song_iv) as ExTextView
+        mTagTab = rootView.findViewById<View>(R.id.tag_tab) as SlidingTabLayout
+        mViewpager = rootView.findViewById<View>(R.id.viewpager) as ViewPager
 
         mCommonTitleBar.centerTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -108,13 +107,15 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_GRAB)
                         .addDataBeforeAdd(1, mRoomData!!.isOwner)
-                        .setFragmentDataListener { requestCode, resultCode, bundle, obj ->
-                            if (requestCode == 0 && resultCode == 0 && obj != null) {
-                                val model = obj as SongModel
-                                MyLog.d(TAG, "onFragmentResult model=$model")
-                                EventBus.getDefault().post(AddSongEvent(model))
+                        .setFragmentDataListener(object :FragmentDataListener{
+                            override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                                if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                    val model = obj as SongModel
+                                    MyLog.d(TAG, "onFragmentResult model=$model")
+                                    EventBus.getDefault().post(AddSongEvent(model))
+                                }
                             }
-                        }
+                        })
                         .build())
             }
         })

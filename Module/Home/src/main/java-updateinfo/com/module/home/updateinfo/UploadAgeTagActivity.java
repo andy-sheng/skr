@@ -1,6 +1,5 @@
 package com.module.home.updateinfo;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.home.R;
 import com.module.playways.IPlaywaysModeService;
-import com.zq.person.view.AgeTagView;
+import com.component.person.view.AgeTagView;
 
 @Route(path = RouterConstants.ACTIVITY_UPLOAD_AGE)
 public class UploadAgeTagActivity extends BaseActivity {

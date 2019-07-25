@@ -186,7 +186,7 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        MyLog.w(TAG, "finish");
+        MyLog.w(getTAG(), "finish");
     }
 
     @Override

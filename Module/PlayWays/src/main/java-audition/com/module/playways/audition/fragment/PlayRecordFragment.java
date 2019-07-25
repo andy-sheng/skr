@@ -35,14 +35,14 @@ import com.engine.Params;
 import com.module.playways.R;
 import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.zq.dialog.ShareWorksDialog;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.ManyLyricsView;
+import com.component.dialog.ShareWorksDialog;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.widget.AbstractLrcView;
+import com.component.lyrics.widget.ManyLyricsView;
 import com.zq.mediaengine.kit.ZqEngineKit;
-import com.zq.person.model.ProducationModel;
+import com.component.person.producation.model.ProducationModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -54,7 +54,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+import static com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class PlayRecordFragment extends BaseFragment {
 
@@ -90,15 +90,15 @@ public class PlayRecordFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTvName = (TextView) mRootView.findViewById(R.id.tv_name);
-        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
-        mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
-        mOptArea = (RelativeLayout) mRootView.findViewById(R.id.opt_area);
-        mOptTv = (ExTextView) mRootView.findViewById(R.id.opt_tv);
-        mResetArea = (RelativeLayout) mRootView.findViewById(R.id.reset_area);
-        mSaveShareArea = (RelativeLayout) mRootView.findViewById(R.id.save_share_area);
-        mSaveShareTv = (ExTextView) mRootView.findViewById(R.id.save_share_tv);
-        mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
+        mTvName = (TextView) getRootView().findViewById(R.id.tv_name);
+        mBottomContainer = (LinearLayout) getRootView().findViewById(R.id.bottom_container);
+        mBackArea = (RelativeLayout) getRootView().findViewById(R.id.back_area);
+        mOptArea = (RelativeLayout) getRootView().findViewById(R.id.opt_area);
+        mOptTv = (ExTextView) getRootView().findViewById(R.id.opt_tv);
+        mResetArea = (RelativeLayout) getRootView().findViewById(R.id.reset_area);
+        mSaveShareArea = (RelativeLayout) getRootView().findViewById(R.id.save_share_area);
+        mSaveShareTv = (ExTextView) getRootView().findViewById(R.id.save_share_tv);
+        mManyLyricsView = (ManyLyricsView) getRootView().findViewById(R.id.many_lyrics_view);
 
         mTvName.setText("《" + mSongModel.getItemName() + "》");
         mUiHanlder = new Handler();
@@ -120,8 +120,8 @@ public class PlayRecordFragment extends BaseFragment {
         mResetArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mFragmentDataListener != null) {
-                    mFragmentDataListener.onFragmentResult(0, 0, null, null);
+                if (getFragmentDataListener() != null) {
+                    getFragmentDataListener().onFragmentResult(0, 0, null, null);
                 }
                 U.getFragmentUtils().popFragment(PlayRecordFragment.this);
             }
@@ -189,36 +189,27 @@ public class PlayRecordFragment extends BaseFragment {
     LyricsReader mLyricsReader;
 
     private void playLyrics(SongModel songModel) {
-        final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-
-        if (lyricFile != null) {
-            LyricsManager.getLyricsManager(U.app())
-                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
-                    .subscribeOn(Schedulers.io())
-                    .retry(10)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(lyricsReader -> {
-                        MyLog.d(TAG, "playMusic, start play lyric");
-                        mManyLyricsView.resetData();
-                        mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
-                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
-                        mManyLyricsView.setLyricsReader(lyricsReader);
-                        mLyricsReader = lyricsReader;
-                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
-                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
-                        }
-                    }, throwable -> MyLog.e(throwable));
-        } else {
-            MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
-        }
+        LyricsManager.getLyricsManager(U.app())
+                .loadStandardLyric(songModel.getLyric())
+                .compose(bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(lyricsReader -> {
+                    MyLog.d(getTAG(), "playMusic, start play lyric");
+                    mManyLyricsView.resetData();
+                    mManyLyricsView.initLrcData();
+                    lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+                    MyLog.d(getTAG(), "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
+                    mManyLyricsView.setLyricsReader(lyricsReader);
+                    mLyricsReader = lyricsReader;
+                    if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                        mManyLyricsView.play(songModel.getBeginMs());
+                        MyLog.d(getTAG(), "songModel.getBeginMs() : " + songModel.getBeginMs());
+                    }
+                }, throwable -> MyLog.e(throwable));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
-        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        MyLog.w(getTAG(), event.foreground ? "切换到前台" : "切换到后台");
         if (!event.foreground && mIsPlay) {
             // 暂停
             if (mPlayer != null) {
@@ -301,7 +292,7 @@ public class PlayRecordFragment extends BaseFragment {
 
                     @Override
                     public void onSuccessNotInUiThread(String url) {
-                        MyLog.d(TAG, "onSuccess" + " url=" + url);
+                        MyLog.d(getTAG(), "onSuccess" + " url=" + url);
                         mUrl = url;
                         saveWorksStep2();
                     }
@@ -376,7 +367,7 @@ public class PlayRecordFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         return true;
     }
 }

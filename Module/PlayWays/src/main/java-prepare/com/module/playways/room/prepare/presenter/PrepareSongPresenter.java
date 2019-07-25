@@ -9,16 +9,15 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.module.playways.room.prepare.view.IPrepareResView;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.model.LyricsLineInfo;
-import com.zq.lyrics.model.UrlRes;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.utils.ZipUrlResourceManager;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.LyricsReader;
+import com.component.lyrics.model.LyricsLineInfo;
+import com.component.lyrics.model.UrlRes;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.greendao.annotation.NotNull;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
@@ -72,40 +71,12 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
 
         mSongResourceZhang = new ZipUrlResourceManager(songResList, mOnDownloadProgress);
         mSongResourceZhang.go();
-
-        fetchLyric();
-    }
-
-    private void fetchLyric() {
-        File lyricFile = SongResUtils.getLyricFileByUrl(mSongModel.getLyric());
-        if (lyricFile == null || !lyricFile.exists()) {
-            LyricsManager.getLyricsManager(U.app())
-                    .fetchLyricTask(mSongModel.getLyric())
-                    .retry(10)
-                    .compose(bindUntilEvent(PresenterEvent.DESTROY))
-                    .subscribe(new Consumer<File>() {
-                        @Override
-                        public void accept(File file) throws Exception {
-                            showLyric();
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            MyLog.e(TAG, throwable);
-                        }
-                    });
-        } else {
-            showLyric();
-        }
+        showLyric();
     }
 
     private void showLyric() {
-        final String fileName = SongResUtils.getFileNameWithMD5(mSongModel.getLyric());
         LyricsManager.getLyricsManager(U.app())
-                .loadLyricsObserable(fileName, fileName.hashCode() + "")
-                .subscribeOn(Schedulers.computation())
-                .retry(10)
-                .observeOn(AndroidSchedulers.mainThread())
+                .loadStandardLyric(mSongModel.getLyric())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Consumer<LyricsReader>() {
                     @Override

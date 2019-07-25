@@ -1,6 +1,5 @@
 package com.module.home.setting.fragment;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -18,10 +17,6 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.manager.BgMusicManager;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.module.home.R;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 import static com.common.utils.SoundUtils.PREF_KEY_GAME_VOLUME_SWITCH;
 import static com.component.busilib.manager.BgMusicManager.PREF_KEY_PIPEI_VOLUME;
@@ -43,12 +38,12 @@ public class VolumeFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mPipeiArea = (RelativeLayout) mRootView.findViewById(R.id.pipei_area);
-        mPipeiSb = (SwitchButton) mRootView.findViewById(R.id.pipei_sb);
-        mPipeiVoiceSeekbar = (SeekBar) mRootView.findViewById(R.id.pipei_voice_seekbar);
-        mGameSb = (SwitchButton) mRootView.findViewById(R.id.game_sb);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mPipeiArea = (RelativeLayout) getRootView().findViewById(R.id.pipei_area);
+        mPipeiSb = (SwitchButton) getRootView().findViewById(R.id.pipei_sb);
+        mPipeiVoiceSeekbar = (SeekBar) getRootView().findViewById(R.id.pipei_voice_seekbar);
+        mGameSb = (SwitchButton) getRootView().findViewById(R.id.game_sb);
 
         mPipeiSb.setChecked(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_PIPEI_VOLUME_SWITCH, true));
         mGameSb.setChecked(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, true));
@@ -115,7 +110,7 @@ public class VolumeFragment extends BaseFragment {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     @Override
@@ -126,6 +121,6 @@ public class VolumeFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 }

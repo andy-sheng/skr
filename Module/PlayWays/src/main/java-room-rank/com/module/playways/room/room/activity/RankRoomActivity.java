@@ -44,7 +44,7 @@ public class RankRoomActivity extends BaseActivity {
             mRoomData.setGameConfigModel(prepareData.getGameConfigModel());
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getRoundInfo());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
-            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
+            MyLog.d(getTAG(), "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
             mRoomData.setSongModel(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
             mRoomData.setAgoraToken(prepareData.getAgoraToken());

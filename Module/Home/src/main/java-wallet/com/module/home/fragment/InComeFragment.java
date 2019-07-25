@@ -75,16 +75,16 @@ public class InComeFragment extends BaseFragment implements IInComeView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (LinearLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mTvCashDetail = (ExTextView) mRootView.findViewById(R.id.tv_cash_detail);
-        mTvCashNum = (ExTextView) mRootView.findViewById(R.id.tv_cash_num);
-        mStvWithdraw = (StrokeTextView) mRootView.findViewById(R.id.stv_withdraw);
-        mIvAttention = (ImageView) mRootView.findViewById(R.id.iv_attention);
-        mTvDqDetail = (ExTextView) mRootView.findViewById(R.id.tv_dq_detail);
-        mTvDqNum = (ExTextView) mRootView.findViewById(R.id.tv_dq_num);
-        mBtnExchangeDiamond = (StrokeTextView) mRootView.findViewById(R.id.btn_exchange_diamond);
-        mBtnExchangeCash = (StrokeTextView) mRootView.findViewById(R.id.btn_exchange_cash);
+        mMainActContainer = (LinearLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mTvCashDetail = (ExTextView) getRootView().findViewById(R.id.tv_cash_detail);
+        mTvCashNum = (ExTextView) getRootView().findViewById(R.id.tv_cash_num);
+        mStvWithdraw = (StrokeTextView) getRootView().findViewById(R.id.stv_withdraw);
+        mIvAttention = (ImageView) getRootView().findViewById(R.id.iv_attention);
+        mTvDqDetail = (ExTextView) getRootView().findViewById(R.id.tv_dq_detail);
+        mTvDqNum = (ExTextView) getRootView().findViewById(R.id.tv_dq_num);
+        mBtnExchangeDiamond = (StrokeTextView) getRootView().findViewById(R.id.btn_exchange_diamond);
+        mBtnExchangeCash = (StrokeTextView) getRootView().findViewById(R.id.btn_exchange_cash);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -237,7 +237,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
 
     @Override
     public void showRule(ExChangeInfoModel exChangeInfoModel) {
-        MyLog.d(TAG, "showRule" + " exChangeInfoModel=" + exChangeInfoModel);
+        MyLog.d(getTAG(), "showRule" + " exChangeInfoModel=" + exChangeInfoModel);
         LinearLayout ruleOneArea = (LinearLayout) mDqRuleDialogPlus.findViewById(R.id.rule_one_area);
         ExTextView toHZDescTv = (ExTextView) mDqRuleDialogPlus.findViewById(R.id.toHZDescTv);
         LinearLayout ruleTwoArea = (LinearLayout) mDqRuleDialogPlus.findViewById(R.id.rule_two_area);

@@ -27,7 +27,7 @@
             android:textSize="@dimen/textsize_16_dp" />
     </ScrollView>
 
-    <com.zq.lyrics.widget.ManyLyricsView
+    <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

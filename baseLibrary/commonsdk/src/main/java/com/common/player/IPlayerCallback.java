@@ -1,5 +1,7 @@
 package com.common.player;
 
+import android.media.MediaPlayer;
+
 /**
  * Created by yangli on 2017/9/21.
  */
@@ -17,4 +19,5 @@ public interface IPlayerCallback {
 
     void onInfo(int what, int extra);
 
+    void onBufferingUpdate(MediaPlayer mp, int percent);
 }

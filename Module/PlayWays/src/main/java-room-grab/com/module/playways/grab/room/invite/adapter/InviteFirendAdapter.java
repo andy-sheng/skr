@@ -18,7 +18,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
-import com.dialog.view.StrokeTextView;
 import com.module.playways.R;
 import com.zq.live.proto.Common.ESex;
 

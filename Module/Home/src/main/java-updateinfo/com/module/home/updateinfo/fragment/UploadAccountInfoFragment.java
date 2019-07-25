@@ -7,10 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -19,7 +15,6 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -74,15 +69,15 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = mRootView.findViewById(R.id.titlebar);
-        mAvatarIv = mRootView.findViewById(R.id.avatar_iv);
-        mNicknameEt = mRootView.findViewById(R.id.nickname_et);
-        mNicknameHintTv = mRootView.findViewById(R.id.nickname_hint_tv);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mAvatarIv = getRootView().findViewById(R.id.avatar_iv);
+        mNicknameEt = getRootView().findViewById(R.id.nickname_et);
+        mNicknameHintTv = getRootView().findViewById(R.id.nickname_hint_tv);
 
-        mSecretIv = mRootView.findViewById(R.id.secret_iv);
-        mMaleIv = mRootView.findViewById(R.id.male_iv);
-        mFemaleIv = mRootView.findViewById(R.id.female_iv);
-        mNextIv = mRootView.findViewById(R.id.next_iv);
+        mSecretIv = getRootView().findViewById(R.id.secret_iv);
+        mMaleIv = getRootView().findViewById(R.id.male_iv);
+        mFemaleIv = getRootView().findViewById(R.id.female_iv);
+        mNextIv = getRootView().findViewById(R.id.next_iv);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override

@@ -2,7 +2,6 @@ package com.module.playways.room.msg.event;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.CommentMsg;
 
 import java.util.List;

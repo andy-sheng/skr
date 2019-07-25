@@ -75,7 +75,7 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
 import com.module.playways.songmanager.event.MuteAllVoiceEvent;
 import com.module.playways.songmanager.event.RoomNameChangeEvent;
-import com.module.playways.others.LyricAndAccMatchManager;
+import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.gift.event.GiftBrushMsgEvent;
 import com.module.playways.room.gift.event.UpdateCoinEvent;
 import com.module.playways.room.gift.event.UpdateMeiliEvent;
@@ -127,8 +127,8 @@ import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
-import com.zq.lyrics.utils.SongResUtils;
-import com.zq.lyrics.utils.ZipUrlResourceManager;
+import com.component.lyrics.utils.SongResUtils;
+import com.component.lyrics.utils.ZipUrlResourceManager;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
@@ -2608,10 +2608,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
-        int line = event.line;
-        int acrScore = event.acrScore;
-        int melpScore = event.melpScore;
-        String from = event.from;
+        int line = event.getLine();
+        int acrScore = event.getAcrScore();
+        int melpScore = event.getMelpScore();
+        String from = event.getFrom();
         if (acrScore > melpScore) {
             processScore(acrScore, line);
         } else {

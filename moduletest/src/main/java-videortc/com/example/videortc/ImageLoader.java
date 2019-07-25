@@ -2,7 +2,6 @@ package com.example.videortc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.opengl.Matrix;
 import android.util.Log;
 
 import com.zq.mediaengine.util.BitmapLoader;

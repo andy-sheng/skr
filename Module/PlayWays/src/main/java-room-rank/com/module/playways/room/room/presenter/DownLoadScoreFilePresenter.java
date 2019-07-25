@@ -5,12 +5,12 @@ import android.text.TextUtils;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
-import com.zq.lyrics.utils.SongResUtils;
+import com.component.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.module.playways.room.prepare.model.ResourceInfoModel;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
-import com.zq.lyrics.model.UrlRes;
-import com.zq.lyrics.utils.ZipUrlResourceManager;
+import com.component.lyrics.model.UrlRes;
+import com.component.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.greendao.annotation.NotNull;
 

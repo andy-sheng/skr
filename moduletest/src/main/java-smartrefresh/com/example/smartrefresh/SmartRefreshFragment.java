@@ -44,7 +44,7 @@ public class SmartRefreshFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+        mRecyclerView = getRootView().findViewById(R.id.recycler_view);
         List<Person> personList = new ArrayList<>();
         personList.addAll(genData(0, 2));
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -56,7 +56,7 @@ public class SmartRefreshFragment extends BaseFragment {
         // 自定义的 rv 动画
         mRecyclerView.setItemAnimator(new LandingAnimator());
 
-        mRefreshLayout = mRootView.findViewById(R.id.refreshLayout);
+        mRefreshLayout = getRootView().findViewById(R.id.refreshLayout);
         /**
          * 具体的api去项目官网上看，很丰富
          * {@link https://github.com/scwang90/SmartRefreshLayout}
@@ -92,7 +92,7 @@ public class SmartRefreshFragment extends BaseFragment {
             }
         });
 
-        RecyclerView opListView = mRootView.findViewById(R.id.op_list_view);
+        RecyclerView opListView = getRootView().findViewById(R.id.op_list_view);
         List<H> opDataList = new ArrayList<>();
         opListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         opListView.setAdapter(new RecyclerView.Adapter() {
@@ -173,7 +173,7 @@ public class SmartRefreshFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         U.getFragmentUtils().popFragment(this);
         return true;
     }

@@ -43,7 +43,7 @@ public class EmojiFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         // 测试一下
-        TextView changeBtn = mRootView.findViewById(R.id.change_btn);
+        TextView changeBtn = getRootView().findViewById(R.id.change_btn);
         if(getActivity() instanceof EmojiActivity) {
             EmojiActivity emojiActivity = (EmojiActivity) getActivity();
             changeBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,10 +60,10 @@ public class EmojiFragment extends BaseFragment {
         }
 
         LQREmotionKit.tryInit(U.app());
-        mLlContent =  mRootView.findViewById(R.id.llContent);
-        mEtContent =  mRootView.findViewById(R.id.etContent);
-        mIvEmo =  mRootView.findViewById(R.id.ivEmo);
-        mElEmotion =  mRootView.findViewById(R.id.elEmotion);
+        mLlContent =  getRootView().findViewById(R.id.llContent);
+        mEtContent =  getRootView().findViewById(R.id.etContent);
+        mIvEmo =  getRootView().findViewById(R.id.ivEmo);
+        mElEmotion =  getRootView().findViewById(R.id.elEmotion);
 
         initEmotionKeyboard();
 

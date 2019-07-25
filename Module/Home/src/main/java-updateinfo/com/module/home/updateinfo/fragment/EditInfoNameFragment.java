@@ -30,7 +30,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.toast.CommonToastView;
+import com.component.toast.CommonToastView;
 
 // 昵称编辑
 public class EditInfoNameFragment extends BaseFragment {
@@ -45,8 +45,8 @@ public class EditInfoNameFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mNicknameEt = (NoLeakEditText) getRootView().findViewById(R.id.nickname_et);
 
         mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
 

@@ -61,10 +61,10 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
             return
         }
 
-        mTitlebar = mRootView.findViewById(R.id.titlebar)
-        mSearchSongIv = mRootView.findViewById(R.id.search_song_iv)
-        mTagTab = mRootView.findViewById(R.id.tag_tab)
-        mViewpager = mRootView.findViewById(R.id.viewpager)
+        mTitlebar = rootView.findViewById(R.id.titlebar)
+        mSearchSongIv = rootView.findViewById(R.id.search_song_iv)
+        mTagTab = rootView.findViewById(R.id.tag_tab)
+        mViewpager = rootView.findViewById(R.id.viewpager)
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -95,13 +95,15 @@ class DoubleSongManageFragment : BaseFragment(), ISongManageView {
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, SongManagerActivity.TYPE_FROM_DOUBLE)
                         .addDataBeforeAdd(1, false)
-                        .setFragmentDataListener { requestCode, resultCode, bundle, obj ->
-                            if (requestCode == 0 && resultCode == 0 && obj != null) {
-                                val model = obj as SongModel
-                                MyLog.d(TAG, "onFragmentResult model=$model")
-                                EventBus.getDefault().post(AddSongEvent(model))
+                        .setFragmentDataListener(object :FragmentDataListener{
+                            override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                                if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                    val model = obj as SongModel
+                                    MyLog.d(TAG, "onFragmentResult model=$model")
+                                    EventBus.getDefault().post(AddSongEvent(model))
+                                }
                             }
-                        }
+                        })
                         .build())
             }
         })

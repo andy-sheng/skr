@@ -92,17 +92,17 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTopSvgaView = (SVGAImageView) mRootView.findViewById(R.id.top_svga_view);
-        mTvReadyTime = (ExTextView) mRootView.findViewById(R.id.tv_ready_time);
-        mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
-        mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
-        mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon4);
-        mSdvIcon4 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
-        mSdvIcon5 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon5);
+        mTopSvgaView = (SVGAImageView) getRootView().findViewById(R.id.top_svga_view);
+        mTvReadyTime = (ExTextView) getRootView().findViewById(R.id.tv_ready_time);
+        mSdvIcon1 = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_icon1);
+        mSdvIcon2 = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_icon3);
+        mSdvIcon3 = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_icon4);
+        mSdvIcon4 = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_icon2);
+        mSdvIcon5 = (SimpleDraweeView) getRootView().findViewById(R.id.sdv_icon5);
 
-        mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
-        mIvPrepare = (ExTextView) mRootView.findViewById(R.id.iv_prepare);
-        mBottomContainer = (RelativeLayout) mRootView.findViewById(R.id.bottom_container);
+        mVsSvga = (SVGAImageView) getRootView().findViewById(R.id.vs_svga);
+        mIvPrepare = (ExTextView) getRootView().findViewById(R.id.iv_prepare);
+        mBottomContainer = (RelativeLayout) getRootView().findViewById(R.id.bottom_container);
 //        mSvgaMatchSuccessBg = (SVGAImageView)mRootView.findViewById(R.id.svga_match_success_bg);
 
         if (mMatchSucessPresenter != null) {
@@ -275,11 +275,11 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mSdvIcon2.setTag("sdv" + mPrepareData.getPlayerInfoList().get(1).getUserInfo().getUserId());
         mSdvIcon3.setTag("sdv" + mPrepareData.getPlayerInfoList().get(2).getUserInfo().getUserId());
 
-        mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
-        mRlIcon2Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon3_root);
-        mRlIcon3Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon4_root);
-        mRlIcon4Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon2_root);
-        mRlIcon5Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon5_root);
+        mRlIcon1Root = (ExRelativeLayout) getRootView().findViewById(R.id.rl_icon1_root);
+        mRlIcon2Root = (ExRelativeLayout) getRootView().findViewById(R.id.rl_icon3_root);
+        mRlIcon3Root = (ExRelativeLayout) getRootView().findViewById(R.id.rl_icon4_root);
+        mRlIcon4Root = (ExRelativeLayout) getRootView().findViewById(R.id.rl_icon2_root);
+        mRlIcon5Root = (ExRelativeLayout) getRootView().findViewById(R.id.rl_icon5_root);
 
         if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
 //            android:layout_marginTop="@dimen/view_90_dp"
@@ -362,7 +362,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         }
 
         for (ReadyInfoModel jsonReadyInfo : readyInfos) {
-            SimpleDraweeView mSdvIcon = mRootView.findViewWithTag("sdv" + jsonReadyInfo.getUserID());
+            SimpleDraweeView mSdvIcon = getRootView().findViewWithTag("sdv" + jsonReadyInfo.getUserID());
             for (PlayerInfoModel playerInfoModel : mPrepareData.getPlayerInfoList()) {
                 if (playerInfoModel.getUserInfo().getUserId() == jsonReadyInfo.getUserID()) {
                     loadIcon(mSdvIcon, false, playerInfoModel.getUserInfo().getAvatar());
@@ -470,7 +470,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         //主动触发回退直接到PrepareResFragment界面
 //        mMatchSucessPresenter.exitGame();
 //        getActivity().finish();
@@ -480,7 +480,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     @Override
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
-        mRootView.setVisibility(VISIBLE);
+        getRootView().setVisibility(VISIBLE);
         // 加上保护
         BgMusicManager.getInstance().setRoom(true);
     }
@@ -488,7 +488,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-        mRootView.setVisibility(View.GONE);
+        getRootView().setVisibility(View.GONE);
         // 加上保护
         BgMusicManager.getInstance().setRoom(false);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()

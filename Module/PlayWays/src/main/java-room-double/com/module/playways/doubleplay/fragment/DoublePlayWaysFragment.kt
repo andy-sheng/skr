@@ -29,6 +29,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -53,11 +54,11 @@ import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.dialog.PersonInfoDialog
+import com.component.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
-import com.zq.report.fragment.QuickFeedbackFragment
+import com.component.report.fragment.QuickFeedbackFragment
 import kotlin.properties.Delegates
 
 
@@ -150,24 +151,24 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         ZqEngineKit.getInstance().muteLocalAudioStream(false)
         MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
-        mReportTv = mRootView.findViewById<View>(R.id.report_tv) as TextView
-        mExitIv = mRootView.findViewById<View>(R.id.exit_iv) as ImageView
-        mLeftAvatarSdv = mRootView.findViewById<View>(R.id.left_avatar_sdv) as SimpleDraweeView
-        mLeftLockIcon = mRootView.findViewById<View>(R.id.left_lock_icon) as ImageView
-        mLeftNameTv = mRootView.findViewById<View>(R.id.left_name_tv) as ExTextView
-        mRightAvatarSdv = mRootView.findViewById<View>(R.id.right_avatar_sdv) as SimpleDraweeView
-        mRightLockIcon = mRootView.findViewById<View>(R.id.right_lock_icon) as ImageView
-        mRightNameTv = mRootView.findViewById<View>(R.id.right_name_tv) as ExTextView
-        mViewPager = mRootView.findViewById<View>(R.id.viewpager) as ViewPager
-        mUnlockTv = mRootView.findViewById<View>(R.id.unlock_tv) as ExTextView
-        mCountDownTv = mRootView.findViewById<View>(R.id.count_down_tv) as ExTextView
-        mNoLimitIcon = mRootView.findViewById(R.id.no_limit_icon) as ExImageView
-        mNoLimitTip = mRootView.findViewById(R.id.no_limit_tip) as ExTextView
-        mChatTagTv = mRootView.findViewById(R.id.chat_tag_tv) as ExTextView
-        mGameTagTv = mRootView.findViewById(R.id.game_tag_tv) as ExTextView
-        mSingTagTv = mRootView.findViewById(R.id.sing_tag_tv) as ExTextView
-        mZanDisplayView = mRootView.findViewById(R.id.zan_display_view) as ZanView
-        mPaddingView = mRootView.findViewById(R.id.padding_view)
+        mReportTv = rootView.findViewById<View>(R.id.report_tv) as TextView
+        mExitIv = rootView.findViewById<View>(R.id.exit_iv) as ImageView
+        mLeftAvatarSdv = rootView.findViewById<View>(R.id.left_avatar_sdv) as SimpleDraweeView
+        mLeftLockIcon = rootView.findViewById<View>(R.id.left_lock_icon) as ImageView
+        mLeftNameTv = rootView.findViewById<View>(R.id.left_name_tv) as ExTextView
+        mRightAvatarSdv = rootView.findViewById<View>(R.id.right_avatar_sdv) as SimpleDraweeView
+        mRightLockIcon = rootView.findViewById<View>(R.id.right_lock_icon) as ImageView
+        mRightNameTv = rootView.findViewById<View>(R.id.right_name_tv) as ExTextView
+        mViewPager = rootView.findViewById<View>(R.id.viewpager) as ViewPager
+        mUnlockTv = rootView.findViewById<View>(R.id.unlock_tv) as ExTextView
+        mCountDownTv = rootView.findViewById<View>(R.id.count_down_tv) as ExTextView
+        mNoLimitIcon = rootView.findViewById(R.id.no_limit_icon) as ExImageView
+        mNoLimitTip = rootView.findViewById(R.id.no_limit_tip) as ExTextView
+        mChatTagTv = rootView.findViewById(R.id.chat_tag_tv) as ExTextView
+        mGameTagTv = rootView.findViewById(R.id.game_tag_tv) as ExTextView
+        mSingTagTv = rootView.findViewById(R.id.sing_tag_tv) as ExTextView
+        mZanDisplayView = rootView.findViewById(R.id.zan_display_view) as ZanView
+        mPaddingView = rootView.findViewById(R.id.padding_view)
 
         (mPaddingView?.layoutParams as ConstraintLayout.LayoutParams).topMargin = U.getStatusBarUtil().getStatusBarHeight(activity)
 
@@ -517,7 +518,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     fun selfLockState() {
         AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(mRoomData!!.getSelfAvatar())
                 .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+//                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                .setBorderWidth(2f.dp().toFloat())
                 .setBorderColor(Color.WHITE)
                 .build())
 

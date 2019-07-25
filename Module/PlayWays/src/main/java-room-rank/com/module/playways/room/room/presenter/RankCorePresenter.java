@@ -31,7 +31,7 @@ import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.others.LyricAndAccMatchManager;
+import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.msg.event.AccBeginEvent;
 import com.module.playways.room.msg.event.AppSwapEvent;
 import com.module.playways.room.msg.event.ExitGameEvent;
@@ -70,8 +70,8 @@ import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
-import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.utils.SongResUtils;
+import com.component.lyrics.event.LrcEvent;
+import com.component.lyrics.utils.SongResUtils;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
 import org.greenrobot.eventbus.EventBus;
@@ -1499,10 +1499,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
-        int line = event.line;
-        int acrScore = event.acrScore;
-        int melpScore = event.melpScore;
-        String from = event.from;
+        int line = event.getLine();
+        int acrScore = event.getAcrScore();
+        int melpScore = event.getMelpScore();
+        String from = event.getFrom();
         if (melpScore > acrScore) {
             processScore(from, melpScore, line);
         } else {

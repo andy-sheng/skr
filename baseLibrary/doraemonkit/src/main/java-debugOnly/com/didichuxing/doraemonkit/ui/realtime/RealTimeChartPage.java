@@ -59,7 +59,7 @@ public class RealTimeChartPage extends BaseFloatPage {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         return false;
     }
 

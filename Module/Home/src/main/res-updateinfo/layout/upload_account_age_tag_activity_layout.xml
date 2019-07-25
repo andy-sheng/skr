@@ -35,7 +35,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titlebar" />
 
-    <com.zq.person.view.AgeTagView
+    <com.component.person.view.AgeTagView
         android:id="@+id/age_tag_view"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"

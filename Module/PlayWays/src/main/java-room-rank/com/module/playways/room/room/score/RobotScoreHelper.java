@@ -3,7 +3,7 @@ package com.module.playways.room.room.score;
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.utils.HttpUtils;
-import com.zq.lyrics.utils.SongResUtils;
+import com.component.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;

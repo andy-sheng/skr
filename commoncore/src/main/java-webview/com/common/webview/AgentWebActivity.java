@@ -88,7 +88,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
         //for  Android 4.0+
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
-            MyLog.d(TAG, "openFileChooser 1");
+            MyLog.d(getTAG(), "openFileChooser 1");
             if (nFilePathCallback != null) {
                 nFilePathCallback.onReceiveValue(null);
             }
@@ -164,7 +164,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
         @Override
         public boolean onShowFileChooser(final WebView webView, final ValueCallback<Uri[]> filePathCallback,
                                          final WebChromeClient.FileChooserParams fileChooserParams) {
-            MyLog.d(TAG, "onShowFileChooser 2 fileChooserParams mode is " + fileChooserParams.getMode() + " getAcceptTypes is " + fileChooserParams.getAcceptTypes() + " isCaptureEnabled " + fileChooserParams.isCaptureEnabled() + " getTitle is " + fileChooserParams.getTitle() + " getFilenameHint is " + fileChooserParams.getFilenameHint());
+            MyLog.d(getTAG(), "onShowFileChooser 2 fileChooserParams mode is " + fileChooserParams.getMode() + " getAcceptTypes is " + fileChooserParams.getAcceptTypes() + " isCaptureEnabled " + fileChooserParams.isCaptureEnabled() + " getTitle is " + fileChooserParams.getTitle() + " getFilenameHint is " + fileChooserParams.getFilenameHint());
             if (mFilePathCallback != null) {
                 mFilePathCallback.onReceiveValue(null);
             }
@@ -468,7 +468,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
             }
             return super.onKeyDown(keyCode, event);
         } catch (Exception e) {
-            MyLog.e(TAG, e);
+            MyLog.e(getTAG(), e);
             return true;
         }
     }

@@ -71,9 +71,4 @@
 
     </declare-styleable>
 
-    <!--VoiceControlPanelView的显示-->
-    <declare-styleable name="VoiceControlPanelView">
-        <!--是否显示伴奏-->
-        <attr name="isShowACC" format="boolean" />
-    </declare-styleable>
 </resources>

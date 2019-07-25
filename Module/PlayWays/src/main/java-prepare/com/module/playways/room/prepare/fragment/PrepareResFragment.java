@@ -77,18 +77,18 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mIvTop = (ExImageView) getRootView().findViewById(R.id.iv_top);
 //        mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
-        mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
-        mTvDuration = (ExTextView) mRootView.findViewById(R.id.tv_duration);
-        mTvLyric = (ExTextView) mRootView.findViewById(R.id.tv_lyric);
-        mIvStartMatch = mRootView.findViewById(R.id.iv_start_match);
-        songResProgressbar = (ProgressBar) mRootView.findViewById(R.id.song_res_progressbar);
+        mSongName = (ExTextView) getRootView().findViewById(R.id.song_name);
+        mTvDuration = (ExTextView) getRootView().findViewById(R.id.tv_duration);
+        mTvLyric = (ExTextView) getRootView().findViewById(R.id.tv_lyric);
+        mIvStartMatch = getRootView().findViewById(R.id.iv_start_match);
+        songResProgressbar = (ProgressBar) getRootView().findViewById(R.id.song_res_progressbar);
         songResProgressbar.setMax(100);
         mSongName.setText(mPrepareData.getSongModel().getItemName());
 
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
 
         if (mSetBackGround) {
             mMainActContainer.setBackgroundResource(R.drawable.dabeijing);
@@ -228,7 +228,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                 .setPopFragment(PrepareResFragment.this)
                 .setNotifyShowFragment(SongSelectFragment.class)
@@ -242,11 +242,11 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     public void notifyToShow() {
         MyLog.d(TAG, "toStaskTop");
         playBackgroundMusic();
-        mRootView.setVisibility(View.VISIBLE);
+        getRootView().setVisibility(View.VISIBLE);
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && PrepareResFragment.this.fragmentVisible) {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && PrepareResFragment.this.getFragmentVisible()) {
             if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
                 BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "PrepareResFragment");
             }
@@ -256,7 +256,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     @Override
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
-        mRootView.setVisibility(View.GONE);
+        getRootView().setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

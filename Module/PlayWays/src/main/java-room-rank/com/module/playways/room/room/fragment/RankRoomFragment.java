@@ -28,12 +28,13 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.component.busilib.manager.BgMusicManager;
+import com.component.lyrics.LyricsReader;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
-import com.module.playways.others.LyricAndAccMatchManager;
+import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.comment.CommentView;
@@ -60,11 +61,11 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.PersonInfoDialog;
-import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.report.fragment.QuickFeedbackFragment;
+import com.component.dialog.PersonInfoDialog;
+import com.component.lyrics.widget.AbstractLrcView;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
+import com.component.report.fragment.QuickFeedbackFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -165,7 +166,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             return;
         }
         // 请保证从下面的view往上面的view开始初始化
-        mRankingContainer = mRootView.findViewById(R.id.ranking_container);
+        mRankingContainer = getRootView().findViewById(R.id.ranking_container);
         mRankingContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,9 +218,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initMainStage() {
-        mStageView = (SVGAImageView) mRootView.findViewById(R.id.stage_view);
-        mSingAvatarView = (BaseImageView) mRootView.findViewById(R.id.sing_avatar_view);
-        mCountDownProcess = (ArcProgressBar) mRootView.findViewById(R.id.count_down_process);
+        mStageView = (SVGAImageView) getRootView().findViewById(R.id.stage_view);
+        mSingAvatarView = (BaseImageView) getRootView().findViewById(R.id.sing_avatar_view);
+        mCountDownProcess = (ArcProgressBar) getRootView().findViewById(R.id.count_down_process);
     }
 
     @Override
@@ -558,12 +559,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 //    }
 
     private void initInputView() {
-        mInputContainerView = mRootView.findViewById(R.id.input_container_view);
+        mInputContainerView = getRootView().findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
     }
 
     private void initBottomView() {
-        mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
+        mBottomContainerView = (BottomContainerView) getRootView().findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
@@ -577,7 +578,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initCommentView() {
-        mCommentView = mRootView.findViewById(R.id.comment_view);
+        mCommentView = getRootView().findViewById(R.id.comment_view);
         mCommentView.setListener(new CommentViewItemListener() {
             @Override
             public void clickAvatar(int userId) {
@@ -605,7 +606,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initTopView() {
-        mRankTopContainerView = mRootView.findViewById(R.id.rank_top_view);
+        mRankTopContainerView = getRootView().findViewById(R.id.rank_top_view);
         mRankTopContainerView.setRoomData(mRoomData);
 
         mRankTopContainerView.setListener(new RankTopContainerView1.Listener() {
@@ -636,27 +637,27 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initLyricsView() {
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
+        mManyLyricsView = getRootView().findViewById(R.id.many_lyrics_view);
         mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
-        mVoiceScaleView = mRootView.findViewById(R.id.voice_scale_view);
+        mVoiceScaleView = getRootView().findViewById(R.id.voice_scale_view);
     }
 
     private void initTurnChangeView() {
-        mTurnChangeView = mRootView.findViewById(R.id.turn_change_view);
-        mEndGameIv = (ImageView) mRootView.findViewById(R.id.end_game_iv);
+        mTurnChangeView = getRootView().findViewById(R.id.turn_change_view);
+        mEndGameIv = (ImageView) getRootView().findViewById(R.id.end_game_iv);
     }
 
     private void initGiftDisplayView() {
-        GiftContinueViewGroup giftContinueViewGroup = mRootView.findViewById(R.id.gift_continue_vg);
+        GiftContinueViewGroup giftContinueViewGroup = getRootView().findViewById(R.id.gift_continue_vg);
         giftContinueViewGroup.setRoomData(mRoomData);
-        GiftOverlayAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
+        GiftOverlayAnimationViewGroup giftBigAnimationViewGroup = getRootView().findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
-        mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
+        mDengBigAnimation = (GrabDengBigAnimationView) getRootView().findViewById(R.id.deng_big_animation);
     }
 
     private void initOpView() {
-        mRankOpView = mRootView.findViewById(R.id.rank_op_view);
+        mRankOpView = getRootView().findViewById(R.id.rank_op_view);
         mRankOpView.setRoomData(mRoomData);
         mRankOpView.setOpListener(new RankOpView.OpListener() {
             @Override
@@ -736,7 +737,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }
@@ -1058,12 +1059,20 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
 
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                songModel.getLyric(), songModel.getRankLrcBeginT(), songModel.getRankLrcEndT(),
-                songModel.getBeginMs(), songModel.getEndMs(), songModel.getUploaderName());
+        LyricAndAccMatchManager.ConfigParams configParams = new LyricAndAccMatchManager.ConfigParams();
+        configParams.setManyLyricsView(mManyLyricsView);
+        configParams.setVoiceScaleView(mVoiceScaleView);
+        configParams.setLyricUrl(songModel.getLyric());
+        configParams.setLyricBeginTs( songModel.getRankLrcBeginT());
+        configParams.setLyricEndTs( songModel.getRankLrcEndT());
+        configParams.setAccBeginTs(songModel.getBeginMs());
+        configParams.setAccEndTs(songModel.getEndMs());
+        configParams.setAuthorName(songModel.getUploaderName());
+        mLyricAndAccMatchManager.setArgs(configParams);
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+
             @Override
-            public void onLyricParseSuccess() {
+            public void onLyricParseSuccess(LyricsReader reader) {
 
             }
 

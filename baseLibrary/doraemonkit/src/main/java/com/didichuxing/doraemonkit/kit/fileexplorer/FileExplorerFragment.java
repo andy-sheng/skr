@@ -103,7 +103,7 @@ public class FileExplorerFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         if (mCurDir == null) {
             getActivity().finish();
             return true;

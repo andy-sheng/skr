@@ -33,11 +33,8 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
-import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ImageUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
@@ -47,7 +44,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.facebook.drawee.drawable.ScalingUtils;
+import com.component.feeds.view.PersonFeedsWallView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -61,24 +58,22 @@ import com.respicker.model.ImageItem;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
-import com.zq.dialog.BusinessCardDialogView;
-import com.zq.level.view.NormalLevelView2;
+import com.component.dialog.BusinessCardDialogView;
+import com.component.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.StringFromatUtils;
-import com.zq.person.fragment.OtherPersonFragment4;
-import com.zq.person.view.PhotoWallView;
-import com.zq.person.view.ProducationWallView;
-import com.zq.person.view.RequestCallBack;
+import com.component.person.utils.StringFromatUtils;
+import com.component.person.fragment.OtherPersonFragment4;
+import com.component.person.photo.view.PhotoWallView;
+import com.component.person.producation.view.ProducationWallView;
+import com.component.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import model.RelationNumModel;
+import com.component.person.model.RelationNumModel;
 
 /**
  * 自己
@@ -127,6 +122,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     PagerAdapter mPersonTabAdapter;
 
     PhotoWallView mPhotoWallView;
+    PersonFeedsWallView mFeedsWallView;
     ProducationWallView mProducationWallView;
 
     DialogPlus mDialogPlus;
@@ -164,7 +160,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
             mPhotoWallView.getPhotos(false);
         }
-        if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+        if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+            mFeedsWallView.getFeeds(false);
+        }
+        if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
             mProducationWallView.getProducations(false);
         }
     }
@@ -175,23 +174,26 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
         }
+        if (mFeedsWallView != null) {
+            mFeedsWallView.stopPlay();
+        }
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
         }
     }
 
     private void initBaseContainArea() {
-        mSmartRefresh = mRootView.findViewById(R.id.smart_refresh);
-        mUserInfoArea = mRootView.findViewById(R.id.user_info_area);
+        mSmartRefresh = getRootView().findViewById(R.id.smart_refresh);
+        mUserInfoArea = getRootView().findViewById(R.id.user_info_area);
 
-        mImageBg = mRootView.findViewById(R.id.image_bg);
-        mAppbar = mRootView.findViewById(R.id.appbar);
-        mToolbar = mRootView.findViewById(R.id.toolbar);
-        mToolbarLayout = mRootView.findViewById(R.id.toolbar_layout);
-        mSrlAvatarIv = mRootView.findViewById(R.id.srl_avatar_iv);
-        mSrlNameTv = mRootView.findViewById(R.id.srl_name_tv);
-        mSrlSexIv = mRootView.findViewById(R.id.srl_sex_iv);
-        mSrlCharmTv = (ExTextView) mRootView.findViewById(R.id.srl_charm_tv);
+        mImageBg = getRootView().findViewById(R.id.image_bg);
+        mAppbar = getRootView().findViewById(R.id.appbar);
+        mToolbar = getRootView().findViewById(R.id.toolbar);
+        mToolbarLayout = getRootView().findViewById(R.id.toolbar_layout);
+        mSrlAvatarIv = getRootView().findViewById(R.id.srl_avatar_iv);
+        mSrlNameTv = getRootView().findViewById(R.id.srl_name_tv);
+        mSrlSexIv = getRootView().findViewById(R.id.srl_sex_iv);
+        mSrlCharmTv = (ExTextView) getRootView().findViewById(R.id.srl_charm_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
                 .build());
@@ -212,7 +214,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getPhotos(true);
                 }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mFeedsWallView.getFeeds(true);
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
                     mProducationWallView.getProducations(true);
                 }
             }
@@ -223,7 +228,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getMorePhotos();
                 }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 1) {
+                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mFeedsWallView.getMoreFeeds();
+                }
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
                     mProducationWallView.getMoreProducations();
                 }
             }
@@ -278,14 +286,14 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initUserInfoArea() {
-        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
-        mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
-        mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
-        mCharmTv = (ExTextView) mRootView.findViewById(R.id.charm_tv);
+        mAvatarIv = (SimpleDraweeView) getRootView().findViewById(R.id.avatar_iv);
+        mLevelView = (NormalLevelView2) getRootView().findViewById(R.id.level_view);
+        mNameTv = (ExTextView) getRootView().findViewById(R.id.name_tv);
+        mSexIv = (ImageView) getRootView().findViewById(R.id.sex_iv);
+        mSignTv = (ExTextView) getRootView().findViewById(R.id.sign_tv);
+        mCharmTv = (ExTextView) getRootView().findViewById(R.id.charm_tv);
 
-        mBusinessCard = (ImageView) mRootView.findViewById(R.id.business_card);
+        mBusinessCard = (ImageView) getRootView().findViewById(R.id.business_card);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -319,8 +327,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initSettingArea() {
-        mSettingImgIv = (ImageView) mRootView.findViewById(R.id.setting_img_iv);
-        mSettingRedDot = (ExImageView) mRootView.findViewById(R.id.setting_red_dot);
+        mSettingImgIv = (ImageView) getRootView().findViewById(R.id.setting_img_iv);
+        mSettingRedDot = (ExImageView) getRootView().findViewById(R.id.setting_red_dot);
 
         mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -343,13 +351,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initFunctionArea() {
-        mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
-        mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-        mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
+        mFriendsNumTv = (ExTextView) getRootView().findViewById(R.id.friends_num_tv);
+        mFollowsNumTv = (ExTextView) getRootView().findViewById(R.id.follows_num_tv);
+        mFansNumTv = (ExTextView) getRootView().findViewById(R.id.fans_num_tv);
 
-        mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
-        mIncomeIv = (ExImageView) mRootView.findViewById(R.id.income_iv);
-        mRechargeIv = (ExImageView) mRootView.findViewById(R.id.recharge_iv);
+        mWalletIv = (ExImageView) getRootView().findViewById(R.id.wallet_iv);
+        mIncomeIv = (ExImageView) getRootView().findViewById(R.id.income_iv);
+        mRechargeIv = (ExImageView) getRootView().findViewById(R.id.recharge_iv);
 
         mWalletIv.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -419,8 +427,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initPersonArea() {
-        mPersonTab = (SlidingTabLayout) mRootView.findViewById(R.id.person_tab);
-        mPersonVp = (NestViewPager) mRootView.findViewById(R.id.person_vp);
+        mPersonTab = (SlidingTabLayout) getRootView().findViewById(R.id.person_tab);
+        mPersonVp = (NestViewPager) getRootView().findViewById(R.id.person_vp);
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
         mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
@@ -449,6 +457,16 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     }
                     return mPhotoWallView;
                 } else if (position == 1) {
+                    // 神曲
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    if (mFeedsWallView == null) {
+                        mFeedsWallView = new PersonFeedsWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
+                    }
+                    if (container.indexOfChild(mFeedsWallView) == -1) {
+                        container.addView(mFeedsWallView);
+                    }
+                    return mFeedsWallView;
+                } else if (position == 2) {
                     // 作品
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
                     if (mProducationWallView == null) {
@@ -464,7 +482,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
 
             @Override
@@ -478,6 +496,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (position == 0) {
                     return "相册";
                 } else if (position == 1) {
+                    return "神曲";
+                } else if (position == 2) {
                     return "作品";
                 }
                 return "";
@@ -505,6 +525,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         mPhotoWallView.getPhotos(false);
                     }
                 } else if (position == 1) {
+                    if (mFeedsWallView != null) {
+                        mFeedsWallView.getFeeds(false);
+                    }
+                } else if (position == 2) {
                     if (mProducationWallView != null) {
                         mProducationWallView.getProducations(false);
                     }

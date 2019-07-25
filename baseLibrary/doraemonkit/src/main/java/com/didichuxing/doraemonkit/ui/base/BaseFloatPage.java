@@ -168,7 +168,7 @@ public abstract class BaseFloatPage {
     public void onRecentAppKeyPress() {
     }
 
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         return false;
     }
 

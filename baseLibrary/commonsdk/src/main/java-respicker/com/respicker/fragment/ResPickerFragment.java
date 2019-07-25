@@ -76,13 +76,13 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         mImagePicker = ResPicker.getInstance();
         mImagePicker.reset();
         mImagePicker.addOnResSelectedListener(this);
-        mContent = (LinearLayout) mRootView.findViewById(R.id.content);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mFooterBar = (RelativeLayout) mRootView.findViewById(R.id.footer_bar);
-        mLlDir = (RelativeLayout) mRootView.findViewById(R.id.ll_dir);
-        mTvDir = (TextView) mRootView.findViewById(R.id.tv_dir);
-        mBtnPreview = (TextView) mRootView.findViewById(R.id.btn_preview);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mContent = (LinearLayout) getRootView().findViewById(R.id.content);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
+        mFooterBar = (RelativeLayout) getRootView().findViewById(R.id.footer_bar);
+        mLlDir = (RelativeLayout) getRootView().findViewById(R.id.ll_dir);
+        mTvDir = (TextView) getRootView().findViewById(R.id.tv_dir);
+        mBtnPreview = (TextView) getRootView().findViewById(R.id.btn_preview);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
         mBtnOk = (TextView) mTitlebar.getRightCustomView();
 
         Bundle data = getArguments();
@@ -214,7 +214,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
             mImageDataSource.loadRes();
         }
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     /**
@@ -278,7 +278,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
         mImagePicker.removeOnResSelectedListener(this);
         if (mImageDataSource != null) {
             mImageDataSource.destroy();
@@ -292,7 +292,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
 
     @Override
     public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
-        MyLog.d(TAG, "onActivityResult" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
+        MyLog.d(getTAG(), "onActivityResult" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (resultCode == FragmentActivity.RESULT_OK && requestCode == ResPicker.REQUEST_CODE_TAKE) {
             if (mImagePicker != null && mImagePicker.getTakeImageFile() != null) {
                 // 拍照结果返回
@@ -315,7 +315,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
                     }
                 }
             } else {
-                MyLog.w(TAG, "onActivityResultReal" + "no takeImageFile" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
+                MyLog.w(getTAG(), "onActivityResultReal" + "no takeImageFile" + " requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
             }
         }
         return false;
@@ -417,9 +417,9 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
      */
     private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
-        if (mFragmentDataListener != null) {
+        if (getFragmentDataListener() != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle, null);
+            getFragmentDataListener().onFragmentResult(requestCode, resultCode, bundle, null);
         }
         if (!mSelfActivity) {
             U.getFragmentUtils().popFragment(ResPickerFragment.this);

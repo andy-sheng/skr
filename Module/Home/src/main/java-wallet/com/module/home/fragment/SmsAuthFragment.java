@@ -73,13 +73,13 @@ public class SmsAuthFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mPhoneInputTv = (NoLeakEditText) mRootView.findViewById(R.id.phone_input_tv);
-        mCodeInputTv = (NoLeakEditText) mRootView.findViewById(R.id.code_input_tv);
-        mGetCodeTv = (ExTextView) mRootView.findViewById(R.id.get_code_tv);
-        mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
-        mLoginTv = (ExTextView) mRootView.findViewById(R.id.login_tv);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+        mPhoneInputTv = (NoLeakEditText) getRootView().findViewById(R.id.phone_input_tv);
+        mCodeInputTv = (NoLeakEditText) getRootView().findViewById(R.id.code_input_tv);
+        mGetCodeTv = (ExTextView) getRootView().findViewById(R.id.get_code_tv);
+        mErrorHint = (ExTextView) getRootView().findViewById(R.id.error_hint);
+        mLoginTv = (ExTextView) getRootView().findViewById(R.id.login_tv);
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
 
         mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
@@ -134,8 +134,8 @@ public class SmsAuthFragment extends BaseFragment {
                                             }
                                         }, 300);
 
-                                        if (mFragmentDataListener != null) {
-                                            mFragmentDataListener.onFragmentResult(0, 0, null, null);
+                                        if (getFragmentDataListener() != null) {
+                                            getFragmentDataListener().onFragmentResult(0, 0, null, null);
                                         }
 
                                         EventBus.getDefault().post(new PhoneAuthSuccessEvent());
@@ -252,7 +252,7 @@ public class SmsAuthFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         finish("onBackPressed");
         return true;
     }

@@ -2,15 +2,12 @@ package com.module.playways.grab.room.presenter
 
 import android.os.Message
 
-import com.common.anim.ObjectPlayControlTemplate
 import com.common.callback.Callback
 import com.common.log.MyLog
 import com.common.utils.CustomHandlerThread
 import com.common.utils.U
 import com.module.playways.room.song.model.SongModel
-import com.zq.lyrics.utils.SongResUtils
-
-import java.io.File
+import com.component.lyrics.utils.SongResUtils
 
 class GrabSongResPresenter {
 

@@ -57,14 +57,14 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
-        mViewpager = (NestViewPager) mRootView.findViewById(R.id.viewpager);
-        mBottomBar = (LinearLayout) mRootView.findViewById(R.id.bottom_bar);
-        mCbOrigin = (SuperCheckBox) mRootView.findViewById(R.id.cb_origin);
-        mCbCheck = (SuperCheckBox) mRootView.findViewById(R.id.cb_check);
-        mMarginBottom = (View) mRootView.findViewById(R.id.margin_bottom);
+        mContent = (RelativeLayout) getRootView().findViewById(R.id.content);
+        mViewpager = (NestViewPager) getRootView().findViewById(R.id.viewpager);
+        mBottomBar = (LinearLayout) getRootView().findViewById(R.id.bottom_bar);
+        mCbOrigin = (SuperCheckBox) getRootView().findViewById(R.id.cb_origin);
+        mCbCheck = (SuperCheckBox) getRootView().findViewById(R.id.cb_check);
+        mMarginBottom = (View) getRootView().findViewById(R.id.margin_bottom);
 
-        mTitleBar = mRootView.findViewById(R.id.titlebar);
+        mTitleBar = getRootView().findViewById(R.id.titlebar);
         mBtnOk = (TextView) mTitleBar.getRightCustomView();
         mTvDes = mTitleBar.getCenterTextView();
 
@@ -96,7 +96,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back);
+                U.getSoundUtils().play(getTAG(), R.raw.normal_back);
                 onBackPressed();
             }
         });
@@ -161,7 +161,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             boolean isSelected = mImagePicker.getSelectedResList().contains(item);
             mCbCheck.setChecked(isSelected);
         } else {
-            MyLog.d(TAG, "initData 出错了 mCurrentPosition<mImageItems.size() == false");
+            MyLog.d(getTAG(), "initData 出错了 mCurrentPosition<mImageItems.size() == false");
             deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
         }
 
@@ -191,14 +191,14 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             });
         }
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     @Override
     public void destroy() {
         super.destroy();
         mImagePicker.removeOnResSelectedListener(this);
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 
     /**
@@ -226,7 +226,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
     }
 
     @Override
-    protected boolean onBackPressed() {
+    public boolean onBackPressed() {
         U.getFragmentUtils().popFragment(ImagePreviewFragment.this);
         return true;
     }
@@ -282,9 +282,9 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
      */
     private void deliverResult(int requestCode, int resultCode, Bundle bundle) {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
-        if (mFragmentDataListener != null) {
+        if (getFragmentDataListener() != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle, null);
+            getFragmentDataListener().onFragmentResult(requestCode, resultCode, bundle, null);
         }
         U.getFragmentUtils().popFragment(this);
     }

@@ -7,7 +7,6 @@ import android.opengl.Matrix;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.TextureView;
 
 import com.bytedance.labcv.effectsdk.BytedEffectConstants;
 import com.bytedance.labcv.effectsdk.RenderManager;

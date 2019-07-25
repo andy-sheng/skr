@@ -30,7 +30,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.zq.dialog.InviteFriendDialog;
+import com.component.dialog.InviteFriendDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -67,10 +67,10 @@ public class InviteFriendFragment2 extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mInviteTab = mRootView.findViewById(R.id.invite_tab);
-        mInviteVp = mRootView.findViewById(R.id.invite_vp);
-        mIvBack = mRootView.findViewById(R.id.iv_back);
-        mShareView = mRootView.findViewById(R.id.share_view);
+        mInviteTab = getRootView().findViewById(R.id.invite_tab);
+        mInviteVp = getRootView().findViewById(R.id.invite_vp);
+        mIvBack = getRootView().findViewById(R.id.iv_back);
+        mShareView = getRootView().findViewById(R.id.share_view);
 
         mInviteTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mInviteTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);

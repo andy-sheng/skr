@@ -12,18 +12,19 @@ import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ExViewStub;
+import com.component.lyrics.LyricsReader;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.others.LyricAndAccMatchManager;
+import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
+import com.component.lyrics.LyricsManager;
+import com.component.lyrics.widget.ManyLyricsView;
+import com.component.lyrics.widget.VoiceScaleView;
 import com.zq.mediaengine.kit.ZqEngineKit;
 
 import java.util.List;
@@ -107,15 +108,21 @@ public class SelfSingLyricView extends ExViewStub {
             MyLog.w(TAG, "playWithAcc" + " curSong = null totalTs=" + totalTs);
             return;
         }
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                curSong.getLyric(),
-                curSong.getStandLrcBeginT(), curSong.getStandLrcBeginT() + totalTs,
-                curSong.getBeginMs(), curSong.getBeginMs() + totalTs, curSong.getUploaderName());
-
+        LyricAndAccMatchManager.ConfigParams configParams = new LyricAndAccMatchManager.ConfigParams();
+        configParams.setManyLyricsView(mManyLyricsView);
+        configParams.setVoiceScaleView(mVoiceScaleView);
+        configParams.setLyricUrl(curSong.getLyric());
+        configParams.setLyricBeginTs( curSong.getRankLrcBeginT());
+        configParams.setLyricEndTs( curSong.getRankLrcEndT());
+        configParams.setAccBeginTs(curSong.getBeginMs());
+        configParams.setAccEndTs(curSong.getEndMs());
+        configParams.setAuthorName(curSong.getUploaderName());
+        mLyricAndAccMatchManager.setArgs(configParams);
         SongModel finalCurSong = curSong;
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+
             @Override
-            public void onLyricParseSuccess() {
+            public void onLyricParseSuccess(LyricsReader reader) {
                 mSvlyric.setVisibility(View.GONE);
             }
 

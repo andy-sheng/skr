@@ -50,7 +50,7 @@
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp" />
 
-    <com.zq.level.view.NormalLevelView2
+    <com.component.level.view.NormalLevelView2
         android:id="@+id/level_view"
         android:layout_width="@dimen/view_56_dp"
         android:layout_height="@dimen/view_48_dp"
@@ -62,7 +62,7 @@
         levelView2:subBottom2="@dimen/view_3_dp"
         levelView2:subHeight2="@dimen/view_6_dp"
         levelView2:subWidth2="@dimen/view_11_dp">
-    </com.zq.level.view.NormalLevelView2>
+    </com.component.level.view.NormalLevelView2>
 
     <View
         android:layout_width="wrap_content"

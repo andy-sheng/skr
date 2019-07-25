@@ -8,7 +8,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
@@ -32,7 +31,7 @@ import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
 import com.trello.rxlifecycle2.android.FragmentEvent
-import com.zq.report.fragment.QuickFeedbackFragment
+import com.component.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -65,16 +64,16 @@ class DoubleGameEndFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mReportTv = mRootView.findViewById<View>(R.id.report_tv) as ExTextView
-        mCloseIv = mRootView.findViewById<View>(R.id.close_iv) as ImageView
-        mWhiteBg = mRootView.findViewById<View>(R.id.white_bg) as ExImageView
-        mAvatarIv = mRootView.findViewById<View>(R.id.avatar_iv) as BaseImageView
-        mEndTv = mRootView.findViewById<View>(R.id.end_tv) as ExTextView
-        mChatTimeTv = mRootView.findViewById<View>(R.id.chat_time_tv) as ExTextView
-        mEndTipTv = mRootView.findViewById<View>(R.id.end_tip_tv) as ExTextView
-        mFollowTv = mRootView.findViewById<View>(R.id.follow_tv) as ExTextView
-        mMatchAgain = mRootView.findViewById<View>(R.id.match_again) as ExTextView
-        mLastNumTv = mRootView.findViewById<View>(R.id.last_num_tv) as ExTextView
+        mReportTv = rootView.findViewById<View>(R.id.report_tv) as ExTextView
+        mCloseIv = rootView.findViewById<View>(R.id.close_iv) as ImageView
+        mWhiteBg = rootView.findViewById<View>(R.id.white_bg) as ExImageView
+        mAvatarIv = rootView.findViewById<View>(R.id.avatar_iv) as BaseImageView
+        mEndTv = rootView.findViewById<View>(R.id.end_tv) as ExTextView
+        mChatTimeTv = rootView.findViewById<View>(R.id.chat_time_tv) as ExTextView
+        mEndTipTv = rootView.findViewById<View>(R.id.end_tip_tv) as ExTextView
+        mFollowTv = rootView.findViewById<View>(R.id.follow_tv) as ExTextView
+        mMatchAgain = rootView.findViewById<View>(R.id.match_again) as ExTextView
+        mLastNumTv = rootView.findViewById<View>(R.id.last_num_tv) as ExTextView
 
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {

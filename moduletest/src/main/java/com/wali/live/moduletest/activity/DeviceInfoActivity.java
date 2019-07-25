@@ -37,7 +37,7 @@ public class DeviceInfoActivity extends BaseActivity {
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                MyLog.d(TAG, "getItem" + " position=" + position);
+                MyLog.d(getTAG(), "getItem" + " position=" + position);
 
                 if (position == 0) {
                     return new DeviceInfoFragment();

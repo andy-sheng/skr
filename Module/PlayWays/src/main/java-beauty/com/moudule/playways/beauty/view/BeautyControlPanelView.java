@@ -3,8 +3,6 @@ package com.moudule.playways.beauty.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -17,14 +15,12 @@ import com.bytedance.labcv.effectsdk.BytedEffectConstants;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ExViewStub;
-import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.engine.Params;
 import com.module.playways.R;
 import com.zq.mediaengine.kit.ZqEngineKit;
 import com.zq.mediaengine.kit.bytedance.BytedEffectFilter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -39,10 +39,10 @@ public class WithDrawHistoryFragment extends BaseFragment implements IWithDrawHi
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mMainActContainer = (RelativeLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
+        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
 
         initPresenter();
 
@@ -70,7 +70,7 @@ public class WithDrawHistoryFragment extends BaseFragment implements IWithDrawHi
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        U.getSoundUtils().preLoad(getTAG(), R.raw.normal_back);
     }
 
     private void initPresenter() {
@@ -98,7 +98,7 @@ public class WithDrawHistoryFragment extends BaseFragment implements IWithDrawHi
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
+        U.getSoundUtils().release(getTAG());
     }
 
     @Override

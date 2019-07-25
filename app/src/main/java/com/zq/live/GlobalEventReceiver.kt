@@ -31,7 +31,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
-import com.zq.person.photo.PhotoLocalApi
+import com.component.person.photo.manager.PhotoLocalApi
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

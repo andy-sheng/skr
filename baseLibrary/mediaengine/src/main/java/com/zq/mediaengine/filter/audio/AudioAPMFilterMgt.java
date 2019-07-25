@@ -3,7 +3,6 @@ package com.zq.mediaengine.filter.audio;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
-import com.zq.mediaengine.framework.PinAdapter;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 

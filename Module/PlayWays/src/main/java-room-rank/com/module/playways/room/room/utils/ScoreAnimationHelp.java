@@ -6,7 +6,7 @@ import com.common.log.MyLog;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.score.ScoreStateModel;
 import com.module.playways.room.room.view.RecordCircleView;
-import com.zq.level.view.NormalLevelView;
+import com.component.level.view.NormalLevelView;
 
 // 辅助战绩动画的类
 public class ScoreAnimationHelp {

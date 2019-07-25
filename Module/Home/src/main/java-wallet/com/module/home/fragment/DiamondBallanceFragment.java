@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -45,12 +44,12 @@ public class DiamondBallanceFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
-        mMainActContainer = (LinearLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mIvDiamondIcon = (ImageView) mRootView.findViewById(R.id.iv_diamond_icon);
-        mTvDiamondText = (ExTextView) mRootView.findViewById(R.id.tv_diamond_text);
-        mTvDiamondBalance = (ExTextView) mRootView.findViewById(R.id.tv_diamond_balance);
-        mRechargeBtn = (StrokeTextView) mRootView.findViewById(R.id.recharge_btn);
+        mMainActContainer = (LinearLayout) getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+        mIvDiamondIcon = (ImageView) getRootView().findViewById(R.id.iv_diamond_icon);
+        mTvDiamondText = (ExTextView) getRootView().findViewById(R.id.tv_diamond_text);
+        mTvDiamondBalance = (ExTextView) getRootView().findViewById(R.id.tv_diamond_balance);
+        mRechargeBtn = (StrokeTextView) getRootView().findViewById(R.id.recharge_btn);
         getZSBalance();
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
