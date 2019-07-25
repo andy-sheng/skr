@@ -255,7 +255,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mXinIv?.setDebounceViewClickListener {
-
+            mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID!!)
         }
 
         mFollowTv?.setDebounceViewClickListener {
@@ -301,6 +301,16 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun addCommentSuccess(model: FirstLevelCommentModel) {
         mFeedsCommentView?.addSelfComment(model)
+    }
+
+    override fun likeFeed(like: Boolean) {
+        mXinIv!!.isSelected = like
+        if (like) {
+            mXinNumTv!!.text = mXinNumTv!!.text.toString().toInt().plus(1).toString()
+        } else {
+            mXinNumTv!!.text = (mXinNumTv!!.text.toString().toInt() - 1).toString()
+        }
+
     }
 
     private fun playSong() {

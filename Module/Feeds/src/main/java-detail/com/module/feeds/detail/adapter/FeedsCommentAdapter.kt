@@ -94,7 +94,7 @@ class FeedsCommentAdapter : DiffAdapter<FirstLevelCommentModel, FeedsCommentAdap
             mCommenterAvaterIv.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     mModel!!.user?.userID?.let {
-                        mIFirstLevelCommentListener?.onClickIcon(mModel!!.user.userID)
+                        mIFirstLevelCommentListener?.onClickIcon(it)
                     }
                 }
             })

@@ -51,6 +51,6 @@ interface FeedsDetailServerApi {
      *  "like": true
      *}
      */
-    @PUT("/v1/feed/comment-add")
+    @PUT("/v1/feed/like")
     fun likeFeed(@Body body: RequestBody): Observable<ApiResult>
 }
