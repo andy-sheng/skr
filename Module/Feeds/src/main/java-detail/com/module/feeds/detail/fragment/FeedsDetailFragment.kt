@@ -30,6 +30,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.R
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -74,6 +75,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mRadioView: FeedsRecordAnimationView? = null
     var mCommonTitleBar: CommonTitleBar? = null
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
+    var mMoreDialogPlus: FeedsMoreDialogView? = null
 
     var mIsSongStart = false
 
@@ -302,6 +304,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 if(fromUser){
                     mMyMediaPlayer.seekTo(progress.toLong())
                     mFeedsCommonLyricView?.seekTo(progress)
+                    mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
                 }
             }
 
@@ -336,7 +339,32 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mMoreTv?.setDebounceViewClickListener {
+            showMoreOp()
+        }
+
+        mCommonTitleBar?.rightImageButton?.setDebounceViewClickListener {
+            showMoreOp()
+        }
+
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
+    }
+
+    private fun showMoreOp() {
+        mMoreDialogPlus?.dismiss()
+        activity?.let {
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT)
+                    .apply {
+                        setReply()
+                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                dismiss()
+                                mFeedsInputContainerView?.showSoftInput()
+                            }
+                        })
+                    }
+            mMoreDialogPlus?.showByDialog()
+        }
     }
 
     override fun addCommentSuccess(model: FirstLevelCommentModel) {

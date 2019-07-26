@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content">
 
                     <com.common.image.fresco.BaseImageView
-                        android:layout_height="388dp"
+                        android:layout_height="386dp"
                         android:id="@+id/blur_bg"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +79,7 @@
                         android:layout_marginRight="@dimen/view_12_dp"
                         android:paddingTop="@dimen/view_8_dp"
                         android:paddingBottom="@dimen/view_8_dp"
-                        android:src="@drawable/gerendongtai_gengduo"
+                        android:src="@drawable/gequxiangqing_gengduo"
                         app:layout_constraintBottom_toBottomOf="@+id/song_name_tv"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/song_name_tv" />
@@ -154,6 +154,7 @@
                         app:layout_constraintTop_toTopOf="@+id/control_tv" />
 
                     <SeekBar
+                        android:thumb="@drawable/shenqu_jindu"
                         android:id="@+id/seek_bar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -261,12 +262,12 @@
                             app:centerType="textView"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:leftDrawable="@drawable/img_back"
+                            app:leftDrawable="@drawable/shenqu_back"
                             app:leftType="textView"
                             app:rightImageResource="@drawable/gerendongtai_gengduo"
                             app:rightTextColor="@color/white"
                             app:rightTextSize="@dimen/textsize_14_dp"
-                            app:rightType="textView"
+                            app:rightType="imageButton"
                             app:showBottomLine="false"
                             app:statusBarColor="@color/transparent"
                             app:titleBarColor="@color/transparent" />

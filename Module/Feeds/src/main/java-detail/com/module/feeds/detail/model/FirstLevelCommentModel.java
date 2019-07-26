@@ -14,7 +14,7 @@ public class FirstLevelCommentModel implements Serializable {
     private CommentBean comment;
     private FeedUserInfo replyUser;
     private FeedUserInfo commentUser;
-    private boolean isLiked;
+    public boolean isLiked;
 
     public FirstLevelCommentModel() {
     }

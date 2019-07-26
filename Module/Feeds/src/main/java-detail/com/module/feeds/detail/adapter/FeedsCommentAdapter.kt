@@ -139,7 +139,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                 }
             }
 
-            mXinIv.isSelected = model.isLiked
+            mXinIv.isSelected = model.isLiked()
 
             mXinIv.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {

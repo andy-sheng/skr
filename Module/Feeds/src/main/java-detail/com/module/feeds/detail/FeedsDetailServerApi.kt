@@ -13,13 +13,13 @@ interface FeedsDetailServerApi {
      * 获取一级评论
      */
     @GET("/v1/feed/first-level-comment-list")
-    fun getFirstLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
+    fun getFirstLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("feedID") feedID: Int, @Query("userID") userID: Int): Observable<ApiResult>
 
     /**
      * 获取二级评论
      */
     @GET("/v1/feed/second-level-comment-list")
-    fun getSecondLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("commentID") commentID: Int): Observable<ApiResult>
+    fun getSecondLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("commentID") commentID: Int, @Query("userID") userID: Int): Observable<ApiResult>
 
     /**
      * 点赞评论

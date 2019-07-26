@@ -109,7 +109,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         })
 
         mXinNumTv!!.text = mFirstLevelCommentModel!!.comment.likedCnt.toString()
-        mXinIv!!.isSelected = mFirstLevelCommentModel!!.isLiked
+        mXinIv!!.isSelected = mFirstLevelCommentModel!!.isLiked()
         mXinIv?.setDebounceViewClickListener {
             mFeedsSecondCommentPresenter?.likeComment(mFirstLevelCommentModel!!, mFeedsID!!, !mXinIv!!.isSelected, 0)
         }
