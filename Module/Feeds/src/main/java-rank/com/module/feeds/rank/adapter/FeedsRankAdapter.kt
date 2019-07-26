@@ -1,21 +1,27 @@
 package com.module.feeds.rank.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.module.feeds.R
 import com.module.feeds.rank.holder.FeedsRankViewHolder
+import com.module.feeds.rank.model.FeedRankInfoModel
 
-class FeedsRankAdapter : RecyclerView.Adapter<FeedsRankViewHolder>(){
+class FeedsRankAdapter : RecyclerView.Adapter<FeedsRankViewHolder>() {
+
+    var mDataList = ArrayList<FeedRankInfoModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsRankViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_rank_item_layout, parent, false)
+        return FeedsRankViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: FeedsRankViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bindData(position, mDataList[position])
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mDataList.size
     }
 
 }

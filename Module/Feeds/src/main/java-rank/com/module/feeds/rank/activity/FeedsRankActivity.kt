@@ -16,6 +16,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.feeds.watch.model.FeedRankModel
 import com.module.RouterConstants
+import com.module.feeds.rank.model.FeedRankTagModel
 import com.module.feeds.rank.presenter.FeedsRankPresenter
 import com.module.feeds.rank.view.FeedsRankView
 import com.module.feeds.rank.view.IFeedsRank
@@ -33,6 +34,8 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
     private lateinit var mPagerAdapter: PagerAdapter
 
     private lateinit var mPresenter: FeedsRankPresenter
+
+    var mFeedRankViews: HashMap<Int, FeedsRankView> = HashMap()
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_rank_activity_layout
@@ -66,10 +69,11 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
         return false
     }
 
-    override fun showFailed() {
+    override fun canSlide(): Boolean {
+        return false
     }
 
-    override fun showFeedRankTag(list: List<FeedRankModel>?) {
+    override fun showFeedRankTag(list: List<FeedRankTagModel>?) {
         if (list == null || list.isEmpty()) {
             return
         }
@@ -89,11 +93,15 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 val rankTagModel = list[position]
-                val view = FeedsRankView(this@FeedsRankActivity, rankTagModel)
+                if (!mFeedRankViews.containsKey(rankTagModel.tagType)) {
+                    mFeedRankViews[rankTagModel.tagType
+                            ?: 0] = FeedsRankView(this@FeedsRankActivity, rankTagModel)
+                }
+                val view = mFeedRankViews[rankTagModel.tagType]
                 if (container.indexOfChild(view) == -1) {
                     container.addView(view)
                 }
-                return view
+                return view!!
             }
 
             override fun getCount(): Int {
@@ -105,7 +113,7 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return list[position].rankDesc
+                return list[position].tagDesc
             }
         }
 
@@ -115,10 +123,8 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
             }
 
             override fun onPageSelected(position: Int) {
-                val view = mViewpager.findViewWithTag<View>(position)
-                if (view != null) {
-
-                }
+                var tagModel = list[position]
+                mFeedRankViews[tagModel.tagType]?.tryLoadData()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -130,4 +136,9 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
         mTagTab.setViewPager(mViewpager)
         mPagerAdapter.notifyDataSetChanged()
     }
+
+    override fun showFailed() {
+
+    }
+
 }

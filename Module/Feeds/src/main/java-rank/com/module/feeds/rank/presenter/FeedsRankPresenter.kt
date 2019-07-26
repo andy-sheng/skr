@@ -8,6 +8,7 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.module.feeds.watch.model.FeedRankModel
 import com.module.feeds.rank.FeedsRankServerApi
+import com.module.feeds.rank.model.FeedRankTagModel
 import com.module.feeds.rank.view.IFeedsRank
 
 class FeedsRankPresenter(val view: IFeedsRank) : RxLifeCyclePresenter() {
@@ -18,7 +19,7 @@ class FeedsRankPresenter(val view: IFeedsRank) : RxLifeCyclePresenter() {
         ApiMethods.subscribe(mFeedRankServerApi.getFeedsRankTags(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    val list = JSON.parseArray(obj.data.getString("tags"), FeedRankModel::class.java)
+                    val list = JSON.parseArray(obj.data.getString("tags"), FeedRankTagModel::class.java)
                     view.showFeedRankTag(list)
                 } else {
                     view.showFailed()

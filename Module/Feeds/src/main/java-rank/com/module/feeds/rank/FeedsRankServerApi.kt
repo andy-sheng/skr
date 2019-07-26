@@ -3,6 +3,7 @@ package com.module.feeds.rank
 import com.common.rxretrofit.ApiResult
 import io.reactivex.Observable
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface FeedsRankServerApi {
 
@@ -13,4 +14,8 @@ interface FeedsRankServerApi {
     fun getFeedsRankTags(): Observable<ApiResult>
 
 
+    @GET("/v1/feed/rank-song-list")
+    fun getFeedRankInfoList(@Query("offset") offset: Int,
+                            @Query("cnt") cnt: Int,
+                            @Query("tagType") tagType: Int): Observable<ApiResult>
 }

@@ -1,9 +1,9 @@
 package com.module.feeds.rank.view
 
-import com.module.feeds.watch.model.FeedRankModel
+import com.module.feeds.rank.model.FeedRankTagModel
 
 interface IFeedsRank {
-    fun showFeedRankTag(list: List<FeedRankModel>?)
+    fun showFeedRankTag(list: List<FeedRankTagModel>?)
 
     fun showFailed()
 }
