@@ -1,4 +1,4 @@
-package com.component.live.wxapi;
+package com.zq.live.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
