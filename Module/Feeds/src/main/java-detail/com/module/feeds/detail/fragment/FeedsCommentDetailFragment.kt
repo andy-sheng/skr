@@ -132,6 +132,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                 feedsCommendAdapter?.notifyItemChanged(1)
                 mTitlebar?.centerTextView?.text = "${mFirstLevelCommentModel?.comment?.subCommentCnt.toString()}条回复"
                 mFeedsSecondCommentPresenter?.mModelList?.add(0, it)
+                mFeedsSecondCommentPresenter?.mOffset = mFeedsSecondCommentPresenter?.mOffset!! + 1
                 mFeedsSecondCommentPresenter?.updateCommentList()
             }
         }
@@ -144,6 +145,10 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     override fun noMore() {
         mRefreshLayout?.finishLoadMore()
         mRefreshLayout?.setEnableLoadMore(false)
+    }
+
+    override fun finishLoadMore() {
+        mRefreshLayout?.finishLoadMore()
     }
 
     override fun updateList(list: List<FirstLevelCommentModel>?) {

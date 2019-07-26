@@ -7,10 +7,10 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.FirstLevelCommentModel
+import com.module.feeds.watch.model.FeedUserInfo
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap
@@ -41,7 +41,17 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                     }
 
                     mOffset = obj.data.getIntValue("offset")
+                } else {
+                    mIFirstLevelCommentView.finishLoadMore()
                 }
+            }
+
+            override fun onError(e: Throwable) {
+                mIFirstLevelCommentView.finishLoadMore()
+            }
+
+            override fun onNetworkError(errorType: ErrorType?) {
+                mIFirstLevelCommentView.finishLoadMore()
             }
         }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
     }

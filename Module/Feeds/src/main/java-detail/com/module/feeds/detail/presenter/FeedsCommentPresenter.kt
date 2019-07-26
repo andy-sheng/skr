@@ -40,7 +40,17 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
                     }
 
                     mOffset = obj.data.getIntValue("offset")
+                } else {
+                    mIFirstLevelCommentView.finishLoadMore()
                 }
+            }
+
+            override fun onError(e: Throwable) {
+                mIFirstLevelCommentView.finishLoadMore()
+            }
+
+            override fun onNetworkError(errorType: ErrorType?) {
+                mIFirstLevelCommentView.finishLoadMore()
             }
         }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
     }
