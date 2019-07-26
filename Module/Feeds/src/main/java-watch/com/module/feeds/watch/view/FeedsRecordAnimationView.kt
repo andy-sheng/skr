@@ -81,6 +81,8 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation?.duration = 10000
         avatarAnimation?.interpolator = LinearInterpolator()
         avatarAnimation?.repeatCount = Animation.INFINITE
+        rockerIv?.clearAnimation()
+        rockerIv?.startAnimation(rotateAnimationStop)
     }
 
     fun setAvatar(url: String) {
