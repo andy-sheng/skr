@@ -138,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/view_2_dp"
-                        android:text="0:00"
+                        android:text="00:00"
                         android:textColor="@color/white"
                         android:textSize="@dimen/textsize_12_dp"
                         app:layout_constraintBottom_toBottomOf="@+id/control_tv"

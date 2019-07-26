@@ -62,6 +62,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mTitlebar?.leftTextView?.setDebounceViewClickListener {
             activity?.finish()
         }
+        mTitlebar?.centerTextView?.text = "${mFirstLevelCommentModel?.comment?.subCommentCnt.toString()}条回复"
 
         mFeedsSecondCommentPresenter = FeedsSecondCommentPresenter(0, this)
 
@@ -69,6 +70,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mRecyclerView = rootView.findViewById(com.module.feeds.R.id.recycler_view)
 
         feedsCommendAdapter = FeedsCommentAdapter(true)
+        feedsCommendAdapter?.mCommentNum = mFirstLevelCommentModel!!.comment!!.subCommentCnt
         feedsCommendAdapter?.mIFirstLevelCommentListener = object : FeedsCommentAdapter.IFirstLevelCommentListener {
             override fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int) {
                 mFeedsSecondCommentPresenter?.likeComment(firstLevelCommentModel, mFeedsID!!, like, position)
@@ -125,7 +127,12 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
 
         mFeedsInputContainerView?.mSendCallBack = {
             mFeedsSecondCommentPresenter?.addComment(it, mFeedsID!!, mRefuseModel!!) {
-
+                mFirstLevelCommentModel!!.comment!!.subCommentCnt++
+                feedsCommendAdapter?.mCommentNum = mFirstLevelCommentModel!!.comment!!.subCommentCnt
+                feedsCommendAdapter?.notifyItemChanged(1)
+                mTitlebar?.centerTextView?.text = "${mFirstLevelCommentModel?.comment?.subCommentCnt.toString()}条回复"
+                mFeedsSecondCommentPresenter?.mModelList?.add(0, it)
+                mFeedsSecondCommentPresenter?.updateCommentList()
             }
         }
 

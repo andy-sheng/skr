@@ -1,11 +1,13 @@
 package com.module.feeds.detail.presenter
 
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.AbsCoroutinePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.component.feeds.model.FeedUserInfo
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -18,7 +20,7 @@ import kotlin.collections.set
 class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : AbsCoroutinePresenter() {
     val mTag = "FeedsSecondCommentPresenter"
     val mFeedsDetailServerApi = ApiManager.getInstance().createService(FeedsDetailServerApi::class.java)
-    val mCount = 30
+    val mCount = 50
     var mOffset = 0
     val mModelList: ArrayList<FirstLevelCommentModel> = ArrayList()
 
@@ -42,6 +44,10 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
+    }
+
+    fun updateCommentList() {
+        mIFirstLevelCommentView.updateList(mModelList)
     }
 
     fun likeComment(firstLevelCommentModel: FirstLevelCommentModel, feedID: Int, like: Boolean, position: Int) {
@@ -78,7 +84,16 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
         ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    callBack.invoke(refuseModel)
+                    val model: FirstLevelCommentModel.CommentBean = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
+                    val firstLevelCommentModel = FirstLevelCommentModel()
+                    firstLevelCommentModel.comment = model
+                    firstLevelCommentModel.comment.content = content
+                    firstLevelCommentModel.commentUser = FeedUserInfo()
+                    firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
+                    firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
+                    firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
+                    firstLevelCommentModel.replyUser = refuseModel.commentUser
+                    callBack.invoke(firstLevelCommentModel)
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))

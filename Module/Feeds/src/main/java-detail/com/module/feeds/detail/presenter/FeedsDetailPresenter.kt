@@ -28,14 +28,14 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
         ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    val commentId = obj.data.getIntValue("commentID")
+                    val model: FirstLevelCommentModel.CommentBean = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
                     val firstLevelCommentModel = FirstLevelCommentModel()
-                    val feedUserInfo = FeedUserInfo()
-                    feedUserInfo.avatar = MyUserInfoManager.getInstance().avatar
-                    feedUserInfo.nickname = MyUserInfoManager.getInstance().nickName
-                    feedUserInfo.userID = MyUserInfoManager.getInstance().uid.toInt()
-                    firstLevelCommentModel.commentUser = feedUserInfo
-                    firstLevelCommentModel.comment = FirstLevelCommentModel.CommentBean(commentId, content, System.currentTimeMillis(), MyUserInfoManager.getInstance().uid.toInt())
+                    firstLevelCommentModel.comment = model
+                    firstLevelCommentModel.comment.content = content
+                    firstLevelCommentModel.commentUser = FeedUserInfo()
+                    firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
+                    firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
+                    firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
                     mIFeedsDetailView.addCommentSuccess(firstLevelCommentModel)
                 }
             }
@@ -49,6 +49,16 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     mIFeedsDetailView.likeFeed(like)
+                }
+            }
+        }, this, ApiMethods.RequestControl(mTag + "likeFeeds", ApiMethods.ControlType.CancelThis))
+    }
+
+    fun getRelation(userID: Int) {
+        ApiMethods.subscribe(mFeedsDetailServerApi.getRelation(userID), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    mIFeedsDetailView.showRelation(obj.data.getBooleanValue("isBlacked"), obj.data.getBooleanValue("isFollow"), obj.data.getBooleanValue("isFriend"))
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "likeFeeds", ApiMethods.ControlType.CancelThis))

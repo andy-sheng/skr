@@ -1,17 +1,24 @@
 package com.module.feeds.detail.adapter
 
+import android.graphics.Color
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
+import com.module.RouterConstants
+import com.module.feeds.R
 import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 
@@ -19,7 +26,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
     val mCommentType = 0
     val mCountType = 1
     var mIFirstLevelCommentListener: IFirstLevelCommentListener? = null
-    var mCommentNum: Int = 1534
+    var mCommentNum: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
@@ -47,7 +54,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (dataList[position] is CommentHolder) {
+        if (dataList[position] is FirstLevelCommentModel) {
             return mCommentType
         } else if (dataList[position] is CommentCountModel) {
             return mCountType
@@ -86,14 +93,50 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                     .build())
 
             mNameTv.text = model.commentUser?.nickname
-            mCommentTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(model.comment.createdAt, "MM-dd HH:mm")
+            mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt
+                    ?: 0L, System.currentTimeMillis())
             mLikeNum.text = model.comment.likedCnt.toString()
-            mContentTv.text = model.comment.content
-            if (model.comment.subCommentCnt > 0 && !mIsSecond) {
-                mReplyNum.visibility = View.VISIBLE
-                mReplyNum.text = "${model.comment.subCommentCnt}条回复"
-            } else {
+
+            mReplyNum.visibility = View.GONE
+            MyLog.d("CommentHolder", "${model.comment.content}")
+            if (model.comment.commentType == 1) {
+                mContentTv.text = model.comment.content
+                if (model.comment.subCommentCnt > 0 && !mIsSecond) {
+                    mReplyNum.visibility = View.VISIBLE
+                    mReplyNum.text = "${model.comment.subCommentCnt}条回复"
+                } else {
+                    mReplyNum.visibility = View.GONE
+                }
+            } else if (model.comment.commentType == 2) {
                 mReplyNum.visibility = View.GONE
+                if (model.comment.replyType == 1) {
+                    mContentTv.text = model.comment.content
+                } else if (model.comment.replyType == 2) {
+                    val spanUtils = SpanUtils()
+                            .append(model.commentUser.nickname.toString()).setForegroundColor(Color.parseColor("#FF6295C4")).setClickSpan(object : ClickableSpan() {
+                                override fun onClick(widget: View?) {
+                                    val bundle = Bundle()
+                                    bundle.putInt("bundle_user_id", model.commentUser.userID!!)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                            .with(bundle)
+                                            .navigation()
+                                }
+                            })
+                            .append("回复").setForegroundColor(U.getColor(R.color.black))
+                            .append(model.replyUser.nickname.toString()).setForegroundColor(Color.parseColor("#FF6295C4")).setClickSpan(object : ClickableSpan() {
+                                override fun onClick(widget: View?) {
+                                    val bundle = Bundle()
+                                    bundle.putInt("bundle_user_id", model.replyUser.userID!!)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                            .with(bundle)
+                                            .navigation()
+                                }
+                            })
+                    val stringBuilder = spanUtils.create()
+                    mContentTv.text = stringBuilder.toString()
+                }
             }
 
             mXinIv.isSelected = model.isLiked

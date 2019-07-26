@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_7_dp"
         android:layout_marginRight="@dimen/view_20_dp"
-        android:text="小时候有个女同学，总是跟老师告状说我偷她铅 。现在，这个女同学正在给我孩子削铅笔。"
+        android:text=""
         android:textColor="@color/black_trans_50"
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintRight_toRightOf="parent"

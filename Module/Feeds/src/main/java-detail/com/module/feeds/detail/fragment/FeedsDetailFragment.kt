@@ -16,6 +16,7 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
@@ -85,10 +86,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             it.setMonitorProgress(true)
             it.setCallback(object : IPlayerCallback {
                 override fun onPrepared() {
-                    if (!mFeedsCommonLyricView!!.isStart()) {
-                        mFeedsCommonLyricView!!.playLyric()
+                    if (mControlTv!!.isSelected) {
+                        if (!mFeedsCommonLyricView!!.isStart()) {
+                            mFeedsCommonLyricView!!.playLyric()
+                        } else {
+                            mFeedsCommonLyricView!!.resume()
+                        }
                     } else {
-                        mFeedsCommonLyricView!!.resume()
+                        mMyMediaPlayer.pause()
                     }
                 }
 
@@ -218,6 +223,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mCommonTitleBar?.leftTextView?.setDebounceViewClickListener {
+            activity?.finish()
+        }
+
         mBtnBack?.setDebounceViewClickListener {
             activity?.finish()
         }
@@ -264,7 +273,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mNameTv?.text = mFeedsWatchModel?.user?.nickname
         mFeedsWatchModel?.song?.createdAt?.let {
-            mCommentTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it, "MM-dd HH:mm")
+            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
         }
 
         if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.title)) {
@@ -325,14 +334,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
-
+        mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
     }
 
     override fun addCommentSuccess(model: FirstLevelCommentModel) {
-        mFeedsCommentView?.addSelfComment(model)
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!.plus(1)
         mFeedsWatchModel?.commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!
-        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
+        mFeedsCommentView?.addSelfComment(model)
     }
 
     override fun likeFeed(like: Boolean) {
@@ -343,6 +351,21 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mXinNumTv!!.text = (mXinNumTv!!.text.toString().toInt() - 1).toString()
         }
 
+    }
+
+    override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
+        if (isFriend) {
+            isFriendState()
+            mFollowTv?.setOnClickListener(null)
+        } else if (isFollow) {
+            isFollowState()
+            mFollowTv?.setOnClickListener(null)
+        } else {
+            isStrangerState()
+            mFollowTv?.setDebounceViewClickListener {
+                UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID!!, UserInfoManager.RA_BUILD, false, 0, null)
+            }
+        }
     }
 
     private fun playSong() {

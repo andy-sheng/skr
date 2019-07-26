@@ -67,21 +67,6 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
         }, this, ApiMethods.RequestControl(mTag + "likeComment", ApiMethods.ControlType.CancelThis))
     }
 
-    fun addComment(content: String, feedID: Int) {
-        val map = HashMap<String, Any>()
-        map["content"] = content
-        map["feedID"] = feedID
-
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-
-                }
-            }
-        }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))
-    }
-
     fun likeFeeds(like: Boolean, feedID: Int) {
         val map = mapOf("feedID" to feedID, "like" to like)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))

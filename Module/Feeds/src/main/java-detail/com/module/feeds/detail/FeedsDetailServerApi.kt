@@ -53,4 +53,13 @@ interface FeedsDetailServerApi {
      */
     @PUT("/v1/feed/like")
     fun likeFeed(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 判断和指定某人的社交关系
+     *
+     * @param toUserID 指定人的id
+     * @return
+     */
+    @GET("/v1/mate/has-relation")
+    fun getRelation(@Query("toUserID") toUserID: Int): Observable<ApiResult>
 }
