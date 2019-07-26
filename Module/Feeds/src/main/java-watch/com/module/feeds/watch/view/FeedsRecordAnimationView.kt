@@ -81,8 +81,14 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation?.duration = 10000
         avatarAnimation?.interpolator = LinearInterpolator()
         avatarAnimation?.repeatCount = Animation.INFINITE
+
+        // 初始化棒棒到指定位置
+        val a = RotateAnimation(-25f, -55f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
+        a.duration = 100
+        a.repeatCount = 0
+        a.fillAfter = true
         rockerIv?.clearAnimation()
-        rockerIv?.startAnimation(rotateAnimationStop)
+        rockerIv?.startAnimation(a)
     }
 
     fun setAvatar(url: String) {
