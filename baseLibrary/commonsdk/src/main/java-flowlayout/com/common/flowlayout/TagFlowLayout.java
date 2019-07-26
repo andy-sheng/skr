@@ -23,6 +23,8 @@ public class TagFlowLayout extends FlowLayout
 
     private TagAdapter mTagAdapter;
     private int mSelectedMax = -1;//-1为不限制数量
+    private int mSelectedMin = 0; // 最少保持几个为选中
+
     private static final String TAG = "TagFlowLayout";
 
     private Set<Integer> mSelectedView = new HashSet<Integer>();
@@ -148,6 +150,10 @@ public class TagFlowLayout extends FlowLayout
         mSelectedMax = count;
     }
 
+    public void setMinSelectCount(int count) {
+        mSelectedMin = count;
+    }
+
     public Set<Integer> getSelectedList() {
         return new HashSet<Integer>(mSelectedView);
     }
@@ -182,8 +188,10 @@ public class TagFlowLayout extends FlowLayout
                 mSelectedView.add(position);
             }
         } else {
-            setChildUnChecked(position, child);
-            mSelectedView.remove(position);
+            if (mSelectedView.size() > mSelectedMin) {
+                setChildUnChecked(position, child);
+                mSelectedView.remove(position);
+            }
         }
         if (mOnSelectListener != null) {
             mOnSelectListener.onSelected(new HashSet<Integer>(mSelectedView));

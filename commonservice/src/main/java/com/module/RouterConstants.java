@@ -84,5 +84,5 @@ public interface RouterConstants {
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
     String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
 
-
+    String ACTIVITY_FOR_TEST = "/test/ForTestActivity";
 }
