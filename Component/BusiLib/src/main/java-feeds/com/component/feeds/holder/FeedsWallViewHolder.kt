@@ -15,7 +15,7 @@ class FeedsWallViewHolder(it: View, l: FeedsListener) : FeedViewHolder(it, l) {
                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                 .setBlur(true)
                 .build())
-        mRecordView.bindData(MyUserInfoManager.getInstance().avatar)
+        mRecordView.setAvatar(MyUserInfoManager.getInstance().avatar)
 
     }
 }

@@ -13,6 +13,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.R
 import com.component.feeds.listener.FeedsListener
 import com.component.feeds.model.FeedsWatchModel
+import com.component.feeds.view.FeedsRecordAnimationView
 import com.component.feeds.view.RecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 
@@ -23,13 +24,12 @@ open class FeedViewHolder(var item: View, var listener: FeedsListener?) : Recycl
     private val mTagTv: TextView = itemView.findViewById(R.id.tag_tv)
     //    private val mClassifySongTv: ExTextView = itemView.findViewById(R.id.classify_song_tv)
     val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
-    val mRecordView: RecordAnimationView = itemView.findViewById(R.id.record_view)
+    val mRecordView: FeedsRecordAnimationView = itemView.findViewById(R.id.record_view)
     private val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
     private val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
 
     var mPosition: Int = 0
     var model: FeedsWatchModel? = null
-    var mIsPlaying = false
 
     init {
         mMoreIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -111,14 +111,10 @@ open class FeedViewHolder(var item: View, var listener: FeedsListener?) : Recycl
     }
 
     fun startPlay() {
-        if (!mIsPlaying) {
-            mIsPlaying = true
-            mRecordView.startAnimation()
-        }
+        mRecordView.play()
     }
 
     fun stopPlay() {
-        mRecordView.stopAnimation(mIsPlaying)
-        mIsPlaying = false
+        mRecordView.pause()
     }
 }

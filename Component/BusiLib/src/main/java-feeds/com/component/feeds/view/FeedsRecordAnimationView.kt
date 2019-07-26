@@ -1,4 +1,4 @@
-package com.module.feeds.view
+package com.component.feeds.view
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -7,14 +7,13 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
-import android.view.animation.Animation.INFINITE
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.module.feeds.R
+import com.component.busilib.R
 
 class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
     val TAG = "FeedsRecordAnimationView"
@@ -40,6 +39,8 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     var playing = false
     var hasLayouted = false
+    var wantPlaying = false
+
     init {
         View.inflate(context, R.layout.feed_record_animation_view_layout, this)
 
@@ -79,7 +80,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation = ObjectAnimator.ofFloat(avatarContainer, View.ROTATION, 0f, 360f)
         avatarAnimation?.duration = 10000
         avatarAnimation?.interpolator = LinearInterpolator()
-        avatarAnimation?.repeatCount = INFINITE
+        avatarAnimation?.repeatCount = Animation.INFINITE
     }
 
     fun setAvatar(url: String) {
@@ -89,12 +90,17 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun play() {
-        MyLog.d(TAG,"play")
-        playing = true
+        MyLog.d(TAG, "play")
+        wantPlaying = true
+        if (playing) {
+            return
+        }
+
         if (!hasLayouted) {
             // 界面还没渲染出来，不播放
             return
         }
+        playing = true
         rockerIv?.clearAnimation()
         rockerIv?.startAnimation(rotateAnimationPlay)
 
@@ -110,7 +116,11 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun pause() {
+        if (!playing) {
+            return
+        }
         playing = false
+        wantPlaying = false
         rockerIv?.clearAnimation()
         rockerIv?.startAnimation(rotateAnimationStop)
         avatarAnimation?.pause()
@@ -118,10 +128,15 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        if (playing && !hasLayouted) {
+        if (!hasLayouted) {
             hasLayouted = true
-            play()
+            if (wantPlaying) {
+                play()
+            } else {
+                pause()
+            }
         }
+
     }
 
     override fun onDetachedFromWindow() {

@@ -39,7 +39,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
                     .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                     .setBlur(true)
                     .build())
-            mRecordView.bindData(it.avatar)
+            mRecordView.setAvatar(it.avatar?:"")
 
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCircle(true)

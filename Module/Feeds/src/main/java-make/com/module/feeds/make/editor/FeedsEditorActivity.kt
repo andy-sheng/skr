@@ -24,7 +24,7 @@ import com.component.lyrics.widget.ManyLyricsView
 import com.engine.EngineEvent
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.view.FeedsRecordAnimationView
+import com.component.feeds.view.FeedsRecordAnimationView
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
