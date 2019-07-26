@@ -1,13 +1,21 @@
 package com.module.feeds.detail.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 
+/**
+ * 可以播伴奏清唱等多种歌词
+ */
 class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
-    val mTag = "FeedsCommonLyricView"
+    override fun loadLyric() {
+        throw Exception("外部只要调用setSongModel就行了")
+    }
+
+    val TAG = "FeedsCommonLyricView"
     var mAutoScrollLyricView: AutoScrollLyricView? = null
     var mFeedsManyLyricView: FeedsManyLyricView? = null
     var mFeedSongModel: FeedSongModel? = null
@@ -27,18 +35,19 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
 
     override fun setSongModel(feedSongModel: FeedSongModel) {
         mFeedSongModel = feedSongModel
-
-        if (feedSongModel.songTpl?.lrcType == 2) {
-            mBaseFeedsLyricView = mAutoScrollLyricView
-        } else {
+        mFeedsManyLyricView?.setSongModel(feedSongModel)
+        mAutoScrollLyricView?.setSongModel(feedSongModel)
+        if (!TextUtils.isEmpty(feedSongModel.songTpl?.lrcTs)) {
+            // 只要有伴奏文件，不管清唱和伴奏都是这个view
             mBaseFeedsLyricView = mFeedsManyLyricView
+        } else {
+            mBaseFeedsLyricView = mAutoScrollLyricView
         }
-
-        mBaseFeedsLyricView?.setSongModel(feedSongModel)
+        mBaseFeedsLyricView?.loadLyric()
     }
 
     override fun isStart(): Boolean {
-        return mBaseFeedsLyricView!!.isStart()
+        return mBaseFeedsLyricView?.isStart() ?: false
     }
 
     override fun playLyric() {

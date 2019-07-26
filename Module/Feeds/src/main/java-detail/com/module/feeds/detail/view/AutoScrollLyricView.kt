@@ -36,21 +36,31 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun setSongModel(feedSongModel: FeedSongModel) {
-        tryInflate()
         mFeedSongModel = feedSongModel
         passTime = 0
+
+    }
+
+    override fun loadLyric() {
+        tryInflate()
         lyricTv.text = "正在加载"
         mDisposable = LyricsManager.getLyricsManager(U.app())
-                .loadGrabPlainLyric(feedSongModel.songTpl!!.lrcTxt)
+                .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                 .subscribe({ s ->
                     lyricTv.text = "\n${s}"
                 }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
     }
 
     override fun playLyric() {
+        tryInflate()
         passTime = 0
         mIsStart = true
-        startScroll()
+        mDisposable = LyricsManager.getLyricsManager(U.app())
+                .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
+                .subscribe({ s ->
+                    lyricTv.text = "\n${s}"
+                    startScroll()
+                }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
     }
 
     override fun seekTo(duration: Int) {

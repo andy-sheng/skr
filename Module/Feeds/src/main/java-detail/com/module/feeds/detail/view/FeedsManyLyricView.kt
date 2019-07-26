@@ -37,11 +37,15 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     override fun setSongModel(feedSongModel: FeedSongModel) {
         mFeedSongModel = feedSongModel
+    }
+
+    override fun loadLyric() {
         tryInflate()
         showLyric(false)
     }
 
     override fun playLyric() {
+        tryInflate()
         showLyric(true)
     }
 
