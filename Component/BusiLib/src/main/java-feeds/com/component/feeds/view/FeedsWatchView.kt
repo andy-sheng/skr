@@ -56,7 +56,9 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mPersenter = FeedWatchViewPresenter(this, type)
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
-                // 排行
+                // 排行榜详情
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                        .navigation()
             }
 
             override fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?) {
