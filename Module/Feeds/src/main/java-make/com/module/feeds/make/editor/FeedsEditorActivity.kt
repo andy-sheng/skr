@@ -182,9 +182,9 @@ class FeedsEditorActivity : BaseActivity() {
                         .navigation()
             }
         })
-        mZqAudioEditorKit.setOnPreviewStartedListener {
-
-        }
+//        mZqAudioEditorKit.setOnPreviewStartedListener(){
+//
+//        }
 
         if (mFeedsMakeModel?.withBgm == true) {
             mVoiceControlView?.mPeopleVoiceIndex = 1
@@ -208,14 +208,14 @@ class FeedsEditorActivity : BaseActivity() {
                     }
                 }
                 //播放音乐
-                mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path)
-                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath)
+//                mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path)
+//                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath)
                 startPreview()
                 initWhenEngineReady()
             }
         } else {
             mVoiceControlView?.mPeopleVoiceIndex = 0
-            mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath)
+//            mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath)
             startPreview()
             initWhenEngineReady()
         }
