@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -15,7 +14,6 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
-import com.common.utils.HttpUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -23,7 +21,6 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.ManyLyricsView
-import com.component.voice.control.VoiceControlPanelView
 import com.engine.EngineEvent
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -33,13 +30,11 @@ import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
 import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqAudioEditorKit
-import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.HashSet
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_EDITOR)
@@ -67,7 +62,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     var mComposeProgressbarVG: ViewGroup? = null
 
-    var mProgressTipsTv: TextView? = null
+    var mComposeProgressTipsTv: TextView? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_editor_activity_layout
@@ -90,7 +85,7 @@ class FeedsEditorActivity : BaseActivity() {
         mResetIv = findViewById(R.id.reset_iv)
         mPublishIv = findViewById(R.id.publish_iv)
         mComposeProgressbarVG = findViewById(R.id.compose_progressbar_vg)
-        mProgressTipsTv = findViewById(R.id.progress_tips_tv)
+        mComposeProgressTipsTv = findViewById(R.id.progress_tips_tv)
         mComposeProgressbarVG?.setOnClickListener {
             // 吃掉点击事件
         }
@@ -115,7 +110,7 @@ class FeedsEditorActivity : BaseActivity() {
             }
         })
 
-        AvatarUtils.loadAvatarByUrl(mAvatarBg,AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar).setBlur(true).build())
+        AvatarUtils.loadAvatarByUrl(mAvatarBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar).setBlur(true).build())
         mRadioView?.setAvatar(MyUserInfoManager.getInstance().avatar)
         mRadioView?.pause()
 
@@ -140,9 +135,9 @@ class FeedsEditorActivity : BaseActivity() {
         mVaControlView?.audioEditorKit = mZqAudioEditorKit
 
         // 面板控制
-        mRenshengIv?.setOnClickListener(object :DebounceViewClickListener(){
+        mRenshengIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if(mFeedsMakeModel?.withBgm== false){
+                if (mFeedsMakeModel?.withBgm == false) {
                     U.getToastUtil().showShort("清唱模式下无需人声对齐")
                     return
                 }
@@ -155,7 +150,7 @@ class FeedsEditorActivity : BaseActivity() {
 
         mVoiceControlView?.mZqAudioEditorKit = mZqAudioEditorKit
 
-        mEffectIv?.setOnClickListener(object :DebounceViewClickListener(){
+        mEffectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mRenshengIv?.isSelected = false
                 mEffectIv?.isSelected = true
@@ -164,27 +159,46 @@ class FeedsEditorActivity : BaseActivity() {
             }
         })
 
-        mResetIv?.setOnClickListener(object :DebounceViewClickListener(){
+        mResetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setResult(Activity.RESULT_OK)
                 finish()
             }
         })
 
-        mPublishIv?.setOnClickListener(object :DebounceViewClickListener(){
+        mPublishIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 开始合成
                 mComposeProgressbarVG?.visibility = View.VISIBLE
                 mZqAudioEditorKit.startCompose()
-
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
-                        .withSerializable("feeds_make_model", mFeedsMakeModel)
-                        .navigation()
             }
         })
-//        mZqAudioEditorKit.setOnPreviewStartedListener(){
-//
-//        }
+        mZqAudioEditorKit.setOnPreviewInfoListener(object : ZqAudioEditorKit.OnPreviewInfoListener {
+            override fun onStarted() {
+            }
+
+            override fun onCompletion() {
+            }
+
+            override fun onLoopCount(count: Int) {
+            }
+        })
+
+        mZqAudioEditorKit.setOnComposeInfoListener(object : ZqAudioEditorKit.OnComposeInfoListener {
+            override fun onProgress(progress: Float) {
+                launch {
+                    mComposeProgressTipsTv?.text = "${progress*100}%"
+                }
+            }
+
+            override fun onCompletion() {
+                launch {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
+                            .withSerializable("feeds_make_model", mFeedsMakeModel)
+                            .navigation()
+                }
+            }
+        })
 
         if (mFeedsMakeModel?.withBgm == true) {
             mVoiceControlView?.mPeopleVoiceIndex = 1
@@ -208,20 +222,24 @@ class FeedsEditorActivity : BaseActivity() {
                     }
                 }
                 //播放音乐
-//                mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path)
-//                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath)
+                mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path, 0, -1)
+                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath, 0, mFeedsMakeModel?.recordDuration
+                        ?: -1)
+                mZqAudioEditorKit.outputPath =  mFeedsMakeModel?.composeSavePath
                 startPreview()
                 initWhenEngineReady()
             }
         } else {
             mVoiceControlView?.mPeopleVoiceIndex = 0
-//            mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath)
+            mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, 0, mFeedsMakeModel?.recordDuration
+                    ?: -1)
+            mZqAudioEditorKit.outputPath =  mFeedsMakeModel?.composeSavePath
             startPreview()
             initWhenEngineReady()
         }
     }
 
-    private fun initWhenEngineReady(){
+    private fun initWhenEngineReady() {
         mVoiceControlView?.bindData()
         mVaControlView?.bindData()
 

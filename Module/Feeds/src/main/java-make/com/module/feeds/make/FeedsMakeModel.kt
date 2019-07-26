@@ -6,6 +6,7 @@ import com.component.feeds.model.FeedSongModel
 
 class FeedsMakeModel(var songModel: FeedSongModel):Serializable{
 
+    val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_compose.aac")
     var bgmDownloadProgress: Float = 0f
 
     var recordDuration: Long = 0 // 录音时间
