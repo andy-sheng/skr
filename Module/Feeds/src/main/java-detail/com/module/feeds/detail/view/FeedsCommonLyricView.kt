@@ -2,7 +2,7 @@ package com.module.feeds.detail.view
 
 import android.view.View
 import android.view.ViewStub
-import com.component.feeds.model.FeedSongModel
+import com.module.feeds.feeds.model.FeedSongModel
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 

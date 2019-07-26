@@ -3,7 +3,7 @@ package com.module.feeds.rank.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.model.FeedsWatchModel
 import com.module.feeds.R
 import com.module.feeds.rank.holder.FeedsDetailRankViewHolder
 

@@ -6,7 +6,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.component.feeds.FeedsWatchServerApi
+import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.view.IFeedLikeView
 

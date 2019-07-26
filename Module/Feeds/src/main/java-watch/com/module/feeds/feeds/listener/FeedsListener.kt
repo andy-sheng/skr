@@ -1,6 +1,6 @@
-package com.component.feeds.listener
+package com.module.feeds.feeds.listener
 
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.model.FeedsWatchModel
 
 interface FeedsListener {
     fun onClickMoreListener(watchModel: FeedsWatchModel?)

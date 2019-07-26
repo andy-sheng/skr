@@ -1,9 +1,8 @@
-package com.component.feeds.view
+package com.module.feeds.feeds.view
 
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
 import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
@@ -15,10 +14,10 @@ import com.common.player.VideoPlayerAdapter
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
 import com.component.dialog.FeedsMoreDialogView
-import com.component.feeds.presenter.FeedWatchViewPresenter
-import com.component.feeds.adapter.FeedsWatchViewAdapter
-import com.component.feeds.listener.FeedsListener
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.presenter.FeedWatchViewPresenter
+import com.module.feeds.feeds.adapter.FeedsWatchViewAdapter
+import com.module.feeds.feeds.listener.FeedsListener
+import com.module.feeds.feeds.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout

@@ -1,6 +1,6 @@
 package com.module.feeds.rank.view
 
-import com.component.feeds.model.FeedRankModel
+import com.module.feeds.feeds.model.FeedRankModel
 
 interface IFeedsRank {
     fun showFeedRankTag(list: List<FeedRankModel>?)

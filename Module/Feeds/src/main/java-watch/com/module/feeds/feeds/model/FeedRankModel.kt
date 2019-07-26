@@ -1,4 +1,4 @@
-package com.component.feeds.model
+package com.module.feeds.feeds.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable

@@ -13,7 +13,6 @@ import com.component.voice.control.VoiceControlPanelView
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import android.widget.TextView
-import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.log.MyLog
@@ -25,7 +24,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.titlebar.CommonTitleBar
-import com.component.feeds.model.FeedSongModel
+import com.module.feeds.feeds.model.FeedSongModel
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
@@ -39,7 +38,6 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqEngineKit
-import io.agora.rtc.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*

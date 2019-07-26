@@ -1,4 +1,4 @@
-package com.component.feeds.holder
+package com.module.feeds.feeds.holder
 
 import android.text.TextUtils
 import android.view.View
@@ -11,8 +11,8 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
 import com.component.busilib.view.BitmapTextView
-import com.component.feeds.listener.FeedsListener
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.listener.FeedsListener
+import com.module.feeds.feeds.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
 
 open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it, l) {

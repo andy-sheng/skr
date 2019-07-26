@@ -1,21 +1,19 @@
-package com.component.feeds.holder
+package com.module.feeds.feeds.holder
 
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.R
-import com.component.feeds.listener.FeedsListener
-import com.component.feeds.model.FeedsWatchModel
 import com.component.feeds.view.FeedsRecordAnimationView
-import com.component.feeds.view.RecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.feeds.feeds.listener.FeedsListener
+import com.module.feeds.feeds.model.FeedsWatchModel
 
 open class FeedViewHolder(var item: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(item) {
 

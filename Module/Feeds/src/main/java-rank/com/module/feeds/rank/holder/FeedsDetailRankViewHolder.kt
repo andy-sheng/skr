@@ -5,10 +5,9 @@ import android.view.View
 import android.widget.TextView
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedsLikeModel
 
 class FeedsDetailRankViewHolder(item: View, onClickPlayListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
 

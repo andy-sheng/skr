@@ -1,4 +1,4 @@
-package com.component.feeds.holder
+package com.module.feeds.feeds.holder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

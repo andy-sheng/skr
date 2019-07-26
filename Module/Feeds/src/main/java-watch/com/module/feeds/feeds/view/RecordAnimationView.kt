@@ -1,4 +1,4 @@
-package com.component.feeds.view
+package com.module.feeds.feeds.view
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

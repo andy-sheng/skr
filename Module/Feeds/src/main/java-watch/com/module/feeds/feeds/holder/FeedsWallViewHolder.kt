@@ -1,11 +1,11 @@
-package com.component.feeds.holder
+package com.module.feeds.feeds.holder
 
 import android.view.View
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
-import com.component.feeds.listener.FeedsListener
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.listener.FeedsListener
+import com.module.feeds.feeds.model.FeedsWatchModel
 
 class FeedsWallViewHolder(it: View, l: FeedsListener) : FeedViewHolder(it, l) {
 

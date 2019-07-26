@@ -1,4 +1,4 @@
-package com.component.feeds.view
+package com.module.feeds.feeds.view
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,14 +11,15 @@ import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
 import com.component.busilib.R
-import com.component.feeds.adapter.FeedsWallViewAdapter
-import com.component.feeds.listener.FeedsListener
-import com.component.feeds.model.FeedsWatchModel
-import com.component.feeds.presenter.FeedsWallViewPresenter
+import com.module.feeds.feeds.adapter.FeedsWallViewAdapter
+import com.module.feeds.feeds.listener.FeedsListener
+import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.feeds.presenter.FeedsWallViewPresenter
 import com.component.person.view.RequestCallBack
 import com.module.RouterConstants
+import com.module.feeds.IPersonFeedsWall
 
-class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(fragment.context), IFeedsWatchView {
+class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
 
     private val mRecyclerView: RecyclerView
 
@@ -74,12 +75,23 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         mRecyclerView.adapter = mAdapter
     }
 
-    fun getFeeds(flag: Boolean) {
+
+    override fun getFeeds(flag: Boolean) {
         mPersenter.getFeeds(flag)
     }
 
-    fun getMoreFeeds() {
+    override fun getMoreFeeds() {
         mPersenter.getMoreFeeds()
+    }
+
+    override fun setUserInfoModel(userInfoModel: Any?) {
+        this.userInfoModel = userInfoModel as UserInfoModel
+    }
+
+    override fun stopPlay() {
+        mAdapter.mCurrentModel = null
+        mAdapter.notifyDataSetChanged()
+        mMediaPlayer?.reset()
     }
 
     override fun requestError() {
@@ -120,12 +132,6 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         destroy()
-    }
-
-    fun stopPlay() {
-        mAdapter.mCurrentModel = null
-        mAdapter.notifyDataSetChanged()
-        mMediaPlayer?.reset()
     }
 
     fun play(model: FeedsWatchModel, isMustPlay: Boolean) {
