@@ -134,13 +134,11 @@ class LyricAndAccMatchManager {
                 .retryWhen(RxRetryAssist(3, ""))
                 .subscribe({ lyricsReader ->
                     MyLog.w(TAG, "onEventMainThread " + "play")
-                    if (mListener != null) {
-                        mListener!!.onLyricParseSuccess(lyricsReader)
-                    }
+                    mListener?.onLyricParseSuccess(lyricsReader)
                     params?.manyLyricsView?.visibility = View.VISIBLE
                     params?.manyLyricsView?.initLrcData()
                     lyricsReader.cut(params?.lyricBeginTs?.toLong()
-                            ?: 0, params?.lyricBeginTs?.toLong() ?: Long.MAX_VALUE)
+                            ?: 0, params?.lyricEndTs?.toLong() ?: Long.MAX_VALUE)
                     params?.manyLyricsView?.lyricsReader = lyricsReader
                     val set = HashSet<Int>()
                     set.add(lyricsReader.getLineInfoIdByStartTs(params?.lyricBeginTs?.toLong()
@@ -259,7 +257,7 @@ class LyricAndAccMatchManager {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LrcEvent.LineLineEndEvent) {
         MyLog.w(TAG, "LineLineEndEvent event=$event")
-        if(this.params?.needScore ==false){
+        if (this.params?.needScore == false) {
             return
         }
         if (ScoreConfig.isMelp2Enable()) {
@@ -340,6 +338,10 @@ class LyricAndAccMatchManager {
         var authorName: String? = null
         var accLoadOk: Boolean = false
         var needScore: Boolean = true
+        override fun toString(): String {
+            return "ConfigParams(lyricUrl=$lyricUrl, lyricBeginTs=$lyricBeginTs, lyricEndTs=$lyricEndTs, accBeginTs=$accBeginTs, accEndTs=$accEndTs, authorName=$authorName, accLoadOk=$accLoadOk, needScore=$needScore)"
+        }
+
     }
 
     internal val MSG_ENSURE_LAUNCHER = 1
