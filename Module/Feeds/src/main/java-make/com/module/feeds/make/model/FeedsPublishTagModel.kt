@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
 
-class FeedsRankTagModel : Serializable {
+class FeedsPublishTagModel : Serializable {
     @JSONField(name = "rankID")
     var rankID: String? = null
     @JSONField(name = "rankName")
