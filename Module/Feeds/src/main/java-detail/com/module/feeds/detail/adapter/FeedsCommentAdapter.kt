@@ -3,6 +3,7 @@ package com.module.feeds.detail.adapter
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -113,7 +114,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                     mContentTv.text = model.comment.content
                 } else if (model.comment.replyType == 2) {
                     val spanUtils = SpanUtils()
-                            .append(model.commentUser.nickname.toString()).setForegroundColor(U.getColor(R.color.blue)).setClickSpan(object : ClickableSpan() {
+                            .append(model.commentUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
                                     bundle.putInt("bundle_user_id", model.commentUser.userID!!)
@@ -122,9 +123,14 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                             .with(bundle)
                                             .navigation()
                                 }
+
+                                override fun updateDrawState(ds: TextPaint?) {
+                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setUnderlineText(false)
+                                }
                             })
                             .append("回复").setForegroundColor(U.getColor(R.color.black))
-                            .append(model.replyUser.nickname.toString()).setForegroundColor(U.getColor(R.color.blue)).setClickSpan(object : ClickableSpan() {
+                            .append(model.replyUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
                                     bundle.putInt("bundle_user_id", model.replyUser.userID!!)
@@ -133,7 +139,13 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                             .with(bundle)
                                             .navigation()
                                 }
-                            }).append(model.comment.content)
+
+                                override fun updateDrawState(ds: TextPaint?) {
+                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setUnderlineText(false)
+                                }
+                            })
+                            .append(model.comment.content).setForegroundColor(U.getColor(R.color.black))
                     val stringBuilder = spanUtils.create()
                     mContentTv.text = stringBuilder
                 }
