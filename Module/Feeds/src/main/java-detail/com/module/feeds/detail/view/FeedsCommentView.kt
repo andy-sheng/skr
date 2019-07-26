@@ -11,6 +11,7 @@ import com.component.feeds.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
 import com.module.feeds.detail.inter.IFirstLevelCommentView
+import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsCommentPresenter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -38,15 +39,16 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         mRefreshLayout = findViewById(com.module.feeds.R.id.refreshLayout)
         mRecyclerView = findViewById(com.module.feeds.R.id.recycler_view)
 
-        feedsCommendAdapter = FeedsCommentAdapter()
+        feedsCommendAdapter = FeedsCommentAdapter(false)
         feedsCommendAdapter.mIFirstLevelCommentListener = object : FeedsCommentAdapter.IFirstLevelCommentListener {
             override fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int) {
                 mFeedsCommentPresenter?.likeComment(firstLevelCommentModel, mFeedsID!!, like, position)
             }
 
-            override fun onClickMoreComment(firstLevelCommentModel: FirstLevelCommentModel) {
+            override fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SECOND_DETAIL)
-                        .withSerializable("feed_model", mFeedsWatchModel)
+                        .withSerializable("comment_model", firstLevelCommentModel)
+                        .withInt("feed_id", mFeedsID!!)
                         .navigation()
             }
 
@@ -84,7 +86,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
             it.plus(1)
         }
 
-        feedsCommendAdapter.dataList.add(0, model)
+        feedsCommendAdapter.dataList.add(1, model)
         feedsCommendAdapter.notifyDataSetChanged()
     }
 
@@ -93,12 +95,14 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         mRefreshLayout.setEnableLoadMore(false)
     }
 
-    override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int) {
+    override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean) {
         feedsCommendAdapter?.notifyItemChanged(position)
     }
 
     override fun updateList(list: List<FirstLevelCommentModel>?) {
-        feedsCommendAdapter?.dataList = list
+        val mList: ArrayList<Any> = ArrayList(list)
+        mList.add(0, CommentCountModel(509))
+        feedsCommendAdapter?.dataList = mList
         mRefreshLayout?.finishLoadMore()
     }
 

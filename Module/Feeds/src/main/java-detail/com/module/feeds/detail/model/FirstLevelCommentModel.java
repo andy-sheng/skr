@@ -12,7 +12,9 @@ public class FirstLevelCommentModel implements Serializable {
      */
 
     private CommentBean comment;
-    private FeedUserInfo user;
+    private FeedUserInfo replyUser;
+    private FeedUserInfo commentUser;
+    private boolean isLiked;
 
     public FirstLevelCommentModel() {
     }
@@ -25,37 +27,59 @@ public class FirstLevelCommentModel implements Serializable {
         this.comment = comment;
     }
 
-    public FeedUserInfo getUser() {
-        return user;
+    public FeedUserInfo getReplyUser() {
+        return replyUser;
     }
 
-    public void setUser(FeedUserInfo user) {
-        this.user = user;
+    public void setReplyUser(FeedUserInfo replyUser) {
+        this.replyUser = replyUser;
+    }
+
+    public FeedUserInfo getCommentUser() {
+        return commentUser;
+    }
+
+    public void setCommentUser(FeedUserInfo commentUser) {
+        this.commentUser = commentUser;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 
     public static class CommentBean implements Serializable {
+
         /**
          * commentID : 0
+         * commentType : ECT_UNKNOWN
          * content : string
          * createdAt : string
-         * isLiked : true
-         * replyUserID : 0
-         * starCnt : 0
+         * feedID : 0
+         * likedCnt : 0
+         * parentCommentID : 0
+         * replyType : ET_UNKNOWN
+         * replyedUserID : 0
          * subCommentCnt : 0
          * userID : 0
          */
 
         private int commentID;
+        private String commentType;
         private String content;
         private Long createdAt;
-        private boolean isLiked;
-        private int replyUserID;
-        private int starCnt;
+        private int feedID;
+        private int likedCnt;
+        private int parentCommentID;
+        private String replyType;
+        private int replyedUserID;
         private int subCommentCnt;
         private int userID;
 
         public CommentBean() {
-
         }
 
         public CommentBean(int commentID, String content, Long createdAt, int userID) {
@@ -71,6 +95,14 @@ public class FirstLevelCommentModel implements Serializable {
 
         public void setCommentID(int commentID) {
             this.commentID = commentID;
+        }
+
+        public String getCommentType() {
+            return commentType;
+        }
+
+        public void setCommentType(String commentType) {
+            this.commentType = commentType;
         }
 
         public String getContent() {
@@ -89,28 +121,44 @@ public class FirstLevelCommentModel implements Serializable {
             this.createdAt = createdAt;
         }
 
-        public boolean isLiked() {
-            return isLiked;
+        public int getFeedID() {
+            return feedID;
         }
 
-        public void setLiked(boolean liked) {
-            isLiked = liked;
+        public void setFeedID(int feedID) {
+            this.feedID = feedID;
         }
 
-        public int getReplyUserID() {
-            return replyUserID;
+        public int getLikedCnt() {
+            return likedCnt;
         }
 
-        public void setReplyUserID(int replyUserID) {
-            this.replyUserID = replyUserID;
+        public void setLikedCnt(int likedCnt) {
+            this.likedCnt = likedCnt;
         }
 
-        public int getStarCnt() {
-            return starCnt;
+        public int getParentCommentID() {
+            return parentCommentID;
         }
 
-        public void setStarCnt(int starCnt) {
-            this.starCnt = starCnt;
+        public void setParentCommentID(int parentCommentID) {
+            this.parentCommentID = parentCommentID;
+        }
+
+        public String getReplyType() {
+            return replyType;
+        }
+
+        public void setReplyType(String replyType) {
+            this.replyType = replyType;
+        }
+
+        public int getReplyedUserID() {
+            return replyedUserID;
+        }
+
+        public void setReplyedUserID(int replyedUserID) {
+            this.replyedUserID = replyedUserID;
         }
 
         public int getSubCommentCnt() {

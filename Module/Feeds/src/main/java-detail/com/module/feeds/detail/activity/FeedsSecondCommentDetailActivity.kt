@@ -5,10 +5,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
-import com.component.feeds.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsCommentDetailFragment
+import com.module.feeds.detail.model.FirstLevelCommentModel
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_SECOND_DETAIL)
 class FeedsSecondCommentDetailActivity : BaseActivity() {
@@ -17,8 +17,9 @@ class FeedsSecondCommentDetailActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val feedsWatchModel = intent.getSerializableExtra("feed_model")
-        if (feedsWatchModel == null) {
+        val model = intent.getSerializableExtra("comment_model")
+        val feedsId = intent.getIntExtra("feed_id", 0)
+        if (model == null) {
             finish()
             return
         }
@@ -26,7 +27,8 @@ class FeedsSecondCommentDetailActivity : BaseActivity() {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsSecondCommentDetailActivity, FeedsCommentDetailFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
-                .addDataBeforeAdd(0, feedsWatchModel as FeedsWatchModel)
+                .addDataBeforeAdd(0, model as FirstLevelCommentModel)
+                .addDataBeforeAdd(1, feedsId)
                 .build())
     }
 

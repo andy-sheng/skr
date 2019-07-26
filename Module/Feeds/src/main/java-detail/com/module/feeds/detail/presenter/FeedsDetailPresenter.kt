@@ -34,7 +34,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     feedUserInfo.avatar = MyUserInfoManager.getInstance().avatar
                     feedUserInfo.nickname = MyUserInfoManager.getInstance().nickName
                     feedUserInfo.userID = MyUserInfoManager.getInstance().uid.toInt()
-                    firstLevelCommentModel.user = feedUserInfo
+                    firstLevelCommentModel.commentUser = feedUserInfo
                     firstLevelCommentModel.comment = FirstLevelCommentModel.CommentBean(commentId, content, System.currentTimeMillis(), MyUserInfoManager.getInstance().uid.toInt())
                     mIFeedsDetailView.addCommentSuccess(firstLevelCommentModel)
                 }

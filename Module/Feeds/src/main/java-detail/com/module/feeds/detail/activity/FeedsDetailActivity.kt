@@ -5,10 +5,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.feeds.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
-import com.component.feeds.model.FeedsWatchModel
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {
@@ -28,6 +28,7 @@ class FeedsDetailActivity : BaseActivity() {
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, feedsWatchModel as FeedsWatchModel)
                 .build())
+
     }
 
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {

@@ -1,5 +1,6 @@
 package com.module.feeds.detail.fragment
 
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -15,6 +16,7 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
+import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.IPlayerCallback
@@ -24,8 +26,10 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.R
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
@@ -33,6 +37,8 @@ import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.detail.view.RadioView
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -124,7 +130,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     internal var mIsPlaying = false
 
     override fun initView(): Int {
-        return com.module.feeds.R.layout.feeds_detail_fragment_layout
+        return R.layout.feeds_detail_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -220,6 +226,24 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val sharePanel = SharePanel(activity)
             sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png")
             sharePanel.show(ShareType.IMAGE_RUL)
+            sharePanel.setUMShareListener(object : UMShareListener {
+                override fun onResult(p0: SHARE_MEDIA?) {
+
+                }
+
+                override fun onCancel(p0: SHARE_MEDIA?) {
+
+                }
+
+                override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+
+                }
+
+                override fun onStart(p0: SHARE_MEDIA?) {
+                    mFeedsWatchModel?.shareCnt = mFeedsWatchModel?.shareCnt?.plus(1)
+                    mShareNumTv?.text = mFeedsWatchModel?.shareCnt.toString()
+                }
+            })
         }
 
         mControlTv?.setDebounceViewClickListener {
@@ -282,6 +306,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it)
         }
+        mShareNumTv?.text = mFeedsWatchModel?.shareCnt.toString()
+        mXinNumTv?.text = mFeedsWatchModel?.starCnt.toString()
+        mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
         mRadioView?.avatarContainer?.setDebounceViewClickListener {
             mControlTv?.callOnClick()
@@ -297,10 +324,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 resumeSong()
             }
         }
+
+
     }
 
     override fun addCommentSuccess(model: FirstLevelCommentModel) {
         mFeedsCommentView?.addSelfComment(model)
+        mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!.plus(1)
+        mFeedsWatchModel?.commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!
+        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
     }
 
     override fun likeFeed(like: Boolean) {
@@ -344,6 +376,58 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelationChangeEvent) {
+        if (mFeedsWatchModel?.user?.userID == event.useId) {
+            if (event.isFriend) {
+                isFriendState()
+                mFollowTv?.setOnClickListener(null)
+            } else if (event.isFollow) {
+                isFollowState()
+                mFollowTv?.setOnClickListener(null)
+            } else {
+                isStrangerState()
+            }
+        }
+    }
+
+    fun isFriendState() {
+        val followState = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                .setSolidColor(U.getColor(R.color.white))
+                .setStrokeColor(Color.parseColor("#AD6C00"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .build()
+
+        mFollowTv?.text = "已互关"
+        mFollowTv?.background = followState
+        mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
+    }
+
+    fun isFollowState() {
+        val followState = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                .setSolidColor(U.getColor(R.color.white))
+                .setStrokeColor(Color.parseColor("#AD6C00"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .build()
+
+        mFollowTv?.text = "已关注"
+        mFollowTv?.background = followState
+        mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
+    }
+
+    fun isStrangerState() {
+        val followState = DrawableCreator.Builder()
+                .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+                .setSolidColor(Color.parseColor("#FFC15B"))
+                .build()
+
+        mFollowTv?.text = "+关注"
+        mFollowTv?.background = followState
+        mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
+    }
+
     private fun pauseSong() {
         mControlTv!!.isSelected = false
         mRadioView?.pause()
@@ -377,6 +461,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         })
     }
+
+    override fun isBlackStatusBarText(): Boolean = true
 
     override fun useEventBus(): Boolean {
         return true

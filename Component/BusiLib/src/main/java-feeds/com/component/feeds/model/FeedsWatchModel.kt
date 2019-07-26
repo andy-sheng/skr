@@ -22,6 +22,8 @@ class FeedsWatchModel : Serializable {
     var song: FeedSongModel? = null
     @JSONField(name = "starCnt")
     var starCnt: Int? = null
+    @JSONField(name = "shareCnt")
+    var shareCnt: Int? = null
     @JSONField(name = "user")
     var user: FeedUserInfo? = null
     @JSONField(name = "status")
