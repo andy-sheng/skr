@@ -132,7 +132,7 @@ public class LyricsManager {
             }
         })
                 .subscribeOn(Schedulers.io())
-                .retryWhen(new RxRetryAssist(3, ""))
+                .retryWhen(new RxRetryAssist(5, ""))
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -5,19 +5,24 @@ import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.log.MyLog
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
+import com.component.lyrics.LyricsManager
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 import com.module.feeds.watch.model.FeedSongModel
+import io.reactivex.disposables.Disposable
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+    val mTag = "AutoScrollLyricView"
     lateinit var lyricTv: ExTextView
     lateinit var scrollView: ScrollView
     var passTime: Int = 0
     var scrollTime: Long? = null
     var mFeedSongModel: FeedSongModel? = null
     var mIsStart: Boolean = false
+    var mDisposable: Disposable? = null
 
     var mHandlerTaskTimer: HandlerTaskTimer? = null
 
@@ -34,79 +39,12 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         tryInflate()
         mFeedSongModel = feedSongModel
         passTime = 0
-        lyricTv.text = "如果那两个字没有颤抖\n" +
-                "我不会发现我难受\n" +
-                "怎么说出口\n" +
-
-                "也不过是分手\n" +
-
-                "如果对于明天没有要求\n" +
-
-                "牵牵手就像旅游\n" +
-
-                "成千上万个门口\n" +
-
-                "总有一个人要先走\n" +
-
-                "怀抱既然不能逗留\n" +
-
-                "何不在离开的时候\n" +
-                "一边享受 一边泪流\n" +
-
-                "十年之前\n" +
-
-                "我不认识你 你不属于我\n" +
-
-                "我们还是一样\n" +
-
-                "陪在一个陌生人左右\n" +
-
-                "走过渐渐熟悉的街头\n" +
-
-                "十年之后\n" +
-
-                "我们是朋友 还可以问候\n" +
-
-                "只是那种温柔\n" +
-
-                "再也找不到拥抱的理由\n" +
-
-                "情人最后难免沦为朋友\n" +
-
-                "怀抱既然不能逗留\n" +
-
-                "何不在离开的时候\n" +
-
-                "一边享受 一边泪流\n" +
-
-                "十年之前\n" +
-
-                "我不认识你 你不属于我\n" +
-
-                "我们还是一样\n" +
-
-                "陪在一个陌生人左右\n" +
-
-                "走过渐渐熟悉的街头\n" +
-
-                "十年之后\n" +
-
-                "我们是朋友 还可以问候\n" +
-
-                "只是那种温柔\n" +
-
-                "再也找不到拥抱的理由\n" +
-
-                "情人最后难免沦为朋友\n" +
-
-                "直到和你做了多年朋友\n" +
-
-                "才明白我的眼泪\n" +
-
-                "不是为你而流\n" +
-
-                "也为别人而流\n" +
-                "\n"
+        lyricTv.text = "正在加载"
+        mDisposable = LyricsManager.getLyricsManager(U.app())
+                .loadGrabPlainLyric(feedSongModel.songTpl!!.lrcTxt)
+                .subscribe({ s ->
+                    lyricTv.text = "\n${s}"
+                }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
     }
 
     override fun playLyric() {
