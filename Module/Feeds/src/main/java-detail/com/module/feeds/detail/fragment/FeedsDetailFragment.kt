@@ -81,6 +81,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mFeedsWatchModel: FeedsWatchModel? = null
 
+    var mResumeCall: (() -> Unit)? = null
+
     val mMyMediaPlayer: MyMediaPlayer by lazy {
         MyMediaPlayer().also {
             it.setMonitorProgress(true)
@@ -351,6 +353,22 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mXinNumTv!!.text = (mXinNumTv!!.text.toString().toInt() - 1).toString()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mResumeCall?.invoke()
+        mResumeCall = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mControlTv!!.isSelected) {
+            mMyMediaPlayer.pause()
+            mResumeCall = {
+                mMyMediaPlayer.resume()
+            }
+        }
     }
 
     override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
