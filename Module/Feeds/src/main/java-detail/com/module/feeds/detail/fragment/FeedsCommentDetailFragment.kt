@@ -64,7 +64,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         }
         mTitlebar?.centerTextView?.text = "${mFirstLevelCommentModel?.comment?.subCommentCnt.toString()}条回复"
 
-        mFeedsSecondCommentPresenter = FeedsSecondCommentPresenter(0, this)
+        mFeedsSecondCommentPresenter = FeedsSecondCommentPresenter(mFeedsID!!, this)
 
         mRefreshLayout = rootView.findViewById(com.module.feeds.R.id.refreshLayout)
         mRecyclerView = rootView.findViewById(com.module.feeds.R.id.recycler_view)
@@ -100,7 +100,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mRefreshLayout?.setEnableRefresh(false)
         mRefreshLayout?.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mFeedsSecondCommentPresenter?.getSecondLevelCommentList()
+                mFeedsSecondCommentPresenter?.getSecondLevelCommentList(mFirstLevelCommentModel!!.comment.commentID)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -126,7 +126,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         }
 
         mFeedsInputContainerView?.mSendCallBack = {
-            mFeedsSecondCommentPresenter?.addComment(it, mFeedsID!!, mRefuseModel!!) {
+            mFeedsSecondCommentPresenter?.addComment(it, mFeedsID!!, mFirstLevelCommentModel!!.comment.commentID, mRefuseModel!!) {
                 mFirstLevelCommentModel!!.comment!!.subCommentCnt++
                 feedsCommendAdapter?.mCommentNum = mFirstLevelCommentModel!!.comment!!.subCommentCnt
                 feedsCommendAdapter?.notifyItemChanged(1)
@@ -137,7 +137,8 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             }
         }
 
-        mFeedsSecondCommentPresenter?.getSecondLevelCommentList()
+        mFeedsSecondCommentPresenter?.updateCommentList()
+        mFeedsSecondCommentPresenter?.getSecondLevelCommentList(mFirstLevelCommentModel!!.comment.commentID)
     }
 
     override fun isBlackStatusBarText(): Boolean = true

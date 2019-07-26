@@ -55,6 +55,10 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
         }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
     }
 
+    fun updateCommentList() {
+        mIFirstLevelCommentView.updateList(mModelList)
+    }
+
     fun likeComment(firstLevelCommentModel: FirstLevelCommentModel, feedID: Int, like: Boolean, position: Int) {
         val map = HashMap<String, Any>()
         map["commentID"] = firstLevelCommentModel.comment.commentID

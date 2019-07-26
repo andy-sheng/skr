@@ -19,7 +19,7 @@ interface FeedsDetailServerApi {
      * 获取二级评论
      */
     @GET("/v1/feed/second-level-comment-list")
-    fun getSecondLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("commentID") commentID: Int, @Query("userID") userID: Int): Observable<ApiResult>
+    fun getSecondLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("feedID") feedID: Int, @Query("commentID") commentID: Int, @Query("userID") userID: Int): Observable<ApiResult>
 
     /**
      * 点赞评论

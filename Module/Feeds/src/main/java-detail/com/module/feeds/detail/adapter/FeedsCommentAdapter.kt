@@ -113,7 +113,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                     mContentTv.text = model.comment.content
                 } else if (model.comment.replyType == 2) {
                     val spanUtils = SpanUtils()
-                            .append(model.commentUser.nickname.toString()).setForegroundColor(Color.parseColor("#FF6295C4")).setClickSpan(object : ClickableSpan() {
+                            .append(model.commentUser.nickname.toString()).setForegroundColor(U.getColor(R.color.blue)).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
                                     bundle.putInt("bundle_user_id", model.commentUser.userID!!)
@@ -124,7 +124,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
                             })
                             .append("回复").setForegroundColor(U.getColor(R.color.black))
-                            .append(model.replyUser.nickname.toString()).setForegroundColor(Color.parseColor("#FF6295C4")).setClickSpan(object : ClickableSpan() {
+                            .append(model.replyUser.nickname.toString()).setForegroundColor(U.getColor(R.color.blue)).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
                                     bundle.putInt("bundle_user_id", model.replyUser.userID!!)
@@ -133,9 +133,9 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                             .with(bundle)
                                             .navigation()
                                 }
-                            })
+                            }).append(model.comment.content)
                     val stringBuilder = spanUtils.create()
-                    mContentTv.text = stringBuilder.toString()
+                    mContentTv.text = stringBuilder
                 }
             }
 

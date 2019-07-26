@@ -113,6 +113,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         mFeedsID = feedsWatchModel.feedID
         mFeedsWatchModel = feedsWatchModel
         mFeedsCommentPresenter = FeedsCommentPresenter(mFeedsID!!, this)
+        mFeedsCommentPresenter?.updateCommentList()
         mFeedsCommentPresenter?.getFirstLevelCommentList()
     }
 

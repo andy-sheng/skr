@@ -16,7 +16,7 @@
         app:centerTextStyle="BOLD"
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/img_back"
+        app:leftDrawable="@drawable/shenqu_back"
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#EBEDF2"

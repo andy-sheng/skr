@@ -20,7 +20,7 @@ import kotlin.collections.set
 class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : AbsCoroutinePresenter() {
     val mTag = "FeedsSecondCommentPresenter"
     val mFeedsDetailServerApi = ApiManager.getInstance().createService(FeedsDetailServerApi::class.java)
-    val mCount = 50
+    val mCount = 30
     var mOffset = 0
     val mModelList: ArrayList<FirstLevelCommentModel> = ArrayList()
 
@@ -28,8 +28,8 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
         addToLifeCycle()
     }
 
-    fun getSecondLevelCommentList() {
-        ApiMethods.subscribe(mFeedsDetailServerApi.getSecondLevelCommentList(mOffset, mCount, mFeedId, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
+    fun getSecondLevelCommentList(commentID: Int) {
+        ApiMethods.subscribe(mFeedsDetailServerApi.getSecondLevelCommentList(mOffset, mCount, mFeedId, commentID, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)
@@ -83,12 +83,12 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
         }, this, ApiMethods.RequestControl(mTag + "likeComment", ApiMethods.ControlType.CancelThis))
     }
 
-    fun addComment(content: String, feedID: Int, refuseModel: FirstLevelCommentModel, callBack: ((FirstLevelCommentModel) -> Unit)) {
+    fun addComment(content: String, feedID: Int, firstLevelCommentID: Int, refuseModel: FirstLevelCommentModel, callBack: ((FirstLevelCommentModel) -> Unit)) {
         val map = HashMap<String, Any>()
         map["content"] = content
         map["feedID"] = feedID
-        map["firstLevelCommentID"] = refuseModel.comment.commentID
-        map["replyedUserID"] = refuseModel.comment.userID
+        map["firstLevelCommentID"] = firstLevelCommentID
+        map["replyedCommentID"] = refuseModel.comment.commentID
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
