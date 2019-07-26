@@ -7,7 +7,7 @@ import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.component.person.view.RequestCallBack
 import com.module.RouterConstants
-import com.module.feeds.feeds.view.PersonFeedsWallView
+import com.module.feeds.watch.view.PersonFeedsWallView
 import com.module.feeds.watch.FeedsWatchFragment
 
 @Route(path = RouterConstants.SERVICE_FEEDS, name = "测试服务")

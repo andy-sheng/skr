@@ -1,4 +1,4 @@
-package com.module.feeds.feeds.view
+package com.module.feeds.watch.view
 
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -12,13 +12,13 @@ import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.R
 import com.component.dialog.FeedsMoreDialogView
-import com.module.feeds.feeds.presenter.FeedWatchViewPresenter
-import com.module.feeds.feeds.adapter.FeedsWatchViewAdapter
-import com.module.feeds.feeds.listener.FeedsListener
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.watch.presenter.FeedWatchViewPresenter
+import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.RouterConstants
+import com.module.feeds.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader

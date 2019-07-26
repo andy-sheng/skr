@@ -1,4 +1,4 @@
-package com.component.feeds.view
+package com.module.feeds.watch.view
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -13,7 +13,7 @@ import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.component.busilib.R
+import com.module.feeds.R
 
 class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
     val TAG = "FeedsRecordAnimationView"

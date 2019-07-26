@@ -1,4 +1,4 @@
-package com.module.feeds.feeds.presenter
+package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
@@ -10,8 +10,8 @@ import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.module.feeds.watch.FeedsWatchServerApi
-import com.module.feeds.feeds.model.FeedsWatchModel
-import com.module.feeds.feeds.view.IFeedsWatchView
+import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.view.IFeedsWatchView
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap

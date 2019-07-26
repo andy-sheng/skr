@@ -1,4 +1,4 @@
-package com.module.feeds.feeds.holder
+package com.module.feeds.watch.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -9,11 +9,11 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
-import com.component.busilib.R
-import com.component.feeds.view.FeedsRecordAnimationView
+import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
-import com.module.feeds.feeds.listener.FeedsListener
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.R
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
 
 open class FeedViewHolder(var item: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(item) {
 

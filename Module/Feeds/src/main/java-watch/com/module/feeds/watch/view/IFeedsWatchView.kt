@@ -1,6 +1,6 @@
-package com.module.feeds.feeds.view
+package com.module.feeds.watch.view
 
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.watch.model.FeedsWatchModel
 
 interface IFeedsWatchView {
     fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean)

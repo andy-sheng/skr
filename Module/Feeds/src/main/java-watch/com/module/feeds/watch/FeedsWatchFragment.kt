@@ -17,7 +17,7 @@ import com.module.feeds.watch.view.FeedsLikeView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
-import com.module.feeds.feeds.view.FeedsWatchView
+import com.module.feeds.watch.view.FeedsWatchView
 import com.module.RouterConstants
 
 class FeedsWatchFragment : BaseFragment() {

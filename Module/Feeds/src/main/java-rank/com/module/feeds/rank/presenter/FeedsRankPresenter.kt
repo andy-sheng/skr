@@ -6,7 +6,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.module.feeds.feeds.model.FeedRankModel
+import com.module.feeds.watch.model.FeedRankModel
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.view.IFeedsRank
 

@@ -84,7 +84,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/song_name_tv" />
 
-                    <com.component.feeds.view.FeedsRecordAnimationView
+                    <com.module.feeds.watch.view.FeedsRecordAnimationView
                         android:id="@+id/radio_view"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

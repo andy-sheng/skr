@@ -1,4 +1,4 @@
-package com.module.feeds.feeds.holder
+package com.module.feeds.watch.viewholder
 
 import android.text.TextUtils
 import android.view.View
@@ -9,11 +9,11 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.R
 import com.component.busilib.view.BitmapTextView
-import com.module.feeds.feeds.listener.FeedsListener
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.feeds.R
 
 open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it, l) {
 

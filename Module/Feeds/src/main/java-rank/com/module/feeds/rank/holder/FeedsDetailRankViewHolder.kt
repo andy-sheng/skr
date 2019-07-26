@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 

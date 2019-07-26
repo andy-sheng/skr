@@ -14,7 +14,7 @@ import com.module.feeds.R
 import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.feeds.model.FeedRankModel
+import com.module.feeds.watch.model.FeedRankModel
 import com.module.RouterConstants
 import com.module.feeds.rank.presenter.FeedsRankPresenter
 import com.module.feeds.rank.view.FeedsRankView

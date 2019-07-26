@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.view.ex.ExConstraintLayout
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
 import com.module.feeds.detail.inter.IFirstLevelCommentView

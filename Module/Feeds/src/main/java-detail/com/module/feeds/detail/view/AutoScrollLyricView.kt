@@ -9,7 +9,7 @@ import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.module.feeds.feeds.model.FeedSongModel
+import com.module.feeds.watch.model.FeedSongModel
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
     lateinit var lyricTv: ExTextView

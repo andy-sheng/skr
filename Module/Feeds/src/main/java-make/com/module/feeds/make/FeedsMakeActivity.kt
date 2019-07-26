@@ -24,7 +24,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.feeds.model.FeedSongModel
+import com.module.feeds.watch.model.FeedSongModel
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader

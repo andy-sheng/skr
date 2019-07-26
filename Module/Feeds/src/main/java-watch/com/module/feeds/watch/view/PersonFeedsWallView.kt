@@ -1,4 +1,4 @@
-package com.module.feeds.feeds.view
+package com.module.feeds.watch.view
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,14 +10,14 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
-import com.component.busilib.R
-import com.module.feeds.feeds.adapter.FeedsWallViewAdapter
-import com.module.feeds.feeds.listener.FeedsListener
-import com.module.feeds.feeds.model.FeedsWatchModel
-import com.module.feeds.feeds.presenter.FeedsWallViewPresenter
+import com.module.feeds.watch.adapter.FeedsWallViewAdapter
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.presenter.FeedsWallViewPresenter
 import com.component.person.view.RequestCallBack
 import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
+import com.module.feeds.R
 
 class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
 

@@ -1,13 +1,13 @@
-package com.module.feeds.feeds.adapter
+package com.module.feeds.watch.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.component.busilib.R
-import com.module.feeds.feeds.holder.EmptyFeedWallHolder
-import com.module.feeds.feeds.holder.FeedsWallViewHolder
-import com.module.feeds.feeds.listener.FeedsListener
-import com.module.feeds.feeds.model.FeedsWatchModel
+import com.module.feeds.R
+import com.module.feeds.watch.viewholder.EmptyFeedWallHolder
+import com.module.feeds.watch.viewholder.FeedsWallViewHolder
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
 
 class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
