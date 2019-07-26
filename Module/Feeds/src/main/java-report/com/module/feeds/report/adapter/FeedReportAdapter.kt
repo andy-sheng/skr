@@ -35,6 +35,16 @@ class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewH
         return mDataList.size
     }
 
+    fun getSelectedList(): ArrayList<FeedReportModel> {
+        var result = ArrayList<FeedReportModel>()
+        for (model in mDataList) {
+            if (model.isSelected) {
+                result.add(model)
+            }
+        }
+        return result
+    }
+
     inner class FeedReportViewHolder(var item: View) : RecyclerView.ViewHolder(item) {
 
         var mPosition = 0

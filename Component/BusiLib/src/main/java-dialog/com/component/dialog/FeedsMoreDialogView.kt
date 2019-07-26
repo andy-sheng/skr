@@ -40,7 +40,9 @@ class FeedsMoreDialogView(var activity: Activity, type: Int) : ConstraintLayout(
 
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_REPORT)
+                        .withInt("from", type)
                         .navigation()
             }
         })

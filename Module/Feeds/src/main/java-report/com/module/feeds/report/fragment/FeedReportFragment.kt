@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.report.adapter.FeedReportAdapter
 import com.module.feeds.report.model.FeedReportModel
 
@@ -24,6 +25,8 @@ class FeedReportFragment : BaseFragment() {
 
     lateinit var mAdapter: FeedReportAdapter
 
+    var mFrom = FeedsMoreDialogView.FROM_FEED
+
     override fun initView(): Int {
         return R.layout.feeds_report_fragment_layout
     }
@@ -36,7 +39,11 @@ class FeedReportFragment : BaseFragment() {
         mSumbitTv = rootView.findViewById(R.id.sumbit_tv)
 
         mAdapter = FeedReportAdapter()
-        mAdapter.mDataList = getReportFeed()
+        if (mFrom == FeedsMoreDialogView.FROM_FEED) {
+            mAdapter.mDataList = getReportFeed()
+        } else if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
+            mAdapter.mDataList = getReportComment()
+        }
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
@@ -49,10 +56,28 @@ class FeedReportFragment : BaseFragment() {
 
         mSumbitTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                val list = mAdapter.getSelectedList()
+                val content = mContentEdit.text.toString()
+                when (mFrom) {
+                    FeedsMoreDialogView.FROM_FEED -> {
+                        // 举报作品
+                    }
+                    FeedsMoreDialogView.FROM_COMMENT -> {
+                        // 举报评论
+                    }
+                    else -> {
 
+                    }
+                }
             }
         })
+    }
 
+    override fun setData(type: Int, data: Any?) {
+        super.setData(type, data)
+        if (type == 0) {
+            mFrom = data as Int
+        }
     }
 
     override fun useEventBus(): Boolean {
