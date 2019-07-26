@@ -83,6 +83,10 @@ android {
             // 详情
             java.srcDirs += 'src/main/java-detail'
             res.srcDirs += 'src/main/res-detail'
+
+            // 举报
+            java.srcDirs += 'src/main/java-report'
+            res.srcDirs += 'src/main/res-report'
         }
     }
 }

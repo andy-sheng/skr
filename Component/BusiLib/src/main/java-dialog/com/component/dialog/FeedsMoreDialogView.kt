@@ -4,12 +4,14 @@ import android.app.Activity
 import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.common.view.ex.ExTextView
+import com.module.RouterConstants
 
 
 /**
@@ -38,6 +40,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int) : ConstraintLayout(
 
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_REPORT)
+                        .navigation()
             }
         })
 
