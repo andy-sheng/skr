@@ -2,8 +2,10 @@ package com.module.feeds.make
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
+import android.view.ViewStub
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 
@@ -33,6 +35,7 @@ import com.component.toast.NoImageCommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.feeds.R
+import com.module.feeds.detail.view.AutoScrollLyricView
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -58,9 +61,11 @@ class FeedsMakeActivity : BaseActivity() {
     var mAdjustTv: TextView? = null
     var mVoiceScaleView: VoiceScaleView? = null
     var mManyLyricsView: ManyLyricsView? = null
+    var mAutoScrollLyricView: AutoScrollLyricView? = null
     var mFeedsMakeModel: FeedsMakeModel? = null
     internal var mSkrAudioPermission = SkrAudioPermission()
     internal var mLyricAndAccMatchManager = LyricAndAccMatchManager()
+
 
     val mVoiceControlPanelView by lazy {
         VoiceControlPanelView(this).apply { bindData() }
@@ -98,6 +103,9 @@ class FeedsMakeActivity : BaseActivity() {
         mAdjustTv = findViewById(R.id.adjust_tv)
         mVoiceScaleView = findViewById(R.id.voice_scale_view)
         mManyLyricsView = findViewById(R.id.many_lyrics_view)
+
+        val viewStub = findViewById<ViewStub>(R.id.auto_scroll_lyric_view_layout_viewstub)
+        mAutoScrollLyricView = AutoScrollLyricView(viewStub)
 
         if (mFeedsMakeModel == null) {
             U.getToastUtil().showShort("参数不正确")
@@ -150,60 +158,72 @@ class FeedsMakeActivity : BaseActivity() {
         mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs
                 ?: 0L)
         initEngine()
-        // 加载歌词
-        LyricsManager.getLyricsManager(U.app())
-                .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
-                .subscribe({ lyricsReader ->
-                    MyLog.w(TAG, "onEventMainThread " + "play")
-                    mManyLyricsView?.visibility = View.VISIBLE
-                    mManyLyricsView?.initLrcData()
-                    mManyLyricsView?.lyricsReader = lyricsReader
-                    val set = HashSet<Int>()
-                    set.add(lyricsReader.getLineInfoIdByStartTs(0))
-                    mManyLyricsView?.needCountDownLine = set
-                    mManyLyricsView?.seekto(0)
-                    mManyLyricsView?.pause()
-                }, { throwable ->
-                    MyLog.e(TAG, throwable)
-                    MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                })
-        // 提前下载伴奏
-        bgmFileJob = async(Dispatchers.IO) {
-            val file = SongResUtils.getAccFileByUrl(mFeedsMakeModel?.songModel?.songTpl?.bgm)
-            if (file?.exists() == true) {
-                MyLog.d(TAG, "伴奏存在")
-                file
-            } else {
-                for (i in 1..10) {
-                    val r = U.getHttpUtils().downloadFileSync(mFeedsMakeModel?.songModel?.songTpl?.bgm, file, true, object : HttpUtils.OnDownloadProgress {
-                        override fun onCanceled() {
-                        }
 
-                        override fun onFailed() {
-                        }
-
-                        override fun onDownloaded(downloaded: Long, totalLength: Long) {
-                            mFeedsMakeModel?.bgmDownloadProgress = downloaded / totalLength.toFloat()
-                        }
-
-                        override fun onCompleted(localPath: String?) {
-                            mFeedsMakeModel?.bgmDownloadProgress = 1f
-                        }
+        val lyricWithTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+        if (!TextUtils.isEmpty(lyricWithTs)) {
+            // 加载歌词
+            LyricsManager.getLyricsManager(U.app())
+                    .loadStandardLyric(lyricWithTs)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                    .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
+                    .subscribe({ lyricsReader ->
+                        MyLog.w(TAG, "onEventMainThread " + "play")
+                        mManyLyricsView?.visibility = View.VISIBLE
+                        mManyLyricsView?.initLrcData()
+                        mManyLyricsView?.lyricsReader = lyricsReader
+                        val set = HashSet<Int>()
+                        set.add(lyricsReader.getLineInfoIdByStartTs(0))
+                        mManyLyricsView?.needCountDownLine = set
+                        mManyLyricsView?.seekto(0)
+                        mManyLyricsView?.pause()
+                    }, { throwable ->
+                        MyLog.e(TAG, throwable)
+                        MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
                     })
-                    if (r) {
-                        MyLog.d(TAG, "伴奏下载成功")
-                        break
-                    } else {
-                        delay(3000)
-                    }
-                }
-                file
+        } else {
+            mFeedsMakeModel?.songModel?.let {
+                mAutoScrollLyricView?.setSongModel(it)
             }
         }
+
+        // 有伴奏提前下载伴奏
+        mFeedsMakeModel?.songModel?.songTpl?.bgm.let {
+            bgmFileJob = async(Dispatchers.IO) {
+                val file = SongResUtils.getAccFileByUrl(it)
+                if (file?.exists() == true) {
+                    MyLog.d(TAG, "伴奏存在")
+                    file
+                } else {
+                    for (i in 1..10) {
+                        val r = U.getHttpUtils().downloadFileSync(it, file, true, object : HttpUtils.OnDownloadProgress {
+                            override fun onCanceled() {
+                            }
+
+                            override fun onFailed() {
+                            }
+
+                            override fun onDownloaded(downloaded: Long, totalLength: Long) {
+                                mFeedsMakeModel?.bgmDownloadProgress = downloaded / totalLength.toFloat()
+                            }
+
+                            override fun onCompleted(localPath: String?) {
+                                mFeedsMakeModel?.bgmDownloadProgress = 1f
+                            }
+                        })
+                        if (r) {
+                            MyLog.d(TAG, "伴奏下载成功")
+                            break
+                        } else {
+                            delay(3000)
+                        }
+                    }
+                    file
+                }
+            }
+        }
+
         if (mFeedsMakeModel?.withBgm == true) {
             (mTitleBar?.rightCustomView as TextView).text = "伴奏"
         } else {
@@ -265,7 +285,9 @@ class FeedsMakeActivity : BaseActivity() {
             }
             runBlocking {
                 val bgmFile = bgmFileJob?.await()
-                ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), bgmFile?.absolutePath, null, 0, false, false, 1)
+                bgmFile?.absolutePath?.let {
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), it, null, 0, false, false, 1)
+                }
                 goLyric(true)
             }
         } else {
@@ -273,42 +295,47 @@ class FeedsMakeActivity : BaseActivity() {
         }
     }
 
-    private fun goLyric(withacc:Boolean) {
-        // 直接走
-        val configParams = LyricAndAccMatchManager.ConfigParams().apply {
-            manyLyricsView = mManyLyricsView
-            voiceScaleView = mVoiceScaleView
-            lyricUrl = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
-            accBeginTs = 0
-            accEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
-            lyricBeginTs = 0
-            lyricEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
-            authorName = mFeedsMakeModel?.songModel?.songTpl?.uploader?.nickname
-            accLoadOk = !withacc
-            needScore = false
+    private fun goLyric(withacc: Boolean) {
+        val lyricWithTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+        if (!TextUtils.isEmpty(lyricWithTs)) {
+            // 直接走
+            val configParams = LyricAndAccMatchManager.ConfigParams().apply {
+                manyLyricsView = mManyLyricsView
+                voiceScaleView = mVoiceScaleView
+                lyricUrl = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+                accBeginTs = 0
+                accEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
+                lyricBeginTs = 0
+                lyricEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
+                authorName = mFeedsMakeModel?.songModel?.songTpl?.uploader?.nickname
+                accLoadOk = !withacc
+                needScore = false
+            }
+            configParams.manyLyricsView = mManyLyricsView
+
+            mLyricAndAccMatchManager.setArgs(configParams)
+
+            mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
+                override fun onLyricParseSuccess(reader: LyricsReader) {
+
+                }
+
+                override fun onLyricParseFailed() {
+
+                }
+
+                override fun onLyricEventPost(lineNum: Int) {
+                    // 开始录音
+                    ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
+                    mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
+                    mFeedsMakeModel?.recording = true
+                    mCircleCountDownView?.go(0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
+                            ?: 0)
+                }
+            })
+        } else {
+            mAutoScrollLyricView?.playLyric()
         }
-        configParams.manyLyricsView = mManyLyricsView
-
-        mLyricAndAccMatchManager.setArgs(configParams)
-
-        mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
-            override fun onLyricParseSuccess(reader: LyricsReader) {
-                
-            }
-
-            override fun onLyricParseFailed() {
-
-            }
-
-            override fun onLyricEventPost(lineNum: Int) {
-                // 开始录音
-                ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
-                mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
-                mFeedsMakeModel?.recording = true
-                mCircleCountDownView?.go(0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
-                        ?: 0)
-            }
-        })
     }
 
     private fun recordOk() {
@@ -322,14 +349,14 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
         }
-        val intent = Intent(this,FeedsEditorActivity::class.java)
+        val intent = Intent(this, FeedsEditorActivity::class.java)
         intent.putExtra("feeds_make_model", mFeedsMakeModel)
-        startActivityForResult(intent,100)
+        startActivityForResult(intent, 100)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==100){
+        if (requestCode == 100) {
             startRecord()
         }
     }
@@ -371,7 +398,7 @@ class FeedsMakeActivity : BaseActivity() {
             // 是否插着有限耳机
             mFeedsMakeModel?.withBgm = false
             (mTitleBar?.rightCustomView as TextView).text = "清唱"
-            if(mFeedsMakeModel?.recording == true){
+            if (mFeedsMakeModel?.recording == true) {
                 // 重新录制
                 startRecord()
             }

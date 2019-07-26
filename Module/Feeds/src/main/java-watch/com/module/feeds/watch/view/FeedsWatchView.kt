@@ -75,7 +75,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             override fun onClickHitListener(watchModel: FeedsWatchModel?) {
                 // 打榜
                 watchModel?.song?.let {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FOR_TEST)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
                             .withSerializable("song_model", it)
                             .navigation()
                 }

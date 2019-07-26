@@ -59,6 +59,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                 .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                 .subscribe({ s ->
                     lyricTv.text = "\n${s}"
+                    visibility = View.VISIBLE
                     startScroll()
                 }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
     }
