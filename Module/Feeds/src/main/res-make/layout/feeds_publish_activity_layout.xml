@@ -45,7 +45,7 @@
         android:layout_marginTop="@dimen/view_12_dp"
         app:layout_constraintTop_toBottomOf="@+id/say_edit" />
 
-    <com.module.feeds.detail.view.RadioView
+    <com.module.feeds.view.FeedsRecordAnimationView
         android:id="@+id/radio_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,13 +54,11 @@
         app:layout_constraintTop_toTopOf="@+id/avatar_bg"
         app:panelDrawable="@drawable/record_film_icon"
         app:panelMarginTop="@dimen/view_30_dp"
-        app:panelWidth="@dimen/view_126_dp"
         app:rockerDrawable="@drawable/record_pointer_icon"
-        app:rockerHeight="@dimen/view_58_dp"
-        app:rockerWidth="@dimen/view_16_dp"
+        app:avatarWidth="@dimen/view_40_dp"
         app:rockerXP="0.5"
         app:rockerYP="0.1"
-        app:userIconMargin="@dimen/view_20_dp" />
+         />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView

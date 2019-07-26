@@ -24,7 +24,7 @@ import com.component.lyrics.widget.ManyLyricsView
 import com.engine.EngineEvent
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.detail.view.RadioView
+import com.module.feeds.view.FeedsRecordAnimationView
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
@@ -44,7 +44,7 @@ class FeedsEditorActivity : BaseActivity() {
     var mPlayBtn: ExImageView? = null
     var mSeekBar: SeekBar? = null
     var mAvatarBg: BaseImageView? = null
-    var mRadioView: RadioView? = null
+    var mRadioView: FeedsRecordAnimationView? = null
     var mManyLyricsView: ManyLyricsView? = null
     var mVoiceControlView: FeedsEditorVoiceControlPanelView? = null
     var mVaControlView: VocalAlignControlPannelView? = null

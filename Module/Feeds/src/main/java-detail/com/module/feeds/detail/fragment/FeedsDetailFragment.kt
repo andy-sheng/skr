@@ -37,7 +37,7 @@ import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
-import com.module.feeds.detail.view.RadioView
+import com.module.feeds.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
 import org.greenrobot.eventbus.Subscribe
@@ -71,7 +71,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mToolbarLayout: ConstraintLayout? = null
     var mFeedsCommonLyricView: FeedsCommonLyricView? = null
     var mFeedsCommentView: FeedsCommentView? = null
-    var mRadioView: RadioView? = null
+    var mRadioView: FeedsRecordAnimationView? = null
     var mCommonTitleBar: CommonTitleBar? = null
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
 

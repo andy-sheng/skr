@@ -419,7 +419,9 @@ public class AndroidMediaPlayer extends BasePlayer {
     @Override
     public void release() {
         MyLog.d(TAG, "release");
-        mPlayer.release();
+        if (mPlayer != null) {
+            mPlayer.release();
+        }
         mPlayer = null;
         sPrePlayer = null;
         mCallback = null;

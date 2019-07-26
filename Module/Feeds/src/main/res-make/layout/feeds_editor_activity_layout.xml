@@ -63,23 +63,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.module.feeds.detail.view.RadioView
+    <com.module.feeds.view.FeedsRecordAnimationView
         android:id="@+id/radio_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
+        app:avatarWidth="80dp"
         app:layout_constraintLeft_toLeftOf="@+id/avatar_bg"
         app:layout_constraintRight_toRightOf="@+id/avatar_bg"
         app:layout_constraintTop_toTopOf="@+id/avatar_bg"
         app:panelDrawable="@drawable/radio_panel"
         app:panelMarginTop="@dimen/view_30_dp"
-        app:panelWidth="@dimen/view_126_dp"
         app:rockerDrawable="@drawable/gequxiangqing_caokonggan"
-        app:rockerHeight="@dimen/view_58_dp"
-        app:rockerWidth="@dimen/view_16_dp"
         app:rockerXP="0.5"
-        app:rockerYP="0.1"
-        app:userIconMargin="@dimen/view_20_dp" />
+        app:rockerYP="0.1" />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView

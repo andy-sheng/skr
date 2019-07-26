@@ -84,8 +84,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/song_name_tv" />
 
-                    <com.module.feeds.detail.view.RadioView
-                        app:panelWidth="@dimen/view_126_dp"
+                    <com.module.feeds.view.FeedsRecordAnimationView
                         android:id="@+id/radio_view"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -95,12 +94,9 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:panelDrawable="@drawable/radio_panel"
                         app:panelMarginTop="@dimen/view_30_dp"
-                        app:userIconMargin="@dimen/view_20_dp"
+                        app:avatarWidth="@dimen/view_82_dp"
                         app:rockerDrawable="@drawable/gequxiangqing_caokonggan"
-                        app:rockerHeight="@dimen/view_58_dp"
-                        app:rockerWidth="@dimen/view_16_dp"
-                        app:rockerXP="0.5"
-                        app:rockerYP="0.1" />
+                         />
 
                     <ViewStub
                         android:layout_marginTop="@dimen/view_20_dp"
