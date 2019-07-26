@@ -15,6 +15,7 @@ public:
     ~AudioPlay();
 
     void setMute(bool mute);
+    int64_t getPosition();
     void setTuneLatency(bool tuneLatency) {mTuneLatency = tuneLatency;}
     int config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs = 40);
     int start();

@@ -674,8 +674,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             }
             mInChannel = false;
             if (mConfig.isUseExternalAudio()) {
-                mAudioCapture.release();
+                // 如果有连接Mixer, 主idx的AudioSource需要最后release
                 mAudioPlayerCapture.release();
+                mAudioCapture.release();
             }
             MyLog.d(TAG, "destroyInner2");
             if (mConfig.isEnableVideo() && mConfig.isUseExternalVideo()) {

@@ -92,7 +92,7 @@ public class AudioPlayerCapture {
     private StcMgt mStcMgt;
     private AudioBufFormat mOutFormat;
     private ByteBuffer mOutBuffer;
-    private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
+    private int mAudioPlayerType = AUDIO_PLAYER_TYPE_OPENSLES;
     private boolean mPlayerTypeChanged = false;
     private boolean mMute = false;
     private float mVolume = 1.0f;
