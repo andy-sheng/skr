@@ -15,7 +15,7 @@
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/img_back"
+        app:leftDrawable="@drawable/img_back_black"
         app:leftType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#EBEDF2"

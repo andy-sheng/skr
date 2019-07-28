@@ -6,7 +6,9 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -14,18 +16,17 @@ import com.module.feeds.R
 import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.model.FeedRankModel
 import com.module.RouterConstants
+import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.model.FeedRankTagModel
-import com.module.feeds.rank.presenter.FeedsRankPresenter
 import com.module.feeds.rank.view.FeedsRankView
-import com.module.feeds.rank.view.IFeedsRank
+import kotlinx.coroutines.launch
 
 /**
  * 神曲打榜 排行榜
  */
 @Route(path = RouterConstants.ACTIVITY_FEEDS_RANK)
-class FeedsRankActivity : BaseActivity(), IFeedsRank {
+class FeedsRankActivity : BaseActivity() {
 
     private lateinit var mTitlebar: CommonTitleBar
     private lateinit var mSearchFeedIv: ExTextView
@@ -33,9 +34,9 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
     private lateinit var mViewpager: ViewPager
     private lateinit var mPagerAdapter: PagerAdapter
 
-    private lateinit var mPresenter: FeedsRankPresenter
-
     var mFeedRankViews: HashMap<Int, FeedsRankView> = HashMap()
+
+    private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_rank_activity_layout
@@ -46,9 +47,6 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
         mSearchFeedIv = findViewById(R.id.search_feed_iv)
         mTagTab = findViewById(R.id.tag_tab)
         mViewpager = findViewById(R.id.viewpager)
-
-        mPresenter = FeedsRankPresenter(this)
-        addPresent(mPresenter)
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -61,8 +59,20 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
                 // 跳到搜索页面
             }
         })
+        
+        getFeedsRankTags()
+    }
 
-        mPresenter.getFeedsRankTags()
+    private fun getFeedsRankTags() {
+        launch {
+            val result = mFeedRankServerApi.getFeedsRankTags()
+            if (result.errno == 0) {
+                val list = JSON.parseArray(result.data.getString("tags"), FeedRankTagModel::class.java)
+                showFeedRankTag(list)
+            } else {
+                showFailed()
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {
@@ -73,7 +83,7 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
         return false
     }
 
-    override fun showFeedRankTag(list: List<FeedRankTagModel>?) {
+    fun showFeedRankTag(list: List<FeedRankTagModel>?) {
         if (list == null || list.isEmpty()) {
             return
         }
@@ -98,6 +108,9 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
                             ?: 0] = FeedsRankView(this@FeedsRankActivity, rankTagModel)
                 }
                 val view = mFeedRankViews[rankTagModel.tagType]
+                if (position == 0) {
+                    view?.tryLoadData()
+                }
                 if (container.indexOfChild(view) == -1) {
                     container.addView(view)
                 }
@@ -137,7 +150,7 @@ class FeedsRankActivity : BaseActivity(), IFeedsRank {
         mPagerAdapter.notifyDataSetChanged()
     }
 
-    override fun showFailed() {
+    fun showFailed() {
 
     }
 

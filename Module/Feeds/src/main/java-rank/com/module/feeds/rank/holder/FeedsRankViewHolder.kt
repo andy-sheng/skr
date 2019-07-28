@@ -1,16 +1,23 @@
 package com.module.feeds.rank.holder
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.UserInfoManager
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
 
-class FeedsRankViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+class FeedsRankViewHolder(item: View, val listener: FeedsRankAdapter.Listener) : RecyclerView.ViewHolder(item) {
 
     val mCoverIv: SimpleDraweeView = item.findViewById(R.id.cover_iv)
     val mHitIv: ImageView = item.findViewById(R.id.hit_iv)
@@ -24,23 +31,30 @@ class FeedsRankViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     init {
         item.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                // 进入详细排行榜
+                listener.onClickItem(mPosition, mModel)
             }
-
         })
 
-        item.setOnClickListener(object : DebounceViewClickListener() {
+        mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                // 打榜去
+                listener.onClickHit(mPosition, mModel)
             }
-
         })
-
     }
 
     fun bindData(position: Int, model: FeedRankInfoModel) {
         this.mPosition = position
         this.mModel = model
 
+        AvatarUtils.loadAvatarByUrl(mCoverIv, AvatarUtils.newParamsBuilder(model.userInfo?.avatar)
+                .setCircle(true)
+                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
+                .setBorderColor(Color.WHITE)
+                .build())
+        mNameTv.text = model.rankTitle
+        val remarkName = UserInfoManager.getInstance().getRemarkName(model.userInfo?.userID
+                ?: 0, model.userInfo?.nickname)
+        mOccupyTv.text = "$remarkName 占领"
+        mJoinTv.text = "${model.userCnt}人参与"
     }
 }
