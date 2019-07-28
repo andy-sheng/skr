@@ -603,11 +603,13 @@ public class ExoPlayer extends BasePlayer {
     @Override
     public void release() {
         MyLog.d(TAG, "release");
-        mPlayer.clearVideoSurface();
-        mPlayer.release();
-        mPlayer.setVideoListener(null);
-        mPlayer.setAudioDebugListener(null);
-        mPlayer.setVideoDebugListener(null);
+        if (mPlayer != null) {
+            mPlayer.clearVideoSurface();
+            mPlayer.release();
+            mPlayer.setVideoListener(null);
+            mPlayer.setAudioDebugListener(null);
+            mPlayer.setVideoDebugListener(null);
+        }
         mPlayer = null;
         mMediaSource = null;
         sPrePlayer = null;

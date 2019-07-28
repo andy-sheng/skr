@@ -15,6 +15,7 @@ import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
 import com.common.image.fresco.BaseImageView
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.lyrics.widget.ManyLyricsView
@@ -106,7 +107,8 @@ class FeedsPublishActivity : BaseActivity() {
 
 
         launch {
-            val result = feedsMakeServerApi.getFeedLikeList()
+            // 先看看发生异常会不会崩溃
+            val result = subscribe {  feedsMakeServerApi.getFeedLikeList()}
             if (result.errno == 0) {
                 rankList = JSON.parseArray(result.data.getString("tags"), FeedsPublishTagModel::class.java)
                 rankClassifyAdapter.setTagDatas(rankList)

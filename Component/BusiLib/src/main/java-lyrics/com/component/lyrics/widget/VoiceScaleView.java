@@ -26,6 +26,7 @@ public class VoiceScaleView extends View {
     public final String TAG = "VoiceScaleView";
     static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
     float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
+    boolean mShowReadDot = true;
     float mRedCy;
     int mWidth = -1;// view的宽度
     int mHeight = -1;// view的高度
@@ -49,6 +50,7 @@ public class VoiceScaleView extends View {
     int mRedInnerpaintColor = Color.parseColor("#CA2C60");
     int mLeftPaintColor = Color.parseColor("#F5A623");
     int mRightPaintColor = Color.parseColor("#474A5F");
+    boolean mShowTopBottomBound = false;
 
     public VoiceScaleView(Context context) {
         this(context, null);
@@ -75,6 +77,8 @@ public class VoiceScaleView extends View {
         mRedInnerpaintColor = typedArray.getColor(R.styleable.VoiceScaleView_redInnerpaintColor, mRedInnerpaintColor);
         mLeftPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_leftPaintColor, mLeftPaintColor);
         mRightPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_rightPaintColor, mRightPaintColor);
+        mShowTopBottomBound = typedArray.getBoolean(R.styleable.VoiceScaleView_showTopBottomBound, false);
+
         typedArray.recycle();
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);
@@ -102,6 +106,7 @@ public class VoiceScaleView extends View {
 
         mRightPaint = new com.common.view.ExPaint();
         mRightPaint.setColor(mRightPaintColor);
+
     }
 
     /**
@@ -113,6 +118,15 @@ public class VoiceScaleView extends View {
         this.mLyricsLineInfoList = lyricsLineInfoList;
         this.mLocalBeginTs = -1;
         this.mTranslateTX = translateTX;
+        mShowReadDot = true;
+        postInvalidate();
+    }
+
+    public void stop(boolean showReadDot) {
+        this.mLyricsLineInfoList = new ArrayList<>();
+        this.mLocalBeginTs = -1;
+        this.mTranslateTX = 0;
+        this.mShowReadDot = showReadDot;
         postInvalidate();
     }
 
@@ -182,8 +196,10 @@ public class VoiceScaleView extends View {
         if (!isRedFlag) {
             mRedCy = getHeight() / 2.0f;
         }
-        canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
-        canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
+        if (mShowReadDot) {
+            canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
+            canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
+        }
 
         if (!mLyricsLineInfoList.isEmpty()) {
             LyricsLineInfo last = mLyricsLineInfoList.get(mLyricsLineInfoList.size() - 1);
@@ -216,6 +232,25 @@ public class VoiceScaleView extends View {
         redLineF.top = 0;
         redLineF.bottom = mHeight;
         canvas.drawRect(redLineF, mRedLinePaint);
+
+        if (mShowTopBottomBound) {
+            RectF topBound = new RectF();
+            topBound.left = 0;
+            topBound.right = mWidth;
+            topBound.top = 0;
+            topBound.bottom = 1;
+            canvas.drawRect(topBound, mRedLinePaint);
+
+
+            RectF bottomBound = new RectF();
+            bottomBound.left = 0;
+            bottomBound.right = mWidth;
+            bottomBound.top = mHeight - 1;
+            bottomBound.bottom = mHeight;
+            canvas.drawRect(bottomBound, mRedLinePaint);
+
+
+        }
     }
 
     @Override
@@ -227,4 +262,5 @@ public class VoiceScaleView extends View {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
     }
+
 }

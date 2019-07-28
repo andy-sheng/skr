@@ -84,6 +84,8 @@ class FeedsMakeActivity : BaseActivity() {
 
     var bgmFileJob: Deferred<File>? = null
 
+    var countDownJob: Job? = null
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_make_activity_layout
     }
@@ -186,6 +188,7 @@ class FeedsMakeActivity : BaseActivity() {
             mFeedsMakeModel?.songModel?.let {
                 mAutoScrollLyricView?.setSongModel(it)
             }
+            mVoiceScaleView?.stop(false)
         }
 
         // 有伴奏提前下载伴奏
@@ -331,10 +334,27 @@ class FeedsMakeActivity : BaseActivity() {
                     mFeedsMakeModel?.recording = true
                     mCircleCountDownView?.go(0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
                             ?: 0)
+                    countDownBegin()
                 }
             })
         } else {
+            mVoiceScaleView?.stop(false)
             mAutoScrollLyricView?.playLyric()
+            // 开始录音
+            ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
+            mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
+            mFeedsMakeModel?.recording = true
+            countDownBegin()
+        }
+    }
+
+    private fun countDownBegin() {
+        countDownJob?.cancel()
+        countDownJob = launch {
+            for (i in 0..Int.MAX_VALUE) {
+                mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
+                delay(1000)
+            }
         }
     }
 
@@ -366,6 +386,8 @@ class FeedsMakeActivity : BaseActivity() {
         ZqEngineKit.getInstance().stopAudioRecording()
         mLyricAndAccMatchManager.stop()
         mCircleCountDownView?.visibility = View.GONE
+        countDownJob?.cancel()
+        mFeedsMakeModel?.recording = false
     }
 
 
@@ -384,8 +406,8 @@ class FeedsMakeActivity : BaseActivity() {
 
             }
             EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER -> {
-                val timeInfo = event.obj as EngineEvent.MixMusicTimeInfo
-                mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(timeInfo.current.toLong())
+//                val timeInfo = event.obj as EngineEvent.MixMusicTimeInfo
+//                mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(timeInfo.current.toLong())
             }
         }
     }

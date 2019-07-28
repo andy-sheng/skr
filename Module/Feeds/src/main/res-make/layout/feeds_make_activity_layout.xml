@@ -107,6 +107,9 @@
         android:layout_height="@dimen/view_88_dp"
         app:leftBgPaintColor="@color/transparent"
         app:rightBgPaintColor="@color/transparent"
+        app:showTopBottomBound="true"
+        app:redInnerpaintColor="#FFC15B"
+        app:redOutpaintColor="@color/transparent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
     <!--正在唱的人的歌词-->
@@ -117,8 +120,8 @@
         app:layout_constraintTop_toBottomOf="@+id/voice_scale_view"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#EF5E85"
-        app:ly_high_light_paint_color_to="#EF5E85"
+        app:ly_high_light_paint_color_from="#FFC15B"
+        app:ly_high_light_paint_color_to="#FFC15B"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
         app:ly_high_light_sub_paint_color="@color/white"
         app:ly_outline_paint_color="@color/white"

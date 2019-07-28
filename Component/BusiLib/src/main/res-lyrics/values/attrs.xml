@@ -15,5 +15,7 @@
         <attr name="redOutpaintColor" format="color" />
         <!--红点内圈颜色-->
         <attr name="redInnerpaintColor" format="color" />
+        <!--显示上下边框-->
+        <attr name="showTopBottomBound" format="boolean" />
     </declare-styleable>
 </resources>
