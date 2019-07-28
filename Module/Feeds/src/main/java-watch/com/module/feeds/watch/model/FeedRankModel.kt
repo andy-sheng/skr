@@ -10,6 +10,8 @@ class FeedRankModel : Serializable {
      */
     @JSONField(name = "rankDesc")
     var rankDesc: String? = null
+    @JSONField(name = "rankTitle")
+    var rankTitle: String? = null
     @JSONField(name = "rankType")
     var rankType: Int = 0  //0 未知  1全部排名  2tag排名
 

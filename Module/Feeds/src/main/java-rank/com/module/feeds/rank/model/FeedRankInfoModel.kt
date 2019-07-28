@@ -7,7 +7,7 @@ import java.io.Serializable
 
 class FeedRankInfoModel : Serializable {
     @JSONField(name = "challengeID")
-    var challengeID: Int? = null
+    var challengeID: Long? = null
     @JSONField(name = "rankTitle")
     var rankTitle: String? = null
     @JSONField(name = "rankType")

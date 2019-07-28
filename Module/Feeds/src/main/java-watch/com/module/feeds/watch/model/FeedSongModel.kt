@@ -4,8 +4,10 @@ import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
 class FeedSongModel : Serializable {
+    @JSONField(name = "challengeID")
+    var challengeID: Long? = null
     @JSONField(name = "createdAt")
-    var createdAt: Long = 0L
+    var createdAt: Long? = null
     @JSONField(name = "feedID")
     var feedID: Int? = null
     @JSONField(name = "needChallenge")
