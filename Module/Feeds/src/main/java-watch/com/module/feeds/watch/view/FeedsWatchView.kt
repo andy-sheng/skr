@@ -56,8 +56,13 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
                 // 排行榜详情
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
-                        .navigation()
+                watchModel?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                            .withString("rankTitle", it.rank?.rankTitle)
+                            .withLong("challengeID", it.song?.challengeID ?: 0L)
+                            .withInt("rankType", it.rank?.rankType ?: 0)
+                            .navigation()
+                }
             }
 
             override fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?) {

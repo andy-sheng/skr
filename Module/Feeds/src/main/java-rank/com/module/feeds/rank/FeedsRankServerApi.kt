@@ -16,6 +16,14 @@ interface FeedsRankServerApi {
 
     @GET("/v1/feed/rank-song-list")
     suspend fun getFeedRankInfoList(@Query("offset") offset: Int,
-                            @Query("cnt") cnt: Int,
-                            @Query("tagType") tagType: Int): ApiResult
+                                    @Query("cnt") cnt: Int,
+                                    @Query("tagType") tagType: Int): ApiResult
+
+
+    @GET("v1/feed/rank-category-list")
+    suspend fun getFeedRankDetailList(@Query("offset") offset: Int,
+                                      @Query("cnt") cnt: Int,
+                                      @Query("userID") userID: Int,
+                                      @Query("challengeID") challengeID: Long,
+                                      @Query("rankType") rankType: Int): ApiResult
 }

@@ -58,9 +58,14 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
         mAdapter = FeedsRankAdapter(object : FeedsRankAdapter.Listener {
             override fun onClickItem(position: Int, model: FeedRankInfoModel?) {
                 // 进入详细排行榜
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
-                        .withSerializable("feed_model", model)
-                        .navigation()
+                model?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                            .withString("rankTitle", it.rankTitle)
+                            .withLong("challengeID", it.challengeID ?: 0L)
+                            .withInt("rankType", it.rankType ?: 0)
+                            .navigation()
+                }
+
             }
 
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
