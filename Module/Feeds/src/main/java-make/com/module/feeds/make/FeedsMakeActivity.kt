@@ -352,6 +352,7 @@ class FeedsMakeActivity : BaseActivity() {
         countDownJob?.cancel()
         countDownJob = launch {
             for (i in 0..Int.MAX_VALUE) {
+                MyLog.d(TAG,"countDownBegin run")
                 mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
                 delay(1000)
             }
