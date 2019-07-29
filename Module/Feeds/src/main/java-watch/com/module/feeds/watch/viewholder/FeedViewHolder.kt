@@ -15,7 +15,7 @@ import com.module.feeds.R
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 
-open class FeedViewHolder(var item: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(item) {
+open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(rootView) {
 
     private val mMoreIv: ImageView = itemView.findViewById(R.id.more_iv)
     private val mTagArea: ExConstraintLayout = itemView.findViewById(R.id.tag_area)
@@ -60,7 +60,7 @@ open class FeedViewHolder(var item: View, var listener: FeedsListener?) : Recycl
             }
         })
 
-        mSongAreaBg.setOnClickListener(object : DebounceViewClickListener() {
+        rootView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickDetailListener(model)
             }

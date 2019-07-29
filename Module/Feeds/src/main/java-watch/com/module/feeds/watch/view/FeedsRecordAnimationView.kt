@@ -1,5 +1,6 @@
 package com.module.feeds.watch.view
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -16,7 +17,7 @@ import com.common.log.MyLog
 import com.module.feeds.R
 
 class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
-    val TAG = "FeedsRecordAnimationView"
+    var TAG = "FeedsRecordAnimationView"
     var panelDrawable: Drawable? = null
     var panelWidth: Float? = 0f
     var panelMarginTop: Float? = 0f
@@ -34,14 +35,15 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     var avatarAnimation: ObjectAnimator? = null
 
-    val rotateAnimationPlay: RotateAnimation
-    val rotateAnimationStop: RotateAnimation
+    var rotateAnimationPlay: ObjectAnimator? = null
+    var rotateAnimationStop: ObjectAnimator?=null
 
     var playing = false
     var hasLayouted = false
     var wantPlaying = false
 
     init {
+        TAG+=hashCode()
         View.inflate(context, R.layout.feed_record_animation_view_layout, this)
 
         avatarContainer = this.findViewById(R.id.avatar_container)
@@ -67,28 +69,34 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         rockerXP = typedArray.getFloat(R.styleable.FeedsRecordAnimationView_rockerXP, 0.5f)
         rockerYP = typedArray.getFloat(R.styleable.FeedsRecordAnimationView_rockerYP, 0f)
 
-        rotateAnimationPlay = RotateAnimation(-55f, -25f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
-        rotateAnimationPlay.duration = 800
-        rotateAnimationPlay.repeatCount = 0
-        rotateAnimationPlay.fillAfter = true
+//        rotateAnimationPlay = RotateAnimation(-55f, -25f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
+//        rotateAnimationPlay.duration = 800
+//        rotateAnimationPlay.repeatCount = 0
+//        rotateAnimationPlay.fillAfter = true
 
-        rotateAnimationStop = RotateAnimation(-25f, -55f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
-        rotateAnimationStop.duration = 800
-        rotateAnimationPlay.repeatCount = 0
-        rotateAnimationStop.fillAfter = true
+//        rotateAnimationPlay = ObjectAnimator.ofFloat(rockerIv,View.ROTATION,-55f, -25f)
+//        rockerIv.pivotX = 1f
+//        rockerIv.pivotY = 0f
+//        rotateAnimationPlay.duration = 8000
+
+//        rotateAnimationStop = RotateAnimation(-25f, -55f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
+//        rotateAnimationStop.duration = 800
+//        rotateAnimationPlay.repeatCount = 0
+//        rotateAnimationStop.fillAfter = true
 
         avatarAnimation = ObjectAnimator.ofFloat(avatarContainer, View.ROTATION, 0f, 360f)
         avatarAnimation?.duration = 10000
         avatarAnimation?.interpolator = LinearInterpolator()
         avatarAnimation?.repeatCount = Animation.INFINITE
 
-        // 初始化棒棒到指定位置
-        val a = RotateAnimation(-25f, -55f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
-        a.duration = 100
-        a.repeatCount = 0
-        a.fillAfter = true
-        rockerIv?.clearAnimation()
-        rockerIv?.startAnimation(a)
+
+//        // 初始化棒棒到指定位置
+//        val a = RotateAnimation(-25f, -55f, Animation.RELATIVE_TO_SELF, rockerXP!!, Animation.RELATIVE_TO_SELF, rockerYP!!)
+//        a.duration = 100
+//        a.repeatCount = 0
+//        a.fillAfter = true
+//        rockerIv?.clearAnimation()
+//        rockerIv?.startAnimation(a)
     }
 
     fun setAvatar(url: String) {
@@ -98,7 +106,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun play() {
-        MyLog.d(TAG, "play")
+        MyLog.d(TAG, "play playing=$playing")
         wantPlaying = true
         if (playing) {
             return
@@ -109,9 +117,8 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
             return
         }
         playing = true
-        rockerIv?.clearAnimation()
-        rockerIv?.startAnimation(rotateAnimationPlay)
-
+        rotateAnimationPlay?.start()
+        rotateAnimationStop?.cancel()
         avatarAnimation?.let {
             if (it.isStarted) {
                 it.resume()
@@ -124,13 +131,14 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun pause() {
+        MyLog.d(TAG, "pause playing=$playing")
         if (!playing) {
             return
         }
         playing = false
         wantPlaying = false
-        rockerIv?.clearAnimation()
-        rockerIv?.startAnimation(rotateAnimationStop)
+        rotateAnimationPlay?.cancel()
+        rotateAnimationStop?.start()
         avatarAnimation?.pause()
     }
 
@@ -138,9 +146,22 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         super.onLayout(changed, left, top, right, bottom)
         if (!hasLayouted) {
             hasLayouted = true
+            rockerIv.pivotX = (rockerXP?:0f) * rockerIv.width.toFloat()
+            rockerIv.pivotY = (rockerYP?:0f) * rockerIv.height.toFloat()
+            if(rotateAnimationPlay == null){
+                rotateAnimationPlay = ObjectAnimator.ofFloat(rockerIv,View.ROTATION,-55f, -25f)
+                rotateAnimationPlay?.duration = 800
+            }
+
+            if(rotateAnimationStop == null){
+                rotateAnimationStop = ObjectAnimator.ofFloat(rockerIv,View.ROTATION,-25f, -55f)
+                rotateAnimationStop?.duration = 800
+            }
+
             if (wantPlaying) {
                 play()
             } else {
+                rockerIv.rotation = -55f
                 pause()
             }
         }

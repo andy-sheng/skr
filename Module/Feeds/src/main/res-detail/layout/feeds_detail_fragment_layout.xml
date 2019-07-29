@@ -95,7 +95,9 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:panelDrawable="@drawable/radio_panel"
                         app:panelMarginTop="@dimen/view_30_dp"
-                        app:rockerDrawable="@drawable/gequxiangqing_caokonggan" />
+                        app:rockerDrawable="@drawable/gequxiangqing_caokonggan"
+                        app:rockerXP="0.5"
+                        app:rockerYP="0.1" />
 
                     <ViewStub
                         android:id="@+id/auto_scroll_lyric_view_layout_viewstub"
