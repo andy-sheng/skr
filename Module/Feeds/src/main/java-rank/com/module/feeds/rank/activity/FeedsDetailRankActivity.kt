@@ -51,7 +51,6 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     var title = ""
     var challengeID = 0L
-    var rankType = 0
 
     var offset = 0
     val mCNT = 30
@@ -64,7 +63,6 @@ class FeedsDetailRankActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         title = intent.getStringExtra("rankTitle")
         challengeID = intent.getLongExtra("challengeID", 0L)
-        rankType = intent.getIntExtra("rankType", 0)
 
         mTitlebar = findViewById(R.id.titlebar)
 
@@ -160,7 +158,7 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     private fun loadData(off: Int) {
         launch {
-            val result = mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID, rankType)
+            val result = mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID)
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")

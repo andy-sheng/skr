@@ -50,7 +50,6 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
                             .withString("rankTitle", it.rank?.rankTitle)
                             .withLong("challengeID", it.song?.challengeID ?: 0L)
-                            .withInt("rankType", it.rank?.rankType ?: 0)
                             .navigation()
                 }
             }

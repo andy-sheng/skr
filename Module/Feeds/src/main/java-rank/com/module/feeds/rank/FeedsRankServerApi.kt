@@ -24,6 +24,5 @@ interface FeedsRankServerApi {
     suspend fun getFeedRankDetailList(@Query("offset") offset: Int,
                                       @Query("cnt") cnt: Int,
                                       @Query("userID") userID: Int,
-                                      @Query("challengeID") challengeID: Long,
-                                      @Query("rankType") rankType: Int): ApiResult
+                                      @Query("challengeID") challengeID: Long): ApiResult
 }
