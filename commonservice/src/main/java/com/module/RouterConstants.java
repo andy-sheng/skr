@@ -70,6 +70,7 @@ public interface RouterConstants {
     String ACTIVITY_FEEDS_MAKE = "/feeds/FeedsMakeActivity";
     String ACTIVITY_FEEDS_EDITOR = "/feeds/FeedsEditorActivity";
     String ACTIVITY_FEEDS_PUBLISH = "/feeds/FeedsPublishActivity";
+    String ACTIVITY_FEEDS_SHARE = "/feeds/FeedsShareActivity";
     String ACTIVITY_FEEDS_REPORT = "/feeds/FeedsReportActivity";
     String ACTIVITY_FEEDS_RANK = "/feeds/FeedsRankActivity";
     String ACTIVITY_FEEDS_RANK_DETAIL = "/feeds/FeedsDetailRankActivity";

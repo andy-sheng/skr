@@ -110,7 +110,7 @@
         app:layout_constraintTop_toBottomOf="@id/tag_classify_tv" />
 
     <ProgressBar
-        android:id="@+id/compose_progressbar"
+        android:id="@+id/upload_progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />

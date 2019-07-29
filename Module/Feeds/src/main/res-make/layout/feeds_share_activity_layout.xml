@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#273083">
+
+    <ImageView
+        android:id="@+id/share_bg"
+        android:layout_width="@dimen/view_345_dp"
+        android:layout_height="@dimen/view_335_dp"
+        android:layout_marginTop="@dimen/view_108_dp"
+        android:background="@drawable/share_bj"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_95_dp"
+        android:layout_height="@dimen/view_95_dp"
+        app:layout_constraintBottom_toTopOf="@+id/share_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/share_bg"
+        app:layout_constraintRight_toRightOf="@+id/share_bg"
+        app:layout_constraintTop_toTopOf="@+id/share_bg" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:text="撕歌用户"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_18_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/share_bg"
+        app:layout_constraintRight_toRightOf="@+id/share_bg"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_iv" />
+
+    <TextView
+        android:id="@+id/song_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:text="《歌曲名称》"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_25_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/share_bg"
+        app:layout_constraintRight_toRightOf="@+id/share_bg"
+        app:layout_constraintTop_toBottomOf="@+id/name_tv" />
+
+    <EditText
+        android:id="@+id/say_edit"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_65_dp"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:layout_marginTop="@dimen/view_34_dp"
+        android:layout_marginRight="@dimen/view_28_dp"
+        android:background="@drawable/feeds_make_publish_editor_bg"
+        android:gravity="left|top"
+        android:maxLength="100"
+        android:padding="@dimen/view_10_dp"
+        android:text="快来听我刚唱的这首歌吧"
+        android:textSize="@dimen/view_15_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/share_bg"
+        app:layout_constraintRight_toRightOf="@+id/share_bg"
+        app:layout_constraintTop_toBottomOf="@+id/song_tv" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/view_26_dp"
+        android:layout_marginRight="@dimen/view_26_dp"
+        android:background="#3A44A3"
+        app:layout_constraintBottom_toBottomOf="@+id/share_tips"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/share_tips" />
+
+    <TextView
+        android:id="@+id/share_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_20_dp"
+        android:paddingRight="@dimen/view_20_dp"
+        android:text="把这首歌分享到"
+        android:textColor="#6C77DB"
+        android:textSize="@dimen/view_14_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/share_bg"
+        app:layout_constraintRight_toRightOf="@+id/share_bg"
+        app:layout_constraintTop_toBottomOf="@+id/share_bg" />
+
+    <ImageView
+        android:id="@+id/qqkongjian_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_27_dp"
+        android:layout_marginTop="@dimen/view_37_dp"
+        android:src="@drawable/qqkongjian"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/share_tips" />
+
+    <ImageView
+        android:id="@+id/qq_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_37_dp"
+        android:src="@drawable/qq"
+        app:layout_constraintLeft_toRightOf="@id/qqkongjian_btn"
+        app:layout_constraintRight_toLeftOf="@+id/weixinhaoyou_btn"
+        app:layout_constraintTop_toBottomOf="@+id/share_tips" />
+
+    <ImageView
+        android:id="@+id/weixinhaoyou_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_37_dp"
+        android:src="@drawable/weixinhaoyou"
+        app:layout_constraintLeft_toRightOf="@id/qq_btn"
+        app:layout_constraintRight_toLeftOf="@+id/pengyouquan_btn"
+        app:layout_constraintTop_toBottomOf="@+id/share_tips" />
+
+    <ImageView
+        android:id="@+id/pengyouquan_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_37_dp"
+        android:layout_marginRight="@dimen/view_27_dp"
+        android:src="@drawable/pengyouquan"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/share_tips" />
+
+</android.support.constraint.ConstraintLayout>

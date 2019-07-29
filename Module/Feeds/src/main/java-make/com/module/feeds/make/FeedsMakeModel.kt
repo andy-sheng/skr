@@ -6,6 +6,10 @@ import com.module.feeds.watch.model.FeedSongModel
 
 class FeedsMakeModel(var songModel: FeedSongModel):Serializable{
 
+    var uploadFeedsId: String? = null // 上传后生成的feedsid
+    var uploadSongName: String? = null // 上传后歌曲名称
+    var uploadSongDesc: String? = null // 上传后歌曲描述
+
     val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_compose.aac")
     var bgmDownloadProgress: Float = 0f
 
