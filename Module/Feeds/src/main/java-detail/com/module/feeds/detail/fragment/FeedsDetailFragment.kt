@@ -22,6 +22,7 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
+import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -77,8 +78,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
 
-    var mIsSongStart = false
-
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
     var mFeedsWatchModel: FeedsWatchModel? = null
@@ -88,7 +87,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     val mMyMediaPlayer: MyMediaPlayer by lazy {
         MyMediaPlayer().also {
             it.setMonitorProgress(true)
-            it.setCallback(object : IPlayerCallback {
+            it.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
                 override fun onPrepared() {
                     if (mControlTv!!.isSelected) {
                         if (!mFeedsCommonLyricView!!.isStart()) {
@@ -109,16 +108,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
                 }
 
-                override fun onVideoSizeChanged(width: Int, height: Int) {
-
-                }
-
                 override fun onError(what: Int, extra: Int) {
                     mFeedsCommonLyricView!!.pause()
-                }
-
-                override fun onInfo(what: Int, extra: Int) {
-
                 }
 
                 override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
@@ -147,35 +138,34 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             activity?.finish()
             return
         }
-
-        mContainer = rootView.findViewById(com.module.feeds.R.id.container)
-        mCommonTitleBar = rootView.findViewById(com.module.feeds.R.id.titlebar)
-        mAppbar = rootView.findViewById(com.module.feeds.R.id.appbar)
-        mContentLayout = rootView.findViewById(com.module.feeds.R.id.content_layout)
-        mBlurBg = rootView.findViewById(com.module.feeds.R.id.blur_bg)
-        mBtnBack = rootView.findViewById(com.module.feeds.R.id.btn_back) as ImageView
-        mSongNameTv = rootView.findViewById(com.module.feeds.R.id.song_name_tv)
-        mMoreTv = rootView.findViewById(com.module.feeds.R.id.more_iv)
-        mControlTv = rootView.findViewById(com.module.feeds.R.id.control_tv)
-        mPassTimeTv = rootView.findViewById(com.module.feeds.R.id.pass_time_tv)
-        mLastTimeTv = rootView.findViewById(com.module.feeds.R.id.last_time_tv)
-        mSeekBar = rootView.findViewById(com.module.feeds.R.id.seek_bar)
-        mSingerIv = rootView.findViewById(com.module.feeds.R.id.singer_iv)
-        mNameTv = rootView.findViewById(com.module.feeds.R.id.name_tv)
-        mCommentTimeTv = rootView.findViewById(com.module.feeds.R.id.comment_time_tv)
-        mFollowTv = rootView.findViewById(com.module.feeds.R.id.follow_tv)
-        mMainCommentTv = rootView.findViewById(com.module.feeds.R.id.main_comment_tv)
-        mToolbar = rootView.findViewById(com.module.feeds.R.id.toolbar)
-        mToolbarLayout = rootView.findViewById(com.module.feeds.R.id.toolbar_layout)
-        mCommentTv = rootView.findViewById(com.module.feeds.R.id.comment_tv)
-        mXinIv = rootView.findViewById(com.module.feeds.R.id.xin_iv)
-        mXinNumTv = rootView.findViewById(com.module.feeds.R.id.xin_num_tv)
-        mShareIv = rootView.findViewById(com.module.feeds.R.id.share_iv)
-        mShareNumTv = rootView.findViewById(com.module.feeds.R.id.share_num_tv)
-        mFeedsInputContainerView = rootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
-        mRadioView = rootView.findViewById(com.module.feeds.R.id.radio_view)
+        mContainer = rootView.findViewById(R.id.container)
+        mCommonTitleBar = rootView.findViewById(R.id.titlebar)
+        mAppbar = rootView.findViewById(R.id.appbar)
+        mContentLayout = rootView.findViewById(R.id.content_layout)
+        mBlurBg = rootView.findViewById(R.id.blur_bg)
+        mBtnBack = rootView.findViewById(R.id.btn_back) as ImageView
+        mSongNameTv = rootView.findViewById(R.id.song_name_tv)
+        mMoreTv = rootView.findViewById(R.id.more_iv)
+        mControlTv = rootView.findViewById(R.id.control_tv)
+        mPassTimeTv = rootView.findViewById(R.id.pass_time_tv)
+        mLastTimeTv = rootView.findViewById(R.id.last_time_tv)
+        mSeekBar = rootView.findViewById(R.id.seek_bar)
+        mSingerIv = rootView.findViewById(R.id.singer_iv)
+        mNameTv = rootView.findViewById(R.id.name_tv)
+        mCommentTimeTv = rootView.findViewById(R.id.comment_time_tv)
+        mFollowTv = rootView.findViewById(R.id.follow_tv)
+        mMainCommentTv = rootView.findViewById(R.id.main_comment_tv)
+        mToolbar = rootView.findViewById(R.id.toolbar)
+        mToolbarLayout = rootView.findViewById(R.id.toolbar_layout)
+        mCommentTv = rootView.findViewById(R.id.comment_tv)
+        mXinIv = rootView.findViewById(R.id.xin_iv)
+        mXinNumTv = rootView.findViewById(R.id.xin_num_tv)
+        mShareIv = rootView.findViewById(R.id.share_iv)
+        mShareNumTv = rootView.findViewById(R.id.share_num_tv)
+        mFeedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
+        mRadioView = rootView.findViewById(R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
-        mFeedsCommentView = rootView.findViewById(com.module.feeds.R.id.feedsCommentView)
+        mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mFeedsDetailPresenter = FeedsDetailPresenter(this)
         addPresent(mFeedsDetailPresenter)
 
@@ -259,18 +249,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             })
         }
 
-        mControlTv?.setDebounceViewClickListener {
-            if (mIsPlaying) {
-                pauseSong()
-                mIsPlaying = false
-                mControlTv?.isSelected = false
-            } else {
-                playSong()
-                mIsPlaying = true
-                mControlTv?.isSelected = true
-            }
-        }
-
         AvatarUtils.loadAvatarByUrl(mSingerIv, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
                 .setCircle(true)
                 .build())
@@ -329,13 +307,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!)
+
         playSong()
 
         mControlTv?.setDebounceViewClickListener {
             if (it!!.isSelected) {
                 pauseSong()
             } else {
-                resumeSong()
+                playSong()
             }
         }
 
@@ -420,34 +399,44 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun playSong() {
-        mMyMediaPlayer.reset()
         mControlTv?.isSelected = true
-        mIsSongStart = true
         mRadioView?.play()
         mMyMediaPlayer.startPlay(mFeedsWatchModel?.song?.playURL)
+        mFeedsWatchModel?.song?.playCurPos?.let {
+            mMyMediaPlayer.seekTo(it.toLong())
+            mFeedsCommonLyricView?.seekTo(it)
+            mFeedsCommonLyricView?.resume()
+        }
     }
 
-    private fun resumeSong() {
-        mControlTv!!.isSelected = true
-        mRadioView?.play()
-        if (mIsSongStart) {
-            mMyMediaPlayer.resume()
-            mFeedsCommonLyricView?.resume()
-        } else {
-            playSong()
+    private fun pauseSong() {
+        mControlTv!!.isSelected = false
+        mRadioView?.pause()
+        mMyMediaPlayer.pause()
+        mFeedsCommonLyricView?.pause()
+    }
+
+    private fun stopSong() {
+        mMyMediaPlayer.stop()
+        mControlTv!!.isSelected = false
+        mRadioView?.pause()
+        mSeekBar!!.progress = 0
+        mPassTimeTv?.text = "00:00"
+        mFeedsWatchModel?.song?.playDurMs?.let {
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
         }
+        mFeedsCommonLyricView?.stop()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PlayerEvent.TimeFly) {
         //歌曲还没加载到的时候这个会返回1毫秒，无意义，do not care
-        if (event.totalDuration > 1000) {
             mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.curPostion, "mm:ss")
             mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
             mSeekBar!!.max = event.totalDuration.toInt()
             mSeekBar!!.progress = event.curPostion.toInt()
             mFeedsCommonLyricView?.seekTo(event.curPostion.toInt())
-        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -500,26 +489,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.text = "+关注"
         mFollowTv?.background = followState
         mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
-    }
-
-    private fun pauseSong() {
-        mControlTv!!.isSelected = false
-        mRadioView?.pause()
-        mMyMediaPlayer.pause()
-        mFeedsCommonLyricView?.pause()
-    }
-
-    private fun stopSong() {
-        mIsSongStart = false
-        mMyMediaPlayer.stop()
-        mControlTv!!.isSelected = false
-        mRadioView?.pause()
-        mSeekBar!!.progress = 0
-        mPassTimeTv?.text = "00:00"
-        mFeedsWatchModel?.song?.playDurMs?.let {
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
-        }
-        mFeedsCommonLyricView?.stop()
     }
 
     override fun setData(type: Int, data: Any?) {

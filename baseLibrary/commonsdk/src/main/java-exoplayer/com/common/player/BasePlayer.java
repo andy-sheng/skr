@@ -106,7 +106,9 @@ public abstract class BasePlayer implements IPlayer {
         if (mMusicTimePlayTimeListener != null) {
             mMusicTimePlayTimeListener.dispose();
         }
-        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
+        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder()
+                .delay(1000)
+                .interval(1000)
                 .start(new Observer<Integer>() {
                     long duration = -1;
 
@@ -117,15 +119,17 @@ public abstract class BasePlayer implements IPlayer {
 
                     @Override
                     public void onNext(Integer integer) {
-                        long currentPostion = getCurrentPosition();
-                        if (duration < 0) {
-                            duration = getDuration();
-                        }
-                        PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
-                        engineEvent.totalDuration = duration;
-                        engineEvent.curPostion = currentPostion;
-                        if(engineEvent.curPostion>0 && engineEvent.totalDuration>0){
-                            EventBus.getDefault().post(engineEvent);
+                        if(isPlaying()){
+                            long currentPostion = getCurrentPosition();
+                            if (duration < 0) {
+                                duration = getDuration();
+                            }
+                            PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
+                            engineEvent.totalDuration = duration;
+                            engineEvent.curPostion = currentPostion;
+                            if(engineEvent.curPostion>0 && engineEvent.totalDuration>0){
+                                EventBus.getDefault().post(engineEvent);
+                            }
                         }
                     }
 

@@ -88,7 +88,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             }
 
             override fun onClickDetailListener(watchModel: FeedsWatchModel?) {
-                // 详情
+                // 详情  声音要连贯
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withSerializable("feed_model", watchModel)
                         .navigation()

@@ -1,6 +1,10 @@
 package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
+<<<<<<< HEAD
+=======
+import com.common.core.account.UserAccountManager
+>>>>>>> 详情页播放优化
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -53,7 +57,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     private fun getRecommendFeedList(offset: Int) {
-        ApiMethods.subscribe(mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mFeedServerApi.getFeedRecommendList(offset, mCNT,MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     mLastUpdatListTime = System.currentTimeMillis()
