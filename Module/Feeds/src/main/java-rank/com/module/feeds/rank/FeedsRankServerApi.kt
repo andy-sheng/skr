@@ -25,4 +25,8 @@ interface FeedsRankServerApi {
                                       @Query("cnt") cnt: Int,
                                       @Query("userID") userID: Int,
                                       @Query("challengeID") challengeID: Long): ApiResult
+
+
+    @GET("v1/feed/search-challenge")
+    fun searchChallenge(@Query("searchContent") searchContent: String): Observable<ApiResult>
 }

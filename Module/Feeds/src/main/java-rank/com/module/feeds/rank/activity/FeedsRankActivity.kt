@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.base.FragmentDataListener
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -18,9 +21,13 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.feeds.rank.FeedsRankServerApi
+import com.module.feeds.rank.fragment.FeedsRankSearchFragment
+import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.rank.model.FeedRankTagModel
 import com.module.feeds.rank.view.FeedsRankView
+import com.umeng.socialize.utils.DeviceConfig.context
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 /**
  * 神曲打榜 排行榜
@@ -57,9 +64,21 @@ class FeedsRankActivity : BaseActivity() {
         mSearchFeedIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 跳到搜索页面
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsRankActivity, FeedsRankSearchFragment::class.java)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setFragmentDataListener(object : FragmentDataListener {
+                            override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                                if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                    val model = obj as FeedRankInfoModel
+                                    MyLog.d(TAG, "onFragmentResult model=$model")
+                                }
+                            }
+                        })
+                        .build())
             }
         })
-        
+
         getFeedsRankTags()
     }
 

@@ -98,14 +98,16 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
         }
     }
 
-    private fun showRankInfo(list: List<FeedRankInfoModel>, isClean: Boolean) {
+    private fun showRankInfo(list: List<FeedRankInfoModel>?, isClean: Boolean) {
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
         if (isClean) {
             mAdapter.mDataList.clear()
         }
 
-        mAdapter.mDataList.addAll(list)
+        if (list != null) {
+            mAdapter.mDataList.addAll(list)
+        }
         mAdapter.notifyDataSetChanged()
     }
 

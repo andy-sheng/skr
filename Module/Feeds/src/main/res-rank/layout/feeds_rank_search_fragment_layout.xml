@@ -20,8 +20,10 @@
     <com.common.view.ex.NoLeakEditText
         android:id="@+id/search_content"
         android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_60_dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="left|center_vertical"
@@ -31,14 +33,13 @@
         android:singleLine="true"
         android:textColor="@color/black_trans_80"
         android:textColorHint="@color/black_trans_20"
-        android:textSize="@dimen/textsize_16_dp"
+        android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="@color/black_trans_5"
-        app:layout_constraintBottom_toBottomOf="@id/cancle_tv"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/cancle_tv"
-        app:layout_constraintTop_toTopOf="@id/cancle_tv" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:layout_width="@dimen/view_18_dp"
@@ -62,7 +63,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"/>
+            android:overScrollMode="never" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
