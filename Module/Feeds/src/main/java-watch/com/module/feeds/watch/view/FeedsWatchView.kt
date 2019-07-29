@@ -102,7 +102,10 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 // 更多
                 watchModel?.let {
                     if (fragment.activity != null) {
-                        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED)
+                        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED,
+                                it.user?.userID ?: 0,
+                                it.song?.songID ?: 0,
+                                0)
                                 .apply {
                                     setFollow(it.hasFollow == true)
                                     mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {

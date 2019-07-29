@@ -18,7 +18,7 @@ import com.module.RouterConstants
  * 回复，举报和取消
  * 关注，回复和取消
  */
-class FeedsMoreDialogView(var activity: Activity, type: Int) : ConstraintLayout(activity) {
+class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, songID: Int, commentID: Int) : ConstraintLayout(activity) {
 
     companion object {
         const val FROM_FEED = 1
@@ -43,6 +43,9 @@ class FeedsMoreDialogView(var activity: Activity, type: Int) : ConstraintLayout(
                 dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_REPORT)
                         .withInt("from", type)
+                        .withInt("targetID", targetID)
+                        .withInt("songID", songID)
+                        .withInt("commentID", commentID)
                         .navigation()
             }
         })

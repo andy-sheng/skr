@@ -301,7 +301,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(fromUser){
+                if (fromUser) {
                     mMyMediaPlayer.seekTo(progress.toLong())
                     mFeedsCommonLyricView?.seekTo(progress)
                     mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
@@ -353,7 +353,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     private fun showMoreOp() {
         mMoreDialogPlus?.dismiss()
         activity?.let {
-            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT)
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
+                    , mFeedsWatchModel?.user?.userID ?: 0
+                    , mFeedsWatchModel?.song?.songID ?: 0
+                    , 0)
                     .apply {
                         setReply()
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {

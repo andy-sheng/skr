@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EBEDF2">
+
+    <TextView
+        android:id="@+id/cancle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:padding="@dimen/view_14_dp"
+        android:text="取消"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/search_content"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="left|center_vertical"
+        android:hint="歌名"
+        android:imeOptions="actionSearch"
+        android:paddingLeft="@dimen/view_35_dp"
+        android:singleLine="true"
+        android:textColor="@color/black_trans_80"
+        android:textColorHint="@color/black_trans_20"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_5"
+        app:layout_constraintBottom_toBottomOf="@id/cancle_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/cancle_tv"
+        app:layout_constraintTop_toTopOf="@id/cancle_tv" />
+
+    <ImageView
+        android:layout_width="@dimen/view_18_dp"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:background="@drawable/common_search_icon"
+        app:layout_constraintBottom_toBottomOf="@id/search_content"
+        app:layout_constraintLeft_toLeftOf="@id/search_content"
+        app:layout_constraintTop_toTopOf="@id/search_content" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_0_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"/>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</android.support.constraint.ConstraintLayout>
