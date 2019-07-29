@@ -23,7 +23,7 @@
         app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#7187FF"
-        app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#7187FF"/>
 
     <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
@@ -31,11 +31,10 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_32_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="#77C7F0"
-        app:bl_stroke_color="#3B4E79"
-        app:bl_stroke_width="@dimen/view_2_dp">
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_solid_color="#D0EFFF"
+        app:bl_shape="rectangle">
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_bg"

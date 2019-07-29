@@ -43,12 +43,12 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     CommonTitleBar mTitlebar;
     ExTextView mTvCashDetail;
     ExTextView mTvCashNum;
-    StrokeTextView mStvWithdraw;
+    ExTextView mStvWithdraw;
     ImageView mIvAttention;
     ExTextView mTvDqDetail;
     ExTextView mTvDqNum;
-    StrokeTextView mBtnExchangeDiamond;
-    StrokeTextView mBtnExchangeCash;
+    ExTextView mBtnExchangeDiamond;
+    ExTextView mBtnExchangeCash;
 
     WithDrawInfoModel mWithDrawInfoModel;
 
@@ -75,16 +75,16 @@ public class InComeFragment extends BaseFragment implements IInComeView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (LinearLayout) getRootView().findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mTvCashDetail = (ExTextView) getRootView().findViewById(R.id.tv_cash_detail);
-        mTvCashNum = (ExTextView) getRootView().findViewById(R.id.tv_cash_num);
-        mStvWithdraw = (StrokeTextView) getRootView().findViewById(R.id.stv_withdraw);
-        mIvAttention = (ImageView) getRootView().findViewById(R.id.iv_attention);
-        mTvDqDetail = (ExTextView) getRootView().findViewById(R.id.tv_dq_detail);
-        mTvDqNum = (ExTextView) getRootView().findViewById(R.id.tv_dq_num);
-        mBtnExchangeDiamond = (StrokeTextView) getRootView().findViewById(R.id.btn_exchange_diamond);
-        mBtnExchangeCash = (StrokeTextView) getRootView().findViewById(R.id.btn_exchange_cash);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mTvCashDetail = getRootView().findViewById(R.id.tv_cash_detail);
+        mTvCashNum = getRootView().findViewById(R.id.tv_cash_num);
+        mStvWithdraw = getRootView().findViewById(R.id.stv_withdraw);
+        mIvAttention = getRootView().findViewById(R.id.iv_attention);
+        mTvDqDetail = getRootView().findViewById(R.id.tv_dq_detail);
+        mTvDqNum = getRootView().findViewById(R.id.tv_dq_num);
+        mBtnExchangeDiamond = getRootView().findViewById(R.id.btn_exchange_diamond);
+        mBtnExchangeCash = getRootView().findViewById(R.id.btn_exchange_cash);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override

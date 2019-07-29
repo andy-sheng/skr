@@ -23,17 +23,19 @@
         app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#7187FF"
-        app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#7187FF" />
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:background="@drawable/chongzhizuanshi_beijingban"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#D0EFFF">
 
         <ImageView
             android:id="@+id/iv_diamond_icon"
@@ -64,20 +66,23 @@
             android:textColor="#ff3b4e79"
             android:textSize="42sp" />
 
-        <com.dialog.view.StrokeTextView
+        <com.common.view.ex.ExTextView
             android:id="@+id/recharge_btn"
-            android:layout_width="@dimen/view_180_dp"
-            android:layout_height="@dimen/view_45_dp"
+            android:layout_width="@dimen/view_152_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_below="@+id/feedback_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginTop="@dimen/view_30_dp"
             android:layout_marginBottom="@dimen/view_125_dp"
-            android:background="@drawable/chongzuzuanshi_anniu"
             android:gravity="center"
-            android:paddingBottom="@dimen/view_5_dp"
             android:text="充值"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_18_dp" />
-    </RelativeLayout>
+            android:textColor="#AD6C00"
+            android:textSize="@dimen/textsize_18_dp"
+            android:textStyle="bold"
+            app:bl_corners_radius="@dimen/view_20_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#FFC15B" />
+    </com.common.view.ex.ExRelativeLayout>
 </LinearLayout>
