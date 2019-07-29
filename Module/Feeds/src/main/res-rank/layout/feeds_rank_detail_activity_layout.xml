@@ -42,6 +42,83 @@
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg" />
 
+
+    <ImageView
+        android:id="@+id/record_film"
+        android:layout_width="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_92_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/record_film_icon"
+        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/song_area_bg"
+        app:layout_constraintTop_toTopOf="@id/song_area_bg" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/record_cover"
+        android:layout_width="@dimen/view_62_dp"
+        android:layout_height="@dimen/view_62_dp"
+        app:layout_constraintBottom_toBottomOf="@id/record_film"
+        app:layout_constraintLeft_toLeftOf="@id/record_film"
+        app:layout_constraintRight_toRightOf="@id/record_film"
+        app:layout_constraintTop_toTopOf="@id/record_film" />
+
+    <ImageView
+        android:id="@+id/media_iv"
+        android:layout_width="@dimen/view_38_dp"
+        android:layout_height="@dimen/view_46_dp"
+        android:layout_marginLeft="@dimen/view_36_dp"
+        android:background="@drawable/feed_rank_media_icon"
+        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
+        app:layout_constraintLeft_toRightOf="@id/record_cover"
+        app:layout_constraintTop_toTopOf="@id/song_area_bg" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/champion_tv"
+        app:layout_constraintLeft_toRightOf="@id/media_iv"
+        app:layout_constraintRight_toRightOf="@id/song_area_bg" />
+
+    <TextView
+        android:id="@+id/champion_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:text="成为打榜冠军"
+        android:textColor="@color/white_trans_50"
+        app:layout_constraintBottom_toBottomOf="@id/media_iv"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv" />
+
+    <ImageView
+        android:id="@+id/like_iv"
+        android:layout_width="@dimen/view_12_dp"
+        android:layout_height="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/feed_like_selected_icon"
+        app:layout_constraintBottom_toBottomOf="@id/champion_tv"
+        app:layout_constraintLeft_toRightOf="@id/champion_tv"
+        app:layout_constraintTop_toTopOf="@id/champion_tv" />
+
+    <TextView
+        android:id="@+id/like_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
+        android:gravity="center"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/like_iv"
+        app:layout_constraintLeft_toRightOf="@id/like_iv"
+        app:layout_constraintTop_toTopOf="@id/like_iv" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -50,12 +127,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_area_bg">
 
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:id="@+id/classics_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:srlAccentColor="@color/black_trans_80" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    <ImageView
+        android:id="@+id/hit_iv"
+        android:layout_width="@dimen/view_136_dp"
+        android:layout_height="@dimen/view_57_dp"
+        android:background="@drawable/feed_rank_hit_icon_b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

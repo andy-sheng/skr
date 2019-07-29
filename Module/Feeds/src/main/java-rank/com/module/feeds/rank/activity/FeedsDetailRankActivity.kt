@@ -8,11 +8,21 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.alibaba.fastjson.JSON
+import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
+import com.common.player.IPlayer
+import com.common.player.MyMediaPlayer
+import com.common.player.VideoPlayerAdapter
 import com.common.rxretrofit.ApiManager
+import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -31,8 +41,13 @@ class FeedsDetailRankActivity : BaseActivity() {
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mRefreshLayout: SmartRefreshLayout
     lateinit var mRecyclerView: RecyclerView
+    lateinit var mRecordCover: SimpleDraweeView
+    lateinit var mNameTv: TextView
+    lateinit var mLikeNumTv: TextView
+    lateinit var mHitIv: ImageView
 
-    lateinit var mAdapter: FeedDetailAdapter
+    private val mAdapter: FeedDetailAdapter = FeedDetailAdapter()
+    private var mMediaPlayer: IPlayer? = null  // 播放器
 
     var title = ""
     var challengeID = 0L
@@ -52,11 +67,16 @@ class FeedsDetailRankActivity : BaseActivity() {
         rankType = intent.getIntExtra("rankType", 0)
 
         mTitlebar = findViewById(R.id.titlebar)
+
+        mRecordCover = findViewById(R.id.record_cover)
+        mNameTv = findViewById(R.id.name_tv)
+        mLikeNumTv = findViewById(R.id.like_num_tv)
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mRecyclerView = findViewById(R.id.recycler_view)
+        mHitIv = findViewById(R.id.hit_iv);
+
 
         mTitlebar.centerTextView.text = title
-        mAdapter = FeedDetailAdapter()
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
@@ -82,8 +102,53 @@ class FeedsDetailRankActivity : BaseActivity() {
             }
         })
 
+        mHitIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 打榜去
+            }
+        })
+
+        mAdapter.onClickPlayListener = { model, _ ->
+            model?.let {
+                if (mAdapter.mCurrentPlayModel == it) {
+                    // 暂停播放
+                    stop(it)
+                } else {
+                    // 开始播放
+                    play(it)
+                }
+            }
+        }
+
         initLoadData()
     }
+
+    private fun play(model: FeedsWatchModel) {
+        mAdapter.mCurrentPlayModel = model
+        mAdapter.notifyDataSetChanged()
+        mMediaPlayer?.stop()
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MyMediaPlayer()
+        }
+        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 重复播放一次
+                play(model)
+            }
+        })
+        model.song?.playURL?.let {
+            mMediaPlayer?.startPlay(it)
+        }
+    }
+
+    private fun stop(model: FeedsWatchModel) {
+        mAdapter.mCurrentPlayModel = null
+        mAdapter.notifyDataSetChanged()
+        mMediaPlayer?.stop()
+        mMediaPlayer?.reset()
+    }
+
 
     private fun initLoadData() {
         loadData(0)
@@ -105,17 +170,34 @@ class FeedsDetailRankActivity : BaseActivity() {
     }
 
     private fun showDetailInfo(list: List<FeedsWatchModel>, isClean: Boolean) {
+        mRefreshLayout.finishLoadMore()
+        mRefreshLayout.finishRefresh()
         if (isClean) {
             mAdapter.mDataList.clear()
         }
 
         mAdapter.mDataList.addAll(list)
         mAdapter.notifyDataSetChanged()
+        if (isClean && mAdapter.mDataList.isNotEmpty()) {
+            bindTopData(mAdapter.mDataList[0])
+        }
+    }
+
+    private fun bindTopData(feedsWatchModel: FeedsWatchModel) {
+        AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(feedsWatchModel.user?.avatar).setCircle(true).build())
+        mNameTv.text = UserInfoManager.getInstance().getRemarkName(feedsWatchModel.user?.userID
+                ?: 0, feedsWatchModel.user?.nickname)
+        mLikeNumTv.text = feedsWatchModel.starCnt.toString()
+
     }
 
     override fun useEventBus(): Boolean {
         return false
     }
 
-
+    override fun destroy() {
+        super.destroy()
+        mMediaPlayer?.stop()
+        mMediaPlayer?.release()
+    }
 }
