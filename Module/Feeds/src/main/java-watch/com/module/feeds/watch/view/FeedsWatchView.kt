@@ -171,36 +171,38 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                             // 找不到位置，取其中百分比最大的
                             var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
                             var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-                            val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
-                            var i = firstVisibleItem
-                            isFound = false
-                            maxPercent = 0f
-                            model = null
-                            while (i <= lastVisibleItem && !isFound) {
-                                val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
-                                val location1 = IntArray(2)
-                                val location2 = IntArray(2)
-                                itemView.getLocationOnScreen(location1)
-                                mRecyclerView.getLocationOnScreen(location2)
-                                val top = location1[1] - location2[1]
-                                when {
-                                    top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
-                                    (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
-                                    else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
-                                }
-                                if (percents[i - firstVisibleItem] == 100f) {
-                                    isFound = true
-                                    maxPercent = 100f
-                                    model = mAdapter.mDataList[i]
-                                    postion = i
-                                } else {
-                                    if (percents[i - firstVisibleItem] > maxPercent) {
-                                        maxPercent = percents[i - firstVisibleItem]
+                            if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
+                                val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
+                                var i = firstVisibleItem
+                                isFound = false
+                                maxPercent = 0f
+                                model = null
+                                while (i <= lastVisibleItem && !isFound) {
+                                    val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
+                                    val location1 = IntArray(2)
+                                    val location2 = IntArray(2)
+                                    itemView.getLocationOnScreen(location1)
+                                    mRecyclerView.getLocationOnScreen(location2)
+                                    val top = location1[1] - location2[1]
+                                    when {
+                                        top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
+                                        (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
+                                        else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
+                                    }
+                                    if (percents[i - firstVisibleItem] == 100f) {
+                                        isFound = true
+                                        maxPercent = 100f
                                         model = mAdapter.mDataList[i]
                                         postion = i
+                                    } else {
+                                        if (percents[i - firstVisibleItem] > maxPercent) {
+                                            maxPercent = percents[i - firstVisibleItem]
+                                            model = mAdapter.mDataList[i]
+                                            postion = i
+                                        }
                                     }
+                                    i++
                                 }
-                                i++
                             }
                         }
 

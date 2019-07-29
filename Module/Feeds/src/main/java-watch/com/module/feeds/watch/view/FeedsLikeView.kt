@@ -27,6 +27,10 @@ import com.common.player.VideoPlayerAdapter
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
 import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.presenter.FeedLikeViewPresenter
@@ -47,6 +51,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     var mRandomList = ArrayList<FeedsLikeModel>()  // 随机播放队列
     var mMediaPlayer: IPlayer? = null  // 播放器
 
+    private val mContainer: ConstraintLayout
     private val mTopAreaBg: SimpleDraweeView
     private val mPlayDescTv: TextView
 
@@ -69,9 +74,12 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     var mCDRotateAnimation: RotateAnimation? = null
     var mCoverRotateAnimation: RotateAnimation? = null
 
+    val mLoadService: LoadService<*>
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
+
+        mContainer = findViewById(R.id.container)
 
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mClassicsHeader = findViewById(R.id.classics_header)
@@ -168,6 +176,13 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
                 playOrPause(it, position, false)
             }
         }
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无喜欢的神曲", "#802F2F30"))
+                .build()
+        mLoadService = mLoadSir.register(mContainer, Callback.OnReloadListener {
+            initData(true)
+        })
     }
 
     // 初始化数据
@@ -282,16 +297,24 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mMediaPlayer?.reset()
     }
 
-    override fun addLikeList(list: List<FeedsLikeModel>, isClear: Boolean) {
+    override fun addLikeList(list: List<FeedsLikeModel>?, isClear: Boolean) {
         if (isClear) {
             mAdapter.mDataList.clear()
         }
 
-        mAdapter.mDataList.addAll(list)
+        if (list != null) {
+            mAdapter.mDataList.addAll(list)
+        }
         if (mAdapter.mDataList.isNotEmpty() && isClear) {
             bindTopData(0, mAdapter.mDataList[0], false)
         }
         mAdapter.notifyDataSetChanged()
+
+        if (mAdapter.mDataList == null || mAdapter.mDataList.isEmpty()) {
+            mLoadService.showCallback(EmptyCallback::class.java)
+        } else {
+            mLoadService.showSuccess()
+        }
     }
 
     override fun showLike(model: FeedsLikeModel) {
