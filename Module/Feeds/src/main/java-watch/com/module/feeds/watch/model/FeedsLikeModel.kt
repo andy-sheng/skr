@@ -12,4 +12,6 @@ class FeedsLikeModel : Serializable {
     var song: FeedSongModel? = null
     @JSONField(name = "user")
     var user: FeedUserInfo? = null
+
+    var isLiked = true   // 标记是否喜欢，默认从服务器拿的都是喜欢
 }

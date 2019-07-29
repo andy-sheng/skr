@@ -5,5 +5,7 @@ import com.module.feeds.watch.model.FeedsLikeModel
 interface IFeedLikeView {
     fun addLikeList(list: List<FeedsLikeModel>, isClear: Boolean)
 
+    fun showLike(model: FeedsLikeModel)
+
     fun requestError()
 }
