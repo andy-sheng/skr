@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_185_dp"
+        android:background="@drawable/recharge_list_empty_icon" />
 
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/view_177_dp"
         android:text="暂无充值记录"
-        android:textColor="#ff3b4e79"
+        android:textColor="#993B4E79"
         android:textSize="@dimen/textsize_16_dp" />
-</FrameLayout>
+</LinearLayout>
