@@ -124,7 +124,9 @@ public abstract class BasePlayer implements IPlayer {
                         PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
                         engineEvent.totalDuration = duration;
                         engineEvent.curPostion = currentPostion;
-                        EventBus.getDefault().post(engineEvent);
+                        if(engineEvent.curPostion>0 && engineEvent.totalDuration>0){
+                            EventBus.getDefault().post(engineEvent);
+                        }
                     }
 
                     @Override

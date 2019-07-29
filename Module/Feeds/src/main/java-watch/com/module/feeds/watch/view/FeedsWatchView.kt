@@ -46,6 +46,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
     var mCurFocusPostion = -1 // 记录当前操作的焦点pos
+
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
 
@@ -93,9 +94,9 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                         .navigation()
             }
 
-            override fun onClickCDListener(position: Int,watchModel: FeedsWatchModel?) {
+            override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 播放
-                watchModel?.let { model -> startplay(position,model, false) }
+                watchModel?.let { model -> startplay(position, model, false) }
             }
 
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
@@ -205,7 +206,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
                         model?.let {
                             isFound = true
-                            startplay(postion,it, true)
+                            startplay(postion, it, true)
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
@@ -218,32 +219,32 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             }
         })
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
     }
 
-    private fun startplay(pos:Int,model: FeedsWatchModel, isMustPlay: Boolean) {
-        if(mCurFocusPostion!=pos){
+    private fun startplay(pos: Int, model: FeedsWatchModel, isMustPlay: Boolean) {
+        if (mCurFocusPostion != pos) {
             mMediaPlayer?.reset()
             mCurFocusPostion = pos
         }
         if (isMustPlay) {
             // 播放
-            startplay(pos,model)
+            startplay(pos, model)
         } else {
             if (mAdapter.mCurrentPlayModel?.feedID == model.feedID) {
                 // 停止播放
                 pausePlay()
             } else {
                 // 播放
-                startplay(pos,model)
+                startplay(pos, model)
             }
         }
     }
 
-    private fun startplay(pos:Int,model: FeedsWatchModel) {
-        mAdapter.updatePlayModel(pos,model)
+    private fun startplay(pos: Int, model: FeedsWatchModel) {
+        mAdapter.updatePlayModel(pos, model)
         if (mMediaPlayer == null) {
             mMediaPlayer = MyMediaPlayer()
             mMediaPlayer?.setMonitorProgress(true)
@@ -267,7 +268,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     }
 
     private fun pausePlay() {
-        mAdapter.updatePlayModel(-1,null)
+        mAdapter.updatePlayModel(-1, null)
         mMediaPlayer?.pause()
     }
 
@@ -277,7 +278,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     fun stopPlay() {
         // 保留mCurrentModel 可以用来恢复页面播放
-        mAdapter.updatePlayModel(-1,null)
+        mAdapter.updatePlayModel(-1, null)
         mMediaPlayer?.reset()
     }
 
@@ -290,7 +291,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 mAdapter.mDataList.addAll(list)
             }
             if (mAdapter.mDataList.isNotEmpty()) {
-                startplay(0,mAdapter.mDataList[0], true)
+                startplay(0, mAdapter.mDataList[0], true)
             }
             mAdapter.notifyDataSetChanged()
         } else {
@@ -318,7 +319,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
     }
@@ -329,13 +330,13 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     }
 
     @Subscribe
-    fun onEvent(event:PlayerEvent.TimeFly){
-        mAdapter.updatePlayProgress(event.curPostion,event.totalDuration)
+    fun onEvent(event: PlayerEvent.TimeFly) {
+        mAdapter.updatePlayProgress(event.curPostion, event.totalDuration)
     }
 
     fun destory() {
         mPersenter.destroy()
         mMediaPlayer?.release()
-            EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 }
