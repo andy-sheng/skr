@@ -87,9 +87,16 @@ class FeedReportActivity : BaseActivity() {
                         // 举报作品,来源神曲
                         reportFeed(content, list, 4)
                     }
+                    FeedsMoreDialogView.FROM_FEED_DETAIL -> {
+                        // 举报作品，来源详情
+                    }
+                    FeedsMoreDialogView.FROM_OTHER_PERSON -> {
+                        // 举报作品，来源他人主页
+                        reportFeed(content, list, 2)
+                    }
                     FeedsMoreDialogView.FROM_COMMENT -> {
-                        // 举报作品,来源详细
-                        reportFeed(content, list, 5)
+                        // 举报评论，来源评论
+                        reportComment(content, list)
                     }
                     else -> {
                         MyLog.w(TAG, "no from")

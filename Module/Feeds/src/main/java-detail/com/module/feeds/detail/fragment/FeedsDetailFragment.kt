@@ -353,12 +353,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     private fun showMoreOp() {
         mMoreDialogPlus?.dismiss()
         activity?.let {
-            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_FEED_DETAIL
                     , mFeedsWatchModel?.user?.userID ?: 0
                     , mFeedsWatchModel?.song?.songID ?: 0
                     , 0)
                     .apply {
-                        setReply()
+                        mFuncationTv.visibility = View.VISIBLE
+                        mFuncationTv.text = "回复"
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss()

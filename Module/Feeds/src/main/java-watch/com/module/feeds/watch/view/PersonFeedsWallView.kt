@@ -6,10 +6,14 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
+import com.common.view.DebounceViewClickListener
+import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.watch.adapter.FeedsWallViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -27,6 +31,7 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
     private val mPersenter: FeedsWallViewPresenter
 
     private var mMediaPlayer: IPlayer? = null
+    var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
     init {
         View.inflate(context, R.layout.feed_wall_view_layout, this)
@@ -40,11 +45,58 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
             }
 
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
-                // 排行
+                // 排行榜详情
+                watchModel?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                            .withString("rankTitle", it.rank?.rankTitle)
+                            .withLong("challengeID", it.song?.challengeID ?: 0L)
+                            .withInt("rankType", it.rank?.rankType ?: 0)
+                            .navigation()
+                }
             }
 
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
                 // 更多
+                watchModel?.let {
+                    if (fragment.activity != null) {
+                        if (userInfoModel.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+                            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON,
+                                    it.user?.userID ?: 0,
+                                    it.song?.songID ?: 0,
+                                    0)
+                                    .apply {
+                                        mFuncationTv.text = "分享"
+                                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                            override fun clickValid(v: View?) {
+                                                dismiss(false)
+                                            }
+                                        })
+                                        mReportTv.text = "删除"
+                                        mReportTv.setOnClickListener(object : DebounceViewClickListener() {
+                                            override fun clickValid(v: View?) {
+                                                dismiss(false)
+                                            }
+                                        })
+                                    }
+                        } else {
+                            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON,
+                                    it.user?.userID ?: 0,
+                                    it.song?.songID ?: 0,
+                                    0)
+                                    .apply {
+                                        mFuncationTv.text = "分享"
+                                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                            override fun clickValid(v: View?) {
+                                                dismiss(false)
+                                            }
+                                        })
+                                    }
+                        }
+
+                        mFeedsMoreDialogView?.showByDialog()
+                    }
+
+                }
             }
 
             override fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?) {

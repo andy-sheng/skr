@@ -15,18 +15,24 @@ import com.module.RouterConstants
 
 
 /**
- * 回复，举报和取消
- * 关注，回复和取消
+ * 关注，举报和取消 //首页
+ * 举报和取消  //详情页面
+ * 回复，举报和取消 //长按评论
+ * 分享，举报和取消 //他人页面
+ * 分享，删除和取消 //自己页面
  */
 class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, songID: Int, commentID: Int) : ConstraintLayout(activity) {
 
     companion object {
         const val FROM_FEED = 1
-        const val FROM_COMMENT = 2
+        const val FROM_FEED_DETAIL = 2
+        const val FROM_COMMENT = 3
+        const val FROM_PERSON = 4
+        const val FROM_OTHER_PERSON = 5
     }
 
     private val mCancleTv: ExTextView
-    private val mReportTv: ExTextView
+    val mReportTv: ExTextView
     val mFuncationTv: ExTextView
 
     var mDialogPlus: DialogPlus? = null
@@ -64,11 +70,6 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, song
             mFuncationTv.visibility = View.VISIBLE
             mFuncationTv.text = "关注"
         }
-    }
-
-    fun setReply() {
-        mFuncationTv.visibility = View.VISIBLE
-        mFuncationTv.text = "回复"
     }
 
     /**
