@@ -1,6 +1,7 @@
 package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -44,7 +45,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
     }
 
     private fun getFeedsLikeList(offset: Int) {
-        ApiMethods.subscribe(mFeedServerApi.getFeedLikeList(offset, mCNT), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mFeedServerApi.getFeedLikeList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     mLastUpdatListTime = System.currentTimeMillis()
