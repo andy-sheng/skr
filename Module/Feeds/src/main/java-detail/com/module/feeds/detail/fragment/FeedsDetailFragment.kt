@@ -358,14 +358,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     , mFeedsWatchModel?.song?.songID ?: 0
                     , 0)
                     .apply {
-                        mFuncationTv.visibility = View.VISIBLE
-                        mFuncationTv.text = "回复"
-                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                            override fun clickValid(v: View?) {
-                                dismiss()
-                                mFeedsInputContainerView?.showSoftInput()
-                            }
-                        })
+                        mFuncationTv.visibility = View.GONE
+//                        mFuncationTv.visibility = View.VISIBLE
+//                        mFuncationTv.text = "回复"
+//                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+//                            override fun clickValid(v: View?) {
+//                                dismiss()
+//                                mFeedsInputContainerView?.showSoftInput()
+//                            }
+//                        })
                     }
             mMoreDialogPlus?.showByDialog()
         }

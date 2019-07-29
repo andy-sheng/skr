@@ -63,11 +63,13 @@ class FeedReportActivity : BaseActivity() {
         mSumbitTv = findViewById(R.id.sumbit_tv)
 
         mAdapter = FeedReportAdapter()
-        if (mFrom == FeedsMoreDialogView.FROM_FEED) {
-            mAdapter.mDataList = getReportFeed()
-        } else if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
+        if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
+            // 只有这个是举报评论的
             mAdapter.mDataList = getReportComment()
+        } else {
+            mAdapter.mDataList = getReportFeed()
         }
+
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
