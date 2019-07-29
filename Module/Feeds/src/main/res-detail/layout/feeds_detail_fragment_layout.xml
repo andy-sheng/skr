@@ -113,7 +113,7 @@
                         android:id="@+id/feeds_many_lyric_layout_viewstub"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_120_dp"
-                        android:layout="@layout/feeds_many_lyric_layout"
+                        android:layout="@layout/feeds_detail_many_lyric_layout"
                         app:layout_constraintTop_toBottomOf="@+id/radio_view" />
 
                     <com.common.view.ex.ExImageView

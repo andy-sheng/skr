@@ -1,5 +1,6 @@
 package com.module.feeds.detail.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
@@ -44,31 +45,41 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     override fun loadLyric() {
         tryInflate()
         lyricTv.text = "正在加载"
-        mDisposable = LyricsManager.getLyricsManager(U.app())
-                .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
-                .subscribe({ s ->
-                    lyricTv.text = "\n${s}"
-                }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+        if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
+            mDisposable = LyricsManager.getLyricsManager(U.app())
+                    .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
+                    .subscribe({ s ->
+                        mFeedSongModel?.songTpl?.lrcTxtStr = s
+                        lyricTv.text = "\n${s}"
+                    }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+        } else {
+            lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
+        }
     }
 
     override fun playLyric() {
         tryInflate()
         passTime = 0
         mIsStart = true
-        mDisposable = LyricsManager.getLyricsManager(U.app())
-                .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
-                .subscribe({ s ->
-                    lyricTv.text = "\n${s}"
-                    visibility = View.VISIBLE
-                    startScroll()
-                }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+
+        if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
+            mDisposable = LyricsManager.getLyricsManager(U.app())
+                    .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
+                    .subscribe({ s ->
+                        mFeedSongModel?.songTpl?.lrcTxtStr = s
+                        lyricTv.text = "\n${s}"
+                        visibility = View.VISIBLE
+                        startScroll()
+                    }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+        } else {
+            lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
+            visibility = View.VISIBLE
+            startScroll()
+        }
     }
 
-    override fun seekTo(duration: Int) {
-//        MyLog.w("AutoScrollLyricView", "passTime - duration is ${passTime - duration}")
-//        if (Math.abs(passTime - duration) > 100) {
-//            passTime = duration
-//        }
+    override fun seekTo(pos: Int) {
+        passTime = pos
     }
 
     override fun isStart(): Boolean = mIsStart
@@ -88,10 +99,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                 .interval(30)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        passTime = passTime.plus(30)
                         val Y = (lyricTv.height - scrollView.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
                         MyLog.w("AutoScrollLyricView", "Y is $Y, passTime is $passTime, duraions is ${mFeedSongModel!!.playDurMs!!.toDouble()}")
                         lyricTv.scrollTo(0, Y.toInt())
+                        passTime = passTime.plus(30)
                     }
                 })
     }
@@ -106,5 +117,12 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     override fun resume() {
         startScroll()
+    }
+
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility == View.GONE) {
+            pause()
+        }
     }
 }

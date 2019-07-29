@@ -12,7 +12,9 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
 
     var mDataList = ArrayList<FeedsWatchModel>()
 
-    var mCurrentModel: FeedsWatchModel? = null
+    var mCurrentPlayModel: FeedsWatchModel? = null
+    var mCurrentPlayPostion:Long = 0
+    var mCurrentPlayDuration:Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsWatchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
@@ -31,8 +33,11 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
         if (payloads.isEmpty()) {
             // 全部刷新的布局
             holder.bindData(position, mDataList[position])
-            if (mDataList[position] == mCurrentModel) {
+            if (mDataList[position] == mCurrentPlayModel) {
                 holder.startPlay()
+                if(mCurrentPlayDuration>0){
+                    holder.playLyric(mCurrentPlayPostion,mCurrentPlayDuration)
+                }
             } else {
                 holder.stopPlay()
             }
@@ -43,6 +48,12 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
                 holder.refreshLike(position, mDataList[position])
             } else if (type == REFRESH_TYPE_COMMENT) {
                 holder.refreshComment(position, mDataList[position])
+            }else if(type == REFRESH_TYPE_LYRIC){
+                if(mDataList[position]==mCurrentPlayModel){
+                    if(mCurrentPlayDuration>0){
+                        holder.playLyric(mCurrentPlayPostion,mCurrentPlayDuration)
+                    }
+                }
             }
         }
     }
@@ -65,8 +76,28 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
         }
     }
 
+    fun updatePlayModel(nothing: FeedsWatchModel?) {
+        if(mCurrentPlayModel!=nothing){
+            mCurrentPlayModel = nothing
+            notifyDataSetChanged()
+        }
+    }
+
+    fun updatePlayProgress(curPostion: Long, totalDuration: Long) {
+        mCurrentPlayPostion = curPostion
+        mCurrentPlayDuration = totalDuration
+        // 位置是错的
+        for (i in 0 until mDataList.size) {
+            if (mDataList[i].feedID == mCurrentPlayModel?.feedID) {
+                notifyItemChanged(i, REFRESH_TYPE_LYRIC)
+                return
+            }
+        }
+    }
+
     companion object {
         const val REFRESH_TYPE_LIKE = 0  // 局部刷新喜欢
         const val REFRESH_TYPE_COMMENT = 1  // 局部刷新评论数
+        const val REFRESH_TYPE_LYRIC = 2  // 局部刷新歌词
     }
 }

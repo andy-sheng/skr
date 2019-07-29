@@ -12,6 +12,8 @@ import com.common.view.ex.ExConstraintLayout
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
+import com.module.feeds.detail.view.AutoScrollLyricView
+import com.module.feeds.detail.view.FeedsManyLyricView
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 
@@ -26,10 +28,15 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     private val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
     private val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
 
+    val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
+    val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub))
+
+
     var mPosition: Int = 0
     var model: FeedsWatchModel? = null
 
     init {
+
         mMoreIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickMoreListener(model)
@@ -50,7 +57,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         mRecordView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener?.onClickCDListener(model)
+                listener?.onClickCDListener(mPosition,model)
             }
         })
 
@@ -84,6 +91,20 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         refreshComment(position, watchModel)
         refreshLike(position, watchModel)
+
+        // 加载带时间戳的歌词
+        watchModel.song?.let {
+            feedWatchManyLyricView.setSongModel(it)
+            feedAutoScrollLyricView.setSongModel(it)
+        }
+        // 加载歌词
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+            feedAutoScrollLyricView.visibility = View.GONE
+            feedWatchManyLyricView.loadLyric()
+        } else {
+            feedAutoScrollLyricView.loadLyric()
+            feedWatchManyLyricView.visibility = View.GONE
+        }
     }
 
     // 刷新喜欢图标和数字
@@ -110,9 +131,27 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
     fun startPlay() {
         mRecordView.play()
+
+    }
+
+
+    fun playLyric(mCurrentPlayPostion: Long, mCurrentPlayDuration: Long) {
+        // 播放歌词 不一定是从头开始播
+        // 有可能从头播 也有可能继续播
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+            feedAutoScrollLyricView.visibility = View.GONE
+            feedWatchManyLyricView.seekTo(mCurrentPlayPostion.toInt())
+            feedWatchManyLyricView.resume()
+        } else {
+            feedAutoScrollLyricView.seekTo(mCurrentPlayPostion.toInt())
+            feedAutoScrollLyricView.resume()
+            feedWatchManyLyricView.visibility = View.GONE
+        }
     }
 
     fun stopPlay() {
         mRecordView.pause()
+        feedAutoScrollLyricView.pause()
+        feedWatchManyLyricView.pause()
     }
 }

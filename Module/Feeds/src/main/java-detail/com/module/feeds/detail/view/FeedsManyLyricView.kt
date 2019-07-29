@@ -7,6 +7,7 @@ import com.common.rx.RxRetryAssist
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricsManager
+import com.component.lyrics.LyricsReader
 import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
@@ -21,18 +22,18 @@ import io.reactivex.schedulers.Schedulers
 
 class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
     val TAG = "FeedsManyLyricView"
-    lateinit var mManyLyricsView: ManyLyricsView
+    private var mManyLyricsView: ManyLyricsView? = null
     private var mFeedSongModel: FeedSongModel? = null
     var mDisposable: Disposable? = null
     var mIsStart: Boolean = false
 
     override fun init(parentView: View) {
         mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view)
-        mManyLyricsView.spaceLineHeight = U.getDisplayUtils().dip2px(15f).toFloat()
+        mManyLyricsView?.spaceLineHeight = U.getDisplayUtils().dip2px(15f).toFloat()
     }
 
     override fun layoutDesc(): Int {
-        return R.layout.feeds_many_lyric_layout
+        return R.layout.feeds_detail_many_lyric_layout
     }
 
     override fun setSongModel(feedSongModel: FeedSongModel) {
@@ -50,31 +51,38 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
     }
 
     private fun showLyric(play: Boolean) {
-        mFeedSongModel?.songTpl?.lrcTs?.let {
-            mDisposable?.dispose()
-            mDisposable = LyricsManager.getLyricsManager(U.app())
-                    .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .retryWhen(RxRetryAssist(3, ""))
-                    .subscribe(Consumer { lyricsReader ->
-                        MyLog.w(TAG, "onEventMainThread " + "play")
-                        if (mManyLyricsView != null) {
-                            mManyLyricsView.setVisibility(View.VISIBLE)
-                            mManyLyricsView.initLrcData()
-                        }
+        if (mFeedSongModel?.songTpl?.lrcTsReader == null) {
+            mFeedSongModel?.songTpl?.lrcTs?.let {
+                mDisposable?.dispose()
+                mDisposable = LyricsManager.getLyricsManager(U.app())
+                        .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .retryWhen(RxRetryAssist(3, ""))
+                        .subscribe(Consumer { lyricsReader ->
+                            MyLog.w(TAG, "onEventMainThread " + "play")
+                            mFeedSongModel?.songTpl?.lrcTsReader = lyricsReader
+                            whenReaderLoad(play)
+                        })
+            }
+        } else {
+            whenReaderLoad(play)
+        }
+    }
 
-                        mManyLyricsView.setLyricsReader(lyricsReader)
-
-                        if (play) {
-                            mIsStart = true
-                            mManyLyricsView.play(0)
-                        } else {
-                            if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                                mManyLyricsView.pause()
-                            }
-                        }
-                    })
+    private fun whenReaderLoad(play: Boolean) {
+        if (mManyLyricsView != null) {
+            mManyLyricsView?.setVisibility(View.VISIBLE)
+            mManyLyricsView?.initLrcData()
+        }
+        mManyLyricsView?.setLyricsReader(mFeedSongModel?.songTpl?.lrcTsReader)
+        if (play) {
+            mIsStart = true
+            mManyLyricsView?.play(0)
+        } else {
+            if (mManyLyricsView?.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                mManyLyricsView?.pause()
+            }
         }
     }
 
@@ -93,7 +101,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
     override fun isStart(): Boolean = mIsStart
 
     override fun stop() {
-        mManyLyricsView.seekto(0)
+        mManyLyricsView?.seekto(0)
         mManyLyricsView?.pause()
         mIsStart = false
     }
@@ -104,14 +112,14 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
     }
 
     override fun destroy() {
-        mManyLyricsView.release()
+        mManyLyricsView?.release()
         mIsStart = false
     }
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
-
+            mManyLyricsView?.pause()
         }
     }
 }

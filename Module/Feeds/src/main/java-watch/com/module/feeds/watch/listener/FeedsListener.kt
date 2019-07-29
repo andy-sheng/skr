@@ -8,6 +8,6 @@ interface FeedsListener {
     fun onClickCommentListener(watchModel: FeedsWatchModel?)
     fun onClickHitListener(watchModel: FeedsWatchModel?)
     fun onClickDetailListener(watchModel: FeedsWatchModel?)
-    fun onClickCDListener(watchModel: FeedsWatchModel?)
+    fun onClickCDListener(position: Int,watchModel: FeedsWatchModel?)
     fun onclickRankListener(watchModel: FeedsWatchModel?)
 }

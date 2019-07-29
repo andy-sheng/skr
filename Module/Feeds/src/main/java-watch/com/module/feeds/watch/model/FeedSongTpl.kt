@@ -1,9 +1,11 @@
 package com.module.feeds.watch.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.component.lyrics.LyricsReader
 import java.io.Serializable
 
 class FeedSongTpl : Serializable {
+
     @JSONField(name = "bgm")
     var bgm: String? = null
     @JSONField(name = "bgmDurMs")
@@ -16,8 +18,11 @@ class FeedSongTpl : Serializable {
     var createdAt: Long? = null
     @JSONField(name = "lrcTs")// 时间戳歌词
     var lrcTs: String? = null
+    @Transient var lrcTsReader: LyricsReader? = null// 时间戳歌词 客户端缓存写入 服务器不会返回
     @JSONField(name = "lrcTxt")// 纯文本歌词
     var lrcTxt: String? = null
+    var lrcTxtStr: String? = null// 纯文本歌词 客户端缓存写入 服务器不会返回
+
     @JSONField(name = "lrcType")// 纯文本歌词 0 1伴奏 2 纯文本
     var lrcType: Int? = null
     @JSONField(name = "lyricist")

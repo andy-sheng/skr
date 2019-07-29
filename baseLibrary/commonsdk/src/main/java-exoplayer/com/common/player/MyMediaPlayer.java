@@ -143,12 +143,12 @@ public class MyMediaPlayer implements IPlayer {
     }
 
     @Override
-    public void startPlay(String path) {
+    public boolean startPlay(String path) {
         mPath = path;
         if (useAndroidMediaPlayer) {
-            mAndroidMediaPlayer.startPlay(path);
+            return mAndroidMediaPlayer.startPlay(path);
         } else {
-            mExoPlayer.startPlay(path);
+            return mExoPlayer.startPlay(path);
         }
     }
 
