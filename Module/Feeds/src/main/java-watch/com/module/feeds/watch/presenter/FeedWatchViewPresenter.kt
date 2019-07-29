@@ -1,10 +1,6 @@
 package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
-<<<<<<< HEAD
-=======
-import com.common.core.account.UserAccountManager
->>>>>>> 详情页播放优化
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
