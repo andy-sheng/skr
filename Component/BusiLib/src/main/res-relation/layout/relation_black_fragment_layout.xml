@@ -21,7 +21,6 @@
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary"/>
 
-
     <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +28,7 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_12_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#D0EFFF"
+        app:bl_solid_color="@color/colorSolidPrimary"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp">
 

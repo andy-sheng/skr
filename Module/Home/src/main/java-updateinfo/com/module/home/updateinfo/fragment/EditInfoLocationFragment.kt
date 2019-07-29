@@ -34,7 +34,7 @@ class EditInfoLocationFragment : BaseFragment() {
     //之前定位的位置
     var mPreProvince: String? = null
 
-    override fun initView() = com.module.home.R.layout.edit_info_location_fragment_layout
+    override fun initView() = R.layout.edit_info_location_fragment_layout
 
     override fun initData(savedInstanceState: Bundle?) {
         mTitlebar = rootView.findViewById(com.module.home.R.id.titlebar)

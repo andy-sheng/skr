@@ -39,7 +39,7 @@
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#D0EFFF"
+        app:bl_solid_color="@color/colorSolidPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

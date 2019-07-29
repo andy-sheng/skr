@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:alpha="0.2"
-        android:background="#FF3E5181"
+        android:background="@color/colorDividerPrimary"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView

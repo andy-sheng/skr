@@ -34,7 +34,7 @@
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#D0EFFF">
+        app:bl_solid_color="@color/colorSolidPrimary">
 
         <!--修改头像-->
         <RelativeLayout
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#D8D8D8" />
+                android:background="@color/colorDividerPrimary" />
 
         </RelativeLayout>
 
@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#D8D8D8" />
+                android:background="@color/colorDividerPrimary" />
 
         </RelativeLayout>
 
@@ -171,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#D8D8D8" />
+                android:background="@color/colorDividerPrimary" />
 
         </RelativeLayout>
 
@@ -216,7 +216,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#D8D8D8" />
+                android:background="@color/colorDividerPrimary" />
 
         </RelativeLayout>
 
@@ -260,7 +260,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#D8D8D8" />
+                android:background="@color/colorDividerPrimary" />
 
         </RelativeLayout>
 
@@ -311,7 +311,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#D8D8D8" />
+                android:background="@color/colorDividerPrimary" />
 
         </RelativeLayout>
 
