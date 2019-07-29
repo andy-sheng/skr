@@ -87,19 +87,24 @@ android {
             // 举报
             java.srcDirs += 'src/main/java-report'
             res.srcDirs += 'src/main/res-report'
+
+            // 排行
+            java.srcDirs += 'src/main/java-rank'
+            res.srcDirs += 'src/main/res-rank'
         }
     }
 }
 
 dependencies {
+    //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
+    api project(":Component:BusiLib")
     if (isBuildModule.toBoolean()) {
 //        tools
         kapt rootProject.ext.dependencies["arouter-compiler"]
     } else {
         kapt rootProject.ext.dependencies["arouter-compiler"]
     }
-    //因为 CommonRes 依赖了 CommonSDK, 所以如果业务模块需要公共 UI 组件就依赖 CommonRes, 如果不需要就只依赖 CommonSDK
-    api project(":Component:BusiLib")
+
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

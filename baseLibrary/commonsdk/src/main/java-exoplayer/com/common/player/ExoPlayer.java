@@ -508,7 +508,7 @@ public class ExoPlayer extends BasePlayer {
         if (setConfig) {
             this.mVolume = volume;
         }
-        if(!mMuted){
+        if (!mMuted) {
             mPlayer.setVolume(volume);
         }
     }
@@ -532,26 +532,30 @@ public class ExoPlayer extends BasePlayer {
     }
 
     @Override
-    public void startPlay(String path) {
+    public boolean startPlay(String path) {
         MyLog.d(TAG, "startPlay" + " path=" + path);
         if (TextUtils.isEmpty(path)) {
-            return;
+            return true;
         }
         if (mPlayer == null) {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
-            return;
+            return true;
         }
         if (path != null && !path.equals(mUrl)) {
             mUrl = path;
             mUrlChange = true;
             mMediaSource = buildMediaSource(Uri.parse(path), null);
         }
+        boolean r = false;
         if (mUrlChange) {
             mUrlChange = false;
             mPlayer.prepare(mMediaSource, true, false);
+            r = true;
+        } else {
         }
         mPlayer.setPlayWhenReady(true);
         startMusicPlayTimeListener();
+        return r;
     }
 
     @Override
@@ -603,11 +607,13 @@ public class ExoPlayer extends BasePlayer {
     @Override
     public void release() {
         MyLog.d(TAG, "release");
-        mPlayer.clearVideoSurface();
-        mPlayer.release();
-        mPlayer.setVideoListener(null);
-        mPlayer.setAudioDebugListener(null);
-        mPlayer.setVideoDebugListener(null);
+        if (mPlayer != null) {
+            mPlayer.clearVideoSurface();
+            mPlayer.release();
+            mPlayer.setVideoListener(null);
+            mPlayer.setAudioDebugListener(null);
+            mPlayer.setVideoDebugListener(null);
+        }
         mPlayer = null;
         mMediaSource = null;
         sPrePlayer = null;

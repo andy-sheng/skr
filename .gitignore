@@ -20,7 +20,7 @@ app/.idea
 app/gradle/
 captures
 projectFilesBackup/
-publish/
+publish1/
 
 # Windows thumbnail db
 Thumbs.db

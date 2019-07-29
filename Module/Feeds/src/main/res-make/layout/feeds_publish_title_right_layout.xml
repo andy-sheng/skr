@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/view_17_dp"
+    android:gravity="center"
+    android:text="保存发布"
+    app:bl_enabled_textColor="@color/black"
+    android:enabled="false"
+    app:bl_unEnabled_textColor="@color/black_trans_50" />

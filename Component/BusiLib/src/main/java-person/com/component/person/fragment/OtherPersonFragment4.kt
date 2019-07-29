@@ -59,7 +59,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import com.component.dialog.BusinessCardDialogView
-import com.component.feeds.view.PersonFeedsWallView
 import com.component.level.view.NormalLevelView2
 import com.zq.live.proto.Common.ESex
 import com.component.person.utils.StringFromatUtils
@@ -69,7 +68,6 @@ import com.component.person.view.EditRemarkView
 import com.component.person.view.IOtherPersonView
 import com.component.person.photo.view.OtherPhotoWallView
 import com.component.person.view.PersonMoreOpView
-import com.component.person.producation.view.ProducationWallView
 import com.component.person.view.RequestCallBack
 
 import org.greenrobot.eventbus.Subscribe
@@ -81,6 +79,7 @@ import java.util.HashMap
 import com.component.person.model.RelationNumModel
 
 import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
+import com.module.feeds.IPersonFeedsWall
 
 class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
@@ -127,7 +126,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonTabAdapter: PagerAdapter
 
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
-    internal var mFeedsWallView: PersonFeedsWallView? = null
+    internal var mFeedsWallView: IPersonFeedsWall? = null
 //    internal var mProducationWallView: ProducationWallView? = null
 
     lateinit var mFunctionArea: LinearLayout
@@ -482,10 +481,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 } else if (position == 1) {
                     // 神曲
                     if (mFeedsWallView == null) {
-                        mFeedsWallView = PersonFeedsWallView(this@OtherPersonFragment4, mUserInfoModel, this@OtherPersonFragment4)
+                        val mIFeedsModuleService = ModuleServiceManager.getInstance().feedsService
+                        mFeedsWallView = mIFeedsModuleService.getPersonFeedsWall(this@OtherPersonFragment4, mUserInfoModel, this@OtherPersonFragment4)
                     }
-                    if (container.indexOfChild(mFeedsWallView) == -1) {
-                        container.addView(mFeedsWallView)
+                    if (container.indexOfChild(mFeedsWallView as View) == -1) {
+                        container.addView(mFeedsWallView as View)
                     }
                     return mFeedsWallView!!
                 }
@@ -624,7 +624,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     private fun showUserInfo(model: UserInfoModel) {
         this.mUserInfoModel = model
-        mFeedsWallView?.userInfoModel = model
+        mFeedsWallView?.setUserInfoModel(model)
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(model.avatar)
                         .setBorderColor(Color.WHITE)

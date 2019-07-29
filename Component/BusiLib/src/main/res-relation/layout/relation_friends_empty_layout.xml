@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_62_dp"
-        android:background="@drawable/tongxunlu_haiyoukongbaiye" />
+        android:background="@drawable/relation_friend_empty_icon" />
 
     <TextView
         android:layout_width="wrap_content"

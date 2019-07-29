@@ -1,6 +1,7 @@
 package com.module.feeds.detail.presenter
 
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.AbsCoroutinePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -9,6 +10,7 @@ import com.common.rxretrofit.ApiResult
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.FirstLevelCommentModel
+import com.module.feeds.watch.model.FeedUserInfo
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap
@@ -26,8 +28,8 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
         addToLifeCycle()
     }
 
-    fun getSecondLevelCommentList() {
-        ApiMethods.subscribe(mFeedsDetailServerApi.getFirstLevelCommentList(mOffset, mCount, mFeedId), object : ApiObserver<ApiResult>() {
+    fun getSecondLevelCommentList(commentID: Int) {
+        ApiMethods.subscribe(mFeedsDetailServerApi.getSecondLevelCommentList(mOffset, mCount, mFeedId, commentID, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)
@@ -39,9 +41,23 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                     }
 
                     mOffset = obj.data.getIntValue("offset")
+                } else {
+                    mIFirstLevelCommentView.finishLoadMore()
                 }
             }
+
+            override fun onError(e: Throwable) {
+                mIFirstLevelCommentView.finishLoadMore()
+            }
+
+            override fun onNetworkError(errorType: ErrorType?) {
+                mIFirstLevelCommentView.finishLoadMore()
+            }
         }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
+    }
+
+    fun updateCommentList() {
+        mIFirstLevelCommentView.updateList(mModelList)
     }
 
     fun likeComment(firstLevelCommentModel: FirstLevelCommentModel, feedID: Int, like: Boolean, position: Int) {
@@ -67,18 +83,27 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
         }, this, ApiMethods.RequestControl(mTag + "likeComment", ApiMethods.ControlType.CancelThis))
     }
 
-    fun addComment(content: String, feedID: Int, refuseModel: FirstLevelCommentModel, callBack: ((FirstLevelCommentModel) -> Unit)) {
+    fun addComment(content: String, feedID: Int, firstLevelCommentID: Int, refuseModel: FirstLevelCommentModel, callBack: ((FirstLevelCommentModel) -> Unit)) {
         val map = HashMap<String, Any>()
         map["content"] = content
         map["feedID"] = feedID
-        map["firstLevelCommentID"] = refuseModel.comment.commentID
-        map["replyedUserID"] = refuseModel.comment.userID
+        map["firstLevelCommentID"] = firstLevelCommentID
+        map["replyedCommentID"] = refuseModel.comment.commentID
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    callBack.invoke(refuseModel)
+                    val model: FirstLevelCommentModel.CommentBean = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
+                    val firstLevelCommentModel = FirstLevelCommentModel()
+                    firstLevelCommentModel.comment = model
+                    firstLevelCommentModel.comment.content = content
+                    firstLevelCommentModel.commentUser = FeedUserInfo()
+                    firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
+                    firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
+                    firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
+                    firstLevelCommentModel.replyUser = refuseModel.commentUser
+                    callBack.invoke(firstLevelCommentModel)
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))

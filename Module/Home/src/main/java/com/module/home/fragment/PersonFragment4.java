@@ -44,9 +44,11 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
-import com.component.feeds.view.PersonFeedsWallView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
+import com.module.feeds.IFeedsModuleService;
+import com.module.feeds.IPersonFeedsWall;
 import com.module.home.R;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
@@ -122,7 +124,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     PagerAdapter mPersonTabAdapter;
 
     PhotoWallView mPhotoWallView;
-    PersonFeedsWallView mFeedsWallView;
+    IPersonFeedsWall mFeedsWallView;
     ProducationWallView mProducationWallView;
 
     DialogPlus mDialogPlus;
@@ -460,10 +462,11 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     // 神曲
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
                     if (mFeedsWallView == null) {
-                        mFeedsWallView = new PersonFeedsWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
+                        IFeedsModuleService feedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
+                        mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
-                    if (container.indexOfChild(mFeedsWallView) == -1) {
-                        container.addView(mFeedsWallView);
+                    if (container.indexOfChild((View) mFeedsWallView) == -1) {
+                        container.addView((View) mFeedsWallView);
                     }
                     return mFeedsWallView;
                 } else if (position == 2) {

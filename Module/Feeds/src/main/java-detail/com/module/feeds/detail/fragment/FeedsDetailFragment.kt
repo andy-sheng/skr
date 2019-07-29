@@ -16,6 +16,7 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
@@ -28,7 +29,8 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
-import com.component.feeds.model.FeedsWatchModel
+import com.module.feeds.watch.model.FeedsWatchModel
+import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.R
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -36,7 +38,7 @@ import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
-import com.module.feeds.detail.view.RadioView
+import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
 import org.greenrobot.eventbus.Subscribe
@@ -70,9 +72,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mToolbarLayout: ConstraintLayout? = null
     var mFeedsCommonLyricView: FeedsCommonLyricView? = null
     var mFeedsCommentView: FeedsCommentView? = null
-    var mRadioView: RadioView? = null
+    var mRadioView: FeedsRecordAnimationView? = null
     var mCommonTitleBar: CommonTitleBar? = null
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
+    var mMoreDialogPlus: FeedsMoreDialogView? = null
 
     var mIsSongStart = false
 
@@ -80,15 +83,21 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mFeedsWatchModel: FeedsWatchModel? = null
 
+    var mResumeCall: (() -> Unit)? = null
+
     val mMyMediaPlayer: MyMediaPlayer by lazy {
         MyMediaPlayer().also {
             it.setMonitorProgress(true)
             it.setCallback(object : IPlayerCallback {
                 override fun onPrepared() {
-                    if (!mFeedsCommonLyricView!!.isStart()) {
-                        mFeedsCommonLyricView!!.playLyric()
+                    if (mControlTv!!.isSelected) {
+                        if (!mFeedsCommonLyricView!!.isStart()) {
+                            mFeedsCommonLyricView!!.playLyric()
+                        } else {
+                            mFeedsCommonLyricView!!.resume()
+                        }
                     } else {
-                        mFeedsCommonLyricView!!.resume()
+                        mMyMediaPlayer.pause()
                     }
                 }
 
@@ -218,6 +227,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mCommonTitleBar?.leftTextView?.setDebounceViewClickListener {
+            activity?.finish()
+        }
+
         mBtnBack?.setDebounceViewClickListener {
             activity?.finish()
         }
@@ -264,7 +277,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mNameTv?.text = mFeedsWatchModel?.user?.nickname
         mFeedsWatchModel?.song?.createdAt?.let {
-            mCommentTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it, "MM-dd HH:mm")
+            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
         }
 
         if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.title)) {
@@ -288,9 +301,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(fromUser){
+                if (fromUser) {
                     mMyMediaPlayer.seekTo(progress.toLong())
                     mFeedsCommonLyricView?.seekTo(progress)
+                    mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
                 }
             }
 
@@ -325,14 +339,43 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mMoreTv?.setDebounceViewClickListener {
+            showMoreOp()
+        }
 
+        mCommonTitleBar?.rightImageButton?.setDebounceViewClickListener {
+            showMoreOp()
+        }
+
+        mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
+    }
+
+    private fun showMoreOp() {
+        mMoreDialogPlus?.dismiss()
+        activity?.let {
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_FEED_DETAIL
+                    , mFeedsWatchModel?.user?.userID ?: 0
+                    , mFeedsWatchModel?.song?.songID ?: 0
+                    , 0)
+                    .apply {
+                        mFuncationTv.visibility = View.GONE
+//                        mFuncationTv.visibility = View.VISIBLE
+//                        mFuncationTv.text = "回复"
+//                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+//                            override fun clickValid(v: View?) {
+//                                dismiss()
+//                                mFeedsInputContainerView?.showSoftInput()
+//                            }
+//                        })
+                    }
+            mMoreDialogPlus?.showByDialog()
+        }
     }
 
     override fun addCommentSuccess(model: FirstLevelCommentModel) {
-        mFeedsCommentView?.addSelfComment(model)
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!.plus(1)
         mFeedsWatchModel?.commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!
-        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
+        mFeedsCommentView?.addSelfComment(model)
     }
 
     override fun likeFeed(like: Boolean) {
@@ -343,6 +386,37 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mXinNumTv!!.text = (mXinNumTv!!.text.toString().toInt() - 1).toString()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mResumeCall?.invoke()
+        mResumeCall = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mControlTv!!.isSelected) {
+            mMyMediaPlayer.pause()
+            mResumeCall = {
+                mMyMediaPlayer.resume()
+            }
+        }
+    }
+
+    override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
+        if (isFriend) {
+            isFriendState()
+            mFollowTv?.setOnClickListener(null)
+        } else if (isFollow) {
+            isFollowState()
+            mFollowTv?.setOnClickListener(null)
+        } else {
+            isStrangerState()
+            mFollowTv?.setDebounceViewClickListener {
+                UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID!!, UserInfoManager.RA_BUILD, false, 0, null)
+            }
+        }
     }
 
     private fun playSong() {

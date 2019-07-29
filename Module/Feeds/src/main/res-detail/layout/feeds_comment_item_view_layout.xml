@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/commenter_avater_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        android:layout_marginTop="@dimen/view_9_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        android:maxWidth="270dp"
+        android:text="我就是传说中的你舅"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/commenter_avater_iv"
+        app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/comment_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        android:text="06-30 23:34"
+        android:textColor="@color/black_trans_30"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
+        app:layout_constraintLeft_toRightOf="@+id/commenter_avater_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/xin_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_12_dp"
+        app:bl_selected_drawable="@drawable/xin_shi"
+        app:bl_unSelected_drawable="@drawable/xin_kong"
+        app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/like_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:text="677"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
+        app:layout_constraintRight_toLeftOf="@+id/xin_iv"
+        app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/content_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_7_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:text=""
+        android:textColor="@color/black_trans_50"
+        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commenter_avater_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:visibility="gone"
+        android:id="@+id/reply_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:text="163条回复"
+        android:textColor="#ff6295c4"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/content_tv"
+        app:layout_constraintTop_toBottomOf="@+id/content_tv" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:layout_marginLeft="@dimen/view_56_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reply_num"
+        app:layout_goneMarginTop="@dimen/view_17_dp" />
+</android.support.constraint.ConstraintLayout>

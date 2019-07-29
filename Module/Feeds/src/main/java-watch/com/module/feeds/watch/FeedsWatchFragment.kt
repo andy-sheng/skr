@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.log.MyLog
 import com.common.utils.U
@@ -16,7 +17,8 @@ import com.module.feeds.watch.view.FeedsLikeView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
-import com.component.feeds.view.FeedsWatchView
+import com.module.feeds.watch.view.FeedsWatchView
+import com.module.RouterConstants
 
 class FeedsWatchFragment : BaseFragment() {
 
@@ -42,7 +44,9 @@ class FeedsWatchFragment : BaseFragment() {
 
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                // 发起挑战
+                // 打榜 神曲榜
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK)
+                        .navigation()
             }
         })
 

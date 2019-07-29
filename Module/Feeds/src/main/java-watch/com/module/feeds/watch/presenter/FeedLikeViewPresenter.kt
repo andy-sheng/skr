@@ -6,9 +6,14 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.component.feeds.FeedsWatchServerApi
+import com.common.utils.U
+import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsLikeModel
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.IFeedLikeView
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.HashMap
 
 class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
 
@@ -38,7 +43,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
         getFeedsLikeList(mOffset)
     }
 
-    fun getFeedsLikeList(offset: Int) {
+    private fun getFeedsLikeList(offset: Int) {
         ApiMethods.subscribe(mFeedServerApi.getFeedLikeList(offset, mCNT), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
@@ -50,6 +55,26 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
             }
 
         }, this)
+    }
+
+    fun likeOrUnLikeFeed(model: FeedsLikeModel) {
+        val map = HashMap<String, Any>()
+        map["feedID"] = model.feedID
+        map["like"] = !model.isLiked
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(mFeedServerApi.feedLike(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    model.isLiked = !model.isLiked
+                    view.showLike(model)
+                } else {
+                    U.getToastUtil().showShort("${obj?.errmsg}")
+                }
+            }
+
+        }, this, ApiMethods.RequestControl("likeOrUnLikeFeed", ApiMethods.ControlType.CancelThis))
+
     }
 
     override fun destroy() {

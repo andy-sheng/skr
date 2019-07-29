@@ -1,6 +1,6 @@
 package com.module.feeds.detail.model;
 
-import com.component.feeds.model.FeedUserInfo;
+import com.module.feeds.watch.model.FeedUserInfo;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ public class FirstLevelCommentModel implements Serializable {
     private CommentBean comment;
     private FeedUserInfo replyUser;
     private FeedUserInfo commentUser;
-    private boolean isLiked;
+    public boolean isLiked;
 
     public FirstLevelCommentModel() {
     }
@@ -68,13 +68,13 @@ public class FirstLevelCommentModel implements Serializable {
          */
 
         private int commentID;
-        private String commentType;
+        private int commentType;//ECT_UNKNOWN = 0 : 未知 - ECT_FIRST_LEVEL = 1 : 一级评论 - ECT_SECOND_LEVEL = 2 : 二级评论
         private String content;
         private Long createdAt;
         private int feedID;
         private int likedCnt;
         private int parentCommentID;
-        private String replyType;
+        private int replyType;//- ET_UNKNOWN = 0 : 未知 - ET_REPLY_TO_MAIN = 1 : 回复主评论 - ET_REPLY_TO_SUB = 2 : 回复子评论
         private int replyedUserID;
         private int subCommentCnt;
         private int userID;
@@ -93,16 +93,24 @@ public class FirstLevelCommentModel implements Serializable {
             return commentID;
         }
 
-        public void setCommentID(int commentID) {
-            this.commentID = commentID;
-        }
-
-        public String getCommentType() {
+        public int getCommentType() {
             return commentType;
         }
 
-        public void setCommentType(String commentType) {
+        public void setCommentType(int commentType) {
             this.commentType = commentType;
+        }
+
+        public int getReplyType() {
+            return replyType;
+        }
+
+        public void setReplyType(int replyType) {
+            this.replyType = replyType;
+        }
+
+        public void setCommentID(int commentID) {
+            this.commentID = commentID;
         }
 
         public String getContent() {
@@ -143,14 +151,6 @@ public class FirstLevelCommentModel implements Serializable {
 
         public void setParentCommentID(int parentCommentID) {
             this.parentCommentID = parentCommentID;
-        }
-
-        public String getReplyType() {
-            return replyType;
-        }
-
-        public void setReplyType(String replyType) {
-            this.replyType = replyType;
         }
 
         public int getReplyedUserID() {

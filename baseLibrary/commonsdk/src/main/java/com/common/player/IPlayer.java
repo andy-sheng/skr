@@ -47,7 +47,7 @@ public interface IPlayer {
 
     void setSurface(Surface surface);
 
-    void startPlay(String path);
+    boolean startPlay(String path); //true 是重头播，false 为继续播
 
     void startPlayPcm(String path, int channels, int sampleRate, int byteRate);
 //    void prepare(boolean realTime);

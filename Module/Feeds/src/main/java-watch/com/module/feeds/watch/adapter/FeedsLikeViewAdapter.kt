@@ -35,4 +35,19 @@ class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>() {
             holder.mSongPlayIv.isSelected = false
         }
     }
+
+    fun update(position: Int, model: FeedsLikeModel) {
+        if (mDataList[position].feedID == model.feedID) {
+            mDataList[position] = model
+            return
+        } else {
+            // 位置是错的
+            for (i in 0 until mDataList.size) {
+                if (mDataList[i].feedID == model.feedID) {
+                    mDataList[i] = model
+                    return
+                }
+            }
+        }
+    }
 }

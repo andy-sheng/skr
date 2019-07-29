@@ -34,6 +34,7 @@ import kotlin.collections.ArrayList
 
 class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
 
+
     val ALL_REPEAT_PLAY_TYPE = 1      //全部循环
     val SINGLE_REPEAT_PLAY_TYPE = 2   //单曲循环
     val RANDOM_PLAY_TYPE = 3          //随机播放 (只在已经拉到的列表里面随机)
@@ -135,12 +136,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mPlayLikeIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 不需要对界面进行任何更新
-                if (mPlayLikeIv.isSelected) {
-                    // 喜欢
-                } else {
-                    // 不喜欢
-                }
-                mPlayLikeIv.isSelected = !mPlayLikeIv.isSelected
+                mTopModel?.let { mPersenter.likeOrUnLikeFeed(it) }
             }
         })
 
@@ -296,6 +292,19 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             bindTopData(0, mAdapter.mDataList[0], false)
         }
         mAdapter.notifyDataSetChanged()
+    }
+
+    override fun showLike(model: FeedsLikeModel) {
+        this.mTopModel = model
+        mPlayLikeIv.isSelected = !model.isLiked
+        // 更新数据
+        mAdapter.update(mTopPosition, model)
+        for (i in 0 until mRandomList.size) {
+            if (mRandomList[i].feedID == model.feedID) {
+                mRandomList[i] = model
+                return
+            }
+        }
     }
 
     override fun requestError() {

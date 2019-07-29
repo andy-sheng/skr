@@ -74,8 +74,8 @@ public class AndroidMediaPlayer extends BasePlayer {
                  *  所以使用时间戳保护一下
                  */
                 if (mCallback != null && (System.currentTimeMillis() - resetTs) > 500) {
-                    mCallback.onCompletion();
                     reset();
+                    mCallback.onCompletion();
                 }
                 mHandler.removeMessages(MSG_DECREASE_VOLUME);
                 stopMusicPlayTimeListener();
@@ -310,11 +310,11 @@ public class AndroidMediaPlayer extends BasePlayer {
      * @param path
      */
     @Override
-    public void startPlay(String path) {
+    public boolean startPlay(String path) {
         MyLog.d(TAG, "startPlay" + " path=" + path +" oldPath="+mPath);
         if (mPlayer == null) {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
-            return;
+            return true;
         }
         boolean needReset = false;
         if (path != null && !path.equals(mPath)) {
@@ -345,12 +345,13 @@ public class AndroidMediaPlayer extends BasePlayer {
                     MyLog.e(e);
                 }
             }
+            startMusicPlayTimeListener();
+            return true;
+        }else{
+            mPlayer.start();
+            startMusicPlayTimeListener();
+            return false;
         }
-
-        // 同步播放
-//        mPlayer.prepareAsync();
-//        mPlayer.start();
-        startMusicPlayTimeListener();
     }
 
     @Override
@@ -419,7 +420,9 @@ public class AndroidMediaPlayer extends BasePlayer {
     @Override
     public void release() {
         MyLog.d(TAG, "release");
-        mPlayer.release();
+        if (mPlayer != null) {
+            mPlayer.release();
+        }
         mPlayer = null;
         sPrePlayer = null;
         mCallback = null;

@@ -1,6 +1,7 @@
 package com.module.feeds.detail.presenter
 
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.AbsCoroutinePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -27,7 +28,7 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
     }
 
     fun getFirstLevelCommentList() {
-        ApiMethods.subscribe(mFeedsDetailServerApi.getFirstLevelCommentList(mOffset, mCount, mFeedId), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mFeedsDetailServerApi.getFirstLevelCommentList(mOffset, mCount, mFeedId, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)
@@ -39,9 +40,23 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
                     }
 
                     mOffset = obj.data.getIntValue("offset")
+                } else {
+                    mIFirstLevelCommentView.finishLoadMore()
                 }
             }
+
+            override fun onError(e: Throwable) {
+                mIFirstLevelCommentView.finishLoadMore()
+            }
+
+            override fun onNetworkError(errorType: ErrorType?) {
+                mIFirstLevelCommentView.finishLoadMore()
+            }
         }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
+    }
+
+    fun updateCommentList() {
+        mIFirstLevelCommentView.updateList(mModelList)
     }
 
     fun likeComment(firstLevelCommentModel: FirstLevelCommentModel, feedID: Int, like: Boolean, position: Int) {
@@ -65,21 +80,6 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "likeComment", ApiMethods.ControlType.CancelThis))
-    }
-
-    fun addComment(content: String, feedID: Int) {
-        val map = HashMap<String, Any>()
-        map["content"] = content
-        map["feedID"] = feedID
-
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-
-                }
-            }
-        }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))
     }
 
     fun likeFeeds(like: Boolean, feedID: Int) {

@@ -55,6 +55,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
 /**
  * ================================================
@@ -327,6 +328,7 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
         if (mAndroidBug5497WorkaroundSupportingTranslucentStatus != null) {
             mAndroidBug5497WorkaroundSupportingTranslucentStatus!!.destroy()
         }
+        cancel()
     }
 
 

@@ -24,14 +24,16 @@
         app:statusBarColor="#7187FF"
         app:titleBarColor="#7187FF" />
 
-    <LinearLayout
+    <com.common.view.ex.ExLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/chongzhizuanshi_beijingban"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/colorSolidPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -128,7 +130,7 @@
             android:textColor="#7f3B4E79"
             android:textSize="@dimen/textsize_13_dp"
             android:textStyle="bold" />
-    </LinearLayout>
+    </com.common.view.ex.ExLinearLayout>
 
     <com.dialog.view.StrokeTextView
         android:id="@+id/iv_exchange_btn"

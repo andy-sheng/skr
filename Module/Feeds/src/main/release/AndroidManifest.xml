@@ -18,7 +18,7 @@
             android:name=".detail.activity.FeedsSecondCommentDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
 
         <!--Feed制作-->
         <activity
@@ -40,10 +40,26 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".make.share.FeedsShareActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".report.FeedReportActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".rank.activity.FeedsRankActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".rank.activity.FeedsDetailRankActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
 
     </application>
 

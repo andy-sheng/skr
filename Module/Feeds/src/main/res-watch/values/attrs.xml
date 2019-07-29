@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FeedsRecordAnimationView">
+        <!--位置-->
+        <attr name="panelDrawable" format="reference" />
+        <attr name="rockerDrawable" format="reference" />
+        <attr name="panelMarginTop" format="dimension" />
+        <attr name="avatarWidth" format="dimension" />
+        <attr name="rockerXP" format="float" />
+        <attr name="rockerYP" format="float" />
+    </declare-styleable>
+</resources>

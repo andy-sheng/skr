@@ -1,23 +1,29 @@
 package com.module.feeds.detail.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.log.MyLog
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
+import com.component.lyrics.LyricsManager
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.component.feeds.model.FeedSongModel
+import com.module.feeds.watch.model.FeedSongModel
+import io.reactivex.disposables.Disposable
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+    val mTag = "AutoScrollLyricView"
     lateinit var lyricTv: ExTextView
     lateinit var scrollView: ScrollView
     var passTime: Int = 0
     var scrollTime: Long? = null
     var mFeedSongModel: FeedSongModel? = null
     var mIsStart: Boolean = false
+    var mDisposable: Disposable? = null
 
     var mHandlerTaskTimer: HandlerTaskTimer? = null
 
@@ -31,95 +37,49 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun setSongModel(feedSongModel: FeedSongModel) {
-        tryInflate()
         mFeedSongModel = feedSongModel
         passTime = 0
-        lyricTv.text = "如果那两个字没有颤抖\n" +
-                "我不会发现我难受\n" +
-                "怎么说出口\n" +
 
-                "也不过是分手\n" +
+    }
 
-                "如果对于明天没有要求\n" +
-
-                "牵牵手就像旅游\n" +
-
-                "成千上万个门口\n" +
-
-                "总有一个人要先走\n" +
-
-                "怀抱既然不能逗留\n" +
-
-                "何不在离开的时候\n" +
-                "一边享受 一边泪流\n" +
-
-                "十年之前\n" +
-
-                "我不认识你 你不属于我\n" +
-
-                "我们还是一样\n" +
-
-                "陪在一个陌生人左右\n" +
-
-                "走过渐渐熟悉的街头\n" +
-
-                "十年之后\n" +
-
-                "我们是朋友 还可以问候\n" +
-
-                "只是那种温柔\n" +
-
-                "再也找不到拥抱的理由\n" +
-
-                "情人最后难免沦为朋友\n" +
-
-                "怀抱既然不能逗留\n" +
-
-                "何不在离开的时候\n" +
-
-                "一边享受 一边泪流\n" +
-
-                "十年之前\n" +
-
-                "我不认识你 你不属于我\n" +
-
-                "我们还是一样\n" +
-
-                "陪在一个陌生人左右\n" +
-
-                "走过渐渐熟悉的街头\n" +
-
-                "十年之后\n" +
-
-                "我们是朋友 还可以问候\n" +
-
-                "只是那种温柔\n" +
-
-                "再也找不到拥抱的理由\n" +
-
-                "情人最后难免沦为朋友\n" +
-
-                "直到和你做了多年朋友\n" +
-
-                "才明白我的眼泪\n" +
-
-                "不是为你而流\n" +
-
-                "也为别人而流\n" +
-                "\n"
+    override fun loadLyric() {
+        tryInflate()
+        lyricTv.text = "正在加载"
+        if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
+            mDisposable = LyricsManager.getLyricsManager(U.app())
+                    .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
+                    .subscribe({ s ->
+                        mFeedSongModel?.songTpl?.lrcTxtStr = s
+                        lyricTv.text = "\n${s}"
+                    }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+        } else {
+            lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
+        }
     }
 
     override fun playLyric() {
+        tryInflate()
         passTime = 0
         mIsStart = true
-        startScroll()
+
+        if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
+            mDisposable = LyricsManager.getLyricsManager(U.app())
+                    .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
+                    .subscribe({ s ->
+                        mFeedSongModel?.songTpl?.lrcTxtStr = s
+                        lyricTv.text = "\n${s}"
+                        visibility = View.VISIBLE
+                        startScroll()
+                    }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+        } else {
+            lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
+            visibility = View.VISIBLE
+            startScroll()
+        }
     }
 
-    override fun seekTo(duration: Int) {
-//        MyLog.w("AutoScrollLyricView", "passTime - duration is ${passTime - duration}")
-//        if (Math.abs(passTime - duration) > 100) {
-//            passTime = duration
-//        }
+    override fun seekTo(pos: Int) {
+        passTime = pos
     }
 
     override fun isStart(): Boolean = mIsStart
@@ -139,10 +99,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                 .interval(30)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        passTime = passTime.plus(30)
                         val Y = (lyricTv.height - scrollView.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
                         MyLog.w("AutoScrollLyricView", "Y is $Y, passTime is $passTime, duraions is ${mFeedSongModel!!.playDurMs!!.toDouble()}")
                         lyricTv.scrollTo(0, Y.toInt())
+                        passTime = passTime.plus(30)
                     }
                 })
     }
@@ -157,5 +117,12 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     override fun resume() {
         startScroll()
+    }
+
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility == View.GONE) {
+            pause()
+        }
     }
 }

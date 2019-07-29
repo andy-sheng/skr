@@ -7,13 +7,13 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.view.ex.ExConstraintLayout
-import com.component.feeds.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsCommentPresenter
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -82,13 +82,12 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
 
     fun addSelfComment(model: FirstLevelCommentModel) {
         mFeedsCommentPresenter?.mModelList?.add(0, model)
-        mFeedsCommentPresenter?.mOffset?.let {
-            it.plus(1)
-        }
+        mFeedsCommentPresenter?.mOffset = mFeedsCommentPresenter?.mOffset!! + 1
 
         feedsCommendAdapter.dataList.add(1, model)
         feedsCommendAdapter.notifyDataSetChanged()
     }
+
 
     override fun noMore() {
         mRefreshLayout?.finishLoadMore()
@@ -97,6 +96,10 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
 
     override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean) {
         feedsCommendAdapter?.notifyItemChanged(position)
+    }
+
+    override fun finishLoadMore() {
+        mRefreshLayout?.finishLoadMore()
     }
 
     override fun updateList(list: List<FirstLevelCommentModel>?) {
@@ -110,6 +113,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         mFeedsID = feedsWatchModel.feedID
         mFeedsWatchModel = feedsWatchModel
         mFeedsCommentPresenter = FeedsCommentPresenter(mFeedsID!!, this)
+        mFeedsCommentPresenter?.updateCommentList()
         mFeedsCommentPresenter?.getFirstLevelCommentList()
     }
 

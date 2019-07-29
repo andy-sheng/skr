@@ -62,13 +62,15 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mTitlebar?.leftTextView?.setDebounceViewClickListener {
             activity?.finish()
         }
+        mTitlebar?.centerTextView?.text = "${mFirstLevelCommentModel?.comment?.subCommentCnt.toString()}条回复"
 
-        mFeedsSecondCommentPresenter = FeedsSecondCommentPresenter(0, this)
+        mFeedsSecondCommentPresenter = FeedsSecondCommentPresenter(mFeedsID!!, this)
 
         mRefreshLayout = rootView.findViewById(com.module.feeds.R.id.refreshLayout)
         mRecyclerView = rootView.findViewById(com.module.feeds.R.id.recycler_view)
 
         feedsCommendAdapter = FeedsCommentAdapter(true)
+        feedsCommendAdapter?.mCommentNum = mFirstLevelCommentModel!!.comment!!.subCommentCnt
         feedsCommendAdapter?.mIFirstLevelCommentListener = object : FeedsCommentAdapter.IFirstLevelCommentListener {
             override fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int) {
                 mFeedsSecondCommentPresenter?.likeComment(firstLevelCommentModel, mFeedsID!!, like, position)
@@ -98,7 +100,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mRefreshLayout?.setEnableRefresh(false)
         mRefreshLayout?.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mFeedsSecondCommentPresenter?.getSecondLevelCommentList()
+                mFeedsSecondCommentPresenter?.getSecondLevelCommentList(mFirstLevelCommentModel!!.comment.commentID)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -107,7 +109,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         })
 
         mXinNumTv!!.text = mFirstLevelCommentModel!!.comment.likedCnt.toString()
-        mXinIv!!.isSelected = mFirstLevelCommentModel!!.isLiked
+        mXinIv!!.isSelected = mFirstLevelCommentModel!!.isLiked()
         mXinIv?.setDebounceViewClickListener {
             mFeedsSecondCommentPresenter?.likeComment(mFirstLevelCommentModel!!, mFeedsID!!, !mXinIv!!.isSelected, 0)
         }
@@ -124,12 +126,19 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         }
 
         mFeedsInputContainerView?.mSendCallBack = {
-            mFeedsSecondCommentPresenter?.addComment(it, mFeedsID!!, mRefuseModel!!) {
-
+            mFeedsSecondCommentPresenter?.addComment(it, mFeedsID!!, mFirstLevelCommentModel!!.comment.commentID, mRefuseModel!!) {
+                mFirstLevelCommentModel!!.comment!!.subCommentCnt++
+                feedsCommendAdapter?.mCommentNum = mFirstLevelCommentModel!!.comment!!.subCommentCnt
+                feedsCommendAdapter?.notifyItemChanged(1)
+                mTitlebar?.centerTextView?.text = "${mFirstLevelCommentModel?.comment?.subCommentCnt.toString()}条回复"
+                mFeedsSecondCommentPresenter?.mModelList?.add(0, it)
+                mFeedsSecondCommentPresenter?.mOffset = mFeedsSecondCommentPresenter?.mOffset!! + 1
+                mFeedsSecondCommentPresenter?.updateCommentList()
             }
         }
 
-        mFeedsSecondCommentPresenter?.getSecondLevelCommentList()
+        mFeedsSecondCommentPresenter?.updateCommentList()
+        mFeedsSecondCommentPresenter?.getSecondLevelCommentList(mFirstLevelCommentModel!!.comment.commentID)
     }
 
     override fun isBlackStatusBarText(): Boolean = true
@@ -137,6 +146,10 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     override fun noMore() {
         mRefreshLayout?.finishLoadMore()
         mRefreshLayout?.setEnableLoadMore(false)
+    }
+
+    override fun finishLoadMore() {
+        mRefreshLayout?.finishLoadMore()
     }
 
     override fun updateList(list: List<FirstLevelCommentModel>?) {

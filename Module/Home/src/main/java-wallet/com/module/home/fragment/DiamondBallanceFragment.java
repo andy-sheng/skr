@@ -32,7 +32,7 @@ public class DiamondBallanceFragment extends BaseFragment {
     ImageView mIvDiamondIcon;
     ExTextView mTvDiamondText;
     ExTextView mTvDiamondBalance;
-    StrokeTextView mRechargeBtn;
+    ExTextView mRechargeBtn;
 
     WalletServerApi mWalletServerApi;
 
@@ -44,12 +44,12 @@ public class DiamondBallanceFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
-        mMainActContainer = (LinearLayout) getRootView().findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mIvDiamondIcon = (ImageView) getRootView().findViewById(R.id.iv_diamond_icon);
-        mTvDiamondText = (ExTextView) getRootView().findViewById(R.id.tv_diamond_text);
-        mTvDiamondBalance = (ExTextView) getRootView().findViewById(R.id.tv_diamond_balance);
-        mRechargeBtn = (StrokeTextView) getRootView().findViewById(R.id.recharge_btn);
+        mMainActContainer = getRootView().findViewById(R.id.main_act_container);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mIvDiamondIcon = getRootView().findViewById(R.id.iv_diamond_icon);
+        mTvDiamondText = getRootView().findViewById(R.id.tv_diamond_text);
+        mTvDiamondBalance = getRootView().findViewById(R.id.tv_diamond_balance);
+        mRechargeBtn = getRootView().findViewById(R.id.recharge_btn);
         getZSBalance();
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {

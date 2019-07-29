@@ -6,6 +6,7 @@
     android:gravity="center"
     android:text="清唱"
     android:textColor="@color/white_trans_50"
+    android:layout_marginRight="@dimen/view_10_dp"
     app:bl_corners_radius="@dimen/view_12_dp"
     app:bl_shape="rectangle"
     app:bl_solid_color="@color/white_trans_10" />

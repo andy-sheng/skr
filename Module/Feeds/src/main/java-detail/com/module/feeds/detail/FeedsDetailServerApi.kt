@@ -13,13 +13,13 @@ interface FeedsDetailServerApi {
      * 获取一级评论
      */
     @GET("/v1/feed/first-level-comment-list")
-    fun getFirstLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
+    fun getFirstLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("feedID") feedID: Int, @Query("userID") userID: Int): Observable<ApiResult>
 
     /**
      * 获取二级评论
      */
     @GET("/v1/feed/second-level-comment-list")
-    fun getSecondLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("commentID") commentID: Int): Observable<ApiResult>
+    fun getSecondLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("feedID") feedID: Int, @Query("commentID") commentID: Int, @Query("userID") userID: Int): Observable<ApiResult>
 
     /**
      * 点赞评论
@@ -53,4 +53,13 @@ interface FeedsDetailServerApi {
      */
     @PUT("/v1/feed/like")
     fun likeFeed(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 判断和指定某人的社交关系
+     *
+     * @param toUserID 指定人的id
+     * @return
+     */
+    @GET("/v1/mate/has-relation")
+    fun getRelation(@Query("toUserID") toUserID: Int): Observable<ApiResult>
 }

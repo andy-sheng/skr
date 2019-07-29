@@ -35,11 +35,12 @@ class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewH
         return mDataList.size
     }
 
-    fun getSelectedList(): ArrayList<FeedReportModel> {
-        var result = ArrayList<FeedReportModel>()
+    // 获得所有选中的类型
+    fun getSelectedList(): ArrayList<Int> {
+        var result = ArrayList<Int>()
         for (model in mDataList) {
             if (model.isSelected) {
-                result.add(model)
+                result.add(model.type)
             }
         }
         return result

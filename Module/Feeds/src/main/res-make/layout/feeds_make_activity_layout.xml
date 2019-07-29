@@ -18,7 +18,7 @@
         app:centerType="textView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftImageResource="@drawable/ic_arrow_back"
+        app:leftImageResource="@drawable/back_close"
         app:leftType="imageButton"
         app:rightCustomView="@layout/feeds_make_title_right_layout"
         app:rightType="customView"
@@ -107,6 +107,9 @@
         android:layout_height="@dimen/view_88_dp"
         app:leftBgPaintColor="@color/transparent"
         app:rightBgPaintColor="@color/transparent"
+        app:showTopBottomBound="true"
+        app:redInnerpaintColor="#FFC15B"
+        app:redOutpaintColor="@color/transparent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
     <!--正在唱的人的歌词-->
@@ -117,8 +120,8 @@
         app:layout_constraintTop_toBottomOf="@+id/voice_scale_view"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#EF5E85"
-        app:ly_high_light_paint_color_to="#EF5E85"
+        app:ly_high_light_paint_color_from="#FFC15B"
+        app:ly_high_light_paint_color_to="#FFC15B"
         app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
         app:ly_high_light_sub_paint_color="@color/white"
         app:ly_outline_paint_color="@color/white"
@@ -127,5 +130,15 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
         app:ly_show_author="true" />
 
+    <ViewStub
+        android:id="@+id/auto_scroll_lyric_view_layout_viewstub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_150_dp"
+        android:layout="@layout/auto_scroll_lyric_view_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>
