@@ -1,5 +1,6 @@
 package com.module.feeds.make
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -352,7 +353,7 @@ class FeedsMakeActivity : BaseActivity() {
         countDownJob?.cancel()
         countDownJob = launch {
             for (i in 0..Int.MAX_VALUE) {
-                MyLog.d(TAG,"countDownBegin run")
+                MyLog.d(TAG, "countDownBegin run")
                 mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
                 delay(1000)
             }
@@ -378,7 +379,11 @@ class FeedsMakeActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100) {
-            startRecord()
+            if (resultCode == Activity.RESULT_OK) {
+                startRecord()
+            } else {
+                finish()
+            }
         }
     }
 

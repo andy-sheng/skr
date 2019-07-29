@@ -18,7 +18,7 @@
         app:centerType="textView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftImageResource="@drawable/ic_arrow_back"
+        app:leftImageResource="@drawable/back_close"
         app:leftType="imageButton"
         app:rightCustomView="@layout/feeds_make_title_right_layout"
         app:rightType="customView"

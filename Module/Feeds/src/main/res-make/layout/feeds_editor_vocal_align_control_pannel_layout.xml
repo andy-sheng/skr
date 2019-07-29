@@ -81,4 +81,12 @@
         app:layout_constraintRight_toLeftOf="@+id/right_iv"
         app:layout_constraintTop_toTopOf="@+id/left_iv" />
 
+    <View
+        android:layout_width="@dimen/view_1_dp"
+        android:layout_height="@dimen/view_9_dp"
+        android:background="#616CC4"
+        app:layout_constraintBottom_toBottomOf="@+id/va_seek_bar"
+        app:layout_constraintLeft_toLeftOf="@+id/va_seek_bar"
+        app:layout_constraintRight_toRightOf="@+id/va_seek_bar"
+        app:layout_constraintTop_toTopOf="@+id/va_seek_bar" />
 </merge>
