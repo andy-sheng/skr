@@ -34,7 +34,6 @@ class FeedsWallViewPresenter(val view: IFeedsWatchView, val userInfoModel: UserI
         if (!flag) {
             // 10分钟更新一次吧
             if (now - mLastUpdatListTime < 10 * 60 * 1000) {
-                view.requestTimeShort()
                 return
             }
         }

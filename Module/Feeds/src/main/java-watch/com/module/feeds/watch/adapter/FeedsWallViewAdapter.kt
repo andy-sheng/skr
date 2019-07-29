@@ -18,6 +18,9 @@ class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<R
     private val mEmptyItemType = 1
     private val mNormalItemType = 2
 
+    var mCurrentPlayPosition: Int? = null
+    var mCurrentPlayModel: FeedsWatchModel? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == mEmptyItemType) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_wall_empty_holder_layout, parent, false)
@@ -88,6 +91,14 @@ class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<R
                     return
                 }
             }
+        }
+    }
+
+    fun updatePlayModel(pos: Int, model: FeedsWatchModel?) {
+        if (mCurrentPlayModel != model) {
+            mCurrentPlayPosition = pos
+            mCurrentPlayModel = model
+            notifyDataSetChanged()
         }
     }
 

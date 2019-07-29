@@ -18,6 +18,7 @@ class FeedSongModel : Serializable {
     var playDurMs: Int? = null
     @JSONField(name = "playURL")
     var playURL: String? = null
+    var playCurPos:Int = 0 // 当前播放到哪了，只在客户端用，服务器不会返回
     @JSONField(name = "songID")
     var songID: Int? = null
     @JSONField(name = "songTpl")

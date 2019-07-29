@@ -75,10 +75,10 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
             mManyLyricsView?.setVisibility(View.VISIBLE)
             mManyLyricsView?.initLrcData()
         }
-        mManyLyricsView?.setLyricsReader(mFeedSongModel?.songTpl?.lrcTsReader)
+        mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
         if (play) {
             mIsStart = true
-            mManyLyricsView?.play(0)
+            mManyLyricsView?.play(mFeedSongModel?.playCurPos?:0)
         } else {
             if (mManyLyricsView?.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                 mManyLyricsView?.pause()

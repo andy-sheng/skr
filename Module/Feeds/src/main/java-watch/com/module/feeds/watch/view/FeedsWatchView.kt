@@ -45,7 +45,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     private var mMediaPlayer: IPlayer? = null
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
-    var mCurPlayPostion = -1
+    var mCurFocusPostion = -1 // 记录当前操作的焦点pos
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
 
@@ -94,12 +94,8 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
             }
 
             override fun onClickCDListener(position: Int,watchModel: FeedsWatchModel?) {
-                if(mCurPlayPostion!=position){
-                    mCurPlayPostion = position
-                    mMediaPlayer?.reset()
-                }
                 // 播放
-                watchModel?.let { model -> startplay(model, false) }
+                watchModel?.let { model -> startplay(position,model, false) }
             }
 
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
@@ -165,9 +161,11 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
                         var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
+                        var postion = 0
                         if (firstCompleteItem != RecyclerView.NO_POSITION) {
                             // 找到了
                             model = mAdapter.mDataList[firstCompleteItem]
+                            postion = firstCompleteItem
                         } else {
                             // 找不到位置，取其中百分比最大的
                             var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
@@ -193,10 +191,12 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                                     isFound = true
                                     maxPercent = 100f
                                     model = mAdapter.mDataList[i]
+                                    postion = i
                                 } else {
                                     if (percents[i - firstVisibleItem] > maxPercent) {
                                         maxPercent = percents[i - firstVisibleItem]
                                         model = mAdapter.mDataList[i]
+                                        postion = i
                                     }
                                 }
                                 i++
@@ -205,7 +205,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
                         model?.let {
                             isFound = true
-                            startplay(it, true)
+                            startplay(postion,it, true)
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
@@ -223,23 +223,27 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         }
     }
 
-    private fun startplay(model: FeedsWatchModel, isMustPlay: Boolean) {
+    private fun startplay(pos:Int,model: FeedsWatchModel, isMustPlay: Boolean) {
+        if(mCurFocusPostion!=pos){
+            mMediaPlayer?.reset()
+            mCurFocusPostion = pos
+        }
         if (isMustPlay) {
             // 播放
-            startplay(model)
+            startplay(pos,model)
         } else {
             if (mAdapter.mCurrentPlayModel?.feedID == model.feedID) {
                 // 停止播放
                 pausePlay()
             } else {
                 // 播放
-                startplay(model)
+                startplay(pos,model)
             }
         }
     }
 
-    private fun startplay(model: FeedsWatchModel) {
-        mAdapter.updatePlayModel(model)
+    private fun startplay(pos:Int,model: FeedsWatchModel) {
+        mAdapter.updatePlayModel(pos,model)
         if (mMediaPlayer == null) {
             mMediaPlayer = MyMediaPlayer()
             mMediaPlayer?.setMonitorProgress(true)
@@ -263,7 +267,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     }
 
     private fun pausePlay() {
-        mAdapter.updatePlayModel(null)
+        mAdapter.updatePlayModel(-1,null)
         mMediaPlayer?.pause()
     }
 
@@ -273,7 +277,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     fun stopPlay() {
         // 保留mCurrentModel 可以用来恢复页面播放
-        mAdapter.updatePlayModel(null)
+        mAdapter.updatePlayModel(-1,null)
         mMediaPlayer?.reset()
     }
 
@@ -286,7 +290,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 mAdapter.mDataList.addAll(list)
             }
             if (mAdapter.mDataList.isNotEmpty()) {
-                startplay(mAdapter.mDataList[0], true)
+                startplay(0,mAdapter.mDataList[0], true)
             }
             mAdapter.notifyDataSetChanged()
         } else {
@@ -294,13 +298,6 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
             }
-        }
-    }
-
-    // 请求时间太短，不向服务器请求，只需要恢复上次播放
-    override fun requestTimeShort() {
-        mAdapter.mCurrentPlayModel?.let {
-            startplay(it, true)
         }
     }
 

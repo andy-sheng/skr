@@ -41,7 +41,9 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         mPersenter = FeedsWallViewPresenter(this, userInfoModel)
         mAdapter = FeedsWallViewAdapter(object : FeedsListener {
             override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
-                watchModel?.let { play(it, false) }
+                watchModel?.let {
+                    startPlay(position,it, false)
+                }
             }
 
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
@@ -120,7 +122,6 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                         .withSerializable("feed_model", watchModel)
                         .navigation()
             }
-
         })
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
@@ -140,17 +141,12 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
     }
 
     override fun stopPlay() {
-        mAdapter.mCurrentModel = null
-        mAdapter.notifyDataSetChanged()
+        mAdapter.updatePlayModel(-1,null)
         mMediaPlayer?.reset()
     }
 
     override fun requestError() {
         mCallBack?.onRequestSucess()
-    }
-
-    override fun requestTimeShort() {
-
     }
 
     override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
@@ -185,23 +181,20 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         destroy()
     }
 
-    fun play(model: FeedsWatchModel, isMustPlay: Boolean) {
+    fun startPlay(pos:Int,model: FeedsWatchModel, isMustPlay: Boolean) {
         if (isMustPlay) {
-            play(model)
+            startPlay(pos,model)
         } else {
             if (mAdapter.mCurrentModel?.feedID != model.feedID) {
-                play(model)
+                startPlay(pos,model)
             } else {
                 stopPlay()
             }
         }
     }
 
-    fun play(model: FeedsWatchModel) {
-        if (mAdapter.mCurrentModel != model) {
-            mAdapter.mCurrentModel = model
-            mAdapter.notifyDataSetChanged()
-        }
+    fun startPlay(pos:Int,model: FeedsWatchModel) {
+        mAdapter.updatePlayModel(pos,model)
         if (mMediaPlayer == null) {
             mMediaPlayer = MyMediaPlayer()
         }

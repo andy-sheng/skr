@@ -32,7 +32,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             // 10秒切页面才刷一下
             val now = System.currentTimeMillis()
             if (now - mLastUpdatListTime < 10 * 1000) {
-                view.requestTimeShort()
+//                view.requestTimeShort()
                 return
             }
         }

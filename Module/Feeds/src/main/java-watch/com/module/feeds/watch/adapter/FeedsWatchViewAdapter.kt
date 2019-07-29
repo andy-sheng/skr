@@ -12,9 +12,9 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
 
     var mDataList = ArrayList<FeedsWatchModel>()
 
+
+    var mCurrentPlayPosition: Int? = null
     var mCurrentPlayModel: FeedsWatchModel? = null
-    var mCurrentPlayPostion:Long = 0
-    var mCurrentPlayDuration:Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsWatchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
@@ -35,9 +35,6 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
             holder.bindData(position, mDataList[position])
             if (mDataList[position] == mCurrentPlayModel) {
                 holder.startPlay()
-                if(mCurrentPlayDuration>0){
-                    holder.playLyric(mCurrentPlayPostion,mCurrentPlayDuration)
-                }
             } else {
                 holder.stopPlay()
             }
@@ -48,27 +45,25 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
                 holder.refreshLike(position, mDataList[position])
             } else if (type == REFRESH_TYPE_COMMENT) {
                 holder.refreshComment(position, mDataList[position])
-            }else if(type == REFRESH_TYPE_LYRIC){
-                if(mDataList[position]==mCurrentPlayModel){
-                    if(mCurrentPlayDuration>0){
-                        holder.playLyric(mCurrentPlayPostion,mCurrentPlayDuration)
-                    }
+            } else if (type == REFRESH_TYPE_LYRIC) {
+                if (mDataList[position] == mCurrentPlayModel) {
+                    holder.playLyric()
                 }
             }
         }
     }
 
-    fun update(position: Int, model: FeedsWatchModel, refreshType: Int) {
-        if (model.feedID == mDataList[position].feedID) {
+    fun update(position: Int, model: FeedsWatchModel?, refreshType: Int) {
+        if (model?.feedID == mDataList[position].feedID) {
             // 位置是对的的
-            mDataList[position] = model
+            mDataList[position] = model!!
             notifyItemChanged(position, refreshType)
             return
         } else {
             // 位置是错的
             for (i in 0 until mDataList.size) {
-                if (mDataList[i].feedID == model.feedID) {
-                    mDataList[i] = model
+                if (mDataList[i].feedID == model?.feedID) {
+                    mDataList[i] = model!!
                     notifyItemChanged(i, refreshType)
                     return
                 }
@@ -76,22 +71,19 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
         }
     }
 
-    fun updatePlayModel(nothing: FeedsWatchModel?) {
-        if(mCurrentPlayModel!=nothing){
-            mCurrentPlayModel = nothing
+    fun updatePlayModel(pos: Int, model: FeedsWatchModel?) {
+        if (mCurrentPlayModel != model) {
+            mCurrentPlayPosition = pos
+            mCurrentPlayModel = model
             notifyDataSetChanged()
         }
     }
 
     fun updatePlayProgress(curPostion: Long, totalDuration: Long) {
-        mCurrentPlayPostion = curPostion
-        mCurrentPlayDuration = totalDuration
         // 位置是错的
-        for (i in 0 until mDataList.size) {
-            if (mDataList[i].feedID == mCurrentPlayModel?.feedID) {
-                notifyItemChanged(i, REFRESH_TYPE_LYRIC)
-                return
-            }
+        mCurrentPlayModel?.song?.let {
+            it.playCurPos = curPostion.toInt()
+            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_LYRIC)
         }
     }
 
