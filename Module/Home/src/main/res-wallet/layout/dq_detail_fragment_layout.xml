@@ -33,7 +33,7 @@
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_solid_color="#D0EFFF">
+        app:bl_solid_color="@color/colorSolidPrimary">
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_bg"

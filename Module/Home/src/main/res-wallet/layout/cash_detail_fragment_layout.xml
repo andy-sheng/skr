@@ -33,7 +33,7 @@
         android:layout_marginRight="@dimen/view_16_dp"
         app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_solid_color="#D0EFFF"
+        app:bl_solid_color="@color/colorSolidPrimary"
         app:bl_shape="rectangle">
 
         <com.common.view.ex.ExImageView

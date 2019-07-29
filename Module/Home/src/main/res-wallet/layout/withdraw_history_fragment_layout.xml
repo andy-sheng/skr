@@ -22,7 +22,7 @@
         app:showBottomLine="true"
         app:bottomLineColor="#0C2275"
         app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#0288D0"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"

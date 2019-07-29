@@ -35,6 +35,10 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
 
         mPersenter = FeedsWallViewPresenter(this, userInfoModel)
         mAdapter = FeedsWallViewAdapter(object : FeedsListener {
+            override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
+                watchModel?.let { play(it, false) }
+            }
+
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
                 // 排行
             }
@@ -64,10 +68,6 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withSerializable("feed_model", watchModel)
                         .navigation()
-            }
-
-            override fun onClickCDListener(watchModel: FeedsWatchModel?) {
-                watchModel?.let { play(it, false) }
             }
 
         })
