@@ -59,7 +59,7 @@ class FeedsPublishActivity : BaseActivity() {
     lateinit var tagClassifyTf: TagFlowLayout
     lateinit var uploadProgressbar: ProgressBar
 
-    lateinit var tagClassifyAdapter: TagAdapter<FeedsPublishTagModel.Tag>
+    lateinit var tagClassifyAdapter: TagAdapter<FeedsPublishTagModel>
 
     var mFeedsMakeModel: FeedsMakeModel? = null
 
@@ -108,8 +108,8 @@ class FeedsPublishActivity : BaseActivity() {
 //            radioView.play()
 //        }
 
-        tagClassifyAdapter = object : TagAdapter<FeedsPublishTagModel.Tag>(ArrayList()) {
-            override fun getView(parent: FlowLayout, position: Int, tagModel: FeedsPublishTagModel.Tag): View {
+        tagClassifyAdapter = object : TagAdapter<FeedsPublishTagModel>(ArrayList()) {
+            override fun getView(parent: FlowLayout, position: Int, tagModel: FeedsPublishTagModel): View {
                 val tv = LayoutInflater.from(parent.context).inflate(R.layout.feeds_tag_item_layout,
                         parent, false) as ExTextView
                 tv.text = tagModel.tagDesc
@@ -125,12 +125,8 @@ class FeedsPublishActivity : BaseActivity() {
             val result = subscribe { feedsMakeServerApi.getFeedLikeList() }
             if (result.errno == 0) {
                 rankList = JSON.parseArray(result.data.getString("tags"), FeedsPublishTagModel::class.java)
-//                rankClassifyAdapter.setTagDatas(rankList)
-//                rankClassifyAdapter.setSelectedList(0)
-//                rankList?.getOrNull(0)?.let {
-//                    tagClassifyAdapter.setTagDatas(it.tags)
-//                    tagClassifyAdapter.notifyDataChanged()
-//                }
+                tagClassifyAdapter.setTagDatas(rankList)
+                tagClassifyAdapter.notifyDataChanged()
             }
         }
 
@@ -140,8 +136,15 @@ class FeedsPublishActivity : BaseActivity() {
             }
         })
 
-        titleBar.rightTextView.setOnClickListener(object : DebounceViewClickListener() {
+        titleBar.rightCustomView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+
+                // TODO fortest
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SHARE)
+                        .withSerializable("feeds_make_model", mFeedsMakeModel)
+                        .navigation()
+
+
                 mFeedsMakeModel?.let {
                     uploadProgressbar.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(playUrl)) {
@@ -170,7 +173,7 @@ class FeedsPublishActivity : BaseActivity() {
         })
         worksNameEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                titleBar.rightTextView.isEnabled = !TextUtils.isEmpty(worksNameEt.text)
+                titleBar.rightCustomView.isEnabled = !TextUtils.isEmpty(worksNameEt.text)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -196,17 +199,33 @@ class FeedsPublishActivity : BaseActivity() {
 //                    "tplID": 0
 //                }
         launch {
+            val tagsIds = ArrayList<Int>()
+            tagClassifyTf.selectedList.forEach {
+                rankList?.get(it)?.tagID?.let {it2->
+                    tagsIds.add(it2)
+                }
+            }
+
             val mutableSet1 = mapOf(
-                    "title" to worksNameEt.text
+                    "title" to sayEdit.text.toString(),
+                    "workName" to worksNameEt.text.toString(),
+                    "tagIDs" to tagsIds,
+                    "playDurMs" to mFeedsMakeModel?.recordDuration,
+                    "playURL" to playUrl,
+                    "challengeID" to mFeedsMakeModel?.songModel?.challengeID
+//TODO                    "tplID": 0,
             )
+
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             val result = subscribe { feedsMakeServerApi.uploadFeeds(body) }
             if (result.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
+                mFeedsMakeModel?.uploadSongName =  worksNameEt.text.toString()
+                mFeedsMakeModel?.uploadSongDesc = sayEdit.text.toString()
                 // 跳到分享页
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SHARE)
-                        .withSerializable("feeds_make_model",mFeedsMakeModel)
+                        .withSerializable("feeds_make_model", mFeedsMakeModel)
                         .navigation()
                 for (ac in U.getActivityUtils().activityList) {
                     if (ac is FeedsEditorActivity) {
@@ -216,14 +235,20 @@ class FeedsPublishActivity : BaseActivity() {
                     }
                 }
                 finish()
+
             } else {
                 U.getToastUtil().showShort(result.errmsg)
+                uploadProgressbar.visibility = View.GONE
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    override fun canSlide(): Boolean {
+        return false
     }
 
     override fun useEventBus(): Boolean {

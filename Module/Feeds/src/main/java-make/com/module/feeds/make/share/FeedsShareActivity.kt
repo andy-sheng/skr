@@ -95,7 +95,7 @@ class FeedsShareActivity : BaseActivity() {
         if (!TextUtils.isEmpty(url)) {
             val web = UMWeb(url)
             web.title = "" + mFeedsMakeModel?.uploadSongName
-            web.description = mFeedsMakeModel?.uploadSongDesc
+            web.description = sayEdit.text.toString()
 
             if (sharePlatform == SharePlatform.WEIXIN_CIRCLE) {
                 web.setThumb(UMImage(this, R.drawable.share_app_weixin_circle_icon))

@@ -312,6 +312,10 @@ class FeedsEditorActivity : BaseActivity() {
         }
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     override fun useEventBus(): Boolean {
         return true
     }

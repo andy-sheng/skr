@@ -15,7 +15,7 @@
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:leftImageResource="@drawable/ic_arrow_back"
+        app:leftImageResource="@drawable/img_back_black"
         app:leftType="imageButton"
         app:rightCustomView="@layout/feeds_publish_title_right_layout"
         app:rightType="customView"
@@ -26,7 +26,8 @@
     <EditText
         android:id="@+id/say_edit"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_75_dp"
+        android:layout_height="@dimen/view_95_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:background="@drawable/feeds_make_publish_editor_bg"
@@ -106,6 +107,7 @@
         android:id="@+id/tag_classify_tf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_20_dp"
         app:layout_constraintLeft_toLeftOf="@+id/tag_classify_tv"
         app:layout_constraintTop_toBottomOf="@id/tag_classify_tv" />
 
