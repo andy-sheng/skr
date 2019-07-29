@@ -10,7 +10,11 @@ import com.common.base.BaseFragment
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.friends.SpecialModel
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.songmanager.SongManagerActivity
@@ -34,6 +38,8 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
     lateinit var mManageSongAdapter: ManageSongAdapter
 
     private var mDoubleRoomData: DoubleRoomData? = null
+
+    lateinit var mLoadService: LoadService<*>
 
     override fun initView(): Int {
         return R.layout.double_exist_song_manage_fragment_layout
@@ -85,6 +91,14 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
                 mPresenter.deleteSong(it)
             }
         }
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.song_exit_empty_icon, "大家还没有点歌", "#99ffffff"))
+                .build()
+        mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
+            mPresenter.getPlayBookList(true)
+
+        })
     }
 
     override fun useEventBus(): Boolean {
@@ -104,11 +118,22 @@ class DoubleExistSongManageFragment : BaseFragment(), IExistSongManageView {
 
     override fun updateSongList(grabRoomSongModelsList: List<GrabRoomSongModel>) {
         mManageSongAdapter.dataList = grabRoomSongModelsList
+
+        if (mManageSongAdapter.dataList != null && mManageSongAdapter.dataList.isNotEmpty()) {
+            mLoadService.showSuccess()
+        }
     }
 
     override fun hasMoreSongList(hasMore: Boolean) {
         mRefreshLayout.setEnableLoadMore(hasMore)
         mRefreshLayout.finishLoadMore()
+        if (!hasMore) {
+            if (mManageSongAdapter.dataList == null || mManageSongAdapter.dataList.isEmpty()) {
+                mLoadService.showCallback(EmptyCallback::class.java)
+            }
+        } else {
+            mLoadService.showSuccess()
+        }
     }
 
     override fun changeTagSuccess(specialModel: SpecialModel) {

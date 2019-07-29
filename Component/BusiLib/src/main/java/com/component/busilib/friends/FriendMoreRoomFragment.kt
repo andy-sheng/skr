@@ -140,7 +140,7 @@ class FriendMoreRoomFragment : BaseFragment() {
         mRecyclerView.addOnScrollListener(mListener)
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.tongxunlu_fensikongbaiye, "暂时没有房间了～", "#4cffffff"))
+                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#4cffffff"))
                 .build()
         mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
             initData(true)

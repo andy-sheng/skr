@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_150_dp"
-        android:background="@drawable/grab_wish_empty_icon" />
+        android:background="@drawable/song_exit_empty_icon" />
 
     <TextView
         android:layout_width="wrap_content"
