@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EFEFEF">
+    android:background="@color/colorSolidPrimary">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -19,9 +19,9 @@
         app:rightText="取消"
         app:rightTextColor="@color/white"
         app:rightType="textView"
-        app:showBottomLine="true"
-        app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:showBottomLine="false"
+        app:statusBarColor="#7088FF"
+        app:titleBarColor="#7088FF"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -32,7 +32,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/search_result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"/>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
