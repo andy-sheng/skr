@@ -25,6 +25,7 @@ public class SharePanel {
     String mDes;
     String mUrl;
     String mShareImage;
+    String mDefaultIconUrl = "http://res-static.inframe.mobi/app/app_icon.webp";
 
     public SharePanel(Activity activity) {
         mActivity = activity;
@@ -164,7 +165,7 @@ public class SharePanel {
         if (!TextUtils.isEmpty(mShareImage)) {
             web.setThumb(new UMImage(mActivity, mShareImage));
         } else {
-            web.setThumb(new UMImage(mActivity, R.drawable.app_icon));
+            web.setThumb(new UMImage(mActivity, mDefaultIconUrl));
         }
         web.setDescription(mDes);
 
