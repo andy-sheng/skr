@@ -125,7 +125,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
 
                                 override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
                                     ds!!.setUnderlineText(false)
                                 }
                             })
@@ -141,7 +141,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
 
                                 override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
                                     ds!!.setUnderlineText(false)
                                 }
                             })
