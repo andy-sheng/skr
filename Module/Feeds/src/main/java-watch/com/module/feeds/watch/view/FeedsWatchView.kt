@@ -14,8 +14,12 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.callback.EmptyCallback
 import com.component.dialog.FeedsMoreDialogView
 import com.component.person.view.RequestCallBack
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.watch.presenter.FeedWatchViewPresenter
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
@@ -51,6 +55,8 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
     private val mClassicsHeader: ClassicsHeader
     private val mLayoutManager: LinearLayoutManager
     private val mRecyclerView: RecyclerView
+
+    private var mLoadService: LoadService<*>? = null
 
     private val mAdapter: FeedsWatchViewAdapter
     private val mPersenter: FeedWatchViewPresenter = FeedWatchViewPresenter(this, type)
@@ -208,78 +214,12 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
         mAdapter.notifyDataSetChanged()
 
         if (isHomePage()) {
-            mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-                var maxPercent = 0f
-                var model: FeedsWatchModel? = null
-                var isFound = false
-
-                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                }
-
-                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    when (newState) {
-                        AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-                            var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
-                            var postion = 0
-                            if (firstCompleteItem != RecyclerView.NO_POSITION) {
-                                // 找到了
-                                model = mAdapter.mDataList[firstCompleteItem]
-                                postion = firstCompleteItem
-                            } else {
-                                // 找不到位置，取其中百分比最大的
-                                var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-                                var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-                                if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
-                                    val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
-                                    var i = firstVisibleItem
-                                    isFound = false
-                                    maxPercent = 0f
-                                    model = null
-                                    while (i <= lastVisibleItem && !isFound) {
-                                        val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
-                                        val location1 = IntArray(2)
-                                        val location2 = IntArray(2)
-                                        itemView.getLocationOnScreen(location1)
-                                        mRecyclerView.getLocationOnScreen(location2)
-                                        val top = location1[1] - location2[1]
-                                        when {
-                                            top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
-                                            (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
-                                            else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
-                                        }
-                                        if (percents[i - firstVisibleItem] == 100f) {
-                                            isFound = true
-                                            maxPercent = 100f
-                                            model = mAdapter.mDataList[i]
-                                            postion = i
-                                        } else {
-                                            if (percents[i - firstVisibleItem] > maxPercent) {
-                                                maxPercent = percents[i - firstVisibleItem]
-                                                model = mAdapter.mDataList[i]
-                                                postion = i
-                                            }
-                                        }
-                                        i++
-                                    }
-                                }
-                            }
-
-                            model?.let {
-                                isFound = true
-                                controlPlay(postion, it, true)
-                            }
-                        }
-                        RecyclerView.SCROLL_STATE_DRAGGING -> {
-
-                        }
-                        RecyclerView.SCROLL_STATE_SETTLING -> {
-
-                        }
-                    }
-                }
+            addRecyclerViewScrollListener()
+            val mLoadSir = LoadSir.Builder()
+                    .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无神曲发布", "#802F2F30"))
+                    .build()
+            mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
+                getFeeds(true)
             })
         }
 
@@ -287,6 +227,82 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
             EventBus.getDefault().register(this)
         }
         SinglePlayer.addCallback(playerTag, playCallback)
+    }
+
+    private fun addRecyclerViewScrollListener() {
+        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            var maxPercent = 0f
+            var model: FeedsWatchModel? = null
+            var isFound = false
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                        var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
+                        var postion = 0
+                        if (firstCompleteItem != RecyclerView.NO_POSITION) {
+                            // 找到了
+                            model = mAdapter.mDataList[firstCompleteItem]
+                            postion = firstCompleteItem
+                        } else {
+                            // 找不到位置，取其中百分比最大的
+                            var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+                            var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                            if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
+                                val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
+                                var i = firstVisibleItem
+                                isFound = false
+                                maxPercent = 0f
+                                model = null
+                                while (i <= lastVisibleItem && !isFound) {
+                                    val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
+                                    val location1 = IntArray(2)
+                                    val location2 = IntArray(2)
+                                    itemView.getLocationOnScreen(location1)
+                                    mRecyclerView.getLocationOnScreen(location2)
+                                    val top = location1[1] - location2[1]
+                                    when {
+                                        top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
+                                        (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
+                                        else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
+                                    }
+                                    if (percents[i - firstVisibleItem] == 100f) {
+                                        isFound = true
+                                        maxPercent = 100f
+                                        model = mAdapter.mDataList[i]
+                                        postion = i
+                                    } else {
+                                        if (percents[i - firstVisibleItem] > maxPercent) {
+                                            maxPercent = percents[i - firstVisibleItem]
+                                            model = mAdapter.mDataList[i]
+                                            postion = i
+                                        }
+                                    }
+                                    i++
+                                }
+                            }
+                        }
+
+                        model?.let {
+                            isFound = true
+                            controlPlay(postion, it, true)
+                        }
+                    }
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+
+                    }
+                    RecyclerView.SCROLL_STATE_SETTLING -> {
+
+                    }
+                }
+            }
+        })
     }
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel, isMustPlay: Boolean) {
@@ -361,6 +377,12 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
             }
+        }
+
+        if (mAdapter.mDataList != null && mAdapter.mDataList.isNotEmpty()) {
+            mLoadService?.showSuccess()
+        } else {
+            mLoadService?.showCallback(EmptyCallback::class.java)
         }
     }
 
