@@ -13,6 +13,7 @@ import com.common.player.SinglePlayer
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
 import com.component.dialog.FeedsMoreDialogView
@@ -256,6 +257,9 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
             var model: FeedsWatchModel? = null
             var isFound = false
 
+            val cdHeight = 120.dp()   // 光盘高度
+            val bottomHeight = 50.dp()  // 底部高度
+
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
@@ -264,50 +268,60 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-                        var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
                         var postion = 0
-                        if (firstCompleteItem != RecyclerView.NO_POSITION) {
-                            // 找到了
-                            model = mAdapter?.mDataList?.get(firstCompleteItem)
-                            postion = firstCompleteItem
-                        } else {
-                            // 找不到位置，取其中百分比最大的
-                            var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-                            var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-                            if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
-                                val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
-                                var i = firstVisibleItem
-                                isFound = false
-                                maxPercent = 0f
-                                model = null
-                                while (i <= lastVisibleItem && !isFound) {
-                                    val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
-                                    val location1 = IntArray(2)
-                                    val location2 = IntArray(2)
-                                    itemView.getLocationOnScreen(location1)
-                                    mRecyclerView.getLocationOnScreen(location2)
-                                    val top = location1[1] - location2[1]
-                                    when {
-                                        top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
-                                        (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
-                                        else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
-                                    }
-                                    if (percents[i - firstVisibleItem] == 100f) {
-                                        isFound = true
-                                        maxPercent = 100f
-                                        model = mAdapter?.mDataList?.get(i)
-                                        postion = i
-                                    } else {
-                                        if (percents[i - firstVisibleItem] > maxPercent) {
-                                            maxPercent = percents[i - firstVisibleItem]
-                                            model = mAdapter?.mDataList?.get(i)
-                                            postion = i
+                        // 以光盘为界限，找光盘显示百分比最多的
+                        var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+                        var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                        if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
+                            val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
+                            var i = firstVisibleItem
+                            isFound = false
+                            maxPercent = 0f
+                            model = null
+                            while (i <= lastVisibleItem && !isFound) {
+                                val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
+                                val location1 = IntArray(2)
+                                val location2 = IntArray(2)
+                                itemView.getLocationOnScreen(location1)
+                                mRecyclerView.getLocationOnScreen(location2)
+                                val top = location1[1] - location2[1]
+                                when {
+                                    top < 0 -> {
+                                        // 顶部的
+                                        if ((itemView.height + top) >= (cdHeight + bottomHeight)) {
+                                            percents[i - firstVisibleItem] = 100f
+                                        } else {
+                                            percents[i - firstVisibleItem] = (itemView.height + top - bottomHeight).toFloat() / cdHeight.toFloat()
                                         }
                                     }
-                                    i++
+                                    (top + itemView.height) < mRecyclerView.height -> {
+                                        percents[i - firstVisibleItem] = 100f
+                                    }
+                                    else -> {
+                                        // 底部的
+                                        if ((mRecyclerView.height - top) >= (itemView.height - bottomHeight)) {
+                                            percents[i - firstVisibleItem] = 100f
+                                        } else {
+                                            percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - bottomHeight).toFloat() / cdHeight.toFloat()
+                                        }
+                                    }
                                 }
+                                if (percents[i - firstVisibleItem] == 100f) {
+                                    isFound = true
+                                    maxPercent = 100f
+                                    model = mAdapter?.mDataList?.get(i)
+                                    postion = i
+                                } else {
+                                    if (percents[i - firstVisibleItem] > maxPercent) {
+                                        maxPercent = percents[i - firstVisibleItem]
+                                        model = mAdapter?.mDataList?.get(i)
+                                        postion = i
+                                    }
+                                }
+                                i++
                             }
                         }
+
 
                         model?.let {
                             isFound = true
