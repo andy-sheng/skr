@@ -55,6 +55,16 @@ interface FeedsDetailServerApi {
     fun likeFeed(@Body body: RequestBody): Observable<ApiResult>
 
     /**
+     * 分享feeds +1
+     *{
+     *  "feedID": 0,
+     *  "userID": 0
+     *}
+     */
+    @PUT("/v1/feed/share")
+    fun shareAdd(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
      * 判断和指定某人的社交关系
      *
      * @param toUserID 指定人的id

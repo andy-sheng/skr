@@ -90,4 +90,16 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
             }
         }, this, ApiMethods.RequestControl(mTag + "likeFeeds", ApiMethods.ControlType.CancelThis))
     }
+
+    fun addShareCount(userID: Int, feedID: Int) {
+        val map = mapOf("feedID" to feedID, "userID" to userID)
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(mFeedsDetailServerApi.shareAdd(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+
+                }
+            }
+        }, this)
+    }
 }

@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
@@ -22,8 +23,6 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.player.VideoPlayerAdapter
-import com.common.player.event.PlayerEvent
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -258,6 +257,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 override fun onStart(p0: SHARE_MEDIA?) {
                     mFeedsWatchModel?.shareCnt = mFeedsWatchModel?.shareCnt?.plus(1)
                     mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
+                    mFeedsDetailPresenter?.addShareCount(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel?.feedID
+                            ?: 0)
                 }
             })
         }
