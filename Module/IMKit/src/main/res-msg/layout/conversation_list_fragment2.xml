@@ -29,14 +29,17 @@
         app:titleBarColor="@color/colorPrimary" />
 
 
-    <LinearLayout
+    <com.common.view.ex.ExLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/titlebar"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/common_bg_2"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/colorSolidPrimary">
 
         <RelativeLayout
             android:id="@+id/latest_follow_area"
@@ -109,6 +112,6 @@
             android:layout_marginLeft="@dimen/view_3_dp"
             android:layout_marginRight="@dimen/view_3_dp"></RelativeLayout>
 
-    </LinearLayout>
+    </com.common.view.ex.ExLinearLayout>
 
 </RelativeLayout>

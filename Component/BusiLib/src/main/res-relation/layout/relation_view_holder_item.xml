@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_alignParentBottom="true"
-        android:background="#333E5181"
+        android:background="@color/colorDividerPrimary"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
