@@ -20,4 +20,8 @@ public interface IPlayerCallback {
     void onInfo(int what, int extra);
 
     void onBufferingUpdate(MediaPlayer mp, int percent);
+
+    boolean openTimeFlyMonitor();
+
+    void onTimeFlyMonitor(long pos,long duration);
 }

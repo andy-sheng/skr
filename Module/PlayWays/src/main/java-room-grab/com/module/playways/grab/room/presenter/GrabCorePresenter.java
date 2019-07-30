@@ -18,6 +18,7 @@ import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.IPlayer;
+import com.common.player.PlayerCallbackAdapter;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.ExoPlayer;
 import com.common.player.AndroidMediaPlayer;
@@ -404,7 +405,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     mExoPlayer.setVolume(1);
                 }
             }
-            mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+            mExoPlayer.setCallback(new PlayerCallbackAdapter() {
                 @Override
                 public void onPrepared() {
                     super.onPrepared();
@@ -905,7 +906,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = new ExoPlayer();
         }
         mExoPlayer.startPlay(skrerUrl);
-        mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+        mExoPlayer.setCallback(new PlayerCallbackAdapter() {
             @Override
             public void onPrepared() {
                 if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {

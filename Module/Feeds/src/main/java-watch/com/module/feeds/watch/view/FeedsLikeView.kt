@@ -21,10 +21,7 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.player.IPlayer
-import com.common.player.MyMediaPlayer
-import com.common.player.SinglePlayer
-import com.common.player.VideoPlayerAdapter
+import com.common.player.*
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -76,6 +73,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     val mLoadService: LoadService<*>
     val playerTag = TAG + hashCode()
+    val playCallback:PlayerCallbackAdapter
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
@@ -185,13 +183,15 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             initData(true)
         })
 
-        SinglePlayer.addCallback(playerTag, object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+        playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 // 自动播放下一首
                 playWithType(true)
             }
-        })
+        }
+
+        SinglePlayer.addCallback(playerTag, playCallback)
 
     }
 
@@ -378,6 +378,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     }
 
     fun destory() {
+        SinglePlayer.removeCallback(playerTag)
         mCDRotateAnimation?.setAnimationListener(null)
         mCDRotateAnimation?.cancel()
         mCoverRotateAnimation?.setAnimationListener(null)
@@ -390,5 +391,6 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     }
 
     fun selected() {
+
     }
 }

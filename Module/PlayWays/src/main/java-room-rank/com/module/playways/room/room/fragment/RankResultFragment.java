@@ -13,6 +13,7 @@ import com.common.base.BaseFragment;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
 import com.common.player.IPlayer;
+import com.common.player.PlayerCallbackAdapter;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.ExoPlayer;
 import com.common.utils.ActivityUtils;
@@ -184,7 +185,7 @@ public class RankResultFragment extends BaseFragment {
                 if (mIPlayer == null) {
                     mIPlayer = new ExoPlayer();
                     // 播放完毕
-                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                    mIPlayer.setCallback(new PlayerCallbackAdapter() {
                         @Override
                         public void onCompletion() {
                             super.onCompletion();

@@ -76,5 +76,5 @@ public interface IPlayer {
      * 是否监听进度
      * @param b
      */
-    void setMonitorProgress(boolean b);
+//    void setMonitorProgress(boolean b);
 }

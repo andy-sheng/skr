@@ -11,6 +11,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
 import com.common.view.DebounceViewClickListener
 import com.component.dialog.FeedsMoreDialogView
@@ -201,7 +202,7 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         if (mMediaPlayer == null) {
             mMediaPlayer = MyMediaPlayer()
         }
-        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+        mMediaPlayer?.setCallback(object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 // 重复播放

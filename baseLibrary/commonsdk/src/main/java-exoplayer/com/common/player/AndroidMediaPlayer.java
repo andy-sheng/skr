@@ -26,7 +26,6 @@ public class AndroidMediaPlayer extends BasePlayer {
     private static String mPreLoadUrl;
     private static Handler sUiHanlder = new Handler();
 
-    private IPlayerCallback mCallback;
     private MediaPlayer mPlayer;
     private String mPath;
 

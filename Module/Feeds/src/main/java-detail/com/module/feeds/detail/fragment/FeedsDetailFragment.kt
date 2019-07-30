@@ -20,7 +20,8 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.common.player.MyMediaPlayer
+import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
 import com.common.rxretrofit.ApiManager
@@ -50,7 +51,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
-    val mTag = "FeedsDetailFragment"
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
     var mContentLayout: CollapsingToolbarLayout? = null
@@ -88,47 +88,50 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mResumeCall: (() -> Unit)? = null
 
-    val mMyMediaPlayer: MyMediaPlayer by lazy {
-        MyMediaPlayer().also {
-            it.setMonitorProgress(true)
-            it.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
-                override fun onPrepared() {
-                    if (mControlTv!!.isSelected) {
-                        if (!mFeedsCommonLyricView!!.isStart()) {
-                            mFeedsCommonLyricView!!.playLyric()
-                        } else {
-                            mFeedsCommonLyricView!!.resume()
-                        }
-                    } else {
-                        mMyMediaPlayer.pause()
-                    }
-                }
+    var playCallback = object : PlayerCallbackAdapter() {
+        override fun onPrepared() {
+        }
 
-                override fun onCompletion() {
-                    stopSong()
-                }
+        override fun onCompletion() {
+            stopSong()
+        }
 
-                override fun onSeekComplete() {
+        override fun onSeekComplete() {
 
-                }
+        }
 
-                override fun onError(what: Int, extra: Int) {
-                    mFeedsCommonLyricView!!.pause()
-                }
+        override fun onError(what: Int, extra: Int) {
+            mFeedsCommonLyricView!!.pause()
+        }
 
-                override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
-                    MyLog.d(mTag, "onBufferingUpdate percent=$percent")
-                    if (percent == 100) {
-                        if (mp!!.isPlaying) {
-                            mFeedsCommonLyricView!!.resume()
-                        }
-                    } else {
-                        mFeedsCommonLyricView!!.pause()
-                    }
+        override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+            MyLog.d(TAG, "onBufferingUpdate percent=$percent")
+            if (percent == 100) {
+                if (mp!!.isPlaying) {
+                    mFeedsCommonLyricView!!.resume()
                 }
-            })
+            } else {
+                mFeedsCommonLyricView!!.pause()
+            }
+        }
+
+        override fun openTimeFlyMonitor(): Boolean {
+            return true
+        }
+
+        override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+            //歌曲还没加载到的时候这个会返回1毫秒，无意义，do not care
+            mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
+            if (mSeekBar?.max != duration.toInt()) {
+                mSeekBar?.max = duration.toInt()
+            }
+            mSeekBar!!.progress = pos.toInt()
+            mFeedsCommonLyricView?.seekTo(pos.toInt())
         }
     }
+
+    val playerTag = TAG + hashCode()
 
     internal var isInitToolbar = false
 
@@ -292,7 +295,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    mMyMediaPlayer.seekTo(progress.toLong())
+                    SinglePlayer.seekTo(playerTag,progress.toLong())
                     mFeedsCommonLyricView?.seekTo(progress)
                     mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
                 }
@@ -320,13 +323,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!)
 
-        playSong()
-
         mControlTv?.setDebounceViewClickListener {
             if (it!!.isSelected) {
-                pauseSong()
+                pausePlay()
             } else {
-                playSong()
+                startPlay()
             }
         }
 
@@ -343,6 +344,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
+
+        SinglePlayer.addCallback(playerTag, playCallback)
+        startPlay()
     }
 
     private fun showMoreOp() {
@@ -415,12 +419,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun onPause() {
         super.onPause()
-        if (mControlTv!!.isSelected) {
-            mMyMediaPlayer.pause()
-            mResumeCall = {
-                mMyMediaPlayer.resume()
-            }
-        }
+        pausePlay()
     }
 
     override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
@@ -438,26 +437,23 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
-    private fun playSong() {
+    private fun startPlay() {
         mControlTv?.isSelected = true
         mRadioView?.play()
-        mMyMediaPlayer.startPlay(mFeedsWatchModel?.song?.playURL)
-        mFeedsWatchModel?.song?.playCurPos?.let {
-            mMyMediaPlayer.seekTo(it.toLong())
-            mFeedsCommonLyricView?.seekTo(it)
-            mFeedsCommonLyricView?.resume()
+        mFeedsWatchModel?.song?.playURL?.let {
+            SinglePlayer.startPlay(playerTag, it)
         }
     }
 
-    private fun pauseSong() {
+    private fun pausePlay() {
         mControlTv!!.isSelected = false
         mRadioView?.pause()
-        mMyMediaPlayer.pause()
+        SinglePlayer.pause(playerTag)
         mFeedsCommonLyricView?.pause()
     }
 
     private fun stopSong() {
-        mMyMediaPlayer.stop()
+        SinglePlayer.stop(playerTag)
         mControlTv!!.isSelected = false
         mRadioView?.pause()
         mSeekBar!!.progress = 0
@@ -466,17 +462,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
         }
         mFeedsCommonLyricView?.stop()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: PlayerEvent.TimeFly) {
-        //歌曲还没加载到的时候这个会返回1毫秒，无意义，do not care
-            mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.curPostion, "mm:ss")
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(event.totalDuration - event.curPostion, "mm:ss")
-            mSeekBar!!.max = event.totalDuration.toInt()
-            mSeekBar!!.progress = event.curPostion.toInt()
-            mFeedsCommonLyricView?.seekTo(event.curPostion.toInt())
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -553,7 +538,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun destroy() {
         super.destroy()
-        mMyMediaPlayer.release()
+        SinglePlayer.removeCallback(playerTag)
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()
     }

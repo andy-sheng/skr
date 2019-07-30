@@ -33,26 +33,59 @@ public class MyMediaPlayer implements IPlayer {
 
         @Override
         public void onCompletion() {
+            if (outCallback != null) {
+                outCallback.onCompletion();
+            }
         }
 
         @Override
         public void onSeekComplete() {
+            if (outCallback != null) {
+                outCallback.onSeekComplete();
+            }
         }
 
         @Override
         public void onVideoSizeChanged(int width, int height) {
+            if (outCallback != null) {
+                outCallback.onVideoSizeChanged(width, height);
+            }
         }
 
         @Override
         public void onError(int what, int extra) {
+            if (outCallback != null) {
+                outCallback.onError(what, extra);
+            }
         }
 
         @Override
         public void onInfo(int what, int extra) {
+            if (outCallback != null) {
+                outCallback.onInfo(what, extra);
+            }
         }
 
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
+            if (outCallback != null) {
+                outCallback.onBufferingUpdate(mp, percent);
+            }
+        }
+
+        @Override
+        public boolean openTimeFlyMonitor() {
+            if (outCallback != null) {
+                return outCallback.openTimeFlyMonitor();
+            }
+            return false;
+        }
+
+        @Override
+        public void onTimeFlyMonitor(long pos, long duration) {
+            if (outCallback != null) {
+                outCallback.onTimeFlyMonitor(pos, duration);
+            }
         }
     };
 
@@ -272,9 +305,4 @@ public class MyMediaPlayer implements IPlayer {
         mExoPlayer.setDecreaseVolumeEnd(b);
     }
 
-    @Override
-    public void setMonitorProgress(boolean b) {
-        mAndroidMediaPlayer.setMonitorProgress(b);
-        mExoPlayer.setMonitorProgress(b);
-    }
 }
