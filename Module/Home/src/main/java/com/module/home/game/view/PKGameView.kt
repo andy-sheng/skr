@@ -247,7 +247,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        destory()
+        //destory()
     }
 
     fun destory() {

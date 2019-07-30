@@ -391,7 +391,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        destory()
+        //destory()
     }
 
     fun destory() {

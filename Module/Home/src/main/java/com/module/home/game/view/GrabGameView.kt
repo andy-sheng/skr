@@ -133,7 +133,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        destory()
+        //destory()
     }
 
     fun destory() {
