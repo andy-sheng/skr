@@ -48,16 +48,11 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
                         mFeedSongModel?.songTpl?.lrcTxtStr = s
-                        whenLoadLyric()
+                        whenLoadLyric(false)
                     }, { throwable -> MyLog.e(TAG, "accept throwable=$throwable") })
         } else {
-            whenLoadLyric()
+            whenLoadLyric(false)
         }
-    }
-
-    fun whenLoadLyric() {
-        lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
-        scrollToTs(mFeedSongModel?.playCurPos ?: 0)
     }
 
     override fun playLyric() {
@@ -70,14 +65,25 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
                         mFeedSongModel?.songTpl?.lrcTxtStr = s
-                        lyricTv.text = "\n${s}"
-                        visibility = View.VISIBLE
-                        startScroll()
+                        whenLoadLyric(true)
                     }, { throwable -> MyLog.e(TAG, "accept throwable=$throwable") })
         } else {
-            lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
-            visibility = View.VISIBLE
+            whenLoadLyric(true)
+        }
+    }
+
+
+    fun whenLoadLyric(play: Boolean) {
+        var l = mFeedSongModel?.songTpl?.lrcTxtStr
+        if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
+            l = "《${mFeedSongModel?.workName}》\n ${l}"
+        }
+        visibility = View.VISIBLE
+        lyricTv.text = l
+        if (play) {
             startScroll()
+        } else {
+            scrollToTs(mFeedSongModel?.playCurPos ?: 0)
         }
     }
 
@@ -106,7 +112,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
                         scrollToTs(mFeedSongModel?.playCurPos ?: 0)
-                        mFeedSongModel?.playCurPos = (mFeedSongModel?.playCurPos?:0)  + 30
+                        mFeedSongModel?.playCurPos = (mFeedSongModel?.playCurPos ?: 0) + 30
                     }
                 })
     }
@@ -129,10 +135,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun resume() {
-        if(mHandlerTaskTimer?.isDisposed == false){
+        if (mHandlerTaskTimer?.isDisposed == false) {
             // 如果没取消
 
-        }else{
+        } else {
             // 如果取消了
             startScroll()
         }
