@@ -53,6 +53,10 @@ class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         initInputView()
     }
 
+    fun setETHint(str: String) {
+        mEtContent?.hint = str
+    }
+
     /**
      * 输入面板相关view的初始化
      */
@@ -97,6 +101,7 @@ class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     override fun onBoradHide() {
         //        EventBus.getDefault().post(new InputBoardEvent(false));
         mInputContainer?.visibility = View.GONE
+        mEtContent?.hint = ""
     }
 
     fun showSoftInput() {

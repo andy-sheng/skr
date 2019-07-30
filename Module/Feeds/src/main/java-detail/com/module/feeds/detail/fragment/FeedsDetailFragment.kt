@@ -266,6 +266,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mCommentTv?.setDebounceViewClickListener {
             mFeedsInputContainerView?.showSoftInput()
+            mFeedsInputContainerView?.setETHint("回复 ${mFeedsWatchModel?.user?.nickname}")
         }
 
         mXinIv?.setDebounceViewClickListener {

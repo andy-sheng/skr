@@ -82,6 +82,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             override fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel) {
                 mRefuseModel = firstLevelCommentModel
                 mFeedsInputContainerView?.showSoftInput()
+                mFeedsInputContainerView?.setETHint("回复 ${mRefuseModel?.commentUser?.nickname}")
             }
 
             override fun onClickIcon(userID: Int) {
@@ -126,6 +127,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mCommentTv?.setDebounceViewClickListener {
             mRefuseModel = mFirstLevelCommentModel
             mFeedsInputContainerView?.showSoftInput()
+            mFeedsInputContainerView?.setETHint("回复 ${mRefuseModel?.commentUser?.nickname}")
         }
 
         mFeedsInputContainerView?.mSendCallBack = {

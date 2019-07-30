@@ -48,7 +48,7 @@
             android:paddingLeft="@dimen/view_15_dp"
             android:paddingRight="@dimen/view_15_dp"
             android:textColor="@color/black_trans_90"
-            android:textColorHint="@color/black_trans_50"
+            android:textColorHint="@color/black_trans_30"
             android:textSize="@dimen/textsize_16_dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
