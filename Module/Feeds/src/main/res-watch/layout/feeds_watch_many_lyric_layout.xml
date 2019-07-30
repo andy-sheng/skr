@@ -15,5 +15,6 @@
     app:ly_paint_color_from="@color/white_trans_60"
     app:ly_paint_color_to="@color/white_trans_60"
     app:ly_paint_text_size="@dimen/textsize_dimen_14"
+    app:ly_show_song_name="true"
     app:ly_show_author="true"
     app:ly_top_line_num="3" />

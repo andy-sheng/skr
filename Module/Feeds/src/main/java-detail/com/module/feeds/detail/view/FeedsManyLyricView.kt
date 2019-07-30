@@ -1,5 +1,6 @@
 package com.module.feeds.detail.view
 
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
 import com.common.log.MyLog
@@ -75,7 +76,10 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
             mManyLyricsView?.initLrcData()
         }
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
-        mManyLyricsView?.setSongName(mFeedSongModel?.workName)
+        if(!TextUtils.isEmpty(mFeedSongModel?.workName)){
+            mManyLyricsView?.setSongName("《${mFeedSongModel?.workName}》")
+        }
+
         if (play) {
             mIsStart = true
             mManyLyricsView?.play(mFeedSongModel?.playCurPos ?: 0)
