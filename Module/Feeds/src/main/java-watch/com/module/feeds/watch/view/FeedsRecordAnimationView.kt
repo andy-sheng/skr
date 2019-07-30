@@ -28,6 +28,9 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     var rockerYP: Float? = 0.1f
     var avatorMargin: Float? = 0f
 
+    var startAngle: Float = 0f
+    var endAngle: Float = 0f
+
     val avatarContainer: ConstraintLayout
     val panelIv: ImageView
     val avatarIv: BaseImageView
@@ -36,14 +39,14 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     var avatarAnimation: ObjectAnimator? = null
 
     var rotateAnimationPlay: ObjectAnimator? = null
-    var rotateAnimationStop: ObjectAnimator?=null
+    var rotateAnimationStop: ObjectAnimator? = null
 
     var playing = false
     var hasLayouted = false
     var wantPlaying = false
 
     init {
-        TAG+=hashCode()
+        TAG += hashCode()
         View.inflate(context, R.layout.feed_record_animation_view_layout, this)
 
         avatarContainer = this.findViewById(R.id.avatar_container)
@@ -53,6 +56,9 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FeedsRecordAnimationView)
+        startAngle = typedArray.getFloat(R.styleable.FeedsRecordAnimationView_startAngle, -55f)
+        endAngle = typedArray.getFloat(R.styleable.FeedsRecordAnimationView_endAngle, -25f)
+
         panelDrawable = typedArray.getDrawable(R.styleable.FeedsRecordAnimationView_panelDrawable)
         panelIv.setImageDrawable(panelDrawable)
         rockerDrawable = typedArray.getDrawable(R.styleable.FeedsRecordAnimationView_rockerDrawable)
@@ -142,19 +148,46 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation?.pause()
     }
 
+    fun showRockerIv() {
+        rockerIv.visibility = View.VISIBLE
+    }
+
+    fun hideRockerIv() {
+        if (rotateAnimationStop != null && rotateAnimationStop?.isStarted == true) {
+            rotateAnimationStop?.removeAllListeners()
+            rotateAnimationStop?.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator?) {
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    rockerIv.visibility = View.GONE
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    rockerIv.visibility = View.GONE
+                }
+
+                override fun onAnimationStart(animation: Animator?) {
+                }
+            })
+        } else {
+            rockerIv.visibility = View.GONE
+        }
+    }
+
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         if (!hasLayouted) {
             hasLayouted = true
-            rockerIv.pivotX = (rockerXP?:0f) * rockerIv.width.toFloat()
-            rockerIv.pivotY = (rockerYP?:0f) * rockerIv.height.toFloat()
-            if(rotateAnimationPlay == null){
-                rotateAnimationPlay = ObjectAnimator.ofFloat(rockerIv,View.ROTATION,-55f, -25f)
+            rockerIv.pivotX = (rockerXP ?: 0f) * rockerIv.width.toFloat()
+            rockerIv.pivotY = (rockerYP ?: 0f) * rockerIv.height.toFloat()
+            if (rotateAnimationPlay == null) {
+                rotateAnimationPlay = ObjectAnimator.ofFloat(rockerIv, View.ROTATION, startAngle, endAngle)
                 rotateAnimationPlay?.duration = 800
             }
 
-            if(rotateAnimationStop == null){
-                rotateAnimationStop = ObjectAnimator.ofFloat(rockerIv,View.ROTATION,-25f, -55f)
+            if (rotateAnimationStop == null) {
+                rotateAnimationStop = ObjectAnimator.ofFloat(rockerIv, View.ROTATION, endAngle, startAngle)
                 rotateAnimationStop?.duration = 800
             }
 

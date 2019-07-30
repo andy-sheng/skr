@@ -130,6 +130,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     }
 
     fun startPlay() {
+        mRecordView.showRockerIv()
         mRecordView.play()
     }
 
@@ -149,6 +150,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
     fun stopPlay() {
         mRecordView.pause()
+        mRecordView.hideRockerIv()
         feedAutoScrollLyricView.pause()
         feedWatchManyLyricView.pause()
     }

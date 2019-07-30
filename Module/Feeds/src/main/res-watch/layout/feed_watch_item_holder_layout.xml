@@ -158,10 +158,12 @@
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg"
         app:panelDrawable="@drawable/record_film_icon"
-        app:panelMarginTop="@dimen/view_28_dp"
+        app:panelMarginTop="@dimen/view_14_dp"
         app:rockerDrawable="@drawable/record_pointer_icon"
         app:rockerXP="1.0"
-        app:rockerYP="0" />
+        app:rockerYP="0"
+        app:startAngle="-80"
+        app:endAngle="-45" />
 
     <!-- 歌词view -->
     <ViewStub
