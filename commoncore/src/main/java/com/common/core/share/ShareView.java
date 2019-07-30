@@ -14,6 +14,7 @@ public class ShareView extends FrameLayout {
     TextView mTvWechatShare;
     TextView mTvWechatCircleShare;
     TextView mTvQqShare;
+    TextView mTvQqZoneShare;
 
     OnClickShareListener mOnClickShareListener;
 
@@ -41,6 +42,7 @@ public class ShareView extends FrameLayout {
         mTvWechatShare = (TextView)findViewById(R.id.tv_wechat_share);
         mTvWechatCircleShare = (TextView)findViewById(R.id.tv_wechat_circle_share);
         mTvQqShare = (TextView)findViewById(R.id.tv_qq_share);
+        mTvQqZoneShare = (TextView) findViewById(R.id.tv_qq_zone);
 
         mTvWechatShare.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -65,6 +67,15 @@ public class ShareView extends FrameLayout {
             public void clickValid(View v) {
                 if(mOnClickShareListener != null){
                     mOnClickShareListener.click(SharePlatform.QQ);
+                }
+            }
+        });
+
+        mTvQqZoneShare.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mOnClickShareListener != null) {
+                    mOnClickShareListener.click(SharePlatform.QZONE);
                 }
             }
         });

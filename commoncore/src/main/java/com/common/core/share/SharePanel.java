@@ -150,6 +150,11 @@ public class SharePanel {
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(mUMShareListener).share();
                 break;
+            case QZONE:
+                new ShareAction(mActivity).withText(sb.toString())
+                        .setPlatform(SHARE_MEDIA.QZONE)
+                        .setCallback(mUMShareListener).share();
+                break;
         }
     }
 
@@ -179,6 +184,11 @@ public class SharePanel {
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(mUMShareListener).share();
                 break;
+            case QZONE:
+                new ShareAction(mActivity).withMedia(web)
+                        .setPlatform(SHARE_MEDIA.QZONE)
+                        .setCallback(mUMShareListener).share();
+                break;
         }
     }
 
@@ -199,6 +209,11 @@ public class SharePanel {
             case WEIXIN_CIRCLE:
                 new ShareAction(mActivity).withMedia(imageurl)
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QZONE:
+                new ShareAction(mActivity).withMedia(imageurl)
+                        .setPlatform(SHARE_MEDIA.QZONE)
                         .setCallback(mUMShareListener).share();
                 break;
         }

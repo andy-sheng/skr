@@ -130,7 +130,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     internal var isInitToolbar = false
-    internal var mIsPlaying = false
 
     override fun initView(): Int {
         return R.layout.feeds_detail_fragment_layout
@@ -236,7 +235,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mShareIv?.setDebounceViewClickListener {
             val sharePanel = SharePanel(activity)
-            sharePanel.setShareContent(ApiManager.getInstance().findRealUrlByChannel(String.format("http://dev.app.inframe.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
+            sharePanel.setShareContent("", mFeedsWatchModel!!.song?.songTpl?.songName, mFeedsWatchModel!!.user?.nickname,
+                    ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
             sharePanel.show(ShareType.URL)
             sharePanel.setUMShareListener(object : UMShareListener {
                 override fun onResult(p0: SHARE_MEDIA?) {
