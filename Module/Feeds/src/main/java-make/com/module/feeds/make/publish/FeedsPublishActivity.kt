@@ -221,8 +221,9 @@ class FeedsPublishActivity : BaseActivity() {
             if (result.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
-                mFeedsMakeModel?.uploadSongName =  worksNameEt.text.toString()
-                mFeedsMakeModel?.uploadSongDesc = sayEdit.text.toString()
+                mFeedsMakeModel?.songModel?.workName =  worksNameEt.text.toString()
+                mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
+                mFeedsMakeModel?.songModel?.songID = result.data.getIntValue("songID")
                 // 跳到分享页
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SHARE)
                         .withSerializable("feeds_make_model", mFeedsMakeModel)

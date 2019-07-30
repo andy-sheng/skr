@@ -12,6 +12,12 @@ interface FeedsMakeServerApi {
     /**
      * 获取feeds所有标签列表
      */
+    @GET("/v1/feed/challenge-song-tpl")
+    suspend fun getSongTplByChallengeID(@Query("challengeID") challengeID:Long): ApiResult
+
+    /**
+     * 获取feeds所有标签列表
+     */
     @GET("/v1/feed/tag-list")
     suspend fun getFeedLikeList(): ApiResult
 

@@ -16,10 +16,14 @@ import com.component.voice.control.VoiceControlPanelView
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.utils.DeviceUtils
 import com.common.utils.HttpUtils
 import com.common.utils.U
@@ -38,6 +42,7 @@ import com.engine.Params
 import com.module.feeds.R
 import com.module.feeds.detail.view.AutoScrollLyricView
 import com.module.feeds.make.editor.FeedsEditorActivity
+import com.module.feeds.watch.model.FeedSongTpl
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.trello.rxlifecycle2.android.ActivityEvent
@@ -67,6 +72,7 @@ class FeedsMakeActivity : BaseActivity() {
     internal var mSkrAudioPermission = SkrAudioPermission()
     internal var mLyricAndAccMatchManager = LyricAndAccMatchManager()
 
+    val feedsMakeServerApi = ApiManager.getInstance().createService(FeedsMakeServerApi::class.java)
 
     val mVoiceControlPanelView by lazy {
         VoiceControlPanelView(this).apply { bindData() }
@@ -92,10 +98,8 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val feedsSongModel = intent.getSerializableExtra("song_model") as? FeedSongModel
-        feedsSongModel?.let {
-            mFeedsMakeModel = FeedsMakeModel(feedsSongModel)
-        }
+        val challengeID = intent.getLongExtra("challengeID", 0)
+        mFeedsMakeModel = FeedsMakeModel(challengeID)
 
         mTitleBar = findViewById(R.id.title_bar)
         mResetIv = findViewById(R.id.reset_iv) as ImageView
@@ -115,9 +119,6 @@ class FeedsMakeActivity : BaseActivity() {
             finish()
             return
         }
-        mFeedsMakeModel?.apply {
-            mTitleBar?.centerTextView?.text = songModel.songTpl?.songName
-        }
 
         mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -125,8 +126,36 @@ class FeedsMakeActivity : BaseActivity() {
             }
         })
 
+        launch {
+            mFeedsMakeModel?.challengeID?.let {
+                for (i in 1..10) {
+                    val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
+                    if (result.errno == 0) {
+                        val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
+                        val workName = result.data.getString("workName")
+                        val songModel = FeedSongModel()
+                        songModel.songTpl = songTpl
+                        songModel.challengeID = it.toLong()
+                        songModel.workName = workName
+                        songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
+
+                        mFeedsMakeModel?.songModel = songModel
+                        whenDataOk()
+                        break
+                    } else {
+                        delay(3000)
+                    }
+                }
+
+            }
+
+        }
         mBeginTv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                if (mFeedsMakeModel?.songModel == null) {
+                    U.getToastUtil().showShort("资源还在准备中")
+                    return
+                }
                 mFeedsMakeModel?.let {
                     if (it.recordingClick) {
                         if (it.recording) {
@@ -148,6 +177,7 @@ class FeedsMakeActivity : BaseActivity() {
                 }
             }
         })
+
         mResetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 startRecord()
@@ -158,9 +188,39 @@ class FeedsMakeActivity : BaseActivity() {
                 mVoiceControlPanelViewDialog.show()
             }
         })
-        mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs
-                ?: 0L)
+
+        if (mFeedsMakeModel?.withBgm == true) {
+            (mTitleBar?.rightCustomView as TextView).text = "伴奏"
+        } else {
+            (mTitleBar?.rightCustomView as TextView).text = "清唱"
+        }
+        mTitleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                if (mFeedsMakeModel?.withBgm == true) {
+                    mFeedsMakeModel?.withBgm = false
+                    (mTitleBar?.rightCustomView as TextView).text = "清唱"
+                } else {
+                    // 清唱变伴奏
+                    if (U.getDeviceUtils().getWiredHeadsetPlugOn()) {
+                        // 是否插着有限耳机
+                        mFeedsMakeModel?.withBgm = true
+                        (mTitleBar?.rightCustomView as TextView).text = "伴奏"
+                    } else {
+                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
+                    }
+                }
+            }
+        })
         initEngine()
+    }
+
+    private fun whenDataOk() {
+        mFeedsMakeModel?.songModel?.workName?.let {
+            mTitleBar?.centerTextView?.text = it
+        }
+        mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+            mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(it)
+        }
 
         val lyricWithTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
         if (!TextUtils.isEmpty(lyricWithTs)) {
@@ -227,29 +287,6 @@ class FeedsMakeActivity : BaseActivity() {
                 }
             }
         }
-
-        if (mFeedsMakeModel?.withBgm == true) {
-            (mTitleBar?.rightCustomView as TextView).text = "伴奏"
-        } else {
-            (mTitleBar?.rightCustomView as TextView).text = "清唱"
-        }
-        mTitleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                if (mFeedsMakeModel?.withBgm == true) {
-                    mFeedsMakeModel?.withBgm = false
-                    (mTitleBar?.rightCustomView as TextView).text = "清唱"
-                } else {
-                    // 清唱变伴奏
-                    if (U.getDeviceUtils().getWiredHeadsetPlugOn()) {
-                        // 是否插着有限耳机
-                        mFeedsMakeModel?.withBgm = true
-                        (mTitleBar?.rightCustomView as TextView).text = "伴奏"
-                    } else {
-                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
-                    }
-                }
-            }
-        })
     }
 
     private fun initEngine() {
@@ -441,5 +478,18 @@ class FeedsMakeActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return true
+    }
+}
+
+fun openFeedsMakeActivity(challenge: Long?) {
+    // 打榜
+    challenge?.let {
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+                .withSerializable("challengeID", it)
+                .navigation()
+    } ?: run {
+        if (MyLog.isDebugLogOpen()) {
+            U.getToastUtil().showShort("失败 challengeID=challenge")
+        }
     }
 }

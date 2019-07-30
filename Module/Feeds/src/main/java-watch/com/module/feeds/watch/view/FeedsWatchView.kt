@@ -32,6 +32,7 @@ import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
+import com.module.feeds.make.openFeedsMakeActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -112,12 +113,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             }
 
             override fun onClickHitListener(watchModel: FeedsWatchModel?) {
-                // 打榜
-                watchModel?.song?.let {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
-                            .withSerializable("song_model", it)
-                            .navigation()
-                }
+                openFeedsMakeActivity(watchModel?.song?.challengeID)
             }
 
             override fun onClickDetailListener(position: Int, watchModel: FeedsWatchModel?) {
