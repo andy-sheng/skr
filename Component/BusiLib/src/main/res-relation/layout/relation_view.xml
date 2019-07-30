@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
         android:id="@+id/search_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_39_dp"
+        android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/friend_search_bg">
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_10"
+        app:bl_corners_radius="@dimen/view_16_dp">
 
         <ImageView
             android:id="@+id/search_icon_iv"
@@ -31,7 +33,7 @@
             android:textColor="@color/white_trans_30"
             android:textSize="@dimen/textsize_16_dp" />
 
-    </RelativeLayout>
+    </com.common.view.ex.ExRelativeLayout>
 
     <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
