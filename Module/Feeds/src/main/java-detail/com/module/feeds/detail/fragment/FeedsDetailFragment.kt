@@ -23,6 +23,7 @@ import com.common.log.MyLog
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
+import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -235,8 +236,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mShareIv?.setDebounceViewClickListener {
             val sharePanel = SharePanel(activity)
-            sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png")
-            sharePanel.show(ShareType.IMAGE_RUL)
+            sharePanel.setShareContent(ApiManager.getInstance().findRealUrlByChannel(String.format("http://dev.app.inframe.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
+            sharePanel.show(ShareType.URL)
             sharePanel.setUMShareListener(object : UMShareListener {
                 override fun onResult(p0: SHARE_MEDIA?) {
 

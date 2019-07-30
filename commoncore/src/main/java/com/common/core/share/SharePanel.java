@@ -1,8 +1,6 @@
 package com.common.core.share;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.Gravity;
 
