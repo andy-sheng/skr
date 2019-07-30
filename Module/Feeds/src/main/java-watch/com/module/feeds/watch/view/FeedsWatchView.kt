@@ -142,7 +142,6 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         }
 
         mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        (mRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
@@ -328,7 +327,10 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        destory()
+        mMediaPlayer?.release()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 
     @Subscribe
@@ -339,6 +341,8 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     fun destory() {
         mPersenter.destroy()
         mMediaPlayer?.release()
-        EventBus.getDefault().unregister(this)
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 }
