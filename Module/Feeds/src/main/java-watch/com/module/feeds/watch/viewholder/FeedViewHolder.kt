@@ -39,7 +39,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         mMoreIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener?.onClickMoreListener(model)
+                listener?.onClickMoreListener(mPosition, model)
             }
         })
 
@@ -57,7 +57,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         mRecordView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener?.onClickCDListener(mPosition,model)
+                listener?.onClickCDListener(mPosition, model)
             }
         })
 
@@ -69,7 +69,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         rootView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener?.onClickDetailListener(mPosition,model)
+                listener?.onClickDetailListener(mPosition, model)
             }
         })
     }
@@ -139,10 +139,10 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         // 有可能从头播 也有可能继续播
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
             feedAutoScrollLyricView.visibility = View.GONE
-            feedWatchManyLyricView.seekTo(model?.song?.playCurPos ?:0)
+            feedWatchManyLyricView.seekTo(model?.song?.playCurPos ?: 0)
             feedWatchManyLyricView.resume()
         } else {
-            feedAutoScrollLyricView.seekTo(model?.song?.playCurPos ?:0)
+            feedAutoScrollLyricView.seekTo(model?.song?.playCurPos ?: 0)
             feedAutoScrollLyricView.resume()
             feedWatchManyLyricView.visibility = View.GONE
         }

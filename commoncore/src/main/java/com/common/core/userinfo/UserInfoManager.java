@@ -281,6 +281,48 @@ public class UserInfoManager {
                     }
                 }
             });
+        } else {
+            if (resultCallback != null) {
+                resultCallback.onGetLocalDB(local);
+            }
+        }
+    }
+
+    /**
+     * 获取和一个用户的关系，个人信息可能不准
+     *
+     * @uuid 用户id
+     */
+    public void getUserRelationByUuid(final int uuid, final ResultCallback resultCallback) {
+        if (uuid <= 0) {
+            MyLog.w(TAG, "getUserInfoByUuid Illegal parameter");
+            return;
+        }
+
+        final UserInfoModel local = UserInfoLocalApi.getUserInfoByUUid(uuid);
+        if (local == null || resultCallback == null || (resultCallback != null && !resultCallback.onGetLocalDB(local))) {
+            ApiMethods.subscribe(userInfoServerApi.getRelation(uuid), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        boolean isFriend = obj.getData().getBooleanValue("isFriend");
+                        boolean isFollow = obj.getData().getBooleanValue("isFollow");
+                        local.setFollow(isFollow);
+                        local.setFriend(isFriend);
+                        if (resultCallback != null) {
+                            resultCallback.onGetServer(local);
+                        }
+                    } else {
+                        if (resultCallback != null) {
+                            resultCallback.onGetLocalDB(local);
+                        }
+                    }
+                }
+            });
+        } else {
+            if (resultCallback != null) {
+                resultCallback.onGetLocalDB(local);
+            }
         }
     }
 

@@ -149,8 +149,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                     , 0
                     , model.comment.commentID)
                     .apply {
-                        mFuncationTv.visibility = View.VISIBLE
-                        mFuncationTv.text = "回复"
+                        showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss()

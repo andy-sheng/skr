@@ -152,8 +152,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
 
     companion object {
-        const val REFRESH_TYPE_LIKE = 0  // 局部刷新喜欢
-        const val REFRESH_TYPE_COMMENT = 1  // 局部刷新评论数
-        const val REFRESH_TYPE_LYRIC = 2  // 局部刷新歌词
+        const val REFRESH_TYPE_LIKE = 1  // 局部刷新喜欢
+        const val REFRESH_TYPE_COMMENT = 2  // 局部刷新评论数
+        const val REFRESH_TYPE_LYRIC = 3  // 局部刷新歌词
     }
 }

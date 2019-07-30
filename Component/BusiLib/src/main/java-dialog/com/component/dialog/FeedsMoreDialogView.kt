@@ -34,6 +34,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, song
     private val mCancleTv: ExTextView
     val mReportTv: ExTextView
     val mFuncationTv: ExTextView
+    private val mDivider: View
 
     var mDialogPlus: DialogPlus? = null
 
@@ -43,6 +44,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, song
         mCancleTv = findViewById(R.id.cancle_tv)
         mReportTv = findViewById(R.id.report_tv)
         mFuncationTv = findViewById(R.id.funcation_tv)
+        mDivider = findViewById(R.id.divider)
 
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -63,13 +65,15 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, song
         })
     }
 
-    fun setFollow(isFollow: Boolean) {
-        if (isFollow) {
-            mFuncationTv.visibility = View.GONE
-        } else {
-            mFuncationTv.visibility = View.VISIBLE
-            mFuncationTv.text = "关注"
-        }
+    fun showFuncation(text: String) {
+        mFuncationTv.text = "${text}"
+        mFuncationTv.visibility = View.VISIBLE
+        mDivider.visibility = View.VISIBLE
+    }
+
+    fun hideFuncation() {
+        mFuncationTv.visibility = View.GONE
+        mDivider.visibility = View.GONE
     }
 
     /**

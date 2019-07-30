@@ -358,15 +358,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     , mFeedsWatchModel?.song?.songID ?: 0
                     , 0)
                     .apply {
-                        mFuncationTv.visibility = View.GONE
-//                        mFuncationTv.visibility = View.VISIBLE
-//                        mFuncationTv.text = "回复"
-//                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-//                            override fun clickValid(v: View?) {
-//                                dismiss()
-//                                mFeedsInputContainerView?.showSoftInput()
-//                            }
-//                        })
+                        hideFuncation()
                     }
             mMoreDialogPlus?.showByDialog()
         }
@@ -380,8 +372,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     , 0
                     , model.comment.commentID)
                     .apply {
-                        mFuncationTv.visibility = View.VISIBLE
-                        mFuncationTv.text = "回复"
+                        showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss()
