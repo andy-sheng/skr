@@ -23,6 +23,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
+import com.common.player.SinglePlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
@@ -38,7 +39,7 @@ import kotlin.collections.ArrayList
 
 class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
 
-
+    val TAG = "FeedsLikeView"
     val ALL_REPEAT_PLAY_TYPE = 1      //全部循环
     val SINGLE_REPEAT_PLAY_TYPE = 2   //单曲循环
     val RANDOM_PLAY_TYPE = 3          //随机播放 (只在已经拉到的列表里面随机)
@@ -49,7 +50,6 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
     var isFirstRandom = true      // 是否第一次随机clear
     var mRandomList = ArrayList<FeedsLikeModel>()  // 随机播放队列
-    var mMediaPlayer: IPlayer? = null  // 播放器
 
     private val mContainer: ConstraintLayout
     private val mTopAreaBg: SimpleDraweeView
@@ -75,6 +75,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     var mCoverRotateAnimation: RotateAnimation? = null
 
     val mLoadService: LoadService<*>
+    val playerTag = TAG + hashCode()
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
@@ -183,6 +184,15 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mLoadService = mLoadSir.register(mContainer, Callback.OnReloadListener {
             initData(true)
         })
+
+        SinglePlayer.addCallback(playerTag, object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 自动播放下一首
+                playWithType(true)
+            }
+        })
+
     }
 
     // 初始化数据
@@ -198,7 +208,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
             mAdapter.mCurrentPlayModel = null
             mAdapter.notifyDataSetChanged()
-            mMediaPlayer?.reset()
+            SinglePlayer.reset(playerTag)
         }
     }
 
@@ -273,18 +283,8 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
-        if (mMediaPlayer == null) {
-            mMediaPlayer = MyMediaPlayer()
-        }
-        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                // 自动播放下一首
-                playWithType(true)
-            }
-        })
         model?.song?.playURL?.let {
-            mMediaPlayer?.startPlay(it)
+            SinglePlayer.startPlay(playerTag, it)
         }
     }
 
@@ -294,7 +294,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
-        mMediaPlayer?.reset()
+        SinglePlayer.reset(playerTag)
     }
 
     override fun addLikeList(list: List<FeedsLikeModel>?, isClear: Boolean) {
@@ -384,5 +384,12 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mCoverRotateAnimation?.setAnimationListener(null)
         mCoverRotateAnimation?.cancel()
         mPersenter.destroy()
+    }
+
+    fun unselected() {
+        stopPlay()
+    }
+
+    fun selected() {
     }
 }

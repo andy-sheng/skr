@@ -28,16 +28,17 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         addToLifeCycle()
     }
 
-    fun initWatchList(flag: Boolean) {
+    fun initWatchList(flag: Boolean):Boolean {
         if (!flag) {
             // 10秒切页面才刷一下
             val now = System.currentTimeMillis()
             if (now - mLastUpdatListTime < 10 * 1000) {
 //                view.requestTimeShort()
-                return
+                return false
             }
         }
         getWatchList(0)
+        return true
     }
 
     fun loadMoreWatchList() {

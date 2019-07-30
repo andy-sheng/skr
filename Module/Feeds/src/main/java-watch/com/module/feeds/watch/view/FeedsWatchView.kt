@@ -8,8 +8,7 @@ import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.userinfo.UserInfoManager
-import com.common.player.IPlayer
-import com.common.player.MyMediaPlayer
+import com.common.player.SinglePlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
 import com.common.view.DebounceViewClickListener
@@ -29,6 +28,8 @@ import org.greenrobot.eventbus.Subscribe
 
 
 class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView {
+    val TAG = "FeedsWatchView"
+
     companion object {
         const val TYPE_RECOMMEND = 1
         const val TYPE_FOLLOW = 2
@@ -42,10 +43,12 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     private val mAdapter: FeedsWatchViewAdapter
     private val mPersenter: FeedWatchViewPresenter
 
-    private var mMediaPlayer: IPlayer? = null
-
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
     var mCurFocusPostion = -1 // 记录当前操作的焦点pos
+    val playerTag = TAG + hashCode()
+    val playCallback = object:VideoPlayerAdapter.PlayerCallbackAdapter(){
+
+    }
 
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
@@ -96,7 +99,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
             override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 播放
-                watchModel?.let { model -> startplay(position, model, false) }
+                watchModel?.let { model -> controlPlay(position, model, false) }
             }
 
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
@@ -208,7 +211,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
                         model?.let {
                             isFound = true
-                            startplay(postion, it, true)
+                            controlPlay(postion, it, true)
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
@@ -220,68 +223,51 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 }
             }
         })
-
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
 
-    private fun startplay(pos: Int, model: FeedsWatchModel, isMustPlay: Boolean) {
+    private fun controlPlay(pos: Int, model: FeedsWatchModel, isMustPlay: Boolean) {
         if (mCurFocusPostion != pos) {
-            mMediaPlayer?.reset()
+            SinglePlayer.reset(playerTag)
             mCurFocusPostion = pos
         }
         if (isMustPlay) {
             // 播放
-            startplay(pos, model)
+            startPlay(pos, model)
         } else {
-            if (mAdapter.mCurrentPlayModel?.feedID == model.feedID) {
+            if (mAdapter.mCurrentPlayModel?.feedID == model.feedID && mAdapter.playing) {
                 // 停止播放
                 pausePlay()
             } else {
                 // 播放
-                startplay(pos, model)
+                startPlay(pos, model)
             }
         }
     }
 
-    private fun startplay(pos: Int, model: FeedsWatchModel) {
-        mAdapter.updatePlayModel(pos, model)
-        if (mMediaPlayer == null) {
-            mMediaPlayer = MyMediaPlayer()
-            mMediaPlayer?.setMonitorProgress(true)
-        }
-        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                // 重复播放
-                model?.song?.playURL?.let {
-                    mMediaPlayer?.startPlay(it)
-                }
-            }
-
-            override fun onPrepared() {
-                super.onPrepared()
-            }
-        })
+    private fun startPlay(pos: Int, model: FeedsWatchModel) {
+        mAdapter.startPlayModel(pos, model)
         model.song?.playURL?.let {
-            mMediaPlayer?.startPlay(it)
+            SinglePlayer.startPlay(playerTag,it)
+        }
+    }
+
+    /**
+     * 继续播放
+     */
+    private fun resumePlay(){
+        mAdapter.resumePlayModel()
+        mAdapter.mCurrentPlayModel?.song?.playURL?.let {
+            SinglePlayer.startPlay(playerTag,it)
         }
     }
 
     private fun pausePlay() {
-        mAdapter.updatePlayModel(-1, null)
-        mMediaPlayer?.pause()
-    }
-
-    fun initData(flag: Boolean) {
-        mPersenter.initWatchList(flag)
-    }
-
-    fun stopPlay() {
-        // 保留mCurrentModel 可以用来恢复页面播放
-        mAdapter.updatePlayModel(-1, null)
-        mMediaPlayer?.reset()
+        mAdapter.pausePlayModel()
+        SinglePlayer.pause(playerTag)
     }
 
     override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
@@ -293,7 +279,7 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 mAdapter.mDataList.addAll(list)
             }
             if (mAdapter.mDataList.isNotEmpty()) {
-                startplay(0, mAdapter.mDataList[0], true)
+                controlPlay(0, mAdapter.mDataList[0], true)
             }
             mAdapter.notifyDataSetChanged()
         } else {
@@ -324,7 +310,9 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
+
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
@@ -338,7 +326,19 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
 
     fun destory() {
         mPersenter.destroy()
-        mMediaPlayer?.release()
+        SinglePlayer.removeCallback(playerTag)
         EventBus.getDefault().unregister(this)
+    }
+
+    fun unselected() {
+        pausePlay()
+    }
+
+    fun selected() {
+        // 该页面选中以及从详情页返回都会回调这个方法
+        if(!mPersenter.initWatchList(false)){
+            // 如果因为时间短没请求，继续往前播放
+            resumePlay()
+        }
     }
 }

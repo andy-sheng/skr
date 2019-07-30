@@ -1,21 +1,60 @@
 package com.common.player;
 
+import android.media.MediaPlayer;
 import android.view.Surface;
 
 import com.common.log.MyLog;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 兼容一些 AndroidMediaPlayer 没法播放的问题
+ * 可以使用 INSTANCE 单例播放器，也可以 new 新的播放器
  */
 public class MyMediaPlayer implements IPlayer {
     public final String TAG = "MyMediaPlayer";
 
     AndroidMediaPlayer mAndroidMediaPlayer = new AndroidMediaPlayer();
-
     ExoPlayer mExoPlayer = new ExoPlayer();
+
     boolean useAndroidMediaPlayer = true;
     String mPath;
-    IPlayerCallback mIPlayerCallback;
+    private IPlayerCallback outCallback = null;
+
+    private IPlayerCallback innerCallback = new IPlayerCallback() {
+        @Override
+        public void onPrepared() {
+            if (outCallback != null) {
+                outCallback.onPrepared();
+            }
+        }
+
+        @Override
+        public void onCompletion() {
+        }
+
+        @Override
+        public void onSeekComplete() {
+        }
+
+        @Override
+        public void onVideoSizeChanged(int width, int height) {
+        }
+
+        @Override
+        public void onError(int what, int extra) {
+        }
+
+        @Override
+        public void onInfo(int what, int extra) {
+        }
+
+        @Override
+        public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        }
+    };
 
     public MyMediaPlayer() {
         mAndroidMediaPlayer.setIPlayerNotSupport(new IPlayerNotSupport() {
@@ -25,23 +64,20 @@ public class MyMediaPlayer implements IPlayer {
                     MyLog.w(TAG, "mAndroidMediaPlayer 没法正常播放，自动切换");
                     mAndroidMediaPlayer.reset();
                     useAndroidMediaPlayer = false;
-                    mExoPlayer.setCallback(mIPlayerCallback);
                     mExoPlayer.startPlay(mPath);
                     mExoPlayer.setVolume(mAndroidMediaPlayer.getVolume());
                 }
             }
         });
+        mAndroidMediaPlayer.setCallback(innerCallback);
+        mExoPlayer.setCallback(innerCallback);
     }
 
     @Override
     public void setCallback(IPlayerCallback callback) {
-        mIPlayerCallback = callback;
-        if (useAndroidMediaPlayer) {
-            mAndroidMediaPlayer.setCallback(callback);
-        } else {
-            mExoPlayer.setCallback(callback);
-        }
+        outCallback = callback;
     }
+
 
     @Override
     public int getVideoWidth() {

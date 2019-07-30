@@ -19,6 +19,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.RouterConstants
+import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
 
@@ -31,6 +32,22 @@ class FeedsWatchFragment : BaseFragment() {
     val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsLikeView by lazy { FeedsLikeView(this) } //喜欢
+
+    var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
+        mFeedVp?.setCurrentItem(newPosition, false)
+        when (oldPositon) {
+            0 -> {
+                mRecommendFeedsView?.unselected()
+            }
+            1 -> {
+                mFollowFeesView?.unselected()
+            }
+            2 -> {
+                mFeedsCollectView?.unselected()
+            }
+        }
+        onViewSelected(newPosition)
+    })
 
     override fun initView(): Int {
         return R.layout.feeds_watch_fragment_layout
@@ -112,7 +129,7 @@ class FeedsWatchFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 mFeedTab.notifyDataChange()
-                onViewSelected(position)
+                mPagerPosition = position
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -131,33 +148,28 @@ class FeedsWatchFragment : BaseFragment() {
         onViewSelected(mFeedVp.currentItem)
     }
 
-    fun onViewSelected(pos:Int){
-        if(!this.fragmentVisible){
+    fun onViewSelected(pos: Int) {
+        if (!this.fragmentVisible) {
             return
         }
         when (pos) {
             0 -> {
-                mFollowFeesView.stopPlay()
-                mFeedsCollectView.stopPlay()
-                mRecommendFeedsView.initData(false)
+                mRecommendFeedsView.selected()
             }
             1 -> {
-                mRecommendFeedsView.stopPlay()
-                mFeedsCollectView.stopPlay()
-                mFollowFeesView.initData(false)
+                mFollowFeesView.selected()
             }
             2 -> {
-                mFollowFeesView.stopPlay()
-                mRecommendFeedsView.stopPlay()
-                mFeedsCollectView.initData(false)
+                mFeedsCollectView.selected()
             }
         }
     }
+
     override fun onFragmentInvisible() {
         super.onFragmentInvisible()
-        mFollowFeesView.stopPlay()
-        mRecommendFeedsView.stopPlay()
-        mFeedsCollectView.stopPlay()
+        mFollowFeesView.unselected()
+        mRecommendFeedsView.unselected()
+        mFeedsCollectView.unselected()
     }
 
     override fun useEventBus(): Boolean {

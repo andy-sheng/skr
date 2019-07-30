@@ -15,6 +15,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
 
     var mCurrentPlayPosition: Int? = null
     var mCurrentPlayModel: FeedsWatchModel? = null
+    var playing = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsWatchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
@@ -33,7 +34,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
         if (payloads.isEmpty()) {
             // 全部刷新的布局
             holder.bindData(position, mDataList[position])
-            if (mDataList[position] == mCurrentPlayModel) {
+            if (mDataList[position] == mCurrentPlayModel && playing) {
                 holder.startPlay()
             } else {
                 holder.stopPlay()
@@ -71,14 +72,37 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
         }
     }
 
-    fun updatePlayModel(pos: Int, model: FeedsWatchModel?) {
-        if (mCurrentPlayModel != model) {
+    /**
+     * 请求播放
+     */
+    fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
+        if (mCurrentPlayModel != model || !playing) {
             mCurrentPlayPosition = pos
             mCurrentPlayModel = model
+            playing = true
             notifyDataSetChanged()
         }
     }
 
+    fun pausePlayModel() {
+        if (playing) {
+            playing = false
+            notifyDataSetChanged()
+        }
+    }
+
+    fun resumePlayModel() {
+        if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
+            if (!playing) {
+                playing = true
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    /**
+     * 更新播放进度
+     */
     fun updatePlayProgress(curPostion: Long, totalDuration: Long) {
         // 位置是错的
         mCurrentPlayModel?.song?.let {
@@ -86,6 +110,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<
             update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_LYRIC)
         }
     }
+
 
     companion object {
         const val REFRESH_TYPE_LIKE = 0  // 局部刷新喜欢
