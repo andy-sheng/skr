@@ -12,8 +12,11 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.dialog.FeedsMoreDialogView
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
+import com.module.feeds.detail.event.AddCommentEvent
+import com.module.feeds.detail.event.LikeFirstLevelCommentEvent
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -22,6 +25,7 @@ import com.module.feeds.detail.view.FeedsInputContainerView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import org.greenrobot.eventbus.EventBus
 
 
 class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
@@ -40,6 +44,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     var feedsCommendAdapter: FeedsCommentAdapter? = null
     var mFeedsSecondCommentPresenter: FeedsSecondCommentPresenter? = null
     var mFeedsID: Int? = null
+    var mMoreDialogPlus: FeedsMoreDialogView? = null
 
     override fun initView(): Int {
         return com.module.feeds.R.layout.feeds_comment_detail_fragment_layout
@@ -77,8 +82,11 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             }
 
             override fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel) {
-                mRefuseModel = firstLevelCommentModel
-                mFeedsInputContainerView?.showSoftInput()
+                showCommentOp(firstLevelCommentModel)
+            }
+
+            override fun onClickMore(firstLevelCommentModel: FirstLevelCommentModel) {
+
             }
 
             override fun onClickIcon(userID: Int) {
@@ -123,6 +131,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mCommentTv?.setDebounceViewClickListener {
             mRefuseModel = mFirstLevelCommentModel
             mFeedsInputContainerView?.showSoftInput()
+            mFeedsInputContainerView?.setETHint("回复 ${mRefuseModel?.commentUser?.nickname}")
         }
 
         mFeedsInputContainerView?.mSendCallBack = {
@@ -134,11 +143,35 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                 mFeedsSecondCommentPresenter?.mModelList?.add(0, it)
                 mFeedsSecondCommentPresenter?.mOffset = mFeedsSecondCommentPresenter?.mOffset!! + 1
                 mFeedsSecondCommentPresenter?.updateCommentList()
+                EventBus.getDefault().post(AddCommentEvent(mFirstLevelCommentModel!!.comment.commentID))
             }
         }
 
         mFeedsSecondCommentPresenter?.updateCommentList()
         mFeedsSecondCommentPresenter?.getSecondLevelCommentList(mFirstLevelCommentModel!!.comment.commentID)
+    }
+
+    private fun showCommentOp(model: FirstLevelCommentModel) {
+        mMoreDialogPlus?.dismiss()
+        activity?.let {
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
+                    , model?.commentUser?.userID ?: 0
+                    , 0
+                    , model.comment.commentID)
+                    .apply {
+                        mFuncationTv.visibility = View.VISIBLE
+                        mFuncationTv.text = "回复"
+                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                dismiss()
+                                mRefuseModel = model
+                                mFeedsInputContainerView?.showSoftInput()
+                                mFeedsInputContainerView?.setETHint("回复 ${mRefuseModel?.commentUser?.nickname}")
+                            }
+                        })
+                    }
+            mMoreDialogPlus?.showByDialog()
+        }
     }
 
     override fun isBlackStatusBarText(): Boolean = true
@@ -168,6 +201,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         if (position == 0) {
             mXinIv?.isSelected = like
             mXinNumTv?.text = firstLevelCommentModel.comment.likedCnt.toString()
+            EventBus.getDefault().post(LikeFirstLevelCommentEvent(firstLevelCommentModel.comment.commentID, like))
         }
     }
 

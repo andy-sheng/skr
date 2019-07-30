@@ -125,7 +125,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
 
                                 override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
                                     ds!!.setUnderlineText(false)
                                 }
                             })
@@ -141,7 +141,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
 
                                 override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
                                     ds!!.setUnderlineText(false)
                                 }
                             })
@@ -161,7 +161,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
             mReplyNum.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    mIFirstLevelCommentListener?.onClickContent(mModel!!)
+                    mIFirstLevelCommentListener?.onClickMore(mModel!!)
                 }
             })
 
@@ -197,5 +197,6 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int)
         fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel)
         fun onClickIcon(userID: Int)
+        fun onClickMore(firstLevelCommentModel: FirstLevelCommentModel)
     }
 }

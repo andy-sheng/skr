@@ -20,28 +20,30 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
+import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.model.FeedsWatchModel
 import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.R
+import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -77,6 +79,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCommonTitleBar: CommonTitleBar? = null
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
+    var mRefuseModel: FirstLevelCommentModel? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
@@ -127,7 +130,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     internal var isInitToolbar = false
-    internal var mIsPlaying = false
 
     override fun initView(): Int {
         return R.layout.feeds_detail_fragment_layout
@@ -176,7 +178,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFeedsInputContainerView?.mSendCallBack = { s ->
-            mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
+            if (mRefuseModel == null) {
+                mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
+            } else {
+                mFeedsDetailPresenter?.refuseComment(s, mFeedsWatchModel!!.feedID!!, mRefuseModel!!.comment.commentID, mRefuseModel!!) {
+                    EventBus.getDefault().post(AddCommentEvent(mRefuseModel!!.comment.commentID))
+                }
+            }
         }
 
         AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
@@ -227,8 +235,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mShareIv?.setDebounceViewClickListener {
             val sharePanel = SharePanel(activity)
-            sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png")
-            sharePanel.show(ShareType.IMAGE_RUL)
+            sharePanel.setShareContent("", mFeedsWatchModel!!.song?.songTpl?.songName, mFeedsWatchModel!!.user?.nickname,
+                    ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
+            sharePanel.show(ShareType.URL)
             sharePanel.setUMShareListener(object : UMShareListener {
                 override fun onResult(p0: SHARE_MEDIA?) {
 
@@ -266,7 +275,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mCommentTv?.setDebounceViewClickListener {
+            mRefuseModel = null
             mFeedsInputContainerView?.showSoftInput()
+            mFeedsInputContainerView?.setETHint("回复 ${mFeedsWatchModel?.user?.nickname}")
         }
 
         mXinIv?.setDebounceViewClickListener {
@@ -326,6 +337,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             showMoreOp()
         }
 
+        mFeedsCommentView?.mClickContentCallBack = {
+            showCommentOp(it)
+        }
+
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
     }
 
@@ -351,6 +366,29 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
+    private fun showCommentOp(model: FirstLevelCommentModel) {
+        mMoreDialogPlus?.dismiss()
+        activity?.let {
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
+                    , model?.commentUser?.userID ?: 0
+                    , 0
+                    , model.comment.commentID)
+                    .apply {
+                        mFuncationTv.visibility = View.VISIBLE
+                        mFuncationTv.text = "回复"
+                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                dismiss()
+                                mRefuseModel = model
+                                mFeedsInputContainerView?.showSoftInput()
+                                mFeedsInputContainerView?.setETHint("回复 ${model.commentUser.nickname}")
+                            }
+                        })
+                    }
+            mMoreDialogPlus?.showByDialog()
+        }
+    }
+
     override fun addCommentSuccess(model: FirstLevelCommentModel) {
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!.plus(1)
         mFeedsWatchModel?.commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!
@@ -360,6 +398,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun likeFeed(like: Boolean) {
         mXinIv!!.isSelected = like
         if (like) {
+            U.getToastUtil().showShort("已添加至【喜欢】列表")
             mXinNumTv!!.text = mXinNumTv!!.text.toString().toInt().plus(1).toString()
         } else {
             mXinNumTv!!.text = (mXinNumTv!!.text.toString().toInt() - 1).toString()
@@ -515,5 +554,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         super.destroy()
         mMyMediaPlayer.release()
         mFeedsCommonLyricView?.destroy()
+        mFeedsCommentView?.destroy()
     }
 }

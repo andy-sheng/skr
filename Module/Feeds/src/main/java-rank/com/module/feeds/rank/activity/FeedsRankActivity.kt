@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
@@ -71,7 +72,12 @@ class FeedsRankActivity : BaseActivity() {
                             override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     val model = obj as FeedRankInfoModel
-                                    MyLog.d(TAG, "onFragmentResult model=$model")
+                                    model?.let {
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                                                .withString("rankTitle", it.rankTitle)
+                                                .withLong("challengeID", it.challengeID ?: 0L)
+                                                .navigation()
+                                    }
                                 }
                             }
                         })

@@ -19,6 +19,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
@@ -66,9 +67,19 @@ class FeedsRankSearchFragment : BaseFragment() {
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mAdapter = FeedsRankAdapter(object : FeedsRankAdapter.Listener {
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
+                // 直接去打榜
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
             }
 
             override fun onClickItem(position: Int, model: FeedRankInfoModel?) {
+                model?.let {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
+                    U.getFragmentUtils().popFragment(FragmentUtils.PopParams.Builder()
+                            .setPopFragment(this@FeedsRankSearchFragment)
+                            .setHasAnimation(false)
+                            .build())
+                    fragmentDataListener?.onFragmentResult(0, 0, null, it)
+                }
             }
         })
         mRecyclerView.adapter = mAdapter
@@ -136,5 +147,10 @@ class FeedsRankSearchFragment : BaseFragment() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
     }
 }

@@ -167,14 +167,14 @@ class FeedsDetailRankActivity : BaseActivity() {
         }
     }
 
-    private fun showDetailInfo(list: List<FeedsWatchModel>, isClean: Boolean) {
+    private fun showDetailInfo(list: List<FeedsWatchModel>?, isClean: Boolean) {
         mRefreshLayout.finishLoadMore()
         mRefreshLayout.finishRefresh()
         if (isClean) {
             mAdapter.mDataList.clear()
         }
 
-        mAdapter.mDataList.addAll(list)
+        list?.let { mAdapter.mDataList.addAll(it) }
         mAdapter.notifyDataSetChanged()
         if (isClean && mAdapter.mDataList.isNotEmpty()) {
             bindTopData(mAdapter.mDataList[0])

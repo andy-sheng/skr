@@ -24,6 +24,9 @@ import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 
 class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
+    override fun unselected() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val mRecyclerView: RecyclerView
 
@@ -140,7 +143,7 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         this.userInfoModel = userInfoModel as UserInfoModel
     }
 
-    override fun stopPlay() {
+     fun stopPlay() {
         mAdapter.updatePlayModel(-1,null)
         mMediaPlayer?.reset()
     }

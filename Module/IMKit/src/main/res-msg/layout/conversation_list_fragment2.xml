@@ -29,14 +29,17 @@
         app:titleBarColor="@color/colorPrimary" />
 
 
-    <LinearLayout
+    <com.common.view.ex.ExLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/titlebar"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/common_bg_2"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/colorSolidPrimary">
 
         <RelativeLayout
             android:id="@+id/latest_follow_area"
@@ -68,7 +71,7 @@
                 android:layout_marginTop="@dimen/view_5_dp"
                 android:layout_toRightOf="@id/follow_area_icon"
                 android:text="最新关注"
-                android:textColor="#3B4E79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
 
             <TextView
@@ -91,24 +94,22 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/view_8_dp"
                 android:layout_marginRight="@dimen/view_16_dp"
-                android:textColor="@color/textColorPrimary"
+                android:textColor="#993B4E79"
                 android:textSize="@dimen/textsize_12_dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_1_dp"
                 android:layout_alignParentBottom="true"
-                android:background="#333E5181" />
+                android:background="#193E5181" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/view_3_dp"
-            android:layout_marginRight="@dimen/view_3_dp"></RelativeLayout>
+            android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </com.common.view.ex.ExLinearLayout>
 
 </RelativeLayout>

@@ -1,8 +1,6 @@
 package com.common.core.share;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.Gravity;
 
@@ -27,6 +25,7 @@ public class SharePanel {
     String mDes;
     String mUrl;
     String mShareImage;
+    String mDefaultIconUrl = "http://res-static.inframe.mobi/app/app_icon.webp";
 
     public SharePanel(Activity activity) {
         mActivity = activity;
@@ -152,6 +151,11 @@ public class SharePanel {
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(mUMShareListener).share();
                 break;
+            case QZONE:
+                new ShareAction(mActivity).withText(sb.toString())
+                        .setPlatform(SHARE_MEDIA.QZONE)
+                        .setCallback(mUMShareListener).share();
+                break;
         }
     }
 
@@ -161,7 +165,7 @@ public class SharePanel {
         if (!TextUtils.isEmpty(mShareImage)) {
             web.setThumb(new UMImage(mActivity, mShareImage));
         } else {
-            web.setThumb(new UMImage(mActivity, R.drawable.app_icon));
+            web.setThumb(new UMImage(mActivity, mDefaultIconUrl));
         }
         web.setDescription(mDes);
 
@@ -179,6 +183,11 @@ public class SharePanel {
             case WEIXIN_CIRCLE:
                 new ShareAction(mActivity).withMedia(web)
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QZONE:
+                new ShareAction(mActivity).withMedia(web)
+                        .setPlatform(SHARE_MEDIA.QZONE)
                         .setCallback(mUMShareListener).share();
                 break;
         }
@@ -201,6 +210,11 @@ public class SharePanel {
             case WEIXIN_CIRCLE:
                 new ShareAction(mActivity).withMedia(imageurl)
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QZONE:
+                new ShareAction(mActivity).withMedia(imageurl)
+                        .setPlatform(SHARE_MEDIA.QZONE)
                         .setCallback(mUMShareListener).share();
                 break;
         }
