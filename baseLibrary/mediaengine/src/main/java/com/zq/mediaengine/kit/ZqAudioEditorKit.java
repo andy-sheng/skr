@@ -380,15 +380,15 @@ public class ZqAudioEditorKit {
      * 设置指定音轨的音效。
      * 需要在设置相应index的DataSource之后调用。
      *
-     * @param idx           音轨索引
-     * @param styleEnum     音效类型
+     * @param idx   音轨索引
+     * @param type  音效类型
      */
-    public synchronized void setAudioEffect(int idx, Params.AudioEffect styleEnum) {
+    public synchronized void setAudioEffect(int idx, int type) {
         if (mAudioSource[idx] == null) {
             Log.e(TAG, "Index " + idx + " has no DataSource set, return");
             return;
         }
-        mAudioSource[idx].setAudioEffect(styleEnum);
+        mAudioSource[idx].setAudioEffect(type);
     }
 
     /**
@@ -397,12 +397,12 @@ public class ZqAudioEditorKit {
      * @param idx   音轨索引
      * @return  音效类型。
      */
-    public synchronized Params.AudioEffect getAudioEffect(int idx) {
+    public synchronized int getAudioEffect(int idx) {
         if (mAudioSource[idx] == null) {
             Log.e(TAG, "Index " + idx + " has no DataSource set, return");
-            return Params.AudioEffect.none;
+            return Params.AudioEffect.none.ordinal();
         }
-        return mAudioSource[idx].styleEnum;
+        return mAudioSource[idx].effectType;
     }
 
     /**
@@ -551,7 +551,7 @@ public class ZqAudioEditorKit {
         public long end;
         public AudioFileCapture capture;
         public AudioFilterMgt filterMgt;
-        public Params.AudioEffect styleEnum;
+        public int effectType;
 
         AudioSource(Context context, String path, long offset, long end) {
             this.path = path;
@@ -566,17 +566,17 @@ public class ZqAudioEditorKit {
             return filterMgt.getSrcPin();
         }
 
-        public void setAudioEffect(Params.AudioEffect styleEnum) {
-            this.styleEnum = styleEnum;
+        public void setAudioEffect(int type) {
+            this.effectType = type;
             // 添加音效
             AudioFilterBase filter = null;
-            if (styleEnum == Params.AudioEffect.ktv) {
+            if (type == Params.AudioEffect.ktv.ordinal()) {
                 filter = new TbAudioEffectFilter(2);
-            } else if (styleEnum == Params.AudioEffect.rock) {
+            } else if (type == Params.AudioEffect.rock.ordinal()) {
                 filter = new TbAudioEffectFilter(1);
-            } else if (styleEnum == Params.AudioEffect.dianyin) {
+            } else if (type == Params.AudioEffect.dianyin.ordinal()) {
                 filter = new CbAudioEffectFilter(8);
-            } else if (styleEnum == Params.AudioEffect.kongling) {
+            } else if (type == Params.AudioEffect.kongling.ordinal()) {
                 filter = new CbAudioEffectFilter(1);
             }
             filterMgt.setFilter(filter);
