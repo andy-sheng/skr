@@ -60,7 +60,6 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
                         .retryWhen(RxRetryAssist(3, ""))
                         .subscribe(Consumer { lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
-                            mManyLyricsView?.setSongName(mFeedSongModel?.songTpl?.songName)
                             mFeedSongModel?.songTpl?.lrcTsReader = lyricsReader
                             whenReaderLoad(play)
                         })
@@ -76,10 +75,10 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
             mManyLyricsView?.initLrcData()
         }
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
+        mManyLyricsView?.setSongName(mFeedSongModel?.workName)
         if (play) {
             mIsStart = true
-            mManyLyricsView?.setSongName(mFeedSongModel?.songTpl?.songName)
-            mManyLyricsView?.play(mFeedSongModel?.playCurPos?:0)
+            mManyLyricsView?.play(mFeedSongModel?.playCurPos ?: 0)
         } else {
             if (mManyLyricsView?.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                 mManyLyricsView?.pause()
