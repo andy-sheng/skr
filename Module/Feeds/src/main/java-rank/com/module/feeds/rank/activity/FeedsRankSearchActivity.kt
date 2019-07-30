@@ -72,13 +72,11 @@ class FeedsRankSearchActivity : BaseActivity() {
                 model?.let {
                     finish()
                     openFeedsMakeActivity(it.challengeID)
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@FeedsRankSearchActivity)
                 }
             }
 
             override fun onClickItem(position: Int, model: FeedRankInfoModel?) {
                 model?.let {
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@FeedsRankSearchActivity)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
                             .withString("rankTitle", it.rankTitle)
                             .withLong("challengeID", it.challengeID ?: 0L)
@@ -124,11 +122,9 @@ class FeedsRankSearchActivity : BaseActivity() {
                 finish()
             }
         })
-
-        mSearchContent.postDelayed({
-            mSearchContent.requestFocus()
-            U.getKeyBoardUtils().showSoftInputKeyBoard(this@FeedsRankSearchActivity)
-        }, 200)
+        
+        mSearchContent.requestFocus()
+        U.getKeyBoardUtils().showSoftInputKeyBoard(this)
     }
 
     private fun initPublishSubject() {
