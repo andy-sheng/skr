@@ -10,6 +10,7 @@ import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
+import com.module.feeds.detail.adapter.FeedsCommentAdapter.Companion.TYPE_LIKE
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.LikeFirstLevelCommentEvent
 import com.module.feeds.detail.inter.IFirstLevelCommentView
@@ -145,7 +146,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
     }
 
     override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean) {
-        feedsCommendAdapter?.notifyItemChanged(position)
+        feedsCommendAdapter?.update(position, firstLevelCommentModel, TYPE_LIKE)
     }
 
     override fun finishLoadMore() {

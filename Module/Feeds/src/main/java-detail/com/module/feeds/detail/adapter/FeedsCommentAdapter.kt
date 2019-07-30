@@ -26,6 +26,10 @@ import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 
 class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerView.ViewHolder>() {
+    companion object {
+        const val TYPE_LIKE = 1  // 推荐
+    }
+
     val mCommentType = 0
     val mCountType = 1
     val mEmptyType = 2
@@ -50,6 +54,36 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
     override fun getItemCount(): Int {
         return mDataList.size
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.size > 0) {
+            if (holder is CommentHolder) {
+                val type = payloads[0] as Int
+                if (type == TYPE_LIKE) {
+                    val model = mDataList[position] as FirstLevelCommentModel
+                    holder.mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
+                    holder.mXinIv.isSelected = model.isLiked()
+                }
+            }
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    fun update(position: Int, model: FirstLevelCommentModel?, refreshType: Int) {
+        if (mDataList[position] is FirstLevelCommentModel) {
+            if ((mDataList[position] as FirstLevelCommentModel).comment.commentID == model?.comment?.commentID) {
+                notifyItemChanged(position, refreshType)
+            } else {
+                for (i in 0 until mDataList.size) {
+                    if (mDataList[position] is FirstLevelCommentModel && (mDataList[position] as FirstLevelCommentModel).comment.commentID == model?.comment?.commentID) {
+                        mDataList[i] = model!!
+                        notifyItemChanged(i, refreshType)
+                    }
+                }
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
