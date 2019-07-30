@@ -194,7 +194,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     }
 
     override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean) {
-        feedsCommendAdapter?.update(position, firstLevelCommentModel, FeedsCommentAdapter.TYPE_LIKE)
+        feedsCommendAdapter?.updatePart(position, firstLevelCommentModel, FeedsCommentAdapter.TYPE_LIKE)
         if (position == 0) {
             mXinIv?.isSelected = like
             mXinNumTv?.text = StringFromatUtils.formatFansNum(firstLevelCommentModel.comment.likedCnt)

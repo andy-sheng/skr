@@ -27,7 +27,8 @@ import com.module.feeds.detail.model.FirstLevelCommentModel
 
 class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     companion object {
-        const val TYPE_LIKE = 1  // 推荐
+        const val TYPE_LIKE = 1
+        const val TYPE_REF_CTN = 2
     }
 
     val mCommentType = 0
@@ -60,10 +61,13 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         if (payloads.size > 0) {
             if (holder is CommentHolder) {
                 val type = payloads[0] as Int
+                val model = mDataList[position] as FirstLevelCommentModel
+                holder.setData(model, position)
                 if (type == TYPE_LIKE) {
-                    val model = mDataList[position] as FirstLevelCommentModel
                     holder.mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
                     holder.mXinIv.isSelected = model.isLiked()
+                } else if (type == TYPE_REF_CTN) {
+                    holder.updateRefCount()
                 }
             }
         } else {
@@ -71,7 +75,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         }
     }
 
-    fun update(position: Int, model: FirstLevelCommentModel?, refreshType: Int) {
+    fun updatePart(position: Int, model: FirstLevelCommentModel?, refreshType: Int) {
         if (mDataList[position] is FirstLevelCommentModel) {
             if ((mDataList[position] as FirstLevelCommentModel).comment.commentID == model?.comment?.commentID) {
                 notifyItemChanged(position, refreshType)
@@ -125,6 +129,27 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             mLikeNum = itemView.findViewById(com.module.feeds.R.id.like_num)
             mContentTv = itemView.findViewById(com.module.feeds.R.id.content_tv)
             mReplyNum = itemView.findViewById(com.module.feeds.R.id.reply_num)
+        }
+
+        fun updateRefCount() {
+            mModel?.let {
+                if (it.comment.commentType == 1) {
+                    mContentTv.text = it.comment.content
+                    if (it.comment.subCommentCnt > 0 && !mIsSecond) {
+                        mReplyNum.visibility = View.VISIBLE
+                        mReplyNum.text = "${StringFromatUtils.formatFansNum(it.comment.subCommentCnt)}条回复"
+                    } else {
+                        mReplyNum.visibility = View.GONE
+                    }
+                } else if (it.comment.commentType == 2) {
+                    mReplyNum.visibility = View.GONE
+                }
+            }
+        }
+
+        fun setData(model: FirstLevelCommentModel, position: Int) {
+            mModel = model
+            mPosition = position
         }
 
         fun bindData(model: FirstLevelCommentModel, position: Int) {
