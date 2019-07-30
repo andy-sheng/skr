@@ -1,4 +1,4 @@
-package com.module.feeds.rank.fragment
+package com.module.feeds.rank.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -6,24 +6,23 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
-import com.common.base.BaseFragment
-import com.common.core.userinfo.UserInfoServerApi
-import com.common.core.userinfo.utils.UserInfoDataUtils
+import com.common.base.BaseActivity
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
+import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
@@ -33,7 +32,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class FeedsRankSearchFragment : BaseFragment() {
+@Route(path = RouterConstants.ACTIVITY_FEEDS_RANK_SEARCH)
+class FeedsRankSearchActivity : BaseActivity() {
+
     lateinit var mCancleTv: TextView
     lateinit var mSearchContent: NoLeakEditText
     lateinit var mRefreshLayout: SmartRefreshLayout
@@ -42,15 +43,15 @@ class FeedsRankSearchFragment : BaseFragment() {
     lateinit var mAdapter: FeedsRankAdapter
     lateinit var mPublishSubject: PublishSubject<String>
 
-    override fun initView(): Int {
+    override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_rank_search_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mCancleTv = rootView.findViewById(R.id.cancle_tv)
-        mSearchContent = rootView.findViewById(R.id.search_content)
-        mRefreshLayout = rootView.findViewById(R.id.refreshLayout)
-        mRecyclerView = rootView.findViewById(R.id.recycler_view)
+        mCancleTv = findViewById(R.id.cancle_tv)
+        mSearchContent = findViewById(R.id.search_content)
+        mRefreshLayout = findViewById(R.id.refreshLayout)
+        mRecyclerView = findViewById(R.id.recycler_view)
 
         mRefreshLayout.setEnableLoadMore(false)
         mRefreshLayout.setEnableRefresh(false)
@@ -64,21 +65,25 @@ class FeedsRankSearchFragment : BaseFragment() {
             }
         })
 
-        mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mAdapter = FeedsRankAdapter(object : FeedsRankAdapter.Listener {
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
                 // 直接去打榜
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
+                model?.let {
+                    finish()
+                    openFeedsMakeActivity(it.challengeID)
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@FeedsRankSearchActivity)
+                }
             }
 
             override fun onClickItem(position: Int, model: FeedRankInfoModel?) {
                 model?.let {
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-                    U.getFragmentUtils().popFragment(FragmentUtils.PopParams.Builder()
-                            .setPopFragment(this@FeedsRankSearchFragment)
-                            .setHasAnimation(false)
-                            .build())
-                    fragmentDataListener?.onFragmentResult(0, 0, null, it)
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@FeedsRankSearchActivity)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                            .withString("rankTitle", it.rankTitle)
+                            .withLong("challengeID", it.challengeID ?: 0L)
+                            .navigation()
+                    finish()
                 }
             }
         })
@@ -116,13 +121,13 @@ class FeedsRankSearchFragment : BaseFragment() {
 
         mCancleTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                U.getFragmentUtils().popFragment(this@FeedsRankSearchFragment)
+                finish()
             }
         })
 
         mSearchContent.postDelayed({
             mSearchContent.requestFocus()
-            U.getKeyBoardUtils().showSoftInputKeyBoard(activity)
+            U.getKeyBoardUtils().showSoftInputKeyBoard(this@FeedsRankSearchActivity)
         }, 200)
     }
 
@@ -149,8 +154,11 @@ class FeedsRankSearchFragment : BaseFragment() {
         return false
     }
 
+    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+        return true
+    }
+
     override fun destroy() {
         super.destroy()
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
     }
 }

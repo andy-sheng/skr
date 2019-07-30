@@ -51,15 +51,23 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".rank.activity.FeedsRankActivity"
+        <activity
+            android:name=".rank.activity.FeedsRankActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".rank.activity.FeedsDetailRankActivity"
+        <activity
+            android:name=".rank.activity.FeedsDetailRankActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".rank.activity.FeedsRankSearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
     </application>
 
