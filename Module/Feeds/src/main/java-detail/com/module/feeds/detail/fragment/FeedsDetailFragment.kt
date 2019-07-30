@@ -315,6 +315,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
         mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
         mXinNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.starCnt!!)
+        mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
         mRadioView?.avatarContainer?.setDebounceViewClickListener {
