@@ -307,10 +307,20 @@ public class UserInfoManager {
                     if (obj.getErrno() == 0) {
                         boolean isFriend = obj.getData().getBooleanValue("isFriend");
                         boolean isFollow = obj.getData().getBooleanValue("isFollow");
-                        local.setFollow(isFollow);
-                        local.setFriend(isFriend);
-                        if (resultCallback != null) {
-                            resultCallback.onGetServer(local);
+                        if (local != null) {
+                            local.setFollow(isFollow);
+                            local.setFriend(isFriend);
+                            if (resultCallback != null) {
+                                resultCallback.onGetServer(local);
+                            }
+                        } else {
+                            UserInfoModel userInfoModel = new UserInfoModel();
+                            userInfoModel.setUserId(uuid);
+                            userInfoModel.setFollow(isFollow);
+                            userInfoModel.setFriend(isFriend);
+                            if (resultCallback != null) {
+                                resultCallback.onGetServer(userInfoModel);
+                            }
                         }
                     } else {
                         if (resultCallback != null) {
