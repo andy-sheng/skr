@@ -27,7 +27,6 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
         if (holder is FeedViewHolder) {
             if (payloads.isEmpty()) {
                 // 全部刷新的布局

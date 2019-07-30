@@ -52,7 +52,6 @@ class FeedsWallViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
         if (payloads.isEmpty()) {
             // 全部刷新的布局
             if (holder is FeedsWallViewHolder) {
