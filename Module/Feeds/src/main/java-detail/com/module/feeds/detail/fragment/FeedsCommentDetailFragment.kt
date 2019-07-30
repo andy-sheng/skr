@@ -14,6 +14,8 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
+import com.module.feeds.detail.event.AddCommentEvent
+import com.module.feeds.detail.event.LikeFirstLevelCommentEvent
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -22,6 +24,7 @@ import com.module.feeds.detail.view.FeedsInputContainerView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import org.greenrobot.eventbus.EventBus
 
 
 class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
@@ -134,6 +137,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                 mFeedsSecondCommentPresenter?.mModelList?.add(0, it)
                 mFeedsSecondCommentPresenter?.mOffset = mFeedsSecondCommentPresenter?.mOffset!! + 1
                 mFeedsSecondCommentPresenter?.updateCommentList()
+                EventBus.getDefault().post(AddCommentEvent(mFirstLevelCommentModel!!.comment.commentID))
             }
         }
 
@@ -168,6 +172,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         if (position == 0) {
             mXinIv?.isSelected = like
             mXinNumTv?.text = firstLevelCommentModel.comment.likedCnt.toString()
+            EventBus.getDefault().post(LikeFirstLevelCommentEvent(firstLevelCommentModel.comment.commentID, like))
         }
     }
 

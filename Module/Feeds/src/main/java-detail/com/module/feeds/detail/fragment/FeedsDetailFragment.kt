@@ -20,7 +20,6 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
 import com.common.player.VideoPlayerAdapter
 import com.common.player.event.PlayerEvent
@@ -30,7 +29,6 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.model.FeedsWatchModel
 import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.R
 import com.module.feeds.detail.inter.IFeedsDetailView
@@ -39,6 +37,7 @@ import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -515,5 +514,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         super.destroy()
         mMyMediaPlayer.release()
         mFeedsCommonLyricView?.destroy()
+        mFeedsCommentView?.destroy()
     }
 }

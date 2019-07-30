@@ -6,9 +6,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
+import com.module.feeds.detail.event.AddCommentEvent
+import com.module.feeds.detail.event.LikeFirstLevelCommentEvent
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -17,8 +20,12 @@ import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
+    val mTag = "FeedsCommentView"
     val mRefreshLayout: SmartRefreshLayout
     val mRecyclerView: RecyclerView
     var mFeedsCommentPresenter: FeedsCommentPresenter? = null
@@ -36,6 +43,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
 
     init {
         inflate(context, com.module.feeds.R.layout.feeds_commont_view_layout, this)
+        EventBus.getDefault().register(this)
         mRefreshLayout = findViewById(com.module.feeds.R.id.refreshLayout)
         mRecyclerView = findViewById(com.module.feeds.R.id.recycler_view)
 
@@ -88,6 +96,34 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         feedsCommendAdapter.notifyDataSetChanged()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: LikeFirstLevelCommentEvent) {
+        for (position in 0 until feedsCommendAdapter.dataList.size) {
+            val any: Any = feedsCommendAdapter.dataList[position]
+            if (any is FirstLevelCommentModel && event.commentID == any.comment.commentID) {
+                any.isLiked = event.isLike
+                if (event.isLike) {
+                    any.comment.likedCnt++
+                } else {
+                    any.comment.likedCnt--
+                }
+
+                feedsCommendAdapter.notifyItemChanged(position)
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AddCommentEvent) {
+        for (position in 0 until feedsCommendAdapter.dataList.size) {
+            MyLog.w(mTag, "position is $position")
+            val any: Any = feedsCommendAdapter.dataList[position]
+            if (any is FirstLevelCommentModel && event.commendID == any.comment.commentID) {
+                any.comment.subCommentCnt++
+                feedsCommendAdapter.notifyItemChanged(position)
+            }
+        }
+    }
 
     override fun noMore() {
         mRefreshLayout?.finishLoadMore()
@@ -120,5 +156,9 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mFeedsCommentPresenter?.destroy()
+    }
+
+    fun destroy() {
+        EventBus.getDefault().unregister(this)
     }
 }
