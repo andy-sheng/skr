@@ -1,6 +1,5 @@
 <com.component.lyrics.widget.ManyLyricsView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/many_lyrics_view"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_120_dp"
@@ -16,4 +15,5 @@
     app:ly_paint_color_to="@color/white_trans_60"
     app:ly_paint_text_size="@dimen/textsize_dimen_14"
     app:ly_show_author="true"
+    app:ly_show_song_name="true"
     app:ly_top_line_num="2" />

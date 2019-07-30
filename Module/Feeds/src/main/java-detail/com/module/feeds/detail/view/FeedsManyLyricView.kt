@@ -7,7 +7,6 @@ import com.common.rx.RxRetryAssist
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricsManager
-import com.component.lyrics.LyricsReader
 import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
@@ -61,6 +60,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
                         .retryWhen(RxRetryAssist(3, ""))
                         .subscribe(Consumer { lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
+                            mManyLyricsView?.setSongName(mFeedSongModel?.songTpl?.songName)
                             mFeedSongModel?.songTpl?.lrcTsReader = lyricsReader
                             whenReaderLoad(play)
                         })
@@ -78,6 +78,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
         if (play) {
             mIsStart = true
+            mManyLyricsView?.setSongName(mFeedSongModel?.songTpl?.songName)
             mManyLyricsView?.play(mFeedSongModel?.playCurPos?:0)
         } else {
             if (mManyLyricsView?.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {

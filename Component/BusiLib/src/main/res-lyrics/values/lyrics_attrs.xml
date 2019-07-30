@@ -11,6 +11,7 @@
     <attr name="ly_eable_verbatim" format="boolean" />
     <attr name="ly_eable_scroll" format="boolean" />
     <attr name="ly_show_author" format="boolean" />
+    <attr name="ly_show_song_name" format="boolean" />
     <attr name="ly_top_line_num" format="integer" />
 
     <declare-styleable name="lrc_view">
@@ -30,5 +31,6 @@
         <attr name="ly_eable_scroll" />
         <attr name="ly_show_author" />
         <attr name="ly_top_line_num" />
+        <attr name="ly_show_song_name" />
     </declare-styleable>
 </resources>
