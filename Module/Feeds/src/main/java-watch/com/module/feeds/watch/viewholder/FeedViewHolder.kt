@@ -69,7 +69,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         rootView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener?.onClickDetailListener(model)
+                listener?.onClickDetailListener(mPosition,model)
             }
         })
     }
