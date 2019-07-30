@@ -474,12 +474,12 @@ public class ManyLyricsView extends AbstractLrcView {
             return;
         }
 
+        lineBottomY = lineBottomY - LyricsUtils.getTextHeight(paint) - getSpaceLineHeight() * 2 - U.getDisplayUtils().dip2px(10);
         float size = paint.getTextSize();
         paint.setTextSize(size * 0.8f);
         float textWidth = LyricsUtils.getTextWidth(paint, mSongName);
         float textX = (getWidth() - textWidth) * 0.5f;
         int[] paintColors = getPaintColors();
-        lineBottomY = lineBottomY - getSpaceLineHeight() * 3;
         LyricsUtils.drawText(canvas, paint, paintColors, mSongName, textX, lineBottomY);
         paint.setTextSize(size);
     }
