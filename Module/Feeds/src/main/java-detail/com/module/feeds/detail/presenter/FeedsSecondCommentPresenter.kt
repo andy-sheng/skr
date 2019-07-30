@@ -33,8 +33,8 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)
-                    if (list == null) {
-                        mIFirstLevelCommentView.noMore()
+                    if (list == null || list.isEmpty()) {
+                        mIFirstLevelCommentView.noMore(mModelList.isEmpty())
                     } else {
                         mModelList.addAll(list)
                         mIFirstLevelCommentView.updateList(mModelList)

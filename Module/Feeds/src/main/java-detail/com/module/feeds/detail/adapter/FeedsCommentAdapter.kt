@@ -21,11 +21,13 @@ import com.common.view.recyclerview.DiffAdapter
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.model.CommentCountModel
+import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 
 class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     val mCommentType = 0
     val mCountType = 1
+    val mEmptyType = 2
     var mIFirstLevelCommentListener: IFirstLevelCommentListener? = null
     var mCommentNum: Int = 0
 
@@ -37,6 +39,9 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         } else if (viewType == mCountType) {
             view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_comment_num_item_view_layout, parent, false)
             return CommentNumHolder(view!!)
+        } else if (viewType == mEmptyType) {
+            view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_empty_item_view_layout, parent, false)
+            return EmptyHolder(view!!)
         }
 
         return CommentHolder(view!!)
@@ -59,6 +64,8 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             return mCommentType
         } else if (dataList[position] is CommentCountModel) {
             return mCountType
+        } else if (dataList[position] is FeedsCommentEmptyModel) {
+            return mEmptyType
         }
 
         return mCommentType
@@ -192,6 +199,8 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             mCountTv.text = "精彩评论（$num）"
         }
     }
+
+    inner class EmptyHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface IFirstLevelCommentListener {
         fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int)
