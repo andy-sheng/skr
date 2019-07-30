@@ -9,19 +9,24 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.scheme.SchemeSdkActivity
+import com.common.core.share.SharePanel
+import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
 import com.common.player.SinglePlayer
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
+import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.FeedsMoreDialogView
 import com.component.person.view.RequestCallBack
+import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -74,6 +79,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private var mUserInfo: UserInfoModel? = null
     private var mCallBack: RequestCallBack? = null
+    private var mTipsDialogView: TipsDialogView? = null
 
     fun isHomePage(): Boolean {
         if (type == TYPE_RECOMMEND || type == TYPE_FOLLOW) {
@@ -138,7 +144,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         if (isHomePage()) {
                             homePagerMore(it)
                         } else {
-                            personPageMore(it)
+                            personPageMore(position, it)
                         }
                     }
 
@@ -389,6 +395,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
     }
 
+    override fun feedDeleteResult(position: Int, model: FeedsWatchModel) {
+        mAdapter?.delete(model)
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 //        if (!EventBus.getDefault().isRegistered(this)) {
@@ -471,7 +481,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         })
     }
 
-    private fun personPageMore(it: FeedsWatchModel) {
+    private fun personPageMore(position: Int, it: FeedsWatchModel) {
         if ((mUserInfo?.userId
                         ?: 0).toLong() == MyUserInfoManager.getInstance().uid) {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON,
@@ -483,12 +493,25 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss(false)
+                                share(it)
                             }
                         })
                         mReportTv.text = "删除"
                         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss(false)
+                                mTipsDialogView = TipsDialogView.Builder(fragment.activity)
+                                        .setMessageTip("是否确定删除该页面")
+                                        .setConfirmTip("确认删除")
+                                        .setCancelTip("取消")
+                                        .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                            override fun click(view: View?) {
+                                                mTipsDialogView?.dismiss(false)
+                                                mPersenter.deleteFeed(position, it)
+                                            }
+                                        })
+                                        .build()
+                                mTipsDialogView?.showByDialog()
                             }
                         })
                     }
@@ -502,10 +525,20 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss(false)
+                                share(it)
                             }
                         })
                     }
         }
         mFeedsMoreDialogView?.showByDialog()
+    }
+
+    private fun share(model: FeedsWatchModel) {
+        //TODO 需要产品确认跳到哪
+        val sharePanel = SharePanel(fragment.activity)
+        sharePanel.setShareContent("", model.song?.workName, model.user?.nickname,
+                ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
+                        model.song?.songID, model.user?.userID)))
+        sharePanel.show(ShareType.URL)
     }
 }

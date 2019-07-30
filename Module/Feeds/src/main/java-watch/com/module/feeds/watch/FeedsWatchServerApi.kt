@@ -49,4 +49,8 @@ interface FeedsWatchServerApi {
     @PUT("/v1/feed/like")
     fun feedLike(@Body body: RequestBody): Observable<ApiResult>
 
+
+    @PUT("v1/feed/delete-song")
+    fun deleteFeed(@Body body: RequestBody) : Observable<ApiResult>
+
 }

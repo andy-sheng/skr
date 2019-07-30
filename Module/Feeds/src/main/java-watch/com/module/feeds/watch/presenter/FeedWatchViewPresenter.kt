@@ -32,7 +32,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         addToLifeCycle()
     }
 
-    fun initWatchList(flag: Boolean):Boolean {
+    fun initWatchList(flag: Boolean): Boolean {
         if (!flag) {
             // 10秒切页面才刷一下
             val now = System.currentTimeMillis()
@@ -133,6 +133,23 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 
         }, this, ApiMethods.RequestControl("feedLike", ApiMethods.ControlType.CancelThis))
 
+    }
+
+    fun deleteFeed(position: Int, model: FeedsWatchModel) {
+        val map = HashMap<String, Any>()
+        map["songID"] = model.song?.songID.toString()
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(mFeedServerApi.deleteFeed(body), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    view.feedDeleteResult(position, model)
+                } else {
+                    U.getToastUtil().showShort("${obj?.errmsg}")
+                }
+            }
+
+        }, this, ApiMethods.RequestControl("deleteFeed", ApiMethods.ControlType.CancelThis))
     }
 
     override fun destroy() {

@@ -111,6 +111,12 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         }
     }
 
+    fun delete(model: FeedsWatchModel) {
+        mDataList.remove(model)
+        notifyDataSetChanged()
+        return
+    }
+
     /**
      * 请求播放
      */
