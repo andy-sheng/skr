@@ -7,48 +7,88 @@ import com.module.feeds.R
 import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.viewholder.EmptyFeedWallHolder
+import com.module.feeds.watch.viewholder.FeedViewHolder
+import com.module.feeds.watch.viewholder.FeedsWallViewHolder
 
-class FeedsWatchViewAdapter(var listener: FeedsListener) : RecyclerView.Adapter<FeedsWatchViewHolder>() {
+class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<FeedsWatchModel>()
-
 
     var mCurrentPlayPosition: Int? = null
     var mCurrentPlayModel: FeedsWatchModel? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsWatchViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
-        return FeedsWatchViewHolder(view, listener)
+    private val mPersonEmptyItemType = 1
+    private val mPersonNormalItemType = 2
+    private val mHomeNormalItemType = 3
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        if (holder is FeedViewHolder) {
+            if (payloads.isEmpty()) {
+                // 全部刷新的布局
+                holder.bindData(position, mDataList[position])
+                if (mDataList[position] == mCurrentPlayModel) {
+                    holder.startPlay()
+                } else {
+                    holder.stopPlay()
+                }
+            } else {
+                // 局部刷新
+                val type = payloads[0] as Int
+                if (type == REFRESH_TYPE_LIKE) {
+                    holder.refreshLike(position, mDataList[position])
+                } else if (type == REFRESH_TYPE_COMMENT) {
+                    holder.refreshComment(position, mDataList[position])
+                } else if (type == REFRESH_TYPE_LYRIC) {
+                    if (mDataList[position] == mCurrentPlayModel) {
+                        holder.playLyric()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            mPersonEmptyItemType -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_wall_empty_holder_layout, parent, false)
+                EmptyFeedWallHolder(view)
+            }
+            mPersonNormalItemType -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_wall_item_holder_layout, parent, false)
+                FeedsWallViewHolder(view, listener)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
+                FeedsWatchViewHolder(view, listener)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
-    }
-
-    override fun onBindViewHolder(holder: FeedsWatchViewHolder, position: Int) {
-    }
-
-    override fun onBindViewHolder(holder: FeedsWatchViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
-        if (payloads.isEmpty()) {
-            // 全部刷新的布局
-            holder.bindData(position, mDataList[position])
-            if (mDataList[position] == mCurrentPlayModel) {
-                holder.startPlay()
-            } else {
-                holder.stopPlay()
-            }
+        return if (isHomePage) {
+            mDataList.size
         } else {
-            // 局部刷新
-            val type = payloads[0] as Int
-            if (type == REFRESH_TYPE_LIKE) {
-                holder.refreshLike(position, mDataList[position])
-            } else if (type == REFRESH_TYPE_COMMENT) {
-                holder.refreshComment(position, mDataList[position])
-            } else if (type == REFRESH_TYPE_LYRIC) {
-                if (mDataList[position] == mCurrentPlayModel) {
-                    holder.playLyric()
-                }
+            if (mDataList.isNotEmpty()) {
+                mDataList.size
+            } else {
+                1
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (isHomePage) {
+            mHomeNormalItemType
+        } else {
+            if (mDataList.isEmpty()) {
+                mPersonEmptyItemType
+            } else {
+                mPersonNormalItemType
             }
         }
     }

@@ -139,12 +139,12 @@ class FeedsWatchFragment : BaseFragment() {
             0 -> {
                 mFollowFeesView.stopPlay()
                 mFeedsCollectView.stopPlay()
-                mRecommendFeedsView.initData(false)
+                mRecommendFeedsView.getFeeds(false)
             }
             1 -> {
                 mRecommendFeedsView.stopPlay()
                 mFeedsCollectView.stopPlay()
-                mFollowFeesView.initData(false)
+                mFollowFeesView.getFeeds(false)
             }
             2 -> {
                 mFollowFeesView.stopPlay()
