@@ -79,6 +79,14 @@ JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInpu
 
 /*
  * Class:     com_zq_mediaengine_filter_audio_AudioMixer
+ * Method:    _setDelay
+ * Signature: (JIJ)V
+ */
+JNIEXPORT void JNICALL Java_com_zq_mediaengine_filter_audio_AudioMixer__1setDelay
+        (JNIEnv *, jobject, jlong, jint, jlong);
+
+/*
+ * Class:     com_zq_mediaengine_filter_audio_AudioMixer
  * Method:    _attachTo
  * Signature: (JIJZ)V
  */

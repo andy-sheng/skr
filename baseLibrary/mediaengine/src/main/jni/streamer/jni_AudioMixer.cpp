@@ -47,6 +47,11 @@ void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setInputVolume__JIFF
     getInstance(instance)->setInputVolume(idx, leftVol, rightVol);
 }
 
+void Java_com_zq_mediaengine_filter_audio_AudioMixer__1setDelay
+        (JNIEnv *env, jobject obj, jlong instance, jint idx, jlong delay) {
+    getInstance(instance)->setDelay(idx, delay);
+}
+
 void Java_com_zq_mediaengine_filter_audio_AudioMixer__1attachTo
         (JNIEnv *env, jobject obj, jlong instance, jint idx, jlong ptr, jboolean detach) {
     getInstance(instance)->attachTo(idx, (AudioFilterBase*)(intptr_t) ptr, detach);

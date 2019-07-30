@@ -1,6 +1,26 @@
 package com.zq.mediaengine.kit;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.engine.Params;
+import com.zq.mediaengine.capture.AudioFileCapture;
+import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
+import com.zq.mediaengine.filter.audio.AudioFilterBase;
+import com.zq.mediaengine.filter.audio.AudioFilterMgt;
+import com.zq.mediaengine.filter.audio.AudioMixer;
+import com.zq.mediaengine.filter.audio.AudioPreview;
+import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
+import com.zq.mediaengine.filter.audio.IPcmPlayer;
+import com.zq.mediaengine.framework.AVConst;
+import com.zq.mediaengine.framework.AudioBufFrame;
+import com.zq.mediaengine.framework.AudioCodecFormat;
+import com.zq.mediaengine.framework.SrcPin;
+import com.zq.mediaengine.kit.filter.CbAudioEffectFilter;
+import com.zq.mediaengine.kit.filter.TbAudioEffectFilter;
+import com.zq.mediaengine.publisher.MediaMuxerPublisher;
+import com.zq.mediaengine.publisher.Publisher;
 
 /**
  * 音频编辑、合成实现类。
@@ -11,6 +31,8 @@ import android.content.Context;
 public class ZqAudioEditorKit {
     public static final String TAG = "ZqAudioEditorKit";
 
+    private static final int MAX_CHN = 8;
+
     public static final int STATE_IDLE = 0;
     public static final int STATE_PREVIEW_PREPARING = 1;
     public static final int STATE_PREVIEW_STARTED = 2;
@@ -18,6 +40,17 @@ public class ZqAudioEditorKit {
     public static final int STATE_COMPOSING = 4;
 
     private Context mContext;
+    private AudioMixer mAudioMixer;
+    private IPcmPlayer mPcmPlayer;
+    private AudioPreview mAudioPreview;
+    private MediaCodecAudioEncoder mAudioEncoder;
+    private MediaMuxerPublisher mPublisher;
+
+    private int mState;
+    private AudioSource mAudioSource[];
+    private int mLoopCount;
+    private int mLoopedCount;
+    private String mComposePath;
 
     private OnPreviewInfoListener mOnPreviewInfoListener;
     private OnComposeInfoListener mOnComposeInfoListener;
@@ -70,7 +103,27 @@ public class ZqAudioEditorKit {
     }
 
     public ZqAudioEditorKit(Context context) {
+        mState = STATE_IDLE;
         mContext = context;
+        mAudioSource = new AudioSource[MAX_CHN];
+
+        mAudioMixer = new AudioMixer();
+        mAudioMixer.setBlockingMode(true);
+//        mPcmPlayer = new AudioTrackPlayer();
+        // TODO: 时间戳不准，用mPcmPlayer代替
+        mAudioPreview = new AudioPreview(context);
+        mAudioPreview.setBlockingMode(true);
+        mAudioMixer.getSrcPin().connect(mAudioPreview.getSinkPin());
+
+        // 合成模块
+        mAudioEncoder = new MediaCodecAudioEncoder();
+        mAudioEncoder.setAutoWork(true);
+        mAudioEncoder.setUseSyncMode(true);
+        mPublisher = new MediaMuxerPublisher();
+        mPublisher.setAudioOnly(true);
+        mPublisher.setPubListener(mPubListener);
+        mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
+        mAudioEncoder.getSrcPin().connect(mPublisher.getAudioSink());
     }
 
     public void setOnPreviewInfoListener(OnPreviewInfoListener listener) {
@@ -90,8 +143,15 @@ public class ZqAudioEditorKit {
      *
      * 如果在合成过程中，则合成操作立即中断，中间文件均被删除。
      */
-    public void reset() {
-
+    public synchronized void reset() {
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.getSrcPin().disconnect(false);
+                mAudioSource[i].release();
+                mAudioSource[i] = null;
+            }
+        }
+        mState = STATE_IDLE;
     }
 
     /**
@@ -100,14 +160,23 @@ public class ZqAudioEditorKit {
      * idx为0的音频文件会作为基准，其有效长度会作为输出文件的长度，一般设置为伴奏的地址。
      * 注意均需要设置为本地文件地址，网络地址目前不能很好的支持。
      *
-     * @param idx       音频文件索引
+     * @param idx       音频文件索引，最大支持8路
      * @param path      音频文件的绝对路径
-     * @param offset    当前音频的实际开始位置，单位为ms, 可以小于0, 小于0是相当于在音频前面添加静音数据；
-     *                  不过需要注意，idx为0时该值不能小于0.
+     * @param offset    当前音频的实际开始位置，单位为ms, 小于0时按0计算，大于音频长度时无效。
      * @param end       当前音频的实际结束位置，单位为ms, 大于音频长度，或者小于0时，按实际长度计算。
      */
-    public void setDataSource(int idx, String path, long offset, long end) {
-
+    public synchronized void setDataSource(int idx, String path, long offset, long end) {
+        if (idx < 0 || idx >= MAX_CHN) {
+            return;
+        }
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+        mAudioSource[idx] = new AudioSource(mContext, path, offset, end);
+        mAudioSource[idx].capture.setOnPreparedListener(mOnCapturePreparedListener);
+        mAudioSource[idx].capture.setOnCompletionListener(mOnCaptureCompletionListener);
+        mAudioSource[idx].capture.setOnErrorListener(mOnCaptureErrorListener);
+        mAudioSource[idx].getSrcPin().connect(mAudioMixer.getSinkPin(idx));
     }
 
     /**
@@ -118,26 +187,79 @@ public class ZqAudioEditorKit {
      *
      * @param loopCount 循环次数，<0表示无限循环。
      */
-    public void startPreview(int loopCount) {
-
+    public synchronized void startPreview(int loopCount) {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (mState != STATE_IDLE) {
+            return;
+        }
+        mState = STATE_PREVIEW_PREPARING;
+        mLoopCount = loopCount;
+        mLoopedCount = 0;
+        mAudioSource[0].start();
     }
 
     /**
      * 暂停音频合成预览。
      */
-    public void pausePreview() {
+    public synchronized void pausePreview() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (mState != STATE_PREVIEW_STARTED && mState != STATE_PREVIEW_PREPARING) {
+            return;
+        }
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.pause();
+            }
+        }
+        mState = STATE_PREVIEW_PAUSED;
+    }
 
+    /**
+     * 恢复音频合成预览。
+     */
+    public synchronized void resumePreview() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (mState != STATE_PREVIEW_PAUSED) {
+            return;
+        }
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.resume();
+            }
+        }
+        mState = STATE_PREVIEW_STARTED;
     }
 
     /**
      * 停止音频合成预览。
      */
-    public void stopPreview() {
-
+    public synchronized void stopPreview() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (mState != STATE_PREVIEW_STARTED && mState != STATE_PREVIEW_PREPARING) {
+            return;
+        }
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.stop();
+            }
+        }
+        mState = STATE_IDLE;
     }
 
-    public int getState() {
-        return STATE_IDLE;
+    public synchronized int getState() {
+        return mState;
     }
 
     /**
@@ -148,8 +270,12 @@ public class ZqAudioEditorKit {
      *
      * @return  音频时长或0
      */
-    public long getDuration() {
-        return 0;
+    public synchronized long getDuration() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return 0;
+        }
+        return mAudioSource[0].capture.getDuration();
     }
 
     /**
@@ -157,17 +283,34 @@ public class ZqAudioEditorKit {
      *
      * @return  当前播放的位置，单位为ms
      */
-    public long getPosition() {
-        return 0;
+    public synchronized long getPosition() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return 0;
+        }
+        // TODO: 不准确
+        return mAudioSource[0].capture.getPosition();
     }
 
     /**
      * 对主音轨进行seek操作，其他音轨也会自动seek。
      *
-     * @param pos 需要seek的目标位置，单位ms
+     * @param pos 需要seek的目标位置，如果配置了offset, 则实际seek位置为offset+pos, 单位ms
      */
-    public void seekTo(long pos) {
-
+    public synchronized void seekTo(long pos) {
+        // TODO: 需要清空mixer和pcmPlayer的缓存数据，并且需要主音轨seek完成后再seek其他音轨
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (mState != STATE_PREVIEW_STARTED && mState != STATE_PREVIEW_PREPARING) {
+            return;
+        }
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].seek(pos);
+            }
+        }
     }
 
     /**
@@ -179,7 +322,7 @@ public class ZqAudioEditorKit {
      * @param vol   音量大小，一般在[0, 1]之间，大于1可以放大声音，但可能会出现爆音。
      */
     public void setInputVolume(int idx, float vol) {
-
+        mAudioMixer.setInputVolume(idx, vol);
     }
 
     /**
@@ -189,7 +332,7 @@ public class ZqAudioEditorKit {
      * @return  音量大小。
      */
     public float getInputVolume(int idx) {
-        return 1.0f;
+        return mAudioMixer.getInputVolume(idx);
     }
 
     /**
@@ -198,7 +341,7 @@ public class ZqAudioEditorKit {
      * @param vol   音量大小，一般在[0, 1]之间，大于1可以放大声音，但可能会出现爆音。
      */
     public void setOutputVolume(float vol) {
-
+        mAudioMixer.setOutputVolume(vol);
     }
 
     /**
@@ -207,7 +350,7 @@ public class ZqAudioEditorKit {
      * @return  当前的输出音量大小。
      */
     public float getOutputVolume() {
-        return 1.0f;
+        return mAudioMixer.getOutputVolume();
     }
 
     /**
@@ -220,7 +363,7 @@ public class ZqAudioEditorKit {
      *                  注意，idx为0时设置该值无效。
      */
     public void setDelay(int idx, long delayInMs) {
-
+        mAudioMixer.setDelay(idx, delayInMs);
     }
 
     /**
@@ -230,17 +373,22 @@ public class ZqAudioEditorKit {
      * @return  延迟大小，单位为毫秒。
      */
     public long getDelay(int idx) {
-        return 0;
+        return mAudioMixer.getDelay(idx);
     }
 
     /**
      * 设置指定音轨的音效。
+     * 需要在设置相应index的DataSource之后调用。
      *
      * @param idx           音轨索引
-     * @param effectType    音效类型
+     * @param styleEnum     音效类型
      */
-    public void setAudioEffect(int idx, int effectType) {
-
+    public synchronized void setAudioEffect(int idx, Params.AudioEffect styleEnum) {
+        if (mAudioSource[idx] == null) {
+            Log.e(TAG, "Index " + idx + " has no DataSource set, return");
+            return;
+        }
+        mAudioSource[idx].setAudioEffect(styleEnum);
     }
 
     /**
@@ -249,8 +397,12 @@ public class ZqAudioEditorKit {
      * @param idx   音轨索引
      * @return  音效类型。
      */
-    public int getAudioEffect(int idx) {
-        return 0;
+    public synchronized Params.AudioEffect getAudioEffect(int idx) {
+        if (mAudioSource[idx] == null) {
+            Log.e(TAG, "Index " + idx + " has no DataSource set, return");
+            return Params.AudioEffect.none;
+        }
+        return mAudioSource[idx].styleEnum;
     }
 
     /**
@@ -259,7 +411,7 @@ public class ZqAudioEditorKit {
      * @param path  输出路径。
      */
     public void setOutputPath(String path) {
-
+        mComposePath = path;
     }
 
     /**
@@ -268,20 +420,178 @@ public class ZqAudioEditorKit {
      * @return  输出路径。
      */
     public String getOutputPath() {
-        return null;
+        return mComposePath;
     }
 
     /**
      * 开始合成。
      */
-    public void startCompose() {
+    public synchronized void startCompose() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (TextUtils.isEmpty(mComposePath)) {
+            Log.e(TAG, "output path is empty, return");
+            return;
+        }
+        if (mState != STATE_IDLE) {
+            return;
+        }
 
+        // AutoWork模式下，采样率和声道数会根据实际参数配置
+        AudioCodecFormat audioCodecFormat =
+                new AudioCodecFormat(AVConst.CODEC_ID_AAC,
+                        AVConst.AV_SAMPLE_FMT_S16,
+                        44100,
+                        2,
+                        96000);
+        mAudioEncoder.configure(audioCodecFormat);
+
+        mState = STATE_COMPOSING;
+        mPublisher.start(mComposePath);
+        mAudioSource[0].start();
+    }
+
+    /**
+     * 中断合成
+     */
+    public synchronized void abortCompose() {
+        if (mAudioSource[0] == null) {
+            Log.e(TAG, "idx 0 audio data source not set, return");
+            return;
+        }
+        if (mState != STATE_COMPOSING) {
+            Log.e(TAG, "composing not started, return");
+            return;
+        }
+        mAudioSource[0].capture.stop();
+        mAudioEncoder.stop();
     }
 
     /**
      * 释放当前实例，释放后不能再访问该实例。
      */
-    public void release() {
+    public synchronized void release() {
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.release();
+                mAudioSource[i] = null;
+            }
+        }
+    }
 
+    private AudioFileCapture.OnPreparedListener mOnCapturePreparedListener = new AudioFileCapture.OnPreparedListener() {
+        @Override
+        public void onPrepared(AudioFileCapture audioFileCapture) {
+            synchronized (ZqAudioEditorKit.this) {
+                // 主音轨播放开始后再开始其他音轨的播放
+                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
+                        mState == STATE_PREVIEW_PREPARING) {
+                    for (int i = 1; i < MAX_CHN; i++) {
+                        if (mAudioSource[i] != null) {
+                            mAudioSource[i].start();
+                        }
+                    }
+                    mState = STATE_PREVIEW_STARTED;
+                }
+            }
+        }
+    };
+
+    private AudioFileCapture.OnCompletionListener mOnCaptureCompletionListener = new AudioFileCapture.OnCompletionListener() {
+        @Override
+        public void onCompletion(AudioFileCapture audioFileCapture) {
+            synchronized (ZqAudioEditorKit.this) {
+                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
+                        (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED)) {
+                    if (mLoopCount < 0 || mLoopedCount < mLoopCount) {
+                        mAudioSource[0].start();
+                        mLoopedCount++;
+                        if (mOnPreviewInfoListener != null) {
+                            mOnPreviewInfoListener.onLoopCount(mLoopCount);
+                        }
+                    } else {
+                        if (mOnPreviewInfoListener != null) {
+                            mOnPreviewInfoListener.onCompletion();
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    private AudioFileCapture.OnErrorListener mOnCaptureErrorListener = new AudioFileCapture.OnErrorListener() {
+        @Override
+        public void onError(AudioFileCapture audioFileCapture, int type, long msg) {
+
+        }
+    };
+
+    private Publisher.PubListener mPubListener = new Publisher.PubListener() {
+        @Override
+        public void onInfo(int type, long msg) {
+            Log.d(TAG, "FilePubListener onInfo type: " + type + " msg: " + msg);
+            if (type == Publisher.INFO_STOPPED) {
+                if (mOnComposeInfoListener != null) {
+                    mOnComposeInfoListener.onCompletion();
+                }
+            }
+        }
+
+        @Override
+        public void onError(int err, long msg) {
+            Log.e(TAG, "FilePubListener onError err: " + err + " msg: " + msg);
+        }
+    };
+
+    private static class AudioSource {
+        public String path;
+        public long offset;
+        public long end;
+        public AudioFileCapture capture;
+        public AudioFilterMgt filterMgt;
+        public Params.AudioEffect styleEnum;
+
+        AudioSource(Context context, String path, long offset, long end) {
+            this.path = path;
+            this.offset = offset;
+            this.end = end;
+            this.capture = new AudioFileCapture(context);
+            this.filterMgt = new AudioFilterMgt();
+            this.capture.getSrcPin().connect(this.filterMgt.getSinkPin());
+        }
+
+        public SrcPin<AudioBufFrame> getSrcPin() {
+            return filterMgt.getSrcPin();
+        }
+
+        public void setAudioEffect(Params.AudioEffect styleEnum) {
+            this.styleEnum = styleEnum;
+            // 添加音效
+            AudioFilterBase filter = null;
+            if (styleEnum == Params.AudioEffect.ktv) {
+                filter = new TbAudioEffectFilter(2);
+            } else if (styleEnum == Params.AudioEffect.rock) {
+                filter = new TbAudioEffectFilter(1);
+            } else if (styleEnum == Params.AudioEffect.dianyin) {
+                filter = new CbAudioEffectFilter(8);
+            } else if (styleEnum == Params.AudioEffect.kongling) {
+                filter = new CbAudioEffectFilter(1);
+            }
+            filterMgt.setFilter(filter);
+        }
+
+        public void start() {
+            capture.start(path, offset, end);
+        }
+
+        public void seek(long pos) {
+            capture.seek(offset + pos);
+        }
+
+        public void release() {
+            capture.release();
+        }
     }
 }

@@ -229,8 +229,32 @@ public class AudioFileCapture {
      *             also prefix "http://", "https://"  supported.
      */
     public void start(String url) {
+        start(url, 0, -1);
+    }
+
+    public void start(String url, Runnable r) {
+        start(url, 0, -1, r);
+    }
+
+    /**
+     * Start audio player.
+     *
+     * @param url  the url.
+     *             prefix "file://" for absolute path,
+     *             and prefix "assets://" for resource in assets folder,
+     *             also prefix "http://", "https://"  supported.
+     * @param offset 配置当前音频文件的实际播放开始时间，小于0时按0计算
+     * @param end 配置当前音频文件的实际播放完成时间，小于0或者大于音频长度时，按音频长度计算
+     */
+    public void start(String url, long offset, long end) {
+        start(url, offset, end, null);
+    }
+
+    public void start(String url, long offset, long end, Runnable r) {
+        // TODO: 支持区间播放
         mUrl = url;
-        mDecodeHandler.sendEmptyMessage(CMD_START);
+        Message msg = mDecodeHandler.obtainMessage(CMD_START, r);
+        mDecodeHandler.sendMessage(msg);
     }
 
     /**
@@ -240,7 +264,7 @@ public class AudioFileCapture {
         stop(null);
     }
 
-    void stop(Runnable r) {
+    public void stop(Runnable r) {
         Message msg = mDecodeHandler.obtainMessage(CMD_STOP, r);
         mDecodeHandler.sendMessage(msg);
     }
@@ -252,7 +276,7 @@ public class AudioFileCapture {
         pause(null);
     }
 
-    void pause(Runnable r) {
+    public void pause(Runnable r) {
         Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 1, 0, r);
         mDecodeHandler.sendMessage(msg);
     }
@@ -264,7 +288,7 @@ public class AudioFileCapture {
         resume(null);
     }
 
-    void resume(Runnable r) {
+    public void resume(Runnable r) {
         Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 0, 0, r);
         mDecodeHandler.sendMessage(msg);
     }
@@ -278,7 +302,7 @@ public class AudioFileCapture {
         seek(ms, null);
     }
 
-    void seek(long ms, Runnable r) {
+    public void seek(long ms, Runnable r) {
         Message msg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) ms, 0, r);
         mDecodeHandler.sendMessage(msg);
     }
@@ -332,6 +356,9 @@ public class AudioFileCapture {
                         }
                         mState = STATE_PREPARING;
                         err = doStart();
+                        if (msg.obj != null) {
+                            ((Runnable) msg.obj).run();
+                        }
                         if (err != 0) {
                             mState = STATE_IDLE;
                             postError(err, 0);

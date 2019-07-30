@@ -43,6 +43,7 @@ public class AudioMixer {
     private float mRightOutputVolume;
     private boolean mMute;
     private boolean mBlockingMode;
+    private long[] mDelay;
 
     private AudioBufFormat mInFormats[];
     private AudioBufFormat mOutFormat;
@@ -53,10 +54,12 @@ public class AudioMixer {
         mLeftOutputVolume = 1.0f;
         mRightOutputVolume = 1.0f;
         mInputVolumes = new float[getSinkPinNum()][2];
+        mDelay = new long[getSinkPinNum()];
         for (int i = 0; i < getSinkPinNum(); i++) {
             mSinkPins.add(new AudioMixerSinkPin(i));
             mInputVolumes[i][0] = 1.0f;
             mInputVolumes[i][1] = 1.0f;
+            mDelay[i] = 0;
         }
         mInFormats = new AudioBufFormat[getSinkPinNum()];
         mInstance = _init();
@@ -254,6 +257,34 @@ public class AudioMixer {
         return -1;
     }
 
+    /**
+     * Set delay value for specified index.
+     * Only valid in blocking mode, and take no effect if index is main index.
+     *
+     * @param idx   index
+     * @param delay delay value in ms
+     */
+    public void setDelay(int idx, long delay) {
+        if (idx < 0 || idx >= getSinkPinNum()) {
+            return;
+        }
+        mDelay[idx] = delay;
+        _setDelay(mInstance, idx, delay);
+    }
+
+    /**
+     * Get delay value.
+     *
+     * @param idx index
+     * @return delay value in ms.
+     */
+    public long getDelay(int idx) {
+        if (idx < 0 || idx >= getSinkPinNum()) {
+            return 0;
+        }
+        return mDelay[idx];
+    }
+
     synchronized public void release() {
         doRelease();
     }
@@ -377,6 +408,8 @@ public class AudioMixer {
     private native void _setInputVolume(long instance, int idx, float vol);
 
     private native void _setInputVolume(long instance, int idx, float leftVol, float rightVol);
+
+    private native void _setDelay(long instance, int idx, long delay);
 
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
 

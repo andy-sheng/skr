@@ -1,14 +1,8 @@
 package com.zq.mediaengine.capture;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaCodec;
-import android.media.MediaExtractor;
-import android.media.MediaFormat;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
@@ -22,11 +16,6 @@ import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.StcMgt;
 import com.zq.mediaengine.util.audio.AudioUtil;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
 
 /**
  * Audio player capture.
