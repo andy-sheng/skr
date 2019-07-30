@@ -221,9 +221,9 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
             })
         }
 
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
+//        if (!EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().register(this)
+//        }
         playCallback = object : PlayerCallbackAdapter() {
             override fun openTimeFlyMonitor(): Boolean {
                 return true
