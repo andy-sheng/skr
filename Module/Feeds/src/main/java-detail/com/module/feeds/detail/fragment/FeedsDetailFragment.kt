@@ -172,7 +172,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         addPresent(mFeedsDetailPresenter)
 
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
-        mFeedsWatchModel?.song?.songTpl?.songName?.let {
+        mFeedsWatchModel?.song?.workName?.let {
             mSongNameTv?.text = it
             mCommonTitleBar?.centerTextView?.text = "正在播放《${it}》"
         }
@@ -235,7 +235,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mShareIv?.setDebounceViewClickListener {
             val sharePanel = SharePanel(activity)
-            sharePanel.setShareContent("", mFeedsWatchModel!!.song?.songTpl?.songName, mFeedsWatchModel!!.user?.nickname,
+            sharePanel.setShareContent("", mFeedsWatchModel!!.song?.workName, mFeedsWatchModel!!.user?.nickname,
                     ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
             sharePanel.show(ShareType.URL)
             sharePanel.setUMShareListener(object : UMShareListener {
