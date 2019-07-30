@@ -60,6 +60,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
                         .retryWhen(RxRetryAssist(3, ""))
                         .subscribe(Consumer { lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
+                            mManyLyricsView?.setSongName(mFeedSongModel?.workName)
                             mFeedSongModel?.songTpl?.lrcTsReader = lyricsReader
                             whenReaderLoad(play)
                         })
