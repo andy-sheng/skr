@@ -11,7 +11,7 @@ interface FeedsListener {
 
     fun onClickHitListener(watchModel: FeedsWatchModel?)
 
-    fun onClickDetailListener(watchModel: FeedsWatchModel?)
+    fun onClickDetailListener(position: Int,watchModel: FeedsWatchModel?)
 
     fun onClickCDListener(position: Int,watchModel: FeedsWatchModel?)
 

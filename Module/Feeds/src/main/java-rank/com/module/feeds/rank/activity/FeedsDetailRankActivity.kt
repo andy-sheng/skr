@@ -2,27 +2,24 @@ package com.module.feeds.rank.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import com.alibaba.android.arouter.facade.annotation.Route
-import com.common.base.BaseActivity
-import com.module.RouterConstants
-import com.module.feeds.R
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
+import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
-import com.common.player.IPlayer
-import com.common.player.MyMediaPlayer
-import com.common.player.VideoPlayerAdapter
+import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
-import com.common.utils.U
-import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
+import com.module.feeds.R
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -30,7 +27,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 
 /**
  * 具体神曲的榜单
@@ -47,15 +43,25 @@ class FeedsDetailRankActivity : BaseActivity() {
     lateinit var mHitIv: ImageView
 
     private val mAdapter: FeedDetailAdapter = FeedDetailAdapter()
-    private var mMediaPlayer: IPlayer? = null  // 播放器
 
     var title = ""
     var challengeID = 0L
-    var rankType = 0
 
     var offset = 0
     val mCNT = 30
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
+
+    private val playerTag = TAG + hashCode()
+
+    private val playCallback = object : PlayerCallbackAdapter() {
+        override fun onCompletion() {
+            super.onCompletion()
+            // 重复播放一次
+            mAdapter.mCurrentPlayModel?.let {
+                play(it)
+            }
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_rank_detail_activity_layout
@@ -64,7 +70,6 @@ class FeedsDetailRankActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         title = intent.getStringExtra("rankTitle")
         challengeID = intent.getLongExtra("challengeID", 0L)
-        rankType = intent.getIntExtra("rankType", 0)
 
         mTitlebar = findViewById(R.id.titlebar)
 
@@ -119,34 +124,22 @@ class FeedsDetailRankActivity : BaseActivity() {
                 }
             }
         }
-
         initLoadData()
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
 
     private fun play(model: FeedsWatchModel) {
         mAdapter.mCurrentPlayModel = model
         mAdapter.notifyDataSetChanged()
-        mMediaPlayer?.stop()
-        if (mMediaPlayer == null) {
-            mMediaPlayer = MyMediaPlayer()
-        }
-        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                // 重复播放一次
-                play(model)
-            }
-        })
         model.song?.playURL?.let {
-            mMediaPlayer?.startPlay(it)
+            SinglePlayer.startPlay(playerTag, it)
         }
     }
 
     private fun stop(model: FeedsWatchModel) {
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
-        mMediaPlayer?.stop()
-        mMediaPlayer?.reset()
+        SinglePlayer.stop(playerTag)
     }
 
 
@@ -160,7 +153,7 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     private fun loadData(off: Int) {
         launch {
-            val result = mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID, rankType)
+            val result = mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID)
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")
@@ -169,14 +162,14 @@ class FeedsDetailRankActivity : BaseActivity() {
         }
     }
 
-    private fun showDetailInfo(list: List<FeedsWatchModel>, isClean: Boolean) {
+    private fun showDetailInfo(list: List<FeedsWatchModel>?, isClean: Boolean) {
         mRefreshLayout.finishLoadMore()
         mRefreshLayout.finishRefresh()
         if (isClean) {
             mAdapter.mDataList.clear()
         }
 
-        mAdapter.mDataList.addAll(list)
+        list?.let { mAdapter.mDataList.addAll(it) }
         mAdapter.notifyDataSetChanged()
         if (isClean && mAdapter.mDataList.isNotEmpty()) {
             bindTopData(mAdapter.mDataList[0])
@@ -197,7 +190,6 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
-        mMediaPlayer?.stop()
-        mMediaPlayer?.release()
+        SinglePlayer.removeCallback(playerTag)
     }
 }

@@ -21,6 +21,7 @@ import com.common.notification.event.FollowNotifyEvent;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
@@ -54,7 +55,7 @@ public class RelationView extends RelativeLayout {
     private int mOffset = 0; // 偏移量
     private int DEFAULT_COUNT = 30; // 每次拉去最大值
 
-    RelativeLayout mSearchArea;
+    ExRelativeLayout mSearchArea;
     RecyclerView mRecyclerView;
     SmartRefreshLayout mRefreshLayout;
 
@@ -78,9 +79,9 @@ public class RelationView extends RelativeLayout {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        mSearchArea = (RelativeLayout) this.findViewById(R.id.search_area);
-        mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view);
-        mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
+        mSearchArea = this.findViewById(R.id.search_area);
+        mRecyclerView = this.findViewById(R.id.recycler_view);
+        mRefreshLayout = this.findViewById(R.id.refreshLayout);
 
         mSearchArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -340,7 +341,7 @@ public class RelationView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RemarkChangeEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
         loadData(0);
     }

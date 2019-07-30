@@ -7,7 +7,6 @@ import com.common.rx.RxRetryAssist
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricsManager
-import com.component.lyrics.LyricsReader
 import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
@@ -61,6 +60,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
                         .retryWhen(RxRetryAssist(3, ""))
                         .subscribe(Consumer { lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
+                            mManyLyricsView?.setSongName(mFeedSongModel?.workName)
                             mFeedSongModel?.songTpl?.lrcTsReader = lyricsReader
                             whenReaderLoad(play)
                         })
@@ -75,10 +75,11 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
             mManyLyricsView?.setVisibility(View.VISIBLE)
             mManyLyricsView?.initLrcData()
         }
-        mManyLyricsView?.setLyricsReader(mFeedSongModel?.songTpl?.lrcTsReader)
+        mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
+        mManyLyricsView?.setSongName(mFeedSongModel?.workName)
         if (play) {
             mIsStart = true
-            mManyLyricsView?.play(0)
+            mManyLyricsView?.play(mFeedSongModel?.playCurPos ?: 0)
         } else {
             if (mManyLyricsView?.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                 mManyLyricsView?.pause()
@@ -87,6 +88,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
     }
 
     override fun seekTo(duration: Int) {
+        mFeedSongModel?.playCurPos = duration
         mManyLyricsView?.seekto(duration)
     }
 
@@ -101,6 +103,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
     override fun isStart(): Boolean = mIsStart
 
     override fun stop() {
+        mFeedSongModel?.playCurPos = 0
         mManyLyricsView?.seekto(0)
         mManyLyricsView?.pause()
         mIsStart = false

@@ -26,7 +26,6 @@ public class AndroidMediaPlayer extends BasePlayer {
     private static String mPreLoadUrl;
     private static Handler sUiHanlder = new Handler();
 
-    private IPlayerCallback mCallback;
     private MediaPlayer mPlayer;
     private String mPath;
 
@@ -45,6 +44,7 @@ public class AndroidMediaPlayer extends BasePlayer {
     private IPlayerNotSupport mIPlayerNotSupport;
 
     private boolean mMuted = false;
+    private long seekPos = -1;
 
     public AndroidMediaPlayer() {
         TAG += hashCode();
@@ -94,6 +94,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 MyLog.d(TAG,"onPrepared begin");
+                mPreparedFlag = true;
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
@@ -105,6 +106,14 @@ public class AndroidMediaPlayer extends BasePlayer {
                     //mDuration = mp.getDuration();
                     mHandler.removeMessages(MSG_DECREASE_VOLUME);
                     mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME,5000);
+                }
+                if(seekPos>0){
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            seekTo(seekPos);
+                        }
+                    });
                 }
                 startTs = System.currentTimeMillis();
                 startMusicPlayTimeListener();
@@ -402,6 +411,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         }
         mPlayer.stop();
         mPath = null;
+        seekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -414,6 +424,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         resetTs = System.currentTimeMillis();
         mPlayer.reset();
         mPath = null;
+        seekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -428,6 +439,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mCallback = null;
         mView = null;
         mPath = null;
+        seekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -437,7 +449,10 @@ public class AndroidMediaPlayer extends BasePlayer {
         if (mPlayer == null) {
             return;
         }
-        mPlayer.seekTo((int) msec);
+        seekPos = msec;
+        if(mPreparedFlag){
+            mPlayer.seekTo((int) msec);
+        }
     }
 
     @Override

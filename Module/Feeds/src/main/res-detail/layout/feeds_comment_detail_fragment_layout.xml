@@ -70,7 +70,7 @@
         app:bl_solid_color="@color/black_trans_5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/share_num_tv" />
+        app:layout_constraintRight_toLeftOf="@+id/xin_num_tv" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/xin_iv"
@@ -91,26 +91,6 @@
         android:text="0"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/xin_iv"
-        app:layout_constraintTop_toTopOf="@+id/comment_tv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/share_iv"
-        android:layout_width="@dimen/view_17_dp"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_marginRight="@dimen/view_22_dp"
-        android:src="@drawable/zhuanfa"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
-        app:layout_constraintRight_toLeftOf="@+id/xin_num_tv"
-        app:layout_constraintTop_toTopOf="@+id/comment_tv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/share_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_7_dp"
-        android:text="0"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
-        app:layout_constraintRight_toLeftOf="@+id/share_iv"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
 
     <com.module.feeds.detail.view.FeedsInputContainerView

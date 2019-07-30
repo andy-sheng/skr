@@ -16,6 +16,7 @@ import com.common.log.MyLog
 import com.common.player.IPlayer
 import com.common.player.IPlayerCallback
 import com.common.player.MyMediaPlayer
+import com.common.player.PlayerCallbackAdapter
 import com.common.utils.U
 import com.zq.mediaengine.kit.ZqEngineKit
 import com.module.playways.BaseRoomData
@@ -192,34 +193,11 @@ class CommentView : RelativeLayout {
                     mCommentAdapter?.setCurrentPlayAudioModel(commentAudioModel)
                     if (mMediaPlayer == null) {
                         mMediaPlayer = MyMediaPlayer()
-                        mMediaPlayer?.setCallback(object : IPlayerCallback {
-                            override fun onPrepared() {
-
-                            }
+                        mMediaPlayer?.setCallback(object : PlayerCallbackAdapter() {
 
                             override fun onCompletion() {
                                 mCommentAdapter?.setCurrentPlayAudioModel(null)
                                 EventBus.getDefault().post(MuteAllVoiceEvent(false))
-                            }
-
-                            override fun onSeekComplete() {
-
-                            }
-
-                            override fun onVideoSizeChanged(width: Int, height: Int) {
-
-                            }
-
-                            override fun onError(what: Int, extra: Int) {
-
-                            }
-
-                            override fun onInfo(what: Int, extra: Int) {
-
-                            }
-
-                            override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
-
                             }
                         })
                     }

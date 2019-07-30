@@ -262,7 +262,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
                     mExoPlayer.setVolume(1);
                 }
             }
-            mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+            mExoPlayer.setCallback(new PlayerCallbackAdapter() {
                 @Override
                 public void onPrepared(long duration) {
                     super.onPrepared(duration);
@@ -454,7 +454,7 @@ public class GrabGuidePresenter extends RxLifeCyclePresenter {
             mExoPlayer = new ExoPlayer();
         }
         mExoPlayer.startPlay(skrerUrl);
-        mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+        mExoPlayer.setCallback(new PlayerCallbackAdapter() {
             @Override
             public void onPrepared(long duration) {
                 if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {

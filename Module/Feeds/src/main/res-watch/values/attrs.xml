@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FeedsRecordAnimationView">
+        <!--指针旋转角度-->
+        <attr name="startAngle" format="float" />
+        <attr name="endAngle" format="float" />
         <!--位置-->
         <attr name="panelDrawable" format="reference" />
         <attr name="rockerDrawable" format="reference" />

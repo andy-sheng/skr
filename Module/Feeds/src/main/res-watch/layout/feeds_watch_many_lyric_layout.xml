@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/many_lyrics_view"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_120_dp"
+    android:layout_height="match_parent"
     android:visibility="visible"
     app:ly_eable_scroll="false"
     app:ly_eable_verbatim="true"

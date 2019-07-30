@@ -158,10 +158,12 @@
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg"
         app:panelDrawable="@drawable/record_film_icon"
-        app:panelMarginTop="@dimen/view_28_dp"
+        app:panelMarginTop="@dimen/view_14_dp"
         app:rockerDrawable="@drawable/record_pointer_icon"
         app:rockerXP="1.0"
-        app:rockerYP="0" />
+        app:rockerYP="0"
+        app:startAngle="-80"
+        app:endAngle="-45" />
 
     <!-- 歌词view -->
     <ViewStub
@@ -183,9 +185,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_46_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
         android:layout="@layout/feeds_watch_many_lyric_layout"
         app:layout_constraintBottom_toBottomOf="@+id/song_area_bg"
         app:layout_constraintLeft_toLeftOf="@+id/song_area_bg"
@@ -196,7 +198,7 @@
     <TextView
         android:id="@+id/like_num_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_16_dp"

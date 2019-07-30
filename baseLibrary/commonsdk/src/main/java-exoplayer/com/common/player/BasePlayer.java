@@ -19,7 +19,6 @@ public abstract class BasePlayer implements IPlayer {
     public final String TAG = "BasePlayer";
 
     protected boolean mEnableDecreaseVolume = false;
-    protected boolean mMonitorProgress = false;
 
     protected HandlerTaskTimer mMusicTimePlayTimeListener;
 
@@ -45,6 +44,8 @@ public abstract class BasePlayer implements IPlayer {
     };
 
     protected ValueAnimator mDecreaseVolumeAnimator;
+
+    protected IPlayerCallback mCallback;
 
     public static final int MSG_DECREASE_VOLUME = 10;
 
@@ -94,19 +95,16 @@ public abstract class BasePlayer implements IPlayer {
         mHandler.removeCallbacksAndMessages(null);
     }
 
-    @Override
-    public void setMonitorProgress(boolean b) {
-        mMonitorProgress = b;
-    }
-
     protected void startMusicPlayTimeListener() {
-        if (!mMonitorProgress) {
+        if (mCallback == null || !mCallback.openTimeFlyMonitor()) {
             return;
         }
         if (mMusicTimePlayTimeListener != null) {
             mMusicTimePlayTimeListener.dispose();
         }
-        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder().interval(1000)
+        mMusicTimePlayTimeListener = HandlerTaskTimer.newBuilder()
+                .delay(1000)
+                .interval(1000)
                 .start(new Observer<Integer>() {
                     long duration = -1;
 
@@ -117,14 +115,17 @@ public abstract class BasePlayer implements IPlayer {
 
                     @Override
                     public void onNext(Integer integer) {
-                        long currentPostion = getCurrentPosition();
-                        if (duration < 0) {
-                            duration = getDuration();
+                        if (isPlaying()) {
+                            long currentPostion = getCurrentPosition();
+                            if (duration < 0) {
+                                duration = getDuration();
+                            }
+                            if (currentPostion > 0 && duration > 0) {
+                                if (mCallback != null) {
+                                    mCallback.onTimeFlyMonitor(currentPostion, duration);
+                                }
+                            }
                         }
-                        PlayerEvent.TimeFly engineEvent = new PlayerEvent.TimeFly();
-                        engineEvent.totalDuration = duration;
-                        engineEvent.curPostion = currentPostion;
-                        EventBus.getDefault().post(engineEvent);
                     }
 
                     @Override

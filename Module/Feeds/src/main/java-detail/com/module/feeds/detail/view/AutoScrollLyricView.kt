@@ -16,10 +16,9 @@ import com.module.feeds.watch.model.FeedSongModel
 import io.reactivex.disposables.Disposable
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
-    val mTag = "AutoScrollLyricView"
+    val TAG = "AutoScrollLyricView"
     lateinit var lyricTv: ExTextView
     lateinit var scrollView: ScrollView
-    var passTime: Int = 0
     var scrollTime: Long? = null
     var mFeedSongModel: FeedSongModel? = null
     var mIsStart: Boolean = false
@@ -38,11 +37,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     override fun setSongModel(feedSongModel: FeedSongModel) {
         mFeedSongModel = feedSongModel
-        passTime = 0
-
     }
 
     override fun loadLyric() {
+        MyLog.d(TAG, "loadLyric")
         tryInflate()
         lyricTv.text = "正在加载"
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
@@ -50,16 +48,21 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
                         mFeedSongModel?.songTpl?.lrcTxtStr = s
-                        lyricTv.text = "\n${s}"
-                    }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+                        whenLoadLyric()
+                    }, { throwable -> MyLog.e(TAG, "accept throwable=$throwable") })
         } else {
-            lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
+            whenLoadLyric()
         }
     }
 
+    fun whenLoadLyric() {
+        lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
+        scrollToTs(mFeedSongModel?.playCurPos ?: 0)
+    }
+
     override fun playLyric() {
+        MyLog.d(TAG, "playLyric")
         tryInflate()
-        passTime = 0
         mIsStart = true
 
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
@@ -70,7 +73,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
                         lyricTv.text = "\n${s}"
                         visibility = View.VISIBLE
                         startScroll()
-                    }, { throwable -> MyLog.e(mTag, "accept throwable=$throwable") })
+                    }, { throwable -> MyLog.e(TAG, "accept throwable=$throwable") })
         } else {
             lyricTv.text = "\n${mFeedSongModel?.songTpl?.lrcTxtStr}"
             visibility = View.VISIBLE
@@ -79,32 +82,41 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun seekTo(pos: Int) {
-        passTime = pos
+        //MyLog.d(TAG, "seekTo")
+        mFeedSongModel?.playCurPos = pos
     }
 
     override fun isStart(): Boolean = mIsStart
 
     override fun stop() {
+        //MyLog.d(TAG, "stop")
         mIsStart = false
-        passTime = 0
+        mFeedSongModel?.playCurPos = 0
         scrollTime = 0
         lyricTv.scrollTo(0, 0)
         mHandlerTaskTimer?.dispose()
     }
 
     private fun startScroll() {
+        //MyLog.d(TAG, "startScroll")
         mHandlerTaskTimer?.dispose()
         mHandlerTaskTimer = HandlerTaskTimer
                 .newBuilder()
                 .interval(30)
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        val Y = (lyricTv.height - scrollView.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
-                        MyLog.w("AutoScrollLyricView", "Y is $Y, passTime is $passTime, duraions is ${mFeedSongModel!!.playDurMs!!.toDouble()}")
-                        lyricTv.scrollTo(0, Y.toInt())
-                        passTime = passTime.plus(30)
+                        scrollToTs(mFeedSongModel?.playCurPos ?: 0)
+                        mFeedSongModel?.playCurPos = (mFeedSongModel?.playCurPos?:0)  + 30
                     }
                 })
+    }
+
+    private fun scrollToTs(passTime: Int) {
+        val Y = (lyricTv.height - scrollView.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
+        //MyLog.w(TAG, "Y is $Y, passTime is $passTime, duraions is ${mFeedSongModel!!.playDurMs!!.toDouble()}")
+        //lyricTv.scrollTo(0, Y.toInt())
+        // 要用父布局滚 不然setText就滚动0了 之前的白滚了
+        scrollView.smoothScrollTo(0, Y.toInt())
     }
 
     override fun destroy() {
@@ -112,11 +124,18 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun pause() {
+        MyLog.d(TAG, "pause")
         mHandlerTaskTimer?.dispose()
     }
 
     override fun resume() {
-        startScroll()
+        if(mHandlerTaskTimer?.isDisposed == false){
+            // 如果没取消
+
+        }else{
+            // 如果取消了
+            startScroll()
+        }
     }
 
     override fun setVisibility(visibility: Int) {

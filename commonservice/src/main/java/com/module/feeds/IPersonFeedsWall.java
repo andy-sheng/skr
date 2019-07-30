@@ -8,5 +8,5 @@ public interface IPersonFeedsWall {
 
     void setUserInfoModel(Object userInfoModel);
 
-    void stopPlay();
+    void unselected();
 }

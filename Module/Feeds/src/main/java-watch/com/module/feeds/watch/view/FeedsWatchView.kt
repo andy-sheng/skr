@@ -7,31 +7,48 @@ import android.view.View
 import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
-import com.common.player.IPlayer
-import com.common.player.MyMediaPlayer
+import com.common.player.SinglePlayer
+import com.common.core.userinfo.model.UserInfoModel
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
-import com.common.player.event.PlayerEvent
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.callback.EmptyCallback
 import com.component.dialog.FeedsMoreDialogView
+import com.component.person.view.RequestCallBack
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.watch.presenter.FeedWatchViewPresenter
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.RouterConstants
+import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 
 
-class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView {
+class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
+
+    val TAG = "FeedsWatchView"
+
+    constructor(fragment: BaseFragment, type: Int, userInfoModel: UserInfoModel, callBack: RequestCallBack?) : this(fragment, type) {
+        this.mUserInfo = userInfoModel
+        this.mCallBack = callBack
+        mPersenter.mUserInfo = userInfoModel
+    }
+
     companion object {
-        const val TYPE_RECOMMEND = 1
-        const val TYPE_FOLLOW = 2
+        const val TYPE_RECOMMEND = 1  // 推荐
+        const val TYPE_FOLLOW = 2   // 关注
+        const val TYPE_PERSON = 3   // 个人中心
     }
 
     private val mRefreshLayout: SmartRefreshLayout
@@ -39,13 +56,27 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
     private val mLayoutManager: LinearLayoutManager
     private val mRecyclerView: RecyclerView
 
-    private val mAdapter: FeedsWatchViewAdapter
-    private val mPersenter: FeedWatchViewPresenter
+    private var mLoadService: LoadService<*>? = null
 
-    private var mMediaPlayer: IPlayer? = null
+    private var mAdapter: FeedsWatchViewAdapter? = null
+    private val mPersenter: FeedWatchViewPresenter = FeedWatchViewPresenter(this, type)
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
-    var mCurPlayPostion = -1
+    var mCurFocusPostion = -1 // 记录当前操作的焦点pos
+    val playerTag = TAG + hashCode()
+
+    val playCallback: PlayerCallbackAdapter
+
+    private var mUserInfo: UserInfoModel? = null
+    private var mCallBack: RequestCallBack? = null
+
+    fun isHomePage(): Boolean {
+        if (type == TYPE_RECOMMEND || type == TYPE_FOLLOW) {
+            return true
+        }
+        return false
+    }
+
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
 
@@ -53,7 +84,6 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         mClassicsHeader = findViewById(R.id.classics_header)
         mRecyclerView = findViewById(R.id.recycler_view)
 
-        mPersenter = FeedWatchViewPresenter(this, type)
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
                 // 排行榜详情
@@ -61,7 +91,6 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
                             .withString("rankTitle", it.rank?.rankTitle)
                             .withLong("challengeID", it.song?.challengeID ?: 0L)
-                            .withInt("rankType", it.rank?.rankType ?: 0)
                             .navigation()
                 }
             }
@@ -87,75 +116,149 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 }
             }
 
-            override fun onClickDetailListener(watchModel: FeedsWatchModel?) {
-                // 详情
+            override fun onClickDetailListener(position: Int,watchModel: FeedsWatchModel?) {
+                // 详情  声音要连贯
+                // 这样返回时能 resume 上
+                mAdapter?.mCurrentPlayModel = watchModel
+                mAdapter?.mCurrentPlayPosition = position
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withSerializable("feed_model", watchModel)
                         .navigation()
             }
 
-            override fun onClickCDListener(position: Int,watchModel: FeedsWatchModel?) {
-                if(mCurPlayPostion!=position){
-                    mCurPlayPostion = position
-                    mMediaPlayer?.reset()
-                }
+            override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 播放
-                watchModel?.let { model -> startplay(model, false) }
+                watchModel?.let { model -> controlPlay(position, model, false) }
             }
 
             override fun onClickMoreListener(watchModel: FeedsWatchModel?) {
                 // 更多
                 watchModel?.let {
                     if (fragment.activity != null) {
-                        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED,
-                                it.user?.userID ?: 0,
-                                it.song?.songID ?: 0,
-                                0)
-                                .apply {
-                                    setFollow(it.hasFollow == true)
-                                    mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                                        override fun clickValid(v: View?) {
-                                            dismiss()
-                                            UserInfoManager.getInstance().mateRelation(it.user?.userID
-                                                    ?: 0, UserInfoManager.RA_BUILD, false)
+                        if (isHomePage()) {
+                            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED,
+                                    it.user?.userID ?: 0,
+                                    it.song?.songID ?: 0,
+                                    0)
+                                    .apply {
+                                        setFollow(it.hasFollow == true)
+                                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                            override fun clickValid(v: View?) {
+                                                dismiss()
+                                                UserInfoManager.getInstance().mateRelation(it.user?.userID
+                                                        ?: 0, UserInfoManager.RA_BUILD, false)
+                                            }
+                                        })
+                                    }
+                        } else {
+                            if ((mUserInfo?.userId
+                                            ?: 0).toLong() == MyUserInfoManager.getInstance().uid) {
+                                mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON,
+                                        it.user?.userID ?: 0,
+                                        it.song?.songID ?: 0,
+                                        0)
+                                        .apply {
+                                            mFuncationTv.text = "分享"
+                                            mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                                override fun clickValid(v: View?) {
+                                                    dismiss(false)
+                                                }
+                                            })
+                                            mReportTv.text = "删除"
+                                            mReportTv.setOnClickListener(object : DebounceViewClickListener() {
+                                                override fun clickValid(v: View?) {
+                                                    dismiss(false)
+                                                }
+                                            })
                                         }
-                                    })
-                                }
+                            } else {
+                                mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON,
+                                        it.user?.userID ?: 0,
+                                        it.song?.songID ?: 0,
+                                        0)
+                                        .apply {
+                                            mFuncationTv.text = "分享"
+                                            mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                                override fun clickValid(v: View?) {
+                                                    dismiss(false)
+                                                }
+                                            })
+                                        }
+                            }
+                        }
                         mFeedsMoreDialogView?.showByDialog()
                     }
 
                 }
             }
 
-        })
+        }, isHomePage())
 
         mRefreshLayout.apply {
-            setEnableRefresh(true)
-            setEnableLoadMore(true)
+            setEnableRefresh(isHomePage())
+            setEnableLoadMore(isHomePage())
             setEnableLoadMoreWhenContentNotFull(false)
-            setEnableOverScrollDrag(true)
+            setEnableOverScrollDrag(isHomePage())
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
-                    mPersenter.initWatchList(true)
+                    getMoreFeeds()
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
-                    mPersenter.loadMoreWatchList()
+                    getFeeds(true)
                 }
             })
         }
 
         mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//        (mRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerView.adapter = mAdapter
-        mAdapter.notifyDataSetChanged()
+        mAdapter?.notifyDataSetChanged()
 
+        if (isHomePage()) {
+            addOnScrollListenerToRv()
+            val mLoadSir = LoadSir.Builder()
+                    .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无神曲发布", "#802F2F30"))
+                    .build()
+            mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
+                getFeeds(true)
+            })
+        }
+
+//        if (!EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().register(this)
+//        }
+        playCallback = object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 循环播放
+                mAdapter?.mCurrentPlayModel?.let {
+                    mAdapter?.mCurrentPlayPosition?.let { it1 ->
+                        startPlay(it1, it)
+                    }
+                }
+            }
+
+            override fun openTimeFlyMonitor(): Boolean {
+                return true
+            }
+
+            override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+                mAdapter?.updatePlayProgress(pos, duration)
+            }
+        }
+        SinglePlayer.addCallback(playerTag, playCallback)
+    }
+
+    private fun addOnScrollListenerToRv() {
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             var maxPercent = 0f
             var model: FeedsWatchModel? = null
             var isFound = false
+
+            val cdHeight = 120.dp()   // 光盘高度
+            val bottomHeight = 50.dp()  // 底部高度
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -165,14 +268,11 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-                        var firstCompleteItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
-                        if (firstCompleteItem != RecyclerView.NO_POSITION) {
-                            // 找到了
-                            model = mAdapter.mDataList[firstCompleteItem]
-                        } else {
-                            // 找不到位置，取其中百分比最大的
-                            var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-                            var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                        var postion = 0
+                        // 以光盘为界限，找光盘显示百分比最多的
+                        var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+                        var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                        if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
                             val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
                             var i = firstVisibleItem
                             isFound = false
@@ -186,126 +286,141 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
                                 mRecyclerView.getLocationOnScreen(location2)
                                 val top = location1[1] - location2[1]
                                 when {
-                                    top < 0 -> percents[i - firstVisibleItem] = (itemView.height + top).toFloat() * 100 / itemView.height
-                                    (top + itemView.height) < mRecyclerView.height -> percents[i - firstVisibleItem] = 100f
-                                    else -> percents[i - firstVisibleItem] = (mRecyclerView.height - top).toFloat() * 100 / itemView.height
+                                    top < 0 -> {
+                                        // 顶部的
+                                        if ((itemView.height + top) >= (cdHeight + bottomHeight)) {
+                                            percents[i - firstVisibleItem] = 100f
+                                        } else {
+                                            percents[i - firstVisibleItem] = (itemView.height + top - bottomHeight).toFloat() / cdHeight.toFloat()
+                                        }
+                                    }
+                                    (top + itemView.height) < mRecyclerView.height -> {
+                                        percents[i - firstVisibleItem] = 100f
+                                    }
+                                    else -> {
+                                        // 底部的
+                                        if ((mRecyclerView.height - top) >= (itemView.height - bottomHeight)) {
+                                            percents[i - firstVisibleItem] = 100f
+                                        } else {
+                                            percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - bottomHeight).toFloat() / cdHeight.toFloat()
+                                        }
+                                    }
                                 }
                                 if (percents[i - firstVisibleItem] == 100f) {
                                     isFound = true
                                     maxPercent = 100f
-                                    model = mAdapter.mDataList[i]
+                                    model = mAdapter?.mDataList?.get(i)
+                                    postion = i
                                 } else {
                                     if (percents[i - firstVisibleItem] > maxPercent) {
                                         maxPercent = percents[i - firstVisibleItem]
-                                        model = mAdapter.mDataList[i]
+                                        model = mAdapter?.mDataList?.get(i)
+                                        postion = i
                                     }
                                 }
                                 i++
                             }
                         }
 
+
                         model?.let {
                             isFound = true
-                            startplay(it, true)
+                            controlPlay(postion, it, true)
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
 
                     }
                     RecyclerView.SCROLL_STATE_SETTLING -> {
-
                     }
                 }
             }
         })
-
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this)
-        }
     }
 
-    private fun startplay(model: FeedsWatchModel, isMustPlay: Boolean) {
+    private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
+        if (mCurFocusPostion != pos) {
+            SinglePlayer.reset(playerTag)
+            mCurFocusPostion = pos
+        }
         if (isMustPlay) {
             // 播放
-            startplay(model)
+            startPlay(pos, model)
         } else {
-            if (mAdapter.mCurrentPlayModel?.feedID == model.feedID) {
+            if (mAdapter?.mCurrentPlayModel?.feedID == model?.feedID && mAdapter?.playing == true) {
                 // 停止播放
                 pausePlay()
             } else {
                 // 播放
-                startplay(model)
+                startPlay(pos, model)
             }
         }
     }
 
-    private fun startplay(model: FeedsWatchModel) {
-        mAdapter.updatePlayModel(model)
-        if (mMediaPlayer == null) {
-            mMediaPlayer = MyMediaPlayer()
-            mMediaPlayer?.setMonitorProgress(true)
+    private fun startPlay(pos: Int, model: FeedsWatchModel?) {
+        mAdapter?.startPlayModel(pos, model)
+        model?.song?.playURL?.let {
+            SinglePlayer.startPlay(playerTag, it)
         }
-        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                // 重复播放
-                model?.song?.playURL?.let {
-                    mMediaPlayer?.startPlay(it)
-                }
-            }
+    }
 
-            override fun onPrepared() {
-                super.onPrepared()
-            }
-        })
-        model.song?.playURL?.let {
-            mMediaPlayer?.startPlay(it)
+    /**
+     * 继续播放
+     */
+    private fun resumePlay() {
+        mAdapter?.resumePlayModel()
+        mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
+            SinglePlayer.startPlay(playerTag, it)
         }
     }
 
     private fun pausePlay() {
-        mAdapter.updatePlayModel(null)
-        mMediaPlayer?.pause()
+        mAdapter?.pausePlayModel()
+        SinglePlayer.pause(playerTag)
     }
 
-    fun initData(flag: Boolean) {
+    override fun getFeeds(flag: Boolean) {
         mPersenter.initWatchList(flag)
     }
 
-    fun stopPlay() {
-        // 保留mCurrentModel 可以用来恢复页面播放
-        mAdapter.updatePlayModel(null)
-        mMediaPlayer?.reset()
+    override fun getMoreFeeds() {
+        mPersenter.loadMoreWatchList()
+    }
+
+    override fun setUserInfoModel(userInfoModel: Any?) {
+        mUserInfo = userInfoModel as UserInfoModel
+        mPersenter.mUserInfo = mUserInfo
     }
 
     override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
+        mCallBack?.onRequestSucess()
         if (isClear) {
-            mAdapter.mDataList.clear()
+            mAdapter?.mDataList?.clear()
             if (list != null && list.isNotEmpty()) {
-                mAdapter.mDataList.addAll(list)
+                mAdapter?.mDataList?.addAll(list)
             }
-            if (mAdapter.mDataList.isNotEmpty()) {
-                startplay(mAdapter.mDataList[0], true)
+            if (mAdapter?.mDataList?.isNotEmpty() == true) {
+                controlPlay(0, mAdapter?.mDataList?.get(0), true)
             }
-            mAdapter.notifyDataSetChanged()
+            mAdapter?.notifyDataSetChanged()
         } else {
             if (list != null && list.isNotEmpty()) {
-                mAdapter.mDataList.addAll(list)
-                mAdapter.notifyDataSetChanged()
+                mAdapter?.mDataList?.addAll(list)
+                mAdapter?.notifyDataSetChanged()
             }
         }
-    }
 
-    // 请求时间太短，不向服务器请求，只需要恢复上次播放
-    override fun requestTimeShort() {
-        mAdapter.mCurrentPlayModel?.let {
-            startplay(it, true)
+        if (mAdapter?.mDataList != null && mAdapter?.mDataList?.isNotEmpty()== true) {
+            mLoadService?.showSuccess()
+        } else {
+            mLoadService?.showCallback(EmptyCallback::class.java)
         }
     }
 
     override fun requestError() {
+        mCallBack?.onRequestSucess()
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
     }
@@ -317,29 +432,43 @@ class FeedsWatchView(fragment: BaseFragment, type: Int) : ConstraintLayout(fragm
         } else {
             model.starCnt = model.starCnt?.minus(1)
         }
-        mAdapter.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
+        mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this)
-        }
+//        if (!EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().register(this)
+//        }
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
+
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        destory()
+//        if (EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().unregister(this)
+//        }
     }
 
-    @Subscribe
-    fun onEvent(event:PlayerEvent.TimeFly){
-        mAdapter.updatePlayProgress(event.curPostion,event.totalDuration)
-    }
 
     fun destory() {
         mPersenter.destroy()
-        mMediaPlayer?.release()
+        SinglePlayer.removeCallback(playerTag)
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
+        }
+    }
+
+    override fun unselected() {
+        pausePlay()
+    }
+
+    fun selected() {
+        // 该页面选中以及从详情页返回都会回调这个方法
+        if (!mPersenter.initWatchList(false)) {
+            // 如果因为时间短没请求，继续往前播放
+            resumePlay()
+        }
     }
 }

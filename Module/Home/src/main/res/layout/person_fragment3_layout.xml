@@ -76,9 +76,9 @@
                 <com.common.view.viewpager.SlidingTabLayout
                     android:id="@+id/person_tab"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="@dimen/view_12_dp"
                     android:layout_height="@dimen/view_52_dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/view_12_dp" />
 
                 <com.common.view.viewpager.NestViewPager
                     android:id="@+id/person_vp"
@@ -212,9 +212,9 @@
                             android:paddingRight="@dimen/view_10_dp"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_14_dp"
+                            app:bl_corners_radius="@dimen/view_12_dp"
                             app:bl_shape="rectangle"
                             app:bl_solid_color="@color/black_trans_10"
-                            app:bl_corners_radius="@dimen/view_12_dp"
                             app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
                             app:layout_constraintLeft_toLeftOf="@id/name_tv"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
@@ -380,7 +380,11 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:srlAccentColor="@color/white" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <!--设置-->

@@ -14,6 +14,7 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -91,7 +92,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
                         mIPlayer = MyMediaPlayer()
                         mIPlayer!!.setDecreaseVolumeEnd(true)
                         // 播放完毕
-                        mIPlayer!!.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+                        mIPlayer!!.setCallback(object : PlayerCallbackAdapter() {
                             override fun onCompletion() {
                                 super.onCompletion()
                                 mAdapter.setPlayPosition(-1)

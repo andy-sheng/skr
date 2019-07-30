@@ -18,6 +18,7 @@ import com.common.log.MyLog;
 import com.common.player.AndroidMediaPlayer;
 import com.common.player.ExoPlayer;
 import com.common.player.IPlayer;
+import com.common.player.PlayerCallbackAdapter;
 import com.common.player.VideoPlayerAdapter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -256,7 +257,7 @@ public class PlayRecordFragment extends BaseFragment {
         }
         if (mPlayer == null) {
             mPlayer = new ExoPlayer();
-            mPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+            mPlayer.setCallback(new PlayerCallbackAdapter() {
                 @Override
                 public void onCompletion() {
                     super.onCompletion();

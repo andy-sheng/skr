@@ -18,14 +18,21 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
+import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.model.CommentCountModel
+import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 
 class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerView.ViewHolder>() {
+    companion object {
+        const val TYPE_LIKE = 1  // 推荐
+    }
+
     val mCommentType = 0
     val mCountType = 1
+    val mEmptyType = 2
     var mIFirstLevelCommentListener: IFirstLevelCommentListener? = null
     var mCommentNum: Int = 0
 
@@ -37,6 +44,9 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         } else if (viewType == mCountType) {
             view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_comment_num_item_view_layout, parent, false)
             return CommentNumHolder(view!!)
+        } else if (viewType == mEmptyType) {
+            view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_empty_item_view_layout, parent, false)
+            return EmptyHolder(view!!)
         }
 
         return CommentHolder(view!!)
@@ -44,6 +54,36 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
     override fun getItemCount(): Int {
         return mDataList.size
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.size > 0) {
+            if (holder is CommentHolder) {
+                val type = payloads[0] as Int
+                if (type == TYPE_LIKE) {
+                    val model = mDataList[position] as FirstLevelCommentModel
+                    holder.mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
+                    holder.mXinIv.isSelected = model.isLiked()
+                }
+            }
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    fun update(position: Int, model: FirstLevelCommentModel?, refreshType: Int) {
+        if (mDataList[position] is FirstLevelCommentModel) {
+            if ((mDataList[position] as FirstLevelCommentModel).comment.commentID == model?.comment?.commentID) {
+                notifyItemChanged(position, refreshType)
+            } else {
+                for (i in 0 until mDataList.size) {
+                    if (mDataList[position] is FirstLevelCommentModel && (mDataList[position] as FirstLevelCommentModel).comment.commentID == model?.comment?.commentID) {
+                        mDataList[i] = model!!
+                        notifyItemChanged(i, refreshType)
+                    }
+                }
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -59,6 +99,8 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             return mCommentType
         } else if (dataList[position] is CommentCountModel) {
             return mCountType
+        } else if (dataList[position] is FeedsCommentEmptyModel) {
+            return mEmptyType
         }
 
         return mCommentType
@@ -96,7 +138,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             mNameTv.text = model.commentUser?.nickname
             mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt
                     ?: 0L, System.currentTimeMillis())
-            mLikeNum.text = model.comment.likedCnt.toString()
+            mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
 
             mReplyNum.visibility = View.GONE
             MyLog.d("CommentHolder", "${model.comment.content}")
@@ -104,7 +146,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                 mContentTv.text = model.comment.content
                 if (model.comment.subCommentCnt > 0 && !mIsSecond) {
                     mReplyNum.visibility = View.VISIBLE
-                    mReplyNum.text = "${model.comment.subCommentCnt}条回复"
+                    mReplyNum.text = "${StringFromatUtils.formatFansNum(model.comment.subCommentCnt)}条回复"
                 } else {
                     mReplyNum.visibility = View.GONE
                 }
@@ -125,7 +167,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
 
                                 override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
                                     ds!!.setUnderlineText(false)
                                 }
                             })
@@ -141,7 +183,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                                 }
 
                                 override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF7088FF"))
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
                                     ds!!.setUnderlineText(false)
                                 }
                             })
@@ -161,7 +203,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
             mReplyNum.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    mIFirstLevelCommentListener?.onClickContent(mModel!!)
+                    mIFirstLevelCommentListener?.onClickMore(mModel!!)
                 }
             })
 
@@ -189,13 +231,16 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         }
 
         fun bindData(num: Int) {
-            mCountTv.text = "精彩评论（$num）"
+            mCountTv.text = "精彩评论（${StringFromatUtils.formatFansNum(num)}）"
         }
     }
+
+    inner class EmptyHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface IFirstLevelCommentListener {
         fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int)
         fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel)
         fun onClickIcon(userID: Int)
+        fun onClickMore(firstLevelCommentModel: FirstLevelCommentModel)
     }
 }

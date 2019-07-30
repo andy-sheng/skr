@@ -91,6 +91,7 @@ class FeedReportActivity : BaseActivity() {
                     }
                     FeedsMoreDialogView.FROM_FEED_DETAIL -> {
                         // 举报作品，来源详情
+                        reportFeed(content, list, 6)
                     }
                     FeedsMoreDialogView.FROM_OTHER_PERSON -> {
                         // 举报作品，来源他人主页
@@ -115,7 +116,6 @@ class FeedReportActivity : BaseActivity() {
     fun reportFeed(content: String, typeList: List<Int>, source: Int) {
         val map = HashMap<String, Any>()
         map["targetID"] = mTargetID
-        map["commentID"] = mCommentID
         map["songID"] = mSongID
         map["content"] = content
         map["type"] = typeList
@@ -147,7 +147,6 @@ class FeedReportActivity : BaseActivity() {
         val map = HashMap<String, Any>()
         map["targetID"] = mTargetID
         map["commentID"] = mCommentID
-        map["songID"] = mSongID
         map["content"] = content
         map["type"] = typeList
         map["source"] = 5

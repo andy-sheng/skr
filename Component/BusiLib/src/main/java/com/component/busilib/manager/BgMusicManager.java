@@ -9,6 +9,8 @@ import android.view.animation.LinearInterpolator;
 import com.common.log.MyLog;
 import com.common.player.IPlayerCallback;
 import com.common.player.ExoPlayer;
+import com.common.player.PlayerCallbackAdapter;
+import com.common.player.VideoPlayerAdapter;
 import com.common.utils.U;
 
 public class BgMusicManager {
@@ -84,40 +86,11 @@ public class BgMusicManager {
             mExoPlayer.seekTo(msec);
         }
 
-        mExoPlayer.setCallback(new IPlayerCallback() {
-            @Override
-            public void onPrepared() {
-
-            }
+        mExoPlayer.setCallback(new PlayerCallbackAdapter() {
 
             @Override
             public void onCompletion() {
                 starPlay(path, msec, from);
-            }
-
-            @Override
-            public void onSeekComplete() {
-
-            }
-
-            @Override
-            public void onVideoSizeChanged(int width, int height) {
-
-            }
-
-            @Override
-            public void onError(int what, int extra) {
-
-            }
-
-            @Override
-            public void onInfo(int what, int extra) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
             }
         });
 

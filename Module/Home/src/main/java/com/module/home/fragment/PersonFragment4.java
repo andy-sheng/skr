@@ -177,7 +177,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             mProducationWallView.stopPlay();
         }
         if (mFeedsWallView != null) {
-            mFeedsWallView.stopPlay();
+            mFeedsWallView.unselected();
         }
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);

@@ -10,10 +10,12 @@ class FeedRankInfoModel : Serializable {
     var challengeID: Long? = null
     @JSONField(name = "rankTitle")
     var rankTitle: String? = null
-    @JSONField(name = "rankType")
-    var rankType: Int? = null
     @JSONField(name = "userCnt")
     var userCnt: Int? = null
     @JSONField(name = "userInfo")
     var userInfo: FeedUserInfo? = null
+
+    override fun toString(): String {
+        return "FeedRankInfoModel(challengeID=$challengeID, rankTitle=$rankTitle, userCnt=$userCnt, userInfo=$userInfo)"
+    }
 }

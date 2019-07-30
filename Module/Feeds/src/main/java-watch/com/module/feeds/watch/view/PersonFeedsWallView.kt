@@ -11,6 +11,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
 import com.common.view.DebounceViewClickListener
 import com.component.dialog.FeedsMoreDialogView
@@ -24,6 +25,9 @@ import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 
 class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
+    override fun unselected() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val mRecyclerView: RecyclerView
 
@@ -41,7 +45,9 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         mPersenter = FeedsWallViewPresenter(this, userInfoModel)
         mAdapter = FeedsWallViewAdapter(object : FeedsListener {
             override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
-                watchModel?.let { play(it, false) }
+                watchModel?.let {
+                    startPlay(position,it, false)
+                }
             }
 
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
@@ -50,7 +56,6 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
                             .withString("rankTitle", it.rank?.rankTitle)
                             .withLong("challengeID", it.song?.challengeID ?: 0L)
-                            .withInt("rankType", it.rank?.rankType ?: 0)
                             .navigation()
                 }
             }
@@ -121,7 +126,6 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
                         .withSerializable("feed_model", watchModel)
                         .navigation()
             }
-
         })
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
@@ -140,18 +144,13 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         this.userInfoModel = userInfoModel as UserInfoModel
     }
 
-    override fun stopPlay() {
-        mAdapter.mCurrentModel = null
-        mAdapter.notifyDataSetChanged()
+     fun stopPlay() {
+        mAdapter.updatePlayModel(-1,null)
         mMediaPlayer?.reset()
     }
 
     override fun requestError() {
         mCallBack?.onRequestSucess()
-    }
-
-    override fun requestTimeShort() {
-
     }
 
     override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
@@ -186,27 +185,24 @@ class PersonFeedsWallView(var fragment: BaseFragment, var userInfoModel: UserInf
         destroy()
     }
 
-    fun play(model: FeedsWatchModel, isMustPlay: Boolean) {
+    fun startPlay(pos:Int,model: FeedsWatchModel, isMustPlay: Boolean) {
         if (isMustPlay) {
-            play(model)
+            startPlay(pos,model)
         } else {
             if (mAdapter.mCurrentModel?.feedID != model.feedID) {
-                play(model)
+                startPlay(pos,model)
             } else {
                 stopPlay()
             }
         }
     }
 
-    fun play(model: FeedsWatchModel) {
-        if (mAdapter.mCurrentModel != model) {
-            mAdapter.mCurrentModel = model
-            mAdapter.notifyDataSetChanged()
-        }
+    fun startPlay(pos:Int,model: FeedsWatchModel) {
+        mAdapter.updatePlayModel(pos,model)
         if (mMediaPlayer == null) {
             mMediaPlayer = MyMediaPlayer()
         }
-        mMediaPlayer?.setCallback(object : VideoPlayerAdapter.PlayerCallbackAdapter() {
+        mMediaPlayer?.setCallback(object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 // 重复播放

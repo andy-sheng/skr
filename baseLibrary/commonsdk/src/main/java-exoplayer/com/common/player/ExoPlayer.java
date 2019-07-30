@@ -60,8 +60,6 @@ public class ExoPlayer extends BasePlayer {
 
     private String TAG = "ExoPlayer";
 
-    private IPlayerCallback mCallback;
-
     private SimpleExoPlayer mPlayer;
     private MediaSource mMediaSource;
     private String mUrl;
