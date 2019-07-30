@@ -12,6 +12,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.dialog.FeedsMoreDialogView
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
 import com.module.feeds.detail.event.AddCommentEvent
@@ -43,6 +44,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     var feedsCommendAdapter: FeedsCommentAdapter? = null
     var mFeedsSecondCommentPresenter: FeedsSecondCommentPresenter? = null
     var mFeedsID: Int? = null
+    var mMoreDialogPlus: FeedsMoreDialogView? = null
 
     override fun initView(): Int {
         return com.module.feeds.R.layout.feeds_comment_detail_fragment_layout
@@ -80,9 +82,11 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             }
 
             override fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel) {
-                mRefuseModel = firstLevelCommentModel
-                mFeedsInputContainerView?.showSoftInput()
-                mFeedsInputContainerView?.setETHint("回复 ${mRefuseModel?.commentUser?.nickname}")
+                showCommentOp(firstLevelCommentModel)
+            }
+
+            override fun onClickMore(firstLevelCommentModel: FirstLevelCommentModel) {
+
             }
 
             override fun onClickIcon(userID: Int) {
@@ -145,6 +149,29 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
 
         mFeedsSecondCommentPresenter?.updateCommentList()
         mFeedsSecondCommentPresenter?.getSecondLevelCommentList(mFirstLevelCommentModel!!.comment.commentID)
+    }
+
+    private fun showCommentOp(model: FirstLevelCommentModel) {
+        mMoreDialogPlus?.dismiss()
+        activity?.let {
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
+                    , model?.commentUser?.userID ?: 0
+                    , 0
+                    , model.comment.commentID)
+                    .apply {
+                        mFuncationTv.visibility = View.VISIBLE
+                        mFuncationTv.text = "回复"
+                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                dismiss()
+                                mRefuseModel = model
+                                mFeedsInputContainerView?.showSoftInput()
+                                mFeedsInputContainerView?.setETHint("回复 ${mRefuseModel?.commentUser?.nickname}")
+                            }
+                        })
+                    }
+            mMoreDialogPlus?.showByDialog()
+        }
     }
 
     override fun isBlackStatusBarText(): Boolean = true

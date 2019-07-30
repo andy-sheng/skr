@@ -31,6 +31,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.component.dialog.FeedsMoreDialogView
 import com.module.feeds.R
+import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
@@ -41,6 +42,7 @@ import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -76,6 +78,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCommonTitleBar: CommonTitleBar? = null
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
+    var mRefuseModel: FirstLevelCommentModel? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
@@ -175,7 +178,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFeedsInputContainerView?.mSendCallBack = { s ->
-            mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
+            if (mRefuseModel == null) {
+                mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
+            } else {
+                mFeedsDetailPresenter?.refuseComment(s, mFeedsWatchModel!!.feedID!!, mRefuseModel!!.comment.commentID, mRefuseModel!!) {
+                    EventBus.getDefault().post(AddCommentEvent(mRefuseModel!!.comment.commentID))
+                }
+            }
         }
 
         AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
@@ -265,6 +274,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mCommentTv?.setDebounceViewClickListener {
+            mRefuseModel = null
             mFeedsInputContainerView?.showSoftInput()
             mFeedsInputContainerView?.setETHint("回复 ${mFeedsWatchModel?.user?.nickname}")
         }
@@ -326,6 +336,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             showMoreOp()
         }
 
+        mFeedsCommentView?.mClickContentCallBack = {
+            showCommentOp(it)
+        }
+
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
     }
 
@@ -346,6 +360,29 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 //                                mFeedsInputContainerView?.showSoftInput()
 //                            }
 //                        })
+                    }
+            mMoreDialogPlus?.showByDialog()
+        }
+    }
+
+    private fun showCommentOp(model: FirstLevelCommentModel) {
+        mMoreDialogPlus?.dismiss()
+        activity?.let {
+            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
+                    , model?.commentUser?.userID ?: 0
+                    , 0
+                    , model.comment.commentID)
+                    .apply {
+                        mFuncationTv.visibility = View.VISIBLE
+                        mFuncationTv.text = "回复"
+                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                dismiss()
+                                mRefuseModel = model
+                                mFeedsInputContainerView?.showSoftInput()
+                                mFeedsInputContainerView?.setETHint("回复 ${model.commentUser.nickname}")
+                            }
+                        })
                     }
             mMoreDialogPlus?.showByDialog()
         }

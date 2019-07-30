@@ -36,6 +36,8 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
 
     var mFeedsWatchModel: FeedsWatchModel? = null
 
+    var mClickContentCallBack: ((FirstLevelCommentModel) -> Unit)? = null
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
@@ -54,6 +56,10 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
             }
 
             override fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel) {
+                mClickContentCallBack?.invoke(firstLevelCommentModel)
+            }
+
+            override fun onClickMore(firstLevelCommentModel: FirstLevelCommentModel) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SECOND_DETAIL)
                         .withSerializable("comment_model", firstLevelCommentModel)
                         .withInt("feed_id", mFeedsID!!)
@@ -109,6 +115,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
                 }
 
                 feedsCommendAdapter.notifyItemChanged(position)
+                break
             }
         }
     }
@@ -121,6 +128,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
             if (any is FirstLevelCommentModel && event.commendID == any.comment.commentID) {
                 any.comment.subCommentCnt++
                 feedsCommendAdapter.notifyItemChanged(position)
+                break
             }
         }
     }

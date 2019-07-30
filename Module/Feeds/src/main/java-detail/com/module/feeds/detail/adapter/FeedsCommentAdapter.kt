@@ -161,7 +161,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
             mReplyNum.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    mIFirstLevelCommentListener?.onClickContent(mModel!!)
+                    mIFirstLevelCommentListener?.onClickMore(mModel!!)
                 }
             })
 
@@ -197,5 +197,6 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         fun onClickLike(firstLevelCommentModel: FirstLevelCommentModel, like: Boolean, position: Int)
         fun onClickContent(firstLevelCommentModel: FirstLevelCommentModel)
         fun onClickIcon(userID: Int)
+        fun onClickMore(firstLevelCommentModel: FirstLevelCommentModel)
     }
 }
