@@ -29,9 +29,12 @@ import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.module.feeds.event.FeedsLikeEvent
 import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
 import com.module.feeds.watch.model.FeedsLikeModel
 import com.module.feeds.watch.presenter.FeedLikeViewPresenter
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import kotlin.collections.ArrayList
 
 class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
@@ -192,6 +195,9 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
 
         SinglePlayer.addCallback(playerTag, playCallback)
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this)
+        }
 
     }
 
@@ -242,7 +248,6 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
                 playOrPause(mAdapter.mDataList[mTopPosition - 1], mTopPosition - 1, true)
             }
         }
-
     }
 
     private fun randomPlay() {
@@ -373,6 +378,12 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
     }
 
+    @Subscribe
+    fun onEvent(event:FeedsLikeEvent){
+        // 有喜欢事件发生促使刷新
+        mPersenter.mLastUpdatListTime = 0
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
     }
@@ -384,6 +395,9 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mCoverRotateAnimation?.setAnimationListener(null)
         mCoverRotateAnimation?.cancel()
         mPersenter.destroy()
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this)
+        }
     }
 
     fun unselected() {
@@ -391,6 +405,6 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     }
 
     fun selected() {
-
+        initData(false)
     }
 }

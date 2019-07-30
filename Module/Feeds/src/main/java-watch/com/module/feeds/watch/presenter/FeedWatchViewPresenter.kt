@@ -9,12 +9,14 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.U
+import com.module.feeds.event.FeedsLikeEvent
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.feeds.watch.view.IFeedsWatchView
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.HashMap
 
 class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) : RxLifeCyclePresenter() {
@@ -34,7 +36,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         if (!flag) {
             // 10秒切页面才刷一下
             val now = System.currentTimeMillis()
-            if (now - mLastUpdatListTime < 30 * 1000) {
+            if (now - mLastUpdatListTime < 180 * 1000) {
 //                view.requestTimeShort()
                 return false
             }
@@ -123,6 +125,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     view.feedLikeResult(position, model, !((model.isLiked) ?: false))
+                    EventBus.getDefault().post(FeedsLikeEvent(model))
                 } else {
                     U.getToastUtil().showShort("${obj?.errmsg}")
                 }

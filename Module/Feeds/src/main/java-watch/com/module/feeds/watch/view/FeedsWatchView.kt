@@ -64,7 +64,7 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
     var mCurFocusPostion = -1 // 记录当前操作的焦点pos
     val playerTag = TAG + hashCode()
 
-    val playCallback : PlayerCallbackAdapter
+    val playCallback: PlayerCallbackAdapter
 
     private var mUserInfo: UserInfoModel? = null
     private var mCallBack: RequestCallBack? = null
@@ -197,11 +197,11 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
             setEnableOverScrollDrag(isHomePage())
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
-                    getFeeds(true)
+                    getMoreFeeds()
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
-                    getMoreFeeds()
+                    getFeeds(true)
                 }
             })
         }
@@ -225,6 +225,16 @@ class FeedsWatchView(fragment: BaseFragment, val type: Int) : ConstraintLayout(f
 //            EventBus.getDefault().register(this)
 //        }
         playCallback = object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                // 循环播放
+                mAdapter.mCurrentPlayModel?.let {
+                    mAdapter.mCurrentPlayPosition?.let { it1 ->
+                        startPlay(it1, it)
+                    }
+                }
+            }
+
             override fun openTimeFlyMonitor(): Boolean {
                 return true
             }

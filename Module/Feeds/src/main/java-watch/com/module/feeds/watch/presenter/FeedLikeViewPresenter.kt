@@ -22,7 +22,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
 
     var mOffset = 0   //偏移量
     private val mCNT = 20  // 默认拉去的个数
-    private var mLastUpdatListTime = 0L    // 上次拉取请求数据时间戳
+    var mLastUpdatListTime = 0L    // 上次拉取请求数据时间戳
 
     init {
         addToLifeCycle()
@@ -32,7 +32,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
         if (!isFlag) {
             // 正常给一个10秒的间隔
             val now = System.currentTimeMillis()
-            if (now - mLastUpdatListTime < 10 * 1000) {
+            if (now - mLastUpdatListTime < 5 * 60 * 1000) {
                 return
             }
         }
