@@ -19,6 +19,7 @@ import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.LikeFirstLevelCommentEvent
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.CommentCountModel
+import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsSecondCommentPresenter
 import com.module.feeds.detail.view.FeedsInputContainerView
@@ -176,7 +177,14 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
 
     override fun isBlackStatusBarText(): Boolean = true
 
-    override fun noMore() {
+    override fun noMore(isEmpty: Boolean) {
+        if (isEmpty) {
+            val mList: ArrayList<Any> = ArrayList()
+            mList.add(0, FeedsCommentEmptyModel())
+            mList.add(0, CommentCountModel())
+            mList.add(0, mFirstLevelCommentModel!!)
+            feedsCommendAdapter?.dataList = mList
+        }
         mRefreshLayout?.finishLoadMore()
         mRefreshLayout?.setEnableLoadMore(false)
     }
@@ -188,7 +196,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     override fun updateList(list: List<FirstLevelCommentModel>?) {
         list?.let {
             val mList: ArrayList<Any> = ArrayList(list)
-            mList.add(0, CommentCountModel(509))
+            mList.add(0, CommentCountModel())
             mList.add(0, mFirstLevelCommentModel!!)
             feedsCommendAdapter?.dataList = mList
         }

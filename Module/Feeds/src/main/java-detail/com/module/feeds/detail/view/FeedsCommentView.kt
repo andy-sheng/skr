@@ -14,6 +14,7 @@ import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.LikeFirstLevelCommentEvent
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.CommentCountModel
+import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsCommentPresenter
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -97,9 +98,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
     fun addSelfComment(model: FirstLevelCommentModel) {
         mFeedsCommentPresenter?.mModelList?.add(0, model)
         mFeedsCommentPresenter?.mOffset = mFeedsCommentPresenter?.mOffset!! + 1
-
-        feedsCommendAdapter.dataList.add(1, model)
-        feedsCommendAdapter.notifyDataSetChanged()
+        mFeedsCommentPresenter?.updateCommentList()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -133,7 +132,14 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         }
     }
 
-    override fun noMore() {
+    override fun noMore(isEmpty: Boolean) {
+        if (isEmpty) {
+            val mList: ArrayList<Any> = ArrayList()
+            mList.add(0, FeedsCommentEmptyModel())
+            mList.add(0, CommentCountModel())
+            feedsCommendAdapter?.dataList = mList
+        }
+
         mRefreshLayout?.finishLoadMore()
         mRefreshLayout.setEnableLoadMore(false)
     }
@@ -148,7 +154,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
 
     override fun updateList(list: List<FirstLevelCommentModel>?) {
         val mList: ArrayList<Any> = ArrayList(list)
-        mList.add(0, CommentCountModel(509))
+        mList.add(0, CommentCountModel())
         feedsCommendAdapter?.dataList = mList
         mRefreshLayout?.finishLoadMore()
     }
