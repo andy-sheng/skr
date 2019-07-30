@@ -18,6 +18,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
+import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.model.CommentCountModel
@@ -103,7 +104,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             mNameTv.text = model.commentUser?.nickname
             mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt
                     ?: 0L, System.currentTimeMillis())
-            mLikeNum.text = model.comment.likedCnt.toString()
+            mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
 
             mReplyNum.visibility = View.GONE
             MyLog.d("CommentHolder", "${model.comment.content}")
@@ -111,7 +112,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                 mContentTv.text = model.comment.content
                 if (model.comment.subCommentCnt > 0 && !mIsSecond) {
                     mReplyNum.visibility = View.VISIBLE
-                    mReplyNum.text = "${model.comment.subCommentCnt}条回复"
+                    mReplyNum.text = "${StringFromatUtils.formatFansNum(model.comment.subCommentCnt)}条回复"
                 } else {
                     mReplyNum.visibility = View.GONE
                 }
@@ -196,7 +197,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         }
 
         fun bindData(num: Int) {
-            mCountTv.text = "精彩评论（$num）"
+            mCountTv.text = "精彩评论（${StringFromatUtils.formatFansNum(num)}）"
         }
     }
 

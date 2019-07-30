@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
-import com.common.core.share.SharePanel
-import com.common.core.share.ShareType
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.dialog.FeedsMoreDialogView
+import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
 import com.module.feeds.detail.event.AddCommentEvent
@@ -35,8 +34,6 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     var mCommentTv: ExTextView? = null
     var mXinIv: ExImageView? = null
     var mXinNumTv: ExTextView? = null
-    var mShareIv: ExImageView? = null
-    var mShareNumTv: ExTextView? = null
     var mFeedsInputContainerView: FeedsInputContainerView? = null
     var mFirstLevelCommentModel: FirstLevelCommentModel? = null
     var mRefuseModel: FirstLevelCommentModel? = null
@@ -60,8 +57,6 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         mCommentTv = rootView.findViewById(com.module.feeds.R.id.comment_tv)
         mXinIv = rootView.findViewById(com.module.feeds.R.id.xin_iv)
         mXinNumTv = rootView.findViewById(com.module.feeds.R.id.xin_num_tv)
-        mShareIv = rootView.findViewById(com.module.feeds.R.id.share_iv)
-        mShareNumTv = rootView.findViewById(com.module.feeds.R.id.share_num_tv)
         mFeedsInputContainerView = rootView.findViewById(com.module.feeds.R.id.feeds_input_container_view)
 
         mTitlebar = rootView.findViewById(com.module.feeds.R.id.titlebar)
@@ -117,16 +112,10 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             }
         })
 
-        mXinNumTv!!.text = mFirstLevelCommentModel!!.comment.likedCnt.toString()
+        mXinNumTv!!.text = StringFromatUtils.formatFansNum(mFirstLevelCommentModel!!.comment.likedCnt)
         mXinIv!!.isSelected = mFirstLevelCommentModel!!.isLiked()
         mXinIv?.setDebounceViewClickListener {
             mFeedsSecondCommentPresenter?.likeComment(mFirstLevelCommentModel!!, mFeedsID!!, !mXinIv!!.isSelected, 0)
-        }
-
-        mShareIv?.setDebounceViewClickListener {
-            val sharePanel = SharePanel(activity)
-            sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png")
-            sharePanel.show(ShareType.IMAGE_RUL)
         }
 
         mCommentTv?.setDebounceViewClickListener {
@@ -208,7 +197,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         feedsCommendAdapter?.notifyItemChanged(position)
         if (position == 0) {
             mXinIv?.isSelected = like
-            mXinNumTv?.text = firstLevelCommentModel.comment.likedCnt.toString()
+            mXinNumTv?.text = StringFromatUtils.formatFansNum(firstLevelCommentModel.comment.likedCnt)
             EventBus.getDefault().post(LikeFirstLevelCommentEvent(firstLevelCommentModel.comment.commentID, like))
         }
     }

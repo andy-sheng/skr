@@ -31,6 +31,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.component.dialog.FeedsMoreDialogView
+import com.component.person.utils.StringFromatUtils
 import com.module.feeds.R
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
@@ -253,7 +254,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
                 override fun onStart(p0: SHARE_MEDIA?) {
                     mFeedsWatchModel?.shareCnt = mFeedsWatchModel?.shareCnt?.plus(1)
-                    mShareNumTv?.text = mFeedsWatchModel?.shareCnt.toString()
+                    mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
                 }
             })
         }
@@ -309,8 +310,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it)
         }
-        mShareNumTv?.text = mFeedsWatchModel?.shareCnt.toString()
-        mXinNumTv?.text = mFeedsWatchModel?.starCnt.toString()
+        mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
+        mXinNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.starCnt!!)
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
         mRadioView?.avatarContainer?.setDebounceViewClickListener {
@@ -399,9 +400,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mXinIv!!.isSelected = like
         if (like) {
             U.getToastUtil().showShort("已添加至【喜欢】列表")
-            mXinNumTv!!.text = mXinNumTv!!.text.toString().toInt().plus(1).toString()
+            mXinNumTv!!.text = StringFromatUtils.formatFansNum(mXinNumTv!!.text.toString().toInt().plus(1))
         } else {
-            mXinNumTv!!.text = (mXinNumTv!!.text.toString().toInt() - 1).toString()
+            mXinNumTv!!.text = StringFromatUtils.formatFansNum((mXinNumTv!!.text.toString().toInt() - 1))
         }
 
     }
