@@ -78,9 +78,11 @@ class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     mSendCallBack?.let {
                         it(mEtContent?.text.toString())
                     }
+                    mEtContent?.setText("")
+                    hideSoftInput()
+                } else {
+                    U.getToastUtil().showShort("发送内容不能为空")
                 }
-                mEtContent?.setText("")
-                hideSoftInput()
             }
         })
     }
