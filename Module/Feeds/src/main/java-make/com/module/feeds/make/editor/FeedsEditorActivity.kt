@@ -222,6 +222,7 @@ class FeedsEditorActivity : BaseActivity() {
 
             override fun onCompletion() {
                 launch {
+                    mComposeProgressbarVG?.visibility = View.GONE
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                             .withSerializable("feeds_make_model", mFeedsMakeModel)
                             .navigation()
