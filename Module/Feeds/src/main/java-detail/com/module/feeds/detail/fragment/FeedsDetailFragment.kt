@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -33,6 +34,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.component.dialog.FeedsMoreDialogView
 import com.component.person.utils.StringFromatUtils
+import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
@@ -275,6 +277,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         AvatarUtils.loadAvatarByUrl(mSingerIv, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
                 .setCircle(true)
                 .build())
+        mSingerIv?.setDebounceViewClickListener {
+            val bundle = Bundle()
+            bundle.putInt("bundle_user_id", mFeedsWatchModel?.user?.userID ?: 0)
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                    .with(bundle)
+                    .navigation()
+        }
 
         mNameTv?.text = mFeedsWatchModel?.user?.nickname
         mFeedsWatchModel?.song?.createdAt?.let {
