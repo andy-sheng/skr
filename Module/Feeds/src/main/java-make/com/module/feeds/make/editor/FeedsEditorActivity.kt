@@ -1,6 +1,7 @@
 package com.module.feeds.make.editor
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -232,7 +233,7 @@ class FeedsEditorActivity : BaseActivity() {
                     mComposeProgressbarVG?.visibility = View.GONE
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                             .withSerializable("feeds_make_model", mFeedsMakeModel)
-                            .navigation()
+                            .navigation(this@FeedsEditorActivity,9)
                 }
             }
         })
@@ -330,6 +331,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+
     }
 
     override fun onPause() {
@@ -342,6 +344,16 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit.release()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == 9 ){
+                // 从发布页返回
+                mZqAudioEditorKit.startPreview(-1)
+                resumePreview()
+            }
+        }
+    }
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    fun onEvent(event: EngineEvent) {
 //        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {

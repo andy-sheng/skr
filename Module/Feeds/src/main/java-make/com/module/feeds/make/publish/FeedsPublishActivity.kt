@@ -1,5 +1,6 @@
 package com.module.feeds.make.publish
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -132,6 +133,7 @@ class FeedsPublishActivity : BaseActivity() {
 
         titleBar.leftImageButton.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                setResult(Activity.RESULT_OK)
                 finish()
             }
         })
