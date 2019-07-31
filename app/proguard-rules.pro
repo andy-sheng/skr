@@ -498,6 +498,16 @@ public static final int *;
 -keep public class com.huawei.android.hms.agent.** extends android.app.Activity { public *; protected *; }
 -keep interface com.huawei.android.hms.agent.common.INoProguard {*;}
 -keep class * extends com.huawei.android.hms.agent.common.INoProguard {*;}
+
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
+-keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
+
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
 -ignorewarnings
 
 
