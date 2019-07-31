@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.View
@@ -183,6 +184,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsInputContainerView?.mSendCallBack = { s ->
             if (mRefuseModel == null) {
                 mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
+                val behavior = ((mAppbar?.getLayoutParams()) as ((CoordinatorLayout.LayoutParams))).behavior
+                if (behavior is AppBarLayout.Behavior) {
+                    val topAndBottomOffset = behavior.getTopAndBottomOffset();
+                    if (-U.getDisplayUtils().dip2px(460f) > topAndBottomOffset) {
+                        behavior.setTopAndBottomOffset(-U.getDisplayUtils().dip2px(460f))
+                    }
+                    mFeedsCommentView?.mRecyclerView?.scrollToPosition(0)
+                }
             } else {
                 mFeedsDetailPresenter?.refuseComment(s, mFeedsWatchModel!!.feedID!!, mRefuseModel!!.comment.commentID, mRefuseModel!!) {
                     EventBus.getDefault().post(AddCommentEvent(mRefuseModel!!.comment.commentID))

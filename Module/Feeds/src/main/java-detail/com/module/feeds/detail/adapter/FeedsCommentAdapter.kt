@@ -113,6 +113,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
     inner class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mCommenterAvaterIv: BaseImageView
         val mNameTv: ExTextView
+        val mBottomDivider: View
         val mCommentTimeTv: ExTextView
         val mXinIv: ExImageView
         val mLikeNum: ExTextView
@@ -129,6 +130,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             mLikeNum = itemView.findViewById(com.module.feeds.R.id.like_num)
             mContentTv = itemView.findViewById(com.module.feeds.R.id.content_tv)
             mReplyNum = itemView.findViewById(com.module.feeds.R.id.reply_num)
+            mBottomDivider = itemView.findViewById(com.module.feeds.R.id.bottom_divider)
         }
 
         fun updateRefCount() {
@@ -155,6 +157,11 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         fun bindData(model: FirstLevelCommentModel, position: Int) {
             mModel = model
             mPosition = position
+            if (position == 0 && mIsSecond) {
+                mBottomDivider.setBackgroundColor(U.getColor(R.color.transparent))
+            } else {
+                mBottomDivider.setBackgroundColor(U.getColor(R.color.black_trans_10))
+            }
 
             AvatarUtils.loadAvatarByUrl(mCommenterAvaterIv, AvatarUtils.newParamsBuilder(mModel?.commentUser?.avatar)
                     .setCircle(true)
@@ -256,7 +263,11 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         }
 
         fun bindData(num: Int) {
-            mCountTv.text = "精彩评论（${StringFromatUtils.formatFansNum(num)}）"
+            if (mIsSecond) {
+                mCountTv.text = "全部回复（${StringFromatUtils.formatFansNum(num)}）"
+            } else {
+                mCountTv.text = "精彩评论（${StringFromatUtils.formatFansNum(num)}）"
+            }
         }
     }
 
