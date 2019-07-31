@@ -275,7 +275,9 @@ public class ZqAudioEditorKit {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
         }
-        if (mState != STATE_PREVIEW_STARTED && mState != STATE_PREVIEW_PREPARING) {
+        if (mState != STATE_PREVIEW_STARTED &&
+                mState != STATE_PREVIEW_PAUSED &&
+                mState != STATE_PREVIEW_PREPARING) {
             return;
         }
         for (int i = 0; i < MAX_CHN; i++) {
@@ -536,6 +538,7 @@ public class ZqAudioEditorKit {
     private AudioFileCapture.OnPreparedListener mOnCapturePreparedListener = new AudioFileCapture.OnPreparedListener() {
         @Override
         public void onPrepared(AudioFileCapture audioFileCapture) {
+            Log.d(TAG, "onPrepared: " + audioFileCapture);
             synchronized (ZqAudioEditorKit.this) {
                 // 主音轨播放开始后再开始其他音轨的播放
                 if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&

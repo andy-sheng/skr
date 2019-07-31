@@ -381,6 +381,7 @@ public class AudioFileCapture {
                             break;
                         }
                         mState = STATE_PREPARING;
+                        mPaused = false;
                         err = doStart();
                         if (msg.obj != null) {
                             ((Runnable) msg.obj).run();
