@@ -312,6 +312,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID!!)
         }
 
+        mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
         mFollowTv?.setDebounceViewClickListener {
 
         }
