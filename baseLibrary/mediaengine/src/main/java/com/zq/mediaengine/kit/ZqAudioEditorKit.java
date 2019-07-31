@@ -122,7 +122,7 @@ public class ZqAudioEditorKit {
         mPublisher = new MediaMuxerPublisher();
         mPublisher.setAudioOnly(true);
         mPublisher.setPubListener(mPubListener);
-        mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
+        // 开始合成时再连接encoder
         mAudioEncoder.getSrcPin().connect(mPublisher.getAudioSink());
     }
 
@@ -196,9 +196,13 @@ public class ZqAudioEditorKit {
             return;
         }
         mState = STATE_PREVIEW_PREPARING;
+        // 预览时断开encoder的连接
+        mAudioMixer.getSrcPin().disconnect(mAudioEncoder.getSinkPin(), false);
+
         mLoopCount = loopCount;
         mLoopedCount = 0;
         mAudioSource[0].start();
+        mAudioPreview.start();
     }
 
     /**
@@ -255,6 +259,7 @@ public class ZqAudioEditorKit {
                 mAudioSource[i].capture.stop();
             }
         }
+        mAudioPreview.stop();
         mState = STATE_IDLE;
     }
 
@@ -447,6 +452,8 @@ public class ZqAudioEditorKit {
                         2,
                         96000);
         mAudioEncoder.configure(audioCodecFormat);
+        // 开始合成时再连接encoder
+        mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
 
         mState = STATE_COMPOSING;
         mPublisher.start(mComposePath);
@@ -502,16 +509,25 @@ public class ZqAudioEditorKit {
     private AudioFileCapture.OnCompletionListener mOnCaptureCompletionListener = new AudioFileCapture.OnCompletionListener() {
         @Override
         public void onCompletion(AudioFileCapture audioFileCapture) {
+            Log.d(TAG, "onCompletion: " + audioFileCapture + " state: " + mState);
             synchronized (ZqAudioEditorKit.this) {
                 if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
                         (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED)) {
                     if (mLoopCount < 0 || mLoopedCount < mLoopCount) {
+                        // 先停止所有音轨
+                        for (int i = 0; i < MAX_CHN; i++) {
+                            if (mAudioSource[i] != null) {
+                                mAudioSource[i].capture.stop();
+                            }
+                        }
+                        // 重新开始主音轨播放
                         mAudioSource[0].start();
                         mLoopedCount++;
                         if (mOnPreviewInfoListener != null) {
                             mOnPreviewInfoListener.onLoopCount(mLoopCount);
                         }
                     } else {
+                        mAudioPreview.stop();
                         if (mOnPreviewInfoListener != null) {
                             mOnPreviewInfoListener.onCompletion();
                         }

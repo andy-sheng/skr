@@ -192,8 +192,14 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize) {
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
+    // LOGD("process idx=%d inBuf=%p inSize=%d nativeMode=%d", idx, inBuf, inSize, nativeMode);
     int result = inSize;
     pthread_mutex_lock(&mLock);
+    // destroyed
+    if (mChannelParams[idx] == NULL) {
+        LOGD("mixer %d params destroyed, break process", idx);
+        goto Quit;
+    }
     if (idx == mMainIdx) {
         mMainFrameReady = true;
         if (mixAll(inBuf, inSize) < 0) {

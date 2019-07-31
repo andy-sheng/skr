@@ -336,20 +336,6 @@ public class AudioMixer {
             return;
         }
 
-        if ((frame.flags & AVConst.FLAG_DETACH_NATIVE_MODULE) != 0) {
-            if (frame.format.nativeModule != 0) {
-                _attachTo(mInstance, idx, frame.format.nativeModule, true);
-            }
-            if(mInstance != INSTANCE_UNINIT) {
-                _destroy(mInstance, idx);
-            }
-        }
-
-        // handle eos, for blocking mode
-        if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0 && mInstance != INSTANCE_UNINIT) {
-                _destroy(mInstance, idx);
-        }
-
         if (frame.buf != null && frame.format.nativeModule == 0 && mInstance != INSTANCE_UNINIT) {
             _process(mInstance, idx, frame.buf, frame.buf.limit());
         }
@@ -366,6 +352,20 @@ public class AudioMixer {
             AudioBufFrame outFrame = new AudioBufFrame(frame);
             outFrame.format = mOutFormat;
             mSrcPin.onFrameAvailable(outFrame);
+        }
+
+        if ((frame.flags & AVConst.FLAG_DETACH_NATIVE_MODULE) != 0) {
+            if (frame.format.nativeModule != 0) {
+                _attachTo(mInstance, idx, frame.format.nativeModule, true);
+            }
+            if(mInstance != INSTANCE_UNINIT) {
+                _destroy(mInstance, idx);
+            }
+        }
+
+        // handle eos, for blocking mode
+        if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0 && mInstance != INSTANCE_UNINIT) {
+            _destroy(mInstance, idx);
         }
     }
 
