@@ -127,6 +127,8 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
             val any: Any = feedsCommendAdapter.dataList[position]
             if (any is FirstLevelCommentModel && event.commendID == any.comment.commentID) {
                 any.comment.subCommentCnt++
+                feedsCommendAdapter.mCommentNum++
+                feedsCommendAdapter.notifyItemChanged(0)
                 feedsCommendAdapter.updatePart(position, any, FeedsCommentAdapter.TYPE_REF_CTN)
                 break
             }
