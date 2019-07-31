@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:background="#EBEDF2">
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:showBottomLine="false"
+        android:visibility="gone"
+        app:statusBarColor="@color/transparent"
+        app:titleBarHeight="@dimen/view_0_dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/cancle_tv"
         android:layout_width="wrap_content"
@@ -15,7 +25,7 @@
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/titlebar"/>
 
     <com.common.view.ex.NoLeakEditText
         android:id="@+id/search_content"
@@ -42,7 +52,7 @@
         app:bl_solid_color="@color/black_trans_5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/titlebar" />
 
     <ImageView
         android:layout_width="@dimen/view_18_dp"
