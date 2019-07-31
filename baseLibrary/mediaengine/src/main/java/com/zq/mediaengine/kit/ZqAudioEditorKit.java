@@ -494,8 +494,13 @@ public class ZqAudioEditorKit {
             Log.e(TAG, "composing not started, return");
             return;
         }
-        mAudioSource[0].capture.stop();
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.stop();
+            }
+        }
         mAudioEncoder.stop();
+        mState = STATE_IDLE;
     }
 
     /**
@@ -511,6 +516,7 @@ public class ZqAudioEditorKit {
         }
         mAudioEncoder.release();
         mAudioPreview.release();
+        mState = STATE_IDLE;
     }
 
     private AudioFileCapture.OnPreparedListener mOnCapturePreparedListener = new AudioFileCapture.OnPreparedListener() {
@@ -555,6 +561,12 @@ public class ZqAudioEditorKit {
     }
 
     private void handleComposeCompletion() {
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.stop();
+            }
+        }
+        mState = STATE_IDLE;
         if (mOnComposeInfoListener != null) {
             mOnComposeInfoListener.onProgress(1.0f);
             mOnComposeInfoListener.onCompletion();
