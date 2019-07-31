@@ -141,7 +141,6 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedVp.adapter = mTabPagerAdapter
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
-        mFeedVp.setCurrentItem(1, false)
     }
 
     override fun onFragmentVisible() {
@@ -166,12 +165,12 @@ class FeedsWatchFragment : BaseFragment() {
         }
     }
 
-    override fun onFragmentInvisible(from:Int) {
+    override fun onFragmentInvisible(from: Int) {
         super.onFragmentInvisible(from)
         mFollowFeesView.unselected()
         mRecommendFeedsView.unselected()
         mFeedsCollectView.unselected()
-        if(from==2){
+        if (from == 2) {
             FeedsPlayStatistics.tryUpload(true)
         }
     }
