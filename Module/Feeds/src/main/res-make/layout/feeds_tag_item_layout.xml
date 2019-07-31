@@ -10,6 +10,7 @@
     android:text="改词"
     android:textColor="@color/black_trans_30"
     android:layout_marginRight="@dimen/view_10_dp"
+    android:layout_marginBottom="@dimen/view_10_dp"
     android:textSize="@dimen/view_14_dp"
     app:bl_corners_radius="@dimen/view_12_dp"
     app:bl_checked_drawable="#9ED7FF"

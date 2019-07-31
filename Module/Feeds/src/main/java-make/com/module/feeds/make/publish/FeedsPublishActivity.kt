@@ -138,13 +138,10 @@ class FeedsPublishActivity : BaseActivity() {
 
         titleBar.rightCustomView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-
-                // TODO fortest
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SHARE)
-                        .withSerializable("feeds_make_model", mFeedsMakeModel)
-                        .navigation()
-
-
+                if(TextUtils.isEmpty(worksNameEt.text)){
+                    U.getToastUtil().showShort("作品名称为必填")
+                    return
+                }
                 mFeedsMakeModel?.let {
                     uploadProgressbar.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(playUrl)) {
@@ -171,9 +168,26 @@ class FeedsPublishActivity : BaseActivity() {
                 }
             }
         })
+        sayEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                leftWordTipsTv.text = "${worksNameEt.text.length}/300"
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         worksNameEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                titleBar.rightCustomView.isEnabled = !TextUtils.isEmpty(worksNameEt.text)
+                if(TextUtils.isEmpty(worksNameEt.text)){
+                    titleBar.rightCustomView?.isSelected = true
+                }else{
+                    titleBar.rightCustomView?.isSelected = false
+                }
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -6,6 +6,6 @@
     android:layout_marginRight="@dimen/view_17_dp"
     android:gravity="center"
     android:text="保存发布"
-    app:bl_enabled_textColor="@color/black"
+    app:bl_unSelected_textColor="@color/black"
     android:enabled="false"
-    app:bl_unEnabled_textColor="@color/black_trans_50" />
+    app:bl_selected_textColor="@color/black_trans_50" />
