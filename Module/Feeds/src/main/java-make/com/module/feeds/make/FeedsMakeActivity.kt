@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 
 import com.common.base.BaseActivity
 import com.module.RouterConstants
-import com.component.voice.control.VoiceControlPanelView
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.VoiceScaleView
 import android.widget.TextView
@@ -240,7 +239,7 @@ class FeedsMakeActivity : BaseActivity() {
                         val set = HashSet<Int>()
                         set.add(lyricsReader.getLineInfoIdByStartTs(0))
                         mManyLyricsView?.needCountDownLine = set
-                        mManyLyricsView?.seekto(0)
+                        mManyLyricsView?.seekTo(0)
                         mManyLyricsView?.pause()
                     }, { throwable ->
                         MyLog.e(TAG, throwable)

@@ -92,7 +92,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     override fun seekTo(duration: Int) {
         mFeedSongModel?.playCurPos = duration
-        mManyLyricsView?.seekto(duration)
+        mManyLyricsView?.seekTo(duration)
     }
 
     override fun pause() {
@@ -107,7 +107,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     override fun stop() {
         mFeedSongModel?.playCurPos = 0
-        mManyLyricsView?.seekto(0)
+        mManyLyricsView?.seekTo(0)
         mManyLyricsView?.pause()
         mIsStart = false
     }

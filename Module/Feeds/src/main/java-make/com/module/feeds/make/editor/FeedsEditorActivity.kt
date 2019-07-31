@@ -23,7 +23,6 @@ import com.component.lyrics.LyricsManager
 import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
-import com.engine.EngineEvent
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.view.AutoScrollLyricView
@@ -37,8 +36,6 @@ import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_EDITOR)
@@ -75,7 +72,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         mFeedsMakeModel = intent.getSerializableExtra("feeds_make_model") as FeedsMakeModel?
-        MyLog.d(TAG,"mFeedsMakeModel=$mFeedsMakeModel")
+        MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
         mTitleBar = findViewById(R.id.title_bar)
         mPlayBtn = findViewById(R.id.play_btn)
         mSeekBar = findViewById(R.id.seek_bar)
@@ -111,7 +108,7 @@ class FeedsEditorActivity : BaseActivity() {
                 if (mPlayBtn?.isSelected == true) {
                     pausePreview()
                 } else {
-                    startPreview()
+                    resumePreview()
                 }
             }
         })
@@ -124,7 +121,7 @@ class FeedsEditorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                mZqAudioEditorKit.seekTo(seekBar?.progress?.toLong()?:0)
+                mZqAudioEditorKit.seekTo(seekBar?.progress?.toLong() ?: 0)
             }
 
         })
@@ -134,6 +131,7 @@ class FeedsEditorActivity : BaseActivity() {
         mRadioView?.pause()
 
         if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
+            mAutoScrollLyricView?.visibility = View.GONE
             LyricsManager.getLyricsManager(U.app())
                     .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
                     .subscribeOn(Schedulers.io())
@@ -145,13 +143,14 @@ class FeedsEditorActivity : BaseActivity() {
                         mManyLyricsView?.visibility = View.VISIBLE
                         mManyLyricsView?.initLrcData()
                         mManyLyricsView?.lyricsReader = lyricsReader
-                        mManyLyricsView?.seekto(0)
+                        mManyLyricsView?.seekTo(0)
                         mManyLyricsView?.pause()
                     }, { throwable ->
                         MyLog.e(TAG, throwable)
                         MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
                     })
         } else {
+            mManyLyricsView?.visibility = View.GONE
             mFeedsMakeModel?.songModel?.let {
                 mAutoScrollLyricView?.setSongModel(it)
             }
@@ -202,12 +201,12 @@ class FeedsEditorActivity : BaseActivity() {
         })
         mZqAudioEditorKit.setOnPreviewInfoListener(object : ZqAudioEditorKit.OnPreviewInfoListener {
             override fun onStarted() {
-                MyLog.d(TAG,"onStarted")
+                MyLog.d(TAG, "onStarted")
             }
 
             override fun onCompletion() {
-                MyLog.d(TAG,"onCompletion")
-                startPreview()
+                MyLog.d(TAG, "onCompletion")
+                //startPreview()
             }
 
             override fun onLoopCount(count: Int) {
@@ -272,30 +271,41 @@ class FeedsEditorActivity : BaseActivity() {
     }
 
     private fun initWhenEngineReady() {
-        MyLog.d(TAG,"initWhenEngineReady" )
+        MyLog.d(TAG, "initWhenEngineReady")
         mZqAudioEditorKit.outputPath = mFeedsMakeModel?.composeSavePath
         mVoiceControlView?.bindData()
         mVaControlView?.bindData()
         mEffectIv?.isSelected = true
         mVoiceControlView?.visibility = View.VISIBLE
-        startPreview()
+        mZqAudioEditorKit.startPreview(-1)
+        resumePreview()
     }
 
-    private fun startPreview() {
-        MyLog.d(TAG,"startPreview" )
-        mZqAudioEditorKit.startPreview(1)
+    private fun resumePreview() {
+        MyLog.d(TAG, "startPreview")
         // 预览开始了
+        mZqAudioEditorKit?.resumePreview()
         mPlayBtn?.isSelected = true
         mRadioView?.play()
-        mManyLyricsView?.play(mZqAudioEditorKit.position.toInt())
+
+        if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
+            mManyLyricsView?.play(mZqAudioEditorKit.position.toInt())
+        } else {
+            mAutoScrollLyricView?.playLyric()
+        }
+
         mPlayProgressJob?.cancel()
         mPlayProgressJob = launch {
             for (i in 1..1000) {
                 mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mZqAudioEditorKit.position)
-                if(mManyLyricsView?.getLrcPlayerStatus()!=LRCPLAYERSTATUS_PLAY){
+                if (mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                     mManyLyricsView?.resume()
                 }
-                mManyLyricsView?.seekto(mZqAudioEditorKit.position.toInt())
+                if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
+                    mManyLyricsView?.seekTo(mZqAudioEditorKit.position.toInt())
+                } else {
+                    mAutoScrollLyricView?.seekTo(mZqAudioEditorKit.position.toInt())
+                }
                 mSeekBar?.progress = mZqAudioEditorKit.position.toInt()
                 delay(1000)
             }
@@ -303,12 +313,20 @@ class FeedsEditorActivity : BaseActivity() {
     }
 
     private fun pausePreview() {
-        MyLog.d(TAG,"pausePreview" )
-
+        MyLog.d(TAG, "pausePreview")
+        mZqAudioEditorKit.pausePreview()
         mPlayProgressJob?.cancel()
         mPlayBtn?.isSelected = false
         mManyLyricsView?.pause()
         mRadioView?.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
     override fun onDestroy() {

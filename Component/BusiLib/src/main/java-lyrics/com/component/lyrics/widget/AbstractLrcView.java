@@ -1042,7 +1042,7 @@ public abstract class AbstractLrcView extends View {
      *
      * @param playProgress
      */
-    public void seekto(int playProgress) {
+    public void seekTo(int playProgress) {
         synchronized (lock) {
             if(mLyricsReader == null){
                 MyLog.w(TAG, "seekto" + " mLyricsReader=null");

@@ -15,11 +15,9 @@ import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
-import com.common.player.AndroidMediaPlayer;
 import com.common.player.ExoPlayer;
 import com.common.player.IPlayer;
 import com.common.player.PlayerCallbackAdapter;
-import com.common.player.VideoPlayerAdapter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -32,17 +30,14 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.SkrConfig;
-import com.engine.Params;
 import com.module.playways.R;
 import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.component.dialog.ShareWorksDialog;
 import com.component.lyrics.LyricsManager;
 import com.component.lyrics.LyricsReader;
-import com.component.lyrics.utils.SongResUtils;
 import com.component.lyrics.widget.AbstractLrcView;
 import com.component.lyrics.widget.ManyLyricsView;
-import com.zq.mediaengine.kit.ZqEngineKit;
 import com.component.person.producation.model.ProducationModel;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -50,8 +45,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -261,7 +254,7 @@ public class PlayRecordFragment extends BaseFragment {
                 @Override
                 public void onCompletion() {
                     super.onCompletion();
-                    mManyLyricsView.seekto(mSongModel.getBeginMs());
+                    mManyLyricsView.seekTo(mSongModel.getBeginMs());
                     mUiHanlder.postDelayed(new Runnable() {
                         @Override
                         public void run() {

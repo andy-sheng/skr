@@ -8,11 +8,8 @@ import com.common.engine.ScoreConfig
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.utils.U
-import com.component.lyrics.model.LyricsLineInfo
 import com.engine.EngineEvent
-import com.engine.Params
 import com.engine.arccloud.SongInfo
-import com.engine.score.Score2Callback
 import com.component.lyrics.event.LrcEvent
 import com.component.lyrics.event.LyricEventLauncher
 import com.component.lyrics.widget.AbstractLrcView
@@ -29,7 +26,6 @@ import java.util.HashSet
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
@@ -146,7 +142,7 @@ class LyricAndAccMatchManager {
                     params?.manyLyricsView?.needCountDownLine = set
                     if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
                         //                            mManyLyricsView.play(mAccBeginTs);
-                        params?.manyLyricsView?.seekto(params?.accBeginTs ?: 0)
+                        params?.manyLyricsView?.seekTo(params?.accBeginTs ?: 0)
                         params?.manyLyricsView?.pause()
                         mLyricsReader = lyricsReader
                         if (params?.accLoadOk == true) {
@@ -218,7 +214,7 @@ class LyricAndAccMatchManager {
                     val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
                     if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
-                        params?.manyLyricsView?.seekto(ts2.toInt())
+                        params?.manyLyricsView?.seekTo(ts2.toInt())
                     }
                 }
             }

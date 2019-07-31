@@ -197,7 +197,7 @@ public class AuditionFragment extends BaseFragment {
                 MyLog.d(TAG, "progress " + progress);
                 if (progress > 0) {
                     ZqEngineKit.getInstance().setAudioMixingPosition(progress - mSongModel.getBeginMs());
-                    mManyLyricsView.seekto(progress);
+                    mManyLyricsView.seekTo(progress);
                 }
 
                 if (!ZqEngineKit.getInstance().getParams().isMixMusicPlaying()) {
