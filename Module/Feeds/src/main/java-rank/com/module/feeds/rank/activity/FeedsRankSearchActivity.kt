@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
+import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.openFeedsMakeActivity
@@ -35,6 +36,7 @@ import java.util.concurrent.TimeUnit
 @Route(path = RouterConstants.ACTIVITY_FEEDS_RANK_SEARCH)
 class FeedsRankSearchActivity : BaseActivity() {
 
+    lateinit var mTitlebar: CommonTitleBar
     lateinit var mCancleTv: TextView
     lateinit var mSearchContent: NoLeakEditText
     lateinit var mRefreshLayout: SmartRefreshLayout
@@ -48,10 +50,17 @@ class FeedsRankSearchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        mTitlebar = findViewById(R.id.titlebar)
         mCancleTv = findViewById(R.id.cancle_tv)
         mSearchContent = findViewById(R.id.search_content)
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mRecyclerView = findViewById(R.id.recycler_view)
+
+        if (U.getDeviceUtils().hasNotch(this)) {
+            mTitlebar.visibility = View.VISIBLE
+        } else {
+            mTitlebar.visibility = View.GONE
+        }
 
         mRefreshLayout.setEnableLoadMore(false)
         mRefreshLayout.setEnableRefresh(false)
@@ -122,7 +131,7 @@ class FeedsRankSearchActivity : BaseActivity() {
                 finish()
             }
         })
-        
+
         mSearchContent.requestFocus()
         U.getKeyBoardUtils().showSoftInputKeyBoard(this)
     }
