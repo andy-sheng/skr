@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.component.person.utils.StringFromatUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.ranked.RankedServerApi;
@@ -205,11 +206,11 @@ public class RankedDetailView extends RelativeLayout {
                 mSeqTv.setTextColor(Color.parseColor("#333B7B"));
                 mRewardBg.setVisibility(GONE);
             } else if (rankDataModel.getRankSeq() <= 3) {
-                mSeqTv.setText("" + rankDataModel.getRankSeq());
+                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
                 mSeqTv.setTextColor(Color.WHITE);
                 mRewardBg.setVisibility(VISIBLE);
             } else {
-                mSeqTv.setText("" + rankDataModel.getRankSeq());
+                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
                 mSeqTv.setTextColor(Color.parseColor("#333B7B"));
                 mRewardBg.setVisibility(GONE);
             }
@@ -238,7 +239,7 @@ public class RankedDetailView extends RelativeLayout {
                 }
             } else {
                 mSeqTv.setBackground(null);
-                mSeqTv.setText("" + rankDataModel.getRankSeq());
+                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
             }
         } else if (rankDataModel.getVType() == USER_RANKING) {
             // 段位榜
@@ -265,7 +266,7 @@ public class RankedDetailView extends RelativeLayout {
                 }
             } else {
                 mSeqTv.setBackground(null);
-                mSeqTv.setText("" + rankDataModel.getRankSeq());
+                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
             }
         }
 
