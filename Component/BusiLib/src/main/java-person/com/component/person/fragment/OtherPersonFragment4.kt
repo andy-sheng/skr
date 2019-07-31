@@ -790,6 +790,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mDialogPlus?.dismiss()
         mPersonMoreOpView?.dismiss()
         mEditRemarkDialog?.dismiss(false)
+        mFeedsWallView?.destroy()
     }
 
     override fun onRequestSucess() {

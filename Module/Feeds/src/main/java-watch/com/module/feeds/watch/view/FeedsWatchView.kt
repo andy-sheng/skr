@@ -187,8 +187,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 //        if (!EventBus.getDefault().isRegistered(this)) {
 //            EventBus.getDefault().register(this)
 //        }
-        playCallback =
-                object : PlayerCallbackAdapter() {
+        playCallback = object : PlayerCallbackAdapter() {
                     override fun onCompletion() {
                         super.onCompletion()
                         // 循环播放
@@ -416,8 +415,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 //        }
     }
 
-
-    fun destory() {
+    override fun destroy() {
         mPersenter.destroy()
         mFeedsMoreDialogView?.dismiss(false)
         SinglePlayer.removeCallback(playerTag)
