@@ -33,7 +33,7 @@ public class MediaMuxerPublisher extends Publisher {
             mMediaMuxer = new MediaMuxer(uri, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
         } catch (IOException e) {
             Log.e(TAG, "Create MediaMuxer with path " + uri + " failed!");
-            return -1;
+            return ERROR_IO;
         }
         return 0;
     }
@@ -57,7 +57,7 @@ public class MediaMuxerPublisher extends Publisher {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ret = -1;
+            ret = ERROR_UNKNOWN;
         }
         return ret;
     }
@@ -81,7 +81,7 @@ public class MediaMuxerPublisher extends Publisher {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ret = -1;
+            ret = ERROR_UNKNOWN;
         }
         return ret;
     }
@@ -96,7 +96,7 @@ public class MediaMuxerPublisher extends Publisher {
             mMediaMuxer.writeSampleData(mAudioTrackIndex, packet.buf, bufferInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            return -1;
+            return ERROR_UNKNOWN;
         }
         return 0;
     }
@@ -111,7 +111,7 @@ public class MediaMuxerPublisher extends Publisher {
             mMediaMuxer.writeSampleData(mVideoTrackIndex, packet.buf, bufferInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            return -1;
+            return ERROR_UNKNOWN;
         }
         return 0;
     }

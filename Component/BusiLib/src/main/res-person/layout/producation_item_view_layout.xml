@@ -2,52 +2,39 @@
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_105_dp"
+    android:layout_height="@dimen/view_126_dp"
     android:layout_marginBottom="@dimen/view_12_dp"
-    android:padding="@dimen/common_stroke_with"
     app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="#77C7F0"
-    app:bl_stroke_color="#3B4E79"
-    app:bl_stroke_width="@dimen/common_stroke_with">
+    app:bl_solid_color="@color/colorSolidPrimary">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/cover_iv"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_10_dp" />
 
     <com.common.view.ex.ExImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/view_3_dp"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_alignLeft="@id/cover_iv"
+        android:layout_alignTop="@id/cover_iv"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#D0EFFF" />
+        app:bl_solid_color="@color/black_trans_20" />
 
-    <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/cover_area"
-        android:layout_width="@dimen/view_41_dp"
-        android:layout_height="@dimen/view_46_dp"
-        android:layout_marginLeft="@dimen/view_8_dp"
-        android:layout_marginTop="@dimen/view_12_dp"
-        android:padding="@dimen/common_stroke_with"
-        app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#6EBDFF"
-        app:bl_stroke_color="#3B4E79"
-        app:bl_stroke_width="@dimen/common_stroke_with">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/cover_iv"
-            android:layout_width="@dimen/view_38_dp"
-            android:layout_height="@dimen/view_38_dp"
-            android:layout_centerHorizontal="true" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/play_back_iv"
-            android:layout_width="@dimen/view_34_dp"
-            android:layout_height="@dimen/view_34_dp"
-            android:layout_alignTop="@id/cover_iv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_2_dp"
-            android:background="@drawable/grab_works_play" />
-
-    </com.common.view.ex.ExRelativeLayout>
+    <com.common.view.ex.ExImageView
+        android:id="@+id/play_back_iv"
+        android:layout_width="@dimen/view_8_dp"
+        android:layout_height="@dimen/view_10_dp"
+        android:layout_alignLeft="@id/cover_iv"
+        android:layout_alignTop="@id/cover_iv"
+        android:layout_marginLeft="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_23_dp"
+        android:background="@drawable/grab_works_play" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/song_name_tv"
@@ -57,7 +44,7 @@
         android:layout_marginTop="@dimen/view_14_dp"
         android:layout_marginRight="@dimen/view_8_dp"
         android:layout_toLeftOf="@+id/save_share_area"
-        android:layout_toRightOf="@+id/cover_area"
+        android:layout_toRightOf="@+id/cover_iv"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
@@ -82,8 +69,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
-        android:layout_marginTop="@dimen/view_69_dp"
-        android:background="#333B4E79" />
+        android:layout_marginTop="@dimen/view_75_dp"
+        android:background="@color/black_trans_10" />
 
     <RelativeLayout
         android:id="@+id/play_num_area"
@@ -91,6 +78,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/view_16_dp"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/view_70_dp">
 
         <TextView
@@ -122,11 +110,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_16_dp"
+            android:layout_marginRight="@dimen/view_20_dp"
             android:drawableLeft="@drawable/works_share_icon"
-            android:drawablePadding="@dimen/view_6_dp"
+            android:drawablePadding="@dimen/view_10_dp"
             android:text="分享"
-            android:textColor="#993B4E79"
+            android:textColor="@color/black_trans_50"
             android:textSize="@dimen/textsize_12_dp" />
 
 
@@ -137,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/view_70_dp"
-        android:layout_marginRight="@dimen/view_22_dp"
+        android:layout_marginRight="@dimen/view_44_dp"
         android:layout_toLeftOf="@id/share_area">
 
         <TextView
@@ -145,10 +133,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:drawableLeft="@drawable/work_dele_icon"
-            android:drawablePadding="@dimen/view_6_dp"
+            android:drawablePadding="@dimen/view_10_dp"
             android:gravity="center"
             android:text="删除"
-            android:textColor="#993B4E79"
+            android:textColor="@color/black_trans_50"
             android:textSize="@dimen/textsize_12_dp" />
 
     </RelativeLayout>

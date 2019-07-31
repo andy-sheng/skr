@@ -148,7 +148,8 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
                     , model?.commentUser?.userID ?: 0
                     , 0
-                    , model.comment.commentID)
+                    , model.comment.commentID
+                    , model.comment.feedID)
                     .apply {
                         showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {

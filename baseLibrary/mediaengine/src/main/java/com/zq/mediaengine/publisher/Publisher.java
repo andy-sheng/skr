@@ -45,8 +45,10 @@ public abstract class Publisher {
 
     // keep max interleave delta sync with native implement
     private static final int MAX_INTERLEAVE_DELTA = 10 * 1000;
-    public static final int ERROR_AV_ASYNC_ERROR = -2004;
-    public static final int ERROR_INVALID_STATE = -2010;
+    public static final int ERROR_UNKNOWN = -1;
+    public static final int ERROR_IO = -2;
+    public static final int ERROR_AV_ASYNC_ERROR = -3;
+    public static final int ERROR_INVALID_STATE = -4;
 
     protected static final int CMD_START = 1;
     protected static final int CMD_STOP = 2;

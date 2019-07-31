@@ -501,7 +501,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 } else if (position == 1) {
                     return "神曲";
                 } else if (position == 2) {
-                    return "作品";
+                    return "录音";
                 }
                 return "";
             }

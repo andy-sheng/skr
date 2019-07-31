@@ -39,6 +39,19 @@ public class ZqAudioEditorKit {
     public static final int STATE_PREVIEW_PAUSED = 3;
     public static final int STATE_COMPOSING = 4;
 
+    /**
+     * The constant ERROR_UNKNOWN.
+     */
+    public static final int ERROR_UNKNOWN = -1;
+    /**
+     * The constant ERROR_IO.
+     */
+    public static final int ERROR_IO = -2;
+    /**
+     * The constant ERROR_UNSUPPORTED.
+     */
+    public static final int ERROR_UNSUPPORTED = -3;
+
     private Context mContext;
     private AudioMixer mAudioMixer;
     private IPcmPlayer mPcmPlayer;
@@ -589,10 +602,46 @@ public class ZqAudioEditorKit {
         }
     };
 
+    private void handleError(int err) {
+        if (mState == STATE_COMPOSING ||
+                mState == STATE_PREVIEW_PREPARING ||
+                mState == STATE_PREVIEW_STARTED ||
+                mState == STATE_PREVIEW_PAUSED) {
+            for (int i = 0; i < MAX_CHN; i++) {
+                if (mAudioSource[i] != null) {
+                    mAudioSource[i].capture.stop();
+                }
+            }
+            if (mState == STATE_COMPOSING) {
+                mAudioEncoder.stop();
+            } else {
+                mAudioPreview.stop();
+            }
+            mState = STATE_IDLE;
+
+            if (mOnErrorListener != null) {
+                mOnErrorListener.onError(err, 0, 0);
+            }
+        }
+    }
+
     private AudioFileCapture.OnErrorListener mOnCaptureErrorListener = new AudioFileCapture.OnErrorListener() {
         @Override
-        public void onError(AudioFileCapture audioFileCapture, int type, long msg) {
-
+        public void onError(AudioFileCapture audioFileCapture, int err, long msg) {
+            Log.e(TAG, "onError: " + audioFileCapture + " err: " + err + " msg: " + msg);
+            int outError;
+            switch (err) {
+                case AudioFileCapture.ERROR_IO:
+                    outError = ERROR_IO;
+                    break;
+                case AudioFileCapture.ERROR_UNSUPPORTED:
+                    outError = ERROR_UNSUPPORTED;
+                    break;
+                default:
+                    outError = ERROR_UNKNOWN;
+                    break;
+            }
+            handleError(outError);
         }
     };
 
@@ -610,6 +659,16 @@ public class ZqAudioEditorKit {
         @Override
         public void onError(int err, long msg) {
             Log.e(TAG, "FilePubListener onError err: " + err + " msg: " + msg);
+            int outError;
+            switch (err) {
+                case Publisher.ERROR_IO:
+                    outError = ERROR_IO;
+                    break;
+                default:
+                    outError = ERROR_UNKNOWN;
+                    break;
+            }
+            handleError(outError);
         }
     };
 

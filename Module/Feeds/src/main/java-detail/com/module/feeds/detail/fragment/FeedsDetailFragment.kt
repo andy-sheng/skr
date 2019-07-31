@@ -130,7 +130,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
             mSeekBar!!.progress = pos.toInt()
             mFeedsCommonLyricView?.seekTo(pos.toInt())
-            if(pos*100/duration>80) {
+            if (pos * 100 / duration > 80) {
                 FeedsPlayStatistics.addComplete(mFeedsWatchModel?.feedID)
             }
         }
@@ -320,7 +320,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    SinglePlayer.seekTo(playerTag,progress.toLong())
+                    SinglePlayer.seekTo(playerTag, progress.toLong())
                     mFeedsCommonLyricView?.seekTo(progress)
                     mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
                 }
@@ -381,6 +381,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_FEED_DETAIL
                     , mFeedsWatchModel?.user?.userID ?: 0
                     , mFeedsWatchModel?.song?.songID ?: 0
+                    , 0
                     , 0)
                     .apply {
                         hideFuncation()
@@ -395,7 +396,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
                     , model?.commentUser?.userID ?: 0
                     , 0
-                    , model.comment.commentID)
+                    , model.comment.commentID,
+                    model.comment.feedID)
                     .apply {
                         showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
