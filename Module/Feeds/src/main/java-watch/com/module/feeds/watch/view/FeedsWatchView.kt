@@ -360,7 +360,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)
             }
-            if (mAdapter?.mDataList?.isNotEmpty() == true) {
+            if (mAdapter?.mDataList?.isNotEmpty() == true && isHomePage()) {
                 controlPlay(0, mAdapter?.mDataList?.get(0), true)
             }
             mAdapter?.notifyDataSetChanged()
