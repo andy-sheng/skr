@@ -90,6 +90,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     override fun seekTo(pos: Int) {
         //MyLog.d(TAG, "seekTo")
         mFeedSongModel?.playCurPos = pos
+        scrollToTs(mFeedSongModel?.playCurPos?:0)
     }
 
     override fun isStart(): Boolean = mIsStart

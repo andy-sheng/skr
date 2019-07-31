@@ -436,6 +436,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsWatchModel?.song?.playURL?.let {
             SinglePlayer.startPlay(playerTag, it)
         }
+        mFeedsCommonLyricView?.playLyric()
     }
 
     private fun pausePlay() {
