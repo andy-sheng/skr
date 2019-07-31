@@ -189,35 +189,35 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 //            EventBus.getDefault().register(this)
 //        }
         playCallback = object : PlayerCallbackAdapter() {
-                    override fun onCompletion() {
-                        super.onCompletion()
-                        // 循环播放
-                        mAdapter?.mCurrentPlayModel?.let {
-                            mAdapter?.mCurrentPlayPosition?.let { it1 ->
-                                startPlay(it1, it)
-                            }
-                        }
-                    }
-
-                    override fun openTimeFlyMonitor(): Boolean {
-                        return true
-                    }
-
-                    override fun onTimeFlyMonitor(pos: Long, duration: Long) {
-                        if(mAdapter?.playing == true){
-                            mAdapter?.updatePlayProgress(pos, duration)
-                            if(pos*100/duration>80) {
-                                FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
-                            }
-                        }else{
-                            if(MyLog.isDebugLogOpen()){
-                                U.getToastUtil().showShort("FeedsWatchView有bug,暂停失败了？")
-                            }
-                            pausePlay()
-                        }
-
+            override fun onCompletion() {
+                super.onCompletion()
+                // 循环播放
+                mAdapter?.mCurrentPlayModel?.let {
+                    mAdapter?.mCurrentPlayPosition?.let { it1 ->
+                        startPlay(it1, it)
                     }
                 }
+            }
+
+            override fun openTimeFlyMonitor(): Boolean {
+                return true
+            }
+
+            override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+                if (mAdapter?.playing == true) {
+                    mAdapter?.updatePlayProgress(pos, duration)
+                    if (pos * 100 / duration > 80) {
+                        FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
+                    }
+                } else {
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("FeedsWatchView有bug,暂停失败了？")
+                    }
+                    pausePlay()
+                }
+
+            }
+        }
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
@@ -374,10 +374,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)
             }
-            if(isHomePage()){
+            if (isHomePage()) {
                 if (mAdapter?.mDataList?.isNotEmpty() == true) {
                     controlPlay(0, mAdapter?.mDataList?.get(0), true)
-                }else{
+                } else {
                     // 拉回来的列表为空
                     pausePlay()
                     mAdapter?.mCurrentPlayModel = null
@@ -469,6 +469,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED,
                             it.user?.userID ?: 0,
                             it.song?.songID ?: 0,
+                            0,
                             0)
                             .apply {
                                 if (userInfoModel.isFollow) {
@@ -505,6 +506,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON,
                     it.user?.userID ?: 0,
                     it.song?.songID ?: 0,
+                    0,
                     0)
                     .apply {
                         showFuncation("分享")
@@ -537,6 +539,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON,
                     it.user?.userID ?: 0,
                     it.song?.songID ?: 0,
+                    0,
                     0)
                     .apply {
                         showFuncation("分享")

@@ -21,7 +21,7 @@ import com.module.RouterConstants
  * 分享，举报和取消 //他人页面
  * 分享，删除和取消 //自己页面
  */
-class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, songID: Int, commentID: Int) : ConstraintLayout(activity) {
+class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, songID: Int, commentID: Int, feedID: Int) : ConstraintLayout(activity) {
 
     companion object {
         const val FROM_FEED = 1
@@ -54,6 +54,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, targetID: Int, song
                         .withInt("targetID", targetID)
                         .withInt("songID", songID)
                         .withInt("commentID", commentID)
+                        .withInt("feedID", feedID)
                         .navigation()
             }
         })

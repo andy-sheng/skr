@@ -45,6 +45,7 @@ class FeedReportActivity : BaseActivity() {
     var mTargetID = 0  // 被举报人ID
     var mSongID = 0    // 神曲的songID
     var mCommentID = 0  // 评论ID
+    var mFeedID = 0   // 评论必须带的feedID
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_report_activity_layout
@@ -55,6 +56,7 @@ class FeedReportActivity : BaseActivity() {
         mTargetID = intent.getIntExtra("targetID", 0)
         mSongID = intent.getIntExtra("songID", 0)
         mCommentID = intent.getIntExtra("commentID", 0)
+        mFeedID = intent.getIntExtra("feedID", 0)
 
         mTitlebar = findViewById(R.id.titlebar)
         mTextHintTv = findViewById(R.id.text_hint_tv)
@@ -148,6 +150,7 @@ class FeedReportActivity : BaseActivity() {
         map["targetID"] = mTargetID
         map["commentID"] = mCommentID
         map["content"] = content
+        map["feedID"] = mFeedID
         map["type"] = typeList
         map["source"] = 5
 
