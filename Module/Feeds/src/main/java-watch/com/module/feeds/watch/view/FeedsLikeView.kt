@@ -106,7 +106,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
 
-        mRefreshLayout.setEnableRefresh(false)
+        mRefreshLayout.setEnableRefresh(true)
         mRefreshLayout.setEnableLoadMore(true)
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setEnableOverScrollDrag(false)
@@ -116,7 +116,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-
+                mPersenter.initFeedLikeList(true)
             }
         })
 
@@ -329,7 +329,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     override fun showLike(model: FeedsLikeModel) {
         this.mTopModel = model
-        mPlayLikeIv.isSelected = !model.isLiked
+        mPlayLikeIv.isSelected = model.isLiked
         // 更新数据
         mAdapter.update(mTopPosition, model)
         for (i in 0 until mRandomList.size) {
@@ -361,6 +361,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
                 songTag = " #$songTag# "
             }
             mPlayDescTv.text = "《${mTopModel?.song?.workName ?: ""}》$songTag"
+            mPlayLikeIv.isSelected = mTopModel?.isLiked == true
         }
 
         // 开启和关闭动画
