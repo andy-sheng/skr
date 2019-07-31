@@ -25,7 +25,6 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -255,7 +254,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val sharePanel = SharePanel(activity)
             sharePanel.setShareContent(mFeedsWatchModel?.user?.avatar
                     ?: "", mFeedsWatchModel!!.song?.workName, mFeedsWatchModel!!.user?.nickname,
-                    ApiManager.getInstance().findRealUrlByChannel(String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
+                    (String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
             sharePanel.show(ShareType.MUSIC)
             sharePanel.setUMShareListener(object : UMShareListener {
                 override fun onResult(p0: SHARE_MEDIA?) {
