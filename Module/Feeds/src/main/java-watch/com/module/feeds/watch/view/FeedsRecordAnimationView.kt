@@ -123,8 +123,8 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
             return
         }
         playing = true
-        rotateAnimationPlay?.start()
         rotateAnimationStop?.cancel()
+        rotateAnimationPlay?.start()
         avatarAnimation?.let {
             if (it.isStarted) {
                 it.resume()
