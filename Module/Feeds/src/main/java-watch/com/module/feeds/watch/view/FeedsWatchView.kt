@@ -38,6 +38,7 @@ import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.make.openFeedsMakeActivity
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -204,6 +205,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
                     override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                         mAdapter?.updatePlayProgress(pos, duration)
+                        if(pos*100/duration>80) {
+                            FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
+                        }
                     }
                 }
         SinglePlayer.addCallback(playerTag, playCallback)
@@ -319,6 +323,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private fun startPlay(pos: Int, model: FeedsWatchModel?) {
         mAdapter?.startPlayModel(pos, model)
         model?.song?.playURL?.let {
+            FeedsPlayStatistics.addExpose(model?.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -329,6 +334,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private fun resumePlay() {
         mAdapter?.resumePlayModel()
         mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
+            FeedsPlayStatistics.addExpose(mAdapter?.mCurrentPlayModel?.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -360,8 +366,14 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)
             }
-            if (mAdapter?.mDataList?.isNotEmpty() == true && isHomePage()) {
-                controlPlay(0, mAdapter?.mDataList?.get(0), true)
+            if(isHomePage()){
+                if (mAdapter?.mDataList?.isNotEmpty() == true) {
+                    controlPlay(0, mAdapter?.mDataList?.get(0), true)
+                }else{
+                    // 拉回来的列表为空
+                    pausePlay()
+                    mAdapter?.mCurrentPlayModel = null
+                }
             }
             mAdapter?.notifyDataSetChanged()
         } else {

@@ -224,8 +224,8 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     }
 
     @Override
-    protected void onFragmentInvisible() {
-        super.onFragmentInvisible();
+    protected void onFragmentInvisible(int from) {
+        super.onFragmentInvisible(from);
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }

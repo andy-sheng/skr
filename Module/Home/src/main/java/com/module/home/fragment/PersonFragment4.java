@@ -171,8 +171,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    protected void onFragmentInvisible() {
-        super.onFragmentInvisible();
+    protected void onFragmentInvisible(int from) {
+        super.onFragmentInvisible(from);
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
         }

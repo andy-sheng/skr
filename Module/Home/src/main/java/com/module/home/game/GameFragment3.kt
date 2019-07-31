@@ -203,8 +203,8 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         StatisticsAdapter.recordCountEvent("game", "all_expose", null)
     }
 
-    override fun onFragmentInvisible() {
-        super.onFragmentInvisible()
+    override fun onFragmentInvisible(from:Int) {
+        super.onFragmentInvisible(from)
 //        mFriendRoomGameView.stopTimer()
         mQuickGameView.stopTimer()
     }

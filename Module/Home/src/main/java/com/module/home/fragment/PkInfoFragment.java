@@ -213,8 +213,8 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     }
 
     @Override
-    protected void onFragmentInvisible() {
-        super.onFragmentInvisible();
+    protected void onFragmentInvisible(int from) {
+        super.onFragmentInvisible(from);
     }
 
     @Override

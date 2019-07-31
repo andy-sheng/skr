@@ -19,6 +19,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.RouterConstants
+import com.module.feeds.statistics.FeedsPlayStatistics
 import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
@@ -165,11 +166,14 @@ class FeedsWatchFragment : BaseFragment() {
         }
     }
 
-    override fun onFragmentInvisible() {
-        super.onFragmentInvisible()
+    override fun onFragmentInvisible(from:Int) {
+        super.onFragmentInvisible(from)
         mFollowFeesView.unselected()
         mRecommendFeedsView.unselected()
         mFeedsCollectView.unselected()
+        if(from==2){
+            FeedsPlayStatistics.tryUpload(true)
+        }
     }
 
     override fun useEventBus(): Boolean {

@@ -274,7 +274,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
             presenter.pause()
         }
         if (fragmentVisible) {
-            onFragmentInvisible()
+            onFragmentInvisible(1)
         }
         if (activity!!.isFinishing && !isDestroyed) {
             destroy()
@@ -347,8 +347,10 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
 
     /**
      * 当Fragment不可见的时候的回调
+     * from 1 表示从 onPause 导致不可见
+     *      2 表示从 setUserVisibleHint ViewPager划走导致不可见
      */
-    protected open fun onFragmentInvisible() {
+    protected open fun onFragmentInvisible(from:Int) {
         MyLog.d(TAG, "onFragmentInvisible")
         StatisticsAdapter.recordPageEnd(activity, this.javaClass.simpleName)
     }
@@ -372,7 +374,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
         } else if (visible) {        // only at fragment onCreated
             fragmentOnCreated = true
         } else if (!visible && fragmentOnCreated) {// only when you go out of fragment screen
-            onFragmentInvisible()
+            onFragmentInvisible(2)
         }
     }
 

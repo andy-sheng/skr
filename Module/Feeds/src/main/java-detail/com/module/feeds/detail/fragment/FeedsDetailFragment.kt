@@ -40,6 +40,7 @@ import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
@@ -127,6 +128,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
             mSeekBar!!.progress = pos.toInt()
             mFeedsCommonLyricView?.seekTo(pos.toInt())
+            if(pos*100/duration>80) {
+                FeedsPlayStatistics.addComplete(mFeedsWatchModel?.feedID)
+            }
         }
     }
 
@@ -434,6 +438,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.isSelected = true
         mRadioView?.play()
         mFeedsWatchModel?.song?.playURL?.let {
+            FeedsPlayStatistics.addExpose(mFeedsWatchModel?.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
         mFeedsCommonLyricView?.playLyric()
