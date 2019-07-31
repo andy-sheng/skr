@@ -14,6 +14,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.media.UMusic;
 
 public class SharePanel {
     public final String TAG = "SharePanel";
@@ -125,8 +126,42 @@ public class SharePanel {
             case TEXT:
                 shareText(sharePlatform);
                 break;
+            case MUSIC:
+                shareMusic(sharePlatform);
+                break;
         }
 
+    }
+
+    public void shareMusic(SharePlatform sharePlatform) {
+        UMusic music = new UMusic(mUrl);
+        music.setTitle("" + mTitle);
+        music.setDescription(mDes + "的撕歌精彩时刻");
+        music.setThumb(new UMImage(mActivity, mShareImage));
+        music.setmTargetUrl(mUrl);
+
+        switch (sharePlatform) {
+            case WEIXIN:
+                new ShareAction(mActivity).withMedia(music)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QQ:
+                new ShareAction(mActivity).withMedia(music)
+                        .setPlatform(SHARE_MEDIA.QQ)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case WEIXIN_CIRCLE:
+                new ShareAction(mActivity).withMedia(music)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QZONE:
+                new ShareAction(mActivity).withMedia(music)
+                        .setPlatform(SHARE_MEDIA.QZONE)
+                        .setCallback(mUMShareListener).share();
+                break;
+        }
     }
 
     private void shareText(SharePlatform sharePlatform) {

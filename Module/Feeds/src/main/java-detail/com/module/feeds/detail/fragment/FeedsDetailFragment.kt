@@ -253,9 +253,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mShareIv?.setDebounceViewClickListener {
             val sharePanel = SharePanel(activity)
-            sharePanel.setShareContent("", mFeedsWatchModel!!.song?.workName, mFeedsWatchModel!!.user?.nickname,
-                    ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
-            sharePanel.show(ShareType.URL)
+            sharePanel.setShareContent(mFeedsWatchModel?.user?.avatar
+                    ?: "", mFeedsWatchModel!!.song?.workName, mFeedsWatchModel!!.user?.nickname,
+                    ApiManager.getInstance().findRealUrlByChannel(String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID)))
+            sharePanel.show(ShareType.MUSIC)
             sharePanel.setUMShareListener(object : UMShareListener {
                 override fun onResult(p0: SHARE_MEDIA?) {
 
