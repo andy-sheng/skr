@@ -78,7 +78,8 @@ public class AudioPlayerCapture {
     private boolean mMuteChanged = false;
 
     private Handler mMainHandler;
-    private volatile boolean mLoop;
+    private int mLoopCount;
+    private int mLoopedCount;
 
     private OnPreparedListener mOnPreparedListener;
     private OnCompletionListener mOnCompletionListener;
@@ -210,7 +211,7 @@ public class AudioPlayerCapture {
                 Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
             }
             if (delay < 10) {
-                if (mLoop) {
+                if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
                     seek(0);
                 } else {
                     postOnCompletion();
@@ -359,7 +360,7 @@ public class AudioPlayerCapture {
      *            also prefix "http://", "https://"  supported.
      */
     public void start(String url) {
-        start(url, false);
+        start(url, 1);
     }
 
     /**
@@ -369,10 +370,11 @@ public class AudioPlayerCapture {
      *             prefix "file://" for absolute path,
      *             and prefix "assets://" for resource in assets folder,
      *             also prefix "http://", "https://"  supported.
-     * @param loop set if in loop play mode
+     * @param loopCount set loop count, <0 for infinity loop.
      */
-    public void start(String url, boolean loop) {
-        mLoop = loop;
+    public void start(String url, int loopCount) {
+        mLoopCount = loopCount;
+        mLoopedCount = 0;
         mAudioFileCapture.start(url);
     }
 

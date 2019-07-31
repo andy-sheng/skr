@@ -1169,7 +1169,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         EventBus.getDefault().post(engineEvent);
 
                         if (mConfig.isUseExternalAudio()) {
-                            mAudioPlayerCapture.start(filePath, cycle == -1);
+                            mAudioPlayerCapture.start(filePath, cycle);
                         } else {
                             mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
                         }

@@ -76,6 +76,8 @@ public class AudioFileCapture {
     private ByteBuffer mOutBuffer;
     private float mVolume = 1.0f;
     private String mUrl;
+    private long mOffset;
+    private long mEnd;
 
     private MediaExtractor mMediaExtractor;
     private MediaCodec mMediaCodec;
@@ -251,8 +253,9 @@ public class AudioFileCapture {
     }
 
     public void start(String url, long offset, long end, Runnable r) {
-        // TODO: 支持区间播放
         mUrl = url;
+        mOffset = offset;
+        mEnd = end;
         Message msg = mDecodeHandler.obtainMessage(CMD_START, r);
         mDecodeHandler.sendMessage(msg);
     }
@@ -365,7 +368,13 @@ public class AudioFileCapture {
                         } else {
                             mState = STATE_STARTED;
                             postOnPrepared();
-                            mDecodeHandler.sendEmptyMessage(CMD_LOOP);
+                            if (mOffset >= 20) {
+                                Log.d(TAG, "seek on start with: " + mOffset);
+                                Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) mOffset);
+                                mDecodeHandler.sendMessage(sendMsg);
+                            } else {
+                                mDecodeHandler.sendEmptyMessage(CMD_LOOP);
+                            }
                         }
                         break;
                     case CMD_LOOP:
@@ -502,6 +511,8 @@ public class AudioFileCapture {
             if (mime.startsWith("audio/")) {
                 mMediaExtractor.selectTrack(i);
                 mDuration = mediaFormat.getLong(MediaFormat.KEY_DURATION);
+                mFirstPts = mMediaExtractor.getSampleTime();
+                Log.d(TAG, "duration: " + mDuration + " first pts: " + mFirstPts);
 
                 // audio format
                 int sampleRate = mediaFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE);
@@ -556,11 +567,8 @@ public class AudioFileCapture {
         if (inputBufferIndex >= 0) {
             ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
             int sampleSize = mMediaExtractor.readSampleData(inputBuffer, 0);
-            if (sampleSize >= 0) {
-                long pts = mMediaExtractor.getSampleTime();
-                if (mFirstPts == Long.MIN_VALUE) {
-                    mFirstPts = pts;
-                }
+            long pts = (sampleSize >= 0) ? mMediaExtractor.getSampleTime() : 0;
+            if (sampleSize >= 0 && (mEnd < 0 || mEnd * 1000 > pts)) {
                 if (mIsSeeking) {
                     mBasePosition = (pts - mFirstPts) / 1000;
                     mIsSeeking = false;

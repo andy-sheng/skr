@@ -47,7 +47,7 @@ public class ZqAudioEditorKit {
     private MediaMuxerPublisher mPublisher;
 
     private int mState;
-    private AudioSource mAudioSource[];
+    private AudioSource[] mAudioSource;
     private int mLoopCount;
     private int mLoopedCount;
     private String mComposePath;
@@ -127,14 +127,17 @@ public class ZqAudioEditorKit {
     }
 
     public void setOnPreviewInfoListener(OnPreviewInfoListener listener) {
+        Log.d(TAG, "setOnPreviewInfoListener: " + listener);
         mOnPreviewInfoListener = listener;
     }
 
     public void setOnComposeInfoListener(OnComposeInfoListener listener) {
+        Log.d(TAG, "OnComposeInfoListener: " + listener);
         mOnComposeInfoListener = listener;
     }
 
     public void setOnErrorListener(OnErrorListener listener) {
+        Log.d(TAG, "OnErrorListener: " + listener);
         mOnErrorListener = listener;
     }
 
@@ -166,6 +169,7 @@ public class ZqAudioEditorKit {
      * @param end       当前音频的实际结束位置，单位为ms, 大于音频长度，或者小于0时，按实际长度计算。
      */
     public synchronized void setDataSource(int idx, String path, long offset, long end) {
+        Log.d(TAG, "setDataSource idx: " + idx + " path: " + path + " off: " + offset + " end: " + end);
         if (idx < 0 || idx >= MAX_CHN) {
             return;
         }
@@ -188,6 +192,10 @@ public class ZqAudioEditorKit {
      * @param loopCount 循环次数，<0表示无限循环。
      */
     public synchronized void startPreview(int loopCount) {
+        Log.d(TAG, "startPreview loopCount: " + loopCount);
+        if (loopCount == 0) {
+            return;
+        }
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
@@ -209,6 +217,7 @@ public class ZqAudioEditorKit {
      * 暂停音频合成预览。
      */
     public synchronized void pausePreview() {
+        Log.d(TAG, "pausePreview");
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
@@ -228,6 +237,7 @@ public class ZqAudioEditorKit {
      * 恢复音频合成预览。
      */
     public synchronized void resumePreview() {
+        Log.d(TAG, "resumePreview");
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
@@ -247,6 +257,7 @@ public class ZqAudioEditorKit {
      * 停止音频合成预览。
      */
     public synchronized void stopPreview() {
+        Log.d(TAG, "stopPreview");
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
@@ -294,7 +305,9 @@ public class ZqAudioEditorKit {
             return 0;
         }
         // TODO: 不准确
-        return mAudioSource[0].capture.getPosition();
+        long pos = mAudioSource[0].capture.getPosition();
+        Log.d(TAG, "getPosition: " + pos);
+        return pos;
     }
 
     /**
@@ -303,6 +316,7 @@ public class ZqAudioEditorKit {
      * @param pos 需要seek的目标位置，如果配置了offset, 则实际seek位置为offset+pos, 单位ms
      */
     public synchronized void seekTo(long pos) {
+        Log.d(TAG, "seekTo: " + pos);
         // TODO: 需要清空mixer和pcmPlayer的缓存数据，并且需要主音轨seek完成后再seek其他音轨
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
@@ -327,6 +341,7 @@ public class ZqAudioEditorKit {
      * @param vol   音量大小，一般在[0, 1]之间，大于1可以放大声音，但可能会出现爆音。
      */
     public void setInputVolume(int idx, float vol) {
+        Log.d(TAG, "setInputVolume idx: " + idx + " vol: " + vol);
         mAudioMixer.setInputVolume(idx, vol);
     }
 
@@ -346,6 +361,7 @@ public class ZqAudioEditorKit {
      * @param vol   音量大小，一般在[0, 1]之间，大于1可以放大声音，但可能会出现爆音。
      */
     public void setOutputVolume(float vol) {
+        Log.d(TAG, "setOutputVolume vol: " + vol);
         mAudioMixer.setOutputVolume(vol);
     }
 
@@ -368,6 +384,7 @@ public class ZqAudioEditorKit {
      *                  注意，idx为0时设置该值无效。
      */
     public void setDelay(int idx, long delayInMs) {
+        Log.d(TAG, "setDelay idx: " + idx + " delay: " + delayInMs);
         mAudioMixer.setDelay(idx, delayInMs);
     }
 
@@ -389,6 +406,7 @@ public class ZqAudioEditorKit {
      * @param type  音效类型
      */
     public synchronized void setAudioEffect(int idx, int type) {
+        Log.d(TAG, "setAudioEffect idx: " + idx + " type: " + type);
         if (mAudioSource[idx] == null) {
             Log.e(TAG, "Index " + idx + " has no DataSource set, return");
             return;
@@ -416,6 +434,7 @@ public class ZqAudioEditorKit {
      * @param path  输出路径。
      */
     public void setOutputPath(String path) {
+        Log.d(TAG, "setOutputPath path: " + path);
         mComposePath = path;
     }
 
@@ -432,6 +451,7 @@ public class ZqAudioEditorKit {
      * 开始合成。
      */
     public synchronized void startCompose() {
+        Log.d(TAG, "startCompose");
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
@@ -465,6 +485,7 @@ public class ZqAudioEditorKit {
      * 中断合成
      */
     public synchronized void abortCompose() {
+        Log.d(TAG, "abortCompose");
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
@@ -481,12 +502,15 @@ public class ZqAudioEditorKit {
      * 释放当前实例，释放后不能再访问该实例。
      */
     public synchronized void release() {
+        Log.d(TAG, "release");
         for (int i = 0; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
                 mAudioSource[i].capture.release();
                 mAudioSource[i] = null;
             }
         }
+        mAudioEncoder.release();
+        mAudioPreview.release();
     }
 
     private AudioFileCapture.OnPreparedListener mOnCapturePreparedListener = new AudioFileCapture.OnPreparedListener() {
@@ -508,7 +532,7 @@ public class ZqAudioEditorKit {
     };
 
     private void handlePreviewCompletion() {
-        if (mLoopCount < 0 || mLoopedCount < mLoopCount) {
+        if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
             // 先停止所有音轨
             for (int i = 0; i < MAX_CHN; i++) {
                 if (mAudioSource[i] != null) {
@@ -517,7 +541,6 @@ public class ZqAudioEditorKit {
             }
             // 重新开始主音轨播放
             mAudioSource[0].start();
-            mLoopedCount++;
             if (mOnPreviewInfoListener != null) {
                 mOnPreviewInfoListener.onLoopCount(mLoopCount);
             }
