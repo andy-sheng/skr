@@ -69,7 +69,7 @@ public interface GrabSongApi {
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/fuel/index-room-list")
-    Observable<ApiResult> getFirstPageRecommendRoomList();
+    Observable<ApiResult> getFirstPageRecommendRoomList(@Query("testList") String testList, @Query("vars") String vars);
 
 
     /**
@@ -79,5 +79,5 @@ public interface GrabSongApi {
      * @return
      */
     @GET("http://dev.room.inframe.mobi/v1/room/roominfo")
-    Observable<ApiResult> checkUserRoom(@Query("userID")int userID);
+    Observable<ApiResult> checkUserRoom(@Query("userID") int userID);
 }
