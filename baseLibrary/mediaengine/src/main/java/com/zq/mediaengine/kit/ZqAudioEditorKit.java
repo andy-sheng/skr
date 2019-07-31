@@ -506,31 +506,45 @@ public class ZqAudioEditorKit {
         }
     };
 
+    private void handlePreviewCompletion() {
+        if (mLoopCount < 0 || mLoopedCount < mLoopCount) {
+            // 先停止所有音轨
+            for (int i = 0; i < MAX_CHN; i++) {
+                if (mAudioSource[i] != null) {
+                    mAudioSource[i].capture.stop();
+                }
+            }
+            // 重新开始主音轨播放
+            mAudioSource[0].start();
+            mLoopedCount++;
+            if (mOnPreviewInfoListener != null) {
+                mOnPreviewInfoListener.onLoopCount(mLoopCount);
+            }
+        } else {
+            mAudioPreview.stop();
+            if (mOnPreviewInfoListener != null) {
+                mOnPreviewInfoListener.onCompletion();
+            }
+        }
+    }
+
+    private void handleComposeCompletion() {
+        if (mOnComposeInfoListener != null) {
+            mOnComposeInfoListener.onProgress(1.0f);
+            mOnComposeInfoListener.onCompletion();
+        }
+    }
+
     private AudioFileCapture.OnCompletionListener mOnCaptureCompletionListener = new AudioFileCapture.OnCompletionListener() {
         @Override
         public void onCompletion(AudioFileCapture audioFileCapture) {
             Log.d(TAG, "onCompletion: " + audioFileCapture + " state: " + mState);
             synchronized (ZqAudioEditorKit.this) {
-                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
-                        (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED)) {
-                    if (mLoopCount < 0 || mLoopedCount < mLoopCount) {
-                        // 先停止所有音轨
-                        for (int i = 0; i < MAX_CHN; i++) {
-                            if (mAudioSource[i] != null) {
-                                mAudioSource[i].capture.stop();
-                            }
-                        }
-                        // 重新开始主音轨播放
-                        mAudioSource[0].start();
-                        mLoopedCount++;
-                        if (mOnPreviewInfoListener != null) {
-                            mOnPreviewInfoListener.onLoopCount(mLoopCount);
-                        }
-                    } else {
-                        mAudioPreview.stop();
-                        if (mOnPreviewInfoListener != null) {
-                            mOnPreviewInfoListener.onCompletion();
-                        }
+                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture) {
+                    if (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
+                        handlePreviewCompletion();
+                    } else if (mState == STATE_COMPOSING) {
+                        handleComposeCompletion();
                     }
                 }
             }
