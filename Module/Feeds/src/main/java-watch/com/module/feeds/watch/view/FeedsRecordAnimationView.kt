@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
@@ -44,7 +43,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     var playing = false
     var hasLayouted = false
     var wantPlaying = false
-
+    private var hideWhenPause = false
     init {
         TAG += hashCode()
         View.inflate(context, R.layout.feed_record_animation_view_layout, this)
@@ -56,6 +55,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FeedsRecordAnimationView)
+        hideWhenPause = typedArray.getBoolean(R.styleable.FeedsRecordAnimationView_hideWhenPause, false)
         startAngle = typedArray.getFloat(R.styleable.FeedsRecordAnimationView_startAngle, -55f)
         endAngle = typedArray.getFloat(R.styleable.FeedsRecordAnimationView_endAngle, -25f)
 
@@ -148,33 +148,6 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation?.pause()
     }
 
-    fun showRockerIv() {
-        rockerIv.visibility = View.VISIBLE
-    }
-
-    fun hideRockerIv() {
-        if (!playing) {
-            rockerIv.visibility = View.GONE
-            return
-        }
-        rotateAnimationStop?.removeAllListeners()
-        rotateAnimationStop?.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                rockerIv.visibility = View.GONE
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-                rockerIv.visibility = View.GONE
-            }
-
-            override fun onAnimationStart(animation: Animator?) {
-            }
-        })
-    }
-
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         if (!hasLayouted) {
@@ -184,17 +157,54 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
             if (rotateAnimationPlay == null) {
                 rotateAnimationPlay = ObjectAnimator.ofFloat(rockerIv, View.ROTATION, startAngle, endAngle)
                 rotateAnimationPlay?.duration = 800
+                rotateAnimationPlay?.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animation: Animator?) {
+                    }
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {
+
+                    }
+
+                    override fun onAnimationStart(animation: Animator?) {
+                        rockerIv.visibility = View.VISIBLE
+                    }
+                })
             }
 
             if (rotateAnimationStop == null) {
                 rotateAnimationStop = ObjectAnimator.ofFloat(rockerIv, View.ROTATION, endAngle, startAngle)
                 rotateAnimationStop?.duration = 800
+                rotateAnimationStop?.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animation: Animator?) {
+                    }
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        if(hideWhenPause){
+                            rockerIv.visibility = View.GONE
+                        }
+                    }
+
+                    override fun onAnimationCancel(animation: Animator?) {
+                        if(hideWhenPause){
+                            rockerIv.visibility = View.GONE
+                        }
+                    }
+
+                    override fun onAnimationStart(animation: Animator?) {
+                    }
+                })
             }
 
             if (wantPlaying) {
                 play()
             } else {
-                rockerIv.rotation = -55f
+                rockerIv.rotation = startAngle
+                if(hideWhenPause){
+                    rockerIv.visibility = View.GONE
+                }
                 pause()
             }
         }
