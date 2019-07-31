@@ -105,8 +105,7 @@
         android:layout="@layout/auto_scroll_lyric_view_layout"
         app:layout_constraintLeft_toLeftOf="@+id/avatar_bg"
         app:layout_constraintRight_toRightOf="@+id/avatar_bg"
-        app:layout_constraintTop_toBottomOf="@+id/radio_view"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/radio_view" />
 
     <com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
         android:id="@+id/voice_control_view"
@@ -222,6 +221,7 @@
         android:id="@+id/compose_progressbar_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black_trans_30"
         android:visibility="gone">
 
         <ProgressBar
@@ -238,7 +238,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_10_dp"
-            android:text="0%"
+            android:text="合成进度 0%"
             android:textColor="@color/white_trans_80"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

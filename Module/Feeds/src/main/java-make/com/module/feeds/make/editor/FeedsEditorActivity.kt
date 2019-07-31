@@ -199,6 +199,12 @@ class FeedsEditorActivity : BaseActivity() {
                 mZqAudioEditorKit.startCompose()
             }
         })
+        mZqAudioEditorKit.setOnErrorListener(object : ZqAudioEditorKit.OnErrorListener {
+            override fun onError(what: Int, msg1: Int, msg2: Int) {
+                MyLog.e(TAG, "onError what=$what msg1=$msg1 msg2=$msg2")
+            }
+        })
+
         mZqAudioEditorKit.setOnPreviewInfoListener(object : ZqAudioEditorKit.OnPreviewInfoListener {
             override fun onStarted() {
                 MyLog.d(TAG, "onStarted")
@@ -210,6 +216,7 @@ class FeedsEditorActivity : BaseActivity() {
             }
 
             override fun onLoopCount(count: Int) {
+                MyLog.d(TAG, "onLoopCount count:$count")
             }
         })
 

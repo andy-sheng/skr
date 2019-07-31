@@ -299,6 +299,8 @@ class FeedsMakeActivity : BaseActivity() {
                 isEnableAudio = true
                 isUseExternalAudio = true
                 isUseExternalAudioRecord = true
+                audioMixingPlayoutVolume = 100
+                recordingSignalVolume = 200
             }
             ZqEngineKit.getInstance().init("feeds_make", params)
         }
