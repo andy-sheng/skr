@@ -22,6 +22,7 @@ class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : Con
     val mRightIv: ExImageView
     val mVaSeekBar: SeekBar
 
+
     init {
         View.inflate(context, R.layout.feeds_editor_vocal_align_control_pannel_layout, this)
         mVaResetTv = this.findViewById(R.id.va_reset_tv)

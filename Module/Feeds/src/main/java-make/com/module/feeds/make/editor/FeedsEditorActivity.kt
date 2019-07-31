@@ -21,6 +21,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.utils.SongResUtils
+import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
 import com.engine.EngineEvent
 import com.module.RouterConstants
@@ -32,6 +33,7 @@ import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
 import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqAudioEditorKit
+import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
@@ -73,7 +75,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         mFeedsMakeModel = intent.getSerializableExtra("feeds_make_model") as FeedsMakeModel?
-
+        MyLog.d(TAG,"mFeedsMakeModel=$mFeedsMakeModel")
         mTitleBar = findViewById(R.id.title_bar)
         mPlayBtn = findViewById(R.id.play_btn)
         mSeekBar = findViewById(R.id.seek_bar)
@@ -113,7 +115,7 @@ class FeedsEditorActivity : BaseActivity() {
                 }
             }
         })
-
+        mSeekBar?.max = mFeedsMakeModel?.recordDuration?.toInt() ?: 0
         mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
@@ -122,9 +124,7 @@ class FeedsEditorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                val d = mFeedsMakeModel?.recordDuration ?: 0
-                val p = seekBar?.progress ?: 0
-                mZqAudioEditorKit.seekTo(p * d / 100)
+                mZqAudioEditorKit.seekTo(seekBar?.progress?.toLong()?:0)
             }
 
         })
@@ -195,20 +195,18 @@ class FeedsEditorActivity : BaseActivity() {
         mPublishIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 开始合成
+                pausePreview()
                 mComposeProgressbarVG?.visibility = View.VISIBLE
                 mZqAudioEditorKit.startCompose()
-
-                //TODO test
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
-                        .withSerializable("feeds_make_model", mFeedsMakeModel)
-                        .navigation()
             }
         })
         mZqAudioEditorKit.setOnPreviewInfoListener(object : ZqAudioEditorKit.OnPreviewInfoListener {
             override fun onStarted() {
+                MyLog.d(TAG,"onStarted")
             }
 
             override fun onCompletion() {
+                MyLog.d(TAG,"onCompletion")
             }
 
             override fun onLoopCount(count: Int) {
@@ -218,7 +216,7 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit.setOnComposeInfoListener(object : ZqAudioEditorKit.OnComposeInfoListener {
             override fun onProgress(progress: Float) {
                 launch {
-                    mComposeProgressTipsTv?.text = "${progress * 100}%"
+                    mComposeProgressTipsTv?.text = "合成进度 ${progress * 100}%"
                 }
             }
 
@@ -253,47 +251,58 @@ class FeedsEditorActivity : BaseActivity() {
                     }
                 }
                 //播放音乐
-                mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path, 0, -1)
-                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath, 0, mFeedsMakeModel?.recordDuration
+                mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path, 0, mFeedsMakeModel?.recordDuration
                         ?: -1)
-                mZqAudioEditorKit.outputPath = mFeedsMakeModel?.composeSavePath
-                startPreview()
+                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath, 0, -1)
+                mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.audioMixingPlayoutVolume / 100.0f)
+                mZqAudioEditorKit.setInputVolume(1, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)
+                mZqAudioEditorKit.setAudioEffect(1, ZqEngineKit.getInstance().params.styleEnum.ordinal)
                 initWhenEngineReady()
             }
         } else {
             mVoiceControlView?.mPeopleVoiceIndex = 0
             mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, 0, mFeedsMakeModel?.recordDuration
                     ?: -1)
-            mZqAudioEditorKit.outputPath = mFeedsMakeModel?.composeSavePath
-            startPreview()
+            mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)
+            mZqAudioEditorKit.setAudioEffect(0, ZqEngineKit.getInstance().params.styleEnum.ordinal)
             initWhenEngineReady()
         }
     }
 
     private fun initWhenEngineReady() {
+        MyLog.d(TAG,"initWhenEngineReady" )
+        mZqAudioEditorKit.outputPath = mFeedsMakeModel?.composeSavePath
         mVoiceControlView?.bindData()
         mVaControlView?.bindData()
-
         mEffectIv?.isSelected = true
         mVoiceControlView?.visibility = View.VISIBLE
+        startPreview()
     }
 
     private fun startPreview() {
+        MyLog.d(TAG,"startPreview" )
         mZqAudioEditorKit.startPreview(1)
         // 预览开始了
         mPlayBtn?.isSelected = true
         mRadioView?.play()
         mManyLyricsView?.play(mZqAudioEditorKit.position.toInt())
+        mPlayProgressJob?.cancel()
         mPlayProgressJob = launch {
             for (i in 1..1000) {
                 mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mZqAudioEditorKit.position)
+                if(mManyLyricsView?.getLrcPlayerStatus()!=LRCPLAYERSTATUS_PLAY){
+                    mManyLyricsView?.resume()
+                }
                 mManyLyricsView?.seekto(mZqAudioEditorKit.position.toInt())
+                mSeekBar?.progress = mZqAudioEditorKit.position.toInt()
                 delay(1000)
             }
         }
     }
 
     private fun pausePreview() {
+        MyLog.d(TAG,"pausePreview" )
+
         mPlayProgressJob?.cancel()
         mPlayBtn?.isSelected = false
         mManyLyricsView?.pause()
@@ -302,21 +311,22 @@ class FeedsEditorActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        mManyLyricsView?.release()
         mZqAudioEditorKit.release()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: EngineEvent) {
-        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
-        } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_START) {
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: EngineEvent) {
+//        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
+//        } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_START) {
+//        }
+//    }
 
     override fun canSlide(): Boolean {
         return false
     }
 
     override fun useEventBus(): Boolean {
-        return true
+        return false
     }
 }

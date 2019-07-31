@@ -42,6 +42,7 @@ import com.engine.Params
 import com.module.feeds.R
 import com.module.feeds.detail.view.AutoScrollLyricView
 import com.module.feeds.make.editor.FeedsEditorActivity
+import com.module.feeds.make.view.FeedsMakeVoiceControlPanelView
 import com.module.feeds.watch.model.FeedSongTpl
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -75,7 +76,7 @@ class FeedsMakeActivity : BaseActivity() {
     val feedsMakeServerApi = ApiManager.getInstance().createService(FeedsMakeServerApi::class.java)
 
     val mVoiceControlPanelView by lazy {
-        VoiceControlPanelView(this).apply { bindData() }
+        FeedsMakeVoiceControlPanelView(this).apply { bindData() }
     }
 
     val mVoiceControlPanelViewDialog by lazy {
@@ -201,13 +202,13 @@ class FeedsMakeActivity : BaseActivity() {
                     (mTitleBar?.rightCustomView as TextView).text = "清唱"
                 } else {
                     // 清唱变伴奏
-                    if (U.getDeviceUtils().getWiredHeadsetPlugOn()) {
+//                    if (U.getDeviceUtils().getWiredHeadsetPlugOn()) {
                         // 是否插着有限耳机
                         mFeedsMakeModel?.withBgm = true
                         (mTitleBar?.rightCustomView as TextView).text = "伴奏"
-                    } else {
-                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
-                    }
+//                    } else {
+//                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
+//                    }
                 }
             }
         })
@@ -432,7 +433,6 @@ class FeedsMakeActivity : BaseActivity() {
         countDownJob?.cancel()
         mFeedsMakeModel?.recording = false
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
