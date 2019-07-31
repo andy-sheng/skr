@@ -487,9 +487,10 @@ fun openFeedsMakeActivity(challenge: Long?) {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
                 .withSerializable("challengeID", it)
                 .navigation()
-    } ?: run {
-        if (MyLog.isDebugLogOpen()) {
-            U.getToastUtil().showShort("失败 challengeID=challenge")
-        }
     }
+//            ?: run {
+//        if (MyLog.isDebugLogOpen()) {
+//            U.getToastUtil().showShort("失败 challengeID=$challenge")
+//        }
+//    }
 }
