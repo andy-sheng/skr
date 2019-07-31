@@ -125,7 +125,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     fun refreshComment(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
-        mCommentNumTv.text = watchModel.commentCnt.toString()
+        mCommentNumTv.text = watchModel.exposure.toString()
 
     }
 

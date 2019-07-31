@@ -217,7 +217,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_108_dp"
-        android:drawableLeft="@drawable/feed_comment_icon"
+        android:drawableLeft="@drawable/feed_listener_icon"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:textColor="@color/black_trans_50"
@@ -228,47 +228,13 @@
 
     <ImageView
         android:id="@+id/hit_iv"
-        android:layout_width="@dimen/view_120_dp"
+        android:layout_width="@dimen/view_64_dp"
         android:layout_height="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:background="@drawable/feed_hit_icon"
+        android:background="@drawable/feed_rank_hit_icon_s"
         app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/like_num_tv" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/view_70_dp" />
-
-    <com.component.busilib.view.BitmapTextView
-        android:id="@+id/people_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        BitmapTextView:scale="0.5"
-        BitmapTextView:text_color="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/hit_iv"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="@id/hit_iv"
-        app:layout_constraintRight_toLeftOf="@id/people_desc"
-        app:layout_constraintTop_toTopOf="@id/hit_iv" />
-
-    <TextView
-        android:id="@+id/people_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/view_4_dp"
-        android:gravity="bottom"
-        android:text="人"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_12_dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/hit_iv"
-        app:layout_constraintLeft_toRightOf="@id/people_num_tv"
-        app:layout_constraintRight_toRightOf="@id/guide" />
 
 
 </com.common.view.ex.ExConstraintLayout>
