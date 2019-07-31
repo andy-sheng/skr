@@ -36,7 +36,6 @@ class ProducationHolder(itemView: View, mIsSelf: Boolean,
     internal var mIsPlay: Boolean = false
     internal var mModel: ProducationModel? = null
 
-    private var mCoverArea: ExRelativeLayout
     private var mCoverIv: SimpleDraweeView
     private var mPlayBackIv: ExImageView
     internal var mSongNameTv: ExTextView
@@ -48,7 +47,6 @@ class ProducationHolder(itemView: View, mIsSelf: Boolean,
 
     init {
         itemView.tag = this
-        mCoverArea = itemView.findViewById<View>(R.id.cover_area) as ExRelativeLayout
         mCoverIv = itemView.findViewById<View>(R.id.cover_iv) as SimpleDraweeView
         mPlayBackIv = itemView.findViewById<View>(R.id.play_back_iv) as ExImageView
         mSongNameTv = itemView.findViewById<View>(R.id.song_name_tv) as ExTextView
