@@ -1,5 +1,6 @@
 package com.module.feeds.statistics
 
+import android.util.ArrayMap
 import android.util.SparseArray
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
@@ -19,8 +20,8 @@ import retrofit2.http.PUT
 
 object FeedsPlayStatistics {
 
-    private val exposeMap = SparseArray<Item>()
-    private val completeMap = SparseArray<Item>()
+    private val exposeMap = ArrayMap<Int, Item>()
+    private val completeMap = ArrayMap<Int, Item>()
 
     fun addExpose(feedID: Int?) {
         if (feedID == null) {
@@ -62,29 +63,29 @@ object FeedsPlayStatistics {
 
     fun tryUpload(force: Boolean) {
         if (!force) {
-            if (exposeMap.size() + completeMap.size() < 20) {
+            if (exposeMap.size + completeMap.size < 20) {
                 return
             }
         }
         val l1 = ArrayList<JSONObject>()
-        for (i in 0 until exposeMap.size()) {
-            val feedID = exposeMap.keyAt(i)
-            val v = exposeMap.valueAt(i) ?: continue
+        exposeMap.keys.forEach {
+            val v = exposeMap[it]
             val jo = JSONObject()
-            jo.put("feedID", feedID)
-            jo.put("cnt", v.cnt)
+            jo.put("feedID", it)
+            jo.put("cnt", v?.cnt)
             l1.add(jo)
         }
 
         val l2 = ArrayList<JSONObject>()
-        for (i in 0 until completeMap.size()) {
-            val feedID = completeMap.keyAt(i)
-            val v = completeMap.valueAt(i) ?: continue
+
+        completeMap.keys.forEach {
+            val v = completeMap[it]
             val jo = JSONObject()
-            jo.put("feedID", feedID)
-            jo.put("cnt", v.cnt)
-            l1.add(jo)
+            jo.put("feedID", it)
+            jo.put("cnt", v?.cnt)
+            l2.add(jo)
         }
+
         exposeMap.clear()
         completeMap.clear()
         val mutableSet1 = mapOf(
