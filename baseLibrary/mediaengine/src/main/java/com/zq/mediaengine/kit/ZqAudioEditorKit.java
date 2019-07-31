@@ -440,6 +440,7 @@ public class ZqAudioEditorKit {
             Log.e(TAG, "output path is empty, return");
             return;
         }
+        stopPreview();
         if (mState != STATE_IDLE) {
             return;
         }
