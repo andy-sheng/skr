@@ -51,7 +51,9 @@ public class LyricsManager {
 
     /**
      * 加载标准歌词 url
-     *
+     * 注意目前 逐字 一般为 zrce 歌词
+     * 如果歌词已经是解密过的 目前为 zrce2 歌词
+     * 如果服务器下发的带时间戳的歌词不为这两种歌词，大概率是他们的bug
      * @param url
      * @return
      */
