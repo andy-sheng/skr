@@ -270,7 +270,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 }
 
                 override fun onStart(p0: SHARE_MEDIA?) {
-                    mFeedsWatchModel?.shareCnt = mFeedsWatchModel?.shareCnt?.plus(1)
+                    mFeedsWatchModel?.shareCnt = mFeedsWatchModel!!.shareCnt.plus(1)
                     mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
                     mFeedsDetailPresenter?.addShareCount(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel?.feedID
                             ?: 0)

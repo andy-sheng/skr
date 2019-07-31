@@ -5,27 +5,27 @@ import java.io.Serializable
 
 class FeedsWatchModel : Serializable {
     @JSONField(name = "exposure")
-    var exposure: Int? = null
+    var exposure: Int = 0
     @JSONField(name = "commentCnt")
-    var commentCnt: Int? = null
+    var commentCnt: Int = 0
     @JSONField(name = "feedID")
-    var feedID: Int? = null
+    var feedID: Int = 0
     @JSONField(name = "feedType")
     var feedType: String? = null
     @JSONField(name = "hasFollow")
-    var hasFollow: Boolean? = null
+    var hasFollow: Boolean = false
     @JSONField(name = "isLiked")
-    var isLiked: Boolean? = null
+    var isLiked: Boolean = false
     @JSONField(name = "rankSeq")
-    var rankSeq: Int? = null
+    var rankSeq: Int = 0
     @JSONField(name = "rank")
     var rank: FeedRankModel? = null
     @JSONField(name = "feedSong")
     var song: FeedSongModel? = null
     @JSONField(name = "starCnt")
-    var starCnt: Int? = null
+    var starCnt: Int = 0
     @JSONField(name = "shareCnt")
-    var shareCnt: Int? = null
+    var shareCnt: Int = 0
     @JSONField(name = "user")
     var user: FeedUserInfo? = null
     @JSONField(name = "status")

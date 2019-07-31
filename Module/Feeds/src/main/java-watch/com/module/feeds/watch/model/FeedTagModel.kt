@@ -7,7 +7,7 @@ class FeedTagModel : Serializable{
     @JSONField(name = "tagDesc")
     var tagDesc: String? = null
     @JSONField(name = "tagID")
-    var tagID: Int? = null
+    var tagID: Int = 0
 
     override fun toString(): String {
         return "FeedTagModel(tagDesc=$tagDesc, tagID=$tagID)"
