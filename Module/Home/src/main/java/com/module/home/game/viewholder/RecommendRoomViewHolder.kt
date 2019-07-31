@@ -22,6 +22,7 @@ import com.component.busilib.friends.FriendRoomHorizontalAdapter
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SimpleRoomInfo
+import com.component.busilib.recommend.RA
 import com.module.home.R
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.listener.EndlessRecycleOnScollListener
@@ -113,7 +114,7 @@ class RecommendRoomViewHolder(itemView: View, internal var mBaseFragment: BaseFr
 
     private fun refreshData() {
 
-        ApiMethods.subscribe(mGrabSongApi.firstPageRecommendRoomList, object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)

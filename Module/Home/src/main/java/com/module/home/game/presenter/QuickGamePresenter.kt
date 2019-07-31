@@ -13,6 +13,7 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
+import com.component.busilib.recommend.RA
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
 import com.module.home.game.view.IQuickGameView3
@@ -202,7 +203,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     }
 
     private fun loadRecommendRoomData() {
-        ApiMethods.subscribe(mGrabSongApi.firstPageRecommendRoomList, object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     mLastUpdateRecomendInfo = System.currentTimeMillis()
