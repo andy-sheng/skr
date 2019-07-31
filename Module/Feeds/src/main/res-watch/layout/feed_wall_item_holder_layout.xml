@@ -172,7 +172,7 @@
         android:id="@+id/more_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_20_dp"
+        android:padding="@dimen/view_20_dp"
         android:background="@drawable/feed_more_icon"
         app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
         app:layout_constraintTop_toTopOf="@id/like_num_tv"
