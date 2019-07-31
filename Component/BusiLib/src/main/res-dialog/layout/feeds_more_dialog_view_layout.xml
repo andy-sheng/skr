@@ -17,38 +17,43 @@
         app:bl_solid_color="@color/white"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/report_tv"
+    <com.common.view.ex.ExConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_48_dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_10_dp"
-        android:gravity="center"
-        android:text="举报"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_16_dp"
-        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
-        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/cancle_tv" />
+        app:layout_constraintBottom_toTopOf="@id/cancle_tv">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/funcation_tv"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_48_dp"
-        android:gravity="center"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_16_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_8_dp"
-        app:bl_corners_topRightRadius="@dimen/view_8_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/report_tv" />
+        <com.common.view.ex.ExTextView
+            android:id="@+id/report_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:gravity="center"
+            android:text="举报"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_1_dp"
-        android:background="@color/black_trans_10"
-        app:layout_constraintBottom_toTopOf="@id/report_tv" />
+        <com.common.view.ex.ExTextView
+            android:id="@+id/funcation_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:gravity="center"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:background="@color/black_trans_10"
+            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+
+
+    </com.common.view.ex.ExConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>

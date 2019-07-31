@@ -3,7 +3,7 @@ package com.module.feeds.watch.listener
 import com.module.feeds.watch.model.FeedsWatchModel
 
 interface FeedsListener {
-    fun onClickMoreListener(watchModel: FeedsWatchModel?)
+    fun onClickMoreListener(position: Int,watchModel: FeedsWatchModel?)
 
     fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?)
 

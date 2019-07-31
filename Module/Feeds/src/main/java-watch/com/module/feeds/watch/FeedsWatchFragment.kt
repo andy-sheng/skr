@@ -186,8 +186,8 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun destroy() {
         super.destroy()
-        mRecommendFeedsView.destory()
-        mFollowFeesView.destory()
+        mRecommendFeedsView.destroy()
+        mFollowFeesView.destroy()
         mFeedsCollectView.destory()
     }
 }

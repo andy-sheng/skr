@@ -158,6 +158,7 @@
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg"
         app:panelDrawable="@drawable/record_film_icon"
+        app:hideWhenPause="true"
         app:panelMarginTop="@dimen/view_14_dp"
         app:rockerDrawable="@drawable/record_pointer_icon"
         app:rockerXP="1.0"

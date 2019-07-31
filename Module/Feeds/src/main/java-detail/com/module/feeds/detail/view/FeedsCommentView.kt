@@ -127,7 +127,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
             val any: Any = feedsCommendAdapter.dataList[position]
             if (any is FirstLevelCommentModel && event.commendID == any.comment.commentID) {
                 any.comment.subCommentCnt++
-                feedsCommendAdapter.notifyItemChanged(position)
+                feedsCommendAdapter.updatePart(position, any, FeedsCommentAdapter.TYPE_REF_CTN)
                 break
             }
         }
@@ -146,7 +146,7 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
     }
 
     override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean) {
-        feedsCommendAdapter?.update(position, firstLevelCommentModel, TYPE_LIKE)
+        feedsCommendAdapter?.updatePart(position, firstLevelCommentModel, TYPE_LIKE)
     }
 
     override fun finishLoadMore() {

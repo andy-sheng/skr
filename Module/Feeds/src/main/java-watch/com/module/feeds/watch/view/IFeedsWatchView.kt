@@ -10,4 +10,6 @@ interface IFeedsWatchView {
     fun requestError()
 
     fun feedLikeResult(position: Int, model: FeedsWatchModel, isLike: Boolean)
+
+    fun feedDeleteResult(position: Int, model: FeedsWatchModel)
 }

@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON
 import com.common.rxretrofit.ApiManager
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
@@ -69,6 +70,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
                 // 直接去打榜
+                openFeedsMakeActivity(model?.challengeID)
             }
 
         })

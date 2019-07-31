@@ -20,6 +20,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -110,6 +111,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 打榜去
+                openFeedsMakeActivity(challengeID)
             }
         })
 

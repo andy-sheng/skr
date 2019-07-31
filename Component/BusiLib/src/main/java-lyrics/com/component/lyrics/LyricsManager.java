@@ -1,16 +1,22 @@
 package com.component.lyrics;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.crash.IgnoreException;
+import com.common.core.global.ResServerApi;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
+import com.common.rxretrofit.ApiManager;
+import com.common.utils.FileUtils;
 import com.common.utils.U;
 import com.component.lyrics.utils.LyricsUtils;
 import com.component.lyrics.utils.SongResUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +29,8 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSource;
 import okio.Okio;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class LyricsManager {
     public static final String TAG = "LyricsManager";
@@ -39,9 +47,13 @@ public class LyricsManager {
         return _LyricsManager;
     }
 
+    ResServerApi mResServerApi = ApiManager.getInstance().createService(ResServerApi.class);
+
     /**
      * 加载标准歌词 url
-     *
+     * 注意目前 逐字 一般为 zrce 歌词
+     * 如果歌词已经是解密过的 目前为 zrce2 歌词
+     * 如果服务器下发的带时间戳的歌词不为这两种歌词，大概率是他们的bug
      * @param url
      * @return
      */
@@ -55,17 +67,35 @@ public class LyricsManager {
                     emitter.onComplete();
                     return;
                 }
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null);
+                boolean isSuccess = false;
+                isSuccess = U.getHttpUtils().downloadFileSync(url, newName, true, null);
                 if (isSuccess) {
                     emitter.onNext(newName);
-                    emitter.onComplete();
                 } else {
-                    if (MyLog.isDebugLogOpen()) {
-                        U.getToastUtil().showShort("歌词文件下载失败 url=" + url);
+                    MyLog.d(TAG, "使用服务器代理下载");
+                    Call<JSONObject> call = mResServerApi.getLyricByUrl(url);
+                    try {
+                        Response<JSONObject> response = call.execute();
+                        JSONObject jsonObject = response.body();
+                        if (jsonObject != null) {
+                            MyLog.d(TAG, "body=" + jsonObject.toString());
+                            String content = jsonObject.getString("body");
+                            U.getIOUtils().writeFile(content, newName);
+                            emitter.onNext(newName);
+                        } else {
+                            emitter.onError(new IgnoreException("代理下载，歌词为空"));
+                        }
+                    } catch (IOException e) {
+                        if (MyLog.isDebugLogOpen()) {
+                            U.getToastUtil().showShort("歌词文件下载失败 url=" + url);
+                        }
+                        emitter.onError(new IgnoreException("代理下载失败"));
+                        return;
                     }
-                    emitter.onError(new Throwable("fetchLyricTask"));
                 }
+                emitter.onComplete();
             }
+
         }).map(new Function<File, LyricsReader>() {
             @Override
             public LyricsReader apply(File file) throws Exception {
@@ -74,7 +104,7 @@ public class LyricsManager {
                     lyricsReader.loadLrc(file);
                     if (MyLog.isDebugLogOpen()) {
                         if (lyricsReader.getLrcLineInfos().isEmpty()) {
-                            U.getToastUtil().showShort("歌词文件解析后内容为空 url=" + url);
+                            U.getToastUtil().showLong("时间戳歌词文件解析后内容为空 url=" + url);
                         }
                     }
                 } catch (Exception e) {
@@ -84,6 +114,7 @@ public class LyricsManager {
             }
         })
                 .subscribeOn(Schedulers.io())
+                .retryWhen(new RxRetryAssist(5, ""))
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -101,21 +132,38 @@ public class LyricsManager {
             public void subscribe(ObservableEmitter<String> emitter) {
                 File file = SongResUtils.getGrabLyricFileByUrl(url);
                 if (file == null || !file.exists()) {
-                    boolean isSuccess = U.getHttpUtils().downloadFileSync(url, file, true, null);
+                    boolean isSuccess = false;
+                    isSuccess = U.getHttpUtils().downloadFileSync(url, file, true, null);
                     if (isSuccess) {
-                        BufferedSource source = null;
-                        try {
-                            source = Okio.buffer(Okio.source(file));
-                            emitter.onNext(source.readUtf8());
-                        } catch (Exception e) {
-                            MyLog.e(TAG, e);
+                        String content = U.getIOUtils().readFile(file);
+                        if (!TextUtils.isEmpty(content)) {
+                            emitter.onNext(content);
+                        } else {
                             emitter.onNext("歌词buffer读取失败");
                         }
                     } else {
-                        MyLog.w(TAG, "loadGrabPlainLyric 下载失败, url is " + url);
-                        emitter.onNext("歌词下载失败");
-                        emitter.onError(new IgnoreException("loadGrabPlainLyric"));
-                        return;
+                        MyLog.d(TAG, "使用服务器代理下载");
+                        Call<JSONObject> call = mResServerApi.getLyricByUrl(url);
+                        try {
+                            Response<JSONObject> response = call.execute();
+                            JSONObject jsonObject = response.body();
+                            if (jsonObject != null) {
+                                MyLog.d(TAG, "body=" + jsonObject.toString());
+                                String content = jsonObject.getString("body");
+                                U.getIOUtils().writeFile(content, file);
+                                if (!TextUtils.isEmpty(content)) {
+                                    emitter.onNext(content);
+                                }
+                            } else {
+                                emitter.onError(new IgnoreException("代理下载，歌词为空"));
+                            }
+                        } catch (IOException e) {
+                            if (MyLog.isDebugLogOpen()) {
+                                U.getToastUtil().showShort("歌词文件下载失败 url=" + url);
+                            }
+                            emitter.onError(new IgnoreException("代理下载失败"));
+                            return;
+                        }
                     }
                 } else {
                     MyLog.w(TAG, "playLyric is exist");

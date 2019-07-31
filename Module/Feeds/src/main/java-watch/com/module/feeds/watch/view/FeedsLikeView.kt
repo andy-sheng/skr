@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.common.view.ex.ExImageView
 import android.support.constraint.Group
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
@@ -76,7 +77,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     val mLoadService: LoadService<*>
     val playerTag = TAG + hashCode()
-    val playCallback:PlayerCallbackAdapter
+    val playCallback: PlayerCallbackAdapter
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
@@ -195,7 +196,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
 
         SinglePlayer.addCallback(playerTag, playCallback)
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
 
@@ -350,6 +351,12 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
             AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(mTopModel?.user?.avatar)
                     .setCircle(true)
                     .build())
+
+            var songTag = mTopModel?.song?.tags?.get(0)?.tagDesc ?: ""
+            if (!TextUtils.isEmpty(songTag)) {
+                songTag = " #$songTag# "
+            }
+            mPlayDescTv.text = "《${mTopModel?.song?.workName ?: ""}》$songTag"
         }
 
         // 开启和关闭动画
@@ -379,7 +386,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     }
 
     @Subscribe
-    fun onEvent(event:FeedsLikeEvent){
+    fun onEvent(event: FeedsLikeEvent) {
         // 有喜欢事件发生促使刷新
         mPersenter.mLastUpdatListTime = 0
     }
@@ -395,7 +402,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mCoverRotateAnimation?.setAnimationListener(null)
         mCoverRotateAnimation?.cancel()
         mPersenter.destroy()
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
     }

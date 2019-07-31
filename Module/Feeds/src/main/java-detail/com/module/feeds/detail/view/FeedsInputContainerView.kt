@@ -85,6 +85,10 @@ class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                 }
             }
         })
+
+        mInputContainer?.setOnClickListener{
+            hideSoftInput()
+        }
     }
 
     private fun initEmotionKeyboard() {

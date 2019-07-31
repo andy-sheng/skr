@@ -2224,7 +2224,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         //TODO 如果加入房间提示有遗漏，可以考虑接受 SomeOne 事件，一担用户有变化都会回调
         if (canAdd) {
-            pretendEnterRoom(playerInfoModel);
+            //  加入房间不提示
+            //pretendEnterRoom(playerInfoModel);
         }
     }
 

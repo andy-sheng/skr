@@ -22,6 +22,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
     private val mContentTv: TextView = itemView.findViewById(R.id.content_tv)
     private val mPeopleNumTv: BitmapTextView = itemView.findViewById(R.id.people_num_tv)
+    private val mPeopleDesc:TextView = itemView.findViewById(R.id.people_desc)
     private val mHitIv: ImageView = itemView.findViewById(R.id.hit_iv)
 
     init {
@@ -39,13 +40,23 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
                     .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                     .setBlur(true)
                     .build())
-            mRecordView.setAvatar(it.avatar?:"")
+            mRecordView.setAvatar(it.avatar ?: "")
 
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCircle(true)
                     .build())
             mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID
                     ?: 0, it.nickname)
+        }
+
+        if (watchModel.song?.needChallenge == true) {
+            mHitIv.visibility = View.VISIBLE
+            mPeopleNumTv.visibility = View.VISIBLE
+            mPeopleDesc.visibility = View.VISIBLE
+        } else {
+            mHitIv.visibility = View.GONE
+            mPeopleNumTv.visibility = View.GONE
+            mPeopleDesc.visibility = View.GONE
         }
 
         mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt

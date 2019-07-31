@@ -84,6 +84,8 @@ public class U {
 
     private static ColorUtils colorUtils;
 
+    private static IOUtils ioUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -331,6 +333,13 @@ public class U {
             mediaUtils = new MediaUtils();
         }
         return mediaUtils;
+    }
+
+    public static IOUtils getIOUtils() {
+        if (ioUtils == null) {
+            ioUtils = new IOUtils();
+        }
+        return ioUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

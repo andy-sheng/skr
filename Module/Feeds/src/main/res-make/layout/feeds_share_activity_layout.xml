@@ -48,7 +48,7 @@
         app:layout_constraintRight_toRightOf="@+id/share_bg"
         app:layout_constraintTop_toBottomOf="@+id/name_tv" />
 
-    <EditText
+    <TextView
         android:id="@+id/say_edit"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_65_dp"

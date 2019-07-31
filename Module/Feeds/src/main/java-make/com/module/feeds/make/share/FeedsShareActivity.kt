@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePlatform
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
@@ -28,7 +29,7 @@ class FeedsShareActivity : BaseActivity() {
     lateinit var avatarIv: BaseImageView
     lateinit var nameTv: TextView
     lateinit var songTv: TextView
-    lateinit var sayEdit: EditText
+    lateinit var sayEdit: TextView
     lateinit var shareTips: TextView
     lateinit var qqkongjianBtn: ImageView
     lateinit var qqBtn: ImageView
@@ -90,11 +91,11 @@ class FeedsShareActivity : BaseActivity() {
     }
 
     private fun shareUrl(sharePlatform: SharePlatform) {
-        var url = String.format("http://dev.app.inframe.mobi/feed/song?songID=2332", mFeedsMakeModel?.uploadFeedsId)
+        var url = String.format("http://dev.app.inframe.mobi/feed/song?songID=%s&userID=%s", mFeedsMakeModel?.songModel?.songID,MyUserInfoManager.getInstance().uid)
         url = ApiManager.getInstance().findRealUrlByChannel(url)
         if (!TextUtils.isEmpty(url)) {
             val web = UMWeb(url)
-            web.title = "" + mFeedsMakeModel?.uploadSongName
+            web.title = "" + mFeedsMakeModel?.songModel?.workName
             web.description = sayEdit.text.toString()
 
             if (sharePlatform == SharePlatform.WEIXIN_CIRCLE) {

@@ -134,6 +134,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                 mFeedsSecondCommentPresenter?.mOffset = mFeedsSecondCommentPresenter?.mOffset!! + 1
                 mFeedsSecondCommentPresenter?.updateCommentList()
                 EventBus.getDefault().post(AddCommentEvent(mFirstLevelCommentModel!!.comment.commentID))
+                mRecyclerView?.scrollToPosition(0)
             }
         }
 
@@ -149,8 +150,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                     , 0
                     , model.comment.commentID)
                     .apply {
-                        mFuncationTv.visibility = View.VISIBLE
-                        mFuncationTv.text = "回复"
+                        showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss()
@@ -194,7 +194,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     }
 
     override fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean) {
-        feedsCommendAdapter?.update(position, firstLevelCommentModel, FeedsCommentAdapter.TYPE_LIKE)
+        feedsCommendAdapter?.updatePart(position, firstLevelCommentModel, FeedsCommentAdapter.TYPE_LIKE)
         if (position == 0) {
             mXinIv?.isSelected = like
             mXinNumTv?.text = StringFromatUtils.formatFansNum(firstLevelCommentModel.comment.likedCnt)
