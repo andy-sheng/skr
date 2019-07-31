@@ -519,13 +519,15 @@ public class ZqAudioEditorKit {
             synchronized (ZqAudioEditorKit.this) {
                 // 主音轨播放开始后再开始其他音轨的播放
                 if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
-                        mState == STATE_PREVIEW_PREPARING) {
+                        mState == STATE_PREVIEW_PREPARING || mState == STATE_COMPOSING) {
                     for (int i = 1; i < MAX_CHN; i++) {
                         if (mAudioSource[i] != null) {
                             mAudioSource[i].start();
                         }
                     }
-                    mState = STATE_PREVIEW_STARTED;
+                    if (mState == STATE_PREVIEW_PREPARING) {
+                        mState = STATE_PREVIEW_STARTED;
+                    }
                 }
             }
         }
