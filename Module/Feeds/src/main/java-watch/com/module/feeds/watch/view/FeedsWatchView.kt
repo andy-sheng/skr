@@ -1,5 +1,6 @@
 package com.module.feeds.watch.view
 
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,14 +17,12 @@ import com.common.player.SinglePlayer
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
-import com.common.player.VideoPlayerAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
-import com.component.dialog.ConfirmDialog
 import com.component.dialog.FeedsMoreDialogView
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
@@ -97,6 +96,17 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mRecyclerView = findViewById(R.id.recycler_view)
 
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
+            override fun onClickAvatarListener(watchModel: FeedsWatchModel?) {
+                watchModel?.user?.let {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it.userID)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
+            }
+
             override fun onclickRankListener(watchModel: FeedsWatchModel?) {
                 // 排行榜详情
                 watchModel?.let {

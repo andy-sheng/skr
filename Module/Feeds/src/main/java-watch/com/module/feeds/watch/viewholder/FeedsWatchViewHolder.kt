@@ -29,6 +29,12 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
                 listener?.onClickHitListener(model)
             }
         })
+
+        mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onClickAvatarListener(model)
+            }
+        })
     }
 
     override fun bindData(position: Int, watchModel: FeedsWatchModel) {

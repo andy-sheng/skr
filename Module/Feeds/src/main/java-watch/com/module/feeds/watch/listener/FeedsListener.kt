@@ -16,4 +16,6 @@ interface FeedsListener {
     fun onClickCDListener(position: Int,watchModel: FeedsWatchModel?)
 
     fun onclickRankListener(watchModel: FeedsWatchModel?)
+
+    fun onClickAvatarListener(watchModel: FeedsWatchModel?)
 }
