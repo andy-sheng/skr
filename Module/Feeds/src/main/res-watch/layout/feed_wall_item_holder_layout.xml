@@ -15,7 +15,6 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_8_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#9ED7FF"
@@ -23,7 +22,8 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/classify_song_tv">
+        app:layout_constraintRight_toLeftOf="@id/classify_song_tv"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/tag_iv"
@@ -62,14 +62,14 @@
         android:paddingRight="@dimen/view_10_dp"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#9ED7FF"
         app:layout_constraintBottom_toBottomOf="@id/tag_area"
         app:layout_constraintLeft_toRightOf="@id/tag_area"
-        app:layout_constraintTop_toTopOf="@id/tag_area"
-        android:visibility="gone"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tag_area" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/song_area_bg"
@@ -99,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_10_dp"
         app:avatarWidth="@dimen/view_62_dp"
+        app:endAngle="-45"
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg"
         app:panelDrawable="@drawable/record_film_icon"
@@ -106,8 +107,7 @@
         app:rockerDrawable="@drawable/record_pointer_icon"
         app:rockerXP="1.0"
         app:rockerYP="0"
-        app:startAngle="-80"
-        app:endAngle="-45" />
+        app:startAngle="-80" />
 
     <!-- 歌词view -->
     <ViewStub
@@ -138,6 +138,19 @@
         app:layout_constraintRight_toLeftOf="@+id/record_view"
         app:layout_constraintTop_toTopOf="@+id/song_area_bg" />
 
+    <ImageView
+        android:id="@+id/more_iv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginBottom="@dimen/view_3_dp"
+        android:padding="@dimen/view_20_dp"
+        android:src="@drawable/feed_more_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/song_area_bg"
+        app:layout_constraintVertical_bias="0" />
+
     <TextView
         android:id="@+id/like_num_tv"
         android:layout_width="wrap_content"
@@ -150,9 +163,9 @@
         android:gravity="center_vertical"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/more_iv"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
+        app:layout_constraintTop_toTopOf="@id/more_iv" />
 
     <TextView
         android:id="@+id/comment_num_tv"
@@ -164,19 +177,22 @@
         android:gravity="center_vertical"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
+        app:layout_constraintBottom_toBottomOf="@id/more_iv"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/like_num_tv" />
+        app:layout_constraintTop_toTopOf="@id/more_iv" />
 
-    <ImageView
-        android:id="@+id/more_iv"
+    <TextView
+        android:id="@+id/check_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/view_20_dp"
-        android:background="@drawable/feed_more_icon"
-        app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
-        app:layout_constraintTop_toTopOf="@id/like_num_tv"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:text="审核中…"
+        android:visibility="gone"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@id/more_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/more_iv" />
 
 
 </com.common.view.ex.ExConstraintLayout>

@@ -34,12 +34,6 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     override fun bindData(position: Int, watchModel: FeedsWatchModel) {
         super.bindData(position, watchModel)
         watchModel.user?.let {
-            AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                    .setBlur(true)
-                    .build())
-            mRecordView.setAvatar(it.avatar ?: "")
-
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCircle(true)
                     .build())

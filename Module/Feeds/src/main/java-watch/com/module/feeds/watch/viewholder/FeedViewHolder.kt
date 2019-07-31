@@ -5,6 +5,8 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -25,8 +27,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     //    private val mClassifySongTv: ExTextView = itemView.findViewById(R.id.classify_song_tv)
     val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
     val mRecordView: FeedsRecordAnimationView = itemView.findViewById(R.id.record_view)
-    private val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
-    private val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
+    val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
+    val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
 
     val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
     val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub))
@@ -77,6 +79,14 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     open fun bindData(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
+
+        watchModel.user?.let {
+            AvatarUtils.loadAvatarByUrl(mSongAreaBg, AvatarUtils.newParamsBuilder(it.avatar)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                    .setBlur(true)
+                    .build())
+            mRecordView.setAvatar(it.avatar ?: "")
+        }
 
         if (watchModel.rank != null) {
             if (TextUtils.isEmpty(watchModel.rank?.rankDesc)) {
