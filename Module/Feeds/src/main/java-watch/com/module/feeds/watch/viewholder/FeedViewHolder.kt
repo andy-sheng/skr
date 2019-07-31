@@ -149,8 +149,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     }
 
     fun stopPlay() {
-        mRecordView.pause()
         mRecordView.hideRockerIv()
+        mRecordView.pause()
         feedAutoScrollLyricView.pause()
         feedWatchManyLyricView.pause()
     }

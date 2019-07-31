@@ -153,26 +153,26 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun hideRockerIv() {
-        if (rotateAnimationStop != null && rotateAnimationStop?.isStarted == true) {
-            rotateAnimationStop?.removeAllListeners()
-            rotateAnimationStop?.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) {
-                }
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    rockerIv.visibility = View.GONE
-                }
-
-                override fun onAnimationCancel(animation: Animator?) {
-                    rockerIv.visibility = View.GONE
-                }
-
-                override fun onAnimationStart(animation: Animator?) {
-                }
-            })
-        } else {
+        if (!playing) {
             rockerIv.visibility = View.GONE
+            return
         }
+        rotateAnimationStop?.removeAllListeners()
+        rotateAnimationStop?.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                rockerIv.visibility = View.GONE
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                rockerIv.visibility = View.GONE
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+        })
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
