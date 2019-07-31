@@ -1,5 +1,7 @@
 package com.zq.mediaengine.filter.audio;
 
+import android.util.Log;
+
 import com.zq.mediaengine.util.LibraryLoader;
 
 import java.nio.ByteBuffer;
@@ -68,12 +70,14 @@ public class AudioSLPlayer implements IPcmPlayer {
 
     @Override
     public int flush() {
+        _stop(mInstance);
+        _start(mInstance);
         return 0;
     }
 
     @Override
     public long getPosition() {
-        return 0;
+        return _getPosition(mInstance);
     }
 
     public int write(ByteBuffer buffer, boolean nonBlock) {
@@ -90,6 +94,7 @@ public class AudioSLPlayer implements IPcmPlayer {
     private native void _attachTo(long instance, int idx, long ptr, boolean detach);
     private native void _setTuneLatency(long instance, boolean tuneLatency);
     private native void _setMute(long instance, boolean mute);
+    private native long _getPosition(long instance);
     private native int _start(long instance);
     private native int _stop(long instance);
     private native int _pause(long instance);

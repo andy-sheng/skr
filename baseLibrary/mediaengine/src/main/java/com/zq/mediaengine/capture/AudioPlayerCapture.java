@@ -1,14 +1,8 @@
 package com.zq.mediaengine.capture;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaCodec;
-import android.media.MediaExtractor;
-import android.media.MediaFormat;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
@@ -23,20 +17,13 @@ import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.StcMgt;
 import com.zq.mediaengine.util.audio.AudioUtil;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
-
 /**
  * Audio player capture.
  */
 public class AudioPlayerCapture {
     private final static String TAG = "AudioPlayerCapture";
-    private final static boolean VERBOSE = false;
+    private final static boolean VERBOSE = true;
 
-    private static final long TIMEOUT_US = 10000;
-    private static final int MAX_EOS_SPINS = 10;
     /**
      * The constant AUDIO_PLAYER_TYPE_AUDIOTRACK.
      */
@@ -49,70 +36,49 @@ public class AudioPlayerCapture {
     /**
      * The constant STATE_IDLE.
      */
-    public static final int STATE_IDLE = 0;
+    public static final int STATE_IDLE = AudioFileCapture.STATE_IDLE;
     /**
      * The constant STATE_PREPARING.
      */
-    public static final int STATE_PREPARING = 1;
+    public static final int STATE_PREPARING = AudioFileCapture.STATE_PREPARING;
     /**
      * The constant STATE_STARTED.
      */
-    public static final int STATE_STARTED = 2;
+    public static final int STATE_STARTED = AudioFileCapture.STATE_STARTED;
     /**
      * The constant STATE_STOPPING.
      */
-    public static final int STATE_STOPPING = 3;
+    public static final int STATE_STOPPING = AudioFileCapture.STATE_STOPPING;
 
     /**
      * The constant ERROR_UNKNOWN.
      */
-    public static final int ERROR_UNKNOWN = -1;
+    public static final int ERROR_UNKNOWN = AudioFileCapture.ERROR_UNKNOWN;
     /**
      * The constant ERROR_IO.
      */
-    public static final int ERROR_IO = -2;
+    public static final int ERROR_IO = AudioFileCapture.ERROR_IO;
     /**
      * The constant ERROR_UNSUPPORTED.
      */
-    public static final int ERROR_UNSUPPORTED = -3;
-
-    private final static int CMD_START = 1;
-    private final static int CMD_STOP = 2;
-    private final static int CMD_SEEK = 3;
-    private final static int CMD_RELEASE = 4;
-    private final static int CMD_LOOP = 5;
-    private final static int CMD_PAUSE = 6;
-    private final static int CMD_WAIT = 7;
+    public static final int ERROR_UNSUPPORTED = AudioFileCapture.ERROR_UNSUPPORTED;
 
     private SrcPin<AudioBufFrame> mSrcPin;
     private AudioFilterMgt mAudioFilterMgt;
+    private AudioFileCapture mAudioFileCapture;
 
     private Context mContext;
     private IPcmPlayer mPcmPlayer;
     private StcMgt mStcMgt;
     private AudioBufFormat mOutFormat;
-    private ByteBuffer mOutBuffer;
+    // TODO: OpenSLES模式下，getPosition不准确，需要改进，这里暂时只能用AudioTrack
     private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
     private boolean mPlayerTypeChanged = false;
     private boolean mMute = false;
-    private float mVolume = 1.0f;
-    private String mUrl;
+    private boolean mMuteChanged = false;
 
-    private MediaExtractor mMediaExtractor;
-    private MediaCodec mMediaCodec;
-    private MediaCodec.BufferInfo mBufferInfo;
-    private int mEosSpinCount = 0;
-    private HandlerThread mDecodeThread;
-    private Handler mDecodeHandler;
     private Handler mMainHandler;
-    private volatile int mState;
-    private volatile boolean mPaused;
     private volatile boolean mLoop;
-    private volatile boolean mIsSeeking;
-    private long mFirstPts;
-    private long mDuration;
-    private long mBasePosition;
-    private long mSamplesWritten;
 
     private OnPreparedListener mOnPreparedListener;
     private OnCompletionListener mOnCompletionListener;
@@ -162,12 +128,12 @@ public class AudioPlayerCapture {
      * @param context the context
      */
     public AudioPlayerCapture(Context context) {
-        mState = STATE_IDLE;
         mContext = context;
         mSrcPin = new SrcPin<>();
-        mMainHandler = new Handler(Looper.getMainLooper());
         mStcMgt = new StcMgt();
-        initDecodeThread();
+        mMainHandler = new Handler(Looper.getMainLooper());
+        mAudioFileCapture = new AudioFileCapture(context);
+        setupListeners();
 
         mAudioFilterMgt = new AudioFilterMgt();
         SinkPin<AudioBufFrame> playerSinkPin = new SinkPin<AudioBufFrame>() {
@@ -175,7 +141,14 @@ public class AudioPlayerCapture {
 
             @Override
             public void onFormatChanged(Object format) {
-                AudioBufFormat inFormat = (AudioBufFormat) format;
+                mOutFormat = (AudioBufFormat) format;
+
+                // 动态切换OpenSL/AudioTrack
+                if (mPcmPlayer != null) {
+                    mPcmPlayer.stop();
+                    mPcmPlayer.release();
+                    mPcmPlayer = null;
+                }
 
                 // open pcm player
                 if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
@@ -183,18 +156,23 @@ public class AudioPlayerCapture {
                 } else {
                     mPcmPlayer = new AudioTrackPlayer();
                 }
-                int atomSize = AudioUtil.getNativeBufferSize(mContext, inFormat.sampleRate);
-                mPcmPlayer.config(inFormat.sampleFormat, inFormat.sampleRate, inFormat.channels, atomSize, 40);
+                int atomSize = AudioUtil.getNativeBufferSize(mContext, mOutFormat.sampleRate);
+                mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate, mOutFormat.channels, atomSize, 40);
                 mPcmPlayer.setMute(mMute);
                 mPcmPlayer.start();
 
-                mPcmOutFormat = new AudioBufFormat(inFormat);
+                mPcmOutFormat = new AudioBufFormat(mOutFormat);
                 mPcmOutFormat.nativeModule = mPcmPlayer.getNativeInstance();
                 mSrcPin.onFormatChanged(mPcmOutFormat);
             }
 
             @Override
             public void onFrameAvailable(AudioBufFrame frame) {
+                handlePlayerTypeChanged();
+                if (mMuteChanged) {
+                    mMuteChanged = false;
+                    mPcmPlayer.setMute(mMute);
+                }
                 if (frame.buf != null && frame.buf.limit() > 0) {
                     // write audio data in blocking mode
                     mPcmPlayer.write(frame.buf);
@@ -203,10 +181,72 @@ public class AudioPlayerCapture {
                     AudioBufFrame outFrame = new AudioBufFrame(frame);
                     outFrame.format = mPcmOutFormat;
                     mSrcPin.onFrameAvailable(outFrame);
+
+                    // 更新时钟
+                    long position = mAudioFileCapture.getBasePosition() + mPcmPlayer.getPosition();
+                    mStcMgt.updateStc(position, true);
+
+                    if (VERBOSE) {
+                        long pos = mAudioFileCapture.getPosition();
+                        Log.i(TAG, "pos: " + pos + " position: " + position);
+                    }
                 }
             }
         };
+        mAudioFileCapture.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
         mAudioFilterMgt.getSrcPin().connect(playerSinkPin);
+    }
+
+    private Runnable mCheckCompletionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mAudioFileCapture.getState() != AudioFileCapture.STATE_STARTED) {
+                return;
+            }
+            long tm = mAudioFileCapture.getPosition() - mAudioFileCapture.getBasePosition();
+            long pos = mPcmPlayer.getPosition();
+            long delay = tm - pos;
+            if (VERBOSE) {
+                Log.d(TAG, "check completion: " + tm + " - " + pos + " = " + delay);
+            }
+            if (delay < 10) {
+                if (mLoop) {
+                    seek(0);
+                } else {
+                    postOnCompletion();
+                }
+            } else {
+                mAudioFileCapture.getWorkHandler().postDelayed(mCheckCompletionRunnable, delay);
+            }
+        }
+    };
+
+    private void setupListeners() {
+        // onPrepared
+        mAudioFileCapture.setOnPreparedListener(new AudioFileCapture.OnPreparedListener() {
+            @Override
+            public void onPrepared(AudioFileCapture audioFileCapture) {
+                if (mOnPreparedListener != null) {
+                    mOnPreparedListener.onPrepared(AudioPlayerCapture.this);
+                }
+            }
+        });
+        // onCompletion
+        mAudioFileCapture.setOnCompletionListener(new AudioFileCapture.OnCompletionListener() {
+            @Override
+            public void onCompletion(AudioFileCapture audioFileCapture) {
+                mAudioFileCapture.getWorkHandler().post(mCheckCompletionRunnable);
+            }
+        });
+        // onError
+        mAudioFileCapture.setOnErrorListener(new AudioFileCapture.OnErrorListener() {
+            @Override
+            public void onError(AudioFileCapture audioFileCapture, int type, long msg) {
+                if (mOnErrorListener != null) {
+                    mOnErrorListener.onError(AudioPlayerCapture.this, type, msg);
+                }
+            }
+        });
     }
 
     /**
@@ -216,6 +256,15 @@ public class AudioPlayerCapture {
      */
     public SrcPin<AudioBufFrame> getSrcPin() {
         return mSrcPin;
+    }
+
+    /**
+     * Get current state.
+     *
+     * @return current state
+     */
+    public int getState() {
+        return mAudioFileCapture.getState();
     }
 
     /**
@@ -243,6 +292,7 @@ public class AudioPlayerCapture {
      * @param mute true to mute, false to unmute
      */
     public void setMute(boolean mute) {
+        mMuteChanged = (mMute != mute);
         mMute = mute;
     }
 
@@ -261,7 +311,7 @@ public class AudioPlayerCapture {
      * @param volume the volume, should be 0.0f-1.0f
      */
     public void setVolume(float volume) {
-        mVolume = volume;
+        mAudioFileCapture.setVolume(volume);
     }
 
     /**
@@ -270,7 +320,7 @@ public class AudioPlayerCapture {
      * @return the volume, should in 0.0f-1.0f
      */
     public float getVolume() {
-        return mVolume;
+        return mAudioFileCapture.getVolume();
     }
 
     /**
@@ -322,32 +372,49 @@ public class AudioPlayerCapture {
      * @param loop set if in loop play mode
      */
     public void start(String url, boolean loop) {
-        mUrl = url;
         mLoop = loop;
-        mDecodeHandler.sendEmptyMessage(CMD_START);
+        mAudioFileCapture.start(url);
     }
 
     /**
      * Stop.
      */
     public void stop() {
-        mDecodeHandler.sendEmptyMessage(CMD_STOP);
+        mAudioFileCapture.stop(new Runnable() {
+            @Override
+            public void run() {
+                mPcmPlayer.stop();
+                mPcmPlayer.release();
+                mPcmPlayer = null;
+                mStcMgt.reset();
+            }
+        });
     }
 
     /**
      * Pause.
      */
     public void pause() {
-        Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 1, 0);
-        mDecodeHandler.sendMessage(msg);
+        mAudioFileCapture.pause(new Runnable() {
+            @Override
+            public void run() {
+                mPcmPlayer.pause();
+                mStcMgt.pause();
+            }
+        });
     }
 
     /**
      * Resume.
      */
     public void resume() {
-        Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 0, 0);
-        mDecodeHandler.sendMessage(msg);
+        mAudioFileCapture.resume(new Runnable() {
+            @Override
+            public void run() {
+                mPcmPlayer.resume();
+                mStcMgt.start();
+            }
+        });
     }
 
     /**
@@ -355,9 +422,15 @@ public class AudioPlayerCapture {
      *
      * @param ms the time seek to, in miliseconds
      */
-    public void seek(long ms) {
-        Message msg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) ms, 0);
-        mDecodeHandler.sendMessage(msg);
+    public void seek(final long ms) {
+        mAudioFileCapture.seek(ms, new Runnable() {
+            @Override
+            public void run() {
+                mPcmPlayer.flush();
+                mStcMgt.pause();
+                mStcMgt.updateStc(ms);
+            }
+        });
     }
 
     /**
@@ -365,8 +438,7 @@ public class AudioPlayerCapture {
      */
     public void release() {
         stop();
-        mDecodeHandler.sendEmptyMessage(CMD_RELEASE);
-        mAudioFilterMgt.getSinkPin().onDisconnect(true);
+        mAudioFileCapture.release();
     }
 
     /**
@@ -375,7 +447,7 @@ public class AudioPlayerCapture {
      * @return the duration in milisenconds
      */
     public long getDuration() {
-        return mDuration;
+        return mAudioFileCapture.getDuration();
     }
 
     /**
@@ -385,109 +457,6 @@ public class AudioPlayerCapture {
      */
     public long getPosition() {
         return mStcMgt.getCurrentStc();
-    }
-
-    private void initDecodeThread() {
-        mDecodeThread = new HandlerThread("AudioDecode");
-        mDecodeThread.start();
-        mDecodeHandler = new Handler(mDecodeThread.getLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                int err;
-                switch (msg.what) {
-                    case CMD_START:
-                        if (mState != STATE_IDLE) {
-                            break;
-                        }
-                        mState = STATE_PREPARING;
-                        err = doStart();
-                        if (err != 0) {
-                            mState = STATE_IDLE;
-                            postError(err, 0);
-                        } else {
-                            mState = STATE_STARTED;
-                            postOnPrepared();
-                            mDecodeHandler.sendEmptyMessage(CMD_LOOP);
-                        }
-                        break;
-                    case CMD_LOOP:
-                        if (mState != STATE_STARTED) {
-                            break;
-                        }
-                        mPcmPlayer.setMute(mMute);
-                        if (!doLoop()) {
-                            if (!mPaused) {
-                                mDecodeHandler.sendEmptyMessage(CMD_LOOP);
-                            }
-                        } else {
-                            mDecodeHandler.sendEmptyMessage(CMD_WAIT);
-                        }
-                        break;
-                    case CMD_PAUSE:
-                        if (mState != STATE_STARTED) {
-                            break;
-                        }
-                        if (msg.arg1 != 0 && !mPaused) {
-                            mPaused = true;
-                            mPcmPlayer.pause();
-                            mStcMgt.pause();
-                        } else if (msg.arg1 == 0 && mPaused) {
-                            mPaused = false;
-                            mPcmPlayer.resume();
-                            mStcMgt.start();
-                            mDecodeHandler.sendEmptyMessage(CMD_LOOP);
-                        }
-                        break;
-                    case CMD_WAIT:
-                        if (mState != STATE_STARTED) {
-                            break;
-                        }
-                        long delay = doWait();
-                        if (delay < 10) {
-                            if (mLoop) {
-                                doRestart();
-                                mDecodeHandler.sendEmptyMessage(CMD_LOOP);
-                            } else {
-                                postOnCompletion();
-                            }
-                        } else {
-                            mDecodeHandler.sendEmptyMessageDelayed(CMD_WAIT, delay);
-                        }
-                        break;
-                    case CMD_STOP:
-                        if (mState != STATE_STARTED) {
-                            break;
-                        }
-                        mState = STATE_STOPPING;
-                        doStop();
-                        mState = STATE_IDLE;
-                        break;
-                    case CMD_SEEK:
-                        if (mState != STATE_STARTED) {
-                            break;
-                        }
-                        doSeek(msg.arg1);
-                        mDecodeHandler.sendEmptyMessage(CMD_LOOP);
-                        break;
-                    case CMD_RELEASE:
-                        mDecodeThread.quit();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-    }
-
-    private void postOnPrepared() {
-        mMainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mOnPreparedListener != null) {
-                    mOnPreparedListener.onPrepared(AudioPlayerCapture.this);
-                }
-            }
-        });
     }
 
     private void postOnCompletion() {
@@ -512,179 +481,6 @@ public class AudioPlayerCapture {
         });
     }
 
-    private void setDataSource(String url) throws IOException {
-        final String filePrefix = "file://";
-        final String assetsPrefix = "assets://";
-
-        if (url == null || url.isEmpty()) {
-            throw new IOException("url is empty!");
-        }
-        Log.d(TAG, "Try to open url " + mUrl);
-        if (url.startsWith(filePrefix)) {
-            String path = url.substring(filePrefix.length());
-            mMediaExtractor.setDataSource(path);
-        } else if (url.startsWith(assetsPrefix)) {
-            String path = url.substring(assetsPrefix.length());
-            final AssetFileDescriptor afd = mContext.getAssets().openFd(path);
-            mMediaExtractor.setDataSource(afd.getFileDescriptor(),
-                    afd.getStartOffset(), afd.getLength());
-        } else {
-            mMediaExtractor.setDataSource(mUrl);
-        }
-    }
-
-    private int doStart() {
-        mFirstPts = Long.MIN_VALUE;
-        mIsSeeking = false;
-        mDuration = 0;
-        mBasePosition = 0;
-        mSamplesWritten = 0;
-        mStcMgt.reset();
-        mMediaExtractor = new MediaExtractor();
-        try {
-            setDataSource(mUrl);
-        } catch (IOException e) {
-            Log.e(TAG, "Open " + mUrl + " failed");
-            e.printStackTrace();
-            return ERROR_IO;
-        }
-
-        int numTracks = mMediaExtractor.getTrackCount();
-        for (int i = 0; i< numTracks; i++) {
-            MediaFormat mediaFormat = mMediaExtractor.getTrackFormat(i);
-            String mime = mediaFormat.getString(MediaFormat.KEY_MIME);
-            if (mime.startsWith("audio/")) {
-                mMediaExtractor.selectTrack(i);
-                mDuration = mediaFormat.getLong(MediaFormat.KEY_DURATION);
-
-                // audio format
-                int sampleRate = mediaFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE);
-                int channels = mediaFormat.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
-                mOutFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, sampleRate, channels);
-
-                // open decoder
-                try {
-                    mMediaCodec = MediaCodec.createDecoderByType(mime);
-                    mMediaCodec.configure(mediaFormat, null, null, 0);
-                } catch (Exception e) {
-                    Log.e(TAG, "init decoder " + mime + " failed!");
-                    e.printStackTrace();
-                    return ERROR_UNSUPPORTED;
-                }
-                mMediaCodec.start();
-                mBufferInfo = new MediaCodec.BufferInfo();
-
-                // trigger format changed
-                mAudioFilterMgt.getSinkPin().onFormatChanged(mOutFormat);
-                return 0;
-            }
-        }
-
-        return ERROR_UNSUPPORTED;
-    }
-
-    private void doStop() {
-        mMediaCodec.stop();
-        mMediaCodec.release();
-        mMediaExtractor.release();
-        mPcmPlayer.stop();
-        mPcmPlayer.release();
-    }
-
-    private boolean doLoop() {
-        boolean eos = fillDecoder();
-        drainDecoder(eos);
-        return eos;
-    }
-
-    private long doWait() {
-        long dur = mSamplesWritten * 1000 / mOutFormat.sampleRate - mPcmPlayer.getPosition();
-        Log.d(TAG, "do Wait " + dur + "ms");
-        return dur;
-    }
-
-    private void doRestart() {
-        mMediaCodec.flush();
-        mMediaExtractor.seekTo(0, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
-        mPcmPlayer.stop();
-        mPcmPlayer.start();
-        mBasePosition = 0;
-        mSamplesWritten = 0;
-    }
-
-    private void doSeek(long ms) {
-        mMediaCodec.flush();
-        mPcmPlayer.flush();
-        mSamplesWritten = 0;
-        mIsSeeking = true;
-        mStcMgt.pause();
-        mStcMgt.updateStc(ms);
-        mMediaExtractor.seekTo(ms * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
-    }
-
-    private boolean fillDecoder() {
-        boolean eos = false;
-        ByteBuffer[] inputBuffers = mMediaCodec.getInputBuffers();
-        int inputBufferIndex = mMediaCodec.dequeueInputBuffer(TIMEOUT_US);
-        if (inputBufferIndex >= 0) {
-            ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
-            int sampleSize = mMediaExtractor.readSampleData(inputBuffer, 0);
-            if (sampleSize >= 0) {
-                long pts = mMediaExtractor.getSampleTime();
-                if (mFirstPts == Long.MIN_VALUE) {
-                    mFirstPts = pts;
-                }
-                if (mIsSeeking) {
-                    mBasePosition = (pts - mFirstPts) / 1000;
-                    mIsSeeking = false;
-                }
-                if (VERBOSE) Log.d(TAG, "fill decoder " + sampleSize + " pts: " + pts / 1000);
-                mMediaCodec.queueInputBuffer(inputBufferIndex, 0, sampleSize, pts, 0);
-                mMediaExtractor.advance();
-            } else {
-                Log.d(TAG, "EOS got, flush decoder");
-                eos = true;
-                mMediaCodec.queueInputBuffer(inputBufferIndex, 0, 0, 0,
-                        MediaCodec.BUFFER_FLAG_END_OF_STREAM);
-            }
-        }
-        return eos;
-    }
-
-    private short clip_short(int val) {
-        if (((val + 0x8000) & ~0xFFFF) != 0) {
-            return (short) ((val >> 31) ^ 0x7FFF);
-        } else {
-            return (short) val;
-        }
-    }
-
-    private ByteBuffer applyVolume(ByteBuffer inBuffer) {
-        if (mOutBuffer != null && mOutBuffer.capacity() < inBuffer.limit()) {
-            mOutBuffer = null;
-        }
-        if (mOutBuffer == null) {
-            int size = 8 * 1024;
-            while (size < inBuffer.limit()) {
-                size *= 2;
-            }
-            mOutBuffer = ByteBuffer.allocateDirect(size);
-            mOutBuffer.order(ByteOrder.nativeOrder());
-        }
-        mOutBuffer.clear();
-        mOutBuffer.put(inBuffer);
-        mOutBuffer.flip();
-        inBuffer.rewind();
-        if (mVolume != 1.0f) {
-            ShortBuffer shortBuffer = mOutBuffer.asShortBuffer();
-            int shortSize = mOutBuffer.limit() / 2;
-            for (int i = 0; i < shortSize; i++) {
-                shortBuffer.put(i, clip_short((int) (shortBuffer.get(i) * mVolume)));
-            }
-        }
-        return mOutBuffer;
-    }
-
     private void handlePlayerTypeChanged() {
         if (!mPlayerTypeChanged) {
             return;
@@ -700,92 +496,7 @@ public class AudioPlayerCapture {
                 AudioBufFrame aFrame = new AudioBufFrame(mOutFormat, null, 0);
                 aFrame.flags |= AVConst.FLAG_DETACH_NATIVE_MODULE;
                 mSrcPin.onFrameAvailable(aFrame);
-            }
-
-            IPcmPlayer player = mPcmPlayer;
-            mPcmPlayer = null;
-            player.stop();
-            player.release();
-            if (mAudioPlayerType == AUDIO_PLAYER_TYPE_OPENSLES) {
-                mPcmPlayer = new AudioSLPlayer();
-            } else {
-                mPcmPlayer = new AudioTrackPlayer();
-            }
-            mPcmPlayer.setMute(mMute);
-            int atomSize = AudioUtil.getNativeBufferSize(mContext, mOutFormat.sampleRate);
-            mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate, mOutFormat.channels, atomSize, 40);
-            mPcmPlayer.start();
-
-            mAudioFilterMgt.getSinkPin().onFormatChanged(mOutFormat);
-        }
-    }
-
-    private void drainDecoder(boolean eos) {
-        ByteBuffer[] outputBuffers = mMediaCodec.getOutputBuffers();
-        mEosSpinCount = 0;
-        long timeoutUs = TIMEOUT_US;
-        while (true) {
-            int outputBufferIndex;
-            try {
-                outputBufferIndex = mMediaCodec.dequeueOutputBuffer(mBufferInfo, timeoutUs);
-            } catch (Exception e) {
-                // Exynos socs may report invalid state exception even on a valid state,
-                // when no input frame filled but eos signaled.
-                Log.e(TAG, "dequeueOutputBuffer failed");
-                break;
-            }
-            if (outputBufferIndex >= 0) {
-                if (VERBOSE) Log.d(TAG, "drain decoder " + mBufferInfo.size);
-
-                ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
-                outputBuffer.position(mBufferInfo.offset);
-                outputBuffer.limit(mBufferInfo.size + mBufferInfo.offset);
-
-                handlePlayerTypeChanged();
-                ByteBuffer buffer = applyVolume(outputBuffer);
-                AudioBufFrame frame = new AudioBufFrame(mOutFormat, buffer,
-                        mBufferInfo.presentationTimeUs / 1000);
-                if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                    frame.flags |= AVConst.FLAG_END_OF_STREAM;
-                    Log.d(TAG, "eos frame got, size = " + mBufferInfo.size);
-                }
-                mAudioFilterMgt.getSinkPin().onFrameAvailable(frame);
-                mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
-
-                mSamplesWritten += frame.buf.limit() / 2 / mOutFormat.channels;
-                long position = mBasePosition + mPcmPlayer.getPosition();
-                mStcMgt.updateStc(position, true);
-                if (VERBOSE) {
-                    long pos = (mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
-                    Log.i(TAG, "pos: " + pos + " position: " + position);
-                }
-
-                if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                    break;
-                }
-                timeoutUs = 0;
-            } else if (outputBufferIndex == MediaCodec.INFO_TRY_AGAIN_LATER) {
-                if (!eos) {
-                    break;
-                } else {
-                    mEosSpinCount++;
-                    if (mEosSpinCount > MAX_EOS_SPINS) {
-                        Log.i(TAG, "Force shutting down decoder for MAX_EOS_SPINS reached");
-                        AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
-                        frame.flags |= AVConst.FLAG_END_OF_STREAM;
-                        mAudioFilterMgt.getSinkPin().onFrameAvailable(frame);
-                        break;
-                    }
-                    if (VERBOSE) Log.d(TAG, "no output available, spinning to await EOS");
-                }
-            } else if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                Log.d(TAG, "INFO_OUTPUT_FORMAT_CHANGED");
-            } else if (outputBufferIndex == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
-                outputBuffers = mMediaCodec.getOutputBuffers();
-                Log.d(TAG, "INFO_OUTPUT_BUFFERS_CHANGED");
-            } else {
-                Log.w(TAG, "unexpected result to dequeueOutputBuffer: " + outputBufferIndex);
-                break;
+                mAudioFilterMgt.getSinkPin().onFormatChanged(mOutFormat);
             }
         }
     }

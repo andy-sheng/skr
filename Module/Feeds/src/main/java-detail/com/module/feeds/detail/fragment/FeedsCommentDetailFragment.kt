@@ -134,6 +134,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                 mFeedsSecondCommentPresenter?.mOffset = mFeedsSecondCommentPresenter?.mOffset!! + 1
                 mFeedsSecondCommentPresenter?.updateCommentList()
                 EventBus.getDefault().post(AddCommentEvent(mFirstLevelCommentModel!!.comment.commentID))
+                mRecyclerView?.scrollToPosition(0)
             }
         }
 

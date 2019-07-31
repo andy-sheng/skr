@@ -21,6 +21,10 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.openFeedsMakeActivity
@@ -43,7 +47,11 @@ class FeedsRankSearchActivity : BaseActivity() {
     lateinit var mRecyclerView: RecyclerView
 
     lateinit var mAdapter: FeedsRankAdapter
-    lateinit var mPublishSubject: PublishSubject<String>
+    lateinit var mPublishSubject: PublishSubject<SearchModel>
+
+    private var mLoadService: LoadService<*>? = null
+    private var isAutoSearch = false       // 标记是否是自动搜索
+    private var lastSearchContent = ""     // 记录最近搜索内容
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_rank_search_fragment_layout
@@ -107,7 +115,7 @@ class FeedsRankSearchActivity : BaseActivity() {
             }
 
             override fun afterTextChanged(editable: Editable) {
-                mPublishSubject.onNext(editable.toString())
+                mPublishSubject.onNext(SearchModel(editable.toString(), true))
             }
         })
 
@@ -119,7 +127,7 @@ class FeedsRankSearchActivity : BaseActivity() {
                     return@OnEditorActionListener false
                 }
                 if (mPublishSubject != null) {
-                    mPublishSubject.onNext(keyword)
+                    mPublishSubject.onNext(SearchModel(keyword, false))
                 }
                 U.getKeyBoardUtils().hideSoftInput(mSearchContent)
             }
@@ -132,6 +140,13 @@ class FeedsRankSearchActivity : BaseActivity() {
             }
         })
 
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.feed_search_empty_icon, "没搜到任何结果", "#802F2F30"))
+                .build()
+        mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
+            mPublishSubject.onNext(SearchModel(lastSearchContent, true))
+        })
+
         mSearchContent.requestFocus()
         U.getKeyBoardUtils().showSoftInputKeyBoard(this)
     }
@@ -139,10 +154,12 @@ class FeedsRankSearchActivity : BaseActivity() {
     private fun initPublishSubject() {
         mPublishSubject = PublishSubject.create()
         ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS)
-                .filter { s -> s.isNotEmpty() }
+                .filter { s -> s.searchContent.isNotEmpty() }
                 .switchMap { key ->
                     val feedRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
-                    feedRankServerApi.searchChallenge(key)
+                    isAutoSearch = key.isAutoSearch
+                    lastSearchContent = key.searchContent
+                    feedRankServerApi.searchChallenge(key.searchContent)
                 }, object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 val list = JSON.parseArray(obj.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
@@ -150,6 +167,12 @@ class FeedsRankSearchActivity : BaseActivity() {
                 if (list != null && list.isNotEmpty()) {
                     mAdapter.mDataList.addAll(list)
                     mAdapter.notifyDataSetChanged()
+                }
+                if (!isAutoSearch && mAdapter.mDataList.isEmpty()) {
+                    mLoadService?.showCallback(EmptyCallback::class.java)
+                }
+                if (mAdapter.mDataList.isNotEmpty()) {
+                    mLoadService?.showSuccess()
                 }
             }
         }, this)
@@ -166,4 +189,6 @@ class FeedsRankSearchActivity : BaseActivity() {
     override fun destroy() {
         super.destroy()
     }
+
+    class SearchModel(var searchContent: String, var isAutoSearch: Boolean)
 }

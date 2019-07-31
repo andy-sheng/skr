@@ -149,6 +149,7 @@ int AudioPlay::stop() {
 
     mState = STATE_INITIALIZED;
     notifyThreadLock(mWriteCond);
+    audio_utils_fifo_flush(&mFifo);
     return 0;
 }
 
@@ -400,10 +401,10 @@ SLresult AudioPlay::startPlayer() {
     }
 
     result = (*mSLPlayer.playerPlay)->SetPlayState(mSLPlayer.playerPlay,
-                                                   SL_RECORDSTATE_RECORDING);
+                                                   SL_PLAYSTATE_PLAYING);
 
     if (result != SL_RESULT_SUCCESS) {
-        LOGE("[start] SetRecordState failed:%d", (int) result);
+        LOGE("[start] SetPlayState failed:%d", (int) result);
     } else {
         mState = STATE_PLAYING;
     }
@@ -414,7 +415,7 @@ SLresult AudioPlay::startPlayer() {
 
 SLresult AudioPlay::pausePlayer() {
     SLresult result = (*mSLPlayer.playerPlay)->SetPlayState(mSLPlayer.playerPlay,
-                                                            SL_RECORDSTATE_PAUSED);
+                                                            SL_PLAYSTATE_PAUSED);
     if (result != SL_RESULT_SUCCESS) {
         LOGE("[pause] SetRecordState failed:%d", (int) result);
     } else {
@@ -426,7 +427,7 @@ SLresult AudioPlay::pausePlayer() {
 
 SLresult AudioPlay::resumePlayer() {
 	SLresult result = (*mSLPlayer.playerPlay)->SetPlayState(mSLPlayer.playerPlay,
-	                                               SL_RECORDSTATE_RECORDING);
+                                                            SL_PLAYSTATE_PLAYING);
 
     if (result != SL_RESULT_SUCCESS) {
 		LOGE("[start] SetRecordState failed:%d", (int) result);
@@ -448,6 +449,20 @@ SLresult AudioPlay::mutePlayer(bool mute) {
         LOGE("SetMute %d failed:%d", (int) mute, (int) result);
     }
     return result;
+}
+
+int64_t AudioPlay::getPosition() {
+    if ((mState != STATE_PLAYING) && (mState != STATE_PAUSE)) {
+        return 0;
+    }
+
+    SLuint32 slPlayPos = 0;
+    SLresult result = (*mSLPlayer.playerPlay)->GetPosition(mSLPlayer.playerPlay, &slPlayPos);
+    if (result != SL_RESULT_SUCCESS) {
+        LOGE("GetPosition failed:%d", (int) result);
+        slPlayPos = 0;
+    }
+    return (int64_t) slPlayPos;
 }
 
 void AudioPlay::release() {

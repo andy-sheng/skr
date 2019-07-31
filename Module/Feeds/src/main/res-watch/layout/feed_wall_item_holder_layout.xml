@@ -159,7 +159,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_108_dp"
-        android:drawableLeft="@drawable/feed_comment_icon"
+        android:drawableLeft="@drawable/feed_listener_icon"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:textColor="@color/black_trans_50"
