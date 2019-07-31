@@ -330,12 +330,13 @@ public class ZqAudioEditorKit {
      */
     public synchronized void seekTo(long pos) {
         Log.d(TAG, "seekTo: " + pos);
-        // TODO: 需要清空mixer和pcmPlayer的缓存数据，并且需要主音轨seek完成后再seek其他音轨
         if (mAudioSource[0] == null) {
             Log.e(TAG, "idx 0 audio data source not set, return");
             return;
         }
-        if (mState != STATE_PREVIEW_STARTED && mState != STATE_PREVIEW_PREPARING) {
+        if (mState != STATE_PREVIEW_STARTED &&
+                mState != STATE_PREVIEW_PAUSED &&
+                mState != STATE_PREVIEW_PREPARING) {
             return;
         }
         for (int i = 0; i < MAX_CHN; i++) {
@@ -554,19 +555,19 @@ public class ZqAudioEditorKit {
 
     private void handlePreviewCompletion() {
         if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
-            // 先停止所有音轨
+            // seek到开头, loop播放
+            mAudioSource[0].seek(0);
+            if (mOnPreviewInfoListener != null) {
+                mOnPreviewInfoListener.onLoopCount(mLoopCount);
+            }
+        } else {
             for (int i = 0; i < MAX_CHN; i++) {
                 if (mAudioSource[i] != null) {
                     mAudioSource[i].capture.stop();
                 }
             }
-            // 重新开始主音轨播放
-            mAudioSource[0].start();
-            if (mOnPreviewInfoListener != null) {
-                mOnPreviewInfoListener.onLoopCount(mLoopCount);
-            }
-        } else {
             mAudioPreview.stop();
+            mState = STATE_IDLE;
             if (mOnPreviewInfoListener != null) {
                 mOnPreviewInfoListener.onCompletion();
             }
@@ -585,6 +586,24 @@ public class ZqAudioEditorKit {
             mOnComposeInfoListener.onCompletion();
         }
     }
+
+    private AudioFileCapture.OnSeekCompletionListener mOnCaptureSeekCompletionListener = new AudioFileCapture.OnSeekCompletionListener() {
+        @Override
+        public void onSeekCompletion(AudioFileCapture audioFileCapture, long ms) {
+            Log.d(TAG, "onSeekCompletion: " + audioFileCapture + " state: " + mState + " ms: " + ms);
+            synchronized (ZqAudioEditorKit.this) {
+                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
+                    mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
+                    // 主音轨seek完成后再处理其他音轨
+                    for (int i = 1; i < MAX_CHN; i++) {
+                        if (mAudioSource[i] != null) {
+                            mAudioSource[i].seek(ms);
+                        }
+                    }
+                }
+            }
+        }
+    };
 
     private AudioFileCapture.OnCompletionListener mOnCaptureCompletionListener = new AudioFileCapture.OnCompletionListener() {
         @Override

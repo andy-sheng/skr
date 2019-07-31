@@ -96,6 +96,7 @@ public class AudioFileCapture {
     private long mSamplesWritten;
 
     private OnPreparedListener mOnPreparedListener;
+    private OnSeekCompletionListener mOnSeekCompletionListener;
     private OnCompletionListener mOnCompletionListener;
     private OnErrorListener mOnErrorListener;
 
@@ -109,6 +110,19 @@ public class AudioFileCapture {
          * @param audioFileCapture the AudioFileCapture instance
          */
         void onPrepared(AudioFileCapture audioFileCapture);
+    }
+
+    /**
+     * The interface On seek completion listener.
+     */
+    public interface OnSeekCompletionListener {
+        /**
+         * On seek completion.
+         *
+         * @param audioFileCapture the AudioFileCapture instance
+         * @param ms position seek in ms
+         */
+        void onSeekCompletion(AudioFileCapture audioFileCapture, long ms);
     }
 
     /**
@@ -202,6 +216,15 @@ public class AudioFileCapture {
      */
     public void setOnPreparedListener(OnPreparedListener listener) {
         mOnPreparedListener = listener;
+    }
+
+    /**
+     * Sets on seek completion listener.
+     *
+     * @param listener the listener
+     */
+    public void setOnSeekCompletionListener(OnSeekCompletionListener listener) {
+        mOnSeekCompletionListener = listener;
     }
 
     /**
@@ -422,6 +445,7 @@ public class AudioFileCapture {
                             ((Runnable) msg.obj).run();
                         }
                         doSeek(msg.arg1);
+                        postOnSeekCompletion(msg.arg1);
                         mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         break;
                     case CMD_RELEASE:
@@ -440,6 +464,17 @@ public class AudioFileCapture {
             public void run() {
                 if (mOnPreparedListener != null) {
                     mOnPreparedListener.onPrepared(AudioFileCapture.this);
+                }
+            }
+        });
+    }
+
+    private void postOnSeekCompletion(final long ms) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mOnSeekCompletionListener != null) {
+                    mOnSeekCompletionListener.onSeekCompletion(AudioFileCapture.this, ms);
                 }
             }
         });
@@ -558,6 +593,8 @@ public class AudioFileCapture {
         mSamplesWritten = 0;
         mIsSeeking = true;
         mMediaExtractor.seekTo(ms * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
+        // seek后发送onFormatChanged事件
+        mSrcPin.onFormatChanged(mOutFormat);
     }
 
     private boolean fillDecoder() {
@@ -652,7 +689,7 @@ public class AudioFileCapture {
                 mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
 
                 mSamplesWritten += frame.buf.limit() / 2 / mOutFormat.channels;
-                mCurrentPosition = mSamplesWritten * 1000 / mOutFormat.sampleRate;
+                mCurrentPosition = mBasePosition + mSamplesWritten * 1000 / mOutFormat.sampleRate;
                 if (VERBOSE) {
                     long pos = (mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
                     Log.i(TAG, "pos: " + pos + " position: " + mCurrentPosition);
