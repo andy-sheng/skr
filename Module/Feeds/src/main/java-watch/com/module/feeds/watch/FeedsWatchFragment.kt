@@ -12,14 +12,18 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
-import com.module.feeds.R
-import com.module.feeds.watch.view.FeedsLikeView
+import com.common.view.ex.ExTextView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
-import com.common.view.ex.ExTextView
-import com.module.feeds.watch.view.FeedsWatchView
 import com.module.RouterConstants
+import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.view.FeedsLikeView
+import com.module.feeds.watch.view.FeedsWatchView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
@@ -33,21 +37,31 @@ class FeedsWatchFragment : BaseFragment() {
     val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsLikeView by lazy { FeedsLikeView(this) } //喜欢
+    var positionIndexJob: Job? = null
 
     var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
-        mFeedVp?.setCurrentItem(newPosition, false)
-        when (oldPositon) {
-            0 -> {
-                mRecommendFeedsView?.unselected()
-            }
-            1 -> {
-                mFollowFeesView?.unselected()
-            }
-            2 -> {
-                mFeedsCollectView?.unselected()
+        positionIndexJob?.let {
+            if (it.isActive) {
+                it.cancel()
             }
         }
-        onViewSelected(newPosition)
+
+        positionIndexJob = launch(Dispatchers.Main) {
+            delay(400)
+            mFeedVp?.setCurrentItem(newPosition, false)
+            when (oldPositon) {
+                0 -> {
+                    mRecommendFeedsView?.unselected()
+                }
+                1 -> {
+                    mFollowFeesView?.unselected()
+                }
+                2 -> {
+                    mFeedsCollectView?.unselected()
+                }
+            }
+            onViewSelected(newPosition)
+        }
     })
 
     override fun initView(): Int {
