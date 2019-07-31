@@ -212,7 +212,7 @@ class FeedsEditorActivity : BaseActivity() {
             }
 
             override fun onCompletion() {
-                MyLog.d(TAG, "onCompletion")
+                MyLog.d(TAG, "preview onCompletion")
                 //startPreview()
             }
 
@@ -229,6 +229,7 @@ class FeedsEditorActivity : BaseActivity() {
             }
 
             override fun onCompletion() {
+                MyLog.d(TAG, "compose onCompletion")
                 launch {
                     mComposeProgressbarVG?.visibility = View.GONE
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
