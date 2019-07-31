@@ -204,10 +204,18 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     }
 
                     override fun onTimeFlyMonitor(pos: Long, duration: Long) {
-                        mAdapter?.updatePlayProgress(pos, duration)
-                        if(pos*100/duration>80) {
-                            FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
+                        if(mAdapter?.playing == true){
+                            mAdapter?.updatePlayProgress(pos, duration)
+                            if(pos*100/duration>80) {
+                                FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
+                            }
+                        }else{
+                            if(MyLog.isDebugLogOpen()){
+                                U.getToastUtil().showShort("FeedsWatchView有bug,暂停失败了？")
+                            }
+                            pausePlay()
                         }
+
                     }
                 }
         SinglePlayer.addCallback(playerTag, playCallback)

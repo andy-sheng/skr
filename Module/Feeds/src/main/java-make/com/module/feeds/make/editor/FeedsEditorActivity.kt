@@ -96,7 +96,7 @@ class FeedsEditorActivity : BaseActivity() {
             // 吃掉点击事件
         }
 
-        mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.songTpl?.songName
+        mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setResult(Activity.RESULT_CANCELED)
@@ -207,6 +207,7 @@ class FeedsEditorActivity : BaseActivity() {
 
             override fun onCompletion() {
                 MyLog.d(TAG,"onCompletion")
+                startPreview()
             }
 
             override fun onLoopCount(count: Int) {
