@@ -204,7 +204,11 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     // 初始化数据
     fun initData(flag: Boolean) {
-        mPersenter.initFeedLikeList(flag)
+        if (mAdapter.mDataList.isNullOrEmpty()) {
+            mPersenter.initFeedLikeList(true)
+        } else {
+            mPersenter.initFeedLikeList(flag)
+        }
     }
 
     // 停止播放

@@ -170,7 +170,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
 
     fun getProducations(isFlag: Boolean) {
         val now = System.currentTimeMillis()
-        if (!isFlag) {
+        if (!isFlag && mAdapter.dataList.isNotEmpty()) {
             // 10分钟更新一次吧
             if (now - mLastUpdateInfo < 10 * 60 * 1000) {
                 return

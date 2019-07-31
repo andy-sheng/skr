@@ -34,7 +34,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 
     fun initWatchList(flag: Boolean): Boolean {
         if (!flag) {
-            // 10秒切页面才刷一下
+            // 3分钟切页面才刷一下
             val now = System.currentTimeMillis()
             if (now - mLastUpdatListTime < 180 * 1000) {
 //                view.requestTimeShort()

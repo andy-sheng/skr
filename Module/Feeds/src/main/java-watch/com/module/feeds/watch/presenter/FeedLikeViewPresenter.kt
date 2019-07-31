@@ -30,7 +30,7 @@ class FeedLikeViewPresenter(var view: IFeedLikeView) : RxLifeCyclePresenter() {
 
     fun initFeedLikeList(isFlag: Boolean) {
         if (!isFlag) {
-            // 正常给一个10秒的间隔
+            // 正常给一个5分钟的间隔
             val now = System.currentTimeMillis()
             if (now - mLastUpdatListTime < 5 * 60 * 1000) {
                 return

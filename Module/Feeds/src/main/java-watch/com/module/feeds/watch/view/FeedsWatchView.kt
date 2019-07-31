@@ -353,7 +353,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     override fun getFeeds(flag: Boolean) {
-        mPersenter.initWatchList(flag)
+        if (mAdapter?.mDataList.isNullOrEmpty()) {
+            // 列表都为空了，还不去拉一次
+            mPersenter.initWatchList(true)
+        } else {
+            mPersenter.initWatchList(flag)
+        }
     }
 
     override fun getMoreFeeds() {
