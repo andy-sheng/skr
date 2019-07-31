@@ -212,7 +212,8 @@ class FeedsPublishActivity : BaseActivity() {
                     "tagIDs" to tagsIds,
                     "playDurMs" to mFeedsMakeModel?.recordDuration,
                     "playURL" to playUrl,
-                    "challengeID" to mFeedsMakeModel?.songModel?.challengeID
+                    "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
+                    "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID
 //TODO                    "tplID": 0,
             )
 
