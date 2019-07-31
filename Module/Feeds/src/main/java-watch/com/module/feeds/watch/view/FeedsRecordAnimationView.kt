@@ -44,6 +44,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     var hasLayouted = false
     var wantPlaying = false
     private var hideWhenPause = false
+
     init {
         TAG += hashCode()
         View.inflate(context, R.layout.feed_record_animation_view_layout, this)
@@ -112,9 +113,9 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun play() {
-        MyLog.d(TAG, "play playing=$playing")
+        MyLog.d(TAG, "play playing=$playing 动画在播 = ${avatarAnimation?.isRunning == true}")
         wantPlaying = true
-        if (playing) {
+        if (playing && avatarAnimation?.isRunning == true) {
             return
         }
 
@@ -137,8 +138,8 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun pause() {
-        MyLog.d(TAG, "pause playing=$playing")
-        if (!playing) {
+        MyLog.d(TAG, "pause playing=$playing 动画在播= ${avatarAnimation?.isRunning != true}")
+        if (!playing && avatarAnimation?.isRunning != true) {
             return
         }
         playing = false
@@ -182,13 +183,13 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
                     }
 
                     override fun onAnimationEnd(animation: Animator?) {
-                        if(hideWhenPause){
+                        if (hideWhenPause) {
                             rockerIv.visibility = View.GONE
                         }
                     }
 
                     override fun onAnimationCancel(animation: Animator?) {
-                        if(hideWhenPause){
+                        if (hideWhenPause) {
                             rockerIv.visibility = View.GONE
                         }
                     }
@@ -202,7 +203,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
                 play()
             } else {
                 rockerIv.rotation = startAngle
-                if(hideWhenPause){
+                if (hideWhenPause) {
                     rockerIv.visibility = View.GONE
                 }
                 pause()
