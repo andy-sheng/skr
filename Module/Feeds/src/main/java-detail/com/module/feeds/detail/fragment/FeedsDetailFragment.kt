@@ -130,6 +130,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mSeekBar?.max = duration.toInt()
             }
             mSeekBar!!.progress = pos.toInt()
+            mFeedsWatchModel?.song?.playDurMsFromPlayerForDebug = duration.toInt()
             mFeedsCommonLyricView?.seekTo(pos.toInt())
             if (pos * 100 / duration > 80) {
                 FeedsPlayStatistics.addComplete(mFeedsWatchModel?.feedID)

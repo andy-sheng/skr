@@ -16,10 +16,17 @@ class FeedSongModel : Serializable {
     var needRecommentTag: Boolean = false
     @JSONField(name = "playDurMs")
     var playDurMs: Int = 0 // 服务器返回的播放总时长
+        get() {
+            if (playDurMsFromPlayerForDebug > 0) {
+                return playDurMsFromPlayerForDebug
+            }
+            return field
+        }
+
     var playDurMsFromPlayerForDebug: Int = 0 // 从播放器拿到的播放总时间， 仅仅是调试使用
     @JSONField(name = "playURL")
     var playURL: String? = null
-    var playCurPos:Int = 0 // 当前播放到哪了，只在客户端用，服务器不会返回
+    var playCurPos: Int = 0 // 当前播放到哪了，只在客户端用，服务器不会返回
     @JSONField(name = "songID")
     var songID: Int = 0
     @JSONField(name = "songTpl")
@@ -31,7 +38,7 @@ class FeedSongModel : Serializable {
     @JSONField(name = "userID")
     var userID: Int = 0
     @JSONField(name = "workName")
-    var workName:String? = null
+    var workName: String? = null
 
     override fun toString(): String {
         return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMs=$playDurMs, playURL=$playURL, playCurPos=$playCurPos, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName)"
