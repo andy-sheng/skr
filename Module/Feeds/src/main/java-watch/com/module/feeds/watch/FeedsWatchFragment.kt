@@ -120,7 +120,7 @@ class FeedsWatchFragment : BaseFragment() {
                 return when (position) {
                     0 -> "推荐"
                     1 -> "关注"
-                    2 -> "喜欢"
+                    2 -> "收藏"
                     else -> super.getPageTitle(position)
                 }
             }

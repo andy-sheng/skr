@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ApiManager
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -91,7 +92,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
         mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 dismiss()
-                if ("收藏歌曲".equals(mCancleTv.text)) {
+                if ("收藏歌曲".equals(mCollectTv.text)) {
                     collect(false)
                 } else {
                     collect(true)
@@ -162,7 +163,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
         launch {
             val result = mFeedServerApi.getRelation(targetID)
             if (result.errno == 0) {
-                val isCollocted = result.data.getBooleanValue("isCollocted")
+                val isCollocted = result.data.getBooleanValue("isCollected")
                 showCollected(isCollocted)
                 EventBus.getDefault().post(FeedsLikeEvent())
             } else {
@@ -179,11 +180,11 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
             }.await()
 
             var collect = async {
-                mFeedServerApi.checkCollects(targetID, feedID)
+                mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)
             }.await()
 
             if (relation.errno == 0 && collect.errno == 0) {
-                val isCollocted = collect.data.getBooleanValue("isCollocted")
+                val isCollocted = collect.data.getBooleanValue("isCollected")
                 val isFriend = relation.data.getBooleanValue("isFriend")
                 val isFollow = relation.data.getBooleanValue("isFollow")
                 showCollected(isCollocted)
