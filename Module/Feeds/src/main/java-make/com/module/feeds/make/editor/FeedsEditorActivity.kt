@@ -127,7 +127,7 @@ class FeedsEditorActivity : BaseActivity() {
                 }
             }
         })
-        mSeekBar?.max = mFeedsMakeModel?.recordDuration?.toInt() ?: 0
+        mSeekBar?.max = mFeedsMakeModel?.recordDuration!!.toInt() - mFeedsMakeModel?.firstLyricShiftTs!!
         mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
