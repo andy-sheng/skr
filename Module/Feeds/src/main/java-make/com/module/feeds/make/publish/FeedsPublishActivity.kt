@@ -9,29 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.flowlayout.FlowLayout
 import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
-import com.common.image.fresco.BaseImageView
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiResult
 import com.common.rxretrofit.subscribe
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
-import com.common.upload.UploadTask
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.component.lyrics.widget.ManyLyricsView
-import com.engine.EngineEvent
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeActivity
@@ -39,12 +32,9 @@ import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.make.model.FeedsPublishTagModel
-import com.module.feeds.watch.view.FeedsRecordAnimationView
 import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_PUBLISH)
@@ -149,7 +139,7 @@ class FeedsPublishActivity : BaseActivity() {
                     uploadProgressbarContainer.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(playUrl)) {
                         UploadParams.newBuilder(it.composeSavePath)
-                                .setFileType(UploadParams.FileType.feeds)
+                                .setFileType(UploadParams.FileType.feed)
                                 .startUploadAsync(object : UploadCallback {
                                     override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
                                     }
@@ -160,8 +150,10 @@ class FeedsPublishActivity : BaseActivity() {
                                     }
 
                                     override fun onFailureNotInUiThread(msg: String?) {
-                                        U.getToastUtil().showShort("上传失败，稍后重试")
-                                        uploadProgressbarContainer.visibility = View.GONE
+                                        launch {
+                                            U.getToastUtil().showShort("上传失败，稍后重试")
+                                            uploadProgressbarContainer.visibility = View.GONE
+                                        }
                                     }
                                 })
                     } else {
