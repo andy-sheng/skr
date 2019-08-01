@@ -169,6 +169,12 @@ class FeedsDetailRankActivity : BaseActivity() {
         mRefreshLayout.finishRefresh()
         if (isClean) {
             mAdapter.mDataList.clear()
+            mRefreshLayout.setEnableLoadMore(true)
+        }
+
+        if (list.isNullOrEmpty()) {
+            // 后面都没有数据了
+            mRefreshLayout.setEnableLoadMore(false)
         }
 
         list?.let { mAdapter.mDataList.addAll(it) }
