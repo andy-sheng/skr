@@ -73,7 +73,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private val mPersenter: FeedWatchViewPresenter = FeedWatchViewPresenter(this, type)
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
-    var mCurFocusPostion = -1 // 记录当前操作的焦点pos
     val playerTag = TAG + hashCode()
 
     val playCallback: PlayerCallbackAdapter
@@ -328,9 +327,8 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
-        if (mCurFocusPostion != pos) {
+        if (model != null && model.feedID != mAdapter?.mCurrentPlayModel?.feedID) {
             SinglePlayer.reset(playerTag)
-            mCurFocusPostion = pos
         }
         if (isMustPlay) {
             // 播放
@@ -348,6 +346,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private fun startPlay(pos: Int, model: FeedsWatchModel?) {
         mAdapter?.startPlayModel(pos, model)
+        // 数据还是要更新，只是不播放，为恢复播放做准备
+        if (!fragment.fragmentVisible) {
+            return
+        }
         model?.song?.playURL?.let {
             FeedsPlayStatistics.addExpose(model?.feedID)
             SinglePlayer.startPlay(playerTag, it)
@@ -358,6 +360,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
      * 继续播放
      */
     private fun resumePlay() {
+        if (!fragment.fragmentVisible) {
+            return
+        }
         mAdapter?.resumePlayModel()
         mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
             FeedsPlayStatistics.addExpose(mAdapter?.mCurrentPlayModel?.feedID)
