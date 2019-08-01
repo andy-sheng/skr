@@ -214,7 +214,7 @@ public class SongInfoCardView extends ConstraintLayout {
                 MyLog.w(TAG, "miniGameInfo 是空的");
             }
         } else {
-            LyricsManager.getLyricsManager(U.app())
+            LyricsManager.INSTANCE
                     .loadGrabPlainLyric(songModel.getStandLrc())
                     .subscribe(new Consumer<String>() {
                         @Override

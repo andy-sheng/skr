@@ -75,7 +75,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
     }
 
     private void showLyric() {
-        LyricsManager.getLyricsManager(U.app())
+        LyricsManager.INSTANCE
                 .loadStandardLyric(mSongModel.getLyric())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Consumer<LyricsReader>() {

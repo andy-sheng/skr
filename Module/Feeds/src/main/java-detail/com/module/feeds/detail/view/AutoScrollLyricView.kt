@@ -35,7 +35,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         return R.layout.auto_scroll_lyric_view_layout
     }
 
-    override fun setSongModel(feedSongModel: FeedSongModel) {
+    override fun setSongModel(feedSongModel: FeedSongModel,shift:Int) {
         mFeedSongModel = feedSongModel
     }
 
@@ -44,7 +44,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         tryInflate()
         lyricTv.text = "正在加载"
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
-            mDisposable = LyricsManager.getLyricsManager(U.app())
+            mDisposable = LyricsManager
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
                         mFeedSongModel?.songTpl?.lrcTxtStr = s
@@ -61,7 +61,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         mIsStart = true
 
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
-            mDisposable = LyricsManager.getLyricsManager(U.app())
+            mDisposable = LyricsManager
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
                         mFeedSongModel?.songTpl?.lrcTxtStr = s

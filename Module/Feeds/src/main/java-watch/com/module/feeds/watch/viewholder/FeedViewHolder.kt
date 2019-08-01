@@ -104,8 +104,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         // 加载带时间戳的歌词
         watchModel.song?.let {
-            feedWatchManyLyricView.setSongModel(it)
-            feedAutoScrollLyricView.setSongModel(it)
+            feedWatchManyLyricView.setSongModel(it,-1)
+            feedAutoScrollLyricView.setSongModel(it,-1)
         }
         // 加载歌词
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {

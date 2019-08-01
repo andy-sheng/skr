@@ -8,6 +8,7 @@ import com.common.rx.RxRetryAssist
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricsManager
+import com.component.lyrics.model.LyricsLineInfo
 import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
@@ -18,15 +19,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 
 class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+
     val TAG = "FeedsManyLyricView"
     private var mManyLyricsView: ManyLyricsView? = null
     private var mFeedSongModel: FeedSongModel? = null
-    var mDisposable: Disposable? = null
-    var mIsStart: Boolean = false
-
+    private var mDisposable: Disposable? = null
+    private var mIsStart: Boolean = false
+    private var shift = 0
     override fun init(parentView: View) {
         mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view)
         mManyLyricsView?.spaceLineHeight = U.getDisplayUtils().dip2px(15f).toFloat()
@@ -36,8 +39,9 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
         return R.layout.feeds_detail_many_lyric_layout
     }
 
-    override fun setSongModel(feedSongModel: FeedSongModel) {
+    override fun setSongModel(feedSongModel: FeedSongModel, shift: Int) {
         mFeedSongModel = feedSongModel
+        this.shift = shift
     }
 
     override fun loadLyric() {
@@ -54,8 +58,8 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
         if (mFeedSongModel?.songTpl?.lrcTsReader == null) {
             mFeedSongModel?.songTpl?.lrcTs?.let {
                 mDisposable?.dispose()
-                mDisposable = LyricsManager.getLyricsManager(U.app())
-                        .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs)
+                mDisposable = LyricsManager
+                        .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs,shift)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .retryWhen(RxRetryAssist(3, ""))
@@ -76,7 +80,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
             mManyLyricsView?.initLrcData()
         }
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
-        if(!TextUtils.isEmpty(mFeedSongModel?.workName)){
+        if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
             mManyLyricsView?.setSongName("《${mFeedSongModel?.workName}》")
         }
 

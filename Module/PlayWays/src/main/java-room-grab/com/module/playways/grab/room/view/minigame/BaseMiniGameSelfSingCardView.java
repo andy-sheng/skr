@@ -117,7 +117,7 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
     }
 
     protected void setLyric(TextView lyricTv, String lyricUrl) {
-        LyricsManager.getLyricsManager(U.app())
+        LyricsManager.INSTANCE
                 .loadGrabPlainLyric(lyricUrl)
                 .subscribe(new Consumer<String>() {
                     @Override

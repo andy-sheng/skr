@@ -133,8 +133,8 @@ class FeedsEditorActivity : BaseActivity() {
 
         if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
             mAutoScrollLyricView?.visibility = View.GONE
-            LyricsManager.getLyricsManager(U.app())
-                    .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+            LyricsManager
+                    .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs,-1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
@@ -153,7 +153,7 @@ class FeedsEditorActivity : BaseActivity() {
         } else {
             mManyLyricsView?.visibility = View.GONE
             mFeedsMakeModel?.songModel?.let {
-                mAutoScrollLyricView?.setSongModel(it)
+                mAutoScrollLyricView?.setSongModel(it,-1)
             }
         }
 

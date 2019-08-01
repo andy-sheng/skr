@@ -11,6 +11,7 @@ import com.module.feeds.detail.view.inter.BaseFeedsLyricView
  * 可以播伴奏清唱等多种歌词
  */
 class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
+
     override fun loadLyric() {
         throw Exception("外部只要调用setSongModel就行了")
     }
@@ -32,11 +33,10 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
             mFeedsManyLyricView = FeedsManyLyricView(viewStub)
         }
     }
-
-    override fun setSongModel(feedSongModel: FeedSongModel) {
+    override fun setSongModel(feedSongModel: FeedSongModel, shift: Int) {
         mFeedSongModel = feedSongModel
-        mFeedsManyLyricView?.setSongModel(feedSongModel)
-        mAutoScrollLyricView?.setSongModel(feedSongModel)
+        mFeedsManyLyricView?.setSongModel(feedSongModel,shift)
+        mAutoScrollLyricView?.setSongModel(feedSongModel,shift)
         if (!TextUtils.isEmpty(feedSongModel.songTpl?.lrcTs)) {
             // 只要有伴奏文件，不管清唱和伴奏都是这个view
             mBaseFeedsLyricView = mFeedsManyLyricView

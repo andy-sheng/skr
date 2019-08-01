@@ -225,7 +225,7 @@ class FeedsMakeActivity : BaseActivity() {
         val lyricWithTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
         if (!TextUtils.isEmpty(lyricWithTs)) {
             // 加载歌词
-            LyricsManager.getLyricsManager(U.app())
+            LyricsManager
                     .loadStandardLyric(lyricWithTs)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -247,7 +247,7 @@ class FeedsMakeActivity : BaseActivity() {
                     })
         } else {
             mFeedsMakeModel?.songModel?.let {
-                mAutoScrollLyricView?.setSongModel(it)
+                mAutoScrollLyricView?.setSongModel(it,0)
             }
             mVoiceScaleView?.stop(false)
         }

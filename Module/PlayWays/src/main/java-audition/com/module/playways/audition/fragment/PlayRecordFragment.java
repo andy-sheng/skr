@@ -183,7 +183,7 @@ public class PlayRecordFragment extends BaseFragment {
     LyricsReader mLyricsReader;
 
     private void playLyrics(SongModel songModel) {
-        LyricsManager.getLyricsManager(U.app())
+        LyricsManager.INSTANCE
                 .loadStandardLyric(songModel.getLyric())
                 .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(lyricsReader -> {

@@ -157,7 +157,7 @@ public class SelfSingLyricView extends ExViewStub {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-        mDisposable = LyricsManager.getLyricsManager(U.app())
+        mDisposable = LyricsManager.INSTANCE
                 .loadGrabPlainLyric(songModel.getStandLrc())
                 .subscribe(new Consumer<String>() {
                     @Override

@@ -170,7 +170,7 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
 
     protected void setLyric(TextView lyricTv, String lyricUrl) {
         lyricTv.setText("");
-        LyricsManager.getLyricsManager(U.app())
+        LyricsManager.INSTANCE
                 .loadGrabPlainLyric(lyricUrl)
                 .subscribe(new Consumer<String>() {
                     @Override

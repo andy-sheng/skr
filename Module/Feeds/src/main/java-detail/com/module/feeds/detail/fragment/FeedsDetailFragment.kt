@@ -347,7 +347,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mControlTv?.callOnClick()
         }
 
-        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!)
+        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!,-1)
 
         mControlTv?.setDebounceViewClickListener {
             if (it!!.isSelected) {

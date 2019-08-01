@@ -103,7 +103,7 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
         mLyricTv.setText("歌词加载中...");
 
         if (!TextUtils.isEmpty(mSongModel.getLyric())) {
-            LyricsManager.getLyricsManager(U.app())
+            LyricsManager.INSTANCE
                     .loadStandardLyric(mSongModel.getLyric())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +121,7 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
                         MyLog.e(TAG, "accept 1" + " throwable=" + throwable);
                     });
         } else if (!TextUtils.isEmpty(mSongModel.getStandLrc())) {
-            LyricsManager.getLyricsManager(U.app())
+            LyricsManager.INSTANCE
                     .loadGrabPlainLyric(mSongModel.getStandLrc())
                     .subscribe(new Consumer<String>() {
                         @Override

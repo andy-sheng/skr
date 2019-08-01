@@ -123,7 +123,7 @@ class LyricAndAccMatchManager {
         if (mDisposable != null) {
             mDisposable!!.dispose()
         }
-        mDisposable = LyricsManager.getLyricsManager(U.app())
+        mDisposable = LyricsManager
                 .loadStandardLyric(params?.lyricUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

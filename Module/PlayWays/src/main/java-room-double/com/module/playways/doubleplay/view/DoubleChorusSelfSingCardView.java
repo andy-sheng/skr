@@ -105,7 +105,7 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
         mChorusSelfLyricAdapter.getDataList().clear();
         mChorusSelfLyricAdapter.notifyDataSetChanged();
 
-        mDisposable = LyricsManager.getLyricsManager(U.app())
+        mDisposable = LyricsManager.INSTANCE
                 .loadGrabPlainLyric(mSongModel.getStandLrc())
                 .subscribe(new Consumer<String>() {
                     @Override

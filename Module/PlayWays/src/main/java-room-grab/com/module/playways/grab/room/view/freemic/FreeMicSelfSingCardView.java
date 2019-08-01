@@ -89,7 +89,7 @@ public class FreeMicSelfSingCardView extends ExViewStub {
             mSingCountDownView.startPlay(progress, leaveTime, true);
             String url = infoModel.getMusic().getStandLrc();
 
-            LyricsManager.getLyricsManager(U.app())
+            LyricsManager.INSTANCE
                     .loadGrabPlainLyric(url)
                     .subscribe(new Consumer<String>() {
                         @Override

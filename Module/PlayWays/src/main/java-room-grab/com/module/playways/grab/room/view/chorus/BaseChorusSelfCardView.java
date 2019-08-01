@@ -107,7 +107,7 @@ public abstract class BaseChorusSelfCardView extends ExViewStub {
             mDisposable.dispose();
         }
 
-        mDisposable = LyricsManager.getLyricsManager(U.app())
+        mDisposable = LyricsManager.INSTANCE
                 .loadGrabPlainLyric(mSongModel.getStandLrc())
                 .subscribe(new Consumer<String>() {
                     @Override
