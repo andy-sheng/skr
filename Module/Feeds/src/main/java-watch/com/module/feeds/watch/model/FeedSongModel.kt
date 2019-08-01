@@ -15,7 +15,8 @@ class FeedSongModel : Serializable {
     @JSONField(name = "needRecommentTag")
     var needRecommentTag: Boolean = false
     @JSONField(name = "playDurMs")
-    var playDurMs: Int = 0
+    var playDurMs: Int = 0 // 服务器返回的播放总时长
+    var playDurMsFromPlayerForDebug: Int = 0 // 从播放器拿到的播放总时间， 仅仅是调试使用
     @JSONField(name = "playURL")
     var playURL: String? = null
     var playCurPos:Int = 0 // 当前播放到哪了，只在客户端用，服务器不会返回

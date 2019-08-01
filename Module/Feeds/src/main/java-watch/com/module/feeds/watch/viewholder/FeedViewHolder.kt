@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -29,7 +30,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     val mRecordView: FeedsRecordAnimationView = itemView.findViewById(R.id.record_view)
     val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
     val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
-
+    val mDebugTv: TextView = itemView.findViewById(R.id.debug_tv)
     val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
     val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub))
 
@@ -74,6 +75,11 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
                 listener?.onClickDetailListener(mPosition, model)
             }
         })
+        if (MyLog.isDebugLogOpen()) {
+            mDebugTv.visibility = View.VISIBLE
+        } else {
+            mDebugTv.visibility = View.GONE
+        }
     }
 
     open fun bindData(position: Int, watchModel: FeedsWatchModel) {
@@ -104,8 +110,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         // 加载带时间戳的歌词
         watchModel.song?.let {
-            feedWatchManyLyricView.setSongModel(it,-1)
-            feedAutoScrollLyricView.setSongModel(it,-1)
+            feedWatchManyLyricView.setSongModel(it, -1)
+            feedAutoScrollLyricView.setSongModel(it, -1)
         }
         // 加载歌词
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
@@ -154,6 +160,10 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             feedAutoScrollLyricView.seekTo(model?.song?.playCurPos ?: 0)
             feedAutoScrollLyricView.resume()
             feedWatchManyLyricView.visibility = View.GONE
+        }
+        if (MyLog.isDebugLogOpen()) {
+            mDebugTv.text = "playDurMs:${model?.song?.playDurMs} \n" +
+                    "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}"
         }
     }
 

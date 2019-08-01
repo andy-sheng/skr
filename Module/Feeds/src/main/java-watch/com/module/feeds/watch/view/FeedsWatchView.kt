@@ -200,6 +200,8 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
+                mAdapter?.pausePlayModel()
+                SinglePlayer.reset(playerTag)
                 // 循环播放
                 mAdapter?.mCurrentPlayModel?.let {
                     mAdapter?.mCurrentPlayPosition?.let { it1 ->
@@ -215,7 +217,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                 if (mAdapter?.playing == true) {
                     mAdapter?.updatePlayProgress(pos, duration)
-                    if (pos * 100 / duration > 80) {
+                    if ((pos * 100 / duration) > 80) {
                         FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
                     }
                 } else {
