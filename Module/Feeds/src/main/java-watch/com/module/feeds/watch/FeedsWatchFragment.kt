@@ -37,18 +37,11 @@ class FeedsWatchFragment : BaseFragment() {
     val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
-    var positionIndexJob: Job? = null
 
     var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
-        positionIndexJob?.let {
-            if (it.isActive) {
-                it.cancel()
-            }
-        }
-
-        positionIndexJob = launch(Dispatchers.Main) {
-            delay(400)
+        launch(Dispatchers.Main) {
             mFeedVp?.setCurrentItem(newPosition, false)
+            delay(400)
             when (oldPositon) {
                 0 -> {
                     mRecommendFeedsView?.unselected()
