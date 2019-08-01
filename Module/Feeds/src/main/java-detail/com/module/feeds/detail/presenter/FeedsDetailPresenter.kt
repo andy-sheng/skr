@@ -7,6 +7,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -37,6 +38,8 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
                     firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
                     mIFeedsDetailView.addCommentSuccess(firstLevelCommentModel)
+                } else {
+                    U.getToastUtil().showShort(obj?.errmsg)
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))

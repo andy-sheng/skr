@@ -7,6 +7,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -104,6 +105,8 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                     firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
                     firstLevelCommentModel.replyUser = refuseModel.commentUser
                     callBack.invoke(firstLevelCommentModel)
+                } else {
+                    U.getToastUtil().showShort(obj?.errmsg)
                 }
             }
         }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))
