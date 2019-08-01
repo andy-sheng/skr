@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.videocache.MediaCacheManager;
 import com.google.android.exoplayer2.C;
 
 import java.io.File;
@@ -341,7 +342,11 @@ public class AndroidMediaPlayer extends BasePlayer {
                 if (needReset) {
                     reset();
                 }
-                mPlayer.setDataSource(p);
+                if(p.startsWith("http://") || p.startsWith("https://")){
+                    mPlayer.setDataSource(MediaCacheManager.INSTANCE.getProxyUrl(p,true));
+                }else{
+                    mPlayer.setDataSource(p);
+                }
                 mPlayer.prepareAsync();
             } catch (Exception e) {
                 MyLog.e(e);

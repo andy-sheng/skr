@@ -100,7 +100,7 @@ class Pinger {
             byte[] response = new byte[expectedResponse.length];
             source.read(response);
             boolean pingOk = Arrays.equals(expectedResponse, response);
-            LOG.info("Ping response: `" + new String(response) + "`, pinged? " + pingOk);
+            MyLog.d("Ping response: `" + new String(response) + "`, pinged? " + pingOk);
             return pingOk;
         } catch (ProxyCacheException e) {
             MyLog.e("Error reading ping response", e);
