@@ -71,6 +71,7 @@ class FeedsEditorActivity : BaseActivity() {
     var mComposeProgressbarVG: ViewGroup? = null
 
     var mComposeProgressTipsTv: TextView? = null
+    var mCoverView:View?=null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_editor_activity_layout
@@ -99,8 +100,8 @@ class FeedsEditorActivity : BaseActivity() {
             // 吃掉点击事件
         }
 
-        val rootView = findViewById<View>(R.id.root_view)
-        rootView?.setOnClickListener {
+        mCoverView  = findViewById<View>(R.id.cover_view)
+        mCoverView?.setOnClickListener {
             mRenshengIv?.isSelected = false
             mEffectIv?.isSelected = false
             mVaControlView?.visibility = View.GONE
@@ -184,6 +185,7 @@ class FeedsEditorActivity : BaseActivity() {
                 mEffectIv?.isSelected = false
                 mVaControlView?.visibility = View.VISIBLE
                 mVoiceControlView?.visibility = View.GONE
+                mCoverView?.visibility = View.VISIBLE
             }
         })
 
@@ -195,6 +197,7 @@ class FeedsEditorActivity : BaseActivity() {
                 mEffectIv?.isSelected = true
                 mVaControlView?.visibility = View.GONE
                 mVoiceControlView?.visibility = View.VISIBLE
+                mCoverView?.visibility = View.VISIBLE
             }
         })
 

@@ -49,6 +49,7 @@
         android:minHeight="@dimen/view_4_dp"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingRight="@dimen/view_10_dp"
+        android:thumb="@drawable/shenqu_jindu"
         android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
         app:layout_constraintBottom_toBottomOf="@+id/play_btn"
         app:layout_constraintLeft_toRightOf="@+id/play_btn"
@@ -108,6 +109,10 @@
         app:layout_constraintRight_toRightOf="@+id/avatar_bg"
         app:layout_constraintTop_toBottomOf="@+id/radio_view" />
 
+    <View
+        android:id="@+id/cover_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
         android:id="@+id/voice_control_view"
         android:layout_width="match_parent"
