@@ -2,6 +2,7 @@ package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -14,6 +15,10 @@ import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.feeds.watch.view.IFeedsWatchView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -117,15 +122,14 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 
     fun feedLike(position: Int, model: FeedsWatchModel) {
         val map = HashMap<String, Any>()
-        map["feedID"] = model.feedID ?: 0
-        map["like"] = !((model.isLiked) ?: false)
+        map["feedID"] = model.feedID
+        map["like"] = !model.isLiked
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         ApiMethods.subscribe(mFeedServerApi.feedLike(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    view.feedLikeResult(position, model, !((model.isLiked) ?: false))
-                    EventBus.getDefault().post(FeedsLikeEvent(model))
+                    view.feedLikeResult(position, model, !model.isLiked)
                 } else {
                     U.getToastUtil().showShort("${obj?.errmsg}")
                 }

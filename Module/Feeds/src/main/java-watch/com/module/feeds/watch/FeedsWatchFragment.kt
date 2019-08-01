@@ -18,7 +18,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.view.FeedsLikeView
+import com.module.feeds.watch.view.FeedsCollectView
 import com.module.feeds.watch.view.FeedsWatchView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,7 +36,7 @@ class FeedsWatchFragment : BaseFragment() {
 
     val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
-    val mFeedsCollectView: FeedsLikeView by lazy { FeedsLikeView(this) } //喜欢
+    val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
     var positionIndexJob: Job? = null
 
     var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->

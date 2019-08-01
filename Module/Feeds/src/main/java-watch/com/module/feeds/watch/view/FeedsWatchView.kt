@@ -9,7 +9,6 @@ import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.scheme.SchemeSdkActivity
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
@@ -23,7 +22,6 @@ import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
-import com.component.dialog.FeedsMoreDialogView
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
@@ -472,47 +470,30 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun homePagerMore(it: FeedsWatchModel) {
-        UserInfoManager.getInstance().getUserRelationByUuid(it.user?.userID
-                ?: 0, object : UserInfoManager.ResultCallback<UserInfoModel>() {
-            override fun onGetLocalDB(o: UserInfoModel): Boolean {
-                return false
-            }
+        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME,
+                it.user?.userID ?: 0,
+                it.feedID)
+                .apply {
+                    songID = it.song?.songID ?: 0
 
-            override fun onGetServer(userInfoModel: UserInfoModel?): Boolean {
-                // 只有关系是可靠数据
-                if (userInfoModel != null) {
-                    mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED,
-                            it.user?.userID ?: 0,
-                            it.song?.songID ?: 0,
-                            0,
-                            0)
-                            .apply {
-                                if (userInfoModel.isFollow) {
-                                    hideFuncation()
-                                } else {
-                                    showFuncation("关注")
-                                    mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                                        override fun clickValid(v: View?) {
-                                            dismiss()
-                                            UserInfoManager.getInstance().mateRelation(userInfoModel.userId, UserInfoManager.RA_BUILD
-                                                    , false, object : UserInfoManager.ResponseCallBack<Boolean>() {
-                                                override fun onServerFailed() {
-                                                    U.getToastUtil().showShort("关注失败了")
-                                                }
-
-                                                override fun onServerSucess(isFriend: Boolean?) {
-                                                    U.getToastUtil().showShort("关注成功")
-                                                }
-                                            })
-                                        }
-                                    })
+                    mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                        override fun clickValid(v: View?) {
+                            dismiss()
+                            UserInfoManager.getInstance().mateRelation(it.user?.userID
+                                    ?: 0, UserInfoManager.RA_BUILD
+                                    , false, object : UserInfoManager.ResponseCallBack<Boolean>() {
+                                override fun onServerFailed() {
+                                    U.getToastUtil().showShort("关注失败了")
                                 }
-                            }
-                    mFeedsMoreDialogView?.showByDialog()
+
+                                override fun onServerSucess(isFriend: Boolean?) {
+                                    U.getToastUtil().showShort("关注成功")
+                                }
+                            })
+                        }
+                    })
                 }
-                return false
-            }
-        })
+        mFeedsMoreDialogView?.showByDialog()
     }
 
     private fun personPageMore(position: Int, it: FeedsWatchModel) {
@@ -520,10 +501,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         ?: 0).toLong() == MyUserInfoManager.getInstance().uid) {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON,
                     it.user?.userID ?: 0,
-                    it.song?.songID ?: 0,
-                    0,
-                    0)
+                    it.feedID)
                     .apply {
+                        songID = it.song?.songID ?: 0
                         showFuncation("分享")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
@@ -553,10 +533,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         } else {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON,
                     it.user?.userID ?: 0,
-                    it.song?.songID ?: 0,
-                    0,
-                    0)
+                    it.feedID)
                     .apply {
+                        songID = it.song?.songID ?: 0
                         showFuncation("分享")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {

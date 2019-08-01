@@ -10,7 +10,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.component.dialog.FeedsMoreDialogView
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
@@ -147,10 +147,9 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         activity?.let {
             mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
                     , model?.commentUser?.userID ?: 0
-                    , 0
-                    , model.comment.commentID
                     , model.comment.feedID)
                     .apply {
+                        commentID = model.comment.commentID
                         showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {

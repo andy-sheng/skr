@@ -31,7 +31,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
-import com.component.dialog.FeedsMoreDialogView
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -380,10 +380,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         activity?.let {
             mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_FEED_DETAIL
                     , mFeedsWatchModel?.user?.userID ?: 0
-                    , mFeedsWatchModel?.song?.songID ?: 0
-                    , 0
-                    , 0)
+                    , mFeedsWatchModel?.feedID ?: 0)
                     .apply {
+                        songID = mFeedsWatchModel?.song?.songID ?: 0
                         hideFuncation()
                     }
             mMoreDialogPlus?.showByDialog()
@@ -394,11 +393,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mMoreDialogPlus?.dismiss()
         activity?.let {
             mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
-                    , model?.commentUser?.userID ?: 0
-                    , 0
-                    , model.comment.commentID,
-                    model.comment.feedID)
+                    , model.commentUser?.userID ?: 0
+                    , model.comment.feedID)
                     .apply {
+                        commentID = model.comment.commentID
                         showFuncation("回复")
                         mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {

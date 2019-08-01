@@ -3,7 +3,7 @@ package com.module.feeds.watch.model
 import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
-class FeedsLikeModel : Serializable {
+class FeedsCollectModel : Serializable {
     @JSONField(name = "feedID")
     var feedID: Int = 0
     @JSONField(name = "feedType")

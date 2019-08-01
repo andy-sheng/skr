@@ -19,7 +19,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
-import com.component.dialog.FeedsMoreDialogView
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -40,7 +40,7 @@ class FeedReportActivity : BaseActivity() {
 
     lateinit var mAdapter: FeedReportAdapter
 
-    var mFrom = FeedsMoreDialogView.FROM_FEED
+    var mFrom = FeedsMoreDialogView.FROM_FEED_HOME
 
     var mTargetID = 0  // 被举报人ID
     var mSongID = 0    // 神曲的songID
@@ -52,7 +52,7 @@ class FeedReportActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mFrom = intent.getIntExtra("from", FeedsMoreDialogView.FROM_FEED)
+        mFrom = intent.getIntExtra("from", FeedsMoreDialogView.FROM_FEED_HOME)
         mTargetID = intent.getIntExtra("targetID", 0)
         mSongID = intent.getIntExtra("songID", 0)
         mCommentID = intent.getIntExtra("commentID", 0)
@@ -87,7 +87,7 @@ class FeedReportActivity : BaseActivity() {
                 val list = mAdapter.getSelectedList()
                 val content = mContentEdit.text.toString()
                 when (mFrom) {
-                    FeedsMoreDialogView.FROM_FEED -> {
+                    FeedsMoreDialogView.FROM_FEED_HOME -> {
                         // 举报作品,来源神曲
                         reportFeed(content, list, 4)
                     }

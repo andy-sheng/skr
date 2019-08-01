@@ -6,26 +6,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.utils.U
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedsLikeModel
-import com.module.feeds.watch.viewholder.FeedsLikeViewHolder
+import com.module.feeds.watch.model.FeedsCollectModel
+import com.module.feeds.watch.viewholder.FeedsCollectViewHolder
 
-class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>() {
+class FeedsCollectViewAdapter : RecyclerView.Adapter<FeedsCollectViewHolder>() {
 
-    var mDataList = ArrayList<FeedsLikeModel>()
-    var mCurrentPlayModel: FeedsLikeModel? = null
+    var mDataList = ArrayList<FeedsCollectModel>()
+    var mCurrentPlayModel: FeedsCollectModel? = null
 
-    var onClickPlayListener: ((model: FeedsLikeModel?, position: Int) -> Unit)? = null
+    var onClickPlayListener: ((model: FeedsCollectModel?, position: Int) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsLikeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsCollectViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
-        return FeedsLikeViewHolder(view, onClickPlayListener)
+        return FeedsCollectViewHolder(view, onClickPlayListener)
     }
 
     override fun getItemCount(): Int {
         return mDataList.size
     }
 
-    override fun onBindViewHolder(holder: FeedsLikeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FeedsCollectViewHolder, position: Int) {
         holder.bindData(position, mDataList[position])
         if (mDataList[position] == mCurrentPlayModel) {
             holder.mSongPlayIv.isSelected = true
@@ -36,7 +36,7 @@ class FeedsLikeViewAdapter : RecyclerView.Adapter<FeedsLikeViewHolder>() {
         }
     }
 
-    fun update(position: Int, model: FeedsLikeModel) {
+    fun update(position: Int, model: FeedsCollectModel) {
         if (mDataList[position].feedID == model.feedID) {
             mDataList[position] = model
             return

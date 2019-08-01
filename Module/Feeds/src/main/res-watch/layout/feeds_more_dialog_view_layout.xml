@@ -37,21 +37,38 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/collect_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:gravity="center"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp"
+            android:text="收藏歌曲"
+            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+
+        <View
+            android:id="@+id/divider_collect"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:background="@color/black_trans_10"
+            app:layout_constraintBottom_toTopOf="@id/collect_tv" />
+
+        <com.common.view.ex.ExTextView
             android:id="@+id/funcation_tv"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_48_dp"
             android:gravity="center"
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+            android:text="关注Ta"
+            app:layout_constraintBottom_toTopOf="@id/collect_tv" />
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/divider_funcation"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
             android:background="@color/black_trans_10"
             app:layout_constraintBottom_toTopOf="@id/report_tv" />
-
 
     </com.common.view.ex.ExConstraintLayout>
 

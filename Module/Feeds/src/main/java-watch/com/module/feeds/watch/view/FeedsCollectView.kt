@@ -15,15 +15,12 @@ import com.common.view.ex.ExImageView
 import android.support.constraint.Group
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.player.*
-import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
@@ -31,14 +28,17 @@ import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.event.FeedsLikeEvent
-import com.module.feeds.watch.adapter.FeedsLikeViewAdapter
-import com.module.feeds.watch.model.FeedsLikeModel
-import com.module.feeds.watch.presenter.FeedLikeViewPresenter
+import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
+import com.module.feeds.watch.model.FeedsCollectModel
+import com.module.feeds.watch.presenter.FeedCollectViewPresenter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import kotlin.collections.ArrayList
 
-class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedLikeView {
+/**
+ * 收藏view
+ */
+class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedCollectView {
 
     val TAG = "FeedsLikeView"
     val ALL_REPEAT_PLAY_TYPE = 1      //全部循环
@@ -47,10 +47,10 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     var mCurrentType = ALL_REPEAT_PLAY_TYPE  //当前播放类型
     var isPlaying = false
-    var mTopModel: FeedsLikeModel? = null
+    var mTopModel: FeedsCollectModel? = null
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
     var isFirstRandom = true      // 是否第一次随机clear
-    var mRandomList = ArrayList<FeedsLikeModel>()  // 随机播放队列
+    var mRandomList = ArrayList<FeedsCollectModel>()  // 随机播放队列
 
     private val mContainer: ConstraintLayout
     private val mTopAreaBg: SimpleDraweeView
@@ -69,8 +69,8 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
     private val mPlayLastIv: ImageView
     private val mPlayNextIv: ImageView
 
-    private val mPersenter: FeedLikeViewPresenter
-    private val mAdapter: FeedsLikeViewAdapter
+    private val mPersenter: FeedCollectViewPresenter
+    private val mAdapter: FeedsCollectViewAdapter
 
     var mCDRotateAnimation: RotateAnimation? = null
     var mCoverRotateAnimation: RotateAnimation? = null
@@ -100,8 +100,8 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         mPlayLastIv = findViewById(R.id.play_last_iv)
         mPlayNextIv = findViewById(R.id.play_next_iv)
 
-        mPersenter = FeedLikeViewPresenter(this)
-        mAdapter = FeedsLikeViewAdapter()
+        mPersenter = FeedCollectViewPresenter(this)
+        mAdapter = FeedsCollectViewAdapter()
 
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
@@ -272,7 +272,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
     }
 
-    fun playOrPause(model: FeedsLikeModel, position: Int, isMust: Boolean) {
+    fun playOrPause(model: FeedsCollectModel, position: Int, isMust: Boolean) {
         if (isMust) {
             // 开始播放
             play(model, position)
@@ -287,7 +287,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
     }
 
-    private fun play(model: FeedsLikeModel, position: Int) {
+    private fun play(model: FeedsCollectModel, position: Int) {
         isPlaying = true
         bindTopData(position, model, true)
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
@@ -298,7 +298,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
     }
 
-    private fun pause(model: FeedsLikeModel, position: Int) {
+    private fun pause(model: FeedsCollectModel, position: Int) {
         isPlaying = false
         bindTopData(position, model, false)
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
@@ -307,7 +307,9 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         SinglePlayer.reset(playerTag)
     }
 
-    override fun addLikeList(list: List<FeedsLikeModel>?, isClear: Boolean) {
+    override fun addLikeList(list: List<FeedsCollectModel>?, isClear: Boolean) {
+        mRefreshLayout.finishRefresh()
+        mRefreshLayout.finishLoadMore()
         if (isClear) {
             mAdapter.mDataList.clear()
         }
@@ -327,7 +329,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
         }
     }
 
-    override fun showLike(model: FeedsLikeModel) {
+    override fun showCollect(model: FeedsCollectModel) {
         this.mTopModel = model
         mPlayLikeIv.isSelected = model.isLiked
         // 更新数据
@@ -344,7 +346,7 @@ class FeedsLikeView(var fragment: BaseFragment) : ConstraintLayout(fragment.cont
 
     }
 
-    private fun bindTopData(position: Int, model: FeedsLikeModel?, isPlay: Boolean) {
+    private fun bindTopData(position: Int, model: FeedsCollectModel?, isPlay: Boolean) {
         this.mTopPosition = position
         if (this.mTopModel != model) {
             this.mTopModel = model

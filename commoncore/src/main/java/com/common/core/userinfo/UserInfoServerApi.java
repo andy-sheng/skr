@@ -123,7 +123,6 @@ public interface UserInfoServerApi {
     @GET("/v1/mate/has-relation")
     Observable<ApiResult> getRelation(@Query("toUserID") int toUserID);
 
-
     /**
      * 获取某人具体的分数
      *
