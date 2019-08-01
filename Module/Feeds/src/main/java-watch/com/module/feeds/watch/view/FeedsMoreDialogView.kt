@@ -160,7 +160,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
     // 检查收藏
     private fun checkColledt() {
         launch {
-            val result = mFeedServerApi.getRelation(targetID)
+            val result = mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)
             if (result.errno == 0) {
                 val isCollocted = result.data.getBooleanValue("isCollected")
                 showCollected(isCollocted)
