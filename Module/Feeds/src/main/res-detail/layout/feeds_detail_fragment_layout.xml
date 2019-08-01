@@ -319,11 +319,11 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/xin_iv"
-        android:layout_width="@dimen/view_20_dp"
-        android:layout_height="@dimen/view_18_dp"
+        android:layout_width="@dimen/view_18_dp"
+        android:layout_height="@dimen/view_19_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        app:bl_selected_drawable="@drawable/xin_shi"
-        app:bl_unSelected_drawable="@drawable/xin_kong"
+        app:bl_selected_drawable="@drawable/feed_like_selected_icon"
+        app:bl_unSelected_drawable="@drawable/feed_like_normal_icon"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
