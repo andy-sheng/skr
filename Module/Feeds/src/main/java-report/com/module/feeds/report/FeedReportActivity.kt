@@ -65,7 +65,11 @@ class FeedReportActivity : BaseActivity() {
         mContentEdit = findViewById(R.id.content_edit)
         mSumbitTv = findViewById(R.id.sumbit_tv)
 
-        mContentEdit.hint = SpannedString("请详细描述你的问题，若作品涉及抄袭、搬运等情况，可发送详细资料至邮箱：wangliuyang@skrer.net")
+        if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
+            mContentEdit.hint = SpannedString("请详细描述你的问题")
+        } else {
+            mContentEdit.hint = SpannedString("请详细描述你的问题，若作品涉及抄袭、搬运等情况，可发送详细资料至邮箱：wangliuyang@skrer.net")
+        }
         mAdapter = FeedReportAdapter()
         if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
             // 只有这个是举报评论的
