@@ -30,7 +30,8 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 
     var mOffset = 0   //偏移量
     private val mCNT = 20  // 默认拉去的个数
-    private var mLastUpdatListTime = 0L    //上次拉取请求时间戳
+    private var mLastUpdatListTime = 0L    //上次拉取请求时间戳(个人中心)
+    private var mHasInitData = false  //关注和推荐是否初始化过数据
     var mUserInfo: UserInfoModel? = null
 
     init {
@@ -38,11 +39,16 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     fun initWatchList(flag: Boolean): Boolean {
-        if (!flag) {
-            // 3分钟切页面才刷一下
+        if (!flag && type == FeedsWatchView.TYPE_PERSON) {
+            // 3分钟切页面才刷一下(只在个人中心生效)
             val now = System.currentTimeMillis()
             if (now - mLastUpdatListTime < 180 * 1000) {
 //                view.requestTimeShort()
+                return false
+            }
+        }
+        if (!flag && type != FeedsWatchView.TYPE_PERSON) {
+            if (mHasInitData) {
                 return false
             }
         }
@@ -55,12 +61,10 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     private fun getWatchList(offset: Int) {
-        if (type == FeedsWatchView.TYPE_FOLLOW) {
-            getFollowFeedList(offset)
-        } else if (type == FeedsWatchView.TYPE_RECOMMEND) {
-            getRecommendFeedList(offset)
-        } else {
-            getPersonFeedList(offset)
+        when (type) {
+            FeedsWatchView.TYPE_FOLLOW -> getFollowFeedList(offset)
+            FeedsWatchView.TYPE_RECOMMEND -> getRecommendFeedList(offset)
+            else -> getPersonFeedList(offset)
         }
     }
 
@@ -68,7 +72,8 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         ApiMethods.subscribe(mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    mLastUpdatListTime = System.currentTimeMillis()
+                    mHasInitData = true
+//                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
                     mOffset = obj.data.getIntValue("offset")
                     view.addWatchList(list, offset == 0)
@@ -82,7 +87,8 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         ApiMethods.subscribe(mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    mLastUpdatListTime = System.currentTimeMillis()
+                    mHasInitData = true
+//                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("follows"), FeedsWatchModel::class.java)
                     mOffset == obj.data.getIntValue("offset")
                     view.addWatchList(list, offset == 0)
