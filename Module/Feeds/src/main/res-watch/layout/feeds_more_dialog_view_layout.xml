@@ -61,12 +61,14 @@
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/textsize_16_dp"
             android:text="关注Ta"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/collect_tv" />
 
         <View
             android:id="@+id/divider_funcation"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
+            android:visibility="gone"
             android:background="@color/black_trans_10"
             app:layout_constraintBottom_toTopOf="@id/report_tv" />
 
