@@ -86,7 +86,7 @@ class FeedsPublishActivity : BaseActivity() {
         worksNameEt = this.findViewById(R.id.works_name_et)
         tagClassifyTv = this.findViewById(R.id.tag_classify_tv)
         tagClassifyTf = this.findViewById(R.id.tag_classify_tf)
-        //uploadProgressbar = this.findViewById(R.id.upload_progressbar)
+        uploadProgressbarContainer = this.findViewById(R.id.upload_progressbar_container)
 
         //填充标签
 //        rankClassifyAdapter = object : TagAdapter<FeedsPublishTagModel>(ArrayList()) {
