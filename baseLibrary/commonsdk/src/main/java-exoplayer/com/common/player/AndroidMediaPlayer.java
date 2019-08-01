@@ -37,7 +37,7 @@ public class AndroidMediaPlayer extends BasePlayer {
     private float mVolume = 1.0f;
     private View mView;
 
-    private boolean mPreparedFlag = false;
+    private boolean mHasPrepared = false;
 
     private long resetTs = 0;
     private long startTs = 0;
@@ -74,7 +74,7 @@ public class AndroidMediaPlayer extends BasePlayer {
                  * 只要调用了reset 接口也会异步回调这个 ，这不是期望的
                  *  所以使用时间戳保护一下
                  */
-                if (mCallback != null && (System.currentTimeMillis() - resetTs) > 500) {
+                if (mCallback != null && mHasPrepared) {
                     reset();
                     mCallback.onCompletion();
                 }
@@ -95,7 +95,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 MyLog.d(TAG,"onPrepared begin");
-                mPreparedFlag = true;
+                mHasPrepared = true;
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
@@ -118,7 +118,6 @@ public class AndroidMediaPlayer extends BasePlayer {
                 }
                 startTs = System.currentTimeMillis();
                 startMusicPlayTimeListener();
-
             }
         });
         mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -163,9 +162,8 @@ public class AndroidMediaPlayer extends BasePlayer {
     public void setCallback(IPlayerCallback callback) {
         this.mCallback = callback;
         if (callback != null) {
-            if (mPreparedFlag) {
+            if (mHasPrepared) {
                 callback.onPrepared();
-                mPreparedFlag = false;
             }
         }
     }
@@ -416,6 +414,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         }
         mPlayer.stop();
         mPath = null;
+        mHasPrepared = false;
         seekPos = -1;
         stopMusicPlayTimeListener();
     }
@@ -429,6 +428,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         resetTs = System.currentTimeMillis();
         mPlayer.reset();
         mPath = null;
+        mHasPrepared = false;
         seekPos = -1;
         stopMusicPlayTimeListener();
     }
@@ -439,6 +439,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         if (mPlayer != null) {
             mPlayer.release();
         }
+        mHasPrepared = false;
         mPlayer = null;
         sPrePlayer = null;
         mCallback = null;
@@ -455,7 +456,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             return;
         }
         seekPos = msec;
-        if(mPreparedFlag){
+        if(mHasPrepared){
             mPlayer.seekTo((int) msec);
         }
     }
