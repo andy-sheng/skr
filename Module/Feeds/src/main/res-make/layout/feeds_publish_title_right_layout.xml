@@ -7,5 +7,4 @@
     android:gravity="center"
     android:text="保存发布"
     app:bl_unSelected_textColor="@color/black"
-    android:enabled="false"
     app:bl_selected_textColor="@color/black_trans_50" />
