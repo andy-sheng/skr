@@ -185,6 +185,7 @@ class FeedsMakeActivity : BaseActivity() {
         })
         mAdjustIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                mVoiceControlPanelView.hideAcc(mFeedsMakeModel?.withBgm == false)
                 mVoiceControlPanelViewDialog.show()
             }
         })
@@ -201,13 +202,13 @@ class FeedsMakeActivity : BaseActivity() {
                     (mTitleBar?.rightCustomView as TextView).text = "清唱"
                 } else {
                     // 清唱变伴奏
-//                    if (U.getDeviceUtils().getWiredHeadsetPlugOn()) {
+                    if (U.getDeviceUtils().getWiredHeadsetPlugOn() || MyLog.isDebugLogOpen()) {
                         // 是否插着有限耳机
                         mFeedsMakeModel?.withBgm = true
                         (mTitleBar?.rightCustomView as TextView).text = "伴奏"
-//                    } else {
-//                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
-//                    }
+                    } else {
+                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
+                    }
                 }
             }
         })

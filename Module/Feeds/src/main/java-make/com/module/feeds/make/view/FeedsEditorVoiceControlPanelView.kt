@@ -24,7 +24,7 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
         mPeopleVoiceSeekbar.max = 200
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                mZqAudioEditorKit?.setInputVolume(mPeopleVoiceIndex, progress/100.0f)
+                mZqAudioEditorKit?.setInputVolume(mPeopleVoiceIndex, progress / 100.0f)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -38,7 +38,7 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
         mMusicVoiceSeekbar.max = 100
         mMusicVoiceSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                mZqAudioEditorKit?.setInputVolume(0, progress/100.0f)
+                mZqAudioEditorKit?.setInputVolume(0, progress / 100.0f)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -79,11 +79,14 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
         } else {
             mScenesBtnGroup.check(R.id.default_sbtn)
         }
-        mPeopleVoiceSeekbar.progress = ((mZqAudioEditorKit?.getInputVolume(mPeopleVoiceIndex)?:1f)*100).toInt()
-        if(mPeopleVoiceIndex==1){
+        mPeopleVoiceSeekbar.progress = ((mZqAudioEditorKit?.getInputVolume(mPeopleVoiceIndex)
+                ?: 1f) * 100).toInt()
+        if (mPeopleVoiceIndex == 1) {
             // 有伴奏
-            mMusicVoiceSeekbar.progress = ((mZqAudioEditorKit?.getInputVolume(0)?:1f)*100).toInt()
-        }else{
+            mMusicVoiceSeekbar.progress = ((mZqAudioEditorKit?.getInputVolume(0)
+                    ?: 1f) * 100).toInt()
+        } else {
+            mAccVoice.visibility = GONE
             mMusicVoiceSeekbar.visibility = GONE
         }
 

@@ -2,6 +2,7 @@ package com.module.feeds.make.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.RadioGroup
 import android.widget.SeekBar
 import com.common.log.MyLog
@@ -13,7 +14,7 @@ import com.zq.mediaengine.kit.ZqEngineKit
 
 class FeedsMakeVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : VoiceControlPanelView(context, attrs) {
 
-    constructor(context: Context?):this(context,null)
+    constructor(context: Context?) : this(context, null)
 
     override fun getLayout(): Int {
         return R.layout.feeds_editor_voice_control_panel_layout
@@ -35,7 +36,16 @@ class FeedsMakeVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : 
 
             }
         })
+    }
 
+    fun hideAcc(hide: Boolean) {
+        if (hide) {
+            mAccVoice.visibility = View.GONE
+            mMusicVoiceSeekbar.visibility = View.GONE
+        } else {
+            mAccVoice.visibility = View.VISIBLE
+            mMusicVoiceSeekbar.visibility = View.VISIBLE
+        }
     }
 
 }
