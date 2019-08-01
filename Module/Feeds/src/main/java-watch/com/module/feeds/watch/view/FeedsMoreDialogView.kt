@@ -15,7 +15,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.common.view.ex.ExTextView
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.event.FeedsLikeEvent
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.FeedsWatchServerApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -25,7 +25,6 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import java.util.HashMap
-
 
 /**
  * 关注Ta，收藏歌曲，举报和取消 //首页
@@ -165,7 +164,6 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
             if (result.errno == 0) {
                 val isCollocted = result.data.getBooleanValue("isCollected")
                 showCollected(isCollocted)
-                EventBus.getDefault().post(FeedsLikeEvent())
             } else {
 
             }
@@ -209,7 +207,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = mFeedServerApi.collectFeed(body)
             if (result.errno == 0) {
-
+                EventBus.getDefault().post(FeedsCollectChangeEvent())
             }
         }
     }

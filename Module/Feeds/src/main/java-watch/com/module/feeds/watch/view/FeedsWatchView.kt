@@ -35,7 +35,6 @@ import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.event.FeedWatchChangeEvent
-import com.module.feeds.event.FeedsLikeEvent
 import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.scwang.smartrefresh.layout.SmartRefreshLayout

@@ -27,7 +27,7 @@ import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import com.module.feeds.event.FeedsLikeEvent
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
@@ -393,7 +393,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     @Subscribe
-    fun onEvent(event: FeedsLikeEvent) {
+    fun onEvent(event: FeedsCollectChangeEvent) {
         // 有喜欢事件发生促使刷新
         mPersenter.mLastUpdatListTime = 0
     }
