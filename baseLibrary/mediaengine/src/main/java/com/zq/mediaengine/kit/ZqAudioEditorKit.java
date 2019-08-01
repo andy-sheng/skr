@@ -577,19 +577,6 @@ public class ZqAudioEditorKit {
         }
     }
 
-    private void handleComposeCompletion() {
-        for (int i = 0; i < MAX_CHN; i++) {
-            if (mAudioSource[i] != null) {
-                mAudioSource[i].capture.stop();
-            }
-        }
-        mState = STATE_IDLE;
-        if (mOnComposeInfoListener != null) {
-            mOnComposeInfoListener.onProgress(1.0f);
-            mOnComposeInfoListener.onCompletion();
-        }
-    }
-
     private AudioFileCapture.OnSeekCompletionListener mOnCaptureSeekCompletionListener = new AudioFileCapture.OnSeekCompletionListener() {
         @Override
         public void onSeekCompletion(AudioFileCapture audioFileCapture, long ms) {
@@ -617,7 +604,7 @@ public class ZqAudioEditorKit {
                     if (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
                         handlePreviewCompletion();
                     } else if (mState == STATE_COMPOSING) {
-                        handleComposeCompletion();
+                        // 合成完成事件依靠Publisher类发出
                     }
                 }
             }
@@ -667,14 +654,25 @@ public class ZqAudioEditorKit {
         }
     };
 
+    private void handleComposeCompletion() {
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.stop();
+            }
+        }
+        mState = STATE_IDLE;
+        if (mOnComposeInfoListener != null) {
+            mOnComposeInfoListener.onProgress(1.0f);
+            mOnComposeInfoListener.onCompletion();
+        }
+    }
+
     private Publisher.PubListener mPubListener = new Publisher.PubListener() {
         @Override
         public void onInfo(int type, long msg) {
             Log.d(TAG, "FilePubListener onInfo type: " + type + " msg: " + msg);
             if (type == Publisher.INFO_STOPPED) {
-                if (mOnComposeInfoListener != null) {
-                    mOnComposeInfoListener.onCompletion();
-                }
+                handleComposeCompletion();
             }
         }
 
