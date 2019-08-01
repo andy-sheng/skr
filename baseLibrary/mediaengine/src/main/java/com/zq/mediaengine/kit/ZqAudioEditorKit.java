@@ -191,6 +191,8 @@ public class ZqAudioEditorKit {
         }
         mAudioSource[idx] = new AudioSource(mContext, path, offset, end);
         mAudioSource[idx].capture.setOnPreparedListener(mOnCapturePreparedListener);
+        mAudioSource[idx].capture.setOnSeekCompletionListener(mOnCaptureSeekCompletionListener);
+        mAudioSource[idx].capture.setOnPositionUpdateListener(mOnCapturePositionUpdateListener, 100);
         mAudioSource[idx].capture.setOnCompletionListener(mOnCaptureCompletionListener);
         mAudioSource[idx].capture.setOnErrorListener(mOnCaptureErrorListener);
         mAudioSource[idx].getSrcPin().connect(mAudioMixer.getSinkPin(idx));
@@ -299,7 +301,7 @@ public class ZqAudioEditorKit {
      * 需要startPreview后，收到onPreviewStarted回调后获取方才有效。
      * 可以在onPreviewStarted回调中获取并保存该值。
      *
-     * @return  音频时长或0
+     * @return  音频时长或0, 单位为ms
      */
     public synchronized long getDuration() {
         if (mAudioSource[0] == null) {
@@ -589,6 +591,22 @@ public class ZqAudioEditorKit {
                         if (mAudioSource[i] != null) {
                             mAudioSource[i].seek(ms);
                         }
+                    }
+                }
+            }
+        }
+    };
+
+    private AudioFileCapture.OnPositionUpdateListener mOnCapturePositionUpdateListener = new AudioFileCapture.OnPositionUpdateListener() {
+        @Override
+        public void onPositionUpdate(AudioFileCapture audioFileCapture, long pos) {
+            synchronized (ZqAudioEditorKit.this) {
+                if (mState == STATE_COMPOSING) {
+                    float progress = (float) pos / audioFileCapture.getDuration();
+                    // Log.d(TAG, "onProgress: " + progress);
+                    progress = progress > 1.0f ? 1.0f : progress;
+                    if (mOnComposeInfoListener != null) {
+                        mOnComposeInfoListener.onProgress(progress);
                     }
                 }
             }

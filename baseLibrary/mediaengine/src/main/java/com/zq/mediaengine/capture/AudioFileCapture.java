@@ -97,6 +97,9 @@ public class AudioFileCapture {
 
     private OnPreparedListener mOnPreparedListener;
     private OnSeekCompletionListener mOnSeekCompletionListener;
+    private long mPositionUpdateInterval = 100;
+    private long mLastUpdateTime = 0;
+    private OnPositionUpdateListener mOnPositionUpdateListener;
     private OnCompletionListener mOnCompletionListener;
     private OnErrorListener mOnErrorListener;
 
@@ -123,6 +126,19 @@ public class AudioFileCapture {
          * @param ms position seek in ms
          */
         void onSeekCompletion(AudioFileCapture audioFileCapture, long ms);
+    }
+
+    /**
+     * The interface On position update listener.
+     */
+    public interface OnPositionUpdateListener {
+        /**
+         * On position update.
+         *
+         * @param audioFileCapture the AudioFileCapture instance
+         * @param pos current position in ms
+         */
+        void onPositionUpdate(AudioFileCapture audioFileCapture, long pos);
     }
 
     /**
@@ -225,6 +241,17 @@ public class AudioFileCapture {
      */
     public void setOnSeekCompletionListener(OnSeekCompletionListener listener) {
         mOnSeekCompletionListener = listener;
+    }
+
+    /**
+     * Sets on position update listener.
+     *
+     * @param listener the listener
+     * @param interval update interval
+     */
+    public void setOnPositionUpdateListener(OnPositionUpdateListener listener, long interval) {
+        mPositionUpdateInterval = interval;
+        mOnPositionUpdateListener = listener;
     }
 
     /**
@@ -381,7 +408,6 @@ public class AudioFileCapture {
                             break;
                         }
                         mState = STATE_PREPARING;
-                        mPaused = false;
                         err = doStart();
                         if (msg.obj != null) {
                             ((Runnable) msg.obj).run();
@@ -481,6 +507,17 @@ public class AudioFileCapture {
         });
     }
 
+    private void postOnPositionUpdate(final long pos) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mOnPositionUpdateListener != null) {
+                    mOnPositionUpdateListener.onPositionUpdate(AudioFileCapture.this, pos);
+                }
+            }
+        });
+    }
+
     private void postOnCompletion() {
         mMainHandler.post(new Runnable() {
             @Override
@@ -526,6 +563,8 @@ public class AudioFileCapture {
 
     private int doStart() {
         mFirstPts = Long.MIN_VALUE;
+        mPaused = false;
+        mLastUpdateTime = 0;
         mIsSeeking = false;
         mDuration = 0;
         mBasePosition = 0;
@@ -549,6 +588,7 @@ public class AudioFileCapture {
                 mDuration = mediaFormat.getLong(MediaFormat.KEY_DURATION);
                 mFirstPts = mMediaExtractor.getSampleTime();
                 Log.d(TAG, "duration: " + mDuration + " first pts: " + mFirstPts);
+                mDuration /= 1000;
 
                 // audio format
                 int sampleRate = mediaFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE);
@@ -691,6 +731,14 @@ public class AudioFileCapture {
 
                 mSamplesWritten += frame.buf.limit() / 2 / mOutFormat.channels;
                 mCurrentPosition = mBasePosition + mSamplesWritten * 1000 / mOutFormat.sampleRate;
+
+                // update position
+                long curTime = System.nanoTime() / 1000 / 1000;
+                if (curTime - mLastUpdateTime >= mPositionUpdateInterval) {
+                    mLastUpdateTime = curTime;
+                    postOnPositionUpdate(mCurrentPosition);
+                }
+
                 if (VERBOSE) {
                     long pos = (mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
                     Log.i(TAG, "pos: " + pos + " position: " + mCurrentPosition);
