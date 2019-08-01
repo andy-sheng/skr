@@ -128,6 +128,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             }
 
             override fun onClickHitListener(watchModel: FeedsWatchModel?) {
+                SinglePlayer.reset(playerTag)
                 openFeedsMakeActivity(watchModel?.song?.challengeID)
             }
 
