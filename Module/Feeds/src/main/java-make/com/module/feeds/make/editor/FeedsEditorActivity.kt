@@ -54,6 +54,8 @@ class FeedsEditorActivity : BaseActivity() {
     var mRadioView: FeedsRecordAnimationView? = null
     var mManyLyricsView: ManyLyricsView? = null
     var mAutoScrollLyricView: AutoScrollLyricView? = null
+    var mVoiceControlView: FeedsEditorVoiceControlPanelView? = null
+    var mVaControlView: VocalAlignControlPannelView? = null
     var mMenuBg: View? = null
     var mRenshengIv: ExImageView? = null
     var mEffectIv: ExImageView? = null
@@ -70,44 +72,6 @@ class FeedsEditorActivity : BaseActivity() {
 
     var mComposeProgressTipsTv: TextView? = null
 
-
-    val mVoiceControlPanelViewDialog by lazy {
-        val view = FeedsEditorVoiceControlPanelView(this).apply {
-            mZqAudioEditorKit = this@FeedsEditorActivity.mZqAudioEditorKit
-            if (mFeedsMakeModel?.withBgm == true) {
-                mPeopleVoiceIndex = 1
-            } else {
-                mPeopleVoiceIndex = 0
-            }
-            bindData()
-        }
-        DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(view))
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setGravity(Gravity.BOTTOM)
-                .create()
-    }
-
-    val mVoiceAlignPanelViewDialog by lazy {
-        val view = VocalAlignControlPannelView(this).apply {
-            audioEditorKit = mZqAudioEditorKit
-
-            bindData()
-        }
-        DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(view))
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setGravity(Gravity.BOTTOM)
-                .create()
-    }
-
-
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_editor_activity_layout
     }
@@ -122,6 +86,8 @@ class FeedsEditorActivity : BaseActivity() {
         mRadioView = findViewById(R.id.radio_view)
         mManyLyricsView = findViewById(R.id.many_lyrics_view)
         mAutoScrollLyricView = AutoScrollLyricView(findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
+        mVoiceControlView = findViewById(R.id.voice_control_view)
+        mVaControlView = findViewById(R.id.va_control_view)
         mMenuBg = findViewById(R.id.menu_bg)
         mRenshengIv = findViewById(R.id.rensheng_iv)
         mEffectIv = findViewById(R.id.effect_iv)
@@ -133,6 +99,14 @@ class FeedsEditorActivity : BaseActivity() {
             // 吃掉点击事件
         }
 
+        val rootView = findViewById<View>(R.id.root_view)
+        rootView?.setOnClickListener {
+            mRenshengIv?.isSelected = false
+            mEffectIv?.isSelected = false
+            mVaControlView?.visibility = View.GONE
+            mVoiceControlView?.visibility = View.GONE
+        }
+        
         mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -198,6 +172,7 @@ class FeedsEditorActivity : BaseActivity() {
                 mAutoScrollLyricView?.setSongModel(it, -1)
             }
         }
+        mVaControlView?.audioEditorKit = mZqAudioEditorKit
         // 面板控制
         mRenshengIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -207,18 +182,19 @@ class FeedsEditorActivity : BaseActivity() {
                 }
                 mRenshengIv?.isSelected = true
                 mEffectIv?.isSelected = false
-                mVoiceControlPanelViewDialog.dismiss(false)
-                mVoiceAlignPanelViewDialog.show()
+                mVaControlView?.visibility = View.VISIBLE
+                mVoiceControlView?.visibility = View.GONE
             }
         })
 
+        mVoiceControlView?.mZqAudioEditorKit = mZqAudioEditorKit
 
         mEffectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mRenshengIv?.isSelected = false
                 mEffectIv?.isSelected = true
-                mVoiceAlignPanelViewDialog.dismiss(false)
-                mVoiceControlPanelViewDialog.show()
+                mVaControlView?.visibility = View.GONE
+                mVoiceControlView?.visibility = View.VISIBLE
             }
         })
 
@@ -277,7 +253,7 @@ class FeedsEditorActivity : BaseActivity() {
         })
 
         if (mFeedsMakeModel?.withBgm == true) {
-
+            mVoiceControlView?.mPeopleVoiceIndex = 1
             runBlocking {
                 val bgmFileJob = async(Dispatchers.IO) {
                     val file = SongResUtils.getAccFileByUrl(mFeedsMakeModel?.songModel?.songTpl?.bgm)
@@ -309,6 +285,7 @@ class FeedsEditorActivity : BaseActivity() {
                 initWhenEngineReady()
             }
         } else {
+            mVoiceControlView?.mPeopleVoiceIndex = 0
             mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, 0, mFeedsMakeModel?.recordDuration
                     ?: -1)
             mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)
@@ -320,7 +297,10 @@ class FeedsEditorActivity : BaseActivity() {
     private fun initWhenEngineReady() {
         MyLog.d(TAG, "initWhenEngineReady")
         mZqAudioEditorKit.outputPath = mFeedsMakeModel?.composeSavePath
-        mEffectIv?.isSelected = true
+        mVoiceControlView?.bindData()
+        mVaControlView?.bindData()
+//        mEffectIv?.isSelected = true
+//        mVoiceControlView?.visibility = View.VISIBLE
         mZqAudioEditorKit.startPreview(-1)
         resumePreview()
     }
