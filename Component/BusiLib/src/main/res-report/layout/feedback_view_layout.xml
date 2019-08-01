@@ -31,7 +31,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_38_dp"
                 android:text="自己唱卡顿"
-                android:textColor="#ff3b4e79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
         </FrameLayout>
 
@@ -55,7 +55,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_38_dp"
                 android:text="伴奏没声音"
-                android:textColor="#ff3b4e79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
         </FrameLayout>
 
@@ -79,7 +79,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_38_dp"
                 android:text="其他"
-                android:textColor="#ff3b4e79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
         </FrameLayout>
     </LinearLayout>
@@ -112,7 +112,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_38_dp"
                 android:text="他人唱卡顿"
-                android:textColor="#ff3b4e79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
         </FrameLayout>
 
@@ -136,7 +136,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_38_dp"
                 android:text="歌词不显示"
-                android:textColor="#ff3b4e79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
         </FrameLayout>
 
@@ -160,7 +160,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/view_38_dp"
                 android:text="新功能建议"
-                android:textColor="#ff3b4e79"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
         </FrameLayout>
     </LinearLayout>
@@ -227,7 +227,7 @@
         android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#B6DAEC" />
+        app:bl_solid_color="#DFEBFC" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/content_text_size"
