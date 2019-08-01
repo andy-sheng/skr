@@ -35,6 +35,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
     val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub))
 
+    val mFeedsClickView: View = itemView.findViewById(R.id.feeds_click_view)
 
     var mPosition: Int = 0
     var model: FeedsWatchModel? = null
@@ -76,6 +77,13 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
                 listener?.onClickDetailListener(mPosition, model)
             }
         })
+
+        mFeedsClickView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onClickDetailListener(mPosition, model)
+            }
+        })
+
         if (MyLog.isDebugLogOpen()) {
             mDebugTv.visibility = View.VISIBLE
         } else {

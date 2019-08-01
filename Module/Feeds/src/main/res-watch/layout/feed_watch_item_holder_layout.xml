@@ -195,6 +195,15 @@
         app:layout_constraintRight_toLeftOf="@+id/record_view"
         app:layout_constraintTop_toTopOf="@+id/song_area_bg" />
 
+    <View
+        android:id="@+id/feeds_click_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/song_area_bg"
+        app:layout_constraintRight_toLeftOf="@id/record_view"
+        app:layout_constraintTop_toTopOf="@id/song_area_bg" />
+
 
     <TextView
         android:id="@+id/like_num_tv"
