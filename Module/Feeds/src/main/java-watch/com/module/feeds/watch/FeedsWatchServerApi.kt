@@ -46,6 +46,7 @@ interface FeedsWatchServerApi {
     fun queryFeedsList(@Query("offset") offset: Int,
                        @Query("cnt") cnt: Int,
                        @Query("userID") userID: Int,
+                       @Query("feedUserID") feedUserID: Int,
                        @Query("feedSongType") feedSongType: Int): Observable<ApiResult>
 
 

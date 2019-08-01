@@ -96,7 +96,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         if (MyUserInfoManager.getInstance().uid.toInt() != mUserInfo?.userId) {
             feedSongType = 2
         }
-        ApiMethods.subscribe(mFeedServerApi.queryFeedsList(offset, mCNT, mUserInfo?.userId
+        ApiMethods.subscribe(mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), mUserInfo?.userId
                 ?: 0, feedSongType), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result?.errno == 0) {
