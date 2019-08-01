@@ -166,14 +166,14 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mPlayLastIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 上一首
-                playWithType(false)
+                playWithType(false, true)
             }
         })
 
         mPlayNextIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 下一首
-                playWithType(true)
+                playWithType(true, true)
             }
         })
 
@@ -194,7 +194,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             override fun onCompletion() {
                 super.onCompletion()
                 // 自动播放下一首
-                playWithType(true)
+                playWithType(true, false)
             }
         }
 
@@ -226,10 +226,16 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         }
     }
 
-    private fun playWithType(isNext: Boolean) {
+    private fun playWithType(isNext: Boolean, fromUser: Boolean) {
         when (mCurrentType) {
             SINGLE_REPEAT_PLAY_TYPE -> {
-                singlePlay(isNext)
+                if (fromUser) {
+                    singlePlay(isNext)
+                } else {
+                    mTopModel?.let {
+                        playOrPause(it, mTopPosition, true)
+                    }
+                }
             }
             ALL_REPEAT_PLAY_TYPE -> {
                 allRepeatPlay(isNext)
