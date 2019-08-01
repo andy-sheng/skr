@@ -147,6 +147,9 @@ android {
             java.srcDirs += 'src/main/java-svga'
             res.srcDirs += 'src/main/res-svga'
 
+            // java video cache
+            java.srcDirs += 'src/main/java-video-cache'
+
             if (UmengPushEnable.toBoolean()) {
                 // umengpush
                 java.srcDirs += 'src/main/java-push-umeng'
