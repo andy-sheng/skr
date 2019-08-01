@@ -31,7 +31,6 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -44,6 +43,7 @@ import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
@@ -448,9 +448,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mFollowTv?.setOnClickListener(null)
         } else {
             isStrangerState()
-            mFollowTv?.setDebounceViewClickListener {
-                UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID!!, UserInfoManager.RA_BUILD, false, 0, null)
-            }
         }
     }
 
@@ -533,6 +530,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.text = "+关注"
         mFollowTv?.background = followState
         mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
+        mFollowTv?.setDebounceViewClickListener {
+            UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID!!, UserInfoManager.RA_BUILD, false, 0, null)
+        }
     }
 
     override fun setData(type: Int, data: Any?) {
