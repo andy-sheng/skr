@@ -422,7 +422,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun likeFeed(like: Boolean) {
         mXinIv!!.isSelected = like
         if (like) {
-            U.getToastUtil().showShort("已添加至【喜欢】列表")
             mFeedsWatchModel!!.starCnt++
         } else {
             mFeedsWatchModel!!.starCnt--

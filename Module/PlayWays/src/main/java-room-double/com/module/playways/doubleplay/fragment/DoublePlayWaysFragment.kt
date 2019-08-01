@@ -35,6 +35,8 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.dialog.PersonInfoDialog
+import com.component.report.fragment.QuickFeedbackFragment
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
@@ -54,11 +56,9 @@ import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.view.ZanView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.component.dialog.PersonInfoDialog
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
-import com.component.report.fragment.QuickFeedbackFragment
 import kotlin.properties.Delegates
 
 
@@ -150,6 +150,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         ZqEngineKit.getInstance().muteLocalAudioStream(false)
+        U.getSoundUtils().preLoad(mTag, R.raw.double_chat_cd)
         MyLog.w(mTag, "initData mRoomData='${mRoomData}'")
         mReportTv = rootView.findViewById<View>(R.id.report_tv) as TextView
         mExitIv = rootView.findViewById<View>(R.id.exit_iv) as ImageView
@@ -367,6 +368,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
                         if (leftSecond > 10) {
                             mCountDownTv?.text = U.getDateTimeUtils().formatTimeStringForDate((leftSecond * 1000).toLong(), "mm:ss")
                         } else {
+                            U.getSoundUtils().play(mTag, R.raw.double_chat_cd)
                             mCountDownTv?.text = "${leftSecond}s"
                             mCountDownTv?.setTextColor(Color.parseColor("#FFC15B"))
                             mCountDownScaleAnimators?.cancel()
@@ -757,6 +759,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         mDoubleSingSenceView?.destroy()
         mCountDownScaleAnimators?.cancel()
         mUiHandler.removeCallbacksAndMessages(null)
+        U.getSoundUtils().release(mTag)
     }
 
     override fun showNoLimitDurationState(noLimit: Boolean) {
