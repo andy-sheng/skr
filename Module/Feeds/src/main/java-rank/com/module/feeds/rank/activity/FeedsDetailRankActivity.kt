@@ -146,20 +146,20 @@ class FeedsDetailRankActivity : BaseActivity() {
 
 
     private fun initLoadData() {
-        loadData(0)
+        loadData(0, true)
     }
 
     private fun loadMoreData() {
-        loadData(offset)
+        loadData(offset, false)
     }
 
-    private fun loadData(off: Int) {
+    private fun loadData(off: Int, isClean: Boolean) {
         launch {
             val result = mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID)
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")
-                showDetailInfo(list, off == 0)
+                showDetailInfo(list, isClean)
             }
         }
     }

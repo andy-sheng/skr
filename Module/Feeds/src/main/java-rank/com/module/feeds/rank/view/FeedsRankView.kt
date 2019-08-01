@@ -80,20 +80,20 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
     }
 
     fun tryLoadData() {
-        getData(0)
+        getData(0, true)
     }
 
     fun loadMoreData() {
-        getData(offset)
+        getData(offset, false)
     }
 
-    private fun getData(off: Int) {
+    private fun getData(off: Int, isClean: Boolean) {
         launch {
             val result = mFeedsRankServerApi.getFeedRankInfoList(off, cnt, tag.tagType ?: 0)
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
                 offset = result.data.getIntValue("offset")
-                showRankInfo(list, off == 0)
+                showRankInfo(list, isClean)
             } else {
 
             }

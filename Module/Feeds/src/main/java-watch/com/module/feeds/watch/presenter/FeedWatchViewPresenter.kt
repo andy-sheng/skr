@@ -45,23 +45,23 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 return false
             }
         }
-        getWatchList(0)
+        getWatchList(0, true)
         return true
     }
 
     fun loadMoreWatchList() {
-        getWatchList(mOffset)
+        getWatchList(mOffset, false)
     }
 
-    private fun getWatchList(offset: Int) {
+    private fun getWatchList(offset: Int, isClear: Boolean) {
         when (type) {
-            FeedsWatchView.TYPE_FOLLOW -> getFollowFeedList(offset)
-            FeedsWatchView.TYPE_RECOMMEND -> getRecommendFeedList(offset)
-            else -> getPersonFeedList(offset)
+            FeedsWatchView.TYPE_FOLLOW -> getFollowFeedList(offset, isClear)
+            FeedsWatchView.TYPE_RECOMMEND -> getRecommendFeedList(offset, isClear)
+            else -> getPersonFeedList(offset, isClear)
         }
     }
 
-    private fun getRecommendFeedList(offset: Int) {
+    private fun getRecommendFeedList(offset: Int, isClear: Boolean) {
         ApiMethods.subscribe(mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
@@ -69,14 +69,14 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 //                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
                     mOffset = obj.data.getIntValue("offset")
-                    view.addWatchList(list, offset == 0)
+                    view.addWatchList(list, isClear)
                 }
             }
 
         }, this, ApiMethods.RequestControl("getRecommendFeedList", ApiMethods.ControlType.CancelThis))
     }
 
-    private fun getFollowFeedList(offset: Int) {
+    private fun getFollowFeedList(offset: Int, isClear: Boolean) {
         ApiMethods.subscribe(mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
@@ -84,14 +84,14 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 //                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("follows"), FeedsWatchModel::class.java)
                     mOffset == obj.data.getIntValue("offset")
-                    view.addWatchList(list, offset == 0)
+                    view.addWatchList(list, isClear)
                 }
             }
 
         }, this, ApiMethods.RequestControl("getFollowFeedList", ApiMethods.ControlType.CancelThis))
     }
 
-    private fun getPersonFeedList(offset: Int) {
+    private fun getPersonFeedList(offset: Int, isClear: Boolean) {
         var feedSongType = 1
         if (MyUserInfoManager.getInstance().uid.toInt() != mUserInfo?.userId) {
             feedSongType = 2
@@ -105,7 +105,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                     }
                     mOffset = result.data.getIntValue("offset")
                     val list = JSON.parseArray(result.data.getString("userSongs"), FeedsWatchModel::class.java)
-                    view.addWatchList(list, offset == 0)
+                    view.addWatchList(list, isClear)
                 } else {
                     view.requestError()
                 }

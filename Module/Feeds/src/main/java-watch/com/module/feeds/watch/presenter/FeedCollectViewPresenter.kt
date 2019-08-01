@@ -39,21 +39,21 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
             }
         }
 
-        getFeedsLikeList(0)
+        getFeedsLikeList(0, true)
     }
 
     fun loadMoreFeedLikeList() {
-        getFeedsLikeList(mOffset)
+        getFeedsLikeList(mOffset, false)
     }
 
-    private fun getFeedsLikeList(offset: Int) {
+    private fun getFeedsLikeList(offset: Int, isClear: Boolean) {
         ApiMethods.subscribe(mFeedServerApi.getFeedCollectList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("likes"), FeedsCollectModel::class.java)
                     mOffset = obj.data.getIntValue("offset")
-                    view.addLikeList(list, offset == 0)
+                    view.addLikeList(list, isClear)
                 }
             }
 
