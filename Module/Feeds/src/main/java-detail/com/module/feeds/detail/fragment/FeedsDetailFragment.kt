@@ -1,5 +1,6 @@
 package com.module.feeds.detail.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -421,11 +422,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mXinIv!!.isSelected = like
         if (like) {
             U.getToastUtil().showShort("已添加至【喜欢】列表")
-            mXinNumTv!!.text = StringFromatUtils.formatFansNum(mXinNumTv!!.text.toString().toInt().plus(1))
+            mFeedsWatchModel!!.starCnt++
         } else {
-            mXinNumTv!!.text = StringFromatUtils.formatFansNum((mXinNumTv!!.text.toString().toInt() - 1))
+            mFeedsWatchModel!!.starCnt--
         }
 
+        mXinNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.starCnt!!)
     }
 
     override fun onResume() {
@@ -560,5 +562,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         SinglePlayer.removeCallback(playerTag)
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()
+
+        activity?.setResult(0, Intent().apply {
+            putExtras(Bundle().apply {
+                putSerializable("model", mFeedsWatchModel?.apply {
+                    commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
+                })
+            })
+        })
     }
 }
