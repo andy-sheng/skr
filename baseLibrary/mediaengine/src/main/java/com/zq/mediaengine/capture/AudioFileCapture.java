@@ -91,8 +91,11 @@ public class AudioFileCapture {
     private volatile boolean mIsSeeking;
     private long mFirstPts;
     private long mDuration;
+    private long mOffsetDuration;
     private long mBasePosition;
+    private long mOffsetBasePosition;
     private long mCurrentPosition;
+    private long mOffsetCurrentPosition;
     private long mSamplesWritten;
 
     private OnPreparedListener mOnPreparedListener;
@@ -374,7 +377,7 @@ public class AudioFileCapture {
      * @return the duration in milisenconds
      */
     public long getDuration() {
-        return mDuration;
+        return mOffsetDuration;
     }
 
     /**
@@ -383,7 +386,7 @@ public class AudioFileCapture {
      * @return current position in miliseconds
      */
     public long getPosition() {
-        return mCurrentPosition;
+        return mOffsetCurrentPosition;
     }
 
     /**
@@ -392,7 +395,7 @@ public class AudioFileCapture {
      * @return base position in miliseconds
      */
     public long getBasePosition() {
-        return mBasePosition;
+        return mOffsetBasePosition;
     }
 
     private void initDecodeThread() {
@@ -416,13 +419,13 @@ public class AudioFileCapture {
                             mState = STATE_IDLE;
                             postError(err, 0);
                         } else {
-                            mState = STATE_STARTED;
-                            postOnPrepared();
                             if (mOffset >= 20) {
                                 Log.d(TAG, "seek on start with: " + mOffset);
                                 Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) mOffset, 0);
                                 mDecodeHandler.sendMessage(sendMsg);
                             } else {
+                                mState = STATE_STARTED;
+                                postOnPrepared();
                                 mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                             }
                         }
@@ -465,14 +468,19 @@ public class AudioFileCapture {
                         mState = STATE_IDLE;
                         break;
                     case CMD_SEEK:
-                        if (mState != STATE_STARTED) {
+                        if (mState != STATE_PREPARING && mState != STATE_STARTED) {
                             break;
                         }
                         if (msg.obj != null) {
                             ((Runnable) msg.obj).run();
                         }
                         doSeek(msg.arg1);
-                        postOnSeekCompletion(msg.arg1);
+                        if (mState == STATE_PREPARING) {
+                            mState = STATE_STARTED;
+                            postOnPrepared();
+                        } else {
+                            postOnSeekCompletion(msg.arg1);
+                        }
                         mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         break;
                     case CMD_RELEASE:
@@ -567,8 +575,11 @@ public class AudioFileCapture {
         mLastUpdateTime = 0;
         mIsSeeking = false;
         mDuration = 0;
+        mOffsetDuration = 0;
         mBasePosition = 0;
+        mOffsetBasePosition = 0;
         mCurrentPosition = 0;
+        mOffsetCurrentPosition = 0;
         mSamplesWritten = 0;
         mMediaExtractor = new MediaExtractor();
         try {
@@ -585,10 +596,13 @@ public class AudioFileCapture {
             String mime = mediaFormat.getString(MediaFormat.KEY_MIME);
             if (mime.startsWith("audio/")) {
                 mMediaExtractor.selectTrack(i);
-                mDuration = mediaFormat.getLong(MediaFormat.KEY_DURATION);
+                mDuration = mediaFormat.getLong(MediaFormat.KEY_DURATION) / 1000;
                 mFirstPts = mMediaExtractor.getSampleTime();
-                Log.d(TAG, "duration: " + mDuration + " first pts: " + mFirstPts);
-                mDuration /= 1000;
+                long end = (mEnd < 0 || mEnd > mDuration) ? mDuration : mEnd;
+                long dur = end - mOffset;
+                mOffsetDuration = dur < 0 ? 0 : dur;
+                Log.d(TAG, "duration: " + mDuration + " offsetDuration: " + mOffsetDuration +
+                        " first pts: " + mFirstPts);
 
                 // audio format
                 int sampleRate = mediaFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE);
@@ -649,6 +663,8 @@ public class AudioFileCapture {
             if (sampleSize >= 0 && (mEnd < 0 || mEnd * 1000 > pts)) {
                 if (mIsSeeking) {
                     mBasePosition = (pts - mFirstPts) / 1000;
+                    long pos = mBasePosition - mOffset;
+                    mOffsetBasePosition = pos > 0 ? pos : 0;
                     mIsSeeking = false;
                 }
                 if (VERBOSE) Log.d(TAG, "fill decoder " + sampleSize + " pts: " + pts / 1000);
@@ -731,12 +747,14 @@ public class AudioFileCapture {
 
                 mSamplesWritten += frame.buf.limit() / 2 / mOutFormat.channels;
                 mCurrentPosition = mBasePosition + mSamplesWritten * 1000 / mOutFormat.sampleRate;
+                long tmpPos = mCurrentPosition - mOffset;
+                mOffsetCurrentPosition = tmpPos > 0 ? tmpPos : 0;
 
                 // update position
                 long curTime = System.nanoTime() / 1000 / 1000;
                 if (curTime - mLastUpdateTime >= mPositionUpdateInterval) {
                     mLastUpdateTime = curTime;
-                    postOnPositionUpdate(mCurrentPosition);
+                    postOnPositionUpdate(mOffsetCurrentPosition);
                 }
 
                 if (VERBOSE) {

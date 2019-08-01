@@ -22,7 +22,7 @@ import com.zq.mediaengine.util.audio.AudioUtil;
  */
 public class AudioPlayerCapture {
     private final static String TAG = "AudioPlayerCapture";
-    private final static boolean VERBOSE = true;
+    private final static boolean VERBOSE = false;
 
     /**
      * The constant AUDIO_PLAYER_TYPE_AUDIOTRACK.

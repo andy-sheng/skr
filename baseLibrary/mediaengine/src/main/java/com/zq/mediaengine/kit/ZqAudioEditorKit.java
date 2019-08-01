@@ -602,8 +602,10 @@ public class ZqAudioEditorKit {
     private AudioFileCapture.OnPositionUpdateListener mOnCapturePositionUpdateListener = new AudioFileCapture.OnPositionUpdateListener() {
         @Override
         public void onPositionUpdate(AudioFileCapture audioFileCapture, long pos) {
+            // Log.d(TAG, "onPositionUpdate: " + audioFileCapture + " pos: " + pos);
             synchronized (ZqAudioEditorKit.this) {
-                if (mState == STATE_COMPOSING) {
+                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
+                        mState == STATE_COMPOSING) {
                     float progress = (float) pos / audioFileCapture.getDuration();
                     // Log.d(TAG, "onProgress: " + progress);
                     progress = progress > 1.0f ? 1.0f : progress;
