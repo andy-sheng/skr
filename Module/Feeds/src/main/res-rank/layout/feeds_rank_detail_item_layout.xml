@@ -61,6 +61,8 @@
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constrainedWidth="true"
+        android:drawablePadding="@dimen/view_3_dp"
+        android:drawableLeft="@drawable/feed_rank_like_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="@id/song_name_tv"

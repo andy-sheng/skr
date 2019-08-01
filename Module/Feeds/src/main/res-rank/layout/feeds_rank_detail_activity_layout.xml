@@ -99,10 +99,10 @@
 
     <ImageView
         android:id="@+id/like_iv"
-        android:layout_width="@dimen/view_12_dp"
-        android:layout_height="@dimen/view_10_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:background="@drawable/feed_like_selected_icon"
+        android:background="@drawable/feed_rank_detail_top_icon"
         app:layout_constraintBottom_toBottomOf="@id/champion_tv"
         app:layout_constraintLeft_toRightOf="@id/champion_tv"
         app:layout_constraintTop_toTopOf="@id/champion_tv" />
