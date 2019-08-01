@@ -18,9 +18,10 @@
         app:bl_solid_color="#7660DC">
 
         <com.common.view.ex.ExTextView
+            android:layout_height="@dimen/view_44_dp"
             android:id="@+id/tv_icon_bg"
             android:layout_width="@dimen/view_44_dp"
-            android:layout_height="@dimen/view_47_dp"
+            android:layout_centerVertical="true"
             android:layout_marginTop="0dp"
             app:bl_corners_radius="@dimen/view_22_dp"
             app:bl_solid_color="#6EBDFF"
@@ -28,6 +29,7 @@
             app:bl_stroke_width="@dimen/view_2_dp" />
 
         <com.common.image.fresco.BaseImageView
+            android:layout_centerVertical="true"
             android:id="@+id/send_avatar_iv"
             android:layout_width="@dimen/view_40_dp"
             android:layout_height="@dimen/view_40_dp"
