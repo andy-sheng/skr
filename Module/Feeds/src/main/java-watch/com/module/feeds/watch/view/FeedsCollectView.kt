@@ -122,7 +122,10 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
         mPlayTypeIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                // 更新游戏类别 全部循环，单曲循环，随机播放
+                // 更新游戏类别 全部循环，单曲循环，随机播放(需要重新校准播放的位置)
+                // 校准位置
+                mTopPosition = mAdapter.findRealPosition(mTopModel)
+                // 为了保证随机播放（确定是否要重新随机）
                 when (mCurrentType) {
                     ALL_REPEAT_PLAY_TYPE -> {
                         mCurrentType = SINGLE_REPEAT_PLAY_TYPE
@@ -226,15 +229,29 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     private fun playWithType(isNext: Boolean) {
         when (mCurrentType) {
             SINGLE_REPEAT_PLAY_TYPE -> {
-                mTopModel?.let {
-                    playOrPause(it, mTopPosition, true)
-                }
+                singlePlay(isNext)
             }
             ALL_REPEAT_PLAY_TYPE -> {
                 allRepeatPlay(isNext)
             }
             RANDOM_PLAY_TYPE -> {
                 randomPlay()
+            }
+        }
+    }
+
+    private fun singlePlay(isNext: Boolean) {
+        if (isNext) {
+            if ((mTopPosition + 1) >= mAdapter.mDataList.size) {
+                playOrPause(mAdapter.mDataList[0], 0, true)
+            } else {
+                playOrPause(mAdapter.mDataList[mTopPosition + 1], mTopPosition + 1, true)
+            }
+        } else {
+            if ((mTopPosition - 1) < 0) {
+                playOrPause(mAdapter.mDataList[mAdapter.mDataList.size - 1], mAdapter.mDataList.size - 1, true)
+            } else {
+                playOrPause(mAdapter.mDataList[mTopPosition - 1], mTopPosition - 1, true)
             }
         }
     }
@@ -259,16 +276,33 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         // 对于随机播放，下一首和上一首，都是在队列里面播下一首
         if (isFirstRandom) {
             isFirstRandom = false
-            mRandomList.clear()
-            mRandomList.addAll(mAdapter.mDataList)
-            mRandomList.shuffle()
+            createRandomList()
         }
 
         if ((mTopPosition + 1) >= mRandomList.size) {
             playOrPause(mRandomList[0], 0, true)
+            // 一个轮回了，重新随机
             isFirstRandom = true
         } else {
             playOrPause(mRandomList[mTopPosition + 1], mTopPosition + 1, true)
+        }
+    }
+
+    // 生成新的随机序列
+    private fun createRandomList() {
+        mRandomList.clear()
+        mRandomList.addAll(mAdapter.mDataList)
+        mRandomList.shuffle()
+        if ((mTopPosition + 1) >= mRandomList.size) {
+            if (mRandomList[0].feedID == mTopModel?.feedID) {
+                // 下一首要重复了
+                createRandomList()
+            }
+        } else {
+            if (mRandomList[mTopPosition + 1].feedID == mTopModel?.feedID) {
+                // 下一首要重复了
+                createRandomList()
+            }
         }
     }
 

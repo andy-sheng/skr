@@ -50,4 +50,15 @@ class FeedsCollectViewAdapter : RecyclerView.Adapter<FeedsCollectViewHolder>() {
             }
         }
     }
+
+    fun findRealPosition(model: FeedsCollectModel?): Int {
+        if (model != null) {
+            for (i in 0 until mDataList.size) {
+                if (mDataList[i].feedID == model.feedID) {
+                    return i
+                }
+            }
+        }
+        return 0
+    }
 }
