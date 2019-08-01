@@ -509,7 +509,7 @@ public class ManyLyricsView extends AbstractLrcView {
 //            MyLog.v(TAG, "倒计时 0");
             return;
         }
-        float radius = 10.0f;
+        float radius = U.getDisplayUtils().dip2px(3.3f);
         float dy = y - textHeight - radius * 2 - U.getDisplayUtils().dip2px(33);
 
         if (degree <= 1000) {
