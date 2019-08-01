@@ -420,7 +420,7 @@ public class AudioFileCapture {
                             postOnPrepared();
                             if (mOffset >= 20) {
                                 Log.d(TAG, "seek on start with: " + mOffset);
-                                Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) mOffset);
+                                Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) mOffset, 0);
                                 mDecodeHandler.sendMessage(sendMsg);
                             } else {
                                 mDecodeHandler.sendEmptyMessage(CMD_LOOP);

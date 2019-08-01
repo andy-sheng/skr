@@ -245,6 +245,7 @@ public class ZqAudioEditorKit {
                 mAudioSource[i].capture.pause();
             }
         }
+        mAudioPreview.pause();
         mState = STATE_PREVIEW_PAUSED;
     }
 
@@ -265,6 +266,7 @@ public class ZqAudioEditorKit {
                 mAudioSource[i].capture.resume();
             }
         }
+        mAudioPreview.resume();
         mState = STATE_PREVIEW_STARTED;
     }
 
