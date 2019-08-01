@@ -435,8 +435,8 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                         }
 
                         if (isInBlack) {
-                            UserInfoManager.getInstance().removeBlackList(mUserId, object : UserInfoManager.ResponseCallBack<Any>() {
-                                override fun onServerSucess(o: Any) {
+                            UserInfoManager.getInstance().removeBlackList(mUserId, object : UserInfoManager.ResponseCallBack<Any?>() {
+                                override fun onServerSucess(o: Any?) {
                                     U.getToastUtil().showShort("移除黑名单成功")
                                 }
 
@@ -445,8 +445,8 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                                 }
                             })
                         } else {
-                            UserInfoManager.getInstance().addToBlacklist(mUserId, object : UserInfoManager.ResponseCallBack<Any>() {
-                                override fun onServerSucess(o: Any) {
+                            UserInfoManager.getInstance().addToBlacklist(mUserId, object : UserInfoManager.ResponseCallBack<Any?>() {
+                                override fun onServerSucess(o: Any?) {
                                     U.getToastUtil().showShort("加入黑名单成功")
                                 }
 
