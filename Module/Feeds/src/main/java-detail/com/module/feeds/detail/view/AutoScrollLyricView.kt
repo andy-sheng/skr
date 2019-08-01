@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.log.MyLog
-import com.common.utils.HandlerTaskTimer
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.component.lyrics.LyricsManager
@@ -23,8 +22,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     var mFeedSongModel: FeedSongModel? = null
     var mIsStart: Boolean = false
     var mDisposable: Disposable? = null
-
-    var mHandlerTaskTimer: HandlerTaskTimer? = null
+    var mScrollJob: Job? = null
 
     override fun init(parentView: View?) {
         lyricTv = parentView!!.findViewById(R.id.lyric_tv)
@@ -90,7 +88,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     override fun seekTo(pos: Int) {
         //MyLog.d(TAG, "seekTo")
         mFeedSongModel?.playCurPos = pos
-//        scrollToTs(mFeedSongModel?.playCurPos?:0)
+        scrollToTs(mFeedSongModel?.playCurPos ?: 0)
     }
 
     override fun isStart(): Boolean = mIsStart
@@ -101,29 +99,19 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         mFeedSongModel?.playCurPos = 0
         scrollTime = 0
         scrollView.smoothScrollTo(0, 0)
-        mHandlerTaskTimer?.dispose()
+        mScrollJob?.cancel()
     }
 
-    var job: Job? = null
-
     private fun startScroll() {
-        //MyLog.d(TAG, "startScroll")
-//        mHandlerTaskTimer?.dispose()
-//        mHandlerTaskTimer = HandlerTaskTimer
-//                .newBuilder()
-//                .interval(30)
-//                .start(object : HandlerTaskTimer.ObserverW() {
-//                    override fun onNext(t: Int) {
-//                        scrollToTs(mFeedSongModel?.playCurPos ?: 0)
-//                        mFeedSongModel?.playCurPos = (mFeedSongModel?.playCurPos ?: 0) + 30
-//                    }
-//                })
-        job?.cancel()
-        job = GlobalScope.launch(Dispatchers.Main) {
+        MyLog.d(TAG, "startScroll")
+        mScrollJob?.cancel()
+        mScrollJob = GlobalScope.launch(Dispatchers.Main) {
             repeat(Int.MAX_VALUE) {
+                val ts = System.currentTimeMillis()
                 delay(30)
                 scrollToTs(mFeedSongModel?.playCurPos ?: 0)
-                mFeedSongModel?.playCurPos = (mFeedSongModel?.playCurPos ?: 0) + 30
+                mFeedSongModel?.playCurPos = (mFeedSongModel?.playCurPos
+                        ?: 0) + (System.currentTimeMillis() - ts).toInt()
             }
         }
     }
@@ -137,19 +125,18 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun destroy() {
-        mHandlerTaskTimer?.dispose()
-        job?.cancel()
+        mScrollJob?.cancel()
     }
 
     override fun pause() {
         MyLog.d(TAG, "pause")
-        mHandlerTaskTimer?.dispose()
+        mScrollJob?.cancel()
     }
 
     override fun resume() {
-        if (mHandlerTaskTimer?.isDisposed == false) {
+        if (mScrollJob?.isActive ?: false) {
             // 如果没取消
-
+            MyLog.d(TAG, "resume状态")
         } else {
             // 如果取消了
             startScroll()
