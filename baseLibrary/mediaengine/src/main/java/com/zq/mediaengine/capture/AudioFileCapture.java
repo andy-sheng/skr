@@ -422,9 +422,11 @@ public class AudioFileCapture {
                         } else {
                             if (mOffset >= OFFSET_IGNORE) {
                                 Log.d(TAG, "seek on start with: " + mOffset);
-                                Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) mOffset, 0);
+                                Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, 0, 0);
                                 mDecodeHandler.sendMessage(sendMsg);
                             } else {
+                                // trigger format changed
+                                mSrcPin.onFormatChanged(mOutFormat);
                                 mState = STATE_STARTED;
                                 postOnPrepared();
                                 mDecodeHandler.sendEmptyMessage(CMD_LOOP);
@@ -476,6 +478,8 @@ public class AudioFileCapture {
                             ((Runnable) msg.obj).run();
                         }
                         doSeek(msg.arg1);
+                        // seek后发送onFormatChanged事件
+                        mSrcPin.onFormatChanged(mOutFormat);
                         if (mState == STATE_PREPARING) {
                             mState = STATE_STARTED;
                             postOnPrepared();
@@ -628,9 +632,6 @@ public class AudioFileCapture {
                 }
                 mMediaCodec.start();
                 mBufferInfo = new MediaCodec.BufferInfo();
-
-                // trigger format changed
-                mSrcPin.onFormatChanged(mOutFormat);
                 return 0;
             }
         }
@@ -652,12 +653,11 @@ public class AudioFileCapture {
 
     private void doSeek(long ms) {
         mMediaCodec.flush();
-        mCurrentPosition = ms;
+        mOffsetCurrentPosition = ms;
+        mCurrentPosition = ms + mOffset;
         mSamplesWritten = 0;
         mIsSeeking = true;
-        mMediaExtractor.seekTo(ms * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
-        // seek后发送onFormatChanged事件
-        mSrcPin.onFormatChanged(mOutFormat);
+        mMediaExtractor.seekTo(mCurrentPosition * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
     }
 
     private boolean fillDecoder() {

@@ -764,7 +764,7 @@ public class ZqAudioEditorKit {
         }
 
         public void seek(long pos) {
-            capture.seek(offset + pos);
+            capture.seek(pos);
         }
 
         public void release() {
