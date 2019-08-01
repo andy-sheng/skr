@@ -42,6 +42,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         tryInflate()
         lyricTv.text = "正在加载"
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
+            mDisposable?.dispose()
             mDisposable = LyricsManager
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
@@ -59,6 +60,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         mIsStart = true
 
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
+            mDisposable?.dispose()
             mDisposable = LyricsManager
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
@@ -100,6 +102,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         scrollTime = 0
         scrollView.smoothScrollTo(0, 0)
         mScrollJob?.cancel()
+        mDisposable?.dispose()
     }
 
     private fun startScroll() {

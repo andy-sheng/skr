@@ -8,7 +8,6 @@ import com.common.rx.RxRetryAssist
 import com.common.utils.U
 import com.common.view.ExViewStub
 import com.component.lyrics.LyricsManager
-import com.component.lyrics.model.LyricsLineInfo
 import com.component.lyrics.widget.AbstractLrcView
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
@@ -19,7 +18,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 
 class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
@@ -113,6 +111,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
         mFeedSongModel?.playCurPos = 0
         mManyLyricsView?.seekTo(0)
         mManyLyricsView?.pause()
+        mDisposable?.dispose()
         mIsStart = false
     }
 

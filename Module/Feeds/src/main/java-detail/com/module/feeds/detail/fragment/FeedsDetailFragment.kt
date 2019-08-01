@@ -54,6 +54,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
+    val mTag = "FeedsDetailFragment"
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
     var mContentLayout: CollapsingToolbarLayout? = null
@@ -93,6 +94,16 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var playCallback = object : PlayerCallbackAdapter() {
         override fun onPrepared() {
+            MyLog.d(mTag, "onPrepared")
+            if (mControlTv!!.isSelected) {
+                if (!mFeedsCommonLyricView!!.isStart()) {
+                    mFeedsCommonLyricView!!.playLyric()
+                } else {
+                    mFeedsCommonLyricView!!.resume()
+                }
+            } else {
+                SinglePlayer.pause("onPrepared")
+            }
         }
 
         override fun onCompletion() {
@@ -108,7 +119,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
-            MyLog.d(TAG, "onBufferingUpdate percent=$percent")
+            MyLog.d(mTag, "onBufferingUpdate percent=$percent")
             if (percent == 100) {
                 if (mp!!.isPlaying) {
                     mFeedsCommonLyricView!!.resume()
@@ -465,6 +476,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun pausePlay() {
+        MyLog.d(mTag, "pausePlay")
         mControlTv!!.isSelected = false
         mRadioView?.pause()
         SinglePlayer.pause(playerTag)
@@ -472,6 +484,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun stopSong() {
+        MyLog.d(mTag, "stopSong()")
         SinglePlayer.stop(playerTag)
         mControlTv!!.isSelected = false
         mRadioView?.pause()
