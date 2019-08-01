@@ -107,19 +107,7 @@
         app:layout_constraintRight_toRightOf="@+id/avatar_bg"
         app:layout_constraintTop_toBottomOf="@+id/radio_view" />
 
-    <com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
-        android:id="@+id/voice_control_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/menu_bg" />
 
-    <com.module.feeds.make.view.VocalAlignControlPannelView
-        android:id="@+id/va_control_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_105_dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/menu_bg" />
     <!-- 下面是菜单栏 -->
     <View
         android:id="@+id/menu_bg"

@@ -11,6 +11,8 @@ import com.zq.mediaengine.kit.ZqAudioEditorKit
 
 class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) : VoiceControlPanelView(context, attrs) {
 
+    constructor(context: Context?):this(context,null)
+
     var mZqAudioEditorKit: ZqAudioEditorKit? = null
 
     var mPeopleVoiceIndex = 0

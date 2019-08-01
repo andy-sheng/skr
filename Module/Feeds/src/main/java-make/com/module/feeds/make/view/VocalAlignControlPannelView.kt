@@ -14,6 +14,8 @@ import com.zq.mediaengine.kit.ZqAudioEditorKit
 
 class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
 
+    constructor(context: Context?):this(context,null)
+
     lateinit var audioEditorKit: ZqAudioEditorKit
 
     val mVaResetTv: ExTextView
