@@ -159,8 +159,8 @@ class FeedsMakeActivity : BaseActivity() {
                 mFeedsMakeModel?.let {
                     if (it.recordingClick) {
                         if (it.recording) {
-                            //真正在录制
-                            if (System.currentTimeMillis() - it.beginRecordTs < 10 * 1000) {
+                            //真正在录制，除去前奏的长度
+                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs  < 10 * 1000) {
                                 U.getToastUtil().showSkrCustomShort(NoImageCommonToastView.Builder(U.app())
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
@@ -172,6 +172,7 @@ class FeedsMakeActivity : BaseActivity() {
                         }
                     } else {
                         mTitleBar?.rightCustomView?.visibility = View.GONE
+                        mResetIv?.isEnabled = true
                         startRecord()
                     }
                 }
@@ -248,7 +249,7 @@ class FeedsMakeActivity : BaseActivity() {
                     })
         } else {
             mFeedsMakeModel?.songModel?.let {
-                mAutoScrollLyricView?.setSongModel(it,0)
+                mAutoScrollLyricView?.setSongModel(it, 0)
             }
             mVoiceScaleView?.stop(false)
         }
@@ -361,7 +362,7 @@ class FeedsMakeActivity : BaseActivity() {
 
             mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
                 override fun onLyricParseSuccess(reader: LyricsReader) {
-                    mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos.get(0)?.startTime ?:0
+                    mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos.get(0)?.startTime ?: 0
                 }
 
                 override fun onLyricParseFailed() {
@@ -373,18 +374,27 @@ class FeedsMakeActivity : BaseActivity() {
                     ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
                     mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
                     mFeedsMakeModel?.recording = true
-                    mCircleCountDownView?.go(0, mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
-                            ?: 0)
+                    val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
+                            ?: 60 * 1000
+                    mCircleCountDownView?.go(0, leave){
+                        recordOk()
+                    }
                     countDownBegin()
                 }
             })
         } else {
+            mFeedsMakeModel?.firstLyricShiftTs = 0
             mVoiceScaleView?.stop(false)
             mAutoScrollLyricView?.playLyric()
             // 开始录音
             ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
             mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
             mFeedsMakeModel?.recording = true
+            val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
+                    ?: 60 * 1000
+            mCircleCountDownView?.go(0, leave){
+                recordOk()
+            }
             countDownBegin()
         }
     }

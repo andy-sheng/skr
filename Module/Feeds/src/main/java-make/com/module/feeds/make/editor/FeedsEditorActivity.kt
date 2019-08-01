@@ -71,7 +71,7 @@ class FeedsEditorActivity : BaseActivity() {
     var mComposeProgressbarVG: ViewGroup? = null
 
     var mComposeProgressTipsTv: TextView? = null
-    var mCoverView:View?=null
+    var mCoverView: View? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_editor_activity_layout
@@ -100,7 +100,7 @@ class FeedsEditorActivity : BaseActivity() {
             // 吃掉点击事件
         }
 
-        mCoverView  = findViewById<View>(R.id.cover_view)
+        mCoverView = findViewById<View>(R.id.cover_view)
         mCoverView?.setOnClickListener {
             mRenshengIv?.isSelected = false
             mEffectIv?.isSelected = false
@@ -108,7 +108,7 @@ class FeedsEditorActivity : BaseActivity() {
             mVoiceControlView?.visibility = View.GONE
             mCoverView?.visibility = View.GONE
         }
-        
+
         mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -290,7 +290,9 @@ class FeedsEditorActivity : BaseActivity() {
             }
         } else {
             mVoiceControlView?.mPeopleVoiceIndex = 0
-            mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, 0, mFeedsMakeModel?.recordDuration
+
+            mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, mFeedsMakeModel?.firstLyricShiftTs?.toLong()
+                    ?: 0, mFeedsMakeModel?.recordDuration
                     ?: -1)
             mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)
             mZqAudioEditorKit.setAudioEffect(0, ZqEngineKit.getInstance().params.styleEnum.ordinal)
