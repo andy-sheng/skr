@@ -221,7 +221,7 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit.setOnComposeInfoListener(object : ZqAudioEditorKit.OnComposeInfoListener {
             override fun onProgress(progress: Float) {
                 launch {
-                    mComposeProgressTipsTv?.text = "合成进度 ${progress * 100}%"
+                    mComposeProgressTipsTv?.text = "合成进度 ${(progress * 100).toInt()}%"
                 }
             }
 

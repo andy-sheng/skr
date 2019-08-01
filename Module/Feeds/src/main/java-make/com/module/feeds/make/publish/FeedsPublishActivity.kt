@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -58,8 +59,8 @@ class FeedsPublishActivity : BaseActivity() {
     lateinit var worksNameEt: EditText
     lateinit var tagClassifyTv: TextView
     lateinit var tagClassifyTf: TagFlowLayout
-    lateinit var uploadProgressbar: ProgressBar
-
+    //lateinit var uploadProgressbar: ProgressBar
+    lateinit var uploadProgressbarContainer: ViewGroup
     lateinit var tagClassifyAdapter: TagAdapter<FeedsPublishTagModel>
 
     var mFeedsMakeModel: FeedsMakeModel? = null
@@ -85,7 +86,7 @@ class FeedsPublishActivity : BaseActivity() {
         worksNameEt = this.findViewById(R.id.works_name_et)
         tagClassifyTv = this.findViewById(R.id.tag_classify_tv)
         tagClassifyTf = this.findViewById(R.id.tag_classify_tf)
-        uploadProgressbar = this.findViewById(R.id.upload_progressbar)
+        //uploadProgressbar = this.findViewById(R.id.upload_progressbar)
 
         //填充标签
 //        rankClassifyAdapter = object : TagAdapter<FeedsPublishTagModel>(ArrayList()) {
@@ -145,7 +146,7 @@ class FeedsPublishActivity : BaseActivity() {
                     return
                 }
                 mFeedsMakeModel?.let {
-                    uploadProgressbar.visibility = View.VISIBLE
+                    uploadProgressbarContainer.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(playUrl)) {
                         UploadParams.newBuilder(it.composeSavePath)
                                 .setFileType(UploadParams.FileType.feeds)
@@ -160,7 +161,7 @@ class FeedsPublishActivity : BaseActivity() {
 
                                     override fun onFailureNotInUiThread(msg: String?) {
                                         U.getToastUtil().showShort("上传失败，稍后重试")
-                                        uploadProgressbar.visibility = View.GONE
+                                        uploadProgressbarContainer.visibility = View.GONE
                                     }
                                 })
                     } else {
@@ -235,6 +236,7 @@ class FeedsPublishActivity : BaseActivity() {
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             val result = subscribe { feedsMakeServerApi.uploadFeeds(body) }
+            uploadProgressbarContainer.visibility = View.GONE
             if (result.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
@@ -253,10 +255,8 @@ class FeedsPublishActivity : BaseActivity() {
                     }
                 }
                 finish()
-
             } else {
                 U.getToastUtil().showShort(result.errmsg)
-                uploadProgressbar.visibility = View.GONE
             }
         }
     }
