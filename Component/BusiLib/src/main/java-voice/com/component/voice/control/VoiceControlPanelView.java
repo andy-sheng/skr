@@ -79,7 +79,7 @@ public class VoiceControlPanelView extends ScrollView {
         mDefaultSbtn = (AppCompatRadioButton) this.findViewById(R.id.default_sbtn);
         mKtvSbtn = (AppCompatRadioButton) this.findViewById(R.id.ktv_sbtn);
         mRockSbtn = (AppCompatRadioButton) this.findViewById(R.id.rock_sbtn);
-        mDianyinSbtn = (AppCompatRadioButton) this.findViewById(R.id.dianyin_sbtn);
+        mDianyinSbtn = (AppCompatRadioButton) this.findViewById(R.id.liuxing_sbtn);
         mKonglingSbtn = (AppCompatRadioButton) this.findViewById(R.id.kongling_sbtn);
 
         int marginLeft = getMarginLeft();
@@ -150,9 +150,9 @@ public class VoiceControlPanelView extends ScrollView {
                 } else if (checkedId == R.id.rock_sbtn) {
                     mAfterMode = Params.AudioEffect.rock;
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.rock);
-                } else if (checkedId == R.id.dianyin_sbtn) {
-                    mAfterMode = Params.AudioEffect.dianyin;
-                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.dianyin);
+                } else if (checkedId == R.id.liuxing_sbtn) {
+                    mAfterMode = Params.AudioEffect.liuxing;
+                    ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.liuxing);
                 } else if (checkedId == R.id.kongling_sbtn) {
                     mAfterMode = Params.AudioEffect.kongling;
                     ZqEngineKit.getInstance().setAudioEffectStyle(Params.AudioEffect.kongling);
@@ -171,8 +171,8 @@ public class VoiceControlPanelView extends ScrollView {
         if (ZqEngineKit.getInstance().getParams() != null) {
             styleEnum = ZqEngineKit.getInstance().getParams().getStyleEnum();
         }
-        if (styleEnum == Params.AudioEffect.dianyin) {
-            mScenesBtnGroup.check(R.id.dianyin_sbtn);
+        if (styleEnum == Params.AudioEffect.liuxing) {
+            mScenesBtnGroup.check(R.id.liuxing_sbtn);
         } else if (styleEnum == Params.AudioEffect.kongling) {
             mScenesBtnGroup.check(R.id.kongling_sbtn);
         } else if (styleEnum == Params.AudioEffect.ktv) {

@@ -1033,7 +1033,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             filters.add(new TbAudioEffectFilter(2));
         } else if (styleEnum == Params.AudioEffect.rock) {
             filters.add(new TbAudioEffectFilter(1));
-        } else if (styleEnum == Params.AudioEffect.dianyin) {
+        } else if (styleEnum == Params.AudioEffect.liuxing) {
             filters.add(new CbAudioEffectFilter(8));
         } else if (styleEnum == Params.AudioEffect.kongling) {
             filters.add(new CbAudioEffectFilter(1));

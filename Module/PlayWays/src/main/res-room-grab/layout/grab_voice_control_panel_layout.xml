@@ -172,7 +172,7 @@
                 android:button="@null"
                 android:checked="false"
                 android:gravity="center"
-                android:text="流行"
+                android:text="摇滚"
                 app:fillColor="@color/transparent"
                 app:fillColor_checked="#F9CC82"
                 app:strokeColor="#F9CC82"
@@ -180,14 +180,14 @@
                 app:textColor_normal="#F9CC82" />
 
             <com.module.playways.view.ScenesSelectBtn
-                android:id="@+id/dianyin_sbtn"
+                android:id="@+id/liuxing_sbtn"
                 android:layout_width="@dimen/view_44_dp"
                 android:layout_height="@dimen/view_44_dp"
                 android:layout_gravity="center"
                 android:button="@null"
                 android:checked="false"
                 android:gravity="center"
-                android:text="摇滚"
+                android:text="流行"
                 app:fillColor="@color/transparent"
                 app:fillColor_checked="#C7E4AC"
                 app:strokeColor="#C7E4AC"

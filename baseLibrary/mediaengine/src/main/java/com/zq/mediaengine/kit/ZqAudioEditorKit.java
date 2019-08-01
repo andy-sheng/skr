@@ -11,7 +11,6 @@ import com.zq.mediaengine.filter.audio.AudioFilterBase;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
-import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.filter.audio.IPcmPlayer;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -751,7 +750,7 @@ public class ZqAudioEditorKit {
                 filter = new TbAudioEffectFilter(2);
             } else if (type == Params.AudioEffect.rock.ordinal()) {
                 filter = new TbAudioEffectFilter(1);
-            } else if (type == Params.AudioEffect.dianyin.ordinal()) {
+            } else if (type == Params.AudioEffect.liuxing.ordinal()) {
                 filter = new CbAudioEffectFilter(8);
             } else if (type == Params.AudioEffect.kongling.ordinal()) {
                 filter = new CbAudioEffectFilter(1);

@@ -60,8 +60,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
                 mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.ktv.ordinal)
             } else if (checkedId == R.id.rock_sbtn) {
                 mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.rock.ordinal)
-            } else if (checkedId == R.id.dianyin_sbtn) {
-                mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.dianyin.ordinal)
+            } else if (checkedId == R.id.liuxing_sbtn) {
+                mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.liuxing.ordinal)
             } else if (checkedId == R.id.kongling_sbtn) {
                 mZqAudioEditorKit?.setAudioEffect(mPeopleVoiceIndex, Params.AudioEffect.kongling.ordinal)
             }
@@ -70,8 +70,8 @@ class FeedsEditorVoiceControlPanelView(context: Context?, attrs: AttributeSet?) 
 
     override fun bindData() {
         val styleEnum = mZqAudioEditorKit?.getAudioEffect(mPeopleVoiceIndex)
-        if (styleEnum == Params.AudioEffect.dianyin.ordinal) {
-            mScenesBtnGroup.check(R.id.dianyin_sbtn)
+        if (styleEnum == Params.AudioEffect.liuxing.ordinal) {
+            mScenesBtnGroup.check(R.id.liuxing_sbtn)
         } else if (styleEnum == Params.AudioEffect.kongling.ordinal) {
             mScenesBtnGroup.check(R.id.kongling_sbtn)
         } else if (styleEnum == Params.AudioEffect.ktv.ordinal) {
