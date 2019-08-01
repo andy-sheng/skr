@@ -145,19 +145,19 @@ public class ZqAudioEditorKit {
     }
 
     public void setOnComposeInfoListener(OnComposeInfoListener listener) {
-        Log.d(TAG, "OnComposeInfoListener: " + listener);
+        Log.d(TAG, "setOnComposeInfoListener: " + listener);
         mOnComposeInfoListener = listener;
     }
 
     public void setOnErrorListener(OnErrorListener listener) {
-        Log.d(TAG, "OnErrorListener: " + listener);
+        Log.d(TAG, "setOnComposeInfoListener: " + listener);
         mOnErrorListener = listener;
     }
 
     /**
      * 重置当前实例，调用后当前实例的状态恢复到刚创建时的样子，不过设置的回调会保留。
      *
-     * 如果在合成过程中，则合成操作立即中断，中间文件均被删除。
+     * 如果在合成过程中，则合成操作立即中断，中间文件不会被删除，需要应用层自行处理。
      */
     public synchronized void reset() {
         for (int i = 0; i < MAX_CHN; i++) {

@@ -31,6 +31,7 @@ public class AudioFileCapture {
 
     private static final long TIMEOUT_US = 10000;
     private static final int MAX_EOS_SPINS = 10;
+    private static final long OFFSET_IGNORE = 20;
 
     /**
      * The constant STATE_IDLE.
@@ -307,9 +308,7 @@ public class AudioFileCapture {
 
     public void start(String url, long offset, long end, Runnable r) {
         mUrl = url;
-        mOffset = offset;
-        mEnd = end;
-        Message msg = mDecodeHandler.obtainMessage(CMD_START, r);
+        Message msg = mDecodeHandler.obtainMessage(CMD_START, (int) offset, (int) end, r);
         mDecodeHandler.sendMessage(msg);
     }
 
@@ -411,6 +410,8 @@ public class AudioFileCapture {
                             break;
                         }
                         mState = STATE_PREPARING;
+                        mOffset = msg.arg1;
+                        mEnd = msg.arg2;
                         err = doStart();
                         if (msg.obj != null) {
                             ((Runnable) msg.obj).run();
@@ -419,7 +420,7 @@ public class AudioFileCapture {
                             mState = STATE_IDLE;
                             postError(err, 0);
                         } else {
-                            if (mOffset >= 20) {
+                            if (mOffset >= OFFSET_IGNORE) {
                                 Log.d(TAG, "seek on start with: " + mOffset);
                                 Message sendMsg = mDecodeHandler.obtainMessage(CMD_SEEK, (int) mOffset, 0);
                                 mDecodeHandler.sendMessage(sendMsg);
@@ -603,6 +604,13 @@ public class AudioFileCapture {
                 mOffsetDuration = dur < 0 ? 0 : dur;
                 Log.d(TAG, "duration: " + mDuration + " offsetDuration: " + mOffsetDuration +
                         " first pts: " + mFirstPts);
+
+                if ((mOffset + OFFSET_IGNORE > mDuration) ||
+                        (mOffset + OFFSET_IGNORE > end)) {
+                    Log.e(TAG, "playback duration " + mOffsetDuration + "ms too short! " +
+                            "off: " + mOffset + " end: " + mEnd + " duration: " + mDuration);
+                    return ERROR_UNSUPPORTED;
+                }
 
                 // audio format
                 int sampleRate = mediaFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE);
