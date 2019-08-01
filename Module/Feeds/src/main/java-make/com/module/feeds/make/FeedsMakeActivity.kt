@@ -360,7 +360,7 @@ class FeedsMakeActivity : BaseActivity() {
 
             mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
                 override fun onLyricParseSuccess(reader: LyricsReader) {
-
+                    mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos.get(0)?.startTime ?:0
                 }
 
                 override fun onLyricParseFailed() {

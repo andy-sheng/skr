@@ -140,7 +140,7 @@ class FeedsPublishActivity : BaseActivity() {
 
         titleBar.rightCustomView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if(TextUtils.isEmpty(worksNameEt.text)){
+                if (TextUtils.isEmpty(worksNameEt.text)) {
                     U.getToastUtil().showShort("作品名称为必填")
                     return
                 }
@@ -184,9 +184,9 @@ class FeedsPublishActivity : BaseActivity() {
 
         worksNameEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(TextUtils.isEmpty(worksNameEt.text)){
+                if (TextUtils.isEmpty(worksNameEt.text)) {
                     titleBar.rightCustomView?.isSelected = true
-                }else{
+                } else {
                     titleBar.rightCustomView?.isSelected = false
                 }
 
@@ -217,7 +217,7 @@ class FeedsPublishActivity : BaseActivity() {
         launch {
             val tagsIds = ArrayList<Int>()
             tagClassifyTf.selectedList.forEach {
-                rankList?.get(it)?.tagID?.let {it2->
+                rankList?.get(it)?.tagID?.let { it2 ->
                     tagsIds.add(it2)
                 }
             }
@@ -238,7 +238,7 @@ class FeedsPublishActivity : BaseActivity() {
             if (result.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
-                mFeedsMakeModel?.songModel?.workName =  worksNameEt.text.toString()
+                mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
                 mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
                 mFeedsMakeModel?.songModel?.songID = result.data.getIntValue("songID")
                 // 跳到分享页
@@ -259,6 +259,12 @@ class FeedsPublishActivity : BaseActivity() {
                 uploadProgressbar.visibility = View.GONE
             }
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_OK)
+        finish()
+        return
     }
 
     override fun onDestroy() {

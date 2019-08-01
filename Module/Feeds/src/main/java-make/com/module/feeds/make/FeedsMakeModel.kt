@@ -8,6 +8,7 @@ import com.module.feeds.watch.model.FeedSongTpl
 class FeedsMakeModel(var challengeID: Long):Serializable{
 
 
+    var firstLyricShiftTs = 0
     var songModel: FeedSongModel? = null
     //var uploadFeedsId: String? = null // 上传后生成的feedsid
     //var uploadSongName: String? = null // 上传后歌曲名称
