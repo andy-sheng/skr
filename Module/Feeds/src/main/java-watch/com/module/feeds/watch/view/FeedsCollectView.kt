@@ -351,6 +351,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
         if (isClear) {
+            stopPlay()
             mAdapter.mDataList.clear()
         }
 
