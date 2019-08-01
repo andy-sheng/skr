@@ -427,6 +427,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mFeedsWatchModel!!.starCnt--
         }
 
+        mFeedsWatchModel?.isLiked = like
         mXinNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.starCnt!!)
     }
 
