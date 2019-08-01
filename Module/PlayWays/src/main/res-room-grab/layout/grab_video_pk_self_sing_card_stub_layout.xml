@@ -38,12 +38,12 @@
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#FFC15B"
         app:ly_high_light_paint_color_to="#FFC15B"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_16"
+        app:ly_high_light_paint_text_size="16.0"
         app:ly_high_light_sub_paint_color="@color/white"
         app:ly_outline_paint_color="@color/white"
         app:ly_paint_color_from="@color/white"
         app:ly_paint_color_to="@color/white"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16"
+        app:ly_paint_text_size="16.0"
         app:ly_show_author="true"
         app:ly_top_line_num="3" />
 

@@ -228,7 +228,7 @@ public abstract class AbstractLrcView extends View {
     /**
      * 空行高度
      */
-    private float mSpaceLineHeight = 60;
+    private float mSpaceLineHeight = U.getDisplayUtils().dip2px(20);
     /**
      * 歌词字体大小
      */
@@ -468,7 +468,7 @@ public abstract class AbstractLrcView extends View {
         mPaint = new com.common.view.ExPaint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
-        mFontSize = U.getDisplayUtils().dip2px(typedArray.getDimension(R.styleable.lrc_view_ly_paint_text_size, 10));
+        mFontSize = U.getDisplayUtils().dip2px(typedArray.getFloat(R.styleable.lrc_view_ly_paint_text_size, 10));
         mPaint.setFakeBoldText(true);
         mPaint.setTextSize(mFontSize);
 
@@ -476,7 +476,7 @@ public abstract class AbstractLrcView extends View {
         mPaintHL = new com.common.view.ExPaint();
         mPaintHL.setDither(true);
         mPaintHL.setAntiAlias(true);
-        float hlSize = U.getDisplayUtils().dip2px(typedArray.getDimension(R.styleable.lrc_view_ly_high_light_paint_text_size, 10));
+        float hlSize = U.getDisplayUtils().dip2px(typedArray.getFloat(R.styleable.lrc_view_ly_high_light_paint_text_size, 10));
         mPaintHL.setFakeBoldText(true);
         mPaintHL.setTextSize(hlSize);
 
