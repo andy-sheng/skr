@@ -77,7 +77,7 @@ class FeedsPublishActivity : BaseActivity() {
         tagClassifyTv = this.findViewById(R.id.tag_classify_tv)
         tagClassifyTf = this.findViewById(R.id.tag_classify_tf)
         uploadProgressbarContainer = this.findViewById(R.id.upload_progressbar_container)
-
+        uploadProgressbarContainer?.setOnClickListener{}
         //填充标签
 //        rankClassifyAdapter = object : TagAdapter<FeedsPublishTagModel>(ArrayList()) {
 //            override fun getView(parent: FlowLayout, position: Int, tagModel: FeedsPublishTagModel): View {

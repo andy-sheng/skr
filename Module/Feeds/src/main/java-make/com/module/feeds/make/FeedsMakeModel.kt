@@ -14,14 +14,14 @@ class FeedsMakeModel(var challengeID: Long):Serializable{
     //var uploadSongName: String? = null // 上传后歌曲名称
     //var uploadSongDesc: String? = null // 上传后歌曲描述
 
-    val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_compose.aac")
+    val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_compose.m4a")
     var bgmDownloadProgress: Float = 0f
 
     var recordDuration: Long = 0 // 录音时间
     var recording: Boolean = false
     var beginRecordTs: Long = Long.MAX_VALUE
 
-    val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_make.aac")
+    val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_make.m4a")
 
     var recordingClick: Boolean = false
     var withBgm  = false

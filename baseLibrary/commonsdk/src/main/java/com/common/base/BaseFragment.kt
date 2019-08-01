@@ -350,7 +350,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
      * from 1 表示从 onPause 导致不可见
      *      2 表示从 setUserVisibleHint ViewPager划走导致不可见
      */
-    protected open fun onFragmentInvisible(from:Int) {
+    protected open fun onFragmentInvisible(from: Int) {
         MyLog.d(TAG, "onFragmentInvisible")
         StatisticsAdapter.recordPageEnd(activity, this.javaClass.simpleName)
     }
@@ -404,7 +404,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
      * 为了防止这种情况，不允许继承 onActivityResult。
      * 统一使用使用 onActivityResultReal BaseActivity会对其做特殊处理。
      */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    final override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         onActivityResult(requestCode, resultCode, data)
     }
