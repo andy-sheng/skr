@@ -201,7 +201,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             tvRank.setVisibility(View.GONE);
         } else {
             tvRank.setVisibility(View.VISIBLE);
-            tvRank.setText(StringFromatUtils.formatRank(userRankModel.getRankSeq()));
+            tvRank.setText(StringFromatUtils.formatTenThousand(userRankModel.getRankSeq()));
         }
         normalLevelView.bindData(userRankModel.getMainRanking(), userRankModel.getSubRanking());
 

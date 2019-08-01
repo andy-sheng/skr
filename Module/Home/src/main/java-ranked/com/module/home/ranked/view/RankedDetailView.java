@@ -206,11 +206,11 @@ public class RankedDetailView extends RelativeLayout {
                 mSeqTv.setTextColor(Color.parseColor("#333B7B"));
                 mRewardBg.setVisibility(GONE);
             } else if (rankDataModel.getRankSeq() <= 3) {
-                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
+                mSeqTv.setText("" + StringFromatUtils.formatTenThousand(rankDataModel.getRankSeq()));
                 mSeqTv.setTextColor(Color.WHITE);
                 mRewardBg.setVisibility(VISIBLE);
             } else {
-                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
+                mSeqTv.setText("" + StringFromatUtils.formatTenThousand(rankDataModel.getRankSeq()));
                 mSeqTv.setTextColor(Color.parseColor("#333B7B"));
                 mRewardBg.setVisibility(GONE);
             }
@@ -239,7 +239,7 @@ public class RankedDetailView extends RelativeLayout {
                 }
             } else {
                 mSeqTv.setBackground(null);
-                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
+                mSeqTv.setText("" + StringFromatUtils.formatTenThousand(rankDataModel.getRankSeq()));
             }
         } else if (rankDataModel.getVType() == USER_RANKING) {
             // 段位榜
@@ -266,7 +266,7 @@ public class RankedDetailView extends RelativeLayout {
                 }
             } else {
                 mSeqTv.setBackground(null);
-                mSeqTv.setText("" + StringFromatUtils.formatRank(rankDataModel.getRankSeq()));
+                mSeqTv.setText("" + StringFromatUtils.formatTenThousand(rankDataModel.getRankSeq()));
             }
         }
 

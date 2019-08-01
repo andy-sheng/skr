@@ -112,7 +112,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
             }
         })
 
-        mXinNumTv!!.text = StringFromatUtils.formatFansNum(mFirstLevelCommentModel!!.comment.likedCnt)
+        mXinNumTv!!.text = StringFromatUtils.formatTenThousand(mFirstLevelCommentModel!!.comment.likedCnt)
         mXinIv!!.isSelected = mFirstLevelCommentModel!!.isLiked()
         mXinIv?.setDebounceViewClickListener {
             mFeedsSecondCommentPresenter?.likeComment(mFirstLevelCommentModel!!, mFeedsID!!, !mXinIv!!.isSelected, 0)
@@ -197,7 +197,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
         feedsCommendAdapter?.updatePart(position, firstLevelCommentModel, FeedsCommentAdapter.TYPE_LIKE)
         if (position == 0) {
             mXinIv?.isSelected = like
-            mXinNumTv?.text = StringFromatUtils.formatFansNum(firstLevelCommentModel.comment.likedCnt)
+            mXinNumTv?.text = StringFromatUtils.formatTenThousand(firstLevelCommentModel.comment.likedCnt)
             EventBus.getDefault().post(LikeFirstLevelCommentEvent(firstLevelCommentModel.comment.commentID, like))
         }
     }

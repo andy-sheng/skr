@@ -12,6 +12,7 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
+import com.component.person.utils.StringFromatUtils
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
@@ -129,20 +130,19 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         this.model = watchModel
 
         var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
-        if (watchModel.isLiked == true) {
+        if (watchModel.isLiked) {
             drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
         }
         drawble.setBounds(0, 0, 20.dp(), 18.dp())
         mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
-        mLikeNumTv.text = watchModel.starCnt.toString()
+        mLikeNumTv.text = StringFromatUtils.formatTenThousand(watchModel.starCnt)
     }
 
     // 刷新评论数字
     fun refreshComment(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
-        mCommentNumTv.text = watchModel.exposure.toString()
-
+        mCommentNumTv.text = StringFromatUtils.formatTenThousand(watchModel.exposure)
     }
 
     fun startPlay() {

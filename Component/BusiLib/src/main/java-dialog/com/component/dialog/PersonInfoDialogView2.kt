@@ -665,13 +665,13 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             }
         }
 
-        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatFansNum(fansNum))
+        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatTenThousand(fansNum))
 
         refreshTag()
     }
 
     private fun showCharmsTag(meiLiCntTotal: Int) {
-        mHashMap.put(CHARMS_TAG, "魅力 " + StringFromatUtils.formatCharmNum(meiLiCntTotal))
+        mHashMap.put(CHARMS_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
 
         refreshTag()
     }

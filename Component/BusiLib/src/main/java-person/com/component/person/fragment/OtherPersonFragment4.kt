@@ -599,7 +599,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private fun showCharms(meiLiCntTotal: Int) {
         charmNum = meiLiCntTotal
 
-        mHashMap.put(CHARM_TAG, "魅力 " + StringFromatUtils.formatCharmNum(meiLiCntTotal))
+        mHashMap.put(CHARM_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
         refreshTag()
     }
 
@@ -686,7 +686,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         }
 
-        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatFansNum(fansNum))
+        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatTenThousand(fansNum))
 
         refreshTag()
     }

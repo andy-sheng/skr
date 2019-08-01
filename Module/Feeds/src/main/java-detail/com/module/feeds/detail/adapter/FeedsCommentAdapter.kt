@@ -64,7 +64,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                 val model = mDataList[position] as FirstLevelCommentModel
                 holder.setData(model, position)
                 if (type == TYPE_LIKE) {
-                    holder.mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
+                    holder.mLikeNum.text = StringFromatUtils.formatTenThousand(model.comment.likedCnt)
                     holder.mXinIv.isSelected = model.isLiked()
                 } else if (type == TYPE_REF_CTN) {
                     holder.updateRefCount()
@@ -139,7 +139,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                     mContentTv.text = it.comment.content
                     if (it.comment.subCommentCnt > 0 && !mIsSecond) {
                         mReplyNum.visibility = View.VISIBLE
-                        mReplyNum.text = "${StringFromatUtils.formatFansNum(it.comment.subCommentCnt)}条回复"
+                        mReplyNum.text = "${StringFromatUtils.formatTenThousand(it.comment.subCommentCnt)}条回复"
                     } else {
                         mReplyNum.visibility = View.GONE
                     }
@@ -170,7 +170,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             mNameTv.text = model.commentUser?.nickname
             mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt
                     ?: 0L, System.currentTimeMillis())
-            mLikeNum.text = StringFromatUtils.formatFansNum(model.comment.likedCnt)
+            mLikeNum.text = StringFromatUtils.formatTenThousand(model.comment.likedCnt)
 
             mReplyNum.visibility = View.GONE
             MyLog.d("CommentHolder", "${model.comment.content}")
@@ -178,7 +178,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                 mContentTv.text = model.comment.content
                 if (model.comment.subCommentCnt > 0 && !mIsSecond) {
                     mReplyNum.visibility = View.VISIBLE
-                    mReplyNum.text = "${StringFromatUtils.formatFansNum(model.comment.subCommentCnt)}条回复"
+                    mReplyNum.text = "${StringFromatUtils.formatTenThousand(model.comment.subCommentCnt)}条回复"
                 } else {
                     mReplyNum.visibility = View.GONE
                 }
@@ -264,9 +264,9 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
         fun bindData(num: Int) {
             if (mIsSecond) {
-                mCountTv.text = "全部回复（${StringFromatUtils.formatFansNum(num)}）"
+                mCountTv.text = "全部回复（${StringFromatUtils.formatTenThousand(num)}）"
             } else {
-                mCountTv.text = "精彩评论（${StringFromatUtils.formatFansNum(num)}）"
+                mCountTv.text = "精彩评论（${StringFromatUtils.formatTenThousand(num)}）"
             }
         }
     }

@@ -578,8 +578,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void showCharmsTotal(int meiLiCntTotal) {
         mCharmNum = meiLiCntTotal;
-        mCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
-        mSrlCharmTv.setText("魅力：" + StringFromatUtils.formatCharmNum(meiLiCntTotal));
+        mCharmTv.setText("魅力：" + StringFromatUtils.formatMillion(meiLiCntTotal));
+        mSrlCharmTv.setText("魅力：" + StringFromatUtils.formatMillion(meiLiCntTotal));
     }
 
     public void showUserLevel(List<UserLevelModel> list) {

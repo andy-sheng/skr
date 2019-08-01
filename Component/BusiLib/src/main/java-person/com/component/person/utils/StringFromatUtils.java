@@ -2,24 +2,27 @@ package com.component.person.utils;
 
 public class StringFromatUtils {
 
-    public static String formatRank(int rankSeq) {
-        if (rankSeq < 10000) {
-            return String.valueOf(rankSeq);
+    /**
+     * 格式化数字  > 10000  1.2w
+     *
+     * @param num
+     * @return
+     */
+    public static String formatTenThousand(int num){
+        if (num < 10000) {
+            return String.valueOf(num);
         } else {
-            float result = (float) (Math.round(((float) rankSeq / 10000) * 10)) / 10;
-            return String.valueOf(result) + "w";
-        }
-    }
-    public static String formatFansNum(int fansNum){
-        if (fansNum < 10000) {
-            return String.valueOf(fansNum);
-        } else {
-            float result = (float) (Math.round(((float) fansNum / 10000) * 10)) / 10;
+            float result = (float) (Math.round(((float) num / 10000) * 10)) / 10;
             return String.valueOf(result) + "w";
         }
     }
 
-    public static String formatCharmNum(int charmNum){
+    /**
+     * 格式化数字  > 1000000 100.1w
+     * @param charmNum
+     * @return
+     */
+    public static String formatMillion(int charmNum){
         if (charmNum < 1000000) {
             return String.valueOf(charmNum);
         } else {
@@ -27,5 +30,4 @@ public class StringFromatUtils {
             return String.valueOf(result) + "w";
         }
     }
-
 }

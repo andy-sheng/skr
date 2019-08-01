@@ -1,6 +1,5 @@
 package com.module.feeds.detail.fragment
 
-import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -273,7 +272,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
                 override fun onStart(p0: SHARE_MEDIA?) {
                     mFeedsWatchModel?.shareCnt = mFeedsWatchModel!!.shareCnt.plus(1)
-                    mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
+                    mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt!!)
                     mFeedsDetailPresenter?.addShareCount(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel?.feedID
                             ?: 0)
                 }
@@ -340,8 +339,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it)
         }
-        mShareNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.shareCnt!!)
-        mXinNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.starCnt!!)
+        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt!!)
+        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt!!)
         mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
@@ -429,7 +428,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFeedsWatchModel?.isLiked = like
-        mXinNumTv?.text = StringFromatUtils.formatFansNum(mFeedsWatchModel!!.starCnt!!)
+        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt!!)
     }
 
     override fun onResume() {

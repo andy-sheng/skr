@@ -82,8 +82,8 @@ class BusinessCardDialogView : ConstraintLayout {
         }
         flowlayout.adapter = mTagAdapter
 
-        mHashMap[CHARM_TAG] = "魅力 " + StringFromatUtils.formatCharmNum(mCharmNums)
-        mHashMap[FANS_NUM_TAG] = "粉丝 " + StringFromatUtils.formatFansNum(mFansNums)
+        mHashMap[CHARM_TAG] = "魅力 " + StringFromatUtils.formatMillion(mCharmNums)
+        mHashMap[FANS_NUM_TAG] = "粉丝 " + StringFromatUtils.formatTenThousand(mFansNums)
 
         if (mUserInfo.location != null && !TextUtils.isEmpty(mUserInfo.location.province)) {
             mHashMap[LOCATION_TAG] = mUserInfo.location.province
