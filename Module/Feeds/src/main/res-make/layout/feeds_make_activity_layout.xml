@@ -26,11 +26,12 @@
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/reset_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/feeds_make_reset"
+        app:src_enabled_drawable="@drawable/feeds_make_reset"
+        app:src_unEnabled_drawable="@drawable/feeds_make_reset_unenable"
         app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/begin_tv"

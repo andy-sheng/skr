@@ -177,7 +177,7 @@ class FeedsMakeActivity : BaseActivity() {
                 }
             }
         })
-
+        mResetIv?.isEnabled = false
         mResetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 startRecord()
