@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.module.feeds.R
 import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
 import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.EmptyFeedWallHolder
 import com.module.feeds.watch.viewholder.FeedViewHolder
@@ -94,19 +95,24 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     fun update(position: Int, model: FeedsWatchModel?, refreshType: Int) {
-        if (position<mDataList.size && model?.feedID == mDataList[position].feedID) {
+        if (position < mDataList.size && model?.feedID == mDataList[position].feedID) {
             // 位置是对的的
             mDataList[position] = model!!
             notifyItemChanged(position, refreshType)
             return
         } else {
             // 位置是错的
-            for (i in 0 until mDataList.size) {
-                if (mDataList[i].feedID == model?.feedID) {
-                    mDataList[i] = model!!
-                    notifyItemChanged(i, refreshType)
-                    return
-                }
+            update(model, refreshType)
+        }
+    }
+
+    fun update(model: FeedsWatchModel?, refreshType: Int) {
+        // 位置是错的
+        for (i in 0 until mDataList.size) {
+            if (mDataList[i].feedID == model?.feedID) {
+                mDataList[i] = model!!
+                notifyItemChanged(i, refreshType)
+                return
             }
         }
     }

@@ -34,6 +34,8 @@ import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
+import com.module.feeds.event.FeedWatchChangeEvent
+import com.module.feeds.event.FeedsLikeEvent
 import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -41,6 +43,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
@@ -88,6 +92,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
 
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mClassicsHeader = findViewById(R.id.classics_header)
@@ -436,9 +444,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this)
-//        }
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
@@ -446,9 +451,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mFeedsMoreDialogView?.dismiss(false)
-//        if (EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().unregister(this)
-//        }
     }
 
     override fun destroy() {
@@ -558,5 +560,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
                         model.song?.songID, model.user?.userID)))
         sharePanel.show(ShareType.URL)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedWatchChangeEvent) {
+        // 数据要更新了
+        mAdapter?.update(event.model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
+        mAdapter?.update(event.model, FeedsWatchViewAdapter.REFRESH_TYPE_COMMENT)
     }
 }

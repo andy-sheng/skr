@@ -42,6 +42,7 @@ import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.event.FeedWatchChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -348,7 +349,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mControlTv?.callOnClick()
         }
 
-        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!,-1)
+        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!, -1)
 
         mControlTv?.setDebounceViewClickListener {
             if (it!!.isSelected) {
@@ -564,12 +565,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()
 
-        activity?.setResult(0, Intent().apply {
-            putExtras(Bundle().apply {
-                putSerializable("model", mFeedsWatchModel?.apply {
-                    commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
-                })
-            })
-        })
+        EventBus.getDefault().post(FeedWatchChangeEvent(mFeedsWatchModel?.apply {
+            commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
+        }))
+
     }
 }
