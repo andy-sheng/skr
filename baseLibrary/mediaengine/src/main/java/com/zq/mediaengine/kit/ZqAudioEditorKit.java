@@ -242,10 +242,14 @@ public class ZqAudioEditorKit {
         }
         for (int i = 0; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
-                mAudioSource[i].capture.pause();
+                mAudioSource[i].capture.pause(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAudioPreview.pause();
+                    }
+                });
             }
         }
-        mAudioPreview.pause();
         mState = STATE_PREVIEW_PAUSED;
     }
 
@@ -263,10 +267,14 @@ public class ZqAudioEditorKit {
         }
         for (int i = 0; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
-                mAudioSource[i].capture.resume();
+                mAudioSource[i].capture.resume(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAudioPreview.resume();
+                    }
+                });
             }
         }
-        mAudioPreview.resume();
         mState = STATE_PREVIEW_STARTED;
     }
 

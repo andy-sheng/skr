@@ -84,7 +84,7 @@ public class AudioFilterMgt {
      *
      * @param filters filter list to set, null or empty means disable filter
      */
-    synchronized public void setFilter(List<? extends AudioFilterBase> filters) {
+    public void setFilter(List<? extends AudioFilterBase> filters) {
         synchronized (mFiltersLock) {
             if (!mFilters.isEmpty()) {
                 mFilters.get(mFilters.size() - 1).getSrcPin().disconnect(false);
@@ -111,7 +111,9 @@ public class AudioFilterMgt {
      *
      * @return current set filters
      */
-    synchronized public List<AudioFilterBase> getFilter() {
-        return mFilters;
+    public List<AudioFilterBase> getFilter() {
+        synchronized (mFiltersLock) {
+            return mFilters;
+        }
     }
 }
