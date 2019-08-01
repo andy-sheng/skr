@@ -106,6 +106,7 @@ class FeedsEditorActivity : BaseActivity() {
             mEffectIv?.isSelected = false
             mVaControlView?.visibility = View.GONE
             mVoiceControlView?.visibility = View.GONE
+            mCoverView.visibility = View.GONE
         }
         
         mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
