@@ -119,6 +119,7 @@ class FeedReportActivity : BaseActivity() {
         val map = HashMap<String, Any>()
         map["targetID"] = mTargetID
         map["songID"] = mSongID
+        map["feedID"] = mFeedID
         map["content"] = content
         map["type"] = typeList
         map["source"] = source
