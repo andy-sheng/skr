@@ -94,7 +94,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                MyLog.d(TAG,"onPrepared begin");
+                MyLog.d(TAG, "onPrepared begin");
                 mHasPrepared = true;
                 if (mPlayer != null) {
                     mPlayer.start();
@@ -106,9 +106,9 @@ public class AndroidMediaPlayer extends BasePlayer {
                 if (mEnableDecreaseVolume) {
                     //mDuration = mp.getDuration();
                     mHandler.removeMessages(MSG_DECREASE_VOLUME);
-                    mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME,5000);
+                    mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, 5000);
                 }
-                if(seekPos>0){
+                if (seekPos > 0) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -287,7 +287,7 @@ public class AndroidMediaPlayer extends BasePlayer {
 
     @Override
     public void setVolume(float volume) {
-        setVolume(volume,true);
+        setVolume(volume, true);
     }
 
     @Override
@@ -298,7 +298,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         if (setConfig) {
             this.mVolume = volume;
         }
-        if(!mMuted){
+        if (!mMuted) {
             mPlayer.setVolume(volume, volume);
         }
     }
@@ -319,7 +319,7 @@ public class AndroidMediaPlayer extends BasePlayer {
      */
     @Override
     public boolean startPlay(String path) {
-        MyLog.d(TAG, "startPlay" + " path=" + path +" oldPath="+mPath);
+        MyLog.d(TAG, "startPlay" + " path=" + path + " oldPath=" + mPath);
         if (mPlayer == null) {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
             return true;
@@ -337,13 +337,14 @@ public class AndroidMediaPlayer extends BasePlayer {
             String p = mPath;
             try {
                 MyLog.d(TAG, "startPlay2" + " p=" + p);
-                if (needReset) {
-                    reset();
-                }
-                if(p.startsWith("http://") || p.startsWith("https://")){
+//                if (needReset) {
+                // 只要重新播 就要 reset 不然状态有问题
+                reset();
+//                }
+                if (p.startsWith("http://") || p.startsWith("https://")) {
 //                    p = "http://res-static.inframe.mobi/pkgs/android/guodegang.mp3";
-                    mPlayer.setDataSource(MediaCacheManager.INSTANCE.getProxyUrl(p,true));
-                }else{
+                    mPlayer.setDataSource(MediaCacheManager.INSTANCE.getProxyUrl(p, true));
+                } else {
                     mPlayer.setDataSource(p);
                 }
                 mPlayer.prepareAsync();
@@ -360,7 +361,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             }
             startMusicPlayTimeListener();
             return true;
-        }else{
+        } else {
             mPlayer.start();
             startMusicPlayTimeListener();
             return false;
@@ -457,7 +458,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             return;
         }
         seekPos = msec;
-        if(mHasPrepared){
+        if (mHasPrepared) {
             mPlayer.seekTo((int) msec);
         }
     }
