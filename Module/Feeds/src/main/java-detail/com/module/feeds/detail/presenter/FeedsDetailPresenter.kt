@@ -7,6 +7,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFeedsDetailView

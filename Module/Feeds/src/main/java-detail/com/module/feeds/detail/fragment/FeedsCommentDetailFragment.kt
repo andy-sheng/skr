@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.statistics.StatisticsAdapter
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
@@ -22,6 +22,7 @@ import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsSecondCommentPresenter
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -126,6 +127,7 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
 
         mFeedsInputContainerView?.mSendCallBack = {
             mFeedsSecondCommentPresenter?.addComment(it, mFeedsID!!, mFirstLevelCommentModel!!.comment.commentID, mRefuseModel!!) {
+                StatisticsAdapter.recordCountEvent("music_detail page", "second_comment_success", null)
                 mFirstLevelCommentModel!!.comment!!.subCommentCnt++
                 feedsCommendAdapter?.mCommentNum = mFirstLevelCommentModel!!.comment!!.subCommentCnt
                 feedsCommendAdapter?.notifyItemChanged(1)
