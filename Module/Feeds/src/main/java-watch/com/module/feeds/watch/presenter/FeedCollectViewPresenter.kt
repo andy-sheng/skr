@@ -3,10 +3,7 @@ package com.module.feeds.watch.presenter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsCollectModel
@@ -67,7 +64,7 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
             map["like"] = !model.isLiked
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = mFeedServerApi.collectFeed(body)
+            val result = subscribe { mFeedServerApi.collectFeed(body)}
             if (result.errno == 0) {
                 model.isLiked = !model.isLiked
                 view.showCollect(model)

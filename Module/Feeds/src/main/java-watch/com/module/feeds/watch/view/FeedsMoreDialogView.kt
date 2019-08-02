@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
@@ -174,11 +175,11 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
     private fun checkCollectAndRelation() {
         launch {
             var relation = async {
-                mFeedServerApi.getRelation(targetID)
+                subscribe { mFeedServerApi.getRelation(targetID)}
             }.await()
 
             var collect = async {
-                mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)
+                subscribe {mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)}
             }.await()
 
             if (relation.errno == 0 && collect.errno == 0) {
