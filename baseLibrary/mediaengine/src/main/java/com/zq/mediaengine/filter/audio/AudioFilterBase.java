@@ -94,7 +94,7 @@ public abstract class AudioFilterBase {
      *
      * @return audio output format
      */
-    protected AudioBufFormat getOutFormat() {
+    protected AudioBufFormat getOutFormat(AudioBufFormat inFormat) {
         return null;
     }
 
@@ -138,7 +138,7 @@ public abstract class AudioFilterBase {
             if (mInFormat.nativeModule != 0 && getNativeInstance() != 0) {
                 // fill data by native
                 attachTo(0, mInFormat.nativeModule, false);
-                AudioBufFormat outFormat = getOutFormat();
+                AudioBufFormat outFormat = getOutFormat(mInFormat);
                 if (outFormat == null) {
                     mOutFormat = new AudioBufFormat(mInFormat);
                 } else {

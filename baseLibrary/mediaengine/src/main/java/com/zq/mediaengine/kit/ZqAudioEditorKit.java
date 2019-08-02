@@ -11,8 +11,11 @@ import com.zq.mediaengine.filter.audio.AudioFilterBase;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
+import com.zq.mediaengine.filter.audio.AudioResampleFilter;
+import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.filter.audio.IPcmPlayer;
 import com.zq.mediaengine.framework.AVConst;
+import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.AudioCodecFormat;
 import com.zq.mediaengine.framework.SrcPin;
@@ -498,7 +501,7 @@ public class ZqAudioEditorKit {
                         AVConst.AV_SAMPLE_FMT_S16,
                         44100,
                         2,
-                        96000);
+                        128000);
         mAudioEncoder.configure(audioCodecFormat);
         // 开始合成时再连接encoder
         mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
@@ -726,6 +729,7 @@ public class ZqAudioEditorKit {
         public long offset;
         public long end;
         public AudioFileCapture capture;
+        public AudioResampleFilter audioResampleFilter;
         public AudioFilterMgt filterMgt;
         public int effectType;
 
@@ -734,8 +738,12 @@ public class ZqAudioEditorKit {
             this.offset = offset;
             this.end = end;
             this.capture = new AudioFileCapture(context);
+            // TODO: 唱吧音效不支持单声道，这里先强制转为双声道
+            this.audioResampleFilter = new AudioResampleFilter();
+            this.audioResampleFilter.setOutFormat(new AudioBufFormat(-1, -1, 2));
             this.filterMgt = new AudioFilterMgt();
-            this.capture.getSrcPin().connect(this.filterMgt.getSinkPin());
+            this.capture.getSrcPin().connect(this.audioResampleFilter.getSinkPin());
+            this.audioResampleFilter.getSrcPin().connect(this.filterMgt.getSinkPin());
         }
 
         public SrcPin<AudioBufFrame> getSrcPin() {

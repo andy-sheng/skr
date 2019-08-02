@@ -100,6 +100,16 @@ public class AudioEffectParamController {
                         }.getType());
 
                 Log.i("songstudio", "init songstudio param success...");
+
+//                int len = json.length();
+//                int pos = 0;
+//                do {
+//                    int end = pos + 2048;
+//                    end = (end < len) ? end : len;
+//                    String tmp = json.substring(pos, end);
+//                    pos = end;
+//                    Log.e("songstudio", "tmp: " + tmp);
+//                } while (pos < len);
             } catch (Exception e) {
                 e.printStackTrace();
             }

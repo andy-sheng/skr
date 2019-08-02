@@ -17,6 +17,8 @@ public class AudioResampleFilter extends AudioFilterBase {
     private static final String TAG = "AudioResampleFilter";
     private AudioResample mAudioResample;
     private AudioBufFormat mOutFormat;
+    private AudioBufFormat mUserOutFormat;
+    private boolean mUseDiffMemory = false;
 
     public AudioResampleFilter() {
         mAudioResample = new AudioResample();
@@ -28,14 +30,12 @@ public class AudioResampleFilter extends AudioFilterBase {
      * @param outFormat the dedicated output format
      */
     public void setOutFormat(@NonNull AudioBufFormat outFormat) {
-        mOutFormat = outFormat;
-        mAudioResample.setOutputFormat(outFormat.sampleFormat, outFormat.sampleRate, outFormat.channels);
+        setOutFormat(outFormat, false);
     }
 
     public void setOutFormat(@NonNull AudioBufFormat outFormat, boolean useDiffMemory) {
-        mOutFormat = outFormat;
-        mAudioResample.setOutputFormat(outFormat.sampleFormat, outFormat.sampleRate,
-                outFormat.channels, useDiffMemory);
+        mUserOutFormat = outFormat;
+        mUseDiffMemory = useDiffMemory;
     }
 
     @Override
@@ -43,8 +43,28 @@ public class AudioResampleFilter extends AudioFilterBase {
         return mAudioResample.getNativeInstance();
     }
 
+    private AudioBufFormat fixOutformat(AudioBufFormat inFormat, AudioBufFormat userFormat) {
+        AudioBufFormat outFormat = new AudioBufFormat(userFormat);
+        if (outFormat.sampleFormat < 0) {
+            outFormat.sampleFormat = inFormat.sampleFormat;
+        }
+        if (outFormat.sampleRate < 0) {
+            outFormat.sampleRate = inFormat.sampleRate;
+        }
+        if (outFormat.channels < 0) {
+            outFormat.channels = inFormat.channels;
+        }
+        return outFormat;
+    }
+
     @Override
-    public AudioBufFormat getOutFormat() {
+    public AudioBufFormat getOutFormat(AudioBufFormat inFormat) {
+        if(mUserOutFormat == null) {
+            throw new IllegalArgumentException("you must call setOutFormat first");
+        }
+        mOutFormat = fixOutformat(inFormat, mUserOutFormat);
+        mAudioResample.setOutputFormat(mOutFormat.sampleFormat, mOutFormat.sampleRate,
+                mOutFormat.channels, mUseDiffMemory);
         return mOutFormat;
     }
 
@@ -60,9 +80,12 @@ public class AudioResampleFilter extends AudioFilterBase {
 
     @Override
     protected AudioBufFormat doFormatChanged(AudioBufFormat format) {
-        if(mOutFormat == null) {
+        if(mUserOutFormat == null) {
             throw new IllegalArgumentException("you must call setOutFormat first");
         }
+        mOutFormat = fixOutformat(format, mUserOutFormat);
+        mAudioResample.setOutputFormat(mOutFormat.sampleFormat, mOutFormat.sampleRate,
+                mOutFormat.channels, mUseDiffMemory);
         mAudioResample.config(format.sampleFormat, format.sampleRate, format.channels);
         return mOutFormat;
     }
