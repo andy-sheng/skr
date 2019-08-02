@@ -149,6 +149,7 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedVp.adapter = mTabPagerAdapter
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
+        mPagerPosition = 0  // 默认为0
     }
 
     override fun onFragmentVisible() {
