@@ -125,6 +125,28 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         }
     }
 
+    // 将外部数据转为list中数据
+    fun getModelFromDetail(model: FeedsWatchModel?): FeedsWatchModel? {
+        if (model != null) {
+            for (i in 0 until mDataList.size) {
+                if (mDataList[i].feedID == model.feedID) {
+                    if (mDataList[i] == model) {
+                        return model
+                    } else {
+                        //更新其中变化的数据
+                        mDataList[i].exposure = model.exposure
+                        mDataList[i].isLiked = model.isLiked
+                        mDataList[i].starCnt = model.starCnt
+                        mDataList[i].shareCnt = model.shareCnt
+                        mDataList[i].commentCnt = model.commentCnt
+                        return mDataList[i]
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     fun delete(model: FeedsWatchModel) {
         mDataList.remove(model)
         notifyDataSetChanged()
