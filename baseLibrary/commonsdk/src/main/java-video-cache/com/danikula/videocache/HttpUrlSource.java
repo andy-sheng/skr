@@ -31,6 +31,7 @@ import static java.net.HttpURLConnection.HTTP_SEE_OTHER;
  */
 public class HttpUrlSource implements Source {
 
+    private final String TAG = "HttpUrlSource";
 
     private static final int MAX_REDIRECTS = 5;
     private final SourceInfoStorage sourceInfoStorage;
@@ -106,7 +107,7 @@ public class HttpUrlSource implements Source {
                         "https://github.com/danikula/AndroidVideoCache/issues.";
                 throw new RuntimeException(message, e);
             } catch (ArrayIndexOutOfBoundsException e) {
-                MyLog.e("Error closing connection correctly. Should happen only on Android L. " +
+                MyLog.e(TAG,"Error closing connection correctly. Should happen only on Android L. " +
                         "If anybody know how to fix it, please visit https://github.com/danikula/AndroidVideoCache/issues/88. " +
                         "Until good solution is not know, just ignore this issue :(", e);
             }
@@ -128,7 +129,7 @@ public class HttpUrlSource implements Source {
     }
 
     private void fetchContentInfo() throws ProxyCacheException {
-        MyLog.d("Read content info from " + sourceInfo.url);
+        MyLog.d(TAG,"Read content info from " + sourceInfo.url);
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
         try {
@@ -138,9 +139,9 @@ public class HttpUrlSource implements Source {
             inputStream = urlConnection.getInputStream();
             this.sourceInfo = new SourceInfo(sourceInfo.url, length, mime);
             this.sourceInfoStorage.put(sourceInfo.url, sourceInfo);
-            MyLog.d("Source info fetched: " + sourceInfo);
+            MyLog.d(TAG,"Source info fetched: " + sourceInfo);
         } catch (IOException e) {
-            MyLog.e("Error fetching info from " + sourceInfo.url, e);
+            MyLog.e(TAG,"Error fetching info from " + sourceInfo.url, e);
         } finally {
             ProxyCacheUtils.close(inputStream);
             if (urlConnection != null) {
@@ -155,7 +156,7 @@ public class HttpUrlSource implements Source {
         int redirectCount = 0;
         String url = this.sourceInfo.url;
         do {
-            MyLog.d("Open connection " + (offset > 0 ? " with offset " + offset : "") + " to " + url);
+            MyLog.d(TAG,"Open connection " + (offset > 0 ? " with offset " + offset : "") + " to " + url);
             connection = (HttpURLConnection) new URL(url).openConnection();
             injectCustomHeaders(connection, url);
             if (offset > 0) {

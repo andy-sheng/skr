@@ -2,6 +2,7 @@ package com.danikula.videocache;
 
 import android.text.TextUtils;
 
+import com.common.log.MyLog;
 import com.danikula.videocache.file.FileCache;
 
 import java.io.BufferedOutputStream;
@@ -18,6 +19,8 @@ import static com.danikula.videocache.ProxyCacheUtils.DEFAULT_BUFFER_SIZE;
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class HttpProxyCache extends ProxyCache {
+
+    private final String TAG = "HttpProxyCache";
 
     private static final float NO_CACHE_BARRIER = .2f;
 
@@ -63,7 +66,7 @@ class HttpProxyCache extends ProxyCache {
         boolean lengthKnown = length >= 0;
         long contentLength = request.partial ? length - request.rangeOffset : length;
         boolean addRange = lengthKnown && request.partial;
-        return new StringBuilder()
+        String newResponseHeader = new StringBuilder()
                 .append(request.partial ? "HTTP/1.1 206 PARTIAL CONTENT\n" : "HTTP/1.1 200 OK\n")
                 .append("Accept-Ranges: bytes\n")
                 .append(lengthKnown ? format("Content-Length: %d\n", contentLength) : "")
@@ -71,9 +74,12 @@ class HttpProxyCache extends ProxyCache {
                 .append(mimeKnown ? format("Content-Type: %s\n", mime) : "")
                 .append("\n") // headers end
                 .toString();
+        MyLog.d(TAG,"newResponseHeader="+newResponseHeader);
+        return newResponseHeader;
     }
 
     private void responseWithCache(OutputStream out, long offset) throws ProxyCacheException, IOException {
+        MyLog.d(TAG,"responseWithCache");
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         int readBytes;
         while ((readBytes = read(buffer, offset, buffer.length)) != -1) {

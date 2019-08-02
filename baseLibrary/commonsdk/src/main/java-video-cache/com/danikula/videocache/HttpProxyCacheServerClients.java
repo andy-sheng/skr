@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.common.log.MyLog;
 import com.danikula.videocache.file.FileCache;
 
 import java.io.File;
@@ -21,6 +22,8 @@ import static com.danikula.videocache.Preconditions.checkNotNull;
  * @author Alexey Danilov (danikula@gmail.com).
  */
 final class HttpProxyCacheServerClients {
+
+    private final String TAG = "HttpProxyCacheServerClients";
 
     private final AtomicInteger clientsCount = new AtomicInteger(0);
     private final String url;
@@ -50,6 +53,7 @@ final class HttpProxyCacheServerClients {
     }
 
     private synchronized void finishProcessRequest() {
+        MyLog.d(TAG,"finishProcessRequest");
         if (clientsCount.decrementAndGet() <= 0) {
             proxyCache.shutdown();
             proxyCache = null;
@@ -65,6 +69,7 @@ final class HttpProxyCacheServerClients {
     }
 
     public void shutdown() {
+        MyLog.d(TAG,"shutdown");
         listeners.clear();
         if (proxyCache != null) {
             proxyCache.registerCacheListener(null);
@@ -78,6 +83,12 @@ final class HttpProxyCacheServerClients {
         return clientsCount.get();
     }
 
+    /**
+     * 新起了一个connection
+     *
+     * @return
+     * @throws ProxyCacheException
+     */
     private HttpProxyCache newHttpProxyCache() throws ProxyCacheException {
         HttpUrlSource source = new HttpUrlSource(url, config.sourceInfoStorage, config.headerInjector);
         FileCache cache = new FileCache(config.generateCacheFile(url), config.diskUsage);

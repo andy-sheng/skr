@@ -2,6 +2,8 @@ package com.danikula.videocache;
 
 import android.text.TextUtils;
 
+import com.common.log.MyLog;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +19,7 @@ import static com.danikula.videocache.Preconditions.checkNotNull;
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class GetRequest {
-
+    private final String TAG = "GetRequest";
     private static final Pattern RANGE_HEADER_PATTERN = Pattern.compile("[R,r]ange:[ ]?bytes=(\\d*)-");
     private static final Pattern URL_PATTERN = Pattern.compile("GET /(.*) HTTP");
 
@@ -38,6 +40,7 @@ class GetRequest {
         StringBuilder stringRequest = new StringBuilder();
         String line;
         while (!TextUtils.isEmpty(line = reader.readLine())) { // until new line (headers ending)
+            MyLog.d("GetRequest","read line="+line);
             stringRequest.append(line).append('\n');
         }
         return new GetRequest(stringRequest.toString());

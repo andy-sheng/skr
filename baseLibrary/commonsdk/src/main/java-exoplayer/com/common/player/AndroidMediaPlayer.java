@@ -341,6 +341,7 @@ public class AndroidMediaPlayer extends BasePlayer {
                     reset();
                 }
                 if(p.startsWith("http://") || p.startsWith("https://")){
+//                    p = "http://res-static.inframe.mobi/pkgs/android/guodegang.mp3";
                     mPlayer.setDataSource(MediaCacheManager.INSTANCE.getProxyUrl(p,true));
                 }else{
                     mPlayer.setDataSource(p);

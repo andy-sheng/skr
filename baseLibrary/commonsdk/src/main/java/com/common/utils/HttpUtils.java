@@ -441,6 +441,11 @@ public class HttpUtils {
         return length;
     }
 
+    public boolean downloadFileSync(String urlStr, final File outputFile,
+                                    boolean needTempFile, OnDownloadProgress progress) {
+        return downloadFileSync(urlStr, outputFile, needTempFile, progress, -1);
+    }
+
     /**
      * 唯一的下载接口，同步
      *
@@ -448,17 +453,21 @@ public class HttpUtils {
      * @param outputFile
      * @param needTempFile 是否生成一个下载中间temp文件，只有下载成功outputFile才有值
      * @param progress
+     * @param maxSaveSize  最大的下载尺寸 <=0 为下完所有 ，主要是用在视频预加载指定大小
      * @return
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
-                                    boolean needTempFile, OnDownloadProgress progress) {
+                                    boolean needTempFile, OnDownloadProgress progress, int maxSaveSize) {
         MyLog.d(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + outputFile.getAbsolutePath());
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
         File outputFile2 = outputFile;
         if (needTempFile) {
-            outputFile2 = new File(outputFile.getParentFile(), "temp" + outputFile.getName());
+            /**
+             * 注意 .temp 不能改 为了和视频缓存的命名一致
+             */
+            outputFile2 = new File(outputFile.getParentFile(), outputFile.getName() + ".temp");
         }
         if (!outputFile2.exists()) {
             File parentFile = outputFile2.getParentFile();
@@ -508,6 +517,12 @@ public class HttpUtils {
                     return false;
                 }
                 downloaded += count;
+                if (maxSaveSize > 0) {
+                    if (downloaded >= maxSaveSize && downloaded < totalLength) {
+                        mDownLoadMap.remove(urlStr);
+                        return true;
+                    }
+                }
                 if (null != progress) {
                     progress.onDownloaded(downloaded, totalLength);
                 }

@@ -33,6 +33,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     fun initWatchList(flag: Boolean): Boolean {
+
         if (!flag && type == FeedsWatchView.TYPE_PERSON) {
             // 3分钟切页面才刷一下(只在个人中心生效)
             val now = System.currentTimeMillis()

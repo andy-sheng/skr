@@ -14,7 +14,7 @@ import java.io.RandomAccessFile;
  */
 public class FileCache implements Cache {
 
-    private static final String TEMP_POSTFIX = ".download";
+    private static final String TEMP_POSTFIX = ".temp";
 
     private final DiskUsage diskUsage;
     public File file;
@@ -49,6 +49,14 @@ public class FileCache implements Cache {
         }
     }
 
+    /**
+     * read 读取任何位置
+     * @param buffer
+     * @param offset
+     * @param length
+     * @return
+     * @throws ProxyCacheException
+     */
     @Override
     public synchronized int read(byte[] buffer, long offset, int length) throws ProxyCacheException {
         try {
@@ -60,6 +68,13 @@ public class FileCache implements Cache {
         }
     }
 
+    /**
+     * 现在看不支持分片
+     * 但是append只能依次往后增加
+     * @param data
+     * @param length
+     * @throws ProxyCacheException
+     */
     @Override
     public synchronized void append(byte[] data, int length) throws ProxyCacheException {
         try {

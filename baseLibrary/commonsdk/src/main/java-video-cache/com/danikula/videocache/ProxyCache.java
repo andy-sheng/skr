@@ -18,6 +18,8 @@ import static com.danikula.videocache.Preconditions.checkNotNull;
  */
 class ProxyCache {
 
+    private final String TAG = "ProxyCache";
+
     private static final int MAX_READ_SOURCE_ATTEMPTS = 1;
 
     private final Source source;
@@ -38,6 +40,9 @@ class ProxyCache {
     public int read(byte[] buffer, long offset, int length) throws ProxyCacheException {
         ProxyCacheUtils.assertBuffer(buffer, offset, length);
 
+        /**
+         * 死等，一直读，读不够就等着
+         */
         while (!cache.isCompleted() && cache.available() < (offset + length) && !stopped) {
             readSourceAsync();
             waitForSourceData();
@@ -48,6 +53,7 @@ class ProxyCache {
             percentsAvailable = 100;
             onCachePercentsAvailableChanged(100);
         }
+        MyLog.d(TAG,"read="+read);
         return read;
     }
 
@@ -61,7 +67,7 @@ class ProxyCache {
 
     public void shutdown() {
         synchronized (stopLock) {
-            MyLog.d("Shutdown proxy for " + source);
+            MyLog.d(TAG,"Shutdown proxy for " + source);
             try {
                 stopped = true;
                 if (sourceReaderThread != null) {
@@ -115,6 +121,8 @@ class ProxyCache {
     }
 
     private void readSource() {
+        MyLog.d(TAG,"readSource begin" );
+        long beginTs = System.currentTimeMillis();
         long sourceAvailable = -1;
         long offset = 0;
         try {
@@ -141,6 +149,7 @@ class ProxyCache {
         } finally {
             closeSource();
             notifyNewCacheDataAvailable(offset, sourceAvailable);
+            MyLog.d(TAG,"readSource over duraion="+(System.currentTimeMillis() - beginTs) );
         }
     }
 
@@ -173,9 +182,9 @@ class ProxyCache {
     protected final void onError(final Throwable e) {
         boolean interruption = e instanceof InterruptedProxyCacheException;
         if (interruption) {
-            MyLog.d("ProxyCache is interrupted");
+            MyLog.d(TAG,"ProxyCache is interrupted");
         } else {
-            MyLog.e("ProxyCache error", e);
+            MyLog.e(TAG,"ProxyCache error", e);
         }
     }
 

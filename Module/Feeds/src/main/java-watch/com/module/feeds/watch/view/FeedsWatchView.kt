@@ -20,6 +20,7 @@ import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
@@ -218,6 +219,15 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 mAdapter?.mCurrentPlayModel?.let {
                     mAdapter?.mCurrentPlayPosition?.let { it1 ->
                         startPlay(it1, it)
+                    }
+                }
+            }
+
+            override fun onPrepared() {
+                super.onPrepared()
+                mAdapter?.mCurrentPlayPosition?.let {
+                    mAdapter?.mDataList?.get(it + 1)?.song?.playURL?.let { it2 ->
+                        MediaCacheManager.preCache(it2)
                     }
                 }
             }
