@@ -16,6 +16,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.facebook.drawee.view.SimpleDraweeView
@@ -151,7 +152,7 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     private fun loadData(off: Int, isClean: Boolean) {
         launch {
-            val result = mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID)
+            val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID) }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")

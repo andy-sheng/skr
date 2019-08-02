@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -71,7 +72,7 @@ class FeedsRankActivity : BaseActivity() {
 
     private fun getFeedsRankTags() {
         launch {
-            val result = mFeedRankServerApi.getFeedsRankTags()
+            val result = subscribe { mFeedRankServerApi.getFeedsRankTags() }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("tags"), FeedRankTagModel::class.java)
                 showFeedRankTag(list)

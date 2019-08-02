@@ -8,6 +8,7 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.openFeedsMakeActivity
@@ -90,7 +91,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
     private fun getData(off: Int, isClean: Boolean) {
         launch {
-            val result = mFeedsRankServerApi.getFeedRankInfoList(off, cnt, tag.tagType ?: 0)
+            val result = subscribe { mFeedsRankServerApi.getFeedRankInfoList(off, cnt, tag.tagType ?: 0) }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
                 offset = result.data.getIntValue("offset")
