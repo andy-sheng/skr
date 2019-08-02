@@ -339,7 +339,7 @@ public class AndroidMediaPlayer extends BasePlayer {
                 MyLog.d(TAG, "startPlay2" + " p=" + p);
 //                if (needReset) {
                 // 只要重新播 就要 reset 不然状态有问题
-                reset();
+                mPlayer.reset();
 //                }
                 if (p.startsWith("http://") || p.startsWith("https://")) {
 //                    p = "http://res-static.inframe.mobi/pkgs/android/guodegang.mp3";
