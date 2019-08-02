@@ -25,7 +25,6 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -286,7 +285,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 }
 
                 override fun onStart(p0: SHARE_MEDIA?) {
-                    StatisticsAdapter.recordCountEvent("music_detail page", "share", null)
                     mFeedsWatchModel?.shareCnt = mFeedsWatchModel!!.shareCnt.plus(1)
                     mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt!!)
                     mFeedsDetailPresenter?.addShareCount(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel?.feedID
@@ -326,7 +324,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mXinIv?.setDebounceViewClickListener {
-            StatisticsAdapter.recordCountEvent("music_detail page", "like", null)
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID!!)
         }
 
@@ -431,7 +428,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     override fun addCommentSuccess(model: FirstLevelCommentModel) {
-        StatisticsAdapter.recordCountEvent("music_detail page", "first_comment_success", null)
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!.plus(1)
         mFeedsWatchModel?.commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum!!
         mFeedsCommentView?.addSelfComment(model)
@@ -467,7 +463,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun isCollect(c: Boolean) {
         mCollectionIv?.isSelected = c
         mCollectionIv?.setDebounceViewClickListener {
-            StatisticsAdapter.recordCountEvent("music_detail page", "collect", null)
             mFeedsDetailPresenter?.collection(!mCollectionIv!!.isSelected, mFeedsWatchModel!!.feedID)
         }
     }
@@ -566,7 +561,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.background = followState
         mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
         mFollowTv?.setDebounceViewClickListener {
-            StatisticsAdapter.recordCountEvent("music_detail page", "follow", null)
             UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID!!, UserInfoManager.RA_BUILD, false, 0, null)
         }
     }
