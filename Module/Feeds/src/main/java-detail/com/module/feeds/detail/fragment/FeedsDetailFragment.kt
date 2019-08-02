@@ -103,7 +103,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     mFeedsCommonLyricView!!.resume()
                 }
             } else {
-                SinglePlayer.pause("onPrepared")
+                SinglePlayer.pause(playerTag)
             }
         }
 
@@ -486,7 +486,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             FeedsPlayStatistics.addExpose(mFeedsWatchModel?.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
-        mFeedsCommonLyricView?.playLyric()
+//        mFeedsCommonLyricView?.playLyric()
     }
 
     private fun pausePlay() {
