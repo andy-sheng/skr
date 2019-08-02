@@ -212,7 +212,7 @@ class LyricAndAccMatchManager {
                     val ts1 = params?.manyLyricsView?.curPlayingTime ?: 0
                     +(params?.manyLyricsView?.playerSpendTime ?: 0)
                     val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
-                    if (Math.abs(ts1 - ts2) > 500) {
+                    if (Math.abs(ts1 - ts2) > 1000) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
                         params?.manyLyricsView?.seekTo(ts2.toInt())
                     }
