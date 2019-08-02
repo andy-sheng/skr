@@ -1,21 +1,18 @@
 package com.component.person.producation.view
 
+import android.media.MediaPlayer
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.SpannableStringBuilder
 import android.view.Gravity
 import android.view.View
 import android.widget.RelativeLayout
-
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.player.IPlayer
-import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
-import com.common.player.VideoPlayerAdapter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -23,18 +20,16 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.SpanUtils
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
+import com.component.dialog.ShareWorksDialog
 import com.component.person.producation.adapter.ProducationAdapter
 import com.component.person.producation.model.ProducationModel
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.component.dialog.ShareWorksDialog
-
-import java.util.HashMap
-
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.util.*
 
 /**
  * 作品墙view
@@ -42,12 +37,11 @@ import okhttp3.RequestBody
 class ProducationWallView(internal var mFragment: BaseFragment, var userInfoModel: UserInfoModel, internal var mCallBack: RequestCallBack?) : RelativeLayout(mFragment.context) {
 
     val TAG = "ProducationWallView"
+    val playerTag = TAG + hashCode()
     internal val mUserInfoServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
     private val mProducationView: RecyclerView
     internal val mAdapter: ProducationAdapter
-
-    private var mIPlayer: IPlayer? = null
 
     private var DEFAUAT_CNT = 20       // 默认拉取一页的数量
     internal var offset: Int = 0  // 拉照片偏移量
@@ -56,6 +50,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
 
     internal var mConfirmDialog: DialogPlus? = null
     private var mShareWorksDialog: ShareWorksDialog? = null
+    val playCallback: PlayerCallbackAdapter
 
     init {
 
@@ -86,32 +81,37 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
             model?.let { showShareDialog(it) }
         }
 
+        playCallback = object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mAdapter.setPlayPosition(-1)
+            }
+
+            override fun openTimeFlyMonitor(): Boolean {
+                return true
+            }
+
+            override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+
+            }
+
+            override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+
+            }
+        }
+        SinglePlayer.addCallback(playerTag, playCallback)
+
         mAdapter.mOnClickPlayListener = { view, play, position, model ->
             if (play) {
                 if (model != null) {
-                    if (mIPlayer == null) {
-                        mIPlayer = MyMediaPlayer()
-                        mIPlayer!!.setDecreaseVolumeEnd(true)
-                        // 播放完毕
-                        mIPlayer!!.setCallback(object : PlayerCallbackAdapter() {
-                            override fun onCompletion() {
-                                super.onCompletion()
-                                mAdapter.setPlayPosition(-1)
-                            }
-                        })
-                    }
-                    mIPlayer?.reset()
-                    mIPlayer?.startPlay(model.worksURL)
+                    SinglePlayer.startPlay(playerTag, model?.worksURL ?: "")
                     playProducation(model, position)
                     // 开始播放当前postion，
                     // 清楚上一个
                     mAdapter.setPlayPosition(model.worksID)
                 }
             } else {
-                if (mIPlayer != null) {
-                    //mIPlayer.setCallback(null);
-                    mIPlayer!!.pause()
-                }
+                SinglePlayer.pause(playerTag)
                 // 不用刷新，优化下，防止闪动， icon 在 click 事件内部已经设置过了
                 mAdapter.setPlayPosition(-1)
             }
@@ -164,9 +164,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
 
     fun stopPlay() {
         mAdapter.setPlayPosition(-1)
-        if (mIPlayer != null) {
-            mIPlayer!!.stop()
-        }
+        SinglePlayer.stop(playerTag)
     }
 
     fun getProducations(isFlag: Boolean) {
@@ -269,11 +267,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (mIPlayer != null) {
-            mIPlayer!!.setCallback(null)
-            mIPlayer!!.stop()
-            mIPlayer!!.release()
-        }
+        SinglePlayer.stop(playerTag)
         if (mShareWorksDialog != null) {
             mShareWorksDialog!!.dismiss(false)
         }
