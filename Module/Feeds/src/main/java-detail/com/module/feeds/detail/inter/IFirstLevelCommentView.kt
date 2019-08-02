@@ -7,4 +7,5 @@ interface IFirstLevelCommentView {
     fun updateList(list: List<FirstLevelCommentModel>?)
     fun likeFinish(firstLevelCommentModel: FirstLevelCommentModel, position: Int, like: Boolean)
     fun finishLoadMore()
+    fun showNum(count: Int)
 }

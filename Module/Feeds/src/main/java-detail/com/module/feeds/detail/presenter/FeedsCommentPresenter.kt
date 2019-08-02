@@ -39,6 +39,10 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
                         mIFirstLevelCommentView.updateList(mModelList)
                     }
 
+                    if (mOffset == 0) {
+                        mIFirstLevelCommentView.showNum(obj.data.getIntValue("commentCnt"))
+                    }
+
                     mOffset = obj.data.getIntValue("offset")
                 } else {
                     mIFirstLevelCommentView.finishLoadMore()

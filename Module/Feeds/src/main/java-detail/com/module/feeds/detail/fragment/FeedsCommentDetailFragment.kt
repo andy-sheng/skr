@@ -10,7 +10,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.detail.adapter.FeedsCommentAdapter
@@ -22,6 +21,7 @@ import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsSecondCommentPresenter
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -162,6 +162,10 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
                     }
             mMoreDialogPlus?.showByDialog()
         }
+    }
+
+    override fun showNum(count: Int) {
+
     }
 
     override fun isBlackStatusBarText(): Boolean = true

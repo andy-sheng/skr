@@ -155,6 +155,11 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
         mRefreshLayout?.finishLoadMore()
     }
 
+    override fun showNum(count: Int) {
+        feedsCommendAdapter?.mCommentNum = count
+        feedsCommendAdapter?.notifyItemChanged(0)
+    }
+
     override fun updateList(list: List<FirstLevelCommentModel>?) {
         val mList: ArrayList<Any> = ArrayList(list)
         mList.add(0, CommentCountModel())
