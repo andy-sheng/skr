@@ -581,6 +581,11 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                                         .setMessageTip("是否确定删除该页面")
                                         .setConfirmTip("确认删除")
                                         .setCancelTip("取消")
+                                        .setCancelBtnClickListener(object : AnimateClickListener() {
+                                            override fun click(view: View?) {
+                                                mTipsDialogView?.dismiss()
+                                            }
+                                        })
                                         .setConfirmBtnClickListener(object : AnimateClickListener() {
                                             override fun click(view: View?) {
                                                 mTipsDialogView?.dismiss(false)
