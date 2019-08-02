@@ -6,14 +6,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.view.BitmapTextView
-import com.module.feeds.watch.listener.FeedsListener
-import com.module.feeds.watch.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
 
 open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it, l) {
 
@@ -26,6 +26,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     init {
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                StatisticsAdapter.recordCountEvent("music_recommend", "challenge", null)
                 listener?.onClickHitListener(model)
             }
         })

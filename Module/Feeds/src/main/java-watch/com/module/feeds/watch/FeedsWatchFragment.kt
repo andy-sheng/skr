@@ -9,6 +9,7 @@ import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -21,7 +22,6 @@ import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
 import com.module.feeds.watch.view.FeedsWatchView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
@@ -44,12 +44,15 @@ class FeedsWatchFragment : BaseFragment() {
             delay(400)
             when (oldPositon) {
                 0 -> {
+                    StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
                     mRecommendFeedsView?.unselected()
                 }
                 1 -> {
+                    StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
                     mFollowFeesView?.unselected()
                 }
                 2 -> {
+                    StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
                     mFeedsCollectView?.unselected()
                 }
             }
@@ -70,6 +73,7 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 打榜 神曲榜
+                StatisticsAdapter.recordCountEvent("music_recommend", "challenge_list", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK)
                         .navigation()
             }
@@ -152,6 +156,7 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
+        StatisticsAdapter.recordCountEvent("music_tab", "music_tab_expose", null)
         onViewSelected(mFeedVp.currentItem)
     }
 

@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -68,6 +69,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
         mTagArea.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                StatisticsAdapter.recordCountEvent("music_recommend", "rank", null)
                 listener?.onclickRankListener(model)
             }
         })
