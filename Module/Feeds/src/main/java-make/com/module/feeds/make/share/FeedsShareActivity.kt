@@ -59,7 +59,10 @@ class FeedsShareActivity : BaseActivity() {
         pengyouquanBtn = this.findViewById(R.id.pengyouquan_btn)
 
         nameTv.text = MyUserInfoManager.getInstance().nickName
-        songTv.text = mFeedsMakeModel?.songModel?.workName
+        mFeedsMakeModel?.songModel?.workName?.let {
+            songTv.text = "《$it》"
+        }
+
         qqkongjianBtn.setOnClickListener {
             if (!U.getCommonUtils().hasInstallApp("com.tencent.mobileqq")) {
                 U.getToastUtil().showShort("未安装QQ")

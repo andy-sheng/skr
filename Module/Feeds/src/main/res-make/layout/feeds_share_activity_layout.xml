@@ -26,11 +26,12 @@
 
     <TextView
         android:id="@+id/name_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_5_dp"
         android:text="撕歌用户"
         android:textColor="@color/white"
+        android:gravity="center"
         android:textSize="@dimen/view_18_dp"
         app:layout_constraintLeft_toLeftOf="@+id/share_bg"
         app:layout_constraintRight_toRightOf="@+id/share_bg"
@@ -38,10 +39,13 @@
 
     <TextView
         android:id="@+id/song_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:text="《歌曲名称》"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/view_25_dp"
         app:layout_constraintLeft_toLeftOf="@+id/share_bg"
