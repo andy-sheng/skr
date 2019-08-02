@@ -97,6 +97,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             public void onPrepared(MediaPlayer mp) {
                 MyLog.d(TAG, "onPrepared begin");
                 mHasPrepared = true;
+                bufferingOk = true;
                 if (mPlayer != null) {
                     mPlayer.start();
                 }
@@ -146,14 +147,19 @@ public class AndroidMediaPlayer extends BasePlayer {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
                 MyLog.d(TAG, "onSeekComplete");
+                bufferingOk = true;
                 if (null != mCallback) {
                     mCallback.onSeekComplete();
                 }
             }
         });
+        /**
+         * 除非真的有卡顿，不然这个不会回调
+         */
         mPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                MyLog.d(TAG,"onBufferingUpdate  percent=" + percent);
                 if(percent>=100){
                     bufferingOk = true;
                 }else{
@@ -458,6 +464,7 @@ public class AndroidMediaPlayer extends BasePlayer {
             mPlayer.release();
         }
         mHasPrepared = false;
+        bufferingOk = false;
         mPlayer = null;
         sPrePlayer = null;
         mCallback = null;

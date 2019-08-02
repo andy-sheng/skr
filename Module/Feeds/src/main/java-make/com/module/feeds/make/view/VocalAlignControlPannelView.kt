@@ -27,6 +27,7 @@ class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : Con
 
     init {
         View.inflate(context, R.layout.feeds_editor_vocal_align_control_pannel_layout, this)
+        this.setOnClickListener {  }
         mVaResetTv = this.findViewById(R.id.va_reset_tv)
         mInfoTipsTv = this.findViewById(R.id.info_tips_tv)
         mLeftIv = this.findViewById(R.id.left_iv)
