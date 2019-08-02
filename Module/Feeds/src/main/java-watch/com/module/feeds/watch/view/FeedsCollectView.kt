@@ -356,6 +356,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         }
 
         if (list != null) {
+            // 数据改变了，重新去生成随机队列去
+            isFirstRandom = true
             mAdapter.mDataList.addAll(list)
         }
         if (mAdapter.mDataList.isNotEmpty() && isClear) {
