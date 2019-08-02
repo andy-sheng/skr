@@ -168,9 +168,15 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun bufferEnd() {
-        mHandler.removeMessages(AVATAR_ANIM)
-        if (playing) {
-            avatarAnimation?.resume()
+        if(!mHandler.hasMessages(AVATAR_ANIM)){
+            mHandler.removeMessages(AVATAR_ANIM)
+            if (playing) {
+                if (avatarAnimation!!.isPaused) {
+                    avatarAnimation?.resume()
+                } else {
+                    avatarAnimation?.start()
+                }
+            }
         }
     }
 

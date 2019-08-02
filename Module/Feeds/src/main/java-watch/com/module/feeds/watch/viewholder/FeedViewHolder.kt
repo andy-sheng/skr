@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.utils.dp
@@ -155,7 +156,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     }
 
     fun startPlay() {
-        mRecordView.play()
+        mRecordView.play(SinglePlayer.isBufferingOk)
     }
 
     fun playLyric(position: Int, watchModel: FeedsWatchModel) {
@@ -186,6 +187,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         } else {
             feedAutoScrollLyricView.pause()
         }
+        mRecordView.buffering()
     }
 
     fun resumeLyricWhenBufferingEnd(position: Int, watchModel: FeedsWatchModel) {
@@ -196,6 +198,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         } else {
             feedAutoScrollLyricView.resume()
         }
+        mRecordView.bufferEnd()
     }
 
     fun stopPlay() {
