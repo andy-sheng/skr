@@ -528,6 +528,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         mSmartRefresh.setEnableLoadMore(it)
                     }
                     mOtherPhotoWallView?.getPhotos(false)
+                    mFeedsWallView?.unselected()
                 } else if (position == 1) {
                     mFeedsWallView?.isHasMore?.let {
                         mSmartRefresh.setEnableLoadMore(it)

@@ -528,12 +528,24 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         mSmartRefresh.setEnableLoadMore(mPhotoWallView.getMHasMore());
                         mPhotoWallView.getPhotos(false);
                     }
+                    if (mFeedsWallView != null) {
+                        mFeedsWallView.unselected();
+                    }
+                    if (mProducationWallView != null) {
+                        mProducationWallView.stopPlay();
+                    }
                 } else if (position == 1) {
                     if (mFeedsWallView != null) {
                         mSmartRefresh.setEnableLoadMore(mFeedsWallView.isHasMore());
                         mFeedsWallView.getFeeds(false);
                     }
+                    if (mProducationWallView != null) {
+                        mProducationWallView.stopPlay();
+                    }
                 } else if (position == 2) {
+                    if (mFeedsWallView != null) {
+                        mFeedsWallView.unselected();
+                    }
                     if (mProducationWallView != null) {
                         mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
                         mProducationWallView.getProducations(false);
