@@ -44,15 +44,12 @@ class FeedsWatchFragment : BaseFragment() {
             delay(400)
             when (oldPositon) {
                 0 -> {
-                    StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
                     mRecommendFeedsView?.unselected()
                 }
                 1 -> {
-                    StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
                     mFollowFeesView?.unselected()
                 }
                 2 -> {
-                    StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
                     mFeedsCollectView?.unselected()
                 }
             }
@@ -166,12 +163,15 @@ class FeedsWatchFragment : BaseFragment() {
         }
         when (pos) {
             0 -> {
+                StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
                 mRecommendFeedsView.selected()
             }
             1 -> {
+                StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
                 mFollowFeesView.selected()
             }
             2 -> {
+                StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
                 mFeedsCollectView.selected()
             }
         }
