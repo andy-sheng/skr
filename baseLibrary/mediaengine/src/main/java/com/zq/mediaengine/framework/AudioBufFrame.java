@@ -29,6 +29,13 @@ public class AudioBufFrame extends AVBufFrame {
         this.flags = 0;
     }
 
+    public AudioBufFrame(AudioBufFormat format, ByteBuffer buf, long pts, int flags) {
+        this.format = format;
+        this.buf = buf;
+        this.pts = pts;
+        this.flags = flags;
+    }
+
     public AudioBufFrame(AudioBufFrame frame) {
         super(frame);
         this.format = frame.format;

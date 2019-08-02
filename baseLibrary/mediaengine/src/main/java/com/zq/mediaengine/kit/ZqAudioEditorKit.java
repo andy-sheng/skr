@@ -571,11 +571,12 @@ public class ZqAudioEditorKit {
     };
 
     private void handlePreviewCompletion() {
-        if (mLoopCount < 0 || ++mLoopedCount < mLoopCount) {
+        if (++mLoopedCount < mLoopCount || mLoopCount < 0) {
+            Log.d(TAG, "try to loop, mLoopedCount: " + mLoopedCount);
             // seek到开头, loop播放
             mAudioSource[0].seek(0);
             if (mOnPreviewInfoListener != null) {
-                mOnPreviewInfoListener.onLoopCount(mLoopCount);
+                mOnPreviewInfoListener.onLoopCount(mLoopedCount);
             }
         } else {
             for (int i = 0; i < MAX_CHN; i++) {

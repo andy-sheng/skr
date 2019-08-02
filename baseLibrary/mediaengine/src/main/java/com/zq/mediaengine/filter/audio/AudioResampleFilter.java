@@ -95,7 +95,7 @@ public class AudioResampleFilter extends AudioFilterBase {
         if (inputFrame.buf != null) {
             ByteBuffer outBuffer = mAudioResample.resample(inputFrame.buf);
             if (outBuffer != null) {
-                return new AudioBufFrame(mOutFormat, outBuffer, inputFrame.pts);
+                return new AudioBufFrame(mOutFormat, outBuffer, inputFrame.pts, inputFrame.flags);
             } else {
                 return null;
             }

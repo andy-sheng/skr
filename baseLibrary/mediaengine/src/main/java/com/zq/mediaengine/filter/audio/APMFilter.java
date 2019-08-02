@@ -75,7 +75,7 @@ public class APMFilter extends AudioFilterBase {
         if (outBuffer == null){
             return frame;
         }
-        return new AudioBufFrame(mApmWrapper.getAPMFormat(), outBuffer, frame.pts);
+        return new AudioBufFrame(mApmWrapper.getAPMFormat(), outBuffer, frame.pts, frame.flags);
     }
 
     @Override
