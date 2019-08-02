@@ -101,6 +101,11 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
         })
 
         when (type) {
+            FROM_FEED_DETAIL -> {
+                // 不用拉接口
+                mCollectTv.visibility = View.GONE
+                mDividerCollect.visibility = View.GONE
+            }
             FROM_COMMENT -> {
                 // 不用拉接口
                 mCollectTv.visibility = View.GONE
@@ -128,10 +133,11 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
         mDividerFuncation.visibility = View.GONE
     }
 
-    fun showCollect(){
+    fun showCollect() {
         mCollectTv.visibility = View.VISIBLE
         mDividerCollect.visibility = View.VISIBLE
     }
+
     fun hideCollect() {
         mCollectTv.visibility = View.GONE
         mDividerCollect.visibility = View.VISIBLE
@@ -184,11 +190,11 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
     private fun checkCollectAndRelation() {
         launch {
             var relation = async {
-                subscribe { mFeedServerApi.getRelation(targetID)}
+                subscribe { mFeedServerApi.getRelation(targetID) }
             }.await()
 
             var collect = async {
-                subscribe {mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)}
+                subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID) }
             }.await()
 
             if (relation.errno == 0 && collect.errno == 0) {
