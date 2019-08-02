@@ -25,7 +25,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_home_selected" />
+                android:drawableTop="@drawable/ic_home_selected"
+                android:text="首页"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#5865A6"
+                app:bl_unSelected_textColor="#7897A5" />
         </RelativeLayout>
 
         <!--动态-->
@@ -41,7 +45,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_feed_normal" />
+                android:drawableTop="@drawable/ic_feed_normal"
+                android:text="小音乐"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#E27425"
+                app:bl_unSelected_textColor="#7897A5" />
         </RelativeLayout>
 
         <!--消息-->
@@ -57,7 +65,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_chat_normal" />
+                android:drawableTop="@drawable/ic_chat_normal"
+                android:text="消息"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#54855F"
+                app:bl_unSelected_textColor="#7897A5" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/unread_num_tv"
@@ -99,7 +111,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_me_normal" />
+                android:background="@drawable/ic_me_normal"
+                android:drawableTop="@drawable/ic_me_normal"
+                android:text="我的"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#BC3A6B"
+                app:bl_unSelected_textColor="#7897A5" />
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/person_info_red_dot"

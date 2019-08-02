@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -344,10 +345,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     private void setTabDrawable(ExTextView textView, Drawable drawable) {
-//        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-//        textView.setCompoundDrawables(null, drawable,
-//                null, null);
-        textView.setBackground(drawable);
+        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+        textView.setCompoundDrawables(null, drawable,
+                null, null);
     }
 
     private void checkIfFromSchema() {
