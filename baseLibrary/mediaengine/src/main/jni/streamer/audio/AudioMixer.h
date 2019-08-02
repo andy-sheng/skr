@@ -30,9 +30,7 @@ public:
         mLeftOutputVolume = leftVol;
         mRightOutputVolume = rightVol;
     }
-    void setDelay(int idx, int64_t delay) {
-        mDelay[idx] = delay;
-    }
+    void setDelay(int idx, int64_t delay);
     void setMute(bool mute) {mMute = mute;}
     void setBlockingMode(bool blockingMode) {mBlockingMode = blockingMode;}
     int config(int idx, int sampleFmt, int sampleRate, int channels, int bufferSamples,
@@ -71,7 +69,8 @@ private:
     float mRightOutputVolume;
     float mInputVolume[CHN_NUM][2];
     int64_t mDelay[CHN_NUM];
-    int64_t mDelayed[CHN_NUM];
+    int64_t mDelaySamples[CHN_NUM];
+    int64_t mDelayedSamples[CHN_NUM];
     ChannelParam* mChannelParams[CHN_NUM];
     ChannelFifo* mChannelFifos[CHN_NUM];
     KSYSwr* mChannelSwrs[CHN_NUM];

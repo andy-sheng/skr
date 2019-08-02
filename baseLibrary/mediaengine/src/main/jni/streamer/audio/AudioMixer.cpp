@@ -25,7 +25,8 @@ AudioMixer::AudioMixer() {
         mInputVolume[i][0] = 1.0f;
         mInputVolume[i][1] = 1.0f;
         mDelay[i] = 0;
-        mDelayed[i] = 0;
+        mDelaySamples[i] = 0;
+        mDelayedSamples[i] = 0;
     }
 
     // for blocking mode
@@ -146,7 +147,8 @@ int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int
         for (int i=0; i<CHN_NUM; i++) {
             fifoSwrRelease(i);
             fifoSwrInit(i);
-            mDelayed[i] = 0;
+            mDelayedSamples[i] = 0;
+            mDelaySamples[i] = mDelay[i] * cp->sampleRate / 1000;
         }
 
         // init attached filter if needed
@@ -156,10 +158,21 @@ int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int
     } else if (mChannelParams[mMainIdx]) {
         fifoSwrRelease(idx);
         fifoSwrInit(idx);
-        mDelayed[idx] = 0;
+        mDelayedSamples[idx] = 0;
     }
     pthread_mutex_unlock(&mLock);
     return 0;
+}
+
+void AudioMixer::setDelay(int idx, int64_t delay) {
+    mDelay[idx] = delay;
+
+    pthread_mutex_lock(&mLock);
+    ChannelParam* cp = mChannelParams[0];
+    if (cp) {
+        mDelaySamples[idx] = delay * cp->sampleRate / 1000;
+    }
+    pthread_mutex_unlock(&mLock);
 }
 
 void AudioMixer::destroy(int idx) {
@@ -218,25 +231,6 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
         ChannelFifo* cf = mChannelFifos[idx];
         KSYSwr* swr = mChannelSwrs[idx];
         if (mMainFrameReady && cf) {
-            // handle negative delay
-            int64_t delayOff = mDelay[idx] - mDelayed[idx];
-            if (mBlockingMode && delayOff < 0) {
-                ChannelParam* cp = mChannelParams[idx];
-                int64_t delayOffSize = (-delayOff) * cp->sampleRate * cp->frameSize / 1000;
-                LOGD("idx: %d delayOff: %"PRId64" delayOffSize: %"PRId64" inSize: %d", idx, delayOff, delayOffSize, inSize);
-                if (delayOffSize < inSize) {
-                    inBuf += delayOffSize;
-                    inSize -= (int) delayOffSize;
-                    mDelayed[idx] += delayOff;
-                    LOGD("idx: %d delay caught up, remain size: %d", idx, inSize);
-                } else {
-                    int64_t tm = inSize * 1000l / cp->frameSize / cp->sampleRate;
-                    mDelayed[idx] -= tm;
-                    LOGD("idx: %d drop data to catch up delay", idx);
-                    goto Quit;
-                }
-            }
-
             int size = 0;
             uint8_t* buf = NULL;
             if (swr) {
@@ -251,6 +245,25 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
                 buf = inBuf;
                 size = inSize;
             }
+
+            // handle negative delay
+            int64_t delayOffSamples = mDelaySamples[idx] - mDelayedSamples[idx];
+            if (mBlockingMode && delayOffSamples < 0) {
+                ChannelParam* cp = mChannelParams[mMainIdx];
+                int64_t delayOffSize = -delayOffSamples * cp->frameSize;
+                LOGD("idx: %d delayOffSamples: %"PRId64" delayOffSize: %"PRId64" size: %d", idx, delayOffSamples, delayOffSize, size);
+                if (delayOffSize < size) {
+                    buf += delayOffSize;
+                    size -= (int) delayOffSize;
+                    mDelayedSamples[idx] += delayOffSamples;
+                    LOGD("idx: %d delay caught up, remain size: %d", idx, size);
+                } else {
+                    mDelayedSamples[idx] -= size / cp->frameSize;
+                    LOGD("idx: %d drop data to catch up delay", idx);
+                    goto Quit;
+                }
+            }
+
             int frameSize = cf->frameSize;
             int samples = size / frameSize;
             do {
@@ -318,16 +331,17 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
                 assert(mBuffer);
                 mBufSize = inSize;
             }
+            memset(mBuffer, 0, (size_t) mBufSize);
             int64_t samples = inSize / frameSize;
             uint8_t* buf = mBuffer;
             // handle positive delay
-            int64_t delayOff = mDelay[i] - mDelayed[i];
-            if (mBlockingMode && i != mMainIdx && delayOff > 0) {
-                int64_t delayOffSamples = delayOff * sampleRate / 1000;
+            int64_t delayOffSamples = mDelaySamples[i] - mDelayedSamples[i];
+            if (mBlockingMode && i != mMainIdx && delayOffSamples > 0) {
                 int64_t zeroSamples = (delayOffSamples < samples) ? delayOffSamples : samples;
-                LOGD("idx: %d delayOff: %"PRId64" delayOffSamples: %"PRId64" zeroSamples: %"PRId64, i, delayOff, delayOffSamples, zeroSamples);
-                mDelayed[i] += zeroSamples * 1000 / sampleRate;
+                LOGD("idx: %d delayOffSamples: %"PRId64" zeroSamples: %"PRId64, i, delayOffSamples, zeroSamples);
+                mDelayedSamples[i] += zeroSamples;
                 samples -= zeroSamples;
+                buf += zeroSamples * frameSize;
             }
             do {
                 int ret = audio_utils_fifo_read(&cf->fifo, buf, (size_t) samples);
