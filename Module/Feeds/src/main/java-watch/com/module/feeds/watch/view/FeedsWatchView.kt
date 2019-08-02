@@ -245,7 +245,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             var model: FeedsWatchModel? = null
             var isFound = false
 
-            val cdHeight = 120.dp()   // 光盘高度
+            val cdHeight = 168.dp()   // 光盘高度
             val bottomHeight = 50.dp()  // 底部高度
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
