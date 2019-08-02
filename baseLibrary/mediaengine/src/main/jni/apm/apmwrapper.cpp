@@ -88,7 +88,7 @@ int APMWrapper::Initialize() {
  * this is the near-end (or captured) audio.
  */
 int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
-    LOGE("ProcessStream data=0x%p len=%d", data, len);
+    //LOGE("ProcessStream data=0x%p len=%d", data, len);
     int idx = 0;
     int delay = 80;
     int start = 0, size = 0, ret = 0;
@@ -182,7 +182,7 @@ int APMWrapper::SetStreamDelay(int delay) {
 }
 
 int APMWrapper::AnalyzeReverseStream(int16_t *data, int len) {
-    LOGE("AnalyzeReverseStream data=0x%p len=%d", data, len);
+    // LOGE("AnalyzeReverseStream data=0x%p len=%d", data, len);
     int idx = 1;
     int ret = 0, size = 0;
     audio_utils_fifo_write(&mFifo[1], (char *) data, len / mFrameSize[idx]);
@@ -197,14 +197,14 @@ int APMWrapper::AnalyzeReverseStream(int16_t *data, int len) {
 
         ret = mAPM->ProcessReverseStream(mTempData[idx], mConfig[idx], mConfig[idx], mTempData[idx]);
         if (ret < 0) {
-            LOGD("[APM] ProcessReverseStream failed, ret = %d", ret);
+            LOGE("[APM] ProcessReverseStream failed, ret = %d", ret);
         }
     }
     return ret;
 }
 
 int APMWrapper::Config(int idx, int sampleFmt, int samplerate, int channels) {
-    LOGE("Config idx=%d sampleFmt=%d samplerate=%d channels=%d", idx, sampleFmt, samplerate, channels);
+    LOGD("Config idx=%d sampleFmt=%d samplerate=%d channels=%d", idx, sampleFmt, samplerate, channels);
     mInSampleFmt[idx] = sampleFmt;
 
     mConfig[idx].set_sample_rate_hz(samplerate);

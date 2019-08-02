@@ -493,9 +493,9 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mCapRawFrameWriter.getSinkPin());
             mAudioPlayerCapture.getSrcPin().connect((SinkPin<AudioBufFrame>) mBgmRawFrameWriter.getSinkPin());
 
-//            mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
-//            mAudioLocalSrcPin = mAPMFilter.getSrcPin();
-            mAudioLocalSrcPin = mAudioCapture.getSrcPin();
+            mAudioCapture.getSrcPin().connect(mAPMFilter.getSinkPin());
+            mAudioLocalSrcPin = mAPMFilter.getSrcPin();
+//            mAudioLocalSrcPin = mAudioCapture.getSrcPin();
             // 自采集模式下，练歌房不需要声网SDK
             if (mConfig.getScene() != Params.Scene.audiotest) {
                 mRemoteAudioMixer = new AudioMixer();
@@ -1482,7 +1482,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                                 if (mConfig.isUseExternalAudio()) {
                                     audioCodecFormat.sampleRate = mAudioCapture.getSampleRate();
                                     audioCodecFormat.channels = mAudioCapture.getChannels();
-                                    audioCodecFormat.bitrate = 48000 * audioCodecFormat.channels;
+                                    audioCodecFormat.bitrate = 64000 * audioCodecFormat.channels;
                                 }
                                 mHumanVoiceAudioEncoder.configure(audioCodecFormat);
                                 mHumanVoiceFilePublisher.setAudioOnly(true);

@@ -566,7 +566,7 @@ public class Params implements Serializable {
     }
 
     public int getAudioBitrate() {
-        return mAudioChannels == 1 ? 48 * 1000 : 96 * 1000;
+        return mAudioChannels == 1 ? 64 * 1000 : 128 * 1000;
     }
 
     public int getNoSticker() {
