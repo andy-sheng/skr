@@ -842,7 +842,7 @@ public class Params implements Serializable {
         if (params != null) {
             String s = JSON.toJSONString(params);
             MyLog.w(TAG, "save2Pref " + s);
-            U.getPreferenceUtils().setSettingString("engine_pref_params3", s);
+            U.getPreferenceUtils().setSettingString("engine_pref_params4", s);
         }
     }
 
@@ -852,7 +852,7 @@ public class Params implements Serializable {
      * @return
      */
     public static Params getFromPref() {
-        String s = U.getPreferenceUtils().getSettingString("engine_pref_params3", "");
+        String s = U.getPreferenceUtils().getSettingString("engine_pref_params4", "");
         MyLog.w(TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {

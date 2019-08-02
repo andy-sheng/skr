@@ -206,10 +206,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 getFeeds(true)
             })
         }
-
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this)
-//        }
         playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
