@@ -188,6 +188,7 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
     }
 }

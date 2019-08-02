@@ -143,7 +143,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 
     fun deleteFeed(position: Int, model: FeedsWatchModel) {
         val map = HashMap<String, Any>()
-        map["songID"] = model.song?.songID.toString()
+        map["songID"] = model.song?.songID ?: 0
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         ApiMethods.subscribe(mFeedServerApi.deleteFeed(body), object : ApiObserver<ApiResult>() {
