@@ -67,11 +67,13 @@
                         app:layout_constraintTop_toTopOf="@+id/song_name_tv" />
 
                     <com.common.view.ex.ExTextView
+                        android:ellipsize="end"
+                        android:maxWidth="@dimen/view_300_dp"
                         android:id="@+id/song_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/view_39_dp"
-                        android:text=""
+                        android:maxLines="1"
                         android:textColor="@color/white_trans_80"
                         android:textSize="@dimen/textsize_16_dp"
                         app:layout_constraintLeft_toLeftOf="parent"
