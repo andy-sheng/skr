@@ -25,6 +25,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     private val mCNT = 20  // 默认拉去的个数
     private var mLastUpdatListTime = 0L    //上次拉取请求时间戳(个人中心)
     private var mHasInitData = false  //关注和推荐是否初始化过数据
+    private var mHasMore = true     // 是否还有更多
     var mUserInfo: UserInfoModel? = null
 
     init {
@@ -69,7 +70,8 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
 //                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
                     mOffset = obj.data.getIntValue("offset")
-                    view.addWatchList(list, isClear)
+                    mHasMore = obj.data.getBoolean("hasMore")
+                    view.addWatchList(list, isClear, mHasMore)
                 }
             }
 
@@ -83,8 +85,9 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                     mHasInitData = true
 //                    mLastUpdatListTime = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data.getString("follows"), FeedsWatchModel::class.java)
-                    mOffset == obj.data.getIntValue("offset")
-                    view.addWatchList(list, isClear)
+                    mOffset = obj.data.getIntValue("offset")
+                    mHasMore = obj.data.getBoolean("hasMore")
+                    view.addWatchList(list, isClear, mHasMore)
                 }
             }
 
@@ -100,12 +103,11 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 ?: 0, feedSongType), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result?.errno == 0) {
-                    if (offset == 0) {
-                        mLastUpdatListTime = System.currentTimeMillis()
-                    }
+                    mLastUpdatListTime = System.currentTimeMillis()
                     mOffset = result.data.getIntValue("offset")
+                    mHasMore = result.data.getBoolean("hasMore")
                     val list = JSON.parseArray(result.data.getString("userSongs"), FeedsWatchModel::class.java)
-                    view.addWatchList(list, isClear)
+                    view.addWatchList(list, isClear, mHasMore)
                 } else {
                     view.requestError()
                 }

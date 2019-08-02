@@ -31,7 +31,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
     val TAG = "PhotoWallView"
 
     internal var DEFAUAT_CNT = 20       // 默认拉取一页的数量
-    internal var mHasMore = false
+    var mHasMore = false
 
     private val mPhotoView: RecyclerView
     internal val mPhotoAdapter: PhotoAdapter
@@ -161,12 +161,10 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
 
     override fun addPhoto(list: List<PhotoModel>?, clear: Boolean, totalNum: Int) {
         MyLog.d(TAG, "showPhoto list=$list clear=$clear totalNum=$totalNum")
-
         mLastUpdateInfo = System.currentTimeMillis()
 
-        if (mCallBack != null) {
-            mCallBack!!.onRequestSucess()
-        }
+        mCallBack?.onRequestSucess(!list.isNullOrEmpty())
+
         if (list != null && list.isNotEmpty()) {
             // 有数据
             mHasMore = true
@@ -210,9 +208,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
     }
 
     override fun loadDataFailed() {
-        if (mCallBack != null) {
-            mCallBack!!.onRequestSucess()
-        }
+        mCallBack?.onRequestSucess(true)
     }
 
     override fun onDetachedFromWindow() {

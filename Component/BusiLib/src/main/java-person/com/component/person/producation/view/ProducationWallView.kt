@@ -52,6 +52,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
     private var DEFAUAT_CNT = 20       // 默认拉取一页的数量
     internal var offset: Int = 0  // 拉照片偏移量
     private var mLastUpdateInfo: Long = 0    //上次更新成功时间
+    var hasMore = true
 
     internal var mConfirmDialog: DialogPlus? = null
     private var mShareWorksDialog: ShareWorksDialog? = null
@@ -243,9 +244,9 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
         offset = newOffset
         mLastUpdateInfo = System.currentTimeMillis()
 
-        if (mCallBack != null) {
-            mCallBack!!.onRequestSucess()
-        }
+        hasMore = !list.isNullOrEmpty()
+        mCallBack?.onRequestSucess(hasMore)
+
         if (isClear) {
             mAdapter.dataList.clear()
         }
@@ -263,9 +264,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
     }
 
     private fun loadProducationsFailed() {
-        if (mCallBack != null) {
-            mCallBack!!.onRequestSucess()
-        }
+        mCallBack?.onRequestSucess(true)
     }
 
     override fun onDetachedFromWindow() {

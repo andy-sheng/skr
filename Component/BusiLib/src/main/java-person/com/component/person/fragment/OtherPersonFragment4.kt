@@ -524,8 +524,14 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
+                    mOtherPhotoWallView?.mHasMore?.let {
+                        mSmartRefresh.setEnableLoadMore(it)
+                    }
                     mOtherPhotoWallView?.getPhotos(false)
                 } else if (position == 1) {
+                    mFeedsWallView?.isHasMore?.let {
+                        mSmartRefresh.setEnableLoadMore(it)
+                    }
                     mFeedsWallView?.getFeeds(false)
                 }
             }
@@ -793,8 +799,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mFeedsWallView?.destroy()
     }
 
-    override fun onRequestSucess() {
+    override fun onRequestSucess(hasMore: Boolean) {
+        mSmartRefresh.finishRefresh()
         mSmartRefresh.finishLoadMore()
+        mSmartRefresh.setEnableLoadMore(hasMore)
     }
 
     companion object {

@@ -15,7 +15,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.R
 import com.component.person.view.RequestCallBack
 import com.imagebrowse.ImageBrowseView
@@ -134,14 +133,11 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
         }, mFragment)
     }
 
-
     fun addPhotos(list: List<PhotoModel>?, newOffset: Int, totalNum: Int, clear: Boolean) {
         offset = newOffset
         mLastUpdateInfo = System.currentTimeMillis()
 
-        if (mCallBack != null) {
-            mCallBack!!.onRequestSucess()
-        }
+        mCallBack?.onRequestSucess(!list.isNullOrEmpty())
 
         if (clear) {
             mPhotoAdapter.dataList?.clear()
@@ -174,7 +170,7 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
 
     fun addPhotosFail() {
         if (mCallBack != null) {
-            mCallBack!!.onRequestSucess()
+            mCallBack!!.onRequestSucess(true)
         }
         if (mPhotoAdapter.dataList == null || mPhotoAdapter.dataList!!.size == 0) {
             if (mListener != null) {

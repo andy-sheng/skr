@@ -33,6 +33,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
     var offset = 0
     var cnt = 30
+    var hasMore = true
 
     init {
         View.inflate(context, R.layout.feed_rank_view_layout, this)
@@ -93,6 +94,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
                 offset = result.data.getIntValue("offset")
+                hasMore = result.data.getBoolean("hasMore")
                 showRankInfo(list, isClean)
             } else {
 
@@ -103,6 +105,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
     private fun showRankInfo(list: List<FeedRankInfoModel>?, isClean: Boolean) {
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
+        mRefreshLayout.setEnableLoadMore(hasMore)
         if (isClean) {
             mAdapter.mDataList.clear()
         }

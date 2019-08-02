@@ -48,6 +48,8 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     var offset = 0
     val mCNT = 30
+    var hasMore = true
+
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 
     private val playerTag = TAG + hashCode()
@@ -153,6 +155,7 @@ class FeedsDetailRankActivity : BaseActivity() {
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")
+                hasMore = result.data.getBooleanValue("hasMore")
                 showDetailInfo(list, isClean)
             }
         }
@@ -161,6 +164,8 @@ class FeedsDetailRankActivity : BaseActivity() {
     private fun showDetailInfo(list: List<FeedsWatchModel>?, isClean: Boolean) {
         mRefreshLayout.finishLoadMore()
         mRefreshLayout.finishRefresh()
+        mRefreshLayout.setEnableLoadMore(hasMore)
+
         if (isClean) {
             mAdapter.mDataList.clear()
             mRefreshLayout.setEnableLoadMore(true)

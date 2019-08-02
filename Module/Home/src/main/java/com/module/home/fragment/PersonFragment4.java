@@ -525,14 +525,17 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             public void onPageSelected(int position) {
                 if (position == 0) {
                     if (mPhotoWallView != null) {
+                        mSmartRefresh.setEnableLoadMore(mPhotoWallView.getMHasMore());
                         mPhotoWallView.getPhotos(false);
                     }
                 } else if (position == 1) {
                     if (mFeedsWallView != null) {
+                        mSmartRefresh.setEnableLoadMore(mFeedsWallView.isHasMore());
                         mFeedsWallView.getFeeds(false);
                     }
                 } else if (position == 2) {
                     if (mProducationWallView != null) {
+                        mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
                         mProducationWallView.getProducations(false);
                     }
                 }
@@ -702,7 +705,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void onRequestSucess() {
+    public void onRequestSucess(boolean hasMore) {
+        mSmartRefresh.finishRefresh();
+        mSmartRefresh.setEnableLoadMore(hasMore);
         mSmartRefresh.finishLoadMore();
     }
 }

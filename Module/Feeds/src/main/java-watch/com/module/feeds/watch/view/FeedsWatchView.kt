@@ -48,7 +48,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 
 class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
-
     val TAG = "FeedsWatchView"
 
     constructor(fragment: BaseFragment, type: Int, userInfoModel: UserInfoModel, callBack: RequestCallBack?) : this(fragment, type) {
@@ -78,6 +77,8 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     val playCallback: PlayerCallbackAdapter
 
+    var hasMore = true // 是否可以加载更多
+
     private var mUserInfo: UserInfoModel? = null
     private var mCallBack: RequestCallBack? = null
     private var mTipsDialogView: TipsDialogView? = null
@@ -87,6 +88,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             return true
         }
         return false
+    }
+
+    override fun isHasMore(): Boolean {
+        return hasMore
     }
 
     init {
@@ -411,10 +416,13 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mPersenter.mUserInfo = mUserInfo
     }
 
-    override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
+    override fun addWatchList(list: List<FeedsWatchModel>?, isClear: Boolean, hasMore: Boolean) {
+        this.hasMore = hasMore
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
-        mCallBack?.onRequestSucess()
+        mRefreshLayout.setEnableLoadMore(hasMore)
+
+        mCallBack?.onRequestSucess(hasMore)
         if (isClear) {
             mAdapter?.mDataList?.clear()
             if (list != null && list.isNotEmpty()) {
@@ -445,7 +453,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     override fun requestError() {
-        mCallBack?.onRequestSucess()
+        mCallBack?.onRequestSucess(true)
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
     }
