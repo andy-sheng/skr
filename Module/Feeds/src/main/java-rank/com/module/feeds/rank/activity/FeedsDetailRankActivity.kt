@@ -1,6 +1,7 @@
 package com.module.feeds.rank.activity
 
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -38,9 +39,6 @@ class FeedsDetailRankActivity : BaseActivity() {
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mRefreshLayout: SmartRefreshLayout
     lateinit var mRecyclerView: RecyclerView
-    lateinit var mRecordCover: SimpleDraweeView
-    lateinit var mNameTv: TextView
-    lateinit var mLikeNumTv: TextView
     lateinit var mHitIv: ImageView
 
     private val mAdapter: FeedDetailAdapter = FeedDetailAdapter()
@@ -74,16 +72,12 @@ class FeedsDetailRankActivity : BaseActivity() {
 
         mTitlebar = findViewById(R.id.titlebar)
 
-        mRecordCover = findViewById(R.id.record_cover)
-        mNameTv = findViewById(R.id.name_tv)
-        mLikeNumTv = findViewById(R.id.like_num_tv)
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mRecyclerView = findViewById(R.id.recycler_view)
-        mHitIv = findViewById(R.id.hit_iv);
-
+        mHitIv = findViewById(R.id.hit_iv)
 
         mTitlebar.centerTextView.text = title
-        mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mRecyclerView.layoutManager = GridLayoutManager(this, 3)
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
 
@@ -177,19 +171,10 @@ class FeedsDetailRankActivity : BaseActivity() {
             mRefreshLayout.setEnableLoadMore(false)
         }
 
-        list?.let { mAdapter.mDataList.addAll(it) }
-        mAdapter.notifyDataSetChanged()
-        if (isClean && mAdapter.mDataList.isNotEmpty()) {
-            bindTopData(mAdapter.mDataList[0])
+        list?.let {
+            mAdapter.mDataList.addAll(it)
         }
-    }
-
-    private fun bindTopData(feedsWatchModel: FeedsWatchModel) {
-        AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(feedsWatchModel.user?.avatar).setCircle(true).build())
-        mNameTv.text = UserInfoManager.getInstance().getRemarkName(feedsWatchModel.user?.userID
-                ?: 0, feedsWatchModel.user?.nickname)
-        mLikeNumTv.text = feedsWatchModel.starCnt.toString()
-
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun useEventBus(): Boolean {
