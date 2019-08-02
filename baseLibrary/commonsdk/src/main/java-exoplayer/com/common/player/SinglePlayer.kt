@@ -102,7 +102,7 @@ object SinglePlayer : IPlayerEx {
     }
 
     override fun isBufferingOk(): Boolean {
-        return player.isPlaying && player.isBufferingOk
+        return player.isBufferingOk
     }
 
 }
