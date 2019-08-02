@@ -4,6 +4,9 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
@@ -17,6 +20,8 @@ import com.module.feeds.R
 
 class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
     var TAG = "FeedsRecordAnimationView"
+    val AVATAR_ANIM = 0
+
     var panelDrawable: Drawable? = null
     var panelWidth: Float? = 0f
     var panelMarginTop: Float? = 0f
@@ -44,6 +49,14 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     var hasLayouted = false
     var wantPlaying = false
     private var hideWhenPause = false
+
+    val mHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            if (msg?.what == AVATAR_ANIM) {
+                playAvatarAnim()
+            }
+        }
+    }
 
     init {
         TAG += hashCode()
@@ -112,8 +125,9 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
                 .build())
     }
 
-    fun play() {
-        MyLog.d(TAG, "play playing=$playing 动画在播 = ${avatarAnimation?.isRunning == true}")
+    fun play(isBufferingOk: Boolean) {
+        MyLog.d(TAG, "play playing=$playing 动画在播 = ${avatarAnimation?.isRunning == true}, isBufferingOk is $isBufferingOk")
+        mHandler.removeMessages(AVATAR_ANIM)
         wantPlaying = true
         if (playing && avatarAnimation?.isRunning == true) {
             return
@@ -124,8 +138,19 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
             return
         }
         playing = true
-        rotateAnimationStop?.cancel()
+        rotateAnimationStop?.pause()
         rotateAnimationPlay?.start()
+
+        if (isBufferingOk) {
+            mHandler.sendEmptyMessageDelayed(AVATAR_ANIM, 800)
+        }
+    }
+
+    fun play() {
+        play(true)
+    }
+
+    fun playAvatarAnim() {
         avatarAnimation?.let {
             if (it.isStarted) {
                 it.resume()
@@ -137,7 +162,20 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         }
     }
 
+    fun buffering() {
+        mHandler.removeMessages(AVATAR_ANIM)
+        avatarAnimation?.pause()
+    }
+
+    fun bufferEnd() {
+        mHandler.removeMessages(AVATAR_ANIM)
+        if (playing) {
+            avatarAnimation?.resume()
+        }
+    }
+
     fun pause() {
+        mHandler.removeMessages(AVATAR_ANIM)
         MyLog.d(TAG, "pause playing=$playing 动画在播= ${avatarAnimation?.isRunning != true}")
         if (!playing && avatarAnimation?.isRunning != true) {
             return
@@ -215,6 +253,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         avatarAnimation?.cancel()
+        mHandler.removeMessages(AVATAR_ANIM)
         rockerIv?.clearAnimation()
     }
 

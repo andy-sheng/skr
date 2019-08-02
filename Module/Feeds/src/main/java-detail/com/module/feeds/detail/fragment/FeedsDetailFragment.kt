@@ -124,9 +124,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             if (percent == 100) {
                 if (mp!!.isPlaying) {
                     mFeedsCommonLyricView!!.resume()
+                    mRadioView?.bufferEnd()
                 }
             } else {
                 mFeedsCommonLyricView!!.pause()
+                mRadioView?.buffering()
             }
         }
 
@@ -481,7 +483,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     private fun startPlay() {
         mControlTv?.isSelected = true
-        mRadioView?.play()
+        mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
             FeedsPlayStatistics.addExpose(mFeedsWatchModel?.feedID)
             SinglePlayer.startPlay(playerTag, it)
