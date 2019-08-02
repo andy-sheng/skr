@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.log.MyLog
 import com.module.feeds.R
-import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
 import com.module.feeds.watch.listener.FeedsListener
-import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.EmptyFeedWallHolder
 import com.module.feeds.watch.viewholder.FeedViewHolder
 import com.module.feeds.watch.viewholder.FeedsWallViewHolder
+import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
 
 class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -50,6 +49,12 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                 } else if (type == REFRESH_TYPE_LYRIC) {
                     if (mDataList[position] == mCurrentPlayModel) {
                         holder.playLyric()
+                    }
+                } else if (type == REFRESH_LYRIC_STATE) {
+                    if (mDataList[position].song?.lyricType == 0) {
+                        holder.pauseLyricWhenBuffering()
+                    } else {
+                        holder.resumeLyricWhenBufferingEnd()
                     }
                 }
             }
@@ -155,6 +160,22 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         }
     }
 
+    fun pauseLyricWhenBuffering() {
+        if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
+            mCurrentPlayModel?.song?.lyricType = 0
+        }
+
+        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_LYRIC_STATE)
+    }
+
+    fun resumeLyricWhenBufferingEnd() {
+        if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
+            mCurrentPlayModel?.song?.lyricType = 1
+        }
+
+        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_LYRIC_STATE)
+    }
+
     /**
      * 更新播放进度
      */
@@ -172,5 +193,6 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         const val REFRESH_TYPE_LIKE = 1  // 局部刷新喜欢
         const val REFRESH_TYPE_COMMENT = 2  // 局部刷新评论数
         const val REFRESH_TYPE_LYRIC = 3  // 局部刷新歌词
+        const val REFRESH_LYRIC_STATE = 4  // 局部刷新歌词
     }
 }

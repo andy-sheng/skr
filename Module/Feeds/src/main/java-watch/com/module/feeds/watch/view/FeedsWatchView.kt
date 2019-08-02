@@ -1,5 +1,6 @@
 package com.module.feeds.watch.view
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -12,10 +13,10 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
-import com.common.player.SinglePlayer
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.utils.dp
@@ -27,16 +28,16 @@ import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import com.module.feeds.watch.presenter.FeedWatchViewPresenter
-import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
-import com.module.feeds.watch.listener.FeedsListener
-import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.event.FeedWatchChangeEvent
 import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
+import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.presenter.FeedWatchViewPresenter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -218,6 +219,17 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
             override fun openTimeFlyMonitor(): Boolean {
                 return true
+            }
+
+            override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+                MyLog.d(TAG, "onBufferingUpdate percent=$percent")
+                if (percent == 100) {
+                    if (mp!!.isPlaying) {
+                        mAdapter!!.resumeLyricWhenBufferingEnd()
+                    }
+                } else {
+                    mAdapter!!.pauseLyricWhenBuffering()
+                }
             }
 
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {

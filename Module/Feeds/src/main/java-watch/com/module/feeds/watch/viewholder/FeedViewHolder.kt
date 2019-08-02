@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
-import com.common.core.userinfo.UserInfoManager
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
@@ -14,13 +13,13 @@ import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.component.person.utils.StringFromatUtils
-import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.detail.view.AutoScrollLyricView
 import com.module.feeds.detail.view.FeedsManyLyricView
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.view.FeedsRecordAnimationView
 
 open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(rootView) {
 
@@ -155,6 +154,12 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mCommentNumTv.text = StringFromatUtils.formatTenThousand(watchModel.exposure)
     }
 
+    fun refreshLyricType(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
+
+    }
+
     fun startPlay() {
         mRecordView.play()
     }
@@ -174,6 +179,22 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         if (MyLog.isDebugLogOpen()) {
             mDebugTv.text = "playDurMs:${model?.song?.playDurMs} \n" +
                     "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}"
+        }
+    }
+
+    fun pauseLyricWhenBuffering() {
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+            feedWatchManyLyricView.pause()
+        } else {
+            feedAutoScrollLyricView.pause()
+        }
+    }
+
+    fun resumeLyricWhenBufferingEnd() {
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+            feedWatchManyLyricView.resume()
+        } else {
+            feedAutoScrollLyricView.resume()
         }
     }
 
