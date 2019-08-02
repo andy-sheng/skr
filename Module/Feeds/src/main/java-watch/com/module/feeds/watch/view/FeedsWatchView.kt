@@ -134,10 +134,13 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             }
 
             override fun onClickCommentListener(watchModel: FeedsWatchModel?) {
-                // 评论
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                        .withSerializable("feed_model", watchModel)
-                        .navigation()
+                // 必须不为空，且审核通过
+                if (watchModel != null && watchModel.status == 2) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                            .withSerializable("feed_model", watchModel)
+                            .navigation()
+                }
+
             }
 
             override fun onClickHitListener(watchModel: FeedsWatchModel?) {
@@ -148,11 +151,14 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onClickDetailListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 详情  声音要连贯
                 // 这样返回时能 resume 上
-                mAdapter?.mCurrentPlayModel = watchModel
-                mAdapter?.mCurrentPlayPosition = position
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                        .withSerializable("feed_model", watchModel)
-                        .navigation()
+                if (watchModel != null && watchModel.status == 2) {
+                    mAdapter?.mCurrentPlayModel = watchModel
+                    mAdapter?.mCurrentPlayPosition = position
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                            .withSerializable("feed_model", watchModel)
+                            .navigation()
+                }
+
             }
 
             override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
