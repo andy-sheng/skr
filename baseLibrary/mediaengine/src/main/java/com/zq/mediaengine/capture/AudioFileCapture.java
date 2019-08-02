@@ -368,6 +368,11 @@ public class AudioFileCapture {
     public void release() {
         stop();
         mDecodeHandler.sendEmptyMessage(CMD_RELEASE);
+        mOnPreparedListener = null;
+        mOnPositionUpdateListener = null;
+        mOnCompletionListener = null;
+        mOnErrorListener = null;
+        mOnSeekCompletionListener = null;
     }
 
     /**
