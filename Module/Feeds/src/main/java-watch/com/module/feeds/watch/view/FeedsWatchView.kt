@@ -327,6 +327,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
+        MyLog.d(TAG, "controlPlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
         if (model != null && model.feedID != mAdapter?.mCurrentPlayModel?.feedID) {
             SinglePlayer.reset(playerTag)
         }
@@ -345,9 +346,11 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun startPlay(pos: Int, model: FeedsWatchModel?) {
+        MyLog.d(TAG, "startPlayModel fragment.fragmentVisible = ${fragment.fragmentVisible}")
         mAdapter?.startPlayModel(pos, model)
         // 数据还是要更新，只是不播放，为恢复播放做准备
         if (!fragment.fragmentVisible) {
+            mAdapter?.pausePlayModel()
             return
         }
         model?.song?.playURL?.let {
@@ -360,7 +363,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
      * 继续播放
      */
     private fun resumePlay() {
+        MyLog.d(TAG, "resumePlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
         if (!fragment.fragmentVisible) {
+            mAdapter?.pausePlayModel()
             return
         }
         mAdapter?.resumePlayModel()
@@ -371,6 +376,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun pausePlay() {
+        MyLog.d(TAG, "pausePlay")
         mAdapter?.pausePlayModel()
         SinglePlayer.pause(playerTag)
     }
@@ -467,10 +473,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     override fun unselected() {
+        MyLog.d("unselected")
         pausePlay()
     }
 
     fun selected() {
+        MyLog.d(TAG, "selected")
         // 该页面选中以及从详情页返回都会回调这个方法
         if (!mPersenter.initWatchList(false)) {
             // 如果因为时间短没请求，继续往前播放

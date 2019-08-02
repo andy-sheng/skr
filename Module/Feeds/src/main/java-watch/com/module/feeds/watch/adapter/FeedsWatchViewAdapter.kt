@@ -3,6 +3,7 @@ package com.module.feeds.watch.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.common.log.MyLog
 import com.module.feeds.R
 import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
 import com.module.feeds.watch.listener.FeedsListener
@@ -30,9 +31,11 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (holder is FeedViewHolder) {
             if (payloads.isEmpty()) {
+                MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder position=$position playing=$playing")
                 // 全部刷新的布局
                 holder.bindData(position, mDataList[position])
-                if (mDataList[position] == mCurrentPlayModel && playing) {
+                if (mDataList[position].feedID == mCurrentPlayModel?.feedID && playing) {
+                    MyLog.d("FeedsWatchViewAdapter", "startPlay")
                     holder.startPlay()
                 } else {
                     holder.stopPlay()
@@ -143,6 +146,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     fun resumePlayModel() {
+        MyLog.d("FeedsWatchViewAdapter", "resumePlayModel playing=$playing mCurrentPlayPosition=$mCurrentPlayPosition mCurrentPlayModel=$mCurrentPlayModel")
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
             if (!playing) {
                 playing = true
