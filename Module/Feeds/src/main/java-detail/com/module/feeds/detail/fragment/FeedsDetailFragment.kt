@@ -60,6 +60,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mContentLayout: CollapsingToolbarLayout? = null
     var mBlurBg: BaseImageView? = null
     var mXinIv: ExImageView? = null
+    var mCollectionIv: ExImageView? = null
     var mShareIv: ExImageView? = null
     var mBtnBack: ImageView? = null
     var mSongNameTv: ExTextView? = null
@@ -190,6 +191,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mRadioView = rootView.findViewById(R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
+        mCollectionIv = rootView.findViewById(R.id.collection_iv)
         mFeedsDetailPresenter = FeedsDetailPresenter(this)
         addPresent(mFeedsDetailPresenter)
 
@@ -386,6 +388,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         SinglePlayer.addCallback(playerTag, playCallback)
         startPlay()
+        mFeedsDetailPresenter?.checkCollect(mFeedsWatchModel!!.feedID)
     }
 
     private fun showMoreOp() {
@@ -451,6 +454,17 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun onPause() {
         super.onPause()
         pausePlay()
+    }
+
+    override fun collectFinish(c: Boolean) {
+        mCollectionIv?.isSelected = c
+    }
+
+    override fun isCollect(c: Boolean) {
+        mCollectionIv?.isSelected = c
+        mCollectionIv?.setDebounceViewClickListener {
+            mFeedsDetailPresenter?.collection(!mCollectionIv!!.isSelected, mFeedsWatchModel!!.feedID)
+        }
     }
 
     override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {

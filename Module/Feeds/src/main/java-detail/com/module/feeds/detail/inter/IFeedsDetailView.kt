@@ -6,4 +6,6 @@ interface IFeedsDetailView {
     fun addCommentSuccess(model: FirstLevelCommentModel)
     fun likeFeed(like: Boolean)
     fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean)
+    fun collectFinish(c: Boolean)
+    fun isCollect(c: Boolean)
 }

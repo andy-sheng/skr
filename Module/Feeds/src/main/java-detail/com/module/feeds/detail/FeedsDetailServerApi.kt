@@ -72,4 +72,20 @@ interface FeedsDetailServerApi {
      */
     @GET("/v1/mate/has-relation")
     fun getRelation(@Query("toUserID") toUserID: Int): Observable<ApiResult>
+
+    /**
+     * 收藏feed  {
+     *        "feedID": 0,
+     *        "like": true
+     *        }
+     */
+    @PUT("v1/feed/collect")
+    fun collectFeed(@Body body: RequestBody): Observable<ApiResult>
+
+    /**
+     * 用户和feed的关系
+     * 全民神曲
+     */
+    @GET("v1/feed/user-mate")
+    fun checkCollects(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
 }
