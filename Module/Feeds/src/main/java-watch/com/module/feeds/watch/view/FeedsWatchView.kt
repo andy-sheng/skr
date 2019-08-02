@@ -359,14 +359,17 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
         MyLog.d(TAG, "controlPlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
-        if (model != null && model.feedID != mAdapter?.mCurrentPlayModel?.feedID) {
+        if (model != null &&
+                !(model.feedID == mAdapter?.mCurrentPlayModel?.feedID && model.song?.songID == mAdapter?.mCurrentPlayModel?.song?.songID)) {
             SinglePlayer.reset(playerTag)
         }
         if (isMustPlay) {
             // 播放
             startPlay(pos, model)
         } else {
-            if (mAdapter?.mCurrentPlayModel?.feedID == model?.feedID && mAdapter?.playing == true) {
+            if (mAdapter?.mCurrentPlayModel?.feedID == model?.feedID
+                    && mAdapter?.mCurrentPlayModel?.song?.songID == model?.song?.songID
+                    && mAdapter?.playing == true) {
                 // 停止播放
                 pausePlay()
             } else {

@@ -33,7 +33,9 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                 MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder position=$position playing=$playing")
                 // 全部刷新的布局
                 holder.bindData(position, mDataList[position])
-                if (mDataList[position].feedID == mCurrentPlayModel?.feedID && playing) {
+                if (mDataList[position].feedID == mCurrentPlayModel?.feedID
+                        && mDataList[position].song?.songID == mCurrentPlayModel?.song?.songID
+                        && playing) {
                     MyLog.d("FeedsWatchViewAdapter", "startPlay")
                     holder.startPlay()
                 } else {
