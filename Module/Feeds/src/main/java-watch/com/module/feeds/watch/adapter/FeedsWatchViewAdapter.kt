@@ -48,13 +48,13 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                     holder.refreshComment(position, mDataList[position])
                 } else if (type == REFRESH_TYPE_LYRIC) {
                     if (mDataList[position] == mCurrentPlayModel) {
-                        holder.playLyric()
+                        holder.playLyric(position, mDataList[position])
                     }
                 } else if (type == REFRESH_LYRIC_STATE) {
                     if (mDataList[position].song?.lyricType == 0) {
-                        holder.pauseLyricWhenBuffering()
+                        holder.pauseLyricWhenBuffering(position, mDataList[position])
                     } else {
-                        holder.resumeLyricWhenBufferingEnd()
+                        holder.resumeLyricWhenBufferingEnd(position, mDataList[position])
                     }
                 }
             }

@@ -154,17 +154,13 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mCommentNumTv.text = StringFromatUtils.formatTenThousand(watchModel.exposure)
     }
 
-    fun refreshLyricType(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
-
-    }
-
     fun startPlay() {
         mRecordView.play()
     }
 
-    fun playLyric() {
+    fun playLyric(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
         // 播放歌词 不一定是从头开始播
         // 有可能从头播 也有可能继续播
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
@@ -182,7 +178,9 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
     }
 
-    fun pauseLyricWhenBuffering() {
+    fun pauseLyricWhenBuffering(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
             feedWatchManyLyricView.pause()
         } else {
@@ -190,7 +188,9 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
     }
 
-    fun resumeLyricWhenBufferingEnd() {
+    fun resumeLyricWhenBufferingEnd(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
             feedWatchManyLyricView.resume()
         } else {
