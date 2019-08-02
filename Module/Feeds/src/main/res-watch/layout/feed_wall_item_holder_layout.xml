@@ -100,6 +100,7 @@
         android:layout_marginRight="@dimen/view_10_dp"
         app:avatarWidth="@dimen/view_62_dp"
         app:endAngle="-45"
+        app:hideWhenPause="true"
         app:layout_constraintRight_toRightOf="@id/song_area_bg"
         app:layout_constraintTop_toTopOf="@id/song_area_bg"
         app:panelDrawable="@drawable/record_film_icon"
@@ -107,7 +108,7 @@
         app:rockerDrawable="@drawable/record_pointer_icon"
         app:rockerXP="1.0"
         app:rockerYP="0"
-        app:startAngle="-80" />
+        app:startAngle="-70" />
 
     <!-- 歌词view -->
     <ViewStub
