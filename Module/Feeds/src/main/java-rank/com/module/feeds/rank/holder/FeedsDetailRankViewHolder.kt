@@ -24,11 +24,12 @@ class FeedsDetailRankViewHolder(item: View, onClickPlayListener: ((model: FeedsW
     val mSongPlayIv: ExImageView = item.findViewById(R.id.song_play_iv)
 
     init {
-//        mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
-//            override fun clickValid(v: View?) {
-//                onClickPlayListener?.invoke(mModel, mPosition)
-//            }
-//        })
+        mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                onClickPlayListener?.invoke(mModel, mPosition)
+            }
+        })
+
         itemView.setOnClickListener(object : DebounceViewClickListener(){
             override fun clickValid(v: View?) {
                 onClickPlayListener?.invoke(mModel, mPosition)

@@ -36,26 +36,19 @@ class ProducationHolder(itemView: View, mIsSelf: Boolean,
     internal var mIsPlay: Boolean = false
     internal var mModel: ProducationModel? = null
 
-    private var mCoverIv: SimpleDraweeView
-    private var mPlayBackIv: ExImageView
-    internal var mSongNameTv: ExTextView
-    private var mSongOwnerTv: ExTextView
-    private var mShareArea: RelativeLayout
-    private var mDeleArea: RelativeLayout
-    private var mPlayNumArea: RelativeLayout
-    private var mPlayNumTv: TextView
+    private val mCoverIv: SimpleDraweeView = itemView.findViewById(R.id.cover_iv)
+    private val mCoverMask: ExImageView = itemView.findViewById(R.id.cover_mask)
+    private val mPlayBackIv: ExImageView = itemView.findViewById(R.id.play_back_iv)
+    internal val mSongNameTv: ExTextView = itemView.findViewById(R.id.song_name_tv)
+    private val mSongOwnerTv: ExTextView = itemView.findViewById(R.id.song_owner_tv)
+    private val mShareArea: RelativeLayout = itemView.findViewById(R.id.share_area)
+    private val mDeleArea: RelativeLayout = itemView.findViewById(R.id.dele_area)
+    private val mPlayNumArea: RelativeLayout = itemView.findViewById(R.id.play_num_area)
+    private val mPlayNumTv: TextView = itemView.findViewById(R.id.play_num_tv)
+
 
     init {
         itemView.tag = this
-        mCoverIv = itemView.findViewById<View>(R.id.cover_iv) as SimpleDraweeView
-        mPlayBackIv = itemView.findViewById<View>(R.id.play_back_iv) as ExImageView
-        mSongNameTv = itemView.findViewById<View>(R.id.song_name_tv) as ExTextView
-        mSongOwnerTv = itemView.findViewById<View>(R.id.song_owner_tv) as ExTextView
-        mShareArea = itemView.findViewById<View>(R.id.share_area) as RelativeLayout
-        mDeleArea = itemView.findViewById<View>(R.id.dele_area) as RelativeLayout
-        mPlayNumArea = itemView.findViewById<View>(R.id.play_num_area) as RelativeLayout
-        mPlayNumTv = itemView.findViewById<View>(R.id.play_num_tv) as TextView
-
         if (mIsSelf) {
             mDeleArea.visibility = View.VISIBLE
         } else {
@@ -71,6 +64,16 @@ class ProducationHolder(itemView: View, mIsSelf: Boolean,
         mDeleArea.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 mOnClickDeleListener?.invoke(mPosition, mModel)
+            }
+        })
+
+        mCoverMask.setOnClickListener(object : DebounceViewClickListener(1000) {
+            override fun clickValid(v: View) {
+                if (mIsPlay) {
+                    mOnClickPlayListener?.invoke(v, !mIsPlay, mPosition, mModel)
+                } else {
+                    mOnClickPlayListener?.invoke(v, !mIsPlay, mPosition, mModel)
+                }
             }
         })
 
@@ -101,17 +104,13 @@ class ProducationHolder(itemView: View, mIsSelf: Boolean,
         if (!TextUtils.isEmpty(model.cover)) {
             FrescoWorker.loadImage(mCoverIv,
                     ImageFactory.newPathImage(model.cover)
-                            .setCornerRadius(U.getDisplayUtils().dip2px(7f).toFloat())
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                            .setBorderColor(U.getColor(R.color.white))
+                            .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.w).build())
                             .build<BaseImage>())
         } else {
             FrescoWorker.loadImage(mCoverIv,
                     ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
                             .setCornerRadius(U.getDisplayUtils().dip2px(7f).toFloat())
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                            .setBorderColor(U.getColor(R.color.white))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.w).build())
                             .build<BaseImage>())
         }

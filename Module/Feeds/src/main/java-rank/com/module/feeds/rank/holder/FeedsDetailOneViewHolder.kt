@@ -29,6 +29,11 @@ class FeedsDetailOneViewHolder(rootView: View, onClickPlayListener: ((model: Fee
                 onClickPlayListener?.invoke(mModel, mPosition)
             }
         })
+        mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                onClickPlayListener?.invoke(mModel, mPosition)
+            }
+        })
     }
 
     fun bindData(position: Int, model: FeedsWatchModel) {

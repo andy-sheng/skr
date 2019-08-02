@@ -23,7 +23,14 @@ class FeedsCollectViewHolder(item: View, var onClickPlayListener: ((model: Feeds
     var mPosition: Int = 0
 
     init {
+        //TODO 为什么itemView的点击事件覆盖不了ExImageView
         mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                onClickPlayListener?.invoke(mModel, mPosition)
+            }
+        })
+
+        itemView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 onClickPlayListener?.invoke(mModel, mPosition)
             }

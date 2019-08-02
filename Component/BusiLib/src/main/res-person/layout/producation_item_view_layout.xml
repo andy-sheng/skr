@@ -18,6 +18,7 @@
         android:layout_marginTop="@dimen/view_10_dp" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/cover_mask"
         android:layout_width="@dimen/view_56_dp"
         android:layout_height="@dimen/view_56_dp"
         android:layout_alignLeft="@id/cover_iv"
