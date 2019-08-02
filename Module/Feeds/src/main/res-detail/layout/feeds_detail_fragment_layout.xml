@@ -50,6 +50,12 @@
                         android:layout_height="386dp"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="386dp"
+                        android:background="@color/black_trans_20"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <ImageView
                         android:id="@+id/btn_back"
                         android:layout_width="wrap_content"
