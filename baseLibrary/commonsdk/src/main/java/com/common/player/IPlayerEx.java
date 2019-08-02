@@ -25,4 +25,7 @@ public interface IPlayerEx {
 
     void seekTo(String from,long msec);
 
+    boolean isPlaying();// 是否为播放状态
+
+    boolean isBufferingOk();// 是否buffering
 }

@@ -158,6 +158,15 @@ public class MyMediaPlayer implements IPlayer {
     }
 
     @Override
+    public boolean isBufferingOk() {
+        if (useAndroidMediaPlayer) {
+            return mAndroidMediaPlayer.isBufferingOk();
+        } else {
+            return mExoPlayer.isBufferingOk();
+        }
+    }
+
+    @Override
     public void setGravity(Object view, int gravity, int width, int height) {
         if (useAndroidMediaPlayer) {
             mAndroidMediaPlayer.setGravity(view, gravity, width, height);

@@ -3,6 +3,7 @@ package com.common.player
 import android.media.MediaPlayer
 
 object SinglePlayer : IPlayerEx {
+
     val player = MyMediaPlayer()
     var startFrom = "" // 当前player 被谁使用
     val callbackMap = HashMap<String, IPlayerCallback>()
@@ -94,6 +95,14 @@ object SinglePlayer : IPlayerEx {
         if (startFrom == from) {
             player.seekTo(msec)
         }
+    }
+
+    override fun isPlaying(): Boolean {
+        return player.isPlaying
+    }
+
+    override fun isBufferingOk(): Boolean {
+        return player.isPlaying && player.isBufferingOk
     }
 
 }

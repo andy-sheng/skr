@@ -71,7 +71,7 @@ public class ExoPlayer extends BasePlayer {
     private float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
     private boolean mMuted = false;
-
+    private boolean bufferingOk = false;
     public ExoPlayer() {
         TAG += hashCode();
         MyLog.w(TAG, "ExoPlayer()");
@@ -120,6 +120,17 @@ public class ExoPlayer extends BasePlayer {
             @Override
             public void onLoadingChanged(boolean isLoading) {
                 MyLog.d(TAG, "onLoadingChanged" + " isLoading=" + isLoading);
+                if(isLoading){
+                    bufferingOk = false;
+                    if (mCallback != null) {
+                        mCallback.onBufferingUpdate(null,0);
+                    }
+                }else{
+                    bufferingOk = true;
+                    if (mCallback != null) {
+                        mCallback.onBufferingUpdate(null,100);
+                    }
+                }
 
             }
 
@@ -128,6 +139,7 @@ public class ExoPlayer extends BasePlayer {
                 MyLog.d(TAG, "onPlayerStateChanged" + " playWhenReady=" + playWhenReady + " playbackState=" + playbackState);
                 switch (playbackState) {
                     case com.google.android.exoplayer2.ExoPlayer.STATE_BUFFERING:
+
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_ENDED:
                         if (mCallback != null) {
@@ -406,6 +418,14 @@ public class ExoPlayer extends BasePlayer {
             return false;
         }
         return mPlayer.getPlayWhenReady();
+    }
+
+    @Override
+    public boolean isBufferingOk() {
+        if (mPlayer == null) {
+            return false;
+        }
+        return bufferingOk;
     }
 
 

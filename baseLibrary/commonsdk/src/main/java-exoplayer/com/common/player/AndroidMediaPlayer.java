@@ -46,6 +46,7 @@ public class AndroidMediaPlayer extends BasePlayer {
 
     private boolean mMuted = false;
     private long seekPos = -1;
+    private boolean bufferingOk = false;
 
     public AndroidMediaPlayer() {
         TAG += hashCode();
@@ -153,6 +154,11 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                if(percent>=100){
+                    bufferingOk = true;
+                }else{
+                    bufferingOk = false;
+                }
                 mCallback.onBufferingUpdate(mp, percent);
             }
         });
@@ -200,6 +206,14 @@ public class AndroidMediaPlayer extends BasePlayer {
             return false;
         }
         return mPlayer.isPlaying();
+    }
+
+    @Override
+    public boolean isBufferingOk() {
+        if (mPlayer == null) {
+            return false;
+        }
+        return bufferingOk;
     }
 
     @Override
@@ -417,6 +431,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPlayer.stop();
         mPath = null;
         mHasPrepared = false;
+        bufferingOk = false;
         seekPos = -1;
         stopMusicPlayTimeListener();
     }
@@ -431,6 +446,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPlayer.reset();
         mPath = null;
         mHasPrepared = false;
+        bufferingOk = false;
         seekPos = -1;
         stopMusicPlayTimeListener();
     }

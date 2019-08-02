@@ -28,6 +28,7 @@ public interface IPlayer {
 
     boolean isPlaying();
 
+    boolean isBufferingOk();
     /**
      *
      * @param view
