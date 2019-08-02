@@ -503,6 +503,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     override fun destroy() {
         mPersenter.destroy()
         mFeedsMoreDialogView?.dismiss(false)
+        SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
