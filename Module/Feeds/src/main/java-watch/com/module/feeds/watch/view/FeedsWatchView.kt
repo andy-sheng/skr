@@ -228,8 +228,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onPrepared() {
                 super.onPrepared()
                 mAdapter?.mCurrentPlayPosition?.let {
-                    mAdapter?.mDataList?.get(it + 1)?.song?.playURL?.let { it2 ->
-                        MediaCacheManager.preCache(it2)
+                    if (it + 1 < mAdapter!!.mDataList.size) {
+                        mAdapter?.mDataList?.get(it + 1)?.song?.playURL?.let { it2 ->
+                            MediaCacheManager.preCache(it2)
+                        }
                     }
                 }
             }
