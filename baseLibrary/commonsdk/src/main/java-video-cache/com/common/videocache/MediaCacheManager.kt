@@ -50,7 +50,7 @@ object MediaCacheManager {
             val outFile = File(saveFile, fileNameGenerator.generate(url))
             val outFileTemp = File(saveFile, fileNameGenerator.generate(url) + ".temp")
             if (!outFile.exists() || !outFileTemp.exists()) {
-                U.getHttpUtils().downloadFileSync(url, outFile, true, null)
+                U.getHttpUtils().downloadFileSync(url, outFile, true, null,1024*1024*2)
             }
             it.onComplete()
         }
