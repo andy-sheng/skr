@@ -128,6 +128,15 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
         mDividerFuncation.visibility = View.GONE
     }
 
+    fun showCollect(){
+        mCollectTv.visibility = View.VISIBLE
+        mDividerCollect.visibility = View.VISIBLE
+    }
+    fun hideCollect() {
+        mCollectTv.visibility = View.GONE
+        mDividerCollect.visibility = View.VISIBLE
+    }
+
     /**
      * 以后tips dialog 不要在外部单独写 dialog 了。
      * 可以不

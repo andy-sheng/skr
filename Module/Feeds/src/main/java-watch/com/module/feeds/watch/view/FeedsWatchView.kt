@@ -524,7 +524,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 it.feedID)
                 .apply {
                     songID = it.song?.songID ?: 0
-
+                    if (it.status != 2) {
+                        hideCollect()
+                    }
                     mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
                         override fun clickValid(v: View?) {
                             dismiss()
@@ -553,13 +555,19 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     it.feedID)
                     .apply {
                         songID = it.song?.songID ?: 0
-                        showFuncation("分享")
-                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                            override fun clickValid(v: View?) {
-                                dismiss(false)
-                                share(it)
-                            }
-                        })
+                        if (it.status != 2) {
+                            // 去掉分享和收藏
+                            hideCollect()
+                            hideFuncation()
+                        } else {
+                            showFuncation("分享")
+                            mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                override fun clickValid(v: View?) {
+                                    dismiss(false)
+                                    share(it)
+                                }
+                            })
+                        }
                         mReportTv.text = "删除"
                         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
@@ -585,13 +593,18 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     it.feedID)
                     .apply {
                         songID = it.song?.songID ?: 0
-                        showFuncation("分享")
-                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                            override fun clickValid(v: View?) {
-                                dismiss(false)
-                                share(it)
-                            }
-                        })
+                        if (it.status != 2) {
+                            hideCollect()
+                            hideFuncation()
+                        } else {
+                            showFuncation("分享")
+                            mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                                override fun clickValid(v: View?) {
+                                    dismiss(false)
+                                    share(it)
+                                }
+                            })
+                        }
                     }
         }
         mFeedsMoreDialogView?.showByDialog()
