@@ -446,6 +446,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     fun destory() {
+        SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
         mCDRotateAnimation?.setAnimationListener(null)
         mCDRotateAnimation?.cancel()
@@ -458,10 +459,12 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     fun unselected() {
+        SinglePlayer.reset(playerTag)
         stopPlay()
     }
 
     fun selected() {
+        SinglePlayer.reset(playerTag)
         initData(false)
     }
 }
