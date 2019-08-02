@@ -209,10 +209,11 @@ class LyricAndAccMatchManager {
                 }
                 params?.accLoadOk = true
                 if (params?.manyLyricsView?.visibility == View.VISIBLE) {
-                    val ts1 = params?.manyLyricsView?.curPlayingTime ?: 0
-                    +(params?.manyLyricsView?.playerSpendTime ?: 0)
+                    val a1 = params?.manyLyricsView?.curPlayingTime?:0
+                    val a2 = params?.manyLyricsView?.playerSpendTime?:0
+                    val ts1 = a1+a2
                     val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
-                    if (Math.abs(ts1 - ts2) > 1000) {
+                    if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
                         params?.manyLyricsView?.seekTo(ts2.toInt())
                     }
