@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.ActivityUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -21,9 +22,12 @@ import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
 import com.module.feeds.watch.view.FeedsWatchView
+import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
@@ -33,6 +37,7 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mFeedTab: SlidingTabLayout
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
+    private var isBackground = false   // 是否在后台
 
     val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
@@ -180,16 +185,21 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentInvisible(from: Int) {
         super.onFragmentInvisible(from)
+        MyLog.d(TAG, "onFragmentInvisible")
         mFollowFeesView.unselected()
         mRecommendFeedsView.unselected()
-        mFeedsCollectView.unselected()
+        mFeedsCollectView.postDelayed({
+            if (!isBackground) {
+                mFeedsCollectView.unselected()
+            }
+        }, 200)
         if (from == 2) {
             FeedsPlayStatistics.tryUpload(true)
         }
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun isInViewPager(): Boolean {
@@ -205,5 +215,11 @@ class FeedsWatchFragment : BaseFragment() {
         mRecommendFeedsView.destroy()
         mFollowFeesView.destroy()
         mFeedsCollectView.destory()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
+        MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
+        isBackground = !event.foreground
     }
 }

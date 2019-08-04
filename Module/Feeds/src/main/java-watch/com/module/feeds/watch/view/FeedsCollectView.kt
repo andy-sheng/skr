@@ -464,7 +464,9 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     fun selected() {
-        SinglePlayer.reset(playerTag)
-        initData(false)
+        if (!isPlaying) {
+            SinglePlayer.reset(playerTag)
+            initData(false)
+        }
     }
 }

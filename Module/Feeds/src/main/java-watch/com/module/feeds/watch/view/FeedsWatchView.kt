@@ -512,7 +512,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     override fun unselected() {
-        MyLog.d("unselected")
+        MyLog.d(TAG, "unselected")
         pausePlay()
     }
 
@@ -623,7 +623,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun share(model: FeedsWatchModel) {
-        //TODO 需要产品确认跳到哪
         val sharePanel = SharePanel(fragment.activity)
         sharePanel.setShareContent("", model.song?.workName, model.user?.nickname,
                 ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
