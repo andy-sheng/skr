@@ -73,6 +73,8 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 mOffset = obj.data.getIntValue("offset")
                 mHasMore = obj.data.getBoolean("hasMore")
                 view.addWatchList(list, isClear, mHasMore)
+            }else{
+                //TODO 请求异常，刷新中状态也要更新
             }
         }
     }

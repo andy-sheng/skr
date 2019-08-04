@@ -16,6 +16,7 @@ val requestMap = ArrayMap<String, Call<ApiResult>>()
 
 suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): ApiResult {
     rc?.let {
+        MyLog.d("ApiObserverKt", "${rc.key}请求")
         val job = requestMap[rc.key]
         if (rc.controlType == ControlType.CancelThis) {
             if (job != null) {
@@ -87,14 +88,18 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
 }
 
 private suspend fun callReal(apiKey: String?, api: () -> Call<ApiResult>): ApiResult {
-    val call = api.invoke()
-    apiKey?.let {
-        requestMap.put(apiKey, call)
+    MyLog.d("ApiObserverKt", "$apiKey 开始请求")
+    try {
+        val call = api.invoke()
+        apiKey?.let {
+            requestMap.put(apiKey, call)
+        }
+        // await 是关键
+        return call.await()
+    }finally {
+        MyLog.d("ApiObserverKt", "$apiKey 请求结束")
+        apiKey?.let {
+            requestMap.remove(apiKey)
+        }
     }
-    // await 是关键
-    val r = call.await()
-    apiKey?.let {
-        requestMap.remove(apiKey)
-    }
-    return r
 }
