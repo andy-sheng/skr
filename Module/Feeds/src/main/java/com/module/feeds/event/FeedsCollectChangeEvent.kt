@@ -1,5 +1,7 @@
 package com.module.feeds.event
 
-class FeedsCollectChangeEvent(){
+import com.module.feeds.watch.model.FeedsWatchModel
+
+class FeedsCollectChangeEvent(model: FeedsWatchModel, isCollect: Boolean) {
 
 }

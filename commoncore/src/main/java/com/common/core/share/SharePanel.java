@@ -78,6 +78,18 @@ public class SharePanel {
         mDialogPlus.show();
     }
 
+    public void dismiss() {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
+    }
+
+    public void dismiss(boolean useAnimation) {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(useAnimation);
+        }
+    }
+
     UMShareListener mUMShareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA share_media) {

@@ -6,11 +6,12 @@ import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
-import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.share.SharePanel
+import com.common.core.share.ShareType
+import com.common.core.userinfo.UserInfoManager
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
@@ -20,9 +21,9 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.FeedsWatchServerApi
+import com.module.feeds.watch.model.FeedsWatchModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -30,69 +31,89 @@ import org.greenrobot.eventbus.EventBus
 import java.util.HashMap
 
 /**
- * 关注Ta，收藏歌曲，举报和取消 //首页
- * 举报，收藏歌曲，取消  //详情页面
+ * 关注Ta,分享，举报，版权举报和取消 //首页
+ * 举报，版权举报，取消  //详情页面
+ * 收藏歌曲，分享，举报，版权举报和取消 //他人页面
+ * 收藏歌曲，分享，删除和取消 //自己页面
+ *
  * 回复，举报和取消 //长按评论
- * 分享，收藏歌曲，举报和取消 //他人页面
- * 分享，收藏歌曲，删除和取消 //自己页面
  */
-class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, val feedID: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
+class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWatchModel, isFollow: Boolean?) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
     companion object {
         const val FROM_FEED_HOME = 1
         const val FROM_FEED_DETAIL = 2
-        const val FROM_COMMENT = 3
-        const val FROM_PERSON = 4
-        const val FROM_OTHER_PERSON = 5
+        const val FROM_PERSON = 3
+        const val FROM_OTHER_PERSON = 4
     }
 
     private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
-    private val mCancleTv: ExTextView
+    val mCancleTv: ExTextView
+    val mCopyReportTv: ExTextView
     val mReportTv: ExTextView
-    val mFuncationTv: ExTextView
-    private val mDividerFuncation: View
+    val mDividerReport: View
+    val mShareTv: ExTextView
+    val mDividerShare: View
+    val mCollectTv: ExTextView
+    val mDividerCollect: View
+    val mFollowTv: ExTextView
+    val mDividerFollow: View
 
-    private val mCollectTv: ExTextView
-    private val mDividerCollect: View
-
+    var mSharePanel: SharePanel? = null
     var mDialogPlus: DialogPlus? = null
-
-    var songID: Int = 0
-    var commentID: Int = 0
 
     init {
         View.inflate(context, R.layout.feeds_more_dialog_view_layout, this)
 
         mCancleTv = findViewById(R.id.cancle_tv)
+        mCopyReportTv = findViewById(R.id.copy_report_tv)
         mReportTv = findViewById(R.id.report_tv)
-        mFuncationTv = findViewById(R.id.funcation_tv)
-        mDividerFuncation = findViewById(R.id.divider_funcation)
+        mDividerReport = findViewById(R.id.divider_report)
+        mShareTv = findViewById(R.id.share_tv)
+        mDividerShare = findViewById(R.id.divider_share)
         mCollectTv = findViewById(R.id.collect_tv)
         mDividerCollect = findViewById(R.id.divider_collect)
+        mFollowTv = findViewById(R.id.follow_tv)
+        mDividerFollow = findViewById(R.id.divider_follow)
 
+        mCancleTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 取消
+                dismiss()
+            }
+        })
 
+        mCopyReportTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 版权举报
+                dismiss(false)
+            }
+        })
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                // 普通举报
                 dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_REPORT)
                         .withInt("from", type)
-                        .withInt("targetID", targetID)
-                        .withInt("songID", songID)
-                        .withInt("commentID", commentID)
-                        .withInt("feedID", feedID)
+                        .withInt("targetID", model.user?.userID ?: 0)
+                        .withInt("songID", model.song?.songID ?: 0)
+                        .withInt("feedID", model.feedID)
                         .navigation()
             }
         })
 
-        mCancleTv.setOnClickListener(object : DebounceViewClickListener() {
+        mShareTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                dismiss()
+                // 分享
+                dismiss(false)
+                share()
             }
         })
 
         mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                // 收藏或取消收藏
                 dismiss()
                 if ("收藏歌曲".equals(mCollectTv.text)) {
                     collect(false)
@@ -102,47 +123,70 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
             }
         })
 
+        mFollowTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                // 关注Ta
+                dismiss(false)
+                UserInfoManager.getInstance().mateRelation(model.user?.userID
+                        ?: 0, UserInfoManager.RA_BUILD
+                        , false, object : UserInfoManager.ResponseCallBack<Boolean>() {
+                    override fun onServerFailed() {
+                        U.getToastUtil().showShort("关注失败了")
+                    }
+
+                    override fun onServerSucess(isFriend: Boolean?) {
+                        U.getToastUtil().showShort("关注成功")
+                    }
+                })
+            }
+        })
+
         when (type) {
-            FROM_FEED_DETAIL -> {
-                // 不用拉接口
-                mCollectTv.visibility = View.GONE
-                mDividerCollect.visibility = View.GONE
-            }
-            FROM_COMMENT -> {
-                // 不用拉接口
-                mCollectTv.visibility = View.GONE
-                mDividerCollect.visibility = View.GONE
-            }
             FROM_FEED_HOME -> {
-                // 关系和收藏
-                checkCollectAndRelation()
+                // 首页推荐和关注
+                mCollectTv.visibility = View.GONE
+                mDividerCollect.visibility = View.GONE
+                if (isFollow == false) {
+                    mFollowTv.visibility = View.VISIBLE
+                    mDividerFollow.visibility = View.VISIBLE
+                } else {
+                    mFollowTv.visibility = View.GONE
+                    mDividerFollow.visibility = View.GONE
+                }
+            }
+            FROM_FEED_DETAIL -> {
+                // 详情，只留两个举报和取消
+                mFollowTv.visibility = View.GONE
+                mDividerFollow.visibility = View.GONE
+                mCollectTv.visibility = View.GONE
+                mDividerCollect.visibility = View.GONE
+                mShareTv.visibility = View.GONE
+                mDividerShare.visibility = View.GONE
+            }
+            FROM_PERSON -> {
+                // 只留分享和删除
+                mFollowTv.visibility = View.GONE
+                mDividerFollow.visibility = View.GONE
+                mReportTv.visibility = View.GONE
+                mDividerReport.visibility = View.GONE
+                mCopyReportTv.text = "删除"
+            }
+            FROM_OTHER_PERSON -> {
+                mFollowTv.visibility = View.GONE
+                mDividerFollow.visibility = View.GONE
             }
             else -> {
-                // 收藏
-                checkColledt()
+
             }
         }
     }
 
-    fun showFuncation(text: String) {
-        mFuncationTv.text = text
-        mFuncationTv.visibility = View.VISIBLE
-        mDividerFuncation.visibility = View.VISIBLE
-    }
-
-    fun hideFuncation() {
-        mFuncationTv.visibility = View.GONE
-        mDividerFuncation.visibility = View.GONE
-    }
-
-    fun showCollect() {
-        mCollectTv.visibility = View.VISIBLE
-        mDividerCollect.visibility = View.VISIBLE
-    }
-
-    fun hideCollect() {
-        mCollectTv.visibility = View.GONE
-        mDividerCollect.visibility = View.VISIBLE
+    private fun share() {
+        mSharePanel = SharePanel(activity)
+        mSharePanel?.setShareContent("", model.song?.workName, model.user?.nickname,
+                ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
+                        model.song?.songID, model.user?.userID)))
+        mSharePanel?.show(ShareType.URL)
     }
 
     /**
@@ -169,65 +213,36 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
 
     fun dismiss() {
         mDialogPlus?.dismiss()
+        mSharePanel?.dismiss()
     }
 
     fun dismiss(isAnimation: Boolean) {
         mDialogPlus?.dismiss(isAnimation)
     }
 
-    // 检查收藏
-    private fun checkColledt() {
-        launch {
-            val result = subscribe {
-                mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)
-            }
-            if (result.errno == 0) {
-                val isCollocted = result.data.getBooleanValue("isCollected")
-                showCollected(isCollocted)
-            } else {
-
-            }
-        }
-    }
-
-    // 检查收藏和关注
-    private fun checkCollectAndRelation() {
-        launch {
-            var relation = async {
-                subscribe { mFeedServerApi.getRelation(targetID) }
-            }.await()
-
-            var collect = async {
-                subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID) }
-            }.await()
-
-            if (relation?.errno == 0 && collect?.errno == 0) {
-                val isCollocted = collect.data.getBooleanValue("isCollected")
-                val isFriend = relation.data.getBooleanValue("isFriend")
-                val isFollow = relation.data.getBooleanValue("isFollow")
-                showCollected(isCollocted)
-                if (isFollow) {
-                    hideFuncation()
-                } else {
-                    showFuncation("关注Ta")
-                }
-            } else {
-
-            }
-        }
-    }
-
     // 收藏
     private fun collect(isCollocted: Boolean) {
         launch {
             val map = HashMap<String, Any>()
-            map["feedID"] = feedID
+            map["feedID"] = model.feedID
             map["like"] = !isCollocted
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { mFeedServerApi.collectFeed(body)}
+            val result = subscribe { mFeedServerApi.collectFeed(body) }
             if (result.errno == 0) {
-                EventBus.getDefault().post(FeedsCollectChangeEvent())
+                // TODO 等服务器接口更新，将收藏接进去
+                if (isCollocted) {
+                    U.getToastUtil().showShort("收藏成功")
+                } else {
+                    U.getToastUtil().showShort("取消收藏成功")
+                }
+                EventBus.getDefault().post(FeedsCollectChangeEvent(model, !isCollocted))
+            } else {
+                if (isCollocted) {
+                    U.getToastUtil().showShort("收藏失败")
+                } else {
+                    U.getToastUtil().showShort("取消收藏失败")
+                }
             }
         }
     }

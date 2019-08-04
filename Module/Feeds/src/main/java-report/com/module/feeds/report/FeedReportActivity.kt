@@ -21,6 +21,7 @@ import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.detail.view.FeedCommentMoreDialog
 import com.module.feeds.report.adapter.FeedReportAdapter
 import com.module.feeds.report.model.FeedReportModel
 import okhttp3.MediaType
@@ -62,13 +63,13 @@ class FeedReportActivity : BaseActivity() {
         mContentEdit = findViewById(R.id.content_edit)
         mSumbitTv = findViewById(R.id.sumbit_tv)
 
-        if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
+        if (mFrom == FeedCommentMoreDialog.FROM_COMMENT) {
             mContentEdit.hint = SpannedString("请详细描述你的问题")
         } else {
             mContentEdit.hint = SpannedString("请详细描述你的问题，若作品涉及抄袭、搬运等情况，可发送详细资料至邮箱：wangliuyang@skrer.net")
         }
         mAdapter = FeedReportAdapter()
-        if (mFrom == FeedsMoreDialogView.FROM_COMMENT) {
+        if (mFrom == FeedCommentMoreDialog.FROM_COMMENT) {
             // 只有这个是举报评论的
             mAdapter.mDataList = getReportComment()
         } else {
@@ -102,7 +103,7 @@ class FeedReportActivity : BaseActivity() {
                         // 举报作品，来源他人主页
                         reportFeed(content, list, 2)
                     }
-                    FeedsMoreDialogView.FROM_COMMENT -> {
+                    FeedCommentMoreDialog.FROM_COMMENT -> {
                         // 举报评论，来源评论
                         reportComment(content, list)
                     }

@@ -33,6 +33,7 @@ import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.event.FeedWatchChangeEvent
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
@@ -389,7 +390,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             return
         }
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.addExpose(model?.feedID)
+            FeedsPlayStatistics.addExpose(model.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -479,9 +480,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     override fun feedLikeResult(position: Int, model: FeedsWatchModel, isLike: Boolean) {
         model.isLiked = isLike
         if (isLike) {
-            model.starCnt = model.starCnt?.plus(1)
+            model.starCnt = model.starCnt.plus(1)
         } else {
-            model.starCnt = model.starCnt?.minus(1)
+            model.starCnt = model.starCnt.minus(1)
         }
         mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
     }
@@ -526,57 +527,35 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun homePagerMore(it: FeedsWatchModel) {
-        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME,
-                it.user?.userID ?: 0,
-                it.feedID)
-                .apply {
-                    songID = it.song?.songID ?: 0
-                    if (it.status != 2) {
-                        hideCollect()
-                    }
-                    mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                        override fun clickValid(v: View?) {
-                            dismiss()
-                            UserInfoManager.getInstance().mateRelation(it.user?.userID
-                                    ?: 0, UserInfoManager.RA_BUILD
-                                    , false, object : UserInfoManager.ResponseCallBack<Boolean>() {
-                                override fun onServerFailed() {
-                                    U.getToastUtil().showShort("关注失败了")
-                                }
-
-                                override fun onServerSucess(isFriend: Boolean?) {
-                                    U.getToastUtil().showShort("关注成功")
-                                }
-                            })
-                        }
-                    })
+        mFeedsMoreDialogView?.dismiss(false)
+        if (it.user?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
+            mFeedsMoreDialogView?.showByDialog()
+        } else {
+            UserInfoManager.getInstance().getUserRelationByUuid(it.user?.userID
+                    ?: 0, object : UserInfoManager.ResultCallback<UserInfoModel>() {
+                override fun onGetServer(t: UserInfoModel?): Boolean {
+                    mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, t?.isFollow
+                            ?: false)
+                    mFeedsMoreDialogView?.showByDialog()
+                    return false
                 }
-        mFeedsMoreDialogView?.showByDialog()
+
+                override fun onGetLocalDB(t: UserInfoModel?): Boolean {
+                    return false
+                }
+
+            })
+        }
     }
 
     private fun personPageMore(position: Int, it: FeedsWatchModel) {
         if ((mUserInfo?.userId
                         ?: 0).toLong() == MyUserInfoManager.getInstance().uid) {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON,
-                    it.user?.userID ?: 0,
-                    it.feedID)
+            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON, it, null)
                     .apply {
-                        songID = it.song?.songID ?: 0
-                        if (it.status != 2) {
-                            // 去掉分享和收藏
-                            hideCollect()
-                            hideFuncation()
-                        } else {
-                            showFuncation("分享")
-                            mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                                override fun clickValid(v: View?) {
-                                    dismiss(false)
-                                    share(it)
-                                }
-                            })
-                        }
-                        mReportTv.text = "删除"
-                        mReportTv.setOnClickListener(object : DebounceViewClickListener() {
+                        mCopyReportTv.text = "删除"
+                        mCopyReportTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss(false)
                                 mTipsDialogView = TipsDialogView.Builder(fragment.activity)
@@ -600,34 +579,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         })
                     }
         } else {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON,
-                    it.user?.userID ?: 0,
-                    it.feedID)
-                    .apply {
-                        songID = it.song?.songID ?: 0
-                        if (it.status != 2) {
-                            hideCollect()
-                            hideFuncation()
-                        } else {
-                            showFuncation("分享")
-                            mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
-                                override fun clickValid(v: View?) {
-                                    dismiss(false)
-                                    share(it)
-                                }
-                            })
-                        }
-                    }
+            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_OTHER_PERSON, it, null)
         }
         mFeedsMoreDialogView?.showByDialog()
-    }
-
-    private fun share(model: FeedsWatchModel) {
-        val sharePanel = SharePanel(fragment.activity)
-        sharePanel.setShareContent("", model.song?.workName, model.user?.nickname,
-                ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
-                        model.song?.songID, model.user?.userID)))
-        sharePanel.show(ShareType.URL)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -638,6 +592,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             mAdapter?.update(it, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
             mAdapter?.update(it, FeedsWatchViewAdapter.REFRESH_TYPE_COMMENT)
         }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedsCollectChangeEvent){
+        // 收藏状态更新
     }
 }

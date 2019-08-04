@@ -20,8 +20,8 @@ import com.module.feeds.detail.model.CommentCountModel
 import com.module.feeds.detail.model.FeedsCommentEmptyModel
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsSecondCommentPresenter
+import com.module.feeds.detail.view.FeedCommentMoreDialog
 import com.module.feeds.detail.view.FeedsInputContainerView
-import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -42,7 +42,8 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     var feedsCommendAdapter: FeedsCommentAdapter? = null
     var mFeedsSecondCommentPresenter: FeedsSecondCommentPresenter? = null
     var mFeedsID: Int? = null
-    var mMoreDialogPlus: FeedsMoreDialogView? = null
+
+    var mMoreDialogPlus: FeedCommentMoreDialog? = null
 
     override fun initView(): Int {
         return com.module.feeds.R.layout.feeds_comment_detail_fragment_layout
@@ -145,13 +146,9 @@ class FeedsCommentDetailFragment : BaseFragment(), IFirstLevelCommentView {
     private fun showCommentOp(model: FirstLevelCommentModel) {
         mMoreDialogPlus?.dismiss()
         activity?.let {
-            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
-                    , model?.commentUser?.userID ?: 0
-                    , model.comment.feedID)
+            mMoreDialogPlus = FeedCommentMoreDialog(it, model)
                     .apply {
-                        commentID = model.comment.commentID
-                        showFuncation("回复")
-                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                        mReplyTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss()
                                 mRefuseModel = model

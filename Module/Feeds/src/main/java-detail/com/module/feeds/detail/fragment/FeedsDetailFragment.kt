@@ -38,6 +38,7 @@ import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
+import com.module.feeds.detail.view.FeedCommentMoreDialog
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
@@ -85,6 +86,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCommonTitleBar: CommonTitleBar? = null
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
+    var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
     var mRefuseModel: FirstLevelCommentModel? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
@@ -205,7 +207,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mFeedsInputContainerView?.mSendCallBack = { s ->
             if (mRefuseModel == null) {
-                mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID!!)
+                mFeedsDetailPresenter?.addComment(s, mFeedsWatchModel!!.feedID)
                 val behavior = ((mAppbar?.getLayoutParams()) as ((CoordinatorLayout.LayoutParams))).behavior
                 if (behavior is AppBarLayout.Behavior) {
                     val topAndBottomOffset = behavior.getTopAndBottomOffset();
@@ -215,7 +217,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     mFeedsCommentView?.mRecyclerView?.scrollToPosition(0)
                 }
             } else {
-                mFeedsDetailPresenter?.refuseComment(s, mFeedsWatchModel!!.feedID!!, mRefuseModel!!.comment.commentID, mRefuseModel!!) {
+                mFeedsDetailPresenter?.refuseComment(s, mFeedsWatchModel!!.feedID, mRefuseModel!!.comment.commentID, mRefuseModel!!) {
                     EventBus.getDefault().post(AddCommentEvent(mRefuseModel!!.comment.commentID))
                 }
             }
@@ -244,9 +246,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 // 完全收缩状态
                 if (mToolbar?.getVisibility() != View.VISIBLE) {
                     if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
-                        val params = mToolbarLayout?.getLayoutParams()
-                        params!!.height = params!!.height + U.getStatusBarUtil().getStatusBarHeight(U.app())
-                        mToolbarLayout?.setLayoutParams(params)
+                        val params = mToolbarLayout?.layoutParams
+                        params!!.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app())
+                        mToolbarLayout?.layoutParams = params
                         isInitToolbar = true
                     }
                     mToolbar?.setVisibility(View.VISIBLE)
@@ -326,7 +328,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mXinIv?.setDebounceViewClickListener {
-            mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID!!)
+            mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
         }
 
         mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
@@ -355,8 +357,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it)
         }
-        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt!!)
-        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt!!)
+        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
+        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
         mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
@@ -386,7 +388,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             showCommentOp(it)
         }
 
-        mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID!!)
+        mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
 
         SinglePlayer.addCallback(playerTag, playCallback)
         startPlay()
@@ -394,29 +396,22 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun showMoreOp() {
-        mMoreDialogPlus?.dismiss()
-        activity?.let {
-            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_FEED_DETAIL
-                    , mFeedsWatchModel?.user?.userID ?: 0
-                    , mFeedsWatchModel?.feedID ?: 0)
-                    .apply {
-                        songID = mFeedsWatchModel?.song?.songID ?: 0
-                        hideFuncation()
-                    }
-            mMoreDialogPlus?.showByDialog()
+        dismissDialog()
+        mFeedsWatchModel?.let { model ->
+            activity?.let {
+                mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_FEED_DETAIL, model, null)
+                mMoreDialogPlus?.showByDialog()
+            }
         }
     }
 
     private fun showCommentOp(model: FirstLevelCommentModel) {
-        mMoreDialogPlus?.dismiss()
+        dismissDialog()
         activity?.let {
-            mMoreDialogPlus = FeedsMoreDialogView(it, FeedsMoreDialogView.FROM_COMMENT
-                    , model.commentUser?.userID ?: 0
-                    , model.comment.feedID)
+            mCommentMoreDialogPlus = FeedCommentMoreDialog(it, model)
                     .apply {
-                        commentID = model.comment.commentID
-                        showFuncation("回复")
-                        mFuncationTv.setOnClickListener(object : DebounceViewClickListener() {
+                        // 重新下回复
+                        mReplyTv.setOnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 dismiss()
                                 mRefuseModel = model
@@ -425,7 +420,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                             }
                         })
                     }
-            mMoreDialogPlus?.showByDialog()
+            mCommentMoreDialogPlus?.showByDialog()
         }
     }
 
@@ -444,7 +439,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFeedsWatchModel?.isLiked = like
-        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt!!)
+        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
     }
 
     override fun onResume() {
@@ -566,7 +561,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.background = followState
         mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
         mFollowTv?.setDebounceViewClickListener {
-            UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID!!, UserInfoManager.RA_BUILD, false, 0, null)
+            UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID, UserInfoManager.RA_BUILD, false, 0, null)
         }
     }
 
@@ -590,8 +585,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         return true
     }
 
+    private fun dismissDialog() {
+        mMoreDialogPlus?.dismiss(false)
+        mCommentMoreDialogPlus?.dismiss(false)
+    }
+
     override fun destroy() {
         super.destroy()
+        dismissDialog()
         SinglePlayer.removeCallback(playerTag)
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()

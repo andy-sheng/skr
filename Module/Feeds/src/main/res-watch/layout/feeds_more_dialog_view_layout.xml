@@ -27,6 +27,16 @@
         app:layout_constraintBottom_toTopOf="@id/cancle_tv">
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/copy_report_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:gravity="center"
+            android:text="版权举报"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.common.view.ex.ExTextView
             android:id="@+id/report_tv"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_48_dp"
@@ -34,7 +44,31 @@
             android:text="举报"
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/copy_report_tv"/>
+
+        <View
+            android:id="@+id/divider_report"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:background="@color/black_trans_10"
+            app:layout_constraintBottom_toBottomOf="@id/report_tv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/share_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:gravity="center"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp"
+            android:text="分享"
+            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+
+        <View
+            android:id="@+id/divider_share"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:background="@color/black_trans_10"
+            app:layout_constraintBottom_toBottomOf="@id/share_tv" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/collect_tv"
@@ -43,34 +77,32 @@
             android:gravity="center"
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/textsize_16_dp"
-            android:text="收藏歌曲"
-            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+            android:text="分享"
+            app:layout_constraintBottom_toTopOf="@id/share_tv" />
 
         <View
             android:id="@+id/divider_collect"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
             android:background="@color/black_trans_10"
-            app:layout_constraintBottom_toTopOf="@id/collect_tv" />
+            app:layout_constraintBottom_toBottomOf="@id/collect_tv" />
 
         <com.common.view.ex.ExTextView
-            android:id="@+id/funcation_tv"
+            android:id="@+id/follow_tv"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_48_dp"
             android:gravity="center"
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/textsize_16_dp"
             android:text="关注Ta"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/collect_tv" />
 
         <View
-            android:id="@+id/divider_funcation"
+            android:id="@+id/divider_follow"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
-            android:visibility="gone"
             android:background="@color/black_trans_10"
-            app:layout_constraintBottom_toTopOf="@id/report_tv" />
+            app:layout_constraintBottom_toBottomOf="@id/follow_tv" />
 
     </com.common.view.ex.ExConstraintLayout>
 
