@@ -61,7 +61,7 @@
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+        app:layout_constraintTop_toBottomOf="@id/tag_area" />
 
     <com.common.view.ex.ExConstraintLayout
         android:id="@+id/tag_area"
@@ -78,7 +78,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/classify_song_tv"
-        app:layout_constraintTop_toBottomOf="@id/content_tv">
+        app:layout_constraintTop_toBottomOf="@id/avatar_iv">
 
         <ImageView
             android:id="@+id/tag_iv"
@@ -135,7 +135,7 @@
         android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tag_area" />
+        app:layout_constraintTop_toBottomOf="@id/content_tv" />
 
     <com.common.view.ex.ExImageView
         android:layout_width="@dimen/view_0_dp"
