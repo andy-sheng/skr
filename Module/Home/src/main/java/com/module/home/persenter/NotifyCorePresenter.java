@@ -126,7 +126,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 return null;
             }
             if (!U.getActivityUtils().isAppForeground()) {
-                MyLog.d(TAG, "在后台，不弹出通知");
+                MyLog.d(getTAG(), "在后台，不弹出通知");
                 return null;
             }
             return NotifyCorePresenter.this;
@@ -200,7 +200,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             public void onClickConfirm(UserInfoModel userInfoModel) {
                                 if (userInfoModel != null) {
                                     if (!userInfoModel.isFriend()) {
-                                        MyLog.d(TAG, "同意邀请，强制成为好友" + userInfoModel);
+                                        MyLog.d(getTAG(), "同意邀请，强制成为好友" + userInfoModel);
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
                                 }
@@ -265,7 +265,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BothRelationFromSchemeEvent event) {
         // TODO: 2019/3/25 成为好友的的口令
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(getTAG(), "onEvent" + " event=" + event);
         UserInfoManager.getInstance().getUserInfoByUuid(event.useId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
             @Override
             public boolean onGetLocalDB(UserInfoModel o) {
@@ -424,7 +424,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                MyLog.e(TAG, e);
+                                MyLog.e(getTAG(), e);
                             }
                         }, NotifyCorePresenter.this);
                     }
@@ -577,7 +577,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        MyLog.e(TAG, e);
+                                        MyLog.e(getTAG(), e);
                                     }
                                 }, NotifyCorePresenter.this);
                             }
@@ -610,15 +610,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                 @Override
                                 public void process(ApiResult result) {
                                     if (result.getErrno() == 0) {
-                                        MyLog.w(TAG, "process" + " result=" + result);
+                                        MyLog.w(getTAG(), "process" + " result=" + result);
                                     } else {
-                                        MyLog.w(TAG, "process" + " result=" + result);
+                                        MyLog.w(getTAG(), "process" + " result=" + result);
                                     }
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    MyLog.e(TAG, e);
+                                    MyLog.e(getTAG(), e);
                                 }
                             }, NotifyCorePresenter.this);
                         }

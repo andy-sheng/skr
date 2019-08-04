@@ -35,7 +35,7 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
     }
 
     public void inviteFriend(int roomID, int tagID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "deleteSong");
+        MyLog.d(getTAG(), "deleteSong");
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         map.put("tagID", tagID);
@@ -46,17 +46,17 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mGrabRoomServerApi.inviteFriend(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                MyLog.d(getTAG(), "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     mView.updateInvited(view);
                 } else {
-                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
+                    MyLog.w(getTAG(), "inviteFriend failed, " + " traceid is " + result.getTraceId());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                MyLog.e(TAG, e);
+                MyLog.e(getTAG(), e);
             }
         }, this);
     }
@@ -77,7 +77,7 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
     }
 
     public void inviteDoubleFriend(int roomID, UserInfoModel model, ExTextView view) {
-        MyLog.d(TAG, "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+        MyLog.d(getTAG(), "inviteDoubleFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         map.put("inviteUserID", model.getUserId());
@@ -87,18 +87,18 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mDoubleRoomServerApi.roomSendInvite(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                MyLog.d(getTAG(), "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     // 更新视图
                     mView.updateInvited(view);
                 } else {
-                    MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
+                    MyLog.w(getTAG(), "inviteFriend failed, " + " traceid is " + result.getTraceId());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                MyLog.e(TAG, e);
+                MyLog.e(getTAG(), e);
             }
         }, this);
     }

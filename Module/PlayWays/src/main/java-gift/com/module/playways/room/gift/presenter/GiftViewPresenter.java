@@ -49,7 +49,7 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GiftReadyEvent giftReadyEvent) {
-        MyLog.w(TAG, "onEvent" + " giftReadyEvent=" + giftReadyEvent);
+        MyLog.w(getTAG(), "onEvent" + " giftReadyEvent=" + giftReadyEvent);
         if (giftReadyEvent.isGiftLoadSuccess()) {
             loadData();
         } else {
@@ -70,7 +70,7 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
                         arrayList.add(baseGifts);
                     }
                 }, throwable -> {
-                    MyLog.d(TAG, "throwable" + throwable);
+                    MyLog.d(getTAG(), "throwable" + throwable);
                 }, () -> {
                     HashMap<Integer, List<BaseGift>> giftHashMap = new HashMap<>();
                     int index = 0;

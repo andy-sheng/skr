@@ -45,7 +45,6 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mIDoublePlayView: IDoublePlayView) : RxLifeCyclePresenter() {
-    val tag = "DoubleCorePresenter"
 
     val SYNC_MSG = 0
     val PICK_MSG = 1
@@ -106,7 +105,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     private fun joinRcRoom(deep: Int) {
         if (deep > 4) {
-            MyLog.d(tag, "加入融云房间，重试5次仍然失败，放弃")
+            MyLog.d(TAG, "加入融云房间，重试5次仍然失败，放弃")
             sendFailedToServer()
             mIDoublePlayView.finishActivityWithError()
             return
@@ -115,11 +114,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         if (mRoomData.gameId > 0) {
             ModuleServiceManager.getInstance().msgService.joinChatRoom(mRoomData.gameId.toString(), -1, object : ICallback {
                 override fun onSucess(obj: Any?) {
-                    MyLog.d(tag, "加入融云房间成功")
+                    MyLog.d(TAG, "加入融云房间成功")
                 }
 
                 override fun onFailed(obj: Any?, errcode: Int, message: String?) {
-                    MyLog.d(tag, "加入融云房间失败， msg is $message, errcode is $errcode")
+                    MyLog.d(TAG, "加入融云房间失败， msg is $message, errcode is $errcode")
                 }
             })
             if (deep == -1) {
@@ -129,12 +128,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 JiGuangPush.joinSkrRoomId(mRoomData.gameId.toString())
             }
         } else {
-            MyLog.e(tag, "房间 gameId 不合法")
+            MyLog.e(TAG, "房间 gameId 不合法")
         }
     }
 
     private fun sendFailedToServer() {
-        MyLog.e(tag, "sendFailedToServer, roomID is ${mRoomData.gameId}")
+        MyLog.e(TAG, "sendFailedToServer, roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.enterRoomFailed(body), object : ApiObserver<ApiResult>() {
@@ -151,7 +150,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun sendChangeScene(sceneType: Int) {
-        MyLog.d(tag, "sendChangeScene, sceneType is $sceneType")
+        MyLog.d(TAG, "sendChangeScene, sceneType is $sceneType")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.sendChangeScene(body), object : ApiObserver<ApiResult>() {
@@ -159,14 +158,14 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 if (obj?.errno == 0) {
                     U.getToastUtil().showShort("邀请已发送")
                 } else {
-                    MyLog.w(tag, "sendChangeScene faild, sceneType is $sceneType, errno is ${obj?.errno}")
+                    MyLog.w(TAG, "sendChangeScene faild, sceneType is $sceneType, errno is ${obj?.errno}")
                 }
             }
         }, this@DoubleCorePresenter)
     }
 
     fun agreeChangeScene(sceneType: Int) {
-        MyLog.e(tag, "agreeChangeScene, roomID is ${mRoomData.gameId}")
+        MyLog.e(TAG, "agreeChangeScene, roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType, "agree" to true)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
@@ -175,19 +174,19 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                     mRoomData.changeScene(sceneType)
                     U.getToastUtil().showShort("切换场景成功")
                 } else {
-                    MyLog.w(tag, "agreeChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
+                    MyLog.w(TAG, "agreeChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
                 }
             }
         }, this@DoubleCorePresenter)
     }
 
     fun refuseChangeScene(sceneType: Int) {
-        MyLog.e(tag, "agreeChangeScene, roomID is ${mRoomData.gameId}")
+        MyLog.e(TAG, "agreeChangeScene, roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId, "sceneType" to sceneType, "agree" to false)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.agreeChangeScene(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
-                MyLog.w(tag, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
+                MyLog.w(TAG, "refuseChangeScene, sceneType is $sceneType, errno is ${obj?.errno}")
             }
         }, this@DoubleCorePresenter)
     }
@@ -201,7 +200,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     fun closeByTimeOver() {
-        MyLog.w(tag, "closeByTimeOver, roomID is ${mRoomData.gameId}")
+        MyLog.w(TAG, "closeByTimeOver, roomID is ${mRoomData.gameId}")
         val mutableSet = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet))
         ApiMethods.subscribe(mDoubleRoomServerApi.closeByTimerOver(body), null)
@@ -218,7 +217,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      * 点击结束按钮或者返回，弹出确认退出弹窗之后退出，使用这个接口
      */
     fun exit() {
-        MyLog.w(tag, "exit(), roomID is ${mRoomData.gameId}")
+        MyLog.w(TAG, "exit(), roomID is ${mRoomData.gameId}")
         val mutableSet1 = mutableMapOf("roomID" to mRoomData.gameId)
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         ApiMethods.subscribe(mDoubleRoomServerApi.exitRoom(body), null)
@@ -227,11 +226,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     fun syncStatus() {
         mUiHandler.removeMessages(SYNC_MSG)
         mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
-        MyLog.d(tag, "syncStatus 1")
+        MyLog.d(TAG, "syncStatus 1")
         ApiMethods.subscribe(mDoubleRoomServerApi.syncStatus(mRoomData.gameId), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    MyLog.d(tag, "syncStatus 2")
+                    MyLog.d(TAG, "syncStatus 2")
                     val model = JSON.parseObject(obj.data.toJSONString(), DoubleSyncModel::class.java)
                     if (model.curScene == ESceneType.ST_Chat.value) {
 
@@ -269,11 +268,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         ApiMethods.subscribe(mDoubleRoomServerApi.unLock(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    MyLog.d(tag, "解锁成功")
+                    MyLog.d(TAG, "解锁成功")
                     mIDoublePlayView.unLockSelfSuccess()
                     mRoomData.selfUnLock()
                 } else {
-                    MyLog.e(tag, obj?.errmsg)
+                    MyLog.e(TAG, obj?.errmsg)
                 }
             }
         }, this@DoubleCorePresenter)
@@ -398,7 +397,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CRStartByCreateNotifyEvent) {
-        MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 1")
+        MyLog.d(TAG, "onEvent StartCombineRoomByCreateNotifyEvent 1")
         val enterRoomModel = LocalEnterRoomModel(event.basePushInfo, event.combineRoomEnterMsg)
         //在唱聊房邀请别人之后当对方同意之后收到的push，如果房间人数已经2个了就说名这个房间已经
         if (mRoomData.gameId == enterRoomModel.roomID && !mRoomData.isRoomPrepared()) {
@@ -412,7 +411,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
             mRoomData.inviterId = event.inviterId
             syncStatus()
             joinRoomAndInit(true)
-            MyLog.d(tag, "onEvent StartCombineRoomByCreateNotifyEvent 2")
+            MyLog.d(TAG, "onEvent StartCombineRoomByCreateNotifyEvent 2")
         }
     }
 
@@ -450,9 +449,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleSyncStatusV2Event) {
-        MyLog.d(tag, "onEvent DoubleCombineRoomSycPushEvent")
+        MyLog.d(TAG, "onEvent DoubleCombineRoomSycPushEvent")
         if (event.doubleSyncModel.syncStatusTimeMs > mSyncStatusTimeMs) {
-            MyLog.d(tag, "onEvent SycPush is $event")
+            MyLog.d(TAG, "onEvent SycPush is $event")
             mSyncStatusTimeMs = event.doubleSyncModel.syncStatusTimeMs
             if (event.doubleSyncModel.combineStatus == ECombineStatus.CS_Finished.value) {
                 mIDoublePlayView.finishActivity()
@@ -480,11 +479,11 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      * 这个信息必须拉到!!
      */
     private fun syncRoomPlayer() {
-        MyLog.d(tag, "syncRoomPlayer")
+        MyLog.d(TAG, "syncRoomPlayer")
         Observable.create<Any> {
             ApiMethods.subscribe(mDoubleRoomServerApi.getRoomUserInfo(mRoomData.gameId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
-                    MyLog.w(tag, "syncRoomPlayer obj is $obj")
+                    MyLog.w(TAG, "syncRoomPlayer obj is $obj")
                     if (obj?.errno == 0 && mRoomData.userInfoListMap?.size ?: 0 < 2) {
                         val userList: List<UserInfoModel>? = JSON.parseArray(obj.data.getString("users"), UserInfoModel::class.java)
 
@@ -518,9 +517,9 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleEndCombineRoomPushEvent) {
-        MyLog.d(tag, "DoubleEndCombineRoomPushEvent 1")
+        MyLog.d(TAG, "DoubleEndCombineRoomPushEvent 1")
         if (event.basePushInfo.timeMs > mSyncStatusTimeMs) {
-            MyLog.d(tag, "DoubleEndCombineRoomPushEvent 2")
+            MyLog.d(TAG, "DoubleEndCombineRoomPushEvent 2")
             mRoomData!!.updateGameState(DoubleRoomData.DoubleGameState.END)
             mIDoublePlayView.gameEnd(event)
         }
@@ -546,7 +545,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
     }
 
     override fun destroy() {
-        MyLog.d(tag, "destroy begin")
+        MyLog.d(TAG, "destroy begin")
         super.destroy()
         if (!mIsCloseByTimeOver) exit()
         EventBus.getDefault().unregister(this)
@@ -554,6 +553,6 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         ZqEngineKit.getInstance().destroy("doubleRoom")
         JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
         mUiHandler.removeCallbacksAndMessages(null)
-        MyLog.d(tag, "destroy end")
+        MyLog.d(TAG, "destroy end")
     }
 }

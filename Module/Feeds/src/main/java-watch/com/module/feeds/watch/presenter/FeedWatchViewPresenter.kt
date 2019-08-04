@@ -10,6 +10,7 @@ import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.feeds.watch.view.IFeedsWatchView
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap
@@ -61,19 +62,19 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     private fun getRecommendFeedList(offset: Int, isClear: Boolean) {
-        ApiMethods.subscribe(mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    mHasInitData = true
-//                    mLastUpdatListTime = System.currentTimeMillis()
-                    val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
-                    mOffset = obj.data.getIntValue("offset")
-                    mHasMore = obj.data.getBoolean("hasMore")
-                    view.addWatchList(list, isClear, mHasMore)
-                }
+        launch {
+            val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
+                mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
             }
-
-        }, this, RequestControl("getRecommendFeedList", ControlType.CancelThis))
+            if (obj?.errno == 0) {
+                mHasInitData = true
+//                    mLastUpdatListTime = System.currentTimeMillis()
+                val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
+                mOffset = obj.data.getIntValue("offset")
+                mHasMore = obj.data.getBoolean("hasMore")
+                view.addWatchList(list, isClear, mHasMore)
+            }
+        }
     }
 
     private fun getFollowFeedList(offset: Int, isClear: Boolean) {

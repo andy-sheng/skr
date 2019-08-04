@@ -54,7 +54,7 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
                 }
             }, this);
         } else {
-            MyLog.e(TAG, "10次都没拉到数据");
+            MyLog.e(getTAG(), "10次都没拉到数据");
             U.getToastUtil().showShort("您网络异常，请退出重进");
         }
     }

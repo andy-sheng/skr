@@ -2,7 +2,7 @@ package com.module.feeds.detail.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.mvp.AbsCoroutinePresenter
+import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
@@ -15,7 +15,7 @@ import java.util.HashMap
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
-class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : AbsCoroutinePresenter() {
+class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : RxLifeCyclePresenter() {
     val mTag = "FeedsSecondCommentPresenter"
     val mFeedsDetailServerApi = ApiManager.getInstance().createService(FeedsDetailServerApi::class.java)
     val mCount = 30

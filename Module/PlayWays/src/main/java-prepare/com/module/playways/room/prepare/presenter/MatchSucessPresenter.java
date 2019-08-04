@@ -50,7 +50,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     ZipUrlResourceManager zipUrlResourceManager;
 
     public MatchSucessPresenter(@NonNull IMatchSucessView view, int currentGameId, PrepareData prepareData) {
-        MyLog.d(TAG, "MatchSucessPresenter" + " view=" + view + " currentGameId=" + currentGameId);
+        MyLog.d(getTAG(), "MatchSucessPresenter" + " view=" + view + " currentGameId=" + currentGameId);
         this.iMatchSucessView = view;
         this.currentGameId = currentGameId;
         matchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
@@ -70,7 +70,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                                 UrlRes lyric = new UrlRes(url, SongResUtils.getLyricDir(), U.getFileUtils().getSuffixFromUrl(url,SongResUtils.SUFF_ZRCE));
                                 urlResArrayList.add(lyric);
                             }
-                        }, throwable -> MyLog.e(TAG, throwable)
+                        }, throwable -> MyLog.e(getTAG(), throwable)
                         , () -> {
                             zipUrlResourceManager = new ZipUrlResourceManager(urlResArrayList, null);
                             zipUrlResourceManager.go();
@@ -78,7 +78,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     }
 
     private void checkPlayerReadyState() {
-        MyLog.d(TAG, "checkPlayerReadyState");
+        MyLog.d(getTAG(), "checkPlayerReadyState");
         if (checkTask != null) {
             checkTask.dispose();
         }
@@ -94,9 +94,9 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                 ApiMethods.subscribe(matchServerApi.getCurrentReadyData(currentGameId), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult result) {
-                        MyLog.w(TAG, "checkPlayerReadyState result = " + result.getErrno() + " traceId = " + result.getTraceId());
+                        MyLog.w(getTAG(), "checkPlayerReadyState result = " + result.getErrno() + " traceId = " + result.getTraceId());
                         if (result.getErrno() == 0) {
-                            MyLog.w(TAG, "checkPlayerReadyState 成功，traceid是：" + result.getTraceId());
+                            MyLog.w(getTAG(), "checkPlayerReadyState 成功，traceid是：" + result.getTraceId());
                             // todo 带回所有已准备人的信息
                             GameReadyModel jsonGameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyModel.class);
                             if (jsonGameReadyInfo.isGameStart()) {
@@ -105,7 +105,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                                 iMatchSucessView.needReMatch(false);
                             }
                         } else {
-                            MyLog.w(TAG, "checkPlayerReadyState 失败，traceid是：" + result.getTraceId());
+                            MyLog.w(getTAG(), "checkPlayerReadyState 失败，traceid是：" + result.getTraceId());
                             iMatchSucessView.needReMatch(false);
                         }
                     }
@@ -113,7 +113,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onError(Throwable e) {
                         iMatchSucessView.needReMatch(false);
-                        MyLog.w(TAG, "checkPlayerReadyState 错误");
+                        MyLog.w(getTAG(), "checkPlayerReadyState 错误");
                     }
                 }, MatchSucessPresenter.this);
             }
@@ -145,7 +145,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
      * @param isPrepare true为准备，false为取消准备
      */
     public void prepare(boolean isPrepare) {
-        MyLog.d(TAG, "prepare");
+        MyLog.d(getTAG(), "prepare");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", currentGameId);
 
@@ -153,21 +153,21 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(matchServerApi.readyGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.w(TAG, "prepare result = " + result.getErrno() + " traceId = " + result.getTraceId());
+                MyLog.w(getTAG(), "prepare result = " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    MyLog.w(TAG, "准备成功，traceid is " + result.getTraceId());
+                    MyLog.w(getTAG(), "准备成功，traceid is " + result.getTraceId());
                     List<ReadyInfoModel> model = JSON.parseArray(result.getData().getString("readyInfo"), ReadyInfoModel.class);
                     iMatchSucessView.ready(isPrepare);
                     //  已准备人
                     iMatchSucessView.readyList(model);
                 } else {
-                    MyLog.w(TAG, "准备失败，traceid 是" + result.getTraceId());
+                    MyLog.w(getTAG(), "准备失败，traceid 是" + result.getTraceId());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                MyLog.w(TAG, "准备错误");
+                MyLog.w(getTAG(), "准备错误");
             }
         }, MatchSucessPresenter.this);
     }
@@ -175,7 +175,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     // 加入指令，即服务器通知加入房间的指令
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
-        MyLog.w(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent + " timeMs = " + readyNoticeEvent.info.getTimeMs());
+        MyLog.w(getTAG(), "onEventMainThread readyNoticeEvent " + readyNoticeEvent + " timeMs = " + readyNoticeEvent.info.getTimeMs());
         if (readyNoticeEvent.gameReadyInfo.isGameStart()) {
             if (checkTask != null) {
                 checkTask.dispose();
@@ -192,7 +192,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ExitGameEvent exitGameEvent) {
         if (exitGameEvent.type == EXIT_GAME_BEFORE_PLAY) {
-            MyLog.w(TAG, "onEventMainThread EXIT_GAME_BEFORE_PLAY " + " timeMs = " + exitGameEvent.info.getTimeMs());
+            MyLog.w(getTAG(), "onEventMainThread EXIT_GAME_BEFORE_PLAY " + " timeMs = " + exitGameEvent.info.getTimeMs());
 //            iMatchSucessView.needReMatch(true);
         }
     }

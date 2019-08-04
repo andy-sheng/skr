@@ -14,7 +14,7 @@ interface FeedsWatchServerApi {
      * 获取推荐列表
      */
     @GET("/v1/feed/recommend-list")
-    fun getFeedRecommendList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Observable<ApiResult>
+    fun getFeedRecommendList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
     /**
      * 获取关注列表

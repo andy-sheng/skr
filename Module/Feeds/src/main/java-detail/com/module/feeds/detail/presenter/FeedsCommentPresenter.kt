@@ -2,7 +2,7 @@ package com.module.feeds.detail.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.mvp.AbsCoroutinePresenter
+import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
@@ -13,8 +13,7 @@ import java.util.HashMap
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
-class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : AbsCoroutinePresenter() {
-    val mTag = "FeedsCommentPresenter"
+class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : RxLifeCyclePresenter() {
     val mFeedsDetailServerApi = ApiManager.getInstance().createService(FeedsDetailServerApi::class.java)
     val mCount = 30
     var mOffset = 0
@@ -53,7 +52,7 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
             override fun onNetworkError(errorType: ErrorType?) {
                 mIFirstLevelCommentView.finishLoadMore()
             }
-        }, this, RequestControl(mTag + "getFirstLevelCommentList", ControlType.CancelThis))
+        }, this, RequestControl(TAG + "getFirstLevelCommentList", ControlType.CancelThis))
     }
 
     fun updateCommentList() {
@@ -80,7 +79,7 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
                     mIFirstLevelCommentView.likeFinish(firstLevelCommentModel, position, like)
                 }
             }
-        }, this, RequestControl(mTag + "likeComment", ControlType.CancelThis))
+        }, this, RequestControl(TAG + "likeComment", ControlType.CancelThis))
     }
 
     fun likeFeeds(like: Boolean, feedID: Int) {
@@ -92,6 +91,6 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
 
                 }
             }
-        }, this, RequestControl(mTag + "likeFeeds", ControlType.CancelThis))
+        }, this, RequestControl(TAG + "likeFeeds", ControlType.CancelThis))
     }
 }
