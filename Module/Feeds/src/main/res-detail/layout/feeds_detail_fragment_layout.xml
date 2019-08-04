@@ -68,7 +68,7 @@
 
                     <com.common.view.ex.ExTextView
                         android:ellipsize="end"
-                        android:maxWidth="@dimen/view_300_dp"
+                        android:maxWidth="@dimen/view_250_dp"
                         android:id="@+id/song_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
