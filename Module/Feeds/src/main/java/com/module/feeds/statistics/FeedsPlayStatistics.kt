@@ -58,6 +58,9 @@ object FeedsPlayStatistics {
     }
 
     fun tryUpload(force: Boolean) {
+        if (exposeMap.size + completeMap.size < 0) {
+            return
+        }
         if (!force) {
             if (exposeMap.size + completeMap.size < 20) {
                 return
@@ -91,18 +94,16 @@ object FeedsPlayStatistics {
         )
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        for (i in 1..5) {
-            GlobalScope.launch {
-                val r = subscribe(RequestControl("uploadFeedsStatistics", ControlType.CancelLast)) {
-                    fedsStatisticsServerApi.uploadFeedsStatistics(body)
-                }
-                launch(Dispatchers.Main) {
-                    if (r?.errno == 0) {
-                        if (MyLog.isDebugLogOpen()) {
-                            U.getToastUtil().showShort("打点上报成功")
-                        }
-
+        GlobalScope.launch {
+            val r = subscribe(RequestControl("uploadFeedsStatistics", ControlType.CancelThis)) {
+                fedsStatisticsServerApi.uploadFeedsStatistics(body)
+            }
+            launch(Dispatchers.Main) {
+                if (r?.errno == 0) {
+                    if (MyLog.isDebugLogOpen()) {
+                        U.getToastUtil().showShort("打点上报成功")
                     }
+
                 }
             }
         }
