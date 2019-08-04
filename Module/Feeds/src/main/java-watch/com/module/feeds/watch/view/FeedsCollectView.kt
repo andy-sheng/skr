@@ -386,7 +386,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     override fun requestError() {
-
+        mRefreshLayout.finishRefresh()
+        mRefreshLayout.finishLoadMore()
     }
 
     private fun bindTopData(position: Int, model: FeedsCollectModel?, isPlay: Boolean) {

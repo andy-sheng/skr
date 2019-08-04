@@ -3,6 +3,7 @@ package com.module.feeds.watch.presenter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.utils.U
@@ -66,33 +67,41 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
                 mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
             }
-            if (obj?.errno == 0) {
+            if (obj.errno == 0) {
                 mHasInitData = true
-//                    mLastUpdatListTime = System.currentTimeMillis()
+//              mLastUpdatListTime = System.currentTimeMillis()
                 val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
                 mOffset = obj.data.getIntValue("offset")
                 mHasMore = obj.data.getBoolean("hasMore")
                 view.addWatchList(list, isClear, mHasMore)
-            }else{
-                //TODO 请求异常，刷新中状态也要更新
+            } else {
+                view.requestError()
+                if (obj.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
             }
         }
     }
 
     private fun getFollowFeedList(offset: Int, isClear: Boolean) {
-        ApiMethods.subscribe(mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    mHasInitData = true
-//                    mLastUpdatListTime = System.currentTimeMillis()
-                    val list = JSON.parseArray(obj.data.getString("follows"), FeedsWatchModel::class.java)
-                    mOffset = obj.data.getIntValue("offset")
-                    mHasMore = obj.data.getBoolean("hasMore")
-                    view.addWatchList(list, isClear, mHasMore)
+        launch {
+            val result = subscribe(RequestControl("getFollowFeedList", ControlType.CancelThis)) {
+                mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+            }
+            if (result.errno == 0) {
+                mHasInitData = true
+//              mLastUpdatListTime = System.currentTimeMillis()
+                val list = JSON.parseArray(result.data.getString("follows"), FeedsWatchModel::class.java)
+                mOffset = result.data.getIntValue("offset")
+                mHasMore = result.data.getBoolean("hasMore")
+                view.addWatchList(list, isClear, mHasMore)
+            } else {
+                view.requestError()
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
-
-        }, this, RequestControl("getFollowFeedList", ControlType.CancelThis))
+        }
     }
 
     private fun getPersonFeedList(offset: Int, isClear: Boolean) {
@@ -100,62 +109,64 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         if (MyUserInfoManager.getInstance().uid.toInt() != mUserInfo?.userId) {
             feedSongType = 2
         }
-        ApiMethods.subscribe(mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), mUserInfo?.userId
-                ?: 0, feedSongType), object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult?) {
-                if (result?.errno == 0) {
-                    mLastUpdatListTime = System.currentTimeMillis()
-                    mOffset = result.data.getIntValue("offset")
-                    mHasMore = result.data.getBoolean("hasMore")
-                    val list = JSON.parseArray(result.data.getString("userSongs"), FeedsWatchModel::class.java)
-                    view.addWatchList(list, isClear, mHasMore)
-                } else {
-                    view.requestError()
+        launch {
+            var result = subscribe(RequestControl("getPersonFeedList", ControlType.CancelThis)) {
+                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), mUserInfo?.userId
+                        ?: 0, feedSongType)
+            }
+            if (result.errno == 0) {
+                mLastUpdatListTime = System.currentTimeMillis()
+                mOffset = result.data.getIntValue("offset")
+                mHasMore = result.data.getBoolean("hasMore")
+                val list = JSON.parseArray(result.data.getString("userSongs"), FeedsWatchModel::class.java)
+                view.addWatchList(list, isClear, mHasMore)
+            } else {
+                view.requestError()
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
-
-            override fun onNetworkError(errorType: ErrorType?) {
-                super.onNetworkError(errorType)
-                view.requestError()
-            }
-
-        }, this, RequestControl("getFeeds", ControlType.CancelThis))
+        }
     }
 
     fun feedLike(position: Int, model: FeedsWatchModel) {
-        val map = HashMap<String, Any>()
-        map["feedID"] = model.feedID
-        map["like"] = !model.isLiked
+        launch {
+            val map = HashMap<String, Any>()
+            map["feedID"] = model.feedID
+            map["like"] = !model.isLiked
 
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(mFeedServerApi.feedLike(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    view.feedLikeResult(position, model, !model.isLiked)
-                } else {
-                    U.getToastUtil().showShort("${obj?.errmsg}")
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val obj = subscribe(RequestControl("feedLike", ControlType.CancelThis)) {
+                mFeedServerApi.feedLike(body)
+            }
+            if (obj.errno == 0) {
+                view.feedLikeResult(position, model, !model.isLiked)
+            } else {
+                if (obj.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
-
-        }, this, RequestControl("feedLike", ControlType.CancelThis))
+        }
 
     }
 
     fun deleteFeed(position: Int, model: FeedsWatchModel) {
-        val map = HashMap<String, Any>()
-        map["songID"] = model.song?.songID ?: 0
+        launch {
+            val map = HashMap<String, Any>()
+            map["songID"] = model.song?.songID ?: 0
 
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(mFeedServerApi.deleteFeed(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    view.feedDeleteResult(position, model)
-                } else {
-                    U.getToastUtil().showShort("${obj?.errmsg}")
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val obj = subscribe(RequestControl("deleteFeed", ControlType.CancelThis)) {
+                mFeedServerApi.deleteFeed(body)
+            }
+            if (obj.errno == 0) {
+                view.feedDeleteResult(position, model)
+            } else {
+                if (obj.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
-
-        }, this, RequestControl("deleteFeed", ControlType.CancelThis))
+        }
     }
 
     override fun destroy() {

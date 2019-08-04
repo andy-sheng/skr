@@ -87,7 +87,6 @@ class FeedsRankSearchActivity : BaseActivity() {
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
                 // 直接去打榜
                 model?.let {
-                    finish()
                     openFeedsMakeActivity(it.challengeID)
                 }
             }
@@ -98,7 +97,6 @@ class FeedsRankSearchActivity : BaseActivity() {
                             .withString("rankTitle", it.rankTitle)
                             .withLong("challengeID", it.challengeID ?: 0L)
                             .navigation()
-                    finish()
                 }
             }
         })
@@ -162,17 +160,23 @@ class FeedsRankSearchActivity : BaseActivity() {
                     feedRankServerApi.searchChallenge(key.searchContent)
                 }, object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
-                val list = JSON.parseArray(obj.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
-                mAdapter.mDataList.clear()
-                if (list != null && list.isNotEmpty()) {
-                    mAdapter.mDataList.addAll(list)
-                    mAdapter.notifyDataSetChanged()
-                }
-                if (!isAutoSearch && mAdapter.mDataList.isEmpty()) {
-                    mLoadService?.showCallback(EmptyCallback::class.java)
-                }
-                if (mAdapter.mDataList.isNotEmpty()) {
-                    mLoadService?.showSuccess()
+                if (obj.errno == 0) {
+                    val list = JSON.parseArray(obj.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
+                    mAdapter.mDataList.clear()
+                    if (list != null && list.isNotEmpty()) {
+                        mAdapter.mDataList.addAll(list)
+                        mAdapter.notifyDataSetChanged()
+                    }
+                    if (!isAutoSearch && mAdapter.mDataList.isEmpty()) {
+                        mLoadService?.showCallback(EmptyCallback::class.java)
+                    }
+                    if (mAdapter.mDataList.isNotEmpty()) {
+                        mLoadService?.showSuccess()
+                    }
+                } else {
+                    if (obj.errno == -2) {
+                        U.getToastUtil().showShort("网络异常，请检查网络后重试")
+                    }
                 }
             }
         }, this)

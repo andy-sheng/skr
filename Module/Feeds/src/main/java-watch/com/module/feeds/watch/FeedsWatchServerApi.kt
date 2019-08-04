@@ -20,7 +20,7 @@ interface FeedsWatchServerApi {
      * 获取关注列表
      */
     @GET("/v1/feed/follow-list")
-    fun getFeedFollowList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Observable<ApiResult>
+    fun getFeedFollowList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
     /**
      * 获取喜欢列表
@@ -33,7 +33,7 @@ interface FeedsWatchServerApi {
      * 获取收藏列表
      */
     @GET("/v1/feed/collect-list")
-    fun getFeedCollectList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Observable<ApiResult>
+    fun getFeedCollectList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
 
     /**
@@ -47,7 +47,7 @@ interface FeedsWatchServerApi {
                        @Query("cnt") cnt: Int,
                        @Query("userID") userID: Int,
                        @Query("feedUserID") feedUserID: Int,
-                       @Query("feedSongType") feedSongType: Int): Observable<ApiResult>
+                       @Query("feedSongType") feedSongType: Int): Call<ApiResult>
 
 
     /**
@@ -56,11 +56,11 @@ interface FeedsWatchServerApi {
      * like ture/false
      */
     @PUT("/v1/feed/like")
-    fun feedLike(@Body body: RequestBody): Observable<ApiResult>
+    fun feedLike(@Body body: RequestBody): Call<ApiResult>
 
 
     @PUT("v1/feed/delete-song")
-    fun deleteFeed(@Body body: RequestBody): Observable<ApiResult>
+    fun deleteFeed(@Body body: RequestBody): Call<ApiResult>
 
 
     /**

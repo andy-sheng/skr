@@ -98,7 +98,8 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
                 hasMore = result.data.getBoolean("hasMore")
                 showRankInfo(list, isClean)
             } else {
-
+                mRefreshLayout.finishLoadMore()
+                mRefreshLayout.finishRefresh()
             }
         }
     }

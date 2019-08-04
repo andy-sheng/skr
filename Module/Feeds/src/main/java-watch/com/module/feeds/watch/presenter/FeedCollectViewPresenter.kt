@@ -17,7 +17,7 @@ import java.util.HashMap
 
 class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresenter(), CoroutineScope by MainScope() {
 
-    val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
+    private val mFeedServerApi: FeedsWatchServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
     var mOffset = 0   //偏移量
     private val mCNT = 20  // 默认拉去的个数
@@ -44,17 +44,20 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
     }
 
     private fun getFeedsLikeList(offset: Int, isClear: Boolean) {
-        ApiMethods.subscribe(mFeedServerApi.getFeedCollectList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    mLastUpdatListTime = System.currentTimeMillis()
-                    val list = JSON.parseArray(obj.data.getString("likes"), FeedsCollectModel::class.java)
-                    mOffset = obj.data.getIntValue("offset")
-                    view.addLikeList(list, isClear)
+        launch {
+            val result = subscribe { mFeedServerApi.getFeedCollectList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt()) }
+            if (result.errno == 0) {
+                mLastUpdatListTime = System.currentTimeMillis()
+                val list = JSON.parseArray(result.data.getString("likes"), FeedsCollectModel::class.java)
+                mOffset = result.data.getIntValue("offset")
+                view.addLikeList(list, isClear)
+            } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }
+                view.requestError()
             }
-
-        }, this)
+        }
     }
 
     fun likeOrUnLikeFeed(model: FeedsCollectModel) {
@@ -64,11 +67,14 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
             map["like"] = !model.isLiked
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { mFeedServerApi.collectFeed(body)}
+            val result = subscribe { mFeedServerApi.collectFeed(body) }
             if (result?.errno == 0) {
                 model.isLiked = !model.isLiked
                 view.showCollect(model)
             } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                }
                 U.getToastUtil().showShort("${result?.errmsg}")
             }
         }
