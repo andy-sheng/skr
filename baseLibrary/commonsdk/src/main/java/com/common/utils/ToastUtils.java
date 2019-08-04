@@ -147,6 +147,15 @@ public final class ToastUtils {
         }
     }
 
+    /**
+     *
+     * @param text
+     * @param duration
+     * @param priority 优先级高的能顶掉优先级低的
+     * @param gravity 显示的位置
+     * @param xOffset
+     * @param yOffset
+     */
     private static void show(final CharSequence text, final int duration, int priority, int gravity,int xOffset,int yOffset) {
         HANDLER.post(new Runnable() {
             @SuppressLint("ShowToast")

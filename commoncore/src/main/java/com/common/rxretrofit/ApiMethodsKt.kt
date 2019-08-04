@@ -14,6 +14,8 @@ import java.net.UnknownHostException
 
 val requestMap = ArrayMap<String, Call<ApiResult>>()
 
+const val ERROR_NETWORK_BROKEN = -2
+
 suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): ApiResult {
     rc?.let {
         MyLog.d("ApiObserverKt", "${rc.key}请求")
@@ -65,23 +67,23 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
         if (e is HttpException) {
             if (e.code() == 404) {
                 return ApiResult().apply {
-                    errno = -2
+                    errno = ERROR_NETWORK_BROKEN
                     errmsg = "HttpException 404"
                 }
             }
         } else if (e is UnknownHostException) {
             return ApiResult().apply {
-                errno = -2
+                errno = ERROR_NETWORK_BROKEN
                 errmsg = "UnknownHostException"
             }
         } else if (e is SocketTimeoutException) {
             return ApiResult().apply {
-                errno = -2
+                errno = ERROR_NETWORK_BROKEN
                 errmsg = "SocketTimeoutException"
             }
         }
         return ApiResult().apply {
-            errno = -2
+            errno = ERROR_NETWORK_BROKEN
             errmsg = "网络较差，导致请求失败"
         }
     }
