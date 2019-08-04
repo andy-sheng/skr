@@ -179,7 +179,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
     }
 
-    fun pauseLyricWhenBuffering(position: Int, watchModel: FeedsWatchModel) {
+    fun pauseWhenBuffering(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
@@ -190,7 +190,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mRecordView.buffering()
     }
 
-    fun resumeLyricWhenBufferingEnd(position: Int, watchModel: FeedsWatchModel) {
+    fun resumeWhenBufferingEnd(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {

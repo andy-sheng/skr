@@ -227,7 +227,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
             override fun onPrepared() {
                 super.onPrepared()
-                mAdapter?.resumeLyricWhenBufferingEnd()
+                mAdapter?.resumeWhenBufferingEnd()
                 mAdapter?.mCurrentPlayPosition?.let {
                     if (it + 1 < mAdapter!!.mDataList.size) {
                         mAdapter?.mDataList?.get(it + 1)?.song?.playURL?.let { it2 ->
@@ -245,10 +245,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 MyLog.d(TAG, "onBufferingUpdate percent=$percent")
                 if (percent == 100) {
                     if (mp!!.isPlaying) {
-                        mAdapter!!.resumeLyricWhenBufferingEnd()
+                        mAdapter!!.resumeWhenBufferingEnd()
                     }
                 } else {
-                    mAdapter!!.pauseLyricWhenBuffering()
+                    mAdapter!!.pauseWhenBuffering()
                 }
             }
 

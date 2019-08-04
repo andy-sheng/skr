@@ -52,11 +52,11 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                     if (mDataList[position] == mCurrentPlayModel) {
                         holder.playLyric(position, mDataList[position])
                     }
-                } else if (type == REFRESH_LYRIC_STATE) {
+                } else if (type == REFRESH_BUFFERING_STATE) {
                     if (mDataList[position].song?.lyricType == 0) {
-                        holder.pauseLyricWhenBuffering(position, mDataList[position])
+                        holder.pauseWhenBuffering(position, mDataList[position])
                     } else {
-                        holder.resumeLyricWhenBufferingEnd(position, mDataList[position])
+                        holder.resumeWhenBufferingEnd(position, mDataList[position])
                     }
                 }
             }
@@ -184,20 +184,20 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         }
     }
 
-    fun pauseLyricWhenBuffering() {
+    fun pauseWhenBuffering() {
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
             mCurrentPlayModel?.song?.lyricType = 0
         }
 
-        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_LYRIC_STATE)
+        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
     }
 
-    fun resumeLyricWhenBufferingEnd() {
+    fun resumeWhenBufferingEnd() {
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
             mCurrentPlayModel?.song?.lyricType = 1
         }
 
-        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_LYRIC_STATE)
+        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
     }
 
     /**
@@ -217,6 +217,6 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         const val REFRESH_TYPE_LIKE = 1  // 局部刷新喜欢
         const val REFRESH_TYPE_COMMENT = 2  // 局部刷新评论数
         const val REFRESH_TYPE_LYRIC = 3  // 局部刷新歌词
-        const val REFRESH_LYRIC_STATE = 4  // 局部刷新歌词
+        const val REFRESH_BUFFERING_STATE = 4  // 局部刷新歌词
     }
 }
