@@ -197,7 +197,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
                 subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID) }
             }.await()
 
-            if (relation.errno == 0 && collect.errno == 0) {
+            if (relation?.errno == 0 && collect?.errno == 0) {
                 val isCollocted = collect.data.getBooleanValue("isCollected")
                 val isFriend = relation.data.getBooleanValue("isFriend")
                 val isFollow = relation.data.getBooleanValue("isFollow")

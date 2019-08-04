@@ -153,7 +153,7 @@ class FeedsDetailRankActivity : BaseActivity() {
     private fun loadData(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID) }
-            if (result.errno == 0) {
+            if (result?.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")

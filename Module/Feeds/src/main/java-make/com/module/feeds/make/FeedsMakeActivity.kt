@@ -130,7 +130,7 @@ class FeedsMakeActivity : BaseActivity() {
             mFeedsMakeModel?.challengeID?.let {
                 for (i in 1..10) {
                     val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
-                    if (result.errno == 0) {
+                    if (result?.errno == 0) {
                         val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
                         val workName = result.data.getString("workName")
                         val songModel = FeedSongModel()

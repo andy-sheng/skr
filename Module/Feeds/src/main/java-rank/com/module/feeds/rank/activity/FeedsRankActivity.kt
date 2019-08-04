@@ -73,7 +73,7 @@ class FeedsRankActivity : BaseActivity() {
     private fun getFeedsRankTags() {
         launch {
             val result = subscribe { mFeedRankServerApi.getFeedsRankTags() }
-            if (result.errno == 0) {
+            if (result?.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("tags"), FeedRankTagModel::class.java)
                 showFeedRankTag(list)
             } else {

@@ -92,7 +92,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
     private fun getData(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe { mFeedsRankServerApi.getFeedRankInfoList(off, cnt, tag.tagType ?: 0) }
-            if (result.errno == 0) {
+            if (result?.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBoolean("hasMore")

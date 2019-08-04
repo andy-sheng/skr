@@ -8,6 +8,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -96,9 +97,9 @@ object FeedsPlayStatistics {
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
         GlobalScope.launch(Dispatchers.IO) {
-            val r = fedsStatisticsServerApi.uploadFeedsStatistics(body)
+            val r = subscribe {  fedsStatisticsServerApi.uploadFeedsStatistics(body) }
             launch(Dispatchers.Main) {
-                if (r.errno == 0) {
+                if (r?.errno == 0) {
                     if (MyLog.isDebugLogOpen()) {
                         U.getToastUtil().showShort("打点上报成功")
                     }

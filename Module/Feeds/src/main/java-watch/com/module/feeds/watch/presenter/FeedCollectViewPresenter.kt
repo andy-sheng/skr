@@ -65,7 +65,7 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { mFeedServerApi.collectFeed(body)}
-            if (result.errno == 0) {
+            if (result?.errno == 0) {
                 model.isLiked = !model.isLiked
                 view.showCollect(model)
             } else {

@@ -115,7 +115,7 @@ class FeedsPublishActivity : BaseActivity() {
         launch {
             // 先看看发生异常会不会崩溃
             val result = subscribe { feedsMakeServerApi.getFeedLikeList() }
-            if (result.errno == 0) {
+            if (result?.errno == 0) {
                 rankList = JSON.parseArray(result.data.getString("tags"), FeedsPublishTagModel::class.java)
                 tagClassifyAdapter.setTagDatas(rankList)
                 tagClassifyAdapter.notifyDataChanged()
@@ -229,7 +229,7 @@ class FeedsPublishActivity : BaseActivity() {
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             val result = subscribe { feedsMakeServerApi.uploadFeeds(body) }
             uploadProgressbarContainer.visibility = View.GONE
-            if (result.errno == 0) {
+            if (result?.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
                 mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
@@ -248,7 +248,7 @@ class FeedsPublishActivity : BaseActivity() {
                 }
                 finish()
             } else {
-                U.getToastUtil().showShort(result.errmsg)
+                U.getToastUtil().showShort(result?.errmsg)
             }
         }
     }
