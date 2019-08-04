@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject
 import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.SpecialModel
@@ -71,7 +68,7 @@ class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCycleP
                     }
                 }
             }
-        }, this, ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getSepcialList", ControlType.CancelThis))
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

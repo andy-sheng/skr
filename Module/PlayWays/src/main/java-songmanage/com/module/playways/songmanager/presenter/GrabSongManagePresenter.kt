@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.GrabRoomServerApi
@@ -70,7 +67,7 @@ class GrabSongManagePresenter(internal var mIOwnerManageView: ISongManageView, i
                 }
 
             }
-        }, this, ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getStandBillBoards", ControlType.CancelThis))
     }
 
     // 向房主推荐新歌

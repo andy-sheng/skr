@@ -14,6 +14,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -150,7 +152,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
                     U.getToastUtil().showShort("" + result.getErrmsg());
                 }
             }
-        }, this, new ApiMethods.RequestControl("create-room", ApiMethods.ControlType.CancelThis));
+        }, this, new RequestControl("create-room", ControlType.CancelThis));
     }
 
 

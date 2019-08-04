@@ -11,10 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
@@ -149,7 +146,7 @@ class FeedReportActivity : BaseActivity() {
                     finish()
                 }
             }
-        }, this, ApiMethods.RequestControl("feedback", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("feedback", ControlType.CancelThis))
     }
 
     fun reportComment(content: String, typeList: List<Int>) {
@@ -180,7 +177,7 @@ class FeedReportActivity : BaseActivity() {
                     finish()
                 }
             }
-        }, this, ApiMethods.RequestControl("feedback", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("feedback", ControlType.CancelThis))
     }
 
     private fun getReportFeed(): ArrayList<FeedReportModel> {

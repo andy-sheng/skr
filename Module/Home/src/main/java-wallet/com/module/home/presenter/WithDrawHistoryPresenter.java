@@ -6,6 +6,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.utils.U;
 import com.module.home.WalletServerApi;
 import com.module.home.inter.IWithDrawHistoryView;
@@ -73,7 +75,7 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                 mIWalletView.update(mWithDrawHistoryModels);
                 mIWalletView.hasMore(true);
             }
-        }, this,new ApiMethods.RequestControl("getListWithdraw", ApiMethods.ControlType.CancelLast));
+        }, this,new RequestControl("getListWithdraw", ControlType.CancelLast));
     }
 
     @Override

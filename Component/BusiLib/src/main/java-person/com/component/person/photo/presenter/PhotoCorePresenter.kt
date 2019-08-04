@@ -11,10 +11,7 @@ import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.upload.UploadTask
@@ -96,7 +93,7 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
                 super.onNetworkError(errorType)
                 mView!!.loadDataFailed()
             }
-        }, mFragment, ApiMethods.RequestControl("getPhotos", ApiMethods.ControlType.CancelThis))
+        }, mFragment, RequestControl("getPhotos", ControlType.CancelThis))
     }
 
     fun uploadPhotoList(imageItems: List<ImageItem>) {

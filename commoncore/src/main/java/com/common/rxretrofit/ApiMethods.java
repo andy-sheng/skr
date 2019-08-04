@@ -1,17 +1,11 @@
 package com.common.rxretrofit;
 
-import android.support.constraint.ConstraintLayout;
-import android.view.View;
-
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.common.view.ex.ExConstraintLayout;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.RxLifecycleView;
-import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -210,19 +204,4 @@ public class ApiMethods {
         }
     }
 
-    public static class RequestControl {
-        String mKey; // key 用于标识 唯一的请求行为
-        ControlType mControlType; // 控制类型
-
-        public RequestControl(String key, ControlType controlType) {
-            mKey = key;
-            mControlType = controlType;
-        }
-    }
-
-    public enum ControlType {
-        CancelLast,// 同一个api请求不可以重复，有重复会取消上一次
-        CancelThis// 同一个api请求不可以重复，有重复会取消这一次
-        // 如果不想有控制 RequestControl 传入 null
-    }
 }

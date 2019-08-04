@@ -26,6 +26,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.statistics.StatisticsAdapter;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
@@ -618,7 +620,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
 
             }
-        }, this, new ApiMethods.RequestControl("ownerBeginGame", ApiMethods.ControlType.CancelThis));
+        }, this, new RequestControl("ownerBeginGame", ControlType.CancelThis));
     }
 
     /**
@@ -1485,7 +1487,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mSwitchRooming = false;
                 mIGrabView.onChangeRoomResult(false, "网络错误");
             }
-        }, this,new ApiMethods.RequestControl("changeRoom", ApiMethods.ControlType.CancelThis));
+        }, this,new RequestControl("changeRoom", ControlType.CancelThis));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -76,7 +73,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 }
             }
 
-        }, this, ApiMethods.RequestControl("getRecommendFeedList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getRecommendFeedList", ControlType.CancelThis))
     }
 
     private fun getFollowFeedList(offset: Int, isClear: Boolean) {
@@ -92,7 +89,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 }
             }
 
-        }, this, ApiMethods.RequestControl("getFollowFeedList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getFollowFeedList", ControlType.CancelThis))
     }
 
     private fun getPersonFeedList(offset: Int, isClear: Boolean) {
@@ -119,7 +116,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 view.requestError()
             }
 
-        }, this, ApiMethods.RequestControl("getFeeds", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getFeeds", ControlType.CancelThis))
     }
 
     fun feedLike(position: Int, model: FeedsWatchModel) {
@@ -137,7 +134,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 }
             }
 
-        }, this, ApiMethods.RequestControl("feedLike", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("feedLike", ControlType.CancelThis))
 
     }
 
@@ -155,7 +152,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
                 }
             }
 
-        }, this, ApiMethods.RequestControl("deleteFeed", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("deleteFeed", ControlType.CancelThis))
     }
 
     override fun destroy() {

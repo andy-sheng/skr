@@ -3,10 +3,7 @@ package com.module.feeds.detail.presenter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.AbsCoroutinePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -56,7 +53,7 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
             override fun onNetworkError(errorType: ErrorType?) {
                 mIFirstLevelCommentView.finishLoadMore()
             }
-        }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "getFirstLevelCommentList", ControlType.CancelThis))
     }
 
     fun updateCommentList() {
@@ -83,7 +80,7 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
                     mIFirstLevelCommentView.likeFinish(firstLevelCommentModel, position, like)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "likeComment", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "likeComment", ControlType.CancelThis))
     }
 
     fun likeFeeds(like: Boolean, feedID: Int) {
@@ -95,6 +92,6 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
 
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "likeFeeds", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "likeFeeds", ControlType.CancelThis))
     }
 }

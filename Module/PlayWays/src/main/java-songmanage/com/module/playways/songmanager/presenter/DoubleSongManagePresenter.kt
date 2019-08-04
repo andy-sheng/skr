@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
@@ -46,7 +43,7 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
                 }
 
             }
-        }, this, ApiMethods.RequestControl("getStandBillBoards", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getStandBillBoards", ControlType.CancelThis))
     }
 
     fun getAddMusicCnt() {
@@ -60,7 +57,7 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
                 }
 
             }
-        }, this, ApiMethods.RequestControl("getAddMusicCnt", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getAddMusicCnt", ControlType.CancelThis))
     }
 
 

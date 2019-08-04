@@ -18,10 +18,7 @@ import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.VideoPlayerAdapter
 import com.common.recorder.MyMediaRecorder
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.upload.UploadTask
@@ -303,7 +300,7 @@ class MakeGamePanelView : RelativeLayout {
                     super.onNetworkError(errorType)
                     mSubmitProgressBar?.visibility = View.GONE
                 }
-            }, ApiMethods.RequestControl("addCustomGame", ApiMethods.ControlType.CancelThis))
+            }, RequestControl("addCustomGame", ControlType.CancelThis))
         }
     }
 

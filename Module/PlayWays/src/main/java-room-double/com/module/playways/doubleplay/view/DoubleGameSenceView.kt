@@ -9,10 +9,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
@@ -276,7 +273,7 @@ class DoubleGameSenceView : ExConstraintLayout {
                 override fun onNetworkError(errorType: ErrorType?) {
                     it.onError(Throwable("网络错误"))
                 }
-            }, this@DoubleGameSenceView, ApiMethods.RequestControl("getGameItemInfo", ApiMethods.ControlType.CancelThis))
+            }, this@DoubleGameSenceView, RequestControl("getGameItemInfo", ControlType.CancelThis))
         }.compose(bindDetachEvent()).retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 
@@ -301,7 +298,7 @@ class DoubleGameSenceView : ExConstraintLayout {
                 override fun onNetworkError(errorType: ErrorType?) {
                     it.onError(Throwable("网络延迟"))
                 }
-            }, this@DoubleGameSenceView, ApiMethods.RequestControl("getGamePanelInfo", ApiMethods.ControlType.CancelThis))
+            }, this@DoubleGameSenceView, RequestControl("getGamePanelInfo", ControlType.CancelThis))
         }.compose(bindDetachEvent()).retryWhen(RxRetryAssist(10, "")).subscribe()
     }
 

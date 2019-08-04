@@ -3,10 +3,7 @@ package com.module.home.game.presenter
 import com.alibaba.fastjson.JSON
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.engine.Params
 import com.module.home.MainPageSlideApi
@@ -52,7 +49,7 @@ class GamePresenter3(internal var mIGameView: IGameView3) : RxLifeCyclePresenter
             override fun onError(e: Throwable) {
                 U.getToastUtil().showShort("网络异常")
             }
-        }, this, ApiMethods.RequestControl("getKConfig", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getKConfig", ControlType.CancelThis))
     }
 
 }

@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.account.event.AccountEvent
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
@@ -52,7 +49,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
                     MyLog.w(TAG, "checkTaskRedDot $obj")
                 }
             }
-        }, this, ApiMethods.RequestControl("checkTaskRedDot", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("checkTaskRedDot", ControlType.CancelThis))
     }
 
     fun initOperationArea(isFlag: Boolean) {
@@ -93,7 +90,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
             override fun onNetworkError(errorType: ApiObserver.ErrorType) {
                 U.getToastUtil().showShort("网络超时")
             }
-        }, this, ApiMethods.RequestControl("getSlideList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getSlideList", ControlType.CancelThis))
     }
 
 //    fun initQuickRoom(isFlag: Boolean) {
@@ -136,7 +133,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
 //                    }
 //                }
 //            }
-//        }, this, ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis))
+//        }, this, RequestControl("getSepcialList", ControlType.CancelThis))
 //    }
 
     fun getRemainTimes(isFlag: Boolean) {
@@ -157,7 +154,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
                     // 请求出错了
                 }
             }
-        }, this, ApiMethods.RequestControl("getRemainTimes", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getRemainTimes", ControlType.CancelThis))
     }
 
     //TODO 这个接口得换，等服务器更新
@@ -211,7 +208,7 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
                     mIGameView3.setRecommendInfo(list)
                 }
             }
-        }, this, ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("getRecommendRoomList", ControlType.CancelThis))
     }
 
 

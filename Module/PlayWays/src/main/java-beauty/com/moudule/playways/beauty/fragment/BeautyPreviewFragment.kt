@@ -14,10 +14,7 @@ import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.permission.SkrCameraPermission
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
@@ -210,7 +207,7 @@ class BeautyPreviewFragment : BaseFragment() {
                     U.getToastUtil().showShort("" + result.errmsg)
                 }
             }
-        }, this, ApiMethods.RequestControl("create-room", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl("create-room", ControlType.CancelThis))
     }
 
     override fun useEventBus(): Boolean {

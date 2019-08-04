@@ -10,6 +10,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
@@ -55,7 +57,7 @@ public class SkrVerifyUtils {
                                     public void process(ApiResult obj) {
                                         process2(obj, successCallback);
                                     }
-                                }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
+                                }, new RequestControl("checkCreatePublicRoomPermission", ControlType.CancelThis));
                                 mTipsDialogView.dismiss();
                             }
                         })
@@ -76,7 +78,7 @@ public class SkrVerifyUtils {
             public void process(ApiResult obj) {
                 process2(obj, successCallback);
             }
-        }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
+        }, new RequestControl("checkCreatePublicRoomPermission", ControlType.CancelThis));
     }
 
     /**
@@ -104,7 +106,7 @@ public class SkrVerifyUtils {
             public void process(ApiResult obj) {
                 process2(obj, successCallback);
             }
-        }, new ApiMethods.RequestControl("checkCreatePublicRoomPermission", ApiMethods.ControlType.CancelThis));
+        }, new RequestControl("checkCreatePublicRoomPermission", ControlType.CancelThis));
     }
 
     /**
@@ -126,7 +128,7 @@ public class SkrVerifyUtils {
             public void process(ApiResult obj) {
                 process2(obj, successCallback);
             }
-        }, new ApiMethods.RequestControl("checkJoinDoubleRoomPermission", ApiMethods.ControlType.CancelThis));
+        }, new RequestControl("checkJoinDoubleRoomPermission", ControlType.CancelThis));
     }
 
     public void checkAgeSettingState(final Runnable successCallback) {

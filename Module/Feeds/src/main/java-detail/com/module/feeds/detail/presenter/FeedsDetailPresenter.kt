@@ -3,10 +3,7 @@ package com.module.feeds.detail.presenter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFeedsDetailView
@@ -42,7 +39,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     U.getToastUtil().showShort(obj?.errmsg)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "addComment", ControlType.CancelThis))
     }
 
     //直接回复评论
@@ -69,7 +66,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     callBack.invoke(firstLevelCommentModel)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "addComment", ControlType.CancelThis))
     }
 
     fun likeFeeds(like: Boolean, feedID: Int) {
@@ -81,7 +78,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     mIFeedsDetailView.likeFeed(like)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "likeFeeds", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "likeFeeds", ControlType.CancelThis))
     }
 
     fun getRelation(userID: Int) {
@@ -91,7 +88,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     mIFeedsDetailView.showRelation(obj.data.getBooleanValue("isBlacked"), obj.data.getBooleanValue("isFollow"), obj.data.getBooleanValue("isFriend"))
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "likeFeeds", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "likeFeeds", ControlType.CancelThis))
     }
 
     fun collection(colloct: Boolean, feedID: Int) {
@@ -106,7 +103,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     mIFeedsDetailView.collectFinish(colloct)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "collection", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "collection", ControlType.CancelThis))
     }
 
     fun checkCollect(feedID: Int) {
@@ -117,7 +114,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                     mIFeedsDetailView.isCollect(isCollocted)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "checkCollect", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "checkCollect", ControlType.CancelThis))
     }
 
     fun addShareCount(userID: Int, feedID: Int) {

@@ -15,6 +15,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.module.home.MainPageSlideApi;
@@ -111,7 +113,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
             }
-        }, this, new ApiMethods.RequestControl("checkInInfo", ApiMethods.ControlType.CancelThis));
+        }, this, new RequestControl("checkInInfo", ControlType.CancelThis));
     }
 
     public void showCheckInView(List<HomeGoldModel> homeGoldModelList) {

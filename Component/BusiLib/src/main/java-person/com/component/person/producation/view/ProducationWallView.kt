@@ -13,10 +13,7 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.SpanUtils
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
@@ -235,7 +232,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
                     mAdapter.notifyDataSetChanged()
                 }
             }
-        }, mFragment, ApiMethods.RequestControl("playWorks", ApiMethods.ControlType.CancelThis))
+        }, mFragment, RequestControl("playWorks", ControlType.CancelThis))
     }
 
     private fun addProducation(list: List<ProducationModel>?, newOffset: Int, totalCnt: Int, isClear: Boolean) {

@@ -28,6 +28,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -357,7 +359,7 @@ public class GiftPanelView extends FrameLayout {
                     mTvDiamond.setText(amount);
                 }
             }
-        }, new ApiMethods.RequestControl("getZSBalance", ApiMethods.ControlType.CancelThis));
+        }, new RequestControl("getZSBalance", ControlType.CancelThis));
     }
 
     public void setGrabRoomData(GrabRoomData grabRoomData) {

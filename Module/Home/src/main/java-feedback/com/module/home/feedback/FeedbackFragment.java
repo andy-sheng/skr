@@ -25,6 +25,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ControlType;
+import com.common.rxretrofit.RequestControl;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -320,7 +322,7 @@ public class FeedbackFragment extends BaseFragment {
                         .build());
                 U.getFragmentUtils().popFragment(FeedbackFragment.this);
             }
-        }, new ApiMethods.RequestControl("feedback", ApiMethods.ControlType.CancelThis));
+        }, new RequestControl("feedback", ControlType.CancelThis));
     }
 
     private void submitReport(List<Integer> typeList, String content, List<String> picUrls) {
@@ -351,7 +353,7 @@ public class FeedbackFragment extends BaseFragment {
                     U.getFragmentUtils().popFragment(FeedbackFragment.this);
                 }
             }
-        }, this, new ApiMethods.RequestControl("feedback", ApiMethods.ControlType.CancelThis));
+        }, this, new RequestControl("feedback", ControlType.CancelThis));
     }
 
     @Override

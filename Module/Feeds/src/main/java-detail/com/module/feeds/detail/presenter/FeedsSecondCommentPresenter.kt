@@ -3,10 +3,7 @@ package com.module.feeds.detail.presenter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.mvp.AbsCoroutinePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFirstLevelCommentView
@@ -54,7 +51,7 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
             override fun onNetworkError(errorType: ErrorType?) {
                 mIFirstLevelCommentView.finishLoadMore()
             }
-        }, this, ApiMethods.RequestControl(mTag + "getFirstLevelCommentList", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "getFirstLevelCommentList", ControlType.CancelThis))
     }
 
     fun updateCommentList() {
@@ -81,7 +78,7 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                     mIFirstLevelCommentView.likeFinish(firstLevelCommentModel, position, like)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "likeComment", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "likeComment", ControlType.CancelThis))
     }
 
     fun addComment(content: String, feedID: Int, firstLevelCommentID: Int, refuseModel: FirstLevelCommentModel, callBack: ((FirstLevelCommentModel) -> Unit)) {
@@ -109,6 +106,6 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                     U.getToastUtil().showShort(obj?.errmsg)
                 }
             }
-        }, this, ApiMethods.RequestControl(mTag + "addComment", ApiMethods.ControlType.CancelThis))
+        }, this, RequestControl(mTag + "addComment", ControlType.CancelThis))
     }
 }
