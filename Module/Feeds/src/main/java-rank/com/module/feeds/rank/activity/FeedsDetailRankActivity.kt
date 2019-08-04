@@ -87,7 +87,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         mRefreshLayout.setEnableRefresh(true)
         mRefreshLayout.setEnableLoadMore(true)
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
-        mRefreshLayout.setEnableOverScrollDrag(false)
+        mRefreshLayout.setEnableOverScrollDrag(true)
 
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
