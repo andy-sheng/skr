@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 
 object MediaCacheManager {
-    private val TAG = "VideoCache"
+    private val TAG = "MediaCacheManager"
     private val saveFile = U.getAppInfoUtils().getSubDirFile("ori")
     private val fileNameGenerator = object : FileNameGenerator {
         override fun generate(url: String?): String {
