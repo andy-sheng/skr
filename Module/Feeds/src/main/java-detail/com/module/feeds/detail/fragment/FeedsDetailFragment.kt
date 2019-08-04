@@ -488,7 +488,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             FeedsPlayStatistics.addExpose(mFeedsWatchModel?.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
-//        mFeedsCommonLyricView?.playLyric()
+
+        if (SinglePlayer.isBufferingOk) {
+            mFeedsCommonLyricView?.playLyric()
+        }
     }
 
     private fun pausePlay() {
