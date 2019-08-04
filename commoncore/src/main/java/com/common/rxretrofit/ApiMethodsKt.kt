@@ -38,7 +38,7 @@ suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): A
 
 private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>): ApiResult {
     try {
-        val result = subscrib(apiKey, api)
+        val result = callReal(apiKey, api)
         if (result?.errno != 0) {
             if (MyLog.isDebugLogOpen()) {
                 U.getToastUtil().showShort("errno:${result?.errno} errmsg:${result?.errmsg}", -100, -1)
@@ -56,6 +56,11 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
             log = e.message
         }
         MyLog.e("ApiObserverKt", log)
+        if (MyLog.isDebugLogOpen()) {
+            if (!TextUtils.isEmpty(log)) {
+                U.getToastUtil().showShort(log, -100, -1)
+            }
+        }
         if (e is HttpException) {
             if (e.code() == 404) {
                 return ApiResult().apply {
@@ -74,11 +79,6 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
                 errmsg = "SocketTimeoutException"
             }
         }
-        if (MyLog.isDebugLogOpen()) {
-            if (!TextUtils.isEmpty(log)) {
-                U.getToastUtil().showShort(log, -100, -1)
-            }
-        }
         return ApiResult().apply {
             errno = -2
             errmsg = "网络较差，导致请求失败"
@@ -86,7 +86,7 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
     }
 }
 
-private suspend fun subscrib(apiKey: String?, api: () -> Call<ApiResult>): ApiResult {
+private suspend fun callReal(apiKey: String?, api: () -> Call<ApiResult>): ApiResult {
     val call = api.invoke()
     apiKey?.let {
         requestMap.put(apiKey, call)
