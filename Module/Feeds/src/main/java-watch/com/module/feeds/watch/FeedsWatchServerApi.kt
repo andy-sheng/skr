@@ -3,6 +3,7 @@ package com.module.feeds.watch
 import com.common.rxretrofit.ApiResult
 import io.reactivex.Observable
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -33,7 +34,6 @@ interface FeedsWatchServerApi {
      */
     @GET("/v1/feed/collect-list")
     fun getFeedCollectList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Observable<ApiResult>
-
 
 
     /**
@@ -70,14 +70,14 @@ interface FeedsWatchServerApi {
      * @return
      */
     @GET("/v1/mate/has-relation")
-    suspend fun getRelation(@Query("toUserID") toUserID: Int): ApiResult
+    fun getRelation(@Query("toUserID") toUserID: Int): Call<ApiResult>
 
     /**
      * 用户和feed的关系
      * 全民神曲
      */
     @GET("v1/feed/user-mate")
-    suspend fun checkCollects(@Query("userID") userID: Int, @Query("feedID") feedID: Int): ApiResult
+    fun checkCollects(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Call<ApiResult>
 
     /**
      * 收藏feed  {
@@ -86,6 +86,6 @@ interface FeedsWatchServerApi {
      *        }
      */
     @PUT("v1/feed/collect")
-    suspend fun collectFeed(@Body body: RequestBody): ApiResult
+    fun collectFeed(@Body body: RequestBody): Call<ApiResult>
 
 }

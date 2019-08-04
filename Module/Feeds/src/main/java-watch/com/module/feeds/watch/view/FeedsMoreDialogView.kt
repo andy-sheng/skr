@@ -8,6 +8,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -176,7 +178,9 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
     // 检查收藏
     private fun checkColledt() {
         launch {
-            val result = mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)
+            val result = subscribe {
+                mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID)
+            }
             if (result.errno == 0) {
                 val isCollocted = result.data.getBooleanValue("isCollected")
                 showCollected(isCollocted)
@@ -221,7 +225,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val targetID: Int, 
             map["like"] = !isCollocted
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = mFeedServerApi.collectFeed(body)
+            val result = subscribe { mFeedServerApi.collectFeed(body)}
             if (result.errno == 0) {
                 EventBus.getDefault().post(FeedsCollectChangeEvent())
             }

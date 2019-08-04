@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSONObject;
 import java.io.Serializable;
 
 public class ApiResult implements Serializable {
-
     int errno;
     String errmsg;
     String traceId;

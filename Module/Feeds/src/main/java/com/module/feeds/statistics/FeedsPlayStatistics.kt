@@ -1,21 +1,16 @@
 package com.module.feeds.statistics
 
 import android.util.ArrayMap
-import android.util.SparseArray
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiResult
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.utils.U
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.PUT
 
@@ -96,18 +91,21 @@ object FeedsPlayStatistics {
         )
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-        GlobalScope.launch(Dispatchers.IO) {
-            val r = subscribe {  fedsStatisticsServerApi.uploadFeedsStatistics(body) }
-            launch(Dispatchers.Main) {
-                if (r?.errno == 0) {
-                    if (MyLog.isDebugLogOpen()) {
-                        U.getToastUtil().showShort("打点上报成功")
-                    }
+        for (i in 1..5) {
+            GlobalScope.launch {
+                val r = subscribe(RequestControl("uploadFeedsStatistics", ControlType.CancelLast)) {
+                    fedsStatisticsServerApi.uploadFeedsStatistics(body)
+                }
+                launch(Dispatchers.Main) {
+                    if (r?.errno == 0) {
+                        if (MyLog.isDebugLogOpen()) {
+                            U.getToastUtil().showShort("打点上报成功")
+                        }
 
+                    }
                 }
             }
         }
-
     }
 
     private val fedsStatisticsServerApi = ApiManager.getInstance().createService(FeedsStatisticsServerApi::class.java)
@@ -115,7 +113,7 @@ object FeedsPlayStatistics {
 
 private interface FeedsStatisticsServerApi {
     @PUT("/v1/feed/statistics")
-    suspend fun uploadFeedsStatistics(@Body requestBody: RequestBody): ApiResult
+    fun uploadFeedsStatistics(@Body requestBody: RequestBody): Call<ApiResult>
 }
 
 private class Item(var feedId: Int, var cnt: Int, var ts: Long)

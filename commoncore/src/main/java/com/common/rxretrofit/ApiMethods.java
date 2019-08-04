@@ -104,19 +104,18 @@ public class ApiMethods {
     }
 
     private static <T> Disposable innerSubscribe(final Observable<T> observable, final ApiObserver<T> apiObserver, ObservableTransformer transformer, final RequestControl requestControl) {
-
         if (requestControl != null) {
-            if (requestControl.mControlType == ControlType.CancelLast) {
+            if (requestControl.controlType == ControlType.CancelLast) {
                 // 取消上一次,继续
-                Disposable lastDisposeable = sReqMap.get(requestControl.mKey);
+                Disposable lastDisposeable = sReqMap.get(requestControl.key);
                 if (lastDisposeable != null && !lastDisposeable.isDisposed()) {
                     lastDisposeable.dispose();
                 }
-            } else if (requestControl.mControlType == ControlType.CancelThis) {
+            } else if (requestControl.controlType == ControlType.CancelThis) {
                 // 取消上一次,继续
-                Disposable lastDisposeable = sReqMap.get(requestControl.mKey);
+                Disposable lastDisposeable = sReqMap.get(requestControl.key);
                 if (lastDisposeable != null && !lastDisposeable.isDisposed()) {
-                    MyLog.e("ApiMethods", "请求key=" + requestControl.mKey + "还在执行，取消这一次");
+                    MyLog.e("ApiMethods", "请求key=" + requestControl.key + "还在执行，取消这一次");
                     return null;
                 }
             }
@@ -147,7 +146,7 @@ public class ApiMethods {
                 public void accept(Throwable throwable) throws Exception {
                     observer.onError(throwable);
                     if (requestControl != null) {
-                        sReqMap.remove(requestControl.mKey);
+                        sReqMap.remove(requestControl.key);
                     }
                 }
             }, new Action() {
@@ -155,7 +154,7 @@ public class ApiMethods {
                 public void run() throws Exception {
                     observer.onComplete();
                     if (requestControl != null) {
-                        sReqMap.remove(requestControl.mKey);
+                        sReqMap.remove(requestControl.key);
                     }
                 }
             }, new Consumer<Disposable>() {
@@ -165,7 +164,7 @@ public class ApiMethods {
                 }
             });
             if (requestControl != null ) {
-                sReqMap.put(requestControl.mKey, disposable);
+                sReqMap.put(requestControl.key, disposable);
             }
             return disposable;
 
@@ -180,7 +179,7 @@ public class ApiMethods {
                 public void accept(Throwable throwable) throws Exception {
                     apiObserver.onError(throwable);
                     if (requestControl != null) {
-                        sReqMap.remove(requestControl.mKey);
+                        sReqMap.remove(requestControl.key);
                     }
                 }
             }, new Action() {
@@ -188,7 +187,7 @@ public class ApiMethods {
                 public void run() throws Exception {
                     apiObserver.onComplete();
                     if (requestControl != null) {
-                        sReqMap.remove(requestControl.mKey);
+                        sReqMap.remove(requestControl.key);
                     }
                 }
             }, new Consumer<Disposable>() {
@@ -198,7 +197,7 @@ public class ApiMethods {
                 }
             });
             if (requestControl != null ) {
-                sReqMap.put(requestControl.mKey, disposable);
+                sReqMap.put(requestControl.key, disposable);
             }
             return disposable;
         }
