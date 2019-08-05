@@ -74,6 +74,8 @@ public class FeedbackFragment extends BaseFragment {
     String mLogUrl = "";
     int mActionType;
     int mTargetId;
+    int mFeedID;
+    int mSongID;
 
     Handler mHandler = new Handler(Looper.getMainLooper());
     boolean mUploading = false;
@@ -271,6 +273,10 @@ public class FeedbackFragment extends BaseFragment {
             mActionType = (int) data;
         } else if (type == 1) {
             mTargetId = (int) data;
+        } else if (type == 2) {
+            mFeedID = (int) data;
+        } else if (type == 3) {
+            mSongID = (int) data;
         }
     }
 
@@ -279,10 +285,43 @@ public class FeedbackFragment extends BaseFragment {
         if (mActionType == FEED_BACK) {
             summitFeedback(typeList, content, logUrl, picUrls);
         } else if (mActionType == COPY_REPORT) {
-            //todo 举报
+            submitCopyReport( content, picUrls);
         } else {
             submitReport(typeList, content, picUrls);
         }
+    }
+
+    private void submitCopyReport(String content, List<String> picUrls) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("targetID", mTargetId);
+        map.put("content", content);
+        map.put("screenshot", picUrls);
+        map.put("feedID", mFeedID);
+        map.put("songID",mSongID);
+        map.put("source", 7);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.report(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
+                            .setText("举报成功")
+                            .build());
+                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                } else {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
+                            .setText("举报失败")
+                            .build());
+                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                }
+            }
+        }, this, new RequestControl("feedback", ControlType.CancelThis));
+
     }
 
     private void summitFeedback(List<Integer> typeList, String content, String logUrl, List<String> picUrls) {

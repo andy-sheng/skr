@@ -32,7 +32,9 @@ class FeedCopyReportActivity : BaseActivity() {
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, 2)
                         .addDataBeforeAdd(1, model.user?.userID)
-                        .setFragmentDataListener(object : FragmentDataListener{
+                        .addDataBeforeAdd(2, model.feedID)
+                        .addDataBeforeAdd(3, model.song?.songID)
+                        .setFragmentDataListener(object : FragmentDataListener {
                             override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
                                 //todo 拿到结果再反馈吧
 

@@ -145,7 +145,7 @@ public class FeedbackView extends RelativeLayout {
                         }
                     }
 
-                    if (tags.size() == 0) {
+                    if (tags.size() == 0 && mActionType != 2) {
                         U.getToastUtil().showShort("请选择顶部的选项哦");
                     } else {
                         mListener.onClickSubmit(tags, mFeedbackContent.getText().toString().trim(), mImageItemArrayList);
