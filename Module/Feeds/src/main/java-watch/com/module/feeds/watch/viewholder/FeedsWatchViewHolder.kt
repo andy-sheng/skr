@@ -110,19 +110,30 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         hideCompleteArea()
     }
 
-    fun showCompleteArea() {
+    fun showCompleteArea(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
+
         mCompleteGruop.visibility = View.VISIBLE
-        mCompleteAreaIv.visibility = View.VISIBLE
-        mShareTv.visibility = View.VISIBLE
-        mCollectTv.visibility = View.VISIBLE
-        mPlayAgainTv.visibility = View.VISIBLE
+        if (watchModel.isCollected) {
+            mCollectTv.text = "已收藏"
+        } else {
+            mContentTv.text = "收藏"
+        }
     }
 
     fun hideCompleteArea() {
         mCompleteGruop.visibility = View.GONE
-        mCompleteAreaIv.visibility = View.GONE
-        mShareTv.visibility = View.GONE
-        mCollectTv.visibility = View.GONE
-        mPlayAgainTv.visibility = View.GONE
+    }
+
+    fun refreshCollects(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
+
+        if (watchModel.isCollected) {
+            mCollectTv.text = "已收藏"
+        } else {
+            mContentTv.text = "收藏"
+        }
     }
 }

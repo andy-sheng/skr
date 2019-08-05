@@ -26,9 +26,9 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     var mRoomData: DoubleRoomData? = null
     val userInfoListMap: LinkedHashMap<Int, UserInfoModel> = LinkedHashMap()
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     var itemId: Int? = -1
 

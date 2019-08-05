@@ -49,12 +49,16 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder type=$type position=$position playing=$playing")
             if (type == REFRESH_SHOW_COMPLETE_AREA) {
                 if (holder is FeedsWatchViewHolder) {
-                    holder.showCompleteArea()
+                    holder.showCompleteArea(position, mDataList[position])
                     holder.stopPlay(false)
                 }
             } else if (type == REFRESH_HIDE_COMPLETE_AREA) {
                 if (holder is FeedsWatchViewHolder) {
                     holder.hideCompleteArea()
+                }
+            } else if (type == REFRESH_TYPE_COLLECT) {
+                if (holder is FeedsWatchViewHolder) {
+                    holder.refreshCollects(position, mDataList[position])
                 }
             }
 
@@ -258,5 +262,6 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         const val REFRESH_BUFFERING_STATE = 4  // 局部刷新歌词
         const val REFRESH_SHOW_COMPLETE_AREA = 5  // 显示局部播放结束画面
         const val REFRESH_HIDE_COMPLETE_AREA = 6  // 隐藏局部播放结束画面
+        const val REFRESH_TYPE_COLLECT = 7 // 刷新是否收藏状态
     }
 }

@@ -284,8 +284,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
 
     private fun initPager() {
-        mDoubleChatSenceView = DoubleChatSenceView(context)
-        mDoubleGameSenceView = DoubleGameSenceView(context)
+        mDoubleChatSenceView = DoubleChatSenceView(context!!)
+        mDoubleGameSenceView = DoubleGameSenceView(context!!)
         mDoubleGameSenceView?.mRoomData = mRoomData
 
         var mPickFun: () -> Unit = {
@@ -297,7 +297,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
         mDoubleGameSenceView?.mPickFun = mPickFun
 
-        mDoubleSingSenceView = DoubleSingSenceView(context)
+        mDoubleSingSenceView = DoubleSingSenceView(context!!)
         mDoubleSingSenceView?.mRoomData = mRoomData
         mDoubleSingSenceView?.mPickFun = mPickFun
 

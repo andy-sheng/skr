@@ -2,6 +2,7 @@ package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.utils.U
@@ -10,6 +11,7 @@ import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.view.IFeedCollectView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -75,7 +77,11 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }
-                U.getToastUtil().showShort("${result?.errmsg}")
+                if (MyLog.isDebugLogOpen()) {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                } else {
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
             }
         }
     }

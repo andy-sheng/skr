@@ -12,4 +12,6 @@ interface IFeedsWatchView {
     fun feedLikeResult(position: Int, model: FeedsWatchModel, isLike: Boolean)
 
     fun feedDeleteResult(position: Int, model: FeedsWatchModel)
+
+    fun showCollect(position: Int, model: FeedsWatchModel)
 }

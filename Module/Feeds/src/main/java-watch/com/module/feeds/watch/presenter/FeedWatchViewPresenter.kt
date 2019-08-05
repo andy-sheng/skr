@@ -7,13 +7,17 @@ import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.utils.U
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.FeedsWatchServerApi
+import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.feeds.watch.view.IFeedsWatchView
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.HashMap
 
 class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) : RxLifeCyclePresenter() {
@@ -164,6 +168,46 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             } else {
                 if (obj.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
+    }
+
+    suspend fun getCollectedStatus(model: FeedsWatchModel): Boolean {
+        var isCollected = false
+        val job = async {
+            val result = subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), model.feedID) }
+            if (result.errno == 0) {
+                isCollected = result.data.getBooleanValue("isCollected")
+            } else {
+
+            }
+        }
+        job.await()
+        return isCollected
+    }
+
+    fun collectOrUnCollectFeed(position: Int, model: FeedsWatchModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["feedID"] = model.feedID
+            map["like"] = !model.isCollected
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { mFeedServerApi.collectFeed(body) }
+            if (result.errno == 0) {
+                model.isCollected = !model.isCollected
+                view.showCollect(position, model)
+                EventBus.getDefault().post(FeedsCollectChangeEvent(model, model.isCollected))
+            } else {
+                view.requestError()
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                }
+                if (MyLog.isDebugLogOpen()) {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                } else {
+                    MyLog.e(TAG, "${result?.errmsg}")
                 }
             }
         }

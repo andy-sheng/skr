@@ -31,6 +31,8 @@ class FeedsWatchModel : Serializable {
     @JSONField(name = "status")
     var status: Int = 2  //0 未知 1待审核 2审核通过
 
+    var isCollected = false  // 默认未收藏
+
     override fun toString(): String {
         return "FeedsWatchModel(exposure=$exposure, commentCnt=$commentCnt, feedID=$feedID, feedType=$feedType, hasFollow=$hasFollow, isLiked=$isLiked, rankSeq=$rankSeq, rank=$rank, song=$song, starCnt=$starCnt, shareCnt=$shareCnt, user=$user, status=$status)"
     }

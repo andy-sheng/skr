@@ -23,6 +23,7 @@ import com.common.utils.dp
 import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.callback.EmptyCallback
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
@@ -44,12 +45,15 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context), IFeedsWatchView, IPersonFeedsWall {
+class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLayout(fragment.context!!), IFeedsWatchView, IPersonFeedsWall, CoroutineScope by MainScope() {
     val TAG = "FeedsWatchView"
 
     constructor(fragment: BaseFragment, type: Int, userInfoModel: UserInfoModel, callBack: RequestCallBack?) : this(fragment, type) {
@@ -75,6 +79,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private val mPersenter: FeedWatchViewPresenter = FeedWatchViewPresenter(this, type)
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
+    var mSharePanel: SharePanel? = null
     val playerTag = TAG + hashCode()
 
     val playCallback: PlayerCallbackAdapter
@@ -112,10 +117,26 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onClickCollectListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 收藏
+                watchModel?.let {
+                    if (!it.isCollected) {
+                        mPersenter.collectOrUnCollectFeed(position, it)
+                    } else {
+                        if (MyLog.isDebugLogOpen()) {
+                            U.getToastUtil().showShort("已经收藏，此处不能取消收藏")
+                        }
+                    }
+                }
             }
 
             override fun onClickShareListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 分享
+                watchModel?.let {
+                    mSharePanel = SharePanel(fragment.activity)
+                    mSharePanel?.setShareContent("", it.song?.workName, it.user?.nickname,
+                            ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
+                                    it.song?.songID, it.user?.userID)))
+                    mSharePanel?.show(ShareType.URL)
+                }
             }
 
             override fun onClickAvatarListener(watchModel: FeedsWatchModel?) {
@@ -232,9 +253,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 mAdapter?.mCurrentPlayModel?.let { model ->
                     mAdapter?.mCurrentPlayPosition?.let {
                         if (isHomePage()) {
-                            // 首页
-                            mAdapter?.playComplete()
-                            mMap.put(it, model)
+                            // 首页,需要去拉一下收藏
+                            launch {
+                                model.isCollected = mPersenter.getCollectedStatus(model)
+                                mAdapter?.playComplete()
+                                mMap[it] = model
+                            }
                         } else {
                             // 个人中心
                             mAdapter?.pausePlayModel()
@@ -530,6 +554,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mAdapter?.delete(model)
     }
 
+    override fun showCollect(position: Int, model: FeedsWatchModel) {
+        mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         SinglePlayer.addCallback(playerTag, playCallback)
@@ -544,6 +572,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     override fun destroy() {
         mPersenter.destroy()
         mFeedsMoreDialogView?.dismiss(false)
+        mSharePanel?.dismiss(false)
         SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
         if (EventBus.getDefault().isRegistered(this)) {
