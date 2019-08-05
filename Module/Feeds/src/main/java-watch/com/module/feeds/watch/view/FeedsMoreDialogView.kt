@@ -192,10 +192,14 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
 
     private fun share() {
         mSharePanel = SharePanel(activity)
-        mSharePanel?.setShareContent("", model.song?.workName, model.user?.nickname,
-                ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
-                        model.song?.songID, model.user?.userID)))
-        mSharePanel?.show(ShareType.URL)
+                .apply {
+                    mTitle = model.song?.workName
+                    mDes = model.user?.nickname
+                    mPlayMusicUrl = model.song?.playURL
+                    mUrl = String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d",
+                            model.song?.songID, model.user?.userID)
+                }
+        mSharePanel?.show(ShareType.MUSIC)
     }
 
     /**
