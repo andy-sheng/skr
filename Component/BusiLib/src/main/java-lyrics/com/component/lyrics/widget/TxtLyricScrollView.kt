@@ -17,6 +17,7 @@ import com.component.lyrics.LyricsReader
  * 纯文本歌词view，支持手动拖动和自动滚动
  */
 class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, attrs) {
+    private val TAG = "TxtLyricScrollView"
     private val lyrics = ArrayList<String>() // 所有歌词
     private var progress = 200f // 当前所处的进度位置 100为播放完毕
     private var maxProgress = progress // 进度的最大值
@@ -35,6 +36,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
 
     private var duration = 0
     private var postion = 0
+    private var posionLocalTs = 0L
     private var playing = false
 
     init {
@@ -97,17 +99,27 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
     }
 
     fun play(pos: Int) {
-        playing = true
+        posionLocalTs = 0
         play(pos, 0)
     }
 
     private fun play(pos: Int, delay: Int) {
+        MyLog.d(TAG, "pos=$pos delay=$delay")
+
         this.postion = pos
-        if(duration<=0){
+        if (duration <= 0) {
             MyLog.e("未设置duration")
         }
         progress = (this.postion * maxProgress) / duration
-        postInvalidateDelayed(delay.toLong())
+        if (delay == 0) {
+            if (!playing) {
+                playing = true
+                invalidate()
+            }
+        } else {
+            postInvalidateDelayed(delay.toLong())
+        }
+
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -150,7 +162,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
     override fun onDraw(canvas: Canvas?) {
         //MyLog.d("TxtLyricScrollView", "progress=${progress}")
         super.onDraw(canvas)
-        if (ht == 0f && lyrics.size>0) {
+        if (ht == 0f && lyrics.size > 0) {
             // 计算一些基本参数
             val fontMetrics = paint1.fontMetrics
             // 字体的大小
@@ -194,7 +206,16 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
         }
         if (lyricAudo) {
             if (playing) {
-                play(postion + 16, 16)
+                var np = postion
+                var now = System.currentTimeMillis()
+                if (posionLocalTs != 0L) {
+                    val dt = now - posionLocalTs
+                    np += dt.toInt()
+                } else {
+                    np += 16
+                }
+                posionLocalTs = now
+                play(np, 16)
             }
         }
     }
