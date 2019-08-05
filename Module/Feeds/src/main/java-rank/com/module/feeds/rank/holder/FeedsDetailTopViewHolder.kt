@@ -22,7 +22,9 @@ import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.watch.model.FeedsWatchModel
 
-class FeedsDetailTopViewHolder(rootView: View, onClickPlayListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(rootView) {
+class FeedsDetailTopViewHolder(rootView: View,
+                               onClickPlayListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?,
+                               onClickItemListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(rootView) {
 
     private val mCoverIv: SimpleDraweeView = itemView.findViewById(R.id.cover_iv)
     private val mEmptyCover: ExImageView = itemView.findViewById(R.id.empty_cover)
@@ -38,10 +40,15 @@ class FeedsDetailTopViewHolder(rootView: View, onClickPlayListener: ((model: Fee
     init {
         itemView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                onClickPlayListener?.invoke(mModel, mPosition)
+                onClickItemListener?.invoke(mModel, mPosition)
             }
         })
         mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                onClickPlayListener?.invoke(mModel, mPosition)
+            }
+        })
+        mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 onClickPlayListener?.invoke(mModel, mPosition)
             }

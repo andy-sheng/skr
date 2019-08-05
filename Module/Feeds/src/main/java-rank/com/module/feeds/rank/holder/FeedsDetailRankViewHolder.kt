@@ -13,7 +13,9 @@ import com.module.feeds.watch.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 
-class FeedsDetailRankViewHolder(item: View, onClickPlayListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
+class FeedsDetailRankViewHolder(item: View,
+                                onClickPlayListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?,
+                                onClickItemListener: ((model: FeedsWatchModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
     var mPosition: Int = 0
     var mModel: FeedsWatchModel? = null
@@ -32,7 +34,7 @@ class FeedsDetailRankViewHolder(item: View, onClickPlayListener: ((model: FeedsW
 
         itemView.setOnClickListener(object : DebounceViewClickListener(){
             override fun clickValid(v: View?) {
-                onClickPlayListener?.invoke(mModel, mPosition)
+                onClickItemListener?.invoke(mModel, mPosition)
             }
         })
     }

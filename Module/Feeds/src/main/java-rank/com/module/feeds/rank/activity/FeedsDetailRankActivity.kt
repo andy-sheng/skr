@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
@@ -127,6 +128,12 @@ class FeedsDetailRankActivity : BaseActivity() {
                     play(it)
                 }
             }
+        }
+        mAdapter.onClickItemListener = { model, _ ->
+            stop()
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                    .withSerializable("feed_model", model)
+                    .navigation()
         }
         initLoadData()
         SinglePlayer.addCallback(playerTag, playCallback)

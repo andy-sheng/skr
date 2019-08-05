@@ -18,6 +18,7 @@ class FeedDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var mCurrentPlayModel: FeedsWatchModel? = null
 
     var onClickPlayListener: ((model: FeedsWatchModel?, position: Int) -> Unit)? = null
+    var onClickItemListener: ((model: FeedsWatchModel?, position: Int) -> Unit)? = null
 
     private val type_ONE = 1
     private val type_TOP = 2
@@ -27,15 +28,15 @@ class FeedDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (viewType) {
             type_ONE -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_rank_detail_one_layout, parent, false)
-                FeedsDetailOneViewHolder(view, onClickPlayListener)
+                FeedsDetailOneViewHolder(view, onClickPlayListener, onClickItemListener)
             }
             type_TOP -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_rank_detail_top_item_layout, parent, false)
-                FeedsDetailTopViewHolder(view, onClickPlayListener)
+                FeedsDetailTopViewHolder(view, onClickPlayListener, onClickItemListener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_rank_detail_item_layout, parent, false)
-                FeedsDetailRankViewHolder(view, onClickPlayListener)
+                FeedsDetailRankViewHolder(view, onClickPlayListener, onClickItemListener)
             }
         }
     }
