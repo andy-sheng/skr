@@ -129,7 +129,7 @@
                         android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/view_17_dp"
-                        android:layout_marginTop="@dimen/view_345_dp"
+                        android:layout_marginTop="@dimen/view_350_dp"
                         android:paddingTop="@dimen/view_4_dp"
                         android:paddingBottom="@dimen/view_4_dp"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -162,24 +162,29 @@
                         app:layout_constraintTop_toTopOf="@+id/control_tv" />
 
                     <SeekBar
+                        android:layout_width="0dp"
+                        android:layout_marginLeft="@dimen/view_10_dp"
+                        android:layout_marginRight="@dimen/view_10_dp"
+                        android:thumb="@drawable/shenqu_jindu"
+                        app:layout_constraintBottom_toBottomOf="@+id/control_tv"
+                        app:layout_constraintLeft_toRightOf="@+id/pass_time_tv"
                         android:id="@+id/seek_bar"
-                        android:layout_width="match_parent"
+                        app:layout_constraintRight_toLeftOf="@+id/last_time_tv"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/view_16_dp"
                         android:maxHeight="@dimen/view_4_dp"
                         android:minHeight="@dimen/view_4_dp"
                         android:paddingStart="0dp"
                         android:paddingEnd="0dp"
                         android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
-                        android:thumb="@drawable/shenqu_jindu"
-                        app:layout_constraintTop_toBottomOf="@+id/control_tv" />
+                        app:layout_constraintTop_toTopOf="@+id/control_tv" />
 
                     <com.common.image.fresco.BaseImageView
+
                         android:id="@+id/singer_iv"
                         android:layout_width="@dimen/view_32_dp"
                         android:layout_height="@dimen/view_32_dp"
                         android:layout_marginLeft="@dimen/view_11_dp"
-                        android:layout_marginTop="@dimen/view_21_dp"
+                        android:layout_marginTop="@dimen/view_40_dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/seek_bar" />
 
