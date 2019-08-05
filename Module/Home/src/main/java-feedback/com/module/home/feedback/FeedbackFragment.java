@@ -285,7 +285,7 @@ public class FeedbackFragment extends BaseFragment {
         if (mActionType == FEED_BACK) {
             summitFeedback(typeList, content, logUrl, picUrls);
         } else if (mActionType == COPY_REPORT) {
-            submitCopyReport( content, picUrls);
+            submitCopyReport(content, picUrls);
         } else {
             submitReport(typeList, content, picUrls);
         }
@@ -297,7 +297,7 @@ public class FeedbackFragment extends BaseFragment {
         map.put("content", content);
         map.put("screenshot", picUrls);
         map.put("feedID", mFeedID);
-        map.put("songID",mSongID);
+        map.put("songID", mSongID);
         map.put("source", 7);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -307,17 +307,17 @@ public class FeedbackFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    getActivity().finish();
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
                             .setText("举报成功")
                             .build());
-                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
                 } else {
+                    getActivity().finish();
                     U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
                             .setText("举报失败")
                             .build());
-                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
                 }
             }
         }, this, new RequestControl("feedback", ControlType.CancelThis));
