@@ -250,6 +250,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
         playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
+                MyLog.w(TAG,"PlayerCallbackAdapter onCompletion")
                 // 播放完成
                 SinglePlayer.reset(playerTag)
                 // 显示分享，收藏和播放的按钮
