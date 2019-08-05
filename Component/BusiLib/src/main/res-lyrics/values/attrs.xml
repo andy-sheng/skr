@@ -18,4 +18,19 @@
         <!--显示上下边框-->
         <attr name="showTopBottomBound" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="TxtLyricScrollView">
+        <!--歌词大小-->
+        <attr name="lyricFontSize" format="dimension" />
+        <!--歌词颜色-->
+        <attr name="lyricColor" format="color" />
+        <!--歌词行间距-->
+        <attr name="lyricLineSpace" format="dimension" />
+        <!--歌词中间高亮的歌词数量-->
+        <attr name="lyricHighlightNum" format="integer" />
+        <!--歌词渐隐的歌词数量-->
+        <attr name="lyricFadeNum" format="integer" />
+        <!--歌词是手动拖着滚还是自动滚-->
+        <attr name="lyricAuto" format="boolean" />
+    </declare-styleable>
 </resources>
