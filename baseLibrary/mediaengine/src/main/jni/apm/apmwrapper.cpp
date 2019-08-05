@@ -20,6 +20,9 @@ APMWrapper::APMWrapper() :
         mOutResample(NULL),
         mResample{NULL, NULL},
         mTempData{NULL, NULL},
+        mInData{NULL, NULL},
+        mOutData{NULL, NULL},
+        mOutDataSize{0, 0},
         mBufferSamples{0, 0},
         mInSampleFmt{0, 0} {
 }
@@ -38,6 +41,8 @@ APMWrapper::~APMWrapper() {
     for (int i = 0; i < 2; i++) {
         free(mInData[i]);
         mInData[i] = NULL;
+        free(mOutData[i]);
+        mOutData[i] = NULL;
 
         if (mResample[i]) {
             ksy_swr_release(mResample[i]);
@@ -66,7 +71,9 @@ int APMWrapper::Create() {
         mConfig[i].set_num_channels(NUM_INPUT_CHANNEL);
         mSamplesPerFrame[i] = mConfig[i].num_samples();
 
-        mInData[i] = (int16_t*) malloc(mConfig[i].num_samples() * sizeof(int16_t));
+        // 100ms
+        mOutDataSize[i] = SAMPLE_RATE_HZ * NUM_INPUT_CHANNEL * sizeof(int16_t) / 10;
+        mOutData[i] = (int16_t *) malloc((size_t) mOutDataSize[i]);
     }
 
     return 0;
@@ -88,11 +95,18 @@ int APMWrapper::Initialize() {
  * this is the near-end (or captured) audio.
  */
 int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
-    //LOGE("ProcessStream data=0x%p len=%d", data, len);
+    // LOGD("ProcessStream data=0x%p len=%d", data, len);
     int idx = 0;
-    int delay = 80;
-    int start = 0, size = 0, ret = 0;
-    audio_utils_fifo_write(&mFifo[0], (char *) data, len / mFrameSize[idx]);
+    int start = 0, size = 0, outSize = 0, ret = 0;
+    audio_utils_fifo_write(&mFifo[0], (char *) data, (size_t)(len / mFrameSize[idx]));
+    int maxSize = audio_utils_fifo_get_remain(&mFifo[idx]);
+    if (maxSize > mOutDataSize[idx]) {
+        while (maxSize > mOutDataSize[idx]) {
+            mOutDataSize[idx] *= 2;
+        }
+        LOGD("realloc out buffer size to %d", mOutDataSize[idx]);
+        mOutData[idx] = (int16_t*)realloc(mOutData[idx], (size_t)mOutDataSize[idx]);
+    }
 
     while (audio_utils_fifo_get_remain(&mFifo[idx]) >= mConfig[idx].num_frames()) {
         audio_utils_fifo_read(&mFifo[idx], mInData[idx], mConfig[idx].num_frames());
@@ -102,15 +116,14 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
             LOGE("apm %d resample to FLTP failed, err=%d", idx, ret);
         }
 
-        SetStreamDelay(delay);
-        delay -= 10;
         ret = mAPM->ProcessStream(mTempData[idx], mConfig[idx], mConfig[idx], mTempData[idx]);
         if (ret >= 0) {
             uint8_t **buf = NULL;
             size = mConfig[idx].num_samples() * getBytesPerSample(SAMPLE_FMT_FLTP);
             ret = ksy_swr_convert(mOutResample, &buf, (uint8_t**) mTempData[idx], size);
             if (ret > 0) {
-                memcpy(data + start, buf[0], (size_t) ret);
+                memcpy(mOutData[idx] + start, buf[0], (size_t) ret);
+                outSize += ret;
             } else {
                 LOGE("apm %d resample from FLTP failed, err=%d", idx, size);
             }
@@ -121,9 +134,9 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
         start += mSamplesPerFrame[idx];
     }
 
-    *out = data;
-    size = start * 2;
-    return size;
+    *out = mOutData[idx];
+    // LOGD("~ProcessStream outData=0x%p outSize=%d", *out, outSize);
+    return outSize;
 }
 
 /**
@@ -210,6 +223,11 @@ int APMWrapper::Config(int idx, int sampleFmt, int samplerate, int channels) {
     mConfig[idx].set_sample_rate_hz(samplerate);
     mConfig[idx].set_num_channels(channels);
     mSamplesPerFrame[idx] = mConfig[idx].num_samples();
+
+    if (mInData[idx]) {
+        free(mInData[idx]);
+    }
+    mInData[idx] = (int16_t *) malloc(mConfig[idx].num_samples() * sizeof(int16_t));
 
     if (mResample[idx]) {
         ksy_swr_release(mResample[idx]);

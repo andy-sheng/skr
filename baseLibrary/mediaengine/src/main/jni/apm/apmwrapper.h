@@ -87,6 +87,8 @@ private:
     KSYSwr *mResample[2];
     KSYSwr *mOutResample;
     int16_t *mInData[2];
+    int16_t *mOutData[2];
+    int mOutDataSize[2];
     float **mTempData[2];
     StreamConfig mConfig[2];
 
