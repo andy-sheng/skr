@@ -180,7 +180,7 @@ public class ZqAudioEditorKit {
      *
      * @param idx       音频文件索引，最大支持8路
      * @param path      音频文件的绝对路径
-     * @param offset    当前音频的实际开始位置，单位为ms, 小于0时按0计算，大于音频长度时无效。
+     * @param offset    当前音频的实际开始位置，单位为ms, 小于0时代表前面补充对应时长的静音数据，大于音频长度时无效。
      * @param end       当前音频的实际结束位置，单位为ms, 大于音频长度，或者小于0时，按实际长度计算。
      */
     public synchronized void setDataSource(int idx, String path, long offset, long end) {
@@ -198,6 +198,10 @@ public class ZqAudioEditorKit {
         mAudioSource[idx].capture.setOnCompletionListener(mOnCaptureCompletionListener);
         mAudioSource[idx].capture.setOnErrorListener(mOnCaptureErrorListener);
         mAudioSource[idx].getSrcPin().connect(mAudioMixer.getSinkPin(idx));
+        if (offset < 0) {
+            Log.d(TAG, "preset idx " + idx + " delay: " + offset);
+            mAudioMixer.setDelay(idx, offset);
+        }
     }
 
     /**
@@ -226,8 +230,22 @@ public class ZqAudioEditorKit {
 
         mLoopCount = loopCount;
         mLoopedCount = 0;
-        mAudioSource[0].start();
-        mAudioPreview.start();
+        doStart();
+    }
+
+    private void doStart() {
+        Log.d(TAG, "doStart");
+        // 在各路音轨均prepared的情况下，同时开始
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].isPrepared = false;
+            }
+        }
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.prepareAsync();
+            }
+        }
     }
 
     /**
@@ -276,7 +294,7 @@ public class ZqAudioEditorKit {
                         mAudioPreview.resume();
                     }
                 } : null;
-                mAudioSource[i].capture.resume(runnable);
+                mAudioSource[i].capture.start(runnable);
             }
         }
         mState = STATE_PREVIEW_STARTED;
@@ -357,9 +375,21 @@ public class ZqAudioEditorKit {
                 mState != STATE_PREVIEW_PREPARING) {
             return;
         }
+        doSeekTo(pos);
+    }
+
+    private void doSeekTo(long pos) {
+        Log.d(TAG, "doSeekTo " + pos);
         for (int i = 0; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
-                mAudioSource[i].seek(pos);
+                mAudioSource[i].isSeekCompletion = false;
+            }
+        }
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                // 暂停后seek, 保障各路音轨同时开始
+                mAudioSource[i].capture.pause();
+                mAudioSource[i].capture.seek(pos);
             }
         }
     }
@@ -409,7 +439,7 @@ public class ZqAudioEditorKit {
     /**
      * 设置指定音轨的延迟信息。
      *
-     * 可以在预览开始前后设置，预览开始后设置会实时生效，合成开始后设置无效。
+     * 必须在setDataSource之后设置，预览开始后设置会实时生效，合成开始后设置无效。
      *
      * @param idx       待设置的音轨序号
      * @param delayInMs 延迟大小，单位为毫秒。小于0表示前移，大于0表示后移。
@@ -417,7 +447,11 @@ public class ZqAudioEditorKit {
      */
     public void setDelay(int idx, long delayInMs) {
         Log.d(TAG, "setDelay idx: " + idx + " delay: " + delayInMs);
-        mAudioMixer.setDelay(idx, delayInMs);
+        if (mAudioSource[idx] == null) {
+            Log.e(TAG, "Index " + idx + " has no DataSource set, return");
+            return;
+        }
+        mAudioMixer.setDelay(idx, delayInMs + mAudioSource[idx].delayBase);
     }
 
     /**
@@ -427,7 +461,10 @@ public class ZqAudioEditorKit {
      * @return  延迟大小，单位为毫秒。
      */
     public long getDelay(int idx) {
-        return mAudioMixer.getDelay(idx);
+        if (mAudioSource[idx] == null) {
+            return 0;
+        }
+        return mAudioMixer.getDelay(idx) - mAudioSource[idx].delayBase;
     }
 
     /**
@@ -510,7 +547,7 @@ public class ZqAudioEditorKit {
 
         mState = STATE_COMPOSING;
         mPublisher.start(mComposePath);
-        mAudioSource[0].start();
+        doStart();
     }
 
     /**
@@ -556,16 +593,31 @@ public class ZqAudioEditorKit {
         public void onPrepared(AudioFileCapture audioFileCapture) {
             Log.d(TAG, "onPrepared: " + audioFileCapture);
             synchronized (ZqAudioEditorKit.this) {
-                // 主音轨播放开始后再开始其他音轨的播放
-                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
-                        mState == STATE_PREVIEW_PREPARING || mState == STATE_COMPOSING) {
-                    for (int i = 1; i < MAX_CHN; i++) {
+                // 等待所有音轨都prepared之后再开始
+                if (mState == STATE_PREVIEW_PREPARING || mState == STATE_COMPOSING) {
+                    boolean isReady = true;
+                    for (int i = 0; i < MAX_CHN; i++) {
                         if (mAudioSource[i] != null) {
-                            mAudioSource[i].start();
+                            if (mAudioSource[i].capture == audioFileCapture)  {
+                                mAudioSource[i].isPrepared = true;
+                                Log.d(TAG, "Player " + i + " prepared");
+                            } else if (!mAudioSource[i].isPrepared) {
+                                isReady = false;
+                                Log.d(TAG, "Player " + i + " not ready, wait...");
+                            }
                         }
                     }
-                    if (mState == STATE_PREVIEW_PREPARING) {
-                        mState = STATE_PREVIEW_STARTED;
+                    if (isReady) {
+                        Log.d(TAG, "All channel prepared, start now");
+                        for (int i = 0; i < MAX_CHN; i++) {
+                            if (mAudioSource[i] != null) {
+                                mAudioSource[i].capture.start();
+                            }
+                        }
+                        if (mState == STATE_PREVIEW_PREPARING) {
+                            mAudioPreview.start();
+                            mState = STATE_PREVIEW_STARTED;
+                        }
                     }
                 }
             }
@@ -576,7 +628,7 @@ public class ZqAudioEditorKit {
         if (++mLoopedCount < mLoopCount || mLoopCount < 0) {
             Log.d(TAG, "try to loop, mLoopedCount: " + mLoopedCount);
             // seek到开头, loop播放
-            mAudioSource[0].seek(0);
+            doSeekTo(0);
             if (mOnPreviewInfoListener != null) {
                 mOnPreviewInfoListener.onLoopCount(mLoopedCount);
             }
@@ -599,12 +651,26 @@ public class ZqAudioEditorKit {
         public void onSeekCompletion(AudioFileCapture audioFileCapture, long ms) {
             Log.d(TAG, "onSeekCompletion: " + audioFileCapture + " state: " + mState + " ms: " + ms);
             synchronized (ZqAudioEditorKit.this) {
-                if (mAudioSource[0] != null && mAudioSource[0].capture == audioFileCapture &&
-                    mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
-                    // 主音轨seek完成后再处理其他音轨
-                    for (int i = 1; i < MAX_CHN; i++) {
+                // 等待所有seek操作完成后同时开始
+                if (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
+                    boolean isReady = true;
+                    for (int i = 0; i < MAX_CHN; i++) {
                         if (mAudioSource[i] != null) {
-                            mAudioSource[i].seek(ms);
+                            if (mAudioSource[i].capture == audioFileCapture)  {
+                                mAudioSource[i].isSeekCompletion = true;
+                                Log.d(TAG, "Player " + i + " seek completion");
+                            } else if (!mAudioSource[i].isSeekCompletion) {
+                                isReady = false;
+                                Log.d(TAG, "Player " + i + " seek not complete, wait...");
+                            }
+                        }
+                    }
+                    if (isReady) {
+                        Log.d(TAG, "All channel seek completion, start now");
+                        for (int i = 0; i < MAX_CHN; i++) {
+                            if (mAudioSource[i] != null) {
+                                mAudioSource[i].capture.start();
+                            }
                         }
                     }
                 }
@@ -729,8 +795,9 @@ public class ZqAudioEditorKit {
 
     private static class AudioSource {
         public String path;
-        public long offset;
-        public long end;
+        public long delayBase;
+        public boolean isPrepared;
+        public boolean isSeekCompletion;
         public AudioFileCapture capture;
         public AudioResampleFilter audioResampleFilter;
         public AudioFilterMgt filterMgt;
@@ -738,9 +805,16 @@ public class ZqAudioEditorKit {
 
         AudioSource(Context context, String path, long offset, long end) {
             this.path = path;
-            this.offset = offset;
-            this.end = end;
+            if (offset < 0) {
+                this.delayBase = offset;
+                offset = 0;
+            } else {
+                this.delayBase = 0;
+            }
+            this.isPrepared = false;
+            this.isSeekCompletion = false;
             this.capture = new AudioFileCapture(context);
+            this.capture.setDataSource(path, offset, end);
             // TODO: 唱吧音效不支持单声道，这里先强制转为双声道
             this.audioResampleFilter = new AudioResampleFilter();
             this.audioResampleFilter.setOutFormat(new AudioBufFormat(-1, -1, 2));
@@ -767,14 +841,6 @@ public class ZqAudioEditorKit {
                 filter = new CbAudioEffectFilter(1);
             }
             filterMgt.setFilter(filter);
-        }
-
-        public void start() {
-            capture.start(path, offset, end);
-        }
-
-        public void seek(long pos) {
-            capture.seek(pos);
         }
 
         public void release() {

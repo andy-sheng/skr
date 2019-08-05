@@ -20,6 +20,8 @@ class FeedsMakeModel(var challengeID: Long):Serializable{
     var recordDuration: Long = 0 // 录音时间
     var recording: Boolean = false
     var beginRecordTs: Long = Long.MAX_VALUE
+    var beginMusicTs: Long = Long.MAX_VALUE
+    var recordOffsetTs: Long = 0 // 录音的偏移
 
     val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds","feeds_make.m4a")
 

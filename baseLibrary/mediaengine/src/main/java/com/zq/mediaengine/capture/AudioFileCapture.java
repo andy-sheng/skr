@@ -42,13 +42,17 @@ public class AudioFileCapture {
      */
     public static final int STATE_PREPARING = 1;
     /**
+     * The constant STATE_PREPARED.
+     */
+    public static final int STATE_PREPARED = 2;
+    /**
      * The constant STATE_STARTED.
      */
-    public static final int STATE_STARTED = 2;
+    public static final int STATE_STARTED = 3;
     /**
      * The constant STATE_STOPPING.
      */
-    public static final int STATE_STOPPING = 3;
+    public static final int STATE_STOPPING = 4;
 
     /**
      * The constant ERROR_UNKNOWN.
@@ -63,7 +67,7 @@ public class AudioFileCapture {
      */
     public static final int ERROR_UNSUPPORTED = -3;
 
-    private final static int CMD_START = 1;
+    private final static int CMD_PREPARE = 1;
     private final static int CMD_STOP = 2;
     private final static int CMD_SEEK = 3;
     private final static int CMD_RELEASE = 4;
@@ -277,23 +281,19 @@ public class AudioFileCapture {
     }
 
     /**
-     * Start audio player.
+     * Set data source.
      *
      * @param url  the url.
      *             prefix "file://" for absolute path,
      *             and prefix "assets://" for resource in assets folder,
      *             also prefix "http://", "https://"  supported.
      */
-    public void start(String url) {
-        start(url, 0, -1);
-    }
-
-    public void start(String url, Runnable r) {
-        start(url, 0, -1, r);
+    public void setDataSource(String url) {
+        setDataSource(url, 0, -1);
     }
 
     /**
-     * Start audio player.
+     * Set data source with specified playback range.
      *
      * @param url  the url.
      *             prefix "file://" for absolute path,
@@ -302,13 +302,33 @@ public class AudioFileCapture {
      * @param offset 配置当前音频文件的实际播放开始时间，小于0时按0计算
      * @param end 配置当前音频文件的实际播放完成时间，小于0或者大于音频长度时，按音频长度计算
      */
-    public void start(String url, long offset, long end) {
-        start(url, offset, end, null);
+    public void setDataSource(String url, long offset, long end) {
+        mUrl = url;
+        mOffset = offset;
+        mEnd = end;
     }
 
-    public void start(String url, long offset, long end, Runnable r) {
-        mUrl = url;
-        Message msg = mDecodeHandler.obtainMessage(CMD_START, (int) offset, (int) end, r);
+    /**
+     * Prepare async.
+     */
+    public void prepareAsync() {
+        prepareAsync(null);
+    }
+
+    public void prepareAsync(Runnable r) {
+        Message msg = mDecodeHandler.obtainMessage(CMD_PREPARE);
+        mDecodeHandler.sendMessage(msg);
+    }
+
+    /**
+     * Start.
+     */
+    public void start() {
+        start(null);
+    }
+
+    public void start(Runnable r) {
+        Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 0, 0, r);
         mDecodeHandler.sendMessage(msg);
     }
 
@@ -333,18 +353,6 @@ public class AudioFileCapture {
 
     public void pause(Runnable r) {
         Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 1, 0, r);
-        mDecodeHandler.sendMessage(msg);
-    }
-
-    /**
-     * Resume.
-     */
-    public void resume() {
-        resume(null);
-    }
-
-    public void resume(Runnable r) {
-        Message msg = mDecodeHandler.obtainMessage(CMD_PAUSE, 0, 0, r);
         mDecodeHandler.sendMessage(msg);
     }
 
@@ -410,13 +418,11 @@ public class AudioFileCapture {
             public void handleMessage(Message msg) {
                 int err;
                 switch (msg.what) {
-                    case CMD_START:
+                    case CMD_PREPARE:
                         if (mState != STATE_IDLE) {
                             break;
                         }
                         mState = STATE_PREPARING;
-                        mOffset = msg.arg1;
-                        mEnd = msg.arg2;
                         err = doStart();
                         if (msg.obj != null) {
                             ((Runnable) msg.obj).run();
@@ -432,31 +438,34 @@ public class AudioFileCapture {
                             } else {
                                 // trigger format changed
                                 mSrcPin.onFormatChanged(mOutFormat);
-                                mState = STATE_STARTED;
+                                mState = STATE_PREPARED;
                                 postOnPrepared();
-                                mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                             }
                         }
                         break;
                     case CMD_LOOP:
+                        if (mState == STATE_PREPARED) {
+                            mState = STATE_STARTED;
+                        }
                         if (mState != STATE_STARTED) {
                             break;
                         }
+                        if (mPaused) {
+                            break;
+                        }
                         if (!doLoop()) {
-                            if (!mPaused) {
-                                mDecodeHandler.sendEmptyMessage(CMD_LOOP);
-                            }
+                            mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         } else {
                             postOnCompletion();
                         }
                         break;
                     case CMD_PAUSE:
-                        if (mState != STATE_STARTED) {
+                        if (mState != STATE_PREPARED && mState != STATE_STARTED) {
                             break;
                         }
                         if (msg.arg1 != 0 && !mPaused) {
                             mPaused = true;
-                        } else if (msg.arg1 == 0 && mPaused) {
+                        } else if (msg.arg1 == 0 && (mPaused || mState == STATE_PREPARED)) {
                             mPaused = false;
                             mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         }
@@ -486,12 +495,12 @@ public class AudioFileCapture {
                         // seek后发送onFormatChanged事件
                         mSrcPin.onFormatChanged(mOutFormat);
                         if (mState == STATE_PREPARING) {
-                            mState = STATE_STARTED;
+                            mState = STATE_PREPARED;
                             postOnPrepared();
                         } else {
                             postOnSeekCompletion(msg.arg1);
+                            mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         }
-                        mDecodeHandler.sendEmptyMessage(CMD_LOOP);
                         break;
                     case CMD_RELEASE:
                         mDecodeThread.quit();
@@ -558,7 +567,7 @@ public class AudioFileCapture {
         });
     }
 
-    private void setDataSource(String url) throws IOException {
+    private void doSetDataSource(String url) throws IOException {
         final String filePrefix = "file://";
         final String assetsPrefix = "assets://";
 
@@ -593,7 +602,7 @@ public class AudioFileCapture {
         mSamplesWritten = 0;
         mMediaExtractor = new MediaExtractor();
         try {
-            setDataSource(mUrl);
+            doSetDataSource(mUrl);
         } catch (IOException e) {
             Log.e(TAG, "Open " + mUrl + " failed");
             e.printStackTrace();

@@ -227,6 +227,7 @@ public class AudioPlayerCapture {
         mAudioFileCapture.setOnPreparedListener(new AudioFileCapture.OnPreparedListener() {
             @Override
             public void onPrepared(AudioFileCapture audioFileCapture) {
+                mAudioFileCapture.start();
                 if (mOnPreparedListener != null) {
                     mOnPreparedListener.onPrepared(AudioPlayerCapture.this);
                 }
@@ -375,7 +376,8 @@ public class AudioPlayerCapture {
     public void start(String url, int loopCount) {
         mLoopCount = loopCount;
         mLoopedCount = 0;
-        mAudioFileCapture.start(url);
+        mAudioFileCapture.setDataSource(url);
+        mAudioFileCapture.prepareAsync();
     }
 
     /**
@@ -410,7 +412,7 @@ public class AudioPlayerCapture {
      * Resume.
      */
     public void resume() {
-        mAudioFileCapture.resume(new Runnable() {
+        mAudioFileCapture.start(new Runnable() {
             @Override
             public void run() {
                 mPcmPlayer.resume();

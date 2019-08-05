@@ -24,6 +24,7 @@ public class EngineEvent {
 
     public static final int TYPE_RECORD_FINISHED = 110; // 录制完成
     public static final int TYPE_RECORD_ERROR = 111;    // 录制出错
+    public static final int TYPE_RECORD_START = 112;    // 录制开始
 
     public static final int TYPE_CAMERA_OPENED = 200;// 相机打开
     public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;//相机首帧渲染
@@ -191,6 +192,8 @@ public class EngineEvent {
                 return "RECORD_FINISHED";
             case TYPE_RECORD_ERROR:
                 return "RECORD_ERROR";
+            case TYPE_RECORD_START:
+                return "RECORD_START";
             case TYPE_CAMERA_OPENED:
                 return "CAMERA_OPENED";
             case TYPE_CAMERA_FIRST_FRAME_RENDERED:

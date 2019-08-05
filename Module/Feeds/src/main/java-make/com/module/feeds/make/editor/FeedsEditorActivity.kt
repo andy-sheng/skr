@@ -311,7 +311,7 @@ class FeedsEditorActivity : BaseActivity() {
                 mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path, mFeedsMakeModel?.firstLyricShiftTs?.toLong()
                         ?: 0L, mFeedsMakeModel?.recordDuration
                         ?: -1)
-                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath, mFeedsMakeModel?.firstLyricShiftTs?.toLong()
+                mZqAudioEditorKit.setDataSource(1, mFeedsMakeModel?.recordSavePath, mFeedsMakeModel?.recordOffsetTs
                         ?: 0L, -1)
                 mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.audioMixingPlayoutVolume / 100.0f)
                 mZqAudioEditorKit.setInputVolume(1, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)

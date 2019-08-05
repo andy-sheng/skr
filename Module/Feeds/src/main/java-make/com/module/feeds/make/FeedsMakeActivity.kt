@@ -346,6 +346,7 @@ class FeedsMakeActivity : BaseActivity() {
                 val bgmFile = bgmFileJob?.await()
                 bgmFile?.absolutePath?.let {
                     ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), it, null, 0, false, false, 1)
+                    mFeedsMakeModel?.beginMusicTs = System.currentTimeMillis()
                 }
                 goLyric(true)
             }
@@ -439,6 +440,8 @@ class FeedsMakeActivity : BaseActivity() {
         mLyricAndAccMatchManager.stop()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
+            // TODO: 这个时间不是很精确，更精确的时间通过添加回调来获取
+            recordOffsetTs = firstLyricShiftTs + beginMusicTs - beginRecordTs
         }
         val intent = Intent(this, FeedsEditorActivity::class.java)
         intent.putExtra("feeds_make_model", mFeedsMakeModel)

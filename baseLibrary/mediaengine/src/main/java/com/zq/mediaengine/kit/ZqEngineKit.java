@@ -1466,6 +1466,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mBgmRawFrameWriter.start(name + "_bgm" + subfix);
                         }
                     } else {
+                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_START);
+                        EventBus.getDefault().post(engineEvent);
                         if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
                             // 未加入房间时需要先开启音频采集
                             if (!mInChannel) {
