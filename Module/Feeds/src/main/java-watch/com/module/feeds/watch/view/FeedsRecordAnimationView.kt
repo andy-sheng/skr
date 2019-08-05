@@ -168,7 +168,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun bufferEnd() {
-        if(!mHandler.hasMessages(AVATAR_ANIM)){
+        if (!mHandler.hasMessages(AVATAR_ANIM)) {
             mHandler.removeMessages(AVATAR_ANIM)
             if (playing) {
                 if (avatarAnimation!!.isPaused) {
@@ -193,7 +193,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation?.pause()
     }
 
-    fun pauseWithNoAnimation(){
+    fun pauseWithNoAnimation() {
         mHandler.removeMessages(AVATAR_ANIM)
         MyLog.d(TAG, "pause playing=$playing 动画在播= ${avatarAnimation?.isRunning != true}")
         if (!playing && avatarAnimation?.isRunning != true) {
@@ -202,7 +202,13 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         playing = false
         wantPlaying = false
         rotateAnimationPlay?.cancel()
-        rotateAnimationStop?.cancel()
+        if (rotateAnimationStop != null) {
+            rotateAnimationStop?.cancel()
+        } else {
+            if (hideWhenPause) {
+                rockerIv.visibility = View.GONE
+            }
+        }
         avatarAnimation?.pause()
     }
 

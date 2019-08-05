@@ -189,8 +189,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
                 // 详情  声音要连贯
                 // 这样返回时能 resume 上
                 if (watchModel != null && watchModel.status == 2) {
-                    mAdapter?.mCurrentPlayModel = watchModel
-                    mAdapter?.mCurrentPlayPosition = position
+                    startPlay(position, watchModel)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withSerializable("feed_model", watchModel)
                             .navigation()
