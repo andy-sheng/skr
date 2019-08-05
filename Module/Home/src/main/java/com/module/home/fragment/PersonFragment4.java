@@ -33,6 +33,7 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
@@ -213,6 +214,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 super.onRefresh(refreshLayout);
                 mPresenter.getHomePage(true);
+                MyLog.d("PersonFragment4", "mPersonVp.getCurrentItem() = " + mPersonVp.getCurrentItem());
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getPhotos(true);
                 }
@@ -453,6 +455,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     // 照片墙
                     if (mPhotoWallView == null) {
                         mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
+                        // 第一次拉歌曲
+                        mPhotoWallView.getPhotos(false);
                     }
                     if (container.indexOfChild(mPhotoWallView) == -1) {
                         container.addView(mPhotoWallView);

@@ -131,6 +131,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
     }
 
     fun getPhotos(isFlag: Boolean) {
+        MyLog.d(TAG, "getPhotos isFlag = $isFlag")
         val now = System.currentTimeMillis()
         if (!isFlag) {
             // 10分钟更新一次吧
@@ -163,19 +164,20 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
         MyLog.d(TAG, "showPhoto list=$list clear=$clear totalNum=$totalNum")
         mLastUpdateInfo = System.currentTimeMillis()
 
-        mCallBack?.onRequestSucess(!list.isNullOrEmpty())
-
         if (list != null && list.isNotEmpty()) {
+            mCallBack?.onRequestSucess(true)
             // 有数据
             mHasMore = true
             //            mSmartRefresh.setEnableLoadMore(true);
             if (clear) {
                 mPhotoAdapter.dataList?.clear()
                 mPhotoAdapter.dataList?.addAll(list)
+                mPhotoAdapter.notifyDataSetChanged()
             } else {
                 mPhotoAdapter.insertLast(list)
             }
         } else {
+            mCallBack?.onRequestSucess(false)
             mHasMore = false
             //            mSmartRefresh.setEnableLoadMore(false);
             if (mPhotoAdapter.dataList != null && mPhotoAdapter.dataList!!.size > 0) {
