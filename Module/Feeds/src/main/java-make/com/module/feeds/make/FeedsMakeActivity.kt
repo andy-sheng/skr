@@ -4,19 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Gravity
 import android.view.View
 import android.view.ViewStub
+import android.view.WindowManager
 import android.widget.ImageView
-import com.alibaba.android.arouter.facade.annotation.Route
-
-import com.common.base.BaseActivity
-import com.module.RouterConstants
-import com.component.lyrics.widget.ManyLyricsView
-import com.component.lyrics.widget.VoiceScaleView
 import android.widget.TextView
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.log.MyLog
@@ -27,24 +23,25 @@ import com.common.utils.DeviceUtils
 import com.common.utils.HttpUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.DiffuseView
+import com.common.view.countdown.RecordProgressBarView
 import com.common.view.ex.ExTextView
-import com.common.view.countdown.CircleCountDownView
 import com.common.view.titlebar.CommonTitleBar
-import com.module.feeds.watch.model.FeedSongModel
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
 import com.component.lyrics.utils.SongResUtils
+import com.component.lyrics.widget.ManyLyricsView
+import com.component.lyrics.widget.VoiceScaleView
 import com.component.toast.NoImageCommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
+import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.view.AutoScrollLyricView
 import com.module.feeds.make.editor.FeedsEditorActivity
-import com.module.feeds.make.view.FeedsMakeVoiceControlPanelView
+import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
 import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -53,7 +50,7 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
-import java.util.HashSet
+import java.util.*
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_MAKE)
@@ -61,10 +58,9 @@ class FeedsMakeActivity : BaseActivity() {
     var mTitleBar: CommonTitleBar? = null
     var mResetIv: ImageView? = null
     var mResetTv: TextView? = null
-    var mCircleCountDownView: CircleCountDownView? = null
+    var mRecordProgressBarView: RecordProgressBarView? = null
     var mBeginTv: ExTextView? = null
-    var mAdjustIv: ImageView? = null
-    var mAdjustTv: TextView? = null
+    var mDiffuseView: DiffuseView? = null
     var mVoiceScaleView: VoiceScaleView? = null
     var mManyLyricsView: ManyLyricsView? = null
     var mAutoScrollLyricView: AutoScrollLyricView? = null
@@ -74,24 +70,10 @@ class FeedsMakeActivity : BaseActivity() {
 
     val feedsMakeServerApi = ApiManager.getInstance().createService(FeedsMakeServerApi::class.java)
 
-    val mVoiceControlPanelView by lazy {
-        FeedsMakeVoiceControlPanelView(this).apply { bindData() }
-    }
-
-    val mVoiceControlPanelViewDialog by lazy {
-        DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(mVoiceControlPanelView))
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setGravity(Gravity.BOTTOM)
-                .create()
-    }
-
     var bgmFileJob: Deferred<File>? = null
 
     var countDownJob: Job? = null
+    var isLrc: Boolean? = false
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_make_activity_layout
@@ -104,12 +86,11 @@ class FeedsMakeActivity : BaseActivity() {
         mTitleBar = findViewById(R.id.title_bar)
         mResetIv = findViewById(R.id.reset_iv) as ImageView
         mResetTv = findViewById(R.id.reset_tv)
-        mCircleCountDownView = findViewById(R.id.circle_count_down_view)
         mBeginTv = findViewById(R.id.begin_tv)
-        mAdjustIv = findViewById(R.id.adjust_iv) as ImageView
-        mAdjustTv = findViewById(R.id.adjust_tv)
         mVoiceScaleView = findViewById(R.id.voice_scale_view)
         mManyLyricsView = findViewById(R.id.many_lyrics_view)
+        mRecordProgressBarView = findViewById(R.id.progress_bar)
+        mDiffuseView = findViewById(R.id.pick_diffuse_view)
 
         val viewStub = findViewById<ViewStub>(R.id.auto_scroll_lyric_view_layout_viewstub)
         mAutoScrollLyricView = AutoScrollLyricView(viewStub)
@@ -184,36 +165,40 @@ class FeedsMakeActivity : BaseActivity() {
                 startRecord()
             }
         })
-        mAdjustIv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                mVoiceControlPanelView.hideAcc(mFeedsMakeModel?.withBgm == false)
-                mVoiceControlPanelViewDialog.show()
-            }
-        })
 
         if (mFeedsMakeModel?.withBgm == true) {
-            (mTitleBar?.rightCustomView as TextView).text = "伴奏"
+            (mTitleBar?.rightCustomView as TextView).text = "伴奏模式"
+            switchMode(true)
         } else {
-            (mTitleBar?.rightCustomView as TextView).text = "清唱"
+            (mTitleBar?.rightCustomView as TextView).text = "清唱模式"
+            switchMode(false)
         }
+
         mTitleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.withBgm == true) {
                     mFeedsMakeModel?.withBgm = false
-                    (mTitleBar?.rightCustomView as TextView).text = "清唱"
+                    (mTitleBar?.rightCustomView as TextView).text = "清唱模式"
+                    switchMode(false)
                 } else {
-                    // 清唱变伴奏
+                    // 清唱变伴奏模式
                     if (U.getDeviceUtils().getWiredHeadsetPlugOn() || MyLog.isDebugLogOpen()) {
                         // 是否插着有限耳机
                         mFeedsMakeModel?.withBgm = true
-                        (mTitleBar?.rightCustomView as TextView).text = "伴奏"
+                        (mTitleBar?.rightCustomView as TextView).text = "伴奏模式"
                     } else {
-                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式")
+                        U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式模式")
                     }
+                    switchMode(true)
                 }
             }
         })
         initEngine()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun whenDataOk() {
@@ -221,7 +206,7 @@ class FeedsMakeActivity : BaseActivity() {
             mTitleBar?.centerTextView?.text = it
         }
         mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
-            mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(it)
+            mTitleBar?.centerSubTextView?.text = "00:00 / ${U.getDateTimeUtils().formatVideoTime(it)}"
         }
 
         val lyricWithTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
@@ -254,7 +239,7 @@ class FeedsMakeActivity : BaseActivity() {
             mVoiceScaleView?.stop(false)
         }
 
-        // 有伴奏提前下载伴奏
+        // 有伴奏模式提前下载伴奏模式
         mFeedsMakeModel?.songModel?.songTpl?.bgm.let {
             bgmFileJob = async(Dispatchers.IO) {
                 val file = SongResUtils.getAccFileByUrl(it)
@@ -308,14 +293,27 @@ class FeedsMakeActivity : BaseActivity() {
         }
     }
 
+    private fun switchMode(lrc: Boolean) {
+        isLrc = lrc
+        if (lrc) {
+            mRecordProgressBarView?.visibility = View.GONE
+            mVoiceScaleView?.visibility = View.VISIBLE
+        } else {
+            mRecordProgressBarView?.visibility = View.VISIBLE
+            mVoiceScaleView?.visibility = View.GONE
+        }
+    }
+
     private fun startRecord() {
         stopRecord()
         // 录制按钮没有点击
         mFeedsMakeModel?.recordingClick = true
         mBeginTv?.isSelected = true
         mBeginTv?.text = "完成"
-        mCircleCountDownView?.visibility = View.VISIBLE
         mTitleBar?.centerSubTextView?.text = "00:00"
+        mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+            mTitleBar?.centerSubTextView?.append(" / ${U.getDateTimeUtils().formatVideoTime(it)}")
+        }
         mSkrAudioPermission.ensurePermission({ startRecordInner() }, true)
     }
 
@@ -341,9 +339,9 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun goLyric(withacc: Boolean) {
-        val lyricWithTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
-        if (!TextUtils.isEmpty(lyricWithTs)) {
+        if (isLrc ?: false) {
             // 直接走
+            mRecordProgressBarView?.visibility = View.GONE
             val configParams = LyricAndAccMatchManager.ConfigParams().apply {
                 manyLyricsView = mManyLyricsView
                 voiceScaleView = mVoiceScaleView
@@ -376,7 +374,7 @@ class FeedsMakeActivity : BaseActivity() {
                     mFeedsMakeModel?.recording = true
                     val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
                             ?: 60 * 1000
-                    mCircleCountDownView?.go(0, leave){
+                    mRecordProgressBarView?.go(0, leave) {
                         recordOk()
                     }
                     countDownBegin()
@@ -386,13 +384,14 @@ class FeedsMakeActivity : BaseActivity() {
             mFeedsMakeModel?.firstLyricShiftTs = 0
             mVoiceScaleView?.stop(false)
             mAutoScrollLyricView?.playLyric()
+            mRecordProgressBarView?.visibility = View.VISIBLE
             // 开始录音
             ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
             mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
             mFeedsMakeModel?.recording = true
             val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
                     ?: 60 * 1000
-            mCircleCountDownView?.go(0, leave){
+            mRecordProgressBarView?.go(0, leave) {
                 recordOk()
             }
             countDownBegin()
@@ -405,6 +404,10 @@ class FeedsMakeActivity : BaseActivity() {
             for (i in 0..Int.MAX_VALUE) {
                 MyLog.d(TAG, "countDownBegin run")
                 mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
+                mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+                    mTitleBar?.centerSubTextView?.append(" / ${U.getDateTimeUtils().formatVideoTime(it)}")
+                }
+                mDiffuseView?.start(2000)
                 delay(1000)
             }
         }
@@ -416,7 +419,7 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.recording = false
         mBeginTv?.isSelected = false
         mBeginTv?.text = "开始"
-        mCircleCountDownView?.visibility = View.GONE
+        mRecordProgressBarView?.visibility = View.GONE
         mLyricAndAccMatchManager.stop()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
@@ -441,7 +444,7 @@ class FeedsMakeActivity : BaseActivity() {
         ZqEngineKit.getInstance().stopAudioMixing()
         ZqEngineKit.getInstance().stopAudioRecording()
         mLyricAndAccMatchManager.stop()
-        mCircleCountDownView?.visibility = View.GONE
+        mRecordProgressBarView?.visibility = View.GONE
         countDownJob?.cancel()
         mFeedsMakeModel?.recording = false
     }
@@ -451,6 +454,7 @@ class FeedsMakeActivity : BaseActivity() {
         ZqEngineKit.getInstance().destroy("feeds_make")
         mLyricAndAccMatchManager.stop()
         mManyLyricsView?.release()
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -474,7 +478,7 @@ class FeedsMakeActivity : BaseActivity() {
             U.getToastUtil().showShort("无耳机，自动切换为清唱模式")
             // 是否插着有限耳机
             mFeedsMakeModel?.withBgm = false
-            (mTitleBar?.rightCustomView as TextView).text = "清唱"
+            (mTitleBar?.rightCustomView as TextView).text = "清唱模式"
             if (mFeedsMakeModel?.recording == true) {
                 // 重新录制
                 startRecord()

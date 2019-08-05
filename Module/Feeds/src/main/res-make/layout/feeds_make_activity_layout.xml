@@ -27,14 +27,14 @@
         app:titleBarColor="@color/transparent" />
 
     <com.common.view.ex.ExImageView
+        app:layout_constraintLeft_toRightOf="@id/begin_tv"
         android:id="@+id/reset_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:src_enabled_drawable="@drawable/feeds_make_reset"
         app:src_unEnabled_drawable="@drawable/feeds_make_reset_unenable"
         app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/begin_tv"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/begin_tv" />
 
     <TextView
@@ -48,15 +48,17 @@
         app:layout_constraintRight_toRightOf="@+id/reset_iv"
         app:layout_constraintTop_toBottomOf="@+id/reset_iv" />
 
-    <com.common.view.countdown.CircleCountDownView
-        android:id="@+id/circle_count_down_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:inner_color="#FF8AB6"
-        app:inner_stroke_raduis="@dimen/view_35_dp"
-        app:inner_stroke_width="@dimen/view_2_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
+    <com.common.view.DiffuseView
+        android:id="@+id/pick_diffuse_view"
+        android:layout_width="@dimen/view_140_dp"
+        android:layout_height="@dimen/view_140_dp"
+        app:diffuse_addNewRadius="@dimen/view_50_dp"
+        app:diffuse_color="#FF8AB6"
+        app:diffuse_coreRadius="@dimen/view_28_dp"
+        app:diffuse_maxRadius="@dimen/view_70_dp"
+        app:diffuse_speed="@dimen/view_0_67_dp"
+        app:diffuse_stroke_width="@dimen/view_7_dp"
+        app:layout_constraintBottom_toBottomOf="@id/begin_tv"
         app:layout_constraintLeft_toLeftOf="@+id/begin_tv"
         app:layout_constraintRight_toRightOf="@+id/begin_tv"
         app:layout_constraintTop_toTopOf="@+id/begin_tv" />
@@ -81,27 +83,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
-        android:id="@+id/adjust_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/feeds_make_adjust"
-        app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
-        app:layout_constraintLeft_toRightOf="@+id/begin_tv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/begin_tv" />
-
-    <TextView
-        android:id="@+id/adjust_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="调音"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/view_12_dp"
-        app:layout_constraintLeft_toLeftOf="@+id/adjust_iv"
-        app:layout_constraintRight_toRightOf="@+id/adjust_iv"
-        app:layout_constraintTop_toBottomOf="@+id/adjust_iv" />
-
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
@@ -117,7 +98,7 @@
     <com.component.lyrics.widget.ManyLyricsView
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="230dp"
         app:layout_constraintTop_toBottomOf="@+id/voice_scale_view"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
@@ -141,5 +122,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
+
+    <com.common.view.countdown.RecordProgressBarView
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/make_song_seekbar_bg"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
 </android.support.constraint.ConstraintLayout>

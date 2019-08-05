@@ -39,7 +39,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/pick_iv" />
 
-    <com.module.playways.doubleplay.view.DiffuseView
+    <com.common.view.DiffuseView
         android:id="@+id/pick_diffuse_view"
         android:layout_width="@dimen/view_200_dp"
         android:layout_height="@dimen/view_200_dp"
