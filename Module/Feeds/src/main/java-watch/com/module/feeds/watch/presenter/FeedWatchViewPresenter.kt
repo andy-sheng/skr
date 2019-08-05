@@ -174,16 +174,15 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     suspend fun getCollectedStatus(model: FeedsWatchModel): Boolean {
-        var isCollected = false
         val job = async {
             val result = subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), model.feedID) }
-            if (result.errno == 0) {
-                isCollected = result.data.getBooleanValue("isCollected")
-            } else {
-
-            }
+            result
         }
-        job.await()
+        val result = job.await()
+        var isCollected = false
+        if (result.errno == 0) {
+            isCollected = result.data.getBooleanValue("isCollected")
+        }
         return isCollected
     }
 

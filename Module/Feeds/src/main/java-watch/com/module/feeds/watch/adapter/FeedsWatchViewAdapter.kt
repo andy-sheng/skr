@@ -72,7 +72,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                         holder.playLyric(position, mDataList[position])
                     }
                 } else if (type == REFRESH_BUFFERING_STATE) {
-                    if (mDataList[position].song?.lyricType == 0) {
+                    if (mDataList[position].song?.lyricStatus == 0) {
                         holder.pauseWhenBuffering(position, mDataList[position])
                     } else {
                         holder.resumeWhenBufferingEnd(position, mDataList[position])
@@ -218,7 +218,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
     fun pauseWhenBuffering() {
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
-            mCurrentPlayModel?.song?.lyricType = 0
+            mCurrentPlayModel?.song?.lyricStatus = 0
         }
 
         update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
@@ -226,7 +226,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
     fun resumeWhenBufferingEnd() {
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
-            mCurrentPlayModel?.song?.lyricType = 1
+            mCurrentPlayModel?.song?.lyricStatus = 1
         }
 
         update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)

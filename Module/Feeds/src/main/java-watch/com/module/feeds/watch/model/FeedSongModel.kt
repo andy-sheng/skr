@@ -27,7 +27,7 @@ class FeedSongModel : Serializable {
     @JSONField(name = "playURL")
     var playURL: String? = null
     var playCurPos: Int = 0 // 当前播放到哪了，只在客户端用，服务器不会返回
-    var lyricType: Int = 0 // 仅针对播放器在buffering的时候控制歌词滚动, 只有客户端有，每次时候的时候都应该是设置过新的状态，旧的状态不可用，0为暂定，1为播放，只在FeedViewHolder.refreshLyricType里用到，不可用别的地方
+    var lyricStatus: Int = 0 // 仅针对播放器在buffering的时候控制歌词滚动, 只有客户端有，每次时候的时候都应该是设置过新的状态，旧的状态不可用，0为暂定，1为播放，只在FeedViewHolder.refreshLyricType里用到，不可用别的地方
     @JSONField(name = "songID")
     var songID: Int = 0
     @JSONField(name = "songTpl")

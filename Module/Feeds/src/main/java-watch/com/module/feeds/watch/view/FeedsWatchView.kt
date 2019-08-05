@@ -274,6 +274,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
             override fun onPrepared() {
                 super.onPrepared()
                 mAdapter?.resumeWhenBufferingEnd()
+                /**
+                 * 预加载
+                 */
                 mAdapter?.mCurrentPlayPosition?.let {
                     if (it + 1 < mAdapter!!.mDataList.size) {
                         mAdapter?.mDataList?.get(it + 1)?.song?.playURL?.let { it2 ->
@@ -290,11 +293,11 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
             override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
                 MyLog.d(TAG, "onBufferingUpdate percent=$percent")
                 if (percent == 100) {
-                    if (mp!!.isPlaying) {
-                        mAdapter!!.resumeWhenBufferingEnd()
+                    if (SinglePlayer.isPlaying) {
+                        mAdapter?.resumeWhenBufferingEnd()
                     }
                 } else {
-                    mAdapter!!.pauseWhenBuffering()
+                    mAdapter?.pauseWhenBuffering()
                 }
             }
 
@@ -389,8 +392,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
                                 i++
                             }
                         }
-
-
                         model?.let {
                             isFound = true
                             controlPlay(postion, it, true)
@@ -548,9 +549,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        SinglePlayer.addCallback(playerTag, playCallback)
     }
-
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()

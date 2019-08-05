@@ -124,7 +124,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
             MyLog.d(mTag, "onBufferingUpdate percent=$percent")
             if (percent == 100) {
-                if (mp!!.isPlaying) {
+                if (SinglePlayer.isPlaying) {
                     mFeedsCommonLyricView!!.resume()
                     mRadioView?.bufferEnd()
                 }

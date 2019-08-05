@@ -43,6 +43,7 @@ class FeedsWatchFragment : BaseFragment() {
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
     var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
+        // 为了解决滑动卡顿
         launch(Dispatchers.Main) {
             mFeedVp?.setCurrentItem(newPosition, false)
             delay(400)
@@ -187,7 +188,7 @@ class FeedsWatchFragment : BaseFragment() {
         MyLog.d(TAG, "onFragmentInvisible")
         mFollowFeesView.unselected()
         mRecommendFeedsView.unselected()
-        //todo 因为切后天的事件会必不可见晚
+        //todo 因为切后台的事件会比不可见晚
         mFeedsCollectView.postDelayed({
             if (!isBackground) {
                 mFeedsCollectView.unselected()
