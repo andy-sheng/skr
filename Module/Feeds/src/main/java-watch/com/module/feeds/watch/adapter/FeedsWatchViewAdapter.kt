@@ -244,6 +244,19 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         }
     }
 
+    // 加入屏幕
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+    }
+
+    // 移除屏幕
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        if (holder is FeedsWatchViewHolder) {
+            holder.hideCompleteArea()
+        }
+    }
+
 
     companion object {
         const val REFRESH_TYPE_PLAY = 0  // 局部刷新播放

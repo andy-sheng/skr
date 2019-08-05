@@ -92,8 +92,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
     private var mCallBack: RequestCallBack? = null
     private var mTipsDialogView: TipsDialogView? = null
 
-    private var mMap = HashMap<Int, FeedsWatchModel>()  // 用来存放播放完成的位置和数据，用于恢复页面
-
     fun isHomePage(): Boolean {
         if (type == TYPE_RECOMMEND || type == TYPE_FOLLOW) {
             return true
@@ -262,7 +260,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
                             launch {
                                 model.isCollected = mPersenter.getCollectedStatus(model)
                                 mAdapter?.playComplete()
-                                mMap[it] = model
                             }
                         } else {
                             // 个人中心
@@ -332,25 +329,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                // 以整个滑出屏幕为界限，来回复页面
-                val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-                val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-                if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
-                    if (firstVisibleItem != lastFirstVisibleItem || lastVisibleItem != lastLastVisibleItem) {
-                        lastFirstVisibleItem = firstVisibleItem
-                        lastLastVisibleItem = lastVisibleItem
-                        // 判断位置是否在2位置中
-                        for ((position, model) in mMap) {
-                            MyLog.d(TAG, "onScrolled firstVisibleItem=$firstVisibleItem lastVisibleItem=$lastVisibleItem position=$position")
-                            if (position < firstVisibleItem || position > lastVisibleItem) {
-                                recyclerView?.post {
-                                    mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_HIDE_COMPLETE_AREA)
-                                    mMap.remove(position)
-                                }
-                            }
-                        }
-                    }
-                }
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -510,7 +488,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
 
         mCallBack?.onRequestSucess(hasMore)
         if (isClear) {
-            mMap.clear()
             mAdapter?.mDataList?.clear()
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)
