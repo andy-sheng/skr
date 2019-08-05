@@ -14,6 +14,7 @@ import com.module.RouterConstants
 class FeedSelectModeActivity : BaseActivity() {
     lateinit var mUploadIv: ExImageView
     lateinit var mDabangIv: ExImageView
+    lateinit var mDownIv: ExImageView
     override fun initView(savedInstanceState: Bundle?): Int {
         overridePendingTransition(com.module.feeds.R.anim.slide_in_bottom, com.module.feeds.R.anim.slide_out_bottom)
         return com.module.feeds.R.layout.feed_select_model_activity_layout
@@ -22,8 +23,15 @@ class FeedSelectModeActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         mUploadIv = findViewById(com.module.feeds.R.id.upload_iv)
         mDabangIv = findViewById(com.module.feeds.R.id.dabang_iv)
+        mDownIv = findViewById(com.module.feeds.R.id.down_iv)
 
         mUploadIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                finish()
+            }
+        })
+
+        mDownIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 finish()
             }
