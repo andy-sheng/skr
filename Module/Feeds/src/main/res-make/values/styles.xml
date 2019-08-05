@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/transparent</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--<item name="android:background">@color/transparent</item>-->
+    <!--</style>-->
+    <!--&lt;!&ndash;全屏加透明&ndash;&gt;-->
+    <!--<style name="TranslucentFullScreenTheme" parent="FullScreenTheme">-->
+    <!--<item name="android:windowBackground">@color/transparent</item>-->
+    <!--<item name="android:windowIsTranslucent">true</item>-->
+    <!--</style>-->
+    <!--&lt;!&ndash;全屏&ndash;&gt;-->
+    <!--<style name="FullScreenTheme" parent="AppTheme">-->
+    <!--<item name="android:windowFullscreen">true</item>-->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!--</style>-->
+    <!--透明，有任务栏电量时间等-->
+    <style name="NoTitleTranslucentTheme" parent="AppTheme">
+        <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

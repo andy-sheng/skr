@@ -22,7 +22,6 @@ import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
 import com.module.feeds.watch.view.FeedsWatchView
-import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -76,7 +75,7 @@ class FeedsWatchFragment : BaseFragment() {
             override fun clickValid(v: View?) {
                 // 打榜 神曲榜
                 StatisticsAdapter.recordCountEvent("music_recommend", "challenge_list", null)
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SELECT_MODE)
                         .navigation()
             }
         })

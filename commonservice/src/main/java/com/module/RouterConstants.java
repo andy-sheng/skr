@@ -75,6 +75,7 @@ public interface RouterConstants {
     String ACTIVITY_FEEDS_RANK = "/feeds/FeedsRankActivity";
     String ACTIVITY_FEEDS_RANK_DETAIL = "/feeds/FeedsDetailRankActivity";
     String ACTIVITY_FEEDS_RANK_SEARCH = "/feeds/FeedsRankSearchActivity";
+    String ACTIVITY_FEEDS_SELECT_MODE = "/feeds/FeedsSelectModeActivity";
 
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";

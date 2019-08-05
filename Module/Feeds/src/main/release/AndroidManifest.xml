@@ -27,6 +27,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
+        <!--Feed制作-->
+        <activity
+            android:name=".make.activity.FeedSelectModeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTranslucentTheme"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".make.editor.FeedsEditorActivity"
             android:launchMode="singleTask"
