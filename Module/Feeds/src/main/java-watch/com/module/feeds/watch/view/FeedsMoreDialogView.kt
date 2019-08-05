@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
@@ -90,7 +91,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_COPY_REPORT)
                         .withInt("from", type)
-                        .withSerializable("watchModel",model)
+                        .withSerializable("watchModel", model)
                         .navigation()
             }
         })
@@ -178,6 +179,10 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             FROM_OTHER_PERSON -> {
                 mFollowTv.visibility = View.GONE
                 mDividerFollow.visibility = View.GONE
+
+                mCollectTv.visibility = View.GONE
+                mDividerCollect.visibility = View.GONE
+                checkCollect()
             }
             else -> {
 
@@ -187,10 +192,14 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
 
     private fun share() {
         mSharePanel = SharePanel(activity)
-        mSharePanel?.setShareContent("", model.song?.workName, model.user?.nickname,
-                ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
-                        model.song?.songID, model.user?.userID)))
-        mSharePanel?.show(ShareType.URL)
+                .apply {
+                    mTitle = model.song?.workName
+                    mDes = model.user?.nickname
+                    mPlayMusicUrl = model.song?.playURL
+                    mUrl = String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d",
+                            model.song?.songID, model.user?.userID)
+                }
+        mSharePanel?.show(ShareType.MUSIC)
     }
 
     /**
@@ -224,6 +233,20 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
         mDialogPlus?.dismiss(isAnimation)
     }
 
+    // 检查是否收藏
+    private fun checkCollect() {
+        launch {
+            val result = subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), model.feedID) }
+            if (result.errno == 0) {
+                val isCollected = result.data.getBooleanValue("isCollected")
+                model.isCollected = isCollected
+                showCollected(isCollected)
+            } else {
+
+            }
+        }
+    }
+
     // 收藏
     private fun collect(isCollocted: Boolean) {
         launch {
@@ -236,9 +259,9 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             if (result.errno == 0) {
                 // TODO 等服务器接口更新，将收藏接进去
                 if (isCollocted) {
-                    U.getToastUtil().showShort("收藏成功")
-                } else {
                     U.getToastUtil().showShort("取消收藏成功")
+                } else {
+                    U.getToastUtil().showShort("收藏成功")
                 }
                 EventBus.getDefault().post(FeedsCollectChangeEvent(model, !isCollocted))
             } else {
@@ -253,6 +276,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
 
     private fun showCollected(isCollocted: Boolean) {
         mCollectTv.visibility = View.VISIBLE
+        mDividerCollect.visibility = View.VISIBLE
         if (isCollocted) {
             mCollectTv.text = "取消收藏"
         } else {

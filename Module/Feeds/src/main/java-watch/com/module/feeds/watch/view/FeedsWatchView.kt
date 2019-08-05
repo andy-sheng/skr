@@ -1,5 +1,6 @@
 package com.module.feeds.watch.view
 
+import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -132,10 +133,14 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
                 // 分享
                 watchModel?.let {
                     mSharePanel = SharePanel(fragment.activity)
-                    mSharePanel?.setShareContent("", it.song?.workName, it.user?.nickname,
-                            ApiManager.getInstance().findRealUrlByChannel(String.format("http://app.inframe.mobi/feed/song?songID=%d&userID=%d",
-                                    it.song?.songID, it.user?.userID)))
-                    mSharePanel?.show(ShareType.URL)
+                            .apply {
+                                mTitle = it.song?.workName
+                                mDes = it.user?.nickname
+                                mPlayMusicUrl = it.song?.playURL
+                                mUrl = String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d",
+                                        it.song?.songID, it.user?.userID)
+                            }
+                    mSharePanel?.show(ShareType.MUSIC)
                 }
             }
 

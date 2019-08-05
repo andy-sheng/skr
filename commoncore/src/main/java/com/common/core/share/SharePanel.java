@@ -22,11 +22,12 @@ public class SharePanel {
     DialogPlus mDialogPlus;
 
     Activity mActivity;
-    String mTitle;
-    String mDes;
-    String mUrl;
-    String mShareImage;
-    String mDefaultIconUrl = "http://res-static.inframe.mobi/app/app_icon.webp";
+    public String mTitle;
+    public String mDes;
+    public String mPlayMusicUrl;
+    public String mUrl;
+    public String mShareImage;
+    public String mDefaultIconUrl = "http://res-static.inframe.mobi/app/app_icon.webp";
 
     public SharePanel(Activity activity) {
         mActivity = activity;
@@ -146,7 +147,7 @@ public class SharePanel {
     }
 
     public void shareMusic(SharePlatform sharePlatform) {
-        UMusic music = new UMusic(mUrl);
+        UMusic music = new UMusic(mPlayMusicUrl);
         music.setTitle("" + mTitle);
         music.setDescription(mDes + "的撕歌精彩时刻");
         music.setThumb(new UMImage(mActivity, mShareImage));
