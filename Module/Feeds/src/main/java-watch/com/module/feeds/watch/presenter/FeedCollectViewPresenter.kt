@@ -9,15 +9,12 @@ import com.common.utils.U
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.view.IFeedCollectView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap
 
-class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresenter(), CoroutineScope by MainScope() {
+class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresenter() {
 
     private val mFeedServerApi: FeedsWatchServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 

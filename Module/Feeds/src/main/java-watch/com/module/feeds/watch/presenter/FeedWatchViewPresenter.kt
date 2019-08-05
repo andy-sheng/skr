@@ -14,6 +14,7 @@ import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsWatchView
 import com.module.feeds.watch.view.IFeedsWatchView
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody

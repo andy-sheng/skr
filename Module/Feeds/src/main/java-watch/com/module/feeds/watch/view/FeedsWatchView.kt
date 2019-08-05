@@ -1,6 +1,5 @@
 package com.module.feeds.watch.view
 
-import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -18,13 +17,11 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
-import com.common.view.ex.ExConstraintLayout
 import com.component.busilib.callback.EmptyCallback
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
@@ -46,16 +43,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLayout(fragment.context!!), IFeedsWatchView, IPersonFeedsWall, CoroutineScope by MainScope() {
+class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context!!), IFeedsWatchView, IPersonFeedsWall, CoroutineScope by MainScope() {
     val TAG = "FeedsWatchView"
 
     constructor(fragment: BaseFragment, type: Int, userInfoModel: UserInfoModel, callBack: RequestCallBack?) : this(fragment, type) {
@@ -557,6 +551,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
     }
 
     override fun destroy() {
+        cancel()
         mPersenter.destroy()
         mFeedsMoreDialogView?.dismiss(false)
         mSharePanel?.dismiss(false)
