@@ -48,6 +48,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -514,16 +515,21 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ExConstraintLa
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)
             }
+            mAdapter?.notifyDataSetChanged()
             if (isHomePage()) {
                 if (mAdapter?.mDataList?.isNotEmpty() == true) {
-                    controlPlay(0, mAdapter?.mDataList?.get(0), true)
+                    // delay 是因为2哥notify冲突
+                    launch {
+                        delay(200)
+                        controlPlay(0, mAdapter?.mDataList?.get(0), true)
+                    }
                 } else {
                     // 拉回来的列表为空
                     pausePlay()
                     mAdapter?.mCurrentPlayModel = null
                 }
             }
-            mAdapter?.notifyDataSetChanged()
+
         } else {
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)

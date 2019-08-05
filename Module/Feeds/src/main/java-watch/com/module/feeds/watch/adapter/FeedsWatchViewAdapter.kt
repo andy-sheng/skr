@@ -34,19 +34,10 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             if (holder is FeedViewHolder) {
                 holder.bindData(position, mDataList[position])
                 // notifyItemChanged 和 notifyDataSetChanged间隔时间很短一起使用时候，会导致notifyItemChanged不生效
-                if (mDataList[position].feedID == mCurrentPlayModel?.feedID
-                        && mDataList[position].song?.songID == mCurrentPlayModel?.song?.songID
-                        && playing) {
-                    MyLog.d("FeedsWatchViewAdapter", "notifyDataSetChanged startPlay")
-                    holder.startPlay()
-                } else {
-                    holder.stopPlay(true)
-                }
             }
         } else {
             // 局部刷新
             val type = payloads[0] as Int
-            MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder type=$type position=$position playing=$playing")
             if (type == REFRESH_SHOW_COMPLETE_AREA) {
                 if (holder is FeedsWatchViewHolder) {
                     holder.showCompleteArea(position, mDataList[position])
