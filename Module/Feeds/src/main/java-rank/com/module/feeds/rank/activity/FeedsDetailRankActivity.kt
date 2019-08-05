@@ -13,10 +13,12 @@ import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
+import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
+import com.common.utils.ActivityUtils
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.facebook.drawee.view.SimpleDraweeView
@@ -30,6 +32,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 具体神曲的榜单
@@ -108,6 +112,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 打榜去
+                stop()
                 openFeedsMakeActivity(challengeID)
             }
         })
@@ -116,7 +121,7 @@ class FeedsDetailRankActivity : BaseActivity() {
             model?.let {
                 if (mAdapter.mCurrentPlayModel == it) {
                     // 暂停播放
-                    stop(it)
+                    stop()
                 } else {
                     // 开始播放
                     play(it)
@@ -135,7 +140,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         }
     }
 
-    private fun stop(model: FeedsWatchModel) {
+    private fun stop() {
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
         SinglePlayer.stop(playerTag)
@@ -187,7 +192,15 @@ class FeedsDetailRankActivity : BaseActivity() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
+        MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
+        if (!event.foreground) {
+            stop()
+        }
     }
 
     override fun destroy() {
