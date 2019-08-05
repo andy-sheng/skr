@@ -123,7 +123,13 @@
         android:layout_height="210dp"
         android:layout_marginTop="@dimen/view_20_dp"
         app:layout_constraintTop_toBottomOf="@+id/cd_bg"
-        app:lyricHighlightNum="4" />
+        app:lyricHighlightNum="4"
+        app:lyricFadeNum="1"
+        app:lyricColor="@color/white_trans_80"
+        app:lyricAuto="true"
+        app:lyricFontSize="@dimen/view_18_dp"
+        app:lyricLineSpace="@dimen/view_6_dp"
+        />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView

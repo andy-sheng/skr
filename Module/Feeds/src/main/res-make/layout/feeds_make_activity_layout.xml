@@ -112,6 +112,7 @@
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="230dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/voice_scale_view"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
@@ -122,7 +123,6 @@
         app:ly_outline_paint_color="@color/white"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"
-        android:visibility="gone"
         app:ly_paint_text_size="16.0"
         app:ly_show_author="true" />
 
@@ -130,11 +130,11 @@
         android:id="@+id/txt_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_210_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qc_progress_bar"
+        app:layout_goneMarginTop="@dimen/view_99_dp"
         app:lyricAuto="false"
         app:lyricColor="@color/white_trans_80"
         app:lyricFadeNum="2"
@@ -143,7 +143,7 @@
         app:lyricLineSpace="@dimen/view_6_dp" />
 
     <com.common.view.countdown.RecordProgressBarView
-        android:id="@+id/progress_bar"
+        android:id="@+id/qc_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="3dp"

@@ -15,7 +15,6 @@ import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.log.MyLog
-import com.common.rx.RxRetryAssist
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.DeviceUtils
@@ -42,10 +41,7 @@ import com.module.feeds.R
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
-import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqEngineKit
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -58,7 +54,7 @@ class FeedsMakeActivity : BaseActivity() {
     var titleBar: CommonTitleBar? = null
     var resetIv: ImageView? = null
     var resetTv: TextView? = null
-    var recordProgressBarView: RecordProgressBarView? = null
+    var qcProgressBarView: RecordProgressBarView? = null
     var beginTv: ExTextView? = null
     var diffuseView: DiffuseView? = null
     var voiceScaleView: VoiceScaleView? = null
@@ -92,7 +88,7 @@ class FeedsMakeActivity : BaseActivity() {
         voiceScaleView = findViewById(R.id.voice_scale_view)
         manyLyricsView = findViewById(R.id.many_lyrics_view)
         txtLyricsView = findViewById(R.id.txt_lyrics_view)
-        recordProgressBarView = findViewById(R.id.progress_bar)
+        qcProgressBarView = findViewById(R.id.qc_progress_bar)
         diffuseView = findViewById(R.id.pick_diffuse_view)
         recordTipsIv = findViewById(R.id.record_tip_iv)
         if (mFeedsMakeModel == null) {
@@ -141,7 +137,7 @@ class FeedsMakeActivity : BaseActivity() {
                     if (it.recordingClick) {
                         if (it.recording) {
                             //真正在录制，除去前奏的长度
-                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs  < 10 * 1000) {
+                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 10 * 1000) {
                                 U.getToastUtil().showSkrCustomShort(NoImageCommonToastView.Builder(U.app())
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
@@ -168,10 +164,8 @@ class FeedsMakeActivity : BaseActivity() {
 
         if (mFeedsMakeModel?.withBgm == true) {
             (titleBar?.rightCustomView as TextView).text = "伴奏模式"
-            switchMode(true)
         } else {
             (titleBar?.rightCustomView as TextView).text = "清唱模式"
-            switchMode(false)
         }
 
         titleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
@@ -179,14 +173,14 @@ class FeedsMakeActivity : BaseActivity() {
                 if (mFeedsMakeModel?.withBgm == true) {
                     mFeedsMakeModel?.withBgm = false
                     (titleBar?.rightCustomView as TextView).text = "清唱模式"
-                    switchMode(false)
+                    initLyricView()
                 } else {
                     // 清唱变伴奏模式
                     if (U.getDeviceUtils().getWiredHeadsetPlugOn() || MyLog.isDebugLogOpen()) {
                         // 是否插着有限耳机
                         mFeedsMakeModel?.withBgm = true
                         (titleBar?.rightCustomView as TextView).text = "伴奏模式"
-                        switchMode(true)
+                        initLyricView()
                     } else {
                         U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式模式")
                     }
@@ -210,7 +204,7 @@ class FeedsMakeActivity : BaseActivity() {
         }
 
 
-      initLyricView()
+        initLyricView()
         // 有伴奏模式提前下载伴奏模式
         mFeedsMakeModel?.songModel?.songTpl?.bgm.let {
             bgmFileJob = async(Dispatchers.IO) {
@@ -248,19 +242,21 @@ class FeedsMakeActivity : BaseActivity() {
         }
     }
 
-    private fun initLyricView(){
+    private fun initLyricView() {
+        qcProgressBarView?.visibility = View.GONE
+        voiceScaleView?.visibility = View.GONE
         manyLyricsView?.visibility = View.GONE
         txtLyricsView?.visibility = View.GONE
         val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
         val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
-        if(mFeedsMakeModel?.withBgm == true){
+        if (mFeedsMakeModel?.withBgm == true) {
             if (!TextUtils.isEmpty(lrcTs)) {
+                voiceScaleView?.visibility = View.VISIBLE
                 manyLyricsView?.visibility = View.VISIBLE
                 // 加载歌词
                 LyricsManager
                         .loadStandardLyric(lrcTs)
                         .subscribe({ lyricsReader ->
-                            manyLyricsView?.visibility = View.VISIBLE
                             manyLyricsView?.initLrcData()
                             manyLyricsView?.lyricsReader = lyricsReader
                             val set = HashSet<Int>()
@@ -272,6 +268,7 @@ class FeedsMakeActivity : BaseActivity() {
                             MyLog.e(TAG, throwable)
                         })
             } else {
+                qcProgressBarView?.visibility = View.VISIBLE
                 txtLyricsView?.visibility = View.VISIBLE
                 voiceScaleView?.stop(false)
                 LyricsManager.loadGrabPlainLyric(lrcTxt)
@@ -282,9 +279,10 @@ class FeedsMakeActivity : BaseActivity() {
                         })
 
             }
-        }else{
+        } else {
+            qcProgressBarView?.visibility = View.VISIBLE
+            txtLyricsView?.visibility = View.VISIBLE
             if (!TextUtils.isEmpty(lrcTs)) {
-                txtLyricsView?.visibility = View.VISIBLE
                 // 加载歌词
                 LyricsManager
                         .loadStandardLyric(lrcTs)
@@ -294,7 +292,6 @@ class FeedsMakeActivity : BaseActivity() {
                             MyLog.e(TAG, throwable)
                         })
             } else {
-                txtLyricsView?.visibility = View.VISIBLE
                 voiceScaleView?.stop(false)
                 LyricsManager.loadGrabPlainLyric(lrcTxt)
                         .subscribe({ lyricsReader ->
@@ -321,17 +318,6 @@ class FeedsMakeActivity : BaseActivity() {
             }
             ZqEngineKit.getInstance().init("feeds_make", params)
         }
-    }
-
-    private fun switchMode(lrc: Boolean) {
-        if (lrc) {
-            recordProgressBarView?.visibility = View.GONE
-            voiceScaleView?.visibility = View.VISIBLE
-        } else {
-            recordProgressBarView?.visibility = View.VISIBLE
-            voiceScaleView?.visibility = View.GONE
-        }
-        initLyricView()
     }
 
     private fun startRecord() {
@@ -371,7 +357,7 @@ class FeedsMakeActivity : BaseActivity() {
     private fun goLyric(withacc: Boolean) {
         if (manyLyricsView?.visibility == View.VISIBLE) {
             // 直接走
-            recordProgressBarView?.visibility = View.GONE
+            qcProgressBarView?.visibility = View.GONE
             val configParams = LyricAndAccMatchManager.ConfigParams().apply {
                 manyLyricsView = this@FeedsMakeActivity.manyLyricsView
                 voiceScaleView = this@FeedsMakeActivity.voiceScaleView
@@ -404,7 +390,7 @@ class FeedsMakeActivity : BaseActivity() {
                     mFeedsMakeModel?.recording = true
                     val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
                             ?: 60 * 1000
-                    recordProgressBarView?.go(0, leave) {
+                    qcProgressBarView?.go(0, leave) {
                         recordOk()
                     }
                     countDownBegin()
@@ -413,14 +399,14 @@ class FeedsMakeActivity : BaseActivity() {
         } else {
             mFeedsMakeModel?.firstLyricShiftTs = 0
             voiceScaleView?.stop(false)
-            recordProgressBarView?.visibility = View.VISIBLE
+            qcProgressBarView?.visibility = View.VISIBLE
             // 开始录音
             ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
             mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
             mFeedsMakeModel?.recording = true
             val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
                     ?: 60 * 1000
-            recordProgressBarView?.go(0, leave) {
+            qcProgressBarView?.go(0, leave) {
                 recordOk()
             }
             countDownBegin()
@@ -449,7 +435,7 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.recording = false
         beginTv?.isSelected = false
         beginTv?.text = "开始"
-        recordProgressBarView?.visibility = View.GONE
+        qcProgressBarView?.visibility = View.GONE
         mLyricAndAccMatchManager.stop()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
@@ -474,7 +460,7 @@ class FeedsMakeActivity : BaseActivity() {
         ZqEngineKit.getInstance().stopAudioMixing()
         ZqEngineKit.getInstance().stopAudioRecording()
         mLyricAndAccMatchManager.stop()
-        recordProgressBarView?.visibility = View.GONE
+        qcProgressBarView?.visibility = View.GONE
         countDownJob?.cancel()
         mFeedsMakeModel?.recording = false
     }

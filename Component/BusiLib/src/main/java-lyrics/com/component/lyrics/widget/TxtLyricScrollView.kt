@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.common.log.MyLog
 import com.common.utils.dp
 import com.component.busilib.R
 import com.component.lyrics.LyricsReader
@@ -102,6 +103,9 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
 
     private fun play(pos: Int, delay: Int) {
         this.postion = pos
+        if(duration<=0){
+            MyLog.e("未设置duration")
+        }
         progress = (this.postion * maxProgress) / duration
         postInvalidateDelayed(delay.toLong())
     }
@@ -117,9 +121,9 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
             }
             MotionEvent.ACTION_MOVE -> {
                 if (touchDown) {
-                    Log.d("csm", "move event:${event?.y}")
                     var ty = (event?.y - ly)
                     var np = progress - ty
+                    MyLog.d("TxtLyricScrollView", "move y:${event?.y} ty:$ty np:${np} maxProgress:$maxProgress progress:$progress")
                     if (np <= 0) {
                         np = 0f
                     } else if (np >= maxProgress) {
@@ -144,9 +148,9 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
      * https://blog.csdn.net/zly921112/article/details/50401976
      */
     override fun onDraw(canvas: Canvas?) {
-        Log.d("csm", "progress=${progress}")
+        MyLog.d("TxtLyricScrollView", "progress=${progress}")
         super.onDraw(canvas)
-        if (ht == 0f) {
+        if (ht == 0f && lyrics.size>0) {
             // 计算一些基本参数
             val fontMetrics = paint1.fontMetrics
             // 字体的大小

@@ -243,7 +243,7 @@ class FeedsEditorActivity : BaseActivity() {
 
         val d = mFeedsMakeModel!!.recordDuration - mFeedsMakeModel!!.firstLyricShiftTs
         totalTsTv.text =  U.getDateTimeUtils().formatVideoTime(d)
-
+        txtLyricsView.setDuration(d.toInt())
         val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
         val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
         txtLyricsView?.visibility = View.GONE
