@@ -88,6 +88,10 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             override fun clickValid(v: View?) {
                 // 版权举报
                 dismiss(false)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_COPY_REPORT)
+                        .withInt("from", type)
+                        .withSerializable("watchModel",model)
+                        .navigation()
             }
         })
         mReportTv.setOnClickListener(object : DebounceViewClickListener() {

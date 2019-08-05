@@ -54,11 +54,14 @@ import io.agora.rtc.RtcEngine;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+//TODO 有时间一定要优化一下
 public class FeedbackFragment extends BaseFragment {
     //反馈
     public static final int FEED_BACK = 0;
     //举报
     public static final int REPORT = 1;
+    //版权举报
+    public static final int COPY_REPORT = 2;
 
     CommonTitleBar mTitlebar;
     FeedbackView mFeedBackView;
@@ -78,7 +81,7 @@ public class FeedbackFragment extends BaseFragment {
     ObjectPlayControlTemplate<PhotoModel, FeedbackFragment> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, FeedbackFragment>() {
         @Override
         protected FeedbackFragment accept(PhotoModel cur) {
-            if(mUploading){
+            if (mUploading) {
                 return null;
             }
             mUploading = true;
@@ -115,12 +118,20 @@ public class FeedbackFragment extends BaseFragment {
             public void clickValid(View v) {
                 //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                if (mActionType == COPY_REPORT) {
+                    getActivity().finish();
+                } else {
+                    U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                }
+
+
             }
         });
 
         if (mActionType == FEED_BACK) {
             mTitlebar.getCenterTextView().setText("意见反馈");
+        } else if (mActionType == COPY_REPORT) {
+            mTitlebar.getCenterTextView().setText("版权举报");
         } else {
             mTitlebar.getCenterTextView().setText("举报");
         }
@@ -267,6 +278,8 @@ public class FeedbackFragment extends BaseFragment {
         MyLog.d(getTAG(), "feedback" + " typeList=" + typeList + " content=" + content + " logUrl=" + logUrl + " picUrls=" + picUrls);
         if (mActionType == FEED_BACK) {
             summitFeedback(typeList, content, logUrl, picUrls);
+        } else if (mActionType == COPY_REPORT) {
+            //todo 举报
         } else {
             submitReport(typeList, content, picUrls);
         }

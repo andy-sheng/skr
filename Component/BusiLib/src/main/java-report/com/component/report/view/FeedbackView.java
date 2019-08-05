@@ -17,6 +17,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
+import com.component.report.fragment.QuickFeedbackFragment;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
@@ -28,6 +29,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
+// 与FeedbackFragment中对应 0反馈  1举报  2版权举报
 public class FeedbackView extends RelativeLayout {
     public final String TAG = "FeedbackView";
 
@@ -83,10 +85,16 @@ public class FeedbackView extends RelativeLayout {
 
     private void init() {
         if (mActionType == 0) {
+            // 反馈
             inflate(getContext(), R.layout.feedback_view_layout, this);
+        } else if (mActionType == 2) {
+            // 版权举报
+            inflate(getContext(), R.layout.copy_report_view_layout, this);
         } else {
+            // 举报
             inflate(getContext(), R.layout.report_view_layout, this);
         }
+
 
         mPicNumTv = findViewById(R.id.pic_num_tv);
         mRecyclerView = findViewById(R.id.recycler_view);
