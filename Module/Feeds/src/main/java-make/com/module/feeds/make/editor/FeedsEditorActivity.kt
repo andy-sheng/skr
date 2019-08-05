@@ -3,10 +3,12 @@ package com.module.feeds.make.editor
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -18,7 +20,6 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.utils.U
-import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
@@ -26,13 +27,11 @@ import com.component.lyrics.LyricsManager
 import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
+import com.component.lyrics.widget.TxtLyricScrollView
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.detail.view.AutoScrollLyricView
-import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
-import com.module.feeds.make.view.FeedsMakeVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
@@ -46,21 +45,23 @@ import kotlinx.coroutines.*
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_EDITOR)
 class FeedsEditorActivity : BaseActivity() {
-
-    var mTitleBar: CommonTitleBar? = null
-    var mPlayBtn: ExImageView? = null
-    var mSeekBar: SeekBar? = null
-    var mAvatarBg: BaseImageView? = null
-    var mRadioView: FeedsRecordAnimationView? = null
-    var mManyLyricsView: ManyLyricsView? = null
-    var mAutoScrollLyricView: AutoScrollLyricView? = null
-    var mVoiceControlView: FeedsEditorVoiceControlPanelView? = null
-    var mVaControlView: VocalAlignControlPannelView? = null
-    var mMenuBg: View? = null
-    var mRenshengIv: ExImageView? = null
-    var mEffectIv: ExImageView? = null
-    var mResetIv: ExImageView? = null
-    var mPublishIv: ExImageView? = null
+    lateinit var rootView: ConstraintLayout
+    lateinit var titleBar:CommonTitleBar
+    lateinit var playBtnContainer:ConstraintLayout
+    lateinit var playBtn:ExImageView
+    lateinit var seekBar:SeekBar
+    lateinit var nowTsTv:TextView
+    lateinit var totalTsTv:TextView
+    lateinit var cdBg: ImageView
+    lateinit var cdAvatar:BaseImageView
+    lateinit var txtLyricsView: TxtLyricScrollView
+    lateinit var manyLyricsView:ManyLyricsView
+    lateinit var renshengIv:ExImageView
+    lateinit var effectIv:ExImageView
+    lateinit var resetIv:ExImageView
+    lateinit var composeProgressbarVg:ConstraintLayout
+    lateinit var composeProgressbar: ProgressBar
+    lateinit var composeProgressTipsTv:TextView
 
     var mFeedsMakeModel: FeedsMakeModel? = null
 
@@ -68,10 +69,41 @@ class FeedsEditorActivity : BaseActivity() {
 
     var mPlayProgressJob: Job? = null
 
-    var mComposeProgressbarVG: ViewGroup? = null
 
-    var mComposeProgressTipsTv: TextView? = null
-    var mCoverView: View? = null
+    val voiceControlPanelViewDialog by lazy {
+        val view = FeedsEditorVoiceControlPanelView(this).apply {
+            this.mZqAudioEditorKit = mZqAudioEditorKit
+            if (mFeedsMakeModel?.withBgm == true) {
+                this.mPeopleVoiceIndex = 1
+            }else{
+                this.mPeopleVoiceIndex = 0
+            }
+            bindData()
+        }
+        DialogPlus.newDialog(this)
+                .setContentHolder(ViewHolder(view))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setCancelable(true)
+                .setGravity(Gravity.BOTTOM)
+                .create()
+    }
+
+    val vocalAlignControlPannelViewDialog by lazy {
+        val view = VocalAlignControlPannelView(this).apply {
+            this.audioEditorKit = mZqAudioEditorKit
+            bindData()
+        }
+        DialogPlus.newDialog(this)
+                .setContentHolder(ViewHolder(view))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setCancelable(true)
+                .setGravity(Gravity.BOTTOM)
+                .create()
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_editor_activity_layout
@@ -80,56 +112,47 @@ class FeedsEditorActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         mFeedsMakeModel = intent.getSerializableExtra("feeds_make_model") as FeedsMakeModel?
         MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
-        mTitleBar = findViewById(R.id.title_bar)
-        mPlayBtn = findViewById(R.id.play_btn)
-        mSeekBar = findViewById(R.id.seek_bar)
-        mAvatarBg = findViewById(R.id.avatar_bg)
-        mRadioView = findViewById(R.id.radio_view)
-        mManyLyricsView = findViewById(R.id.many_lyrics_view)
-        mAutoScrollLyricView = AutoScrollLyricView(findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
-        mVoiceControlView = findViewById(R.id.voice_control_view)
-        mVaControlView = findViewById(R.id.va_control_view)
-        mMenuBg = findViewById(R.id.menu_bg)
-        mRenshengIv = findViewById(R.id.rensheng_iv)
-        mEffectIv = findViewById(R.id.effect_iv)
-        mResetIv = findViewById(R.id.reset_iv)
-        mPublishIv = findViewById(R.id.publish_iv)
-        mComposeProgressbarVG = findViewById(R.id.compose_progressbar_vg)
-        mComposeProgressTipsTv = findViewById(R.id.progress_tips_tv)
-        mComposeProgressbarVG?.setOnClickListener {
+        rootView = rootView.findViewById(R.id.root_view)
+        titleBar = rootView.findViewById(R.id.title_bar)
+        playBtnContainer = rootView.findViewById(R.id.play_btn_container)
+        playBtn = rootView.findViewById(R.id.play_btn)
+        seekBar = rootView.findViewById(R.id.seek_bar)
+        nowTsTv = rootView.findViewById(R.id.now_ts_tv)
+        totalTsTv = rootView.findViewById(R.id.total_ts_tv)
+        cdBg = rootView.findViewById(R.id.cd_bg)
+        cdAvatar = rootView.findViewById(R.id.cd_avatar)
+        txtLyricsView = rootView.findViewById(R.id.txt_lyrics_view)
+        manyLyricsView = rootView.findViewById(R.id.many_lyrics_view)
+        renshengIv = rootView.findViewById(R.id.rensheng_iv)
+        effectIv = rootView.findViewById(R.id.effect_iv)
+        resetIv = rootView.findViewById(R.id.reset_iv)
+        composeProgressbarVg = rootView.findViewById(R.id.compose_progressbar_vg)
+        composeProgressbar = rootView.findViewById(R.id.compose_progressbar)
+        composeProgressTipsTv = findViewById(R.id.compose_progress_tips_tv)
+
+        composeProgressbarVg?.setOnClickListener {
             // 吃掉点击事件
         }
 
-        mCoverView = findViewById<View>(R.id.cover_view)
-        mCoverView?.setOnClickListener {
-            mRenshengIv?.isSelected = false
-            mEffectIv?.isSelected = false
-            mVaControlView?.visibility = View.GONE
-            mVoiceControlView?.visibility = View.GONE
-            mCoverView?.visibility = View.GONE
-        }
-
-        mTitleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
-        mTitleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
+        titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
+        titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
         })
-        mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mFeedsMakeModel?.recordDuration?.toLong()
-                ?: 0L)
 
-        mPlayBtn?.setOnClickListener(object : DebounceViewClickListener() {
+        playBtnContainer?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if (mPlayBtn?.isSelected == true) {
+                if (playBtn?.isSelected == true) {
                     pausePreview()
                 } else {
                     resumePreview()
                 }
             }
         })
-        mSeekBar?.max = mFeedsMakeModel?.recordDuration!!.toInt() - mFeedsMakeModel?.firstLyricShiftTs!!
-        mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seekBar?.max = mFeedsMakeModel?.recordDuration!!.toInt() - mFeedsMakeModel?.firstLyricShiftTs!!
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
 
@@ -142,78 +165,40 @@ class FeedsEditorActivity : BaseActivity() {
 
         })
 
-        AvatarUtils.loadAvatarByUrl(mAvatarBg, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(10.dp().toFloat())
-                .setBlur(true)
+        AvatarUtils.loadAvatarByUrl(cdAvatar, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                .setCircle(true)
                 .build())
-        mRadioView?.setAvatar(MyUserInfoManager.getInstance().avatar)
-        mRadioView?.pause()
 
-        if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
-            mAutoScrollLyricView?.visibility = View.GONE
-            LyricsManager
-                    .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs, -1)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                    .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
-                    .subscribe({ lyricsReader ->
-                        MyLog.w(TAG, "onEventMainThread " + "play")
-                        mManyLyricsView?.visibility = View.VISIBLE
-                        mManyLyricsView?.initLrcData()
-                        mManyLyricsView?.lyricsReader = lyricsReader
-                        mManyLyricsView?.seekTo(0)
-                        mManyLyricsView?.pause()
-                    }, { throwable ->
-                        MyLog.e(TAG, throwable)
-                        MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                    })
-        } else {
-            mManyLyricsView?.visibility = View.GONE
-            mFeedsMakeModel?.songModel?.let {
-                mAutoScrollLyricView?.setSongModel(it, -1)
-            }
-        }
-        mVaControlView?.audioEditorKit = mZqAudioEditorKit
         // 面板控制
-        mRenshengIv?.setOnClickListener(object : DebounceViewClickListener() {
+        renshengIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.withBgm == false) {
                     U.getToastUtil().showShort("清唱模式下无需人声对齐")
                     return
                 }
-                mRenshengIv?.isSelected = true
-                mEffectIv?.isSelected = false
-                mVaControlView?.visibility = View.VISIBLE
-                mVoiceControlView?.visibility = View.GONE
-                mCoverView?.visibility = View.VISIBLE
+                vocalAlignControlPannelViewDialog.show()
             }
         })
 
-        mVoiceControlView?.mZqAudioEditorKit = mZqAudioEditorKit
 
-        mEffectIv?.setOnClickListener(object : DebounceViewClickListener() {
+        effectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                mRenshengIv?.isSelected = false
-                mEffectIv?.isSelected = true
-                mVaControlView?.visibility = View.GONE
-                mVoiceControlView?.visibility = View.VISIBLE
-                mCoverView?.visibility = View.VISIBLE
+                voiceControlPanelViewDialog.show()
             }
         })
 
-        mResetIv?.setOnClickListener(object : DebounceViewClickListener() {
+        resetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 setResult(Activity.RESULT_OK)
                 finish()
             }
         })
 
-        mPublishIv?.setOnClickListener(object : DebounceViewClickListener() {
+        titleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 开始合成
                 pausePreview()
-                mComposeProgressbarVG?.visibility = View.VISIBLE
+                composeProgressbarVg?.visibility = View.VISIBLE
                 mZqAudioEditorKit.startCompose()
             }
         })
@@ -241,14 +226,14 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit.setOnComposeInfoListener(object : ZqAudioEditorKit.OnComposeInfoListener {
             override fun onProgress(progress: Float) {
                 launch {
-                    mComposeProgressTipsTv?.text = "合成进度 ${(progress * 100).toInt()}%"
+                    composeProgressTipsTv?.text = "合成进度 ${(progress * 100).toInt()}%"
                 }
             }
 
             override fun onCompletion() {
                 MyLog.d(TAG, "compose onCompletion")
                 launch {
-                    mComposeProgressbarVG?.visibility = View.GONE
+                    composeProgressbarVg?.visibility = View.GONE
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                             .withSerializable("feeds_make_model", mFeedsMakeModel)
                             .navigation(this@FeedsEditorActivity, 9)
@@ -256,8 +241,49 @@ class FeedsEditorActivity : BaseActivity() {
             }
         })
 
+        val d = mFeedsMakeModel!!.recordDuration - mFeedsMakeModel!!.firstLyricShiftTs
+        totalTsTv.text =  U.getDateTimeUtils().formatVideoTime(d)
+
+        val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+        val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
+        txtLyricsView?.visibility = View.GONE
+        manyLyricsView?.visibility = View.GONE
         if (mFeedsMakeModel?.withBgm == true) {
-            mVoiceControlView?.mPeopleVoiceIndex = 1
+            if(!TextUtils.isEmpty(lrcTs)){
+                manyLyricsView?.visibility = View.VISIBLE
+                LyricsManager
+                        .loadStandardLyric(lrcTs, -1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
+                        .subscribe({ lyricsReader ->
+                            MyLog.w(TAG, "onEventMainThread " + "play")
+                            manyLyricsView?.initLrcData()
+                            manyLyricsView?.lyricsReader = lyricsReader
+                            manyLyricsView?.seekTo(0)
+                            manyLyricsView?.pause()
+                        }, { throwable ->
+                            MyLog.e(TAG, throwable)
+                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                        })
+            }else{
+                txtLyricsView?.visibility = View.VISIBLE
+                LyricsManager
+                        .loadGrabPlainLyric(lrcTxt)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
+                        .subscribe({ lyricsReader ->
+                            MyLog.w(TAG, "onEventMainThread " + "play")
+                            txtLyricsView.setLyrics(lyricsReader)
+                        }, { throwable ->
+                            MyLog.e(TAG, throwable)
+                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                        })
+            }
+
             runBlocking {
                 val bgmFileJob = async(Dispatchers.IO) {
                     val file = SongResUtils.getAccFileByUrl(mFeedsMakeModel?.songModel?.songTpl?.bgm)
@@ -278,6 +304,7 @@ class FeedsEditorActivity : BaseActivity() {
                     }
                 }
                 //播放音乐
+
                 mZqAudioEditorKit.setDataSource(0, bgmFileJob.await().path, mFeedsMakeModel?.firstLyricShiftTs?.toLong()
                         ?: 0L, mFeedsMakeModel?.recordDuration
                         ?: -1)
@@ -289,8 +316,36 @@ class FeedsEditorActivity : BaseActivity() {
                 initWhenEngineReady()
             }
         } else {
-            mVoiceControlView?.mPeopleVoiceIndex = 0
-
+            txtLyricsView?.visibility = View.VISIBLE
+            if(!TextUtils.isEmpty(lrcTs)){
+                LyricsManager
+                        .loadStandardLyric(lrcTs, -1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
+                        .subscribe({ lyricsReader ->
+                            MyLog.w(TAG, "onEventMainThread " + "play")
+                            txtLyricsView.setLyrics(lyricsReader)
+                        }, { throwable ->
+                            MyLog.e(TAG, throwable)
+                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                        })
+            }else{
+                LyricsManager
+                        .loadGrabPlainLyric(lrcTxt)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
+                        .subscribe({ lyricsReader ->
+                            MyLog.w(TAG, "onEventMainThread " + "play")
+                            txtLyricsView.setLyrics(lyricsReader)
+                        }, { throwable ->
+                            MyLog.e(TAG, throwable)
+                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                        })
+            }
             mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, mFeedsMakeModel?.firstLyricShiftTs?.toLong()
                     ?: 0, mFeedsMakeModel?.recordDuration
                     ?: -1)
@@ -303,8 +358,6 @@ class FeedsEditorActivity : BaseActivity() {
     private fun initWhenEngineReady() {
         MyLog.d(TAG, "initWhenEngineReady")
         mZqAudioEditorKit.outputPath = mFeedsMakeModel?.composeSavePath
-        mVoiceControlView?.bindData()
-        mVaControlView?.bindData()
 //        mEffectIv?.isSelected = true
 //        mVoiceControlView?.visibility = View.VISIBLE
         mZqAudioEditorKit.startPreview(-1)
@@ -315,28 +368,28 @@ class FeedsEditorActivity : BaseActivity() {
         MyLog.d(TAG, "startPreview")
         // 预览开始了
         mZqAudioEditorKit?.resumePreview()
-        mPlayBtn?.isSelected = true
-        mRadioView?.play()
+        playBtn?.isSelected = true
 
-        if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
-            mManyLyricsView?.play(mZqAudioEditorKit.position.toInt())
-        } else {
-            mAutoScrollLyricView?.playLyric()
+        if(manyLyricsView.visibility == View.VISIBLE){
+            manyLyricsView?.play(mZqAudioEditorKit.position.toInt())
+        }else if(txtLyricsView.visibility == View.VISIBLE){
+            txtLyricsView?.play(mZqAudioEditorKit.position.toInt())
         }
 
         mPlayProgressJob?.cancel()
         mPlayProgressJob = launch {
             for (i in 1..1000) {
-                mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(mZqAudioEditorKit.position)
-                if (mManyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                    mManyLyricsView?.resume()
+                nowTsTv.text = U.getDateTimeUtils().formatVideoTime(mZqAudioEditorKit.position)
+                if(manyLyricsView.visibility == View.VISIBLE){
+                    if (manyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                        manyLyricsView?.resume()
+                    }
+                    manyLyricsView?.seekTo(mZqAudioEditorKit.position.toInt())
                 }
-                if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
-                    mManyLyricsView?.seekTo(mZqAudioEditorKit.position.toInt())
-                } else {
-                    mAutoScrollLyricView?.seekTo(mZqAudioEditorKit.position.toInt())
+                if(txtLyricsView.visibility == View.VISIBLE){
+                    txtLyricsView?.play(mZqAudioEditorKit.position.toInt())
                 }
-                mSeekBar?.progress = mZqAudioEditorKit.position.toInt()
+                seekBar?.progress = mZqAudioEditorKit.position.toInt()
                 delay(1000)
             }
         }
@@ -346,9 +399,9 @@ class FeedsEditorActivity : BaseActivity() {
         MyLog.d(TAG, "pausePreview")
         mZqAudioEditorKit.pausePreview()
         mPlayProgressJob?.cancel()
-        mPlayBtn?.isSelected = false
-        mManyLyricsView?.pause()
-        mRadioView?.pause()
+        playBtn?.isSelected = false
+        manyLyricsView?.pause()
+        txtLyricsView.pause()
     }
 
     override fun onResume() {
@@ -362,7 +415,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mManyLyricsView?.release()
+        manyLyricsView?.release()
         mZqAudioEditorKit.release()
     }
 

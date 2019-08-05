@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import com.common.utils.dp
 import com.component.busilib.R
+import com.component.lyrics.LyricsReader
 
 /**
  * 纯文本歌词view，支持手动拖动和自动滚动
@@ -30,6 +31,10 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
     private var ly = 0f
 
     private val paint1: Paint
+
+    private var duration = 0
+    private var postion = 0
+    private var playing = false
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.TxtLyricScrollView)
@@ -56,6 +61,49 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
         lyrics.addAll(l)
         progress = 0f
         invalidate()
+    }
+
+    fun setLyrics(l: String) {
+        lyrics.clear()
+        val a = l.split("\n")
+        for (s in a) {
+            lyrics.add(s)
+        }
+        progress = 0f
+        invalidate()
+    }
+
+    fun setLyrics(lyricsReader: LyricsReader?) {
+        lyrics.clear()
+        lyricsReader?.let {
+            val it = it.lrcLineInfos.entries.iterator()
+            while (it.hasNext()) {
+                val entry = it.next()
+                val s = entry.value.lineLyrics
+                lyrics.add(s)
+            }
+        }
+        progress = 0f
+        invalidate()
+    }
+
+    fun setDuration(pos: Int) {
+        duration = pos
+    }
+
+    fun pause() {
+        playing = false
+    }
+
+    fun play(pos: Int) {
+        playing = true
+        play(pos, 0)
+    }
+
+    private fun play(pos: Int, delay: Int) {
+        this.postion = pos
+        progress = (this.postion * maxProgress) / duration
+        postInvalidateDelayed(delay.toLong())
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -140,5 +188,12 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
                 }
             }
         }
+        if (lyricAudo) {
+            if (playing) {
+                play(postion + 16, 16)
+            }
+        }
     }
+
+
 }
