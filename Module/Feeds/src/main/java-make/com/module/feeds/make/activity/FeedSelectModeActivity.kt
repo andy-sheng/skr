@@ -5,6 +5,7 @@ import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
+import com.common.rxretrofit.ApiManager
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.module.RouterConstants
@@ -27,6 +28,9 @@ class FeedSelectModeActivity : BaseActivity() {
 
         mUploadIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/feed/collection"))
+                        .greenChannel().navigation()
                 finish()
             }
         })
