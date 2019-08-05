@@ -34,11 +34,11 @@ class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : Con
         mRightIv = this.findViewById(R.id.right_iv)
         mVaSeekBar = this.findViewById(R.id.va_seek_bar)
         mLeftIv.setOnClickListener {
-            mVaSeekBar?.progress = mVaSeekBar.progress - 5
+            mVaSeekBar?.progress = mVaSeekBar.progress - 1
             updateProgress()
         }
         mRightIv.setOnClickListener {
-            mVaSeekBar?.progress = mVaSeekBar.progress + 5
+            mVaSeekBar?.progress = mVaSeekBar.progress + 1
             updateProgress()
         }
         mVaResetTv.setOnClickListener(object : DebounceViewClickListener() {
