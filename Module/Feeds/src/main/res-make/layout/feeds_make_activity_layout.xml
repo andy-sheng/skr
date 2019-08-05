@@ -27,6 +27,19 @@
         app:titleBarColor="@color/transparent" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/record_tid"
+        android:layout_width="@dimen/view_8_dp"
+        android:layout_height="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_76_dp"
+        android:layout_marginBottom="@dimen/view_7_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_4_dp"
+        app:bl_solid_color="#FFFF2B2B"
+        app:layout_constraintBottom_toBottomOf="@+id/title_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.common.view.ex.ExImageView
         app:layout_constraintLeft_toRightOf="@id/begin_tv"
         android:id="@+id/reset_iv"
         android:layout_width="wrap_content"

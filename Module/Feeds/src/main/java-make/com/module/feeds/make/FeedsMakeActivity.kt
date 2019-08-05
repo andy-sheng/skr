@@ -25,6 +25,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.DiffuseView
 import com.common.view.countdown.RecordProgressBarView
+import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.lyrics.LyricAndAccMatchManager
@@ -61,6 +62,7 @@ class FeedsMakeActivity : BaseActivity() {
     var mRecordProgressBarView: RecordProgressBarView? = null
     var mBeginTv: ExTextView? = null
     var mDiffuseView: DiffuseView? = null
+    var mRecordTid: ExImageView? = null
     var mVoiceScaleView: VoiceScaleView? = null
     var mManyLyricsView: ManyLyricsView? = null
     var mAutoScrollLyricView: AutoScrollLyricView? = null
@@ -91,6 +93,7 @@ class FeedsMakeActivity : BaseActivity() {
         mManyLyricsView = findViewById(R.id.many_lyrics_view)
         mRecordProgressBarView = findViewById(R.id.progress_bar)
         mDiffuseView = findViewById(R.id.pick_diffuse_view)
+        mRecordTid = findViewById(R.id.record_tid)
 
         val viewStub = findViewById<ViewStub>(R.id.auto_scroll_lyric_view_layout_viewstub)
         mAutoScrollLyricView = AutoScrollLyricView(viewStub)
@@ -408,6 +411,7 @@ class FeedsMakeActivity : BaseActivity() {
                     mTitleBar?.centerSubTextView?.append(" / ${U.getDateTimeUtils().formatVideoTime(it)}")
                 }
                 mDiffuseView?.start(2000)
+                mRecordTid?.visibility = if (i % 2 == 0) View.GONE else View.VISIBLE
                 delay(1000)
             }
         }
