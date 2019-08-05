@@ -28,10 +28,10 @@
         android:id="@+id/name_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:gravity="center"
         android:text="撕歌用户"
         android:textColor="@color/white"
-        android:gravity="center"
         android:textSize="@dimen/view_18_dp"
         app:layout_constraintLeft_toLeftOf="@+id/share_bg"
         app:layout_constraintRight_toRightOf="@+id/share_bg"
@@ -41,33 +41,28 @@
         android:id="@+id/song_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:text="《歌曲名称》"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
+        android:text="《歌曲名称》"
         android:textColor="@color/white"
         android:textSize="@dimen/view_25_dp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/share_bg"
         app:layout_constraintRight_toRightOf="@+id/share_bg"
         app:layout_constraintTop_toBottomOf="@+id/name_tv" />
 
     <TextView
-        android:id="@+id/say_edit"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/view_65_dp"
-        android:layout_marginLeft="@dimen/view_28_dp"
-        android:layout_marginTop="@dimen/view_34_dp"
-        android:layout_marginRight="@dimen/view_28_dp"
-        android:background="@drawable/feeds_make_publish_editor_bg"
-        android:gravity="left|top"
-        android:maxLength="100"
-        android:padding="@dimen/view_10_dp"
-        android:text="快来听我刚唱的这首歌吧"
-        android:textSize="@dimen/view_15_dp"
-        app:layout_constraintLeft_toLeftOf="@+id/share_bg"
-        app:layout_constraintRight_toRightOf="@+id/share_bg"
-        app:layout_constraintTop_toBottomOf="@+id/song_tv" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:text="快来听我刚唱的这首歌吧～"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="@id/song_tv"
+        app:layout_constraintRight_toRightOf="@id/song_tv"
+        app:layout_constraintTop_toBottomOf="@id/song_tv" />
 
     <View
         android:layout_width="0dp"
@@ -134,5 +129,17 @@
         android:src="@drawable/pengyouquan"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/share_tips" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

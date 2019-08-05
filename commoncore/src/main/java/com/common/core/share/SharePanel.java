@@ -3,6 +3,7 @@ package com.common.core.share;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.widget.TextView;
 
 import com.common.core.R;
 import com.common.log.MyLog;
@@ -149,8 +150,16 @@ public class SharePanel {
     public void shareMusic(SharePlatform sharePlatform) {
         UMusic music = new UMusic(mPlayMusicUrl);
         music.setTitle("" + mTitle);
-        music.setDescription(mDes + "的撕歌精彩时刻");
-        music.setThumb(new UMImage(mActivity, mShareImage));
+        music.setDescription(mDes);
+        if (TextUtils.isEmpty(mShareImage)) {
+            if (sharePlatform == SharePlatform.WEIXIN || sharePlatform == SharePlatform.WEIXIN_CIRCLE) {
+                music.setThumb(new UMImage(mActivity, R.drawable.share_app_weixin_circle_icon));
+            } else {
+                music.setThumb(new UMImage(mActivity, mDefaultIconUrl));
+            }
+        } else {
+            music.setThumb(new UMImage(mActivity, mShareImage));
+        }
         music.setmTargetUrl(mUrl);
 
         switch (sharePlatform) {

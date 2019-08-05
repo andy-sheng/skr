@@ -175,6 +175,15 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 mReportTv.visibility = View.GONE
                 mDividerReport.visibility = View.GONE
                 mCopyReportTv.text = "删除"
+                if (model.status != 2) {
+                    // 未审核通过
+                    mCollectTv.visibility = View.GONE
+                    mDividerCollect.visibility = View.GONE
+                    mShareTv.visibility = View.GONE
+                    mDividerShare.visibility = View.GONE
+                } else {
+                    checkCollect()
+                }
             }
             FROM_OTHER_PERSON -> {
                 mFollowTv.visibility = View.GONE

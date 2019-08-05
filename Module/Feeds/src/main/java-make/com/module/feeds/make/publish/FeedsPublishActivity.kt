@@ -234,6 +234,7 @@ class FeedsPublishActivity : BaseActivity() {
                 U.getToastUtil().showShort("上传成功")
                 mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
                 mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
+                mFeedsMakeModel?.songModel?.playURL = playUrl
                 mFeedsMakeModel?.songModel?.songID = result.data.getIntValue("songID")
                 // 跳到分享页
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SHARE)
