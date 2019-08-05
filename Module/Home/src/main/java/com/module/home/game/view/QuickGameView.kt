@@ -69,7 +69,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     init {
         View.inflate(context, R.layout.quick_game_view_layout, this)
-        mQuickGamePresenter = QuickGamePresenter(this)
+        mQuickGamePresenter = QuickGamePresenter(fragment,this)
         mSkrAudioPermission = SkrAudioPermission()
         mCameraPermission = SkrCameraPermission()
 

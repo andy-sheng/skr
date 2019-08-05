@@ -2,6 +2,7 @@ package com.module.home.game.presenter
 
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
+import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
@@ -19,7 +20,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCyclePresenter() {
+class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: IQuickGameView3) : RxLifeCyclePresenter() {
 
     private val mMainPageSlideApi: MainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
     private val mGrabSongApi: GrabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
@@ -200,6 +201,11 @@ class QuickGamePresenter(internal var mIGameView3: IQuickGameView3) : RxLifeCycl
     }
 
     private fun loadRecommendRoomData() {
+        // 加个保护
+        if (!fragment.fragmentVisible) {
+            stopTimer()
+            return
+        }
         ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
