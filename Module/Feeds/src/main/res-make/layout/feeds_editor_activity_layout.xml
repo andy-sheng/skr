@@ -59,13 +59,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/view_2_dp"
             android:layout_marginRight="@dimen/view_8_dp"
             android:max="100"
             android:maxHeight="@dimen/view_4_dp"
             android:min="0"
             android:minHeight="@dimen/view_4_dp"
-            android:paddingLeft="@dimen/view_10_dp"
+            android:paddingLeft="@dimen/view_6_dp"
             android:paddingRight="@dimen/view_10_dp"
             android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
             android:thumb="@drawable/shenqu_jindu"
@@ -98,38 +97,48 @@
             app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/cd_bg"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cd_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_37_dp"
-        android:src="@drawable/radio_panel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play_btn_container" />
+        app:layout_constraintTop_toBottomOf="@+id/play_btn_container">
 
-    <com.common.image.fresco.BaseImageView
-        android:id="@+id/cd_avatar"
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_80_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cd_bg"
-        app:layout_constraintLeft_toLeftOf="@+id/cd_bg"
-        app:layout_constraintRight_toRightOf="@+id/cd_bg"
-        app:layout_constraintTop_toTopOf="@+id/cd_bg" />
+        <ImageView
+            android:id="@+id/cd_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_37_dp"
+            android:src="@drawable/radio_panel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/cd_avatar"
+            android:layout_width="@dimen/view_80_dp"
+            android:layout_height="@dimen/view_80_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cd_bg"
+            app:layout_constraintLeft_toLeftOf="@+id/cd_bg"
+            app:layout_constraintRight_toRightOf="@+id/cd_bg"
+            app:layout_constraintTop_toTopOf="@+id/cd_bg" />
+    </android.support.constraint.ConstraintLayout>
+
 
     <com.component.lyrics.widget.TxtLyricScrollView
         android:id="@+id/txt_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:layout_marginTop="@dimen/view_20_dp"
-        app:layout_constraintTop_toBottomOf="@+id/cd_bg"
-        app:lyricHighlightNum="4"
-        app:lyricFadeNum="1"
-        app:lyricColor="@color/white_trans_80"
+        app:layout_constraintTop_toBottomOf="@+id/cd_container"
         app:lyricAuto="true"
+        app:lyricColor="@color/white_trans_80"
+        app:lyricFadeNum="1"
         app:lyricFontSize="@dimen/view_18_dp"
-        app:lyricLineSpace="@dimen/view_6_dp"
-        />
+        app:lyricHighlightNum="4"
+        app:lyricLineSpace="@dimen/view_6_dp" />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView

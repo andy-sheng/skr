@@ -123,7 +123,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
                 if (touchDown) {
                     var ty = (event?.y - ly)
                     var np = progress - ty
-                    MyLog.d("TxtLyricScrollView", "move y:${event?.y} ty:$ty np:${np} maxProgress:$maxProgress progress:$progress")
+                    //MyLog.d("TxtLyricScrollView", "move y:${event?.y} ty:$ty np:${np} maxProgress:$maxProgress progress:$progress")
                     if (np <= 0) {
                         np = 0f
                     } else if (np >= maxProgress) {
@@ -148,7 +148,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
      * https://blog.csdn.net/zly921112/article/details/50401976
      */
     override fun onDraw(canvas: Canvas?) {
-        MyLog.d("TxtLyricScrollView", "progress=${progress}")
+        //MyLog.d("TxtLyricScrollView", "progress=${progress}")
         super.onDraw(canvas)
         if (ht == 0f && lyrics.size>0) {
             // 计算一些基本参数

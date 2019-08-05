@@ -222,7 +222,8 @@ class FeedsPublishActivity : BaseActivity() {
                     "playDurMs" to mFeedsMakeModel?.recordDuration,
                     "playURL" to playUrl,
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
-                    "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID
+                    "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
+                    "songType" to if(mFeedsMakeModel?.withBgm==true) 1 else 2
 //TODO                    "tplID": 0,
             )
 

@@ -1,5 +1,7 @@
 package com.module.feeds.make.editor
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +9,8 @@ import android.support.constraint.ConstraintLayout
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.SeekBar
@@ -52,6 +56,7 @@ class FeedsEditorActivity : BaseActivity() {
     lateinit var seekBar:SeekBar
     lateinit var nowTsTv:TextView
     lateinit var totalTsTv:TextView
+    lateinit var cdContainer:View
     lateinit var cdBg: ImageView
     lateinit var cdAvatar:BaseImageView
     lateinit var txtLyricsView: TxtLyricScrollView
@@ -68,7 +73,7 @@ class FeedsEditorActivity : BaseActivity() {
     val mZqAudioEditorKit = ZqAudioEditorKit(U.app())
 
     var mPlayProgressJob: Job? = null
-
+    var cdRotateAnimator:ObjectAnimator?=null
 
     val voiceControlPanelViewDialog by lazy {
         val view = FeedsEditorVoiceControlPanelView(this).apply {
@@ -119,6 +124,7 @@ class FeedsEditorActivity : BaseActivity() {
         seekBar = findViewById(R.id.seek_bar)
         nowTsTv = findViewById(R.id.now_ts_tv)
         totalTsTv = findViewById(R.id.total_ts_tv)
+        cdContainer = findViewById(R.id.cd_container)
         cdBg = findViewById(R.id.cd_bg)
         cdAvatar = findViewById(R.id.cd_avatar)
         txtLyricsView = findViewById(R.id.txt_lyrics_view)
@@ -129,10 +135,15 @@ class FeedsEditorActivity : BaseActivity() {
         composeProgressbarVg = findViewById(R.id.compose_progressbar_vg)
         composeProgressbar = findViewById(R.id.compose_progressbar)
         composeProgressTipsTv = findViewById(R.id.compose_progress_tips_tv)
-
         composeProgressbarVg?.setOnClickListener {
             // 吃掉点击事件
         }
+
+        cdRotateAnimator = ObjectAnimator.ofFloat(cdContainer, View.ROTATION, 0f, 360f)
+        cdRotateAnimator?.duration = 10000
+        cdRotateAnimator?.interpolator = LinearInterpolator()
+        cdRotateAnimator?.repeatCount = Animation.INFINITE
+
 
         titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
@@ -360,6 +371,14 @@ class FeedsEditorActivity : BaseActivity() {
             txtLyricsView?.play(mZqAudioEditorKit.position.toInt())
         }
 
+        if(cdRotateAnimator?.isStarted == true){
+            cdRotateAnimator?.resume()
+        }else{
+            cdContainer?.pivotX = cdContainer.width / 2f
+            cdContainer?.pivotY = cdContainer.height / 2f
+            cdRotateAnimator?.start()
+        }
+
         mPlayProgressJob?.cancel()
         mPlayProgressJob = launch {
             for (i in 1..1000) {
@@ -386,6 +405,7 @@ class FeedsEditorActivity : BaseActivity() {
         playBtn?.isSelected = false
         manyLyricsView?.pause()
         txtLyricsView.pause()
+        cdRotateAnimator?.pause()
     }
 
     override fun onResume() {
