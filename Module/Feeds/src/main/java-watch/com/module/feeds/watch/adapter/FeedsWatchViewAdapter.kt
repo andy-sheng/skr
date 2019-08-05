@@ -200,6 +200,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     fun playComplete() {
+        MyLog.w("FeedsWatchViewAdapter", "playComplete playing=$playing")
         if (playing) {
             playing = false
             update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_SHOW_COMPLETE_AREA)

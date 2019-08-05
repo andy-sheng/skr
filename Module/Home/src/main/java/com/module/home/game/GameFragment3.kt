@@ -203,7 +203,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         StatisticsAdapter.recordCountEvent("game", "all_expose", null)
     }
 
-    override fun onFragmentInvisible(from:Int) {
+    override fun onFragmentInvisible(from: Int) {
         super.onFragmentInvisible(from)
 //        mFriendRoomGameView.stopTimer()
         mQuickGameView.stopTimer()
@@ -216,7 +216,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 //        }
 
         mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
-        if (mGameVp.currentItem == 1) {
+        if (mGameVp.currentItem == 1 && this.fragmentVisible) {
             mQuickGameView.initData(true)
         }
     }
