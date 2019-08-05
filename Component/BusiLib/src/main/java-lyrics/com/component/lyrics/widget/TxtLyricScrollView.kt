@@ -21,7 +21,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
     private var maxProgress = progress // 进度的最大值
     private val highlightNum: Int // 中间高亮几行
     private val fadingNum: Int // 上下渐隐的行数
-    private val lineSpace: Int // 歌词行间距
+    private val lineSpace: Float // 歌词行间距
     private val lyricAudo: Boolean
     private var lyricFontSize = 15.dp().toFloat() //歌词字体大小
     private var ht = 0f
@@ -40,7 +40,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.TxtLyricScrollView)
         val lyricFontSize = typedArray.getDimension(R.styleable.TxtLyricScrollView_lyricFontSize, 15.dp().toFloat())
         val lyricColor = typedArray.getColor(R.styleable.TxtLyricScrollView_lyricColor, Color.WHITE)
-        lineSpace = typedArray.getColor(R.styleable.TxtLyricScrollView_lyricLineSpace, 2.dp())
+        lineSpace = typedArray.getDimension(R.styleable.TxtLyricScrollView_lyricLineSpace, 2.dp().toFloat())
         highlightNum = typedArray.getInt(R.styleable.TxtLyricScrollView_lyricHighlightNum, 4)
         fadingNum = typedArray.getInt(R.styleable.TxtLyricScrollView_lyricFadeNum, 2)
         lyricAudo = typedArray.getBoolean(R.styleable.TxtLyricScrollView_lyricAuto, false)

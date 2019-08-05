@@ -112,22 +112,22 @@ class FeedsEditorActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         mFeedsMakeModel = intent.getSerializableExtra("feeds_make_model") as FeedsMakeModel?
         MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
-        rootView = rootView.findViewById(R.id.root_view)
-        titleBar = rootView.findViewById(R.id.title_bar)
-        playBtnContainer = rootView.findViewById(R.id.play_btn_container)
-        playBtn = rootView.findViewById(R.id.play_btn)
-        seekBar = rootView.findViewById(R.id.seek_bar)
-        nowTsTv = rootView.findViewById(R.id.now_ts_tv)
-        totalTsTv = rootView.findViewById(R.id.total_ts_tv)
-        cdBg = rootView.findViewById(R.id.cd_bg)
-        cdAvatar = rootView.findViewById(R.id.cd_avatar)
-        txtLyricsView = rootView.findViewById(R.id.txt_lyrics_view)
-        manyLyricsView = rootView.findViewById(R.id.many_lyrics_view)
-        renshengIv = rootView.findViewById(R.id.rensheng_iv)
-        effectIv = rootView.findViewById(R.id.effect_iv)
-        resetIv = rootView.findViewById(R.id.reset_iv)
-        composeProgressbarVg = rootView.findViewById(R.id.compose_progressbar_vg)
-        composeProgressbar = rootView.findViewById(R.id.compose_progressbar)
+        rootView = findViewById(R.id.root_view)
+        titleBar = findViewById(R.id.title_bar)
+        playBtnContainer = findViewById(R.id.play_btn_container)
+        playBtn = findViewById(R.id.play_btn)
+        seekBar = findViewById(R.id.seek_bar)
+        nowTsTv = findViewById(R.id.now_ts_tv)
+        totalTsTv = findViewById(R.id.total_ts_tv)
+        cdBg = findViewById(R.id.cd_bg)
+        cdAvatar = findViewById(R.id.cd_avatar)
+        txtLyricsView = findViewById(R.id.txt_lyrics_view)
+        manyLyricsView = findViewById(R.id.many_lyrics_view)
+        renshengIv = findViewById(R.id.rensheng_iv)
+        effectIv = findViewById(R.id.effect_iv)
+        resetIv = findViewById(R.id.reset_iv)
+        composeProgressbarVg = findViewById(R.id.compose_progressbar_vg)
+        composeProgressbar = findViewById(R.id.compose_progressbar)
         composeProgressTipsTv = findViewById(R.id.compose_progress_tips_tv)
 
         composeProgressbarVg?.setOnClickListener {
@@ -253,10 +253,6 @@ class FeedsEditorActivity : BaseActivity() {
                 manyLyricsView?.visibility = View.VISIBLE
                 LyricsManager
                         .loadStandardLyric(lrcTs, -1)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
                         .subscribe({ lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
                             manyLyricsView?.initLrcData()
@@ -271,10 +267,6 @@ class FeedsEditorActivity : BaseActivity() {
                 txtLyricsView?.visibility = View.VISIBLE
                 LyricsManager
                         .loadGrabPlainLyric(lrcTxt)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
                         .subscribe({ lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
                             txtLyricsView.setLyrics(lyricsReader)
@@ -320,10 +312,6 @@ class FeedsEditorActivity : BaseActivity() {
             if(!TextUtils.isEmpty(lrcTs)){
                 LyricsManager
                         .loadStandardLyric(lrcTs, -1)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
                         .subscribe({ lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
                             txtLyricsView.setLyrics(lyricsReader)
@@ -334,10 +322,6 @@ class FeedsEditorActivity : BaseActivity() {
             }else{
                 LyricsManager
                         .loadGrabPlainLyric(lrcTxt)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
-                        .retryWhen(RxRetryAssist(3, "feed歌词下载失败"))
                         .subscribe({ lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
                             txtLyricsView.setLyrics(lyricsReader)
