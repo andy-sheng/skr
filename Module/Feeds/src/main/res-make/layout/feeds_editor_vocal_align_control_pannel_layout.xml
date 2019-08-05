@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_21_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_28_dp"
         android:gravity="center"
         android:text="重置"
         android:textColor="@color/white_trans_80"
@@ -33,7 +33,7 @@
         android:id="@+id/info_tips_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_28_dp"
         android:gravity="center"
         android:text="人声提前0毫秒"
         android:textColor="@color/white_trans_50"
@@ -47,7 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_21_dp"
-        android:layout_marginTop="@dimen/view_54_dp"
+        android:layout_marginTop="@dimen/view_72_dp"
+        android:layout_marginBottom="@dimen/view_31_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:src_unPressed_drawable="@drawable/gequ_left" />
@@ -56,10 +57,9 @@
         android:id="@+id/right_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_54_dp"
         android:layout_marginRight="@dimen/view_21_dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/left_iv"
         app:src_unPressed_drawable="@drawable/gequ_right" />
 
     <SeekBar
@@ -89,4 +89,6 @@
         app:layout_constraintLeft_toLeftOf="@+id/va_seek_bar"
         app:layout_constraintRight_toRightOf="@+id/va_seek_bar"
         app:layout_constraintTop_toTopOf="@+id/va_seek_bar" />
+
+
 </merge>

@@ -77,7 +77,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     val voiceControlPanelViewDialog by lazy {
         val view = FeedsEditorVoiceControlPanelView(this).apply {
-            this.mZqAudioEditorKit = mZqAudioEditorKit
+            this.mZqAudioEditorKit = this@FeedsEditorActivity.mZqAudioEditorKit
             if (mFeedsMakeModel?.withBgm == true) {
                 this.mPeopleVoiceIndex = 1
             }else{
@@ -97,7 +97,7 @@ class FeedsEditorActivity : BaseActivity() {
 
     val vocalAlignControlPannelViewDialog by lazy {
         val view = VocalAlignControlPannelView(this).apply {
-            this.audioEditorKit = mZqAudioEditorKit
+            this.audioEditorKit = this@FeedsEditorActivity.mZqAudioEditorKit
             bindData()
         }
         DialogPlus.newDialog(this)
@@ -374,9 +374,15 @@ class FeedsEditorActivity : BaseActivity() {
         if(cdRotateAnimator?.isStarted == true){
             cdRotateAnimator?.resume()
         }else{
-            cdContainer?.pivotX = cdContainer.width / 2f
-            cdContainer?.pivotY = cdContainer.height / 2f
             cdRotateAnimator?.start()
+//            launch {
+//                delay(1000)
+//                if(cdContainer.width>0){
+//                    cdContainer?.pivotX = cdContainer.width / 2f
+//                    cdContainer?.pivotY = cdContainer.height / 2f
+//
+//                }
+//            }
         }
 
         mPlayProgressJob?.cancel()
