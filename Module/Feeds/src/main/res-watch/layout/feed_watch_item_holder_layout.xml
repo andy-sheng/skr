@@ -205,6 +205,64 @@
         app:layout_constraintRight_toLeftOf="@id/record_view"
         app:layout_constraintTop_toTopOf="@id/song_area_bg" />
 
+    <android.support.constraint.Group
+        android:id="@+id/complete_gruop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="complete_area_iv,share_tv,collect_tv,play_again_tv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/complete_area_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/textsize_0_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_80"
+        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/song_area_bg"
+        app:layout_constraintRight_toRightOf="@id/song_area_bg"
+        app:layout_constraintTop_toTopOf="@id/song_area_bg" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/share_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分享"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        android:drawablePadding="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/complete_area_iv"
+        app:layout_constraintLeft_toLeftOf="@id/complete_area_iv"
+        app:layout_constraintRight_toLeftOf="@id/collect_tv"
+        app:layout_constraintTop_toTopOf="@id/complete_area_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/collect_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收藏"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        android:drawablePadding="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/complete_area_iv"
+        app:layout_constraintLeft_toRightOf="@id/share_tv"
+        app:layout_constraintRight_toLeftOf="@id/play_again_tv"
+        app:layout_constraintTop_toTopOf="@id/complete_area_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/play_again_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重播"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        android:drawablePadding="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/complete_area_iv"
+        app:layout_constraintLeft_toRightOf="@id/collect_tv"
+        app:layout_constraintRight_toRightOf="@id/complete_area_iv"
+        app:layout_constraintTop_toTopOf="@id/complete_area_iv" />
+
 
     <TextView
         android:id="@+id/like_num_tv"

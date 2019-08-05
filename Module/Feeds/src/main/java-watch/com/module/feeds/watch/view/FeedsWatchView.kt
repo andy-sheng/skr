@@ -85,6 +85,8 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private var mCallBack: RequestCallBack? = null
     private var mTipsDialogView: TipsDialogView? = null
 
+    private var mMap = HashMap<Int, FeedsWatchModel>()  // 用来存放播放完成的位置和数据，用于恢复页面
+
     fun isHomePage(): Boolean {
         if (type == TYPE_RECOMMEND || type == TYPE_FOLLOW) {
             return true
@@ -108,6 +110,14 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mRecyclerView = findViewById(R.id.recycler_view)
 
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
+            override fun onClickCollectListener(position: Int, watchModel: FeedsWatchModel?) {
+                // 收藏
+            }
+
+            override fun onClickShareListener(position: Int, watchModel: FeedsWatchModel?) {
+                // 分享
+            }
+
             override fun onClickAvatarListener(watchModel: FeedsWatchModel?) {
                 watchModel?.user?.let {
                     val bundle = Bundle()
@@ -216,12 +226,20 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
-                mAdapter?.pausePlayModel()
+                // 播放完成
                 SinglePlayer.reset(playerTag)
-                // 循环播放
-                mAdapter?.mCurrentPlayModel?.let {
-                    mAdapter?.mCurrentPlayPosition?.let { it1 ->
-                        startPlay(it1, it)
+                // 显示分享，收藏和播放的按钮
+                mAdapter?.mCurrentPlayModel?.let { model ->
+                    mAdapter?.mCurrentPlayPosition?.let {
+                        if (isHomePage()) {
+                            // 首页
+                            mAdapter?.playComplete()
+                            mMap.put(it, model)
+                        } else {
+                            // 个人中心
+                            mAdapter?.pausePlayModel()
+                        }
+
                     }
                 }
             }
@@ -280,9 +298,30 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
             val cdHeight = 168.dp()   // 光盘高度
             val bottomHeight = 50.dp()  // 底部高度
+            var lastFirstVisibleItem = -1
+            var lastLastVisibleItem = -1
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                // 以整个滑出屏幕为界限，来回复页面
+                val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+                val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
+                    if (firstVisibleItem != lastFirstVisibleItem || lastVisibleItem != lastLastVisibleItem) {
+                        lastFirstVisibleItem = firstVisibleItem
+                        lastLastVisibleItem = lastVisibleItem
+                        // 判断位置是否在2位置中
+                        for ((position, model) in mMap) {
+                            MyLog.d(TAG, "onScrolled firstVisibleItem=$firstVisibleItem lastVisibleItem=$lastVisibleItem position=$position")
+                            if (position < firstVisibleItem || position > lastVisibleItem) {
+                                recyclerView?.post {
+                                    mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_HIDE_COMPLETE_AREA)
+                                    mMap.remove(position)
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -291,8 +330,8 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
                         var postion = 0
                         // 以光盘为界限，找光盘显示百分比最多的
-                        var firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-                        var lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+                        val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+                        val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
                         if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
                             val percents = FloatArray(lastVisibleItem - firstVisibleItem + 1)
                             var i = firstVisibleItem
@@ -350,7 +389,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
-
                     }
                     RecyclerView.SCROLL_STATE_SETTLING -> {
                     }
@@ -443,6 +481,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
         mCallBack?.onRequestSucess(hasMore)
         if (isClear) {
+            mMap.clear()
             mAdapter?.mDataList?.clear()
             if (list != null && list.isNotEmpty()) {
                 mAdapter?.mDataList?.addAll(list)
@@ -595,7 +634,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: FeedsCollectChangeEvent){
+    fun onEvent(event: FeedsCollectChangeEvent) {
         // 收藏状态更新
     }
 }

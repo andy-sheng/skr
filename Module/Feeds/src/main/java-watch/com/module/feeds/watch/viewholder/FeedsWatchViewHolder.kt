@@ -1,5 +1,6 @@
 package com.module.feeds.watch.viewholder
 
+import android.support.constraint.Group
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
@@ -10,6 +11,8 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.watch.listener.FeedsListener
@@ -23,6 +26,12 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     private val mContentTv: TextView = itemView.findViewById(R.id.content_tv)
     private val mHitIv: ImageView = itemView.findViewById(R.id.hit_iv)
 
+    private val mCompleteGruop: Group = itemView.findViewById(R.id.complete_gruop)
+    private val mCompleteAreaIv: ExImageView = itemView.findViewById(R.id.complete_area_iv)
+    private val mShareTv: ExTextView = itemView.findViewById(R.id.share_tv)
+    private val mCollectTv: ExTextView = itemView.findViewById(R.id.collect_tv)
+    private val mPlayAgainTv: ExTextView = itemView.findViewById(R.id.play_again_tv)
+
     init {
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -34,6 +43,24 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickAvatarListener(model)
+            }
+        })
+
+        mShareTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onClickShareListener(mPosition, model)
+            }
+        })
+
+        mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onClickCollectListener(mPosition, model)
+            }
+        })
+
+        mPlayAgainTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onClickCDListener(mPosition, model)
             }
         })
     }
@@ -78,5 +105,24 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         }
     }
 
+    override fun startPlay() {
+        super.startPlay()
+        hideCompleteArea()
+    }
 
+    fun showCompleteArea() {
+        mCompleteGruop.visibility = View.VISIBLE
+        mCompleteAreaIv.visibility = View.VISIBLE
+        mShareTv.visibility = View.VISIBLE
+        mCollectTv.visibility = View.VISIBLE
+        mPlayAgainTv.visibility = View.VISIBLE
+    }
+
+    fun hideCompleteArea() {
+        mCompleteGruop.visibility = View.GONE
+        mCompleteAreaIv.visibility = View.GONE
+        mShareTv.visibility = View.GONE
+        mCollectTv.visibility = View.GONE
+        mPlayAgainTv.visibility = View.GONE
+    }
 }

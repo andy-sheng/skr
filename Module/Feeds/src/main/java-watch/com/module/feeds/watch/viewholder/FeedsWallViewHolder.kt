@@ -28,4 +28,6 @@ class FeedsWallViewHolder(it: View, l: FeedsListener) : FeedViewHolder(it, l) {
             mCheckTv.visibility = View.VISIBLE
         }
     }
+
+
 }

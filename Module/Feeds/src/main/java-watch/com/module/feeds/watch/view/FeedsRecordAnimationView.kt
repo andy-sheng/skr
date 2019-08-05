@@ -193,6 +193,19 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         avatarAnimation?.pause()
     }
 
+    fun pauseWithNoAnimation(){
+        mHandler.removeMessages(AVATAR_ANIM)
+        MyLog.d(TAG, "pause playing=$playing 动画在播= ${avatarAnimation?.isRunning != true}")
+        if (!playing && avatarAnimation?.isRunning != true) {
+            return
+        }
+        playing = false
+        wantPlaying = false
+        rotateAnimationPlay?.cancel()
+        rotateAnimationStop?.cancel()
+        avatarAnimation?.pause()
+    }
+
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         if (!hasLayouted) {

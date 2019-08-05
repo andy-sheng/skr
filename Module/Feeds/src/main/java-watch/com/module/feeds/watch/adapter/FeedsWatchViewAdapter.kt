@@ -28,23 +28,47 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        if (holder is FeedViewHolder) {
-            if (payloads.isEmpty()) {
-                MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder position=$position playing=$playing")
-                // 全部刷新的布局
+        if (payloads.isEmpty()) {
+            MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder position=$position playing=$playing")
+            // 全部刷新的布局
+            if (holder is FeedViewHolder) {
                 holder.bindData(position, mDataList[position])
+                // notifyItemChanged 和 notifyDataSetChanged间隔时间很短一起使用时候，会导致notifyItemChanged不生效
                 if (mDataList[position].feedID == mCurrentPlayModel?.feedID
                         && mDataList[position].song?.songID == mCurrentPlayModel?.song?.songID
                         && playing) {
-                    MyLog.d("FeedsWatchViewAdapter", "startPlay")
+                    MyLog.d("FeedsWatchViewAdapter", "notifyDataSetChanged startPlay")
                     holder.startPlay()
                 } else {
-                    holder.stopPlay()
+                    holder.stopPlay(true)
                 }
-            } else {
-                // 局部刷新
-                val type = payloads[0] as Int
-                if (type == REFRESH_TYPE_LIKE) {
+            }
+        } else {
+            // 局部刷新
+            val type = payloads[0] as Int
+            MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder type=$type position=$position playing=$playing")
+            if (type == REFRESH_SHOW_COMPLETE_AREA) {
+                if (holder is FeedsWatchViewHolder) {
+                    holder.showCompleteArea()
+                    holder.stopPlay(false)
+                }
+            } else if (type == REFRESH_HIDE_COMPLETE_AREA) {
+                if (holder is FeedsWatchViewHolder) {
+                    holder.hideCompleteArea()
+                }
+            }
+
+            if (holder is FeedViewHolder) {
+                if (type == REFRESH_TYPE_PLAY) {
+                    if (mDataList[position].feedID == mCurrentPlayModel?.feedID
+                            && mDataList[position].song?.songID == mCurrentPlayModel?.song?.songID
+                            && playing) {
+                        MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay")
+                        holder.startPlay()
+                    } else {
+                        holder.stopPlay(true)
+                    }
+                } else if (type == REFRESH_TYPE_LIKE) {
                     holder.refreshLike(position, mDataList[position])
                 } else if (type == REFRESH_TYPE_COMMENT) {
                     holder.refreshComment(position, mDataList[position])
@@ -132,8 +156,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         if (model != null) {
             for (i in 0 until mDataList.size) {
                 if (mDataList[i].feedID == model.feedID) {
-                    if (mDataList[i] == model) {
-                        return model
+                    return if (mDataList[i] == model) {
+                        model
                     } else {
                         //更新其中变化的数据
                         mDataList[i].exposure = model.exposure
@@ -141,7 +165,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                         mDataList[i].starCnt = model.starCnt
                         mDataList[i].shareCnt = model.shareCnt
                         mDataList[i].commentCnt = model.commentCnt
-                        return mDataList[i]
+                        mDataList[i]
                     }
                 }
             }
@@ -159,18 +183,31 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
      * 请求播放
      */
     fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
-        if (mCurrentPlayModel != model || !playing) {
-            mCurrentPlayPosition = pos
+        if (!(mCurrentPlayModel?.feedID == model?.feedID && mCurrentPlayModel?.song?.songID == model?.song?.songID) || !playing) {
             mCurrentPlayModel = model
             playing = true
-            notifyDataSetChanged()
+
+            update(pos, mCurrentPlayModel, REFRESH_TYPE_PLAY)
+            if (pos != mCurrentPlayPosition) {
+                mCurrentPlayPosition?.let {
+                    notifyItemChanged(it, REFRESH_TYPE_PLAY)
+                }
+                mCurrentPlayPosition = pos
+            }
         }
     }
 
     fun pausePlayModel() {
         if (playing) {
             playing = false
-            notifyDataSetChanged()
+            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_PLAY)
+        }
+    }
+
+    fun playComplete() {
+        if (playing) {
+            playing = false
+            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_SHOW_COMPLETE_AREA)
         }
     }
 
@@ -179,7 +216,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
             if (!playing) {
                 playing = true
-                notifyDataSetChanged()
+                update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_PLAY)
             }
         }
     }
@@ -214,9 +251,12 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
 
     companion object {
+        const val REFRESH_TYPE_PLAY = 0  // 局部刷新播放
         const val REFRESH_TYPE_LIKE = 1  // 局部刷新喜欢
         const val REFRESH_TYPE_COMMENT = 2  // 局部刷新评论数
         const val REFRESH_TYPE_LYRIC = 3  // 局部刷新歌词
         const val REFRESH_BUFFERING_STATE = 4  // 局部刷新歌词
+        const val REFRESH_SHOW_COMPLETE_AREA = 5  // 显示局部播放结束画面
+        const val REFRESH_HIDE_COMPLETE_AREA = 6  // 隐藏局部播放结束画面
     }
 }

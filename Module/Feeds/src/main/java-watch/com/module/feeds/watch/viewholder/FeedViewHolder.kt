@@ -155,7 +155,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mCommentNumTv.text = StringFromatUtils.formatTenThousand(watchModel.exposure)
     }
 
-    fun startPlay() {
+    open fun startPlay() {
         mRecordView.play(SinglePlayer.isBufferingOk)
     }
 
@@ -201,8 +201,12 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mRecordView.bufferEnd()
     }
 
-    fun stopPlay() {
-        mRecordView.pause()
+    fun stopPlay(useAnimation: Boolean) {
+        if (useAnimation) {
+            mRecordView.pause()
+        } else {
+            mRecordView.pauseWithNoAnimation()
+        }
         feedAutoScrollLyricView.pause()
         feedWatchManyLyricView.pause()
     }
