@@ -5,13 +5,17 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.log.MyLog
+import com.common.rx.RxRetryAssist
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.component.lyrics.LyricsManager
+import com.component.lyrics.LyricsReader
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 import com.module.feeds.watch.model.FeedSongModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
@@ -23,6 +27,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     var mIsStart: Boolean = false
     var mDisposable: Disposable? = null
     var mScrollJob: Job? = null
+    private var shift = 0
 
     override fun init(parentView: View?) {
         lyricTv = parentView!!.findViewById(R.id.lyric_tv)
@@ -35,6 +40,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     override fun setSongModel(feedSongModel: FeedSongModel,shift:Int) {
         mFeedSongModel = feedSongModel
+        this.shift = shift
     }
 
     override fun loadLyric() {
@@ -43,14 +49,45 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         lyricTv.text = "正在加载"
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
             mDisposable?.dispose()
+            fetchLyric {
+                whenLoadLyric(false)
+            }
+        } else {
+            whenLoadLyric(false)
+        }
+    }
+
+    private fun fetchLyric(call: () -> Unit) {
+        mDisposable?.dispose()
+        if (!TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxt)) {
             mDisposable = LyricsManager
                     .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
                     .subscribe({ s ->
                         mFeedSongModel?.songTpl?.lrcTxtStr = s
-                        whenLoadLyric(false)
+                        call.invoke()
                     }, { throwable -> MyLog.e(TAG, "accept throwable=$throwable") })
         } else {
-            whenLoadLyric(false)
+            mDisposable = LyricsManager
+                    .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs, shift)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .retryWhen(RxRetryAssist(5, ""))
+                    .subscribe({
+                        MyLog.w(TAG, "onEventMainThread " + "play")
+                        lrcToTxtStr(it)
+                        call.invoke()
+                    }, { throwable ->
+                        MyLog.e(TAG, "accept throwable=$throwable")
+                    })
+        }
+    }
+
+    fun lrcToTxtStr(lrcTsReader: LyricsReader?) {
+        lrcTsReader?.let {
+            mFeedSongModel?.songTpl?.lrcTxtStr = ""
+            it.lrcLineInfos.forEach {
+                mFeedSongModel?.songTpl?.lrcTxtStr = mFeedSongModel?.songTpl?.lrcTxtStr + it.value.lineLyrics + "\n"
+            }
         }
     }
 
@@ -61,12 +98,9 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
             mDisposable?.dispose()
-            mDisposable = LyricsManager
-                    .loadGrabPlainLyric(mFeedSongModel?.songTpl?.lrcTxt)
-                    .subscribe({ s ->
-                        mFeedSongModel?.songTpl?.lrcTxtStr = s
-                        whenLoadLyric(true)
-                    }, { throwable -> MyLog.e(TAG, "accept throwable=$throwable") })
+            fetchLyric {
+                whenLoadLyric(true)
+            }
         } else {
             whenLoadLyric(true)
         }

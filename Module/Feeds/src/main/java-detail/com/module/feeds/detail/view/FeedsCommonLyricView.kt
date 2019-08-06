@@ -3,9 +3,9 @@ package com.module.feeds.detail.view
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
-import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
+import com.module.feeds.watch.model.FeedSongModel
 
 /**
  * 可以播伴奏清唱等多种歌词
@@ -37,7 +37,7 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
         mFeedSongModel = feedSongModel
         mFeedsManyLyricView?.setSongModel(feedSongModel,shift)
         mAutoScrollLyricView?.setSongModel(feedSongModel,shift)
-        if (!TextUtils.isEmpty(feedSongModel.songTpl?.lrcTs)) {
+        if (!TextUtils.isEmpty(feedSongModel.songTpl?.lrcTs) && feedSongModel.songType == 1) {
             // 只要有伴奏文件，不管清唱和伴奏都是这个view
             mBaseFeedsLyricView = mFeedsManyLyricView
         } else {
