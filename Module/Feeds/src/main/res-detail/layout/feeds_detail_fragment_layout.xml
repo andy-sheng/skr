@@ -173,8 +173,8 @@
                         android:layout_height="wrap_content"
                         android:maxHeight="@dimen/view_4_dp"
                         android:minHeight="@dimen/view_4_dp"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="0dp"
+                        android:paddingStart="@dimen/view_6_dp"
+                        android:paddingEnd="@dimen/view_6_dp"
                         android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
                         app:layout_constraintTop_toTopOf="@+id/control_tv" />
 
