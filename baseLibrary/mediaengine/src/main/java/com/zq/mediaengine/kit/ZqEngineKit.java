@@ -1554,7 +1554,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mHumanVoiceAudioEncoder.stop();
                             mAudioEncoder.stop();
                             // 未加入房间时需要停止音频采集
-                            if (!mInChannel) {
+                            if (!mInChannel && mAudioCapture != null) {
                                 mAudioCapture.stop();
                             }
                         } else {
@@ -1581,9 +1581,9 @@ public class ZqEngineKit implements AgoraOutCallback {
      * TODO: 后面再实现
      * 同步开始伴奏播放和录制。
      *
-     * @param recordPath        录制文件输出地址
-     * @param musicPath         伴奏地址
-     * @param recordHumanVoice  是否仅录制人声
+     * @param recordPath       录制文件输出地址
+     * @param musicPath        伴奏地址
+     * @param recordHumanVoice 是否仅录制人声
      */
     public void startAudioRecordWithMusic(final String recordPath, final String musicPath, final boolean recordHumanVoice) {
 
