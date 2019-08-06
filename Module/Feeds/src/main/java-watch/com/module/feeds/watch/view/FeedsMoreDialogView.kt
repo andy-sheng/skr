@@ -10,6 +10,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
@@ -148,14 +149,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
 
         when (type) {
             FROM_FEED_HOME -> {
-                // 首页推荐和关注
-                if (isFollow == false) {
-                    mFollowTv.visibility = View.VISIBLE
-                    mDividerFollow.visibility = View.VISIBLE
-                } else {
-                    mFollowTv.visibility = View.GONE
-                    mDividerFollow.visibility = View.GONE
-                }
+                checkFollow(isFollow)
                 checkCollect()
             }
             FROM_FEED_DETAIL -> {
@@ -287,6 +281,33 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             mCollectTv.text = "取消收藏"
         } else {
             mCollectTv.text = "收藏歌曲"
+        }
+    }
+
+    private fun checkFollow(isFollow: Boolean?) {
+        // 首页推荐和关注
+        if (isFollow == false) {
+            mFollowTv.visibility = View.VISIBLE
+            mDividerFollow.visibility = View.VISIBLE
+        } else if (isFollow == true) {
+            mFollowTv.visibility = View.GONE
+            mDividerFollow.visibility = View.GONE
+        } else if (isFollow == null) {
+            // 没有取
+            mFollowTv.visibility = View.GONE
+            mDividerFollow.visibility = View.GONE
+            UserInfoManager.getInstance().getUserRelationByUuid(model.user?.userID
+                    ?: 0, object : UserInfoManager.ResultCallback<UserInfoModel>() {
+                override fun onGetServer(t: UserInfoModel?): Boolean {
+                    checkFollow(t?.isFollow ?: false)
+                    return false
+                }
+
+                override fun onGetLocalDB(t: UserInfoModel?): Boolean {
+                    return false
+                }
+
+            })
         }
     }
 }

@@ -579,23 +579,11 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private fun homePagerMore(it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
         if (it.user?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
+            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
             mFeedsMoreDialogView?.showByDialog()
         } else {
-            UserInfoManager.getInstance().getUserRelationByUuid(it.user?.userID
-                    ?: 0, object : UserInfoManager.ResultCallback<UserInfoModel>() {
-                override fun onGetServer(t: UserInfoModel?): Boolean {
-                    mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, t?.isFollow
-                            ?: false)
-                    mFeedsMoreDialogView?.showByDialog()
-                    return false
-                }
-
-                override fun onGetLocalDB(t: UserInfoModel?): Boolean {
-                    return false
-                }
-
-            })
+            mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
+            mFeedsMoreDialogView?.showByDialog()
         }
     }
 
