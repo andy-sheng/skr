@@ -149,8 +149,6 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
         when (type) {
             FROM_FEED_HOME -> {
                 // 首页推荐和关注
-                mCollectTv.visibility = View.GONE
-                mDividerCollect.visibility = View.GONE
                 if (isFollow == false) {
                     mFollowTv.visibility = View.VISIBLE
                     mDividerFollow.visibility = View.VISIBLE
@@ -158,6 +156,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                     mFollowTv.visibility = View.GONE
                     mDividerFollow.visibility = View.GONE
                 }
+                checkCollect()
             }
             FROM_FEED_DETAIL -> {
                 // 详情，只留两个举报和取消
@@ -179,8 +178,6 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                     // 未审核通过
                     mCollectTv.visibility = View.GONE
                     mDividerCollect.visibility = View.GONE
-                    mShareTv.visibility = View.GONE
-                    mDividerShare.visibility = View.GONE
                 } else {
                     checkCollect()
                 }
