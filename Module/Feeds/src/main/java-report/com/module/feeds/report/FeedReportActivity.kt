@@ -189,7 +189,6 @@ class FeedReportActivity : BaseActivity() {
         list.add(FeedReportModel(1, "诈骗信息", false))
         list.add(FeedReportModel(8, "政治敏感", false))
         list.add(FeedReportModel(4, "血腥暴力", false))
-        list.add(FeedReportModel(13, "抄袭、非原创", false))
         list.add(FeedReportModel(12, "歌词有误", false))
         list.add(FeedReportModel(10, "其它问题", false))
         return list
