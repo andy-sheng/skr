@@ -81,6 +81,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     val playCallback: PlayerCallbackAdapter
 
     var hasMore = true // 是否可以加载更多
+    var isSeleted = false  // 是否选中
 
     private var mUserInfo: UserInfoModel? = null
     private var mCallBack: RequestCallBack? = null
@@ -399,7 +400,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
-        MyLog.d(TAG, "controlPlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
+        MyLog.d(TAG, "controlPlay isSeleted = $isSeleted")
         if (model != null && model != mAdapter?.mCurrentPlayModel) {
             SinglePlayer.reset(playerTag)
         }
@@ -418,10 +419,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun startPlay(pos: Int, model: FeedsWatchModel?) {
-        MyLog.d(TAG, "startPlayModel fragment.fragmentVisible = ${fragment.fragmentVisible}")
+        MyLog.d(TAG, "startPlayModel isSeleted = $isSeleted")
         mAdapter?.startPlayModel(pos, model)
         // 数据还是要更新，只是不播放，为恢复播放做准备
-        if (!fragment.fragmentVisible) {
+        if (!isSeleted) {
             mAdapter?.pausePlayModel()
             return
         }
@@ -436,7 +437,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
      */
     private fun resumePlay() {
         MyLog.d(TAG, "resumePlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
-        if (!fragment.fragmentVisible) {
+        if (!isSeleted) {
             mAdapter?.pausePlayModel()
             return
         }
@@ -564,11 +565,13 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     override fun unselected() {
         MyLog.d(TAG, "unselected")
+        isSeleted = false
         pausePlay()
     }
 
     override fun selected() {
         MyLog.d(TAG, "selected")
+        isSeleted = true
         // 该页面选中以及从详情页返回都会回调这个方法
         if (!mPersenter.initWatchList(false)) {
             // 如果因为时间短没请求，继续往前播放
