@@ -55,9 +55,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
             if (holder is FeedViewHolder) {
                 if (type == REFRESH_TYPE_PLAY) {
-                    if (mDataList[position].feedID == mCurrentPlayModel?.feedID
-                            && mDataList[position].song?.songID == mCurrentPlayModel?.song?.songID
-                            && playing) {
+                    if (mDataList[position] == mCurrentPlayModel && playing) {
                         MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay")
                         holder.startPlay()
                     } else {
@@ -124,44 +122,41 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     fun update(position: Int, model: FeedsWatchModel?, refreshType: Int) {
-        if (position < mDataList.size && model?.feedID == mDataList[position].feedID) {
-            // 位置是对的的
-            mDataList[position] = model!!
-            notifyItemChanged(position, refreshType)
-            return
+        if (mDataList.isNotEmpty()) {
+            if (mDataList[position] == model) {
+                // 位置是对的
+                notifyItemChanged(position, refreshType)
+                return
+            } else {
+                update(model, refreshType)
+            }
         } else {
-            // 位置是错的
-            update(model, refreshType)
+            mCurrentPlayModel = null
+            mCurrentPlayPosition = null
         }
     }
 
     fun update(model: FeedsWatchModel?, refreshType: Int) {
         // 位置是错的
         for (i in 0 until mDataList.size) {
-            if (mDataList[i].feedID == model?.feedID) {
-                mDataList[i] = model!!
+            if (mDataList[i] == model) {
                 notifyItemChanged(i, refreshType)
                 return
             }
         }
     }
 
-    // 将外部数据转为list中数据
-    fun getModelFromDetail(model: FeedsWatchModel?): FeedsWatchModel? {
+    // 将从detail中数据放到data中
+    fun updateModelFromDetail(model: FeedsWatchModel?): FeedsWatchModel? {
         if (model != null) {
+            if (mCurrentPlayModel?.feedID == model.feedID && mCurrentPlayModel?.song?.songID == model.song?.songID) {
+                mCurrentPlayModel = model
+            }
             for (i in 0 until mDataList.size) {
-                if (mDataList[i].feedID == model.feedID) {
-                    return if (mDataList[i] == model) {
-                        model
-                    } else {
-                        //更新其中变化的数据
-                        mDataList[i].exposure = model.exposure
-                        mDataList[i].isLiked = model.isLiked
-                        mDataList[i].starCnt = model.starCnt
-                        mDataList[i].shareCnt = model.shareCnt
-                        mDataList[i].commentCnt = model.commentCnt
-                        mDataList[i]
-                    }
+                if (mDataList[i].feedID == model.feedID
+                        && mDataList[i].song?.songID == model.song?.songID) {
+                    mDataList[i] = model
+                    notifyItemChanged(i)
                 }
             }
         }
@@ -178,7 +173,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
      * 请求播放
      */
     fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
-        if (!(mCurrentPlayModel?.feedID == model?.feedID && mCurrentPlayModel?.song?.songID == model?.song?.songID) || !playing) {
+        if (mCurrentPlayModel != model || !playing) {
             mCurrentPlayModel = model
             playing = true
 

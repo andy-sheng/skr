@@ -32,7 +32,6 @@ import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.event.FeedWatchChangeEvent
-import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
@@ -244,7 +243,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
-                MyLog.w(TAG,"PlayerCallbackAdapter onCompletion")
+                MyLog.w(TAG, "PlayerCallbackAdapter onCompletion")
                 // 播放完成
                 SinglePlayer.reset(playerTag)
                 // 显示分享，收藏和播放的按钮
@@ -402,17 +401,14 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
         MyLog.d(TAG, "controlPlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
-        if (model != null &&
-                !(model.feedID == mAdapter?.mCurrentPlayModel?.feedID && model.song?.songID == mAdapter?.mCurrentPlayModel?.song?.songID)) {
+        if (model != null && model != mAdapter?.mCurrentPlayModel) {
             SinglePlayer.reset(playerTag)
         }
         if (isMustPlay) {
             // 播放
             startPlay(pos, model)
         } else {
-            if (mAdapter?.mCurrentPlayModel?.feedID == model?.feedID
-                    && mAdapter?.mCurrentPlayModel?.song?.songID == model?.song?.songID
-                    && mAdapter?.playing == true) {
+            if (mAdapter?.mCurrentPlayModel == model && mAdapter?.playing == true) {
                 // 停止播放
                 pausePlay()
             } else {
@@ -637,15 +633,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedWatchChangeEvent) {
         // 数据要更新了
-        val model = mAdapter?.getModelFromDetail(event.model)
-        model?.let {
-            mAdapter?.update(it, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
-            mAdapter?.update(it, FeedsWatchViewAdapter.REFRESH_TYPE_COMMENT)
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: FeedsCollectChangeEvent) {
-        // 收藏状态更新
+        mAdapter?.updateModelFromDetail(event.model)
     }
 }
