@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="参与打榜上传小音乐"
+        android:text="参与打榜上传神曲"
         android:layout_marginTop="@dimen/view_10_dp"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_14_dp" />

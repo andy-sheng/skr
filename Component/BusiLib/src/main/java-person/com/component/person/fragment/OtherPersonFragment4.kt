@@ -504,7 +504,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 if (position == 0) {
                     return "相册"
                 } else if (position == 1) {
-                    return "小音乐"
+                    return "神曲"
                 }
                 return ""
             }
