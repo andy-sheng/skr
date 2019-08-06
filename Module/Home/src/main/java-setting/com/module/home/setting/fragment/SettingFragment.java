@@ -92,7 +92,7 @@ public class SettingFragment extends BaseFragment {
     DialogPlus mDialogPlus;
 
     static final String[] CACHE_CAN_DELETE = {
-            "fresco", "gif", "upload", "acc", "acr", "logs", "grabLyric", "lyrics", "midi", "score"
+            "fresco", "gif", "upload", "acc", "acr", "logs", "grabLyric", "lyrics", "midi", "score","ori"
     };
 
     @Override
