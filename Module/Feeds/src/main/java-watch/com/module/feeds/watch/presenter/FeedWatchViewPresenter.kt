@@ -28,7 +28,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     var mOffset = 0   //偏移量
     private val mCNT = 20  // 默认拉去的个数
     private var mLastUpdatListTime = 0L    //上次拉取请求时间戳(个人中心)
-    private var mHasInitData = false  //关注和推荐是否初始化过数据
+    var mHasInitData = false  //关注和推荐是否初始化过数据
     private var mHasMore = true     // 是否还有更多
     var mUserInfo: UserInfoModel? = null
 
@@ -37,7 +37,6 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
     }
 
     fun initWatchList(flag: Boolean): Boolean {
-
         if (!flag && type == FeedsWatchView.TYPE_PERSON) {
             // 3分钟切页面才刷一下(只在个人中心生效)
             val now = System.currentTimeMillis()

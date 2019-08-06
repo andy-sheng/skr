@@ -13,6 +13,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
@@ -634,5 +635,13 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     fun onEvent(event: FeedWatchChangeEvent) {
         // 数据要更新了
         mAdapter?.updateModelFromDetail(event.model)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelationChangeEvent) {
+        // 关注的人有变化了
+        if (type == TYPE_FOLLOW) {
+            mPersenter.mHasInitData = false
+        }
     }
 }
