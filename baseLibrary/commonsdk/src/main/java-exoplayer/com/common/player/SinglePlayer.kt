@@ -9,6 +9,8 @@ object SinglePlayer : IPlayerEx {
     val callbackMap = HashMap<String, IPlayerCallback>()
 
     init {
+        // false 为使用ExoPlayer，否则使用系统的
+        player.useAndroidMediaPlayer = false
         player.setCallback(object : IPlayerCallback {
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                 callbackMap[startFrom]?.onTimeFlyMonitor(pos, duration)

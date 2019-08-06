@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.videocache.MediaCacheManager;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -20,6 +21,9 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
+import com.google.android.exoplayer2.audio.AudioAttributes;
+import com.google.android.exoplayer2.audio.AudioListener;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -28,6 +32,7 @@ import com.google.android.exoplayer2.metadata.MetadataRenderer;
 import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -51,7 +56,7 @@ public class ExoPlayer extends BasePlayer {
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     private static DataSource.Factory mediaDataSourceFactory = new DefaultDataSourceFactory(U.app(), BANDWIDTH_METER,
-            new DefaultHttpDataSourceFactory(Util.getUserAgent(U.app(), "MiLivePlayer"), BANDWIDTH_METER));
+            new DefaultHttpDataSourceFactory(Util.getUserAgent(U.app(), "SkrExoPlayer"), BANDWIDTH_METER));
     // 为了预加载使用
     private static SimpleExoPlayer sPrePlayer;
     private static String mPreLoadUrl;
@@ -69,9 +74,10 @@ public class ExoPlayer extends BasePlayer {
     private float mShiftUp = 0;
     private View mView;
     private float mVolume = 1.0f;
-    private boolean mPreparedFlag = false;
+    private boolean mHasPrepared = false;
     private boolean mMuted = false;
     private boolean bufferingOk = false;
+
     public ExoPlayer() {
         TAG += hashCode();
         MyLog.w(TAG, "ExoPlayer()");
@@ -106,60 +112,39 @@ public class ExoPlayer extends BasePlayer {
             mPlayer = genPlayer();
         }
 
-        mPlayer.addListener(new Player.EventListener() {
+        mPlayer.addAnalyticsListener(new AnalyticsListener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
-                MyLog.d(TAG, "onTimelineChanged" + " timeline=" + timeline + " manifest=" + manifest + " reason=" + reason);
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                MyLog.d(TAG, "onTracksChanged" + " trackGroups=" + trackGroups + " trackSelections=" + trackSelections);
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-                MyLog.d(TAG, "onLoadingChanged" + " isLoading=" + isLoading);
-                if(isLoading){
-                    bufferingOk = false;
-                    if (mCallback != null) {
-                        mCallback.onBufferingUpdate(null,0);
-                    }
-                }else{
-                    bufferingOk = true;
-                    if (mCallback != null) {
-                        mCallback.onBufferingUpdate(null,100);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                MyLog.d(TAG, "onPlayerStateChanged" + " playWhenReady=" + playWhenReady + " playbackState=" + playbackState);
+            public void onPlayerStateChanged(EventTime eventTime, boolean playWhenReady, int playbackState) {
+                MyLog.d(TAG, "onPlayerStateChanged" + " eventTime=" + eventTime + " playWhenReady=" + playWhenReady + " playbackState=" + playbackState);
                 switch (playbackState) {
-                    case com.google.android.exoplayer2.ExoPlayer.STATE_BUFFERING:
+                    case Player.STATE_BUFFERING:
+                        /**
+                         * startPlay 以后会调这个
+                         * onPlayerStateChanged playWhenReady=false playbackState=2
+                         * onPlayerStateChanged playWhenReady=true playbackState=2
+                         */
 
                         break;
-                    case com.google.android.exoplayer2.ExoPlayer.STATE_ENDED:
+                    case Player.STATE_ENDED:
+                        /**
+                         * 播放完毕会回调这个
+                         */
                         if (mCallback != null) {
                             mCallback.onCompletion();
                         }
                         reset();
                         stopMusicPlayTimeListener();
-                        mHandler.removeMessages(MSG_DECREASE_VOLUME);
-                        MyLog.d(TAG, "onCompletion");
                         break;
-                    case com.google.android.exoplayer2.ExoPlayer.STATE_IDLE:
-
+                    case Player.STATE_IDLE:
+                        /**
+                         * reset会回调这  playWhenReady=false playbackState=1
+                         */
                         break;
-                    case com.google.android.exoplayer2.ExoPlayer.STATE_READY:
-                        if (mCallback != null) {
-                            mCallback.onPrepared();
-                        } else {
-                            mPreparedFlag = true;
-                        }
-                        setVolume(1);
+                    case Player.STATE_READY:
+                        /**
+                         * 继续播放也会回调这  playWhenReady=true playbackState=3
+                         * 暂停 会回调 playWhenReady=false playbackState=3
+                         */
                         break;
                     default:
                         break;
@@ -167,103 +152,185 @@ public class ExoPlayer extends BasePlayer {
             }
 
             @Override
-            public void onRepeatModeChanged(int repeatMode) {
-                MyLog.d(TAG, "onRepeatModeChanged" + " repeatMode=" + repeatMode);
-
-            }
-
-
-            @Override
-            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-                MyLog.d(TAG, "onShuffleModeEnabledChanged" + " shuffleModeEnabled=" + shuffleModeEnabled);
-
-
+            public void onTimelineChanged(EventTime eventTime, int reason) {
+                MyLog.d(TAG, "onTimelineChanged" + " eventTime=" + eventTime + " reason=" + reason);
             }
 
             @Override
-            public void onPlayerError(ExoPlaybackException error) {
-                MyLog.d(TAG, "onPlayerError" + " error=" + error);
-                error.printStackTrace();
+            public void onPositionDiscontinuity(EventTime eventTime, int reason) {
+                MyLog.d(TAG, "onPositionDiscontinuity" + " eventTime=" + eventTime + " reason=" + reason);
+            }
+
+            @Override
+            public void onSeekStarted(EventTime eventTime) {
+                MyLog.d(TAG, "onSeekStarted" + " eventTime=" + eventTime);
+            }
+
+            @Override
+            public void onSeekProcessed(EventTime eventTime) {
+                MyLog.d(TAG, "onSeekProcessed" + " eventTime=" + eventTime);
                 if (mCallback != null) {
-                    mCallback.onError(-1, -1);
+                    mCallback.onSeekComplete();
                 }
             }
 
             @Override
-            public void onPositionDiscontinuity(int reason) {
-                MyLog.d(TAG, "onPositionDiscontinuity" + " reason=" + reason);
+            public void onPlaybackParametersChanged(EventTime eventTime, PlaybackParameters playbackParameters) {
+                MyLog.d(TAG, "onPlaybackParametersChanged" + " eventTime=" + eventTime + " playbackParameters=" + playbackParameters);
+            }
+
+            @Override
+            public void onRepeatModeChanged(EventTime eventTime, int repeatMode) {
+                MyLog.d(TAG, "onRepeatModeChanged" + " eventTime=" + eventTime + " repeatMode=" + repeatMode);
+            }
+
+            @Override
+            public void onShuffleModeChanged(EventTime eventTime, boolean shuffleModeEnabled) {
+                MyLog.d(TAG, "onShuffleModeChanged" + " eventTime=" + eventTime + " shuffleModeEnabled=" + shuffleModeEnabled);
+            }
+
+            @Override
+            public void onLoadingChanged(EventTime eventTime, boolean isLoading) {
+                MyLog.d(TAG, "onLoadingChanged" + " eventTime=" + eventTime + " isLoading=" + isLoading);
+                if (isLoading) {
+                    bufferingOk = false;
+                    if (mCallback != null) {
+                        mCallback.onBufferingUpdate(null, 0);
+                    }
+                } else {
+                    bufferingOk = true;
+                    if (mCallback != null) {
+                        mCallback.onBufferingUpdate(null, 100);
+                    }
+                }
+            }
+
+            @Override
+            public void onPlayerError(EventTime eventTime, ExoPlaybackException error) {
+                MyLog.d(TAG, "onPlayerError" + " eventTime=" + eventTime + " error=" + error);
+            }
+
+            @Override
+            public void onTracksChanged(EventTime eventTime, TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+                MyLog.d(TAG, "onTracksChanged" + " eventTime=" + eventTime + " trackGroups=" + trackGroups + " trackSelections=" + trackSelections);
+            }
+
+            @Override
+            public void onLoadStarted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+                MyLog.d(TAG, "onLoadStarted" + " eventTime=" + eventTime + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
 
             }
 
             @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-                MyLog.d(TAG, "onPlaybackParametersChanged" + " playbackParameters=" + playbackParameters);
+            public void onLoadCompleted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+                MyLog.d(TAG, "onLoadCompleted" + " eventTime=" + eventTime + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+            }
+
+            @Override
+            public void onLoadCanceled(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+                MyLog.d(TAG, "onLoadCanceled" + " eventTime=" + eventTime + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+            }
+
+            @Override
+            public void onLoadError(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
+                MyLog.d(TAG, "onLoadError" + " eventTime=" + eventTime + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData + " error=" + error + " wasCanceled=" + wasCanceled);
 
             }
 
             @Override
-            public void onSeekProcessed() {
-                MyLog.d(TAG, "onSeekProcessed");
-
-            }
-        });
-        mPlayer.setAudioDebugListener(new AudioRendererEventListener() {
-            @Override
-            public void onAudioEnabled(DecoderCounters counters) {
-                MyLog.d(TAG, "onAudioEnabled" + " counters=" + counters);
+            public void onDownstreamFormatChanged(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+                MyLog.d(TAG, "onDownstreamFormatChanged" + " eventTime=" + eventTime + " mediaLoadData=" + mediaLoadData);
             }
 
             @Override
-            public void onAudioSessionId(int audioSessionId) {
-                MyLog.d(TAG, "onAudioSessionId" + " audioSessionId=" + audioSessionId);
-            }
-
-            @Override
-            public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                MyLog.d(TAG, "onAudioDecoderInitialized" + " decoderName=" + decoderName + " initializedTimestampMs=" + initializedTimestampMs + " initializationDurationMs=" + initializationDurationMs);
-            }
-
-            @Override
-            public void onAudioInputFormatChanged(Format format) {
-                MyLog.d(TAG, "onAudioInputFormatChanged" + " format=" + format);
-            }
-
-            @Override
-            public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                MyLog.d(TAG, "onAudioSinkUnderrun" + " bufferSize=" + bufferSize + " bufferSizeMs=" + bufferSizeMs + " elapsedSinceLastFeedMs=" + elapsedSinceLastFeedMs);
-            }
-
-            @Override
-            public void onAudioDisabled(DecoderCounters counters) {
-                MyLog.d(TAG, "onAudioDisabled" + " counters=" + counters);
-            }
-        });
-
-        mPlayer.setVideoDebugListener(new VideoRendererEventListener() {
-            @Override
-            public void onVideoEnabled(DecoderCounters counters) {
-                MyLog.d(TAG, "onVideoEnabled" + " counters=" + counters);
-            }
-
-            @Override
-            public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-                MyLog.d(TAG, "onVideoDecoderInitialized" + " decoderName=" + decoderName + " initializedTimestampMs=" + initializedTimestampMs + " initializationDurationMs=" + initializationDurationMs);
-            }
-
-            @Override
-            public void onVideoInputFormatChanged(Format format) {
-                MyLog.d(TAG, "onVideoInputFormatChanged" + " format=" + format);
+            public void onUpstreamDiscarded(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+                MyLog.d(TAG, "onUpstreamDiscarded" + " eventTime=" + eventTime + " mediaLoadData=" + mediaLoadData);
 
             }
 
             @Override
-            public void onDroppedFrames(int count, long elapsedMs) {
-                MyLog.d(TAG, "onDroppedFrames" + " count=" + count + " elapsedMs=" + elapsedMs);
+            public void onMediaPeriodCreated(EventTime eventTime) {
+                MyLog.d(TAG, "onMediaPeriodCreated" + " eventTime=" + eventTime);
+            }
+
+            @Override
+            public void onMediaPeriodReleased(EventTime eventTime) {
+                MyLog.d(TAG, "onMediaPeriodReleased" + " eventTime=" + eventTime);
+            }
+
+            @Override
+            public void onReadingStarted(EventTime eventTime) {
+                MyLog.d(TAG, "onReadingStarted" + " eventTime=" + eventTime);
 
             }
 
             @Override
-            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
+                MyLog.d(TAG, "onBandwidthEstimate" + " eventTime=" + eventTime + " totalLoadTimeMs=" + totalLoadTimeMs + " totalBytesLoaded=" + totalBytesLoaded + " bitrateEstimate=" + bitrateEstimate);
+            }
+
+            @Override
+            public void onSurfaceSizeChanged(EventTime eventTime, int width, int height) {
+                MyLog.d(TAG, "onSurfaceSizeChanged" + " eventTime=" + eventTime + " width=" + width + " height=" + height);
+            }
+
+            @Override
+            public void onMetadata(EventTime eventTime, Metadata metadata) {
+                MyLog.d(TAG, "onMetadata" + " eventTime=" + eventTime + " metadata=" + metadata);
+            }
+
+            @Override
+            public void onDecoderEnabled(EventTime eventTime, int trackType, DecoderCounters decoderCounters) {
+                MyLog.d(TAG, "onDecoderEnabled" + " eventTime=" + eventTime + " trackType=" + trackType + " decoderCounters=" + decoderCounters);
+            }
+
+            @Override
+            public void onDecoderInitialized(EventTime eventTime, int trackType, String decoderName, long initializationDurationMs) {
+                MyLog.d(TAG, "onDecoderInitialized" + " eventTime=" + eventTime + " trackType=" + trackType + " decoderName=" + decoderName + " initializationDurationMs=" + initializationDurationMs);
+            }
+
+            @Override
+            public void onDecoderInputFormatChanged(EventTime eventTime, int trackType, Format format) {
+                MyLog.d(TAG, "onDecoderInputFormatChanged" + " eventTime=" + eventTime + " trackType=" + trackType + " format=" + format);
+            }
+
+            @Override
+            public void onDecoderDisabled(EventTime eventTime, int trackType, DecoderCounters decoderCounters) {
+                MyLog.d(TAG, "onDecoderDisabled" + " eventTime=" + eventTime + " trackType=" + trackType + " decoderCounters=" + decoderCounters);
+            }
+
+            @Override
+            public void onAudioSessionId(EventTime eventTime, int audioSessionId) {
+                MyLog.d(TAG, "onAudioSessionId" + " eventTime=" + eventTime + " audioSessionId=" + audioSessionId);
+                if (mCallback != null) {
+                    mCallback.onPrepared();
+                }
+                mHasPrepared = true;
+                setVolume(1);
+            }
+
+            @Override
+            public void onAudioAttributesChanged(EventTime eventTime, AudioAttributes audioAttributes) {
+                MyLog.d(TAG, "onAudioAttributesChanged" + " eventTime=" + eventTime + " audioAttributes=" + audioAttributes);
+            }
+
+            @Override
+            public void onVolumeChanged(EventTime eventTime, float volume) {
+                MyLog.d(TAG, "onVolumeChanged" + " eventTime=" + eventTime + " volume=" + volume);
+            }
+
+            @Override
+            public void onAudioUnderrun(EventTime eventTime, int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
+                MyLog.d(TAG, "onAudioUnderrun" + " eventTime=" + eventTime + " bufferSize=" + bufferSize + " bufferSizeMs=" + bufferSizeMs + " elapsedSinceLastFeedMs=" + elapsedSinceLastFeedMs);
+            }
+
+            @Override
+            public void onDroppedVideoFrames(EventTime eventTime, int droppedFrames, long elapsedMs) {
+                MyLog.d(TAG, "onDroppedVideoFrames" + " eventTime=" + eventTime + " droppedFrames=" + droppedFrames + " elapsedMs=" + elapsedMs);
+            }
+
+            @Override
+            public void onVideoSizeChanged(EventTime eventTime, int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
                 MyLog.d(TAG, "onVideoSizeChanged" + " width=" + width + " height=" + height + " unappliedRotationDegrees=" + unappliedRotationDegrees + " pixelWidthHeightRatio=" + pixelWidthHeightRatio);
                 ExoPlayer.this.videoWidth = width;
                 ExoPlayer.this.videoHeight = height;
@@ -273,26 +340,50 @@ public class ExoPlayer extends BasePlayer {
             }
 
             @Override
-            public void onRenderedFirstFrame(Surface surface) {
-                MyLog.d(TAG, "onRenderedFirstFrame" + " surface=" + surface);
+            public void onRenderedFirstFrame(EventTime eventTime, @Nullable Surface surface) {
+                MyLog.d(TAG, "onRenderedFirstFrame" + " eventTime=" + eventTime + " surface=" + surface);
             }
 
             @Override
-            public void onVideoDisabled(DecoderCounters counters) {
-                MyLog.d(TAG, "onVideoDisabled" + " counters=" + counters);
-
+            public void onDrmSessionAcquired(EventTime eventTime) {
+                MyLog.d(TAG, "onDrmSessionAcquired" + " eventTime=" + eventTime);
             }
-        });
-        mPlayer.setMetadataOutput(new MetadataRenderer.Output() {
-            @Override
-            public void onMetadata(Metadata metadata) {
-                MyLog.d(TAG, "onMetadata" + " metadata=" + metadata);
 
+            @Override
+            public void onDrmKeysLoaded(EventTime eventTime) {
+                MyLog.d(TAG, "onDrmKeysLoaded" + " eventTime=" + eventTime);
+            }
+
+            @Override
+            public void onDrmSessionManagerError(EventTime eventTime, Exception error) {
+                MyLog.d(TAG, "onDrmSessionManagerError" + " eventTime=" + eventTime + " error=" + error);
+            }
+
+            @Override
+            public void onDrmKeysRestored(EventTime eventTime) {
+                MyLog.d(TAG, "onDrmKeysRestored" + " eventTime=" + eventTime);
+            }
+
+            @Override
+            public void onDrmKeysRemoved(EventTime eventTime) {
+                MyLog.d(TAG, "onDrmKeysRemoved" + " eventTime=" + eventTime);
+            }
+
+            @Override
+            public void onDrmSessionReleased(EventTime eventTime) {
+                MyLog.d(TAG, "onDrmSessionReleased" + " eventTime=" + eventTime);
             }
         });
     }
 
-    private static MediaSource buildMediaSource(Uri uri, String overrideExtension) {
+    private static MediaSource buildMediaSource(String path, String overrideExtension) {
+        String p;
+        if (path.startsWith("http://") || path.startsWith("https://")) {
+            p = MediaCacheManager.INSTANCE.getProxyUrl(path, true);
+        } else {
+            p = path;
+        }
+        Uri uri = Uri.parse(p);
         int type = TextUtils.isEmpty(overrideExtension) ? Util.inferContentType(uri)
                 : Util.inferContentType("." + overrideExtension);
         switch (type) {
@@ -378,9 +469,8 @@ public class ExoPlayer extends BasePlayer {
     public void setCallback(IPlayerCallback callback) {
         this.mCallback = callback;
         if (callback != null) {
-            if (mPreparedFlag) {
+            if (mHasPrepared) {
                 callback.onPrepared();
-                mPreparedFlag = false;
             }
         }
     }
@@ -562,7 +652,7 @@ public class ExoPlayer extends BasePlayer {
         if (path != null && !path.equals(mUrl)) {
             mUrl = path;
             mUrlChange = true;
-            mMediaSource = buildMediaSource(Uri.parse(path), null);
+            mMediaSource = buildMediaSource(path, null);
         }
         boolean r = false;
         if (mUrlChange) {
@@ -608,6 +698,7 @@ public class ExoPlayer extends BasePlayer {
         }
         mPlayer.stop();
         mUrl = null;
+        mHasPrepared = false;
         stopMusicPlayTimeListener();
     }
 
@@ -619,6 +710,7 @@ public class ExoPlayer extends BasePlayer {
         }
         mPlayer.stop();
         mUrl = null;
+        mHasPrepared = false;
         stopMusicPlayTimeListener();
     }
 
@@ -638,6 +730,7 @@ public class ExoPlayer extends BasePlayer {
         mCallback = null;
         mView = null;
         mUrl = null;
+        mHasPrepared = false;
         stopMusicPlayTimeListener();
     }
 
