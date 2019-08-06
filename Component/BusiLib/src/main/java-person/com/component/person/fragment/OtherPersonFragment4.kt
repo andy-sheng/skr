@@ -523,24 +523,33 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
 
             override fun onPageSelected(position: Int) {
-                if (position == 0) {
-                    mOtherPhotoWallView?.mHasMore?.let {
-                        mSmartRefresh.setEnableLoadMore(it)
-                    }
-                    mOtherPhotoWallView?.getPhotos(false)
-                    mFeedsWallView?.unselected()
-                } else if (position == 1) {
-                    mFeedsWallView?.isHasMore?.let {
-                        mSmartRefresh.setEnableLoadMore(it)
-                    }
-                    mFeedsWallView?.getFeeds(false)
-                }
+                viewSelected(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
 
             }
         })
+    }
+
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
+        viewSelected(mPersonVp.currentItem)
+    }
+
+    private fun viewSelected(position: Int) {
+        if (position == 0) {
+            mOtherPhotoWallView?.mHasMore?.let {
+                mSmartRefresh.setEnableLoadMore(it)
+            }
+            mOtherPhotoWallView?.getPhotos(false)
+            mFeedsWallView?.unselected()
+        } else if (position == 1) {
+            mFeedsWallView?.isHasMore?.let {
+                mSmartRefresh.setEnableLoadMore(it)
+            }
+            mFeedsWallView?.selected()
+        }
     }
 
     private fun initFunctionArea() {

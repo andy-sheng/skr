@@ -8,6 +8,8 @@ public interface IPersonFeedsWall {
 
     void setUserInfoModel(Object userInfoModel);
 
+    void selected();
+
     void unselected();
 
     boolean isHasMore();

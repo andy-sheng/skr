@@ -563,7 +563,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         pausePlay()
     }
 
-    fun selected() {
+    override fun selected() {
         MyLog.d(TAG, "selected")
         // 该页面选中以及从详情页返回都会回调这个方法
         if (!mPersenter.initWatchList(false)) {

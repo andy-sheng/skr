@@ -160,15 +160,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         super.onFragmentVisible();
         StatisticsAdapter.recordCountEvent("Metab", "expose", null);
         mPresenter.getHomePage(false);
-        if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
-            mPhotoWallView.getPhotos(false);
-        }
-        if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
-            mFeedsWallView.getFeeds(false);
-        }
-        if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
-            mProducationWallView.getProducations(false);
-        }
+        viewSelected(mPersonVp.getCurrentItem());
     }
 
     @Override
@@ -527,34 +519,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    if (mPhotoWallView != null) {
-                        mSmartRefresh.setEnableLoadMore(mPhotoWallView.getMHasMore());
-                        mPhotoWallView.getPhotos(false);
-                    }
-                    if (mFeedsWallView != null) {
-                        mFeedsWallView.unselected();
-                    }
-                    if (mProducationWallView != null) {
-                        mProducationWallView.stopPlay();
-                    }
-                } else if (position == 1) {
-                    if (mFeedsWallView != null) {
-                        mSmartRefresh.setEnableLoadMore(mFeedsWallView.isHasMore());
-                        mFeedsWallView.getFeeds(false);
-                    }
-                    if (mProducationWallView != null) {
-                        mProducationWallView.stopPlay();
-                    }
-                } else if (position == 2) {
-                    if (mFeedsWallView != null) {
-                        mFeedsWallView.unselected();
-                    }
-                    if (mProducationWallView != null) {
-                        mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
-                        mProducationWallView.getProducations(false);
-                    }
-                }
+                viewSelected(position);
             }
 
             @Override
@@ -562,6 +527,37 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
             }
         });
+    }
+
+    private void viewSelected(int position) {
+        if (position == 0) {
+            if (mPhotoWallView != null) {
+                mSmartRefresh.setEnableLoadMore(mPhotoWallView.getMHasMore());
+                mPhotoWallView.getPhotos(false);
+            }
+            if (mFeedsWallView != null) {
+                mFeedsWallView.unselected();
+            }
+            if (mProducationWallView != null) {
+                mProducationWallView.stopPlay();
+            }
+        } else if (position == 1) {
+            if (mFeedsWallView != null) {
+                mSmartRefresh.setEnableLoadMore(mFeedsWallView.isHasMore());
+                mFeedsWallView.selected();
+            }
+            if (mProducationWallView != null) {
+                mProducationWallView.stopPlay();
+            }
+        } else if (position == 2) {
+            if (mFeedsWallView != null) {
+                mFeedsWallView.unselected();
+            }
+            if (mProducationWallView != null) {
+                mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
+                mProducationWallView.getProducations(false);
+            }
+        }
     }
 
     @Override
