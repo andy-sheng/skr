@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.UserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
@@ -167,7 +168,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                     .setCircle(true)
                     .build())
 
-            mNameTv.text = model.commentUser?.nickname
+            mNameTv.text = UserInfoManager.getInstance().getRemarkName(model.commentUser.userID, model.commentUser?.nickname)
             mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt
                     ?: 0L, System.currentTimeMillis())
             mLikeNum.text = StringFromatUtils.formatTenThousand(model.comment.likedCnt)

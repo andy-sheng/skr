@@ -309,7 +309,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     .navigation()
         }
 
-        mNameTv?.text = mFeedsWatchModel?.user?.nickname
+        mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userID
+                ?: 0, mFeedsWatchModel?.user?.nickname)
         mFeedsWatchModel?.song?.createdAt?.let {
             mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
         }
