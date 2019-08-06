@@ -58,7 +58,7 @@ object FeedsPlayStatistics {
     }
 
     fun tryUpload(force: Boolean) {
-        if (exposeMap.size + completeMap.size < 0) {
+        if (exposeMap.size + completeMap.size <= 0) {
             return
         }
         if (!force) {
