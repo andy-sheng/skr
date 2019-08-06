@@ -161,7 +161,7 @@ class FeedsMakeActivity : BaseActivity() {
                 startRecord()
             }
         })
-
+        mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm",false) && U.getDeviceUtils().getWiredHeadsetPlugOn()
         if (mFeedsMakeModel?.withBgm == true) {
             (titleBar?.rightCustomView as TextView).text = "伴奏模式"
         } else {
@@ -172,6 +172,7 @@ class FeedsMakeActivity : BaseActivity() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.withBgm == true) {
                     mFeedsMakeModel?.withBgm = false
+                    U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm",false)
                     (titleBar?.rightCustomView as TextView).text = "清唱模式"
                     initLyricView()
                 } else {
@@ -179,6 +180,7 @@ class FeedsMakeActivity : BaseActivity() {
                     if (U.getDeviceUtils().getWiredHeadsetPlugOn() || MyLog.isDebugLogOpen()) {
                         // 是否插着有限耳机
                         mFeedsMakeModel?.withBgm = true
+                        U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm",true)
                         (titleBar?.rightCustomView as TextView).text = "伴奏模式"
                         initLyricView()
                     } else {

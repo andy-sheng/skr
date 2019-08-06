@@ -316,6 +316,7 @@ class FeedsEditorActivity : BaseActivity() {
                 mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.audioMixingPlayoutVolume / 100.0f)
                 mZqAudioEditorKit.setInputVolume(1, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)
                 mZqAudioEditorKit.setAudioEffect(1, ZqEngineKit.getInstance().params.styleEnum.ordinal)
+                mZqAudioEditorKit.setDelay(1,U.getPreferenceUtils().getSettingLong("feeds_voice_delay",0))
                 initWhenEngineReady()
             }
         } else {

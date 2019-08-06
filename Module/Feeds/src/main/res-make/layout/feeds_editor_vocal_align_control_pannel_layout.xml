@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:parentTag="android.support.constraint.ConstraintLayout">
-
-    <com.common.view.ex.ExFrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#4C56AA"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+    android:layout_height="@dimen/view_127_dp"
+    app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+    app:bl_corners_topRightRadius="@dimen/view_16_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#4C56AA"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/va_reset_tv"
@@ -91,4 +87,4 @@
         app:layout_constraintTop_toTopOf="@+id/va_seek_bar" />
 
 
-</merge>
+</com.common.view.ex.ExConstraintLayout>

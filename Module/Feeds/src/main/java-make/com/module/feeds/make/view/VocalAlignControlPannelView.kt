@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.SeekBar
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -14,7 +15,7 @@ import com.zq.mediaengine.kit.ZqAudioEditorKit
 
 class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
 
-    constructor(context: Context?):this(context,null)
+    constructor(context: Context?) : this(context, null)
 
     lateinit var audioEditorKit: ZqAudioEditorKit
 
@@ -27,7 +28,7 @@ class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : Con
 
     init {
         View.inflate(context, R.layout.feeds_editor_vocal_align_control_pannel_layout, this)
-        this.setOnClickListener {  }
+        this.setOnClickListener { }
         mVaResetTv = this.findViewById(R.id.va_reset_tv)
         mInfoTipsTv = this.findViewById(R.id.info_tips_tv)
         mLeftIv = this.findViewById(R.id.left_iv)
@@ -74,6 +75,7 @@ class VocalAlignControlPannelView(context: Context?, attrs: AttributeSet?) : Con
         } else {
             mInfoTipsTv?.text = "人声延后${ts}毫秒"
         }
+        U.getPreferenceUtils().setSettingLong("feeds_voice_delay", ts.toLong())
     }
 
     fun bindData() {
