@@ -292,7 +292,7 @@ class FeedsMakeActivity : BaseActivity() {
             }
         } else {
             mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
-                titleBar?.centerSubTextView?.text = "01:30"
+                titleBar?.centerSubTextView?.text = "00:00 / 01:30"
             }
             qcProgressBarView?.visibility = View.VISIBLE
             txtLyricsView?.visibility = View.VISIBLE
@@ -418,8 +418,7 @@ class FeedsMakeActivity : BaseActivity() {
             ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
             mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
             mFeedsMakeModel?.recording = true
-            val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
-                    ?: 60 * 1000
+            val leave = 90 * 1000
             qcProgressBarView?.go(0, leave) {
                 recordOk()
             }
@@ -433,9 +432,16 @@ class FeedsMakeActivity : BaseActivity() {
             for (i in 0..Int.MAX_VALUE) {
                 MyLog.d(TAG, "countDownBegin run")
                 titleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
-                mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
-                    titleBar?.centerSubTextView?.append(" / ${U.getDateTimeUtils().formatVideoTime(it)}")
+                if(mFeedsMakeModel?.withBgm==true){
+                    mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+                        titleBar?.centerSubTextView?.append(" / ${U.getDateTimeUtils().formatVideoTime(it)}")
+                    }
+                }else{
+                    mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+                        titleBar?.centerSubTextView?.append(" / 01:30")
+                    }
                 }
+
                 diffuseView?.start(2000)
                 recordTipsIv?.visibility = if (i % 2 == 0) View.GONE else View.VISIBLE
                 delay(1000)
