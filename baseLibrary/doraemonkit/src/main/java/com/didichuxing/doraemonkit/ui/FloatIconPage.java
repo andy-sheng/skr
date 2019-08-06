@@ -77,7 +77,10 @@ public class FloatIconPage extends BaseFloatPage implements TouchProxy.OnTouchEv
     public void onMove(int x, int y, int dx, int dy) {
         getLayoutParams().x += dx;
         getLayoutParams().y += dy;
-        mWindowManager.updateViewLayout(getRootView(), getLayoutParams());
+        View view = getRootView();
+        if (mWindowManager != null && view != null) {
+            mWindowManager.updateViewLayout(view, getLayoutParams());
+        }
     }
 
     @Override
