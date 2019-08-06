@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -65,7 +67,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     public final String TAG = "HomeActivity";
     public final static String NOTIFY_CHANNEL_ID = "invite_notify";
 
-    RelativeLayout mMainActContainer;
+    ConstraintLayout mMainActContainer;
     LinearLayout mBottomContainer;
     RelativeLayout mGameArea;
     ExTextView mGameBtn;
@@ -79,6 +81,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mFeedArea;
     ExTextView mFeedBtn;
     NestViewPager mMainVp;
+    ImageView mFeedTipsIv;
+
     IMsgService mMsgService;
     IFeedsModuleService mIFeedsModuleService;
     HomeCorePresenter mHomePresenter;
@@ -149,6 +153,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
         mMainVp = findViewById(R.id.main_vp);
+        mFeedTipsIv = findViewById(R.id.feed_tips_iv);
         mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -327,6 +332,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             case 1:
                 drawable1 = U.getDrawable(R.drawable.ic_feed_selected);
                 mFeedBtn.setSelected(true);
+                mFeedTipsIv.setVisibility(View.GONE);
                 break;
             case 2:
                 drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
@@ -438,6 +444,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         if (UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
+            if (!U.getPreferenceUtils().getSettingBoolean("feed_tips_has_show", false)) {
+                mFeedTipsIv.setVisibility(View.VISIBLE);
+                U.getPreferenceUtils().setSettingBoolean("feed_tips_has_show", true);
+                mFeedTipsIv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFeedTipsIv.setVisibility(View.GONE);
+                    }
+                }, 3000);
+            }
         }
     }
 

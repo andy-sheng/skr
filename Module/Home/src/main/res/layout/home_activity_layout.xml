@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
@@ -10,7 +10,8 @@
         android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentBottom="true"
         android:background="#EFFAFF"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <!--游戏-->
         <RelativeLayout
@@ -47,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/ic_feed_normal"
-                android:text="小音乐"
                 android:gravity="center"
+                android:text="小音乐"
                 android:textSize="@dimen/textsize_10_dp"
                 app:bl_selected_textColor="#E27425"
                 app:bl_unSelected_textColor="#7897A5" />
@@ -68,8 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/ic_chat_normal"
-                android:text="消息"
                 android:gravity="center"
+                android:text="消息"
                 android:textSize="@dimen/textsize_10_dp"
                 app:bl_selected_textColor="#54855F"
                 app:bl_unSelected_textColor="#7897A5" />
@@ -116,8 +117,8 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/ic_me_normal"
                 android:drawableTop="@drawable/ic_me_normal"
-                android:text="我的"
                 android:gravity="center"
+                android:text="我的"
                 android:textSize="@dimen/textsize_10_dp"
                 app:bl_selected_textColor="#BC3A6B"
                 app:bl_unSelected_textColor="#7897A5" />
@@ -138,13 +139,35 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:layout_alignTop="@+id/bottom_container"
-        android:background="#F0E9E5" />
+        android:background="#F0E9E5"
+        app:layout_constraintTop_toTopOf="@id/bottom_container" />
 
     <com.common.view.viewpager.NestViewPager
         android:id="@+id/main_vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/view_0_dp"
         android:layout_above="@+id/bottom_container"
-        android:background="#F9F4F1" />
+        android:background="#F9F4F1"
+        app:layout_constraintBottom_toTopOf="@id/bottom_container"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <android.support.constraint.Guideline
+        android:id="@+id/tips_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.375" />
+
+    <ImageView
+        android:id="@+id/feed_tips_iv"
+        android:layout_width="@dimen/view_128_dp"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_above="@id/bottom_container"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:background="@drawable/feed_tips_icon"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottom_container"
+        app:layout_constraintLeft_toLeftOf="@id/tips_guide"
+        app:layout_constraintRight_toRightOf="@id/tips_guide" />
+
+</android.support.constraint.ConstraintLayout>
