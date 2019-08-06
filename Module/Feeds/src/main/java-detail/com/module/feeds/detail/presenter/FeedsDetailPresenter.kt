@@ -101,6 +101,11 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     mIFeedsDetailView.collectFinish(colloct)
+                    if (colloct) {
+                        U.getToastUtil().showShort("收藏成功")
+                    } else {
+                        U.getToastUtil().showShort("已取消收藏")
+                    }
                 }
             }
         }, this, RequestControl(mTag + "collection", ControlType.CancelThis))
