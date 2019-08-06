@@ -138,7 +138,7 @@ class FeedsMakeActivity : BaseActivity() {
                     if (it.recordingClick) {
                         if (it.recording) {
                             //真正在录制，除去前奏的长度
-                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 10 * 1000) {
+                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 20 * 1000) {
                                 U.getToastUtil().showSkrCustomShort(NoImageCommonToastView.Builder(U.app())
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
@@ -206,9 +206,6 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.songModel?.workName?.let {
             titleBar?.centerTextView?.text = it
         }
-        mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
-            titleBar?.centerSubTextView?.text = "00:00 / ${U.getDateTimeUtils().formatVideoTime(it)}"
-        }
 
         mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()
@@ -261,6 +258,9 @@ class FeedsMakeActivity : BaseActivity() {
         val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
         val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
         if (mFeedsMakeModel?.withBgm == true) {
+            mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+                titleBar?.centerSubTextView?.text = "00:00 / ${U.getDateTimeUtils().formatVideoTime(it)}"
+            }
             if (!TextUtils.isEmpty(lrcTs)) {
                 voiceScaleView?.visibility = View.VISIBLE
                 manyLyricsView?.visibility = View.VISIBLE
@@ -291,6 +291,9 @@ class FeedsMakeActivity : BaseActivity() {
 
             }
         } else {
+            mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
+                titleBar?.centerSubTextView?.text = "01:30"
+            }
             qcProgressBarView?.visibility = View.VISIBLE
             txtLyricsView?.visibility = View.VISIBLE
             if (!TextUtils.isEmpty(lrcTs)) {
