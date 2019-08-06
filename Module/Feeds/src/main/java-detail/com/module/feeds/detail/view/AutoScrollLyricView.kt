@@ -69,9 +69,6 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         } else {
             mDisposable = LyricsManager
                     .loadStandardLyric(mFeedSongModel!!.songTpl!!.lrcTs, shift)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .retryWhen(RxRetryAssist(5, ""))
                     .subscribe({
                         MyLog.w(TAG, "onEventMainThread " + "play")
                         lrcToTxtStr(it)
