@@ -131,6 +131,11 @@ int AudioMixer::config(int idx, int sampleFmt, int sampleRate, int channels, int
     ChannelParam* cp = mChannelParams[idx];
     if (cp == NULL) {
         cp = (ChannelParam *) calloc(1, sizeof(ChannelParam));
+    } else if (sampleFmt == cp->sampleFmt &&
+                sampleRate == cp->sampleRate &&
+                channels == cp->channels) {
+        pthread_mutex_unlock(&mLock);
+        return 0;
     }
     cp->sampleFmt = sampleFmt;
     cp->sampleRate = sampleRate;

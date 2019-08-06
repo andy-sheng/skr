@@ -332,11 +332,11 @@ public class AudioMixer {
     }
 
     protected void doFrameAvailable(int idx, AudioBufFrame frame) {
-        if (frame == null || frame.format == null) {
+        if (frame == null || frame.format == null || mInstance == INSTANCE_UNINIT) {
             return;
         }
 
-        if (frame.buf != null && frame.format.nativeModule == 0 && mInstance != INSTANCE_UNINIT) {
+        if (frame.buf != null && frame.format.nativeModule == 0) {
             _process(mInstance, idx, frame.buf, frame.buf.limit());
         }
 
@@ -358,13 +358,14 @@ public class AudioMixer {
             if (frame.format.nativeModule != 0) {
                 _attachTo(mInstance, idx, frame.format.nativeModule, true);
             }
-            if(mInstance != INSTANCE_UNINIT) {
+            // in blocking mode, do not flush cache
+            if (!mBlockingMode) {
                 _destroy(mInstance, idx);
             }
         }
 
         // handle eos, for blocking mode
-        if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0 && mInstance != INSTANCE_UNINIT) {
+        if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0) {
             _destroy(mInstance, idx);
         }
     }
