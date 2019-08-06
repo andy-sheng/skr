@@ -42,7 +42,7 @@ class FeedDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        if (mDataList.size in 2..3) {
+        if (mDataList.size in 1..3) {
             // 需要补充空页面
             return 4
         }
