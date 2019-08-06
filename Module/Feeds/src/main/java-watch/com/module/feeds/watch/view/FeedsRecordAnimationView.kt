@@ -277,9 +277,15 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        avatarAnimation?.cancel()
+        playing = false
+        hasLayouted = false
+        wantPlaying = false
         mHandler.removeMessages(AVATAR_ANIM)
-        rockerIv?.clearAnimation()
+        avatarAnimation?.cancel()
+        rockerIv.clearAnimation()
+        if (hideWhenPause) {
+            rockerIv.visibility = View.GONE
+        }
     }
 
 }
