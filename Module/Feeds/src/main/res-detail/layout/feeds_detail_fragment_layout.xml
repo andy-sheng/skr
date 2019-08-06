@@ -331,12 +331,13 @@
         app:layout_constraintRight_toLeftOf="@+id/collection_iv" />
 
     <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
         android:id="@+id/xin_iv"
-        android:layout_width="@dimen/view_18_dp"
-        android:layout_height="@dimen/view_19_dp"
-        android:layout_marginRight="@dimen/view_12_dp"
-        app:bl_selected_drawable="@drawable/feed_like_selected_icon"
-        app:bl_unSelected_drawable="@drawable/feed_like_normal_icon"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:padding="@dimen/view_4_dp"
+        app:src_selected_drawable="@drawable/feed_like_selected_icon"
+        app:src_unSelected_drawable="@drawable/feed_like_normal_icon"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
@@ -345,17 +346,18 @@
         android:id="@+id/xin_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_7_dp"
+        android:layout_marginRight="@dimen/view_3_dp"
         android:text="0"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/xin_iv"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
 
     <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
         android:id="@+id/share_iv"
-        android:layout_width="@dimen/view_17_dp"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_marginRight="@dimen/view_22_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:padding="@dimen/view_4_dp"
         android:src="@drawable/zhuanfa"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/xin_num_tv"
@@ -365,19 +367,20 @@
         android:id="@+id/share_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_7_dp"
+        android:layout_marginRight="@dimen/view_3_dp"
         android:text="0"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/share_iv"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
 
     <com.common.view.ex.ExImageView
+        android:layout_width="wrap_content"
         android:id="@+id/collection_iv"
-        android:layout_width="@dimen/view_22_dp"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        app:bl_selected_drawable="@drawable/feed_collection"
-        app:bl_unSelected_drawable="@drawable/feed_not_collection"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:padding="@dimen/view_4_dp"
+        app:src_selected_drawable="@drawable/feed_collection"
+        app:src_unSelected_drawable="@drawable/feed_not_collection"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/share_num_tv"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
