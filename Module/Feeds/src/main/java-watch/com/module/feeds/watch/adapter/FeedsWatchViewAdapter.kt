@@ -34,6 +34,13 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             if (holder is FeedViewHolder) {
                 holder.bindData(position, mDataList[position])
                 // notifyItemChanged 和 notifyDataSetChanged间隔时间很短一起使用时候，会导致notifyItemChanged不生效
+                if (mDataList[position] == mCurrentPlayModel && playing) {
+                    //todo 可以把播放状态需要做的操作都在这补一下
+                    MyLog.d("FeedsWatchViewAdapter", "notifyDataSetChanged startPlay")
+                    holder.startPlay()
+                } else {
+                    holder.stopPlay(true)
+                }
             }
         } else {
             // 局部刷新
