@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.log.MyLog
-import com.common.rx.RxRetryAssist
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.component.lyrics.LyricsManager
@@ -13,9 +12,7 @@ import com.component.lyrics.LyricsReader
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 import com.module.feeds.watch.model.FeedSongModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
@@ -119,7 +116,6 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun seekTo(pos: Int) {
-        //MyLog.d(TAG, "seekTo")
         mFeedSongModel?.playCurPos = pos
         scrollToTs(mFeedSongModel?.playCurPos ?: 0)
     }
@@ -134,6 +130,11 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         scrollView.smoothScrollTo(0, 0)
         mScrollJob?.cancel()
         mDisposable?.dispose()
+    }
+
+    override fun onViewDetachedFromWindow(v: View?) {
+        super.onViewDetachedFromWindow(v)
+        mScrollJob?.cancel()
     }
 
     private fun startScroll() {

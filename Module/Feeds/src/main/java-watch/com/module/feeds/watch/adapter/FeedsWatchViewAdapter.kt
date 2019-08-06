@@ -242,6 +242,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         // 位置是错的
         mCurrentPlayModel?.song?.let {
             it.playCurPos = curPostion.toInt()
+            it.playDurMs = totalDuration.toInt()
             it.playDurMsFromPlayerForDebug = totalDuration.toInt()
             update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_LYRIC)
         }
@@ -257,6 +258,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         super.onViewDetachedFromWindow(holder)
         if (holder is FeedsWatchViewHolder) {
             holder.hideCompleteArea()
+        } else if (holder is FeedViewHolder) {
+            holder.stopPlay(false)
         }
     }
 
