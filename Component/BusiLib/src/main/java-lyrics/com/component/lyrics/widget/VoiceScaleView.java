@@ -261,6 +261,9 @@ public class VoiceScaleView extends View {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
+        if(visibility == View.GONE){
+            stop(false);
+        }
     }
 
 }

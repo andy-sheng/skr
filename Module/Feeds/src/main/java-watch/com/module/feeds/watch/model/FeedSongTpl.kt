@@ -16,10 +16,10 @@ class FeedSongTpl : Serializable {
     var cover: String? = null
     @JSONField(name = "createdAt")
     var createdAt: Long = 0
-    @JSONField(name = "lrcTs")// 时间戳歌词
+    @JSONField(name = "lrcTs")// 时间戳歌词url
     var lrcTs: String? = null
     @Transient var lrcTsReader: LyricsReader? = null// 时间戳歌词 客户端缓存写入 服务器不会返回
-    @JSONField(name = "lrcTxt")// 纯文本歌词
+    @JSONField(name = "lrcTxt")// 纯文本歌词url
     var lrcTxt: String? = null
     var lrcTxtStr: String? = null// 纯文本歌词 客户端缓存写入 服务器不会返回
 

@@ -44,8 +44,11 @@ class FeedsLyricMakeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
 class LyricItem(var type: Int, var content: String) {
-    val TYPE_TITLE = 1
-    val TYPE_NORMAL = 2
+    companion object{
+        val TYPE_TITLE = 1
+        val TYPE_NORMAL = 2
+    }
+
     var startTs = 0
     var endTs = 0
 }

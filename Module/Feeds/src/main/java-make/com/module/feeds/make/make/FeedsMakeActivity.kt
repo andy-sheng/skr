@@ -185,7 +185,7 @@ class FeedsMakeActivity : BaseActivity() {
                             U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm", true)
                             (titleBar?.rightCustomView as TextView).text = "伴奏模式"
                             initLyricView()
-                        }else{
+                        } else {
                             U.getToastUtil().showShort("该首歌曲仅支持清唱模式")
                         }
                     } else {
@@ -264,31 +264,33 @@ class FeedsMakeActivity : BaseActivity() {
             if (!TextUtils.isEmpty(lrcTs)) {
                 voiceScaleView?.visibility = View.VISIBLE
                 manyLyricsView?.visibility = View.VISIBLE
-                // 加载歌词
-                LyricsManager
-                        .loadStandardLyric(lrcTs)
-                        .subscribe({ lyricsReader ->
-                            manyLyricsView?.initLrcData()
-                            manyLyricsView?.lyricsReader = lyricsReader
-                            val set = HashSet<Int>()
-                            set.add(lyricsReader.getLineInfoIdByStartTs(0))
-                            manyLyricsView?.needCountDownLine = set
-                            manyLyricsView?.seekTo(0)
-                            manyLyricsView?.pause()
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                        })
+                if (mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader != null) {
+                    initManyLyricView()
+                } else {
+                    // 加载歌词
+                    LyricsManager
+                            .loadStandardLyric(lrcTs)
+                            .subscribe({ lyricsReader ->
+                                mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
+                                initManyLyricView()
+                            }, { throwable ->
+                                MyLog.e(TAG, throwable)
+                            })
+                }
             } else {
                 qcProgressBarView?.visibility = View.VISIBLE
                 txtLyricsView?.visibility = View.VISIBLE
-                voiceScaleView?.stop(false)
-                LyricsManager.loadGrabPlainLyric(lrcTxt)
-                        .subscribe({ lyricsReader ->
-                            txtLyricsView?.setLyrics(lyricsReader)
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                        })
-
+                if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)) {
+                    txtLyricsView?.setLyrics(mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr ?: "")
+                } else {
+                    LyricsManager.loadGrabPlainLyric(lrcTxt)
+                            .subscribe({ lyricsReader ->
+                                mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr = lyricsReader
+                                txtLyricsView?.setLyrics(lyricsReader)
+                            }, { throwable ->
+                                MyLog.e(TAG, throwable)
+                            })
+                }
             }
         } else {
             mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
@@ -296,25 +298,51 @@ class FeedsMakeActivity : BaseActivity() {
             }
             qcProgressBarView?.visibility = View.VISIBLE
             txtLyricsView?.visibility = View.VISIBLE
-            if (!TextUtils.isEmpty(lrcTs)) {
-                // 加载歌词
-                LyricsManager
-                        .loadStandardLyric(lrcTs)
-                        .subscribe({ lyricsReader ->
-                            txtLyricsView?.setLyrics(lyricsReader)
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                        })
+
+            if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)) {
+                txtLyricsView?.setLyrics(mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr ?: "")
             } else {
-                voiceScaleView?.stop(false)
-                LyricsManager.loadGrabPlainLyric(lrcTxt)
-                        .subscribe({ lyricsReader ->
-                            txtLyricsView?.setLyrics(lyricsReader)
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                        })
+                if (!TextUtils.isEmpty(lrcTs)) {
+                    // 加载歌词
+                    LyricsManager
+                            .loadStandardLyric(lrcTs)
+                            .subscribe({ lyricsReader ->
+                                val sb = StringBuilder()
+                                lyricsReader?.let {
+                                    val it = it.lrcLineInfos.entries.iterator()
+                                    while (it.hasNext()) {
+                                        val entry = it.next()
+                                        val s = entry.value.lineLyrics
+                                        sb.append(s).append("\n")
+                                    }
+                                }
+                                mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr = sb.toString()
+                                txtLyricsView?.setLyrics(sb.toString())
+                            }, { throwable ->
+                                MyLog.e(TAG, throwable)
+                            })
+                } else {
+                    LyricsManager.loadGrabPlainLyric(lrcTxt)
+                            .subscribe({ lyricsReader ->
+                                mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr = lyricsReader
+                                txtLyricsView?.setLyrics(lyricsReader)
+                            }, { throwable ->
+                                MyLog.e(TAG, throwable)
+                            })
+                }
             }
         }
+    }
+
+    private fun initManyLyricView() {
+        manyLyricsView?.initLrcData()
+        val lyricsReader = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader
+        manyLyricsView?.lyricsReader = lyricsReader
+        val set = HashSet<Int>()
+        set.add(lyricsReader?.getLineInfoIdByStartTs(0) ?: 0)
+        manyLyricsView?.needCountDownLine = set
+        manyLyricsView?.seekTo(0)
+        manyLyricsView?.pause()
     }
 
     private fun initEngine() {
@@ -432,11 +460,11 @@ class FeedsMakeActivity : BaseActivity() {
             for (i in 0..Int.MAX_VALUE) {
                 MyLog.d(TAG, "countDownBegin run")
                 titleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
-                if(mFeedsMakeModel?.withBgm==true){
+                if (mFeedsMakeModel?.withBgm == true) {
                     mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
                         titleBar?.centerSubTextView?.append(" / ${U.getDateTimeUtils().formatVideoTime(it)}")
                     }
-                }else{
+                } else {
                     mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
                         titleBar?.centerSubTextView?.append(" / 01:30")
                     }
