@@ -2,18 +2,14 @@ package com.module.feeds.rank.activity
 
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.UserInfoManager
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -22,10 +18,9 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.ActivityUtils
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
-import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
 import com.module.feeds.watch.model.FeedsWatchModel

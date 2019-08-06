@@ -1,4 +1,4 @@
-package com.module.feeds.make
+package com.module.feeds.make.make
 
 import android.app.Activity
 import android.content.Intent
@@ -23,7 +23,6 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.DiffuseView
 import com.common.view.countdown.RecordProgressBarView
-import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.lyrics.LyricAndAccMatchManager
@@ -38,6 +37,8 @@ import com.engine.EngineEvent
 import com.engine.Params
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.FeedsMakeModel
+import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl

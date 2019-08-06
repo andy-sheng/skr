@@ -33,7 +33,7 @@ import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.event.FeedWatchChangeEvent
-import com.module.feeds.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener

@@ -1,4 +1,4 @@
-package com.module.feeds.make.activity
+package com.module.feeds.make
 
 import android.os.Bundle
 import android.view.View

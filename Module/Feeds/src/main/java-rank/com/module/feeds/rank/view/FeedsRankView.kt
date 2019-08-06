@@ -11,7 +11,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
@@ -19,7 +19,6 @@ import com.module.feeds.rank.model.FeedRankTagModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.android.synthetic.main.feeds_detail_activity_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

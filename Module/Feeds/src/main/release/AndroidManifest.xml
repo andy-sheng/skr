@@ -22,14 +22,21 @@
 
         <!--Feed制作-->
         <activity
-            android:name=".make.FeedsMakeActivity"
+            android:name=".make.make.FeedsMakeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <!--Feed制作-->
         <activity
-            android:name=".make.activity.FeedSelectModeActivity"
+            android:name=".make.make.FeedsLyricMakeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!--Feed制作-->
+        <activity
+            android:name=".make.FeedSelectModeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTranslucentTheme"

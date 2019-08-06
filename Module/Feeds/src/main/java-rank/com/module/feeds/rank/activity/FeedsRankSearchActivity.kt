@@ -27,7 +27,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel

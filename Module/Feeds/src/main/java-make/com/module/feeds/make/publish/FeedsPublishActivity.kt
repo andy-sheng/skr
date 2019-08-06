@@ -27,7 +27,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.FeedsMakeActivity
+import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
@@ -191,6 +191,9 @@ class FeedsPublishActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
+        worksNameEt.setText(mFeedsMakeModel?.songModel?.workName)
+        worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length?:0)
+
     }
 
     private fun submitToServer() {

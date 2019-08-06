@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/view_20_dp"
+    android:background="@drawable/feeds_make_bg">
+
+    <TextView
+        android:id="@+id/label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:gravity="center"
+        android:text="歌曲名"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_68_dp"
+        android:layout_marginRight="@dimen/view_27_dp"
+        android:background="@drawable/feeds_lyric_make_editor_bg"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/view_12_dp"
+        android:paddingTop="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_33_dp"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="告白气球"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/word_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_5_dp"
+        android:gravity="center"
+        android:text="5/14"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_12_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_et"
+        app:layout_constraintRight_toRightOf="@+id/edit_et"
+        app:layout_constraintTop_toTopOf="@+id/edit_et" />
+
+</android.support.constraint.ConstraintLayout>
