@@ -198,6 +198,11 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             if (result.errno == 0) {
                 model.isCollected = !model.isCollected
                 view.showCollect(position, model)
+                if (model.isCollected) {
+                    U.getToastUtil().showShort("收藏成功")
+                } else {
+                    U.getToastUtil().showShort("取消收藏成功")
+                }
                 EventBus.getDefault().post(FeedsCollectChangeEvent(model, model.isCollected))
             } else {
                 view.requestError()
