@@ -24,6 +24,7 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
@@ -33,6 +34,7 @@ import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.TxtLyricScrollView
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeModel
@@ -73,6 +75,8 @@ class FeedsEditorActivity : BaseActivity() {
 
     var mPlayProgressJob: Job? = null
     var cdRotateAnimator: ObjectAnimator? = null
+
+    var tipsDialogView: TipsDialogView? = null
 
     val voiceControlPanelViewDialog by lazy {
         val view = FeedsEditorVoiceControlPanelView(this).apply {
@@ -195,8 +199,20 @@ class FeedsEditorActivity : BaseActivity() {
 
         resetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                setResult(Activity.RESULT_OK)
-                finish()
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(this@FeedsEditorActivity)
+                        .setMessageTip("确定要重新演唱么?")
+                        .setCancelTip("取消")
+                        .setCancelBtnClickListener {
+                            tipsDialogView?.dismiss()
+                        }
+                        .setConfirmTip("确认")
+                        .setConfirmBtnClickListener {
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
+                        .build()
+                tipsDialogView?.showByDialog()
             }
         })
 
