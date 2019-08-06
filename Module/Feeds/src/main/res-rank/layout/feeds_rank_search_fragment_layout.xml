@@ -41,7 +41,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="left|center_vertical"
-        android:hint="歌名"
+        android:hint="搜索榜单"
         android:imeOptions="actionSearch"
         android:includeFontPadding="false"
         android:paddingLeft="@dimen/view_35_dp"
