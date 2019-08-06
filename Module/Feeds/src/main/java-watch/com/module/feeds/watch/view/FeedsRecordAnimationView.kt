@@ -127,7 +127,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun play(isBufferingOk: Boolean) {
-        MyLog.d(TAG, "play playing=$playing 动画在播 = ${avatarAnimation?.isRunning == true}, isBufferingOk is $isBufferingOk")
+        MyLog.d(TAG, "play playing=$playing 动画在播 = ${avatarAnimation?.isRunning == true}, isBufferingOk is $isBufferingOk rotateAnimationPlay is $rotateAnimationPlay")
         mHandler.removeMessages(AVATAR_ANIM)
         wantPlaying = true
         if (playing && avatarAnimation?.isRunning == true) {
@@ -135,7 +135,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         }
 
         if (!hasLayouted) {
-            // 界面还没渲染出来，不播放
+            MyLog.d(TAG, "界面还没渲染出来，不播放")
             return
         }
         playing = true
@@ -163,11 +163,14 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun buffering() {
+        MyLog.d(TAG,"buffering" )
+
         mHandler.removeMessages(AVATAR_ANIM)
         avatarAnimation?.pause()
     }
 
     fun bufferEnd() {
+        MyLog.d(TAG,"bufferEnd" )
         if (!mHandler.hasMessages(AVATAR_ANIM)) {
             mHandler.removeMessages(AVATAR_ANIM)
             if (playing) {
@@ -181,8 +184,8 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun pause() {
-        mHandler.removeMessages(AVATAR_ANIM)
         MyLog.d(TAG, "pause playing=$playing 动画在播= ${avatarAnimation?.isRunning != true}")
+        mHandler.removeMessages(AVATAR_ANIM)
         if (!playing && avatarAnimation?.isRunning != true) {
             return
         }
@@ -214,6 +217,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
+        MyLog.d(TAG,"onLayout hasLayouted=$hasLayouted" )
         if (!hasLayouted) {
             hasLayouted = true
             rockerIv.pivotX = (rockerXP ?: 0f) * rockerIv.width.toFloat()
@@ -261,7 +265,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
                     }
                 })
             }
-
+            MyLog.d(TAG,"onLayout wantPlaying=$wantPlaying" )
             if (wantPlaying) {
                 play()
             } else {
@@ -276,13 +280,16 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     override fun onDetachedFromWindow() {
+        MyLog.d(TAG,"onDetachedFromWindow" )
         super.onDetachedFromWindow()
         playing = false
         hasLayouted = false
         wantPlaying = false
         mHandler.removeMessages(AVATAR_ANIM)
         avatarAnimation?.cancel()
-        rockerIv.clearAnimation()
+        rotateAnimationStop?.cancel()
+        rotateAnimationPlay?.cancel()
+        //rockerIv.clearAnimation()
         if (hideWhenPause) {
             rockerIv.visibility = View.GONE
         }
