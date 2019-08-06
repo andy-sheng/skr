@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:SkrProgressView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
@@ -101,8 +102,8 @@
         android:id="@+id/cd_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="@dimen/view_37_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play_btn_container">
 
@@ -224,32 +225,11 @@
         app:layout_constraintTop_toBottomOf="@+id/reset_iv" />
 
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/compose_progressbar_vg"
+    <com.component.busilib.view.SkrProgressView
+        android:id="@+id/progress_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_trans_30"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/compose_progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/compose_progress_tips_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_10_dp"
-            android:text="合成进度 0%"
-            android:textColor="@color/white_trans_80"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/compose_progressbar" />
-    </android.support.constraint.ConstraintLayout>
+        android:visibility="gone"
+        SkrProgressView:progressText="合成中"/>
 
 </android.support.constraint.ConstraintLayout>

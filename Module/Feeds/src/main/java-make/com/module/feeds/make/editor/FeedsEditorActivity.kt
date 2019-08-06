@@ -27,6 +27,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.SkrProgressView
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
@@ -50,37 +51,35 @@ import kotlinx.coroutines.*
 @Route(path = RouterConstants.ACTIVITY_FEEDS_EDITOR)
 class FeedsEditorActivity : BaseActivity() {
     lateinit var rootView: ConstraintLayout
-    lateinit var titleBar:CommonTitleBar
-    lateinit var playBtnContainer:ConstraintLayout
-    lateinit var playBtn:ExImageView
-    lateinit var seekBar:SeekBar
-    lateinit var nowTsTv:TextView
-    lateinit var totalTsTv:TextView
-    lateinit var cdContainer:View
+    lateinit var titleBar: CommonTitleBar
+    lateinit var playBtnContainer: ConstraintLayout
+    lateinit var playBtn: ExImageView
+    lateinit var seekBar: SeekBar
+    lateinit var nowTsTv: TextView
+    lateinit var totalTsTv: TextView
+    lateinit var cdContainer: View
     lateinit var cdBg: ImageView
-    lateinit var cdAvatar:BaseImageView
+    lateinit var cdAvatar: BaseImageView
     lateinit var txtLyricsView: TxtLyricScrollView
-    lateinit var manyLyricsView:ManyLyricsView
-    lateinit var renshengIv:ExImageView
-    lateinit var effectIv:ExImageView
-    lateinit var resetIv:ExImageView
-    lateinit var composeProgressbarVg:ConstraintLayout
-    lateinit var composeProgressbar: ProgressBar
-    lateinit var composeProgressTipsTv:TextView
+    lateinit var manyLyricsView: ManyLyricsView
+    lateinit var renshengIv: ExImageView
+    lateinit var effectIv: ExImageView
+    lateinit var resetIv: ExImageView
+    lateinit var progressView: SkrProgressView
 
     var mFeedsMakeModel: FeedsMakeModel? = null
 
     val mZqAudioEditorKit = ZqAudioEditorKit(U.app())
 
     var mPlayProgressJob: Job? = null
-    var cdRotateAnimator:ObjectAnimator?=null
+    var cdRotateAnimator: ObjectAnimator? = null
 
     val voiceControlPanelViewDialog by lazy {
         val view = FeedsEditorVoiceControlPanelView(this).apply {
             this.mZqAudioEditorKit = this@FeedsEditorActivity.mZqAudioEditorKit
             if (mFeedsMakeModel?.withBgm == true) {
                 this.mPeopleVoiceIndex = 1
-            }else{
+            } else {
                 this.mPeopleVoiceIndex = 0
             }
             bindData()
@@ -132,12 +131,8 @@ class FeedsEditorActivity : BaseActivity() {
         renshengIv = findViewById(R.id.rensheng_iv)
         effectIv = findViewById(R.id.effect_iv)
         resetIv = findViewById(R.id.reset_iv)
-        composeProgressbarVg = findViewById(R.id.compose_progressbar_vg)
-        composeProgressbar = findViewById(R.id.compose_progressbar)
-        composeProgressTipsTv = findViewById(R.id.compose_progress_tips_tv)
-        composeProgressbarVg?.setOnClickListener {
-            // 吃掉点击事件
-        }
+        progressView = findViewById(R.id.progress_view)
+
 
         cdRotateAnimator = ObjectAnimator.ofFloat(cdContainer, View.ROTATION, 0f, 360f)
         cdRotateAnimator?.duration = 10000
@@ -209,7 +204,7 @@ class FeedsEditorActivity : BaseActivity() {
             override fun clickValid(v: View?) {
                 // 开始合成
                 pausePreview()
-                composeProgressbarVg?.visibility = View.VISIBLE
+                progressView.visibility = View.VISIBLE
                 mZqAudioEditorKit.startCompose()
             }
         })
@@ -237,14 +232,16 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit.setOnComposeInfoListener(object : ZqAudioEditorKit.OnComposeInfoListener {
             override fun onProgress(progress: Float) {
                 launch {
-                    composeProgressTipsTv?.text = "合成进度 ${(progress * 100).toInt()}%"
+                    progressView.setProgressText("合成进度 ${(progress * 100).toInt()}%")
                 }
             }
 
             override fun onCompletion() {
                 MyLog.d(TAG, "compose onCompletion")
                 launch {
-                    composeProgressbarVg?.visibility = View.GONE
+                    progressView.setProgressDrwable(U.getDrawable(R.drawable.common_progress_complete_icon))
+                    progressView.setProgressText("合成完成")
+                    progressView.visibility = View.GONE
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                             .withSerializable("feeds_make_model", mFeedsMakeModel)
                             .navigation(this@FeedsEditorActivity, 9)
@@ -253,14 +250,14 @@ class FeedsEditorActivity : BaseActivity() {
         })
 
         val d = mFeedsMakeModel!!.recordDuration - mFeedsMakeModel!!.firstLyricShiftTs
-        totalTsTv.text =  U.getDateTimeUtils().formatVideoTime(d)
+        totalTsTv.text = U.getDateTimeUtils().formatVideoTime(d)
         txtLyricsView.setDuration(d.toInt())
         val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
         val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
         txtLyricsView?.visibility = View.GONE
         manyLyricsView?.visibility = View.GONE
         if (mFeedsMakeModel?.withBgm == true) {
-            if(!TextUtils.isEmpty(lrcTs)){
+            if (!TextUtils.isEmpty(lrcTs)) {
                 manyLyricsView?.visibility = View.VISIBLE
                 LyricsManager
                         .loadStandardLyric(lrcTs, -1)
@@ -274,7 +271,7 @@ class FeedsEditorActivity : BaseActivity() {
                             MyLog.e(TAG, throwable)
                             MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
                         })
-            }else{
+            } else {
                 txtLyricsView?.visibility = View.VISIBLE
                 LyricsManager
                         .loadGrabPlainLyric(lrcTxt)
@@ -316,12 +313,12 @@ class FeedsEditorActivity : BaseActivity() {
                 mZqAudioEditorKit.setInputVolume(0, ZqEngineKit.getInstance().params.audioMixingPlayoutVolume / 100.0f)
                 mZqAudioEditorKit.setInputVolume(1, ZqEngineKit.getInstance().params.recordingSignalVolume / 100.0f)
                 mZqAudioEditorKit.setAudioEffect(1, ZqEngineKit.getInstance().params.styleEnum.ordinal)
-                mZqAudioEditorKit.setDelay(1,U.getPreferenceUtils().getSettingLong("feeds_voice_delay",0))
+                mZqAudioEditorKit.setDelay(1, U.getPreferenceUtils().getSettingLong("feeds_voice_delay", 0))
                 initWhenEngineReady()
             }
         } else {
             txtLyricsView?.visibility = View.VISIBLE
-            if(!TextUtils.isEmpty(lrcTs)){
+            if (!TextUtils.isEmpty(lrcTs)) {
                 LyricsManager
                         .loadStandardLyric(lrcTs, -1)
                         .subscribe({ lyricsReader ->
@@ -331,7 +328,7 @@ class FeedsEditorActivity : BaseActivity() {
                             MyLog.e(TAG, throwable)
                             MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
                         })
-            }else{
+            } else {
                 LyricsManager
                         .loadGrabPlainLyric(lrcTxt)
                         .subscribe({ lyricsReader ->
@@ -366,15 +363,15 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit?.resumePreview()
         playBtn?.isSelected = true
 
-        if(manyLyricsView.visibility == View.VISIBLE){
+        if (manyLyricsView.visibility == View.VISIBLE) {
             manyLyricsView?.play(mZqAudioEditorKit.position.toInt())
-        }else if(txtLyricsView.visibility == View.VISIBLE){
+        } else if (txtLyricsView.visibility == View.VISIBLE) {
             txtLyricsView?.play(mZqAudioEditorKit.position.toInt())
         }
 
-        if(cdRotateAnimator?.isStarted == true){
+        if (cdRotateAnimator?.isStarted == true) {
             cdRotateAnimator?.resume()
-        }else{
+        } else {
             cdRotateAnimator?.start()
 //            launch {
 //                delay(1000)
@@ -390,13 +387,13 @@ class FeedsEditorActivity : BaseActivity() {
         mPlayProgressJob = launch {
             for (i in 1..1000) {
                 nowTsTv.text = U.getDateTimeUtils().formatVideoTime(mZqAudioEditorKit.position)
-                if(manyLyricsView.visibility == View.VISIBLE){
+                if (manyLyricsView.visibility == View.VISIBLE) {
                     if (manyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                         manyLyricsView?.resume()
                     }
                     manyLyricsView?.seekTo(mZqAudioEditorKit.position.toInt())
                 }
-                if(txtLyricsView.visibility == View.VISIBLE){
+                if (txtLyricsView.visibility == View.VISIBLE) {
                     txtLyricsView?.play(mZqAudioEditorKit.position.toInt())
                 }
                 seekBar?.progress = mZqAudioEditorKit.position.toInt()

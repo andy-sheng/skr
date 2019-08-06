@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.R;
 
@@ -74,6 +75,8 @@ public class SkrProgressView extends ConstraintLayout {
         mProgressTv.setText(mProgressText);
         if (mProgressDrwable != null) {
             mProgressIv.setBackground(mProgressDrwable);
+        } else {
+            mProgressIv.setBackground(U.getDrawable(R.drawable.common_progress_bar_icon));
         }
         if (!isClickCanThrough) {
             mContainer.setOnTouchListener(new View.OnTouchListener() {

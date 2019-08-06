@@ -25,6 +25,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.SkrProgressView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.make.FeedsMakeActivity
@@ -50,7 +51,8 @@ class FeedsPublishActivity : BaseActivity() {
     lateinit var tagClassifyTv: TextView
     lateinit var tagClassifyTf: TagFlowLayout
     //lateinit var uploadProgressbar: ProgressBar
-    lateinit var uploadProgressbarContainer: ViewGroup
+    lateinit var progressSkr: SkrProgressView
+
     lateinit var tagClassifyAdapter: TagAdapter<FeedsPublishTagModel>
 
     var mFeedsMakeModel: FeedsMakeModel? = null
@@ -76,8 +78,8 @@ class FeedsPublishActivity : BaseActivity() {
         worksNameEt = this.findViewById(R.id.works_name_et)
         tagClassifyTv = this.findViewById(R.id.tag_classify_tv)
         tagClassifyTf = this.findViewById(R.id.tag_classify_tf)
-        uploadProgressbarContainer = this.findViewById(R.id.upload_progressbar_container)
-        uploadProgressbarContainer?.setOnClickListener{}
+        progressSkr = this.findViewById(R.id.progress_skr)
+
         //填充标签
 //        rankClassifyAdapter = object : TagAdapter<FeedsPublishTagModel>(ArrayList()) {
 //            override fun getView(parent: FlowLayout, position: Int, tagModel: FeedsPublishTagModel): View {
@@ -136,7 +138,7 @@ class FeedsPublishActivity : BaseActivity() {
                     return
                 }
                 mFeedsMakeModel?.let {
-                    uploadProgressbarContainer.visibility = View.VISIBLE
+                    progressSkr.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(playUrl)) {
                         UploadParams.newBuilder(it.composeSavePath)
                                 .setFileType(UploadParams.FileType.feed)
@@ -152,7 +154,7 @@ class FeedsPublishActivity : BaseActivity() {
                                     override fun onFailureNotInUiThread(msg: String?) {
                                         launch {
                                             U.getToastUtil().showShort("上传失败，稍后重试")
-                                            uploadProgressbarContainer.visibility = View.GONE
+                                            progressSkr.visibility = View.GONE
                                         }
                                     }
                                 })
@@ -192,7 +194,7 @@ class FeedsPublishActivity : BaseActivity() {
             }
         })
         worksNameEt.setText(mFeedsMakeModel?.songModel?.workName)
-        worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length?:0)
+        worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length ?: 0)
 
     }
 
@@ -226,13 +228,13 @@ class FeedsPublishActivity : BaseActivity() {
                     "playURL" to playUrl,
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
                     "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
-                    "songType" to if(mFeedsMakeModel?.withBgm==true) 1 else 2
+                    "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2
 //TODO                    "tplID": 0,
             )
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             val result = subscribe { feedsMakeServerApi.uploadFeeds(body) }
-            uploadProgressbarContainer.visibility = View.GONE
+            progressSkr.visibility = View.GONE
             if (result?.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
