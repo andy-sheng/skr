@@ -30,6 +30,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.SkrConfig;
+import com.component.busilib.view.SkrProgressView;
 import com.module.playways.R;
 import com.module.playways.room.song.model.SongModel;
 import com.trello.rxlifecycle2.android.FragmentEvent;
@@ -76,6 +77,7 @@ public class PlayRecordFragment extends BaseFragment {
     int mWorksId;   // 作品id
 
     ShareWorksDialog mShareWorksDialog;
+    SkrProgressView mProgressView;
 
     @Override
     public int initView() {
@@ -84,15 +86,16 @@ public class PlayRecordFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mTvName = (TextView) getRootView().findViewById(R.id.tv_name);
-        mBottomContainer = (LinearLayout) getRootView().findViewById(R.id.bottom_container);
-        mBackArea = (RelativeLayout) getRootView().findViewById(R.id.back_area);
-        mOptArea = (RelativeLayout) getRootView().findViewById(R.id.opt_area);
-        mOptTv = (ExTextView) getRootView().findViewById(R.id.opt_tv);
-        mResetArea = (RelativeLayout) getRootView().findViewById(R.id.reset_area);
-        mSaveShareArea = (RelativeLayout) getRootView().findViewById(R.id.save_share_area);
-        mSaveShareTv = (ExTextView) getRootView().findViewById(R.id.save_share_tv);
-        mManyLyricsView = (ManyLyricsView) getRootView().findViewById(R.id.many_lyrics_view);
+        mTvName = getRootView().findViewById(R.id.tv_name);
+        mBottomContainer = getRootView().findViewById(R.id.bottom_container);
+        mBackArea = getRootView().findViewById(R.id.back_area);
+        mOptArea = getRootView().findViewById(R.id.opt_area);
+        mOptTv = getRootView().findViewById(R.id.opt_tv);
+        mResetArea = getRootView().findViewById(R.id.reset_area);
+        mSaveShareArea = getRootView().findViewById(R.id.save_share_area);
+        mSaveShareTv = getRootView().findViewById(R.id.save_share_tv);
+        mManyLyricsView = getRootView().findViewById(R.id.many_lyrics_view);
+        mProgressView = getRootView().findViewById(R.id.progress_view);
 
         mTvName.setText("《" + mSongModel.getItemName() + "》");
         mUiHanlder = new Handler();
@@ -154,6 +157,7 @@ public class PlayRecordFragment extends BaseFragment {
 
                     }
                 } else {
+                    mProgressView.setVisibility(View.VISIBLE);
                     saveWorksStep1();
                 }
             }
@@ -351,6 +355,7 @@ public class PlayRecordFragment extends BaseFragment {
     }
 
     private void showShareDialog(boolean containSaveTips) {
+        mProgressView.setVisibility(View.GONE);
         if (mShareWorksDialog != null) {
             mShareWorksDialog.dismiss(false);
         }

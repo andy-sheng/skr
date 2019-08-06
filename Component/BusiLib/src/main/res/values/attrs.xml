@@ -9,4 +9,16 @@
         <!--字体是否有阴影-->
         <attr name="has_shadow" format="boolean"/>
     </declare-styleable>
+
+    <!--SkrProgressView的属性-->
+    <declare-styleable name="SkrProgressView">
+        <!--进度条图标-->
+        <attr name="progressDrawable" format="reference" />
+        <!--进度条文字-->
+        <attr name="progressText" format="string"/>
+        <!--进度条是否拦截点击-->
+        <attr name="clickCanThrough" format="boolean"/>
+        <!--进度条有动画-->
+        <attr name="hasAnimation" format="boolean"/>
+    </declare-styleable>
 </resources>
