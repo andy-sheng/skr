@@ -71,6 +71,13 @@ public class AudioCapture {
         void onStatusChanged(int status);
 
         /**
+         * Notify first audio packet received.
+         *
+         * @param time time in ms the first audio packet captured
+         */
+        void onFirstPacketReceived(long time);
+
+        /**
          * Notify AudioCapture error occurred.
          *
          * @param errorCode error code.
@@ -212,6 +219,17 @@ public class AudioCapture {
         });
     }
 
+    private void postFirstPacketReceived(final long time) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mOnAudioCaptureListener != null) {
+                    mOnAudioCaptureListener.onFirstPacketReceived(time);
+                }
+            }
+        });
+    }
+
     private void postError(final int err) {
         mMainHandler.post(new Runnable() {
             @Override
@@ -228,6 +246,7 @@ public class AudioCapture {
         public void run() {
             int atomSize;
             int readSize;
+            boolean firstPacketReceived = false;
 
             // set max priority to this thread
             Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
@@ -311,6 +330,12 @@ public class AudioCapture {
 
                     AudioBufFrame frame = new AudioBufFrame(outFormat, byteBuffer, pts);
                     mSrcPin.onFrameAvailable(frame);
+
+                    if (!firstPacketReceived) {
+                        firstPacketReceived = true;
+                        long time = System.nanoTime() / 1000 / 1000;
+                        postFirstPacketReceived(time);
+                    }
                 } else if (read < 0) {
                     Log.e(TAG, "read error: " + read);
                     postError(AUDIO_ERROR_UNKNOWN);

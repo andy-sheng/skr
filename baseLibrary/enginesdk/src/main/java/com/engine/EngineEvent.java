@@ -16,8 +16,8 @@ public class EngineEvent {
     public static final int TYPE_MUSIC_PLAY_PAUSE = 11;// 伴奏暂停
     public static final int TYPE_MUSIC_PLAY_STOP = 12;// 伴奏停止
     public static final int TYPE_MUSIC_PLAY_FINISH = 13;// 伴奏结束
-
     public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
+    public static final int TYPE_MUSIC_PLAY_FIRST_PKT = 15; // 伴奏首帧开始播放，仅在自采集模式下生效
 
     public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
     public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
@@ -25,6 +25,7 @@ public class EngineEvent {
     public static final int TYPE_RECORD_FINISHED = 110; // 录制完成
     public static final int TYPE_RECORD_ERROR = 111;    // 录制出错
     public static final int TYPE_RECORD_START = 112;    // 录制开始
+    public static final int TYPE_RECORD_AUDIO_FIRST_PKT = 113; // 录制首帧获取，仅在自采集模式下生效
 
     public static final int TYPE_CAMERA_OPENED = 200;// 相机打开
     public static final int TYPE_CAMERA_FIRST_FRAME_RENDERED = 201;//相机首帧渲染
@@ -183,7 +184,9 @@ public class EngineEvent {
             case TYPE_MUSIC_PLAY_STOP:
                 return "MUSIC_PLAY_STOP";
             case TYPE_MUSIC_PLAY_FINISH:
-                return "USIC_PLAY_FINISH";
+                return "MUSIC_PLAY_FINISH";
+            case TYPE_MUSIC_PLAY_FIRST_PKT:
+                return "MUSIC_PLAY_FIRST_PKT";
             case TYPE_ENGINE_DESTROY:
                 return "ENGINE_DESTROY";
             case TYPE_ENGINE_INITED:
@@ -194,6 +197,8 @@ public class EngineEvent {
                 return "RECORD_ERROR";
             case TYPE_RECORD_START:
                 return "RECORD_START";
+            case TYPE_RECORD_AUDIO_FIRST_PKT:
+                return "RECORD_AUDIO_FIRST_PKT";
             case TYPE_CAMERA_OPENED:
                 return "CAMERA_OPENED";
             case TYPE_CAMERA_FIRST_FRAME_RENDERED:

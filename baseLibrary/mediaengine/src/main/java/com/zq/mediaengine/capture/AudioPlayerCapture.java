@@ -82,6 +82,7 @@ public class AudioPlayerCapture {
     private int mLoopedCount;
 
     private OnPreparedListener mOnPreparedListener;
+    private OnFirstAudioFrameDecodedListener mOnFirstAudioFrameDecodedListener;
     private OnCompletionListener mOnCompletionListener;
     private OnErrorListener mOnErrorListener;
 
@@ -95,6 +96,19 @@ public class AudioPlayerCapture {
          * @param audioPlayerCapture the AudioPlayerCapture instance
          */
         void onPrepared(AudioPlayerCapture audioPlayerCapture);
+    }
+
+    /**
+     * The interface on fist audio frame decoded listener.
+     */
+    public interface OnFirstAudioFrameDecodedListener {
+        /**
+         * On prepared.
+         *
+         * @param audioFileCapture the AudioFileCapture instance
+         * @param time time in ms when first audio frame decoded
+         */
+        void onFirstAudioFrameDecoded(AudioPlayerCapture audioFileCapture, long time);
     }
 
     /**
@@ -233,6 +247,15 @@ public class AudioPlayerCapture {
                 }
             }
         });
+        // onFirstFrameDecoded
+        mAudioFileCapture.setOnFirstAudioFrameDecodedListener(new AudioFileCapture.OnFirstAudioFrameDecodedListener() {
+            @Override
+            public void onFirstAudioFrameDecoded(AudioFileCapture audioFileCapture, long time) {
+                if (mOnFirstAudioFrameDecodedListener != null) {
+                    mOnFirstAudioFrameDecodedListener.onFirstAudioFrameDecoded(AudioPlayerCapture.this, time);
+                }
+            }
+        });
         // onCompletion
         mAudioFileCapture.setOnCompletionListener(new AudioFileCapture.OnCompletionListener() {
             @Override
@@ -332,6 +355,15 @@ public class AudioPlayerCapture {
      */
     public void setOnPreparedListener(OnPreparedListener listener) {
         mOnPreparedListener = listener;
+    }
+
+    /**
+     * Sets on first audio frame decoded listener.
+     *
+     * @param listener the listener
+     */
+    public void setOnFirstAudioFrameDecodedListener(OnFirstAudioFrameDecodedListener listener) {
+        mOnFirstAudioFrameDecodedListener = listener;
     }
 
     /**

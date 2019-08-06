@@ -346,7 +346,6 @@ class FeedsMakeActivity : BaseActivity() {
                 val bgmFile = bgmFileJob?.await()
                 bgmFile?.absolutePath?.let {
                     ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), it, null, 0, false, false, 1)
-                    mFeedsMakeModel?.beginMusicTs = System.currentTimeMillis()
                 }
                 goLyric(true)
             }
@@ -440,8 +439,7 @@ class FeedsMakeActivity : BaseActivity() {
         mLyricAndAccMatchManager.stop()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
-            // TODO: 这个时间不是很精确，更精确的时间通过添加回调来获取
-            recordOffsetTs = firstLyricShiftTs + beginMusicTs - beginRecordTs
+            recordOffsetTs = firstLyricShiftTs + musicFirstFrameTs - recordFirstFrameTs
         }
         val intent = Intent(this, FeedsEditorActivity::class.java)
         intent.putExtra("feeds_make_model", mFeedsMakeModel)
@@ -486,6 +484,12 @@ class FeedsMakeActivity : BaseActivity() {
             EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER -> {
 //                val timeInfo = event.obj as EngineEvent.MixMusicTimeInfo
 //                mTitleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime(timeInfo.current.toLong())
+            }
+            EngineEvent.TYPE_RECORD_AUDIO_FIRST_PKT -> {
+                mFeedsMakeModel?.recordFirstFrameTs = event.obj as Long
+            }
+            EngineEvent.TYPE_MUSIC_PLAY_FIRST_PKT -> {
+                mFeedsMakeModel?.musicFirstFrameTs = event.obj as Long
             }
         }
     }

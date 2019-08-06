@@ -514,10 +514,20 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAPMFilter.enableNs(true);
             mAPMFilter.setNsLevel(APMFilter.NS_LEVEL_1);
 
+            mAudioCapture.setAudioCaptureListener(mOnAudioCaptureListener);
             mAudioPlayerCapture.setOnCompletionListener(new AudioPlayerCapture.OnCompletionListener() {
                 @Override
                 public void onCompletion(AudioPlayerCapture audioPlayerCapture) {
                     onAudioMixingFinished();
+                }
+            });
+            mAudioPlayerCapture.setOnFirstAudioFrameDecodedListener(new AudioPlayerCapture.OnFirstAudioFrameDecodedListener() {
+                @Override
+                public void onFirstAudioFrameDecoded(AudioPlayerCapture audioFileCapture, long time) {
+                    MyLog.d(TAG, "AudioPlayerCapture onFirstAudioFrameDecoded: " + time);
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_FIRST_PKT);
+                    engineEvent.setObj(time);
+                    EventBus.getDefault().post(engineEvent);
                 }
             });
         } else {
@@ -577,6 +587,28 @@ public class ZqEngineKit implements AgoraOutCallback {
             mAudioFilterMgt.getSrcPin().connect((SinkPin<AudioBufFrame>) mRawFrameWriter.getSinkPin());
         }
     }
+
+    private AudioCapture.OnAudioCaptureListener mOnAudioCaptureListener = new AudioCapture.OnAudioCaptureListener() {
+        @Override
+        public void onStatusChanged(int status) {
+            MyLog.d(TAG, "AudioCapture onStatusChanged: " + status);
+        }
+
+        @Override
+        public void onFirstPacketReceived(long time) {
+            MyLog.d(TAG, "AudioCapture onFirstPacketReceived: " + time);
+            if (mConfig.isRecording()) {
+                EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_AUDIO_FIRST_PKT);
+                engineEvent.setObj(time);
+                EventBus.getDefault().post(engineEvent);
+            }
+        }
+
+        @Override
+        public void onError(int errorCode) {
+            MyLog.e(TAG, "AudioCapture onError err: " + errorCode);
+        }
+    };
 
     private Publisher.PubListener mPubListener = new Publisher.PubListener() {
         @Override

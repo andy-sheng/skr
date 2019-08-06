@@ -94,6 +94,7 @@ public class AudioFileCapture {
     private volatile int mState;
     private volatile boolean mPaused;
     private volatile boolean mIsSeeking;
+    private boolean mFirstFrameDecoded;
     private long mFirstPts;
     private long mDuration;
     private long mOffsetDuration;
@@ -104,6 +105,7 @@ public class AudioFileCapture {
     private long mSamplesWritten;
 
     private OnPreparedListener mOnPreparedListener;
+    private OnFirstAudioFrameDecodedListener mOnFirstAudioFrameDecodedListener;
     private OnSeekCompletionListener mOnSeekCompletionListener;
     private long mPositionUpdateInterval = 100;
     private long mLastUpdateTime = 0;
@@ -121,6 +123,19 @@ public class AudioFileCapture {
          * @param audioFileCapture the AudioFileCapture instance
          */
         void onPrepared(AudioFileCapture audioFileCapture);
+    }
+
+    /**
+     * The interface on fist audio frame decoded listener.
+     */
+    public interface OnFirstAudioFrameDecodedListener {
+        /**
+         * On prepared.
+         *
+         * @param audioFileCapture the AudioFileCapture instance
+         * @param time time in ms when first audio frame decoded
+         */
+        void onFirstAudioFrameDecoded(AudioFileCapture audioFileCapture, long time);
     }
 
     /**
@@ -240,6 +255,15 @@ public class AudioFileCapture {
      */
     public void setOnPreparedListener(OnPreparedListener listener) {
         mOnPreparedListener = listener;
+    }
+
+    /**
+     * Sets on first audio frame decoded listener.
+     *
+     * @param listener the listener
+     */
+    public void setOnFirstAudioFrameDecodedListener(OnFirstAudioFrameDecodedListener listener) {
+        mOnFirstAudioFrameDecodedListener = listener;
     }
 
     /**
@@ -377,6 +401,7 @@ public class AudioFileCapture {
         stop();
         mDecodeHandler.sendEmptyMessage(CMD_RELEASE);
         mOnPreparedListener = null;
+        mOnFirstAudioFrameDecodedListener = null;
         mOnPositionUpdateListener = null;
         mOnCompletionListener = null;
         mOnErrorListener = null;
@@ -523,6 +548,17 @@ public class AudioFileCapture {
         });
     }
 
+    private void postOnFirstAudioFrameDecoded(final long time) {
+        mMainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mOnFirstAudioFrameDecodedListener != null) {
+                    mOnFirstAudioFrameDecodedListener.onFirstAudioFrameDecoded(AudioFileCapture.this, time);
+                }
+            }
+        });
+    }
+
     private void postOnSeekCompletion(final long ms) {
         mMainHandler.post(new Runnable() {
             @Override
@@ -590,6 +626,7 @@ public class AudioFileCapture {
 
     private int doStart() {
         mFirstPts = Long.MIN_VALUE;
+        mFirstFrameDecoded = false;
         mPaused = false;
         mLastUpdateTime = 0;
         mIsSeeking = false;
@@ -766,6 +803,12 @@ public class AudioFileCapture {
                 }
                 mSrcPin.onFrameAvailable(frame);
                 mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+
+                if (!mFirstFrameDecoded) {
+                    mFirstFrameDecoded = true;
+                    long time = System.nanoTime() / 1000 / 1000;
+                    postOnFirstAudioFrameDecoded(time);
+                }
 
                 mSamplesWritten += frame.buf.limit() / 2 / mOutFormat.channels;
                 mCurrentPosition = mBasePosition + mSamplesWritten * 1000 / mOutFormat.sampleRate;
