@@ -60,7 +60,7 @@ class FeedsMakeActivity : BaseActivity() {
     var voiceScaleView: VoiceScaleView? = null
     var manyLyricsView: ManyLyricsView? = null
     var txtLyricsView: TxtLyricScrollView? = null
-    var recordTipsIv:View?=null
+    var recordTipsIv: View? = null
 
     var mFeedsMakeModel: FeedsMakeModel? = null
 
@@ -161,7 +161,6 @@ class FeedsMakeActivity : BaseActivity() {
                 startRecord()
             }
         })
-        mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm",false) && U.getDeviceUtils().getWiredHeadsetPlugOn()
         if (mFeedsMakeModel?.withBgm == true) {
             (titleBar?.rightCustomView as TextView).text = "伴奏模式"
         } else {
@@ -172,17 +171,22 @@ class FeedsMakeActivity : BaseActivity() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.withBgm == true) {
                     mFeedsMakeModel?.withBgm = false
-                    U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm",false)
+                    U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm", false)
                     (titleBar?.rightCustomView as TextView).text = "清唱模式"
                     initLyricView()
                 } else {
                     // 清唱变伴奏模式
+                    // 是否插着有限耳机
                     if (U.getDeviceUtils().getWiredHeadsetPlugOn() || MyLog.isDebugLogOpen()) {
-                        // 是否插着有限耳机
-                        mFeedsMakeModel?.withBgm = true
-                        U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm",true)
-                        (titleBar?.rightCustomView as TextView).text = "伴奏模式"
-                        initLyricView()
+                        if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.bgm)
+                                && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
+                            mFeedsMakeModel?.withBgm = true
+                            U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm", true)
+                            (titleBar?.rightCustomView as TextView).text = "伴奏模式"
+                            initLyricView()
+                        }else{
+                            U.getToastUtil().showShort("该首歌曲仅支持清唱模式")
+                        }
                     } else {
                         U.getToastUtil().showShort("仅在插着有线耳机的情况下才可开启伴奏模式模式")
                     }
@@ -205,6 +209,10 @@ class FeedsMakeActivity : BaseActivity() {
             titleBar?.centerSubTextView?.text = "00:00 / ${U.getDateTimeUtils().formatVideoTime(it)}"
         }
 
+        mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
+                && U.getDeviceUtils().getWiredHeadsetPlugOn()
+                && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.bgm)
+                && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
 
         initLyricView()
         // 有伴奏模式提前下载伴奏模式
