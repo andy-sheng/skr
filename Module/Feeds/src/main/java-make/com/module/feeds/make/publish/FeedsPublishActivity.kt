@@ -165,7 +165,7 @@ class FeedsPublishActivity : BaseActivity() {
         })
         sayEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                leftWordTipsTv.text = "${worksNameEt.text.length}/300"
+                leftWordTipsTv.text = "${sayEdit.text.length}/300"
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
