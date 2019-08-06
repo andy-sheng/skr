@@ -298,6 +298,7 @@ public class PlayRecordFragment extends BaseFragment {
                     @Override
                     public void onFailureNotInUiThread(String msg) {
                         U.getToastUtil().showShort("保存失败");
+                        mProgressView.setVisibility(View.GONE);
                         mUrl = "";
                     }
                 });
@@ -333,6 +334,7 @@ public class PlayRecordFragment extends BaseFragment {
                     }
                 } else {
                     mWorksId = 0;
+                    mProgressView.setVisibility(View.GONE);
                     U.getToastUtil().showShort("保存失败");
                 }
             }
@@ -341,6 +343,7 @@ public class PlayRecordFragment extends BaseFragment {
             public void onError(Throwable e) {
                 super.onError(e);
                 mWorksId = 0;
+                mProgressView.setVisibility(View.GONE);
                 U.getToastUtil().showShort("保存失败");
             }
 
@@ -348,6 +351,7 @@ public class PlayRecordFragment extends BaseFragment {
             public void onNetworkError(ErrorType errorType) {
                 super.onNetworkError(errorType);
                 mWorksId = 0;
+                mProgressView.setVisibility(View.GONE);
                 U.getToastUtil().showShort("保存失败");
 
             }

@@ -179,12 +179,7 @@ class FeedsPublishActivity : BaseActivity() {
 
         worksNameEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (TextUtils.isEmpty(worksNameEt.text)) {
-                    titleBar.rightCustomView?.isSelected = true
-                } else {
-                    titleBar.rightCustomView?.isSelected = false
-                }
-
+                titleBar.rightCustomView?.isSelected = TextUtils.isEmpty(worksNameEt.text)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
