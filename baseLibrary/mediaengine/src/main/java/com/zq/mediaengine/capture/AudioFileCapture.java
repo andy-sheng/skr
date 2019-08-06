@@ -517,8 +517,6 @@ public class AudioFileCapture {
                             ((Runnable) msg.obj).run();
                         }
                         doSeek(msg.arg1);
-                        // seek后发送onFormatChanged事件
-                        mSrcPin.onFormatChanged(mOutFormat);
                         if (mState == STATE_PREPARING) {
                             mState = STATE_PREPARED;
                             postOnPrepared();
@@ -709,6 +707,12 @@ public class AudioFileCapture {
         mSamplesWritten = 0;
         mIsSeeking = true;
         mMediaExtractor.seekTo(mCurrentPosition * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
+
+        // seek后发送flush和onFormatChanged事件
+        AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
+        frame.flags |= AVConst.FLAG_FLUSH_OF_STREAM;
+        mSrcPin.onFrameAvailable(frame);
+        mSrcPin.onFormatChanged(mOutFormat);
     }
 
     private boolean fillDecoder() {

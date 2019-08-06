@@ -365,7 +365,8 @@ public class AudioMixer {
         }
 
         // handle eos, for blocking mode
-        if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0) {
+        if ((frame.flags & AVConst.FLAG_END_OF_STREAM) != 0 ||
+                (frame.flags & AVConst.FLAG_FLUSH_OF_STREAM) != 0) {
             _destroy(mInstance, idx);
         }
     }
