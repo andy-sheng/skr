@@ -322,8 +322,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
             val cdHeight = 168.dp()   // 光盘高度
             val bottomHeight = 50.dp()  // 底部高度
-            var lastFirstVisibleItem = -1
-            var lastLastVisibleItem = -1
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -531,6 +529,11 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     override fun feedDeleteResult(position: Int, model: FeedsWatchModel) {
+        if (mAdapter?.mCurrentPlayModel == model) {
+            SinglePlayer.pause(playerTag)
+            mAdapter?.mCurrentPlayModel = null
+            mAdapter?.mCurrentPlayPosition = null
+        }
         mAdapter?.delete(model)
     }
 
