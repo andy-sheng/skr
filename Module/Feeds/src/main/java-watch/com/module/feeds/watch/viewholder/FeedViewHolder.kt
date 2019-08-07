@@ -132,6 +132,11 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             feedAutoScrollLyricView.loadLyric()
             feedWatchManyLyricView.visibility = View.GONE
         }
+        if (MyLog.isDebugLogOpen()) {
+            mDebugTv.text = "playDurMs:${model?.song?.playDurMs} \n" +
+                    "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}\n" +
+                    "${model?.song?.playURL?.substring((model?.song?.playURL?.length ?: 10) - 10)}"
+        }
     }
 
     // 刷新喜欢图标和数字
@@ -175,7 +180,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
         if (MyLog.isDebugLogOpen()) {
             mDebugTv.text = "playDurMs:${model?.song?.playDurMs} \n" +
-                    "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}"
+                    "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}\n" +
+                    "${model?.song?.playURL?.substring((model?.song?.playURL?.length ?: 10) - 10)}"
         }
     }
 

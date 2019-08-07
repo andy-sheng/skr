@@ -12,7 +12,7 @@ object SinglePlayer : IPlayerEx {
     init {
         // 根据系统版本决定使用哪个播放器
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
-            player.useAndroidMediaPlayer = true
+            player.useAndroidMediaPlayer = false
         }else{
             player.useAndroidMediaPlayer = false
         }
