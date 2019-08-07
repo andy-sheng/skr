@@ -152,15 +152,13 @@ class FeedsEditorActivity : BaseActivity() {
             }
         })
 
-        playBtnContainer?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                if (playBtn?.isSelected == true) {
-                    pausePreview()
-                } else {
-                    resumePreview()
-                }
+        playBtnContainer?.setOnClickListener{
+            if (playBtn?.isSelected == true) {
+                pausePreview()
+            } else {
+                resumePreview()
             }
-        })
+        }
         seekBar?.max = mFeedsMakeModel?.recordDuration!!.toInt() - mFeedsMakeModel?.firstLyricShiftTs!!
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
