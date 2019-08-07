@@ -14,9 +14,13 @@ class FeedsLyricMakeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val lyrics: ArrayList<LyricItem> = ArrayList()
 
     fun setData(lyrics: ArrayList<LyricItem>) {
-        lyrics.clear()
-        lyrics.addAll(lyrics)
+        this.lyrics.clear()
+        this.lyrics.addAll(lyrics)
         notifyDataSetChanged()
+    }
+
+    fun getData():ArrayList<LyricItem> {
+        return this.lyrics
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -30,9 +34,7 @@ class FeedsLyricMakeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is FeedsLyricMakeHolder) {
-            if (position == 0) {
-                holder.bindData(position, lyrics[position])
-            }
+            holder.bindData(position, lyrics[position])
         }
 
     }
@@ -42,13 +44,13 @@ class FeedsLyricMakeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-
 class LyricItem(var type: Int, var content: String) {
-    companion object{
+    companion object {
         val TYPE_TITLE = 1
         val TYPE_NORMAL = 2
     }
 
+    var newContent = content
     var startTs = 0
     var endTs = 0
 }

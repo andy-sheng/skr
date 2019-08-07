@@ -25,7 +25,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lyric_rv"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
 </android.support.constraint.ConstraintLayout>

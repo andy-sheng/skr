@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/view_20_dp"
-    android:background="@drawable/feeds_make_bg">
+    >
 
     <TextView
         android:id="@+id/label_tv"
