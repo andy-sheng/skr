@@ -95,6 +95,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mResumeCall: (() -> Unit)? = null
 
+    var sharePanel: SharePanel? = null
+
     var playCallback = object : PlayerCallbackAdapter() {
         override fun onPrepared() {
             MyLog.d(mTag, "onPrepared")
@@ -274,8 +276,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mShareIv?.setDebounceViewClickListener {
-            val sharePanel = SharePanel(activity)
-            sharePanel.apply {
+            sharePanel?.setUMShareListener(null)
+            sharePanel = SharePanel(activity)
+            sharePanel?.apply {
                 mShareImage = mFeedsWatchModel?.user?.avatar
                         ?: ""
                 mTitle = mFeedsWatchModel!!.song?.workName
@@ -284,8 +287,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mPlayMusicUrl = mFeedsWatchModel?.song?.playURL
             }
 
-            sharePanel.show(ShareType.MUSIC)
-            sharePanel.setUMShareListener(object : UMShareListener {
+            sharePanel?.show(ShareType.MUSIC)
+            sharePanel?.setUMShareListener(object : UMShareListener {
                 override fun onResult(p0: SHARE_MEDIA?) {
 
                 }
@@ -607,6 +610,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         SinglePlayer.removeCallback(playerTag)
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()
+        sharePanel?.setUMShareListener(null)
 
         EventBus.getDefault().post(FeedWatchChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
