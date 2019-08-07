@@ -574,8 +574,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         isSeleted = true
         // 该页面选中以及从详情页返回都会回调这个方法
         if (!mPersenter.initWatchList(false)) {
-            // 如果因为时间短没请求，继续往前播放
-            resumePlay()
+            // 如果因为时间短没请求，继续往前播放,只有在首页才播
+            if (isHomePage()) {
+                resumePlay()
+            }
         }
     }
 
