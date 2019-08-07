@@ -140,6 +140,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         override fun onTimeFlyMonitor(pos: Long, duration: Long) {
             //歌曲还没加载到的时候这个会返回1毫秒，无意义，do not care
+            if (pos < 1000) {
+                return
+            }
+
             mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
             mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
             if (mSeekBar?.max != duration.toInt()) {
