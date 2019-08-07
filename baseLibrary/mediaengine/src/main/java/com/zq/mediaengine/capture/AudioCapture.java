@@ -202,43 +202,51 @@ public class AudioCapture {
 
     public void release() {
         stop();
-        mMainHandler.removeCallbacksAndMessages(null);
-        mMainHandler = null;
+        if (mMainHandler != null) {
+            mMainHandler.removeCallbacksAndMessages(null);
+            mMainHandler = null;
+        }
         mSrcPin.disconnect(true);
     }
 
     private void postState(int state) {
         mState = state;
-        mMainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mOnAudioCaptureListener != null) {
-                    mOnAudioCaptureListener.onStatusChanged(mState);
+        if (mMainHandler != null) {
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAudioCaptureListener != null) {
+                        mOnAudioCaptureListener.onStatusChanged(mState);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void postFirstPacketReceived(final long time) {
-        mMainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mOnAudioCaptureListener != null) {
-                    mOnAudioCaptureListener.onFirstPacketReceived(time);
+        if (mMainHandler != null) {
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAudioCaptureListener != null) {
+                        mOnAudioCaptureListener.onFirstPacketReceived(time);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void postError(final int err) {
-        mMainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mOnAudioCaptureListener != null) {
-                    mOnAudioCaptureListener.onError(err);
+        if (mMainHandler != null) {
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAudioCaptureListener != null) {
+                        mOnAudioCaptureListener.onError(err);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private class AudioCaptureThread extends Thread {
@@ -323,7 +331,7 @@ public class AudioCapture {
                 if (read > 0) {
                     // minus audio frame duration
                     long pts = System.nanoTime() / 1000 / 1000;
-                    pts -= (long)read * 1000 / 2 / mChannels / mSampleRate;
+                    pts -= (long) read * 1000 / 2 / mChannels / mSampleRate;
                     if (VERBOSE) {
                         Log.d(TAG, "read " + read + " bytes pts=" + pts);
                     }
