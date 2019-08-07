@@ -1503,7 +1503,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                         if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
                             // 未加入房间时需要先开启音频采集
                             if (!mInChannel) {
-                                mAudioCapture.start();
+                                if (mAudioCapture != null) {
+                                    mAudioCapture.start();
+                                }
                             }
 
                             AudioCodecFormat audioCodecFormat =
@@ -1513,7 +1515,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                                             mConfig.getAudioChannels(),
                                             mConfig.getAudioBitrate());
                             if (recordHumanVoice) {
-                                if (mConfig.isUseExternalAudio()) {
+                                if (mConfig.isUseExternalAudio() && mAudioCapture!=null) {
                                     audioCodecFormat.sampleRate = mAudioCapture.getSampleRate();
                                     audioCodecFormat.channels = mAudioCapture.getChannels();
                                     audioCodecFormat.bitrate = 64000 * audioCodecFormat.channels;
