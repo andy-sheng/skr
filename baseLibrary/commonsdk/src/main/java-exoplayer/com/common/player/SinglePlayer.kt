@@ -1,6 +1,7 @@
 package com.common.player
 
 import android.media.MediaPlayer
+import android.os.Build
 
 object SinglePlayer : IPlayerEx {
 
@@ -9,8 +10,12 @@ object SinglePlayer : IPlayerEx {
     val callbackMap = HashMap<String, IPlayerCallback>()
 
     init {
-        // false 为使用ExoPlayer，否则使用系统的
-        player.useAndroidMediaPlayer = false
+        // 根据系统版本决定使用哪个播放器
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
+            player.useAndroidMediaPlayer = true
+        }else{
+            player.useAndroidMediaPlayer = false
+        }
         player.setCallback(object : IPlayerCallback {
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                 callbackMap[startFrom]?.onTimeFlyMonitor(pos, duration)
