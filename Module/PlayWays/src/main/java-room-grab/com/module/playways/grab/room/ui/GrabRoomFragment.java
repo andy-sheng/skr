@@ -1713,6 +1713,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }, 1500 - t);
         }
         if (success) {
+            initBgView();
             hideAllCardView();
             // 重新决定显示mic按钮
             mBottomContainerView.setRoomData(mRoomData);
