@@ -88,4 +88,11 @@ interface FeedsDetailServerApi {
      */
     @GET("v1/feed/user-mate")
     fun checkCollects(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
+
+    /**
+     * 获取feed一些相关数据
+     * 全民神曲
+     */
+    @GET("v1/feed/info")
+    fun feedsExtraInfo(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
 }

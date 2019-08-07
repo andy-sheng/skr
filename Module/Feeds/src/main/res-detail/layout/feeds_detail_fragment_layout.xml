@@ -311,6 +311,8 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:ellipsize="end"
+        android:maxLines="1"
         android:id="@+id/comment_tv"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_32_dp"

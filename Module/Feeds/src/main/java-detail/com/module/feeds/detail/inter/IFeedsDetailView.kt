@@ -8,4 +8,5 @@ interface IFeedsDetailView {
     fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean)
     fun collectFinish(c: Boolean)
     fun isCollect(c: Boolean)
+    fun showExtraInfo(commentCnt: Int, exposure: Int, isLiked: Boolean, shareCnt: Int, starCnt: Int)
 }

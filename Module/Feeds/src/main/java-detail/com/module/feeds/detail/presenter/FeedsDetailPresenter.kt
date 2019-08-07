@@ -133,4 +133,19 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
             }
         }, this)
     }
+
+    fun getFeedExTraInfo(userID: Int, feedID: Int) {
+        ApiMethods.subscribe(mFeedsDetailServerApi.feedsExtraInfo(userID, feedID), object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult?) {
+                if (obj?.errno == 0) {
+                    val commentCnt = obj.data.getIntValue("commentCnt")
+                    val exposure = obj.data.getIntValue("exposure")
+                    val isLiked = obj.data.getBooleanValue("isLiked")
+                    val shareCnt = obj.data.getIntValue("shareCnt")
+                    val starCnt = obj.data.getIntValue("starCnt")
+                    mIFeedsDetailView.showExtraInfo(commentCnt, exposure, isLiked, shareCnt, starCnt)
+                }
+            }
+        }, this)
+    }
 }

@@ -341,10 +341,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mFeedsInputContainerView?.setETHint("回复 ${mFeedsWatchModel?.user?.nickname}")
         }
 
-        mXinIv?.setDebounceViewClickListener {
-            mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
-        }
-
         mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
         mFollowTv?.setDebounceViewClickListener {
 
@@ -407,6 +403,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         SinglePlayer.addCallback(playerTag, playCallback)
         startPlay()
         mFeedsDetailPresenter?.checkCollect(mFeedsWatchModel!!.feedID)
+        mFeedsDetailPresenter?.getFeedExTraInfo(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel!!.feedID)
     }
 
     private fun showMoreOp() {
@@ -475,6 +472,24 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mCollectionIv?.isSelected = c
         mCollectionIv?.setDebounceViewClickListener {
             mFeedsDetailPresenter?.collection(!mCollectionIv!!.isSelected, mFeedsWatchModel!!.feedID)
+        }
+    }
+
+    override fun showExtraInfo(commentCnt: Int, exposure: Int, isLiked: Boolean, shareCnt: Int, starCnt: Int) {
+        mFeedsWatchModel!!.shareCnt = shareCnt
+        mFeedsWatchModel!!.isLiked = isLiked
+        mFeedsWatchModel!!.starCnt = starCnt
+        mFeedsWatchModel!!.exposure = exposure
+        mFeedsWatchModel!!.commentCnt = commentCnt
+
+        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
+        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
+        mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
+        mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
+        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
+
+        mXinIv?.setDebounceViewClickListener {
+            mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
         }
     }
 
