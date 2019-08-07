@@ -172,7 +172,6 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     fun bufferEnd() {
         MyLog.d(TAG,"bufferEnd" )
         if (!mHandler.hasMessages(AVATAR_ANIM)) {
-            mHandler.removeMessages(AVATAR_ANIM)
             if (playing) {
                 if (avatarAnimation!!.isPaused) {
                     avatarAnimation?.resume()
