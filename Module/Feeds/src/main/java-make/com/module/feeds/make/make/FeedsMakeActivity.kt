@@ -162,12 +162,6 @@ class FeedsMakeActivity : BaseActivity() {
                 startRecord()
             }
         })
-        if (mFeedsMakeModel?.withBgm == true) {
-            (titleBar?.rightCustomView as TextView).text = "伴奏模式"
-        } else {
-            (titleBar?.rightCustomView as TextView).text = "清唱模式"
-        }
-
         titleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.withBgm == true) {
@@ -211,6 +205,12 @@ class FeedsMakeActivity : BaseActivity() {
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()
                 && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.bgm)
                 && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+
+        if (mFeedsMakeModel?.withBgm == true) {
+            (titleBar?.rightCustomView as TextView).text = "伴奏模式"
+        } else {
+            (titleBar?.rightCustomView as TextView).text = "清唱模式"
+        }
 
         initLyricView()
         // 有伴奏模式提前下载伴奏模式
