@@ -6,6 +6,10 @@ import java.io.Serializable
 class FeedSongModel : Serializable {
     @JSONField(name = "challengeID")
     var challengeID: Long = 0
+
+    //榜单名字
+    var challengeDesc: String? = null
+
     @JSONField(name = "createdAt")
     var createdAt: Long = 0
     @JSONField(name = "feedID")

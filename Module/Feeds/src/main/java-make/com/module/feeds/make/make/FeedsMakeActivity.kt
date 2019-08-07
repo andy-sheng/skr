@@ -111,7 +111,9 @@ class FeedsMakeActivity : BaseActivity() {
                     if (result?.errno == 0) {
                         val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
                         val workName = result.data.getString("workName")
+                        val challengeDesc = result.data.getString("challengeDesc")
                         val songModel = FeedSongModel()
+                        songModel.challengeDesc = challengeDesc
                         songModel.songTpl = songTpl
                         songModel.challengeID = it.toLong()
                         songModel.workName = workName
@@ -197,7 +199,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun whenDataOk() {
-        mFeedsMakeModel?.songModel?.workName?.let {
+        mFeedsMakeModel?.songModel?.challengeDesc?.let {
             titleBar?.centerTextView?.text = it
         }
 
