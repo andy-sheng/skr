@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/textsize_10_dp"
         android:paddingTop="@dimen/view_4_dp"
-        android:text="歌名"
+        android:text="搜索榜单"
         android:textColor="@color/black_trans_20"
         android:textSize="@dimen/textsize_16_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
