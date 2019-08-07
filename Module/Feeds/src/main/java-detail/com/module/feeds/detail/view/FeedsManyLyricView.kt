@@ -61,10 +61,12 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .retryWhen(RxRetryAssist(3, ""))
-                        .subscribe(Consumer { lyricsReader ->
+                        .subscribe( { lyricsReader ->
                             MyLog.w(TAG, "onEventMainThread " + "play")
                             mFeedSongModel?.songTpl?.lrcTsReader = lyricsReader
                             whenReaderLoad(play)
+                        },{
+                            MyLog.e(TAG,it)
                         })
             }
         } else {
