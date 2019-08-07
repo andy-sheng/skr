@@ -139,6 +139,11 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
                             lyricTv.append(o);
                         }
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        MyLog.e(throwable);
+                    }
                 });
     }
 
