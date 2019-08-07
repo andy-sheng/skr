@@ -209,7 +209,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/view_5_dp"
-        android:src="@drawable/editor_reset"
+        android:src="@drawable/feeds_make_reset"
         app:layout_constraintBottom_toBottomOf="@+id/rensheng_iv"
         app:layout_constraintLeft_toRightOf="@+id/effect_iv"
         app:layout_constraintRight_toRightOf="parent" />

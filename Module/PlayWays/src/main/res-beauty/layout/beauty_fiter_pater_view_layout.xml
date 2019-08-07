@@ -25,7 +25,7 @@
         android:minHeight="@dimen/view_3_dp"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingRight="@dimen/view_10_dp"
-        android:progressDrawable="@drawable/beauty_control_seek_bar_bg"
+        android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
         android:thumb="@drawable/beauty_seekbar_thumb" />
 
 

@@ -381,7 +381,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_16_dp"
         android:padding="@dimen/view_4_dp"
-        app:src_selected_drawable="@drawable/feed_collection"
+        app:src_selected_drawable="@drawable/feed_collect_selected_icon"
         app:src_unSelected_drawable="@drawable/feed_not_collection"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/share_num_tv"
