@@ -208,6 +208,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 // 这样返回时能 resume 上
                 if (watchModel != null && watchModel.status == 2) {
                     startPlay(position, watchModel)
+                    if (!isHomePage()) {
+                        mAdapter?.mCurrentPlayPosition = null
+                        mAdapter?.mCurrentPlayModel = null
+                    }
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withSerializable("feed_model", watchModel)
                             .navigation()
