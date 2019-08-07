@@ -287,6 +287,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         hasLayouted = false
         wantPlaying = false
         mHandler.removeMessages(AVATAR_ANIM)
+        avatarContainer?.rotation = 0f
         avatarAnimation?.cancel()
         rotateAnimationStop?.cancel()
         rotateAnimationPlay?.cancel()
