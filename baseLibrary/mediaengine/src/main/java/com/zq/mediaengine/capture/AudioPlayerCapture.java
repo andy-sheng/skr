@@ -71,7 +71,6 @@ public class AudioPlayerCapture {
     private IPcmPlayer mPcmPlayer;
     private StcMgt mStcMgt;
     private AudioBufFormat mOutFormat;
-    // TODO: OpenSLES模式下，getPosition不准确，需要改进，这里暂时只能用AudioTrack
     private int mAudioPlayerType = AUDIO_PLAYER_TYPE_AUDIOTRACK;
     private boolean mPlayerTypeChanged = false;
     private boolean mMute = false;

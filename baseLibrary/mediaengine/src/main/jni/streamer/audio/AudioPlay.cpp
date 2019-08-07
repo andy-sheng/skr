@@ -11,6 +11,9 @@
 #undef LOG_TAG
 #define LOG_TAG "AudioPlay"
 
+#undef VERBOSE
+#define VERBOSE 0
+
 AudioPlay::AudioPlay():
     mMute(false),
     mNonBlock(false),
@@ -20,7 +23,10 @@ AudioPlay::AudioPlay():
     mFifoBuffer(NULL),
     mWriteCond(NULL),
     mState(STATE_IDLE),
-    mStart(false){
+    mStart(false),
+    mSamplesWritten(0),
+    mZeroSamplesEnqueue(0),
+    mSamplesEnqueue(0){
     memset(&mSLPlayer, 0, sizeof(mSLPlayer));
 }
 
@@ -43,6 +49,10 @@ int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSam
     mBufferSamples = bufferSamples;
     mFifoSizeInMs = fifoSizeInMs;
     mFrameSize = 2 * channels;
+
+    mSamplesWritten = 0;
+    mZeroSamplesEnqueue = 0;
+    mSamplesEnqueue = 0;
 
     mLastWriteTime = 0;
     mWriteInterval = mBufferSamples * 1000000 / mSampleRate;
@@ -176,6 +186,7 @@ int AudioPlay::write(uint8_t *inBuf, int inSize, bool nonBlock) {
         len += audio_utils_fifo_write(&mFifo, inBuf + len * mFrameSize,
                                       (size_t) (inSamples - len));
     }
+    mSamplesWritten += len;
     return len * mFrameSize;
 }
 
@@ -220,20 +231,28 @@ void AudioPlay::bqPlayerCallback(SLAndroidSimpleBufferQueueItf bq, void *context
                             thiz->mBufferSamples, thiz->mBuffer, size);
     }
 
-    int len;
+    int len = 0;
+    int samplesWritten = 0;
     memset(thiz->mBuffer, 0, size);
     do {
+        if (len > 0) {
+            LOGD("[AudioPlay][Play] %d samples flushed!", len);
+        }
         len = audio_utils_fifo_read(&thiz->mFifo, thiz->mBuffer, (size_t) thiz->mBufferSamples);
+        samplesWritten += len;
         if (len < thiz->mBufferSamples) {
             LOGD("[AudioPlay][Play] fifo empty, enqueue %d samples", len);
         }
-    } while((thiz->mFirstFrame || --readCount) && len == thiz->mBufferSamples);
+    } while(thiz->mNonBlock && (thiz->mFirstFrame || --readCount) && len == thiz->mBufferSamples);
     thiz->mFirstFrame = false;
 
     SLresult result = (*thiz->mSLPlayer.playerBufferQueue)->Enqueue(
             thiz->mSLPlayer.playerBufferQueue, thiz->mBuffer, size);
     if (result != SL_RESULT_SUCCESS) {
         LOGE("[AudioPlay][Play] Enqueue failed:%d",(int)result);
+    } else {
+        thiz->mSamplesEnqueue += samplesWritten;
+        thiz->mZeroSamplesEnqueue += thiz->mBufferSamples - samplesWritten;
     }
 
     // measure fifo size
@@ -398,6 +417,8 @@ SLresult AudioPlay::startPlayer() {
     if (result != SL_RESULT_SUCCESS) {
         LOGE("[start] Enqueue failed:%d", (int) result);
         //return result;
+    } else {
+        mZeroSamplesEnqueue += mBufferSamples;
     }
 
     result = (*mSLPlayer.playerPlay)->SetPlayState(mSLPlayer.playerPlay,
@@ -462,7 +483,17 @@ int64_t AudioPlay::getPosition() {
         LOGE("GetPosition failed:%d", (int) result);
         slPlayPos = 0;
     }
-    return (int64_t) slPlayPos;
+
+    int64_t writtenPos = mSamplesWritten * 1000 / mSampleRate;
+    int64_t enqueuePos = mSamplesEnqueue * 1000 / mSampleRate;
+    int64_t playPos = (int64_t) slPlayPos - mZeroSamplesEnqueue * 1000 / mSampleRate;
+
+    if (VERBOSE) {
+        LOGD("writtenPos %lld enqueuePos %lld slPlayPos %u zeroPos %lld playPos %lld",
+             writtenPos, enqueuePos, slPlayPos, mZeroSamplesEnqueue * 1000 / mSampleRate, playPos);
+    }
+
+    return playPos < 0 ? 0 : playPos;
 }
 
 void AudioPlay::release() {

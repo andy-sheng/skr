@@ -73,6 +73,10 @@ private:
     bool mFirstFrame;
     SLPlayer mSLPlayer;
 
+    int64_t mSamplesWritten;
+    int64_t mZeroSamplesEnqueue;
+    int64_t mSamplesEnqueue;
+
     bool mNonBlock;
     int mFifoSizeInMs;
     audio_utils_fifo mFifo;
