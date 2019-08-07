@@ -24,7 +24,7 @@
 
     </style>
 
-    <!--支持右滑推出的activity的设置-->
+    <!--支持右滑推出的activity的设置 默认的application 主题-->
     <style name="AppTheme_Swipe" parent="AppTheme_Base">
         <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>
         <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
