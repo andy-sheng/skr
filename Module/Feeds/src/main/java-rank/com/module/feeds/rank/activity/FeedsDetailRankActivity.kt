@@ -1,5 +1,6 @@
 package com.module.feeds.rank.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -195,6 +196,14 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return true
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        title = intent?.getStringExtra("rankTitle") ?: ""
+        challengeID = intent?.getLongExtra("challengeID", 0L) ?: 0
+        mTitlebar.centerTextView.text = title
+        initLoadData()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
