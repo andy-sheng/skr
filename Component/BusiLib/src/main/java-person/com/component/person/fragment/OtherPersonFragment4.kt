@@ -564,7 +564,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     return
                 }
                 if (mUserInfoModel != null) {
-                    val tag = mFollowIv.tag as Int
+                    var tag: Int? = null
+                    if (mFollowIv.tag != null) {
+                        tag = mFollowIv.tag as Int
+                    }
                     if (tag != null) {
                         if (tag == RELATION_FOLLOWED) {
                             unFollow(mUserInfoModel)
