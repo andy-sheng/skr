@@ -600,12 +600,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initBgView() {
         mGrabRoomBgFlag = getRootView().findViewById(R.id.grab_room_bg_flag);
+        mGrabRoomBgFlag.setVisibility(View.VISIBLE);
         if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET) {
             mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_simi);
         } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
             mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_haoyou);
         } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
             //mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_simi);
+            mGrabRoomBgFlag.setVisibility(GONE);
         } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PUBLIC) {
             mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_haohua);
         }
