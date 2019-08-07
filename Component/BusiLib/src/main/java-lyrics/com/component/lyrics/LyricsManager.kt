@@ -111,9 +111,9 @@ object LyricsManager {
                     if (lyricsReader.lrcLineInfos.isEmpty()) {
                         U.getToastUtil().showLong("时间戳歌词文件解析后内容为空 url=$url")
                     } else {
-                        lyricsReader.lrcLineInfos.iterator().forEach {
-                            it.value.lineLyrics = "${it.value.startTime}:${it.value.lineLyrics}"
-                        }
+//                        lyricsReader.lrcLineInfos.iterator().forEach {
+//                            it.value.lineLyrics = "${it.value.startTime}:${it.value.lineLyrics}"
+//                        }
                     }
                 }
             } catch (e: Exception) {
