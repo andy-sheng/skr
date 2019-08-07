@@ -129,11 +129,11 @@ public class ExoPlayer extends BasePlayer {
                         /**
                          * 播放完毕会回调这个
                          */
+                        reset();
+                        stopMusicPlayTimeListener();
                         if (mCallback != null) {
                             mCallback.onCompletion();
                         }
-                        reset();
-                        stopMusicPlayTimeListener();
                         break;
                     case Player.STATE_IDLE:
                         /**

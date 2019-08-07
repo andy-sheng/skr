@@ -75,12 +75,12 @@ public class AndroidMediaPlayer extends BasePlayer {
                  * 只要调用了reset 接口也会异步回调这个 ，这不是期望的
                  *  所以使用时间戳保护一下
                  */
+                mHandler.removeMessages(MSG_DECREASE_VOLUME);
+                stopMusicPlayTimeListener();
                 if (mCallback != null && mHasPrepared) {
                     reset();
                     mCallback.onCompletion();
                 }
-                mHandler.removeMessages(MSG_DECREASE_VOLUME);
-                stopMusicPlayTimeListener();
                 long a = System.currentTimeMillis() - startTs;
                 if (a > 0 && a < 200) {
                     /**
