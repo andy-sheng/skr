@@ -217,6 +217,19 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         }
     }
 
+    fun addShareCount(model: FeedsWatchModel){
+        launch {
+            val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.getInstance().uid.toInt())
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { mFeedServerApi.shareAdd(body) }
+            if (result.errno == 0) {
+                model.shareCnt = model.shareCnt.plus(1)
+            } else {
+
+            }
+        }
+    }
+
     override fun destroy() {
         super.destroy()
     }

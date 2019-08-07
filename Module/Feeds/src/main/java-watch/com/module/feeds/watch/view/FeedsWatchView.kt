@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
@@ -18,6 +19,8 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.videocache.MediaCacheManager
@@ -43,7 +46,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -135,6 +142,23 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                                         it.song?.songID, it.user?.userID)
                             }
                     mSharePanel?.show(ShareType.MUSIC)
+                    mSharePanel?.setUMShareListener(object : UMShareListener {
+                        override fun onResult(p0: SHARE_MEDIA?) {
+
+                        }
+
+                        override fun onCancel(p0: SHARE_MEDIA?) {
+
+                        }
+
+                        override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+
+                        }
+
+                        override fun onStart(p0: SHARE_MEDIA?) {
+                            mPersenter.addShareCount(it)
+                        }
+                    })
                 }
             }
 

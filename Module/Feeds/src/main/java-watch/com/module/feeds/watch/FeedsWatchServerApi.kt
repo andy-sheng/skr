@@ -88,4 +88,14 @@ interface FeedsWatchServerApi {
     @PUT("v1/feed/collect")
     fun collectFeed(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * 分享feeds +1
+     *{
+     *  "feedID": 0,
+     *  "userID": 0
+     *}
+     */
+    @PUT("/v1/feed/share")
+    fun shareAdd(@Body body: RequestBody): Call<ApiResult>
+
 }

@@ -19,11 +19,14 @@ import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.common.view.ex.ExTextView
+import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedsWatchModel
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -200,6 +203,32 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                             model.song?.songID, model.user?.userID)
                 }
         mSharePanel?.show(ShareType.MUSIC)
+        mSharePanel?.setUMShareListener(object : UMShareListener {
+            override fun onResult(p0: SHARE_MEDIA?) {
+
+            }
+
+            override fun onCancel(p0: SHARE_MEDIA?) {
+
+            }
+
+            override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+
+            }
+
+            override fun onStart(p0: SHARE_MEDIA?) {
+                launch {
+                    val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.getInstance().uid.toInt())
+                    val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                    val result = subscribe { mFeedServerApi.shareAdd(body) }
+                    if (result.errno == 0) {
+                        model.shareCnt = model.shareCnt.plus(1)
+                    } else {
+
+                    }
+                }
+            }
+        })
     }
 
     /**
