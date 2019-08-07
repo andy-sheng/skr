@@ -177,7 +177,9 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
                 if (avatarAnimation!!.isPaused) {
                     avatarAnimation?.resume()
                 } else {
-                    avatarAnimation?.start()
+                    if (!avatarAnimation!!.isRunning) {
+                        avatarAnimation?.start()
+                    }
                 }
             }
         }
