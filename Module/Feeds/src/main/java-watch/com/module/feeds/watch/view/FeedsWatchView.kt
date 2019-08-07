@@ -630,7 +630,9 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedWatchChangeEvent) {
         // 数据要更新了
-        mAdapter?.updateModelFromDetail(event.model)
+        event.model?.let {
+            mAdapter?.updateModelFromDetail(it)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

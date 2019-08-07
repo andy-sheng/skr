@@ -154,20 +154,27 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     // 将从detail中数据放到data中
-    fun updateModelFromDetail(model: FeedsWatchModel?): FeedsWatchModel? {
+    fun updateModelFromDetail(model: FeedsWatchModel) {
         if (model != null) {
             if (mCurrentPlayModel?.feedID == model.feedID && mCurrentPlayModel?.song?.songID == model.song?.songID) {
-                mCurrentPlayModel = model
+                updateProperty(mCurrentPlayModel, model)
             }
             for (i in 0 until mDataList.size) {
                 if (mDataList[i].feedID == model.feedID
                         && mDataList[i].song?.songID == model.song?.songID) {
-                    mDataList[i] = model
+                    updateProperty(mDataList[i], model)
                     notifyItemChanged(i)
                 }
             }
         }
-        return null
+    }
+
+    private fun updateProperty(model: FeedsWatchModel?, update: FeedsWatchModel) {
+        // 更新一下其中属性(几个可能变得数字)
+        model?.commentCnt = update.commentCnt
+        model?.isLiked = update.isLiked
+        model?.starCnt = update.starCnt
+        model?.shareCnt = update.shareCnt
     }
 
     fun delete(model: FeedsWatchModel) {
