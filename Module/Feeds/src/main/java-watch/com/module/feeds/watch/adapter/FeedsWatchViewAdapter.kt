@@ -63,7 +63,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             if (holder is FeedViewHolder) {
                 if (type == REFRESH_TYPE_PLAY) {
                     if (mDataList[position] == mCurrentPlayModel && playing) {
-                        MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay")
+                        MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position")
                         holder.startPlay()
                     } else {
                         holder.stopPlay(true)
@@ -188,16 +188,12 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
      */
     fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
         if (mCurrentPlayModel != model || !playing) {
+            val lastpost = mCurrentPlayPosition
             mCurrentPlayModel = model
+            mCurrentPlayPosition = pos
             playing = true
 
-            update(pos, mCurrentPlayModel, REFRESH_TYPE_PLAY)
-            if (pos != mCurrentPlayPosition) {
-                mCurrentPlayPosition?.let {
-                    notifyItemChanged(it, REFRESH_TYPE_PLAY)
-                }
-                mCurrentPlayPosition = pos
-            }
+            notifyDataSetChanged()
         }
     }
 

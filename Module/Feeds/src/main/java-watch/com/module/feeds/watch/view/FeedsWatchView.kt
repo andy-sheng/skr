@@ -419,7 +419,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun startPlay(pos: Int, model: FeedsWatchModel?) {
-        MyLog.d(TAG, "startPlayModel isSeleted = $isSeleted")
+        MyLog.d(TAG, "startPlayModel isSeleted = $isSeleted pos=$pos mCurrentPlayPosition=${mAdapter?.mCurrentPlayPosition}")
         mAdapter?.startPlayModel(pos, model)
         // 数据还是要更新，只是不播放，为恢复播放做准备
         if (!isSeleted) {
@@ -436,7 +436,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
      * 继续播放
      */
     private fun resumePlay() {
-        MyLog.d(TAG, "resumePlay fragment.fragmentVisible = ${fragment.fragmentVisible}")
+        MyLog.d(TAG, "resumePlay isSeleted= $isSeleted")
         if (!isSeleted) {
             mAdapter?.pausePlayModel()
             return
