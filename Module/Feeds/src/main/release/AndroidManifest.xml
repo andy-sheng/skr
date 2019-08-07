@@ -39,6 +39,7 @@
             android:name=".make.FeedSelectModeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTranslucentTheme"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
