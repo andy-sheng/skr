@@ -81,6 +81,7 @@ public class VoiceScaleView extends View {
 
         typedArray.recycle();
 
+        MyLog.e("setLayerType from VoiceScaleView");
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         mLeftBgPaint = new com.common.view.ExPaint();

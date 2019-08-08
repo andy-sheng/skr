@@ -11,6 +11,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.common.base.R
+import com.common.log.MyLog
 import com.opensource.svgaplayer.utils.SVGARange
 import java.lang.ref.WeakReference
 import java.net.URL
@@ -60,7 +61,8 @@ open class SVGAImageView : ImageView {
 
     private fun setSoftwareLayerType() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            MyLog.e("setLayerType from SVGAImageView")
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         }
     }
 

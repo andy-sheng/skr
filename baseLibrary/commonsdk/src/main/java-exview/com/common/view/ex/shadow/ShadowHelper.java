@@ -26,6 +26,7 @@ public class ShadowHelper {
         //MyLog.d(TAG,"draw" + " canvas=" + canvas + " view=" + view + " config=" + config);
         View parent = (View) view.getParent();
         if (parent.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
+            MyLog.e("setLayerType from ShadowHelper");
             parent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             return;
         }
