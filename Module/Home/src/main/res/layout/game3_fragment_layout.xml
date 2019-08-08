@@ -4,38 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="@color/colorPrimary" />
+
     <ImageView
         android:id="@+id/navigation_bg_iv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_72_dp"
         android:background="#7088FF"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <com.common.view.viewpager.SlidingTabLayout
         android:id="@+id/game_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_36_dp"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <com.common.view.viewpager.NestViewPager
         android:id="@+id/game_vp"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/view_16_dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_16_dp"
         android:layout_weight="1"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:overScrollMode="never"
         android:requiresFadingEdge="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_tab" />
 
 </android.support.constraint.ConstraintLayout>

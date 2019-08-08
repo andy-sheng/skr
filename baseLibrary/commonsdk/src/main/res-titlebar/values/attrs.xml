@@ -9,6 +9,8 @@
         <attr name="statusBarColor" format="color" />
         <!-- 标题栏高度 -->
         <attr name="titleBarHeight" format="dimension" />
+        <!-- 是否显示主界面 -->
+        <attr name="showMainView" format="boolean"/>
         <!-- 显示标题栏分割线 -->
         <attr name="showBottomLine" format="boolean" />
         <!-- 标题栏分割线颜色 -->

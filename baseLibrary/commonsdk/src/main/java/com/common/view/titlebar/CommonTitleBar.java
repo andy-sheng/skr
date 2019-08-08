@@ -127,6 +127,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private int titleBarHeight;                         // 标题栏高度
     private int statusBarColor;                         // 状态栏颜色
 
+    private boolean showMainView;                       // 是否展示主视图
     private boolean showBottomLine;                     // 是否显示底部分割线
     private int bottomLineColor;                        // 分割线颜色
     private float bottomShadowHeight;                   // 底部阴影高度
@@ -214,6 +215,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         titleBarHeight = (int) array.getDimension(R.styleable.CommonTitleBar_titleBarHeight, U.getDisplayUtils().dip2px(context, 44));
         statusBarColor = array.getColor(R.styleable.CommonTitleBar_statusBarColor, Color.parseColor("#ffffff"));
 
+        showMainView = array.getBoolean(R.styleable.CommonTitleBar_showMainView, true);
         showBottomLine = array.getBoolean(R.styleable.CommonTitleBar_showBottomLine, true);
         bottomLineColor = array.getColor(R.styleable.CommonTitleBar_bottomLineColor, Color.parseColor("#dddddd"));
         bottomShadowHeight = array.getDimension(R.styleable.CommonTitleBar_bottomShadowHeight, U.getDisplayUtils().dip2px(context, 0));
@@ -296,23 +298,25 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             addView(viewStatusBarFill, statusBarParams);
         }
         // 构建主视图
-        rlMain = new RelativeLayout(context);
-        rlMain.setId(generateViewId());
-        rlMain.setBackgroundColor(titleBarColor);
-        LayoutParams mainParams = new LayoutParams(MATCH_PARENT, titleBarHeight);
-        if (fillStatusBar && transparentStatusBar) {
-            mainParams.addRule(RelativeLayout.BELOW, viewStatusBarFill.getId());
-        } else {
-            mainParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            mainParams.topMargin = U.getStatusBarUtil().getStatusBarHeight(U.app());
+        if (showMainView) {
+            rlMain = new RelativeLayout(context);
+            rlMain.setId(generateViewId());
+            rlMain.setBackgroundColor(titleBarColor);
+            LayoutParams mainParams = new LayoutParams(MATCH_PARENT, titleBarHeight);
+            if (fillStatusBar && transparentStatusBar) {
+                mainParams.addRule(RelativeLayout.BELOW, viewStatusBarFill.getId());
+            } else {
+                mainParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                mainParams.topMargin = U.getStatusBarUtil().getStatusBarHeight(U.app());
+            }
+            // 计算主布局高度
+            if (showBottomLine) {
+                mainParams.height = titleBarHeight - Math.max(1, U.getDisplayUtils().dip2px(context, 0.4f));
+            } else {
+                mainParams.height = titleBarHeight;
+            }
+            addView(rlMain, mainParams);
         }
-        // 计算主布局高度
-        if (showBottomLine) {
-            mainParams.height = titleBarHeight - Math.max(1, U.getDisplayUtils().dip2px(context, 0.4f));
-        } else {
-            mainParams.height = titleBarHeight;
-        }
-        addView(rlMain, mainParams);
         // 构建分割线视图
         if (showBottomLine) {
             // 已设置显示标题栏分隔线,5.0以下机型,显示分隔线
@@ -338,14 +342,16 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
      * @param context
      */
     private void initMainViews(Context context) {
-        if (leftType != TYPE_LEFT_NONE) {
-            initMainLeftViews(context);
-        }
-        if (rightType != TYPE_RIGHT_NONE) {
-            initMainRightViews(context);
-        }
-        if (centerType != TYPE_CENTER_NONE) {
-            initMainCenterViews(context);
+        if (showMainView) {
+            if (leftType != TYPE_LEFT_NONE) {
+                initMainLeftViews(context);
+            }
+            if (rightType != TYPE_RIGHT_NONE) {
+                initMainRightViews(context);
+            }
+            if (centerType != TYPE_CENTER_NONE) {
+                initMainCenterViews(context);
+            }
         }
     }
 
