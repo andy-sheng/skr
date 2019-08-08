@@ -179,6 +179,10 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
         }
     }
 
+    fun destory(){
+
+    }
+
     interface AppCanSrollListener {
         fun notifyAppbarSroll(canScroll: Boolean)
     }

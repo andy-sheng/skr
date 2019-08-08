@@ -711,6 +711,15 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     public void destroy() {
         super.destroy();
+        if (mPhotoWallView != null) {
+            mPhotoWallView.destory();
+        }
+        if (mProducationWallView != null) {
+            mProducationWallView.destory();
+        }
+        if (mFeedsWallView != null) {
+            mFeedsWallView.destroy();
+        }
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
         }

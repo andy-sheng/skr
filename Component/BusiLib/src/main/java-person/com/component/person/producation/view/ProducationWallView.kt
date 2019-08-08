@@ -272,4 +272,9 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
             mConfirmDialog!!.dismiss(false)
         }
     }
+
+    fun destory() {
+        SinglePlayer.reset(playerTag)
+        SinglePlayer.removeCallback(playerTag)
+    }
 }

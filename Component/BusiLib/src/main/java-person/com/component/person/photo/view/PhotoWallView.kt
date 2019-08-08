@@ -215,8 +215,10 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (mPhotoCorePresenter != null) {
-            mPhotoCorePresenter!!.destroy()
-        }
+        mPhotoCorePresenter?.destroy()
+    }
+
+    fun destory() {
+
     }
 }

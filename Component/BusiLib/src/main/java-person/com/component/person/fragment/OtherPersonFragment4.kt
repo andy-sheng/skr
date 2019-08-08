@@ -806,6 +806,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun destroy() {
         super.destroy()
+        mOtherPhotoWallView?.destory()
+        mFeedsWallView?.destroy()
         mDialogPlus?.dismiss()
         mPersonMoreOpView?.dismiss()
         mEditRemarkDialog?.dismiss(false)
