@@ -16,7 +16,6 @@ import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.common.player.SinglePlayer
 import com.module.feeds.R
 
 class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
@@ -141,7 +140,10 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         playing = true
         rotateAnimationStop?.pause()
         rotateAnimationPlay?.start()
-        mHandler.sendEmptyMessageDelayed(AVATAR_ANIM, 800)
+
+        if (isBufferingOk) {
+            mHandler.sendEmptyMessageDelayed(AVATAR_ANIM, 800)
+        }
     }
 
     fun play() {
@@ -150,14 +152,12 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     fun playAvatarAnim() {
         avatarAnimation?.let {
-            if (SinglePlayer.isBufferingOk) {
-                if (it.isStarted) {
-                    it.resume()
-                } else {
-                    avatarContainer?.pivotX = avatarContainer.width / 2f
-                    avatarContainer?.pivotY = avatarContainer.height / 2f
-                    it.start()
-                }
+            if (it.isStarted) {
+                it.resume()
+            } else {
+                avatarContainer?.pivotX = avatarContainer.width / 2f
+                avatarContainer?.pivotY = avatarContainer.height / 2f
+                it.start()
             }
         }
     }
