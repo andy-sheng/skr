@@ -3,6 +3,7 @@ package com.zq.mediaengine.capture;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.os.ConditionVariable;
+import android.util.Log;
 
 import com.zq.mediaengine.framework.ImgTexFormat;
 import com.zq.mediaengine.framework.ImgTexFrame;
@@ -278,7 +279,18 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             formatChanged = true;
         }
 
-        mTextureId = GlUtil.loadTexture(img, mTextureId);
+        try {
+            mTextureId = GlUtil.loadTexture(img, mTextureId);
+        } catch (Exception e) {
+            Log.e(TAG, "loadTexture failed");
+            e.printStackTrace();
+
+            if (recycle) {
+                img.recycle();
+            }
+            return;
+        }
+
         if (recycle) {
             img.recycle();
         }
@@ -330,7 +342,15 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
         }
 
         int sw = stride / 4;
-        mTextureId = GlUtil.loadTexture(buf, sw, srcHeight, mTextureId);
+
+        try {
+            mTextureId = GlUtil.loadTexture(buf, sw, srcHeight, mTextureId);
+        } catch (Exception e) {
+            Log.e(TAG, "loadTexture failed");
+            e.printStackTrace();
+            return;
+        }
+
         if (mTextureId == ImgTexFrame.NO_TEXTURE) {
             return;
         }
@@ -385,7 +405,14 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             mYUVLoader = new YUVLoader(mGLRender);
         }
 
-        mTextureId = mYUVLoader.loadTexture(buf, srcWidth, srcHeight, strides);
+        try {
+            mTextureId = mYUVLoader.loadTexture(buf, srcWidth, srcHeight, strides);
+        } catch (Exception e) {
+            Log.e(TAG, "loadTexture with yuv data failed");
+            e.printStackTrace();
+            return;
+        }
+
         if (mTextureId == ImgTexFrame.NO_TEXTURE) {
             return;
         }
