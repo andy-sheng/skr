@@ -146,7 +146,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
         }
     }
 
-    fun play() {
+    private fun play() {
         play(true)
     }
 

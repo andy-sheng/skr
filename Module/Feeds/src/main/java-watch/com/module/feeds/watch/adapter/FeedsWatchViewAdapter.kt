@@ -1,5 +1,7 @@
 package com.module.feeds.watch.adapter
 
+import android.os.Handler
+import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,6 +25,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     private val mPersonEmptyItemType = 1
     private val mPersonNormalItemType = 2
     private val mHomeNormalItemType = 3
+    private val uiHanlder = Handler(Looper.getMainLooper())
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     }
@@ -62,8 +65,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
             if (holder is FeedViewHolder) {
                 if (type == REFRESH_TYPE_PLAY) {
+                    MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position type=$type mCurrentPlayModel=$mCurrentPlayModel mCurrentPlayPosition=$mCurrentPlayPosition playing=$playing")
                     if (mDataList[position] == mCurrentPlayModel && playing) {
-                        MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position")
                         holder.startPlay()
                     } else {
                         holder.stopPlay(true)
@@ -186,14 +189,34 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     /**
      * 请求播放
      */
+//    fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
+//        if (mCurrentPlayModel != model || !playing) {
+//            val lastpost = mCurrentPlayPosition
+//            mCurrentPlayModel = model
+//            mCurrentPlayPosition = pos
+//            playing = true
+//
+//            notifyDataSetChanged()
+//        }
+//    }
+
     fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
         if (mCurrentPlayModel != model || !playing) {
-            val lastpost = mCurrentPlayPosition
-            mCurrentPlayModel = model
-            mCurrentPlayPosition = pos
+            var lastPos:Int? = null
+            if(mCurrentPlayModel!=model){
+                mCurrentPlayModel = model
+                lastPos = mCurrentPlayPosition
+                mCurrentPlayPosition = pos
+            }
             playing = true
-
-            notifyDataSetChanged()
+            MyLog.d("FeedsWatchViewAdapter","now pos=$pos")
+            notifyItemChanged(pos, REFRESH_TYPE_PLAY)
+            lastPos?.let {
+                MyLog.d("FeedsWatchViewAdapter","last pos=$it")
+                uiHanlder.post {
+                    notifyItemChanged(it, REFRESH_TYPE_PLAY)
+                }
+            }
         }
     }
 
