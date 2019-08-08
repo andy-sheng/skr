@@ -37,6 +37,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
         // keep eye on if glcontext recreated
         mGLRender = glRender;
         mGLRender.addListener(mOnReadyListener);
+        mGLRender.addListener(mOnFboCacheClearedListener);
         mGLRender.addListener(mOnReleasedListener);
         mSyncMode = false;
     }
@@ -238,6 +239,7 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
     public void release() {
         disconnect(true);
         mGLRender.removeListener(mOnReadyListener);
+        mGLRender.removeListener(mOnFboCacheClearedListener);
         mGLRender.removeListener(mOnReleasedListener);
         reset();
         mYUVLoader = null;
@@ -413,6 +415,16 @@ public class ImgTexSrcPin extends SrcPin<ImgTexFrame> {
             mTextureId = ImgTexFrame.NO_TEXTURE;
             if (mYUVLoader != null) {
                 mYUVLoader.reset();
+            }
+        }
+    };
+
+    private GLRender.OnFboCacheClearedListener mOnFboCacheClearedListener = new GLRender.OnFboCacheClearedListener() {
+        @Override
+        public void onFboCacheClearedListener() {
+            if (mYUVLoader != null) {
+                mTextureId = ImgTexFrame.NO_TEXTURE;
+                mYUVLoader.onFboCacheCleared();
             }
         }
     };

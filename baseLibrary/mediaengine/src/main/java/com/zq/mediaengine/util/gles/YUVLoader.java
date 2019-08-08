@@ -71,6 +71,10 @@ public class YUVLoader {
         }
     }
 
+    public void onFboCacheCleared() {
+        mOutTexture = ImgTexFrame.NO_TEXTURE;
+    }
+
     public int loadTexture(ByteBuffer buf, int width, int height, int strides[]) {
         if (buf == null || buf.limit() == 0 || width <= 0 || height <= 0) {
             return ImgTexFrame.NO_TEXTURE;

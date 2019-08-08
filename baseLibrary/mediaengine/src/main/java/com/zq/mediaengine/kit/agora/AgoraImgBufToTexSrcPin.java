@@ -11,7 +11,7 @@ import io.agora.rtc.mediaio.IVideoSink;
 import io.agora.rtc.mediaio.MediaIO;
 
 public class AgoraImgBufToTexSrcPin extends ImgTexSrcPin implements IVideoSink {
-    private final static String TAG = "AgoraImgTexSrcPin";
+    private final static String TAG = "AgoraImgBufToTexSrcPin";
 
     public AgoraImgBufToTexSrcPin(GLRender glRender) {
         super(glRender);
