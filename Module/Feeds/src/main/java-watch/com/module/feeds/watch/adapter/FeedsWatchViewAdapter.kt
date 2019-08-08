@@ -130,7 +130,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
     fun update(position: Int, model: FeedsWatchModel?, refreshType: Int) {
         if (mDataList.isNotEmpty()) {
-            if (mDataList[position] == model) {
+            if (position < mDataList.size && mDataList[position] == model) {
                 // 位置是对的
                 notifyItemChanged(position, refreshType)
                 return
