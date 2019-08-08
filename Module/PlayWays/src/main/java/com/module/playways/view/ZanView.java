@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.SurfaceTexture;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -126,8 +127,14 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
         Canvas canvas = null;
         try {
             canvas = lockCanvas();
-            /**清除画面*/
-            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            /**清除画面 drawColor 导致的崩溃有点多*/
+            //canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
+            Paint paint = new Paint();
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            canvas.drawPaint(paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
+
             /**对所有心进行遍历绘制*/
             java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
             while (iterable.hasNext()) {
