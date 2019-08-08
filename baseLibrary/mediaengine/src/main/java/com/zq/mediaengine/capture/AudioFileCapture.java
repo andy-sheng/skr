@@ -103,6 +103,7 @@ public class AudioFileCapture {
     private long mCurrentPosition;
     private long mOffsetCurrentPosition;
     private long mSamplesWritten;
+    private long mAccurateSeekPosition;
 
     private OnPreparedListener mOnPreparedListener;
     private OnFirstAudioFrameDecodedListener mOnFirstAudioFrameDecodedListener;
@@ -628,6 +629,7 @@ public class AudioFileCapture {
         mPaused = false;
         mLastUpdateTime = 0;
         mIsSeeking = false;
+        mAccurateSeekPosition = Long.MIN_VALUE;
         mDuration = 0;
         mOffsetDuration = 0;
         mBasePosition = 0;
@@ -704,9 +706,13 @@ public class AudioFileCapture {
         mMediaCodec.flush();
         mOffsetCurrentPosition = ms;
         mCurrentPosition = ms + mOffset;
+        mAccurateSeekPosition = mCurrentPosition;
         mSamplesWritten = 0;
         mIsSeeking = true;
         mMediaExtractor.seekTo(mCurrentPosition * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
+
+        long seeked = mMediaExtractor.getSampleTime() / 1000;
+        Log.d(TAG, "doSeek pos: " + mAccurateSeekPosition + " seeked: " + seeked);
 
         // seek后发送flush和onFormatChanged事件
         AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
@@ -795,10 +801,36 @@ public class AudioFileCapture {
                 if (VERBOSE) Log.d(TAG, "drain decoder " + mBufferInfo.size);
 
                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
-                outputBuffer.position(mBufferInfo.offset);
+                // accurate seek
+                int offSize = 0;
+                if (mAccurateSeekPosition != Long.MIN_VALUE) {
+                    long curPts = (mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
+                    long durSamples = mBufferInfo.size / mOutFormat.channels / 2;
+                    long dur = durSamples * 1000 / mOutFormat.sampleRate;
+                    long diff = mAccurateSeekPosition - curPts;
+                    long diffSamples = diff * mOutFormat.sampleRate / 1000;
+                    Log.d(TAG, "[Accurate seek] seek: " + mAccurateSeekPosition +
+                            " pts: " + curPts + " dur: " + dur + " diff: " + diff +
+                            " oriSize: " + mBufferInfo.size);
+                    if (diff <= 0) {
+                        mAccurateSeekPosition = Long.MIN_VALUE;
+                    } else if (diffSamples >= durSamples) {
+                        Log.d(TAG, "[Accurate seek] drop current frame with samples: " + durSamples);
+                        mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+                        continue;
+                    } else {
+                        Log.d(TAG, "[Accurate seek] drop samples: " + diffSamples);
+                        offSize = (int)diffSamples * mOutFormat.channels * 2;
+                        mAccurateSeekPosition = Long.MIN_VALUE;
+                    }
+                }
+                outputBuffer.position(mBufferInfo.offset + offSize);
                 outputBuffer.limit(mBufferInfo.size + mBufferInfo.offset);
 
                 ByteBuffer buffer = applyVolume(outputBuffer);
+                if (offSize > 0) {
+                    Log.d(TAG, "[Accurate seek] outBuffer: " + buffer);
+                }
                 AudioBufFrame frame = new AudioBufFrame(mOutFormat, buffer,
                         mBufferInfo.presentationTimeUs / 1000);
                 if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
