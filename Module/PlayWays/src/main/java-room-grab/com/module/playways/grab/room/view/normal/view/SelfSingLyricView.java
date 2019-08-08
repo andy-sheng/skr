@@ -112,10 +112,10 @@ public class SelfSingLyricView extends ExViewStub {
         configParams.setManyLyricsView(mManyLyricsView);
         configParams.setVoiceScaleView(mVoiceScaleView);
         configParams.setLyricUrl(curSong.getLyric());
-        configParams.setLyricBeginTs( curSong.getRankLrcBeginT());
-        configParams.setLyricEndTs( curSong.getRankLrcEndT());
+        configParams.setLyricBeginTs( curSong.getStandLrcBeginT());
+        configParams.setLyricEndTs( curSong.getStandLrcBeginT() + totalTs);
         configParams.setAccBeginTs(curSong.getBeginMs());
-        configParams.setAccEndTs(curSong.getEndMs());
+        configParams.setAccEndTs(curSong.getBeginMs() + totalTs);
         configParams.setAuthorName(curSong.getUploaderName());
         mLyricAndAccMatchManager.setArgs(configParams);
         SongModel finalCurSong = curSong;
