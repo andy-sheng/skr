@@ -125,18 +125,14 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             feedAutoScrollLyricView.setSongModel(it, -1)
         }
         // 加载歌词
-        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedAutoScrollLyricView.visibility = View.GONE
             feedWatchManyLyricView.loadLyric()
         } else {
             feedAutoScrollLyricView.loadLyric()
             feedWatchManyLyricView.visibility = View.GONE
         }
-        if (MyLog.isDebugLogOpen()) {
-            mDebugTv.text = "playDurMs:${model?.song?.playDurMs} \n" +
-                    "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}\n" +
-                    "${model?.song?.playURL?.substring((model?.song?.playURL?.length ?: 10) - 10)}"
-        }
+        tryBindDebugView()
     }
 
     // 刷新喜欢图标和数字
@@ -169,7 +165,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         this.model = watchModel
         // 播放歌词 不一定是从头开始播
         // 有可能从头播 也有可能继续播
-        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedAutoScrollLyricView.visibility = View.GONE
             feedWatchManyLyricView.seekTo(model?.song?.playCurPos ?: 0)
             feedWatchManyLyricView.resume()
@@ -178,6 +174,10 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             feedAutoScrollLyricView.resume()
             feedWatchManyLyricView.visibility = View.GONE
         }
+        tryBindDebugView()
+    }
+
+    private fun tryBindDebugView() {
         if (MyLog.isDebugLogOpen()) {
             mDebugTv.text = "uid:${model?.user?.userID}\n" +
                     "songtype:${model?.song?.songType}\n" +
@@ -190,7 +190,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     fun pauseWhenBuffering(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
-        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedWatchManyLyricView.pause()
         } else {
             feedAutoScrollLyricView.pause()
@@ -201,7 +201,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     fun resumeWhenBufferingEnd(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
-        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs)) {
+        if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedWatchManyLyricView.resume()
         } else {
             feedAutoScrollLyricView.resume()
