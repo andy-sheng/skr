@@ -23,10 +23,13 @@ import com.module.home.game.view.*
 import com.module.home.model.GameKConfigModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import com.common.view.titlebar.CommonTitleBar
+
 
 // 主页
 class GameFragment3 : BaseFragment(), IGameView3 {
 
+    lateinit var mTitle: CommonTitleBar
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
@@ -46,6 +49,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        mTitle = rootView.findViewById(R.id.title) as CommonTitleBar
         mNavigationBgIv = rootView.findViewById<View>(R.id.navigation_bg_iv) as ImageView
         mGameTab = rootView.findViewById<View>(R.id.game_tab) as SlidingTabLayout
         mGameVp = rootView.findViewById<View>(R.id.game_vp) as NestViewPager
@@ -163,6 +167,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         if (startColor == endColor) {
             return
         }
+        mTitle.setStatusBarColor(endColor)
         mNavigationBgIv.setBackgroundColor(endColor)
 
         if (alphaAnimation == null) {
@@ -170,6 +175,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             alphaAnimation?.duration = 1000
         }
         mNavigationBgIv.startAnimation(alphaAnimation)
+        mTitle.startAnimation(alphaAnimation)
     }
 
     override fun onFragmentVisible() {

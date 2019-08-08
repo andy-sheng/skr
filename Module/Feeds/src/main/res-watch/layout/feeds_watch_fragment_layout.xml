@@ -5,14 +5,23 @@
     android:layout_height="match_parent"
     android:background="#EBEDF2">
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="#EBEDF2" />
+
     <ImageView
         android:id="@+id/navigation_bg_iv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_62_dp"
         android:background="#EBEDF2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <View
         android:layout_width="match_parent"
@@ -25,10 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_36_dp"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/feed_challenge_tv"
