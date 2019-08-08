@@ -371,43 +371,45 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                             maxPercent = 0f
                             model = null
                             while (i <= lastVisibleItem && !isFound) {
-                                val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
-                                val location1 = IntArray(2)
-                                val location2 = IntArray(2)
-                                itemView.getLocationOnScreen(location1)
-                                mRecyclerView.getLocationOnScreen(location2)
-                                val top = location1[1] - location2[1]
-                                when {
-                                    top < 0 -> {
-                                        // 顶部的
-                                        if ((itemView.height + top) >= (cdHeight + bottomHeight)) {
+                                if (mRecyclerView.findViewHolderForAdapterPosition(i) != null) {
+                                    val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
+                                    val location1 = IntArray(2)
+                                    val location2 = IntArray(2)
+                                    itemView.getLocationOnScreen(location1)
+                                    mRecyclerView.getLocationOnScreen(location2)
+                                    val top = location1[1] - location2[1]
+                                    when {
+                                        top < 0 -> {
+                                            // 顶部的
+                                            if ((itemView.height + top) >= (cdHeight + bottomHeight)) {
+                                                percents[i - firstVisibleItem] = 100f
+                                            } else {
+                                                percents[i - firstVisibleItem] = (itemView.height + top - bottomHeight).toFloat() / cdHeight.toFloat()
+                                            }
+                                        }
+                                        (top + itemView.height) < mRecyclerView.height -> {
                                             percents[i - firstVisibleItem] = 100f
-                                        } else {
-                                            percents[i - firstVisibleItem] = (itemView.height + top - bottomHeight).toFloat() / cdHeight.toFloat()
+                                        }
+                                        else -> {
+                                            // 底部的
+                                            if ((mRecyclerView.height - top) >= (itemView.height - bottomHeight)) {
+                                                percents[i - firstVisibleItem] = 100f
+                                            } else {
+                                                percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - bottomHeight).toFloat() / cdHeight.toFloat()
+                                            }
                                         }
                                     }
-                                    (top + itemView.height) < mRecyclerView.height -> {
-                                        percents[i - firstVisibleItem] = 100f
-                                    }
-                                    else -> {
-                                        // 底部的
-                                        if ((mRecyclerView.height - top) >= (itemView.height - bottomHeight)) {
-                                            percents[i - firstVisibleItem] = 100f
-                                        } else {
-                                            percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - bottomHeight).toFloat() / cdHeight.toFloat()
-                                        }
-                                    }
-                                }
-                                if (percents[i - firstVisibleItem] == 100f) {
-                                    isFound = true
-                                    maxPercent = 100f
-                                    model = mAdapter?.mDataList?.get(i)
-                                    postion = i
-                                } else {
-                                    if (percents[i - firstVisibleItem] > maxPercent) {
-                                        maxPercent = percents[i - firstVisibleItem]
+                                    if (percents[i - firstVisibleItem] == 100f) {
+                                        isFound = true
+                                        maxPercent = 100f
                                         model = mAdapter?.mDataList?.get(i)
                                         postion = i
+                                    } else {
+                                        if (percents[i - firstVisibleItem] > maxPercent) {
+                                            maxPercent = percents[i - firstVisibleItem]
+                                            model = mAdapter?.mDataList?.get(i)
+                                            postion = i
+                                        }
                                     }
                                 }
                                 i++
