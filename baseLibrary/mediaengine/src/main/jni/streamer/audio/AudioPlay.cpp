@@ -25,10 +25,12 @@ AudioPlay::AudioPlay():
 }
 
 AudioPlay::~AudioPlay() {
+    LOGD("~AudioPlay");
     release();
 }
 
 int AudioPlay::config(int sampleFmt, int sampleRate, int channels, int bufferSamples, int fifoSizeInMs) {
+    LOGD("config %dHz %d channels, bufferSamples: %d, fifoSizeInMs: %d", sampleRate, channels, bufferSamples, fifoSizeInMs);
     // destroy previous instance
     release();
 

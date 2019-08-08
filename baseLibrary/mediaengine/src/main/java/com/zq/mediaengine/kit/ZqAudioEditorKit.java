@@ -577,14 +577,21 @@ public class ZqAudioEditorKit {
      */
     public synchronized void release() {
         Log.d(TAG, "release");
-        for (int i = 0; i < MAX_CHN; i++) {
+        mAudioMixer.getSrcPin().disconnect(false);
+        mAudioEncoder.release();
+        mAudioPreview.release();
+
+        // 如果有连接Mixer, 主idx的AudioSource需要最后release
+        for (int i = 1; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
                 mAudioSource[i].capture.release();
                 mAudioSource[i] = null;
             }
         }
-        mAudioEncoder.release();
-        mAudioPreview.release();
+        if (mAudioSource[0] != null) {
+            mAudioSource[0].capture.release();
+            mAudioSource[0] = null;
+        }
         mState = STATE_IDLE;
     }
 
