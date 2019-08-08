@@ -179,7 +179,9 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             feedWatchManyLyricView.visibility = View.GONE
         }
         if (MyLog.isDebugLogOpen()) {
-            mDebugTv.text = "playDurMs:${model?.song?.playDurMs} \n" +
+            mDebugTv.text = "uid:${model?.user?.userID}\n" +
+                    "songtype:${model?.song?.songType}\n" +
+                    "playDurMs:${model?.song?.playDurMs} \n" +
                     "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}\n" +
                     "${model?.song?.playURL?.substring((model?.song?.playURL?.length ?: 10) - 10)}"
         }
