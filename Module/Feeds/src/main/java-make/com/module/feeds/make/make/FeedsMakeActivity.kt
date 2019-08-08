@@ -100,7 +100,11 @@ class FeedsMakeActivity : BaseActivity() {
 
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                finish()
+                if (MyLog.isDebugLogOpen()) {
+                    openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
+                } else {
+                    finish()
+                }
             }
         })
 
@@ -405,7 +409,8 @@ class FeedsMakeActivity : BaseActivity() {
             val configParams = LyricAndAccMatchManager.ConfigParams().apply {
                 manyLyricsView = this@FeedsMakeActivity.manyLyricsView
                 voiceScaleView = this@FeedsMakeActivity.voiceScaleView
-                lyricUrl = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+                //lyricUrl = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+                lyricReader = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader
                 accBeginTs = 0
                 accEndTs = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt() ?: 0
                 lyricBeginTs = 0
@@ -498,13 +503,19 @@ class FeedsMakeActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100) {
-            if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 100) {
                 startRecord()
+            } else if (requestCode == 101) {
+                // 改完歌词
+                mFeedsMakeModel = sFeedsMakeModelHolder
+                sFeedsMakeModelHolder = null
+                initLyricView()
             } else {
                 finish()
             }
         }
+
     }
 
     private fun stopRecord() {

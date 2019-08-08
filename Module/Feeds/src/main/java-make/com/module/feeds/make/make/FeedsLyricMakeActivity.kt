@@ -1,5 +1,6 @@
 package com.module.feeds.make.make
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -36,7 +37,31 @@ class FeedsLyricMakeActivity : BaseActivity() {
         lyricRv.layoutManager = LinearLayoutManager(this)
         lyricAdapter = FeedsLyricMakeAdapter()
         lyricRv.adapter = lyricAdapter
-
+        titleBar.leftImageButton.setOnClickListener {
+            //  将歌词文件写入
+            if (mFeedsMakeModel?.withBgm == true) {
+                lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+                    if (index == 0) {
+                        mFeedsMakeModel?.songModel?.workName = lyricItem.newContent
+                    } else {
+                        mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.get(index - 1)?.lineLyrics = lyricItem.newContent
+                    }
+                }
+            } else {
+                val sb = StringBuilder()
+                lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+                    if (index == 0) {
+                        mFeedsMakeModel?.songModel?.workName = lyricItem.newContent
+                    } else {
+                        sb.append(lyricItem.newContent).append("\n")
+                    }
+                }
+                mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr = sb.toString()
+            }
+            sFeedsMakeModelHolder = mFeedsMakeModel
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
         val list = ArrayList<LyricItem>()
         if (mFeedsMakeModel?.withBgm == true) {
             val size = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.size
@@ -84,11 +109,15 @@ class FeedsLyricMakeActivity : BaseActivity() {
     override fun useEventBus(): Boolean {
         return false
     }
+
+    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+        return true
+    }
 }
 
 var sFeedsMakeModelHolder: FeedsMakeModel? = null
 
 fun openLyricMakeActivity(mFeedsMakeModel: FeedsMakeModel? = null, activity: BaseActivity) {
     sFeedsMakeModelHolder = mFeedsMakeModel
-    activity.startActivity(Intent(activity, FeedsLyricMakeActivity::class.java))
+    activity.startActivityForResult(Intent(activity, FeedsLyricMakeActivity::class.java), 101)
 }

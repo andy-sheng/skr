@@ -123,44 +123,51 @@ class LyricAndAccMatchManager {
         if (mDisposable != null) {
             mDisposable!!.dispose()
         }
-        mDisposable = LyricsManager
-                .loadStandardLyric(params?.lyricUrl)
-                .subscribe({ lyricsReader ->
-                    MyLog.w(TAG, "onEventMainThread " + "play")
-                    mListener?.onLyricParseSuccess(lyricsReader)
-                    params?.manyLyricsView?.visibility = View.VISIBLE
-                    params?.manyLyricsView?.initLrcData()
-                    lyricsReader.cut(params?.lyricBeginTs?.toLong()
-                            ?: 0, params?.lyricEndTs?.toLong() ?: Long.MAX_VALUE)
-                    params?.manyLyricsView?.lyricsReader = lyricsReader
-                    val set = HashSet<Int>()
-                    set.add(lyricsReader.getLineInfoIdByStartTs(params?.lyricBeginTs?.toLong()
-                            ?: 0))
-                    params?.manyLyricsView?.needCountDownLine = set
-                    if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
-                        //                            mManyLyricsView.play(mAccBeginTs);
-                        params?.manyLyricsView?.seekTo(params?.accBeginTs ?: 0)
-                        params?.manyLyricsView?.pause()
-                        mLyricsReader = lyricsReader
-                        if (params?.accLoadOk == true) {
-                            launchLyricEvent(ZqEngineKit.getInstance().audioMixingCurrentPosition)
-                        } else {
-                            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY.toLong())
+        if(params?.lyricReader!=null){
+            parseReader(params!!.lyricReader!!)
+        }else{
+            mDisposable = LyricsManager
+                    .loadStandardLyric(params?.lyricUrl)
+                    .subscribe({ lyricsReader ->
+                        parseReader(lyricsReader)
+                    }, { throwable ->
+                        MyLog.e(TAG, throwable)
+                        MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                        if (mListener != null) {
+                            mListener!!.onLyricParseFailed()
                         }
-                        mLrcLoadOk = true
-                        // 这里是假设 伴奏 和 歌词一起初始化完毕的， 实际两者会有偏差优化下
-                        //                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
-                        //                            mRoomData.setSongLineNum(lineNum);
-                    }
-                }, { throwable ->
-                    MyLog.e(TAG, throwable)
-                    MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                    if (mListener != null) {
-                        mListener!!.onLyricParseFailed()
-                    }
-                })
+                    })
+        }
     }
 
+    private fun parseReader(lyricsReader:LyricsReader){
+        MyLog.w(TAG, "onEventMainThread " + "play")
+        mListener?.onLyricParseSuccess(lyricsReader)
+        params?.manyLyricsView?.visibility = View.VISIBLE
+        params?.manyLyricsView?.initLrcData()
+        lyricsReader.cut(params?.lyricBeginTs?.toLong()
+                ?: 0, params?.lyricEndTs?.toLong() ?: Long.MAX_VALUE)
+        params?.manyLyricsView?.lyricsReader = lyricsReader
+        val set = HashSet<Int>()
+        set.add(lyricsReader.getLineInfoIdByStartTs(params?.lyricBeginTs?.toLong()
+                ?: 0))
+        params?.manyLyricsView?.needCountDownLine = set
+        if (params?.manyLyricsView?.lrcStatus == AbstractLrcView.LRCSTATUS_LRC && params?.manyLyricsView?.lrcPlayerStatus != LRCPLAYERSTATUS_PLAY) {
+            //                            mManyLyricsView.play(mAccBeginTs);
+            params?.manyLyricsView?.seekTo(params?.accBeginTs ?: 0)
+            params?.manyLyricsView?.pause()
+            mLyricsReader = lyricsReader
+            if (params?.accLoadOk == true) {
+                launchLyricEvent(ZqEngineKit.getInstance().audioMixingCurrentPosition)
+            } else {
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY.toLong())
+            }
+            mLrcLoadOk = true
+            // 这里是假设 伴奏 和 歌词一起初始化完毕的， 实际两者会有偏差优化下
+            //                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
+            //                            mRoomData.setSongLineNum(lineNum);
+        }
+    }
 
     //发射歌词事件
     internal fun launchLyricEvent(accPlayTs: Int) {
@@ -322,6 +329,7 @@ class LyricAndAccMatchManager {
     class ScoreResultEvent(var from: String, var melpScore: Int, var acrScore: Int, var line: Int)
 
     class ConfigParams {
+        var lyricReader: LyricsReader? = null
         var manyLyricsView: ManyLyricsView? = null
         var voiceScaleView: VoiceScaleView? = null
         var lyricUrl: String? = null
