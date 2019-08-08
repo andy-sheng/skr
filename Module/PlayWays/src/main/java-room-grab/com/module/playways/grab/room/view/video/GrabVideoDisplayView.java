@@ -559,7 +559,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 ensureBindDisplayView();
                 tryBindMainVideoStream(false);
                 tryBindLeftVideoStream(false);
-                tryBindLeftVideoStream(false);
+                tryBindRightVideoStream(false);
             } else {
                 ZqEngineKit.getInstance().unbindAllRemoteVideo();
             }
