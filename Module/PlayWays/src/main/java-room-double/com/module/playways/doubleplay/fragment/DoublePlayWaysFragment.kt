@@ -330,19 +330,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         mViewPager?.adapter = mTabPagerAdapter
-        mViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
 
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                mPagerPosition = position
-            }
-        })
         mViewPager?.offscreenPageLimit = 3
 
         mPagerPosition = getPagerPositionByScene(mRoomData!!.sceneType)
