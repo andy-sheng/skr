@@ -46,7 +46,6 @@
         <!--会话界面-->
         <activity
             android:name="com.module.msg.activity.ConversationActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
 

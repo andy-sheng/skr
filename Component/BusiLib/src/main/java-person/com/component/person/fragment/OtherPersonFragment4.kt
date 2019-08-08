@@ -588,7 +588,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                             mUserInfoModel!!.isFriend
                     )
                     if (needPop) {
-                        U.getFragmentUtils().popFragment(this@OtherPersonFragment4)
+                        activity?.finish()
                     }
                 }
             }
