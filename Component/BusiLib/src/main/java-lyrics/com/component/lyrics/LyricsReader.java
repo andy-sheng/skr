@@ -3,8 +3,8 @@ package com.component.lyrics;
 import android.util.Base64;
 
 import com.common.log.MyLog;
-import com.component.lyrics.model.LyricsInfo;
 import com.component.lyrics.formats.LyricsFileReader;
+import com.component.lyrics.model.LyricsInfo;
 import com.component.lyrics.model.LyricsLineInfo;
 import com.component.lyrics.model.LyricsTag;
 import com.component.lyrics.utils.LyricsIOUtils;
@@ -157,6 +157,10 @@ public class LyricsReader implements Cloneable {
             return;
         }
 
+        if (mLrcLineInfos == null) {
+            return;
+        }
+
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
@@ -224,22 +228,26 @@ public class LyricsReader implements Cloneable {
     public List<LyricsLineInfo> getLyricsLineInfoList() {
         ArrayList<LyricsLineInfo> mLyricsLineInfoList = new ArrayList<>();
 
-        Iterator<Map.Entry<Integer, LyricsLineInfo>> newIt = mLrcLineInfos.entrySet().iterator();
+        if (mLrcLineInfos != null) {
+            Iterator<Map.Entry<Integer, LyricsLineInfo>> newIt = mLrcLineInfos.entrySet().iterator();
 
-        while (newIt.hasNext()) {
-            Map.Entry<Integer, LyricsLineInfo> entry = newIt.next();
-            mLyricsLineInfoList.add(entry.getValue());
+            while (newIt.hasNext()) {
+                Map.Entry<Integer, LyricsLineInfo> entry = newIt.next();
+                mLyricsLineInfoList.add(entry.getValue());
+            }
         }
 
         return mLyricsLineInfoList;
     }
 
     public int getLineInfoIdByStartTs(long startTs) {
-        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
-            if (entry.getValue().getEndTime() > startTs) {
-                return entry.getKey();
+        if (mLrcLineInfos != null) {
+            Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<Integer, LyricsLineInfo> entry = it.next();
+                if (entry.getValue().getEndTime() > startTs) {
+                    return entry.getKey();
+                }
             }
         }
         return -1;
