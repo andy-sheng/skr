@@ -360,7 +360,7 @@ class FeedsMakeActivity : BaseActivity() {
                 audioMixingPlayoutVolume = 100
                 recordingSignalVolume = 200
             }
-            ZqEngineKit.getInstance().init("feeds_make", params)
+            ZqEngineKit.getInstance().init("feeds_make"+hashCode(), params)
         }
     }
 
@@ -518,7 +518,7 @@ class FeedsMakeActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        ZqEngineKit.getInstance().destroy("feeds_make")
+        ZqEngineKit.getInstance().destroy("feeds_make"+hashCode())
         mLyricAndAccMatchManager.stop()
         manyLyricsView?.release()
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
