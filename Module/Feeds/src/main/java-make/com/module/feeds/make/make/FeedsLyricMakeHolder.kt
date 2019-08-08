@@ -1,13 +1,17 @@
 package com.module.feeds.make.make
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.common.log.MyLog
+import com.common.utils.SpanUtils
+import com.common.utils.U
 import com.module.feeds.R
 
 
@@ -27,7 +31,11 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         editEt.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
+                MyLog.d("FeedsLyricMakeHolder","" )
                 item?.newContent = s?.toString()?:""
+                item?.let {
+                    setEtText(it)
+                }
                 wordNumTv.text = "${item?.newContent?.length}/${item?.content?.length}"
             }
 
@@ -54,7 +62,26 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             labelTv.visibility = View.GONE
         }
         editEt.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(item.content.length)))
-        editEt.setText(item.newContent)
         wordNumTv.text = "${item.newContent.length}/${item.content.length}"
+        setEtText(item)
+    }
+
+    private fun setEtText(item: LyricItem){
+        if(item.newContent.length==item.content.length){
+            val sp = SpanUtils()
+            for(i  in 0 until  item.newContent.length){
+                if(item.newContent[i].equals(item.content[i])){
+                    sp.append(item.newContent[i].toString()).setForegroundColor(U.getColor(R.color.black_trans_80))
+                }else{
+                    sp.append(item.newContent[i].toString()).setForegroundColor(Color.parseColor("#FF8F00"))
+                }
+            }
+            editEt.setText(sp.create())
+        }else{
+            val spanBuilder = SpanUtils()
+                    .append(item.newContent).setForegroundColor(U.getColor(R.color.red))
+                    .create()
+            editEt.setText(spanBuilder)
+        }
     }
 }
