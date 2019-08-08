@@ -45,7 +45,6 @@ class FeedsWatchFragment : BaseFragment() {
     var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
         // 为了解决滑动卡顿
         launch(Dispatchers.Main) {
-            mFeedVp?.setCurrentItem(newPosition, false)
             delay(400)
             when (oldPositon) {
                 0 -> {
@@ -154,7 +153,7 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedVp.adapter = mTabPagerAdapter
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
-        mPagerPosition = 0  // 默认为0
+        mFeedVp?.setCurrentItem(0, false)
     }
 
     override fun onFragmentVisible() {
