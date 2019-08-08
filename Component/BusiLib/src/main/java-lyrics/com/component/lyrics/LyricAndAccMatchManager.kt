@@ -125,9 +125,6 @@ class LyricAndAccMatchManager {
         }
         mDisposable = LyricsManager
                 .loadStandardLyric(params?.lyricUrl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(RxRetryAssist(3, ""))
                 .subscribe({ lyricsReader ->
                     MyLog.w(TAG, "onEventMainThread " + "play")
                     mListener?.onLyricParseSuccess(lyricsReader)
@@ -186,8 +183,8 @@ class LyricAndAccMatchManager {
         }
         if (params?.manyLyricsView?.visibility == View.VISIBLE) {
             params?.voiceScaleView?.visibility = View.VISIBLE
-            params?.voiceScaleView?.startWithData(mLyricsReader?.lyricsLineInfoList, params?.accBeginTs
-                    ?: 0 + accPlayTs)
+            params?.voiceScaleView?.startWithData(mLyricsReader?.lyricsLineInfoList, (params?.accBeginTs
+                    ?: 0) + accPlayTs)
         }
     }
 
