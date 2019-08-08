@@ -36,6 +36,7 @@ import com.component.toast.NoImageCommonToastView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.RouterConstants
+import com.module.feeds.BuildConfig
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
@@ -100,7 +101,7 @@ class FeedsMakeActivity : BaseActivity() {
 
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if (MyLog.isDebugLogOpen()) {
+                if (BuildConfig.DEBUG) {
                     openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
                 } else {
                     finish()
