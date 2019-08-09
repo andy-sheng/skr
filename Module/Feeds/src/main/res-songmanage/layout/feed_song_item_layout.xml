@@ -26,8 +26,8 @@
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:textColor="@color/black"
         android:text="《龙卷风》"
+        android:textColor="@color/black"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/song_desc_tv"
@@ -42,8 +42,8 @@
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_3_dp"
-        android:text="词/丁一 曲/丁二三"
         android:layout_marginRight="@dimen/view_10_dp"
+        android:text="词/丁一 曲/丁二三"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,4 +51,9 @@
         app:layout_constraintRight_toLeftOf="@id/song_select_tv"
         app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/colorDividerPrimary"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

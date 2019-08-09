@@ -1,6 +1,7 @@
 package com.module.feeds.songmanage
 
 import com.common.rxretrofit.ApiResult
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -17,4 +18,11 @@ interface FeedSongManageServerApi {
      */
     @GET("/v1/feed/common-song-list")
     fun getFeedSongList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("tagType") tagType: Int): Call<ApiResult>
+
+
+    /**
+     * 搜索普通歌曲
+     */
+    @GET("v1/feed/common-song-search")
+    fun searchFeedSong(@Query("searchContent") searchContent: String): Observable<ApiResult>
 }

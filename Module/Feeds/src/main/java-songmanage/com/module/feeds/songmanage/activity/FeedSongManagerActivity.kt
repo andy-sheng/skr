@@ -1,11 +1,13 @@
 package com.module.feeds.songmanage.activity
 
 import android.os.Bundle
+import android.os.Debug
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 
 import com.common.base.BaseActivity
@@ -14,6 +16,7 @@ import com.common.rxretrofit.ERROR_NETWORK_BROKEN
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
@@ -50,6 +53,13 @@ class FeedSongManagerActivity : BaseActivity() {
         searchSongIv = findViewById(R.id.search_song_iv)
         tagTab = findViewById(R.id.tag_tab)
         viewpager = findViewById(R.id.viewpager)
+
+        searchSongIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_SEARCH)
+                        .navigation()
+            }
+        })
 
         launch {
             val result = subscribe { feedSongManageServerApi.getFeedSongTagList() }
