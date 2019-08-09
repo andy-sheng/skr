@@ -136,6 +136,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     int mFocusNum = 0;
     int mCharmNum = 0;
 
+    int lastVerticalOffset = Integer.MAX_VALUE;
+
     @Override
     public int initView() {
         return R.layout.person_fragment3_layout;
@@ -249,34 +251,36 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 // TODO: 2019-06-23  可以加效果，看产品需求
-                mImageBg.setTranslationY(verticalOffset);
-                int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
-                if (U.getDeviceUtils().hasNotch(U.app())) {
-                    srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());
-                }
-                if (verticalOffset == 0) {
-                    // 展开状态
-                    if (mToolbar.getVisibility() != View.GONE) {
-                        mToolbar.setVisibility(View.GONE);
+                if (lastVerticalOffset != verticalOffset) {
+                    lastVerticalOffset = verticalOffset;
+                    mImageBg.setTranslationY(verticalOffset);
+                    int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
+                    if (U.getDeviceUtils().hasNotch(U.app())) {
+                        srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());
                     }
-                } else if (Math.abs(verticalOffset) >= srollLimit) {
-                    // 完全收缩状态
-                    if (mToolbar.getVisibility() != View.VISIBLE) {
-                        if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
-                            ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
-                            params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
-                            mToolbarLayout.setLayoutParams(params);
-                            isInitToolbar = true;
+                    if (verticalOffset == 0) {
+                        // 展开状态
+                        if (mToolbar.getVisibility() != View.GONE) {
+                            mToolbar.setVisibility(View.GONE);
                         }
-                        mToolbar.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                    if (mToolbar.getVisibility() != View.GONE) {
-                        mToolbar.setVisibility(View.GONE);
+                    } else if (Math.abs(verticalOffset) >= srollLimit) {
+                        // 完全收缩状态
+                        if (mToolbar.getVisibility() != View.VISIBLE) {
+                            if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
+                                ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
+                                params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
+                                mToolbarLayout.setLayoutParams(params);
+                                isInitToolbar = true;
+                            }
+                            mToolbar.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        // TODO: 2019/4/8 过程中，可以加动画，先直接显示
+                        if (mToolbar.getVisibility() != View.GONE) {
+                            mToolbar.setVisibility(View.GONE);
+                        }
                     }
                 }
-
             }
         });
     }

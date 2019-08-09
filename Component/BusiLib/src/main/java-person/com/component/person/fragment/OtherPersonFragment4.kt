@@ -135,6 +135,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     internal var mEditRemarkDialog: DialogPlus? = null
 
+    var lastVerticalOffset = Int.MAX_VALUE
+
     // 未关注
     private val mUnFollowDrawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#FFC15B"))
@@ -224,23 +226,26 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mAppbar!!.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
-            mImageBg.translationY = verticalOffset.toFloat()
-            if (verticalOffset == 0) {
-                // 展开状态
-                if (mToolbar.visibility != View.GONE) {
-                    mToolbar.visibility = View.GONE
-                }
-            } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
-                // 完全收缩状态
-                if (mToolbar.visibility != View.VISIBLE) {
-                    mToolbar.visibility = View.VISIBLE
-                }
-            } else {
-                // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                if (mToolbar.visibility != View.GONE) {
-                    mToolbar.visibility = View.GONE
+            if (lastVerticalOffset != verticalOffset) {
+                lastVerticalOffset = verticalOffset
+                mImageBg.translationY = verticalOffset.toFloat()
+                if (verticalOffset == 0) {
+                    // 展开状态
+                    if (mToolbar.visibility != View.GONE) {
+                        mToolbar.visibility = View.GONE
+                    }
+                } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+                    // 完全收缩状态
+                    if (mToolbar.visibility != View.VISIBLE) {
+                        mToolbar.visibility = View.VISIBLE
+                    }
+                } else {
+                    // TODO: 2019/4/8 过程中，可以加动画，先直接显示
+                    if (mToolbar.visibility != View.GONE) {
+                        mToolbar.visibility = View.GONE
+                    }
                 }
             }
         }

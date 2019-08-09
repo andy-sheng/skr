@@ -127,6 +127,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     internal var hasInitHeight = false
     internal var isAppBarCanScroll = true   // AppBarLayout是否可以滚动
+    var lastVerticalOffset = Int.MAX_VALUE
 
     internal var mClickListener: PersonInfoDialog.PersonCardClickListener? = null
 
@@ -317,20 +318,23 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         })
 
         mAppbar!!.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (verticalOffset == 0) {
-                // 展开状态
-                if (mToolbar.visibility != View.GONE) {
-                    mToolbar.visibility = View.GONE
-                }
-            } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(70f)) {
-                // 完全收缩状态
-                if (mToolbar.visibility != View.VISIBLE) {
-                    mToolbar.visibility = View.VISIBLE
-                }
-            } else {
-                // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                if (mToolbar.visibility != View.GONE) {
-                    mToolbar.visibility = View.GONE
+            if (lastVerticalOffset != verticalOffset) {
+                lastVerticalOffset = verticalOffset
+                if (verticalOffset == 0) {
+                    // 展开状态
+                    if (mToolbar.visibility != View.GONE) {
+                        mToolbar.visibility = View.GONE
+                    }
+                } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(70f)) {
+                    // 完全收缩状态
+                    if (mToolbar.visibility != View.VISIBLE) {
+                        mToolbar.visibility = View.VISIBLE
+                    }
+                } else {
+                    // TODO: 2019/4/8 过程中，可以加动画，先直接显示
+                    if (mToolbar.visibility != View.GONE) {
+                        mToolbar.visibility = View.GONE
+                    }
                 }
             }
         }

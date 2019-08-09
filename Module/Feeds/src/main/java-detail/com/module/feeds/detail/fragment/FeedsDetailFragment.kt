@@ -97,6 +97,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var sharePanel: SharePanel? = null
 
+    var lastVerticalOffset = Int.MAX_VALUE
+
     var playCallback = object : PlayerCallbackAdapter() {
         override fun onPrepared() {
             MyLog.d(mTag, "onPrepared")
@@ -154,7 +156,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mSeekBar!!.progress = pos.toInt()
             mFeedsWatchModel?.song?.playDurMsFromPlayerForDebug = duration.toInt()
             mFeedsCommonLyricView?.seekTo(pos.toInt())
-            FeedsPlayStatistics.updateCurProgress(pos,duration)
+            FeedsPlayStatistics.updateCurProgress(pos, duration)
         }
     }
 
@@ -237,30 +239,33 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(95f)
-            if (U.getDeviceUtils().hasNotch(U.app())) {
-                srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app())
-            }
-            if (verticalOffset == 0) {
-                // 展开状态
-                if (mToolbar?.getVisibility() != View.GONE) {
-                    mToolbar?.setVisibility(View.GONE)
+            if (lastVerticalOffset != verticalOffset) {
+                lastVerticalOffset = verticalOffset
+                var srollLimit = appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(95f)
+                if (U.getDeviceUtils().hasNotch(U.app())) {
+                    srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app())
                 }
-            } else if (Math.abs(verticalOffset) >= srollLimit) {
-                // 完全收缩状态
-                if (mToolbar?.getVisibility() != View.VISIBLE) {
-                    if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
-                        val params = mToolbarLayout?.layoutParams
-                        params!!.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app())
-                        mToolbarLayout?.layoutParams = params
-                        isInitToolbar = true
+                if (verticalOffset == 0) {
+                    // 展开状态
+                    if (mToolbar?.getVisibility() != View.GONE) {
+                        mToolbar?.setVisibility(View.GONE)
                     }
-                    mToolbar?.setVisibility(View.VISIBLE)
-                }
-            } else {
-                // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                if (mToolbar?.getVisibility() != View.GONE) {
-                    mToolbar?.setVisibility(View.GONE)
+                } else if (Math.abs(verticalOffset) >= srollLimit) {
+                    // 完全收缩状态
+                    if (mToolbar?.getVisibility() != View.VISIBLE) {
+                        if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
+                            val params = mToolbarLayout?.layoutParams
+                            params!!.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app())
+                            mToolbarLayout?.layoutParams = params
+                            isInitToolbar = true
+                        }
+                        mToolbar?.setVisibility(View.VISIBLE)
+                    }
+                } else {
+                    // TODO: 2019/4/8 过程中，可以加动画，先直接显示
+                    if (mToolbar?.getVisibility() != View.GONE) {
+                        mToolbar?.setVisibility(View.GONE)
+                    }
                 }
             }
         }
@@ -507,7 +512,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.isSelected = true
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID?:0)
+            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0)
             SinglePlayer.startPlay(playerTag, it)
         }
 
