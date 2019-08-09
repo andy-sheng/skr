@@ -21,6 +21,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLayout(context), CoroutineScope by MainScope() {
@@ -117,5 +118,8 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
         mAdapter.notifyDataSetChanged()
     }
 
+    fun destory(){
+        cancel()
+    }
 
 }

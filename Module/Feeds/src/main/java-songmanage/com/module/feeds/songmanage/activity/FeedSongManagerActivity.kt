@@ -1,0 +1,151 @@
+package com.module.feeds.songmanage.activity
+
+import android.os.Bundle
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
+import android.view.View
+import android.view.ViewGroup
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
+
+import com.common.base.BaseActivity
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ERROR_NETWORK_BROKEN
+import com.common.rxretrofit.subscribe
+import com.common.utils.U
+import com.common.utils.dp
+import com.common.view.ex.ExTextView
+import com.common.view.titlebar.CommonTitleBar
+import com.common.view.viewpager.NestViewPager
+import com.common.view.viewpager.SlidingTabLayout
+import com.module.RouterConstants
+import com.module.feeds.R
+import com.module.feeds.songmanage.FeedSongManageServerApi
+import com.module.feeds.songmanage.model.FeedSongTagModel
+import com.module.feeds.songmanage.view.FeedSongManageView
+import kotlinx.coroutines.launch
+
+/**
+ * 歌曲管理页面
+ */
+@Route(path = RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+class FeedSongManagerActivity : BaseActivity() {
+
+    lateinit var titlebar: CommonTitleBar
+    lateinit var searchSongIv: ExTextView
+    lateinit var tagTab: SlidingTabLayout
+    lateinit var viewpager: NestViewPager
+
+    private lateinit var pagerAdapter: PagerAdapter
+
+    private var songManageViews: HashMap<Int, FeedSongManageView> = HashMap()
+    val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
+
+    override fun initView(savedInstanceState: Bundle?): Int {
+        return R.layout.feed_song_manage_activity_layout
+    }
+
+    override fun initData(savedInstanceState: Bundle?) {
+        titlebar = findViewById(R.id.titlebar)
+        searchSongIv = findViewById(R.id.search_song_iv)
+        tagTab = findViewById(R.id.tag_tab)
+        viewpager = findViewById(R.id.viewpager)
+
+        launch {
+            val result = subscribe { feedSongManageServerApi.getFeedSongTagList() }
+            if (result.errno == 0) {
+                val list = JSON.parseArray(result.data.getString("tags"), FeedSongTagModel::class.java)
+                showSongTagList(list)
+            } else {
+                if (result.errno == ERROR_NETWORK_BROKEN) {
+                    U.getToastUtil().showShort("网络异常，请检查网络后重试～")
+                }
+            }
+        }
+    }
+
+    fun showSongTagList(list: List<FeedSongTagModel>?) {
+        if (list == null || list.isEmpty()) {
+            return
+        }
+        tagTab.setCustomTabView(R.layout.feed_song_tab_view, R.id.tab_tv)
+        tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
+        tagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_AS_DIVIDER)
+        tagTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
+        tagTab.setIndicatorWidth(80f.dp())
+        tagTab.setSelectedIndicatorThickness(24.dp().toFloat())
+        tagTab.setIndicatorCornorRadius(12.dp().toFloat())
+
+        pagerAdapter = object : PagerAdapter() {
+
+            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+                container.removeView(`object` as View)
+            }
+
+            override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                val songTagModel = list[position]
+                if (!songManageViews.containsKey(songTagModel.tagType)) {
+                    songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel)
+                }
+                val view = songManageViews[songTagModel.tagType]
+                if (position == 0) {
+                    view?.tryloadData()
+                }
+                if (container.indexOfChild(view) == -1) {
+                    container.addView(view)
+                }
+                return view!!
+            }
+
+            override fun getCount(): Int {
+                return list.size
+            }
+
+            override fun isViewFromObject(view: View, `object`: Any): Boolean {
+                return view === `object`
+            }
+
+            override fun getPageTitle(position: Int): CharSequence? {
+                return list[position].tagDesc
+            }
+        }
+
+        tagTab.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                var tagModel = list[position]
+                songManageViews[tagModel.tagType]?.tryloadData()
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
+
+        viewpager.adapter = pagerAdapter
+        tagTab.setViewPager(viewpager)
+        pagerAdapter.notifyDataSetChanged()
+
+    }
+
+    override fun useEventBus(): Boolean {
+        return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        if (songManageViews.isNotEmpty()) {
+            for ((_, songView) in songManageViews) {
+                songView.destory()
+            }
+        }
+        songManageViews.clear()
+    }
+
+    override fun canSlide(): Boolean {
+        return false
+    }
+}

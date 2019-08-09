@@ -91,6 +91,10 @@ android {
             // 排行
             java.srcDirs += 'src/main/java-rank'
             res.srcDirs += 'src/main/res-rank'
+
+            // 歌曲管理
+            java.srcDirs += 'src/main/java-songmanage'
+            res.srcDirs += 'src/main/res-songmanage'
         }
     }
 }

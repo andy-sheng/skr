@@ -161,4 +161,13 @@ class FeedsRankActivity : BaseActivity() {
 
     }
 
+    override fun destroy() {
+        super.destroy()
+        if (mFeedRankViews.isNotEmpty()) {
+            for ((_, feedRankView) in mFeedRankViews) {
+                feedRankView.destory()
+            }
+        }
+        mFeedRankViews.clear()
+    }
 }

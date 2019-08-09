@@ -9,6 +9,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.module.RouterConstants
+import com.module.feeds.R
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_SELECT_MODE)
@@ -16,15 +17,18 @@ class FeedSelectModeActivity : BaseActivity() {
     lateinit var mUploadIv: ExImageView
     lateinit var mDabangIv: ExImageView
     lateinit var mDownIv: ExImageView
+    lateinit var kuaichuanIv:ExImageView
+
     override fun initView(savedInstanceState: Bundle?): Int {
-        overridePendingTransition(com.module.feeds.R.anim.slide_in_bottom, com.module.feeds.R.anim.slide_out_bottom)
-        return com.module.feeds.R.layout.feed_select_model_activity_layout
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+        return R.layout.feed_select_model_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mUploadIv = findViewById(com.module.feeds.R.id.upload_iv)
-        mDabangIv = findViewById(com.module.feeds.R.id.dabang_iv)
-        mDownIv = findViewById(com.module.feeds.R.id.down_iv)
+        mUploadIv = findViewById(R.id.upload_iv)
+        mDabangIv = findViewById(R.id.dabang_iv)
+        mDownIv = findViewById(R.id.down_iv)
+        kuaichuanIv = findViewById(R.id.kuaichuan_iv)
 
         mUploadIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -44,6 +48,14 @@ class FeedSelectModeActivity : BaseActivity() {
         mDabangIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK)
+                        .navigation()
+                finish()
+            }
+        })
+
+        kuaichuanIv.setOnClickListener(object : DebounceViewClickListener(){
+            override fun clickValid(v: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
                         .navigation()
                 finish()
             }
