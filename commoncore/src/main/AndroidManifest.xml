@@ -183,7 +183,7 @@
 
         <provider
             android:name="com.common.webview.aidl.WebIpcProvider"
-            android:authorities="com.component.live.web.binder.service" />
+            android:authorities="com.zq.live.web.binder.service" />
     </application>
 
 </manifest>

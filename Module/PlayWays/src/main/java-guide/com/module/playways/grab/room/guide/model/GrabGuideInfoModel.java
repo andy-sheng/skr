@@ -7,8 +7,8 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.room.song.model.SongModel;
-import com.component.live.proto.Room.EQRoundStatus;
-import com.component.live.proto.Room.EQUserRole;
+import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQUserRole;
 
 import java.io.Serializable;
 import java.util.ArrayList;

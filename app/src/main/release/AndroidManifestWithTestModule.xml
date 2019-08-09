@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.component.live"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.zq.live"
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
