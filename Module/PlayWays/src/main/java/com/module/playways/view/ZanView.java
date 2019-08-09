@@ -4,25 +4,25 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.SurfaceTexture;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.TextureView;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.common.log.MyLog;
 import com.module.playways.R;
 
 import java.util.ArrayList;
 
-public class ZanView extends TextureView implements TextureView.SurfaceTextureListener {
-    public final String TAG = "ZanView";
+public class ZanView extends SurfaceView implements SurfaceHolder.Callback {
+    public final static String TAG = "ZanView";
     public final static int ADD_XIN_MSG = 0;
     public final static int DRAW_XIN_MSG = 1;
-//    private SurfaceHolder mSurfaceHolder;
+    private SurfaceHolder mSurfaceHolder;
 
     /**
      * 心的个数
@@ -47,14 +47,11 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
 
     public ZanView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //设置透明
-        setOpaque(false);
-//        this.setZOrderOnTop(true);
-//        /**设置画布  背景透明*/
-//        this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-//        mSurfaceHolder = getHolder();
-//        mSurfaceHolder.addCallback(this);
-        setSurfaceTextureListener(this);
+        this.setZOrderOnTop(true);
+        /**设置画布  背景透明*/
+        this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        mSurfaceHolder = getHolder();
+        mSurfaceHolder.addCallback(this);
         p = new Paint();
         p.setAntiAlias(true);
 
@@ -99,25 +96,19 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
     }
 
     @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+    public void surfaceCreated(SurfaceHolder holder) {
         mHandler.sendEmptyMessageDelayed(DRAW_XIN_MSG, 0);
     }
 
     @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
     }
 
     @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+    public void surfaceDestroyed(SurfaceHolder holder) {
         mHandler.removeCallbacksAndMessages(null);
         mIsDestroy = true;
-        return false;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
     }
 
     private void drawXin() {
@@ -126,15 +117,9 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
         }
         Canvas canvas = null;
         try {
-            canvas = lockCanvas();
-            /**清除画面 drawColor 导致的崩溃有点多*/
-            //canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-            Paint paint = new Paint();
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-            canvas.drawPaint(paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
-
+            canvas = mSurfaceHolder.lockCanvas();
+            /**清除画面*/
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             /**对所有心进行遍历绘制*/
             java.util.Iterator<ZanBean> iterable = mBeanArrayList.iterator();
             while (iterable.hasNext()) {
@@ -160,7 +145,7 @@ public class ZanView extends TextureView implements TextureView.SurfaceTextureLi
         } finally {
             if (canvas != null) {
                 try {
-                    unlockCanvasAndPost(canvas);
+                    mSurfaceHolder.unlockCanvasAndPost(canvas);
                 } catch (Exception e) {
                     MyLog.e(TAG, e);
                 }
