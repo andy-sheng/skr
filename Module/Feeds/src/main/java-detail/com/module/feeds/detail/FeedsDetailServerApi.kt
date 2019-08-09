@@ -3,6 +3,7 @@ package com.module.feeds.detail
 import com.common.rxretrofit.ApiResult
 import io.reactivex.Observable
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -95,4 +96,16 @@ interface FeedsDetailServerApi {
      */
     @GET("v1/feed/info")
     fun feedsExtraInfo(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
+
+    /**
+     * 获取被赞的列表
+     */
+    @GET("/v1/msgbox/like-list")
+    fun getLikeWorkList(@Query("userID") userID: Int, @Query("offset") feedID: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    /**
+     * 获取被回复的列表
+     */
+    @GET("/v1/msgbox/comment-list")
+    fun getRefuseCommentList(@Query("userID") userID: Int, @Query("offset") feedID: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 }

@@ -7,6 +7,8 @@ import com.common.base.BaseFragment
 import com.common.core.userinfo.model.UserInfoModel
 import com.component.person.view.RequestCallBack
 import com.module.RouterConstants
+import com.module.feeds.detail.fragment.LikeWorksFragment
+import com.module.feeds.detail.fragment.RefuseFeedsFragment
 import com.module.feeds.watch.FeedsWatchFragment
 import com.module.feeds.watch.view.FeedsWatchView
 
@@ -25,4 +27,11 @@ class FeedsServiceImpl : IFeedsModuleService {
     override fun init(context: Context?) {
     }
 
+    override fun getLikeWorkFragment(): Fragment {
+        return LikeWorksFragment()
+    }
+
+    override fun getRefuseCommentFragment(): Fragment {
+        return RefuseFeedsFragment()
+    }
 }
