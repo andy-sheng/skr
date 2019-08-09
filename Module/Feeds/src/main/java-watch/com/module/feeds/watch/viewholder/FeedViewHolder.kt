@@ -180,6 +180,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     private fun tryBindDebugView() {
         if (MyLog.isDebugLogOpen()) {
             mDebugTv.text = "uid:${model?.user?.userID}\n" +
+                    "feedId:${model?.feedID}\n" +
+                    "songId:${model?.song?.songID}\n" +
                     "songtype:${model?.song?.songType}\n" +
                     "playDurMs:${model?.song?.playDurMs} \n" +
                     "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}\n" +

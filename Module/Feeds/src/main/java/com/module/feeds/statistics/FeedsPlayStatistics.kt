@@ -160,10 +160,10 @@ object FeedsPlayStatistics {
             v?.forEach {
                 arrs.add(it)
             }
-            jo["aaas"] = arrs
+            jo["progress"] = arrs
             l1.add(jo)
         }
-
+        infoMap.clear()
 //        val l2 = ArrayList<JSONObject>()
 //
 //        completeMap.keys.forEach {
@@ -177,7 +177,7 @@ object FeedsPlayStatistics {
 //        exposeMap.clear()
 //        completeMap.clear()
         val mutableSet1 = mapOf(
-                "exposureFeeds" to l1,
+                "stats" to l1,
                 "userID" to MyUserInfoManager.getInstance().uid
         )
 
@@ -201,7 +201,7 @@ object FeedsPlayStatistics {
 }
 
 private interface FeedsStatisticsServerApi {
-    @PUT("/v1/feed/statistics")
+    @PUT("/v2/feed/statistics")
     fun uploadFeedsStatistics(@Body requestBody: RequestBody): Call<ApiResult>
 }
 

@@ -194,6 +194,7 @@ class FeedsWatchFragment : BaseFragment() {
             }
         }, 200)
         if (from == 2) {
+            FeedsPlayStatistics.setCurPlayMode(0)
             FeedsPlayStatistics.tryUpload(true)
         }
     }
