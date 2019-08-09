@@ -48,8 +48,8 @@ void AudioFilterBase::initFifo(int sampleFmt, int sampleRate, int channels) {
 }
 
 void AudioFilterBase::destroyFifo() {
-    audio_utils_fifo_deinit(&mFifo);
     if (mFifoBuffer) {
+        audio_utils_fifo_deinit(&mFifo);
         free(mFifoBuffer);
         mFifoBuffer = NULL;
     }
