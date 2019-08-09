@@ -103,6 +103,7 @@ public class AudioFileCapture {
     private long mCurrentPosition;
     private long mOffsetCurrentPosition;
     private long mSamplesWritten;
+    private boolean mEnableAccurateSeek;
     private long mAccurateSeekPosition;
 
     private OnPreparedListener mOnPreparedListener;
@@ -198,6 +199,7 @@ public class AudioFileCapture {
      */
     public AudioFileCapture(Context context) {
         mState = STATE_IDLE;
+        mEnableAccurateSeek = false;
         mContext = context;
         mSrcPin = new SrcPin<>();
         mMainHandler = new Handler(Looper.getMainLooper());
@@ -303,6 +305,24 @@ public class AudioFileCapture {
      */
     public void setOnErrorListener(OnErrorListener listener) {
         mOnErrorListener = listener;
+    }
+
+    /**
+     * Set if enable accurate seek
+     *
+     * @param enableAccurateSeek if enable accurate seek
+     */
+    public void setEnableAccurateSeek(boolean enableAccurateSeek) {
+        mEnableAccurateSeek = enableAccurateSeek;
+    }
+
+    /**
+     * Get is accurate seek enabled
+     *
+     * @return is accurate seek enabled
+     */
+    public boolean isEnableAccurateSeek() {
+        return mEnableAccurateSeek;
     }
 
     /**
@@ -706,13 +726,15 @@ public class AudioFileCapture {
         mMediaCodec.flush();
         mOffsetCurrentPosition = ms;
         mCurrentPosition = ms + mOffset;
-        mAccurateSeekPosition = mCurrentPosition;
+        if (mEnableAccurateSeek) {
+            mAccurateSeekPosition = mCurrentPosition;
+        }
         mSamplesWritten = 0;
         mIsSeeking = true;
         mMediaExtractor.seekTo(mCurrentPosition * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
 
         long seeked = mMediaExtractor.getSampleTime() / 1000;
-        Log.d(TAG, "doSeek pos: " + mAccurateSeekPosition + " seeked: " + seeked);
+        Log.d(TAG, "doSeek pos: " + mCurrentPosition + " seeked: " + seeked);
 
         // seek后发送flush和onFormatChanged事件
         AudioBufFrame frame = new AudioBufFrame(mOutFormat, null, 0);
@@ -798,7 +820,8 @@ public class AudioFileCapture {
                 break;
             }
             if (outputBufferIndex >= 0) {
-                if (VERBOSE) Log.d(TAG, "drain decoder " + mBufferInfo.size);
+                if (VERBOSE) Log.d(TAG, "drain decoder size: " + mBufferInfo.size +
+                        " pts: " + mBufferInfo.presentationTimeUs / 1000);
 
                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
                 // accurate seek
@@ -860,7 +883,8 @@ public class AudioFileCapture {
 
                 if (VERBOSE) {
                     long pos = (mBufferInfo.presentationTimeUs - mFirstPts) / 1000;
-                    Log.i(TAG, "pos: " + pos + " position: " + mCurrentPosition);
+                    Log.i(TAG, "pos: " + pos + " position: " + mCurrentPosition +
+                            " samples: " + mSamplesWritten);
                 }
 
                 if ((mBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
@@ -868,6 +892,7 @@ public class AudioFileCapture {
                 }
                 timeoutUs = 0;
             } else if (outputBufferIndex == MediaCodec.INFO_TRY_AGAIN_LATER) {
+                if (VERBOSE) Log.d(TAG, "INFO_TRY_AGAIN_LATER");
                 if (!eos) {
                     break;
                 } else {
