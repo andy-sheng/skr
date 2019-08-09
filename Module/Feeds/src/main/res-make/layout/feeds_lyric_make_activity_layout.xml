@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftImageResource="@drawable/img_back_black"
         app:leftType="imageButton"
-        app:rightCustomView="@layout/feeds_editor_title_right_layout"
+        app:rightCustomView="@layout/feeds_lyric_make_title_right_layout"
         app:rightType="customView"
         app:showBottomLine="true"
         app:bottomLineColor="@color/black_trans_10"
