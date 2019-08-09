@@ -8,19 +8,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
-import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
-import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.videocache.MediaCacheManager
@@ -49,8 +45,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
 import kotlinx.coroutines.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -327,9 +321,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                 if (mAdapter?.playing == true) {
                     mAdapter?.updatePlayProgress(pos, duration)
-                    if ((pos * 100 / duration) > 80) {
-                        FeedsPlayStatistics.addComplete(mAdapter?.mCurrentPlayModel?.feedID)
-                    }
+                    FeedsPlayStatistics.updateCurProgress(pos,duration)
                 } else {
                     if (MyLog.isDebugLogOpen()) {
                         U.getToastUtil().showShort("FeedsWatchView有bug,暂停失败了？")
@@ -457,7 +449,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             return
         }
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.addExpose(model.feedID)
+            FeedsPlayStatistics.setCurPlayMode(model.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -473,7 +465,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         }
         mAdapter?.resumePlayModel()
         mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
-            FeedsPlayStatistics.addExpose(mAdapter?.mCurrentPlayModel?.feedID)
+            FeedsPlayStatistics.setCurPlayMode(mAdapter?.mCurrentPlayModel?.feedID?:0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }

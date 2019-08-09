@@ -5,7 +5,7 @@
     android:layout_height="@dimen/view_24_dp"
     android:layout_marginRight="@dimen/view_10_dp"
     android:gravity="center"
-    android:text="下一步"
+    android:text="保存"
     android:textSize="@dimen/view_14_dp"
-    app:bl_pressed_textColor="@color/white_trans_30"
-    app:bl_unPressed_textColor="@color/white_trans_50" />
+    app:bl_pressed_textColor="@color/black_trans_30"
+    app:bl_unPressed_textColor="@color/black_trans_50" />

@@ -154,9 +154,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mSeekBar!!.progress = pos.toInt()
             mFeedsWatchModel?.song?.playDurMsFromPlayerForDebug = duration.toInt()
             mFeedsCommonLyricView?.seekTo(pos.toInt())
-            if (pos * 100 / duration > 80) {
-                FeedsPlayStatistics.addComplete(mFeedsWatchModel?.feedID)
-            }
+            FeedsPlayStatistics.updateCurProgress(pos,duration)
         }
     }
 
@@ -509,7 +507,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.isSelected = true
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
-            FeedsPlayStatistics.addExpose(mFeedsWatchModel?.feedID)
+            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID?:0)
             SinglePlayer.startPlay(playerTag, it)
         }
 
