@@ -1,0 +1,77 @@
+package com.module.feeds.songmanage.view
+
+import android.content.Context
+import android.support.constraint.ConstraintLayout
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import com.common.utils.U
+import com.module.feeds.R
+import com.module.feeds.songmanage.adapter.FeedSongDraftsAdapter
+import com.module.feeds.songmanage.adapter.FeedSongDraftsListener
+import com.module.feeds.songmanage.model.FeedSongDraftsModel
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+
+/**
+ * 草稿箱view
+ */
+class FeedDraftsView(context: Context) : ConstraintLayout(context) {
+
+    val refreshLayout: SmartRefreshLayout
+    val recyclerView: RecyclerView
+
+    val adapter: FeedSongDraftsAdapter
+
+    init {
+        View.inflate(context, R.layout.feed_song_drafts_view_layout, this)
+
+        refreshLayout = this.findViewById(R.id.refreshLayout)
+        recyclerView = this.findViewById(R.id.recycler_view)
+
+        refreshLayout.setEnableRefresh(false)
+        refreshLayout.setEnableLoadMore(false)
+        refreshLayout.setEnableLoadMoreWhenContentNotFull(false)
+        refreshLayout.setEnableOverScrollDrag(false)
+
+        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                // 加载更多
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+            }
+        })
+
+        adapter = FeedSongDraftsAdapter(object : FeedSongDraftsListener {
+            override fun onClickSing(position: Int, model: FeedSongDraftsModel?) {
+                model?.let {
+                    //todo 点击发布或演唱
+                    U.getToastUtil().showShort("点击了发布或演唱")
+                }
+            }
+
+            override fun onLongClick(position: Int, model: FeedSongDraftsModel?) {
+                model?.let {
+                    //todo 长按删除
+                }
+            }
+        })
+
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
+    }
+
+    fun tryloadData() {
+        // 测试数据
+        var list = ArrayList<FeedSongDraftsModel>()
+        list.add(FeedSongDraftsModel())
+        list.add(FeedSongDraftsModel())
+        list.add(FeedSongDraftsModel())
+        adapter.mDataList.addAll(list)
+        adapter.notifyDataSetChanged()
+    }
+
+}

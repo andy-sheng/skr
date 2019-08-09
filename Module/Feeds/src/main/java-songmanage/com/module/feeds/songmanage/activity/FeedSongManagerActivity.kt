@@ -25,6 +25,7 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.model.FeedSongTagModel
+import com.module.feeds.songmanage.view.FeedDraftsView
 import com.module.feeds.songmanage.view.FeedSongManageView
 import kotlinx.coroutines.launch
 
@@ -42,6 +43,8 @@ class FeedSongManagerActivity : BaseActivity() {
     private lateinit var pagerAdapter: PagerAdapter
 
     private var songManageViews: HashMap<Int, FeedSongManageView> = HashMap()
+    private val feedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this) }
+
     val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -78,6 +81,7 @@ class FeedSongManagerActivity : BaseActivity() {
         if (list == null || list.isEmpty()) {
             return
         }
+
         tagTab.setCustomTabView(R.layout.feed_song_tab_view, R.id.tab_tv)
         tagTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
         tagTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_AS_DIVIDER)
@@ -93,22 +97,29 @@ class FeedSongManagerActivity : BaseActivity() {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                val songTagModel = list[position]
-                if (!songManageViews.containsKey(songTagModel.tagType)) {
-                    songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel)
+                if (position < list.size) {
+                    val songTagModel = list[position]
+                    if (!songManageViews.containsKey(songTagModel.tagType)) {
+                        songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel)
+                    }
+                    val view = songManageViews[songTagModel.tagType]
+                    if (position == 0) {
+                        view?.tryloadData()
+                    }
+                    if (container.indexOfChild(view) == -1) {
+                        container.addView(view)
+                    }
+                    return view!!
+                } else {
+                    if (container.indexOfChild(feedDraftsView) == -1) {
+                        container.addView(feedDraftsView)
+                    }
+                    return feedDraftsView
                 }
-                val view = songManageViews[songTagModel.tagType]
-                if (position == 0) {
-                    view?.tryloadData()
-                }
-                if (container.indexOfChild(view) == -1) {
-                    container.addView(view)
-                }
-                return view!!
             }
 
             override fun getCount(): Int {
-                return list.size
+                return list.size + 1
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -116,7 +127,11 @@ class FeedSongManagerActivity : BaseActivity() {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return list[position].tagDesc
+                return if (position < list.size) {
+                    list[position].tagDesc
+                } else {
+                    "草稿箱"
+                }
             }
         }
 
@@ -126,8 +141,12 @@ class FeedSongManagerActivity : BaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                var tagModel = list[position]
-                songManageViews[tagModel.tagType]?.tryloadData()
+                if (position < list.size) {
+                    var tagModel = list[position]
+                    songManageViews[tagModel.tagType]?.tryloadData()
+                } else {
+                    feedDraftsView.tryloadData()
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {
