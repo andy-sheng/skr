@@ -15,6 +15,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 
@@ -60,6 +61,8 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
 
         mPlayAgainTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                // 触发上一次打点统计
+                FeedsPlayStatistics.setCurPlayMode(0)
                 listener?.onClickCDListener(mPosition, model)
             }
         })

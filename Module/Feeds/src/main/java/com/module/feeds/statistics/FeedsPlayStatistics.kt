@@ -25,6 +25,9 @@ object FeedsPlayStatistics {
     private var curDuration:Long = 0
     private var curFeedsId:Int = 0
 
+    /**
+     * 传0可以触发打点统计
+     */
     fun setCurPlayMode(feedsId: Int){
         if(curFeedsId!=0){
             if(curFeedsId!=feedsId) {
