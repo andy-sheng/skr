@@ -67,6 +67,11 @@ class FeedDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is FeedsDetailRankViewHolder -> {
                 holder.bindData(position, mDataList[position])
                 holder.mSongPlayIv.isSelected = mCurrentPlayModel?.feedID == mDataList[position].feedID
+                if (mCurrentPlayModel?.feedID == mDataList[position].feedID) {
+                    holder.mSongPlayIv.setImageResource(R.drawable.list_song_pause_icon)
+                } else {
+                    holder.mSongPlayIv.setImageResource(R.drawable.list_song_play_icon)
+                }
             }
         }
     }
