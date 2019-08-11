@@ -35,6 +35,12 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 editEt.setBackgroundResource(R.drawable.feeds_lyric_make_editor_bg_focus)
                 wordNumTv.visibility = View.VISIBLE
                 wordNumTv.setTextColor(U.getColor(R.color.black_trans_50))
+                item?.newContent?.let {
+                    val spanBuilder = SpanUtils()
+                            .append(it).setForegroundColor(U.getColor(R.color.black_trans_80))
+                            .create()
+                    editEt.setText(spanBuilder)
+                }
             } else {
                 editEt.setBackgroundResource(R.drawable.feeds_lyric_make_editor_bg)
                 if (item?.newContent?.length == item?.content?.length) {

@@ -1,18 +1,15 @@
 package com.module.feeds.make.editor
 
-import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -22,14 +19,13 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.common.rx.RxRetryAssist
 import com.common.utils.U
-import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.component.lyrics.LyricsManager
+import com.component.lyrics.LyricsReader
 import com.component.lyrics.utils.SongResUtils
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
 import com.component.lyrics.widget.ManyLyricsView
@@ -37,17 +33,16 @@ import com.component.lyrics.widget.TxtLyricScrollView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
+import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.trello.rxlifecycle2.android.ActivityEvent
 import com.zq.mediaengine.kit.ZqAudioEditorKit
 import com.zq.mediaengine.kit.ZqEngineKit
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 
 
@@ -147,12 +142,11 @@ class FeedsEditorActivity : BaseActivity() {
         titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                setResult(Activity.RESULT_CANCELED)
-                finish()
+                finishPage()
             }
         })
 
-        playBtnContainer?.setOnClickListener{
+        playBtnContainer?.setOnClickListener {
             if (playBtn?.isSelected == true) {
                 pausePreview()
             } else {
@@ -260,6 +254,12 @@ class FeedsEditorActivity : BaseActivity() {
                     sFeedsMakeModelHolder = mFeedsMakeModel
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                             .navigation(this@FeedsEditorActivity, 9)
+                    finish()
+                    for (ac in U.getActivityUtils().activityList) {
+                        if (ac is FeedsMakeActivity) {
+                            ac.finish()
+                        }
+                    }
                 }
             }
         })
@@ -267,37 +267,26 @@ class FeedsEditorActivity : BaseActivity() {
         val d = mFeedsMakeModel!!.recordDuration - mFeedsMakeModel!!.firstLyricShiftTs
         totalTsTv.text = U.getDateTimeUtils().formatVideoTime(d)
         txtLyricsView.setDuration(d.toInt())
-        val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
-        val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
         txtLyricsView?.visibility = View.GONE
         manyLyricsView?.visibility = View.GONE
         if (mFeedsMakeModel?.withBgm == true) {
-            if (!TextUtils.isEmpty(lrcTs)) {
-                manyLyricsView?.visibility = View.VISIBLE
-                LyricsManager
-                        .loadStandardLyric(lrcTs, -1)
-                        .subscribe({ lyricsReader ->
-                            MyLog.w(TAG, "onEventMainThread " + "play")
-                            manyLyricsView?.initLrcData()
-                            manyLyricsView?.lyricsReader = lyricsReader
-                            manyLyricsView?.seekTo(0)
-                            manyLyricsView?.pause()
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                        })
-            } else {
-                txtLyricsView?.visibility = View.VISIBLE
-                LyricsManager
-                        .loadGrabPlainLyric(lrcTxt)
-                        .subscribe({ lyricsReader ->
-                            MyLog.w(TAG, "onEventMainThread " + "play")
-                            txtLyricsView.setLyrics(lyricsReader)
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                        })
-            }
+            manyLyricsView?.visibility = View.VISIBLE
+            LyricsManager
+                    .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs, -1)
+                    .subscribe({ lyricsReader ->
+                        val changeLyrics = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr?.split("\n")
+                        //mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
+                        var index = 0
+                        lyricsReader.lrcLineInfos.forEach {
+                            if (index < (changeLyrics?.size ?: 0)) {
+                                it.value.lineLyrics = changeLyrics?.get(index)
+                                index++
+                            }
+                        }
+                        initManyLyricView(lyricsReader)
+                    }, { throwable ->
+                        MyLog.e(TAG, throwable)
+                    })
 
             runBlocking {
                 val bgmFileJob = async(Dispatchers.IO) {
@@ -333,26 +322,8 @@ class FeedsEditorActivity : BaseActivity() {
             }
         } else {
             txtLyricsView?.visibility = View.VISIBLE
-            if (!TextUtils.isEmpty(lrcTs)) {
-                LyricsManager
-                        .loadStandardLyric(lrcTs, -1)
-                        .subscribe({ lyricsReader ->
-                            MyLog.w(TAG, "onEventMainThread " + "play")
-                            txtLyricsView.setLyrics(lyricsReader)
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                        })
-            } else {
-                LyricsManager
-                        .loadGrabPlainLyric(lrcTxt)
-                        .subscribe({ lyricsReader ->
-                            MyLog.w(TAG, "onEventMainThread " + "play")
-                            txtLyricsView.setLyrics(lyricsReader)
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                            MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
-                        })
+            mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr?.let {
+                txtLyricsView.setLyrics(it)
             }
             mZqAudioEditorKit.setDataSource(0, mFeedsMakeModel?.recordSavePath, mFeedsMakeModel?.firstLyricShiftTs?.toLong()
                     ?: 0, mFeedsMakeModel?.recordDuration
@@ -370,6 +341,13 @@ class FeedsEditorActivity : BaseActivity() {
 //        mVoiceControlView?.visibility = View.VISIBLE
         mZqAudioEditorKit.startPreview(-1)
         resumePreview()
+    }
+
+    private fun initManyLyricView(lyricsReader: LyricsReader) {
+        manyLyricsView?.initLrcData()
+        manyLyricsView?.lyricsReader = lyricsReader
+        manyLyricsView?.seekTo(0)
+        manyLyricsView?.pause()
     }
 
     private fun resumePreview() {
@@ -452,7 +430,40 @@ class FeedsEditorActivity : BaseActivity() {
             }
         }
     }
-//    @Subscribe(threadMode = ThreadMode.MAIN)
+
+    override fun onBackPressed() {
+        finishPage()
+    }
+
+    private fun finishPage() {
+        if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
+            val tipsDialogView = TipsDialogView.Builder(this@FeedsEditorActivity)
+                    .setConfirmTip("保存")
+                    .setCancelTip("直接退出")
+                    .setCancelBtnClickListener {
+                        setResult(Activity.RESULT_CANCELED)
+                        finish()
+                    }
+                    .setMessageTip("是否将改编歌词保存到草稿箱?")
+                    .setConfirmBtnClickListener {
+                        launch {
+                            launch(Dispatchers.IO) {
+                                mFeedsMakeModel?.let {
+                                    FeedsMakeLocalApi.insert(it)
+                                }
+                            }
+                            // 保存到草稿
+                            setResult(Activity.RESULT_CANCELED)
+                            finish()
+                        }
+                    }
+                    .build()
+            tipsDialogView.showByDialog()
+        } else {
+            finish()
+        }
+    }
+    //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    fun onEvent(event: EngineEvent) {
 //        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
 //        } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_START) {

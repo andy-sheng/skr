@@ -39,6 +39,7 @@ import com.engine.Params
 import com.module.RouterConstants
 import com.module.feeds.BuildConfig
 import com.module.feeds.R
+import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
@@ -86,7 +87,14 @@ class FeedsMakeActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val challengeID = intent.getLongExtra("challengeID", 0)
-        mFeedsMakeModel = FeedsMakeModel(challengeID)
+        if (challengeID != 0L) {
+            mFeedsMakeModel = FeedsMakeModel()
+            mFeedsMakeModel?.challengeID = challengeID
+        } else {
+            // 从草稿箱进来的
+            mFeedsMakeModel = sFeedsMakeModelHolder
+            sFeedsMakeModelHolder = null
+        }
 
         titleBar = findViewById(R.id.title_bar)
         resetIv = findViewById(R.id.reset_iv) as ImageView
@@ -114,53 +122,60 @@ class FeedsMakeActivity : BaseActivity() {
             override fun clickValid(v: View?) {
                 //val content = LyricsManager.createZrce2ByReader(mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader)
                 //MyLog.d(TAG,"content=$content")
-                if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
-                    val tipsDialogView = TipsDialogView.Builder(this@FeedsMakeActivity)
-                            .setConfirmTip("保存")
-                            .setCancelTip("直接退出")
-                            .setCancelBtnClickListener {
-                                finish()
-                            }
-                            .setMessageTip("是否将改编歌词保存到草稿箱?")
-                            .setConfirmBtnClickListener {
-                                // 保存到草稿
-                                finish()
-                            }
-                            .build()
-                    tipsDialogView.showByDialog()
-                } else {
-                    finish()
-                }
-
+                finishPage()
             }
         })
 
-        launch {
-            mFeedsMakeModel?.challengeID?.let {
-                for (i in 1..10) {
-                    val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
-                    if (result?.errno == 0) {
-                        val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
-                        val workName = result.data.getString("workName")
-                        val challengeDesc = result.data.getString("challengeDesc")
-                        val songModel = FeedSongModel()
-                        songModel.challengeDesc = challengeDesc
-                        songModel.songTpl = songTpl
-                        songModel.challengeID = it.toLong()
-                        songModel.workName = workName
-                        songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
+        if (mFeedsMakeModel?.draftID != 0L) {
+            // 将伴奏的reader弄好
+            // 加载歌词
+            if (TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
+                whenDataOk()
+            } else {
+                LyricsManager
+                        .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+                        .subscribe({ lyricsReader ->
+                            val changeLyrics = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr?.split("\n")
+                            mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
+                            var index = 0
+                            lyricsReader.lrcLineInfos.forEach {
+                                if (index < (changeLyrics?.size ?: 0)) {
+                                    it.value.lineLyrics = changeLyrics?.get(index)
+                                    index++
+                                }
+                            }
+                            whenDataOk()
+                        }, { throwable ->
+                            MyLog.e(TAG, throwable)
+                        })
+            }
+        } else {
+            launch {
+                mFeedsMakeModel?.challengeID?.let {
+                    for (i in 1..10) {
+                        val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
+                        if (result?.errno == 0) {
+                            val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
+                            val workName = result.data.getString("workName")
+                            val challengeDesc = result.data.getString("challengeDesc")
+                            val songModel = FeedSongModel()
+                            songModel.challengeDesc = challengeDesc
+                            songModel.songTpl = songTpl
+                            songModel.challengeID = it.toLong()
+                            songModel.workName = workName
+                            songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
 
-                        mFeedsMakeModel?.songModel = songModel
-                        whenDataOk()
-                        break
-                    } else {
-                        delay(3000)
+                            mFeedsMakeModel?.songModel = songModel
+                            whenDataOk()
+                            break
+                        } else {
+                            delay(3000)
+                        }
                     }
                 }
-
             }
-
         }
+
         beginTv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.songModel == null) {
@@ -574,6 +589,33 @@ class FeedsMakeActivity : BaseActivity() {
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
+    private fun finishPage() {
+        if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
+            val tipsDialogView = TipsDialogView.Builder(this@FeedsMakeActivity)
+                    .setConfirmTip("保存")
+                    .setCancelTip("直接退出")
+                    .setCancelBtnClickListener {
+                        finish()
+                    }
+                    .setMessageTip("是否将改编歌词保存到草稿箱?")
+                    .setConfirmBtnClickListener {
+                        launch {
+                            launch(Dispatchers.IO) {
+                                mFeedsMakeModel?.let {
+                                    FeedsMakeLocalApi.insert(it)
+                                }
+                            }
+                            // 保存到草稿
+                            finish()
+                        }
+                    }
+                    .build()
+            tipsDialogView.showByDialog()
+        } else {
+            finish()
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EngineEvent) {
         when (event.getType()) {
@@ -618,6 +660,10 @@ class FeedsMakeActivity : BaseActivity() {
     override fun useEventBus(): Boolean {
         return true
     }
+
+    override fun onBackPressed() {
+        finishPage()
+    }
 }
 
 fun openFeedsMakeActivity(challenge: Long?) {
@@ -627,9 +673,11 @@ fun openFeedsMakeActivity(challenge: Long?) {
                 .withSerializable("challengeID", it)
                 .navigation()
     }
-//            ?: run {
-//        if (MyLog.isDebugLogOpen()) {
-//            U.getToastUtil().showShort("失败 challengeID=$challenge")
-//        }
-//    }
+}
+
+fun openFeedsMakeActivity(model: FeedsMakeModel?) {
+    // 打榜
+    sFeedsMakeModelHolder = model
+    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+            .navigation()
 }

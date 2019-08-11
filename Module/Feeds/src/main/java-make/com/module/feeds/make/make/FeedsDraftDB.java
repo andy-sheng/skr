@@ -12,10 +12,13 @@ public class FeedsDraftDB implements Serializable {
     private static final long serialVersionUID = -5209781574576943999L;
     @Id
     Long draftID;
+    Long updateTs;
     String feedsMakeModelJson;
-    @Generated(hash = 1605575814)
-    public FeedsDraftDB(Long draftID, String feedsMakeModelJson) {
+
+    @Generated(hash = 1346152501)
+    public FeedsDraftDB(Long draftID, Long updateTs, String feedsMakeModelJson) {
         this.draftID = draftID;
+        this.updateTs = updateTs;
         this.feedsMakeModelJson = feedsMakeModelJson;
     }
     @Generated(hash = 1536597371)
@@ -32,5 +35,13 @@ public class FeedsDraftDB implements Serializable {
     }
     public void setFeedsMakeModelJson(String feedsMakeModelJson) {
         this.feedsMakeModelJson = feedsMakeModelJson;
+    }
+
+    public Long getUpdateTs() {
+        return updateTs;
+    }
+
+    public void setUpdateTs(Long updateTs) {
+        this.updateTs = updateTs;
     }
 }

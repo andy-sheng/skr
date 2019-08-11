@@ -144,8 +144,6 @@ class FeedSongManagerActivity : BaseActivity() {
                 if (position < list.size) {
                     var tagModel = list[position]
                     songManageViews[tagModel.tagType]?.tryloadData()
-                } else {
-                    feedDraftsView.tryloadData()
                 }
             }
 

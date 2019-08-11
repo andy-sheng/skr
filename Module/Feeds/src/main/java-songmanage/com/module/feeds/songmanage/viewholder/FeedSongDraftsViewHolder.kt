@@ -1,15 +1,15 @@
 package com.module.feeds.songmanage.viewholder
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.feeds.R
+import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.songmanage.adapter.FeedSongDraftsListener
-import com.module.feeds.songmanage.adapter.FeedSongManageListener
-import com.module.feeds.songmanage.model.FeedSongDraftsModel
 
 class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : RecyclerView.ViewHolder(item) {
 
@@ -18,7 +18,7 @@ class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : R
     val songDescTv: TextView = item.findViewById(R.id.song_desc_tv)
 
     var mPosition: Int = 0
-    var mModel: FeedSongDraftsModel? = null
+    var mModel: FeedsMakeModel? = null
 
     init {
 
@@ -35,12 +35,17 @@ class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : R
 
     }
 
-    fun bindData(position: Int, model: FeedSongDraftsModel) {
+    fun bindData(position: Int, model: FeedsMakeModel) {
         this.mPosition = position
         this.mModel = model
 
-        songNameTv.text = model.workName
-        songDescTv.text = "刚刚"
+        songNameTv.text = "《${model.songModel?.workName}》"
+        songDescTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model?.draftUpdateTs,System.currentTimeMillis())
+        if(TextUtils.isEmpty(model?.audioUploadUrl)){
+            songSelectTv.text = "演唱"
+        }else{
+            songSelectTv.text = "发布"
+        }
     }
 
 }

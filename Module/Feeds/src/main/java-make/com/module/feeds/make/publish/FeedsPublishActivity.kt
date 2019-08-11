@@ -7,7 +7,6 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -28,14 +27,17 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.component.lyrics.LyricsManager
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.make.model.FeedsPublishTagModel
 import com.module.feeds.make.sFeedsMakeModelHolder
+import com.module.feeds.watch.model.FeedTagModel
 import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -64,8 +66,6 @@ class FeedsPublishActivity : BaseActivity() {
     val feedsMakeServerApi = ApiManager.getInstance().createService(FeedsMakeServerApi::class.java)
 
     var rankList: List<FeedsPublishTagModel>? = null
-
-    var playUrl: String? = null
 
     var customLrcUrl: String? = null
 
@@ -123,21 +123,31 @@ class FeedsPublishActivity : BaseActivity() {
         tagClassifyTf.setMaxSelectCount(1)
         tagClassifyTf.adapter = tagClassifyAdapter
 
-
         launch {
             // 先看看发生异常会不会崩溃
             val result = subscribe { feedsMakeServerApi.getFeedLikeList() }
             if (result?.errno == 0) {
                 rankList = JSON.parseArray(result.data.getString("tags"), FeedsPublishTagModel::class.java)
                 tagClassifyAdapter.setTagDatas(rankList)
+                val set = HashSet<Int>()
+                rankList?.forEachIndexed { index, feedsPublishTagModel ->
+                    mFeedsMakeModel?.songModel?.tags?.forEach { it ->
+                        if (it?.tagID == feedsPublishTagModel.tagID) {
+                            feedsPublishTagModel.tagID?.let { it2 ->
+                                set.add(it2)
+                            }
+                        }
+                    }
+                }
+                tagClassifyAdapter.setSelectedList(set)
                 tagClassifyAdapter.notifyDataChanged()
             }
         }
 
         titleBar.leftImageButton.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                setResult(Activity.RESULT_OK)
-                finish()
+                //setResult(Activity.RESULT_OK)
+                finishPage()
             }
         })
 
@@ -149,7 +159,7 @@ class FeedsPublishActivity : BaseActivity() {
                 }
                 mFeedsMakeModel?.let {
                     progressSkr.visibility = View.VISIBLE
-                    if (TextUtils.isEmpty(playUrl)) {
+                    if (TextUtils.isEmpty(mFeedsMakeModel?.audioUploadUrl)) {
                         step1()
                     } else {
                         step2()
@@ -184,6 +194,9 @@ class FeedsPublishActivity : BaseActivity() {
         worksNameEt.setText(mFeedsMakeModel?.songModel?.workName)
         worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length ?: 0)
 
+        // 默认的心情 和标签
+        sayEdit.setText(mFeedsMakeModel?.songModel?.title)
+
     }
 
     private fun step1() {
@@ -194,7 +207,7 @@ class FeedsPublishActivity : BaseActivity() {
                     }
 
                     override fun onSuccessNotInUiThread(url: String?) {
-                        playUrl = url
+                        mFeedsMakeModel?.audioUploadUrl = url
                         step2()
                     }
 
@@ -249,6 +262,22 @@ class FeedsPublishActivity : BaseActivity() {
         }
     }
 
+    private fun setValueFromUi(){
+        mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
+        mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
+
+        val tagsIds = ArrayList<FeedTagModel>()
+        tagClassifyTf.selectedList.forEach {
+            rankList?.get(it)?.let {
+                val model = FeedTagModel()
+                model.tagID = it.tagID?:0
+                model.tagDesc = it.tagDesc
+                tagsIds.add(model)
+            }
+            mFeedsMakeModel?.songModel?.tags = tagsIds
+        }
+    }
+
     private fun submitToServer() {
         //保存发布 服务器api
 //                {
@@ -264,19 +293,19 @@ class FeedsPublishActivity : BaseActivity() {
 //                    "tplID": 0
 //                }
         launch {
+            setValueFromUi()
             val tagsIds = ArrayList<Int>()
-            tagClassifyTf.selectedList.forEach {
-                rankList?.get(it)?.tagID?.let { it2 ->
-                    tagsIds.add(it2)
+            mFeedsMakeModel?.songModel?.tags?.forEach {
+                it?.let {
+                    tagsIds.add(it.tagID)
                 }
             }
-
             val mutableSet1 = mapOf(
-                    "title" to sayEdit.text.toString(),
-                    "workName" to worksNameEt.text.toString(),
+                    "title" to mFeedsMakeModel?.songModel?.title,
+                    "workName" to mFeedsMakeModel?.songModel?.workName,
                     "tagIDs" to tagsIds,
                     "playDurMs" to mFeedsMakeModel?.recordDuration,
-                    "playURL" to playUrl,
+                    "playURL" to mFeedsMakeModel?.audioUploadUrl,
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
                     "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
                     "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
@@ -292,7 +321,7 @@ class FeedsPublishActivity : BaseActivity() {
                 U.getToastUtil().showShort("上传成功")
                 mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
                 mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
-                mFeedsMakeModel?.songModel?.playURL = playUrl
+                mFeedsMakeModel?.songModel?.playURL = mFeedsMakeModel?.audioUploadUrl
                 mFeedsMakeModel?.songModel?.songID = result.data.getIntValue("songID")
                 // 跳到分享页
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SHARE)
@@ -313,9 +342,65 @@ class FeedsPublishActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        setResult(Activity.RESULT_OK)
-        finish()
-        return
+        //setResult(Activity.RESULT_OK)
+        finishPage()
+    }
+
+    private fun finishPage() {
+        if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
+            setValueFromUi()
+            val tipsDialogView = TipsDialogView.Builder(this@FeedsPublishActivity)
+                    .setConfirmTip("保存")
+                    .setCancelTip("直接退出")
+                    .setCancelBtnClickListener {
+                        finish()
+                    }
+                    .setMessageTip("是否将发布保存到草稿箱?")
+                    .setConfirmBtnClickListener {
+                        if (TextUtils.isEmpty(mFeedsMakeModel?.audioUploadUrl)) {
+                            progressSkr.visibility = View.VISIBLE
+                            UploadParams.newBuilder(mFeedsMakeModel?.composeSavePath)
+                                    .setFileType(UploadParams.FileType.feed)
+                                    .startUploadAsync(object : UploadCallback {
+                                        override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                                        }
+
+                                        override fun onSuccessNotInUiThread(url: String?) {
+                                            mFeedsMakeModel?.audioUploadUrl = url
+                                            mFeedsMakeModel?.let {
+                                                FeedsMakeLocalApi.insert(it)
+                                            }
+                                            launch {
+                                                U.getToastUtil().showShort("保存成功")
+                                                finish()
+                                            }
+                                        }
+
+                                        override fun onFailureNotInUiThread(msg: String?) {
+                                            launch {
+                                                U.getToastUtil().showShort("上传失败，稍后重试")
+                                                progressSkr.visibility = View.GONE
+                                            }
+                                        }
+                                    })
+                        } else {
+                            launch {
+                                launch(Dispatchers.IO) {
+                                    mFeedsMakeModel?.let {
+                                        FeedsMakeLocalApi.insert(it)
+                                    }
+                                }
+                                // 保存到草稿
+                                U.getToastUtil().showShort("保存成功")
+                                finish()
+                            }
+                        }
+                    }
+                    .build()
+            tipsDialogView.showByDialog()
+        } else {
+            finish()
+        }
     }
 
     override fun onDestroy() {
