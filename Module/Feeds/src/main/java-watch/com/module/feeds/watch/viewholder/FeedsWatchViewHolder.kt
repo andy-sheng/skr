@@ -90,9 +90,13 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         if (watchModel.song?.needRecommentTag == true) {
             recomendTag = "#小编推荐# "
         }
-        var songTag = watchModel.song?.tags?.get(0)?.tagDesc ?: ""
-        if (!TextUtils.isEmpty(songTag)) {
-            songTag = "#$songTag# "
+        var songTag = ""
+        watchModel.song?.tags?.let {
+            for (model in it) {
+                model?.tagDesc.let { tagDesc ->
+                    songTag = "$songTag#$tagDesc# "
+                }
+            }
         }
         val title = watchModel.song?.title ?: ""
         if (TextUtils.isEmpty(recomendTag) && TextUtils.isEmpty(songTag) && TextUtils.isEmpty(title)) {
