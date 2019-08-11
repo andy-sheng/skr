@@ -49,7 +49,22 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 双人房邀请信令
    */
-  NM_CR_INVITEV2(7);
+  NM_CR_INVITEV2(7),
+
+  /**
+   * 点赞feed
+   */
+  NM_FD_LIKE(8),
+
+  /**
+   * 点赞评论信令
+   */
+  NM_FD_COMMENT_LIKE(9),
+
+  /**
+   * 添加评论信令
+   */
+  NM_FD_COMMENT_ADD(10);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -72,6 +87,9 @@ public enum ENotificationMsgType implements WireEnum {
       case 5: return NM_CR_ENTER;
       case 6: return NM_CR_REFUSE;
       case 7: return NM_CR_INVITEV2;
+      case 8: return NM_FD_LIKE;
+      case 9: return NM_FD_COMMENT_LIKE;
+      case 10: return NM_FD_COMMENT_ADD;
       default: return null;
     }
   }

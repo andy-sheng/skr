@@ -16,10 +16,16 @@ public class WeakRedDotManager {
     public final static String SP_KEY_NEW_FRIEND = "SP_KEY_NEW_FRIEND";  //从外到内 个人中心icon2 个人中心好友1
     public final static String SP_KEY_NEW_FANS = "SP_KEY_NEW_FANS";      //从外到内 个人中心icon2 个人中心粉丝1
     public final static String SP_KEY_NEW_MESSAGE_FOLLOW = "SP_KEY_NEW_FOLLOW";  //关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
+    public final static String SP_KEY_FEED_LIKE = "SP_KEY_NEW_FOLLOW";  //关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
+    public final static String SP_KEY_FEED_COMMENT_LIKE = "SP_KEY_NEW_FOLLOW";  //关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
+    public final static String SP_KEY_FEED_COMMENT_ADD = "SP_KEY_NEW_FOLLOW";  //关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
 
     public static final int FANS_RED_ROD_TYPE = 1;
     public static final int FRIEND_RED_ROD_TYPE = 2;
     public static final int MESSAGE_FOLLOW_RED_ROD_TYPE = 3;
+    public static final int MESSAGE_FEED_LIKE_TYPE = 4;
+    public static final int MESSAGE_FEED_COMMENT_LIKE_TYPE = 5;
+    public static final int MESSAGE_FEED_COMMENT_ADD_TYPE = 6;
 
     HashMap<Integer, HashSet<WeakRedDotListener>> mMap = new HashMap<>();
 
@@ -63,27 +69,51 @@ public class WeakRedDotManager {
      * @param isFlag 是否强制刷新
      */
     public void updateWeakRedRot(int type, int value, boolean isFlag) {
-        if (type == FANS_RED_ROD_TYPE) {
-            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FANS, 0) < value && !isFlag) {
-                return;
-            } else {
-                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FANS, value);
-            }
-        }
-
-        if (type == FRIEND_RED_ROD_TYPE) {
-            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FRIEND, 0) < value && !isFlag) {
-                return;
-            } else {
-                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FRIEND, value);
-            }
-        }
+//        if (type == FANS_RED_ROD_TYPE) {
+//            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FANS, 0) < value && !isFlag) {
+//                return;
+//            } else {
+//                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FANS, value);
+//            }
+//        }
+//
+//        if (type == FRIEND_RED_ROD_TYPE) {
+//            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FRIEND, 0) < value && !isFlag) {
+//                return;
+//            } else {
+//                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FRIEND, value);
+//            }
+//        }
 
         if (type == MESSAGE_FOLLOW_RED_ROD_TYPE) {
             if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_MESSAGE_FOLLOW, 0) < value && !isFlag) {
                 return;
             } else {
                 U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_MESSAGE_FOLLOW, value);
+            }
+        }
+
+        if (type == MESSAGE_FEED_LIKE_TYPE) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_FEED_LIKE, 0) < value && !isFlag) {
+                return;
+            } else {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_FEED_LIKE, value);
+            }
+        }
+
+        if (type == MESSAGE_FEED_COMMENT_LIKE_TYPE) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_FEED_COMMENT_LIKE, 0) < value && !isFlag) {
+                return;
+            } else {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_FEED_COMMENT_LIKE, value);
+            }
+        }
+
+        if (type == MESSAGE_FEED_COMMENT_ADD_TYPE) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_FEED_COMMENT_ADD, 0) < value && !isFlag) {
+                return;
+            } else {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_FEED_COMMENT_ADD, value);
             }
         }
 

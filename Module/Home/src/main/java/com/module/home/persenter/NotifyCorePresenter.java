@@ -31,6 +31,9 @@ import com.common.notification.event.CRInviteInCreateRoomNotifyEvent;
 import com.common.notification.event.CRRefuseInviteNotifyEvent;
 import com.common.notification.event.CRSendInviteUserNotifyEvent;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
+import com.common.notification.event.FeedCommentAddNotifyEvent;
+import com.common.notification.event.FeedCommentLikeNotifyEvent;
+import com.common.notification.event.FeedLikeNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
@@ -45,6 +48,11 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.verify.SkrVerifyUtils;
+import com.component.dialog.ConfirmDialog;
+import com.component.dialog.NotifyDialogView;
+import com.component.notification.DoubleInviteNotifyView;
+import com.component.notification.FollowNotifyView;
+import com.component.notification.GrabInviteNotifyView;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
@@ -53,12 +61,7 @@ import com.module.home.view.INotifyView;
 import com.module.playways.IPlaywaysModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.component.dialog.ConfirmDialog;
-import com.component.dialog.NotifyDialogView;
 import com.zq.live.proto.Common.EMsgRoomMediaType;
-import com.component.notification.DoubleInviteNotifyView;
-import com.component.notification.FollowNotifyView;
-import com.component.notification.GrabInviteNotifyView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -341,6 +344,21 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         floatWindowData.setRoomID(event.getRoomID());
         floatWindowData.setExtra(event.getInviteMsg());
         mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FeedLikeNotifyEvent event) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 2);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FeedCommentLikeNotifyEvent event) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 2);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FeedCommentAddNotifyEvent event) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 2);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

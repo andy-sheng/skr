@@ -42,7 +42,7 @@ import io.rong.imkit.R;
 
 public class LastFollowFragment extends BaseFragment {
 
-    CommonTitleBar mTitlebar;
+//    CommonTitleBar mTitlebar;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;
 
@@ -58,7 +58,7 @@ public class LastFollowFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
+//        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
         mRefreshLayout = (SmartRefreshLayout) getRootView().findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) getRootView().findViewById(R.id.content_rv);
 
@@ -101,12 +101,12 @@ public class LastFollowFragment extends BaseFragment {
         mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mContentRv.setAdapter(mLastFollowAdapter);
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                finish();
-            }
-        });
+//        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+//            @Override
+//            public void clickValid(View v) {
+//                finish();
+//            }
+//        });
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LastFollowEmptyCallback())
@@ -117,6 +117,11 @@ public class LastFollowFragment extends BaseFragment {
                 getLastRelations();
             }
         });
+    }
+
+    @Override
+    public boolean isInViewPager() {
+        return true;
     }
 
     @Override

@@ -3,6 +3,13 @@ if (isBuildModule.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'
 }
+//kotlin-android用于编译Android代码
+apply plugin: 'kotlin-android'
+//kotlin-android-extensions用于扩展绑定关系.
+apply plugin: 'kotlin-android-extensions'
+//kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
+apply plugin: 'kotlin-kapt'
+
 android {
     // 融云 2.9.14-stable版本
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -88,9 +95,9 @@ dependencies {
     }
     if (isBuildModule.toBoolean()) {
 //        tools
-        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     } else {
-        compileOnly rootProject.ext.dependencies["arouter-compiler"]
+        kapt rootProject.ext.dependencies["arouter-compiler"]
     }
 
     if(RomPushUseRC.toBoolean()){

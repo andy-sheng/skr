@@ -366,4 +366,7 @@ public interface UserInfoServerApi {
 
     @GET("/v1/mate/is-blacked")
     Observable<ApiResult> checkIsBlack(@Query("userID")int userID);
+
+    @GET("/v1/msgbox/latest-news")
+    Observable<ApiResult> getLatestNews(@Query("userID") long userID);
 }

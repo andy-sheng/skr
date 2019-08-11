@@ -238,6 +238,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 selectTab(2);
 
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 1);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 1);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 1);
             }
         });
 
@@ -492,6 +495,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         selectTab(event.channel);
         if (event.channel == 1) {
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 1);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 1);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 1);
         }
     }
 
@@ -552,7 +558,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     @Override
     public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE) {
+        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE) {
             mMessageFollowRedDotValue = value;
         }
 

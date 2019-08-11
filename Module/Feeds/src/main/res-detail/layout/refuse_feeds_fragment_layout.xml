@@ -10,13 +10,13 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/colorSolidPrimary"
         android:paddingLeft="@dimen/view_3_dp"
         android:paddingTop="@dimen/view_10_dp"
-        android:paddingRight="@dimen/view_3_dp">
+        android:paddingRight="@dimen/view_3_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/colorSolidPrimary">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/refreshLayout"

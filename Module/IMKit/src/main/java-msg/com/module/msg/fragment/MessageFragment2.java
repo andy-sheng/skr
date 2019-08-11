@@ -14,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -28,11 +28,11 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.manager.WeakRedDotManager;
+import com.component.dialog.InviteFriendDialog;
+import com.component.relation.fragment.SearchUserFragment;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowModel;
-import com.component.dialog.InviteFriendDialog;
-import com.component.relation.fragment.SearchUserFragment;
 
 import java.util.List;
 
@@ -139,10 +139,13 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             @Override
             public void clickValid(View v) {
                 StatisticsAdapter.recordCountEvent("IMtab", "newfollow", null);
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_LAST_FOLLOW)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_INTERACTION)
                         .navigation();
 
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 0);
             }
         });
 
@@ -175,12 +178,16 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
         }
 
         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(userInfoServerApi.getLatestRelation(1), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.getLatestNews(MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    List<LastFollowModel> list = JSON.parseArray(result.getData().getString("users"), LastFollowModel.class);
-                    showLastRelation(list);
+                    String str = result.getData().getString("latestNews");
+                    long timeMs = result.getData().getLongValue("timeMs");
+                    mFollowTips.setVisibility(View.VISIBLE);
+                    mFollowTips.setText(str);
+                    mFollowTimeTv.setVisibility(View.VISIBLE);
+                    mFollowTimeTv.setText(U.getDateTimeUtils().getDateTimeString(timeMs, false, getContext()));
                 }
             }
         }, this);
@@ -268,7 +275,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     @Override
     public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE) {
+        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE) {
             mMessageFollowRedDotValue = value;
         }
 

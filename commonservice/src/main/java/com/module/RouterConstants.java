@@ -37,6 +37,7 @@ public interface RouterConstants {
     String ACTIVITY_RANKED = "/home/RankedActivity";
 
     String ACTIVITY_LAST_FOLLOW = "/msg/LastFollowActivity";
+    String ACTIVITY_INTERACTION = "/msg/InteractionActivity";
 
     String ACTIVITY_FRIEND_ROOM = "/busilib/FriendMoreRoomActivity";
     String ACTIVITY_RELATION = "/busilib/RelationActivity";
