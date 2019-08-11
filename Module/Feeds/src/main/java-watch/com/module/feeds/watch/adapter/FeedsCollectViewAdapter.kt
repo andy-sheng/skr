@@ -29,10 +29,12 @@ class FeedsCollectViewAdapter : RecyclerView.Adapter<FeedsCollectViewHolder>() {
         holder.bindData(position, mDataList[position])
         if (mDataList[position] == mCurrentPlayModel) {
             holder.mSongPlayIv.isSelected = true
+            holder.mSongPlayIv.setImageResource(R.drawable.list_song_pause_icon)
             holder.mSongNameTv.setTextColor(Color.parseColor("#FFC15B"))
         } else {
             holder.mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80))
             holder.mSongPlayIv.isSelected = false
+            holder.mSongPlayIv.setImageResource(R.drawable.list_song_play_icon)
         }
     }
 

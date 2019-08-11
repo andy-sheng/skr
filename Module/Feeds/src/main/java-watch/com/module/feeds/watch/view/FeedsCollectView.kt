@@ -375,6 +375,11 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     override fun showCollect(model: FeedsCollectModel) {
         this.mTopModel = model
         mPlayLikeIv.isSelected = model.isLiked
+        if (model.isLiked) {
+            mPlayLikeIv.setImageResource(R.drawable.feed_collect_selected_icon)
+        } else {
+            mPlayLikeIv.setImageResource(R.drawable.feed_collect_normal_icon)
+        }
         // 更新数据
         mAdapter.update(mTopPosition, model)
         for (i in 0 until mRandomList.size) {
@@ -408,6 +413,11 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             }
             mPlayDescTv.text = "《${mTopModel?.song?.workName ?: ""}》$songTag"
             mPlayLikeIv.isSelected = mTopModel?.isLiked == true
+            if (mTopModel?.isLiked == true) {
+                mPlayLikeIv.setImageResource(R.drawable.feed_collect_selected_icon)
+            } else {
+                mPlayLikeIv.setImageResource(R.drawable.feed_collect_normal_icon)
+            }
         }
 
         // 开启和关闭动画
