@@ -8,6 +8,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -55,6 +56,6 @@ class FeedsDetailOneViewHolder(rootView: View,
             AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(it.avatar).setCircle(true).build())
             mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
         }
-        mLikeNumTv.text = model.starCnt.toString()
+        mLikeNumTv.text = "${StringFromatUtils.formatTenThousand(model.starCnt)}赞"
     }
 }

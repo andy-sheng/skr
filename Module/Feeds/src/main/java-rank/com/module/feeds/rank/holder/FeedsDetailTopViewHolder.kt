@@ -16,6 +16,7 @@ import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.component.busilib.view.BitmapTextView
+import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.rank.adapter.FeedsRankAdapter
@@ -83,7 +84,7 @@ class FeedsDetailTopViewHolder(rootView: View,
                 mNameTv.setTextColor(U.getColor(R.color.black_trans_80))
                 mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
             }
-            mLikeNumTv.text = model.starCnt.toString()
+            mLikeNumTv.text = "${StringFromatUtils.formatTenThousand(model.starCnt)}赞"
             mSeqBtv.setText(model.rankSeq.toString())
         } else {
             mCoverIv.visibility = View.GONE

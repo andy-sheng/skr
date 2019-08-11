@@ -9,6 +9,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.component.busilib.view.BitmapTextView
+import com.component.person.utils.StringFromatUtils
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
@@ -43,7 +44,7 @@ class FeedsDetailRankViewHolder(item: View,
         this.mPosition = position
         this.mModel = model
 
-        mLikeNumTv.text = "${model.starCnt}"
+        mLikeNumTv.text = "${StringFromatUtils.formatTenThousand(model.starCnt)}赞"
         model.user?.let {
             AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
