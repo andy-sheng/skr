@@ -29,7 +29,41 @@ message NotificationMsg
     CombineRoomEnterMsg enterMsg   = 14; //双人房进房信令
     CombineRoomRefuseMsg refuseMsg = 15; //双人房拒绝邀请信令
     CombineRoomInviteV2Msg inviteV2Msg = 16; //双人房邀请信令
+
+    FeedLikeMsg feedLikeMsg = 17; //点赞feed信令
+    FeedCommentLikeMsg feedCommentLikeMsg = 18; //评论喜欢信令
+    FeedCommentAddMsg feedCommentAddMsg = 19; //评论增加信令
 }
+
+//神曲点赞
+message FeedLikeMsg
+{
+    uint32 userID    = 1; //点赞人的userID
+    uint32 feedID    = 2; //点赞的feed
+    bool isLike      = 3; //点赞 or 取消点赞
+    uint32 likeCnt   = 4; //点赞数
+}
+
+//神曲评论点赞
+message FeedCommentLikeMsg
+{
+    uint32 userID    = 1; //点赞人的userID
+    uint32 feedID    = 2; //feed
+    uint32 commentID = 3; //评论id
+    bool isLike      = 4; //点赞 or 取消点赞
+    uint32 likeCnt   = 5; //点赞数
+}
+
+//神曲评论
+message FeedCommentAddMsg
+{
+    uint32 userID                = 1; //评论人userID
+    uint32 feedID                = 2; //feed
+    uint32 commentID             = 3; //新生成评论ID
+    uint32 firstLevelCommentID   = 4; //若为二级评论，则需要传入所属的一级评论id
+    uint32 replyedCommentID      = 5; //被回复的commentID
+}
+
 
 enum ECombineRoomEnterType {
     CRET_UNKNOWN = 0; //未知
@@ -94,6 +128,10 @@ enum ENotificationMsgType {
     NM_CR_ENTER  = 5; //双人房进房信令
     NM_CR_REFUSE = 6; //双人房拒绝邀请信令
     NM_CR_INVITEV2 = 7; //双人房邀请信令
+
+    NM_FD_LIKE = 8; //点赞feed
+    NM_FD_COMMENT_LIKE = 9; //点赞评论信令
+    NM_FD_COMMENT_ADD = 10; //添加评论信令
 }
 
 message FollowMsg

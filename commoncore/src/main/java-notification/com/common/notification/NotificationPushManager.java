@@ -7,6 +7,9 @@ import com.common.notification.event.CRSendInviteUserNotifyEvent;
 import com.common.notification.event.CRStartByCreateNotifyEvent;
 import com.common.notification.event.CRStartByMatchPushEvent;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
+import com.common.notification.event.FeedCommentAddNotifyEvent;
+import com.common.notification.event.FeedCommentLikeNotifyEvent;
+import com.common.notification.event.FeedLikeNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
@@ -17,6 +20,9 @@ import com.zq.live.proto.Notification.CombineRoomRefuseMsg;
 import com.zq.live.proto.Notification.ECombineRoomEnterType;
 import com.zq.live.proto.Notification.EInviteType;
 import com.zq.live.proto.Notification.ENotificationMsgType;
+import com.zq.live.proto.Notification.FeedCommentAddMsg;
+import com.zq.live.proto.Notification.FeedCommentLikeMsg;
+import com.zq.live.proto.Notification.FeedLikeMsg;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
@@ -66,6 +72,12 @@ public class NotificationPushManager {
             processEnterRoomMsg(baseNotiInfo, msg.getEnterMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_CR_REFUSE) {
             processRefuseDoubleRoomMsg(baseNotiInfo, msg.getRefuseMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_FD_LIKE) {
+            processFeedLikeMsg(baseNotiInfo, msg.getFeedLikeMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_FD_COMMENT_LIKE) {
+            processFeedCommentLikeMsg(baseNotiInfo, msg.getFeedCommentLikeMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_FD_COMMENT_ADD) {
+            processFeedCommentAddMsg(baseNotiInfo, msg.getFeedCommentAddMsg());
         }
     }
 
@@ -155,6 +167,33 @@ public class NotificationPushManager {
             }
         } else {
             MyLog.e(TAG, "processEnterRoomMsg combineRoomEnterMsg=null");
+        }
+    }
+
+    private void processFeedLikeMsg(BaseNotiInfo baseNotiInfo, FeedLikeMsg feedLikeMsg) {
+        if (feedLikeMsg != null) {
+            FeedLikeNotifyEvent feedLikeNotifyEvent = new FeedLikeNotifyEvent(baseNotiInfo, feedLikeMsg);
+            EventBus.getDefault().post(feedLikeNotifyEvent);
+        } else {
+            MyLog.e(TAG, "processFeedLikeMsg feedLikeMsg=null");
+        }
+    }
+
+    private void processFeedCommentLikeMsg(BaseNotiInfo baseNotiInfo, FeedCommentLikeMsg feedCommentLikeMsg) {
+        if (feedCommentLikeMsg != null) {
+            FeedCommentLikeNotifyEvent feedCommentLikeNotifyEvent = new FeedCommentLikeNotifyEvent(baseNotiInfo, feedCommentLikeMsg);
+            EventBus.getDefault().post(feedCommentLikeNotifyEvent);
+        } else {
+            MyLog.e(TAG, "processFeedCommentLikeMsg feedCommentLikeMsg=null");
+        }
+    }
+
+    private void processFeedCommentAddMsg(BaseNotiInfo baseNotiInfo, FeedCommentAddMsg feedCommentAddMsg) {
+        if (feedCommentAddMsg != null) {
+            FeedCommentAddNotifyEvent feedCommentAddNotifyEvent = new FeedCommentAddNotifyEvent(baseNotiInfo, feedCommentAddMsg);
+            EventBus.getDefault().post(feedCommentAddNotifyEvent);
+        } else {
+            MyLog.e(TAG, "processFeedCommentAddMsg feedCommentAddMsg=null");
         }
     }
 }

@@ -143,6 +143,9 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
                         .navigation();
 
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 0);
             }
         });
 
@@ -272,7 +275,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
 
     @Override
     public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE) {
+        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE) {
             mMessageFollowRedDotValue = value;
         }
 
