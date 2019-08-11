@@ -192,12 +192,28 @@ object LyricsManager {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun createZrce2ByReader(lrcTsReader: LyricsReader?): String {
-        lrcTsReader?.lrcLineInfos?.forEach {
-            it->
-            MyLog.d(TAG,"it.key = ${it.key}")
-            MyLog.d(TAG,"it.value = ${it.value}")
+    fun createZrce2ByReader(zrce2Reader: LyricsReader?): String {
+        val sb = StringBuilder()
+        zrce2Reader?.lrcLineInfos?.forEach { it ->
+            MyLog.d(TAG, "it.key = ${it.key}")
+            MyLog.d(TAG, "it.value = ${it.value}")
+            val info = it.value
+            sb.append("[${info.startTime},${info.endTime - info.startTime}]")
+            var wordBeginTs = 0
+            val customLine = info.lineLyrics
+            var wordBeginIndex = 0
+            for (i in 0 until info.wordsDisInterval.size) {
+                if (i < (info?.lyricsWords?.size ?: 0)) {
+                    var word = info.lyricsWords[i]
+                    word = customLine.substring(wordBeginIndex, wordBeginIndex + word.length)
+                    wordBeginIndex += word.length
+                    val wordDuration = info.wordsDisInterval[i]
+                    sb.append("<${wordBeginTs},${wordDuration},0>").append(word)
+                    wordBeginTs += wordDuration
+                }
+            }
+            sb.append("\n")
         }
-        return ""
+        return sb.toString()
     }
 }

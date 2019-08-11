@@ -112,6 +112,8 @@ class FeedsMakeActivity : BaseActivity() {
 
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                //val content = LyricsManager.createZrce2ByReader(mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader)
+                //MyLog.d(TAG,"content=$content")
                 if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
                     val tipsDialogView = TipsDialogView.Builder(this@FeedsMakeActivity)
                             .setConfirmTip("保存")
@@ -199,9 +201,7 @@ class FeedsMakeActivity : BaseActivity() {
         })
         changeLyricIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-
-                LyricsManager.createZrce2ByReader(mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader)
-                //openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
+                openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
             }
         })
         titleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
