@@ -9,7 +9,10 @@ import android.text.TextUtils
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
+import com.component.lyrics.LyricsManager
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeModel
@@ -23,6 +26,9 @@ class FeedsLyricMakeActivity : BaseActivity() {
     lateinit var titleBar: CommonTitleBar
     lateinit var lyricRv: RecyclerView
     lateinit var lyricAdapter: FeedsLyricMakeAdapter
+
+    var originLyric: String? = ""
+    var originLyricThisTime: String? = ""
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_lyric_make_activity_layout
@@ -38,54 +44,132 @@ class FeedsLyricMakeActivity : BaseActivity() {
         lyricAdapter = FeedsLyricMakeAdapter()
         lyricRv.adapter = lyricAdapter
         titleBar.leftImageButton.setOnClickListener {
-            //  将歌词文件写入
-            if (mFeedsMakeModel?.withBgm == true) {
-                lyricAdapter.getData().forEachIndexed { index, lyricItem ->
-                    if (index == 0) {
-                        mFeedsMakeModel?.songModel?.workName = lyricItem.newContent
-                    } else {
-                        mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.get(index - 1)?.lineLyrics = lyricItem.newContent
-                    }
-                }
-            } else {
-                val sb = StringBuilder()
-                lyricAdapter.getData().forEachIndexed { index, lyricItem ->
-                    if (index == 0) {
-                        mFeedsMakeModel?.songModel?.workName = lyricItem.newContent
-                    } else {
-                        sb.append(lyricItem.newContent).append("\n")
-                    }
-                }
-                mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr = sb.toString()
+            finish()
+        }
+        titleBar.rightCustomView.setOnClickListener {
+            if (lyricAdapter.songName.isNullOrEmpty()) {
+                U.getToastUtil().showShort("歌曲名不能为空")
+                return@setOnClickListener
             }
+            // 判断歌词是否有变化
+            //  尝试写入伴奏歌词
+            lyricAdapter.getData().forEach { lyricItem ->
+                if (lyricItem.newContent.length != lyricItem.content.length) {
+                    U.getToastUtil().showShort("新歌词字数必须与原歌词一致 ${lyricItem.newContent}")
+                    return@setOnClickListener
+                }
+            }
+            // 判断歌词是否有变化
+            //  尝试写入伴奏歌词
+            if (mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader == null) {
+                if (mFeedsMakeModel?.songModel?.songTpl?.lrcTs?.isNullOrEmpty() == false) {
+                    LyricsManager.loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+                            .subscribe({
+                                mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = it
+                                lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+                                    mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.get(index)?.lineLyrics = lyricItem.newContent
+                                }
+                            }, { MyLog.e(TAG, it) })
+                }
+            }else{
+                lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+                    mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.get(index)?.lineLyrics = lyricItem.newContent
+                }
+            }
+
+            // 尝试写入清唱歌词
+            val sb = StringBuilder()
+            lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+                sb.append(lyricItem.newContent).append("\n")
+            }
+            mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr = sb.toString()
+            if (originLyric != mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr) {
+                mFeedsMakeModel?.hasChangeLyric = true
+            }
+            if (originLyricThisTime != mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr) {
+                mFeedsMakeModel?.hasChangeLyricThisTime = true
+            }
+            mFeedsMakeModel?.songModel?.workName = lyricAdapter.songName
             sFeedsMakeModelHolder = mFeedsMakeModel
             setResult(Activity.RESULT_OK)
             finish()
         }
         val list = ArrayList<LyricItem>()
+
+        // 原唱歌词
+        val lrcTs = mFeedsMakeModel?.songModel?.songTpl?.lrcTs
+        if (!TextUtils.isEmpty(lrcTs)) {
+            LyricsManager.loadStandardLyric(lrcTs)
+                    .subscribe({
+                        MyLog.d(TAG, "loadStandardLyric")
+                        val size = it?.lrcLineInfos?.size
+                        if (size != null && size > 0) {
+                            val map = it?.lrcLineInfos
+                            map?.forEach { it ->
+                                val lyric = it.value.lineLyrics
+                                originLyric = originLyric + "\n" + lyric
+                                val item = LyricItem(lyric)
+                                item.startTs = it.value.startTime
+                                item.endTs = it.value.endTime
+                                list.add(item)
+                            }
+                            fillNewContent(list)
+                        }
+                    }, {
+                        MyLog.e(TAG, it)
+                    })
+        } else {
+            val lrcTxt = mFeedsMakeModel?.songModel?.songTpl?.lrcTxt
+            LyricsManager.loadGrabPlainLyric(lrcTxt)
+                    .subscribe({ lrcTxtStr ->
+                        originLyric = lrcTxtStr
+                        if (!TextUtils.isEmpty(lrcTxtStr)) {
+                            lrcTxtStr?.split("\n")?.forEach {
+                                if (!TextUtils.isEmpty(it)) {
+                                    val item = LyricItem(it)
+                                    list.add(item)
+                                }
+                            }
+                            fillNewContent(list)
+                        }
+                    }, {
+                        MyLog.e(TAG, it)
+                    })
+        }
+    }
+
+    private fun fillNewContent(list: ArrayList<LyricItem>) {
+        MyLog.d(TAG, "fillNewContentlist = $list")
         if (mFeedsMakeModel?.withBgm == true) {
             val size = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.size
             if (size != null && size > 0) {
                 val map = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos
+                var index = 0
                 map?.forEach {
-                    val item = LyricItem(LyricItem.TYPE_NORMAL, it.value.lineLyrics)
-                    item.startTs = it.value.startTime
-                    item.endTs = it.value.endTime
-                    list.add(item)
+                    val lyric = it.value.lineLyrics
+                    originLyricThisTime = originLyricThisTime + "\n" + lyric
+                    if (index < list.size) {
+                        list[index].newContent = lyric
+                    }
+                    index++
                 }
             }
         } else {
             val lrcTxtStr = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr
             if (!TextUtils.isEmpty(lrcTxtStr)) {
-                lrcTxtStr?.split("\n")?.forEach {
-                    val item = LyricItem(LyricItem.TYPE_NORMAL, it)
-                    list.add(item)
+                originLyricThisTime = lrcTxtStr
+                var index = 0
+                lrcTxtStr?.split("\n")?.forEach { s ->
+                    if (index < list.size) {
+                        list[index].newContent = s
+                    }
+                    index++
                 }
             }
         }
-
-        list.add(0, LyricItem(LyricItem.TYPE_TITLE, mFeedsMakeModel?.songModel?.workName ?: ""))
-        lyricAdapter.setData(list)
+        // 歌曲名不用展示原来的
+        MyLog.d(TAG, "fillNewContentlist update")
+        lyricAdapter.setData(mFeedsMakeModel?.songModel?.workName ?: "", list)
     }
 
     override fun onResume() {

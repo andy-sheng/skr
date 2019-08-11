@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:gravity="left"
+        android:text="哥名:"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/view_14_dp"
+        app:layout_constraintBottom_toTopOf="@+id/edit_et"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_et" />
+
+
+    <EditText
+        android:id="@+id/edit_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/feeds_lyric_make_editor_bg"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/view_12_dp"
+        android:paddingTop="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_33_dp"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:maxLength="20"
+        android:text="告白气球"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/view_16_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

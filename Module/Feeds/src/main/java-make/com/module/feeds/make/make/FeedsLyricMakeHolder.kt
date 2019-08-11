@@ -31,10 +31,18 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         editEt.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             MyLog.d("FeedsLyricMakeHolder", "postion=$postion item=$item hasFocus=$hasFocus")
-            if(hasFocus){
+            if (hasFocus) {
                 editEt.setBackgroundResource(R.drawable.feeds_lyric_make_editor_bg_focus)
-            }else{
+                wordNumTv.visibility = View.VISIBLE
+                wordNumTv.setTextColor(U.getColor(R.color.black_trans_50))
+            } else {
                 editEt.setBackgroundResource(R.drawable.feeds_lyric_make_editor_bg)
+                if (item?.newContent?.length == item?.content?.length) {
+                    wordNumTv.visibility = View.GONE
+                } else {
+                    wordNumTv.visibility = View.VISIBLE
+                    wordNumTv.setTextColor(Color.parseColor("#F9102C"))
+                }
                 item?.let {
                     setEtText(it)
                 }
@@ -76,10 +84,6 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         this.item = item
         if (pos == 0) {
             labelTv.visibility = View.VISIBLE
-            labelTv.text = "歌名:"
-            originTv.visibility = View.GONE
-        } else if (pos == 1) {
-            labelTv.visibility = View.VISIBLE
             labelTv.text = "歌词:"
             originTv.visibility = View.VISIBLE
         } else {
@@ -94,6 +98,7 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setEtText(item: LyricItem) {
         if (item.newContent.length == item.content.length) {
+            wordNumTv.visibility = View.GONE
             val sp = SpanUtils()
             for (i in 0 until item.newContent.length) {
                 if (item.newContent[i].equals(item.content[i])) {
@@ -104,6 +109,8 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
             editEt.setText(sp.create())
         } else {
+            wordNumTv.visibility = View.VISIBLE
+            wordNumTv.setTextColor(Color.parseColor("#F9102C"))
             val spanBuilder = SpanUtils()
                     .append(item.newContent).setForegroundColor(U.getColor(R.color.red))
                     .create()

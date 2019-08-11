@@ -61,6 +61,28 @@
         app:layout_constraintRight_toRightOf="@+id/reset_iv"
         app:layout_constraintTop_toBottomOf="@+id/reset_iv" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/change_lyric_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/feeds_make_change_lyric"
+        app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
+        app:layout_constraintLeft_toRightOf="@id/begin_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/begin_tv" />
+
+    <TextView
+        android:id="@+id/change_lyric_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="改编歌词"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_12_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/change_lyric_iv"
+        app:layout_constraintRight_toRightOf="@+id/change_lyric_iv"
+        app:layout_constraintTop_toBottomOf="@+id/change_lyric_iv" />
+
+
     <com.common.view.DiffuseView
         android:id="@+id/pick_diffuse_view"
         android:layout_width="@dimen/view_140_dp"
@@ -130,10 +152,10 @@
         android:id="@+id/txt_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_210_dp"
+        android:layout_marginTop="@dimen/view_99_dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="@dimen/view_99_dp"
         app:layout_constraintTop_toBottomOf="@+id/qc_progress_bar"
         app:lyricAuto="false"
         app:lyricColor="@color/white_trans_80"

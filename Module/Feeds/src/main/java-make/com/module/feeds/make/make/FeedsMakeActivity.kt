@@ -33,6 +33,7 @@ import com.component.lyrics.widget.ManyLyricsView
 import com.component.lyrics.widget.TxtLyricScrollView
 import com.component.lyrics.widget.VoiceScaleView
 import com.component.toast.NoImageCommonToastView
+import com.dialog.view.TipsDialogView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.RouterConstants
@@ -63,6 +64,9 @@ class FeedsMakeActivity : BaseActivity() {
     var manyLyricsView: ManyLyricsView? = null
     var txtLyricsView: TxtLyricScrollView? = null
     var recordTipsIv: View? = null
+    var changeLyricIv: ImageView? = null
+    var changeLyricTv: TextView? = null
+
 
     var mFeedsMakeModel: FeedsMakeModel? = null
 
@@ -93,19 +97,38 @@ class FeedsMakeActivity : BaseActivity() {
         qcProgressBarView = findViewById(R.id.qc_progress_bar)
         diffuseView = findViewById(R.id.pick_diffuse_view)
         recordTipsIv = findViewById(R.id.record_tip_iv)
+        changeLyricIv = findViewById(R.id.change_lyric_iv)
+        changeLyricTv = findViewById(R.id.change_lyric_tv)
+
         if (mFeedsMakeModel == null) {
             U.getToastUtil().showShort("参数不正确")
             finish()
             return
         }
 
+        resetIv?.visibility = View.GONE
+        resetTv?.visibility = View.GONE
+
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if (BuildConfig.DEBUG) {
-                    openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
-                } else {
+                if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
+                    val tipsDialogView = TipsDialogView.Builder(this@FeedsMakeActivity)
+                            .setConfirmTip("保存")
+                            .setCancelTip("直接退出")
+                            .setCancelBtnClickListener {
+                                finish()
+                            }
+                            .setMessageTip("是否将改编歌词保存到草稿箱?")
+                            .setConfirmBtnClickListener {
+                                // 保存到草稿
+                                finish()
+                            }
+                            .build()
+                    tipsDialogView.showByDialog()
+                }else{
                     finish()
                 }
+
             }
         })
 
@@ -158,6 +181,10 @@ class FeedsMakeActivity : BaseActivity() {
                     } else {
                         titleBar?.rightCustomView?.visibility = View.GONE
                         resetIv?.isEnabled = true
+                        resetIv?.visibility = View.VISIBLE
+                        resetTv?.visibility = View.VISIBLE
+                        changeLyricIv?.visibility = View.GONE
+                        changeLyricTv?.visibility = View.GONE
                         startRecord()
                     }
                 }
@@ -167,6 +194,11 @@ class FeedsMakeActivity : BaseActivity() {
         resetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 startRecord()
+            }
+        })
+        changeLyricIv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
             }
         })
         titleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
@@ -365,7 +397,7 @@ class FeedsMakeActivity : BaseActivity() {
                 audioMixingPlayoutVolume = 100
                 recordingSignalVolume = 200
             }
-            ZqEngineKit.getInstance().init("feeds_make"+hashCode(), params)
+            ZqEngineKit.getInstance().init("feeds_make" + hashCode(), params)
         }
     }
 
@@ -426,7 +458,7 @@ class FeedsMakeActivity : BaseActivity() {
 
             mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
                 override fun onLyricParseSuccess(reader: LyricsReader) {
-                    mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos.get(0)?.startTime ?: 0
+                    mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos?.get(0)?.startTime ?: 0
                 }
 
                 override fun onLyricParseFailed() {
@@ -530,7 +562,7 @@ class FeedsMakeActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        ZqEngineKit.getInstance().destroy("feeds_make"+hashCode())
+        ZqEngineKit.getInstance().destroy("feeds_make" + hashCode())
         mLyricAndAccMatchManager.stop()
         manyLyricsView?.release()
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

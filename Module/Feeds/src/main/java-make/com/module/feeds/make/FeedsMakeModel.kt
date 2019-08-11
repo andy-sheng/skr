@@ -29,6 +29,9 @@ class FeedsMakeModel(var challengeID: Long):Serializable{
 
     var recordingClick: Boolean = false
     var withBgm  = false
+    var hasChangeLyric = false // 是否改变了歌词
+    var hasChangeLyricThisTime = false // 本次是否改变了歌词，因为可能从草稿箱进去
+
     override fun toString(): String {
         return "FeedsMakeModel(challengeID=$challengeID, songModel=$songModel, composeSavePath='$composeSavePath', bgmDownloadProgress=$bgmDownloadProgress, recordDuration=$recordDuration, recording=$recording, beginRecordTs=$beginRecordTs, recordSavePath='$recordSavePath', recordingClick=$recordingClick, withBgm=$withBgm)"
     }
