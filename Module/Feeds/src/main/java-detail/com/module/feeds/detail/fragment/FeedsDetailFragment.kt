@@ -243,12 +243,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mSongManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, ArrayList())
 
-        mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
-        mFeedsWatchModel?.song?.workName?.let {
-            mSongNameTv?.text = it
-            mCommonTitleBar?.centerTextView?.text = "正在播放《${it}》"
-        }
-
         mPlayLastIv?.setDebounceViewClickListener {
 //            val feedSongModel = mSongManager?.getPreSong(true)
         }
@@ -283,15 +277,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     EventBus.getDefault().post(AddCommentEvent(mRefuseModel!!.comment.commentID))
                 }
             }
-        }
-
-        AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
-                .setCircle(false)
-                .setBlur(true)
-                .build())
-
-        mFeedsWatchModel?.song?.playDurMs?.let {
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
         }
 
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -369,9 +354,48 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             })
         }
 
-        AvatarUtils.loadAvatarByUrl(mSingerIv, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
-                .setCircle(true)
-                .build())
+        mControlTv?.setDebounceViewClickListener {
+            if (it!!.isSelected) {
+                pausePlay()
+            } else {
+                startPlay()
+            }
+        }
+
+        mMoreTv?.setDebounceViewClickListener {
+            showMoreOp()
+        }
+
+        mCommonTitleBar?.rightImageButton?.setDebounceViewClickListener {
+            showMoreOp()
+        }
+
+        mFeedsCommentView?.mClickContentCallBack = {
+            showCommentOp(it)
+        }
+
+        mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    SinglePlayer.seekTo(playerTag, progress.toLong())
+                    mFeedsCommonLyricView?.seekTo(progress)
+                    mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+
+        mRadioView?.avatarContainer?.setDebounceViewClickListener {
+            mControlTv?.callOnClick()
+        }
+
         mSingerIv?.setDebounceViewClickListener {
             val bundle = Bundle()
             bundle.putInt("bundle_user_id", mFeedsWatchModel?.user?.userID ?: 0)
@@ -380,6 +404,32 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     .with(bundle)
                     .navigation()
         }
+
+        SinglePlayer.addCallback(playerTag, playCallback)
+        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel!!.feedID)
+    }
+
+    fun setModelData() {
+        mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
+        mFeedsWatchModel?.song?.workName?.let {
+            mSongNameTv?.text = it
+            mCommonTitleBar?.centerTextView?.text = "正在播放《${it}》"
+        }
+
+        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!, -1)
+        AvatarUtils.loadAvatarByUrl(mBlurBg, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
+                .setCircle(false)
+                .setBlur(true)
+                .build())
+
+        mFeedsWatchModel?.song?.playDurMs?.let {
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+        }
+
+        AvatarUtils.loadAvatarByUrl(mSingerIv, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
+                .setCircle(true)
+                .build())
+
 
         mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userID
                 ?: 0, mFeedsWatchModel?.user?.nickname)
@@ -401,27 +451,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
-        mFollowTv?.setDebounceViewClickListener {
-
-        }
-
-        mSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    SinglePlayer.seekTo(playerTag, progress.toLong())
-                    mFeedsCommonLyricView?.seekTo(progress)
-                    mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            }
-        })
 
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it)
@@ -431,38 +460,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
-        mRadioView?.avatarContainer?.setDebounceViewClickListener {
-            mControlTv?.callOnClick()
-        }
-
-        mFeedsCommonLyricView?.setSongModel(mFeedsWatchModel!!.song!!, -1)
-
-        mControlTv?.setDebounceViewClickListener {
-            if (it!!.isSelected) {
-                pausePlay()
-            } else {
-                startPlay()
-            }
-        }
-
-        mMoreTv?.setDebounceViewClickListener {
-            showMoreOp()
-        }
-
-        mCommonTitleBar?.rightImageButton?.setDebounceViewClickListener {
-            showMoreOp()
-        }
-
-        mFeedsCommentView?.mClickContentCallBack = {
-            showCommentOp(it)
-        }
-
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
-
-        SinglePlayer.addCallback(playerTag, playCallback)
-
         mFeedsDetailPresenter?.checkCollect(mFeedsWatchModel!!.feedID)
-        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel!!.feedID)
     }
 
     private fun showMoreOp() {
@@ -537,16 +536,17 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun showFeedsWatchModel(model: FeedsWatchModel) {
         mFeedsWatchModel = model
 
-        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
-        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
-        mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
-        mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
-        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
+//        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
+//        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
+//        mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
+//        mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
+//        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
 
         mXinIv?.setDebounceViewClickListener {
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
         }
 
+        setModelData()
         startPlay()
     }
 
