@@ -16,6 +16,7 @@ import com.component.lyrics.LyricsManager
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeModel
+import com.module.feeds.make.sFeedsMakeModelHolder
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_LYRIC_MAKE)
@@ -199,7 +200,6 @@ class FeedsLyricMakeActivity : BaseActivity() {
     }
 }
 
-var sFeedsMakeModelHolder: FeedsMakeModel? = null
 
 fun openLyricMakeActivity(mFeedsMakeModel: FeedsMakeModel? = null, activity: BaseActivity) {
     sFeedsMakeModelHolder = mFeedsMakeModel

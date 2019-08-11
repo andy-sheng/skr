@@ -191,4 +191,13 @@ object LyricsManager {
                 .retryWhen(RxRetryAssist(5, ""))
                 .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun createZrce2ByReader(lrcTsReader: LyricsReader?): String {
+        lrcTsReader?.lrcLineInfos?.forEach {
+            it->
+            MyLog.d(TAG,"it.key = ${it.key}")
+            MyLog.d(TAG,"it.value = ${it.value}")
+        }
+        return ""
+    }
 }

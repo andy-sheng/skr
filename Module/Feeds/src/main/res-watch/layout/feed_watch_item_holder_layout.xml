@@ -315,6 +315,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_30_dp"
+        android:gravity="right"
         android:textColor="@color/red"
         android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"

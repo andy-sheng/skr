@@ -38,6 +38,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeModel
+import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
 import com.orhanobut.dialogplus.DialogPlus
@@ -118,7 +119,8 @@ class FeedsEditorActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mFeedsMakeModel = intent.getSerializableExtra("feeds_make_model") as FeedsMakeModel?
+        mFeedsMakeModel = sFeedsMakeModelHolder
+        sFeedsMakeModelHolder = null
         MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
         rootView = findViewById(R.id.root_view)
         titleBar = findViewById(R.id.title_bar)
@@ -137,12 +139,10 @@ class FeedsEditorActivity : BaseActivity() {
         resetIv = findViewById(R.id.reset_iv)
         progressView = findViewById(R.id.progress_view)
 
-
         cdRotateAnimator = ObjectAnimator.ofFloat(cdContainer, View.ROTATION, 0f, 360f)
         cdRotateAnimator?.duration = 10000
         cdRotateAnimator?.interpolator = LinearInterpolator()
         cdRotateAnimator?.repeatCount = Animation.INFINITE
-
 
         titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
@@ -257,8 +257,8 @@ class FeedsEditorActivity : BaseActivity() {
                     progressView.setProgressDrwable(U.getDrawable(R.drawable.common_progress_complete_icon))
                     progressView.setProgressText("合成完成")
                     progressView.visibility = View.GONE
+                    sFeedsMakeModelHolder = mFeedsMakeModel
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
-                            .withSerializable("feeds_make_model", mFeedsMakeModel)
                             .navigation(this@FeedsEditorActivity, 9)
                 }
             }

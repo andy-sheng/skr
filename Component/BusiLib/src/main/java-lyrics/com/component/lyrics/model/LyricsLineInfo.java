@@ -1,5 +1,6 @@
 package com.component.lyrics.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -105,8 +106,18 @@ public class LyricsLineInfo {
         if (orig.getLyricsWords() != null) {
             dist.setLyricsWords(orig.getLyricsWords());
         }
-
         dist.setLineLyrics(orig.getLineLyrics());
+    }
 
+    @Override
+    public String toString() {
+        return "LyricsLineInfo{" +
+                "mStartTime=" + mStartTime +
+                ", mEndTime=" + mEndTime +
+                ", mLineLyrics='" + mLineLyrics + '\'' +
+                ", mLyricsWords=" + Arrays.toString(mLyricsWords) +
+                ", mWordsDisInterval=" + Arrays.toString(mWordsDisInterval) +
+                ", mSplitDynamicLrcLineInfos=" + mSplitDynamicLrcLineInfos +
+                '}';
     }
 }

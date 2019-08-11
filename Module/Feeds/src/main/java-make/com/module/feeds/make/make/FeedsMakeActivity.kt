@@ -42,6 +42,7 @@ import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
+import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -125,7 +126,7 @@ class FeedsMakeActivity : BaseActivity() {
                             }
                             .build()
                     tipsDialogView.showByDialog()
-                }else{
+                } else {
                     finish()
                 }
 
@@ -198,7 +199,9 @@ class FeedsMakeActivity : BaseActivity() {
         })
         changeLyricIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
+
+                LyricsManager.createZrce2ByReader(mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader)
+                //openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
             }
         })
         titleBar?.rightCustomView?.setOnClickListener(object : DebounceViewClickListener() {
@@ -529,8 +532,8 @@ class FeedsMakeActivity : BaseActivity() {
             recordDuration = System.currentTimeMillis() - beginRecordTs
             recordOffsetTs = firstLyricShiftTs + musicFirstFrameTs - recordFirstFrameTs
         }
+        sFeedsMakeModelHolder = mFeedsMakeModel
         val intent = Intent(this, FeedsEditorActivity::class.java)
-        intent.putExtra("feeds_make_model", mFeedsMakeModel)
         startActivityForResult(intent, 100)
     }
 
@@ -547,8 +550,11 @@ class FeedsMakeActivity : BaseActivity() {
             } else {
                 finish()
             }
+        } else {
+            if (requestCode == 100) {
+                finish()
+            }
         }
-
     }
 
     private fun stopRecord() {

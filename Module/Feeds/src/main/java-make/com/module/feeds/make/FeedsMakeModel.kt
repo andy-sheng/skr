@@ -35,6 +35,5 @@ class FeedsMakeModel(var challengeID: Long):Serializable{
     override fun toString(): String {
         return "FeedsMakeModel(challengeID=$challengeID, songModel=$songModel, composeSavePath='$composeSavePath', bgmDownloadProgress=$bgmDownloadProgress, recordDuration=$recordDuration, recording=$recording, beginRecordTs=$beginRecordTs, recordSavePath='$recordSavePath', recordingClick=$recordingClick, withBgm=$withBgm)"
     }
-
-
 }
+var sFeedsMakeModelHolder: FeedsMakeModel? = null

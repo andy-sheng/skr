@@ -17,6 +17,7 @@ import com.common.base.BaseActivity
 import com.common.flowlayout.FlowLayout
 import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.upload.UploadCallback
@@ -26,6 +27,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
+import com.component.lyrics.LyricsManager
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.make.FeedsMakeActivity
@@ -33,9 +35,11 @@ import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.make.model.FeedsPublishTagModel
+import com.module.feeds.make.sFeedsMakeModelHolder
 import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.io.File
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_PUBLISH)
@@ -63,12 +67,18 @@ class FeedsPublishActivity : BaseActivity() {
 
     var playUrl: String? = null
 
+    var customLrcUrl: String? = null
+
     override fun initView(savedInstanceState: Bundle?): Int {
+        MyLog.d(TAG, "initViewsavedInstanceState = $savedInstanceState")
         return R.layout.feeds_publish_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mFeedsMakeModel = intent.getSerializableExtra("feeds_make_model") as FeedsMakeModel?
+        MyLog.d(TAG, "initDatasavedInstanceState = $savedInstanceState")
+
+        mFeedsMakeModel = sFeedsMakeModelHolder
+        sFeedsMakeModelHolder = null
 
         titleBar = this.findViewById(R.id.title_bar)
         sayEdit = this.findViewById(R.id.say_edit)
@@ -140,26 +150,9 @@ class FeedsPublishActivity : BaseActivity() {
                 mFeedsMakeModel?.let {
                     progressSkr.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(playUrl)) {
-                        UploadParams.newBuilder(it.composeSavePath)
-                                .setFileType(UploadParams.FileType.feed)
-                                .startUploadAsync(object : UploadCallback {
-                                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
-                                    }
-
-                                    override fun onSuccessNotInUiThread(url: String?) {
-                                        playUrl = url
-                                        submitToServer()
-                                    }
-
-                                    override fun onFailureNotInUiThread(msg: String?) {
-                                        launch {
-                                            U.getToastUtil().showShort("上传失败，稍后重试")
-                                            progressSkr.visibility = View.GONE
-                                        }
-                                    }
-                                })
+                        step1()
                     } else {
-                        submitToServer()
+                        step2()
                     }
 
                 }
@@ -193,6 +186,69 @@ class FeedsPublishActivity : BaseActivity() {
 
     }
 
+    private fun step1() {
+        UploadParams.newBuilder(mFeedsMakeModel?.composeSavePath)
+                .setFileType(UploadParams.FileType.feed)
+                .startUploadAsync(object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String?) {
+                        playUrl = url
+                        step2()
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String?) {
+                        launch {
+                            U.getToastUtil().showShort("上传失败，稍后重试")
+                            progressSkr.visibility = View.GONE
+                        }
+                    }
+                })
+    }
+
+    private fun step2() {
+        MyLog.d(TAG, "step2 mFeedsMakeModel?.hasChangeLyric=${mFeedsMakeModel?.hasChangeLyric}")
+        if (mFeedsMakeModel?.hasChangeLyric == true) {
+            if (!TextUtils.isEmpty(customLrcUrl)) {
+                submitToServer()
+            } else {
+                launch(Dispatchers.IO) {
+                    var content = ""
+                    var filePath: String? = null
+                    if (mFeedsMakeModel?.withBgm == true) {
+                        val lrcTsReader = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader
+                        filePath = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_custom_lyric_temp.zrce2")
+                        content = LyricsManager.createZrce2ByReader(lrcTsReader)
+                    } else {
+                        content = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr ?: ""
+                        filePath = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_custom_lyric_temp.txt")
+                    }
+                    val file = File(filePath)
+                    U.getIOUtils().writeFile(content, file)
+                    if (file.exists()) {
+                        UploadParams.newBuilder(filePath)
+                                .setFileType(UploadParams.FileType.feed)
+                                .startUploadAsync(object : UploadCallback {
+                                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                                    }
+
+                                    override fun onSuccessNotInUiThread(url: String?) {
+                                        customLrcUrl = url
+                                        submitToServer()
+                                    }
+
+                                    override fun onFailureNotInUiThread(msg: String?) {
+                                    }
+                                })
+                    }
+                }
+            }
+        } else {
+            submitToServer()
+        }
+    }
+
     private fun submitToServer() {
         //保存发布 服务器api
 //                {
@@ -223,8 +279,9 @@ class FeedsPublishActivity : BaseActivity() {
                     "playURL" to playUrl,
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
                     "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
-                    "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2
-//TODO                    "tplID": 0,
+                    "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
+                    "hasChangeLRC" to if (mFeedsMakeModel?.hasChangeLyric == true) true else false,
+                    "lrcURL" to customLrcUrl
             )
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
