@@ -64,6 +64,7 @@
         android:id="@+id/song_play_iv"
         android:layout_width="@dimen/view_64_dp"
         android:layout_height="@dimen/view_64_dp"
+        android:padding="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:src="@drawable/list_song_play_icon"
         app:layout_constraintBottom_toBottomOf="parent"
