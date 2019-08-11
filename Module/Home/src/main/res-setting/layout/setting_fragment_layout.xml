@@ -520,12 +520,27 @@
 
             </RelativeLayout>
 
+
+            <!--客服联系方式-->
+            <com.common.view.ex.ExTextView
+                android:id="@+id/contact_way"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_18_dp"
+                android:layout_below="@+id/service_agreen"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_16_dp"
+                android:gravity="center"
+                android:text="官方客服QQ号: 2790401767"
+                android:textColor="#803B4E79"
+                android:textSize="@dimen/textsize_12_dp"
+                android:textStyle="bold" />
+
             <!--退出登录-->
             <com.common.view.ex.ExTextView
                 android:id="@+id/exit_login"
                 android:layout_width="@dimen/view_132_dp"
-                android:layout_height="@dimen/view_48_dp"
-                android:layout_below="@+id/service_agreen"
+                android:layout_height="@dimen/view_40_dp"
+                android:layout_below="@+id/contact_way"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_16_dp"
                 android:layout_marginBottom="@dimen/view_20_dp"
