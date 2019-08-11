@@ -10,7 +10,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     var mShuffleSongList: ArrayList<FeedSongModel>
 
     //默认顺序播放
-    var mMode: PlayMode = PlayMode.ORDER
+    var mMode: PlayMode = PlayMode.SINGLE
     //当前位置
     var mPosition: Int = 0
 
@@ -27,6 +27,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     }
 
     fun changeMode(mode: PlayMode) {
+        mMode = mode
         if (mCur == null) {
             mPosition = 0
             return
