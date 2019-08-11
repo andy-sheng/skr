@@ -19,6 +19,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.ActivityUtils
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
+import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.make.openFeedsMakeActivity
@@ -47,6 +48,7 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     var title = ""
     var challengeID = 0L
+    var challengeCnt = 0L   //挑战人数
 
     var offset = 0
     val mCNT = 30
@@ -73,6 +75,7 @@ class FeedsDetailRankActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         title = intent.getStringExtra("rankTitle")
         challengeID = intent.getLongExtra("challengeID", 0L)
+        challengeCnt = intent.getLongExtra("challengeCnt", 0L)
 
         mTitlebar = findViewById(R.id.titlebar)
 
@@ -81,6 +84,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         mHitIv = findViewById(R.id.hit_iv)
 
         mTitlebar.centerTextView.text = title
+        mTitlebar.rightTextView.text = "${StringFromatUtils.formatTenThousand(challengeCnt.toInt())}人参与"
         mRecyclerView.layoutManager = GridLayoutManager(this, 3)
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()

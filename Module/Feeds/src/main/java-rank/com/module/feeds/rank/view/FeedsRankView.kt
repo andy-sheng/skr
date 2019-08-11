@@ -65,6 +65,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
                             .withString("rankTitle", it.rankTitle)
                             .withLong("challengeID", it.challengeID ?: 0L)
+                            .withLong("challengeCnt", it.userCnt?.toLong() ?: 0L)
                             .navigation()
                 }
 

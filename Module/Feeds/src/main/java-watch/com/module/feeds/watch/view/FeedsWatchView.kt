@@ -173,6 +173,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
                             .withString("rankTitle", it.rank?.rankTitle)
                             .withLong("challengeID", it.song?.challengeID ?: 0L)
+                            .withLong("challengeCnt", it.challengeCnt.toLong())
                             .navigation()
                 }
             }

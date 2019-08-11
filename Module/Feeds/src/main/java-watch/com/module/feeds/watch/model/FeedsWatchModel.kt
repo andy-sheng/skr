@@ -26,6 +26,8 @@ class FeedsWatchModel : Serializable {
     var starCnt: Int = 0
     @JSONField(name = "shareCnt")
     var shareCnt: Int = 0
+    @JSONField(name = "challengeCnt")
+    var challengeCnt: Int = 0
     @JSONField(name = "user")
     var user: FeedUserInfo? = null
     @JSONField(name = "status")
@@ -34,7 +36,6 @@ class FeedsWatchModel : Serializable {
     var isCollected = false  // 默认未收藏
 
     override fun toString(): String {
-        return "FeedsWatchModel(exposure=$exposure, commentCnt=$commentCnt, feedID=$feedID, feedType=$feedType, hasFollow=$hasFollow, isLiked=$isLiked, rankSeq=$rankSeq, rank=$rank, song=$song, starCnt=$starCnt, shareCnt=$shareCnt, user=$user, status=$status)"
+        return "FeedsWatchModel(exposure=$exposure, commentCnt=$commentCnt, feedID=$feedID, feedType=$feedType, hasFollow=$hasFollow, isLiked=$isLiked, rankSeq=$rankSeq, rank=$rank, song=$song, starCnt=$starCnt, shareCnt=$shareCnt, challengeCnt=$challengeCnt, user=$user, status=$status, isCollected=$isCollected)"
     }
-
 }
