@@ -185,7 +185,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
                     "songtype:${model?.song?.songType}\n" +
                     "playDurMs:${model?.song?.playDurMs} \n" +
                     "${model?.song?.playCurPos}/${model?.song?.playDurMsFromPlayerForDebug}\n" +
-                    "${model?.song?.playURL?.substring((model?.song?.playURL?.length ?: 10) - 10)}"
+                    "${model?.song?.playURL}"
         }
     }
 
