@@ -122,6 +122,16 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     }
 
+    override fun showHalf() {
+        mManyLyricsView?.setDownLineNum(0)
+        mManyLyricsView?.setUpLineNum(1)
+    }
+
+    override fun showWhole() {
+        mManyLyricsView?.setDownLineNum(2)
+        mManyLyricsView?.setUpLineNum(2)
+    }
+
     override fun destroy() {
         mManyLyricsView?.release()
         mIsStart = false

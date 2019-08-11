@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ScrollView
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExTextView
 import com.component.lyrics.LyricsManager
@@ -176,6 +177,14 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
             // 如果取消了
             startScroll()
         }
+    }
+
+    override fun showHalf() {
+        scrollView?.layoutParams.height = U.getDisplayUtils().dip2px(38f)
+    }
+
+    override fun showWhole() {
+        scrollView?.layoutParams.height = U.getDisplayUtils().dip2px(74f)
     }
 
     override fun setVisibility(visibility: Int) {

@@ -484,6 +484,14 @@ public class ManyLyricsView extends AbstractLrcView {
         paint.setTextSize(size);
     }
 
+    public void setUpLineNum(int upLineNum) {
+        mUpLineNum = upLineNum;
+    }
+
+    public void setDownLineNum(int downLineNum) {
+        mDownLineNum = downLineNum;
+    }
+
     private void drawCountDownPoint(Canvas canvas, float y) {
         int lyricsLineNum = getLyricsLineNum();
         LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);

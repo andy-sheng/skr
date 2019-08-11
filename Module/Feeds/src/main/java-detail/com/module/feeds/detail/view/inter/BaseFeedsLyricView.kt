@@ -12,4 +12,6 @@ interface BaseFeedsLyricView {
     fun stop()
     fun isStart(): Boolean
     fun destroy()
+    fun showHalf()
+    fun showWhole()
 }

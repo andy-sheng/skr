@@ -95,7 +95,7 @@ interface FeedsDetailServerApi {
      * 全民神曲
      */
     @GET("v1/feed/info")
-    fun feedsExtraInfo(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
+    fun getFeedsWatchModel(@Query("userID") userID: Int, @Query("feedID") feedID: Int): Observable<ApiResult>
 
     /**
      * 获取被赞的列表

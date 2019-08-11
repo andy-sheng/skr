@@ -1,6 +1,7 @@
 package com.module.feeds.detail.inter
 
 import com.module.feeds.detail.model.FirstLevelCommentModel
+import com.module.feeds.watch.model.FeedsWatchModel
 
 interface IFeedsDetailView {
     fun addCommentSuccess(model: FirstLevelCommentModel)
@@ -8,5 +9,5 @@ interface IFeedsDetailView {
     fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean)
     fun collectFinish(c: Boolean)
     fun isCollect(c: Boolean)
-    fun showExtraInfo(commentCnt: Int, exposure: Int, isLiked: Boolean, shareCnt: Int, starCnt: Int)
+    fun showFeedsWatchModel(model: FeedsWatchModel)
 }

@@ -31,6 +31,7 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.feeds_many_lyric_layout_viewstub)
             mFeedsManyLyricView = FeedsManyLyricView(viewStub)
+            mFeedsManyLyricView?.showHalf()
         }
     }
     override fun setSongModel(feedSongModel: FeedSongModel, shift: Int) {
@@ -56,6 +57,14 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
 
     override fun seekTo(duration: Int) {
         mBaseFeedsLyricView?.seekTo(duration)
+    }
+
+    override fun showHalf() {
+        mBaseFeedsLyricView?.showHalf()
+    }
+
+    override fun showWhole() {
+        mBaseFeedsLyricView?.showWhole()
     }
 
     override fun pause() {

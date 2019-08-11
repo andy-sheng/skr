@@ -3,7 +3,11 @@ package com.module.feeds.detail.fragment
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.Group
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.CoordinatorLayout
@@ -34,6 +38,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.detail.FeedSongPlayModeManager
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -56,6 +61,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     val mTag = "FeedsDetailFragment"
+    val HIDE_CONTROL_AREA = 0
+    val SHOW_CONTROL_AREA = 1
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
     var mContentLayout: CollapsingToolbarLayout? = null
@@ -64,6 +71,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCollectionIv: ExImageView? = null
     var mShareIv: ExImageView? = null
     var mBtnBack: ImageView? = null
+    var mPlayLastIv: ImageView? = null
+    var mPlayNextIv: ImageView? = null
     var mSongNameTv: ExTextView? = null
     var mMoreTv: ExImageView? = null
     var mControlTv: ExImageView? = null
@@ -87,7 +96,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
     var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
+    var mSongControlArea: Group? = null
     var mRefuseModel: FirstLevelCommentModel? = null
+    var mSongManager: FeedSongPlayModeManager? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
@@ -98,6 +109,28 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var sharePanel: SharePanel? = null
 
     var lastVerticalOffset = Int.MAX_VALUE
+
+    val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            if (msg?.what == HIDE_CONTROL_AREA) {
+                showControlArea(false)
+                mFeedsCommonLyricView?.showWhole()
+            } else if (msg?.what == SHOW_CONTROL_AREA) {
+                showControlArea(true)
+                mFeedsCommonLyricView?.showHalf()
+            }
+        }
+    }
+
+    fun showControlArea(show: Boolean) {
+        if (show) {
+            mSongControlArea?.visibility = View.VISIBLE
+            mUiHandler.removeMessages(HIDE_CONTROL_AREA)
+            mUiHandler.sendEmptyMessageDelayed(HIDE_CONTROL_AREA, 5000)
+        } else {
+            mSongControlArea?.visibility = View.GONE
+        }
+    }
 
     var playCallback = object : PlayerCallbackAdapter() {
         override fun onPrepared() {
@@ -200,16 +233,39 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         mRadioView = rootView.findViewById(R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
+        mSongControlArea = rootView.findViewById(R.id.song_control_arae)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mCollectionIv = rootView.findViewById(R.id.collection_iv)
+        mPlayLastIv = rootView.findViewById(R.id.play_last_iv)
+        mPlayNextIv = rootView.findViewById(R.id.play_next_iv)
         mFeedsDetailPresenter = FeedsDetailPresenter(this)
         addPresent(mFeedsDetailPresenter)
+
+        mSongManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, ArrayList())
 
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
         mFeedsWatchModel?.song?.workName?.let {
             mSongNameTv?.text = it
             mCommonTitleBar?.centerTextView?.text = "正在播放《${it}》"
         }
+
+        mPlayLastIv?.setDebounceViewClickListener {
+//            val feedSongModel = mSongManager?.getPreSong(true)
+        }
+
+        mPlayNextIv?.setDebounceViewClickListener {
+//            val feedSongModel = mSongManager?.getNextSong(true)
+        }
+
+        mBlurBg?.setDebounceViewClickListener {
+            if (mSongControlArea?.visibility == View.VISIBLE) {
+                mUiHandler.sendEmptyMessage(HIDE_CONTROL_AREA)
+            } else {
+                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+            }
+        }
+
+        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
 
         mFeedsInputContainerView?.mSendCallBack = { s ->
             if (mRefuseModel == null) {
@@ -404,9 +460,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
 
         SinglePlayer.addCallback(playerTag, playCallback)
-        startPlay()
+
         mFeedsDetailPresenter?.checkCollect(mFeedsWatchModel!!.feedID)
-        mFeedsDetailPresenter?.getFeedExTraInfo(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel!!.feedID)
+        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel!!.feedID)
     }
 
     private fun showMoreOp() {
@@ -478,12 +534,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
-    override fun showExtraInfo(commentCnt: Int, exposure: Int, isLiked: Boolean, shareCnt: Int, starCnt: Int) {
-        mFeedsWatchModel!!.shareCnt = shareCnt
-        mFeedsWatchModel!!.isLiked = isLiked
-        mFeedsWatchModel!!.starCnt = starCnt
-        mFeedsWatchModel!!.exposure = exposure
-        mFeedsWatchModel!!.commentCnt = commentCnt
+    override fun showFeedsWatchModel(model: FeedsWatchModel) {
+        mFeedsWatchModel = model
 
         mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
         mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
@@ -494,6 +546,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mXinIv?.setDebounceViewClickListener {
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
         }
+
+        startPlay()
     }
 
     override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
