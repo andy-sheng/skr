@@ -67,7 +67,7 @@
         android:layout_alignTop="@id/search_content"
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_7_dp"
-        android:background="@drawable/common_search_icon"
+        android:background="@drawable/feed_search_icon"
         app:layout_constraintBottom_toBottomOf="@id/search_content"
         app:layout_constraintLeft_toLeftOf="@id/search_content"
         app:layout_constraintTop_toTopOf="@id/search_content" />
