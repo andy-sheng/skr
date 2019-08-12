@@ -11,6 +11,7 @@ import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
+import com.common.core.scheme.event.FeedDetailFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
@@ -90,6 +91,9 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndReturn;
                     case SchemeConstants.HOST_RELATION:
                         processRelationUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_FEED:
+                        processFeedUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
                     case "game":
                         processGameUrl(uri);
@@ -266,7 +270,20 @@ public class InframeProcessor implements ISchemeProcessor {
         } else {
 
         }
+    }
 
+    private void processFeedUrl(Uri uri) {
+        String path = uri.getPath();
+        if ("/detail".equals(path)) {
+            int feedID = SchemeUtils.getInt(uri, "feedId", 0);
+            if (feedID > 0) {
+                FeedDetailFromSchemeEvent event = new FeedDetailFromSchemeEvent();
+                event.feedID = feedID;
+                EventBus.getDefault().post(event);
+            }
+        } else {
+
+        }
     }
 
     private void processShareUrl(Uri uri) {
