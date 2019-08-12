@@ -244,9 +244,6 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun whenDataOk() {
-        mFeedsMakeModel?.songModel?.challengeDesc?.let {
-            titleBar?.centerTextView?.text = it
-        }
 
         mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()
@@ -298,6 +295,9 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun initLyricView() {
+        mFeedsMakeModel?.songModel?.workName?.let {
+            titleBar?.centerTextView?.text = it
+        }
         qcProgressBarView?.visibility = View.GONE
         voiceScaleView?.visibility = View.GONE
         manyLyricsView?.visibility = View.GONE

@@ -395,15 +395,16 @@ class FeedsPublishActivity : BaseActivity() {
     }
 
     private fun saveAndExit() {
-        launch(Dispatchers.IO) {
-            mFeedsMakeModel?.let {
-                FeedsMakeLocalApi.insert(it)
+        launch {
+            val j = launch(Dispatchers.IO) {
+                mFeedsMakeModel?.let {
+                    FeedsMakeLocalApi.insert(it)
+                }
             }
-            launch {
-                U.getToastUtil().showShort("保存成功")
-                progressSkr.visibility = View.GONE
-                finish()
-            }
+            j.join()
+            U.getToastUtil().showShort("保存成功")
+            progressSkr.visibility = View.GONE
+            finish()
         }
     }
 
