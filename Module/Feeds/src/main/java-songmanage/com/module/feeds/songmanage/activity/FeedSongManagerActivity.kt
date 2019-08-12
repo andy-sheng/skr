@@ -170,6 +170,7 @@ class FeedSongManagerActivity : BaseActivity() {
             }
         }
         songManageViews.clear()
+        feedDraftsView.destroy()
     }
 
     override fun canSlide(): Boolean {

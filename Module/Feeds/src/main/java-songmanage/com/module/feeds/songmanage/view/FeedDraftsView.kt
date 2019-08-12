@@ -1,8 +1,7 @@
 package com.module.feeds.songmanage.view
 
-import android.content.Context
+
 import android.support.constraint.ConstraintLayout
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -10,7 +9,7 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.log.MyLog
-import com.common.utils.U
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeLocalApi
@@ -22,18 +21,18 @@ import com.module.feeds.songmanage.adapter.FeedSongDraftsListener
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * 草稿箱view
  */
-class FeedDraftsView(context: Context) : ConstraintLayout(context) {
+class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
     val refreshLayout: SmartRefreshLayout
     val recyclerView: RecyclerView
 
     val adapter: FeedSongDraftsAdapter
+    var mTipsDialogView: TipsDialogView? = null
 
     init {
         View.inflate(context, R.layout.feed_song_drafts_view_layout, this)
@@ -72,7 +71,20 @@ class FeedDraftsView(context: Context) : ConstraintLayout(context) {
 
             override fun onLongClick(position: Int, model: FeedsMakeModel?) {
                 model?.let {
-                    //todo 长按删除
+                    mTipsDialogView?.dismiss()
+                    mTipsDialogView = TipsDialogView.Builder(activity)
+                            .setMessageTip("确定删除歌曲吗?")
+                            .setCancelTip("取消")
+                            .setCancelBtnClickListener {
+                                mTipsDialogView?.dismiss()
+                            }
+                            .setConfirmTip("确认")
+                            .setConfirmBtnClickListener {
+                                mTipsDialogView?.dismiss()
+                                deleteDrafts(model)
+                            }
+                            .build()
+                    mTipsDialogView?.showByDialog()
                 }
             }
         })
@@ -87,5 +99,18 @@ class FeedDraftsView(context: Context) : ConstraintLayout(context) {
         }
     }
 
+    private fun deleteDrafts(model: FeedsMakeModel) {
+        launch {
+            launch(Dispatchers.IO) {
+                FeedsMakeLocalApi.delete(model.draftID)
+            }
+            adapter.delete(model)
+        }
+    }
+
+    fun destroy() {
+        mTipsDialogView?.dismiss(false)
+        cancel()
+    }
 
 }

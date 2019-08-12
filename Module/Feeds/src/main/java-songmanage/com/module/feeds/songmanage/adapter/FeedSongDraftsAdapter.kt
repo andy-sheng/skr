@@ -11,7 +11,7 @@ class FeedSongDraftsAdapter(val listener: FeedSongDraftsListener) : RecyclerView
 
     private var mDataList = ArrayList<FeedsMakeModel>()
 
-    fun setData(list:ArrayList<FeedsMakeModel>){
+    fun setData(list: ArrayList<FeedsMakeModel>) {
         mDataList.clear()
         mDataList.addAll(list)
         notifyDataSetChanged()
@@ -32,6 +32,13 @@ class FeedSongDraftsAdapter(val listener: FeedSongDraftsListener) : RecyclerView
 
     override fun onBindViewHolder(holder: FeedSongDraftsViewHolder, position: Int, payloads: MutableList<Any>) {
         super.onBindViewHolder(holder, position, payloads)
+    }
+
+    fun delete( model: FeedsMakeModel) {
+        if (mDataList.contains(model)) {
+            mDataList.remove(model)
+            notifyDataSetChanged()
+        }
     }
 }
 
