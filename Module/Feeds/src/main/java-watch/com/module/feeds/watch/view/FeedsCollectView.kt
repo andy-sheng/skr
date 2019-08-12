@@ -476,7 +476,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     @Subscribe
     fun onEvent(event: FeedsCollectChangeEvent) {
         // 有喜欢事件发生促使刷新
-        mPersenter.mLastUpdatListTime = 0
+        mPersenter.hasInitData = false
     }
 
     override fun onDetachedFromWindow() {

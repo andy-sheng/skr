@@ -452,8 +452,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     // 照片墙
                     if (mPhotoWallView == null) {
                         mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
-                        // 第一次拉歌曲
-                        mPhotoWallView.getPhotos(false);
                     }
                     if (container.indexOfChild(mPhotoWallView) == -1) {
                         container.addView(mPhotoWallView);

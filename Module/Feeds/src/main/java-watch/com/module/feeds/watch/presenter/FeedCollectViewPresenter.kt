@@ -21,19 +21,16 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
 
     private val mFeedServerApi: FeedsWatchServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
-    var mLastUpdatListTime = 0L    // 上次拉取请求数据时间戳
+    var hasInitData = false  // 标记是否刷新过数据
 
     init {
         addToLifeCycle()
     }
 
     fun initFeedLikeList(isFlag: Boolean) {
-        if (!isFlag) {
-            // 正常给一个5分钟的间隔
-            val now = System.currentTimeMillis()
-            if (now - mLastUpdatListTime < 5 * 60 * 1000) {
-                return
-            }
+        if (!isFlag && hasInitData) {
+            // 不是必要的刷新，并且已经拉过一次数据
+            return
         }
 
         getFeedsLikeList(true)
