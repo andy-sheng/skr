@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -109,7 +110,7 @@ public class PersonMoreOpView extends RelativeLayout {
             }
         });
 
-        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserID), new UserInfoManager.ResponseCallBack() {
+        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserID), new ResponseCallBack() {
             @Override
             public void onServerSucess(Object obj) {
                 if (obj != null) {

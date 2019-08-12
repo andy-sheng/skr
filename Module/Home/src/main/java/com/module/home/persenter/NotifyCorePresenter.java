@@ -18,6 +18,7 @@ import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
+import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.floatwindow.FloatWindow;
@@ -183,7 +184,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         // TODO: 2019/3/20   一场到底邀请 口令
         if (event.ask == 1) {
             // 需要再次确认弹窗
-            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, new ResultCallback<UserInfoModel>() {
                 @Override
                 public boolean onGetLocalDB(UserInfoModel o) {
                     return false;
@@ -226,7 +227,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         // 双人房间邀请口令
         if (event.ask == 1) {
             // 需要再次确认弹窗
-            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, new ResultCallback<UserInfoModel>() {
                 @Override
                 public boolean onGetLocalDB(UserInfoModel o) {
                     return false;
@@ -269,7 +270,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(BothRelationFromSchemeEvent event) {
         // TODO: 2019/3/25 成为好友的的口令
         MyLog.d(getTAG(), "onEvent" + " event=" + event);
-        UserInfoManager.getInstance().getUserInfoByUuid(event.useId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+        UserInfoManager.getInstance().getUserInfoByUuid(event.useId, true, new ResultCallback<UserInfoModel>() {
             @Override
             public boolean onGetLocalDB(UserInfoModel o) {
                 return false;

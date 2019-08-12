@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -407,7 +408,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         }
 
 
-        BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+        BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true, new ResultCallback<UserInfoModel>() {
             @Override
             public boolean onGetLocalDB(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {

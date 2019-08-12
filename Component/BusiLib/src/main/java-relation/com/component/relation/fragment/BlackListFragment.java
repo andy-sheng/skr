@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
+import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -79,7 +80,7 @@ public class BlackListFragment extends BaseFragment {
                             .navigation();
                 } else if (view.getId() == R.id.follow_tv) {
                     // 移除黑名单
-                    UserInfoManager.getInstance().removeBlackList(userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack() {
+                    UserInfoManager.getInstance().removeBlackList(userInfoModel.getUserId(), new ResponseCallBack() {
                         @Override
                         public void onServerSucess(Object o) {
                             if (mRelationAdapter.getData() != null) {

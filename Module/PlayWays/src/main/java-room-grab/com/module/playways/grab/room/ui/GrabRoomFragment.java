@@ -26,6 +26,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.permission.SkrCameraPermission;
+import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.DebugLogView;
@@ -820,7 +821,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         if (userInfoModel.isFriend()) {
                             mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
                         } else {
-                            UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack<Boolean>() {
+                            UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new ResponseCallBack<Boolean>() {
                                 @Override
                                 public void onServerSucess(Boolean isFans) {
                                     if (isFans) {

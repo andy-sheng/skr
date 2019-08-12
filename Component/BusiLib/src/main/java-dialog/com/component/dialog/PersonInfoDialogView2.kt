@@ -23,6 +23,7 @@ import com.common.callback.Callback
 import com.common.core.account.UserAccountManager
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
@@ -439,7 +440,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                         }
 
                         if (isInBlack) {
-                            UserInfoManager.getInstance().removeBlackList(mUserId, object : UserInfoManager.ResponseCallBack<Any?>() {
+                            UserInfoManager.getInstance().removeBlackList(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
                                     U.getToastUtil().showShort("移除黑名单成功")
                                 }
@@ -449,7 +450,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                                 }
                             })
                         } else {
-                            UserInfoManager.getInstance().addToBlacklist(mUserId, object : UserInfoManager.ResponseCallBack<Any?>() {
+                            UserInfoManager.getInstance().addToBlacklist(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
                                     U.getToastUtil().showShort("加入黑名单成功")
                                 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -79,7 +80,7 @@ public class FollowNotifyView extends RelativeLayout {
 //                            UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
                 } else {
                     UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(),
-                            UserInfoManager.RA_BUILD, mUserInfoModel.isFriend(), new UserInfoManager.ResponseCallBack() {
+                            UserInfoManager.RA_BUILD, mUserInfoModel.isFriend(), new ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
                                     mFollowTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(18f));

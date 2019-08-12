@@ -2,6 +2,7 @@ package com.module.feeds.watch.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
@@ -39,7 +40,7 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
     }
 
     private fun getFeedsLikeList(isClear: Boolean) {
-        FeedCollectManager.getMyCollect(object : UserInfoManager.ResponseCallBack<List<FeedsCollectModel>?>() {
+        FeedCollectManager.getMyCollect(object : ResponseCallBack<List<FeedsCollectModel>?>() {
             override fun onServerFailed() {
             }
 

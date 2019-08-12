@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.permission.SkrNotificationPermission;
+import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.rxretrofit.ApiManager;
@@ -146,7 +147,7 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void showConfirmOptions() {
-        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserId), new UserInfoManager.ResponseCallBack() {
+        UserInfoManager.getInstance().getBlacklistStatus(Integer.valueOf(mUserId), new ResponseCallBack() {
             @Override
             public void onServerSucess(Object obj) {
                 if (obj != null) {
@@ -178,7 +179,7 @@ public class ConversationActivity extends BaseActivity {
                 @Override
                 public void run() {
                     if (channel.equals(getString(R.string.add_to_black_list))) {
-                        UserInfoManager.getInstance().addToBlacklist(Integer.valueOf(mUserId), new UserInfoManager.ResponseCallBack() {
+                        UserInfoManager.getInstance().addToBlacklist(Integer.valueOf(mUserId), new ResponseCallBack() {
                             @Override
                             public void onServerSucess(Object o) {
                                 U.getToastUtil().showShort("加入黑名单成功");
@@ -190,7 +191,7 @@ public class ConversationActivity extends BaseActivity {
                             }
                         });
                     } else if (channel.equals(getString(R.string.remove_from_black_list))) {
-                        UserInfoManager.getInstance().removeBlackList(Integer.valueOf(mUserId), new UserInfoManager.ResponseCallBack() {
+                        UserInfoManager.getInstance().removeBlackList(Integer.valueOf(mUserId), new ResponseCallBack() {
                             @Override
                             public void onServerSucess(Object o) {
                                 U.getToastUtil().showShort("移除黑名单成功");

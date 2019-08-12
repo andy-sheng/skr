@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -218,7 +219,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
                         if (userInfoModel.isFriend()) {
                             mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.getUserId());
                         } else {
-                            UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new UserInfoManager.ResponseCallBack<Boolean>() {
+                            UserInfoManager.getInstance().checkIsFans((int) MyUserInfoManager.getInstance().getUid(), userInfoModel.getUserId(), new ResponseCallBack<Boolean>() {
                                 @Override
                                 public void onServerSucess(Boolean isFans) {
                                     if (isFans) {

@@ -4,6 +4,7 @@ package com.common.core.userinfo.cache;
 import android.os.Build;
 
 import com.common.cache.LruCache;
+import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -101,7 +102,7 @@ public class BuddyCache {
      * @param resultCallback  服务器回调
      * @return
      */
-    public BuddyCacheEntry getBuddyNormal(final int uuid, boolean queryIfNotExist, UserInfoManager.ResultCallback<UserInfoModel> resultCallback) {
+    public BuddyCacheEntry getBuddyNormal(final int uuid, boolean queryIfNotExist, ResultCallback<UserInfoModel> resultCallback) {
         BuddyCacheEntry result = mLruCache.get(uuid);
         if (result != null) {
             return result;

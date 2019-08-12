@@ -22,6 +22,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
@@ -313,7 +314,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         }
 
                         if (isInBlack) {
-                            UserInfoManager.getInstance().removeBlackList(mUserId, object : UserInfoManager.ResponseCallBack<Any?>() {
+                            UserInfoManager.getInstance().removeBlackList(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
                                     U.getToastUtil().showShort("移除黑名单成功")
                                 }
@@ -323,7 +324,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                                 }
                             })
                         } else {
-                            UserInfoManager.getInstance().addToBlacklist(mUserId, object : UserInfoManager.ResponseCallBack<Any?>() {
+                            UserInfoManager.getInstance().addToBlacklist(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
                                     U.getToastUtil().showShort("加入黑名单成功")
                                 }

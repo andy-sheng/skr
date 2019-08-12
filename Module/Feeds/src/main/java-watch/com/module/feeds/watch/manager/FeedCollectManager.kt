@@ -2,6 +2,7 @@ package com.module.feeds.watch.manager
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
@@ -21,7 +22,7 @@ object FeedCollectManager {
 
     const val PREF_KEY_COLLECT_MARKER_WATER = "collect_marker_water"
 
-    fun getMyCollect(feedCollectListCallBack: UserInfoManager.ResponseCallBack<List<FeedsCollectModel>?>?) {
+    fun getMyCollect(feedCollectListCallBack: ResponseCallBack<List<FeedsCollectModel>?>?) {
         Observable.create(ObservableOnSubscribe<List<FeedsCollectModel>> {
             val feedWatchServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
             var collectMarkerWater = U.getPreferenceUtils().getSettingLong(PREF_KEY_COLLECT_MARKER_WATER, -1L)

@@ -9,6 +9,8 @@ import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
+import com.common.core.userinfo.ResponseCallBack
+import com.common.core.userinfo.ResultCallback
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.rxretrofit.ApiManager
@@ -138,7 +140,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 dismiss(false)
                 UserInfoManager.getInstance().mateRelation(model.user?.userID
                         ?: 0, UserInfoManager.RA_BUILD
-                        , false, object : UserInfoManager.ResponseCallBack<Boolean>() {
+                        , false, object : ResponseCallBack<Boolean>() {
                     override fun onServerFailed() {
                         U.getToastUtil().showShort("关注失败了")
                     }
@@ -326,7 +328,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             mFollowTv.visibility = View.GONE
             mDividerFollow.visibility = View.GONE
             UserInfoManager.getInstance().getUserRelationByUuid(model.user?.userID
-                    ?: 0, object : UserInfoManager.ResultCallback<UserInfoModel>() {
+                    ?: 0, object : ResultCallback<UserInfoModel>() {
                 override fun onGetServer(t: UserInfoModel?): Boolean {
                     checkFollow(t?.isFollow ?: false)
                     return false
