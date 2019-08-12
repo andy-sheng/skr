@@ -353,6 +353,12 @@ class FeedsPublishActivity : BaseActivity() {
                     }
                 }
                 finish()
+                val draftId = mFeedsMakeModel?.draftID ?: 0L
+                if (draftId != 0L) {
+                    launch(Dispatchers.IO) {
+                        FeedsMakeLocalApi.delete(draftId)
+                    }
+                }
             } else {
                 U.getToastUtil().showShort(result?.errmsg)
             }
