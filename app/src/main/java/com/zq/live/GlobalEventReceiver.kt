@@ -33,6 +33,7 @@ import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.component.person.photo.manager.PhotoLocalApi
 import com.module.feeds.make.FeedsMakeLocalApi
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.manager.FeedCollectLocalApi
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -69,6 +70,8 @@ object GlobalEventReceiver{
             if (!TextUtils.isEmpty(str)) {
                 SkrKouLingUtils.tryParseScheme(str)
             }
+        }else{
+            FeedsPlayStatistics.tryUpload(true)
         }
     }
 
