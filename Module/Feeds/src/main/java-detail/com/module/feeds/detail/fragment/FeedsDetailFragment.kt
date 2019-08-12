@@ -39,6 +39,7 @@ import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.FeedSongPlayModeManager
+import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
@@ -96,14 +97,17 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
     var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
-    var mSongControlArea: Group? = null
+    lateinit var mSongControlArea: Group
     var mRefuseModel: FirstLevelCommentModel? = null
     var mSongManager: FeedSongPlayModeManager? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
-    var mFeedsWatchModel: FeedsWatchModel? = null  // 详细的数据model
     var mFeedID: Int = -1   // 外部跳转传入mFeedID
+    var mFrom: Int = -1  // 从外部跳转标记的来源
+    var mPlayType = FeedSongPlayModeManager.PlayMode.ORDER   // 播放模式，默认顺序播放
+
+    var mFeedsWatchModel: FeedsWatchModel? = null  // 详细的数据model，通过请求去拉
 
     var mResumeCall: (() -> Unit)? = null
 
@@ -215,7 +219,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mBtnBack = rootView.findViewById(R.id.btn_back) as ImageView
         mSongNameTv = rootView.findViewById(R.id.song_name_tv)
         mMoreTv = rootView.findViewById(R.id.more_iv)
-        mControlTv = rootView.findViewById(R.id.control_tv)
+
         mPassTimeTv = rootView.findViewById(R.id.pass_time_tv)
         mLastTimeTv = rootView.findViewById(R.id.last_time_tv)
         mSeekBar = rootView.findViewById(R.id.seek_bar)
@@ -234,23 +238,38 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         mRadioView = rootView.findViewById(R.id.radio_view)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
-        mSongControlArea = rootView.findViewById(R.id.song_control_arae)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mCollectionIv = rootView.findViewById(R.id.collection_iv)
+
+        mSongControlArea = rootView.findViewById(R.id.song_control_arae)
         mPlayLastIv = rootView.findViewById(R.id.play_last_iv)
         mPlayNextIv = rootView.findViewById(R.id.play_next_iv)
+        mControlTv = rootView.findViewById(R.id.control_tv)
         mFeedsDetailPresenter = FeedsDetailPresenter(this)
         addPresent(mFeedsDetailPresenter)
 
-        mSongManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, ArrayList())
+        if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            mSongControlArea.visibility = View.VISIBLE
+            mSongManager = FeedSongPlayModeManager(mPlayType, null, ArrayList())
+            mPlayLastIv?.setDebounceViewClickListener {
+                //            val feedSongModel = mSongManager?.getPreSong(true)
+            }
 
-        mPlayLastIv?.setDebounceViewClickListener {
-            //            val feedSongModel = mSongManager?.getPreSong(true)
+            mPlayNextIv?.setDebounceViewClickListener {
+                //            val feedSongModel = mSongManager?.getNextSong(true)
+            }
+
+            mControlTv?.setDebounceViewClickListener {
+                if (it!!.isSelected) {
+                    pausePlay()
+                } else {
+                    startPlay()
+                }
+            }
+        } else {
+            mSongControlArea.visibility = View.GONE
         }
 
-        mPlayNextIv?.setDebounceViewClickListener {
-            //            val feedSongModel = mSongManager?.getNextSong(true)
-        }
 
         mBlurBg?.setDebounceViewClickListener {
             if (mSongControlArea?.visibility == View.VISIBLE) {
@@ -353,14 +372,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                             ?: 0)
                 }
             })
-        }
-
-        mControlTv?.setDebounceViewClickListener {
-            if (it!!.isSelected) {
-                pausePlay()
-            } else {
-                startPlay()
-            }
         }
 
         mMoreTv?.setDebounceViewClickListener {
@@ -648,7 +659,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
-            mFeedID = data as Int
+            mFeedID = (data as Int?) ?: -1
+        } else if (type == 1) {
+            mFrom = (data as Int?) ?: -1
+        } else if (type == 2) {
+            mPlayType = (data as FeedSongPlayModeManager.PlayMode?)
+                    ?: FeedSongPlayModeManager.PlayMode.ORDER
         }
     }
 

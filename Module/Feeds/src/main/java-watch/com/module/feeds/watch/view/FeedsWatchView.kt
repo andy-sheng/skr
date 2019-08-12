@@ -188,6 +188,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 if (watchModel != null && watchModel.status == 2) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withInt("feed_ID", watchModel.feedID)
+                            .withInt("from", 1)
                             .navigation()
                 }
 
@@ -209,6 +210,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     }
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withInt("feed_ID", watchModel.feedID)
+                            .withInt("from", 1)
                             .navigation()
                 }
 
@@ -322,7 +324,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                 if (mAdapter?.playing == true) {
                     mAdapter?.updatePlayProgress(pos, duration)
-                    FeedsPlayStatistics.updateCurProgress(pos,duration)
+                    FeedsPlayStatistics.updateCurProgress(pos, duration)
                 } else {
                     if (MyLog.isDebugLogOpen()) {
                         U.getToastUtil().showShort("FeedsWatchView有bug,暂停失败了？")
@@ -466,7 +468,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         }
         mAdapter?.resumePlayModel()
         mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(mAdapter?.mCurrentPlayModel?.feedID?:0)
+            FeedsPlayStatistics.setCurPlayMode(mAdapter?.mCurrentPlayModel?.feedID ?: 0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }

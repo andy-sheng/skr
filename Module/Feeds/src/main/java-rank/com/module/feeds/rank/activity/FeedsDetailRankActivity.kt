@@ -134,6 +134,7 @@ class FeedsDetailRankActivity : BaseActivity() {
                 stop()
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withInt("feed_ID", it.feedID)
+                        .withInt("from", 3)
                         .navigation()
             }
         }

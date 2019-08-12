@@ -29,6 +29,7 @@ import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
+import com.module.feeds.detail.FeedSongPlayModeManager
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
@@ -44,11 +45,8 @@ import kotlin.collections.ArrayList
 class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedCollectView {
 
     val TAG = "FeedsLikeView"
-    val ALL_REPEAT_PLAY_TYPE = 1      //全部循环
-    val SINGLE_REPEAT_PLAY_TYPE = 2   //单曲循环
-    val RANDOM_PLAY_TYPE = 3          //随机播放 (只在已经拉到的列表里面随机)
 
-    var mCurrentType = ALL_REPEAT_PLAY_TYPE  //当前播放类型
+    var mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER //默认顺序播放
     var isPlaying = false
     var mTopModel: FeedsCollectModel? = null
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
@@ -110,6 +108,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 model?.let {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withInt("feed_ID", it.feedID)
+                            .withInt("from", 2)
+                            .withSerializable("playType", mCurrentType)
                             .navigation()
                 }
 
@@ -146,18 +146,18 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 mTopPosition = mAdapter.findRealPosition(mTopModel)
                 // 为了保证随机播放（确定是否要重新随机）
                 when (mCurrentType) {
-                    ALL_REPEAT_PLAY_TYPE -> {
-                        mCurrentType = SINGLE_REPEAT_PLAY_TYPE
+                    FeedSongPlayModeManager.PlayMode.ORDER -> {
+                        mCurrentType = FeedSongPlayModeManager.PlayMode.SINGLE
                         mPlayLikeIv.setImageResource(R.drawable.like_single_repeat_icon)
                         U.getToastUtil().showShort("单曲循环")
                     }
-                    SINGLE_REPEAT_PLAY_TYPE -> {
-                        mCurrentType = RANDOM_PLAY_TYPE
+                    FeedSongPlayModeManager.PlayMode.SINGLE -> {
+                        mCurrentType = FeedSongPlayModeManager.PlayMode.RANDOM
                         mPlayLikeIv.setImageResource(R.drawable.like_random_icon)
                         U.getToastUtil().showShort("随机播放")
                     }
-                    RANDOM_PLAY_TYPE -> {
-                        mCurrentType = ALL_REPEAT_PLAY_TYPE
+                    FeedSongPlayModeManager.PlayMode.RANDOM -> {
+                        mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER
                         mPlayLikeIv.setImageResource(R.drawable.like_all_repeat_icon)
                         U.getToastUtil().showShort("列表循环")
                     }
@@ -241,7 +241,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
     private fun playWithType(isNext: Boolean, fromUser: Boolean) {
         when (mCurrentType) {
-            SINGLE_REPEAT_PLAY_TYPE -> {
+            FeedSongPlayModeManager.PlayMode.SINGLE -> {
                 if (fromUser) {
                     singlePlay(isNext)
                 } else {
@@ -250,10 +250,10 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                     }
                 }
             }
-            ALL_REPEAT_PLAY_TYPE -> {
+            FeedSongPlayModeManager.PlayMode.ORDER -> {
                 allRepeatPlay(isNext)
             }
-            RANDOM_PLAY_TYPE -> {
+            FeedSongPlayModeManager.PlayMode.RANDOM -> {
                 randomPlay()
             }
         }
