@@ -88,8 +88,8 @@ class RefuseFeedsFragment : BaseFragment() {
 
             mRefreshLayout?.finishLoadMore()
             if (result.errno == 0) {
-                var list: List<RefuseCommentModel> = JSON.parseArray(result.data.getString("details"), RefuseCommentModel::class.java)
-                if (list != null && list.size > 0) {
+                var list = JSON.parseArray(result.data.getString("details"), RefuseCommentModel::class.java)
+                if (!list.isNullOrEmpty()) {
                     array.addAll(list)
                     mAdapter?.dataList = array
                     mAdapter?.notifyDataSetChanged()
