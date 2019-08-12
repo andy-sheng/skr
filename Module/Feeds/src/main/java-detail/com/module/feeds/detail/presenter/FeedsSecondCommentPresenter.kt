@@ -92,16 +92,18 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
         ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
-                    val model: FirstLevelCommentModel.CommentBean = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
-                    val firstLevelCommentModel = FirstLevelCommentModel()
-                    firstLevelCommentModel.comment = model
-                    firstLevelCommentModel.comment.content = content
-                    firstLevelCommentModel.commentUser = FeedUserInfo()
-                    firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
-                    firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-                    firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
-                    firstLevelCommentModel.replyUser = refuseModel.commentUser
-                    callBack.invoke(firstLevelCommentModel)
+                    val model = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
+                    model?.let {
+                        val firstLevelCommentModel = FirstLevelCommentModel()
+                        firstLevelCommentModel.comment = model
+                        firstLevelCommentModel.comment.content = content
+                        firstLevelCommentModel.commentUser = FeedUserInfo()
+                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
+                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
+                        firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
+                        firstLevelCommentModel.replyUser = refuseModel.commentUser
+                        callBack.invoke(firstLevelCommentModel)
+                    }
                 } else {
                     U.getToastUtil().showShort(obj?.errmsg)
                 }
