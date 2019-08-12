@@ -244,6 +244,7 @@ public class ImgTexMixer extends ImgTexFilterBase {
 
     @Override
     public void onFormatChanged(int inIdx, ImgTexFormat format) {
+        Log.d(TAG, "onFormatChanged " + inIdx + " " + format.width + "x" + format.height);
         mInputFormats[inIdx] = format;
         updateCoordsBuf(inIdx);
     }

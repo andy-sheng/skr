@@ -287,6 +287,10 @@ abstract public class ImgTexFilterBase extends ImgFilterBase {
         if (mLastOutFormat != null && (mLastOutFormat.width != outFormat.width ||
                 mLastOutFormat.height != outFormat.height)) {
             mSrcPin.onFormatChanged(outFormat);
+            if (mOutTexture != ImgTexFrame.NO_TEXTURE) {
+                mGLRender.getFboManager().remove(mOutTexture);
+                mOutTexture = ImgTexFrame.NO_TEXTURE;
+            }
         }
         mLastOutFormat = outFormat;
 

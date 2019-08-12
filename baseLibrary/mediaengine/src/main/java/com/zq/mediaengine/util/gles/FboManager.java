@@ -153,7 +153,7 @@ public class FboManager {
         mTextureMap.remove(texture);
         String key = genKey(fbo.width, fbo.height);
         List<Integer> texList = mResolutionMap.get(key);
-        texList.remove(texture);
+        texList.remove(Integer.valueOf(texture));
         releaseFbo(fbo);
     }
 

@@ -284,11 +284,22 @@ public class BytedEffectFilter {
     private SinkPin<ImgTexFrame> mImgTexSinkPin = new SinkPin<ImgTexFrame>() {
         @Override
         public void onFormatChanged(Object format) {
-            MyLog.i(TAG, "onFormatChanged: " + format);
+            MyLog.d(TAG, "onFormatChanged: " + format);
             if (format == null) {
                 return;
             }
-            mOutFormat = new ImgTexFormat((ImgTexFormat) format);
+
+            ImgTexFormat inFormat = (ImgTexFormat) format;
+            // 处理分辨率变化
+            if (mOutFormat != null && (inFormat.width != mOutFormat.width || inFormat.height != mOutFormat.height)) {
+                MyLog.i(TAG, "res changed from " + mOutFormat.width + "x" + mOutFormat.height +
+                        " to " + inFormat.width + "x" + inFormat.height);
+                if (mOutTexture != ImgTexFrame.NO_TEXTURE) {
+                    mGLRender.getFboManager().remove(mOutTexture);
+                    mOutTexture = ImgTexFrame.NO_TEXTURE;
+                }
+            }
+            mOutFormat = new ImgTexFormat(inFormat);
             mImgTexSrcPin.onFormatChanged(mOutFormat);
         }
 
