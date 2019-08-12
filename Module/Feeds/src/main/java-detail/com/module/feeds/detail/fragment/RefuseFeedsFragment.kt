@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
@@ -14,8 +15,10 @@ import com.common.rxretrofit.subscribe
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.FeedsDetailServerApi
+import com.module.feeds.detail.adapter.FeedClickListener
 import com.module.feeds.detail.adapter.FeedRefuseCommentAdapter
 import com.module.feeds.detail.model.RefuseCommentModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -67,7 +70,16 @@ class RefuseFeedsFragment : BaseFragment() {
             }
         })
 
-        mAdapter = FeedRefuseCommentAdapter()
+        mAdapter = FeedRefuseCommentAdapter(object : FeedClickListener {
+            override fun onClickItme(model: RefuseCommentModel?) {
+                model?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                            .withInt("feed_ID", it.feedID)
+                            .withInt("from", 5)
+                            .navigation()
+                }
+            }
+        })
         mContentRv?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mContentRv?.adapter = mAdapter
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
@@ -12,8 +13,10 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.kingja.loadsir.core.LoadService
+import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.FeedsDetailServerApi
+import com.module.feeds.detail.adapter.FeedLikeListener
 import com.module.feeds.detail.adapter.LikeWorkAdapter
 import com.module.feeds.detail.model.FeedLikeModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -64,7 +67,16 @@ class LikeWorksFragment : BaseFragment() {
         })
 
         mContentRv?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        mAdapter = LikeWorkAdapter()
+        mAdapter = LikeWorkAdapter(object : FeedLikeListener {
+            override fun onClickItme(model: FeedLikeModel?) {
+                model?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                            .withInt("feed_ID", it.feedID)
+                            .withInt("from", 5)
+                            .navigation()
+                }
+            }
+        })
         mContentRv?.adapter = mAdapter
 
 //        val mLoadSir = LoadSir.Builder()

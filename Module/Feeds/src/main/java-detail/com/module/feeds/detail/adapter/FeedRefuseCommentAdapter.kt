@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.module.feeds.R
 import com.module.feeds.detail.model.RefuseCommentModel
 
 
-class FeedRefuseCommentAdapter : DiffAdapter<RefuseCommentModel, FeedRefuseCommentAdapter.FeedRefuseCommentHolder>() {
+class FeedRefuseCommentAdapter(val listener: FeedClickListener) : DiffAdapter<RefuseCommentModel, FeedRefuseCommentAdapter.FeedRefuseCommentHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedRefuseCommentHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.refuse_comment_item_layout, parent, false)
         return FeedRefuseCommentHolder(view)
@@ -42,6 +43,12 @@ class FeedRefuseCommentAdapter : DiffAdapter<RefuseCommentModel, FeedRefuseComme
             mSubTitleTv = itemView.findViewById(R.id.sub_title_tv)
             mCommentTv = itemView.findViewById(R.id.comment_tv)
             mTimeTv = itemView.findViewById(R.id.time_tv)
+
+            itemView.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    listener.onClickItme(model)
+                }
+            })
         }
 
         fun bindData(model: RefuseCommentModel) {
@@ -58,4 +65,8 @@ class FeedRefuseCommentAdapter : DiffAdapter<RefuseCommentModel, FeedRefuseComme
             mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.timeMs, System.currentTimeMillis())
         }
     }
+}
+
+interface FeedClickListener {
+    fun onClickItme(model: RefuseCommentModel?)
 }

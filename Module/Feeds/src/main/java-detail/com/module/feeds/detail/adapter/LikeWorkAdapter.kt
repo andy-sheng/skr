@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.module.feeds.detail.model.FeedLikeModel
 
 
-class LikeWorkAdapter : DiffAdapter<FeedLikeModel, LikeWorkAdapter.LikeWorkHolder>() {
+class LikeWorkAdapter(val listener: FeedLikeListener) : DiffAdapter<FeedLikeModel, LikeWorkAdapter.LikeWorkHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikeWorkHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.like_work_item_layout, parent, false)
         return LikeWorkHolder(view)
@@ -40,6 +41,12 @@ class LikeWorkAdapter : DiffAdapter<FeedLikeModel, LikeWorkAdapter.LikeWorkHolde
             mTitleTv = itemView.findViewById(R.id.title_tv)
             mSubTitleTv = itemView.findViewById(R.id.sub_title_tv)
             mTimeTv = itemView.findViewById(R.id.time_tv)
+
+            itemView.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    listener.onClickItme(model)
+                }
+            })
         }
 
         fun bindData(model: FeedLikeModel) {
@@ -55,4 +62,8 @@ class LikeWorkAdapter : DiffAdapter<FeedLikeModel, LikeWorkAdapter.LikeWorkHolde
             mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.timeMs, System.currentTimeMillis())
         }
     }
+}
+
+interface FeedLikeListener {
+    fun onClickItme(model: FeedLikeModel?)
 }

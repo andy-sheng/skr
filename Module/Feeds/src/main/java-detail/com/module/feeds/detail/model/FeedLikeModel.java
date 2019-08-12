@@ -1,6 +1,8 @@
 package com.module.feeds.detail.model;
 
-public class FeedLikeModel {
+import java.io.Serializable;
+
+public class FeedLikeModel implements Serializable {
 
     /**
      * actionDesc : string
@@ -15,8 +17,17 @@ public class FeedLikeModel {
     private String avatar;
     private String content;
     private String nickname;
+    private int feedID;
     private long timeMs;
     private int userID;
+
+    public int getFeedID() {
+        return feedID;
+    }
+
+    public void setFeedID(int feedID) {
+        this.feedID = feedID;
+    }
 
     public String getActionDesc() {
         return actionDesc;

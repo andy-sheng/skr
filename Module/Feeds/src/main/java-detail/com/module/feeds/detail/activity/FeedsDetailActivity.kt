@@ -20,6 +20,7 @@ class FeedsDetailActivity : BaseActivity() {
         val FROM_HOME_COLLECT = 2  //收藏
         val FROM_FEED_RANK = 3     //排行
         val FROM_SCHEME = 4 // scheme
+        val FROM_COMMENT_LIKE = 5  //评论或赞
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {

@@ -1,6 +1,8 @@
 package com.module.feeds.detail.model;
 
-public class RefuseCommentModel {
+import java.io.Serializable;
+
+public class RefuseCommentModel implements Serializable {
 
     /**
      * actionDesc : string
@@ -15,6 +17,7 @@ public class RefuseCommentModel {
     private String avatar;
     private String content;
     private String nickname;
+    private int feedID;
     private long timeMs;
     private int userID;
 
@@ -64,5 +67,13 @@ public class RefuseCommentModel {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public int getFeedID() {
+        return feedID;
+    }
+
+    public void setFeedID(int feedID) {
+        this.feedID = feedID;
     }
 }
