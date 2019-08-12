@@ -187,7 +187,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 // 必须不为空，且审核通过
                 if (watchModel != null && watchModel.status == 2) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                            .withSerializable("feed_model", watchModel)
+                            .withInt("feed_ID", watchModel.feedID)
                             .navigation()
                 }
 
@@ -208,7 +208,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         mAdapter?.mCurrentPlayModel = null
                     }
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                            .withSerializable("feed_model", watchModel)
+                            .withInt("feed_ID", watchModel.feedID)
                             .navigation()
                 }
 

@@ -19,6 +19,7 @@ import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.player.*
 import com.common.utils.U
@@ -27,7 +28,9 @@ import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.module.RouterConstants
 import com.module.feeds.event.FeedsCollectChangeEvent
+import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
@@ -101,18 +104,34 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mPlayNextIv = findViewById(R.id.play_next_iv)
 
         mPersenter = FeedCollectViewPresenter(this)
-        mAdapter = FeedsCollectViewAdapter()
+        mAdapter = FeedsCollectViewAdapter(object : FeedCollectListener {
+            override fun onClickItemListener(model: FeedsCollectModel?, position: Int) {
+                // 跳到详情页面
+                model?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                            .withInt("feed_ID", it.feedID)
+                            .navigation()
+                }
+
+            }
+
+            override fun onClickPlayListener(model: FeedsCollectModel?, position: Int) {
+                model?.let {
+                    playOrPause(it, position, false)
+                }
+            }
+        })
 
         mRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
 
         mRefreshLayout.setEnableRefresh(true)
-        mRefreshLayout.setEnableLoadMore(true)
+        mRefreshLayout.setEnableLoadMore(false)
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setEnableOverScrollDrag(false)
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mPersenter.loadMoreFeedLikeList()
+
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -129,17 +148,17 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 when (mCurrentType) {
                     ALL_REPEAT_PLAY_TYPE -> {
                         mCurrentType = SINGLE_REPEAT_PLAY_TYPE
-                        mPlayTypeIv.background = U.getDrawable(R.drawable.like_single_repeat_icon)
+                        mPlayLikeIv.setImageResource(R.drawable.like_single_repeat_icon)
                         U.getToastUtil().showShort("单曲循环")
                     }
                     SINGLE_REPEAT_PLAY_TYPE -> {
                         mCurrentType = RANDOM_PLAY_TYPE
-                        mPlayTypeIv.background = U.getDrawable(R.drawable.like_random_icon)
+                        mPlayLikeIv.setImageResource(R.drawable.like_random_icon)
                         U.getToastUtil().showShort("随机播放")
                     }
                     RANDOM_PLAY_TYPE -> {
                         mCurrentType = ALL_REPEAT_PLAY_TYPE
-                        mPlayTypeIv.background = U.getDrawable(R.drawable.like_all_repeat_icon)
+                        mPlayLikeIv.setImageResource(R.drawable.like_all_repeat_icon)
                         U.getToastUtil().showShort("列表循环")
                     }
                 }
@@ -176,12 +195,6 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 playWithType(true, true)
             }
         })
-
-        mAdapter.onClickPlayListener = { model, position ->
-            model?.let {
-                playOrPause(it, position, false)
-            }
-        }
 
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无收藏的神曲", "#802F2F30"))

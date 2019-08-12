@@ -18,15 +18,11 @@ class FeedsDetailActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val feedsWatchModel = intent.getSerializableExtra("feed_model")
-        if (feedsWatchModel == null) {
-            finish()
-            return
-        }
+        val feedID = intent.getIntExtra("feed_ID", -1)
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsDetailActivity, FeedsDetailFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
-                .addDataBeforeAdd(0, feedsWatchModel as FeedsWatchModel)
+                .addDataBeforeAdd(0, feedID)
                 .build())
 
     }

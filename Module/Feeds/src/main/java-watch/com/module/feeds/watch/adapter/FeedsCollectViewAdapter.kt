@@ -9,16 +9,14 @@ import com.module.feeds.R
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.viewholder.FeedsCollectViewHolder
 
-class FeedsCollectViewAdapter : RecyclerView.Adapter<FeedsCollectViewHolder>() {
+class FeedsCollectViewAdapter(val listener: FeedCollectListener) : RecyclerView.Adapter<FeedsCollectViewHolder>() {
 
     var mDataList = ArrayList<FeedsCollectModel>()
     var mCurrentPlayModel: FeedsCollectModel? = null
 
-    var onClickPlayListener: ((model: FeedsCollectModel?, position: Int) -> Unit)? = null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsCollectViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
-        return FeedsCollectViewHolder(view, onClickPlayListener)
+        return FeedsCollectViewHolder(view, listener)
     }
 
     override fun getItemCount(): Int {
@@ -63,4 +61,9 @@ class FeedsCollectViewAdapter : RecyclerView.Adapter<FeedsCollectViewHolder>() {
         }
         return 0
     }
+}
+
+interface FeedCollectListener {
+    fun onClickPlayListener(model: FeedsCollectModel?, position: Int)
+    fun onClickItemListener(model: FeedsCollectModel?, position: Int)
 }

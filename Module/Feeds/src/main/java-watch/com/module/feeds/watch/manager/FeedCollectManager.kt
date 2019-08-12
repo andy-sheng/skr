@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.functions.Consumer
 import java.io.IOException
+import java.lang.Exception
 
 class FeedCollectManager {
 
@@ -30,12 +31,12 @@ class FeedCollectManager {
             if (collectMarkerWater == -1L) {
                 // 全量拉
                 var offset = 0
-                val mCnt = 50
+                val mCnt = 30
                 var baohu = 0
                 while (baohu < 100) {
                     baohu++
-                    val result = feedWatchServerApi.getCollectListByPage(offset, mCnt, MyUserInfoManager.getInstance().uid)
                     try {
+                        val result = feedWatchServerApi.getCollectListByPage(offset, mCnt, MyUserInfoManager.getInstance().uid)
                         val response = result.execute()
                         val obj = response.body()
                         if (obj == null || obj.data == null || obj.errno != 0) {
@@ -59,7 +60,7 @@ class FeedCollectManager {
                             U.getPreferenceUtils().setSettingLong(PREF_KEY_COLLECT_MARKER_WATER, collectMarkerWater)
                             break
                         }
-                    } catch (e: IOException) {
+                    } catch (e: Exception) {
                         MyLog.e(TAG, "getMyCollect 全量拉取 $e")
                         break
                     }
@@ -69,8 +70,8 @@ class FeedCollectManager {
                 var baohu = 0
                 while (baohu < 100) {
                     baohu++
-                    val result = feedWatchServerApi.getCollectListByIndex(collectMarkerWater, MyUserInfoManager.getInstance().uid)
                     try {
+                        val result = feedWatchServerApi.getCollectListByIndex(collectMarkerWater, MyUserInfoManager.getInstance().uid)
                         val response = result.execute()
                         val obj = response.body()
                         if (obj != null && !obj.data.isNullOrEmpty() && obj.errno == 0) {
@@ -92,8 +93,11 @@ class FeedCollectManager {
                                 U.getPreferenceUtils().setSettingLong(PREF_KEY_COLLECT_MARKER_WATER, collectMarkerWater)
                                 break
                             }
+                        } else {
+                            // 请求出错，跳出循环
+                            break
                         }
-                    } catch (e: IOException) {
+                    } catch (e: Exception) {
                         MyLog.e(TAG, "getMyCollect 增量拉取 $e")
                         break
                     }
@@ -103,6 +107,7 @@ class FeedCollectManager {
             // 操作完数据库，从数据库中读取所有的内容
             val resultList = FeedCollectLocalApi.getFeedCollects()
             feedCollectListCallBack?.onServerSucess(resultList)
+
             it.onComplete()
         }).subscribeOn(U.getThreadUtils().singleThreadPoll())
                 .subscribe(Consumer<List<FeedsCollectModel>> {

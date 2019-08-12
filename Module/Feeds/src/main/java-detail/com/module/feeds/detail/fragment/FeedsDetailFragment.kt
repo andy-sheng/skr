@@ -102,7 +102,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
-    var mFeedsWatchModel: FeedsWatchModel? = null
+    var mFeedsWatchModel: FeedsWatchModel? = null  // 详细的数据model
+    var mFeedID: Int = -1   // 外部跳转传入mFeedID
 
     var mResumeCall: (() -> Unit)? = null
 
@@ -202,7 +203,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        if (mFeedsWatchModel == null) {
+        if (mFeedID == -1) {
             activity?.finish()
             return
         }
@@ -244,11 +245,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSongManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, ArrayList())
 
         mPlayLastIv?.setDebounceViewClickListener {
-//            val feedSongModel = mSongManager?.getPreSong(true)
+            //            val feedSongModel = mSongManager?.getPreSong(true)
         }
 
         mPlayNextIv?.setDebounceViewClickListener {
-//            val feedSongModel = mSongManager?.getNextSong(true)
+            //            val feedSongModel = mSongManager?.getNextSong(true)
         }
 
         mBlurBg?.setDebounceViewClickListener {
@@ -406,7 +407,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         SinglePlayer.addCallback(playerTag, playCallback)
-        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel!!.feedID)
+        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
     }
 
     fun setModelData() {
@@ -647,7 +648,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
-            mFeedsWatchModel = data as FeedsWatchModel
+            mFeedID = data as Int
         }
     }
 

@@ -11,8 +11,9 @@ class FeedsCollectModel : Serializable {
         fun toFeedCollectDB(feedsCollectModel: FeedsCollectModel?): FeedCollectDB {
             val feedCollectDB = FeedCollectDB()
             feedsCollectModel?.let {
-                feedCollectDB.feedID = it.feedID
-                feedCollectDB.feedType = it.feedType
+                feedCollectDB.feedID = it.feedID.toLong()
+                feedCollectDB.feedType = it.feedType.toLong()
+                feedCollectDB.timeMs = it.timeMs
 
                 val feedSong = JSONObject()
                 feedSong["feedSong"] = it.song
@@ -29,8 +30,9 @@ class FeedsCollectModel : Serializable {
         fun parseFeedCollectModel(feedCollectDB: FeedCollectDB?): FeedsCollectModel {
             val feedCollectModel = FeedsCollectModel()
             feedCollectDB?.let {
-                feedCollectModel.feedID = it.feedID
-                feedCollectModel.feedType = it.feedType
+                feedCollectModel.feedID = it.feedID.toInt()
+                feedCollectModel.feedType = it.feedType.toInt()
+                feedCollectModel.timeMs = it.timeMs
                 feedCollectModel.song = FeedSongModel.parseFeedSongModel(it.feedSong)
                 feedCollectModel.user = FeedUserInfo.parseFeedUserInfo(it.user)
             }
@@ -43,6 +45,8 @@ class FeedsCollectModel : Serializable {
     var feedID: Int = 0
     @JSONField(name = "feedType")
     var feedType: Int = 0
+    @JSONField(name = "timeMs")
+    var timeMs: Long = 0
     @JSONField(name = "feedSong")
     var song: FeedSongModel? = null
     @JSONField(name = "user")

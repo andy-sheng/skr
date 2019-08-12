@@ -10,9 +10,10 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
+import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.model.FeedsCollectModel
 
-class FeedsCollectViewHolder(item: View, var onClickPlayListener: ((model: FeedsCollectModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
+class FeedsCollectViewHolder(item: View, val listener: FeedCollectListener) : RecyclerView.ViewHolder(item) {
 
     private val mSongCoverSdv: SimpleDraweeView = item.findViewById(R.id.song_cover_sdv)
     val mSongNameTv: TextView = item.findViewById(R.id.song_name_tv)
@@ -26,13 +27,13 @@ class FeedsCollectViewHolder(item: View, var onClickPlayListener: ((model: Feeds
         //TODO 为什么itemView的点击事件覆盖不了ExImageView
         mSongPlayIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                onClickPlayListener?.invoke(mModel, mPosition)
+                listener.onClickPlayListener(mModel, mPosition)
             }
         })
 
         itemView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                onClickPlayListener?.invoke(mModel, mPosition)
+                listener.onClickItemListener(mModel, mPosition)
             }
         })
     }

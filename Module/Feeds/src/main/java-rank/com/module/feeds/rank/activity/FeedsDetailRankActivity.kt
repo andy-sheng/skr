@@ -130,10 +130,12 @@ class FeedsDetailRankActivity : BaseActivity() {
             }
         }
         mAdapter.onClickItemListener = { model, _ ->
-            stop()
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                    .withSerializable("feed_model", model)
-                    .navigation()
+            model?.let {
+                stop()
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+                        .withInt("feed_ID", it.feedID)
+                        .navigation()
+            }
         }
         initLoadData()
         SinglePlayer.addCallback(playerTag, playCallback)
