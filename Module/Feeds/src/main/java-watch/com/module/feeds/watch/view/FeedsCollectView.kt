@@ -44,7 +44,7 @@ import kotlin.collections.ArrayList
  */
 class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedCollectView {
 
-    val TAG = "FeedsLikeView"
+    val TAG = "FeedsCollectView"
 
     var mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER //默认顺序播放
     var isPlaying = false
@@ -73,12 +73,12 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     private val mPersenter: FeedCollectViewPresenter
     private val mAdapter: FeedsCollectViewAdapter
 
-    var mCDRotateAnimation: RotateAnimation? = null
-    var mCoverRotateAnimation: RotateAnimation? = null
+    private var mCDRotateAnimation: RotateAnimation? = null
+    private var mCoverRotateAnimation: RotateAnimation? = null
 
-    val mLoadService: LoadService<*>
-    val playerTag = TAG + hashCode()
-    val playCallback: PlayerCallbackAdapter
+    private val mLoadService: LoadService<*>
+    private val playerTag = TAG + hashCode()
+    private val playCallback: PlayerCallbackAdapter
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
