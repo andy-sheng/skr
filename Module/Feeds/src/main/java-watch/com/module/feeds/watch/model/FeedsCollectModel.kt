@@ -1,5 +1,6 @@
 package com.module.feeds.watch.model
 
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.annotation.JSONField
 import com.module.feeds.watch.manager.FeedCollectDB
@@ -14,14 +15,8 @@ class FeedsCollectModel : Serializable {
                 feedCollectDB.feedID = it.feedID.toLong()
                 feedCollectDB.feedType = it.feedType.toLong()
                 feedCollectDB.timeMs = it.timeMs
-
-                val feedSong = JSONObject()
-                feedSong["feedSong"] = it.song
-                feedCollectDB.feedSong = feedSong.toJSONString()
-
-                val feedUser = JSONObject()
-                feedUser["user"] = it.user
-                feedCollectDB.user = feedUser.toJSONString()
+                feedCollectDB.feedSong = JSON.toJSONString(it.song)
+                feedCollectDB.user = JSON.toJSONString(it.user)
 
             }
             return feedCollectDB
@@ -33,8 +28,8 @@ class FeedsCollectModel : Serializable {
                 feedCollectModel.feedID = it.feedID.toInt()
                 feedCollectModel.feedType = it.feedType.toInt()
                 feedCollectModel.timeMs = it.timeMs
-                feedCollectModel.song = FeedSongModel.parseFeedSongModel(it.feedSong)
-                feedCollectModel.user = FeedUserInfo.parseFeedUserInfo(it.user)
+                feedCollectModel.song = JSON.parseObject(it.feedSong, FeedSongModel::class.java)
+                feedCollectModel.user = JSON.parseObject(it.user, FeedUserInfo::class.java)
             }
             return feedCollectModel
         }

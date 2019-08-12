@@ -5,15 +5,6 @@ import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
 class FeedSongModel : Serializable {
-    companion object {
-        fun parseFeedSongModel(content: String?): FeedSongModel? {
-            content?.let {
-                val jsonObject = JSONObject.parseObject(it, JSONObject::class.java)
-                return jsonObject.getObject("feedSong", FeedSongModel::class.java)
-            }
-            return null
-        }
-    }
 
     @JSONField(name = "challengeID")
     var challengeID: Long = 0

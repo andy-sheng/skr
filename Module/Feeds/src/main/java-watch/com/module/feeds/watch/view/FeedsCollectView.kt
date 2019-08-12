@@ -199,6 +199,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无收藏的神曲", "#802F2F30"))
                 .build()
+
         mLoadService = mLoadSir.register(mContainer, Callback.OnReloadListener {
             initData(true)
         })

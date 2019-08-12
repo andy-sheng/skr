@@ -39,7 +39,7 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
     }
 
     private fun getFeedsLikeList(isClear: Boolean) {
-        FeedCollectManager.instance.getMyCollect(object : UserInfoManager.ResponseCallBack<List<FeedsCollectModel>?>() {
+        FeedCollectManager.getMyCollect(object : UserInfoManager.ResponseCallBack<List<FeedsCollectModel>?>() {
             override fun onServerFailed() {
             }
 

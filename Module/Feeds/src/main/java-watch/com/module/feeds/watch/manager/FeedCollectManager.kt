@@ -15,14 +15,11 @@ import io.reactivex.functions.Consumer
 import java.io.IOException
 import java.lang.Exception
 
-class FeedCollectManager {
+object FeedCollectManager {
 
     val TAG = "FeedCollectManager"
 
-    companion object {
-        const val PREF_KEY_COLLECT_MARKER_WATER = "collect_marker_water"
-        val instance: FeedCollectManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { FeedCollectManager() }
-    }
+    const val PREF_KEY_COLLECT_MARKER_WATER = "collect_marker_water"
 
     fun getMyCollect(feedCollectListCallBack: UserInfoManager.ResponseCallBack<List<FeedsCollectModel>?>?) {
         Observable.create(ObservableOnSubscribe<List<FeedsCollectModel>> {
@@ -112,6 +109,7 @@ class FeedCollectManager {
         }).subscribeOn(U.getThreadUtils().singleThreadPoll())
                 .subscribe(Consumer<List<FeedsCollectModel>> {
                 }, Consumer<Throwable> {
+                    MyLog.d(TAG, it)
                 })
     }
 
