@@ -32,6 +32,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.detail.FeedSongPlayModeManager
 import com.module.feeds.event.FeedsCollectChangeEvent
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.model.FeedsCollectModel
@@ -211,6 +212,14 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 // 自动播放下一首
                 playWithType(true, false)
             }
+
+            override fun openTimeFlyMonitor(): Boolean {
+                return true
+            }
+
+            override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+                FeedsPlayStatistics.updateCurProgress(pos,duration)
+            }
         }
 
         SinglePlayer.addCallback(playerTag, playCallback)
@@ -349,6 +358,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
         model?.song?.playURL?.let {
+            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?:0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
