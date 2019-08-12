@@ -89,8 +89,8 @@ object FeedCollectManager {
                     val response = result.execute()
                     val obj = response.body()
                     if (obj != null && !obj.data.isNullOrEmpty() && obj.errno == 0) {
-                        val updateList = JSON.parseArray(obj.data.getString(""), FeedsCollectModel::class.java)
-                        val delList = JSON.parseArray(obj.data.getString(""), Int::class.java)
+                        val updateList = JSON.parseArray(obj.data.getString("updates"), FeedsCollectModel::class.java)
+                        val delList = JSON.parseArray(obj.data.getString("dels"), Int::class.java)
                         collectMarkerWater = obj.data.getLongValue("lastIndexID")
                         val hasMore = obj.data.getBooleanValue("hasMore")
 
