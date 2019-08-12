@@ -232,7 +232,7 @@ class FeedsPublishActivity : BaseActivity() {
                 launch(Dispatchers.IO) {
                     var content = ""
                     var filePath: String? = null
-                    if (mFeedsMakeModel?.withBgm == true) {
+                    if (mFeedsMakeModel?.songModel?.songTpl?.lrcTs?.isNotEmpty() == true) {
                         val lrcTsReader = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader
                         if (lrcTsReader == null) {
                             LyricsManager.loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
