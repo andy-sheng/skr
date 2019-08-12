@@ -17,7 +17,6 @@ import com.common.core.permission.SkrCameraPermission;
 import com.common.core.scheme.SchemeSdkActivity;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
-import com.common.core.scheme.event.FeedDetailFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
@@ -328,13 +327,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 return false;
             }
         });
-    }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FeedDetailFromSchemeEvent event) {
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                .withInt("feed_ID", event.feedID)
-                .withInt("from", 4)
-                .navigation();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
