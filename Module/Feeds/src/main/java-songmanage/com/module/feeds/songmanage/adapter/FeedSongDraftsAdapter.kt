@@ -9,7 +9,7 @@ import com.module.feeds.songmanage.viewholder.FeedSongDraftsViewHolder
 
 class FeedSongDraftsAdapter(val listener: FeedSongDraftsListener) : RecyclerView.Adapter<FeedSongDraftsViewHolder>() {
 
-    private var mDataList = ArrayList<FeedsMakeModel>()
+    var mDataList = ArrayList<FeedsMakeModel>()
 
     fun setData(list: ArrayList<FeedsMakeModel>) {
         mDataList.clear()

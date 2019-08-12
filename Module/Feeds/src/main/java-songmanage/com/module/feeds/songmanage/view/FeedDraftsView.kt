@@ -9,7 +9,11 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.log.MyLog
+import com.component.busilib.callback.EmptyCallback
 import com.dialog.view.TipsDialogView
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeLocalApi
@@ -29,10 +33,12 @@ import kotlinx.coroutines.*
 class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
     val refreshLayout: SmartRefreshLayout
-    val recyclerView: RecyclerView
+    private val recyclerView: RecyclerView
 
     val adapter: FeedSongDraftsAdapter
     var mTipsDialogView: TipsDialogView? = null
+
+    private val mLoadService: LoadService<*>
 
     init {
         View.inflate(context, R.layout.feed_song_drafts_view_layout, this)
@@ -91,11 +97,27 @@ class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), Corou
 
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
-        (getContext() as BaseActivity).launch {
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.feed_drafts_empty_icon, "暂无草稿", "#802F2F30"))
+                .build()
+        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+            tryLoadData()
+        })
+    }
+
+    fun tryLoadData() {
+        (context as BaseActivity).launch {
             val list = async {
                 FeedsMakeLocalApi.loadAll()
             }
             adapter.setData(list.await())
+
+            if (!adapter.mDataList.isNullOrEmpty()) {
+                mLoadService.showSuccess()
+            } else {
+                mLoadService.showCallback(EmptyCallback::class.java)
+            }
         }
     }
 

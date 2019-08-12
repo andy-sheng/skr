@@ -22,6 +22,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.model.SearchModel
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -194,6 +195,4 @@ class FeedsRankSearchActivity : BaseActivity() {
     override fun destroy() {
         super.destroy()
     }
-
-    class SearchModel(var searchContent: String, var isAutoSearch: Boolean)
 }

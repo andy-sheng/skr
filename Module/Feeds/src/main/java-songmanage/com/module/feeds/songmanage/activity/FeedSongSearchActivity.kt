@@ -23,6 +23,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.model.SearchModel
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -56,9 +57,11 @@ class FeedSongSearchActivity : BaseActivity() {
     lateinit var mRecyclerView: RecyclerView
 
     lateinit var mAdapter: FeedSongManageAdapter
-    lateinit var mPublishSubject: PublishSubject<String>
+    lateinit var mPublishSubject: PublishSubject<SearchModel>
 
+    private var isAutoSearch = false       // 标记是否是自动搜索
     private var lastSearchContent = ""     // 记录最近搜索内容
+    private var mLoadService: LoadService<*>? = null
 
     private val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
 
@@ -113,7 +116,7 @@ class FeedSongSearchActivity : BaseActivity() {
             }
 
             override fun afterTextChanged(editable: Editable) {
-                mPublishSubject.onNext(editable.toString())
+                mPublishSubject.onNext(SearchModel(editable.toString(), true))
             }
         })
 
@@ -125,7 +128,7 @@ class FeedSongSearchActivity : BaseActivity() {
                     return@OnEditorActionListener false
                 }
                 if (mPublishSubject != null) {
-                    mPublishSubject.onNext(keyword)
+                    mPublishSubject.onNext(SearchModel(keyword, false))
                 }
                 U.getKeyBoardUtils().hideSoftInput(mSearchContent)
             }
@@ -138,6 +141,13 @@ class FeedSongSearchActivity : BaseActivity() {
             }
         })
 
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.feed_search_empty_icon, "暂无相对应的歌曲", "#802F2F30"))
+                .build()
+        mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
+            mPublishSubject.onNext(SearchModel(lastSearchContent, false))
+        })
+
         mSearchContent.requestFocus()
         U.getKeyBoardUtils().showSoftInputKeyBoard(this)
     }
@@ -145,18 +155,25 @@ class FeedSongSearchActivity : BaseActivity() {
     private fun initPublishSubject() {
         mPublishSubject = PublishSubject.create()
         ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS)
-                .filter { s -> s.isNotEmpty() }
+                .filter { s -> s.searchContent.isNotEmpty() }
                 .switchMap { key ->
-                    lastSearchContent = key
-                    feedSongManageServerApi.searchFeedSong(key)
+                    isAutoSearch = key.isAutoSearch
+                    lastSearchContent = key.searchContent
+                    feedSongManageServerApi.searchFeedSong(key.searchContent)
                 }, object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     val list = JSON.parseArray(obj.data.getString("songs"), FeedSongInfoModel::class.java)
                     mAdapter.mDataList.clear()
-                    if (list != null && list.isNotEmpty()) {
+                    if (!list.isNullOrEmpty()) {
                         mAdapter.mDataList.addAll(list)
                         mAdapter.notifyDataSetChanged()
+                    }
+                    if (!isAutoSearch && mAdapter.mDataList.isEmpty()) {
+                        mLoadService?.showCallback(EmptyCallback::class.java)
+                    }
+                    if (mAdapter.mDataList.isNotEmpty()) {
+                        mLoadService?.showSuccess()
                     }
                 } else {
                     if (obj.errno == -2) {
