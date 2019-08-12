@@ -348,6 +348,7 @@ dependencies {
     // ConstraintLayout布局
     api 'com.android.support.constraint:constraint-layout:1.1.3'
 
+    // 协程
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-RC"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-RC"

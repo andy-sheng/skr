@@ -108,7 +108,7 @@ class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), Corou
 
     fun tryLoadData() {
         (context as BaseActivity).launch {
-            val list = async {
+            val list = async (Dispatchers.IO){
                 FeedsMakeLocalApi.loadAll()
             }
             adapter.setData(list.await())
