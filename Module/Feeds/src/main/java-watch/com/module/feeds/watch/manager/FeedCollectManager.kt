@@ -13,14 +13,31 @@ import com.module.feeds.watch.model.FeedsCollectModel
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.functions.Consumer
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.IOException
 import java.lang.Exception
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 object FeedCollectManager {
 
     val TAG = "FeedCollectManager"
 
     const val PREF_KEY_COLLECT_MARKER_WATER = "collect_marker_water"
+
+    suspend fun getMyCollect(): List<FeedsCollectModel>? {
+        return suspendCancellableCoroutine {
+            getMyCollect(object : ResponseCallBack<List<FeedsCollectModel>?>() {
+                override fun onServerSucess(t: List<FeedsCollectModel>?) {
+                    it.resume(t)
+                }
+
+                override fun onServerFailed() {
+                    it.resumeWithException(Exception("读取收藏数据失败"))
+                }
+            })
+        }
+    }
 
     fun getMyCollect(feedCollectListCallBack: ResponseCallBack<List<FeedsCollectModel>?>?) {
         Observable.create(ObservableOnSubscribe<List<FeedsCollectModel>> {

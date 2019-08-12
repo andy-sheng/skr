@@ -21,6 +21,7 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
+import com.common.log.MyLog
 import com.common.player.*
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -232,7 +233,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     fun stopPlay() {
         if (isPlaying) {
             isPlaying = false
-            bindTopData(mTopPosition, mTopModel, false)
+            bindPlayAreaData(mTopPosition, mTopModel, false)
             mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
             mAdapter.mCurrentPlayModel = null
             mAdapter.notifyDataSetChanged()
@@ -343,7 +344,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
     private fun play(model: FeedsCollectModel, position: Int) {
         isPlaying = true
-        bindTopData(position, model, true)
+        bindPlayAreaData(position, model, true)
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_pause_icon)
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
@@ -354,7 +355,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
     private fun pause(model: FeedsCollectModel, position: Int) {
         isPlaying = false
-        bindTopData(position, model, false)
+        bindPlayAreaData(position, model, false)
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
@@ -375,7 +376,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             mAdapter.mDataList.addAll(list)
         }
         if (mAdapter.mDataList.isNotEmpty() && isClear) {
-            bindTopData(0, mAdapter.mDataList[0], false)
+            bindPlayAreaData(0, mAdapter.mDataList[0], false)
         }
         mAdapter.notifyDataSetChanged()
 
@@ -409,7 +410,10 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mRefreshLayout.finishLoadMore()
     }
 
-    private fun bindTopData(position: Int, model: FeedsCollectModel?, isPlay: Boolean) {
+    /**
+     * 绑定顶部播放区域数据
+     */
+    private fun bindPlayAreaData(position: Int, model: FeedsCollectModel?, isPlay: Boolean) {
         this.mTopPosition = position
         if (this.mTopModel != model) {
             this.mTopModel = model
@@ -433,7 +437,6 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 mPlayLikeIv.setImageResource(R.drawable.feed_collect_normal_icon)
             }
         }
-
         // 开启和关闭动画
         if (isPlay) {
             if (mCDRotateAnimation == null) {
@@ -484,11 +487,13 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     fun unselected() {
+        MyLog.d(TAG, "unselected")
         SinglePlayer.reset(playerTag)
         stopPlay()
     }
 
     fun selected() {
+        MyLog.d(TAG, "selected isPlaying=$isPlaying")
         if (!isPlaying) {
             SinglePlayer.reset(playerTag)
             initData(false)

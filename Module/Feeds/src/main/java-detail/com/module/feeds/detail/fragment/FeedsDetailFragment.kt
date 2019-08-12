@@ -50,11 +50,16 @@ import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedWatchChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.manager.FeedCollectManager
+import com.module.feeds.watch.model.FeedSongModel
+import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -152,7 +157,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         override fun onCompletion() {
-            stopSong()
+            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                val newModel = mSongManager?.getNextSong(true)
+                newModel?.feedID?.let {
+                    tryLoadNewFeed(it)
+                }
+            } else {
+                stopSong()
+            }
         }
 
         override fun onSeekComplete() {
@@ -249,22 +261,45 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         addPresent(mFeedsDetailPresenter)
 
         if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
-            mSongControlArea.visibility = View.VISIBLE
-            mSongManager = FeedSongPlayModeManager(mPlayType, null, ArrayList())
-            mPlayLastIv?.setDebounceViewClickListener {
-                //            val feedSongModel = mSongManager?.getPreSong(true)
-            }
-
-            mPlayNextIv?.setDebounceViewClickListener {
-                //            val feedSongModel = mSongManager?.getNextSong(true)
-            }
-
-            mControlTv?.setDebounceViewClickListener {
-                if (it!!.isSelected) {
-                    pausePlay()
-                } else {
-                    startPlay()
+            launch {
+                // 读收藏
+                val collectList = async {
+                    FeedCollectManager.getMyCollect()
                 }
+                mSongControlArea.visibility = View.VISIBLE
+                mPlayLastIv?.setDebounceViewClickListener {
+                    val newModel = mSongManager?.getPreSong(true)
+                    newModel?.feedID?.let {
+                        tryLoadNewFeed(it)
+                    }
+                }
+
+                mPlayNextIv?.setDebounceViewClickListener {
+                    val newModel = mSongManager?.getNextSong(true)
+                    newModel?.feedID?.let {
+                        tryLoadNewFeed(it)
+                    }
+                }
+
+                mControlTv?.setDebounceViewClickListener {
+                    if (it!!.isSelected) {
+                        pausePlay()
+                    } else {
+                        startPlay()
+                    }
+                }
+                val feedSongModels = ArrayList<FeedSongModel>()
+                var cur: FeedSongModel? = null
+                collectList.await()?.forEach {
+                    it.song?.let {
+                        feedSongModels.add(it)
+                        if (it.feedID == mFeedID) {
+                            cur = it
+                        }
+                    }
+                }
+
+                mSongManager = FeedSongPlayModeManager(mPlayType, cur, feedSongModels)
             }
         } else {
             mSongControlArea.visibility = View.GONE
@@ -422,7 +457,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
     }
 
-    fun setModelData() {
+    private fun tryLoadNewFeed(newFeedId: Int) {
+        if (newFeedId != mFeedID) {
+            mFeedID = newFeedId
+            mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+        }
+    }
+
+    private fun setModelData() {
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
         mFeedsWatchModel?.song?.workName?.let {
             mSongNameTv?.text = it

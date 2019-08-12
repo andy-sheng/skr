@@ -440,13 +440,14 @@ class FeedsEditorActivity : BaseActivity() {
                     .setMessageTip("是否将改编歌词保存到草稿箱?")
                     .setConfirmBtnClickListener {
                         launch {
-                            launch(Dispatchers.IO) {
+                            val j = launch(Dispatchers.IO) {
                                 mFeedsMakeModel?.let {
                                     FeedsMakeLocalApi.insert(it)
                                 }
                             }
                             // 保存到草稿
                             // 保存到草稿
+                            j.join()
                             U.getToastUtil().showShort("保存成功")
                             setResult(Activity.RESULT_CANCELED)
                             finish()
