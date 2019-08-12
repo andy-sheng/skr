@@ -13,7 +13,7 @@ import java.util.HashMap
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
-class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : RxLifeCyclePresenter() {
+class FeedsCommentPresenter(var mFeedId: Int, val mIFirstLevelCommentView: IFirstLevelCommentView) : RxLifeCyclePresenter() {
     val mFeedsDetailServerApi = ApiManager.getInstance().createService(FeedsDetailServerApi::class.java)
     val mCount = 30
     var mOffset = 0
@@ -57,6 +57,11 @@ class FeedsCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView: IFirs
 
     fun updateCommentList() {
         mIFirstLevelCommentView.updateList(mModelList)
+    }
+
+    fun resetFeedId(feedID: Int) {
+        mFeedId = feedID
+        mModelList.clear()
     }
 
     fun likeComment(firstLevelCommentModel: FirstLevelCommentModel, feedID: Int, like: Boolean, position: Int) {

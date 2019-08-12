@@ -536,12 +536,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun showFeedsWatchModel(model: FeedsWatchModel) {
         mFeedsWatchModel = model
 
-//        mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
-//        mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
-//        mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
-//        mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
-//        mFeedsCommentView?.feedsCommendAdapter?.notifyItemChanged(0)
-
         mXinIv?.setDebounceViewClickListener {
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
         }

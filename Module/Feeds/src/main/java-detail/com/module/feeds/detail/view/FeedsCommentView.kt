@@ -168,9 +168,15 @@ class FeedsCommentView : ExConstraintLayout, IFirstLevelCommentView {
     }
 
     fun setFeedsID(feedsWatchModel: FeedsWatchModel) {
+        mRefreshLayout.setEnableLoadMore(true)
         mFeedsID = feedsWatchModel.feedID
         mFeedsWatchModel = feedsWatchModel
-        mFeedsCommentPresenter = FeedsCommentPresenter(mFeedsID!!, this)
+        if (mFeedsCommentPresenter == null) {
+            mFeedsCommentPresenter = FeedsCommentPresenter(mFeedsID!!, this)
+        } else {
+            mFeedsCommentPresenter?.resetFeedId(mFeedsID!!)
+        }
+
         mFeedsCommentPresenter?.updateCommentList()
         mFeedsCommentPresenter?.getFirstLevelCommentList()
     }
