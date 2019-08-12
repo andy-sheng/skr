@@ -20,37 +20,37 @@ object FeedsPlayStatistics {
 //    private val exposeMap = ArrayMap<Int, Item>()
 //    private val completeMap = ArrayMap<Int, Item>()
 
-    private val infoMap = ArrayMap<Int,ArrayList<Float>>()
-    private var curProgress:Long = 0
-    private var curDuration:Long = 0
-    private var curFeedsId:Int = 0
+    private val infoMap = ArrayMap<Int, ArrayList<Item>>()
+    private var curProgress: Long = 0
+    private var curDuration: Long = 0
+    private var curFeedsId: Int = 0
 
     /**
      * 传0可以触发打点统计
      */
-    fun setCurPlayMode(feedsId: Int){
-        if(curFeedsId!=0){
-            if(curFeedsId!=feedsId) {
+    fun setCurPlayMode(feedsId: Int) {
+        if (curFeedsId != 0) {
+            if (curFeedsId != feedsId) {
                 add2Map()
             }
         }
         curFeedsId = feedsId
     }
 
-    fun updateCurProgress(pos: Long, duration: Long){
+    fun updateCurProgress(pos: Long, duration: Long) {
         curProgress = pos
         curDuration = duration
     }
 
-    private fun add2Map(){
-        if(curFeedsId!=0 && curDuration!=0L && curProgress!=0L){
-            val p = curProgress*1.0f/ curDuration
+    private fun add2Map() {
+        if (curFeedsId != 0 && curDuration != 0L && curProgress != 0L) {
+            val p = curProgress * 1.0f / curDuration
             var l = infoMap[curFeedsId]
-            if(l==null){
-                 l = ArrayList<Float>()
+            if (l == null) {
+                l = ArrayList<Item>()
                 infoMap[curFeedsId] = l
             }
-            l.add(p)
+            l.add(Item(p, curProgress.toInt()))
             tryUpload(false)
         }
     }
@@ -159,11 +159,14 @@ object FeedsPlayStatistics {
             val v = infoMap[it]
             val jo = JSONObject()
             jo["feedID"] = it
-            val arrs = JSONArray()
+            val arrs1 = JSONArray()
+            val arrs2 = JSONArray()
             v?.forEach {
-                arrs.add(it)
+                arrs1.add(it.progress)
+                arrs2.add(it.playPostion)
             }
-            jo["progress"] = arrs
+            jo["progress"] = arrs1
+            jo["durations"] = arrs2
             l1.add(jo)
         }
         infoMap.clear()
@@ -208,4 +211,4 @@ private interface FeedsStatisticsServerApi {
     fun uploadFeedsStatistics(@Body requestBody: RequestBody): Call<ApiResult>
 }
 
-private class Item(var feedId: Int, var cnt: Int, var ts: Long)
+private class Item(var progress: Float = 0f, var playPostion: Int = 0)
