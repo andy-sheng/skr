@@ -26,22 +26,23 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.component.lyrics.LyricsManager
+import com.component.lyrics.LyricsReader
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.FeedsMakeLocalApi
-import com.module.feeds.make.FeedsMakeModel
-import com.module.feeds.make.FeedsMakeServerApi
+import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.model.FeedsPublishTagModel
-import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.watch.model.FeedTagModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_PUBLISH)
@@ -199,6 +200,23 @@ class FeedsPublishActivity : BaseActivity() {
 
     }
 
+    private suspend fun getReader(): LyricsReader {
+        return suspendCancellableCoroutine<LyricsReader> { continuation ->
+            LyricsManager.loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+                    .subscribe({
+                        it?.let {
+                            createCustomZrce2ReaderByTxt(it, mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)
+                            mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = it
+                            continuation.resume(it)
+                            step2()
+                        }
+                    }, {
+                        MyLog.e(TAG, it)
+                        continuation.resumeWithException(it)
+                    })
+        }
+    }
+
     private fun step1() {
         uploadAudio {
             step2()
@@ -216,8 +234,22 @@ class FeedsPublishActivity : BaseActivity() {
                     var filePath: String? = null
                     if (mFeedsMakeModel?.withBgm == true) {
                         val lrcTsReader = mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader
-                        filePath = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_custom_lyric_temp.zrce2")
-                        content = LyricsManager.createZrce2ByReader(lrcTsReader)
+                        if (lrcTsReader == null) {
+                            LyricsManager.loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+                                    .subscribe({
+                                        it?.let {
+                                            createCustomZrce2ReaderByTxt(it, mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)
+                                            mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = it
+                                            step2()
+                                        }
+                                    }, {
+                                        MyLog.e(TAG, it)
+                                    })
+                            return@launch
+                        } else {
+                            filePath = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_custom_lyric_temp.zrce2")
+                            content = LyricsManager.createZrce2ByReader(lrcTsReader)
+                        }
                     } else {
                         content = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr ?: ""
                         filePath = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_custom_lyric_temp.txt")
