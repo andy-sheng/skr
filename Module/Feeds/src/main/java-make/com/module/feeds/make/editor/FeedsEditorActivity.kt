@@ -35,6 +35,7 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
+import com.module.feeds.make.createCustomZrce2ReaderByTxt
 import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
@@ -274,15 +275,7 @@ class FeedsEditorActivity : BaseActivity() {
             LyricsManager
                     .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs, -1)
                     .subscribe({ lyricsReader ->
-                        val changeLyrics = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr?.split("\n")
-                        //mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
-                        var index = 0
-                        lyricsReader.lrcLineInfos.forEach {
-                            if (index < (changeLyrics?.size ?: 0)) {
-                                it.value.lineLyrics = changeLyrics?.get(index)
-                                index++
-                            }
-                        }
+                        createCustomZrce2ReaderByTxt(lyricsReader, mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)
                         initManyLyricView(lyricsReader)
                     }, { throwable ->
                         MyLog.e(TAG, throwable)
@@ -453,6 +446,8 @@ class FeedsEditorActivity : BaseActivity() {
                                 }
                             }
                             // 保存到草稿
+                            // 保存到草稿
+                            U.getToastUtil().showShort("保存成功")
                             setResult(Activity.RESULT_CANCELED)
                             finish()
                         }

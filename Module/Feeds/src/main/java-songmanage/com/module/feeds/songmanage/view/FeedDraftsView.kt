@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
+import com.common.log.MyLog
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -33,6 +34,7 @@ class FeedDraftsView(context: Context) : ConstraintLayout(context) {
     val recyclerView: RecyclerView
 
     val adapter: FeedSongDraftsAdapter
+
     init {
         View.inflate(context, R.layout.feed_song_drafts_view_layout, this)
 
@@ -56,11 +58,11 @@ class FeedDraftsView(context: Context) : ConstraintLayout(context) {
         adapter = FeedSongDraftsAdapter(object : FeedSongDraftsListener {
             override fun onClickSing(position: Int, model: FeedsMakeModel?) {
                 model?.let {
-                    //todo 点击发布或演唱
-                    if(TextUtils.isEmpty(model?.audioUploadUrl)){
+                    MyLog.d("FeedDraftsView", "FeedsMakeModel=$model")
+                    if (TextUtils.isEmpty(model.audioUploadUrl)) {
                         // 演唱
                         openFeedsMakeActivity(model)
-                    }else{
+                    } else {
                         sFeedsMakeModelHolder = model
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                                 .navigation()

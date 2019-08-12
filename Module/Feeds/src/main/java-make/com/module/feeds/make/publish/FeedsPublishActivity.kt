@@ -1,6 +1,5 @@
 package com.module.feeds.make.publish
 
-import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -31,14 +30,15 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FeedsMakeLocalApi
-import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.FeedsMakeServerApi
 import com.module.feeds.make.editor.FeedsEditorActivity
+import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.model.FeedsPublishTagModel
 import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.watch.model.FeedTagModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
@@ -200,24 +200,9 @@ class FeedsPublishActivity : BaseActivity() {
     }
 
     private fun step1() {
-        UploadParams.newBuilder(mFeedsMakeModel?.composeSavePath)
-                .setFileType(UploadParams.FileType.feed)
-                .startUploadAsync(object : UploadCallback {
-                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
-                    }
-
-                    override fun onSuccessNotInUiThread(url: String?) {
-                        mFeedsMakeModel?.audioUploadUrl = url
-                        step2()
-                    }
-
-                    override fun onFailureNotInUiThread(msg: String?) {
-                        launch {
-                            U.getToastUtil().showShort("上传失败，稍后重试")
-                            progressSkr.visibility = View.GONE
-                        }
-                    }
-                })
+        uploadAudio {
+            step2()
+        }
     }
 
     private fun step2() {
@@ -247,6 +232,7 @@ class FeedsPublishActivity : BaseActivity() {
                                     }
 
                                     override fun onSuccessNotInUiThread(url: String?) {
+                                        MyLog.d(TAG, "歌词上传 onSuccessNotInUiThreadurl = $url")
                                         customLrcUrl = url
                                         submitToServer()
                                     }
@@ -262,7 +248,7 @@ class FeedsPublishActivity : BaseActivity() {
         }
     }
 
-    private fun setValueFromUi(){
+    private fun setValueFromUi() {
         mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
         mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
 
@@ -270,7 +256,7 @@ class FeedsPublishActivity : BaseActivity() {
         tagClassifyTf.selectedList.forEach {
             rankList?.get(it)?.let {
                 val model = FeedTagModel()
-                model.tagID = it.tagID?:0
+                model.tagID = it.tagID ?: 0
                 model.tagDesc = it.tagDesc
                 tagsIds.add(model)
             }
@@ -347,60 +333,61 @@ class FeedsPublishActivity : BaseActivity() {
     }
 
     private fun finishPage() {
-        if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
-            setValueFromUi()
-            val tipsDialogView = TipsDialogView.Builder(this@FeedsPublishActivity)
-                    .setConfirmTip("保存")
-                    .setCancelTip("直接退出")
-                    .setCancelBtnClickListener {
-                        finish()
+        setValueFromUi()
+        val tipsDialogView = TipsDialogView.Builder(this@FeedsPublishActivity)
+                .setConfirmTip("保存")
+                .setCancelTip("直接退出")
+                .setCancelBtnClickListener {
+                    finish()
+                }
+                .setMessageTip("是否将发布保存到草稿箱?")
+                .setConfirmBtnClickListener {
+                    if (TextUtils.isEmpty(mFeedsMakeModel?.audioUploadUrl)) {
+                        progressSkr.visibility = View.VISIBLE
+                        progressSkr.setProgressText("保存中")
+                        uploadAudio {
+                            saveAndExit()
+                        }
+                    } else {
+                        saveAndExit()
                     }
-                    .setMessageTip("是否将发布保存到草稿箱?")
-                    .setConfirmBtnClickListener {
-                        if (TextUtils.isEmpty(mFeedsMakeModel?.audioUploadUrl)) {
-                            progressSkr.visibility = View.VISIBLE
-                            UploadParams.newBuilder(mFeedsMakeModel?.composeSavePath)
-                                    .setFileType(UploadParams.FileType.feed)
-                                    .startUploadAsync(object : UploadCallback {
-                                        override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
-                                        }
+                }
+                .build()
+        tipsDialogView.showByDialog()
+    }
 
-                                        override fun onSuccessNotInUiThread(url: String?) {
-                                            mFeedsMakeModel?.audioUploadUrl = url
-                                            mFeedsMakeModel?.let {
-                                                FeedsMakeLocalApi.insert(it)
-                                            }
-                                            launch {
-                                                U.getToastUtil().showShort("保存成功")
-                                                finish()
-                                            }
-                                        }
+    private fun saveAndExit() {
+        launch(Dispatchers.IO) {
+            mFeedsMakeModel?.let {
+                FeedsMakeLocalApi.insert(it)
+            }
+            launch {
+                U.getToastUtil().showShort("保存成功")
+                progressSkr.visibility = View.GONE
+                finish()
+            }
+        }
+    }
 
-                                        override fun onFailureNotInUiThread(msg: String?) {
-                                            launch {
-                                                U.getToastUtil().showShort("上传失败，稍后重试")
-                                                progressSkr.visibility = View.GONE
-                                            }
-                                        }
-                                    })
-                        } else {
-                            launch {
-                                launch(Dispatchers.IO) {
-                                    mFeedsMakeModel?.let {
-                                        FeedsMakeLocalApi.insert(it)
-                                    }
-                                }
-                                // 保存到草稿
-                                U.getToastUtil().showShort("保存成功")
-                                finish()
-                            }
+    private fun uploadAudio(call: (String?) -> Unit) {
+        UploadParams.newBuilder(mFeedsMakeModel?.composeSavePath)
+                .setFileType(UploadParams.FileType.feed)
+                .startUploadAsync(object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String?) {
+                        mFeedsMakeModel?.audioUploadUrl = url
+                        call.invoke(url)
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String?) {
+                        launch {
+                            U.getToastUtil().showShort("上传失败，稍后重试")
+                            progressSkr.visibility = View.GONE
                         }
                     }
-                    .build()
-            tipsDialogView.showByDialog()
-        } else {
-            finish()
-        }
+                })
     }
 
     override fun onDestroy() {

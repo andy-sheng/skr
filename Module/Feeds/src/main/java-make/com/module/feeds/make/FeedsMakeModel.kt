@@ -1,6 +1,7 @@
 package com.module.feeds.make
 
 import com.common.utils.U
+import com.component.lyrics.LyricsReader
 import java.io.Serializable
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
@@ -33,7 +34,7 @@ class FeedsMakeModel : Serializable {
 
     @Transient
     var hasChangeLyricThisTime = false // 本次是否改变了歌词，因为可能从草稿箱进去
-    var audioUploadUrl:String? = null
+    var audioUploadUrl: String? = null
 
     var draftUpdateTs = 0L // 对应的草稿箱更新睡哪
     var draftID = 0L //草稿箱ID
@@ -44,3 +45,17 @@ class FeedsMakeModel : Serializable {
 }
 
 var sFeedsMakeModelHolder: FeedsMakeModel? = null
+
+fun createCustomZrce2ReaderByTxt(lyricsReader: LyricsReader, lrcTxtStr: String?) {
+    if(lrcTxtStr.isNullOrEmpty()){
+        return
+    }
+    val changeLyrics = lrcTxtStr?.split("\n")
+    var index = 0
+    lyricsReader.lrcLineInfos.forEach {
+        if (index < (changeLyrics?.size?:0)) {
+            it.value.lineLyrics = changeLyrics?.get(index)
+            index++
+        }
+    }
+}

@@ -39,11 +39,8 @@ import com.engine.Params
 import com.module.RouterConstants
 import com.module.feeds.BuildConfig
 import com.module.feeds.R
-import com.module.feeds.make.FeedsMakeLocalApi
-import com.module.feeds.make.FeedsMakeModel
-import com.module.feeds.make.FeedsMakeServerApi
+import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
-import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -135,15 +132,8 @@ class FeedsMakeActivity : BaseActivity() {
                 LyricsManager
                         .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
                         .subscribe({ lyricsReader ->
-                            val changeLyrics = mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr?.split("\n")
+                            createCustomZrce2ReaderByTxt(lyricsReader, mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)
                             mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
-                            var index = 0
-                            lyricsReader.lrcLineInfos.forEach {
-                                if (index < (changeLyrics?.size ?: 0)) {
-                                    it.value.lineLyrics = changeLyrics?.get(index)
-                                    index++
-                                }
-                            }
                             whenDataOk()
                         }, { throwable ->
                             MyLog.e(TAG, throwable)
@@ -606,6 +596,7 @@ class FeedsMakeActivity : BaseActivity() {
                                 }
                             }
                             // 保存到草稿
+                            U.getToastUtil().showShort("保存成功")
                             finish()
                         }
                     }
