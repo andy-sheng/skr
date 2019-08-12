@@ -33,15 +33,15 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
             return
         }
 
-        getFeedsLikeList(true)
+        getFeedsLikeList()
     }
 
-    private fun getFeedsLikeList(isClear: Boolean) {
+    private fun getFeedsLikeList() {
         launch {
             val l = async {
                 FeedCollectManager.getMyCollect()
             }
-            view.addLikeList(l.await(), isClear)
+            view.showCollectList(l.await())
         }
     }
 

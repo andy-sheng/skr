@@ -40,6 +40,22 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
+    fun setCurrentPlayModel(mode: FeedSongModel?) {
+        mCur = mode
+        mOriginalSongList.forEachIndexed { index, feedSongModel ->
+            if (feedSongModel == mode) {
+                mOriginPosition = index
+                return@forEachIndexed
+            }
+        }
+        mShuffleSongList.forEachIndexed { index, pair ->
+            if (pair.second == mode) {
+                mShufflePosition = index
+                return@forEachIndexed
+            }
+        }
+    }
+
     fun changeMode(mode: PlayMode) {
         val lastMode = mMode
         mMode = mode

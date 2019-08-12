@@ -3,7 +3,7 @@ package com.module.feeds.watch.view
 import com.module.feeds.watch.model.FeedsCollectModel
 
 interface IFeedCollectView {
-    fun addLikeList(list: List<FeedsCollectModel>?, isClear: Boolean)
+    fun showCollectList(list: List<FeedsCollectModel>?)
 
     fun showCollect(model: FeedsCollectModel)
 

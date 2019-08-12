@@ -35,6 +35,7 @@ import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
+import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
 import org.greenrobot.eventbus.EventBus
@@ -50,10 +51,11 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
     var mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER //默认顺序播放
     var isPlaying = false
+
     var mTopModel: FeedsCollectModel? = null
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
-    var isFirstRandom = true      // 是否第一次随机clear
-    var mRandomList = ArrayList<FeedsCollectModel>()  // 随机播放队列
+
+    var mSongManager: FeedSongPlayModeManager? = null
 
     private val mContainer: ConstraintLayout
     private val mTopAreaBg: SimpleDraweeView
@@ -119,6 +121,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
             override fun onClickPlayListener(model: FeedsCollectModel?, position: Int) {
                 model?.let {
+                    mSongManager?.setCurrentPlayModel(it.song)
                     playOrPause(it, position, false)
                 }
             }
@@ -144,24 +147,25 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mPlayTypeIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 更新游戏类别 全部循环，单曲循环，随机播放(需要重新校准播放的位置)
-                // 校准位置
-                mTopPosition = mAdapter.findRealPosition(mTopModel)
                 // 为了保证随机播放（确定是否要重新随机）
                 when (mCurrentType) {
                     FeedSongPlayModeManager.PlayMode.ORDER -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.SINGLE
                         mPlayTypeIv.setImageResource(R.drawable.like_single_repeat_icon)
                         U.getToastUtil().showShort("单曲循环")
+                        mSongManager?.changeMode(mCurrentType)
                     }
                     FeedSongPlayModeManager.PlayMode.SINGLE -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.RANDOM
                         mPlayTypeIv.setImageResource(R.drawable.like_random_icon)
                         U.getToastUtil().showShort("随机播放")
+                        mSongManager?.changeMode(mCurrentType)
                     }
                     FeedSongPlayModeManager.PlayMode.RANDOM -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER
                         mPlayTypeIv.setImageResource(R.drawable.like_all_repeat_icon)
                         U.getToastUtil().showShort("列表循环")
+                        mSongManager?.changeMode(mCurrentType)
                     }
                 }
             }
@@ -178,6 +182,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mRecordFilm.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mTopModel?.let {
+                    mSongManager?.setCurrentPlayModel(it.song)
                     playOrPause(it, mTopPosition, false)
                 }
             }
@@ -218,7 +223,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             }
 
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
-                FeedsPlayStatistics.updateCurProgress(pos,duration)
+                FeedsPlayStatistics.updateCurProgress(pos, duration)
             }
         }
 
@@ -251,90 +256,19 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     private fun playWithType(isNext: Boolean, fromUser: Boolean) {
-        when (mCurrentType) {
-            FeedSongPlayModeManager.PlayMode.SINGLE -> {
-                if (fromUser) {
-                    singlePlay(isNext)
-                } else {
-                    mTopModel?.let {
-                        playOrPause(it, mTopPosition, true)
-                    }
-                }
-            }
-            FeedSongPlayModeManager.PlayMode.ORDER -> {
-                allRepeatPlay(isNext)
-            }
-            FeedSongPlayModeManager.PlayMode.RANDOM -> {
-                randomPlay()
-            }
-        }
-    }
-
-    private fun singlePlay(isNext: Boolean) {
-        if (isNext) {
-            if ((mTopPosition + 1) >= mAdapter.mDataList.size) {
-                playOrPause(mAdapter.mDataList[0], 0, true)
-            } else {
-                playOrPause(mAdapter.mDataList[mTopPosition + 1], mTopPosition + 1, true)
-            }
+        val songModel = if (isNext) {
+            mSongManager?.getNextSong(fromUser)
         } else {
-            if ((mTopPosition - 1) < 0) {
-                playOrPause(mAdapter.mDataList[mAdapter.mDataList.size - 1], mAdapter.mDataList.size - 1, true)
-            } else {
-                playOrPause(mAdapter.mDataList[mTopPosition - 1], mTopPosition - 1, true)
+            mSongManager?.getPreSong(fromUser)
+        }
+        mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
+            if (feedsCollectModel.feedID == songModel?.feedID) {
+                playOrPause(feedsCollectModel, index, true)
+                return@forEachIndexed
             }
         }
     }
 
-    private fun allRepeatPlay(isNext: Boolean) {
-        if (isNext) {
-            if ((mTopPosition + 1) >= mAdapter.mDataList.size) {
-                playOrPause(mAdapter.mDataList[0], 0, true)
-            } else {
-                playOrPause(mAdapter.mDataList[mTopPosition + 1], mTopPosition + 1, true)
-            }
-        } else {
-            if ((mTopPosition - 1) < 0) {
-                playOrPause(mAdapter.mDataList[mAdapter.mDataList.size - 1], mAdapter.mDataList.size - 1, true)
-            } else {
-                playOrPause(mAdapter.mDataList[mTopPosition - 1], mTopPosition - 1, true)
-            }
-        }
-    }
-
-    private fun randomPlay() {
-        // 对于随机播放，下一首和上一首，都是在队列里面播下一首
-        if (isFirstRandom) {
-            isFirstRandom = false
-            createRandomList()
-        }
-
-        if ((mTopPosition + 1) >= mRandomList.size) {
-            playOrPause(mRandomList[0], 0, true)
-            // 一个轮回了，重新随机
-            isFirstRandom = true
-        } else {
-            playOrPause(mRandomList[mTopPosition + 1], mTopPosition + 1, true)
-        }
-    }
-
-    // 生成新的随机序列
-    private fun createRandomList() {
-        mRandomList.clear()
-        mRandomList.addAll(mAdapter.mDataList)
-        mRandomList.shuffle()
-        if ((mTopPosition + 1) >= mRandomList.size) {
-            if (mRandomList[0].feedID == mTopModel?.feedID) {
-                // 下一首要重复了
-                createRandomList()
-            }
-        } else {
-            if (mRandomList[mTopPosition + 1].feedID == mTopModel?.feedID) {
-                // 下一首要重复了
-                createRandomList()
-            }
-        }
-    }
 
     fun playOrPause(model: FeedsCollectModel, position: Int, isMust: Boolean) {
         if (isMust) {
@@ -358,7 +292,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?:0)
+            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -372,23 +306,33 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         SinglePlayer.reset(playerTag)
     }
 
-    override fun addLikeList(list: List<FeedsCollectModel>?, isClear: Boolean) {
+    override fun showCollectList(list: List<FeedsCollectModel>?) {
         mRefreshLayout.finishRefresh()
         mRefreshLayout.finishLoadMore()
-        if (isClear) {
+
+        list?.let {
+            // 初始化数据
+            val feedSongModels = ArrayList<FeedSongModel>()
+            var cur: FeedSongModel? = null
+            it.forEach { feedCollectModel ->
+                feedCollectModel.song?.let { feedSongModel ->
+                    feedSongModels.add(feedSongModel)
+                }
+            }
+            mSongManager = FeedSongPlayModeManager(mCurrentType, cur, feedSongModels)
+
+
             stopPlay()
             mAdapter.mDataList.clear()
+            if (list != null) {
+                // 数据改变了，重新去生成随机队列去
+                mAdapter.mDataList.addAll(list)
+            }
+            if (mAdapter.mDataList.isNotEmpty()) {
+                bindPlayAreaData(0, mAdapter.mDataList[0], false)
+            }
+            mAdapter.notifyDataSetChanged()
         }
-
-        if (list != null) {
-            // 数据改变了，重新去生成随机队列去
-            isFirstRandom = true
-            mAdapter.mDataList.addAll(list)
-        }
-        if (mAdapter.mDataList.isNotEmpty() && isClear) {
-            bindPlayAreaData(0, mAdapter.mDataList[0], false)
-        }
-        mAdapter.notifyDataSetChanged()
 
         if (mAdapter.mDataList == null || mAdapter.mDataList.isEmpty()) {
             mLoadService.showCallback(EmptyCallback::class.java)
@@ -407,12 +351,6 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         }
         // 更新数据
         mAdapter.update(mTopPosition, model)
-        for (i in 0 until mRandomList.size) {
-            if (mRandomList[i].feedID == model.feedID) {
-                mRandomList[i] = model
-                return
-            }
-        }
     }
 
     override fun requestError() {
