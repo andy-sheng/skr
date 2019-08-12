@@ -299,6 +299,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mToolbar?.visibility = View.GONE
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset

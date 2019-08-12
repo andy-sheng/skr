@@ -247,6 +247,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
+        mToolbar.setVisibility(View.GONE);
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
