@@ -98,4 +98,16 @@ interface FeedsWatchServerApi {
     @PUT("/v1/feed/share")
     fun shareAdd(@Body body: RequestBody): Call<ApiResult>
 
+    /**
+     * 全民神曲，分页获取全量的feed收藏信息
+     */
+    @GET("v1/feed/collect-list-by-page")
+    fun getCollectListByPage(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Long): Call<ApiResult>
+
+    /**
+     * 全民神曲：按照indexID拉去feed收藏信息
+     */
+    @GET("v1/feed/collect-list-by-index-id")
+    fun getCollectListByIndex(@Query("lastIndexID") lastIndexID: Long, @Query("userID") userID: Long): Call<ApiResult>
+
 }

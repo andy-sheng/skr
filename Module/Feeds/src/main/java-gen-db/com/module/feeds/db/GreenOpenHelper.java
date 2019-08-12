@@ -25,19 +25,20 @@ public class GreenOpenHelper
 
     @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
-
         MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
             @Override
             public void onCreateAllTables(Database db, boolean ifNotExists) {
                 MyLog.d(TAG, "onCreateAllTables" + " db=" + db + " ifNotExists=" + ifNotExists);
                 FeedsDraftDBDao.createTable(db, ifNotExists);
+                FeedCollectDBDao.createTable(db, ifNotExists);
             }
 
             @Override
             public void onDropAllTables(Database db, boolean ifExists) {
                 MyLog.d(TAG, "onDropAllTables" + " db=" + db + " ifExists=" + ifExists);
                 FeedsDraftDBDao.dropTable(db, ifExists);
+                FeedCollectDBDao.dropTable(db, ifExists);
             }
-        }, FeedsDraftDBDao.class);
+        }, FeedsDraftDBDao.class, FeedCollectDBDao.class);
     }
 }

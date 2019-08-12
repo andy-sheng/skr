@@ -33,6 +33,7 @@ import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.bean.SHARE_MEDIA
 import com.component.person.photo.manager.PhotoLocalApi
 import com.module.feeds.make.FeedsMakeLocalApi
+import com.module.feeds.watch.manager.FeedCollectLocalApi
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -75,6 +76,7 @@ object GlobalEventReceiver{
     fun onEvent(event: AccountEvent.LogoffAccountEvent) {
         PhotoLocalApi.deleteAll()
         FeedsMakeLocalApi.deleteAll()
+        FeedCollectLocalApi.deleteAll()
         if (event.reason == AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED) {
             MyLog.w(TAG, "LogoffAccountEvent" + " 账号已经过期，需要重新登录,跳到登录页面")
         }
