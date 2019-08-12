@@ -104,8 +104,7 @@ class TxtLyricScrollView(context: Context, attrs: AttributeSet) : View(context, 
     }
 
     private fun play(pos: Int, delay: Int) {
-        MyLog.d(TAG, "pos=$pos delay=$delay")
-
+        //MyLog.d(TAG, "pos=$pos delay=$delay")
         this.postion = pos
         if (duration <= 0) {
             MyLog.e("未设置duration")

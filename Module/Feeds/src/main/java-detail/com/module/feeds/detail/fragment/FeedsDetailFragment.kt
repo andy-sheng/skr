@@ -58,6 +58,7 @@ import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -263,7 +264,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
             launch {
                 // 读收藏
-                val collectList = async {
+                val collectList = async(Dispatchers.IO) {
+                    if(Looper.myLooper() == Looper.getMainLooper()){
+                        MyLog.d(TAG,"主进程")
+                    }else{
+                        MyLog.d(TAG,"不在主进程")
+                    }
                     FeedCollectManager.getMyCollect()
                 }
                 mSongControlArea.visibility = View.VISIBLE
