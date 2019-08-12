@@ -42,7 +42,7 @@ class FeedsWatchFragment : BaseFragment() {
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
-    var mPagerPosition: Int by Delegates.observable(1, { _, oldPositon, newPosition ->
+    var mPagerPosition: Int by Delegates.observable(0, { _, oldPositon, newPosition ->
         // 为了解决滑动卡顿
         launch(Dispatchers.Main) {
             delay(400)

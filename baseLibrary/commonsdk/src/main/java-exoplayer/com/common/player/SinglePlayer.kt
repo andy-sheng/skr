@@ -2,6 +2,7 @@ package com.common.player
 
 import android.media.MediaPlayer
 import android.os.Build
+import com.common.log.MyLog
 
 object SinglePlayer : IPlayerEx {
 
@@ -65,10 +66,12 @@ object SinglePlayer : IPlayerEx {
 
     override fun startPlay(from: String, path: String): Boolean {
         startFrom = from
+        MyLog.d("SinglePlayer", "startPlayfrom = $from")
         return player.startPlay(path)
     }
 
     override fun pause(from: String?) {
+        MyLog.d("SinglePlayer", "pausefrom=$from startFrom=$startFrom")
         if (startFrom == from) {
             player.pause()
         }
@@ -87,6 +90,7 @@ object SinglePlayer : IPlayerEx {
     }
 
     override fun reset(from: String?) {
+        MyLog.d("SinglePlayer", "resetfrom=$from startFrom=$startFrom")
         if (startFrom == from) {
             player.reset()
         }
