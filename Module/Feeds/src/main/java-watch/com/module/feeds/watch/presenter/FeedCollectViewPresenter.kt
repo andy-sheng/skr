@@ -40,16 +40,12 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
     }
 
     private fun getFeedsLikeList(isClear: Boolean) {
-        FeedCollectManager.getMyCollect(object : ResponseCallBack<List<FeedsCollectModel>?>() {
-            override fun onServerFailed() {
+        launch {
+            val l = async {
+                FeedCollectManager.getMyCollect()
             }
-
-            override fun onServerSucess(t: List<FeedsCollectModel>?) {
-                launch {
-                    view.addLikeList(t, isClear)
-                }
-            }
-        })
+            view.addLikeList(l.await(), isClear)
+        }
     }
 
     fun likeOrUnLikeFeed(model: FeedsCollectModel) {
