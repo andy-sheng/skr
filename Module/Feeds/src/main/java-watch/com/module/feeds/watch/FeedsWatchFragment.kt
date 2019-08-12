@@ -42,7 +42,9 @@ class FeedsWatchFragment : BaseFragment() {
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
-    var mPagerPosition: Int by Delegates.observable(0, { _, oldPositon, newPosition ->
+    val initPostion = 0
+    // 保持 init Postion 一致
+    var mPagerPosition: Int by Delegates.observable(initPostion, { _, oldPositon, newPosition ->
         // 为了解决滑动卡顿
         launch(Dispatchers.Main) {
             delay(400)
@@ -153,7 +155,7 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedVp.adapter = mTabPagerAdapter
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
-        mFeedVp?.setCurrentItem(0, false)
+        mFeedVp?.setCurrentItem(initPostion, false)
     }
 
     override fun onFragmentVisible() {
