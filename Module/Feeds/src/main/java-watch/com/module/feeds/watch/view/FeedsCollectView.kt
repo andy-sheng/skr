@@ -148,17 +148,17 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 when (mCurrentType) {
                     FeedSongPlayModeManager.PlayMode.ORDER -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.SINGLE
-                        mPlayLikeIv.setImageResource(R.drawable.like_single_repeat_icon)
+                        mPlayTypeIv.setImageResource(R.drawable.like_single_repeat_icon)
                         U.getToastUtil().showShort("单曲循环")
                     }
                     FeedSongPlayModeManager.PlayMode.SINGLE -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.RANDOM
-                        mPlayLikeIv.setImageResource(R.drawable.like_random_icon)
+                        mPlayTypeIv.setImageResource(R.drawable.like_random_icon)
                         U.getToastUtil().showShort("随机播放")
                     }
                     FeedSongPlayModeManager.PlayMode.RANDOM -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER
-                        mPlayLikeIv.setImageResource(R.drawable.like_all_repeat_icon)
+                        mPlayTypeIv.setImageResource(R.drawable.like_all_repeat_icon)
                         U.getToastUtil().showShort("列表循环")
                     }
                 }
