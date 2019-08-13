@@ -14,7 +14,6 @@ public class ResImage extends BaseImage {
      */
     ResImage(int resId) {
         mResId = resId;
-        generateUri();
     }
 
     protected void generateUri() {

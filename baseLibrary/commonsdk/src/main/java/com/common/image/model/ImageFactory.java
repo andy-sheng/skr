@@ -209,6 +209,7 @@ public class ImageFactory {
         }
 
         public <T extends BaseImage> T build() {
+            mBaseImage.generateUri();
             return (T) mBaseImage;
         }
     }

@@ -131,6 +131,7 @@ public class FrescoWorker {
      * @param baseImage  请使用 {@link com.common.image.model.ImageFactory 构造}
      */
     public static void loadImage(final SimpleDraweeView draweeView, final BaseImage baseImage) {
+        MyLog.d(TAG,"loadImage baseImage=" + baseImage);
         if (draweeView == null) {
             MyLog.d(TAG, "draweeView is null");
             return;

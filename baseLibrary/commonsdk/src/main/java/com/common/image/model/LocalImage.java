@@ -17,7 +17,6 @@ public class LocalImage extends BaseImage {
      */
      LocalImage(String path) {
         mPath = path;
-        generateUri();
     }
 
     protected void generateUri() {
@@ -26,18 +25,7 @@ public class LocalImage extends BaseImage {
         }
     }
 
-    public void setPath(String path) {
-        if (!TextUtils.isEmpty(path)) {
-            mPath = path;
-            mUri = Uri.fromFile(new File(mPath));
-        }
-    }
-
     public String getPath() {
         return mPath;
-    }
-
-    public void setUri(Uri mUri) {
-        this.mUri=mUri;
     }
 }

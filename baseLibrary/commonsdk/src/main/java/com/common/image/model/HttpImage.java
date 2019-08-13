@@ -17,9 +17,8 @@ import java.io.File;
  * 网络图片
  */
 public class HttpImage extends BaseImage {
-    private String mUrl;
-    private String originUrl;
-    public String fullSizeUrl = "";
+    private String mUrl; // 处理后的的url
+    private String originUrl;//原始的url
     public Bitmap.Config config;
     private boolean canHasLowUri = true;
 
@@ -29,7 +28,7 @@ public class HttpImage extends BaseImage {
     HttpImage(String url) {
         mUrl = url;
         originUrl = url;
-        generateUri();
+        //generateUri();
     }
 
     protected void generateUri() {
@@ -40,7 +39,10 @@ public class HttpImage extends BaseImage {
                     String lowUrl = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
                             .setW(mLowImageSize.getW())
                             .build());
-                    mLowImageUri = Uri.parse(lowUrl);
+                    if(!lowUrl.equals(mUrl)){
+                        // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
+                        mLowImageUri = Uri.parse(lowUrl);
+                    }
                 } else {
                     //低分辨率的没有
                     if (canHasLowUri) {
@@ -54,7 +56,10 @@ public class HttpImage extends BaseImage {
                             String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
                                     .setW(ImageUtils.SIZE.SIZE_160.getW())
                                     .build());
-                            mLowImageUri = Uri.parse(lowUrl_160);
+                            if(!lowUrl_160.equals(mUrl)){
+                                // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
+                                mLowImageUri = Uri.parse(lowUrl_160);
+                            }
                         }
                     }else{
                         // 不需要设置
@@ -72,14 +77,6 @@ public class HttpImage extends BaseImage {
 
     public void setUrl(String url) {
         mUrl = url;
-    }
-
-    public String getFullSizeUrl() {
-        return fullSizeUrl;
-    }
-
-    public void setFullSizeUrl(String fullSizeUrl) {
-        this.fullSizeUrl = fullSizeUrl;
     }
 
     public Bitmap.Config getConfig() {
@@ -102,6 +99,13 @@ public class HttpImage extends BaseImage {
             }
         }
         mUrl = OssImgFactory.addOssParams(mUrl, ossProcessors);
-        generateUri();
+    }
+
+    @Override
+    public String toString() {
+        return "HttpImage{" +
+                "mUri=" + mUri +
+                ", mLowImageUri=" + mLowImageUri +
+                '}';
     }
 }
