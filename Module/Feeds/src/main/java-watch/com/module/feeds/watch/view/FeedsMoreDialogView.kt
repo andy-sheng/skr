@@ -266,16 +266,18 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
 
     // 检查是否收藏
     private fun checkCollect() {
-        launch {
-            val result = subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), model.feedID) }
-            if (result.errno == 0) {
-                val isCollected = result.data.getBooleanValue("isCollected")
-                model.isCollected = isCollected
-                showCollected(isCollected)
-            } else {
-
-            }
-        }
+//        launch {
+//            val result = subscribe { mFeedServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), model.feedID) }
+//            if (result.errno == 0) {
+//                val isCollected = result.data.getBooleanValue("isCollected")
+//                model.isCollected = isCollected
+//                showCollected(isCollected)
+//            } else {
+//
+//            }
+//        }
+        // model中的就准了，不用请求
+        showCollected(model.isCollected)
     }
 
     // 收藏
@@ -294,7 +296,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 } else {
                     U.getToastUtil().showShort("收藏成功")
                 }
-                EventBus.getDefault().post(FeedsCollectChangeEvent(model, !isCollocted))
+                model.isCollected = !isCollocted
+                EventBus.getDefault().post(FeedsCollectChangeEvent(model))
             } else {
                 if (isCollocted) {
                     U.getToastUtil().showShort("收藏失败")

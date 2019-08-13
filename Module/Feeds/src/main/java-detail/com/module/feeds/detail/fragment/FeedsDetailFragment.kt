@@ -32,6 +32,7 @@ import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -535,12 +536,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
         }
 
-        if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.title)) {
-            mMainCommentTv?.text = mFeedsWatchModel?.song?.title
-            mMainCommentTv?.visibility = View.VISIBLE
-        } else {
-            mMainCommentTv?.visibility = View.GONE
-        }
+        showMainComment()
 
         mCommentTv?.setDebounceViewClickListener {
             mRefuseModel = null
@@ -561,6 +557,33 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mCollectionIv?.isSelected = mFeedsWatchModel?.isCollected == true
 
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
+    }
+
+    private fun showMainComment() {
+        var recomendTag = ""
+        if (mFeedsWatchModel?.song?.needRecommentTag == true) {
+            recomendTag = "#小编推荐# "
+        }
+        var songTag = ""
+        mFeedsWatchModel?.song?.tags?.let {
+            for (model in it) {
+                model?.tagDesc.let { tagDesc ->
+                    songTag = "$songTag#$tagDesc# "
+                }
+            }
+        }
+        val title = mFeedsWatchModel?.song?.title ?: ""
+        if (TextUtils.isEmpty(recomendTag) && TextUtils.isEmpty(songTag) && TextUtils.isEmpty(title)) {
+            mMainCommentTv?.visibility = View.GONE
+        } else {
+            val stringBuilder = SpanUtils()
+                    .append(recomendTag).setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append(songTag).setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append(title).setForegroundColor(U.getColor(R.color.black_trans_80))
+                    .create()
+            mMainCommentTv?.visibility = View.VISIBLE
+            mMainCommentTv?.text = stringBuilder
+        }
     }
 
     private fun showMoreOp() {

@@ -32,8 +32,10 @@ import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
 import com.module.feeds.event.FeedWatchChangeEvent
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -670,5 +672,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         if (type == TYPE_FOLLOW) {
             mPersenter.mHasInitData = false
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedsCollectChangeEvent) {
+        mAdapter?.update(event.model, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
     }
 }
