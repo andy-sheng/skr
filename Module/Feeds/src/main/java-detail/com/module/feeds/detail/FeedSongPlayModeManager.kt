@@ -62,7 +62,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         if (mCur == null) {
             return
         }
-        if (mMode == PlayMode.RANDOM && (lastMode == PlayMode.ORDER || lastMode == PlayMode.SINGLE)) {
+        if (mMode == PlayMode.RANDOM) {
             // 新的模式为随机，且之前的模式为顺序或者单曲
             ensureHasShuffle(null)
             mShuffleSongList.forEachIndexed { index, pair ->
@@ -73,7 +73,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             }
         }
 
-        if (lastMode == PlayMode.RANDOM && (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE)) {
+        if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
             // 新的模式为随机，且之前的模式为顺序或者单曲
             mOriginPosition = mShuffleSongList.get(mShufflePosition).first
         }
@@ -98,6 +98,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             return mCur
         } else if (mMode == PlayMode.RANDOM) {
             mShufflePosition += 1
+            //ensureHasShuffle(null)
             if (mShufflePosition >= mShuffleSongList.size) {
                 mShuffleSongList.clear()
                 ensureHasShuffle(mCur)
