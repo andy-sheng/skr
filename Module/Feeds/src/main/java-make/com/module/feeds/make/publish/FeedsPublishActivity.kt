@@ -135,9 +135,7 @@ class FeedsPublishActivity : BaseActivity() {
                 rankList?.forEachIndexed { index, feedsPublishTagModel ->
                     mFeedsMakeModel?.songModel?.tags?.forEach { it ->
                         if (it?.tagID == feedsPublishTagModel.tagID) {
-                            feedsPublishTagModel.tagID?.let { it2 ->
-                                set.add(it2)
-                            }
+                            set.add(index)
                         }
                     }
                 }
@@ -292,13 +290,16 @@ class FeedsPublishActivity : BaseActivity() {
 
         val tagsIds = ArrayList<FeedTagModel>()
         tagClassifyTf.selectedList.forEach {
-            rankList?.get(it)?.let {
-                val model = FeedTagModel()
-                model.tagID = it.tagID ?: 0
-                model.tagDesc = it.tagDesc
-                tagsIds.add(model)
+            if(it<rankList?.size ?:0){
+                rankList?.get(it)?.let {
+                    val model = FeedTagModel()
+                    model.tagID = it.tagID ?: 0
+                    model.tagDesc = it.tagDesc
+                    tagsIds.add(model)
+                }
+                mFeedsMakeModel?.songModel?.tags = tagsIds
             }
-            mFeedsMakeModel?.songModel?.tags = tagsIds
+
         }
     }
 
