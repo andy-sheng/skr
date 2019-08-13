@@ -25,6 +25,7 @@ import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.rank.model.FeedRankTagModel
 import com.module.feeds.rank.view.FeedsRankView
+import com.module.feeds.songmanage.view.FeedDraftsView
 import kotlinx.coroutines.launch
 
 /**
@@ -40,6 +41,7 @@ class FeedsRankActivity : BaseActivity() {
     private lateinit var mPagerAdapter: PagerAdapter
 
     var mFeedRankViews: HashMap<Int, FeedsRankView> = HashMap()
+    val mFeedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, FeedDraftsView.FROM_FEED_HIT) }
 
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 
@@ -109,23 +111,31 @@ class FeedsRankActivity : BaseActivity() {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                val rankTagModel = list[position]
-                if (!mFeedRankViews.containsKey(rankTagModel.tagType)) {
-                    mFeedRankViews[rankTagModel.tagType
-                            ?: 0] = FeedsRankView(this@FeedsRankActivity, rankTagModel)
+                if (position < list.size) {
+                    val rankTagModel = list[position]
+                    if (!mFeedRankViews.containsKey(rankTagModel.tagType)) {
+                        mFeedRankViews[rankTagModel.tagType
+                                ?: 0] = FeedsRankView(this@FeedsRankActivity, rankTagModel)
+                    }
+                    val view = mFeedRankViews[rankTagModel.tagType]
+                    if (position == 0) {
+                        view?.tryLoadData()
+                    }
+                    if (container.indexOfChild(view) == -1) {
+                        container.addView(view)
+                    }
+                    return view!!
+                } else {
+                    if (container.indexOfChild(mFeedDraftsView) == -1) {
+                        container.addView(mFeedDraftsView)
+                    }
+                    return mFeedDraftsView
                 }
-                val view = mFeedRankViews[rankTagModel.tagType]
-                if (position == 0) {
-                    view?.tryLoadData()
-                }
-                if (container.indexOfChild(view) == -1) {
-                    container.addView(view)
-                }
-                return view!!
+
             }
 
             override fun getCount(): Int {
-                return list.size
+                return list.size + 1
             }
 
             override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -133,7 +143,11 @@ class FeedsRankActivity : BaseActivity() {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return list[position].tagDesc
+                if (position < list.size) {
+                    return list[position].tagDesc
+                } else {
+                    return "草稿箱"
+                }
             }
         }
 
@@ -143,8 +157,13 @@ class FeedsRankActivity : BaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                var tagModel = list[position]
-                mFeedRankViews[tagModel.tagType]?.tryLoadData()
+                if (position < list.size) {
+                    var tagModel = list[position]
+                    mFeedRankViews[tagModel.tagType]?.tryLoadData()
+                } else {
+                    mFeedDraftsView.tryLoadData()
+                }
+
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -169,5 +188,6 @@ class FeedsRankActivity : BaseActivity() {
             }
         }
         mFeedRankViews.clear()
+        mFeedDraftsView.destroy()
     }
 }

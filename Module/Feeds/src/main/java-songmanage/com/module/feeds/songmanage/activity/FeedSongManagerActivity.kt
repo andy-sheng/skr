@@ -43,7 +43,7 @@ class FeedSongManagerActivity : BaseActivity() {
     private lateinit var pagerAdapter: PagerAdapter
 
     private var songManageViews: HashMap<Int, FeedSongManageView> = HashMap()
-    private val feedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this) }
+    private val feedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, FeedDraftsView.FROM_FEED_QUICK) }
 
     val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
 

@@ -30,7 +30,12 @@ import kotlinx.coroutines.*
 /**
  * 草稿箱view
  */
-class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), CoroutineScope by MainScope() {
+class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
+
+    companion object {
+        const val FROM_FEED_HIT = 1   // 打榜
+        const val FROM_FEED_QUICK = 2   // 快唱
+    }
 
     val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
@@ -108,7 +113,7 @@ class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), Corou
 
     fun tryLoadData() {
         (context as BaseActivity).launch {
-            val list = async (Dispatchers.IO){
+            val list = async(Dispatchers.IO) {
                 FeedsMakeLocalApi.loadAll()
             }
             adapter.setData(list.await())
