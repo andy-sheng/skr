@@ -150,7 +150,7 @@ object FeedsPlayStatistics {
             return
         }
         if (!force) {
-            if (infoMap.size < 20) {
+            if (infoMap.size < 5) {
                 return
             }
         }
