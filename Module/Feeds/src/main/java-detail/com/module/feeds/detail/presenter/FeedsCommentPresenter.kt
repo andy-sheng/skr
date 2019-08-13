@@ -62,6 +62,7 @@ class FeedsCommentPresenter(var mFeedId: Int, val mIFirstLevelCommentView: IFirs
     fun resetFeedId(feedID: Int) {
         mFeedId = feedID
         mModelList.clear()
+        mOffset = 0
     }
 
     fun likeComment(firstLevelCommentModel: FirstLevelCommentModel, feedID: Int, like: Boolean, position: Int) {
