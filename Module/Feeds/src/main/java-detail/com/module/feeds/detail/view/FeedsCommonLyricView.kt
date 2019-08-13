@@ -3,6 +3,7 @@ package com.module.feeds.detail.view
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewStub
+import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 import com.module.feeds.watch.model.FeedSongModel
@@ -26,6 +27,7 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.auto_scroll_lyric_view_layout_viewstub)
             mAutoScrollLyricView = AutoScrollLyricView(viewStub)
+            mAutoScrollLyricView?.scrollView?.layoutParams?.height = U.getDisplayUtils().dip2px(74f)
         }
 
         run {

@@ -153,7 +153,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     private fun scrollToTs(passTime: Int) {
-        val Y = (lyricTv!!.height - scrollView!!.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
+        val Y = (lyricTv!!.height - U.getDisplayUtils().dip2px(74f)) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
         //MyLog.w(TAG, "Y is $Y, passTime is $passTime, duraions is ${mFeedSongModel!!.playDurMs!!.toDouble()}")
         //lyricTv.scrollTo(0, Y.toInt())
         // 要用父布局滚 不然setText就滚动0了 之前的白滚了
