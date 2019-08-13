@@ -115,13 +115,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onClickCollectListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 收藏
                 watchModel?.let {
-                    if (!it.isCollected) {
-                        mPersenter.collectOrUnCollectFeed(position, it)
-                    } else {
-                        if (MyLog.isDebugLogOpen()) {
-                            U.getToastUtil().showShort("已经收藏，此处不能取消收藏")
-                        }
-                    }
+                    mPersenter.collectOrUnCollectFeed(position, it)
                 }
             }
 

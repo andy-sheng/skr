@@ -73,8 +73,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                     }
                 } else if (type == REFRESH_TYPE_LIKE) {
                     holder.refreshLike(position, mDataList[position])
-                } else if (type == REFRESH_TYPE_COMMENT) {
-                    holder.refreshComment(position, mDataList[position])
+                } else if (type == REFRESH_TYPE_PLAY_NUM) {
+                    holder.refreshPlayNum(position, mDataList[position])
                 } else if (type == REFRESH_TYPE_LYRIC) {
                     if (mDataList[position] == mCurrentPlayModel) {
                         holder.playLyric(position, mDataList[position])
@@ -178,6 +178,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         model?.isLiked = update.isLiked
         model?.starCnt = update.starCnt
         model?.shareCnt = update.shareCnt
+        model?.isCollected = update.isCollected
     }
 
     fun delete(model: FeedsWatchModel) {
@@ -297,7 +298,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     companion object {
         const val REFRESH_TYPE_PLAY = 0  // 局部刷新播放
         const val REFRESH_TYPE_LIKE = 1  // 局部刷新喜欢
-        const val REFRESH_TYPE_COMMENT = 2  // 局部刷新评论数
+        const val REFRESH_TYPE_PLAY_NUM = 2  // 局部刷新播放次数
         const val REFRESH_TYPE_LYRIC = 3  // 局部刷新歌词
         const val REFRESH_BUFFERING_STATE = 4  // 局部刷新歌词
         const val REFRESH_SHOW_COMPLETE_AREA = 5  // 显示局部播放结束画面

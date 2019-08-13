@@ -288,10 +288,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             launch {
                 // 读收藏
                 val collectList = async(Dispatchers.IO) {
-                    if(Looper.myLooper() == Looper.getMainLooper()){
-                        MyLog.d(TAG,"主进程")
-                    }else{
-                        MyLog.d(TAG,"不在主进程")
+                    if (Looper.myLooper() == Looper.getMainLooper()) {
+                        MyLog.d(TAG, "主进程")
+                    } else {
+                        MyLog.d(TAG, "不在主进程")
                     }
                     FeedCollectManager.getMyCollect()
                 }
@@ -449,6 +449,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             showMoreOp()
         }
 
+        mCollectionIv?.setDebounceViewClickListener {
+            mFeedsDetailPresenter?.collection(mFeedsWatchModel?.isCollected != true, mFeedsWatchModel!!.feedID)
+        }
+
         mFeedsCommentView?.mClickContentCallBack = {
             showCommentOp(it)
         }
@@ -554,8 +558,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mXinIv?.isSelected = mFeedsWatchModel!!.isLiked!!
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
+        mCollectionIv?.isSelected = mFeedsWatchModel?.isCollected == true
+
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
-        mFeedsDetailPresenter?.checkCollect(mFeedsWatchModel!!.feedID)
     }
 
     private fun showMoreOp() {
@@ -618,13 +623,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun collectFinish(c: Boolean) {
         mCollectionIv?.isSelected = c
-    }
-
-    override fun isCollect(c: Boolean) {
-        mCollectionIv?.isSelected = c
-        mCollectionIv?.setDebounceViewClickListener {
-            mFeedsDetailPresenter?.collection(!mCollectionIv!!.isSelected, mFeedsWatchModel!!.feedID)
-        }
+        mFeedsWatchModel?.isCollected = c
     }
 
     override fun showFeedsWatchModel(model: FeedsWatchModel) {

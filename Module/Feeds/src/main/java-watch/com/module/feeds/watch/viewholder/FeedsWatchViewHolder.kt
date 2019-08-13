@@ -123,7 +123,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
 
         mCompleteGruop.visibility = View.VISIBLE
         if (watchModel.isCollected) {
-            mCollectTv.text = "已收藏"
+            mCollectTv.text = "取消收藏"
         } else {
             mCollectTv.text = "收藏"
         }
@@ -133,12 +133,10 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         mCompleteGruop.visibility = View.GONE
     }
 
-    fun refreshCollects(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
-
+    override fun refreshCollects(position: Int, watchModel: FeedsWatchModel) {
+        super.refreshCollects(position, watchModel)
         if (watchModel.isCollected) {
-            mCollectTv.text = "已收藏"
+            mCollectTv.text = "取消收藏"
         } else {
             mCollectTv.text = "收藏"
         }

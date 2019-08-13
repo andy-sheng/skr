@@ -32,7 +32,7 @@ class FeedsWatchModel : Serializable {
     var user: FeedUserInfo? = null
     @JSONField(name = "status")
     var status: Int = 2  //0 未知 1待审核 2审核通过
-
+    @JSONField(name = "isCollected")
     var isCollected = false  // 默认未收藏
 
     override fun toString(): String {

@@ -269,36 +269,52 @@
         app:layout_constraintRight_toRightOf="@id/complete_area_iv"
         app:layout_constraintTop_toTopOf="@id/complete_area_iv" />
 
+    <!--播放次数-->
+    <TextView
+        android:id="@+id/play_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
+        app:layout_constraintLeft_toLeftOf="@id/song_area_bg" />
 
+    <!--收藏-->
+    <TextView
+        android:id="@+id/collect_icon_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_50_dp"
+        android:drawableLeft="@drawable/feed_not_collection"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/view_16_dp"
+        android:text="收藏"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
+
+    <!--点赞数-->
     <TextView
         android:id="@+id/like_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_50_dp"
+        android:layout_marginLeft="@dimen/view_108_dp"
         android:drawableLeft="@drawable/feed_like_normal_icon"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:padding="@dimen/view_16_dp"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
-
-    <TextView
-        android:id="@+id/comment_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_50_dp"
-        android:layout_marginLeft="@dimen/view_108_dp"
-        android:drawableLeft="@drawable/feed_listener_icon"
-        android:drawablePadding="@dimen/view_5_dp"
-        android:gravity="center_vertical"
-        android:paddingTop="@dimen/view_16_dp"
-        android:paddingBottom="@dimen/view_16_dp"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/like_num_tv" />
 
     <ImageView
         android:id="@+id/hit_iv"

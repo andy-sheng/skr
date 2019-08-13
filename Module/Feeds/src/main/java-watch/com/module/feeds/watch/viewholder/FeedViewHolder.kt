@@ -31,7 +31,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
     val mRecordView: FeedsRecordAnimationView = itemView.findViewById(R.id.record_view)
     val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
-    val mCommentNumTv: TextView = itemView.findViewById(R.id.comment_num_tv)
+    val mPlayNumTv: TextView = itemView.findViewById(R.id.play_num_tv)
+    val mCollectIconTv: TextView = itemView.findViewById(R.id.collect_icon_tv)
     val mDebugTv: TextView = itemView.findViewById(R.id.debug_tv)
     val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
     val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub))
@@ -52,12 +53,6 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mLikeNumTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickLikeListener(mPosition, model)
-            }
-        })
-
-        mCommentNumTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                listener?.onClickCommentListener(model)
             }
         })
 
@@ -83,6 +78,12 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mFeedsClickView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 listener?.onClickDetailListener(mPosition, model)
+            }
+        })
+
+        mCollectIconTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener?.onClickCollectListener(mPosition, model)
             }
         })
 
@@ -116,8 +117,9 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             mTagArea.visibility = View.GONE
         }
 
-        refreshComment(position, watchModel)
+        refreshPlayNum(position, watchModel)
         refreshLike(position, watchModel)
+        refreshCollects(position, watchModel)
 
         // 加载带时间戳的歌词
         watchModel.song?.let {
@@ -149,12 +151,26 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mLikeNumTv.text = StringFromatUtils.formatTenThousand(watchModel.starCnt)
     }
 
-    // 刷新评论数字
-    fun refreshComment(position: Int, watchModel: FeedsWatchModel) {
+    // 刷新播放次数
+    fun refreshPlayNum(position: Int, watchModel: FeedsWatchModel) {
         this.mPosition = position
         this.model = watchModel
-        mCommentNumTv.text = StringFromatUtils.formatTenThousand(watchModel.exposure)
+        mPlayNumTv.text = "${StringFromatUtils.formatTenThousand(watchModel.exposure)} 播放"
     }
+
+    // 刷新收藏状态
+    open fun refreshCollects(position: Int, watchModel: FeedsWatchModel) {
+        this.mPosition = position
+        this.model = watchModel
+
+        var drawble = U.getDrawable(R.drawable.feed_not_collection)
+        if (watchModel.isCollected) {
+            drawble = U.getDrawable(R.drawable.feed_collect_selected_icon)
+        }
+        drawble.setBounds(0, 0, 20.dp(), 18.dp())
+        mCollectIconTv.setCompoundDrawables(drawble, null, null, null)
+    }
+
 
     open fun startPlay() {
         mRecordView.play(SinglePlayer.isBufferingOk)

@@ -116,16 +116,16 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
         }, this, RequestControl(mTag + "collection", ControlType.CancelThis))
     }
 
-    fun checkCollect(feedID: Int) {
-        ApiMethods.subscribe(mFeedsDetailServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-                    val isCollocted = obj.data.getBooleanValue("isCollected")
-                    mIFeedsDetailView.isCollect(isCollocted)
-                }
-            }
-        }, this, RequestControl(mTag + "checkCollect", ControlType.CancelThis))
-    }
+//    fun checkCollect(feedID: Int) {
+//        ApiMethods.subscribe(mFeedsDetailServerApi.checkCollects(MyUserInfoManager.getInstance().uid.toInt(), feedID), object : ApiObserver<ApiResult>() {
+//            override fun process(obj: ApiResult?) {
+//                if (obj?.errno == 0) {
+//                    val isCollocted = obj.data.getBooleanValue("isCollected")
+//                    mIFeedsDetailView.isCollect(isCollocted)
+//                }
+//            }
+//        }, this, RequestControl(mTag + "checkCollect", ControlType.CancelThis))
+//    }
 
     fun addShareCount(userID: Int, feedID: Int) {
         val map = mapOf("feedID" to feedID, "userID" to userID)

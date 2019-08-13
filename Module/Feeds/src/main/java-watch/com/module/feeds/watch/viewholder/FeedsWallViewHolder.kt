@@ -18,12 +18,12 @@ class FeedsWallViewHolder(it: View, l: FeedsListener) : FeedViewHolder(it, l) {
 
         if (watchModel.status == 2) {
             // 审核通过
-            mCommentNumTv.visibility = View.VISIBLE
+            mPlayNumTv.visibility = View.VISIBLE
             mLikeNumTv.visibility = View.VISIBLE
             mCheckTv.visibility = View.GONE
         } else {
             // 未通过
-            mCommentNumTv.visibility = View.GONE
+            mPlayNumTv.visibility = View.GONE
             mLikeNumTv.visibility = View.GONE
             mCheckTv.visibility = View.VISIBLE
         }
