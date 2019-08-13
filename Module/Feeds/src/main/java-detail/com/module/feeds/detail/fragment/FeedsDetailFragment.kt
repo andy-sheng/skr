@@ -473,12 +473,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun setModelData() {
-        if (mSongControlArea?.visibility == View.GONE) {
-            mFeedsCommonLyricView?.showWhole()
-        } else {
-            mFeedsCommonLyricView?.showHalf()
-        }
-
         mSeekBar?.progress = 0
         mPassTimeTv?.text = "00:00"
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
@@ -492,6 +486,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 .setCircle(false)
                 .setBlur(true)
                 .build())
+
+        if (mSongControlArea?.visibility == View.GONE) {
+            mFeedsCommonLyricView?.showWhole()
+        } else {
+            mFeedsCommonLyricView?.showHalf()
+        }
 
         mFeedsWatchModel?.song?.playDurMs?.let {
             mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
