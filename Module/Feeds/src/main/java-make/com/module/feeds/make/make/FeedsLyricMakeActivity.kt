@@ -90,7 +90,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
             if (originLyricThisTime != mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr) {
                 mFeedsMakeModel?.hasChangeLyricThisTime = true
             }
-            mFeedsMakeModel?.songModel?.workName = lyricAdapter.songName
+            mFeedsMakeModel?.songModel?.songTpl?.songName = lyricAdapter.songName
             sFeedsMakeModelHolder = mFeedsMakeModel
             setResult(Activity.RESULT_OK)
             finish()

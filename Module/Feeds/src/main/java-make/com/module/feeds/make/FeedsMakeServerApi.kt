@@ -27,5 +27,11 @@ interface FeedsMakeServerApi {
      * 获取feeds所有标签列表
      */
     @PUT("/v1/feed/upload")
-    fun uploadFeeds(@Body requestBody: RequestBody): Call<ApiResult>
+    fun uploadHitFeeds(@Body requestBody: RequestBody): Call<ApiResult>
+
+    /**
+     * 获取feeds所有标签列表
+     */
+    @PUT("/v1/feed/common-song-upload")
+    fun uploadQuickFeeds(@Body requestBody: RequestBody): Call<ApiResult>
 }

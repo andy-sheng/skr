@@ -17,6 +17,7 @@ import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 import com.common.rxretrofit.subscribe
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
@@ -192,8 +193,13 @@ class FeedsPublishActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        worksNameEt.setText(mFeedsMakeModel?.songModel?.workName)
-        worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length ?: 0)
+        if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.workName)) {
+            worksNameEt.setText(mFeedsMakeModel?.songModel?.workName)
+            worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length ?: 0)
+        } else {
+            worksNameEt.setText(mFeedsMakeModel?.songModel?.songTpl?.songName)
+            worksNameEt.setSelection(mFeedsMakeModel?.songModel?.songTpl?.songName?.length ?: 0)
+        }
 
         // 默认的心情 和标签
         sayEdit.setText(mFeedsMakeModel?.songModel?.title)
@@ -318,27 +324,48 @@ class FeedsPublishActivity : BaseActivity() {
                     tagsIds.add(it.tagID)
                 }
             }
-            val mutableSet1 = mapOf(
-                    "title" to mFeedsMakeModel?.songModel?.title,
-                    "workName" to mFeedsMakeModel?.songModel?.workName,
-                    "tagIDs" to tagsIds,
-                    "playDurMs" to mFeedsMakeModel?.recordDuration,
-                    "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                    "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
-                    "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
-                    "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
-                    "hasChangeLRC" to if (mFeedsMakeModel?.hasChangeLyric == true) true else false,
-                    "lrcURL" to customLrcUrl
-            )
+            val result: ApiResult
+            if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
+                // 快唱
+                val mutableSet1 = mapOf(
+                        "hasChangeLRC" to if (mFeedsMakeModel?.hasChangeLyric == true) true else false,
+                        "lrcURL" to customLrcUrl,
+                        "playDurMs" to mFeedsMakeModel?.recordDuration,
+                        "playURL" to mFeedsMakeModel?.audioUploadUrl,
+                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.songName,
+                        "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
+                        "tagIDs" to tagsIds,
+                        "title" to mFeedsMakeModel?.songModel?.title,
+                        "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
+                        "workName" to mFeedsMakeModel?.songModel?.workName
+                )
 
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-            val result = subscribe { feedsMakeServerApi.uploadFeeds(body) }
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+                result = subscribe { feedsMakeServerApi.uploadQuickFeeds(body) }
+            } else {
+                // 打榜
+                val mutableSet1 = mapOf(
+                        "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
+                        "hasChangeLRC" to if (mFeedsMakeModel?.hasChangeLyric == true) true else false,
+                        "lrcURL" to customLrcUrl,
+                        "playDurMs" to mFeedsMakeModel?.recordDuration,
+                        "playURL" to mFeedsMakeModel?.audioUploadUrl,
+                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.songName,
+                        "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
+                        "tagIDs" to tagsIds,
+                        "title" to mFeedsMakeModel?.songModel?.title,
+                        "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
+                        "workName" to mFeedsMakeModel?.songModel?.workName
+                )
+
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+                result = subscribe { feedsMakeServerApi.uploadHitFeeds(body) }
+            }
+
             progressSkr.visibility = View.GONE
             if (result?.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
-                mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
-                mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
                 mFeedsMakeModel?.songModel?.playURL = mFeedsMakeModel?.audioUploadUrl
                 mFeedsMakeModel?.songModel?.songID = result.data.getIntValue("songID")
                 // 跳到分享页

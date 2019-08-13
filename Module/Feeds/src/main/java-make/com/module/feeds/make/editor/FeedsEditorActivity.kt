@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
@@ -140,7 +141,13 @@ class FeedsEditorActivity : BaseActivity() {
         cdRotateAnimator?.interpolator = LinearInterpolator()
         cdRotateAnimator?.repeatCount = Animation.INFINITE
 
-        titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
+        val songName = mFeedsMakeModel?.songModel?.songTpl?.songName
+        if (!TextUtils.isEmpty(songName)) {
+            titleBar?.centerTextView?.text = songName
+        } else {
+            titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
+        }
+
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 finishPage()

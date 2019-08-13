@@ -63,7 +63,7 @@ public class ColorUtils {
     }
 
 
-    public static int toDarkenColor(@ColorInt int color, @FloatRange(from = 0f, to = 1f) float value) {
+    public int toDarkenColor(@ColorInt int color, @FloatRange(from = 0f, to = 1f) float value) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
         hsv[2] *= value;//HSV指Hue、Saturation、Value，即色调、饱和度和亮度，此处表示修改亮度

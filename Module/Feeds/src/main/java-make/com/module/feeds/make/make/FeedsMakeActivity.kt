@@ -174,8 +174,8 @@ class FeedsMakeActivity : BaseActivity() {
         })
 
 
-        val from = intent.getIntExtra("from",1)
-        if(from==1){
+        val from = intent.getIntExtra("from", 1)
+        if (from == 1) {
             val challengeID = intent.getLongExtra("challengeID", 0)
             mFeedsMakeModel = FeedsMakeModel()
             mFeedsMakeModel?.enterPageFrom = from
@@ -192,7 +192,7 @@ class FeedsMakeActivity : BaseActivity() {
                             songModel.challengeDesc = challengeDesc
                             songModel.songTpl = songTpl
                             songModel.challengeID = it.toLong()
-                            songModel.workName = workName
+                            //songModel.workName = workName
                             songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
 
                             mFeedsMakeModel?.songModel = songModel
@@ -204,13 +204,14 @@ class FeedsMakeActivity : BaseActivity() {
                     }
                 }
             }
-        }else if(from==2){
+        } else if (from == 2) {
             val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
             mFeedsMakeModel = FeedsMakeModel()
             mFeedsMakeModel?.enterPageFrom = from
             mFeedsMakeModel?.songModel = feedSongModel
+            //mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.songTpl?.songName
             whenDataOk()
-        }else if(from==3){
+        } else if (from == 3) {
             // 从草稿箱进来的
             mFeedsMakeModel = sFeedsMakeModelHolder
             mFeedsMakeModel?.enterPageFrom = from
@@ -296,8 +297,11 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun initLyricView() {
-        mFeedsMakeModel?.songModel?.workName?.let {
-            titleBar?.centerTextView?.text = it
+        val songName = mFeedsMakeModel?.songModel?.songTpl?.songName
+        if (!TextUtils.isEmpty(songName)) {
+            titleBar?.centerTextView?.text = songName
+        } else {
+            titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
         }
         qcProgressBarView?.visibility = View.GONE
         voiceScaleView?.visibility = View.GONE
