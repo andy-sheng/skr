@@ -170,7 +170,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
         }
         // 歌曲名不用展示原来的
         MyLog.d(TAG, "fillNewContentlist update")
-        lyricAdapter.setData(mFeedsMakeModel?.songModel?.workName ?: "", list)
+        lyricAdapter.setData(mFeedsMakeModel?.songModel?.songTpl?.songName ?: "", list)
     }
 
     override fun onResume() {

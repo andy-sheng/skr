@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:gravity="left"
-        android:text="哥名:"
+        android:text="歌名:"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/view_14_dp"
         app:layout_constraintBottom_toTopOf="@+id/edit_et"
