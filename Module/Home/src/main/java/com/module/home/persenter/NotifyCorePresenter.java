@@ -349,17 +349,17 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FeedLikeNotifyEvent event) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 2);
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 2, true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FeedCommentLikeNotifyEvent event) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 2);
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 2, true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FeedCommentAddNotifyEvent event) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 2);
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 2, true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -166,10 +166,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         StatisticsAdapter.recordCountEvent("IMtab", "expose", null);
-        getLastRelationOne(false);
+        getLastNews(false);
     }
 
-    private void getLastRelationOne(boolean flag) {
+    private void getLastNews(boolean flag) {
         long now = System.currentTimeMillis();
         if (!flag) {
             if ((now - mLastUpdateTime) < 60 * 1000) {
@@ -270,7 +270,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     @Override
     public int[] acceptType() {
         return new int[]{
-                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE};
+                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
+                , WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE};
     }
 
     @Override
@@ -283,6 +286,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
         }
 
         refreshMessageRedDot();
+        getLastNews(true);
     }
 
     private void refreshMessageRedDot() {

@@ -553,7 +553,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     @Override
     public int[] acceptType() {
         return new int[]{
-                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE};
+                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
+                , WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE};
     }
 
     @Override
