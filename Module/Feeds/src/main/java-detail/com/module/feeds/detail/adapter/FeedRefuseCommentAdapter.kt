@@ -1,10 +1,12 @@
 package com.module.feeds.detail.adapter
 
 import android.graphics.Color
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.image.fresco.BaseImageView
@@ -12,6 +14,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
+import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.model.RefuseCommentModel
 
@@ -64,6 +67,16 @@ class FeedRefuseCommentAdapter(val listener: FeedClickListener) : DiffAdapter<Re
             mSubTitleTv.text = model.actionDesc
             mCommentTv.text = model.content
             mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.timeMs, System.currentTimeMillis())
+            mAvatarIv?.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", model?.userID)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
+            })
         }
     }
 }
