@@ -472,6 +472,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun setModelData() {
+        mSeekBar?.progress = 0
+        mPassTimeTv?.text = "00:00"
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
         mFeedsWatchModel?.song?.workName?.let {
             mSongNameTv?.text = it
