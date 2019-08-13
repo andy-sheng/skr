@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.UserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -57,7 +58,7 @@ class LikeWorkAdapter(val listener: FeedLikeListener) : DiffAdapter<FeedLikeMode
                     .setCircle(true)
                     .build())
 
-            mTitleTv.text = model.nickname
+            mTitleTv.text = UserInfoManager.getInstance().getRemarkName(model.userID, model.nickname)
             mSubTitleTv.text = model.actionDesc
             mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.timeMs, System.currentTimeMillis())
         }
