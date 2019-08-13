@@ -75,10 +75,11 @@
                 android:textSize="@dimen/textsize_16_dp" />
 
             <TextView
+                android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/follow_tips"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/follow_area_icon"
                 android:layout_marginLeft="@dimen/view_10_dp"
