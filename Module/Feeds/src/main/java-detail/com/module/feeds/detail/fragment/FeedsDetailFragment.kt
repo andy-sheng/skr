@@ -1,5 +1,7 @@
 package com.module.feeds.detail.fragment
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -139,8 +141,25 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mSongControlArea?.visibility = View.VISIBLE
             mUiHandler.removeMessages(HIDE_CONTROL_AREA)
             mUiHandler.sendEmptyMessageDelayed(HIDE_CONTROL_AREA, 5000)
+            val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 0f, 1f)
+            val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 0f, 1f)
+            val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 0f, 1f)
+            val animSet = AnimatorSet()
+            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.setDuration(300)
+            animSet.start()
+
         } else {
-            mSongControlArea?.visibility = View.GONE
+            val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 1f, 0f)
+            val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 1f, 0f)
+            val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 1f, 0f)
+            val animSet = AnimatorSet()
+            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.setDuration(300)
+            animSet.start()
+            mUiHandler.postDelayed({
+                mSongControlArea?.visibility = View.GONE
+            }, 300)
         }
     }
 
