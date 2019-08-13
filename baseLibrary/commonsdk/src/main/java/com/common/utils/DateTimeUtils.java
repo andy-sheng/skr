@@ -157,7 +157,7 @@ public class DateTimeUtils {
      * 大于1小时的 00:00:00
      */
     public String formatVideoTime(long videoTime) {
-        MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
+        //MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
 
         int seconds = 0;
         int minutes = 0;

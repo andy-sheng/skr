@@ -192,7 +192,10 @@ class FeedsMakeActivity : BaseActivity() {
                             songModel.challengeDesc = challengeDesc
                             songModel.songTpl = songTpl
                             songModel.challengeID = it.toLong()
-                            //songModel.workName = workName
+                            songModel.workName = workName
+                            if(TextUtils.isEmpty(songModel?.songTpl?.songName)){
+                                songModel?.songTpl?.songName = songModel.workName
+                            }
                             songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
 
                             mFeedsMakeModel?.songModel = songModel
@@ -214,7 +217,21 @@ class FeedsMakeActivity : BaseActivity() {
         } else if (from == 3) {
             // 从草稿箱进来的
             mFeedsMakeModel = sFeedsMakeModelHolder
+            /**
+             * 因为是引用传递，所以重新初始化一下相关属性
+             */
             mFeedsMakeModel?.enterPageFrom = from
+            mFeedsMakeModel?.hasChangeLyricThisTime = false
+            mFeedsMakeModel?.recordingClick = false
+            mFeedsMakeModel?.recordOffsetTs = 0
+            mFeedsMakeModel?.firstLyricShiftTs = 0
+            mFeedsMakeModel?.bgmDownloadProgress = 0f
+            mFeedsMakeModel?.recording = false
+            mFeedsMakeModel?.beginRecordTs = Long.MAX_VALUE
+            mFeedsMakeModel?.recordFirstFrameTs = Long.MAX_VALUE
+            mFeedsMakeModel?.musicFirstFrameTs = Long.MAX_VALUE
+
+
             sFeedsMakeModelHolder = null
             // 将伴奏的reader弄好
             // 加载歌词
@@ -511,7 +528,7 @@ class FeedsMakeActivity : BaseActivity() {
         countDownJob?.cancel()
         countDownJob = launch {
             for (i in 0..Int.MAX_VALUE) {
-                MyLog.d(TAG, "countDownBegin run")
+                //MyLog.d(TAG, "countDownBegin run")
                 titleBar?.centerSubTextView?.text = U.getDateTimeUtils().formatVideoTime((i * 1000).toLong())
                 if (mFeedsMakeModel?.withBgm == true) {
                     mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.let {
