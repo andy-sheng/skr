@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/view_34_dp"
                         android:padding="@dimen/view_16_dp"
-                        android:src="@drawable/like_play_last_icon"
+                        android:src="@drawable/sq_shangyihsou"
                         app:layout_constraintBottom_toBottomOf="@+id/control_tv"
                         app:layout_constraintRight_toLeftOf="@+id/control_tv"
                         app:layout_constraintTop_toTopOf="@+id/control_tv" />
@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/view_34_dp"
                         android:padding="@dimen/view_16_dp"
-                        android:src="@drawable/like_play_next_icon"
+                        android:src="@drawable/sq_xiayishou"
                         app:layout_constraintBottom_toBottomOf="@+id/control_tv"
                         app:layout_constraintLeft_toRightOf="@+id/control_tv"
                         app:layout_constraintTop_toTopOf="@+id/control_tv" />
@@ -153,14 +153,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/view_12_dp"
                         android:layout_marginTop="@dimen/view_344_dp"
-                        android:layout_marginBottom="@dimen/view_30_dp"
+                        android:layout_marginBottom="@dimen/view_20_dp"
                         android:paddingTop="@dimen/view_10_dp"
                         android:paddingBottom="@dimen/view_10_dp"
                         app:layout_constraintBottom_toTopOf="@+id/seek_bar"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:src_selected_drawable="@drawable/gequxiangqing_bofang"
-                        app:src_unSelected_drawable="@drawable/gequxiangqing_zanting" />
+                        app:src_selected_drawable="@drawable/sq_bofang"
+                        app:src_unSelected_drawable="@drawable/sq_zanting" />
 
                     <android.support.constraint.Group
                         android:id="@+id/song_control_arae"
