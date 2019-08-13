@@ -38,6 +38,7 @@ import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.presenter.FeedWatchViewPresenter
+import com.module.feeds.watch.viewholder.FeedViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -324,6 +325,15 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
                 if (mAdapter?.playing == true) {
                     mAdapter?.updatePlayProgress(pos, duration)
+                    mAdapter?.mCurrentPlayPosition?.let { position ->
+                        val holder = mRecyclerView.findViewHolderForAdapterPosition(position)
+                        if (holder is FeedViewHolder?) {
+                            mAdapter?.mCurrentPlayModel?.let { model ->
+                                holder?.playLyric(position, model)
+                            }
+                        }
+                    }
+
                     FeedsPlayStatistics.updateCurProgress(pos, duration)
                 } else {
                     if (MyLog.isDebugLogOpen()) {

@@ -270,7 +270,11 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             it.playCurPos = curPostion.toInt()
             it.playDurMs = totalDuration.toInt()
             it.playDurMsFromPlayerForDebug = totalDuration.toInt()
-            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_LYRIC)
+            /**
+             * 这里更新会导致 头像url 不停地 的下载（通过代理抓包观察），原因未知
+             * 所以暂时不用 notifyItemChanged 进行刷新
+             */
+            //update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_LYRIC)
         }
     }
 
