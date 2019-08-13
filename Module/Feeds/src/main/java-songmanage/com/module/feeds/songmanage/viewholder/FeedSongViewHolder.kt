@@ -33,7 +33,7 @@ class FeedSongViewHolder(itemView: View, val listener: FeedSongManageListener) :
         this.mPosition = pos
         this.mModel = model
 
-        songNameTv.text = "《${model.song?.workName}》"
+        songNameTv.text = "《${model.song?.songTpl?.songName}》"
         if (!TextUtils.isEmpty(model.song?.songTpl?.getSongDesc())) {
             songDescTv.visibility = View.VISIBLE
             songDescTv.text = model.song?.songTpl?.getSongDesc()
