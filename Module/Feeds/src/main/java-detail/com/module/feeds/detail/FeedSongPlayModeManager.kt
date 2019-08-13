@@ -29,7 +29,6 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
 
     init {
         mCur = cur
-        mMode = mode
         mOriginalSongList.addAll(originalSongList)
 
 //        mShuffleSongList = ArrayList(originalSongList)
@@ -62,7 +61,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         if (mCur == null) {
             return
         }
-        if (mMode == PlayMode.RANDOM) {
+        if (mMode == PlayMode.RANDOM && (lastMode == PlayMode.ORDER || lastMode == PlayMode.SINGLE)) {
             // 新的模式为随机，且之前的模式为顺序或者单曲
             ensureHasShuffle(null)
             mShuffleSongList.forEachIndexed { index, pair ->
@@ -73,9 +72,13 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             }
         }
 
-        if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
-            // 新的模式为随机，且之前的模式为顺序或者单曲
-            mOriginPosition = mShuffleSongList.get(mShufflePosition).first
+        if (lastMode == PlayMode.RANDOM && (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE)) {
+            mOriginalSongList.forEachIndexed { index, feedSongModel ->
+                if (feedSongModel == mCur) {
+                    mOriginPosition = index
+                    return@forEachIndexed
+                }
+            }
         }
     }
 
