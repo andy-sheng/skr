@@ -70,7 +70,7 @@
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginTop="@dimen/view_5_dp"
                 android:layout_toRightOf="@id/follow_area_icon"
-                android:text="最新关注"
+                android:text="互动通知"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_16_dp" />
 
