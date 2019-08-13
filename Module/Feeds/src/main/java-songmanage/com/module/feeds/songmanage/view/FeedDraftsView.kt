@@ -114,7 +114,11 @@ class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(a
     fun tryLoadData() {
         (context as BaseActivity).launch {
             val list = async(Dispatchers.IO) {
-                FeedsMakeLocalApi.loadAll()
+                if (from == FROM_FEED_HIT) {
+                    FeedsMakeLocalApi.loadDraftFromChanllege()
+                } else {
+                    FeedsMakeLocalApi.loadDraftFromQuickSing()
+                }
             }
             adapter.setData(list.await())
 

@@ -26,7 +26,8 @@ public class FeedsDraftDBDao extends AbstractDao<FeedsDraftDB, Long> {
     public static class Properties {
         public final static Property DraftID = new Property(0, Long.class, "draftID", true, "_id");
         public final static Property UpdateTs = new Property(1, Long.class, "updateTs", false, "UPDATE_TS");
-        public final static Property FeedsMakeModelJson = new Property(2, String.class, "feedsMakeModelJson", false, "FEEDS_MAKE_MODEL_JSON");
+        public final static Property From = new Property(2, Integer.class, "from", false, "FROM");
+        public final static Property FeedsMakeModelJson = new Property(3, String.class, "feedsMakeModelJson", false, "FEEDS_MAKE_MODEL_JSON");
     }
 
 
@@ -44,7 +45,8 @@ public class FeedsDraftDBDao extends AbstractDao<FeedsDraftDB, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"FEEDS_DRAFT_DB\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: draftID
                 "\"UPDATE_TS\" INTEGER," + // 1: updateTs
-                "\"FEEDS_MAKE_MODEL_JSON\" TEXT);"); // 2: feedsMakeModelJson
+                "\"FROM\" INTEGER," + // 2: from
+                "\"FEEDS_MAKE_MODEL_JSON\" TEXT);"); // 3: feedsMakeModelJson
     }
 
     /** Drops the underlying database table. */
@@ -67,9 +69,14 @@ public class FeedsDraftDBDao extends AbstractDao<FeedsDraftDB, Long> {
             stmt.bindLong(2, updateTs);
         }
  
+        Integer from = entity.getFrom();
+        if (from != null) {
+            stmt.bindLong(3, from);
+        }
+ 
         String feedsMakeModelJson = entity.getFeedsMakeModelJson();
         if (feedsMakeModelJson != null) {
-            stmt.bindString(3, feedsMakeModelJson);
+            stmt.bindString(4, feedsMakeModelJson);
         }
     }
 
@@ -87,9 +94,14 @@ public class FeedsDraftDBDao extends AbstractDao<FeedsDraftDB, Long> {
             stmt.bindLong(2, updateTs);
         }
  
+        Integer from = entity.getFrom();
+        if (from != null) {
+            stmt.bindLong(3, from);
+        }
+ 
         String feedsMakeModelJson = entity.getFeedsMakeModelJson();
         if (feedsMakeModelJson != null) {
-            stmt.bindString(3, feedsMakeModelJson);
+            stmt.bindString(4, feedsMakeModelJson);
         }
     }
 
@@ -103,7 +115,8 @@ public class FeedsDraftDBDao extends AbstractDao<FeedsDraftDB, Long> {
         FeedsDraftDB entity = new FeedsDraftDB( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // draftID
             cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // updateTs
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // feedsMakeModelJson
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // from
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // feedsMakeModelJson
         );
         return entity;
     }
@@ -112,7 +125,8 @@ public class FeedsDraftDBDao extends AbstractDao<FeedsDraftDB, Long> {
     public void readEntity(Cursor cursor, FeedsDraftDB entity, int offset) {
         entity.setDraftID(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUpdateTs(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setFeedsMakeModelJson(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setFrom(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setFeedsMakeModelJson(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     @Override

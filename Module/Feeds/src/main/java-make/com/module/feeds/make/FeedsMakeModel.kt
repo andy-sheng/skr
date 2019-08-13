@@ -10,7 +10,7 @@ class FeedsMakeModel : Serializable {
 
     val composeSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_compose.m4a")
     val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_make.m4a")
-
+    var enterPageFrom = 1 // 1打榜 2快唱 3草稿
     var challengeID: Long = 0L
     var firstLyricShiftTs = 0
     var songModel: FeedSongModel? = null

@@ -41,6 +41,7 @@ import com.module.feeds.BuildConfig
 import com.module.feeds.R
 import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
+import com.module.feeds.songmanage.model.FeedSongInfoModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -83,16 +84,6 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val challengeID = intent.getLongExtra("challengeID", 0)
-        if (challengeID != 0L) {
-            mFeedsMakeModel = FeedsMakeModel()
-            mFeedsMakeModel?.challengeID = challengeID
-        } else {
-            // 从草稿箱进来的
-            mFeedsMakeModel = sFeedsMakeModelHolder
-            sFeedsMakeModelHolder = null
-        }
-
         titleBar = findViewById(R.id.title_bar)
         resetIv = findViewById(R.id.reset_iv) as ImageView
         resetTv = findViewById(R.id.reset_tv)
@@ -105,67 +96,13 @@ class FeedsMakeActivity : BaseActivity() {
         recordTipsIv = findViewById(R.id.record_tip_iv)
         changeLyricIv = findViewById(R.id.change_lyric_iv)
         changeLyricTv = findViewById(R.id.change_lyric_tv)
-
-        if (mFeedsMakeModel == null) {
-            U.getToastUtil().showShort("参数不正确")
-            finish()
-            return
-        }
-
         resetIv?.visibility = View.GONE
         resetTv?.visibility = View.GONE
-
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                //val content = LyricsManager.createZrce2ByReader(mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader)
-                //MyLog.d(TAG,"content=$content")
                 finishPage()
             }
         })
-
-        if (mFeedsMakeModel?.draftID != 0L) {
-            // 将伴奏的reader弄好
-            // 加载歌词
-            if (TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
-                whenDataOk()
-            } else {
-                LyricsManager
-                        .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
-                        .subscribe({ lyricsReader ->
-                            createCustomZrce2ReaderByTxt(lyricsReader, mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)
-                            mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
-                            whenDataOk()
-                        }, { throwable ->
-                            MyLog.e(TAG, throwable)
-                        })
-            }
-        } else {
-            launch {
-                mFeedsMakeModel?.challengeID?.let {
-                    for (i in 1..10) {
-                        val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
-                        if (result?.errno == 0) {
-                            val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
-                            val workName = result.data.getString("workName")
-                            val challengeDesc = result.data.getString("challengeDesc")
-                            val songModel = FeedSongModel()
-                            songModel.challengeDesc = challengeDesc
-                            songModel.songTpl = songTpl
-                            songModel.challengeID = it.toLong()
-                            songModel.workName = workName
-                            songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
-
-                            mFeedsMakeModel?.songModel = songModel
-                            whenDataOk()
-                            break
-                        } else {
-                            delay(3000)
-                        }
-                    }
-                }
-            }
-        }
-
         beginTv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (mFeedsMakeModel?.songModel == null) {
@@ -235,6 +172,71 @@ class FeedsMakeActivity : BaseActivity() {
                 }
             }
         })
+
+
+        val from = intent.getIntExtra("from",1)
+        if(from==1){
+            val challengeID = intent.getLongExtra("challengeID", 0)
+            mFeedsMakeModel = FeedsMakeModel()
+            mFeedsMakeModel?.enterPageFrom = from
+            mFeedsMakeModel?.challengeID = challengeID
+            launch {
+                mFeedsMakeModel?.challengeID?.let {
+                    for (i in 1..10) {
+                        val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
+                        if (result?.errno == 0) {
+                            val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
+                            val workName = result.data.getString("workName")
+                            val challengeDesc = result.data.getString("challengeDesc")
+                            val songModel = FeedSongModel()
+                            songModel.challengeDesc = challengeDesc
+                            songModel.songTpl = songTpl
+                            songModel.challengeID = it.toLong()
+                            songModel.workName = workName
+                            songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
+
+                            mFeedsMakeModel?.songModel = songModel
+                            whenDataOk()
+                            break
+                        } else {
+                            delay(3000)
+                        }
+                    }
+                }
+            }
+        }else if(from==2){
+            val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
+            mFeedsMakeModel = FeedsMakeModel()
+            mFeedsMakeModel?.enterPageFrom = from
+            mFeedsMakeModel?.songModel = feedSongModel
+            whenDataOk()
+        }else if(from==3){
+            // 从草稿箱进来的
+            mFeedsMakeModel = sFeedsMakeModelHolder
+            mFeedsMakeModel?.enterPageFrom = from
+            sFeedsMakeModelHolder = null
+            // 将伴奏的reader弄好
+            // 加载歌词
+            if (TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)) {
+                whenDataOk()
+            } else {
+                LyricsManager
+                        .loadStandardLyric(mFeedsMakeModel?.songModel?.songTpl?.lrcTs)
+                        .subscribe({ lyricsReader ->
+                            createCustomZrce2ReaderByTxt(lyricsReader, mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr)
+                            mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader = lyricsReader
+                            whenDataOk()
+                        }, { throwable ->
+                            MyLog.e(TAG, throwable)
+                        })
+            }
+        }
+
+        if (mFeedsMakeModel == null) {
+            U.getToastUtil().showShort("参数不正确")
+            finish()
+            return
+        }
         initEngine()
     }
 
@@ -244,7 +246,6 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun whenDataOk() {
-
         mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()
                 && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.bgm)
@@ -662,6 +663,7 @@ fun openFeedsMakeActivity(challenge: Long?) {
     // 打榜
     challenge?.let {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+                .withInt("from", 1)
                 .withSerializable("challengeID", it)
                 .navigation()
     }
@@ -671,5 +673,14 @@ fun openFeedsMakeActivity(model: FeedsMakeModel?) {
     // 打榜
     sFeedsMakeModelHolder = model
     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+            .withInt("from", 3)
+            .navigation()
+}
+
+fun openFeedsMakeActivity(model: FeedSongModel?) {
+    // 打榜
+    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+            .withInt("from", 2)
+            .withSerializable("feedSongModel", model)
             .navigation()
 }

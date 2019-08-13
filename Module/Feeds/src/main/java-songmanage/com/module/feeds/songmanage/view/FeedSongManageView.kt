@@ -11,6 +11,7 @@ import com.common.rxretrofit.ERROR_NETWORK_BROKEN
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.feeds.R
+import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.adapter.FeedSongManageAdapter
 import com.module.feeds.songmanage.adapter.FeedSongManageListener
@@ -60,7 +61,7 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel) : Constr
             override fun onClickSing(position: Int, model: FeedSongInfoModel?) {
                 model?.let {
                     //TODO 补全跳转
-                    U.getToastUtil().showShort("你点击了演唱呃呃呃呃")
+                    openFeedsMakeActivity(model.song)
                 }
             }
         })

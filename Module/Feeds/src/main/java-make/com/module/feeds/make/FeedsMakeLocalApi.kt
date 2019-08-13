@@ -12,9 +12,22 @@ object FeedsMakeLocalApi {
     private val draftDBDao: FeedsDraftDBDao
         get() = GreenDaoManager.getDaoSession().feedsDraftDBDao
 
-    fun loadAll(): ArrayList<FeedsMakeModel> {
+    fun loadDraftFromChanllege(): ArrayList<FeedsMakeModel> {
         val list = ArrayList<FeedsMakeModel>()
-        val listDB = draftDBDao.queryBuilder().orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
+        val listDB = draftDBDao.queryBuilder()
+                .where(FeedsDraftDBDao.Properties.From.eq(1))
+                .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
+        listDB.forEach {
+            list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
+        }
+        return list
+    }
+
+    fun loadDraftFromQuickSing(): ArrayList<FeedsMakeModel> {
+        val list = ArrayList<FeedsMakeModel>()
+        val listDB = draftDBDao.queryBuilder()
+                .where(FeedsDraftDBDao.Properties.From.eq(2))
+                .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
         listDB.forEach {
             list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
         }
@@ -34,6 +47,7 @@ object FeedsMakeLocalApi {
         if (feedsMakeModel.draftID == 0L) {
             feedsMakeModel.draftID = draftDb.draftID
         }
+        draftDb.from = if (feedsMakeModel.songModel?.challengeID == 0L) 2 else 1
         draftDb.feedsMakeModelJson = JSON.toJSONString(feedsMakeModel)
         draftDBDao.insertOrReplace(draftDb)
     }
