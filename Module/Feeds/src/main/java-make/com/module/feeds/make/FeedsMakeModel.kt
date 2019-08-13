@@ -22,7 +22,7 @@ class FeedsMakeModel : Serializable {
     //var uploadSongName: String? = null // 上传后歌曲名称
     //var uploadSongDesc: String? = null // 上传后歌曲描述
     @Transient
-    var bgmDownloadProgress: Float = 0f
+    var bgmDownloadProgress: Int = 0
 
     @Transient
     var recording: Boolean = false

@@ -227,7 +227,7 @@ class FeedsMakeActivity : BaseActivity() {
             mFeedsMakeModel?.recordingClick = false
             mFeedsMakeModel?.recordOffsetTs = 0
             mFeedsMakeModel?.firstLyricShiftTs = 0
-            mFeedsMakeModel?.bgmDownloadProgress = 0f
+            mFeedsMakeModel?.bgmDownloadProgress = 0
             mFeedsMakeModel?.recording = false
             mFeedsMakeModel?.beginRecordTs = Long.MAX_VALUE
             mFeedsMakeModel?.recordFirstFrameTs = Long.MAX_VALUE
@@ -295,11 +295,11 @@ class FeedsMakeActivity : BaseActivity() {
                             }
 
                             override fun onDownloaded(downloaded: Long, totalLength: Long) {
-                                mFeedsMakeModel?.bgmDownloadProgress = downloaded / totalLength.toFloat()
+                                mFeedsMakeModel?.bgmDownloadProgress = (100*downloaded / totalLength).toInt()
                             }
 
                             override fun onCompleted(localPath: String?) {
-                                mFeedsMakeModel?.bgmDownloadProgress = 1f
+                                mFeedsMakeModel?.bgmDownloadProgress = 100
                             }
                         })
                         if (r) {
@@ -452,8 +452,7 @@ class FeedsMakeActivity : BaseActivity() {
         if (mFeedsMakeModel?.withBgm == true) {
             // 如果开着伴奏
             if (bgmFileJob?.isCompleted == false) {
-                U.getToastUtil().showShort("伴奏下载中 ${(mFeedsMakeModel?.bgmDownloadProgress
-                        ?: 0f) * 100}%")
+                U.getToastUtil().showShort("伴奏下载中 ${mFeedsMakeModel?.bgmDownloadProgress}%")
             }
             runBlocking {
                 val bgmFile = bgmFileJob?.await()
