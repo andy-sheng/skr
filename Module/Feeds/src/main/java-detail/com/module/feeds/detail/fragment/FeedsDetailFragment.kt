@@ -29,6 +29,7 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -220,6 +221,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        StatisticsAdapter.recordCountEvent("music_recommend", "detail_page", null)
         if (mFeedID == -1) {
             activity?.finish()
             return

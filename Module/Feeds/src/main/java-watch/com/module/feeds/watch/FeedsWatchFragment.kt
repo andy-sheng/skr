@@ -76,7 +76,7 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 打榜 神曲榜
-                StatisticsAdapter.recordCountEvent("music_recommend", "challenge_list", null)
+                StatisticsAdapter.recordCountEvent("music_tab", "publish", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SELECT_MODE)
                         .navigation()
             }

@@ -17,6 +17,7 @@ import com.common.core.permission.SkrAudioPermission
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.DeviceUtils
 import com.common.utils.HttpUtils
 import com.common.utils.U
@@ -143,6 +144,7 @@ class FeedsMakeActivity : BaseActivity() {
         })
         changeLyricIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                StatisticsAdapter.recordCountEvent("music_record", "lyric", null)
                 openLyricMakeActivity(mFeedsMakeModel, this@FeedsMakeActivity)
             }
         })

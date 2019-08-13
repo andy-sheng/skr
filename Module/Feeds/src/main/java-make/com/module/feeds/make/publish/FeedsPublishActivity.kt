@@ -19,6 +19,7 @@ import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
@@ -153,6 +154,7 @@ class FeedsPublishActivity : BaseActivity() {
 
         titleBar.rightCustomView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                StatisticsAdapter.recordCountEvent("music_record", "publish_success", null)
                 if (TextUtils.isEmpty(worksNameEt.text)) {
                     U.getToastUtil().showShort("作品名称为必填")
                     return
