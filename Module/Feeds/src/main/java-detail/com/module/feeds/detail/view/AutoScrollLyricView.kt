@@ -18,8 +18,8 @@ import kotlinx.coroutines.*
 
 class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
     val TAG = "AutoScrollLyricView"
-    lateinit var lyricTv: ExTextView
-    lateinit var scrollView: ScrollView
+    var lyricTv: ExTextView? = null
+    var scrollView: ScrollView? = null
     var scrollTime: Long? = null
     var mFeedSongModel: FeedSongModel? = null
     var mIsStart: Boolean = false
@@ -44,7 +44,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     override fun loadLyric() {
         MyLog.d(TAG, "loadLyric")
         tryInflate()
-        lyricTv.text = "正在加载"
+        lyricTv?.text = "正在加载"
         if (TextUtils.isEmpty(mFeedSongModel?.songTpl?.lrcTxtStr)) {
             mDisposable?.dispose()
             fetchLyric {
@@ -108,7 +108,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
             l = "《${mFeedSongModel?.workName}》\n ${l}"
         }
         visibility = View.VISIBLE
-        lyricTv.text = l
+        lyricTv?.text = l
         if (play) {
             startScroll()
         } else {
@@ -128,7 +128,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         mIsStart = false
         mFeedSongModel?.playCurPos = 0
         scrollTime = 0
-        scrollView.smoothScrollTo(0, 0)
+        scrollView?.smoothScrollTo(0, 0)
         mScrollJob?.cancel()
         mDisposable?.dispose()
     }
@@ -153,11 +153,11 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     private fun scrollToTs(passTime: Int) {
-        val Y = (lyricTv.height - scrollView.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
+        val Y = (lyricTv!!.height - scrollView!!.height) * (passTime.toDouble() / mFeedSongModel!!.playDurMs!!.toDouble())
         //MyLog.w(TAG, "Y is $Y, passTime is $passTime, duraions is ${mFeedSongModel!!.playDurMs!!.toDouble()}")
         //lyricTv.scrollTo(0, Y.toInt())
         // 要用父布局滚 不然setText就滚动0了 之前的白滚了
-        scrollView.smoothScrollTo(0, Y.toInt())
+        scrollView?.smoothScrollTo(0, Y.toInt())
     }
 
     override fun destroy() {
@@ -180,11 +180,11 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     }
 
     override fun showHalf() {
-        scrollView?.layoutParams.height = U.getDisplayUtils().dip2px(38f)
+        scrollView?.layoutParams?.height = U.getDisplayUtils().dip2px(38f)
     }
 
     override fun showWhole() {
-        scrollView?.layoutParams.height = U.getDisplayUtils().dip2px(74f)
+        scrollView?.layoutParams?.height = U.getDisplayUtils().dip2px(74f)
     }
 
     override fun setVisibility(visibility: Int) {

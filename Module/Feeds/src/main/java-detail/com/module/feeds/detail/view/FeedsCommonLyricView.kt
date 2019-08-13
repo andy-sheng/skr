@@ -41,8 +41,12 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
         if (!TextUtils.isEmpty(feedSongModel.songTpl?.lrcTs) && feedSongModel.songType == 1) {
             // 只要有伴奏文件，不管清唱和伴奏都是这个view
             mBaseFeedsLyricView = mFeedsManyLyricView
+            mAutoScrollLyricView?.visibility = View.GONE
+            mAutoScrollLyricView?.stop()
         } else {
             mBaseFeedsLyricView = mAutoScrollLyricView
+            mFeedsManyLyricView?.visibility = View.GONE
+            mFeedsManyLyricView?.stop()
         }
         mBaseFeedsLyricView?.loadLyric()
     }
