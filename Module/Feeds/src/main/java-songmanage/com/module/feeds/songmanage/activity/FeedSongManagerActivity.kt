@@ -64,6 +64,12 @@ class FeedSongManagerActivity : BaseActivity() {
             }
         })
 
+        titlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                finish()
+            }
+        })
+
         launch {
             val result = subscribe { feedSongManageServerApi.getFeedSongTagList() }
             if (result.errno == 0) {
