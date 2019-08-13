@@ -472,6 +472,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun setModelData() {
+        if (mSongControlArea?.visibility == View.GONE) {
+            mFeedsCommonLyricView?.showWhole()
+        } else {
+            mFeedsCommonLyricView?.showHalf()
+        }
+
         mSeekBar?.progress = 0
         mPassTimeTv?.text = "00:00"
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
