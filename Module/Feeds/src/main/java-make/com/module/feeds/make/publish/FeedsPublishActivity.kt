@@ -399,7 +399,6 @@ class FeedsPublishActivity : BaseActivity() {
     }
 
     private fun finishPage() {
-        setValueFromUi()
         val tipsDialogView = TipsDialogView.Builder(this@FeedsPublishActivity)
                 .setConfirmTip("保存")
                 .setCancelTip("直接退出")
@@ -408,6 +407,7 @@ class FeedsPublishActivity : BaseActivity() {
                 }
                 .setMessageTip("是否将发布保存到草稿箱?")
                 .setConfirmBtnClickListener {
+                    setValueFromUi()
                     if (TextUtils.isEmpty(mFeedsMakeModel?.audioUploadUrl)) {
                         progressSkr.visibility = View.VISIBLE
                         progressSkr.setProgressText("保存中")
