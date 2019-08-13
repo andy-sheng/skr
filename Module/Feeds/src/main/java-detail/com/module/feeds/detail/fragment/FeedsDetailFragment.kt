@@ -71,8 +71,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     val mTag = "FeedsDetailFragment"
-    val HIDE_CONTROL_AREA = 0
-    val SHOW_CONTROL_AREA = 1
+    val DELAY_HIDE_CONTROL_AREA = 0
+    val HIDE_CONTROL_AREA = 1
+    val SHOW_CONTROL_AREA = 2
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
     var mContentLayout: CollapsingToolbarLayout? = null
@@ -126,21 +127,24 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
-            if (msg?.what == HIDE_CONTROL_AREA) {
+            if (msg?.what == DELAY_HIDE_CONTROL_AREA) {
                 showControlArea(false)
                 mFeedsCommonLyricView?.showWhole()
             } else if (msg?.what == SHOW_CONTROL_AREA) {
                 showControlArea(true)
                 mFeedsCommonLyricView?.showHalf()
+            } else if (msg?.what == HIDE_CONTROL_AREA) {
+                mSongControlArea?.visibility = View.GONE
             }
         }
     }
 
     fun showControlArea(show: Boolean) {
+        mUiHandler.removeMessages(HIDE_CONTROL_AREA)
         if (show) {
             mSongControlArea?.visibility = View.VISIBLE
-            mUiHandler.removeMessages(HIDE_CONTROL_AREA)
-            mUiHandler.sendEmptyMessageDelayed(HIDE_CONTROL_AREA, 5000)
+            mUiHandler.removeMessages(DELAY_HIDE_CONTROL_AREA)
+            mUiHandler.sendEmptyMessageDelayed(DELAY_HIDE_CONTROL_AREA, 5000)
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 0f, 1f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 0f, 1f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 0f, 1f)
@@ -157,9 +161,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             animSet.play(animator1).with(animator2).with(animator3)
             animSet.setDuration(300)
             animSet.start()
-            mUiHandler.postDelayed({
-                mSongControlArea?.visibility = View.GONE
-            }, 300)
+            mUiHandler.sendEmptyMessageDelayed(HIDE_CONTROL_AREA, 300)
         }
     }
 
@@ -323,7 +325,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
                 mBlurBg?.setOnClickListener {
                     if (mSongControlArea?.visibility == View.VISIBLE) {
-                        mUiHandler.sendEmptyMessage(HIDE_CONTROL_AREA)
+                        mUiHandler.sendEmptyMessage(DELAY_HIDE_CONTROL_AREA)
                     } else {
                         mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
                     }
