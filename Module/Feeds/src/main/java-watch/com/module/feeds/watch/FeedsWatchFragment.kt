@@ -186,7 +186,7 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentInvisible(from: Int) {
         super.onFragmentInvisible(from)
-        MyLog.d(TAG, "onFragmentInvisible")
+        MyLog.d(TAG, "onFragmentInvisible from=$from")
         mFollowFeesView.unselected()
         mRecommendFeedsView.unselected()
         //todo 因为切后台的事件会比不可见晚

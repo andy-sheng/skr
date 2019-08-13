@@ -31,6 +31,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.detail.FeedSongPlayModeManager
+import com.module.feeds.event.FeedSongPlayEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedCollectListener
@@ -54,6 +55,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
     var mTopModel: FeedsCollectModel? = null
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
+    var mIsNeedResumePlay = false    // 标记是否需要恢复播放
 
     var mSongManager: FeedSongPlayModeManager? = null
 
@@ -110,6 +112,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             override fun onClickItemListener(model: FeedsCollectModel?, position: Int) {
                 // 跳到详情页面
                 model?.let {
+                    mIsNeedResumePlay = true
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withInt("feed_ID", it.feedID)
                             .withInt("from", 2)
@@ -417,6 +420,21 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mPersenter.hasInitData = false
     }
 
+    @Subscribe
+    fun onEvent(event: FeedSongPlayEvent) {
+        // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
+        MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
+        event.song?.let {
+            mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
+                if (event.song.feedID == feedsCollectModel.song?.feedID && event.song.songID == feedsCollectModel.song?.songID) {
+                    mTopPosition = index
+                    mTopModel = feedsCollectModel
+                    return@forEachIndexed
+                }
+            }
+        }
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
     }
@@ -443,8 +461,19 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     fun selected() {
         MyLog.d(TAG, "selected isPlaying=$isPlaying")
         if (!isPlaying) {
-            SinglePlayer.reset(playerTag)
-            initData(false)
+            if (mIsNeedResumePlay) {
+                // 恢复播放
+                mIsNeedResumePlay = false
+                mTopModel?.let {
+                    playOrPause(it, mTopPosition, true)
+                }
+            } else {
+                // 停止播放
+                MyLog.d(TAG, "selected 停止播放吧")
+                SinglePlayer.reset(playerTag)
+                initData(false)
+            }
+
         }
     }
 }

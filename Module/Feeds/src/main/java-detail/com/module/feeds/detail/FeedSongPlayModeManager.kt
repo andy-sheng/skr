@@ -35,7 +35,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
 //        Collections.shuffle(mShuffleSongList)
 
         mCur?.let {
-            changeMode(mMode)
+            changeMode(mode)
         }
     }
 

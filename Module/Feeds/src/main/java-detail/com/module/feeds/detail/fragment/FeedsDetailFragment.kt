@@ -48,6 +48,7 @@ import com.module.feeds.detail.view.FeedCommentMoreDialog
 import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
+import com.module.feeds.event.FeedSongPlayEvent
 import com.module.feeds.event.FeedWatchChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.manager.FeedCollectManager
@@ -753,6 +754,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
 
+        EventBus.getDefault().post(FeedSongPlayEvent(mFeedsWatchModel?.song))
         EventBus.getDefault().post(FeedWatchChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
         }))
