@@ -50,6 +50,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#33020202"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/play_btn_container"
         app:layout_constraintLeft_toRightOf="@+id/play_btn_container"
         app:layout_constraintRight_toRightOf="parent"
@@ -59,16 +60,15 @@
             android:id="@+id/seek_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="@dimen/view_8_dp"
             android:max="100"
             android:maxHeight="@dimen/view_4_dp"
             android:min="0"
             android:minHeight="@dimen/view_4_dp"
             android:paddingLeft="@dimen/view_6_dp"
-            android:paddingRight="@dimen/view_10_dp"
+            android:paddingRight="@dimen/view_6_dp"
             android:progressDrawable="@drawable/feeds_detail_seekbar_bg"
             android:thumb="@drawable/shenqu_jindu"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -230,6 +230,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        SkrProgressView:progressText="合成中"/>
+        SkrProgressView:progressText="合成中" />
 
 </android.support.constraint.ConstraintLayout>
