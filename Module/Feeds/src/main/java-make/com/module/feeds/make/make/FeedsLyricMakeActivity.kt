@@ -56,7 +56,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
             //  尝试写入伴奏歌词
             lyricAdapter.getData().forEach { lyricItem ->
                 if (lyricItem.newContent.length != lyricItem.content.length) {
-                    U.getToastUtil().showShort("新歌词字数必须与原歌词一致 ${lyricItem.newContent}")
+                    U.getToastUtil().showShort("歌词字数请与原歌词保持一致")
                     return@setOnClickListener
                 }
             }

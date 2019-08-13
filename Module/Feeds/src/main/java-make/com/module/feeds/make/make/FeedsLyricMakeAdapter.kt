@@ -27,26 +27,26 @@ class FeedsLyricMakeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 1) {
+        return if (viewType == 1) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_song_name_make_item_layout, parent, false)
             val h = FeedsSongNameMakeHolder(view)
             h.songNameChangeListener = {
                 this.songName = it
             }
-            return h
+            h
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_lyric_make_item_layout, parent, false)
-            return FeedsLyricMakeHolder(view)
+            FeedsLyricMakeHolder(view)
         }
     }
 
     override fun getItemCount(): Int {
-        return lyrics.size+1
+        return lyrics.size + 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is FeedsLyricMakeHolder) {
-            holder.bindData(position-1, lyrics[position-1])
+            holder.bindData(position - 1, lyrics[position - 1])
         } else if (holder is FeedsSongNameMakeHolder) {
             holder.bindData(position, songName ?: "")
         }
@@ -54,10 +54,10 @@ class FeedsLyricMakeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == 0) {
-            return 1
+        return if (position == 0) {
+            1
         } else {
-            return 2
+            2
         }
     }
 }

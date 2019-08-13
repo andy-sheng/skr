@@ -39,13 +39,14 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     val spanBuilder = SpanUtils()
                             .append(it).setForegroundColor(U.getColor(R.color.black_trans_80))
                             .create()
-                    editEt.setText(spanBuilder)
+                    editEt.text = spanBuilder
                 }
             } else {
-                editEt.setBackgroundResource(R.drawable.feeds_lyric_make_editor_bg)
                 if (item?.newContent?.length == item?.content?.length) {
+                    editEt.setBackgroundResource(R.drawable.feeds_lyric_make_editor_bg)
                     wordNumTv.visibility = View.GONE
                 } else {
+                    editEt.setBackgroundResource(R.drawable.feeds_lyric_make_error_editor_bg)
                     wordNumTv.visibility = View.VISIBLE
                     wordNumTv.setTextColor(Color.parseColor("#F9102C"))
                 }
@@ -113,14 +114,14 @@ class FeedsLyricMakeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     sp.append(item.newContent[i].toString()).setForegroundColor(Color.parseColor("#FF8F00"))
                 }
             }
-            editEt.setText(sp.create())
+            editEt.text = sp.create()
         } else {
             wordNumTv.visibility = View.VISIBLE
             wordNumTv.setTextColor(Color.parseColor("#F9102C"))
             val spanBuilder = SpanUtils()
-                    .append(item.newContent).setForegroundColor(U.getColor(R.color.red))
+                    .append(item.newContent).setForegroundColor(U.getColor(R.color.black_trans_80))
                     .create()
-            editEt.setText(spanBuilder)
+            editEt.text = spanBuilder
         }
     }
 }
