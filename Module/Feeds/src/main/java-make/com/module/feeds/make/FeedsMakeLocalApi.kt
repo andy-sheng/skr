@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.module.feeds.db.FeedsDraftDBDao
 import com.module.feeds.db.GreenDaoManager
 import com.module.feeds.make.make.FeedsDraftDB
+import org.greenrobot.eventbus.EventBus
 
 object FeedsMakeLocalApi {
 
@@ -50,6 +51,7 @@ object FeedsMakeLocalApi {
         draftDb.from = if (feedsMakeModel.songModel?.challengeID == 0L) 2 else 1
         draftDb.feedsMakeModelJson = JSON.toJSONString(feedsMakeModel)
         draftDBDao.insertOrReplace(draftDb)
+        EventBus.getDefault().post(FeedsDraftUpdateEvent())
     }
 
     fun delete(draftID: Long) {
@@ -59,4 +61,8 @@ object FeedsMakeLocalApi {
     fun deleteAll() {
         draftDBDao.deleteAll()
     }
+}
+
+class FeedsDraftUpdateEvent{
+
 }

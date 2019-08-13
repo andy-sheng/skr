@@ -16,6 +16,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.FeedsDraftUpdateEvent
 import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.make.openFeedsMakeActivity
@@ -26,6 +27,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 /**
  * 草稿箱view
@@ -109,6 +112,9 @@ class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(a
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             tryLoadData()
         })
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     fun tryLoadData() {
@@ -139,8 +145,15 @@ class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(a
         }
     }
 
+    //数据库有变化，重新加载一下数据
+    @Subscribe
+    fun onEvent(e: FeedsDraftUpdateEvent) {
+        tryLoadData()
+    }
+
     fun destroy() {
         mTipsDialogView?.dismiss(false)
+        EventBus.getDefault().unregister(this)
         cancel()
     }
 
