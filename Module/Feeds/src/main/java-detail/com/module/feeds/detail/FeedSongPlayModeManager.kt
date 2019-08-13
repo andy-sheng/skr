@@ -39,16 +39,16 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
-    fun setCurrentPlayModel(mode: FeedSongModel?) {
-        mCur = mode
+    fun setCurrentPlayModel(model: FeedSongModel?) {
+        mCur = model
         mOriginalSongList.forEachIndexed { index, feedSongModel ->
-            if (feedSongModel == mode) {
+            if (feedSongModel == model) {
                 mOriginPosition = index
                 return@forEachIndexed
             }
         }
         mShuffleSongList.forEachIndexed { index, pair ->
-            if (pair.second == mode) {
+            if (pair.second == model) {
                 mShufflePosition = index
                 return@forEachIndexed
             }
