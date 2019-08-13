@@ -52,7 +52,6 @@ import com.module.feeds.event.FeedWatchChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.manager.FeedCollectManager
 import com.module.feeds.watch.model.FeedSongModel
-import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
@@ -277,6 +276,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     val newModel = mSongManager?.getPreSong(true)
                     newModel?.feedID?.let {
                         tryLoadNewFeed(it)
+                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
                     }
                 }
 
@@ -284,16 +284,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     val newModel = mSongManager?.getNextSong(true)
                     newModel?.feedID?.let {
                         tryLoadNewFeed(it)
+                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
                     }
                 }
 
-                mControlTv?.setDebounceViewClickListener {
-                    if (it!!.isSelected) {
-                        pausePlay()
-                    } else {
-                        startPlay()
-                    }
-                }
                 val feedSongModels = ArrayList<FeedSongModel>()
                 var cur: FeedSongModel? = null
                 collectList.await()?.forEach {
@@ -305,22 +299,29 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
+                mBlurBg?.setDebounceViewClickListener {
+                    if (mSongControlArea?.visibility == View.VISIBLE) {
+                        mUiHandler.sendEmptyMessage(HIDE_CONTROL_AREA)
+                    } else {
+                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                    }
+                }
+
+                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+
                 mSongManager = FeedSongPlayModeManager(mPlayType, cur, feedSongModels)
             }
         } else {
             mSongControlArea.visibility = View.GONE
         }
 
-
-        mBlurBg?.setDebounceViewClickListener {
-            if (mSongControlArea?.visibility == View.VISIBLE) {
-                mUiHandler.sendEmptyMessage(HIDE_CONTROL_AREA)
+        mControlTv?.setDebounceViewClickListener {
+            if (it!!.isSelected) {
+                pausePlay()
             } else {
-                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                startPlay()
             }
         }
-
-        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
 
         mFeedsInputContainerView?.mSendCallBack = { s ->
             if (mRefuseModel == null) {
