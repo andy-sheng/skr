@@ -125,7 +125,7 @@ class FeedDraftsView(activity: BaseActivity) : ConstraintLayout(activity), Corou
         launch {
             launch(Dispatchers.IO) {
                 FeedsMakeLocalApi.delete(model.draftID)
-            }
+            }.join()
             adapter.delete(model)
         }
     }
