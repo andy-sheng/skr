@@ -195,7 +195,7 @@ class FeedsMakeActivity : BaseActivity() {
                             songModel.songTpl = songTpl
                             songModel.challengeID = it.toLong()
                             songModel.workName = workName
-                            if(TextUtils.isEmpty(songModel?.songTpl?.songName)){
+                            if (TextUtils.isEmpty(songModel?.songTpl?.songName)) {
                                 songModel?.songTpl?.songName = songModel.workName
                             }
                             songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
@@ -295,7 +295,7 @@ class FeedsMakeActivity : BaseActivity() {
                             }
 
                             override fun onDownloaded(downloaded: Long, totalLength: Long) {
-                                mFeedsMakeModel?.bgmDownloadProgress = (100*downloaded / totalLength).toInt()
+                                mFeedsMakeModel?.bgmDownloadProgress = (100 * downloaded / totalLength).toInt()
                             }
 
                             override fun onCompleted(localPath: String?) {
@@ -527,6 +527,7 @@ class FeedsMakeActivity : BaseActivity() {
 
     private fun countDownBegin() {
         countDownJob?.cancel()
+        titleBar?.centerTextView?.setEllipsize(TextUtils.TruncateAt.END)
         countDownJob = launch {
             for (i in 0..Int.MAX_VALUE) {
                 //MyLog.d(TAG, "countDownBegin run")
@@ -540,7 +541,6 @@ class FeedsMakeActivity : BaseActivity() {
                         titleBar?.centerSubTextView?.append(" / 01:30")
                     }
                 }
-
                 diffuseView?.start(2000)
                 recordTipsIv?.visibility = if (i % 2 == 0) View.GONE else View.VISIBLE
                 delay(1000)
