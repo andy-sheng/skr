@@ -15,7 +15,7 @@
         app:centerTextSize="@dimen/view_16_dp"
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftImageResource="@drawable/img_back_black"
+        app:leftImageResource="@drawable/back_close_black"
         app:leftType="imageButton"
         app:rightCustomView="@layout/feeds_publish_title_right_layout"
         app:rightType="customView"
