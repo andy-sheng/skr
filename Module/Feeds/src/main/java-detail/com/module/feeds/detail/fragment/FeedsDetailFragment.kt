@@ -300,7 +300,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
-                mBlurBg?.setDebounceViewClickListener {
+                mBlurBg?.setOnClickListener {
                     if (mSongControlArea?.visibility == View.VISIBLE) {
                         mUiHandler.sendEmptyMessage(HIDE_CONTROL_AREA)
                     } else {
