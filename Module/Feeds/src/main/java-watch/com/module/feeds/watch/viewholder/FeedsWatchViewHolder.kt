@@ -125,7 +125,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         if (watchModel.isCollected) {
             mCollectTv.text = "已收藏"
         } else {
-            mContentTv.text = "收藏"
+            mCollectTv.text = "收藏"
         }
     }
 
@@ -140,7 +140,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         if (watchModel.isCollected) {
             mCollectTv.text = "已收藏"
         } else {
-            mContentTv.text = "收藏"
+            mCollectTv.text = "收藏"
         }
     }
 }
