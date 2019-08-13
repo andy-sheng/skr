@@ -13,10 +13,14 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.component.lyrics.LyricsManager
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.sFeedsMakeModelHolder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_LYRIC_MAKE)
@@ -30,6 +34,8 @@ class FeedsLyricMakeActivity : BaseActivity() {
 
     var originLyric: String? = ""
     var originLyricThisTime: String? = ""
+
+    var tipsDialogView: TipsDialogView? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_lyric_make_activity_layout
@@ -45,7 +51,32 @@ class FeedsLyricMakeActivity : BaseActivity() {
         lyricAdapter = FeedsLyricMakeAdapter()
         lyricRv.adapter = lyricAdapter
         titleBar.leftImageButton.setOnClickListener {
-            finish()
+            // 尝试写入清唱歌词
+            val sb = StringBuilder()
+            lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+                sb.append(lyricItem.newContent).append("\n")
+            }
+            var hasChange = false
+            if (originLyricThisTime != sb.toString()) {
+                hasChange = true
+            }
+            if (hasChange) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(this@FeedsLyricMakeActivity)
+                        .setConfirmTip("退出")
+                        .setCancelTip("取消")
+                        .setCancelBtnClickListener {
+                            tipsDialogView?.dismiss()
+                        }
+                        .setMessageTip("不保存歌词直接退出么?")
+                        .setConfirmBtnClickListener {
+                            finish()
+                        }
+                        .build()
+                tipsDialogView?.showByDialog()
+            } else {
+                finish()
+            }
         }
         titleBar.rightCustomView.setOnClickListener {
             if (lyricAdapter.songName.isNullOrEmpty()) {
@@ -72,7 +103,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
                                 }
                             }, { MyLog.e(TAG, it) })
                 }
-            }else{
+            } else {
                 lyricAdapter.getData().forEachIndexed { index, lyricItem ->
                     mFeedsMakeModel?.songModel?.songTpl?.lrcTsReader?.lrcLineInfos?.get(index)?.lineLyrics = lyricItem.newContent
                 }
