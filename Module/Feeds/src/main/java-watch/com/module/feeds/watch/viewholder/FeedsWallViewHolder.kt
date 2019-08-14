@@ -20,11 +20,13 @@ class FeedsWallViewHolder(it: View, l: FeedsListener) : FeedViewHolder(it, l) {
             // 审核通过
             mPlayNumTv.visibility = View.VISIBLE
             mLikeNumTv.visibility = View.VISIBLE
+            mCollectIconTv.visibility = View.VISIBLE
             mCheckTv.visibility = View.GONE
         } else {
             // 未通过
             mPlayNumTv.visibility = View.GONE
             mLikeNumTv.visibility = View.GONE
+            mCollectIconTv.visibility = View.GONE
             mCheckTv.visibility = View.VISIBLE
         }
     }
