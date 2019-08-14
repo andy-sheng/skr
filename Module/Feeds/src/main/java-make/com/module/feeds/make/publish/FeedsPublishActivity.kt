@@ -343,11 +343,11 @@ class FeedsPublishActivity : BaseActivity() {
             if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
                 // 快唱
                 val mutableSet1 = mapOf(
-                        "hasChangeLRC" to if (mFeedsMakeModel?.hasChangeLyric == true) true else false,
+                        "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
                         "lrcURL" to customLrcUrl,
                         "playDurMs" to mFeedsMakeModel?.recordDuration,
                         "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                        "songName" to mFeedsMakeModel?.songModel?.getDisplayName(),
+                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
                         "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
                         "tagIDs" to tagsIds,
                         "title" to mFeedsMakeModel?.songModel?.title,
@@ -361,11 +361,11 @@ class FeedsPublishActivity : BaseActivity() {
                 // 打榜
                 val mutableSet1 = mapOf(
                         "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
-                        "hasChangeLRC" to if (mFeedsMakeModel?.hasChangeLyric == true) true else false,
+                        "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
                         "lrcURL" to customLrcUrl,
                         "playDurMs" to mFeedsMakeModel?.recordDuration,
                         "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                        "songName" to mFeedsMakeModel?.songModel?.getDisplayName(),
+                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
                         "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
                         "tagIDs" to tagsIds,
                         "title" to mFeedsMakeModel?.songModel?.title,
