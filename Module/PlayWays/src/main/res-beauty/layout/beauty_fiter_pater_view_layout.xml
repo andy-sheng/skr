@@ -26,7 +26,7 @@
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingRight="@dimen/view_10_dp"
         android:progressDrawable="@drawable/voice_control_panel_seekbar_bg"
-        android:thumb="@drawable/beauty_seekbar_thumb" />
+        android:thumb="@drawable/yellow_seekbar_thumb" />
 
 
 </RelativeLayout>
