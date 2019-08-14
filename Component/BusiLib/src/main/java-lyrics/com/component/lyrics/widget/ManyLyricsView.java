@@ -480,7 +480,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
         int[] paintColors = getPaintColors();
 
-        LyricsUtils.drawText(canvas, paint, paintColors, "上传者：" + mAuthorName, textX, lineBottomY);
+        LyricsUtils.drawText(canvas, paint, paintColors, "上传者：" + mAuthorName, textX, lineBottomY, getMeasuredWidth());
         paint.setTextSize(size);
     }
 
@@ -501,7 +501,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
 
         int[] paintColors = getPaintColors();
-        LyricsUtils.drawText(canvas, paint, paintColors, mSongName, textX, lineBottomY);
+        LyricsUtils.drawText(canvas, paint, paintColors, mSongName, textX, lineBottomY, getMeasuredWidth());
         paint.setTextSize(size);
     }
 
@@ -632,7 +632,7 @@ public class ManyLyricsView extends AbstractLrcView {
             if (i < curLyricsLineNum) {
                 float textWidth = LyricsUtils.getTextWidth(paint, text);
                 float textX = (getWidth() - textWidth) * 0.5f;
-                LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY);
+                LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY, getMeasuredWidth());
                 // TODO: 2018/12/14 不应该画2次
 //                LyricsUtils.drawText(canvas, paintHL, paintHLColors, text, textX, lineBottomY);
 
@@ -658,7 +658,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 }
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
 
-                LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
+                LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY, getMeasuredWidth());
                 //再把原来的大小设置进去
                 paint.setTextSize(paintOriginalTextSize);
                 paintHL.setTextSize(paintHLOriginalTextSize);
@@ -670,7 +670,7 @@ public class ManyLyricsView extends AbstractLrcView {
                 } else if (mLyricGravity == 1) {
                     textX = 0.0f;
                 }
-                LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY);
+                LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY, getMeasuredWidth());
             }
 
 //            canvas.drawLine(0, lineBottomY - getTextHeight(paint), 720, lineBottomY - getTextHeight(paint), paint);
@@ -836,7 +836,7 @@ public class ManyLyricsView extends AbstractLrcView {
             } else if (mLyricGravity == 1) {
                 textX = 0.0f;
             }
-            LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineTopY);
+            LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineTopY, getMeasuredWidth());
 
 //            canvas.drawLine(0, lineTopY - getTextHeight(paint), 720, lineTopY - getTextHeight(paint), paint);
 //            canvas.drawLine(0, lineTopY, 720, lineTopY, paint);

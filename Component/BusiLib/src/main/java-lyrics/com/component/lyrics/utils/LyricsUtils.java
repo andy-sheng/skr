@@ -454,6 +454,66 @@ public class LyricsUtils {
     }
 
     /**
+     * 有时候歌词太长没办法显示完整，需要特殊处理
+     * @param paint
+     * @param text
+     * @param viewWidth
+     * @return
+     */
+    public static String getFormatText(Paint paint, String text, int viewWidth) {
+        if (viewWidth <= 0) {
+            return text;
+        }
+
+        float textWidth = LyricsUtils.getTextWidth(paint, text);
+
+        if (textWidth > viewWidth) {
+            do {
+                text = text.substring(0, text.length() - 1);
+                textWidth = LyricsUtils.getTextWidth(paint, text + "...");
+            } while (textWidth > viewWidth);
+
+            return text + "...";
+        }
+
+        return text;
+    }
+
+    /**
+     * 绘画动感文本
+     *
+     * @param canvas
+     * @param paint   默认画笔
+     * @param paintHL 高亮画笔
+     * @param text    文本
+     * @param hlWidth 高亮宽度
+     * @param x
+     * @param y
+     */
+    public static void drawDynamicText(Canvas canvas, Paint paint, Paint paintHL, int[] paintColor, int[] paintHLColor, String text, float hlWidth, float x, float y, int viewWidth) {
+        canvas.save();
+        float originalTextSize = paint.getTextSize();
+        paint.setFakeBoldText(true);
+        paint.setTextSize(paintHL.getTextSize());
+        //设置为上下渐变
+        LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint), x, y, paintColor, null, Shader.TileMode.CLAMP);
+        paint.setShader(linearGradient);
+        text = getFormatText(paint, text, viewWidth);
+        canvas.drawText(text, x, y, paint);
+        //设置动感歌词过渡效果
+        canvas.clipRect(x, y - getRealTextHeight(paint), x + hlWidth,
+                y + getRealTextHeight(paint));
+        paint.setTextSize(originalTextSize);
+        paint.setFakeBoldText(false);
+
+        //设置为上下渐变
+        LinearGradient linearGradientHL = new LinearGradient(x, y - getTextHeight(paint), x, y, paintHLColor, null, Shader.TileMode.CLAMP);
+        paintHL.setShader(linearGradientHL);
+        canvas.drawText(text, x, y, paintHL);
+        canvas.restore();
+    }
+
+    /**
      * 得到渐变画笔大小
      * @param lyricsWordHLTime   过去的时间
      * @param textSizeOne        原始大小
@@ -525,6 +585,24 @@ public class LyricsUtils {
         //设置为上下渐变
         LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint), x, y, paintColor, null, Shader.TileMode.CLAMP);
         paint.setShader(linearGradient);
+        canvas.drawText(text, x, y, paint);
+    }
+
+    /**
+     * 绘画文本
+     *
+     * @param canvas
+     * @param paint
+     * @param paintColor
+     * @param text
+     * @param x
+     * @param y
+     */
+    public static void drawText(Canvas canvas, Paint paint, int[] paintColor, String text, float x, float y, int viewWidth) {
+        //设置为上下渐变
+        LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint), x, y, paintColor, null, Shader.TileMode.CLAMP);
+        paint.setShader(linearGradient);
+        text = getFormatText(paint, text, viewWidth);
         canvas.drawText(text, x, y, paint);
     }
 
