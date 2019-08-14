@@ -45,6 +45,7 @@ import com.module.feeds.R
 import com.module.feeds.detail.FeedSongPlayModeManager
 import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.event.AddCommentEvent
+import com.module.feeds.detail.event.FeedCommentBoardEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
@@ -126,6 +127,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var lastVerticalOffset = Int.MAX_VALUE
 
+    var specialCase: Boolean? = false
+
     val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
             if (msg?.what == DELAY_HIDE_CONTROL_AREA) {
@@ -182,9 +185,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         override fun onCompletion() {
             if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
-                val newModel = mSongManager?.getNextSong(true)
-                newModel?.feedID?.let {
-                    tryLoadNewFeed(it)
+                if (specialCase ?: false) {
+                    mFeedsWatchModel?.let {
+                        showFeedsWatchModel(it)
+                    }
+                } else {
+                    val newModel = mSongManager?.getNextSong(true)
+                    newModel?.feedID?.let {
+                        tryLoadNewFeed(it)
+                    }
                 }
             } else {
                 stopSong()
@@ -728,6 +737,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 isStrangerState()
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedCommentBoardEvent) {
+        specialCase = event.showing
     }
 
     fun isFriendState() {

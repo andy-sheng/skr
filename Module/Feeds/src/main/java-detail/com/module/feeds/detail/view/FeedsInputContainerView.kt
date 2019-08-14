@@ -18,6 +18,8 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.NoLeakEditText
 import com.module.feeds.R
+import com.module.feeds.detail.event.FeedCommentBoardEvent
+import org.greenrobot.eventbus.EventBus
 
 class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListener {
     internal var mEmotionKeyboard: EmotionKeyboard? = null
@@ -100,12 +102,12 @@ class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     }
 
     override fun onBoradShow() {
-        //        EventBus.getDefault().post(new InputBoardEvent(true));
+        EventBus.getDefault().post(FeedCommentBoardEvent(true))
         mInputContainer?.visibility = View.VISIBLE
     }
 
     override fun onBoradHide() {
-        //        EventBus.getDefault().post(new InputBoardEvent(false));
+        EventBus.getDefault().post(FeedCommentBoardEvent(false))
         mInputContainer?.visibility = View.GONE
         mEtContent?.hint = ""
     }
