@@ -195,7 +195,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             val result = subscribe { mFeedServerApi.collectFeed(body) }
             if (result.errno == 0) {
                 model.isCollected = !model.isCollected
-                EventBus.getDefault().post(FeedsCollectChangeEvent(model))
+                EventBus.getDefault().post(FeedsCollectChangeEvent(model.feedID, model.isCollected))
                 view.showCollect(position, model)
                 if (model.isCollected) {
                     U.getToastUtil().showShort("收藏成功")
@@ -216,7 +216,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
         }
     }
 
-    fun addShareCount(model: FeedsWatchModel){
+    fun addShareCount(model: FeedsWatchModel) {
         launch {
             val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.getInstance().uid.toInt())
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))

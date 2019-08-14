@@ -297,7 +297,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                     U.getToastUtil().showShort("收藏成功")
                 }
                 model.isCollected = !isCollocted
-                EventBus.getDefault().post(FeedsCollectChangeEvent(model))
+                EventBus.getDefault().post(FeedsCollectChangeEvent(model.feedID, model.isCollected))
             } else {
                 if (isCollocted) {
                     U.getToastUtil().showShort("收藏失败")

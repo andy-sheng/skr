@@ -680,7 +680,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedsCollectChangeEvent) {
-        mAdapter?.update(event.model, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
+        mAdapter?.mDataList?.forEachIndexed { index, feedsWatchModel ->
+            if (feedsWatchModel.feedID == event.feedID) {
+                feedsWatchModel.isCollected = event.isCollected
+                mAdapter?.update(index, feedsWatchModel, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

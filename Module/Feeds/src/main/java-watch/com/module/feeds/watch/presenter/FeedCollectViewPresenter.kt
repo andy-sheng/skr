@@ -8,6 +8,7 @@ import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.utils.U
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.manager.FeedCollectManager
 import com.module.feeds.watch.model.FeedsCollectModel
@@ -15,7 +16,8 @@ import com.module.feeds.watch.view.IFeedCollectView
 import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.util.HashMap
+import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresenter() {
 
@@ -38,7 +40,7 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
 
     private fun getFeedsLikeList() {
         launch {
-            val l = async (Dispatchers.IO){
+            val l = async(Dispatchers.IO) {
                 FeedCollectManager.getMyCollect()
             }
             view.showCollectList(l.await())
@@ -56,6 +58,7 @@ class FeedCollectViewPresenter(var view: IFeedCollectView) : RxLifeCyclePresente
             if (result?.errno == 0) {
                 model.isLiked = !model.isLiked
                 view.showCollect(model)
+                EventBus.getDefault().post(FeedsCollectChangeEvent(model.feedID, model.isLiked))
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
