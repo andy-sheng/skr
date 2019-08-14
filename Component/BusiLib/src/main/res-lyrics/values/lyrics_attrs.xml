@@ -32,5 +32,11 @@
         <attr name="ly_show_author" />
         <attr name="ly_top_line_num" />
         <attr name="ly_show_song_name" />
+        <attr name="custom_gravity" />
     </declare-styleable>
+
+    <attr name="custom_gravity">
+        <flag name="center" value="0" />
+        <flag name="left" value="1" />
+    </attr>
 </resources>

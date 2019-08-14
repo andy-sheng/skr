@@ -190,7 +190,7 @@
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_46_dp"
+        android:layout_marginRight="@dimen/view_26_dp"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:layout="@layout/feeds_watch_many_lyric_layout"
         app:layout_constraintBottom_toBottomOf="@+id/song_area_bg"

@@ -13,6 +13,7 @@
     app:ly_outline_paint_color="@color/white"
     app:ly_paint_color_from="@color/white_trans_60"
     app:ly_paint_color_to="@color/white_trans_60"
+    app:custom_gravity="center"
     app:ly_paint_text_size="14.0"
     app:ly_show_author="true"
     app:ly_show_song_name="true"

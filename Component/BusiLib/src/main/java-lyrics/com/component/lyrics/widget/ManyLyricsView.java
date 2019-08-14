@@ -191,6 +191,11 @@ public class ManyLyricsView extends AbstractLrcView {
 
     private String mSongName;
 
+    //    <flag name="center" value="0" />
+    //    <flag name="left" value="1" />
+    private int mLyricGravity = 0;
+
+
     /**
      * Handler处理滑动指示器隐藏和歌词滚动到当前播放的位置
      */
@@ -262,6 +267,10 @@ public class ManyLyricsView extends AbstractLrcView {
 
         if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_show_song_name)) {
             mShowSongName = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_show_song_name, false);
+        }
+
+        if (typedArray.hasValue(R.styleable.many_line_lrc_view_custom_gravity)) {
+            mLyricGravity = typedArray.getInteger(R.styleable.many_line_lrc_view_custom_gravity, 0);
         }
 
         typedArray.recycle();
@@ -463,8 +472,14 @@ public class ManyLyricsView extends AbstractLrcView {
         float size = paint.getTextSize();
         paint.setTextSize(size * 0.8f);
         float textWidth = LyricsUtils.getTextWidth(paint, "上传者：" + mAuthorName);
-        float textX = (getWidth() - textWidth) * 0.5f;
+        float textX = 0.0f;
+        if (mLyricGravity == 0) {
+            textX = (getWidth() - textWidth) * 0.5f;
+        } else if (mLyricGravity == 1) {
+            textX = 0.0f;
+        }
         int[] paintColors = getPaintColors();
+
         LyricsUtils.drawText(canvas, paint, paintColors, "上传者：" + mAuthorName, textX, lineBottomY);
         paint.setTextSize(size);
     }
@@ -478,7 +493,13 @@ public class ManyLyricsView extends AbstractLrcView {
         float size = paint.getTextSize();
         paint.setTextSize(size * 0.8f);
         float textWidth = LyricsUtils.getTextWidth(paint, mSongName);
-        float textX = (getWidth() - textWidth) * 0.5f;
+        float textX = 0.0f;
+        if (mLyricGravity == 0) {
+            textX = (getWidth() - textWidth) * 0.5f;
+        } else if (mLyricGravity == 1) {
+            textX = 0.0f;
+        }
+
         int[] paintColors = getPaintColors();
         LyricsUtils.drawText(canvas, paint, paintColors, mSongName, textX, lineBottomY);
         paint.setTextSize(size);
@@ -629,7 +650,12 @@ public class ManyLyricsView extends AbstractLrcView {
                 paintHL.setTextSize(drawHLTextPaintSize);
                 //绘画动感歌词
                 float textWidth = LyricsUtils.getTextWidth(paintHL, text);
-                float textX = (getWidth() - textWidth) * 0.5f;
+                float textX = 0.0f;
+                if (mLyricGravity == 0) {
+                    textX = (getWidth() - textWidth) * 0.5f;
+                } else if (mLyricGravity == 1) {
+                    textX = 0.0f;
+                }
                 float lineLyricsHLWidth = LyricsUtils.getLineLyricsHLWidth(lyricsReader.getLyricsType(), paintHL, splitLyricsLineInfos.get(i), splitLyricsWordIndex, lyricsWordHLTime);
 
                 LyricsUtils.drawDynamicText(canvas, paint, paintHL, new int[]{getSubPaintHLColor(), getSubPaintHLColor()}, paintHLColors, text, lineLyricsHLWidth, textX, lineBottomY);
@@ -638,7 +664,12 @@ public class ManyLyricsView extends AbstractLrcView {
                 paintHL.setTextSize(paintHLOriginalTextSize);
             } else if (i > curLyricsLineNum) {
                 float textWidth = LyricsUtils.getTextWidth(paint, text);
-                float textX = (getWidth() - textWidth) * 0.5f;
+                float textX = 0.0f;
+                if (mLyricGravity == 0) {
+                    textX = (getWidth() - textWidth) * 0.5f;
+                } else if (mLyricGravity == 1) {
+                    textX = 0.0f;
+                }
                 LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineBottomY);
             }
 
@@ -799,8 +830,12 @@ public class ManyLyricsView extends AbstractLrcView {
             paint.setAlpha(alpha);
 
             float textWidth = LyricsUtils.getTextWidth(paint, text);
-            float textX = (getWidth() - textWidth) * 0.5f;
-
+            float textX = 0.0f;
+            if (mLyricGravity == 0) {
+                textX = (getWidth() - textWidth) * 0.5f;
+            } else if (mLyricGravity == 1) {
+                textX = 0.0f;
+            }
             LyricsUtils.drawText(canvas, paint, paintColors, text, textX, lineTopY);
 
 //            canvas.drawLine(0, lineTopY - getTextHeight(paint), 720, lineTopY - getTextHeight(paint), paint);
