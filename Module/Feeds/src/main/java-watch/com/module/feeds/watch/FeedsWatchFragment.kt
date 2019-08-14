@@ -43,7 +43,7 @@ class FeedsWatchFragment : BaseFragment() {
     val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
-    val initPostion = 0
+    val initPostion = 1
     // 保持 init Postion 一致
     var mPagerPosition: Int by Delegates.observable(initPostion, { _, oldPositon, newPosition ->
         // 为了解决滑动卡顿
@@ -51,10 +51,10 @@ class FeedsWatchFragment : BaseFragment() {
             delay(400)
             when (oldPositon) {
                 0 -> {
-                    mRecommendFeedsView?.unselected()
+                    mFollowFeesView?.unselected()
                 }
                 1 -> {
-                    mFollowFeesView?.unselected()
+                    mRecommendFeedsView?.unselected()
                 }
                 2 -> {
                     mFeedsCollectView?.unselected()
@@ -105,8 +105,8 @@ class FeedsWatchFragment : BaseFragment() {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
                 var view: View? = when (position) {
-                    0 -> mRecommendFeedsView
-                    1 -> mFollowFeesView
+                    0 -> mFollowFeesView
+                    1 -> mRecommendFeedsView
                     2 -> mFeedsCollectView
                     else -> null
                 }
@@ -126,8 +126,8 @@ class FeedsWatchFragment : BaseFragment() {
 
             override fun getPageTitle(position: Int): CharSequence? {
                 return when (position) {
-                    0 -> "推荐"
-                    1 -> "关注"
+                    0 -> "关注"
+                    1 -> "推荐"
                     2 -> "收藏"
                     else -> super.getPageTitle(position)
                 }
@@ -171,12 +171,12 @@ class FeedsWatchFragment : BaseFragment() {
         }
         when (pos) {
             0 -> {
-                StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
-                mRecommendFeedsView.selected()
-            }
-            1 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
                 mFollowFeesView.selected()
+            }
+            1 -> {
+                StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
+                mRecommendFeedsView.selected()
             }
             2 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
@@ -231,11 +231,11 @@ class FeedsWatchFragment : BaseFragment() {
     fun onEvent(refreshEvent: FeedWatchTabRefreshEvent) {
         // 首页重复点击了神曲，自动刷新一下吧
         if (mFeedVp.currentItem == 0) {
-            // 推荐自动刷新
-            mRecommendFeedsView.autoRefresh()
-        } else if (mFeedVp.currentItem == 1) {
             // 关注自动刷新
             mFollowFeesView.autoRefresh()
+        } else if (mFeedVp.currentItem == 1) {
+            // 推荐自动刷新
+            mRecommendFeedsView.autoRefresh()
         }
     }
 }
