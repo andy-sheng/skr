@@ -5,6 +5,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.person.OtherPersonActivity
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.FeedSongPlayModeManager
@@ -21,6 +22,21 @@ class FeedsDetailActivity : BaseActivity() {
         val FROM_FEED_RANK = 3     //排行
         val FROM_SCHEME = 4 // scheme
         val FROM_COMMENT_LIKE = 5  //评论或赞
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // 避免不停地进主页又从神曲进主页
+        var num = 0
+        for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+            val ac = U.getActivityUtils().activityList[i]
+            if (ac is FeedsDetailActivity) {
+                num++
+                if (num >= 2) {
+                    ac.finish()
+                }
+            }
+        }
     }
 
     override fun initView(savedInstanceState: Bundle?): Int {

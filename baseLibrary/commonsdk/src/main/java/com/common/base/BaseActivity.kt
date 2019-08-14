@@ -189,6 +189,22 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        MyLog.d(TAG, "onNewIntent intent = $intent")
+        /**
+         * 先看看有没有顶层的 fragment 要处理这个事件的
+         * 顶层的 fragment 消化掉了就算了
+         */
+        val fragment = U.getFragmentUtils().getTopFragment(this)
+        if (fragment != null) {
+            if (fragment.onNewIntent(intent)) {
+                // 以及消费掉了
+                return
+            }
+        }
+        super.onNewIntent(intent)
+    }
+
     override fun setContentView(layoutResID: Int) {
         MyLog.d(TAG, "setContentView id=$layoutResID")
         super.setContentView(layoutResID)

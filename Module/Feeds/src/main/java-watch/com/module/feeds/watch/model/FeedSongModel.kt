@@ -61,15 +61,20 @@ class FeedSongModel : Serializable {
         } else {
             if (!TextUtils.isEmpty(songTpl?.songNameChange)) {
                 return songTpl?.songNameChange
-            } else {
-                if (!TextUtils.isEmpty(challengeDesc)) {
-                    return challengeDesc
-                } else if (!TextUtils.isEmpty(workName)) {
-                    return workName
-                } else {
-                    return songTpl?.songName
-                }
             }
+
+            if (!TextUtils.isEmpty(songTpl?.songName)) {
+                return songTpl?.songName
+            }
+
+            if (!TextUtils.isEmpty(workName)) {
+                return workName
+            }
+
+            if (!TextUtils.isEmpty(challengeDesc)) {
+                return challengeDesc
+            }
+            return ""
         }
     }
 }

@@ -442,4 +442,9 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
     }
 
     override fun onHiddenChanged(hidden: Boolean) {}
+
+    open fun onNewIntent(intent: Intent?): Boolean {
+        MyLog.d(TAG, "onNewIntent intent = $intent")
+        return false
+    }
 }

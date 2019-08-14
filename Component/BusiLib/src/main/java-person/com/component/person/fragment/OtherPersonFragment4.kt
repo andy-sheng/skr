@@ -1,5 +1,6 @@
 package com.component.person.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -164,7 +165,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         mPresenter = OtherPersonPresenter(this)
         addPresent(mPresenter)
+        bindData()
+    }
 
+    private fun bindData() {
         val bundle = arguments
         if (bundle != null) {
             mUserId = bundle.getInt(BUNDLE_USER_ID)
@@ -178,6 +182,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
     }
 
+    override fun onNewIntent(intent: Intent?): Boolean {
+        arguments = intent?.extras
+        bindData()
+        return true
+    }
 
     private fun initBaseContainArea() {
         mImageBg = rootView.findViewById<View>(R.id.image_bg) as SimpleDraweeView
