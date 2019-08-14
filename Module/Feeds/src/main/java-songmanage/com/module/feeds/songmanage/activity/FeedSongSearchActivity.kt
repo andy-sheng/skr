@@ -97,8 +97,7 @@ class FeedSongSearchActivity : BaseActivity() {
         mAdapter = FeedSongManageAdapter(object : FeedSongManageListener {
             override fun onClickSing(position: Int, model: FeedSongInfoModel?) {
                 model?.let {
-                    //todo 补全跳转吧
-                    U.getToastUtil().showShort("点击了演唱，哈哈哈")
+                    openFeedsMakeActivity(model.song)
                 }
             }
         })
