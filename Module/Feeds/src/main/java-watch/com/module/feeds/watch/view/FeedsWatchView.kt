@@ -516,6 +516,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 mAdapter?.mDataList?.addAll(list)
             }
             mAdapter?.notifyDataSetChanged()
+            mRecyclerView.smoothScrollToPosition(0)
             if (isHomePage()) {
                 if (mAdapter?.mDataList?.isNotEmpty() == true) {
                     // delay 是因为2哥notify冲突
