@@ -42,6 +42,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
+import com.component.busilib.event.FeedWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -58,6 +59,7 @@ import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -197,9 +199,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mHomePresenter = new
 
                 HomeCorePresenter(this, this);
-        if (!UserAccountManager.getInstance().
-
-                hasAccount()) {
+        if (!UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
@@ -226,6 +226,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mFeedArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
+                if (mMainVp.getCurrentItem() == 1) {
+                    EventBus.getDefault().post(new FeedWatchTabRefreshEvent());
+                }
                 mMainVp.setCurrentItem(1, false);
                 selectTab(1);
             }

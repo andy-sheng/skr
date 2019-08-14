@@ -17,6 +17,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.busilib.event.FeedWatchTabRefreshEvent
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
@@ -224,5 +225,17 @@ class FeedsWatchFragment : BaseFragment() {
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
         MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
         isBackground = !event.foreground
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(refreshEvent: FeedWatchTabRefreshEvent) {
+        // 首页重复点击了神曲，自动刷新一下吧
+        if (mFeedVp.currentItem == 0) {
+            // 推荐自动刷新
+            mRecommendFeedsView.autoRefresh()
+        } else if (mFeedVp.currentItem == 1) {
+            // 关注自动刷新
+            mFollowFeesView.autoRefresh()
+        }
     }
 }

@@ -612,6 +612,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         }
     }
 
+    fun autoRefresh() {
+        mRefreshLayout.autoRefresh()
+    }
+
     private fun homePagerMore(it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
         if (it.user?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
