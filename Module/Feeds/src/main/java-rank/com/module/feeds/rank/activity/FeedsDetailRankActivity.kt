@@ -25,6 +25,7 @@ import com.module.feeds.R
 import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -65,6 +66,14 @@ class FeedsDetailRankActivity : BaseActivity() {
             mAdapter.mCurrentPlayModel?.let {
                 play(it)
             }
+        }
+
+        override fun openTimeFlyMonitor(): Boolean {
+            return true
+        }
+
+        override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+            FeedsPlayStatistics.updateCurProgress(pos,duration)
         }
     }
 
@@ -146,6 +155,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         mAdapter.mCurrentPlayModel = model
         mAdapter.notifyDataSetChanged()
         model.song?.playURL?.let {
+            FeedsPlayStatistics.setCurPlayMode(model?.feedID)
             SinglePlayer.startPlay(playerTag, it)
         }
     }

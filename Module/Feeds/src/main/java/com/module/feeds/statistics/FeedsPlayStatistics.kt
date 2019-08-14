@@ -31,6 +31,7 @@ object FeedsPlayStatistics {
      * 传0可以触发打点统计
      */
     fun setCurPlayMode(feedsId: Int) {
+        MyLog.d("FeedsPlayStatistics", "setCurPlayMode feedsId = $feedsId")
         if (curFeedsId != 0) {
             if (curFeedsId != feedsId) {
                 add2Map()
