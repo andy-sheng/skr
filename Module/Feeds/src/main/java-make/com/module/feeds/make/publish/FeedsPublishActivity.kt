@@ -201,9 +201,9 @@ class FeedsPublishActivity : BaseActivity() {
             //从草稿箱进入的
             // 有作品名了,优先显示作品名字
             if (TextUtils.isEmpty(mFeedsMakeModel?.songModel?.workName)) {
-                displayName = mFeedsMakeModel?.songModel?.workName ?: ""
-            } else {
                 displayName = mFeedsMakeModel?.songModel?.getDisplayName() ?: ""
+            } else {
+                displayName = mFeedsMakeModel?.songModel?.workName ?: ""
             }
         } else {
             displayName = mFeedsMakeModel?.songModel?.getDisplayName() ?: ""
