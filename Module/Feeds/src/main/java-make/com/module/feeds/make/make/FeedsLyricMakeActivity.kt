@@ -218,7 +218,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
         }
         // 歌曲名不用展示原来的
         MyLog.d(TAG, "fillNewContentlist update")
-        lyricAdapter.setData(mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName()?:"", list)
+        lyricAdapter.setData(mFeedsMakeModel?.songModel?.getDisplayName()?:"", list)
     }
 
     override fun onResume() {
