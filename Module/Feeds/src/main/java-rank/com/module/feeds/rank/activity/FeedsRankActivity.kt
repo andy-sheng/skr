@@ -21,6 +21,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
+import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.rank.model.FeedRankTagModel
@@ -44,6 +45,21 @@ class FeedsRankActivity : BaseActivity() {
     val mFeedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, FeedDraftsView.FROM_FEED_HIT) }
 
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // 避免不停地进主页又从神曲进主页
+        var num = 0
+        for (i in U.getActivityUtils().activityList.size - 1 downTo 0) {
+            val ac = U.getActivityUtils().activityList[i]
+            if (ac is FeedsRankActivity) {
+                num++
+                if (num >= 2) {
+                    ac.finish()
+                }
+            }
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_rank_activity_layout
