@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View
 import android.view.WindowManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
@@ -61,35 +62,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
             }
         })
         titleBar.leftImageButton.setOnClickListener {
-            // 尝试写入清唱歌词
-            val sb = StringBuilder()
-            lyricAdapter.getData().forEachIndexed { index, lyricItem ->
-                sb.append(lyricItem.newContent).append("\n")
-            }
-            var hasChange = false
-            if (originLyricThisTime != sb.toString()) {
-                hasChange = true
-            }
-            if (lyricAdapter.songName != mFeedsMakeModel?.songModel?.songTpl?.songNameChange) {
-                hasChange = true
-            }
-            if (hasChange) {
-                tipsDialogView?.dismiss()
-                tipsDialogView = TipsDialogView.Builder(this@FeedsLyricMakeActivity)
-                        .setConfirmTip("退出")
-                        .setCancelTip("取消")
-                        .setCancelBtnClickListener {
-                            tipsDialogView?.dismiss()
-                        }
-                        .setMessageTip("确定要放弃已修改的内容退出么?")
-                        .setConfirmBtnClickListener {
-                            finish()
-                        }
-                        .build()
-                tipsDialogView?.showByDialog()
-            } else {
-                finish()
-            }
+          finishPage()
         }
         titleBar.rightCustomView.setOnClickListener {
             if (lyricAdapter.songName.isNullOrEmpty()) {
@@ -245,6 +218,43 @@ class FeedsLyricMakeActivity : BaseActivity() {
 
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
         return true
+    }
+
+    override fun onBackPressed() {
+        finishPage()
+    }
+
+    private fun finishPage() {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
+        // 尝试写入清唱歌词
+        val sb = StringBuilder()
+        lyricAdapter.getData().forEachIndexed { index, lyricItem ->
+            sb.append(lyricItem.newContent).append("\n")
+        }
+        var hasChange = false
+        if (originLyricThisTime != sb.toString()) {
+            hasChange = true
+        }
+        if (lyricAdapter.songName != mFeedsMakeModel?.songModel?.songTpl?.songNameChange) {
+            hasChange = true
+        }
+        if (hasChange) {
+            tipsDialogView?.dismiss()
+            tipsDialogView = TipsDialogView.Builder(this@FeedsLyricMakeActivity)
+                    .setConfirmTip("退出")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener {
+                        tipsDialogView?.dismiss()
+                    }
+                    .setMessageTip("确定要放弃已修改的内容退出么?")
+                    .setConfirmBtnClickListener {
+                        finish()
+                    }
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
+            finish()
+        }
     }
 }
 
