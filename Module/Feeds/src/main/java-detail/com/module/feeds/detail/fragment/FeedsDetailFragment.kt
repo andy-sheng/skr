@@ -297,11 +297,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             launch {
                 // 读收藏
                 val collectList = async(Dispatchers.IO) {
-                    if (Looper.myLooper() == Looper.getMainLooper()) {
-                        MyLog.d(TAG, "主进程")
-                    } else {
-                        MyLog.d(TAG, "不在主进程")
-                    }
                     FeedCollectManager.getMyCollect()
                 }
                 mSongControlArea.visibility = View.VISIBLE
