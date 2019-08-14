@@ -54,7 +54,7 @@ class FeedSongModel : Serializable {
         return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMsFromPlayerForDebug=$playDurMsFromPlayerForDebug, playURL=$playURL, playCurPos=$playCurPos, lyricStatus=$lyricStatus, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName, songType=$songType)"
     }
 
-    fun getDisplayName(): CharSequence? {
+    fun getDisplayName(): String? {
         if (challengeID == 0L) {
             // 快唱
             return songTpl?.getDisplaySongName()
