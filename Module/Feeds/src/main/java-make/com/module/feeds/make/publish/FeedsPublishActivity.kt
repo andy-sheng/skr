@@ -26,6 +26,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.event.FeedPublishSucessEvent
 import com.component.busilib.view.SkrProgressView
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
@@ -42,6 +43,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -364,6 +366,7 @@ class FeedsPublishActivity : BaseActivity() {
             if (result?.errno == 0) {
                 //上传成功
                 U.getToastUtil().showShort("上传成功")
+                EventBus.getDefault().post(FeedPublishSucessEvent())
                 mFeedsMakeModel?.songModel?.playURL = mFeedsMakeModel?.audioUploadUrl
                 mFeedsMakeModel?.songModel?.songID = result.data.getIntValue("songID")
                 // 跳到分享页

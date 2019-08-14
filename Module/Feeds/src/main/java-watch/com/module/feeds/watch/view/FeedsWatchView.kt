@@ -23,6 +23,7 @@ import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.event.FeedPublishSucessEvent
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
@@ -680,5 +681,13 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedsCollectChangeEvent) {
         mAdapter?.update(event.model, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedPublishSucessEvent) {
+        // 新的发布,重新去刷新下数据
+        if (type == TYPE_PERSON) {
+            mPersenter.mLastUpdatListTime = 0L
+        }
     }
 }
