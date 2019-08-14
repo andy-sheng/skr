@@ -68,6 +68,13 @@ object LyricsManager {
      */
     fun loadStandardLyric(url: String?, processReader: ((reader: LyricsReader) -> Unit)?): Observable<LyricsReader> {
         return Observable.create(ObservableOnSubscribe<File> { emitter ->
+            if(TextUtils.isEmpty(url)){
+                if(MyLog.isDebugLogOpen()){
+                    U.getToastUtil().showShort("歌词 url==null")
+                }
+                emitter.onComplete()
+                return@ObservableOnSubscribe
+            }
             val newName = File(SongResUtils.createLyricFileName(url))
             if (newName.exists() && newName.isFile) {
                 emitter.onNext(newName)
@@ -137,6 +144,13 @@ object LyricsManager {
     fun loadGrabPlainLyric(url: String?): Observable<String> {
         MyLog.w(TAG, "loadGrabPlainLyric url=$url")
         return Observable.create(ObservableOnSubscribe<String> { emitter ->
+            if(TextUtils.isEmpty(url)){
+                if(MyLog.isDebugLogOpen()){
+                    U.getToastUtil().showShort("歌词 url==null")
+                }
+                emitter.onComplete()
+                return@ObservableOnSubscribe
+            }
             val file = SongResUtils.getGrabLyricFileByUrl(url)
             if (file == null || !file.exists()) {
                 var isSuccess = false
