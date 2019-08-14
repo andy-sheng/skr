@@ -318,7 +318,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             }
         })
 
-        mToolbar.visibility = View.GONE
         mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
@@ -472,6 +471,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mToolbar = this.findViewById<View>(R.id.toolbar) as Toolbar
         mSrlAvatarIv = this.findViewById<View>(R.id.srl_avatar_iv) as SimpleDraweeView
 
+        mToolbar.visibility = View.GONE
         mSrlAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 if (mClickListener != null) {
