@@ -508,6 +508,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         if (newFeedId != mFeedID) {
             mFeedID = newFeedId
             mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+        } else {
+            mSeekBar?.progress = 0
+            mPassTimeTv?.text = "00:00"
+            mFeedsWatchModel?.song?.playDurMs?.let {
+                mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+            }
+            startPlay()
         }
     }
 
