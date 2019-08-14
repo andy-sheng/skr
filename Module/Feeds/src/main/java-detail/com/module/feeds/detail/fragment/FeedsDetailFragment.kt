@@ -189,7 +189,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                         showFeedsWatchModel(it)
                     }
                 } else {
-                    val newModel = mSongManager?.getNextSong(true)
+                    val newModel = mSongManager?.getNextSong(false)
                     newModel?.feedID?.let {
                         tryLoadNewFeed(it)
                     }
