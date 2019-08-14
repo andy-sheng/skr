@@ -688,6 +688,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         startPlay()
     }
 
+    override fun finishWithModelError() {
+        activity?.finish()
+    }
+
     override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
         if (isFriend) {
             isFriendState()

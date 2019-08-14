@@ -145,6 +145,9 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                 if (obj?.errno == 0) {
                     val feedsWatchModel = JSON.parseObject(obj.data.toJSONString(), FeedsWatchModel::class.java)
                     mIFeedsDetailView.showFeedsWatchModel(feedsWatchModel)
+                } else {
+                    U.getToastUtil().showShort(obj?.errmsg)
+                    mIFeedsDetailView.finishWithModelError()
                 }
             }
         }, this)

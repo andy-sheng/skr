@@ -10,4 +10,6 @@ interface IFeedsDetailView {
     fun collectFinish(c: Boolean)
 //    fun isCollect(c: Boolean)
     fun showFeedsWatchModel(model: FeedsWatchModel)
+
+    fun finishWithModelError()
 }
