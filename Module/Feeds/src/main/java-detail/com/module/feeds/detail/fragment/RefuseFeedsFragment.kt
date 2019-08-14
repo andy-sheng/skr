@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -83,11 +84,12 @@ class RefuseFeedsFragment : BaseFragment() {
         mContentRv?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mContentRv?.adapter = mAdapter
 
-//        val mLoadSir = LoadSir.Builder()
-//                .build()
-//        mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
-//
-//        })
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.feed_empty_icon, "暂无评论哦", "#FF3B4E79"))
+                .build()
+        mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
+            getList()
+        })
 
         getList()
     }
@@ -114,6 +116,8 @@ class RefuseFeedsFragment : BaseFragment() {
 
                 mOffset = result.data.getInteger("offset")
             }
+
+            if (array.size > 0) mLoadService?.showSuccess() else mLoadService?.showCallback(EmptyCallback::class.java)
         }
     }
 
