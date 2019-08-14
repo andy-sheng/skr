@@ -25,6 +25,8 @@ object FeedsPlayStatistics {
     private var curDuration: Long = 0
     private var curFeedsId: Int = 0
 
+    private var mapNum = 0
+    private var lastUploadTs = System.currentTimeMillis()
     /**
      * 传0可以触发打点统计
      */
@@ -51,6 +53,7 @@ object FeedsPlayStatistics {
                 infoMap[curFeedsId] = l
             }
             l.add(Item(p, curProgress.toInt()))
+            mapNum++
             tryUpload(false)
         }
     }
@@ -149,8 +152,9 @@ object FeedsPlayStatistics {
         if (infoMap.size <= 0) {
             return
         }
+        val now = System.currentTimeMillis()
         if (!force) {
-            if (infoMap.size < 5) {
+            if (mapNum < 5 && (now - lastUploadTs < 2 * 60 * 1000)) {
                 return
             }
         }
@@ -170,6 +174,8 @@ object FeedsPlayStatistics {
             l1.add(jo)
         }
         infoMap.clear()
+        mapNum = 0
+        lastUploadTs = now
 //        val l2 = ArrayList<JSONObject>()
 //
 //        completeMap.keys.forEach {
@@ -184,7 +190,8 @@ object FeedsPlayStatistics {
 //        completeMap.clear()
         val mutableSet1 = mapOf(
                 "stats" to l1,
-                "userID" to MyUserInfoManager.getInstance().uid
+                "userID" to MyUserInfoManager.getInstance().uid,
+                "platform" to 20
         )
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
@@ -197,7 +204,6 @@ object FeedsPlayStatistics {
                     if (MyLog.isDebugLogOpen()) {
                         U.getToastUtil().showShort("打点上报成功")
                     }
-
                 }
             }
         }

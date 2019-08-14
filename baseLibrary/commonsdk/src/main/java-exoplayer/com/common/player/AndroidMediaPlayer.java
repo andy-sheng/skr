@@ -45,7 +45,7 @@ public class AndroidMediaPlayer extends BasePlayer {
     private IPlayerNotSupport mIPlayerNotSupport;
 
     private boolean mMuted = false;
-    private long seekPos = -1;
+    private long pendingSeekPos = -1;
     private boolean bufferingOk = false;
 
     public AndroidMediaPlayer() {
@@ -110,11 +110,11 @@ public class AndroidMediaPlayer extends BasePlayer {
                     mHandler.removeMessages(MSG_DECREASE_VOLUME);
                     mHandler.sendEmptyMessageDelayed(MSG_DECREASE_VOLUME, 5000);
                 }
-                if (seekPos > 0) {
+                if (pendingSeekPos > 0) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            seekTo(seekPos);
+                            seekTo(pendingSeekPos);
                         }
                     });
                 }
@@ -159,10 +159,10 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                MyLog.d(TAG,"onBufferingUpdate  percent=" + percent);
-                if(percent>=100){
+                MyLog.d(TAG, "onBufferingUpdate  percent=" + percent);
+                if (percent >= 100) {
                     bufferingOk = true;
-                }else{
+                } else {
                     bufferingOk = false;
                 }
                 mCallback.onBufferingUpdate(mp, percent);
@@ -438,7 +438,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPath = null;
         mHasPrepared = false;
         bufferingOk = false;
-        seekPos = -1;
+        pendingSeekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -453,7 +453,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mPath = null;
         mHasPrepared = false;
         bufferingOk = false;
-        seekPos = -1;
+        pendingSeekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -470,7 +470,7 @@ public class AndroidMediaPlayer extends BasePlayer {
         mCallback = null;
         mView = null;
         mPath = null;
-        seekPos = -1;
+        pendingSeekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -480,9 +480,10 @@ public class AndroidMediaPlayer extends BasePlayer {
         if (mPlayer == null) {
             return;
         }
-        seekPos = msec;
         if (mHasPrepared) {
             mPlayer.seekTo((int) msec);
+        } else {
+            pendingSeekPos = msec;
         }
     }
 

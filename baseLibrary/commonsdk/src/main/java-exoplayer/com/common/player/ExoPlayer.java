@@ -20,15 +20,11 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.audio.AudioListener;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataRenderer;
 import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -44,7 +40,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.io.IOException;
 
@@ -76,6 +71,7 @@ public class ExoPlayer extends BasePlayer {
     private float mVolume = 1.0f;
     private boolean mHasPrepared = false;
     private boolean mMuted = false;
+    private long pendingSeekPos = -1;
     private boolean bufferingOk = false;
 
     public ExoPlayer() {
@@ -307,6 +303,14 @@ public class ExoPlayer extends BasePlayer {
                 }
                 mHasPrepared = true;
                 setVolume(1);
+                if (pendingSeekPos > 0) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            seekTo(pendingSeekPos);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -699,6 +703,7 @@ public class ExoPlayer extends BasePlayer {
         mPlayer.stop();
         mUrl = null;
         mHasPrepared = false;
+        pendingSeekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -710,6 +715,7 @@ public class ExoPlayer extends BasePlayer {
         }
         mPlayer.stop();
         mUrl = null;
+        pendingSeekPos = -1;
         mHasPrepared = false;
         stopMusicPlayTimeListener();
     }
@@ -730,7 +736,7 @@ public class ExoPlayer extends BasePlayer {
         mCallback = null;
         mView = null;
         mUrl = null;
-        mHasPrepared = false;
+        pendingSeekPos = -1;
         stopMusicPlayTimeListener();
     }
 
@@ -740,7 +746,11 @@ public class ExoPlayer extends BasePlayer {
         if (mPlayer == null) {
             return;
         }
-        mPlayer.seekTo(msec);
+        if(mHasPrepared){
+            mPlayer.seekTo(msec);
+        }else{
+            pendingSeekPos = msec;
+        }
     }
 
     @Override
