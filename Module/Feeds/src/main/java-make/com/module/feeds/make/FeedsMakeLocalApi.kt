@@ -56,6 +56,7 @@ object FeedsMakeLocalApi {
 
     fun delete(draftID: Long) {
         draftDBDao.deleteByKey(draftID)
+        EventBus.getDefault().post(FeedsDraftUpdateEvent())
     }
 
     fun deleteAll() {
