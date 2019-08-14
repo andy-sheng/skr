@@ -31,11 +31,10 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
-import com.module.feeds.event.FeedWatchChangeEvent
+import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -663,7 +662,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: FeedWatchChangeEvent) {
+    fun onEvent(event: FeedDetailChangeEvent) {
         // 数据要更新了
         event.model?.let {
             mAdapter?.updateModelFromDetail(it)

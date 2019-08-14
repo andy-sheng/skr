@@ -22,6 +22,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
@@ -73,7 +74,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         }
 
         override fun onTimeFlyMonitor(pos: Long, duration: Long) {
-            FeedsPlayStatistics.updateCurProgress(pos,duration)
+            FeedsPlayStatistics.updateCurProgress(pos, duration)
         }
     }
 
@@ -122,7 +123,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 打榜去
-                stop()
+                pause()
                 openFeedsMakeActivity(challengeID)
             }
         })
@@ -131,7 +132,7 @@ class FeedsDetailRankActivity : BaseActivity() {
             model?.let {
                 if (mAdapter.mCurrentPlayModel == it) {
                     // 暂停播放
-                    stop()
+                    pause()
                 } else {
                     // 开始播放
                     play(it)
@@ -140,7 +141,7 @@ class FeedsDetailRankActivity : BaseActivity() {
         }
         mAdapter.onClickItemListener = { model, _ ->
             model?.let {
-                stop()
+//                pause()
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withInt("feed_ID", it.feedID)
                         .withInt("from", 3)
@@ -148,6 +149,7 @@ class FeedsDetailRankActivity : BaseActivity() {
             }
         }
         initLoadData()
+        SinglePlayer.reset(playerTag)
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
@@ -160,10 +162,10 @@ class FeedsDetailRankActivity : BaseActivity() {
         }
     }
 
-    private fun stop() {
+    private fun pause() {
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
-        SinglePlayer.stop(playerTag)
+        SinglePlayer.pause(playerTag)
     }
 
 
@@ -227,7 +229,19 @@ class FeedsDetailRankActivity : BaseActivity() {
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
         MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
         if (!event.foreground) {
-            stop()
+            pause()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedDetailChangeEvent) {
+        event.model?.song?.let {
+            mAdapter.mDataList.forEachIndexed { _, feedModel ->
+                if (it.feedID == feedModel.song?.feedID && it.songID == feedModel.song?.songID) {
+                    play(feedModel)
+                    return@forEachIndexed
+                }
+            }
         }
     }
 

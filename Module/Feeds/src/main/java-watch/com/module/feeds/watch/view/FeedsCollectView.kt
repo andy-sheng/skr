@@ -31,7 +31,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.detail.FeedSongPlayModeManager
-import com.module.feeds.event.FeedSongPlayEvent
+import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedCollectListener
@@ -421,12 +421,12 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     @Subscribe
-    fun onEvent(event: FeedSongPlayEvent) {
+    fun onEvent(event: FeedDetailChangeEvent) {
         // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
         MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
-        event.song?.let {
+        event.model?.song?.let {
             mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
-                if (event.song.feedID == feedsCollectModel.song?.feedID && event.song.songID == feedsCollectModel.song?.songID) {
+                if (it.feedID == feedsCollectModel.song?.feedID && it.songID == feedsCollectModel.song?.songID) {
                     mTopPosition = index
                     mTopModel = feedsCollectModel
                     return@forEachIndexed
