@@ -659,6 +659,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun onPause() {
         super.onPause()
+        if (SinglePlayer.isPlaying) {
+            mResumeCall = {
+                startPlay()
+            }
+        } else {
+            mResumeCall = null
+        }
+
         pausePlay()
     }
 
