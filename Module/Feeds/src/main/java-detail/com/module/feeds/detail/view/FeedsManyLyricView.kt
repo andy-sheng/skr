@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers
 class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
 
     val TAG = "FeedsManyLyricView"
-    private var mManyLyricsView: ManyLyricsView? = null
+    var mManyLyricsView: ManyLyricsView? = null
     private var mFeedSongModel: FeedSongModel? = null
     private var mDisposable: Disposable? = null
     private var mIsStart: Boolean = false

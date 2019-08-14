@@ -918,7 +918,7 @@ public class ManyLyricsView extends AbstractLrcView {
     public boolean onTouchEvent(MotionEvent event) {
         int lrcStatus = getLrcStatus();
         if (!mTouchAble || lrcStatus != AbstractLrcView.LRCSTATUS_LRC) {
-            return true;
+            return false;
         }
 
         mGestureDetector.onTouchEvent(event);

@@ -332,6 +332,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
+                mFeedsCommonLyricView?.mAutoScrollLyricView?.lyricTv?.setOnClickListener {
+                    if (mSongControlArea?.visibility == View.VISIBLE) {
+                        mUiHandler.sendEmptyMessage(DELAY_HIDE_CONTROL_AREA)
+                    } else {
+                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                    }
+                }
+
                 mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
 
                 mSongManager = FeedSongPlayModeManager(mPlayType, cur, feedSongModels)
