@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_11_dp"
-        android:text="快唱"
+        android:text="翻唱"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintEnd_toEndOf="@+id/kuaichuan_iv"
