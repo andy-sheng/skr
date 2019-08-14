@@ -427,6 +427,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         event.model?.song?.let {
             mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
                 if (it.feedID == feedsCollectModel.song?.feedID && it.songID == feedsCollectModel.song?.songID) {
+                    bindPlayAreaData(index, feedsCollectModel, false)
                     mTopPosition = index
                     mTopModel = feedsCollectModel
                     return@forEachIndexed
