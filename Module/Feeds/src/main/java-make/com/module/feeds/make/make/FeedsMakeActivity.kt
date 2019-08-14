@@ -193,9 +193,9 @@ class FeedsMakeActivity : BaseActivity() {
                             songModel.songTpl = songTpl
                             songModel.challengeID = it.toLong()
                             songModel.workName = workName
-                            if (TextUtils.isEmpty(songModel?.songTpl?.songName)) {
-                                songModel?.songTpl?.songName = songModel.workName
-                            }
+//                            if (TextUtils.isEmpty(songModel?.songTpl?.songName)) {
+//                                songModel?.songTpl?.songName = songModel.workName
+//                            }
                             songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
 
                             mFeedsMakeModel?.songModel = songModel
@@ -613,7 +613,11 @@ class FeedsMakeActivity : BaseActivity() {
                             }
                             // 保存到草稿
                             j.join()
-                            U.getToastUtil().showShort("保存成功")
+                            if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
+                                U.getToastUtil().showShort("已存入快唱草稿")
+                            } else {
+                                U.getToastUtil().showShort("已存入打榜草稿")
+                            }
                             finish()
                         }
                     }

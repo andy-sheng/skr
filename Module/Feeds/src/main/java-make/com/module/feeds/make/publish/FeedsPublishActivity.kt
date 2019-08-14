@@ -195,7 +195,19 @@ class FeedsPublishActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        val displayName = mFeedsMakeModel?.songModel?.getDisplayName() ?: ""
+        val from = intent.getIntExtra("from", 0)
+        val displayName: String
+        if (from == 3) {
+            //从草稿箱进入的
+            // 有作品名了,优先显示作品名字
+            if (TextUtils.isEmpty(mFeedsMakeModel?.songModel?.workName)) {
+                displayName = mFeedsMakeModel?.songModel?.workName ?: ""
+            } else {
+                displayName = mFeedsMakeModel?.songModel?.getDisplayName() ?: ""
+            }
+        } else {
+            displayName = mFeedsMakeModel?.songModel?.getDisplayName() ?: ""
+        }
         worksNameEt.setText(displayName)
         worksNameEt.setSelection(displayName.length)
         // 默认的心情 和标签
@@ -433,7 +445,11 @@ class FeedsPublishActivity : BaseActivity() {
                 }
             }
             j.join()
-            U.getToastUtil().showShort("保存成功")
+            if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
+                U.getToastUtil().showShort("已存入快唱草稿")
+            } else {
+                U.getToastUtil().showShort("已存入打榜草稿")
+            }
             progressSkr.visibility = View.GONE
             finish()
         }

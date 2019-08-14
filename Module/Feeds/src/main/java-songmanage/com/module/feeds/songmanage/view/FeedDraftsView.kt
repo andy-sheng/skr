@@ -78,6 +78,7 @@ class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(a
                     } else {
                         sFeedsMakeModelHolder = model
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
+                                .withInt("from",3)
                                 .navigation()
                     }
                 }

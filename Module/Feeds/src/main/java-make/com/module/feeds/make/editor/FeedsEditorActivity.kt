@@ -450,7 +450,11 @@ class FeedsEditorActivity : BaseActivity() {
                             // 保存到草稿
                             // 保存到草稿
                             j.join()
-                            U.getToastUtil().showShort("保存成功")
+                            if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
+                                U.getToastUtil().showShort("已存入快唱草稿")
+                            } else {
+                                U.getToastUtil().showShort("已存入打榜草稿")
+                            }
                             setResult(Activity.RESULT_CANCELED)
                             finish()
                         }
