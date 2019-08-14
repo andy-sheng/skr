@@ -38,12 +38,19 @@ class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : R
     fun bindData(position: Int, model: FeedsMakeModel) {
         this.mPosition = position
         this.mModel = model
-        songNameTv.text = "《${model.songModel?.getDisplayName()}》"
+
         songDescTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model?.draftUpdateTs, System.currentTimeMillis())
         if (TextUtils.isEmpty(model?.audioUploadUrl)) {
             songSelectTv.text = "演唱"
+            songNameTv.text = "《${model.songModel?.getDisplayName()}》"
         } else {
             songSelectTv.text = "发布"
+            // 有作品名了,优先显示作品名字
+            if (TextUtils.isEmpty(model.songModel?.workName)) {
+                songNameTv.text = "《${model.songModel?.getDisplayName()}》"
+            } else {
+                songNameTv.text = "《${model.songModel?.workName}》"
+            }
         }
     }
 
