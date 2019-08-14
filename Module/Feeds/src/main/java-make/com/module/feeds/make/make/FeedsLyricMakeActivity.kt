@@ -16,11 +16,8 @@ import com.component.lyrics.LyricsManager
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.sFeedsMakeModelHolder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_LYRIC_MAKE)
@@ -31,6 +28,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
     lateinit var titleBar: CommonTitleBar
     lateinit var lyricRv: RecyclerView
     lateinit var lyricAdapter: FeedsLyricMakeAdapter
+
 
     var originLyric: String? = ""
     var originLyricThisTime: String? = ""
@@ -50,14 +48,14 @@ class FeedsLyricMakeActivity : BaseActivity() {
         lyricRv.layoutManager = LinearLayoutManager(this)
         lyricAdapter = FeedsLyricMakeAdapter()
         lyricRv.adapter = lyricAdapter
-        lyricRv.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+        lyricRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(newState==RecyclerView.SCROLL_STATE_DRAGGING){
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(this@FeedsLyricMakeActivity)
                 }
             }
@@ -72,6 +70,9 @@ class FeedsLyricMakeActivity : BaseActivity() {
             if (originLyricThisTime != sb.toString()) {
                 hasChange = true
             }
+            if (lyricAdapter.songName != mFeedsMakeModel?.songModel?.songTpl?.songNameChange) {
+                hasChange = true
+            }
             if (hasChange) {
                 tipsDialogView?.dismiss()
                 tipsDialogView = TipsDialogView.Builder(this@FeedsLyricMakeActivity)
@@ -80,7 +81,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
                         .setCancelBtnClickListener {
                             tipsDialogView?.dismiss()
                         }
-                        .setMessageTip("不保存歌词直接退出么?")
+                        .setMessageTip("确定要放弃已修改的内容退出么?")
                         .setConfirmBtnClickListener {
                             finish()
                         }
@@ -131,9 +132,13 @@ class FeedsLyricMakeActivity : BaseActivity() {
                 mFeedsMakeModel?.hasChangeLyric = true
             }
             if (originLyricThisTime != mFeedsMakeModel?.songModel?.songTpl?.lrcTxtStr) {
-                mFeedsMakeModel?.hasChangeLyricThisTime = true
+                mFeedsMakeModel?.hasChangeLyricOrSongNameThisTime = true
             }
-            mFeedsMakeModel?.songModel?.songTpl?.songName = lyricAdapter.songName
+            if(lyricAdapter.songName!=mFeedsMakeModel?.songModel?.songTpl?.songNameChange){
+                mFeedsMakeModel?.songModel?.songTpl?.songNameChange = lyricAdapter.songName
+                mFeedsMakeModel?.hasChangeLyricOrSongNameThisTime = true
+            }
+
             sFeedsMakeModelHolder = mFeedsMakeModel
             setResult(Activity.RESULT_OK)
             finish()
@@ -213,7 +218,7 @@ class FeedsLyricMakeActivity : BaseActivity() {
         }
         // 歌曲名不用展示原来的
         MyLog.d(TAG, "fillNewContentlist update")
-        lyricAdapter.setData(mFeedsMakeModel?.songModel?.songTpl?.songName ?: "", list)
+        lyricAdapter.setData(mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName()?:"", list)
     }
 
     override fun onResume() {

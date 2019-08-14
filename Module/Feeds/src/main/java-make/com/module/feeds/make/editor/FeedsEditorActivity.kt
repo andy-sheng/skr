@@ -141,12 +141,7 @@ class FeedsEditorActivity : BaseActivity() {
         cdRotateAnimator?.interpolator = LinearInterpolator()
         cdRotateAnimator?.repeatCount = Animation.INFINITE
 
-        val songName = mFeedsMakeModel?.songModel?.songTpl?.songName
-        if (!TextUtils.isEmpty(songName)) {
-            titleBar?.centerTextView?.text = songName
-        } else {
-            titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
-        }
+        titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.getDisplayName()
 
         titleBar?.leftImageButton?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -436,7 +431,7 @@ class FeedsEditorActivity : BaseActivity() {
     }
 
     private fun finishPage() {
-        if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
+        if (mFeedsMakeModel?.hasChangeLyricOrSongNameThisTime == true) {
             val tipsDialogView = TipsDialogView.Builder(this@FeedsEditorActivity)
                     .setConfirmTip("保存")
                     .setCancelTip("直接退出")

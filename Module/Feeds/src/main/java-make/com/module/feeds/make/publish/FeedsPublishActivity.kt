@@ -193,17 +193,11 @@ class FeedsPublishActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        if (!TextUtils.isEmpty(mFeedsMakeModel?.songModel?.workName)) {
-            worksNameEt.setText(mFeedsMakeModel?.songModel?.workName)
-            worksNameEt.setSelection(mFeedsMakeModel?.songModel?.workName?.length ?: 0)
-        } else {
-            worksNameEt.setText(mFeedsMakeModel?.songModel?.songTpl?.songName)
-            worksNameEt.setSelection(mFeedsMakeModel?.songModel?.songTpl?.songName?.length ?: 0)
-        }
-
+        val displayName = mFeedsMakeModel?.songModel?.getDisplayName() ?: ""
+        worksNameEt.setText(displayName)
+        worksNameEt.setSelection(displayName.length)
         // 默认的心情 和标签
         sayEdit.setText(mFeedsMakeModel?.songModel?.title)
-
     }
 
     private suspend fun getReader(): LyricsReader {
@@ -292,7 +286,7 @@ class FeedsPublishActivity : BaseActivity() {
 
         val tagsIds = ArrayList<FeedTagModel>()
         tagClassifyTf.selectedList.forEach {
-            if(it<rankList?.size ?:0){
+            if (it < rankList?.size ?: 0) {
                 rankList?.get(it)?.let {
                     val model = FeedTagModel()
                     model.tagID = it.tagID ?: 0

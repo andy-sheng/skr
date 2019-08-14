@@ -38,11 +38,9 @@ import com.dialog.view.TipsDialogView
 import com.engine.EngineEvent
 import com.engine.Params
 import com.module.RouterConstants
-import com.module.feeds.BuildConfig
 import com.module.feeds.R
 import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
-import com.module.feeds.songmanage.model.FeedSongInfoModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedSongTpl
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -154,7 +152,7 @@ class FeedsMakeActivity : BaseActivity() {
                     mFeedsMakeModel?.withBgm = false
                     U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm", false)
                     (titleBar?.rightCustomView as TextView).text = "清唱模式"
-                    initLyricView()
+                    initViewByData()
                 } else {
                     // 清唱变伴奏模式
                     // 是否插着有限耳机
@@ -164,7 +162,7 @@ class FeedsMakeActivity : BaseActivity() {
                             mFeedsMakeModel?.withBgm = true
                             U.getPreferenceUtils().setSettingBoolean("feeds_with_bgm", true)
                             (titleBar?.rightCustomView as TextView).text = "伴奏模式"
-                            initLyricView()
+                            initViewByData()
                         } else {
                             U.getToastUtil().showShort("该首歌曲仅支持清唱模式")
                         }
@@ -223,7 +221,7 @@ class FeedsMakeActivity : BaseActivity() {
              * 因为是引用传递，所以重新初始化一下相关属性
              */
             mFeedsMakeModel?.enterPageFrom = from
-            mFeedsMakeModel?.hasChangeLyricThisTime = false
+            mFeedsMakeModel?.hasChangeLyricOrSongNameThisTime = false
             mFeedsMakeModel?.recordingClick = false
             mFeedsMakeModel?.recordOffsetTs = 0
             mFeedsMakeModel?.firstLyricShiftTs = 0
@@ -277,7 +275,7 @@ class FeedsMakeActivity : BaseActivity() {
             (titleBar?.rightCustomView as TextView).text = "清唱模式"
         }
 
-        initLyricView()
+        initViewByData()
         // 有伴奏模式提前下载伴奏模式
         mFeedsMakeModel?.songModel?.songTpl?.bgm.let {
             bgmFileJob = async(Dispatchers.IO) {
@@ -315,13 +313,8 @@ class FeedsMakeActivity : BaseActivity() {
         }
     }
 
-    private fun initLyricView() {
-        val songName = mFeedsMakeModel?.songModel?.songTpl?.songName
-        if (!TextUtils.isEmpty(songName)) {
-            titleBar?.centerTextView?.text = songName
-        } else {
-            titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.workName
-        }
+    private fun initViewByData() {
+        titleBar?.centerTextView?.text = mFeedsMakeModel?.songModel?.getDisplayName()
         qcProgressBarView?.visibility = View.GONE
         voiceScaleView?.visibility = View.GONE
         manyLyricsView?.visibility = View.GONE
@@ -574,7 +567,7 @@ class FeedsMakeActivity : BaseActivity() {
                 // 改完歌词
                 mFeedsMakeModel = sFeedsMakeModelHolder
                 sFeedsMakeModelHolder = null
-                initLyricView()
+                initViewByData()
             } else {
                 finish()
             }
@@ -603,7 +596,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun finishPage() {
-        if (mFeedsMakeModel?.hasChangeLyricThisTime == true) {
+        if (mFeedsMakeModel?.hasChangeLyricOrSongNameThisTime == true) {
             val tipsDialogView = TipsDialogView.Builder(this@FeedsMakeActivity)
                     .setConfirmTip("保存")
                     .setCancelTip("直接退出")
