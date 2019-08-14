@@ -285,7 +285,7 @@ class FeedsPublishActivity : BaseActivity() {
     private fun setValueFromUi() {
         mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
 
-        mFeedsMakeModel?.songModel?.songTpl?.songNameChange = worksNameEt.text.toString()
+        mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
 
         val tagsIds = ArrayList<FeedTagModel>()
         tagClassifyTf.selectedList.forEach {

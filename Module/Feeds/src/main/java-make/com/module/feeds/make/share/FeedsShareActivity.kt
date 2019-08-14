@@ -71,9 +71,7 @@ class FeedsShareActivity : BaseActivity() {
                         .setCircle(true)
                         .build())
         nameTv.text = MyUserInfoManager.getInstance().nickName
-        mFeedsMakeModel?.songModel?.workName?.let {
-            songTv.text = "《$it》"
-        }
+        songTv.text = "《${mFeedsMakeModel?.songModel?.workName}》"
 
         ivBack.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
