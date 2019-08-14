@@ -282,7 +282,8 @@ class FeedsPublishActivity : BaseActivity() {
 
     private fun setValueFromUi() {
         mFeedsMakeModel?.songModel?.title = sayEdit.text.toString()
-        mFeedsMakeModel?.songModel?.workName = worksNameEt.text.toString()
+
+        mFeedsMakeModel?.songModel?.songTpl?.songNameChange = worksNameEt.text.toString()
 
         val tagsIds = ArrayList<FeedTagModel>()
         tagClassifyTf.selectedList.forEach {
@@ -329,7 +330,7 @@ class FeedsPublishActivity : BaseActivity() {
                         "lrcURL" to customLrcUrl,
                         "playDurMs" to mFeedsMakeModel?.recordDuration,
                         "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.songName,
+                        "songName" to mFeedsMakeModel?.songModel?.getDisplayName(),
                         "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
                         "tagIDs" to tagsIds,
                         "title" to mFeedsMakeModel?.songModel?.title,
@@ -347,7 +348,7 @@ class FeedsPublishActivity : BaseActivity() {
                         "lrcURL" to customLrcUrl,
                         "playDurMs" to mFeedsMakeModel?.recordDuration,
                         "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.songName,
+                        "songName" to mFeedsMakeModel?.songModel?.getDisplayName(),
                         "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
                         "tagIDs" to tagsIds,
                         "title" to mFeedsMakeModel?.songModel?.title,
