@@ -175,15 +175,8 @@ object LyricsManager {
                 }
             } else {
                 MyLog.w(TAG, "playLyric is exist")
-                var source: BufferedSource? = null
-                try {
-                    source = Okio.buffer(Okio.source(file))
-                    emitter.onNext(source!!.readUtf8())
-                } catch (e: Exception) {
-                    MyLog.e(TAG, e)
-                    emitter.onNext("歌词buffer读取失败")
-                }
-
+                val content = U.getIOUtils().readFile(file)
+                emitter.onNext(content)
             }
             emitter.onComplete()
         })

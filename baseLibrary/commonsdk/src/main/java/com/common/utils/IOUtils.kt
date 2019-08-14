@@ -2,6 +2,8 @@ package com.common.utils
 
 import android.text.TextUtils
 import com.common.log.MyLog
+import okio.BufferedSink
+import okio.BufferedSource
 import okio.Okio
 import java.io.File
 import java.nio.charset.Charset
@@ -11,24 +13,29 @@ class IOUtils {
         if (TextUtils.isEmpty(content)) {
             return
         }
+        var bufferSink: BufferedSink? = null
         try {
-            val bufferSink = Okio.buffer(Okio.sink(file))
+            bufferSink = Okio.buffer(Okio.sink(file))
             bufferSink.writeString(content, Charset.forName("utf-8"))
-            bufferSink.close()
         } catch (e: Exception) {
             MyLog.e(e)
+        } finally {
+            bufferSink?.close()
         }
     }
 
     fun readFile(file: File): String {
+        var bufferSink: BufferedSource? = null
         try {
-            val bufferSink = Okio.buffer(Okio.source(file))
+            bufferSink = Okio.buffer(Okio.source(file))
             val r = bufferSink.readUtf8()
-            bufferSink.close()
             return r
         } catch (e: Exception) {
             MyLog.e(e)
+        } finally {
+            bufferSink?.close()
         }
+
         return ""
     }
 }
