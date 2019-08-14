@@ -509,6 +509,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun setModelData() {
+        mSeekBar?.max = mFeedsWatchModel?.song?.playDurMs ?: 60*1000
         mSeekBar?.progress = 0
         mPassTimeTv?.text = "00:00"
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
