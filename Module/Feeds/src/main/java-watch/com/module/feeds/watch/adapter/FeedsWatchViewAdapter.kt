@@ -57,10 +57,6 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                 if (holder is FeedsWatchViewHolder) {
                     holder.hideCompleteArea()
                 }
-            } else if (type == REFRESH_TYPE_COLLECT) {
-                if (holder is FeedsWatchViewHolder) {
-                    holder.refreshCollects(position, mDataList[position])
-                }
             }
 
             if (holder is FeedViewHolder) {
@@ -85,6 +81,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                     } else {
                         holder.resumeWhenBufferingEnd(position, mDataList[position])
                     }
+                } else if (type == REFRESH_TYPE_COLLECT) {
+                    holder.refreshCollects(position, mDataList[position])
                 }
             }
         }
@@ -203,17 +201,17 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
     fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
         if (mCurrentPlayModel != model || !playing) {
-            var lastPos:Int? = null
-            if(mCurrentPlayModel!=model){
+            var lastPos: Int? = null
+            if (mCurrentPlayModel != model) {
                 mCurrentPlayModel = model
                 lastPos = mCurrentPlayPosition
                 mCurrentPlayPosition = pos
             }
             playing = true
-            MyLog.d("FeedsWatchViewAdapter","now pos=$pos")
+            MyLog.d("FeedsWatchViewAdapter", "now pos=$pos")
             notifyItemChanged(pos, REFRESH_TYPE_PLAY)
             lastPos?.let {
-                MyLog.d("FeedsWatchViewAdapter","last pos=$it")
+                MyLog.d("FeedsWatchViewAdapter", "last pos=$it")
                 uiHanlder.post {
                     notifyItemChanged(it, REFRESH_TYPE_PLAY)
                 }
