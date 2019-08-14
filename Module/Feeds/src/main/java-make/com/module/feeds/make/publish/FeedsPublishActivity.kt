@@ -414,6 +414,7 @@ class FeedsPublishActivity : BaseActivity() {
     }
 
     private fun finishPage() {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
         val tipsDialogView = TipsDialogView.Builder(this@FeedsPublishActivity)
                 .setConfirmTip("保存")
                 .setCancelTip("直接退出")
