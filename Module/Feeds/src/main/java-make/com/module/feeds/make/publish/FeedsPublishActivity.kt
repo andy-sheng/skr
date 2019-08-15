@@ -447,7 +447,7 @@ class FeedsPublishActivity : BaseActivity() {
             }
             j.join()
             if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
-                U.getToastUtil().showShort("已存入快唱草稿")
+                U.getToastUtil().showShort("已存入翻唱草稿")
             } else {
                 U.getToastUtil().showShort("已存入打榜草稿")
             }
