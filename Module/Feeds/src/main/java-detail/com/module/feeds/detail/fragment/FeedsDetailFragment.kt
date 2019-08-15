@@ -83,6 +83,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCollectionIv: ExImageView? = null
     var mShareIv: ExImageView? = null
     var mBtnBack: ImageView? = null
+    var mPlayTypeIv: ImageView? = null
     var mPlayLastIv: ImageView? = null
     var mPlayNextIv: ImageView? = null
     var mSongNameTv: ExTextView? = null
@@ -151,8 +152,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 0f, 1f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 0f, 1f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 0f, 1f)
+            val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 0f, 1f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.play(animator1).with(animator2).with(animator3).with(animator4)
             animSet.setDuration(300)
             animSet.start()
 
@@ -160,8 +162,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 1f, 0f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 1f, 0f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 1f, 0f)
+            val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 1f, 0f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.play(animator1).with(animator2).with(animator3).with(animator4)
             animSet.setDuration(300)
             animSet.start()
             mUiHandler.sendEmptyMessageDelayed(HIDE_CONTROL_AREA, 300)
@@ -264,6 +267,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mBtnBack = rootView.findViewById(R.id.btn_back) as ImageView
         mSongNameTv = rootView.findViewById(R.id.song_name_tv)
         mMoreTv = rootView.findViewById(R.id.more_iv)
+        mPlayTypeIv = rootView.findViewById(R.id.play_type_iv)
 
         mPassTimeTv = rootView.findViewById(R.id.pass_time_tv)
         mLastTimeTv = rootView.findViewById(R.id.last_time_tv)
@@ -335,6 +339,26 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
+                mPlayTypeIv?.setOnClickListener {
+                    when (mSongManager?.mMode) {
+                        FeedSongPlayModeManager.PlayMode.ORDER -> {
+                            mPlayType = FeedSongPlayModeManager.PlayMode.SINGLE
+                            mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
+                            mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.SINGLE)
+                        }
+                        FeedSongPlayModeManager.PlayMode.SINGLE -> {
+                            mPlayType = FeedSongPlayModeManager.PlayMode.RANDOM
+                            mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
+                            mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.RANDOM)
+                        }
+                        FeedSongPlayModeManager.PlayMode.RANDOM -> {
+                            mPlayType = FeedSongPlayModeManager.PlayMode.ORDER
+                            mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
+                            mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.ORDER)
+                        }
+                    }
+                }
+
                 mFeedsCommonLyricView?.mAutoScrollLyricView?.lyricTv?.setOnClickListener {
                     if (mSongControlArea?.visibility == View.VISIBLE) {
                         mUiHandler.sendEmptyMessage(DELAY_HIDE_CONTROL_AREA)
@@ -346,6 +370,18 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
 
                 mSongManager = FeedSongPlayModeManager(mPlayType, cur, feedSongModels)
+
+                when (mPlayType) {
+                    FeedSongPlayModeManager.PlayMode.ORDER -> {
+                        mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
+                    }
+                    FeedSongPlayModeManager.PlayMode.SINGLE -> {
+                        mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
+                    }
+                    FeedSongPlayModeManager.PlayMode.RANDOM -> {
+                        mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
+                    }
+                }
             }
         } else {
             mSongControlArea.visibility = View.GONE

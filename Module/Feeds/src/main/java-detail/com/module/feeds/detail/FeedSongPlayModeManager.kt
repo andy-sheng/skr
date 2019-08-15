@@ -25,7 +25,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     private var mShufflePosition: Int = 0
 
     //默认顺序播放
-    private var mMode: PlayMode = PlayMode.SINGLE
+    var mMode: PlayMode = PlayMode.SINGLE
 
     init {
         mCur = cur
