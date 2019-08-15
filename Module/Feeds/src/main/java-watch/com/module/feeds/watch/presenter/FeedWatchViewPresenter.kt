@@ -192,7 +192,7 @@ class FeedWatchViewPresenter(val view: IFeedsWatchView, private val type: Int) :
             map["like"] = !model.isCollected
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { mFeedServerApi.collectFeed(body) }
+            val result = subscribe(RequestControl("collectFeed",ControlType.CancelThis)) { mFeedServerApi.collectFeed(body) }
             if (result.errno == 0) {
                 model.isCollected = !model.isCollected
                 EventBus.getDefault().post(FeedsCollectChangeEvent(model.feedID, model.isCollected))
