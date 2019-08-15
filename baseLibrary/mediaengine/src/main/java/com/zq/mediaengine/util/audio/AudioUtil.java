@@ -33,11 +33,15 @@ public class AudioUtil {
                 .VERSION_CODES.JELLY_BEAN_MR1) {
             AudioManager audioManager = (AudioManager) context.getSystemService(
                     Context.AUDIO_SERVICE);
-            int nativeSampleRate = Integer.parseInt(audioManager.getProperty(
-                    AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
-            if (sampleRate == nativeSampleRate) {
-                atomSize = Integer.parseInt(audioManager.getProperty(AudioManager
-                        .PROPERTY_OUTPUT_FRAMES_PER_BUFFER));
+            try {
+                int nativeSampleRate = Integer.parseInt(audioManager.getProperty(
+                        AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
+                if (sampleRate == nativeSampleRate) {
+                    atomSize = Integer.parseInt(audioManager.getProperty(AudioManager
+                            .PROPERTY_OUTPUT_FRAMES_PER_BUFFER));
+                }
+            }catch (Exception e){
+                MyLog.e(e);
             }
         }
         return atomSize;

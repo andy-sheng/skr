@@ -55,6 +55,7 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
 
 
 class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context!!), IFeedsWatchView, IPersonFeedsWall, CoroutineScope by MainScope() {
@@ -323,11 +324,15 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 if (mAdapter?.playing == true) {
                     mAdapter?.updatePlayProgress(pos, duration)
                     mAdapter?.mCurrentPlayPosition?.let { position ->
-                        val holder = mRecyclerView.findViewHolderForAdapterPosition(position)
-                        if (holder is FeedViewHolder?) {
-                            mAdapter?.mCurrentPlayModel?.let { model ->
-                                holder?.playLyric(position, model)
+                        try {
+                            val holder = mRecyclerView.findViewHolderForAdapterPosition(position)
+                            if (holder is FeedViewHolder?) {
+                                mAdapter?.mCurrentPlayModel?.let { model ->
+                                    holder?.playLyric(position, model)
+                                }
                             }
+                        }catch (e:Exception){
+                            MyLog.e(e)
                         }
                     }
 
