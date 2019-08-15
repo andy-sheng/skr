@@ -475,6 +475,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         mProducationWallView = new ProducationWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
                     if (container.indexOfChild(mProducationWallView) == -1) {
+                        if (mProducationWallView.getParent() != null) {
+                            ((ViewGroup) mProducationWallView.getParent()).removeView(mProducationWallView);
+                        }
                         container.addView(mProducationWallView);
                     }
                     return mProducationWallView;
