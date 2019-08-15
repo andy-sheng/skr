@@ -10,6 +10,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -53,8 +54,8 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             }
         })
 
-        mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mCollectTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
                 listener?.onClickCollectListener(mPosition, model)
             }
         })

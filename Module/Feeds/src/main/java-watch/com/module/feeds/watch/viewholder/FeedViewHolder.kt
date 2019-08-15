@@ -11,6 +11,7 @@ import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.component.person.utils.StringFromatUtils
@@ -50,8 +51,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             }
         })
 
-        mLikeNumTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mLikeNumTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 listener?.onClickLikeListener(mPosition, model)
             }
         })
@@ -81,8 +82,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             }
         })
 
-        mCollectIconTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mCollectIconTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 listener?.onClickCollectListener(mPosition, model)
             }
         })
