@@ -42,7 +42,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.detail.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.FeedCommentBoardEvent

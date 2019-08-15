@@ -5,12 +5,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
 import com.common.utils.FragmentUtils
 import com.common.utils.U
-import com.component.person.OtherPersonActivity
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.detail.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.fragment.FeedsDetailFragment
-import com.module.feeds.watch.model.FeedsWatchModel
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {

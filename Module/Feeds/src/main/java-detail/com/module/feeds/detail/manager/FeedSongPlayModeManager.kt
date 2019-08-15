@@ -1,4 +1,4 @@
-package com.module.feeds.detail
+package com.module.feeds.detail.manager
 
 import com.module.feeds.watch.model.FeedSongModel
 import java.util.*
@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
  *
  *  提供不同模式的上一首 下一首逻辑
  */
-class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>) {
+class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>) : IPlayModeManager {
     private var mCur: FeedSongModel? = null
 
     private var mOriginalSongList = ArrayList<FeedSongModel>()
@@ -56,7 +56,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
-    fun changeMode(mode: PlayMode) {
+    override fun changeMode(mode: PlayMode) {
         val lastMode = mMode
         mMode = mode
         if (mCur == null) {
@@ -83,7 +83,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
-    fun getNextSong(userAction: Boolean): FeedSongModel? {
+    override fun getNextSong(userAction: Boolean): FeedSongModel? {
         if (mCur == null) {
             return getFirstSongWhenCurNull()
         }
@@ -115,7 +115,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         return FeedSongModel()
     }
 
-    fun getPreSong(userAction: Boolean): FeedSongModel? {
+    override fun getPreSong(userAction: Boolean): FeedSongModel? {
         if (mCur == null) {
             return getFirstSongWhenCurNull()
         }
