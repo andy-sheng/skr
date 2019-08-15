@@ -35,8 +35,8 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     private val mPlayAgainTv: ExTextView = itemView.findViewById(R.id.play_again_tv)
 
     init {
-        mHitIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mHitIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
                 StatisticsAdapter.recordCountEvent("music_recommend", "challenge", null)
                 listener?.onClickHitListener(model)
             }
@@ -48,8 +48,8 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             }
         })
 
-        mShareTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mShareTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 listener?.onClickShareListener(mPosition, model)
             }
         })
@@ -60,8 +60,8 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             }
         })
 
-        mPlayAgainTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mPlayAgainTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 // 触发上一次打点统计
                 FeedsPlayStatistics.setCurPlayMode(0)
                 listener?.onClickCDListener(mPosition, model)

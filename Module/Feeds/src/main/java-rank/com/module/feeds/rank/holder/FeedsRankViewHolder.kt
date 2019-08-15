@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -35,8 +36,8 @@ class FeedsRankViewHolder(item: View, val listener: FeedsRankAdapter.Listener) :
             }
         })
 
-        mHitIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mHitIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 listener.onClickHit(mPosition, mModel)
             }
         })

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.feeds.R
@@ -22,8 +23,8 @@ class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : R
 
     init {
 
-        songSelectTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        songSelectTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 listener.onClickSing(mPosition, mModel)
             }
         })

@@ -44,9 +44,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     var model: FeedsWatchModel? = null
 
     init {
-
-        mMoreIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mMoreIv.setOnClickListener(object : DebounceViewClickListener(){
+            override fun clickValid(view: View?) {
                 listener?.onClickMoreListener(mPosition, model)
             }
         })
@@ -63,8 +62,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             }
         })
 
-        mTagArea.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        mTagArea.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 StatisticsAdapter.recordCountEvent("music_recommend", "rank", null)
                 listener?.onclickRankListener(model)
             }
