@@ -1,36 +1,33 @@
 package com.module.feeds.watch.view
 
 import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import com.common.base.BaseFragment
-import com.module.feeds.R
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import android.widget.TextView
-import com.facebook.drawee.view.SimpleDraweeView
-import com.common.view.ex.ExImageView
 import android.support.constraint.Group
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
-import com.alibaba.android.arouter.launcher.ARouter
+import android.widget.TextView
+import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.log.MyLog
-import com.common.player.*
+import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExImageView
 import com.component.busilib.callback.EmptyCallback
+import com.facebook.drawee.view.SimpleDraweeView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import com.module.RouterConstants
+import com.module.feeds.R
+import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.IPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
@@ -39,9 +36,12 @@ import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import kotlin.collections.ArrayList
 
 /**
  * 收藏view
@@ -113,13 +113,22 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 // 跳到详情页面
                 model?.let {
                     mIsNeedResumePlay = true
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                            .withInt("feed_ID", it.feedID)
-                            .withInt("from", 2)
-                            .withSerializable("playType", mCurrentType)
-                            .navigation()
-                }
+                    fragment?.activity?.let { fragmentActivity ->
+                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, 2, mCurrentType, object : IPlayModeManager {
+                            override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
+                                mSongManager?.changeMode(mode)
+                            }
 
+                            override fun getNextSong(userAction: Boolean): FeedSongModel? {
+                                return mSongManager?.getNextSong(userAction)
+                            }
+
+                            override fun getPreSong(userAction: Boolean): FeedSongModel? {
+                                return mSongManager?.getPreSong(userAction)
+                            }
+                        })
+                    }
+                }
             }
 
             override fun onClickPlayListener(model: FeedsCollectModel?, position: Int) {

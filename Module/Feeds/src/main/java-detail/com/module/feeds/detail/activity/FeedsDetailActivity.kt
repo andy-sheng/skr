@@ -24,6 +24,21 @@ class FeedsDetailActivity : BaseActivity() {
         val FROM_SCHEME = 4 // scheme
         val FROM_COMMENT_LIKE = 5  //评论或赞
         var MANAGER: IPlayModeManager? = null
+
+        fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: IPlayModeManager?) {
+            MANAGER = playModeManager
+            val intent = Intent(activity, FeedsDetailActivity::class.java)
+            intent.putExtra("feed_ID", feedID)
+
+            from?.let {
+                intent.putExtra("from", from)
+            }
+
+            playType?.let {
+                intent.putExtra("playType", playType)
+            }
+            activity.startActivity(intent)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,20 +81,5 @@ class FeedsDetailActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return false
-    }
-
-    fun openActivity(activity: Activity, playModeManager: IPlayModeManager?, feedID: Int, from: String, playType: FeedSongPlayModeManager.PlayMode?) {
-        MANAGER = playModeManager
-        val intent = Intent(activity, FeedsDetailActivity::class.java)
-        intent.putExtra("feed_ID", feedID)
-
-        from?.let {
-            intent.putExtra("from", from)
-        }
-
-        playType?.let {
-            intent.putExtra("playType", playType)
-        }
-        activity.startActivity(intent)
     }
 }
