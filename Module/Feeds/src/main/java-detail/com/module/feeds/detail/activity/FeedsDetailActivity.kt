@@ -1,5 +1,7 @@
 package com.module.feeds.detail.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
@@ -7,8 +9,9 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.fragment.FeedsDetailFragment
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.IPlayModeManager
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {
@@ -20,6 +23,7 @@ class FeedsDetailActivity : BaseActivity() {
         val FROM_FEED_RANK = 3     //排行
         val FROM_SCHEME = 4 // scheme
         val FROM_COMMENT_LIKE = 5  //评论或赞
+        var MANAGER: IPlayModeManager? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +55,9 @@ class FeedsDetailActivity : BaseActivity() {
                 .addDataBeforeAdd(0, feedID)
                 .addDataBeforeAdd(1, from)
                 .addDataBeforeAdd(2, playType)
+                .addDataBeforeAdd(3, MANAGER)
                 .build())
-
+        MANAGER = null
     }
 
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
@@ -61,5 +66,20 @@ class FeedsDetailActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    fun openActivity(activity: Activity, playModeManager: IPlayModeManager?, feedID: Int, from: String, playType: FeedSongPlayModeManager.PlayMode?) {
+        MANAGER = playModeManager
+        val intent = Intent(activity, FeedsDetailActivity::class.java)
+        intent.putExtra("feed_ID", feedID)
+
+        from?.let {
+            intent.putExtra("from", from)
+        }
+
+        playType?.let {
+            intent.putExtra("playType", playType)
+        }
+        activity.startActivity(intent)
     }
 }

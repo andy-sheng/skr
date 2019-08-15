@@ -42,11 +42,12 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.FeedCommentBoardEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.IPlayModeManager
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedCommentMoreDialog
@@ -798,6 +799,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
+    var manager: IPlayModeManager? = null
+
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
             mFeedID = (data as Int?) ?: -1
@@ -806,6 +809,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         } else if (type == 2) {
             mPlayType = (data as FeedSongPlayModeManager.PlayMode?)
                     ?: FeedSongPlayModeManager.PlayMode.ORDER
+        } else if (type == 3) {
+            data?.let {
+                manager = data as IPlayModeManager
+            }
         }
     }
 
@@ -835,10 +842,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
+        manager = null
 
         EventBus.getDefault().post(FeedDetailChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
         }))
-
     }
 }
