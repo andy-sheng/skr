@@ -332,6 +332,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     val newModel = mSongManager?.getNextSong(true)
                     if (newModel == null) {
                         latestActionView = null
+                        U.getToastUtil().showShort("已经最后一首了")
                     } else {
                         newModel?.feedID?.let {
                             tryLoadNewFeed(it)
