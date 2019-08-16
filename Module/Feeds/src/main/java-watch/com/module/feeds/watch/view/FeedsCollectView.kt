@@ -26,8 +26,8 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
-import com.module.feeds.detail.manager.IPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
@@ -114,7 +114,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 model?.let {
                     mIsNeedResumePlay = true
                     fragment?.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, 2, mCurrentType, object : IPlayModeManager {
+                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, 2, mCurrentType, object : AbsPlayModeManager() {
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
                                 mSongManager?.changeMode(mode)
                             }

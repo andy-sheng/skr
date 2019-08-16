@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
  *
  *  提供不同模式的上一首 下一首逻辑
  */
-class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>) : IPlayModeManager {
+class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>) : AbsPlayModeManager() {
     private var mCur: FeedSongModel? = null
 
     private var mOriginalSongList = ArrayList<FeedSongModel>()

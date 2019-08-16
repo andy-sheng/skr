@@ -11,7 +11,7 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
-import com.module.feeds.detail.manager.IPlayModeManager
+import com.module.feeds.detail.manager.AbsPlayModeManager
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {
@@ -23,9 +23,9 @@ class FeedsDetailActivity : BaseActivity() {
         val FROM_FEED_RANK = 3     //排行
         val FROM_SCHEME = 4 // scheme
         val FROM_COMMENT_LIKE = 5  //评论或赞
-        var MANAGER: IPlayModeManager? = null
+        var MANAGER: AbsPlayModeManager? = null
 
-        fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: IPlayModeManager?) {
+        fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
             MANAGER = playModeManager
             val intent = Intent(activity, FeedsDetailActivity::class.java)
             intent.putExtra("feed_ID", feedID)

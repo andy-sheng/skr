@@ -47,7 +47,7 @@ import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.FeedCommentBoardEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
-import com.module.feeds.detail.manager.IPlayModeManager
+import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedCommentMoreDialog
@@ -112,7 +112,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
     lateinit var mSongControlArea: Group
     var mRefuseModel: FirstLevelCommentModel? = null
-    var mSongManager: IPlayModeManager? = null
+    var mSongManager: AbsPlayModeManager? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
@@ -845,7 +845,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     ?: FeedSongPlayModeManager.PlayMode.ORDER
         } else if (type == 3) {
             data?.let {
-                mSongManager = data as IPlayModeManager
+                mSongManager = data as AbsPlayModeManager
             }
         }
     }
