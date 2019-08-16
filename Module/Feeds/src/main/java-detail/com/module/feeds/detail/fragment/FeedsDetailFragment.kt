@@ -112,7 +112,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
     lateinit var mSongControlArea: Group
     var mRefuseModel: FirstLevelCommentModel? = null
-    var mSongManager: FeedSongPlayModeManager? = null
+    var mSongManager: IPlayModeManager? = null
 
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
@@ -298,7 +298,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsDetailPresenter = FeedsDetailPresenter(this)
         addPresent(mFeedsDetailPresenter)
 
-        if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+        if (mSongManager != null) {
             launch {
                 // 读收藏
                 val collectList = async(Dispatchers.IO) {
@@ -341,7 +341,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 }
 
                 mPlayTypeIv?.setOnClickListener {
-                    when (mSongManager?.mMode) {
+                    when (mSongManager?.getCurMode()) {
                         FeedSongPlayModeManager.PlayMode.ORDER -> {
                             mPlayType = FeedSongPlayModeManager.PlayMode.SINGLE
                             mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
@@ -835,8 +835,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
-    var manager: IPlayModeManager? = null
-
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
             mFeedID = (data as Int?) ?: -1
@@ -847,7 +845,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     ?: FeedSongPlayModeManager.PlayMode.ORDER
         } else if (type == 3) {
             data?.let {
-                manager = data as IPlayModeManager
+                mSongManager = data as IPlayModeManager
             }
         }
     }
@@ -878,7 +876,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommonLyricView?.destroy()
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
-        manager = null
+        mSongManager = null
 
         EventBus.getDefault().post(FeedDetailChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0

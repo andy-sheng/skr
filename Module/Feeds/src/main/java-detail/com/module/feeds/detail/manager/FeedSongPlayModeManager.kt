@@ -143,6 +143,10 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         return FeedSongModel()
     }
 
+    override fun getCurMode(): PlayMode {
+        return mMode
+    }
+
 
     private fun getFirstSongWhenCurNull(): FeedSongModel? {
         when (mMode) {

@@ -6,4 +6,5 @@ interface IPlayModeManager {
     fun changeMode(mode: FeedSongPlayModeManager.PlayMode)
     fun getNextSong(userAction: Boolean): FeedSongModel?
     fun getPreSong(userAction: Boolean): FeedSongModel?
+    fun getCurMode(): FeedSongPlayModeManager.PlayMode
 }

@@ -126,6 +126,10 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                             override fun getPreSong(userAction: Boolean): FeedSongModel? {
                                 return mSongManager?.getPreSong(userAction)
                             }
+
+                            override fun getCurMode(): FeedSongPlayModeManager.PlayMode {
+                                return mSongManager!!.getCurMode()
+                            }
                         })
                     }
                 }
