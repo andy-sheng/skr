@@ -144,6 +144,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                             }
                         })
                     }
+
+                    mSongManager?.setCurrentPlayModel(it.song)
                 }
             }
 
