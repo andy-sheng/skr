@@ -11,7 +11,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedsRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
@@ -73,7 +73,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
                 // 直接去打榜
-                openFeedsMakeActivity(model?.challengeID)
+                openFeedsMakeActivityFromChallenge(model?.challengeID)
             }
 
         })

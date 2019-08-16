@@ -37,7 +37,7 @@ import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
-import com.module.feeds.make.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
@@ -187,7 +187,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
             override fun onClickHitListener(watchModel: FeedsWatchModel?) {
                 SinglePlayer.reset(playerTag)
-                openFeedsMakeActivity(watchModel?.song?.challengeID)
+                openFeedsMakeActivityFromChallenge(watchModel?.song?.challengeID)
             }
 
             override fun onClickDetailListener(position: Int, watchModel: FeedsWatchModel?) {

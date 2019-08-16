@@ -39,11 +39,11 @@ class FeedSongManagerActivity : BaseActivity() {
     lateinit var searchSongIv: ExTextView
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: NestViewPager
-
+    var from = 1
     private lateinit var pagerAdapter: PagerAdapter
 
     private var songManageViews: HashMap<Int, FeedSongManageView> = HashMap()
-    private val feedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, FeedDraftsView.FROM_FEED_QUICK) }
+    private val feedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, from) }
 
     val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
 
@@ -52,6 +52,7 @@ class FeedSongManagerActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        from = intent.getIntExtra("from",0)
         titlebar = findViewById(R.id.titlebar)
         searchSongIv = findViewById(R.id.search_song_iv)
         tagTab = findViewById(R.id.tag_tab)
@@ -60,6 +61,7 @@ class FeedSongManagerActivity : BaseActivity() {
         searchSongIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_SEARCH)
+                        .withInt("from",from)
                         .navigation()
             }
         })
@@ -106,7 +108,7 @@ class FeedSongManagerActivity : BaseActivity() {
                 if (position < list.size) {
                     val songTagModel = list[position]
                     if (!songManageViews.containsKey(songTagModel.tagType)) {
-                        songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel)
+                        songManageViews[songTagModel.tagType] = FeedSongManageView(this@FeedSongManagerActivity, songTagModel,from)
                     }
                     val view = songManageViews[songTagModel.tagType]
                     if (position == 0) {

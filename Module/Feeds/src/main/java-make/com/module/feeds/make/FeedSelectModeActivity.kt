@@ -19,6 +19,7 @@ class FeedSelectModeActivity : BaseActivity() {
     lateinit var mDabangIv: ExImageView
     lateinit var mDownIv: ExImageView
     lateinit var kuaichuanIv:ExImageView
+    lateinit var gaibianIv:ExImageView
 
     override fun initView(savedInstanceState: Bundle?): Int {
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
@@ -30,6 +31,7 @@ class FeedSelectModeActivity : BaseActivity() {
         mDabangIv = findViewById(R.id.dabang_iv)
         mDownIv = findViewById(R.id.down_iv)
         kuaichuanIv = findViewById(R.id.kuaichuan_iv)
+        gaibianIv = findViewById(R.id.gaibian_iv)
 
         mUploadIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -60,6 +62,17 @@ class FeedSelectModeActivity : BaseActivity() {
             override fun clickValid(v: View?) {
                 StatisticsAdapter.recordCountEvent("music_publish", "sing", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+                        .withInt("from", FROM_QUICK_SING)
+                        .navigation()
+                finish()
+            }
+        })
+
+        gaibianIv.setOnClickListener(object : DebounceViewClickListener(){
+            override fun clickValid(v: View?) {
+                StatisticsAdapter.recordCountEvent("music_publish", "change", null)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+                        .withInt("from", FROM_CHANGE_SING)
                         .navigation()
                 finish()
             }

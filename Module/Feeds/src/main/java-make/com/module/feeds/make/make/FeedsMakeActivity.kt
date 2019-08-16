@@ -174,63 +174,60 @@ class FeedsMakeActivity : BaseActivity() {
         })
 
 
-        val from = intent.getIntExtra("from", 1)
-        if (from == 1) {
-            val challengeID = intent.getLongExtra("challengeID", 0)
-            mFeedsMakeModel = FeedsMakeModel()
-            mFeedsMakeModel?.enterPageFrom = from
-            mFeedsMakeModel?.challengeID = challengeID
-            launch {
-                mFeedsMakeModel?.challengeID?.let {
-                    for (i in 1..10) {
-                        val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
-                        if (result?.errno == 0) {
-                            val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
-                            val workName = result.data.getString("workName")
-                            val challengeDesc = result.data.getString("challengeDesc")
-                            val songModel = FeedSongModel()
-                            songModel.challengeDesc = challengeDesc
-                            songModel.songTpl = songTpl
-                            songModel.challengeID = it.toLong()
-                            songModel.workName = workName
+        val from = intent.getIntExtra("from", FROM_CHALLENGE)
+        val isDraft = intent.getBooleanExtra("isDraft", false)
+        if(from == FROM_QUICK_SING){
+            changeLyricTv?.visibility = View.GONE
+            changeLyricIv?.visibility = View.GONE
+        }
+        if(!isDraft){
+            if (from == FROM_CHALLENGE) {
+                val challengeID = intent.getLongExtra("challengeID", 0)
+                mFeedsMakeModel = FeedsMakeModel()
+                mFeedsMakeModel?.challengeID = challengeID
+                launch {
+                    mFeedsMakeModel?.challengeID?.let {
+                        for (i in 1..10) {
+                            val result = subscribe { feedsMakeServerApi.getSongTplByChallengeID(it) }
+                            if (result?.errno == 0) {
+                                val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
+                                val workName = result.data.getString("workName")
+                                val challengeDesc = result.data.getString("challengeDesc")
+                                val songModel = FeedSongModel()
+                                songModel.challengeDesc = challengeDesc
+                                songModel.songTpl = songTpl
+                                songModel.challengeID = it.toLong()
+                                songModel.workName = workName
 //                            if (TextUtils.isEmpty(songModel?.songTpl?.songName)) {
 //                                songModel?.songTpl?.songName = songModel.workName
 //                            }
-                            songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
+                                songModel.playDurMs = songTpl?.bgmDurMs?.toInt() ?: 0
 
-                            mFeedsMakeModel?.songModel = songModel
-                            whenDataOk()
-                            break
-                        } else {
-                            delay(3000)
+                                mFeedsMakeModel?.songModel = songModel
+                                whenDataOk()
+                                break
+                            } else {
+                                delay(3000)
+                            }
                         }
                     }
                 }
+            } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING) {
+                val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
+                mFeedsMakeModel = FeedsMakeModel()
+                mFeedsMakeModel?.songModel = feedSongModel
+                //mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.songTpl?.songName
+                whenDataOk()
             }
-        } else if (from == 2) {
-            val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
-            mFeedsMakeModel = FeedsMakeModel()
-            mFeedsMakeModel?.enterPageFrom = from
-            mFeedsMakeModel?.songModel = feedSongModel
-            //mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.songTpl?.songName
-            whenDataOk()
-        } else if (from == 3) {
+        }else{
             // 从草稿箱进来的
             mFeedsMakeModel = sFeedsMakeModelHolder
             /**
              * 因为是引用传递，所以重新初始化一下相关属性
              */
-            mFeedsMakeModel?.enterPageFrom = from
             mFeedsMakeModel?.hasChangeLyricOrSongNameThisTime = false
-            mFeedsMakeModel?.recordingClick = false
-            mFeedsMakeModel?.recordOffsetTs = 0
-            mFeedsMakeModel?.firstLyricShiftTs = 0
             mFeedsMakeModel?.bgmDownloadProgress = 0
-            mFeedsMakeModel?.recording = false
-            mFeedsMakeModel?.beginRecordTs = Long.MAX_VALUE
-            mFeedsMakeModel?.recordFirstFrameTs = Long.MAX_VALUE
-            mFeedsMakeModel?.musicFirstFrameTs = Long.MAX_VALUE
-
+            resetValue()
 
             sFeedsMakeModelHolder = null
             // 将伴奏的reader弄好
@@ -249,7 +246,7 @@ class FeedsMakeActivity : BaseActivity() {
                         })
             }
         }
-
+        mFeedsMakeModel?.from = from
         if (mFeedsMakeModel == null) {
             U.getToastUtil().showShort("参数不正确")
             finish()
@@ -542,13 +539,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun recordOk() {
-        stopRecord()
-        mFeedsMakeModel?.recordingClick = false
-        mFeedsMakeModel?.recording = false
-        beginTv?.isSelected = false
-        beginTv?.text = "开始"
-        qcProgressBarView?.visibility = View.GONE
-        mLyricAndAccMatchManager.stop()
+        resetAll()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
             recordOffsetTs = firstLyricShiftTs + musicFirstFrameTs - recordFirstFrameTs
@@ -558,11 +549,41 @@ class FeedsMakeActivity : BaseActivity() {
         startActivityForResult(intent, 100)
     }
 
+    private fun resetValue(){
+        mFeedsMakeModel?.recordingClick = false
+        mFeedsMakeModel?.recordOffsetTs = 0
+        mFeedsMakeModel?.firstLyricShiftTs = 0
+        mFeedsMakeModel?.recording = false
+        mFeedsMakeModel?.beginRecordTs = Long.MAX_VALUE
+        mFeedsMakeModel?.recordFirstFrameTs = Long.MAX_VALUE
+        mFeedsMakeModel?.musicFirstFrameTs = Long.MAX_VALUE
+    }
+    private fun resetAll() {
+        stopRecord()
+        resetValue()
+        beginTv?.isSelected = false
+        beginTv?.text = "开始"
+        qcProgressBarView?.progress=0
+        qcProgressBarView?.visibility = View.GONE
+        mLyricAndAccMatchManager.stop()
+        mLyricAndAccMatchManager.stop()
+        resetIv?.visibility = View.GONE
+        resetTv?.visibility = View.GONE
+        if(mFeedsMakeModel?.from== FROM_QUICK_SING){
+
+        }else
+        {
+
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 100) {
-                startRecord()
+                // 重唱
+                resetAll()
+                initViewByData()
             } else if (requestCode == 101) {
                 // 改完歌词
                 mFeedsMakeModel = sFeedsMakeModelHolder
@@ -678,28 +699,37 @@ class FeedsMakeActivity : BaseActivity() {
     }
 }
 
-fun openFeedsMakeActivity(challenge: Long?) {
-    // 打榜
+fun openFeedsMakeActivityFromChallenge(challenge: Long?) {
     challenge?.let {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
-                .withInt("from", 1)
+                .withInt("from", FROM_CHALLENGE)
+                .withBoolean("isDraft", false)
                 .withSerializable("challengeID", it)
                 .navigation()
     }
 }
 
-fun openFeedsMakeActivity(model: FeedsMakeModel?) {
-    // 打榜
-    sFeedsMakeModelHolder = model
+fun openFeedsMakeActivityFromQuickSong(model: FeedSongModel?) {
     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
-            .withInt("from", 3)
+            .withInt("from", FROM_QUICK_SING)
+            .withBoolean("isDraft", false)
+            .withSerializable("feedSongModel", model)
             .navigation()
 }
 
-fun openFeedsMakeActivity(model: FeedSongModel?) {
-    // 打榜
+fun openFeedsMakeActivityFromChangeSong(model: FeedSongModel?) {
     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
-            .withInt("from", 2)
+            .withInt("from", FROM_CHANGE_SING)
+            .withBoolean("isDraft", false)
             .withSerializable("feedSongModel", model)
+            .navigation()
+}
+
+fun openFeedsMakeActivityFromDraft(draftFrom:Int,model:FeedsMakeModel?) {
+    sFeedsMakeModelHolder = model
+    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+            .withInt("from", draftFrom)
+            .withBoolean("isDraft", true)
+            .withSerializable("feedMakeModel",model)
             .navigation()
 }

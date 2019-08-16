@@ -10,7 +10,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 
 import com.common.base.BaseActivity
@@ -29,11 +28,10 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.make.openFeedsMakeActivity
-import com.module.feeds.rank.FeedsRankServerApi
-import com.module.feeds.rank.activity.FeedsRankSearchActivity
-import com.module.feeds.rank.adapter.FeedsRankAdapter
-import com.module.feeds.rank.model.FeedRankInfoModel
+import com.module.feeds.make.FROM_CHANGE_SING
+import com.module.feeds.make.FROM_QUICK_SING
+import com.module.feeds.make.make.openFeedsMakeActivityFromChangeSong
+import com.module.feeds.make.make.openFeedsMakeActivityFromQuickSong
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.adapter.FeedSongManageAdapter
 import com.module.feeds.songmanage.adapter.FeedSongManageListener
@@ -62,7 +60,7 @@ class FeedSongSearchActivity : BaseActivity() {
     private var isAutoSearch = false       // 标记是否是自动搜索
     private var lastSearchContent = ""     // 记录最近搜索内容
     private var mLoadService: LoadService<*>? = null
-
+    private var from = FROM_QUICK_SING
     private val feedSongManageServerApi = ApiManager.getInstance().createService(FeedSongManageServerApi::class.java)
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -70,6 +68,7 @@ class FeedSongSearchActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        from = intent.getIntExtra("from",FROM_QUICK_SING)
         mTitlebar = findViewById(R.id.titlebar)
         mCancleTv = findViewById(R.id.cancle_tv)
         mSearchContent = findViewById(R.id.search_content)
@@ -97,7 +96,11 @@ class FeedSongSearchActivity : BaseActivity() {
         mAdapter = FeedSongManageAdapter(object : FeedSongManageListener {
             override fun onClickSing(position: Int, model: FeedSongInfoModel?) {
                 model?.let {
-                    openFeedsMakeActivity(model.song)
+                    if(from== FROM_QUICK_SING){
+                        openFeedsMakeActivityFromQuickSong(it.song)
+                    }else if (from== FROM_CHANGE_SING){
+                        openFeedsMakeActivityFromChangeSong(it.song)
+                    }
                 }
             }
         })

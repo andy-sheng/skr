@@ -14,8 +14,6 @@ class FeedsMakeModel : Serializable {
     val recordSavePath: String = U.getAppInfoUtils().getFilePathInSubDir("feeds", "feeds_make.m4a")
 
     @Transient
-    var enterPageFrom = 1 // 1打榜 2快唱 3草稿
-    @Transient
     var firstLyricShiftTs = 0
 
     //var uploadFeedsId: String? = null // 上传后生成的feedsid
@@ -39,6 +37,7 @@ class FeedsMakeModel : Serializable {
     @Transient
     var hasChangeLyricOrSongNameThisTime = false // 本次是否改变了歌词，因为可能从草稿箱进去
 
+    var from:Int = FROM_QUICK_SING //来自哪个?打榜 快唱 改编
     var songModel: FeedSongModel? = null
     var challengeID: Long = 0L
     var audioUploadUrl: String? = null
@@ -52,6 +51,9 @@ class FeedsMakeModel : Serializable {
         return "FeedsMakeModel(challengeID=$challengeID, songModel=$songModel, composeSavePath='$composeSavePath', bgmDownloadProgress=$bgmDownloadProgress, recordDuration=$recordDuration, recording=$recording, beginRecordTs=$beginRecordTs, recordSavePath='$recordSavePath', recordingClick=$recordingClick, withBgm=$withBgm)"
     }
 }
+const val FROM_CHALLENGE = 1
+const val FROM_QUICK_SING = 2
+const val FROM_CHANGE_SING = 3
 
 var sFeedsMakeModelHolder: FeedsMakeModel? = null
 

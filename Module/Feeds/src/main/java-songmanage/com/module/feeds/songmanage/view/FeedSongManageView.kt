@@ -11,7 +11,10 @@ import com.common.rxretrofit.ERROR_NETWORK_BROKEN
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.feeds.R
-import com.module.feeds.make.make.openFeedsMakeActivity
+import com.module.feeds.make.FROM_CHANGE_SING
+import com.module.feeds.make.FROM_QUICK_SING
+import com.module.feeds.make.make.openFeedsMakeActivityFromChangeSong
+import com.module.feeds.make.make.openFeedsMakeActivityFromQuickSong
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.adapter.FeedSongManageAdapter
 import com.module.feeds.songmanage.adapter.FeedSongManageListener
@@ -25,7 +28,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class FeedSongManageView(context: Context, val model: FeedSongTagModel) : ConstraintLayout(context), CoroutineScope by MainScope() {
+class FeedSongManageView(context: Context, val model: FeedSongTagModel,val from:Int) : ConstraintLayout(context), CoroutineScope by MainScope() {
 
     val refreshLayout: SmartRefreshLayout
     val recyclerView: RecyclerView
@@ -60,8 +63,11 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel) : Constr
         adapter = FeedSongManageAdapter(object : FeedSongManageListener {
             override fun onClickSing(position: Int, model: FeedSongInfoModel?) {
                 model?.let {
-                    //TODO 补全跳转
-                    openFeedsMakeActivity(model.song)
+                    if(from== FROM_QUICK_SING){
+                        openFeedsMakeActivityFromQuickSong(it.song)
+                    }else if(from== FROM_CHANGE_SING){
+                        openFeedsMakeActivityFromChangeSong(it.song)
+                    }
                 }
             }
         })

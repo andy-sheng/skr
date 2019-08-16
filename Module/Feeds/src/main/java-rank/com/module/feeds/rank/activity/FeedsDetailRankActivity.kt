@@ -23,7 +23,7 @@ import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.event.FeedDetailChangeEvent
-import com.module.feeds.make.make.openFeedsMakeActivity
+import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedDetailAdapter
 import com.module.feeds.statistics.FeedsPlayStatistics
@@ -124,7 +124,7 @@ class FeedsDetailRankActivity : BaseActivity() {
             override fun clickValid(v: View?) {
                 // 打榜去
                 pause()
-                openFeedsMakeActivity(challengeID)
+                openFeedsMakeActivityFromChallenge(challengeID)
             }
         })
 

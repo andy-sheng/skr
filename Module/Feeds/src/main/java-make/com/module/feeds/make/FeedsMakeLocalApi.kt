@@ -16,7 +16,7 @@ object FeedsMakeLocalApi {
     fun loadDraftFromChanllege(): ArrayList<FeedsMakeModel> {
         val list = ArrayList<FeedsMakeModel>()
         val listDB = draftDBDao.queryBuilder()
-                .where(FeedsDraftDBDao.Properties.From.eq(1))
+                .where(FeedsDraftDBDao.Properties.From.eq(FROM_CHALLENGE))
                 .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
         listDB.forEach {
             list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
@@ -27,7 +27,18 @@ object FeedsMakeLocalApi {
     fun loadDraftFromQuickSing(): ArrayList<FeedsMakeModel> {
         val list = ArrayList<FeedsMakeModel>()
         val listDB = draftDBDao.queryBuilder()
-                .where(FeedsDraftDBDao.Properties.From.eq(2))
+                .where(FeedsDraftDBDao.Properties.From.eq(FROM_QUICK_SING))
+                .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
+        listDB.forEach {
+            list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
+        }
+        return list
+    }
+
+    fun loadDraftFromChangeSing(): ArrayList<FeedsMakeModel> {
+        val list = ArrayList<FeedsMakeModel>()
+        val listDB = draftDBDao.queryBuilder()
+                .where(FeedsDraftDBDao.Properties.From.eq(FROM_CHANGE_SING))
                 .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
         listDB.forEach {
             list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
@@ -48,7 +59,7 @@ object FeedsMakeLocalApi {
         if (feedsMakeModel.draftID == 0L) {
             feedsMakeModel.draftID = draftDb.draftID
         }
-        draftDb.from = if (feedsMakeModel.songModel?.challengeID == 0L) 2 else 1
+        draftDb.from = feedsMakeModel?.from
         draftDb.feedsMakeModelJson = JSON.toJSONString(feedsMakeModel)
         draftDBDao.insertOrReplace(draftDb)
         EventBus.getDefault().post(FeedsDraftUpdateEvent())

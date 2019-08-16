@@ -16,11 +16,10 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.make.FeedsDraftUpdateEvent
-import com.module.feeds.make.FeedsMakeLocalApi
-import com.module.feeds.make.FeedsMakeModel
-import com.module.feeds.make.make.openFeedsMakeActivity
-import com.module.feeds.make.sFeedsMakeModelHolder
+import com.module.feeds.make.*
+import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
+import com.module.feeds.make.make.openFeedsMakeActivityFromDraft
+import com.module.feeds.make.publish.ENTER_FROM_DRAFT
 import com.module.feeds.songmanage.adapter.FeedSongDraftsAdapter
 import com.module.feeds.songmanage.adapter.FeedSongDraftsListener
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -35,10 +34,6 @@ import org.greenrobot.eventbus.Subscribe
  */
 class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
-    companion object {
-        const val FROM_FEED_HIT = 1   // 打榜
-        const val FROM_FEED_QUICK = 2   // 快唱
-    }
 
     val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
@@ -73,12 +68,12 @@ class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(a
                 model?.let {
                     MyLog.d("FeedDraftsView", "FeedsMakeModel=$model")
                     if (TextUtils.isEmpty(model.audioUploadUrl)) {
-                        // 演唱
-                        openFeedsMakeActivity(model)
+                        openFeedsMakeActivityFromDraft(from,it)
                     } else {
+                        //TODO
                         sFeedsMakeModelHolder = model
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
-                                .withInt("from",3)
+                                .withInt("from",ENTER_FROM_DRAFT)
                                 .navigation()
                     }
                 }
@@ -121,10 +116,14 @@ class FeedDraftsView(activity: BaseActivity, val from: Int) : ConstraintLayout(a
     fun tryLoadData() {
         (context as BaseActivity).launch {
             val list = async(Dispatchers.IO) {
-                if (from == FROM_FEED_HIT) {
+                if (from == FROM_CHALLENGE) {
                     FeedsMakeLocalApi.loadDraftFromChanllege()
-                } else {
+                } else if(from == FROM_QUICK_SING){
                     FeedsMakeLocalApi.loadDraftFromQuickSing()
+                }else if(from == FROM_CHANGE_SING){
+                    FeedsMakeLocalApi.loadDraftFromChangeSing()
+                }else{
+                    ArrayList()
                 }
             }
             adapter.setData(list.await())

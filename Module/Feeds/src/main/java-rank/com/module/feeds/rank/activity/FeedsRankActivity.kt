@@ -22,6 +22,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.make.FROM_CHALLENGE
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.rank.model.FeedRankTagModel
@@ -42,7 +43,7 @@ class FeedsRankActivity : BaseActivity() {
     private lateinit var mPagerAdapter: PagerAdapter
 
     var mFeedRankViews: HashMap<Int, FeedsRankView> = HashMap()
-    val mFeedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, FeedDraftsView.FROM_FEED_HIT) }
+    val mFeedDraftsView: FeedDraftsView by lazy { FeedDraftsView(this, FROM_CHALLENGE) }
 
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 

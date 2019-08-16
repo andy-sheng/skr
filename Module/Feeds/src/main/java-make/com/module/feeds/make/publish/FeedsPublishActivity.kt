@@ -197,7 +197,7 @@ class FeedsPublishActivity : BaseActivity() {
         })
         val from = intent.getIntExtra("from", 0)
         val displayName: String
-        if (from == 3) {
+        if (from == ENTER_FROM_DRAFT) {
             //从草稿箱进入的
             // 有作品名了,优先显示作品名字
             if (TextUtils.isEmpty(mFeedsMakeModel?.songModel?.workName)) {
@@ -376,7 +376,6 @@ class FeedsPublishActivity : BaseActivity() {
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
                 result = subscribe { feedsMakeServerApi.uploadHitFeeds(body) }
             }
-
             progressSkr.visibility = View.GONE
             if (result?.errno == 0) {
                 //上传成功
@@ -489,3 +488,5 @@ class FeedsPublishActivity : BaseActivity() {
         return false
     }
 }
+
+const val ENTER_FROM_DRAFT = 10
