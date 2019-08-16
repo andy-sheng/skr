@@ -56,15 +56,11 @@ import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.manager.FeedCollectManager
-import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -129,6 +125,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var lastVerticalOffset = Int.MAX_VALUE
 
     var specialCase: Boolean? = false
+
+    //某一个歌曲被删除了，以防死循环
+    var latestActionView: View? = null
 
     val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
@@ -319,19 +318,26 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     val newModel = mSongManager?.getPreSong(true)
                     if (newModel == null) {
                         U.getToastUtil().showShort("已经到头了，没有上一首了")
+                        latestActionView = null
                     } else {
                         newModel?.feedID?.let {
                             tryLoadNewFeed(it)
                             mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
                         }
+                        latestActionView = mPlayLastIv
                     }
                 }
 
                 mPlayNextIv?.setDebounceViewClickListener {
                     val newModel = mSongManager?.getNextSong(true)
-                    newModel?.feedID?.let {
-                        tryLoadNewFeed(it)
-                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                    if (newModel == null) {
+                        latestActionView = null
+                    } else {
+                        newModel?.feedID?.let {
+                            tryLoadNewFeed(it)
+                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                        }
+                        latestActionView = mPlayNextIv
                     }
                 }
 
@@ -729,7 +735,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     override fun finishWithModelError() {
-        activity?.finish()
+        if (mSongManager == null) {
+            activity?.finish()
+        } else {
+            if (latestActionView == null) {
+                mPlayNextIv?.callOnClick()
+            } else {
+                latestActionView?.callOnClick()
+            }
+        }
     }
 
     override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
