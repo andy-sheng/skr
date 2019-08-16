@@ -82,6 +82,8 @@ public interface RouterConstants {
     String ACTIVITY_FEEDS_SONG_MANAGE = "/feeds/FeedSongManagerActivity";
     String ACTIVITY_FEEDS_SONG_SEARCH = "/feeds/FeedSongSearchActivity";
 
+    String ACTIVITY_RACE_ROOM = "/race/RaceRoomActivity";
+
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";
     String ACTIVITY_DEBUG_CORE_ACTIVITY = "/debug/DebugCoreActivity";

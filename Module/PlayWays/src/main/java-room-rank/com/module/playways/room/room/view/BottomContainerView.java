@@ -40,6 +40,8 @@ import org.greenrobot.eventbus.ThreadMode;
  * {@link com.module.playways.grab.room.bottom.GrabBottomContainerView}
  * 排位赛看这个
  * {@link com.module.playways.room.room.bottom.RankBottomContainerView}
+ * 擂台赛看这个
+ * {@link com.module.playways.race.room.bottom.RaceBottomContainerView}
  */
 public abstract class BottomContainerView extends RelativeLayout {
 

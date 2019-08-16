@@ -76,21 +76,21 @@
 
         </activity>
 
-        <activity
-            android:name="com.module.playways.grab.room.guide.activity.GrabGuideActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+        <!--<activity-->
+            <!--android:name="com.module.playways.grab.room.guide.activity.GrabGuideActivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:windowSoftInputMode="adjustResize">-->
 
-        </activity>
+        <!--</activity>-->
 
-        <activity
-            android:name="com.module.playways.grab.room.guide.activity.GrabGuideResultActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+        <!--<activity-->
+            <!--android:name="com.module.playways.grab.room.guide.activity.GrabGuideResultActivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:windowSoftInputMode="adjustResize">-->
 
-        </activity>
+        <!--</activity>-->
 
 
         <activity
@@ -119,6 +119,14 @@
 
         <activity
             android:name="com.module.playways.voice.activity.VoiceRoomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
+            android:name="com.module.playways.race.room.RaceRoomActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">

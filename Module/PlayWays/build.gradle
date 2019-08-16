@@ -101,6 +101,9 @@ android {
 
             java.srcDirs += 'src/main/java-songmanage'
             res.srcDirs += 'src/main/res-songmanage'
+
+            java.srcDirs += 'src/main/java-room-race'
+            res.srcDirs += 'src/main/res-room-race'
         }
     }
 }

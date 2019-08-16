@@ -15,11 +15,12 @@ import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
-
 import com.common.view.ex.ExTextView
+import com.module.playways.BaseRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
+import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.room.RankRoomServerApi
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.zq.live.proto.Room.EQRoundStatus
@@ -29,7 +30,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.io.IOException
-import java.util.HashMap
+import java.util.*
 
 class VoiceRecordTextView : ExTextView {
 
@@ -58,7 +59,7 @@ class VoiceRecordTextView : ExTextView {
 
     val mVoiceDir = U.getAppInfoUtils().getSubDirFile("voice")
     var mRecordAudioFilePath: String? = null
-    var mRoomData: GrabRoomData? = null
+    var mRoomData: BaseRoomData<*>? = null
 
     constructor(context: Context) : super(context) {}
 
@@ -98,24 +99,27 @@ class VoiceRecordTextView : ExTextView {
         when (action) {
             MotionEvent.ACTION_DOWN -> {
                 MyLog.d(TAG, "ACTION_DOWN")
-                val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
-                if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
-                    U.getToastUtil().showShort("演唱中无法录音")
-                    return false
+                if (mRoomData is GrabRoomData) {
+                    val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
+                    if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
+                        U.getToastUtil().showShort("演唱中无法录音")
+                        return false
+                    }
+                    if (roundInfoModel != null && roundInfoModel!!.isFreeMicRound) {
+                        U.getToastUtil().showShort("自由麦轮次无法录音")
+                        return false
+                    }
+                    if (roundInfoModel != null && roundInfoModel!!.status == EQRoundStatus.QRS_INTRO.value && roundInfoModel.isSelfGrab) {
+                        U.getToastUtil().showShort("参与抢唱无法录音")
+                        return false
+                    }
+                    if (ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute) {
+                        // 是主播切开麦不能录音
+                        U.getToastUtil().showShort("在麦上无法录音")
+                        return false
+                    }
                 }
-                if (roundInfoModel != null && roundInfoModel!!.isFreeMicRound) {
-                    U.getToastUtil().showShort("自由麦轮次无法录音")
-                    return false
-                }
-                if (roundInfoModel != null && roundInfoModel!!.status == EQRoundStatus.QRS_INTRO.value && roundInfoModel.isSelfGrab) {
-                    U.getToastUtil().showShort("参与抢唱无法录音")
-                    return false
-                }
-                if (ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute) {
-                    // 是主播切开麦不能录音
-                    U.getToastUtil().showShort("在麦上无法录音")
-                    return false
-                }
+
                 if (mCurrentState == STATE_IDLE) {
                     // 开始录音，显示手指上滑，取消发送
                     mCurrentState = STATE_RECORDING

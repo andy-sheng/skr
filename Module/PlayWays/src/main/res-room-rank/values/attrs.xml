@@ -29,6 +29,7 @@
             <enum name="voice" value="1" />
             <enum name="rank" value="4" />
             <enum name="grab" value="5" />
+            <enum name="race" value="6" />
         </attr>
     </declare-styleable>
 
