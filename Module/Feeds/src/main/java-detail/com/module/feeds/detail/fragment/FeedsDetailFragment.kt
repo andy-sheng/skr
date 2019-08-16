@@ -145,7 +145,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 }
             } else if (msg?.what == AUTO_CHANGE_SONG) {
                 if (latestAction == null) {
-                    toNextSongAction()
+                    toNextSongAction(true)
                 } else {
                     latestAction?.invoke()
                 }
@@ -212,7 +212,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                         showFeedsWatchModel(it)
                     }
                 } else {
-                    toNextSongAction()
+                    toNextSongAction(false)
                 }
             } else {
                 stopSong()
@@ -320,12 +320,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mSongControlArea.visibility = View.VISIBLE
                 mPlayLastIv?.setDebounceViewClickListener {
                     mUiHandler.removeMessages(AUTO_CHANGE_SONG)
-                    toPreSongAction()
+                    toPreSongAction(true)
                 }
 
                 mPlayNextIv?.setDebounceViewClickListener {
                     mUiHandler.removeMessages(AUTO_CHANGE_SONG)
-                    toNextSongAction();
+                    toNextSongAction(true)
                 }
 
                 mBlurBg?.setOnClickListener {
@@ -553,8 +553,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
     }
 
-    private fun toNextSongAction() {
-        val newModel = mSongManager?.getNextSong(true)
+    private fun toNextSongAction(userAction: Boolean) {
+        val newModel = mSongManager?.getNextSong(userAction)
         if (newModel == null) {
             latestAction = null
             U.getToastUtil().showShort("这已经是最后一首歌了")
@@ -565,13 +565,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
 
             latestAction = {
-                toNextSongAction()
+                toNextSongAction(true)
             }
         }
     }
 
-    private fun toPreSongAction() {
-        val newModel = mSongManager?.getPreSong(true)
+    private fun toPreSongAction(userAction: Boolean) {
+        val newModel = mSongManager?.getPreSong(userAction)
         if (newModel == null) {
             U.getToastUtil().showShort("这已经是第一首歌了")
             latestAction = null
@@ -582,7 +582,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
 
             latestAction = {
-                toPreSongAction()
+                toPreSongAction(true)
             }
         }
     }
