@@ -314,9 +314,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         if (mSongManager != null) {
             launch {
                 // 读收藏
-                val collectList = async(Dispatchers.IO) {
-                    FeedCollectManager.getMyCollect()
-                }
                 mSongControlArea.visibility = View.VISIBLE
                 mPlayLastIv?.setDebounceViewClickListener {
                     val newModel = mSongManager?.getPreSong(true)
@@ -335,17 +332,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     newModel?.feedID?.let {
                         tryLoadNewFeed(it)
                         mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-                    }
-                }
-
-                val feedSongModels = ArrayList<FeedSongModel>()
-                var cur: FeedSongModel? = null
-                collectList.await()?.forEach {
-                    it.song?.let {
-                        feedSongModels.add(it)
-                        if (it.feedID == mFeedID) {
-                            cur = it
-                        }
                     }
                 }
 
@@ -400,8 +386,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 }
 
                 mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-
-                mSongManager = FeedSongPlayModeManager(mPlayType, cur, feedSongModels)
             }
         } else {
             mSongControlArea.visibility = View.GONE
