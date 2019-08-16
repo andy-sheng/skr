@@ -32,12 +32,16 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.R
+import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.manager.AbsPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivity
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.presenter.FeedWatchViewPresenter
 import com.module.feeds.watch.viewholder.FeedViewHolder
@@ -180,17 +184,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 watchModel?.let { mPersenter.feedLike(position, it) }
             }
 
-            override fun onClickCommentListener(watchModel: FeedsWatchModel?) {
-                // 必须不为空，且审核通过
-                if (watchModel != null && watchModel.status == 2) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                            .withInt("feed_ID", watchModel.feedID)
-                            .withInt("from", 1)
-                            .navigation()
-                }
-
-            }
-
             override fun onClickHitListener(watchModel: FeedsWatchModel?) {
                 SinglePlayer.reset(playerTag)
                 openFeedsMakeActivity(watchModel?.song?.challengeID)
@@ -205,10 +198,26 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                         mAdapter?.mCurrentPlayPosition = null
                         mAdapter?.mCurrentPlayModel = null
                     }
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                            .withInt("feed_ID", watchModel.feedID)
-                            .withInt("from", 1)
-                            .navigation()
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
+//                            .withInt("feed_ID", watchModel.feedID)
+//                            .withInt("from", 1)
+//                            .navigation()
+                    // 默认顺序就只是列表循环
+                    fragment.activity?.let { fragmentActivity ->
+                        FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, 1, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                            override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
+
+                            }
+
+                            override fun getNextSong(userAction: Boolean): FeedSongModel? {
+                                return findNextSong(userAction)
+                            }
+
+                            override fun getPreSong(userAction: Boolean): FeedSongModel? {
+                                return findPresong(userAction)
+                            }
+                        })
+                    }
                 }
 
             }
@@ -341,6 +350,40 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             }
         }
         SinglePlayer.addCallback(playerTag, playCallback)
+    }
+
+    private fun findPresong(userAction: Boolean): FeedSongModel? {
+        if (mAdapter?.mCurrentPlayPosition == 0) {
+            U.getToastUtil().showShort("已经到头了，没有上一首了")
+            return null
+        }
+
+        mAdapter?.mCurrentPlayPosition?.let {
+            if (!mAdapter?.mDataList.isNullOrEmpty()) {
+                mAdapter?.mCurrentPlayPosition = it - 1
+                mAdapter?.mCurrentPlayModel = mAdapter?.mDataList!![mAdapter?.mCurrentPlayPosition
+                        ?: 0]
+                return mAdapter?.mCurrentPlayModel?.song
+            }
+        }
+
+        return null
+    }
+
+    private fun findNextSong(userAction: Boolean): FeedSongModel? {
+        if (mAdapter?.mCurrentPlayPosition == (mAdapter?.mDataList?.size ?: 0) - 2) {
+            // 已经到最后一个，需要去更新数据
+            getMoreFeeds()
+        }
+
+        if (mAdapter?.mCurrentPlayPosition != null && mAdapter?.mCurrentPlayPosition!! < (mAdapter?.mDataList?.size
+                        ?: 0) - 1) {
+            // 在合理范围内
+            mAdapter?.mCurrentPlayPosition = mAdapter?.mCurrentPlayPosition!! + 1
+            mAdapter?.mCurrentPlayModel = mAdapter?.mDataList!![mAdapter?.mCurrentPlayPosition!!]
+            return mAdapter?.mCurrentPlayModel?.song
+        }
+        return null
     }
 
     private fun addOnScrollListenerToRv() {

@@ -7,8 +7,6 @@ interface FeedsListener {
 
     fun onClickLikeListener(position: Int, watchModel: FeedsWatchModel?)
 
-    fun onClickCommentListener(watchModel: FeedsWatchModel?)
-
     fun onClickHitListener(watchModel: FeedsWatchModel?)
 
     fun onClickDetailListener(position: Int, watchModel: FeedsWatchModel?)

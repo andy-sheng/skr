@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.log.MyLog
+import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
