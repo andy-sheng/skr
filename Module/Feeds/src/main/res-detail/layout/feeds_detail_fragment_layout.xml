@@ -126,6 +126,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/radio_view" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/play_type_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -177,7 +178,7 @@
                         android:id="@+id/song_control_arae"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="play_next_iv, play_last_iv, control_tv, play_type_iv"
+                        app:constraint_referenced_ids="play_next_iv, play_last_iv, control_tv"
                         tools:visibility="visible" />
 
                     <com.common.view.ex.ExTextView

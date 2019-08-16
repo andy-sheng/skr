@@ -46,8 +46,8 @@ import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.event.AddCommentEvent
 import com.module.feeds.detail.event.FeedCommentBoardEvent
 import com.module.feeds.detail.inter.IFeedsDetailView
-import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.AbsPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.detail.presenter.FeedsDetailPresenter
 import com.module.feeds.detail.view.FeedCommentMoreDialog
@@ -140,6 +140,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mFeedsCommonLyricView?.showHalf()
             } else if (msg?.what == HIDE_CONTROL_AREA) {
                 mSongControlArea?.visibility = View.GONE
+                if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                    mPlayTypeIv?.visibility = View.GONE
+                }
             }
         }
     }
@@ -153,9 +156,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 0f, 1f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 0f, 1f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 0f, 1f)
-            val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 0f, 1f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3).with(animator4)
+            animSet.play(animator1).with(animator2).with(animator3)
+
+            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 0f, 1f)
+                animSet.play(animator1).with(animator4)
+                mPlayTypeIv?.visibility = View.VISIBLE
+            }
+
             animSet.setDuration(300)
             animSet.start()
 
@@ -163,9 +172,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 1f, 0f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 1f, 0f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 1f, 0f)
-            val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 1f, 0f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3).with(animator4)
+            animSet.play(animator1).with(animator2).with(animator3)
+            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 1f, 0f)
+                animSet.play(animator1).with(animator4)
+            }
+
             animSet.setDuration(300)
             animSet.start()
             mUiHandler.sendEmptyMessageDelayed(HIDE_CONTROL_AREA, 300)
@@ -340,22 +353,36 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
-                mPlayTypeIv?.setOnClickListener {
-                    when (mSongManager?.getCurMode()) {
+                if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                    mPlayTypeIv?.setOnClickListener {
+                        when (mSongManager?.getCurMode()) {
+                            FeedSongPlayModeManager.PlayMode.ORDER -> {
+                                mPlayType = FeedSongPlayModeManager.PlayMode.SINGLE
+                                mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
+                                mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.SINGLE)
+                            }
+                            FeedSongPlayModeManager.PlayMode.SINGLE -> {
+                                mPlayType = FeedSongPlayModeManager.PlayMode.RANDOM
+                                mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
+                                mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.RANDOM)
+                            }
+                            FeedSongPlayModeManager.PlayMode.RANDOM -> {
+                                mPlayType = FeedSongPlayModeManager.PlayMode.ORDER
+                                mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
+                                mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.ORDER)
+                            }
+                        }
+                    }
+
+                    when (mPlayType) {
                         FeedSongPlayModeManager.PlayMode.ORDER -> {
-                            mPlayType = FeedSongPlayModeManager.PlayMode.SINGLE
-                            mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
-                            mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.SINGLE)
+                            mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
                         }
                         FeedSongPlayModeManager.PlayMode.SINGLE -> {
-                            mPlayType = FeedSongPlayModeManager.PlayMode.RANDOM
-                            mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
-                            mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.RANDOM)
+                            mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
                         }
                         FeedSongPlayModeManager.PlayMode.RANDOM -> {
-                            mPlayType = FeedSongPlayModeManager.PlayMode.ORDER
-                            mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
-                            mSongManager?.changeMode(FeedSongPlayModeManager.PlayMode.ORDER)
+                            mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
                         }
                     }
                 }
@@ -371,18 +398,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
 
                 mSongManager = FeedSongPlayModeManager(mPlayType, cur, feedSongModels)
-
-                when (mPlayType) {
-                    FeedSongPlayModeManager.PlayMode.ORDER -> {
-                        mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
-                    }
-                    FeedSongPlayModeManager.PlayMode.SINGLE -> {
-                        mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
-                    }
-                    FeedSongPlayModeManager.PlayMode.RANDOM -> {
-                        mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
-                    }
-                }
             }
         } else {
             mSongControlArea.visibility = View.GONE
