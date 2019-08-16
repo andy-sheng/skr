@@ -117,6 +117,18 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                         FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, 2, mCurrentType, object : AbsPlayModeManager() {
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
                                 mSongManager?.changeMode(mode)
+                                mCurrentType = mode
+                                when (mode) {
+                                    FeedSongPlayModeManager.PlayMode.ORDER -> {
+                                        mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
+                                    }
+                                    FeedSongPlayModeManager.PlayMode.SINGLE -> {
+                                        mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
+                                    }
+                                    FeedSongPlayModeManager.PlayMode.RANDOM -> {
+                                        mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
+                                    }
+                                }
                             }
 
                             override fun getNextSong(userAction: Boolean): FeedSongModel? {
