@@ -419,6 +419,7 @@ public class AudioFileCapture {
      * Release.
      */
     public void release() {
+        mDecodeHandler.removeCallbacksAndMessages(null);
         stop();
         mDecodeHandler.sendEmptyMessage(CMD_RELEASE);
         mOnPreparedListener = null;
@@ -547,6 +548,7 @@ public class AudioFileCapture {
                         }
                         break;
                     case CMD_RELEASE:
+                        mSrcPin.disconnect(true);
                         mDecodeThread.quit();
                         break;
                     default:

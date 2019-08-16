@@ -584,12 +584,12 @@ public class ZqAudioEditorKit {
         // 如果有连接Mixer, 主idx的AudioSource需要最后release
         for (int i = 1; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
-                mAudioSource[i].capture.release();
+                mAudioSource[i].release();
                 mAudioSource[i] = null;
             }
         }
         if (mAudioSource[0] != null) {
-            mAudioSource[0].capture.release();
+            mAudioSource[0].release();
             mAudioSource[0] = null;
         }
         mState = STATE_IDLE;
