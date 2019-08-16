@@ -557,7 +557,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         val newModel = mSongManager?.getNextSong(true)
         if (newModel == null) {
             latestAction = null
-            U.getToastUtil().showShort("已经最后一首了")
+            U.getToastUtil().showShort("这已经是最后一首歌了")
         } else {
             newModel?.feedID?.let {
                 tryLoadNewFeed(it)
@@ -573,7 +573,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     private fun toPreSongAction() {
         val newModel = mSongManager?.getPreSong(true)
         if (newModel == null) {
-            U.getToastUtil().showShort("已经到头了，没有上一首了")
+            U.getToastUtil().showShort("这已经是第一首歌了")
             latestAction = null
         } else {
             newModel?.feedID?.let {
