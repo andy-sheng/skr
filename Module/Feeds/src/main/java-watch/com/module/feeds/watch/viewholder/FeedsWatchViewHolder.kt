@@ -31,7 +31,6 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     private val mCompleteGruop: Group = itemView.findViewById(R.id.complete_gruop)
     private val mCompleteAreaIv: ExImageView = itemView.findViewById(R.id.complete_area_iv)
     private val mShareTv: ExTextView = itemView.findViewById(R.id.share_tv)
-    private val mCollectTv: ExTextView = itemView.findViewById(R.id.collect_tv)
     private val mPlayAgainTv: ExTextView = itemView.findViewById(R.id.play_again_tv)
 
     init {
@@ -51,12 +50,6 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         mShareTv.setOnClickListener(object : AnimateClickListener() {
             override fun click(v: View?) {
                 listener?.onClickShareListener(mPosition, model)
-            }
-        })
-
-        mCollectTv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                listener?.onClickCollectListener(mPosition, model)
             }
         })
 
@@ -123,23 +116,9 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         this.model = watchModel
 
         mCompleteGruop.visibility = View.VISIBLE
-        if (watchModel.isCollected) {
-            mCollectTv.text = "取消收藏"
-        } else {
-            mCollectTv.text = "收藏"
-        }
     }
 
     fun hideCompleteArea() {
         mCompleteGruop.visibility = View.GONE
-    }
-
-    override fun refreshCollects(position: Int, watchModel: FeedsWatchModel) {
-        super.refreshCollects(position, watchModel)
-        if (watchModel.isCollected) {
-            mCollectTv.text = "取消收藏"
-        } else {
-            mCollectTv.text = "收藏"
-        }
     }
 }
