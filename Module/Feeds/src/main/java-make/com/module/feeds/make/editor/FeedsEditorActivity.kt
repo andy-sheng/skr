@@ -119,6 +119,10 @@ class FeedsEditorActivity : BaseActivity() {
         mFeedsMakeModel = sFeedsMakeModelHolder
         sFeedsMakeModelHolder = null
         MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
+        if(mFeedsMakeModel==null){
+            finish()
+            return
+        }
         rootView = findViewById(R.id.root_view)
         titleBar = findViewById(R.id.title_bar)
         playBtnContainer = findViewById(R.id.play_btn_container)
@@ -156,7 +160,8 @@ class FeedsEditorActivity : BaseActivity() {
                 resumePreview()
             }
         }
-        seekBar?.max = mFeedsMakeModel?.recordDuration!!.toInt() - mFeedsMakeModel?.firstLyricShiftTs!!
+        val realDuration = (mFeedsMakeModel?.recordDuration?.toInt()?:0) - (mFeedsMakeModel?.firstLyricShiftTs?:0)
+        seekBar?.max = realDuration
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             }
@@ -267,9 +272,8 @@ class FeedsEditorActivity : BaseActivity() {
             }
         })
 
-        val d = mFeedsMakeModel!!.recordDuration - mFeedsMakeModel!!.firstLyricShiftTs
-        totalTsTv.text = U.getDateTimeUtils().formatVideoTime(d)
-        txtLyricsView.setDuration(d.toInt())
+        totalTsTv.text = U.getDateTimeUtils().formatVideoTime(realDuration.toLong())
+        txtLyricsView.setDuration(realDuration)
         txtLyricsView?.visibility = View.GONE
         manyLyricsView?.visibility = View.GONE
         if (mFeedsMakeModel?.withBgm == true) {
