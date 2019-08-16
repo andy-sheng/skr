@@ -127,7 +127,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var specialCase: Boolean? = false
 
     //某一个歌曲被删除了，以防死循环
-    var latestActionView: View? = null
+    var latestActionView: (() -> Unit)? = null
 
     val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
@@ -315,31 +315,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 // 读收藏
                 mSongControlArea.visibility = View.VISIBLE
                 mPlayLastIv?.setDebounceViewClickListener {
-                    val newModel = mSongManager?.getPreSong(true)
-                    if (newModel == null) {
-                        U.getToastUtil().showShort("已经到头了，没有上一首了")
-                        latestActionView = null
-                    } else {
-                        newModel?.feedID?.let {
-                            tryLoadNewFeed(it)
-                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-                        }
-                        latestActionView = mPlayLastIv
-                    }
+                    toPreSongAction()
                 }
 
                 mPlayNextIv?.setDebounceViewClickListener {
-                    val newModel = mSongManager?.getNextSong(true)
-                    if (newModel == null) {
-                        latestActionView = null
-                        U.getToastUtil().showShort("已经最后一首了")
-                    } else {
-                        newModel?.feedID?.let {
-                            tryLoadNewFeed(it)
-                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-                        }
-                        latestActionView = mPlayNextIv
-                    }
+                    toNextSongAction();
                 }
 
                 mBlurBg?.setOnClickListener {
@@ -567,6 +547,40 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
     }
 
+    private fun toNextSongAction() {
+        val newModel = mSongManager?.getNextSong(true)
+        if (newModel == null) {
+            latestActionView = null
+            U.getToastUtil().showShort("已经最后一首了")
+        } else {
+            newModel?.feedID?.let {
+                tryLoadNewFeed(it)
+                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+            }
+
+            latestActionView = {
+                toNextSongAction()
+            }
+        }
+    }
+
+    private fun toPreSongAction() {
+        val newModel = mSongManager?.getPreSong(true)
+        if (newModel == null) {
+            U.getToastUtil().showShort("已经到头了，没有上一首了")
+            latestActionView = null
+        } else {
+            newModel?.feedID?.let {
+                tryLoadNewFeed(it)
+                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+            }
+
+            latestActionView = {
+                toPreSongAction()
+            }
+        }
+    }
+
     private fun tryLoadNewFeed(newFeedId: Int) {
         if (newFeedId != mFeedID) {
             mFeedID = newFeedId
@@ -757,9 +771,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             MyLog.d(TAG, "finishWithModelError mSongManager == null")
         } else {
             if (latestActionView == null) {
-                mPlayNextIv?.callOnClick()
+                toNextSongAction()
             } else {
-                latestActionView?.callOnClick()
+                latestActionView?.invoke()
             }
         }
     }
