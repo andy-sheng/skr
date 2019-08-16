@@ -205,10 +205,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                     // 默认顺序就只是列表循环
                     fragment.activity?.let { fragmentActivity ->
                         FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, 1, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
-                            override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
-
-                            }
-
                             override fun getNextSong(userAction: Boolean): FeedSongModel? {
                                 return findNextSong(userAction)
                             }
