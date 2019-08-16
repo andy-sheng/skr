@@ -320,9 +320,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mSongControlArea.visibility = View.VISIBLE
                 mPlayLastIv?.setDebounceViewClickListener {
                     val newModel = mSongManager?.getPreSong(true)
-                    newModel?.feedID?.let {
-                        tryLoadNewFeed(it)
-                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                    if (newModel == null) {
+                        U.getToastUtil().showShort("已经到头了，没有上一首了")
+                    } else {
+                        newModel?.feedID?.let {
+                            tryLoadNewFeed(it)
+                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                        }
                     }
                 }
 

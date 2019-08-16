@@ -350,7 +350,6 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private fun findPresong(userAction: Boolean): FeedSongModel? {
         if (mAdapter?.mCurrentPlayPosition == 0) {
-            U.getToastUtil().showShort("已经到头了，没有上一首了")
             return null
         }
 
