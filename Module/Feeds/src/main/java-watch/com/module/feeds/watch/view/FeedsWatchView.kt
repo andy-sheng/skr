@@ -511,6 +511,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             return
         }
         mAdapter?.resumePlayModel()
+        if (isHomePage()) {
+            // 置顶显示
+            mLayoutManager.scrollToPositionWithOffset(mAdapter?.mCurrentPlayPosition ?: 0,0)
+            // 滚到可见
+//            mRecyclerView.smoothScrollToPosition(mAdapter?.mCurrentPlayPosition ?: 0)
+        }
         mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
             FeedsPlayStatistics.setCurPlayMode(mAdapter?.mCurrentPlayModel?.feedID ?: 0)
             SinglePlayer.startPlay(playerTag, it)
@@ -731,7 +737,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     fun onEvent(event: FeedPublishSucessEvent) {
         // 新的发布,重新去刷新下数据
         if (type == TYPE_PERSON) {
-            mPersenter.mLastUpdatListTime = 0L
+            mPersenter.mHasInitData = false
         }
     }
 }
