@@ -397,11 +397,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mSongControlArea.visibility = View.GONE
         }
 
-        mControlTv?.setDebounceViewClickListener {
-            if (it!!.isSelected) {
-                pausePlay()
-            } else {
-                startPlay()
+        mControlTv?.setDebounceViewClickListener { view ->
+            mFeedsWatchModel?.let {
+                if (view!!.isSelected) {
+                    pausePlay()
+                } else {
+                    startPlay()
+                }
             }
         }
 
@@ -465,6 +467,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mShareIv?.setDebounceViewClickListener {
+            if (mFeedsWatchModel == null) {
+                return@setDebounceViewClickListener
+            }
+
             sharePanel?.setUMShareListener(null)
             sharePanel = SharePanel(activity)
             sharePanel?.apply {
@@ -500,15 +506,21 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         mMoreTv?.setDebounceViewClickListener {
-            showMoreOp()
+            mFeedsWatchModel?.let {
+                showMoreOp()
+            }
         }
 
         mCommonTitleBar?.rightImageButton?.setDebounceViewClickListener {
-            showMoreOp()
+            mFeedsWatchModel?.let {
+                showMoreOp()
+            }
         }
 
         mCollectionIv?.setDebounceViewClickListener {
-            mFeedsDetailPresenter?.collection(mFeedsWatchModel?.isCollected != true, mFeedsWatchModel!!.feedID)
+            mFeedsWatchModel?.let {
+                mFeedsDetailPresenter?.collection(!it.isCollected, it.feedID)
+            }
         }
 
         mFeedsCommentView?.mClickContentCallBack = {
@@ -534,16 +546,20 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         })
 
         mRadioView?.avatarContainer?.setDebounceViewClickListener {
-            mControlTv?.callOnClick()
+            mFeedsWatchModel?.let {
+                mControlTv?.callOnClick()
+            }
         }
 
         mSingerIv?.setDebounceViewClickListener {
-            val bundle = Bundle()
-            bundle.putInt("bundle_user_id", mFeedsWatchModel?.user?.userID ?: 0)
-            ARouter.getInstance()
-                    .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                    .with(bundle)
-                    .navigation()
+            mFeedsWatchModel?.let {
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", mFeedsWatchModel?.user?.userID ?: 0)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
         }
 
         SinglePlayer.addCallback(playerTag, playCallback)
@@ -736,7 +752,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun finishWithModelError() {
         if (mSongManager == null) {
-            activity?.finish()
+//            activity?.finish()
+            MyLog.d(TAG, "finishWithModelError mSongManager == null")
         } else {
             if (latestActionView == null) {
                 mPlayNextIv?.callOnClick()
