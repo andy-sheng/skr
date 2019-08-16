@@ -331,7 +331,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                                     holder?.playLyric(position, model)
                                 }
                             }
-                        }catch (e:Exception){
+                        } catch (e: Exception) {
                             MyLog.e(e)
                         }
                     }
@@ -359,7 +359,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 mAdapter?.mCurrentPlayPosition = it - 1
                 mAdapter?.mCurrentPlayModel = mAdapter?.mDataList!![mAdapter?.mCurrentPlayPosition
                         ?: 0]
-                return mAdapter?.mCurrentPlayModel?.song
+                return if (mAdapter?.mCurrentPlayModel?.status != 2) {
+                    // 未审核通过
+                    findPresong(userAction)
+                } else {
+                    mAdapter?.mCurrentPlayModel?.song
+                }
             }
         }
 
@@ -377,7 +382,12 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
             // 在合理范围内
             mAdapter?.mCurrentPlayPosition = mAdapter?.mCurrentPlayPosition!! + 1
             mAdapter?.mCurrentPlayModel = mAdapter?.mDataList!![mAdapter?.mCurrentPlayPosition!!]
-            return mAdapter?.mCurrentPlayModel?.song
+            return if (mAdapter?.mCurrentPlayModel?.status != 2) {
+                // 继续找下一个
+                findNextSong(userAction)
+            } else {
+                mAdapter?.mCurrentPlayModel?.song
+            }
         }
         return null
     }
@@ -514,7 +524,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mAdapter?.resumePlayModel()
         if (isHomePage()) {
             // 置顶显示
-            mLayoutManager.scrollToPositionWithOffset(mAdapter?.mCurrentPlayPosition ?: 0,0)
+            mLayoutManager.scrollToPositionWithOffset(mAdapter?.mCurrentPlayPosition ?: 0, 0)
             // 滚到可见
 //            mRecyclerView.smoothScrollToPosition(mAdapter?.mCurrentPlayPosition ?: 0)
         }
