@@ -72,6 +72,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     val DELAY_HIDE_CONTROL_AREA = 0
     val HIDE_CONTROL_AREA = 1
     val SHOW_CONTROL_AREA = 2
+    val AUTO_CHANGE_SONG = 3
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
     var mContentLayout: CollapsingToolbarLayout? = null
@@ -141,6 +142,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mSongControlArea?.visibility = View.GONE
                 if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
                     mPlayTypeIv?.visibility = View.GONE
+                }
+            } else if (msg?.what == AUTO_CHANGE_SONG) {
+                if (latestAction == null) {
+                    toNextSongAction()
+                } else {
+                    latestAction?.invoke()
                 }
             }
         }
@@ -312,10 +319,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 // 读收藏
                 mSongControlArea.visibility = View.VISIBLE
                 mPlayLastIv?.setDebounceViewClickListener {
+                    mUiHandler.removeMessages(AUTO_CHANGE_SONG)
                     toPreSongAction()
                 }
 
                 mPlayNextIv?.setDebounceViewClickListener {
+                    mUiHandler.removeMessages(AUTO_CHANGE_SONG)
                     toNextSongAction();
                 }
 
@@ -763,15 +772,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     override fun finishWithModelError() {
+        mUiHandler.removeMessages(AUTO_CHANGE_SONG)
         if (mSongManager == null) {
 //            activity?.finish()
             MyLog.d(TAG, "finishWithModelError mSongManager == null")
         } else {
-            if (latestAction == null) {
-                toNextSongAction()
-            } else {
-                latestAction?.invoke()
-            }
+            mUiHandler.sendEmptyMessageDelayed(AUTO_CHANGE_SONG, 1000);
         }
     }
 
