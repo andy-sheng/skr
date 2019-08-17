@@ -80,7 +80,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private var mLoadService: LoadService<*>? = null
 
-    private var mAdapter: FeedsWatchViewAdapter? = null
+    private val mAdapter: FeedsWatchViewAdapter
     private val mPersenter: FeedWatchViewPresenter = FeedWatchViewPresenter(this, type)
 
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
@@ -234,7 +234,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 }
             }
 
-        }, isHomePage())
+        }, type)
 
         mRefreshLayout.apply {
             setEnableRefresh(isHomePage())
@@ -255,7 +255,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRecyclerView.layoutManager = mLayoutManager
         mRecyclerView.adapter = mAdapter
-        mAdapter?.notifyDataSetChanged()
+        mAdapter.notifyDataSetChanged()
 
         if (isHomePage()) {
             addOnScrollListenerToRv()
@@ -273,17 +273,17 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 // 播放完成
                 SinglePlayer.reset(playerTag)
                 // 显示分享，收藏和播放的按钮
-                mAdapter?.mCurrentPlayModel?.let { model ->
-                    mAdapter?.mCurrentPlayPosition?.let {
+                mAdapter.mCurrentPlayModel?.let { model ->
+                    mAdapter.mCurrentPlayPosition?.let {
                         if (isHomePage()) {
                             // 首页,需要去拉一下收藏
                             launch {
                                 model.isCollected = mPersenter.getCollectedStatus(model)
-                                mAdapter?.playComplete()
+                                mAdapter.playComplete()
                             }
                         } else {
                             // 个人中心
-                            mAdapter?.pausePlayModel()
+                            mAdapter.pausePlayModel()
                         }
 
                     }
@@ -292,13 +292,13 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
             override fun onPrepared() {
                 super.onPrepared()
-                mAdapter?.resumeWhenBufferingEnd()
+                mAdapter.resumeWhenBufferingEnd()
                 /**
                  * 预加载
                  */
-                mAdapter?.mCurrentPlayPosition?.let {
+                mAdapter.mCurrentPlayPosition?.let {
                     if (it + 1 < mAdapter!!.mDataList.size) {
-                        mAdapter?.mDataList?.get(it + 1)?.song?.playURL?.let { it2 ->
+                        mAdapter.mDataList.get(it + 1)?.song?.playURL?.let { it2 ->
                             MediaCacheManager.preCache(it2)
                         }
                     }
@@ -313,22 +313,22 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 MyLog.d(TAG, "onBufferingUpdate percent=$percent")
                 if (percent == 100) {
                     if (SinglePlayer.isPlaying) {
-                        mAdapter?.resumeWhenBufferingEnd()
+                        mAdapter.resumeWhenBufferingEnd()
                     }
                 } else {
-                    mAdapter?.pauseWhenBuffering()
+                    mAdapter.pauseWhenBuffering()
                 }
             }
 
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
-                if (mAdapter?.playing == true) {
-                    mAdapter?.updatePlayProgress(pos, duration)
-                    mAdapter?.mCurrentPlayPosition?.let { position ->
+                if (mAdapter.playing == true) {
+                    mAdapter.updatePlayProgress(pos, duration)
+                    mAdapter.mCurrentPlayPosition?.let { position ->
                         try {
                             val holder = mRecyclerView.findViewHolderForAdapterPosition(position)
                             if (holder is FeedViewHolder?) {
-                                mAdapter?.mCurrentPlayModel?.let { model ->
-                                    holder?.playLyric(position, model)
+                                mAdapter.mCurrentPlayModel?.let { model ->
+                                    holder?.playLyric()
                                 }
                             }
                         } catch (e: Exception) {
@@ -350,20 +350,41 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun findPresong(userAction: Boolean): FeedSongModel? {
-        if (mAdapter?.mCurrentPlayPosition == 0) {
-            return null
-        }
+        if (type == TYPE_RECOMMEND) {
+            // todo 补充推荐
+            if (mAdapter.mCurrentPlayPosition == 1 || mAdapter.mCurrentPlayPosition == 0) {
+                return null
+            }
+            mAdapter.mCurrentPlayPosition?.let {
+                if (!mAdapter.mDataList.isNullOrEmpty()) {
+                    mAdapter.mCurrentPlayPosition = it - 1
+                    mAdapter.mCurrentPlayModel = mAdapter.mDataList[(mAdapter.mCurrentPlayPosition
+                            ?: 0) - 1]
+                    return if (mAdapter.mCurrentPlayModel?.status != 2) {
+                        // 未审核通过
+                        findPresong(userAction)
+                    } else {
+                        mAdapter.mCurrentPlayModel?.song
+                    }
+                }
+            }
 
-        mAdapter?.mCurrentPlayPosition?.let {
-            if (!mAdapter?.mDataList.isNullOrEmpty()) {
-                mAdapter?.mCurrentPlayPosition = it - 1
-                mAdapter?.mCurrentPlayModel = mAdapter?.mDataList!![mAdapter?.mCurrentPlayPosition
-                        ?: 0]
-                return if (mAdapter?.mCurrentPlayModel?.status != 2) {
-                    // 未审核通过
-                    findPresong(userAction)
-                } else {
-                    mAdapter?.mCurrentPlayModel?.song
+        } else {
+            if (mAdapter.mCurrentPlayPosition == 0) {
+                return null
+            }
+
+            mAdapter.mCurrentPlayPosition?.let {
+                if (!mAdapter.mDataList.isNullOrEmpty()) {
+                    mAdapter.mCurrentPlayPosition = it - 1
+                    mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition
+                            ?: 0]
+                    return if (mAdapter.mCurrentPlayModel?.status != 2) {
+                        // 未审核通过
+                        findPresong(userAction)
+                    } else {
+                        mAdapter.mCurrentPlayModel?.song
+                    }
                 }
             }
         }
@@ -372,21 +393,38 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun findNextSong(userAction: Boolean): FeedSongModel? {
-        if (mAdapter?.mCurrentPlayPosition == (mAdapter?.mDataList?.size ?: 0) - 2) {
-            // 已经到最后一个，需要去更新数据
-            getMoreFeeds()
-        }
+        if (type == TYPE_RECOMMEND) {
+            // 补充推荐
+            if (mAdapter.mCurrentPlayPosition == mAdapter.mDataList.size - 1) {
+                getMoreFeeds()
+            }
+            if (mAdapter.mCurrentPlayPosition != null && mAdapter.mCurrentPlayPosition!! < mAdapter.mDataList.size - 1) {
+                // 在合理范围内
+                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition!! + 1
+                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition!! - 1]
+                return if (mAdapter.mCurrentPlayModel?.status != 2) {
+                    // 继续找下一个
+                    findNextSong(userAction)
+                } else {
+                    mAdapter.mCurrentPlayModel?.song
+                }
+            }
+        } else {
+            if (mAdapter.mCurrentPlayPosition == mAdapter.mDataList.size - 2) {
+                // 已经到最后一个，需要去更新数据
+                getMoreFeeds()
+            }
 
-        if (mAdapter?.mCurrentPlayPosition != null && mAdapter?.mCurrentPlayPosition!! < (mAdapter?.mDataList?.size
-                        ?: 0) - 1) {
-            // 在合理范围内
-            mAdapter?.mCurrentPlayPosition = mAdapter?.mCurrentPlayPosition!! + 1
-            mAdapter?.mCurrentPlayModel = mAdapter?.mDataList!![mAdapter?.mCurrentPlayPosition!!]
-            return if (mAdapter?.mCurrentPlayModel?.status != 2) {
-                // 继续找下一个
-                findNextSong(userAction)
-            } else {
-                mAdapter?.mCurrentPlayModel?.song
+            if (mAdapter.mCurrentPlayPosition != null && mAdapter.mCurrentPlayPosition!! < mAdapter.mDataList.size - 1) {
+                // 在合理范围内
+                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition!! + 1
+                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition!!]
+                return if (mAdapter.mCurrentPlayModel?.status != 2) {
+                    // 继续找下一个
+                    findNextSong(userAction)
+                } else {
+                    mAdapter.mCurrentPlayModel?.song
+                }
             }
         }
         return null
@@ -410,7 +448,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-                        var postion = 0
+                        var postion = -1
                         // 以光盘为界限，找光盘显示百分比最多的
                         val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
                         val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
@@ -452,12 +490,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                                     if (percents[i - firstVisibleItem] == 100f) {
                                         isFound = true
                                         maxPercent = 100f
-                                        model = mAdapter?.mDataList?.get(i)
                                         postion = i
                                     } else {
                                         if (percents[i - firstVisibleItem] > maxPercent) {
                                             maxPercent = percents[i - firstVisibleItem]
-                                            model = mAdapter?.mDataList?.get(i)
                                             postion = i
                                         }
                                     }
@@ -465,9 +501,20 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
                                 i++
                             }
                         }
-                        model?.let {
+                        if (postion >= 0) {
                             isFound = true
-                            controlPlay(postion, it, true)
+                            model = if (type == TYPE_RECOMMEND) {
+                                // 推荐列表中第一个是无效的
+                                if (postion == 0) postion = 1
+                                if (!mAdapter.mDataList.isNullOrEmpty() && postion - 1 >= 0 && postion - 1 < mAdapter.mDataList.size) {
+                                    mAdapter.mDataList[postion - 1]
+                                } else {
+                                    null
+                                }
+                            } else {
+                                mAdapter.mDataList[postion]
+                            }
+                            controlPlay(postion, model, true)
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
@@ -481,14 +528,14 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     private fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
         MyLog.d(TAG, "controlPlay isSeleted = $isSeleted")
-        if (model != null && model != mAdapter?.mCurrentPlayModel) {
+        if (model != null && model != mAdapter.mCurrentPlayModel) {
             SinglePlayer.reset(playerTag)
         }
         if (isMustPlay) {
             // 播放
             startPlay(pos, model)
         } else {
-            if (mAdapter?.mCurrentPlayModel == model && mAdapter?.playing == true) {
+            if (mAdapter.mCurrentPlayModel == model && mAdapter.playing) {
                 // 停止播放
                 pausePlay()
             } else {
@@ -499,11 +546,11 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     }
 
     private fun startPlay(pos: Int, model: FeedsWatchModel?) {
-        MyLog.d(TAG, "startPlayModel isSeleted = $isSeleted pos=$pos mCurrentPlayPosition=${mAdapter?.mCurrentPlayPosition}")
-        mAdapter?.startPlayModel(pos, model)
+        MyLog.d(TAG, "startPlayModel isSeleted = $isSeleted pos=$pos mCurrentPlayPosition=${mAdapter.mCurrentPlayPosition}")
+        mAdapter.startPlayModel(pos, model)
         // 数据还是要更新，只是不播放，为恢复播放做准备
         if (!isSeleted) {
-            mAdapter?.pausePlayModel()
+            mAdapter.pausePlayModel()
             return
         }
         model?.song?.playURL?.let {
@@ -518,30 +565,36 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     private fun resumePlay() {
         MyLog.d(TAG, "resumePlay isSeleted= $isSeleted")
         if (!isSeleted) {
-            mAdapter?.pausePlayModel()
+            mAdapter.pausePlayModel()
             return
         }
-        mAdapter?.resumePlayModel()
+        mAdapter.resumePlayModel()
         if (isHomePage()) {
-            // 置顶显示
-            mLayoutManager.scrollToPositionWithOffset(mAdapter?.mCurrentPlayPosition ?: 0, 0)
-            // 滚到可见
-//            mRecyclerView.smoothScrollToPosition(mAdapter?.mCurrentPlayPosition ?: 0)
+            srollPositionToTop(mAdapter.mCurrentPlayPosition ?: 0)
         }
-        mAdapter?.mCurrentPlayModel?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(mAdapter?.mCurrentPlayModel?.feedID ?: 0)
+        mAdapter.mCurrentPlayModel?.song?.playURL?.let {
+            FeedsPlayStatistics.setCurPlayMode(mAdapter.mCurrentPlayModel?.feedID ?: 0)
             SinglePlayer.startPlay(playerTag, it)
+        }
+    }
+
+    private fun srollPositionToTop(position: Int) {
+        // 置顶显示
+        val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+        val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+        if (position < firstVisibleItem || position > lastVisibleItem) {
+            mLayoutManager.scrollToPositionWithOffset(position, 0)
         }
     }
 
     private fun pausePlay() {
         MyLog.d(TAG, "pausePlay")
-        mAdapter?.pausePlayModel()
+        mAdapter.pausePlayModel()
         SinglePlayer.pause(playerTag)
     }
 
     override fun getFeeds(flag: Boolean) {
-        if (mAdapter?.mDataList.isNullOrEmpty()) {
+        if (mAdapter.mDataList.isNullOrEmpty()) {
             // 列表都为空了，还不去拉一次
             mPersenter.initWatchList(true)
         } else {
@@ -566,34 +619,38 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
         mCallBack?.onRequestSucess(hasMore)
         if (isClear) {
-            mAdapter?.mDataList?.clear()
+            mAdapter.mDataList.clear()
             if (list != null && list.isNotEmpty()) {
-                mAdapter?.mDataList?.addAll(list)
+                mAdapter.mDataList.addAll(list)
             }
-            mAdapter?.notifyDataSetChanged()
+            mAdapter.notifyDataSetChanged()
             mRecyclerView.smoothScrollToPosition(0)
             if (isHomePage()) {
-                if (mAdapter?.mDataList?.isNotEmpty() == true) {
+                if (mAdapter.mDataList.isNotEmpty() == true) {
                     // delay 是因为2哥notify冲突
                     launch {
                         delay(200)
-                        controlPlay(0, mAdapter?.mDataList?.get(0), true)
+                        if (type == TYPE_RECOMMEND) {
+                            controlPlay(1, mAdapter.mDataList.get(0), true)
+                        } else {
+                            controlPlay(0, mAdapter.mDataList.get(0), true)
+                        }
                     }
                 } else {
                     // 拉回来的列表为空
                     pausePlay()
-                    mAdapter?.mCurrentPlayModel = null
+                    mAdapter.mCurrentPlayModel = null
                 }
             }
 
         } else {
             if (list != null && list.isNotEmpty()) {
-                mAdapter?.mDataList?.addAll(list)
-                mAdapter?.notifyDataSetChanged()
+                mAdapter.mDataList.addAll(list)
+                mAdapter.notifyDataSetChanged()
             }
         }
 
-        if (mAdapter?.mDataList != null && mAdapter?.mDataList?.isNotEmpty() == true) {
+        if (mAdapter.mDataList != null && mAdapter.mDataList.isNotEmpty()) {
             mLoadService?.showSuccess()
         } else {
             mLoadService?.showCallback(EmptyCallback::class.java)
@@ -613,20 +670,20 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
         } else {
             model.starCnt = model.starCnt.minus(1)
         }
-        mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
+        mAdapter.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
     }
 
     override fun feedDeleteResult(position: Int, model: FeedsWatchModel) {
-        if (mAdapter?.mCurrentPlayModel == model) {
+        if (mAdapter.mCurrentPlayModel == model) {
             SinglePlayer.pause(playerTag)
-            mAdapter?.mCurrentPlayModel = null
-            mAdapter?.mCurrentPlayPosition = null
+            mAdapter.mCurrentPlayModel = null
+            mAdapter.mCurrentPlayPosition = null
         }
-        mAdapter?.delete(model)
+        mAdapter.delete(model)
     }
 
     override fun showCollect(position: Int, model: FeedsWatchModel) {
-        mAdapter?.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
+        mAdapter.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
     }
 
     override fun onAttachedToWindow() {
@@ -722,7 +779,7 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
     fun onEvent(event: FeedDetailChangeEvent) {
         // 数据要更新了
         event.model?.let {
-            mAdapter?.updateModelFromDetail(it)
+            mAdapter.updateModelFromDetail(it)
         }
     }
 
@@ -736,10 +793,10 @@ class FeedsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedsCollectChangeEvent) {
-        mAdapter?.mDataList?.forEachIndexed { index, feedsWatchModel ->
+        mAdapter.mDataList.forEachIndexed { index, feedsWatchModel ->
             if (feedsWatchModel.feedID == event.feedID) {
                 feedsWatchModel.isCollected = event.isCollected
-                mAdapter?.update(index, feedsWatchModel, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
+                mAdapter.update(index, feedsWatchModel, FeedsWatchViewAdapter.REFRESH_TYPE_COLLECT)
             }
         }
     }

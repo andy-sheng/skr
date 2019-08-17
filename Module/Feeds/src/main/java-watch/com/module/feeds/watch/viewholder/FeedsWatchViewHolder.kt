@@ -111,10 +111,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         hideCompleteArea()
     }
 
-    fun showCompleteArea(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
-
+    fun showCompleteArea() {
         mCompleteGruop.visibility = View.VISIBLE
     }
 

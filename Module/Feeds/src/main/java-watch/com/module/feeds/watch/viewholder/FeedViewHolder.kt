@@ -44,7 +44,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     var model: FeedsWatchModel? = null
 
     init {
-        mMoreIv.setOnClickListener(object : DebounceViewClickListener(){
+        mMoreIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(view: View?) {
                 listener?.onClickMoreListener(mPosition, model)
             }
@@ -117,9 +117,9 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             mTagArea.visibility = View.GONE
         }
 
-        refreshPlayNum(position, watchModel)
-        refreshLike(position, watchModel)
-        refreshCollects(position, watchModel)
+        refreshPlayNum()
+        refreshLike()
+        refreshCollects()
 
         // 加载带时间戳的歌词
         watchModel.song?.let {
@@ -138,33 +138,25 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     }
 
     // 刷新喜欢图标和数字
-    fun refreshLike(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
-
+    fun refreshLike() {
         var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
-        if (watchModel.isLiked) {
+        if (model?.isLiked == true) {
             drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
         }
         drawble.setBounds(0, 0, 20.dp(), 18.dp())
         mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
-        mLikeNumTv.text = StringFromatUtils.formatTenThousand(watchModel.starCnt)
+        mLikeNumTv.text = StringFromatUtils.formatTenThousand(model?.starCnt ?: 0)
     }
 
     // 刷新播放次数
-    fun refreshPlayNum(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
-        mPlayNumTv.text = "${StringFromatUtils.formatTenThousand(watchModel.exposure)} 播放"
+    fun refreshPlayNum() {
+        mPlayNumTv.text = "${StringFromatUtils.formatTenThousand(model?.exposure ?: 0)} 播放"
     }
 
     // 刷新收藏状态
-    open fun refreshCollects(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
-
+    open fun refreshCollects() {
         var drawble = U.getDrawable(R.drawable.feed_not_collection)
-        if (watchModel.isCollected) {
+        if (model?.isCollected == true) {
             drawble = U.getDrawable(R.drawable.feed_collect_selected_icon)
         }
         drawble.setBounds(0, 0, 20.dp(), 18.dp())
@@ -176,9 +168,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mRecordView.play(SinglePlayer.isBufferingOk)
     }
 
-    fun playLyric(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
+    fun playLyric() {
         // 播放歌词 不一定是从头开始播
         // 有可能从头播 也有可能继续播
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
@@ -205,9 +195,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
     }
 
-    fun pauseWhenBuffering(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
+    fun pauseWhenBuffering() {
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedWatchManyLyricView.pause()
         } else {
@@ -216,9 +204,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         mRecordView.buffering()
     }
 
-    fun resumeWhenBufferingEnd(position: Int, watchModel: FeedsWatchModel) {
-        this.mPosition = position
-        this.model = watchModel
+    fun resumeWhenBufferingEnd() {
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedWatchManyLyricView.resume()
         } else {
