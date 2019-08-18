@@ -5,15 +5,12 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.player.SinglePlayer
-import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.event.FeedPublishSucessEvent
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
@@ -21,14 +18,9 @@ import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
-import com.module.feeds.watch.view.FeedsWatchView
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.HashMap
 
 class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, val callBack: RequestCallBack?) : BaseWatchView(fragment, TYPE_PERSON), IPersonFeedsWall {
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
