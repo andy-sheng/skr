@@ -25,7 +25,7 @@ class VoiceRecordTipsView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     override fun layoutDesc(): Int {
-        return R.layout.grab_voice_record_tips_view_layout
+        return R.layout.voice_record_tips_view_layout
     }
 
     fun show() {

@@ -1,8 +1,12 @@
 package com.module.playways.race.room.ui
 
 import android.os.Bundle
+import android.view.ViewStub
 import com.common.base.BaseFragment
+import com.common.utils.U
 import com.module.playways.R
+import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
+import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.view.RaceInputContainerView
@@ -14,7 +18,9 @@ class RaceRoomFragment : BaseFragment() {
 
     lateinit var mInputContainerView: RaceInputContainerView
     lateinit var mBottomContainerView: RaceBottomContainerView
+    lateinit var mVoiceRecordTipsView:VoiceRecordTipsView
     lateinit var mCommentView:CommentView
+    lateinit var mVoiceRecordUiController:VoiceRecordUiController
     var mRoomData = RaceRoomData()
     override fun initView(): Int {
         return R.layout.race_room_fragment_layout
@@ -32,11 +38,10 @@ class RaceRoomFragment : BaseFragment() {
     }
 
     private fun initBottomView() {
-//        run {
-//            val viewStub = rootView.findViewById<ViewStub>(R.id.grab_voice_record_tip_view_stub)
-//            mVoiceRecordTipsView = VoiceRecordTipsView(viewStub)
-//        }
-//
+        run {
+            val viewStub = rootView.findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
+            mVoiceRecordTipsView = VoiceRecordTipsView(viewStub)
+        }
 //        mBottomBgVp = rootView.findViewById<ViewGroup>(R.id.bottom_bg_vp)
 //        val lp = mBottomBgVp.getLayoutParams() as RelativeLayout.LayoutParams
 //        /**
@@ -97,10 +102,10 @@ class RaceRoomFragment : BaseFragment() {
         mCommentView.setListener(CommentViewItemListener {
 //            userId -> showPersonInfoView(userId)
         })
-//        mCommentView.roomData = mRoomData
-        //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
-        //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
-//        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
+        mCommentView.roomData = mRoomData
+        val layoutParams = mCommentView.layoutParams
+        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px((430 + 60).toFloat())
+        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
     }
 
     override fun useEventBus(): Boolean {

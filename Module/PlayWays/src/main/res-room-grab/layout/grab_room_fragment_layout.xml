@@ -48,8 +48,8 @@
             android:layout_marginBottom="@dimen/view_18_dp"
             gameType:type="grab" />
 
-        <com.module.playways.view.EdgeTransparentView
-            android:id="@+id/comment_bg"
+        <com.module.playways.room.room.comment.CommentView
+            android:id="@+id/comment_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
@@ -59,14 +59,8 @@
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingBottom="@dimen/view_7_dp"
             app:edge_position="top|bottom"
-            app:edge_width="30dp">
-
-            <com.module.playways.room.room.comment.CommentView
-                android:id="@+id/comment_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                gameType:type="grab" />
-        </com.module.playways.view.EdgeTransparentView>
+            gameType:type="grab"
+            app:edge_width="30dp"/>
 
         <!--<com.common.view.ex.ExImageView-->
         <!--android:id="@+id/cover_iv"-->
@@ -80,7 +74,7 @@
             android:id="@+id/mini_owner_mic_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/comment_bg"
+            android:layout_alignBottom="@id/comment_view"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_10_dp"
@@ -296,11 +290,11 @@
         android:layout_alignParentBottom="true" />
 
     <ViewStub
-        android:id="@+id/grab_voice_record_tip_view_stub"
+        android:id="@+id/voice_record_tip_view_stub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/view_18_dp"
-        android:layout="@layout/grab_voice_record_tips_view_layout" />
+        android:layout="@layout/voice_record_tips_view_layout" />
 
     <ViewStub
         android:id="@+id/debug_log_view_stub"

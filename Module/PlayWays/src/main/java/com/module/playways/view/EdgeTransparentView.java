@@ -11,11 +11,12 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.module.playways.R;
 
-public class EdgeTransparentView extends FrameLayout {
+public class EdgeTransparentView extends RelativeLayout {
     private Paint mPaint;
     private int position;
     private float drawSize;

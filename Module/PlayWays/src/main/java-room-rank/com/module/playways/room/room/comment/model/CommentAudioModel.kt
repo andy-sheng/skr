@@ -23,7 +23,7 @@ class CommentAudioModel : CommentModel() {
 
             if (roomData != null) {
                 val sender = roomData.getUserInfo(event.mInfo.sender.userID!!)
-                commentModel.userName = sender!!.nicknameRemark
+                commentModel.userName = sender?.nicknameRemark
                 commentModel.avatarColor = CommentModel.AVATAR_COLOR
                 if (sender != null) {
                     commentModel.avatar = sender.avatar

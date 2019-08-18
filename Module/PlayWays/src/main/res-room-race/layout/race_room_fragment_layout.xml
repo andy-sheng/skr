@@ -13,8 +13,8 @@
         android:layout_marginBottom="@dimen/view_18_dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.module.playways.view.EdgeTransparentView
-        android:id="@+id/comment_bg"
+    <com.module.playways.room.room.comment.CommentView
+        android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_284_dp"
         android:layout_marginRight="@dimen/view_100_dp"
@@ -22,20 +22,20 @@
         android:paddingBottom="@dimen/view_7_dp"
         app:edge_position="top|bottom"
         app:edge_width="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view">
-
-        <com.module.playways.room.room.comment.CommentView
-            android:id="@+id/comment_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            gameType:type="race" />
-    </com.module.playways.view.EdgeTransparentView>
+        app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
+        app:layout_goneMarginBottom="@dimen/view_50_dp"
+        gameType:type="race" />
 
     <com.module.playways.race.room.view.RaceInputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
+    <ViewStub
+        android:id="@+id/voice_record_tip_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:layout="@layout/voice_record_tips_view_layout" />
 </com.common.view.ex.ExConstraintLayout>

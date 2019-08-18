@@ -669,7 +669,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initBottomView() {
         {
-            ViewStub viewStub = getRootView().findViewById(R.id.grab_voice_record_tip_view_stub);
+            ViewStub viewStub = getRootView().findViewById(R.id.voice_record_tip_view_stub);
             mVoiceRecordTipsView = new VoiceRecordTipsView(viewStub);
         }
 

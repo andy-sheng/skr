@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Message
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -34,13 +35,14 @@ import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
+import com.module.playways.view.EdgeTransparentView
 import com.module.playways.voice.activity.VoiceRoomActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class CommentView : RelativeLayout {
+class CommentView : EdgeTransparentView {
 
     internal var mCommentRv: RecyclerView? = null
 
@@ -141,10 +143,16 @@ class CommentView : RelativeLayout {
             EventBus.getDefault().register(this)
         }
         if (this.layoutParams.height > maxHeight) {
-            val layoutParams = this.layoutParams as RelativeLayout.LayoutParams
-            layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight)
-            layoutParams.height = maxHeight
-            setLayoutParams(layoutParams)
+            val layoutParams = this.layoutParams
+            if (layoutParams is RelativeLayout.LayoutParams) {
+                layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight)
+                layoutParams.height = maxHeight
+                setLayoutParams(layoutParams)
+            }else if(layoutParams is ConstraintLayout.LayoutParams){
+                layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight)
+                layoutParams.height = maxHeight
+                setLayoutParams(layoutParams)
+            }
         }
     }
 
