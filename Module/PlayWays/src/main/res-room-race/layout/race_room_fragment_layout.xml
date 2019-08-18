@@ -6,6 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="@color/transparent" />
+    <!--底部按钮区-->
     <com.module.playways.race.room.bottom.RaceBottomContainerView
         android:id="@+id/bottom_container_view"
         android:layout_width="match_parent"
@@ -13,6 +23,7 @@
         android:layout_marginBottom="@dimen/view_18_dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <!--评论区-->
     <com.module.playways.room.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
@@ -26,6 +37,22 @@
         app:layout_goneMarginBottom="@dimen/view_50_dp"
         gameType:type="race" />
 
+    <!-- 包括 顶部操作菜单栏 -->
+    <com.module.playways.race.room.view.RaceTopOpView
+        android:id="@+id/race_top_op_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_38_dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <!--包括嘉宾栏 和 观众栏-->
+    <com.module.playways.race.room.view.RaceTopContentView
+        android:id="@+id/race_top_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_120_dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <!--输入框区域-->
     <com.module.playways.race.room.view.RaceInputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
@@ -49,8 +76,8 @@
         android:id="@+id/gift_panel_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup

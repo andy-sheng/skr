@@ -4,13 +4,11 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.R;
@@ -55,7 +53,7 @@ public class GrabTopOpView extends RelativeLayout {
     }
 
     public void init() {
-        inflate(getContext(), R.layout.grab_top_view, this);
+        inflate(getContext(), R.layout.grab_top_op_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mCameraIv = (ImageView) findViewById(R.id.camera_iv);
         mDivider = (View) findViewById(R.id.divider);
