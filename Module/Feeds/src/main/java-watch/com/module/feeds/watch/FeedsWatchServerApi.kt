@@ -110,4 +110,7 @@ interface FeedsWatchServerApi {
     @GET("v1/feed/collect-list-by-index-id")
     fun getCollectListByIndex(@Query("lastIndexID") lastIndexID: Long, @Query("userID") userID: Long): Call<ApiResult>
 
+    @GET("v1/feed/rank-tag-category")
+    fun getRecomendTagList(): Call<ApiResult>
+
 }

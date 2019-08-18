@@ -42,6 +42,7 @@ import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.FeedViewHolder
@@ -103,6 +104,17 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         mRecyclerView = findViewById(R.id.recycler_view)
 
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
+            override fun onClickRecommendTagMore() {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
+                        .navigation()
+            }
+
+            override fun onClickRecommendTag(model: FeedRecommendTagModel) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG_DETAIL)
+                        .withSerializable("model", model)
+                        .navigation()
+            }
+
             override fun onClickCollectListener(position: Int, watchModel: FeedsWatchModel?) {
                 // 收藏
                 watchModel?.let {

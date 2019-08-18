@@ -1,7 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_100_dp">
+    android:layout_height="@dimen/view_82_dp"
+    android:layout_marginBottom="@dimen/view_16_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/top_one"
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_82_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/top_two"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/top_two"
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_82_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/top_one"
+        app:layout_constraintRight_toLeftOf="@id/top_three"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/top_three"
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_82_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/top_two"
+        app:layout_constraintRight_toLeftOf="@id/top_more"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/top_more"
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_82_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/top_three"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

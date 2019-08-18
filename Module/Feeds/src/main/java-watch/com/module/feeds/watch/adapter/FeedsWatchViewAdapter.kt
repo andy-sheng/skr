@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.common.log.MyLog
 import com.module.feeds.R
 import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.*
 import com.module.feeds.watch.watchview.BaseWatchView
@@ -15,6 +16,8 @@ import com.module.feeds.watch.watchview.BaseWatchView
 class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<FeedsWatchModel>()
+    // 只用来做推荐顶部的
+    var mRecommendList = ArrayList<FeedRecommendTagModel>()
 
     var mCurrentPlayPosition: Int? = null
     var mCurrentPlayModel: FeedsWatchModel? = null
@@ -35,8 +38,8 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             // 全部刷新的布局
             if (mType == BaseWatchView.TYPE_RECOMMEND) {
                 if (position == 0) {
-                    if (holder is FeedRecommendViewHolder) {
-                        holder.bindData()
+                    if (holder is FeedRecommendTagHolder) {
+                        holder.bindData(mRecommendList)
                     }
                 } else {
                     if (!mDataList.isNullOrEmpty() && (position - 1) < mDataList.size) {
@@ -141,7 +144,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             }
             mHomeTopType -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_recommend_view_layout, parent, false)
-                FeedRecommendViewHolder(view)
+                FeedRecommendTagHolder(view,listener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)

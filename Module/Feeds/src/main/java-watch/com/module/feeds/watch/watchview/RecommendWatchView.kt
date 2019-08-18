@@ -9,6 +9,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.component.busilib.callback.EmptyCallback
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -111,8 +112,30 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
             // 不一定要刷新
             return false
         }
+        // todo 记得优化一下
         getRecommendFeedList(0, true)
+        getRecommendTagList()
         return true
+    }
+
+    private fun getRecommendTagList() {
+        launch {
+            val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
+                mFeedServerApi.getRecomendTagList()
+            }
+            if (obj.errno == 0) {
+                val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
+                mAdapter.mRecommendList.clear()
+                if (!list.isNullOrEmpty()) {
+                    mAdapter.mRecommendList.addAll(list)
+                }
+                mAdapter.notifyDataSetChanged()
+            } else {
+                if (obj.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
     }
 
     private fun getRecommendFeedList(offset: Int, isClear: Boolean) {

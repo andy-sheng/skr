@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_160_dp"
+    android:layout_height="@dimen/view_160_dp"
+    android:layout_margin="@dimen/view_16_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/tag_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</android.support.constraint.ConstraintLayout>
