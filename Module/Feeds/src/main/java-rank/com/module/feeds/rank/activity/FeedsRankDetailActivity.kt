@@ -30,7 +30,7 @@ import com.module.feeds.R
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
-import com.module.feeds.rank.adapter.FeedDetailAdapter
+import com.module.feeds.rank.adapter.FeedRankDetailAdapter
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -44,7 +44,7 @@ import org.greenrobot.eventbus.ThreadMode
  * 具体神曲的榜单
  */
 @Route(path = RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
-class FeedsDetailRankActivity : BaseActivity() {
+class FeedsRankDetailActivity : BaseActivity() {
     val MOUTH_RANK = 0
     val YEAR_RANK = 1
 
@@ -57,7 +57,7 @@ class FeedsDetailRankActivity : BaseActivity() {
     lateinit var mSelectTv: ExTextView
     internal var mQuickMsgPopWindow: PopupWindow? = null  //快捷词弹出面板
 
-    private val mAdapter: FeedDetailAdapter = FeedDetailAdapter()
+    private val mAdapter: FeedRankDetailAdapter = FeedRankDetailAdapter()
 
     var title = ""
     var challengeID = 0L

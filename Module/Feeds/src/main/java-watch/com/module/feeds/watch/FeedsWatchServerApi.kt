@@ -113,4 +113,13 @@ interface FeedsWatchServerApi {
     @GET("v1/feed/rank-tag-category")
     fun getRecomendTagList(): Call<ApiResult>
 
+    /**
+     * 全民神曲：根据榜单标签分类获取歌单数据
+     */
+    @GET("v1/feed/rank-song-list-by-tag")
+    fun getRecomendTagDetailList(@Query("offset") offset: Int,
+                                 @Query("cnt") cnt: Int,
+                                 @Query("tagTypeID") tagTypeID: Int,
+                                 @Query("queryDate") queryDate: String): Call<ApiResult>
+
 }

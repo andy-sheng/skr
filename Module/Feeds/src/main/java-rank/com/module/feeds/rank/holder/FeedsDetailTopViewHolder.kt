@@ -9,8 +9,6 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
-import com.common.image.model.oss.OssImgFactory
-import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -19,8 +17,6 @@ import com.component.busilib.view.BitmapTextView
 import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
-import com.module.feeds.rank.adapter.FeedsRankAdapter
-import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.watch.model.FeedsWatchModel
 
 class FeedsDetailTopViewHolder(rootView: View,

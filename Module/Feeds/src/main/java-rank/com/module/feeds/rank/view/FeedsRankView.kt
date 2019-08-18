@@ -13,7 +13,7 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
-import com.module.feeds.rank.adapter.FeedsRankAdapter
+import com.module.feeds.rank.adapter.FeedRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
 import com.module.feeds.rank.model.FeedRankTagModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -28,7 +28,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
     private val mRefreshLayout: SmartRefreshLayout
     private val mRecyclerView: RecyclerView
-    private val mAdapter: FeedsRankAdapter
+    private val mAdapter: FeedRankAdapter
 
     private val mFeedsRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 
@@ -58,7 +58,7 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
 
 
-        mAdapter = FeedsRankAdapter(object : FeedsRankAdapter.Listener {
+        mAdapter = FeedRankAdapter(object : FeedRankAdapter.Listener {
             override fun onClickItem(position: Int, model: FeedRankInfoModel?) {
                 // 进入详细排行榜
                 model?.let {

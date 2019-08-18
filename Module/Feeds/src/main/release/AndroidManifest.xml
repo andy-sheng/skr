@@ -78,7 +78,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".rank.activity.FeedsDetailRankActivity"
+            android:name=".rank.activity.FeedsRankDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

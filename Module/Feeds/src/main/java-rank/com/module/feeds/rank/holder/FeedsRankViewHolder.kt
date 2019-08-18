@@ -5,20 +5,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
-import com.common.view.ex.ExImageView
 import com.facebook.drawee.view.SimpleDraweeView
-import com.module.RouterConstants
 import com.module.feeds.R
-import com.module.feeds.rank.adapter.FeedsRankAdapter
+import com.module.feeds.rank.adapter.FeedRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
 
-class FeedsRankViewHolder(item: View, val listener: FeedsRankAdapter.Listener) : RecyclerView.ViewHolder(item) {
+class FeedsRankViewHolder(item: View, val listener: FeedRankAdapter.Listener) : RecyclerView.ViewHolder(item) {
 
     val mCoverIv: SimpleDraweeView = item.findViewById(R.id.cover_iv)
     val mHitIv: ImageView = item.findViewById(R.id.hit_iv)

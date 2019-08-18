@@ -10,7 +10,7 @@ import com.module.feeds.rank.holder.FeedsDetailOneViewHolder
 import com.module.feeds.rank.holder.FeedsDetailRankViewHolder
 import com.module.feeds.rank.holder.FeedsDetailTopViewHolder
 
-class FeedDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FeedRankDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     var mDataList = ArrayList<FeedsWatchModel>()

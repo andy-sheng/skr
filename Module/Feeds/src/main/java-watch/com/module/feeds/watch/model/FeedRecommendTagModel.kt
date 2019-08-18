@@ -6,12 +6,15 @@ import com.alibaba.fastjson.annotation.JSONField
 class FeedRecommendTagModel : Serializable {
     @JSONField(name = "bigImgURL")
     var bigImgURL: String? = null
-    @JSONField(name = "remark")
-    var remark: String? = null
+    @JSONField(name = "subTitle")
+    var subTitle: String? = null
     @JSONField(name = "smallImgURL")
     var smallImgURL: String? = null
     @JSONField(name = "tagDesc")
     var tagDesc: String? = null
-    @JSONField(name = "tagType")
-    var tagType: String? = null
+    @JSONField(name = "tagTypeID")
+    var tagTypeID: Int = 0
+    @JSONField(name = "timeMs")
+    val timeMs: Long = 0L
+
 }

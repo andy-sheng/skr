@@ -31,7 +31,7 @@ class FeedsTagActivity : BaseActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FeedTagAdapter
 
-    val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
+    private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
     override fun initData(savedInstanceState: Bundle?) {
         titlebar = findViewById(R.id.titlebar)
