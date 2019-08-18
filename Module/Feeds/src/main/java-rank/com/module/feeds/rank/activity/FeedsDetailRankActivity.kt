@@ -1,11 +1,15 @@
 package com.module.feeds.rank.activity
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.PopupWindow
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -17,9 +21,10 @@ import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.ActivityUtils
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.event.FeedDetailChangeEvent
@@ -40,11 +45,17 @@ import org.greenrobot.eventbus.ThreadMode
  */
 @Route(path = RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
 class FeedsDetailRankActivity : BaseActivity() {
+    val MOUTH_RANK = 0
+    val YEAR_RANK = 1
+
+    var mRankType = MOUTH_RANK
 
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mRefreshLayout: SmartRefreshLayout
     lateinit var mRecyclerView: RecyclerView
     lateinit var mHitIv: ImageView
+    lateinit var mSelectTv: ExTextView
+    internal var mQuickMsgPopWindow: PopupWindow? = null  //快捷词弹出面板
 
     private val mAdapter: FeedDetailAdapter = FeedDetailAdapter()
 
@@ -55,6 +66,7 @@ class FeedsDetailRankActivity : BaseActivity() {
     var offset = 0
     val mCNT = 30
     var hasMore = true
+
 
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 
@@ -88,13 +100,14 @@ class FeedsDetailRankActivity : BaseActivity() {
         challengeCnt = intent.getLongExtra("challengeCnt", 0L)
 
         mTitlebar = findViewById(R.id.titlebar)
+        mSelectTv = findViewById(R.id.select_tv)
 
         mRefreshLayout = findViewById(R.id.refreshLayout)
         mRecyclerView = findViewById(R.id.recycler_view)
         mHitIv = findViewById(R.id.hit_iv)
 
         mTitlebar.centerTextView.text = title
-        mTitlebar.rightTextView.text = "${StringFromatUtils.formatTenThousand(challengeCnt.toInt())}人参与"
+//        mTitlebar.rightTextView.text = "${StringFromatUtils.formatTenThousand(challengeCnt.toInt())}人参与"
         mRecyclerView.layoutManager = GridLayoutManager(this, 3)
         mRecyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
@@ -111,6 +124,12 @@ class FeedsDetailRankActivity : BaseActivity() {
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 initLoadData()
+            }
+        })
+
+        mSelectTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                showRankWindow()
             }
         })
 
@@ -153,6 +172,67 @@ class FeedsDetailRankActivity : BaseActivity() {
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
+    private fun showRankWindow() {
+        if (mQuickMsgPopWindow == null) {
+            val mLayoutInflater = LayoutInflater.from(this)
+            val view = mLayoutInflater.inflate(R.layout.feeds_rank_select_layout, null)
+            mQuickMsgPopWindow = PopupWindow(view, U.getDisplayUtils().dip2px(80f), U.getDisplayUtils().dip2px(84f))
+            mQuickMsgPopWindow?.setFocusable(false)
+            view.findViewById<View>(R.id.month_tv).setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    if (mRankType == YEAR_RANK) {
+                        mRankType = MOUTH_RANK
+                        mSelectTv?.text = "月榜"
+                        offset = 0
+                        loadData(offset, true)
+                    }
+                    mQuickMsgPopWindow?.dismiss()
+                }
+            })
+
+            view.findViewById<View>(R.id.year_tv).setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    if (mRankType == MOUTH_RANK) {
+                        mRankType = YEAR_RANK
+                        mSelectTv?.text = "年榜"
+                        offset = 0
+                        loadData(offset, true)
+                    }
+                    mQuickMsgPopWindow?.dismiss()
+                }
+            })
+
+            // 去除动画
+//            mQuickMsgPopWindow?.setAnimationStyle(R.style.MyPopupWindow_anim_style)
+            mQuickMsgPopWindow?.setOutsideTouchable(true)
+            mQuickMsgPopWindow?.setFocusable(true)
+            mQuickMsgPopWindow?.setOnDismissListener {
+                val drawable = U.getDrawable(R.drawable.bangdan_top)
+                drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+                mSelectTv.setCompoundDrawables(null, null, drawable, null)
+            }
+        }
+
+        mQuickMsgPopWindow?.getContentView()?.findViewById<View>(R.id.month_tv).apply {
+            this?.isSelected = (mRankType == MOUTH_RANK)
+        }
+
+        mQuickMsgPopWindow?.getContentView()?.findViewById<View>(R.id.year_tv).apply {
+            this?.isSelected = (mRankType == YEAR_RANK)
+        }
+
+        if (!(mQuickMsgPopWindow?.isShowing() ?: false)) {
+            val drawable = U.getDrawable(R.drawable.bangdan_down)
+            drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+            mSelectTv.setCompoundDrawables(null, null, drawable, null)
+            val l = IntArray(2)
+            mSelectTv.getLocationInWindow(l)
+            mQuickMsgPopWindow?.showAtLocation(mSelectTv, Gravity.START or Gravity.TOP, U.getDisplayUtils().phoneWidth - mSelectTv.measuredWidth - U.getDisplayUtils().dip2px(45f), l[1] + mSelectTv.measuredHeight + U.getDisplayUtils().dip2px(15f))
+        } else {
+            mQuickMsgPopWindow?.dismiss()
+        }
+    }
+
     private fun play(model: FeedsWatchModel) {
         mAdapter.mCurrentPlayModel = model
         mAdapter.notifyDataSetChanged()
@@ -179,7 +259,7 @@ class FeedsDetailRankActivity : BaseActivity() {
 
     private fun loadData(off: Int, isClean: Boolean) {
         launch {
-            val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID) }
+            val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID, if (mRankType == MOUTH_RANK) 1 else 2) }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")

@@ -21,11 +21,12 @@ interface FeedsRankServerApi {
                             @Query("tagType") tagType: Int): Call<ApiResult>
 
 
-    @GET("v1/feed/rank-category-list")
+    @GET("v1/feed/rank-list-by-challenge-tag")
     fun getFeedRankDetailList(@Query("offset") offset: Int,
                               @Query("cnt") cnt: Int,
                               @Query("userID") userID: Int,
-                              @Query("challengeID") challengeID: Long): Call<ApiResult>
+                              @Query("challengeID") challengeID: Long,
+                              @Query("tagType") tagType: Int): Call<ApiResult>
 
 
     @GET("v1/feed/search-challenge")
