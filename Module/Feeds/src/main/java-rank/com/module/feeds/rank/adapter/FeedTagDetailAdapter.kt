@@ -12,6 +12,9 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
 
     var mDataList = ArrayList<FeedsWatchModel>()
 
+    var mCurrentPlayPosition = -1
+    var mCurrentPlayModel: FeedsWatchModel? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedDetailTagViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_tag_detail_item_layout, parent, false)
         return FeedDetailTagViewHolder(view, listener)
@@ -33,7 +36,7 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
             if (refreshType == REFRESH_TYPE_COLLECT) {
                 holder.refreshCollects()
             } else if (refreshType == REFRESH_TYPE_PLAY) {
-                
+
             }
         }
     }

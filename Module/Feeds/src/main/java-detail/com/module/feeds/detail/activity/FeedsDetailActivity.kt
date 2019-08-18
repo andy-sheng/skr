@@ -23,6 +23,8 @@ class FeedsDetailActivity : BaseActivity() {
         val FROM_FEED_RANK = 3     //排行
         val FROM_SCHEME = 4 // scheme
         val FROM_COMMENT_LIKE = 5  //评论或赞
+        val FROM_FEED_RANK_DETAL = 6      // 来自排行榜
+        val FROM_FEED_TAG_DETAIL = 7      // 来自标签详单
         var MANAGER: AbsPlayModeManager? = null
 
         fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {

@@ -19,7 +19,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.DateTimeUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -28,23 +27,26 @@ import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.manager.AbsPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedsCollectChangeEvent
-import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedTagDetailAdapter
 import com.module.feeds.rank.adapter.FeedTagListener
 import com.module.feeds.watch.FeedsWatchServerApi
-import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.model.FeedRecommendTagModel
+import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_TAG_DETAIL)
@@ -63,7 +65,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     lateinit var ivBack: ExImageView
 
     var model: FeedRecommendTagModel? = null
-    var adapter: FeedTagDetailAdapter? = null
+    lateinit var adapter: FeedTagDetailAdapter
 
     var lastVerticalOffset = Int.MAX_VALUE
     var queryDate: String = ""
@@ -156,7 +158,18 @@ class FeedsTagDetailActivity : BaseActivity() {
         })
         adapter = FeedTagDetailAdapter(object : FeedTagListener {
             override fun onClickItem(position: Int, model: FeedsWatchModel?) {
+                // 默认顺序就只是列表循环
+                model?.let {
+                    FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, 7, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                        override fun getNextSong(userAction: Boolean): FeedSongModel? {
+                            return findNextSong(userAction)
+                        }
 
+                        override fun getPreSong(userAction: Boolean): FeedSongModel? {
+                            return findPresong(userAction)
+                        }
+                    })
+                }
             }
 
             override fun onClickCollect(position: Int, model: FeedsWatchModel?) {
@@ -182,6 +195,40 @@ class FeedsTagDetailActivity : BaseActivity() {
         loadInitData()
     }
 
+    private fun findNextSong(userAction: Boolean): FeedSongModel? {
+        if (adapter.mCurrentPlayPosition == adapter.mDataList.size - 2) {
+            // 已经到最后一个，需要去更新数据
+            loadMoreData()
+        }
+
+        if (!adapter.mDataList.isNullOrEmpty()) {
+            // 在合理范围内
+            if (adapter.mCurrentPlayPosition in -1..(adapter.mDataList.size - 2)) {
+                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition + 1
+                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
+                return adapter.mCurrentPlayModel?.song
+            }
+        }
+
+        return null
+    }
+
+    private fun findPresong(userAction: Boolean): FeedSongModel? {
+        if (adapter.mCurrentPlayPosition == 0) {
+            return null
+        }
+
+        if (!adapter.mDataList.isNullOrEmpty()) {
+            if (adapter.mCurrentPlayPosition in 1..adapter.mDataList.size) {
+                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition - 1
+                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
+                return adapter.mCurrentPlayModel?.song
+            }
+        }
+        return null
+
+    }
+
     private fun loadInitData() {
         getRecomendTagDetailList(0, true)
     }
@@ -204,17 +251,17 @@ class FeedsTagDetailActivity : BaseActivity() {
         smartRefresh.setEnableLoadMore(hasMore)
 
         if (clean) {
-            adapter?.mDataList?.clear()
+            adapter.mDataList.clear()
         }
 
         if (!list.isNullOrEmpty()) {
-            adapter?.mDataList?.addAll(list)
+            adapter.mDataList.addAll(list)
         }
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun canSlide(): Boolean {
@@ -268,6 +315,16 @@ class FeedsTagDetailActivity : BaseActivity() {
                 } else {
                     MyLog.e(TAG, "${result?.errmsg}")
                 }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedsCollectChangeEvent) {
+        adapter.mDataList.forEachIndexed { index, feedsWatchModel ->
+            if (feedsWatchModel.feedID == event.feedID) {
+                feedsWatchModel.isCollected = event.isCollected
+                adapter.update(index, feedsWatchModel, FeedTagDetailAdapter.REFRESH_TYPE_COLLECT)
             }
         }
     }

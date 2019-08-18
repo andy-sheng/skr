@@ -30,7 +30,7 @@ class FeedDetailTagViewHolder(itemView: View, val listener: FeedTagListener) : R
 
         itemView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                listener.onClickCollect(mPosition, mModel)
+                listener.onClickItem(mPosition, mModel)
             }
         })
     }
