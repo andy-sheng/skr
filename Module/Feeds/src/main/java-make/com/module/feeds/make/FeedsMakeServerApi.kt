@@ -30,8 +30,26 @@ interface FeedsMakeServerApi {
     fun uploadHitFeeds(@Body requestBody: RequestBody): Call<ApiResult>
 
     /**
-     * 获取feeds所有标签列表
+     * 上传翻唱
      */
-    @PUT("/v1/feed/common-song-upload")
+    @PUT("/v1/feed/common-fanchang-upload")
     fun uploadQuickFeeds(@Body requestBody: RequestBody): Call<ApiResult>
+
+    /**
+     * 上传改编
+     */
+    @PUT("/v1/feed/common-gaibian-upload")
+    fun uploadChangeFeeds(@Body requestBody: RequestBody): Call<ApiResult>
+
+    /**
+     * 打榜上传翻唱
+     */
+    @PUT("/v1/feed/fanchang-upload")
+    fun uploadHitQuickFeeds(@Body requestBody: RequestBody): Call<ApiResult>
+
+    /**
+     * 打榜上传改编
+     */
+    @PUT("/v1/feed/gaibian-upload")
+    fun uploadHitChangeFeeds(@Body requestBody: RequestBody): Call<ApiResult>
 }

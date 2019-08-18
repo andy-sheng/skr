@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.flowlayout.FlowLayout
 import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
@@ -339,42 +340,40 @@ class FeedsPublishActivity : BaseActivity() {
                     tagsIds.add(it.tagID)
                 }
             }
-            val result: ApiResult
+            var result: ApiResult?=null
+            // 快唱
+            val mutableSet1 = mapOf(
+                    "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
+                    "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
+                    "lrcURL" to customLrcUrl,
+                    "playDurMs" to mFeedsMakeModel?.recordDuration,
+                    "playURL" to mFeedsMakeModel?.audioUploadUrl,
+                    "songName" to mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
+                    "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
+                    "tagIDs" to tagsIds,
+                    "title" to mFeedsMakeModel?.songModel?.title,
+                    "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
+                    "userID" to MyUserInfoManager.getInstance().uid.toInt(),
+                    "workName" to mFeedsMakeModel?.songModel?.workName
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
-                // 快唱
-                val mutableSet1 = mapOf(
-                        "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
-                        "lrcURL" to customLrcUrl,
-                        "playDurMs" to mFeedsMakeModel?.recordDuration,
-                        "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
-                        "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
-                        "tagIDs" to tagsIds,
-                        "title" to mFeedsMakeModel?.songModel?.title,
-                        "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
-                        "workName" to mFeedsMakeModel?.songModel?.workName
-                )
-
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-                result = subscribe { feedsMakeServerApi.uploadQuickFeeds(body) }
+                if(mFeedsMakeModel?.challengeType== CHALLENGE_TYPE_QUICK_SONG){
+                    // 翻唱
+                    result = subscribe { feedsMakeServerApi.uploadQuickFeeds(body) }
+                }else{
+                    // 改编
+                    result = subscribe { feedsMakeServerApi.uploadChangeFeeds(body) }
+                }
             } else {
                 // 打榜
-                val mutableSet1 = mapOf(
-                        "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
-                        "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
-                        "lrcURL" to customLrcUrl,
-                        "playDurMs" to mFeedsMakeModel?.recordDuration,
-                        "playURL" to mFeedsMakeModel?.audioUploadUrl,
-                        "songName" to mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
-                        "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,
-                        "tagIDs" to tagsIds,
-                        "title" to mFeedsMakeModel?.songModel?.title,
-                        "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
-                        "workName" to mFeedsMakeModel?.songModel?.workName
-                )
-
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-                result = subscribe { feedsMakeServerApi.uploadHitFeeds(body) }
+                if(mFeedsMakeModel?.challengeType== CHALLENGE_TYPE_QUICK_SONG){
+                    // 翻唱
+                    result = subscribe { feedsMakeServerApi.uploadHitQuickFeeds(body) }
+                }else {
+                    // 改编
+                    result = subscribe { feedsMakeServerApi.uploadHitChangeFeeds(body) }
+                }
             }
             progressSkr.visibility = View.GONE
             if (result?.errno == 0) {

@@ -176,10 +176,6 @@ class FeedsMakeActivity : BaseActivity() {
 
         val from = intent.getIntExtra("from", FROM_CHALLENGE)
         val isDraft = intent.getBooleanExtra("isDraft", false)
-        if(from == FROM_QUICK_SING){
-            changeLyricTv?.visibility = View.GONE
-            changeLyricIv?.visibility = View.GONE
-        }
         if(!isDraft){
             if (from == FROM_CHALLENGE) {
                 val challengeID = intent.getLongExtra("challengeID", 0)
@@ -193,6 +189,7 @@ class FeedsMakeActivity : BaseActivity() {
                                 val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
                                 val workName = result.data.getString("workName")
                                 val challengeDesc = result.data.getString("challengeDesc")
+                                mFeedsMakeModel?.challengeType = result.data.getIntValue("challengeType")
                                 val songModel = FeedSongModel()
                                 songModel.challengeDesc = challengeDesc
                                 songModel.songTpl = songTpl
@@ -215,6 +212,11 @@ class FeedsMakeActivity : BaseActivity() {
             } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING) {
                 val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
                 mFeedsMakeModel = FeedsMakeModel()
+                if(from==FROM_QUICK_SING){
+                    mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_QUICK_SONG
+                }else if(from== FROM_CHANGE_SING){
+                    mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_CHANGE_SONG
+                }
                 mFeedsMakeModel?.songModel = feedSongModel
                 //mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.songTpl?.songName
                 whenDataOk()
@@ -246,7 +248,6 @@ class FeedsMakeActivity : BaseActivity() {
                         })
             }
         }
-        mFeedsMakeModel?.from = from
         if (mFeedsMakeModel == null) {
             U.getToastUtil().showShort("参数不正确")
             finish()
@@ -261,6 +262,10 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun whenDataOk() {
+        if(mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG){
+            changeLyricTv?.visibility = View.GONE
+            changeLyricIv?.visibility = View.GONE
+        }
         mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()
                 && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.bgm)
@@ -570,12 +575,6 @@ class FeedsMakeActivity : BaseActivity() {
         mLyricAndAccMatchManager.stop()
         resetIv?.visibility = View.GONE
         resetTv?.visibility = View.GONE
-        if(mFeedsMakeModel?.from== FROM_QUICK_SING){
-
-        }else
-        {
-
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

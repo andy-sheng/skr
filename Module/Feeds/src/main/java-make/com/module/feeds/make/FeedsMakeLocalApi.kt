@@ -59,7 +59,15 @@ object FeedsMakeLocalApi {
         if (feedsMakeModel.draftID == 0L) {
             feedsMakeModel.draftID = draftDb.draftID
         }
-        draftDb.from = feedsMakeModel?.from
+        if(feedsMakeModel?.challengeID==0L){
+            if(feedsMakeModel?.challengeType== CHALLENGE_TYPE_QUICK_SONG){
+                draftDb.from = FROM_QUICK_SING
+            }else{
+                draftDb.from = FROM_CHANGE_SING
+            }
+        }else{
+            draftDb.from = FROM_CHALLENGE
+        }
         draftDb.feedsMakeModelJson = JSON.toJSONString(feedsMakeModel)
         draftDBDao.insertOrReplace(draftDb)
         EventBus.getDefault().post(FeedsDraftUpdateEvent())
