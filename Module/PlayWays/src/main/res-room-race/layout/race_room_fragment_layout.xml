@@ -32,6 +32,59 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <!--礼物连送按钮-->
+    <com.module.playways.room.gift.view.ContinueSendView
+        android:id="@+id/continue_send_view"
+        android:layout_width="@dimen/view_78_dp"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingBottom="@dimen/view_8_dp"
+        android:visibility="gone" />
+
+    <!--礼物面板-->
+    <com.module.playways.room.gift.view.GiftPanelView
+        android:id="@+id/gift_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone" />
+
+    <!--中礼物展示-->
+    <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
+        android:id="@+id/gift_overlay_animation_vg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--小礼物连送-->
+    <com.module.playways.room.room.gift.GiftContinueViewGroup
+        android:id="@+id/gift_continue_vg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bottom_bg_vp"
+        android:layout_marginTop="-55dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_10_dp" />
+
+    <!--大礼物动画-->
+    <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
+        android:id="@+id/gift_big_animation_vg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--大礼物连送-->
+    <com.module.playways.room.room.gift.GiftBigContinuousView
+        android:id="@+id/gift_big_continue_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_67_dp"
+        android:gravity="bottom"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:visibility="gone" />
+
     <ViewStub
         android:id="@+id/voice_record_tip_view_stub"
         android:layout_width="match_parent"

@@ -616,9 +616,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void initGiftPanelView() {
         mGiftPanelView = (GiftPanelView) getRootView().findViewById(R.id.gift_panel_view);
-        mGiftPanelView.setGrabRoomData(mRoomData);
+        mGiftPanelView.setRoomData(mRoomData);
         mContinueSendView = (ContinueSendView) getRootView().findViewById(R.id.continue_send_view);
-        mContinueSendView.setBaseRoomData(mRoomData);
+        mContinueSendView.setRoomData(mRoomData);
         mContinueSendView.setObserver(new ContinueSendView.OnVisibleStateListener() {
             @Override
             public void onVisible(boolean isVisible) {
