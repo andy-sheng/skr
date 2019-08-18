@@ -10,12 +10,12 @@ import com.module.RouterConstants
 import com.module.feeds.detail.fragment.LikeWorksFragment
 import com.module.feeds.detail.fragment.RefuseFeedsFragment
 import com.module.feeds.watch.FeedsWatchFragment
-import com.module.feeds.watch.view.FeedsWatchView
+import com.module.feeds.watch.watchview.PersonWatchView
 
 @Route(path = RouterConstants.SERVICE_FEEDS, name = "测试服务")
 class FeedsServiceImpl : IFeedsModuleService {
     override fun getPersonFeedsWall(basefragment: Any?, userInfo: Any?, requestCall: Any?): IPersonFeedsWall {
-        return FeedsWatchView(basefragment as BaseFragment, FeedsWatchView.TYPE_PERSON, userInfo as UserInfoModel, requestCall as RequestCallBack)
+        return PersonWatchView(basefragment as BaseFragment, userInfo as UserInfoModel, requestCall as RequestCallBack)
     }
 
     val TAG = "FeedsServiceImpl"

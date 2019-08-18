@@ -22,7 +22,8 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
-import com.module.feeds.watch.view.FeedsWatchView
+import com.module.feeds.watch.watchview.FollowWatchView
+import com.module.feeds.watch.watchview.RecommendWatchView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,8 +40,8 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mTabPagerAdapter: PagerAdapter
     private var isBackground = false   // 是否在后台
 
-    val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
-    val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
+    val mFollowFeesView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
+    val mRecommendFeedsView: RecommendWatchView by lazy { RecommendWatchView(this) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
     val initPostion = 1
