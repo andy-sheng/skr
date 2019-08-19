@@ -13,7 +13,6 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
-import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -21,12 +20,10 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.videocache.MediaCacheManager
 import com.component.busilib.callback.EmptyCallback
-import com.component.busilib.event.FeedPublishSucessEvent
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -203,7 +200,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                             }
 
                             override fun getPreSong(userAction: Boolean): FeedSongModel? {
-                                return findPresong(userAction)
+                                return findPreSong(userAction)
                             }
                         })
                     }
@@ -427,7 +424,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     abstract fun clickMore(position: Int, it: FeedsWatchModel)
 
     // 上一首
-    abstract fun findPresong(userAction: Boolean): FeedSongModel?
+    abstract fun findPreSong(userAction: Boolean): FeedSongModel?
 
     // 下一首
     abstract fun findNextSong(userAction: Boolean): FeedSongModel?

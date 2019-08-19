@@ -5,6 +5,7 @@ import android.view.View
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
+import com.common.utils.ImageUtils
 import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.facebook.drawee.drawable.ScalingUtils
@@ -65,6 +66,7 @@ class FeedRecommendTagHolder(val rootView: View, listener: FeedsListener) : Recy
             FrescoWorker.loadImage(topOne, ImageFactory.newPathImage(modelList[0].smallImgURL)
                     .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                     .setCornerRadius(8.dp().toFloat())
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
                     .build<BaseImage>())
         } else {
             topOne.visibility = View.GONE
@@ -75,6 +77,7 @@ class FeedRecommendTagHolder(val rootView: View, listener: FeedsListener) : Recy
             FrescoWorker.loadImage(topTwo, ImageFactory.newPathImage(modelList[1].smallImgURL)
                     .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                     .setCornerRadius(8.dp().toFloat())
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
                     .build<BaseImage>())
         } else {
             topTwo.visibility = View.GONE
@@ -85,6 +88,7 @@ class FeedRecommendTagHolder(val rootView: View, listener: FeedsListener) : Recy
             FrescoWorker.loadImage(topThree, ImageFactory.newPathImage(modelList[2].smallImgURL)
                     .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                     .setCornerRadius(8.dp().toFloat())
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
                     .build<BaseImage>())
         } else {
             topThree.visibility = View.GONE

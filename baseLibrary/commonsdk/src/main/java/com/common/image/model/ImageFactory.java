@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.image.model.oss.OssImgResize;
 import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
@@ -166,6 +167,19 @@ public class ImageFactory {
 
         public ImageFactory.Builder setTapToRetryEnabled(boolean tapToRetryEnabled) {
             mBaseImage.setTapToRetryEnabled(tapToRetryEnabled);
+            return this;
+        }
+
+        /**
+         * 与 addOssProcessors 方法只能调用一个
+         * @param size
+         * @return
+         */
+        public ImageFactory.Builder setResizeByOssProcessor(ImageUtils.SIZE size) {
+            if (mBaseImage instanceof HttpImage) {
+                HttpImage httpImage = (HttpImage) mBaseImage;
+                httpImage.addOssProcessors(OssImgFactory.newResizeBuilder().setW(size.getW()).build());
+            }
             return this;
         }
 

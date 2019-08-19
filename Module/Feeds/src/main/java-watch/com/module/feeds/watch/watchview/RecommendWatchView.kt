@@ -3,7 +3,6 @@ package com.module.feeds.watch.watchview
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.log.MyLog
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -63,7 +62,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
         }
     }
 
-    override fun findPresong(userAction: Boolean): FeedSongModel? {
+    override fun findPreSong(userAction: Boolean): FeedSongModel? {
         // 推荐
         if (mAdapter.mCurrentPlayPosition == 1 || mAdapter.mCurrentPlayPosition == 0) {
             return null
@@ -75,7 +74,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
                         ?: 0) - 1]
                 return if (mAdapter.mCurrentPlayModel?.status != 2) {
                     // 未审核通过
-                    findPresong(userAction)
+                    findPreSong(userAction)
                 } else {
                     mAdapter.mCurrentPlayModel?.song
                 }
@@ -125,9 +124,9 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
-                mAdapter.mRecommendList.clear()
+                mAdapter.mRankTagList.clear()
                 if (!list.isNullOrEmpty()) {
-                    mAdapter.mRecommendList.addAll(list)
+                    mAdapter.mRankTagList.addAll(list)
                 }
                 mAdapter.notifyDataSetChanged()
             } else {

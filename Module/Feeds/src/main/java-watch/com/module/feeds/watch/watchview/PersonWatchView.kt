@@ -68,7 +68,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         mFeedsMoreDialogView?.showByDialog()
     }
 
-    override fun findPresong(userAction: Boolean): FeedSongModel? {
+    override fun findPreSong(userAction: Boolean): FeedSongModel? {
         if (mAdapter.mCurrentPlayPosition == 0) {
             return null
         }
@@ -80,7 +80,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
                         ?: 0]
                 return if (mAdapter.mCurrentPlayModel?.status != 2) {
                     // 未审核通过
-                    findPresong(userAction)
+                    findPreSong(userAction)
                 } else {
                     mAdapter.mCurrentPlayModel?.song
                 }

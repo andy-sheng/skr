@@ -17,7 +17,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
 
     var mDataList = ArrayList<FeedsWatchModel>()
     // 只用来做推荐顶部的
-    var mRecommendList = ArrayList<FeedRecommendTagModel>()
+    var mRankTagList = ArrayList<FeedRecommendTagModel>()
 
     var mCurrentPlayPosition: Int? = null
     var mCurrentPlayModel: FeedsWatchModel? = null
@@ -39,7 +39,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             if (mType == BaseWatchView.TYPE_RECOMMEND) {
                 if (position == 0) {
                     if (holder is FeedRecommendTagHolder) {
-                        holder.bindData(mRecommendList)
+                        holder.bindData(mRankTagList)
                     }
                 } else {
                     if (!mDataList.isNullOrEmpty() && (position - 1) < mDataList.size) {
