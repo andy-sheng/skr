@@ -33,6 +33,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -230,9 +231,11 @@ class FeedsTagDetailActivity : BaseActivity() {
 
         FrescoWorker.loadImage(imageBg, ImageFactory.newPathImage(model?.bigImgURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
                 .build<BaseImage>())
         topDesc.text = model?.tagDesc
         AvatarUtils.loadAvatarByUrl(topAreaBg, AvatarUtils.newParamsBuilder(model?.bigImgURL)
+                .setSizeType(ImageUtils.SIZE.SIZE_160)
                 .setBlur(true)
                 .build())
         maxDate = Date(model?.timeMs ?: System.currentTimeMillis())

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
+import com.common.utils.ImageUtils
 import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.facebook.drawee.drawable.ScalingUtils
@@ -52,6 +53,7 @@ class FeedTagAdapter : RecyclerView.Adapter<FeedTagAdapter.FeedTagHolder>() {
 
             FrescoWorker.loadImage(mTagIcon, ImageFactory.newPathImage(model?.smallImgURL)
                     .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
                     .setCornerRadius(8.dp().toFloat())
                     .build<BaseImage>())
         }
