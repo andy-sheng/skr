@@ -27,6 +27,8 @@ import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
+import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -42,9 +44,11 @@ import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.rank.adapter.FeedTagDetailAdapter
 import com.module.feeds.rank.adapter.FeedTagListener
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
@@ -89,8 +93,24 @@ class FeedsTagDetailActivity : BaseActivity() {
     var hasMore = true
 
     var pvCustomTime: TimePickerView? = null
+    private val playerTag = TAG + hashCode()
 
     private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
+
+    private val playCallback = object : PlayerCallbackAdapter() {
+        override fun onCompletion() {
+            super.onCompletion()
+            // todo 怎么说,现在怎么播放
+        }
+
+        override fun openTimeFlyMonitor(): Boolean {
+            return true
+        }
+
+        override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+            FeedsPlayStatistics.updateCurProgress(pos, duration)
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.feeds_tag_detail_activity_layout
@@ -217,6 +237,9 @@ class FeedsTagDetailActivity : BaseActivity() {
         timeTv.text = queryDate
 
         loadInitData()
+
+        SinglePlayer.reset(playerTag)
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
 
     private fun showDatePicker() {
@@ -422,5 +445,30 @@ class FeedsTagDetailActivity : BaseActivity() {
                 adapter.update(index, feedsWatchModel, FeedTagDetailAdapter.REFRESH_TYPE_COLLECT)
             }
         }
+    }
+
+    @Subscribe
+    fun onEvent(event: FeedDetailChangeEvent) {
+        // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
+        MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
+        event.model?.song?.let {
+            adapter.mDataList.forEachIndexed { index, feed ->
+                if (it.feedID == feed.song?.feedID && it.songID == feed.song?.songID) {
+                    //todo 从详情页面返回，直接播放吧(继续播放)
+                    adapter.startPlayModel(index, feed)
+                    feed.song?.playURL?.let {
+                        FeedsPlayStatistics.setCurPlayMode(feed.feedID)
+                        SinglePlayer.startPlay(playerTag, it)
+                    }
+                    return@forEachIndexed
+                }
+            }
+        }
+    }
+
+    override fun destroy() {
+        super.destroy()
+        SinglePlayer.reset(playerTag)
+        SinglePlayer.removeCallback(playerTag)
     }
 }

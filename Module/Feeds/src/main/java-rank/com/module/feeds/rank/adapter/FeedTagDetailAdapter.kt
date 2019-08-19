@@ -1,10 +1,16 @@
 package com.module.feeds.rank.adapter
 
+import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.common.log.MyLog
+import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.rank.holder.FeedDetailTagViewHolder
+import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.watchview.BaseWatchView
 
@@ -14,6 +20,8 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
 
     var mCurrentPlayPosition = -1
     var mCurrentPlayModel: FeedsWatchModel? = null
+
+    private val uiHanlder = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedDetailTagViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_tag_detail_item_layout, parent, false)
@@ -36,7 +44,11 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
             if (refreshType == REFRESH_TYPE_COLLECT) {
                 holder.refreshCollects()
             } else if (refreshType == REFRESH_TYPE_PLAY) {
-
+                if (mCurrentPlayModel == mDataList[position]) {
+                    holder.songNameTv.setTextColor(Color.parseColor("#FFC15B"))
+                } else {
+                    holder.songNameTv.setTextColor(U.getColor(R.color.black_trans_80))
+                }
             }
         }
     }
@@ -62,6 +74,25 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
             if (mDataList[i] == model) {
                 notifyItemChanged(i, refreshType)
                 return
+            }
+        }
+    }
+
+    fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
+        if (mCurrentPlayModel != model) {
+            var lastPos: Int? = null
+            if (mCurrentPlayModel != model) {
+                mCurrentPlayModel = model
+                lastPos = mCurrentPlayPosition
+                mCurrentPlayPosition = pos
+            }
+            MyLog.d("FeedsWatchViewAdapter", "now pos=$pos")
+            notifyItemChanged(pos, FeedsWatchViewAdapter.REFRESH_TYPE_PLAY)
+            lastPos?.let {
+                MyLog.d("FeedsWatchViewAdapter", "last pos=$it")
+                uiHanlder.post {
+                    notifyItemChanged(it, FeedsWatchViewAdapter.REFRESH_TYPE_PLAY)
+                }
             }
         }
     }
