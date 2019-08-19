@@ -292,6 +292,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         tryGoConversationList(getIntent());
 
+        if (U.getChannelUtils().getChannel().startsWith("FEED")) {
+            mFeedArea.callOnClick();
+        }
     }
 
     @Override
