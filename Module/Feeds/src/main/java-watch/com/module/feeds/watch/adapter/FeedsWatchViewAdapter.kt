@@ -19,7 +19,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
     // 只用来做推荐顶部的
     var mRankTagList = ArrayList<FeedRecommendTagModel>()
 
-    var mCurrentPlayPosition: Int? = null
+    var mCurrentPlayPosition: Int = -1 // 默认给个无效值
     var mCurrentPlayModel: FeedsWatchModel? = null
     var playing = false
 
@@ -144,7 +144,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             }
             mHomeTopType -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_recommend_view_layout, parent, false)
-                FeedRecommendTagHolder(view,listener)
+                FeedRecommendTagHolder(view, listener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
@@ -188,7 +188,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
     fun update(position: Int, model: FeedsWatchModel?, refreshType: Int) {
         if (mDataList.isNotEmpty()) {
             if (mType == BaseWatchView.TYPE_RECOMMEND) {
-                if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1] == model) {
+                if (position in 1..mDataList.size && mDataList[position - 1] == model) {
                     // 位置是对的
                     notifyItemChanged(position, refreshType)
                     return
@@ -196,7 +196,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
                     update(model, refreshType)
                 }
             } else {
-                if (position >= 0 && position < mDataList.size && mDataList[position] == model) {
+                if (position in 0 until mDataList.size && mDataList[position] == model) {
                     // 位置是对的
                     notifyItemChanged(position, refreshType)
                     return
@@ -206,11 +206,11 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             }
         } else {
             mCurrentPlayModel = null
-            mCurrentPlayPosition = null
+            mCurrentPlayPosition = -1
         }
     }
 
-    fun update(model: FeedsWatchModel?, refreshType: Int) {
+    private fun update(model: FeedsWatchModel?, refreshType: Int) {
         // 位置是错的
         if (mType == BaseWatchView.TYPE_RECOMMEND) {
             for (i in 0 until mDataList.size) {
@@ -232,19 +232,17 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
 
     // 将从detail中数据放到data中
     fun updateModelFromDetail(model: FeedsWatchModel) {
-        if (model != null) {
-            if (mCurrentPlayModel?.feedID == model.feedID && mCurrentPlayModel?.song?.songID == model.song?.songID) {
-                updateProperty(mCurrentPlayModel, model)
-            }
-            for (i in 0 until mDataList.size) {
-                if (mDataList[i].feedID == model.feedID
-                        && mDataList[i].song?.songID == model.song?.songID) {
-                    updateProperty(mDataList[i], model)
-                    if (mType == BaseWatchView.TYPE_RECOMMEND) {
-                        notifyItemChanged(i + 1)
-                    } else {
-                        notifyItemChanged(i)
-                    }
+        if (mCurrentPlayModel?.feedID == model.feedID && mCurrentPlayModel?.song?.songID == model.song?.songID) {
+            updateProperty(mCurrentPlayModel, model)
+        }
+        for (i in 0 until mDataList.size) {
+            if (mDataList[i].feedID == model.feedID
+                    && mDataList[i].song?.songID == model.song?.songID) {
+                updateProperty(mDataList[i], model)
+                if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                    notifyItemChanged(i + 1)
+                } else {
+                    notifyItemChanged(i)
                 }
             }
         }
@@ -302,7 +300,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
     fun pausePlayModel() {
         if (playing) {
             playing = false
-            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_PLAY)
+            update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_TYPE_PLAY)
         }
     }
 
@@ -313,7 +311,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
         } else {
             if (playing) {
                 playing = false
-                update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_SHOW_COMPLETE_AREA)
+                update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_SHOW_COMPLETE_AREA)
             }
         }
 
@@ -324,7 +322,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
             if (!playing) {
                 playing = true
-                update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_PLAY)
+                update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_TYPE_PLAY)
             }
         }
     }
@@ -334,7 +332,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             mCurrentPlayModel?.song?.lyricStatus = 0
         }
 
-        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
+        update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
     }
 
     fun resumeWhenBufferingEnd() {
@@ -342,7 +340,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             mCurrentPlayModel?.song?.lyricStatus = 1
         }
 
-        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
+        update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
     }
 
     /**

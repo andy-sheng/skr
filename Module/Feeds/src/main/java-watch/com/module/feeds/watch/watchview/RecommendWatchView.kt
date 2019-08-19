@@ -7,6 +7,7 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.component.busilib.callback.EmptyCallback
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
@@ -62,16 +63,25 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
         }
     }
 
+    override fun onPreparedMusic() {
+        if (mAdapter.mCurrentPlayPosition in 0 until mAdapter.mDataList.size) {
+            // mCurrentPlayPosition 比在list中大1
+            mAdapter.mDataList[mAdapter.mCurrentPlayPosition].song?.playURL?.let { it2 ->
+                MediaCacheManager.preCache(it2)
+            }
+        }
+    }
+
     override fun findPreSong(userAction: Boolean): FeedSongModel? {
         // 推荐
-        if (mAdapter.mCurrentPlayPosition == 1 || mAdapter.mCurrentPlayPosition == 0) {
+        if (mAdapter.mCurrentPlayPosition < 2) {
             return null
         }
-        mAdapter.mCurrentPlayPosition?.let {
-            if (!mAdapter.mDataList.isNullOrEmpty()) {
-                mAdapter.mCurrentPlayPosition = it - 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[(mAdapter.mCurrentPlayPosition
-                        ?: 0) - 1]
+
+        if (!mAdapter.mDataList.isNullOrEmpty()) {
+            if (mAdapter.mCurrentPlayPosition in 2..(mAdapter.mDataList.size + 1)) {
+                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition - 1
+                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition - 1]
                 return if (mAdapter.mCurrentPlayModel?.status != 2) {
                     // 未审核通过
                     findPreSong(userAction)
@@ -80,6 +90,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
                 }
             }
         }
+
         return null
     }
 
@@ -88,17 +99,21 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
         if (mAdapter.mCurrentPlayPosition == mAdapter.mDataList.size - 1) {
             getMoreFeeds()
         }
-        if (mAdapter.mCurrentPlayPosition != null && mAdapter.mCurrentPlayPosition!! <= mAdapter.mDataList.size - 1) {
+
+        if (!mAdapter.mDataList.isNullOrEmpty()) {
             // 在合理范围内
-            mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition!! + 1
-            mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition!! - 1]
-            return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                // 继续找下一个
-                findNextSong(userAction)
-            } else {
-                mAdapter.mCurrentPlayModel?.song
+            if (mAdapter.mCurrentPlayPosition in 0 until mAdapter.mDataList.size) {
+                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition + 1
+                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition - 1]
+                return if (mAdapter.mCurrentPlayModel?.status != 2) {
+                    // 继续找下一个
+                    findNextSong(userAction)
+                } else {
+                    mAdapter.mCurrentPlayModel?.song
+                }
             }
         }
+
         return null
     }
 
@@ -161,7 +176,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
     private fun addRecommendWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
         if (isClear) {
             mAdapter.mDataList.clear()
-            if (list != null && list.isNotEmpty()) {
+            if (!list.isNullOrEmpty()) {
                 mAdapter.mDataList.addAll(list)
             }
             mAdapter.notifyDataSetChanged()

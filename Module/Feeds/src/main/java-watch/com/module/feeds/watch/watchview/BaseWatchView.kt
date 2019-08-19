@@ -188,11 +188,6 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 // 这样返回时能 resume 上
                 if (watchModel != null && watchModel.status == 2) {
                     startPlay(position, watchModel)
-//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-//                            .withInt("feed_ID", watchModel.feedID)
-//                            .withInt("from", 1)
-//                            .navigation()
-                    // 默认顺序就只是列表循环
                     fragment.activity?.let { fragmentActivity ->
                         FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, 1, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                             override fun getNextSong(userAction: Boolean): FeedSongModel? {
@@ -260,10 +255,8 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 // 播放完成
                 SinglePlayer.reset(playerTag)
                 // 显示分享，收藏和播放的按钮
-                mAdapter.mCurrentPlayModel?.let { model ->
-                    mAdapter.mCurrentPlayPosition?.let {
-                        mAdapter.playComplete()
-                    }
+                mAdapter.mCurrentPlayModel?.let {
+                    mAdapter.playComplete()
                 }
             }
 
@@ -273,13 +266,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 /**
                  * 预加载
                  */
-                mAdapter.mCurrentPlayPosition?.let {
-                    if (it + 1 < mAdapter!!.mDataList.size) {
-                        mAdapter.mDataList.get(it + 1)?.song?.playURL?.let { it2 ->
-                            MediaCacheManager.preCache(it2)
-                        }
-                    }
-                }
+                onPreparedMusic()
             }
 
             override fun openTimeFlyMonitor(): Boolean {
@@ -298,13 +285,13 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             }
 
             override fun onTimeFlyMonitor(pos: Long, duration: Long) {
-                if (mAdapter.playing == true) {
+                if (mAdapter.playing) {
                     mAdapter.updatePlayProgress(pos, duration)
-                    mAdapter.mCurrentPlayPosition?.let { position ->
+                    if (mAdapter.mCurrentPlayPosition >= 0) {
                         try {
-                            val holder = mRecyclerView.findViewHolderForAdapterPosition(position)
+                            val holder = mRecyclerView.findViewHolderForAdapterPosition(mAdapter.mCurrentPlayPosition)
                             if (holder is FeedViewHolder?) {
-                                mAdapter.mCurrentPlayModel?.let { model ->
+                                mAdapter.mCurrentPlayModel?.let { _ ->
                                     holder?.playLyric()
                                 }
                             }
@@ -312,7 +299,6 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                             MyLog.e(e)
                         }
                     }
-
                     FeedsPlayStatistics.updateCurProgress(pos, duration)
                 } else {
                     if (MyLog.isDebugLogOpen()) {
@@ -377,10 +363,12 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
 
     fun srollPositionToTop(position: Int) {
         // 置顶显示
-        val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
-        val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-        if (position < firstVisibleItem || position > lastVisibleItem) {
-            mLayoutManager.scrollToPositionWithOffset(position, 0)
+        if (position >= 0) {
+            val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+            val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
+            if (position < firstVisibleItem || position > lastVisibleItem) {
+                mLayoutManager.scrollToPositionWithOffset(position, 0)
+            }
         }
     }
 
@@ -428,6 +416,9 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
 
     // 下一首
     abstract fun findNextSong(userAction: Boolean): FeedSongModel?
+
+    // 预加载
+    abstract fun onPreparedMusic()
 
     open fun destroy() {
         cancel()
@@ -622,7 +613,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 if (mAdapter.mCurrentPlayModel == model) {
                     SinglePlayer.pause(playerTag)
                     mAdapter.mCurrentPlayModel = null
-                    mAdapter.mCurrentPlayPosition = null
+                    mAdapter.mCurrentPlayPosition = -1
                 }
                 mAdapter.delete(model)
             } else {

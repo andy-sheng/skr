@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.event.FeedPublishSucessEvent
@@ -68,16 +70,23 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         mFeedsMoreDialogView?.showByDialog()
     }
 
+    override fun onPreparedMusic() {
+        if (mAdapter.mCurrentPlayPosition in -1..(mAdapter.mDataList.size - 2)) {
+            mAdapter.mDataList[mAdapter.mCurrentPlayPosition + 1].song?.playURL?.let { it2 ->
+                MediaCacheManager.preCache(it2)
+            }
+        }
+    }
+
     override fun findPreSong(userAction: Boolean): FeedSongModel? {
         if (mAdapter.mCurrentPlayPosition == 0) {
             return null
         }
 
-        mAdapter.mCurrentPlayPosition?.let {
-            if (!mAdapter.mDataList.isNullOrEmpty()) {
-                mAdapter.mCurrentPlayPosition = it - 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition
-                        ?: 0]
+        if (!mAdapter.mDataList.isNullOrEmpty()) {
+            if (mAdapter.mCurrentPlayPosition in 1..mAdapter.mDataList.size) {
+                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition - 1
+                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition]
                 return if (mAdapter.mCurrentPlayModel?.status != 2) {
                     // 未审核通过
                     findPreSong(userAction)
@@ -86,6 +95,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
                 }
             }
         }
+
         return null
     }
 
@@ -95,15 +105,17 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
             getMoreFeeds()
         }
 
-        if (mAdapter.mCurrentPlayPosition != null && mAdapter.mCurrentPlayPosition!! < mAdapter.mDataList.size - 1) {
-            // 在合理范围内
-            mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition!! + 1
-            mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition!!]
-            return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                // 继续找下一个
-                findNextSong(userAction)
-            } else {
-                mAdapter.mCurrentPlayModel?.song
+        if (!mAdapter.mDataList.isNullOrEmpty()) {
+            if (mAdapter.mCurrentPlayPosition in -1..(mAdapter.mDataList.size - 2)) {
+                // 在合理范围内
+                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition + 1
+                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition]
+                return if (mAdapter.mCurrentPlayModel?.status != 2) {
+                    // 继续找下一个
+                    findNextSong(userAction)
+                } else {
+                    mAdapter.mCurrentPlayModel?.song
+                }
             }
         }
 
@@ -124,7 +136,11 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
     }
 
     override fun getMoreFeeds() {
-        getPersonFeedList(mOffset, false)
+        if (hasMore) {
+            getPersonFeedList(mOffset, false)
+        } else {
+            MyLog.d(TAG, "getMoreFeeds hasMore = false")
+        }
     }
 
     override fun recyclerIdlePosition(position: Int) {
