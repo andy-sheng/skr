@@ -42,7 +42,7 @@ class FeedRankDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        if (mDataList.size in 1..3) {
+        if (mDataList.size in 0..3) {
             // 需要补充空页面
             return 4
         }
@@ -52,8 +52,12 @@ class FeedRankDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is FeedsDetailOneViewHolder -> {
-                holder.bindData(position, mDataList[position])
-                holder.mSongPlayIv.isSelected = mCurrentPlayModel?.feedID == mDataList[position].feedID
+                if (position < mDataList.size) {
+                    holder.bindData(position, mDataList[position])
+                    holder.mSongPlayIv.isSelected = mCurrentPlayModel?.feedID == mDataList[position].feedID
+                } else {
+                    holder.bindData(position, null)
+                }
             }
             is FeedsDetailTopViewHolder -> {
                 // 有数据

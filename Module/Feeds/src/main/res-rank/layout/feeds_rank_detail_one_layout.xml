@@ -78,9 +78,10 @@
         android:singleLine="true"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/media_iv"
+        app:layout_constraintBottom_toTopOf="@id/champion_tv"
         app:layout_constraintLeft_toRightOf="@id/media_iv"
-        app:layout_constraintRight_toRightOf="@id/song_area_bg" />
+        app:layout_constraintRight_toRightOf="@id/song_area_bg"
+        app:layout_constraintTop_toTopOf="@id/media_iv" />
 
     <TextView
         android:id="@+id/champion_tv"
@@ -88,15 +89,16 @@
         android:layout_height="@dimen/view_18_dp"
         android:text="成为打榜冠军"
         android:textColor="@color/white_trans_50"
-        app:layout_constraintTop_toBottomOf="@id/name_tv"
-        app:layout_constraintLeft_toLeftOf="@id/name_tv" />
+        app:layout_constraintBottom_toBottomOf="@id/media_iv"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/name_tv" />
 
     <ImageView
         android:id="@+id/like_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:background="@drawable/feed_rank_detail_top_icon"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/champion_tv"
         app:layout_constraintLeft_toRightOf="@id/champion_tv"
         app:layout_constraintTop_toTopOf="@id/champion_tv" />
