@@ -140,7 +140,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
         }
     }
 
-    private fun addFollowWatchList(list: List<FeedsWatchModel>, isClear: Boolean) {
+    private fun addFollowWatchList(list: List<FeedsWatchModel>?, isClear: Boolean) {
         if (isClear) {
             mAdapter.mDataList.clear()
             if (list != null && list.isNotEmpty()) {
