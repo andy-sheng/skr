@@ -120,6 +120,7 @@ interface FeedsWatchServerApi {
     fun getRecomendTagDetailList(@Query("offset") offset: Int,
                                  @Query("cnt") cnt: Int,
                                  @Query("tagTypeID") tagTypeID: Int,
-                                 @Query("queryDate") queryDate: String): Call<ApiResult>
+                                 @Query("queryDate") queryDate: String,
+                                 @Query("userID") userID: Long): Call<ApiResult>
 
 }

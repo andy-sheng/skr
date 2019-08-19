@@ -15,6 +15,6 @@ class FeedRecommendTagModel : Serializable {
     @JSONField(name = "tagTypeID")
     var tagTypeID: Int = 0
     @JSONField(name = "timeMs")
-    val timeMs: Long = 0L
+    var timeMs: Long = 0L
 
 }

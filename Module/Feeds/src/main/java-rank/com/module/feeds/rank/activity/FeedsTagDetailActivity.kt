@@ -1,16 +1,28 @@
 package com.module.feeds.rank.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.listener.CustomListener
+import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
+import com.bigkoo.pickerview.view.TimePickerView
 import com.common.base.BaseActivity
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
@@ -68,11 +80,15 @@ class FeedsTagDetailActivity : BaseActivity() {
     lateinit var adapter: FeedTagDetailAdapter
 
     var lastVerticalOffset = Int.MAX_VALUE
+    lateinit var maxDate: Date   // 最大的时间戳
+    lateinit var curDate: Date   // 当前选择的时间
     var queryDate: String = ""
 
     var mOffset = 0
     val mCNT = 30
     var hasMore = true
+
+    var pvCustomTime: TimePickerView? = null
 
     private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
@@ -156,6 +172,13 @@ class FeedsTagDetailActivity : BaseActivity() {
                 finish()
             }
         })
+
+        timeTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                showDatePicker()
+            }
+        })
+
         adapter = FeedTagDetailAdapter(object : FeedTagListener {
             override fun onClickItem(position: Int, model: FeedsWatchModel?) {
                 // 默认顺序就只是列表循环
@@ -188,11 +211,73 @@ class FeedsTagDetailActivity : BaseActivity() {
         AvatarUtils.loadAvatarByUrl(topAreaBg, AvatarUtils.newParamsBuilder(model?.bigImgURL)
                 .setBlur(true)
                 .build())
-        queryDate = U.getDateTimeUtils().formatDateString(Date(model?.timeMs
-                ?: System.currentTimeMillis()))
+        maxDate = Date(model?.timeMs ?: System.currentTimeMillis())
+        curDate = Date(model?.timeMs ?: System.currentTimeMillis())
+        queryDate = U.getDateTimeUtils().formatDateString(curDate)
         timeTv.text = queryDate
 
         loadInitData()
+    }
+
+    private fun showDatePicker() {
+        var cur = Calendar.getInstance()
+        cur.time = curDate
+        var max = Calendar.getInstance()
+        max.time = maxDate
+        var star = Calendar.getInstance()
+        //todo 月份需要减去一
+        star.set(2019, 7, 1)
+        pvCustomTime = TimePickerBuilder(this, OnTimeSelectListener { date, v ->
+            changeDate(date)
+        })
+                .setType(booleanArrayOf(true, true, true, false, false, false))
+                .setDividerColor(Color.parseColor("#4c979797"))
+                .setBgColor(Color.parseColor("#EBEDF2"))
+                .setContentTextSize(16)
+                .setTextColorCenter(Color.BLACK)
+                .setLineSpacingMultiplier(2f)
+                .setDate(cur)
+                .setRangDate(star, max)
+                .setLayoutRes(R.layout.feed_time_picker_layout) {
+                    val cancleTv: TextView = it.findViewById(R.id.cancle_tv)
+                    val confirmTv: TextView = it.findViewById(R.id.confirm_tv)
+
+                    cancleTv.setOnClickListener(object : DebounceViewClickListener() {
+                        override fun clickValid(v: View?) {
+                            pvCustomTime?.dismiss()
+                        }
+                    })
+
+                    confirmTv.setOnClickListener(object : DebounceViewClickListener() {
+                        override fun clickValid(v: View?) {
+                            pvCustomTime?.returnData()
+                            pvCustomTime?.dismiss()
+                        }
+                    })
+
+                }
+                .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
+                .build()
+
+        val mDialog = pvCustomTime?.dialog
+        if (mDialog != null) {
+
+            val params = FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM)
+
+            params.leftMargin = 0
+            params.rightMargin = 0
+            pvCustomTime?.dialogContainerLayout?.layoutParams = params
+
+            val dialogWindow = mDialog.window
+            if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(R.style.picker_view_slide_anim)//修改动画样式
+                dialogWindow.setGravity(Gravity.BOTTOM)//改成Bottom,底部显示
+            }
+        }
+        pvCustomTime?.show()
     }
 
     private fun findNextSong(userAction: Boolean): FeedSongModel? {
@@ -229,23 +314,28 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     }
 
+
     private fun loadInitData() {
-        getRecomendTagDetailList(0, true)
+        getRecomendTagDetailList(0, queryDate, curDate, true)
     }
 
     private fun loadMoreData() {
         if (hasMore) {
-            getRecomendTagDetailList(mOffset, false)
+            getRecomendTagDetailList(mOffset, queryDate, curDate, false)
         } else {
             U.getToastUtil().showShort("没有更多数据了")
         }
     }
 
-    private fun changeDate() {
+    private fun changeDate(date: Date) {
+        if (date != curDate) {
+            getRecomendTagDetailList(0, U.getDateTimeUtils().formatDateString(date), date, true)
+        } else {
 
+        }
     }
 
-    private fun addFeedList(list: List<FeedsWatchModel>, clean: Boolean) {
+    private fun addFeedList(list: List<FeedsWatchModel>?, clean: Boolean) {
         smartRefresh.finishRefresh()
         smartRefresh.finishLoadMore()
         smartRefresh.setEnableLoadMore(hasMore)
@@ -268,15 +358,20 @@ class FeedsTagDetailActivity : BaseActivity() {
         return false
     }
 
-    private fun getRecomendTagDetailList(offset: Int, isClean: Boolean) {
+    private fun getRecomendTagDetailList(offset: Int, queryTime: String, date: Date, isClean: Boolean) {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagDetailList", ControlType.CancelThis)) {
-                mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.tagTypeID!!, queryDate)
+                mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.tagTypeID!!, queryTime, MyUserInfoManager.getInstance().uid)
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 mOffset = obj.data.getIntValue("offset")
                 hasMore = obj.data.getBooleanValue("hasMore")
+                if (date != curDate) {
+                    queryDate = queryTime
+                    curDate = date
+                    timeTv.text = queryDate
+                }
                 addFeedList(list, isClean)
             } else {
                 smartRefresh.finishRefresh()
