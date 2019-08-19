@@ -21,7 +21,7 @@ object FeedsMakeLocalApi {
         listDB.forEach {
             val makeModel = JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java)
             if(makeModel.challengeType == 0 ){
-                makeModel.challengeType == CHALLENGE_TYPE_CHANGE_SONG
+                makeModel.challengeType = CHALLENGE_TYPE_CHANGE_SONG
             }
             list.add(makeModel)
         }
@@ -36,7 +36,7 @@ object FeedsMakeLocalApi {
         listDB.forEach {
             val makeModel = JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java)
             if(makeModel.challengeType == 0 ){
-                makeModel.challengeType == CHALLENGE_TYPE_QUICK_SONG
+                makeModel.challengeType = CHALLENGE_TYPE_QUICK_SONG
             }
             list.add(makeModel)
         }
@@ -51,7 +51,7 @@ object FeedsMakeLocalApi {
         listDB.forEach {
             val makeModel = JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java)
             if(makeModel.challengeType == 0 ){
-                makeModel.challengeType == CHALLENGE_TYPE_CHANGE_SONG
+                makeModel.challengeType = CHALLENGE_TYPE_CHANGE_SONG
             }
             list.add(makeModel)
         }

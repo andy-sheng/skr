@@ -15,6 +15,7 @@ import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -28,6 +29,7 @@ import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
+import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.model.BannerModel
@@ -48,6 +50,9 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.recycler_view
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.refreshLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * 快速游戏
@@ -183,10 +188,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
         mGameAdapter.onPkRoomListener = {
             StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                    .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
-                    .withBoolean("selectSong", true)
-                    .navigation()
+            openPlayWaysActivityByRank(context)
         }
 
         mGameAdapter.onDoubleRoomListener = {
