@@ -101,6 +101,8 @@ class FeedsTagDetailActivity : BaseActivity() {
         override fun onCompletion() {
             super.onCompletion()
             // todo 怎么说,现在怎么播放
+            SinglePlayer.reset(playerTag)
+            adapter.pausePlay()
         }
 
         override fun openTimeFlyMonitor(): Boolean {
@@ -202,6 +204,8 @@ class FeedsTagDetailActivity : BaseActivity() {
         adapter = FeedTagDetailAdapter(object : FeedTagListener {
             override fun onClickItem(position: Int, model: FeedsWatchModel?) {
                 // 默认顺序就只是列表循环
+                adapter.mCurrentPlayPosition = position
+                adapter.mCurrentPlayModel = model
                 model?.let {
                     FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, 7, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean): FeedSongModel? {

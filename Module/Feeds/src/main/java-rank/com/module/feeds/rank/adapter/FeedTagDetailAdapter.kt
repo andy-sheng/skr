@@ -20,6 +20,7 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
 
     var mCurrentPlayPosition = -1
     var mCurrentPlayModel: FeedsWatchModel? = null
+    var isPlaying = false
 
     private val uiHanlder = Handler(Looper.getMainLooper())
 
@@ -44,7 +45,7 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
             if (refreshType == REFRESH_TYPE_COLLECT) {
                 holder.refreshCollects()
             } else if (refreshType == REFRESH_TYPE_PLAY) {
-                if (mCurrentPlayModel == mDataList[position]) {
+                if (mCurrentPlayModel == mDataList[position] && isPlaying) {
                     holder.songNameTv.setTextColor(Color.parseColor("#FFC15B"))
                 } else {
                     holder.songNameTv.setTextColor(U.getColor(R.color.black_trans_80))
@@ -79,7 +80,8 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
     }
 
     fun startPlayModel(pos: Int, model: FeedsWatchModel?) {
-        if (mCurrentPlayModel != model) {
+        if (mCurrentPlayModel != model || !isPlaying) {
+            isPlaying = true
             var lastPos: Int? = null
             if (mCurrentPlayModel != model) {
                 mCurrentPlayModel = model
@@ -94,6 +96,13 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
                     notifyItemChanged(it, FeedsWatchViewAdapter.REFRESH_TYPE_PLAY)
                 }
             }
+        }
+    }
+
+    fun pausePlay() {
+        if (isPlaying) {
+            isPlaying = false
+            update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_TYPE_PLAY)
         }
     }
 
