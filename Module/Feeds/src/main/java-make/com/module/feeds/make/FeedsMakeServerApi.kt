@@ -20,7 +20,7 @@ interface FeedsMakeServerApi {
      * 获取feeds所有标签列表
      */
     @GET("/v1/feed/tag-list")
-    fun getFeedLikeList(): Call<ApiResult>
+    fun getFeedLikeList(@Query("tagType") tagType: Int): Call<ApiResult>
 
 
     /**

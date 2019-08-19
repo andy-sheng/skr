@@ -131,7 +131,15 @@ class FeedsPublishActivity : BaseActivity() {
 
         launch {
             // 先看看发生异常会不会崩溃
-            val result = subscribe { feedsMakeServerApi.getFeedLikeList() }
+            val result = subscribe {
+                feedsMakeServerApi.getFeedLikeList(
+                        when (CHALLENGE_TYPE_QUICK_SONG) {
+                            mFeedsMakeModel?.challengeType -> 1
+                            mFeedsMakeModel?.challengeType -> 2
+                            else -> 0
+                        }
+                )
+            }
             if (result?.errno == 0) {
                 rankList = JSON.parseArray(result.data.getString("tags"), FeedsPublishTagModel::class.java)
                 tagClassifyAdapter.setTagDatas(rankList)
@@ -340,7 +348,7 @@ class FeedsPublishActivity : BaseActivity() {
                     tagsIds.add(it.tagID)
                 }
             }
-            var result: ApiResult?=null
+            var result: ApiResult? = null
             // 快唱
             val mutableSet1 = mapOf(
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
@@ -358,19 +366,19 @@ class FeedsPublishActivity : BaseActivity() {
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
             if (mFeedsMakeModel?.songModel?.challengeID == 0L) {
-                if(mFeedsMakeModel?.challengeType== CHALLENGE_TYPE_QUICK_SONG){
+                if (mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG) {
                     // 翻唱
                     result = subscribe { feedsMakeServerApi.uploadQuickFeeds(body) }
-                }else{
+                } else {
                     // 改编
                     result = subscribe { feedsMakeServerApi.uploadChangeFeeds(body) }
                 }
             } else {
                 // 打榜
-                if(mFeedsMakeModel?.challengeType== CHALLENGE_TYPE_QUICK_SONG){
+                if (mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG) {
                     // 翻唱
                     result = subscribe { feedsMakeServerApi.uploadHitQuickFeeds(body) }
-                }else {
+                } else {
                     // 改编
                     result = subscribe { feedsMakeServerApi.uploadHitChangeFeeds(body) }
                 }
