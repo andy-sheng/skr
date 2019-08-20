@@ -413,6 +413,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         }
 
         if ((mAdapter.mDataList == null || mAdapter.mDataList.isEmpty())) {
+            mTopModel = null
             if (mAdapter.mRankTagList.isEmpty()) {
                 mLoadService.showCallback(EmptyCallback::class.java)
             } else {
