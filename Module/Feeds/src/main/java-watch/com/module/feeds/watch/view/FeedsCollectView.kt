@@ -38,6 +38,7 @@ import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
+import com.module.feeds.rank.event.FeedTagFollowStateEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.adapter.FeedCollectListener
@@ -487,6 +488,27 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
     fun onEvent(event: FeedsCollectChangeEvent) {
         // 有喜欢事件发生促使刷新
         mPersenter.hasInitData = false
+    }
+
+    @Subscribe
+    fun onEvent(event: FeedTagFollowStateEvent) {
+        if (event.feedRecommendTagModel.isCollected) {
+            mAdapter.mRankTagList.add(event.feedRecommendTagModel)
+        } else {
+            var model: FeedRecommendTagModel? = null
+            mAdapter.mRankTagList.forEach {
+                if (it.rankID == event.feedRecommendTagModel.rankID) {
+                    model = it
+                    return@forEach
+                }
+            }
+
+            model?.let {
+                mAdapter.mRankTagList.remove(it)
+            }
+        }
+
+        mAdapter.notifyDataSetChanged()
     }
 
     @Subscribe

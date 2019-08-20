@@ -47,6 +47,7 @@ import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.rank.adapter.FeedTagDetailAdapter
 import com.module.feeds.rank.adapter.FeedTagListener
+import com.module.feeds.rank.event.FeedTagFollowStateEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedRecommendTagModel
@@ -153,7 +154,8 @@ class FeedsTagDetailActivity : BaseActivity() {
 
                         if (obj.errno == 0) {
                             model!!.isCollected = !model!!.isCollected
-                            mCollectTv.text = if (model!!.isCollected) "取消关注" else "关注歌单"
+                            mCollectTv.text = if (model!!.isCollected) "取消收藏" else "收藏歌单"
+                            EventBus.getDefault().post(FeedTagFollowStateEvent(model))
                         } else {
                             if (obj.errno == -2) {
                                 U.getToastUtil().showShort("网络出错了，请检查网络后重试")
@@ -171,7 +173,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 if (obj.errno == 0) {
                     val isCollected = obj.data.getBooleanValue("isCollected")
                     model!!.isCollected = isCollected
-                    mCollectTv.text = if (model!!.isCollected) "取消关注" else "关注歌单"
+                    mCollectTv.text = if (model!!.isCollected) "取消收藏" else "收藏歌单"
                 } else {
                     if (obj.errno == -2) {
                         U.getToastUtil().showShort("网络出错了，请检查网络后重试")
