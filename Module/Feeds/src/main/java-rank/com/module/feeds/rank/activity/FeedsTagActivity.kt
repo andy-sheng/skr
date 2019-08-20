@@ -29,11 +29,13 @@ import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_TAG)
 class FeedsTagActivity : BaseActivity() {
-
+    val COLLECT = 0
+    val RECOMMEND = 1
     private lateinit var titlebar: CommonTitleBar
     private lateinit var refreshLayout: SmartRefreshLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: FeedTagAdapter
+    private var from: Int = RECOMMEND
 
     var mOffset = 0
     var mCNT = 30
@@ -45,6 +47,7 @@ class FeedsTagActivity : BaseActivity() {
         titlebar = findViewById(R.id.titlebar)
         refreshLayout = findViewById(R.id.refreshLayout)
         recyclerView = findViewById(R.id.recycler_view)
+        from = intent.getIntExtra("from", RECOMMEND)
 
         refreshLayout.apply {
             setEnableLoadMore(true)
@@ -98,7 +101,11 @@ class FeedsTagActivity : BaseActivity() {
     private fun getRecommendTagList(offset: Int, isClear: Boolean) {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
-                mFeedServerApi.getRecomendTagList(offset, mCNT, MyUserInfoManager.getInstance().uid)
+                if (from == COLLECT) {
+                    mFeedServerApi.getAlbumCollectList(offset, mCNT, MyUserInfoManager.getInstance().uid)
+                } else {
+                    mFeedServerApi.getRecomendTagList(offset, mCNT, MyUserInfoManager.getInstance().uid)
+                }
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)

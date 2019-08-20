@@ -22,7 +22,6 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.utils.dp
-import com.common.videocache.MediaCacheManager
 import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
@@ -58,8 +57,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.Exception
-import java.util.HashMap
+import java.util.*
 
 abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context!!), CoroutineScope by MainScope() {
     val TAG = "FeedsWatchView"
@@ -103,6 +101,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onClickRecommendTagMore() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
+                        .withInt("from", 1)
                         .navigation()
             }
 

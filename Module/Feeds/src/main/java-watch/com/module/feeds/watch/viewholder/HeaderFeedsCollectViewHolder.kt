@@ -71,6 +71,7 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
 
     fun toMoreTag() {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
+                .withInt("from", 0)
                 .navigation()
     }
 
