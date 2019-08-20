@@ -54,6 +54,7 @@ class FeedSongModel : Serializable {
         return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMsFromPlayerForDebug=$playDurMsFromPlayerForDebug, playURL=$playURL, playCurPos=$playCurPos, lyricStatus=$lyricStatus, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName, songType=$songType)"
     }
 
+
     fun getDisplayName(): String? {
         if (challengeID == 0L) {
             // 快唱
@@ -76,5 +77,23 @@ class FeedSongModel : Serializable {
             }
             return ""
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FeedSongModel
+
+        if (feedID != other.feedID) return false
+        if (songID != other.songID) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = feedID.hashCode()
+        result = 31 * result + songID
+        return result
     }
 }
