@@ -111,7 +111,9 @@ interface FeedsWatchServerApi {
     fun getCollectListByIndex(@Query("lastIndexID") lastIndexID: Long, @Query("userID") userID: Long): Call<ApiResult>
 
     @GET("v1/feed/rank-tag-category")
-    fun getRecomendTagList(): Call<ApiResult>
+    fun getRecomendTagList(@Query("offset") offset: Int,
+                           @Query("cnt") cnt: Int,
+                           @Query("userID") userID: Long): Call<ApiResult>
 
     /**
      * 全民神曲：根据榜单标签分类获取歌单数据

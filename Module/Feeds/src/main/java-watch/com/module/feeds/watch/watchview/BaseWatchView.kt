@@ -464,6 +464,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                     itemView.getLocationOnScreen(location1)
                                     mRecyclerView.getLocationOnScreen(location2)
                                     val top = location1[1] - location2[1]
+//                                    MyLog.d(TAG, "onScrollStateChangedrecyclerView i=$i, newState = $newState location1[1]=${location1[1]} location2[1]=${location2[1]}")
                                     when {
                                         top < 0 -> {
                                             // 顶部的

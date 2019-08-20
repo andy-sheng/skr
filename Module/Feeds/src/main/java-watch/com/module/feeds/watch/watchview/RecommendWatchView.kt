@@ -135,7 +135,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
     private fun getRecommendTagList() {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
-                mFeedServerApi.getRecomendTagList()
+                mFeedServerApi.getRecomendTagList(0, 4, MyUserInfoManager.getInstance().uid)
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
