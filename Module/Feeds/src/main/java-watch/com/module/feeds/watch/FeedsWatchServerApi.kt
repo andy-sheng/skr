@@ -136,7 +136,7 @@ interface FeedsWatchServerApi {
     @GET("v1/feed/rank-song-list-by-tag")
     fun getRecomendTagDetailList(@Query("offset") offset: Int,
                                  @Query("cnt") cnt: Int,
-                                 @Query("tagTypeID") tagTypeID: Int,
+                                 @Query("rankID") rankID: Int,
                                  @Query("queryDate") queryDate: String,
                                  @Query("userID") userID: Long): Call<ApiResult>
 
