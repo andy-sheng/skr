@@ -8,8 +8,9 @@ abstract class AbsPlayModeManager {
         MyLog.d("AbsPlayModeManager", "changeModemode = $mode")
     }
 
-    abstract fun getNextSong(userAction: Boolean): FeedSongModel?
-    abstract fun getPreSong(userAction: Boolean): FeedSongModel?
+    abstract fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit)
+
+    abstract fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit)
 
     open fun getCurMode(): FeedSongPlayModeManager.PlayMode {
         return FeedSongPlayModeManager.PlayMode.ORDER

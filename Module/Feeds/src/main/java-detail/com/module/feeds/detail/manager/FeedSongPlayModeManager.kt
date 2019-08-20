@@ -11,25 +11,37 @@ import kotlin.collections.ArrayList
  *
  *  提供不同模式的上一首 下一首逻辑
  */
-class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>) : AbsPlayModeManager() {
+class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>?) : AbsPlayModeManager() {
+
+    //当前播放
     private var mCur: FeedSongModel? = null
 
+    //原始列表
     private var mOriginalSongList = ArrayList<FeedSongModel>()
 
     //当前循环播放列表中的位置
     private var mOriginPosition: Int = 0
 
+    //混淆列表
     private var mShuffleSongList = ArrayList<Pair<Int, FeedSongModel>>()
 
     //当前随机列表中的位置
     private var mShufflePosition: Int = 0
 
+    //是否支持循环，即在第一首时点击上一首，则返回最后一首。在最后一首点击下一首回到第一首
+    var supportCycle = true
+
     //默认顺序播放
     var mMode: PlayMode = PlayMode.SINGLE
 
+    //当不支持循环播放时，当列表走到头时
+    var loadMoreCallback: ((size: Int, whenOkCallback: () -> Unit) -> Unit)? = null
+
     init {
         mCur = cur
-        mOriginalSongList.addAll(originalSongList)
+        if (originalSongList != null) {
+            mOriginalSongList.addAll(originalSongList)
+        }
 
 //        mShuffleSongList = ArrayList(originalSongList)
 //        Collections.shuffle(mShuffleSongList)
@@ -56,8 +68,28 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
+    fun setOriginList(fsms: ArrayList<FeedSongModel>) {
+        mOriginalSongList.clear()
+        mOriginalSongList.addAll(fsms)
+        mShuffleSongList.clear()
+        ensureHasShuffle(mCur)
+        mOriginPosition = 0
+        mShufflePosition = 0
+        setCurrentPlayModel(mCur)
+    }
+
+    fun getCurPostionInOrigin(): Int {
+        if (mMode == PlayMode.RANDOM) {
+            return mShuffleSongList.get(mShufflePosition).first
+        }
+
+        if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
+            return mOriginPosition
+        }
+        return 0
+    }
+
     override fun changeMode(mode: PlayMode) {
-        val lastMode = mMode
         mMode = mode
         if (mCur == null) {
             return
@@ -83,23 +115,65 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
-    override fun getNextSong(userAction: Boolean): FeedSongModel? {
+    override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
         if (mCur == null) {
-            return getFirstSongWhenCurNull()
+            getFirstSongWhenCurNull()
+            callback?.invoke(mCur)
+            return
         }
 
         if (mMode == PlayMode.SINGLE) {
             if (userAction) {
-                mOriginPosition = (mOriginPosition + 1) % mOriginalSongList.size
-                mCur = mOriginalSongList[mOriginPosition]
-                return mCur
+                if (supportCycle) {
+                    mOriginPosition = (mOriginPosition + 1) % mOriginalSongList.size
+                    mCur = mOriginalSongList[mOriginPosition]
+                    callback?.invoke(mCur)
+                } else {
+                    if (mOriginPosition + 1 >= mOriginalSongList.size) {
+                        // 拉没了
+                        loadMoreCallback?.invoke(mOriginalSongList.size) {
+                            //请求准备数据，数据准备好了
+                            if (mOriginPosition + 1 >= mOriginalSongList.size) {
+                                callback?.invoke(null)
+                            }else{
+                                mOriginPosition++
+                                mCur = mOriginalSongList[mOriginPosition]
+                                callback?.invoke(mCur)
+                            }
+                        }
+                    } else {
+                        mOriginPosition++
+                        mCur = mOriginalSongList[mOriginPosition]
+                        callback?.invoke(mCur)
+                    }
+                }
             } else {
-                return mCur
+                callback?.invoke(mCur)
             }
         } else if (mMode == PlayMode.ORDER) {
-            mOriginPosition = (mOriginPosition + 1) % mOriginalSongList.size
-            mCur = mOriginalSongList[mOriginPosition]
-            return mCur
+            if (supportCycle) {
+                mOriginPosition = (mOriginPosition + 1) % mOriginalSongList.size
+                mCur = mOriginalSongList[mOriginPosition]
+                callback?.invoke(mCur)
+            } else {
+                if (mOriginPosition + 1 >= mOriginalSongList.size) {
+                    // 拉没了
+                    loadMoreCallback?.invoke(mOriginalSongList.size) {
+                        //请求准备数据，数据准备好了
+                        if (mOriginPosition + 1 >= mOriginalSongList.size) {
+                            callback?.invoke(null)
+                        }else{
+                            mOriginPosition++
+                            mCur = mOriginalSongList[mOriginPosition]
+                            callback?.invoke(mCur)
+                        }
+                    }
+                } else {
+                    mOriginPosition++
+                    mCur = mOriginalSongList[mOriginPosition]
+                    callback?.invoke(mCur)
+                }
+            }
         } else if (mMode == PlayMode.RANDOM) {
             mShufflePosition += 1
             //ensureHasShuffle(null)
@@ -109,44 +183,60 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                 mShufflePosition -= mShuffleSongList.size
             }
             mCur = mShuffleSongList[mShufflePosition].second
-            return mCur
+            callback?.invoke(mCur)
         }
-
-        return FeedSongModel()
     }
 
-    override fun getPreSong(userAction: Boolean): FeedSongModel? {
+    override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
         if (mCur == null) {
-            return getFirstSongWhenCurNull()
+            getFirstSongWhenCurNull()
+            callback?.invoke(mCur)
+            return
         }
-
         if (mMode == PlayMode.SINGLE) {
             if (userAction) {
-                mOriginPosition = (mOriginPosition - 1 + mOriginalSongList.size) % mOriginalSongList.size
-                mCur = mOriginalSongList[mOriginPosition]
-                return mCur
+                if (supportCycle) {
+                    mOriginPosition = (mOriginPosition - 1 + mOriginalSongList.size) % mOriginalSongList.size
+                    mCur = mOriginalSongList[mOriginPosition]
+                    callback?.invoke(mCur)
+                } else {
+                    if (mOriginPosition - 1 < 0) {
+                        callback?.invoke(null)
+                    } else {
+                        mOriginPosition--
+                        mCur = mOriginalSongList[mOriginPosition]
+                        callback?.invoke(mCur)
+                    }
+                }
             } else {
-                return mCur
+                callback?.invoke(mCur)
             }
         } else if (mMode == PlayMode.ORDER) {
-            mOriginPosition = (mOriginPosition - 1 + mOriginalSongList.size) % mOriginalSongList.size
-            mCur = mOriginalSongList[mOriginPosition]
-            return mCur
+            if (supportCycle) {
+                mOriginPosition = (mOriginPosition - 1 + mOriginalSongList.size) % mOriginalSongList.size
+                mCur = mOriginalSongList[mOriginPosition]
+                callback?.invoke(mCur)
+            } else {
+                if (mOriginPosition - 1 < 0) {
+                    callback?.invoke(null)
+                } else {
+                    mOriginPosition--
+                    mCur = mOriginalSongList[mOriginPosition]
+                    callback?.invoke(mCur)
+                }
+            }
         } else if (mMode == PlayMode.RANDOM) {
             // 往前播不重新混淆，一直循环
             ensureHasShuffle(mCur)
             mShufflePosition = (mShufflePosition - 1 + mShuffleSongList.size) % mShuffleSongList.size
             mCur = mShuffleSongList[mShufflePosition].second
-            return mCur
+            callback?.invoke(mCur)
         }
-
-        return FeedSongModel()
     }
 
     override fun getCurMode(): PlayMode {
         return mMode
     }
-
 
     private fun getFirstSongWhenCurNull(): FeedSongModel? {
         when (mMode) {
@@ -180,6 +270,12 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                 mShuffleSongList.add(p)
             }
         }
+    }
+
+    private fun addToList(list: List<FeedSongModel>) {
+        mOriginalSongList.addAll(list)
+        mShuffleSongList.clear()
+        ensureHasShuffle(mCur)
     }
 
     enum class PlayMode(val model: Int) {

@@ -99,6 +99,10 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
         }
     }
 
+    fun startPlayModel(pos: Int) {
+        startPlayModel(pos, mDataList[pos])
+    }
+
     fun pausePlay() {
         if (isPlaying) {
             isPlaying = false

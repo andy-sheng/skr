@@ -554,35 +554,38 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun toNextSongAction(userAction: Boolean) {
-        val newModel = mSongManager?.getNextSong(userAction)
-        if (newModel == null) {
-            latestAction = null
-            U.getToastUtil().showShort("这已经是最后一首歌了")
-        } else {
-            newModel?.feedID?.let {
-                tryLoadNewFeed(it)
-                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-            }
-
-            latestAction = {
-                toNextSongAction(true)
+        mSongManager?.getNextSong(userAction){
+            newModel->
+            if (newModel == null) {
+                latestAction = null
+                U.getToastUtil().showShort("这已经是最后一首歌了")
+            } else {
+                newModel?.feedID?.let {
+                    tryLoadNewFeed(it)
+                    mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                }
+                latestAction = {
+                    toNextSongAction(true)
+                }
             }
         }
     }
 
     private fun toPreSongAction(userAction: Boolean) {
-        val newModel = mSongManager?.getPreSong(userAction)
-        if (newModel == null) {
-            U.getToastUtil().showShort("这已经是第一首歌了")
-            latestAction = null
-        } else {
-            newModel?.feedID?.let {
-                tryLoadNewFeed(it)
-                mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-            }
+        mSongManager?.getPreSong(userAction){
+            newModel->
+            if (newModel == null) {
+                U.getToastUtil().showShort("这已经是第一首歌了")
+                latestAction = null
+            } else {
+                newModel?.feedID?.let {
+                    tryLoadNewFeed(it)
+                    mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                }
 
-            latestAction = {
-                toPreSongAction(true)
+                latestAction = {
+                    toPreSongAction(true)
+                }
             }
         }
     }

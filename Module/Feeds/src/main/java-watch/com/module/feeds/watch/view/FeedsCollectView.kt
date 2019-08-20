@@ -33,6 +33,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_HOME_COLLECT
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
@@ -67,7 +68,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
     var mIsNeedResumePlay = false    // 标记是否需要恢复播放
 
-    var mSongManager: FeedSongPlayModeManager? = null
+    var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
     private val mContainer: ConstraintLayout
     private val mTopAreaBg: SimpleDraweeView
@@ -126,9 +127,17 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 model?.let {
                     mIsNeedResumePlay = true
                     fragment?.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, 2, mCurrentType, object : AbsPlayModeManager() {
+                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, FROM_HOME_COLLECT, mCurrentType, object : AbsPlayModeManager() {
+                            override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                                mSongPlayModeManager?.getNextSong(userAction,callback)
+                            }
+
+                            override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                                mSongPlayModeManager?.getPreSong(userAction,callback)
+                            }
+
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
-                                mSongManager?.changeMode(mode)
+                                mSongPlayModeManager?.changeMode(mode)
                                 mCurrentType = mode
                                 when (mode) {
                                     FeedSongPlayModeManager.PlayMode.ORDER -> {
@@ -143,27 +152,19 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                                 }
                             }
 
-                            override fun getNextSong(userAction: Boolean): FeedSongModel? {
-                                return mSongManager?.getNextSong(userAction)
-                            }
-
-                            override fun getPreSong(userAction: Boolean): FeedSongModel? {
-                                return mSongManager?.getPreSong(userAction)
-                            }
-
                             override fun getCurMode(): FeedSongPlayModeManager.PlayMode {
-                                return mSongManager!!.getCurMode()
+                                return mSongPlayModeManager?.getCurMode()?:FeedSongPlayModeManager.PlayMode.ORDER
                             }
                         })
                     }
 
-                    mSongManager?.setCurrentPlayModel(it.song)
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                 }
             }
 
             override fun onClickPlayListener(model: FeedsCollectModel?, position: Int) {
                 model?.let {
-                    mSongManager?.setCurrentPlayModel(it.song)
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     playOrPause(it, position, false)
                 }
             }
@@ -195,19 +196,19 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                         mCurrentType = FeedSongPlayModeManager.PlayMode.SINGLE
                         mPlayTypeIv.setImageResource(R.drawable.like_single_repeat_icon)
                         U.getToastUtil().showShort("单曲循环")
-                        mSongManager?.changeMode(mCurrentType)
+                        mSongPlayModeManager?.changeMode(mCurrentType)
                     }
                     FeedSongPlayModeManager.PlayMode.SINGLE -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.RANDOM
                         mPlayTypeIv.setImageResource(R.drawable.like_random_icon)
                         U.getToastUtil().showShort("随机播放")
-                        mSongManager?.changeMode(mCurrentType)
+                        mSongPlayModeManager?.changeMode(mCurrentType)
                     }
                     FeedSongPlayModeManager.PlayMode.RANDOM -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER
                         mPlayTypeIv.setImageResource(R.drawable.like_all_repeat_icon)
                         U.getToastUtil().showShort("列表循环")
-                        mSongManager?.changeMode(mCurrentType)
+                        mSongPlayModeManager?.changeMode(mCurrentType)
                     }
                 }
             }
@@ -224,7 +225,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         mRecordFilm.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mTopModel?.let {
-                    mSongManager?.setCurrentPlayModel(it.song)
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     playOrPause(it, mTopPosition, false)
                 }
             }
@@ -324,16 +325,18 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
     }
 
     private fun playWithType(isNext: Boolean, fromUser: Boolean) {
-        val songModel = if (isNext) {
-            mSongManager?.getNextSong(fromUser)
-        } else {
-            mSongManager?.getPreSong(fromUser)
-        }
-        mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
-            if (feedsCollectModel.feedID == songModel?.feedID) {
-                playOrPause(feedsCollectModel, index, true)
-                return@forEachIndexed
+        val f: (songModel: FeedSongModel?) -> Unit = {
+            mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
+                if (feedsCollectModel.feedID == it?.feedID) {
+                    playOrPause(feedsCollectModel, index, true)
+                    return@forEachIndexed
+                }
             }
+        }
+        if (isNext) {
+            mSongPlayModeManager?.getNextSong(fromUser, f)
+        } else {
+            mSongPlayModeManager?.getPreSong(fromUser, f)
         }
     }
 
@@ -387,7 +390,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                     feedSongModels.add(feedSongModel)
                 }
             }
-            mSongManager = FeedSongPlayModeManager(mCurrentType, cur, feedSongModels)
+            mSongPlayModeManager = FeedSongPlayModeManager(mCurrentType, cur, feedSongModels)
 
 
             stopPlay()

@@ -40,6 +40,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_FEED_TAG_DETAIL
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
@@ -62,6 +63,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_TAG_DETAIL)
 class FeedsTagDetailActivity : BaseActivity() {
@@ -96,12 +98,16 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
+    var mSongPlayModeManager: FeedSongPlayModeManager? = null
+
     private val playCallback = object : PlayerCallbackAdapter() {
         override fun onCompletion() {
             super.onCompletion()
-            // todo 怎么说,现在怎么播放
-            SinglePlayer.reset(playerTag)
-            adapter.pausePlay()
+            mSongPlayModeManager?.getNextSong(false) {
+                it?.let { sm ->
+                    startPlay(sm)
+                }
+            }
         }
 
         override fun openTimeFlyMonitor(): Boolean {
@@ -241,19 +247,59 @@ class FeedsTagDetailActivity : BaseActivity() {
             }
         })
 
+        mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, null)
+        mSongPlayModeManager?.supportCycle = false
+        mSongPlayModeManager?.loadMoreCallback = { size, callback ->
+            if (hasMore) {
+                getRecomendTagDetailList(mOffset, queryDate, curDate, false) {
+                    callback.invoke()
+                }
+            } else {
+                callback.invoke()
+            }
+        }
         adapter = FeedTagDetailAdapter(object : FeedTagListener {
             override fun onClickItem(position: Int, model: FeedsWatchModel?) {
                 // 默认顺序就只是列表循环
                 adapter.mCurrentPlayPosition = position
                 adapter.mCurrentPlayModel = model
                 model?.let {
-                    FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, 7, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
-                        override fun getNextSong(userAction: Boolean): FeedSongModel? {
-                            return findNextSong(userAction)
+                    FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, FROM_FEED_TAG_DETAIL, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                        override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                            mSongPlayModeManager?.getNextSong(userAction) { sm ->
+                                if(sm!=null){
+                                    val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
+                                    curPos?.let {
+                                        adapter.startPlayModel(curPos)
+                                    }
+                                }else{
+
+                                }
+                                callback.invoke(sm)
+                            }
                         }
 
-                        override fun getPreSong(userAction: Boolean): FeedSongModel? {
-                            return findPresong(userAction)
+                        override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                            mSongPlayModeManager?.getPreSong(userAction) { sm ->
+                                if(sm!=null){
+                                    val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
+                                    curPos?.let {
+                                        adapter.startPlayModel(curPos)
+                                    }
+                                }else{
+
+                                }
+                                callback.invoke(sm)
+                            }
+                        }
+
+                        override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
+                            mSongPlayModeManager?.changeMode(mode)
+                        }
+
+                        override fun getCurMode(): FeedSongPlayModeManager.PlayMode {
+                            return mSongPlayModeManager?.getCurMode()
+                                    ?: FeedSongPlayModeManager.PlayMode.ORDER
                         }
                     })
                 }
@@ -267,7 +313,6 @@ class FeedsTagDetailActivity : BaseActivity() {
         })
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
-
         FrescoWorker.loadImage(imageBg, ImageFactory.newPathImage(model?.bigImgURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
@@ -349,39 +394,38 @@ class FeedsTagDetailActivity : BaseActivity() {
         pvCustomTime?.show()
     }
 
-    private fun findNextSong(userAction: Boolean): FeedSongModel? {
-        if (adapter.mCurrentPlayPosition == adapter.mDataList.size - 2) {
-            // 已经到最后一个，需要去更新数据
-            loadMoreData()
-        }
-
-        if (!adapter.mDataList.isNullOrEmpty()) {
-            // 在合理范围内
-            if (adapter.mCurrentPlayPosition in -1..(adapter.mDataList.size - 2)) {
-                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition + 1
-                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
-                return adapter.mCurrentPlayModel?.song
-            }
-        }
-
-        return null
-    }
-
-    private fun findPresong(userAction: Boolean): FeedSongModel? {
-        if (adapter.mCurrentPlayPosition == 0) {
-            return null
-        }
-
-        if (!adapter.mDataList.isNullOrEmpty()) {
-            if (adapter.mCurrentPlayPosition in 1..adapter.mDataList.size) {
-                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition - 1
-                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
-                return adapter.mCurrentPlayModel?.song
-            }
-        }
-        return null
-
-    }
+//    private fun findNextSong(userAction: Boolean): FeedSongModel? {
+//        if (adapter.mCurrentPlayPosition == adapter.mDataList.size - 2) {
+//            // 已经到最后一个，需要去更新数据
+//            loadMoreData()
+//        }
+//
+//        if (!adapter.mDataList.isNullOrEmpty()) {
+//            // 在合理范围内
+//            if (adapter.mCurrentPlayPosition in -1..(adapter.mDataList.size - 2)) {
+//                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition + 1
+//                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
+//                return adapter.mCurrentPlayModel?.song
+//            }
+//        }
+//
+//        return null
+//    }
+//
+//    private fun findPresong(userAction: Boolean): FeedSongModel? {
+//        if (adapter.mCurrentPlayPosition == 0) {
+//            return null
+//        }
+//
+//        if (!adapter.mDataList.isNullOrEmpty()) {
+//            if (adapter.mCurrentPlayPosition in 1..adapter.mDataList.size) {
+//                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition - 1
+//                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
+//                return adapter.mCurrentPlayModel?.song
+//            }
+//        }
+//        return null
+//    }
 
 
     private fun loadInitData() {
@@ -396,38 +440,7 @@ class FeedsTagDetailActivity : BaseActivity() {
         }
     }
 
-    private fun changeDate(date: Date) {
-        if (date != curDate) {
-            getRecomendTagDetailList(0, U.getDateTimeUtils().formatDateString(date), date, true)
-        } else {
-
-        }
-    }
-
-    private fun addFeedList(list: List<FeedsWatchModel>?, clean: Boolean) {
-        smartRefresh.finishRefresh()
-        smartRefresh.finishLoadMore()
-        smartRefresh.setEnableLoadMore(hasMore)
-
-        if (clean) {
-            adapter.mDataList.clear()
-        }
-
-        if (!list.isNullOrEmpty()) {
-            adapter.mDataList.addAll(list)
-        }
-        adapter.notifyDataSetChanged()
-    }
-
-    override fun useEventBus(): Boolean {
-        return true
-    }
-
-    override fun canSlide(): Boolean {
-        return false
-    }
-
-    private fun getRecomendTagDetailList(offset: Int, queryTime: String, date: Date, isClean: Boolean) {
+    private fun getRecomendTagDetailList(offset: Int, queryTime: String, date: Date, isClean: Boolean, dataOkListener: (() -> Unit)? = null) {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagDetailList", ControlType.CancelThis)) {
                 mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.rankID!!, queryTime, MyUserInfoManager.getInstance().uid)
@@ -441,8 +454,34 @@ class FeedsTagDetailActivity : BaseActivity() {
                     curDate = date
                     timeTv.text = queryDate
                 }
-                addFeedList(list, isClean)
+                smartRefresh.finishRefresh()
+                smartRefresh.finishLoadMore()
+                smartRefresh.setEnableLoadMore(hasMore)
+
+                if (isClean) {
+                    adapter.mDataList.clear()
+                }
+
+                if (!list.isNullOrEmpty()) {
+                    adapter.mDataList.addAll(list)
+                }
+
+                adapter.notifyDataSetChanged()
+
+                val fsms = ArrayList<FeedSongModel>()
+                list?.let { wms ->
+                    wms.forEach { wm ->
+                        wm.song?.let {
+                            fsms.add(it)
+                        }
+                    }
+                }
+                // 重新调整列表
+                mSongPlayModeManager?.setOriginList(fsms)
+                // 一定要放在 mSongPlayModeManager 后面
+                dataOkListener?.invoke()
             } else {
+                dataOkListener?.invoke()
                 smartRefresh.finishRefresh()
                 smartRefresh.finishLoadMore()
                 if (obj.errno == -2) {
@@ -450,6 +489,22 @@ class FeedsTagDetailActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun changeDate(date: Date) {
+        if (date != curDate) {
+            getRecomendTagDetailList(0, U.getDateTimeUtils().formatDateString(date), date, true)
+        } else {
+
+        }
+    }
+
+    override fun useEventBus(): Boolean {
+        return true
+    }
+
+    override fun canSlide(): Boolean {
+        return false
     }
 
     // 收藏和取消收藏
@@ -498,16 +553,20 @@ class FeedsTagDetailActivity : BaseActivity() {
         // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
         MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
         event.model?.song?.let {
-            adapter.mDataList.forEachIndexed { index, feed ->
-                if (it.feedID == feed.song?.feedID && it.songID == feed.song?.songID) {
-                    //todo 从详情页面返回，直接播放吧(继续播放)
-                    adapter.startPlayModel(index, feed)
-                    feed.song?.playURL?.let {
-                        FeedsPlayStatistics.setCurPlayMode(feed.feedID)
-                        SinglePlayer.startPlay(playerTag, it)
-                    }
-                    return@forEachIndexed
+            startPlay(it)
+        }
+    }
+
+    fun startPlay(it: FeedSongModel) {
+        adapter.mDataList.forEachIndexed { index, feed ->
+            if (it.feedID == feed.song?.feedID && it.songID == feed.song?.songID) {
+                //todo 从详情页面返回，直接播放吧(继续播放)
+                adapter.startPlayModel(index, feed)
+                feed.song?.playURL?.let {
+                    FeedsPlayStatistics.setCurPlayMode(feed.feedID)
+                    SinglePlayer.startPlay(playerTag, it)
                 }
+                return@forEachIndexed
             }
         }
     }
