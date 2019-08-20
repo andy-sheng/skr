@@ -174,10 +174,6 @@ class FeedsTagDetailActivity : BaseActivity() {
                     val isCollected = obj.data.getBooleanValue("isCollected")
                     model!!.isCollected = isCollected
                     mCollectTv.text = if (model!!.isCollected) "取消收藏" else "收藏歌单"
-                } else {
-                    if (obj.errno == -2) {
-                        U.getToastUtil().showShort("网络出错了，请检查网络后重试")
-                    }
                 }
             }
         }
