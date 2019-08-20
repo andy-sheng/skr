@@ -64,7 +64,7 @@ AudioRecord::~AudioRecord() {
     // release buffer
     if (mBuffer) {
         free(mBuffer);
-        mBuffer;
+        mBuffer = NULL;
     }
     pthread_mutex_destroy(&mFilterLock);
 

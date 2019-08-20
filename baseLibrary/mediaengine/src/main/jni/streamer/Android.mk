@@ -89,7 +89,7 @@ STREAMER_SRC_FILES += KSYAudioEffect.cpp
 
 STREAMER_STATIC_LIBRARIES := Denoise_export
 STREAMER_STATIC_LIBRARIES += yuv_static swresample avutil \
-                             gnustl_static libsox
+                             c++_static libsox
 
 # build shared library
 include $(CLEAR_VARS)

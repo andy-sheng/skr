@@ -28,7 +28,7 @@ void* createThreadLock(void)
     return p;
 }
 
-int waitThreadLock(void *lock)
+void waitThreadLock(void *lock)
 {
     threadLock  *p;
     int retval = 0;

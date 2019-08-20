@@ -60,7 +60,7 @@ APMWrapper::~APMWrapper() {
 }
 
 int APMWrapper::Create() {
-    mAPM = AudioProcessing::Create();
+    mAPM = AudioProcessingBuilder().Create();
     if (mAPM == NULL) {
         LOGE("[APM][Create] createAPM failed!");
         return -1;
@@ -108,12 +108,18 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
         mOutData[idx] = (int16_t*)realloc(mOutData[idx], (size_t)mOutDataSize[idx]);
     }
 
+    int delay_ms = 200;
     while (audio_utils_fifo_get_remain(&mFifo[idx]) >= mConfig[idx].num_frames()) {
         audio_utils_fifo_read(&mFifo[idx], mInData[idx], mConfig[idx].num_frames());
         size = mConfig[idx].num_samples() * getBytesPerSample(mInSampleFmt[idx]);
         ret = ksy_swr_convert(mResample[idx], (uint8_t***) &mTempData[idx], (uint8_t**) &mInData[idx], size);
         if (ret <= 0) {
             LOGE("apm %d resample to FLTP failed, err=%d", idx, ret);
+        }
+
+        if (mAPMConfig.echo_canceller.enabled) {
+            mAPM->set_stream_delay_ms(delay_ms);
+            delay_ms -= 10;
         }
 
         ret = mAPM->ProcessStream(mTempData[idx], mConfig[idx], mConfig[idx], mTempData[idx]);
@@ -143,11 +149,15 @@ int APMWrapper::ProcessStream(int16_t **out, int16_t *data, int len) {
  * A filtering component which removes DC offset and low-frequency noise.
  */
 int APMWrapper::EnableHighPassFilter(bool enable) {
-    return mAPM->high_pass_filter()->Enable(enable);
+    mAPMConfig.high_pass_filter.enabled = enable;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::EnableNs(bool enable) {
-    return mAPM->noise_suppression()->Enable(enable);
+    mAPMConfig.noise_suppression.enabled = enable;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::SetNsLevel(int level) {
@@ -155,11 +165,15 @@ int APMWrapper::SetNsLevel(int level) {
         return -1;
     }
 
-    return mAPM->noise_suppression()->set_level((NoiseSuppression::Level) level);
+    mAPMConfig.noise_suppression.level = (AudioProcessing::Config::NoiseSuppression::Level) level;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::EnableVAD(bool enable) {
-    return mAPM->voice_detection()->Enable(enable);
+    mAPMConfig.voice_detection.enabled = enable;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::SetVADLikelihood(int likelihood) {
@@ -172,22 +186,28 @@ int APMWrapper::SetVADLikelihood(int likelihood) {
 }
 
 int APMWrapper::EnableAECM(bool enable) {
-    return mAPM->echo_control_mobile()->Enable(enable);
+    mAPMConfig.echo_canceller.enabled = enable;
+    mAPMConfig.echo_canceller.use_legacy_aec = enable;
+    mAPMConfig.echo_canceller.mobile_mode = false;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::EnableAEC(bool enable) {
-    if (enable) {
-        mAPM->echo_cancellation()->enable_drift_compensation(false);
-    }
-    return mAPM->echo_cancellation()->Enable(true);
+    mAPMConfig.echo_canceller.enabled = enable;
+    mAPMConfig.echo_canceller.mobile_mode = false;
+    mAPM->ApplyConfig(mAPMConfig);
+    return 0;
 }
 
 int APMWrapper::SetRoutingMode(int mode) {
-    if (mode < EchoControlMobile::kQuietEarpieceOrHeadset ||
-        mode > EchoControlMobile::kLoudSpeakerphone) {
-        return -1;
-    }
-    return mAPM->echo_control_mobile()->set_routing_mode((EchoControlMobile::RoutingMode) mode);
+    return 0;
+
+//    if (mode < EchoControlMobile::kQuietEarpieceOrHeadset ||
+//        mode > EchoControlMobile::kLoudSpeakerphone) {
+//        return -1;
+//    }
+//    return mAPM->echo_control_mobile()->set_routing_mode((EchoControlMobile::RoutingMode) mode);
 }
 
 int APMWrapper::SetStreamDelay(int delay) {
@@ -195,7 +215,7 @@ int APMWrapper::SetStreamDelay(int delay) {
 }
 
 int APMWrapper::AnalyzeReverseStream(int16_t *data, int len) {
-    // LOGE("AnalyzeReverseStream data=0x%p len=%d", data, len);
+    // LOGD("AnalyzeReverseStream data=0x%p len=%d", data, len);
     int idx = 1;
     int ret = 0, size = 0;
     audio_utils_fifo_write(&mFifo[1], (char *) data, len / mFrameSize[idx]);

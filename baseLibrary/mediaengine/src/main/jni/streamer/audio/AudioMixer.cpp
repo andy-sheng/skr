@@ -206,7 +206,7 @@ int AudioMixer::init(int idx, int sampleFmt, int sampleRate, int channels, int b
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize) {
-    process(idx, inBuf, inSize, true);
+    return process(idx, inBuf, inSize, true);
 }
 
 int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
@@ -256,7 +256,7 @@ int AudioMixer::process(int idx, uint8_t *inBuf, int inSize, bool nativeMode) {
             if (mBlockingMode && delayOffSamples < 0) {
                 ChannelParam* cp = mChannelParams[mMainIdx];
                 int64_t delayOffSize = -delayOffSamples * cp->frameSize;
-                LOGD("idx: %d delayOffSamples: %"PRId64" delayOffSize: %"PRId64" size: %d", idx, delayOffSamples, delayOffSize, size);
+                LOGD("idx: %d delayOffSamples: %" PRId64 " delayOffSize: %" PRId64 " size: %d", idx, delayOffSamples, delayOffSize, size);
                 if (delayOffSize < size) {
                     buf += delayOffSize;
                     size -= (int) delayOffSize;
@@ -343,7 +343,7 @@ int AudioMixer::mixAll(uint8_t *inBuf, int inSize) {
             int64_t delayOffSamples = mDelaySamples[i] - mDelayedSamples[i];
             if (mBlockingMode && i != mMainIdx && delayOffSamples > 0) {
                 int64_t zeroSamples = (delayOffSamples < samples) ? delayOffSamples : samples;
-                LOGD("idx: %d delayOffSamples: %"PRId64" zeroSamples: %"PRId64, i, delayOffSamples, zeroSamples);
+                LOGD("idx: %d delayOffSamples: %" PRId64 " zeroSamples: %" PRId64, i, delayOffSamples, zeroSamples);
                 mDelayedSamples[i] += zeroSamples;
                 samples -= zeroSamples;
                 buf += zeroSamples * frameSize;

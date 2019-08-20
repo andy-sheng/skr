@@ -107,18 +107,18 @@ static int update_status(sox_bool all_done, void *client_data) {
     return thiz->stop ? SOX_EOF : SOX_SUCCESS;
 }
 
-static int count = 0;
+static int sCount = 0;
 
 static void init_sox() {
-    count++;
-    if (count <= 1) {
+    sCount++;
+    if (sCount <= 1) {
         sox_init();
     }
 }
 
 static void quit_sox() {
-    count--;
-    if (count <= 0) {
+    sCount--;
+    if (sCount <= 0) {
         sox_quit();
     }
 }
