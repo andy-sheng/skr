@@ -1,7 +1,8 @@
 package com.module.feeds.watch.model
 
-import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
+import java.io.Serializable
+
 
 class FeedRecommendTagModel : Serializable {
     @JSONField(name = "bigImgURL")
@@ -10,11 +11,15 @@ class FeedRecommendTagModel : Serializable {
     var subTitle: String? = null
     @JSONField(name = "smallImgURL")
     var smallImgURL: String? = null
-    @JSONField(name = "tagDesc")
-    var tagDesc: String? = null
-    @JSONField(name = "tagTypeID")
-    var tagTypeID: Int = 0
+    @JSONField(name = "rankDesc")
+    var rankDesc: String? = null
+    @JSONField(name = "rankID")
+    var rankID: Int = 0
     @JSONField(name = "timeMs")
     var timeMs: Long = 0L
+    @JSONField(name = "isSupportCollected")
+    var isSupportCollected: Boolean = false //歌单是否支持收藏
+    @JSONField(name = "isCollected")
+    var isCollected: Boolean = false //自己是否收藏过该歌单
 
 }

@@ -163,4 +163,17 @@
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/img_back" />
 
+    <com.common.view.ex.ExTextView
+        android:visibility="gone"
+        android:id="@+id/collect_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_back"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_21_dp"
+        android:text="收藏歌单"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp" />
+
 </RelativeLayout>

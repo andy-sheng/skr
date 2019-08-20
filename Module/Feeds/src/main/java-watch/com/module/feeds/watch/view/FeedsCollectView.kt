@@ -11,13 +11,20 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.component.busilib.callback.EmptyCallback
 import com.facebook.drawee.view.SimpleDraweeView
@@ -31,8 +38,10 @@ import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
@@ -40,13 +49,14 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 /**
  * 收藏view
  */
-class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedCollectView {
+class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment.context!!), IFeedCollectView {
 
     val TAG = "FeedsCollectView"
 
@@ -85,6 +95,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     private val mLoadService: LoadService<*>
     private val playerTag = TAG + hashCode()
     private val playCallback: PlayerCallbackAdapter
+
+    private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
@@ -262,6 +274,32 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             EventBus.getDefault().register(this)
         }
 
+        getRecommendTagList()
+    }
+
+    private fun getRecommendTagList() {
+        launch {
+            val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
+                mFeedServerApi.getAlbumCollectList(0, 10, MyUserInfoManager.getInstance().uid)
+            }
+            if (obj.errno == 0) {
+                val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
+                mAdapter.mRankTagList.clear()
+                if (!list.isNullOrEmpty()) {
+                    mAdapter.mRankTagList.addAll(list)
+                }
+
+                mAdapter.mDataList?.let {
+                    if (it.size > 0) {
+                        mAdapter.notifyDataSetChanged()
+                    }
+                }
+            } else {
+                if (obj.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
     }
 
     // 初始化数据

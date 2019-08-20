@@ -6,18 +6,14 @@ import android.support.design.widget.AppBarLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.bigkoo.pickerview.builder.TimePickerBuilder
-import com.bigkoo.pickerview.listener.CustomListener
-import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.common.base.BaseActivity
@@ -38,6 +34,7 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
@@ -78,6 +75,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     lateinit var toolbar: Toolbar
     lateinit var topAreaBg: SimpleDraweeView
     lateinit var topDesc: TextView
+    lateinit var mCollectTv: ExTextView
 
     lateinit var ivBack: ExImageView
 
@@ -134,6 +132,49 @@ class FeedsTagDetailActivity : BaseActivity() {
         topAreaBg = findViewById(R.id.top_area_bg)
         topDesc = findViewById(R.id.top_desc)
         ivBack = findViewById(R.id.iv_back)
+        mCollectTv = findViewById(R.id.collect_tv)
+
+        if (model?.isSupportCollected ?: false) {
+            mCollectTv.visibility = View.VISIBLE
+            mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    launch {
+                        val obj = subscribe(RequestControl("FeedsTagDetailActivity", ControlType.CancelThis)) {
+                            val map = mutableMapOf("albumID" to model!!.rankID, "isCollected" to !model!!.isCollected, "userID" to MyUserInfoManager.getInstance().uid)
+                            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                            mFeedServerApi.albumCollect(body)
+                        }
+
+                        if (obj.errno == 0) {
+                            model!!.isCollected = !model!!.isCollected
+                            mCollectTv.text = if (model!!.isCollected) "取消关注" else "关注歌单"
+                        } else {
+                            if (obj.errno == -2) {
+                                U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                            }
+                        }
+                    }
+                }
+            })
+
+            launch {
+                val obj = subscribe(RequestControl("FeedsTagDetailActivity", ControlType.CancelThis)) {
+                    mFeedServerApi.checkAlbumCollect(model!!.rankID, MyUserInfoManager.getInstance().uid)
+                }
+
+                if (obj.errno == 0) {
+                    val isCollected = obj.data.getBooleanValue("isCollected")
+                    model!!.isCollected = isCollected
+                    mCollectTv.text = if (model!!.isCollected) "取消关注" else "关注歌单"
+                } else {
+                    if (obj.errno == -2) {
+                        U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                    }
+                }
+            }
+
+            mCollectTv.text = if (model!!.isCollected) "取消关注" else "关注歌单"
+        }
 
         smartRefresh.apply {
             setEnableRefresh(true)
@@ -233,7 +274,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
                 .build<BaseImage>())
-        topDesc.text = model?.tagDesc
+        topDesc.text = model?.rankDesc
         AvatarUtils.loadAvatarByUrl(topAreaBg, AvatarUtils.newParamsBuilder(model?.bigImgURL)
                 .setSizeType(ImageUtils.SIZE.SIZE_160)
                 .setBlur(true)
@@ -391,7 +432,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     private fun getRecomendTagDetailList(offset: Int, queryTime: String, date: Date, isClean: Boolean) {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagDetailList", ControlType.CancelThis)) {
-                mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.tagTypeID!!, queryTime, MyUserInfoManager.getInstance().uid)
+                mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.rankID!!, queryTime, MyUserInfoManager.getInstance().uid)
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("rankInfos"), FeedsWatchModel::class.java)

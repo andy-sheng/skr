@@ -89,6 +89,16 @@ interface FeedsWatchServerApi {
     fun collectFeed(@Body body: RequestBody): Call<ApiResult>
 
     /**
+     * 收藏歌单  {
+     *        "albumID": 0,
+     *        "isCollected": true,
+     *        "userID": 0
+     *          }
+     */
+    @PUT("/v1/feed/album-collect")
+    fun albumCollect(@Body body: RequestBody): Call<ApiResult>
+
+    /**
      * 分享feeds +1
      *{
      *  "feedID": 0,
@@ -115,6 +125,11 @@ interface FeedsWatchServerApi {
                            @Query("cnt") cnt: Int,
                            @Query("userID") userID: Long): Call<ApiResult>
 
+    @GET("v1/feed/album-collect-list")
+    fun getAlbumCollectList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Long): Call<ApiResult>
+
+    @GET("/v1/feed/check-album-collect")
+    fun checkAlbumCollect(@Query("albumID") albumID: Int, @Query("userID") userID: Long): Call<ApiResult>
     /**
      * 全民神曲：根据榜单标签分类获取歌单数据
      */

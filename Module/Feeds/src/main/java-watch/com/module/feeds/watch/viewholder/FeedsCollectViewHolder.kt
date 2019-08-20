@@ -13,7 +13,7 @@ import com.module.feeds.R
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.model.FeedsCollectModel
 
-class FeedsCollectViewHolder(item: View, val listener: FeedCollectListener) : RecyclerView.ViewHolder(item) {
+open class FeedsCollectViewHolder(item: View, val listener: FeedCollectListener) : RecyclerView.ViewHolder(item) {
 
     private val mSongCoverSdv: SimpleDraweeView = item.findViewById(R.id.song_cover_sdv)
     val mSongNameTv: TextView = item.findViewById(R.id.song_name_tv)
