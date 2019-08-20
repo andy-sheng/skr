@@ -30,23 +30,30 @@ class FeedsCollectViewAdapter(val listener: FeedCollectListener) : RecyclerView.
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
+        if (mDataList.size > 0) {
+            return mDataList.size
+        } else {
+            return 1
+        }
     }
 
     override fun onBindViewHolder(holder: FeedsCollectViewHolder, position: Int) {
-        holder.bindData(position, mDataList[position])
-        if (mDataList[position] == mCurrentPlayModel) {
-            holder.mSongPlayIv.isSelected = true
-            holder.mSongPlayIv.setImageResource(R.drawable.list_song_pause_icon)
-            holder.mSongNameTv.setTextColor(Color.parseColor("#FFC15B"))
-        } else {
-            holder.mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80))
-            holder.mSongPlayIv.isSelected = false
-            holder.mSongPlayIv.setImageResource(R.drawable.list_song_play_icon)
+        if (mDataList.size > position) {
+            holder.bindData(position, mDataList[position])
+            if (mDataList[position] == mCurrentPlayModel) {
+                holder.mSongPlayIv.isSelected = true
+                holder.mSongPlayIv.setImageResource(R.drawable.list_song_pause_icon)
+                holder.mSongNameTv.setTextColor(Color.parseColor("#FFC15B"))
+            } else {
+                holder.mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80))
+                holder.mSongPlayIv.isSelected = false
+                holder.mSongPlayIv.setImageResource(R.drawable.list_song_play_icon)
+            }
         }
 
         if (holder is HeaderFeedsCollectViewHolder) {
             holder.bindData(mRankTagList, mDataList.size)
+            holder.showContent(mDataList.size != 0)
         }
     }
 

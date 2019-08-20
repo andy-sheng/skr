@@ -15,6 +15,9 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.BaseImage
+import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -27,6 +30,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.component.busilib.callback.EmptyCallback
+import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
@@ -292,10 +296,11 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                     mAdapter.mRankTagList.addAll(list)
                 }
 
-                mAdapter.mDataList?.let {
-                    if (it.size > 0) {
-                        mAdapter.notifyDataSetChanged()
-                    }
+                mAdapter.notifyDataSetChanged()
+                if ((mAdapter.mDataList == null || mAdapter.mDataList.isEmpty()) && mAdapter.mRankTagList.isEmpty()) {
+                    mLoadService.showCallback(EmptyCallback::class.java)
+                } else {
+                    mLoadService.showSuccess()
                 }
             } else {
                 if (obj.errno == -2) {
@@ -407,8 +412,14 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             mAdapter.notifyDataSetChanged()
         }
 
-        if (mAdapter.mDataList == null || mAdapter.mDataList.isEmpty()) {
-            mLoadService.showCallback(EmptyCallback::class.java)
+        if ((mAdapter.mDataList == null || mAdapter.mDataList.isEmpty())) {
+            if (mAdapter.mRankTagList.isEmpty()) {
+                mLoadService.showCallback(EmptyCallback::class.java)
+            } else {
+                mLoadService.showSuccess()
+                mRecordCover.setImageDrawable(null)
+                mTopAreaBg.setImageDrawable(null)
+            }
         } else {
             mLoadService.showSuccess()
         }

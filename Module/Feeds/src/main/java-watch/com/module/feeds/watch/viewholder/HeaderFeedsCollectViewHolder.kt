@@ -75,6 +75,10 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
                 .navigation()
     }
 
+    fun showContent(show: Boolean) {
+        contentView.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
     fun bindData(list: List<FeedRecommendTagModel>, count: Int) {
         countTv.text = "单曲（共${count}首）"
 
