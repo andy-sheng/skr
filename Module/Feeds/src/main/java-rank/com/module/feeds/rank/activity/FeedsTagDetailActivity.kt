@@ -172,8 +172,6 @@ class FeedsTagDetailActivity : BaseActivity() {
                     }
                 }
             }
-
-            mCollectTv.text = if (model!!.isCollected) "取消关注" else "关注歌单"
         }
 
         smartRefresh.apply {
