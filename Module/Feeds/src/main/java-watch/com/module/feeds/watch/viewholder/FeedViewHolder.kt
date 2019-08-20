@@ -9,6 +9,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.AnimateClickListener
@@ -22,15 +23,19 @@ import com.module.feeds.detail.view.FeedsManyLyricView
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
+import kotlin.math.sin
+
 
 open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(rootView) {
 
     private val mMoreIv: ImageView = itemView.findViewById(R.id.more_iv)
     private val mTagArea: ExConstraintLayout = itemView.findViewById(R.id.tag_area)
     private val mTagTv: TextView = itemView.findViewById(R.id.tag_tv)
-    //    private val mClassifySongTv: ExTextView = itemView.findViewById(R.id.classify_song_tv)
+    private val mContentTv: TextView = itemView.findViewById(R.id.content_tv)
     val mSongAreaBg: SimpleDraweeView = itemView.findViewById(R.id.song_area_bg)
     val mRecordView: FeedsRecordAnimationView = itemView.findViewById(R.id.record_view)
+    val mShareTag: TextView = itemView.findViewById(R.id.share_tag)
+
     val mLikeNumTv: TextView = itemView.findViewById(R.id.like_num_tv)
     val mPlayNumTv: TextView = itemView.findViewById(R.id.play_num_tv)
     val mCollectIconTv: TextView = itemView.findViewById(R.id.collect_icon_tv)
@@ -106,20 +111,62 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             mRecordView.setAvatar(it.avatar ?: "")
         }
 
-        if (watchModel.rank != null) {
-            if (TextUtils.isEmpty(watchModel.rank?.rankDesc)) {
-                mTagArea.visibility = View.GONE
+        if (watchModel.song?.needChallenge == true) {
+            //打榜歌曲
+            mShareTag.visibility = View.GONE
+            if (watchModel.rank != null) {
+                if (TextUtils.isEmpty(watchModel.rank?.rankDesc)) {
+                    mTagArea.visibility = View.GONE
+                } else {
+                    mTagTv.text = watchModel.rank?.rankDesc
+                    mTagArea.visibility = View.VISIBLE
+                }
             } else {
-                mTagTv.text = watchModel.rank?.rankDesc
-                mTagArea.visibility = View.VISIBLE
+                mTagArea.visibility = View.GONE
             }
         } else {
+            //非打榜歌曲
             mTagArea.visibility = View.GONE
+            if (watchModel.song?.needShareTag == true) {
+                var singler = ""
+                if (!TextUtils.isEmpty(watchModel.song?.songTpl?.singer)) {
+                    singler = " 演唱/${watchModel.song?.songTpl?.singer}"
+                }
+                mShareTag.visibility = View.VISIBLE
+                mShareTag.text = "#神曲分享#$singler"
+            } else {
+                mShareTag.visibility = View.GONE
+            }
         }
-
+        
         refreshPlayNum()
         refreshLike()
         refreshCollects()
+
+        var recomendTag = ""
+        if (watchModel.song?.needRecommentTag == true) {
+            recomendTag = "#小编推荐# "
+        }
+        var songTag = ""
+        watchModel.song?.tags?.let {
+            for (model in it) {
+                model?.tagDesc.let { tagDesc ->
+                    songTag = "$songTag#$tagDesc# "
+                }
+            }
+        }
+        val title = watchModel.song?.title ?: ""
+        if (TextUtils.isEmpty(recomendTag) && TextUtils.isEmpty(songTag) && TextUtils.isEmpty(title)) {
+            mContentTv.visibility = View.GONE
+        } else {
+            val stringBuilder = SpanUtils()
+                    .append(recomendTag).setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append(songTag).setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append(title).setForegroundColor(U.getColor(R.color.black_trans_80))
+                    .create()
+            mContentTv.visibility = View.VISIBLE
+            mContentTv.text = stringBuilder
+        }
 
         // 加载带时间戳的歌词
         watchModel.song?.let {

@@ -25,7 +25,6 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     private val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
     private val mNicknameTv: TextView = itemView.findViewById(R.id.nickname_tv)
     private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
-    private val mContentTv: TextView = itemView.findViewById(R.id.content_tv)
     private val mHitIv: ImageView = itemView.findViewById(R.id.hit_iv)
 
     private val mCompleteGruop: Group = itemView.findViewById(R.id.complete_gruop)
@@ -68,8 +67,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCircle(true)
                     .build())
-            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID
-                    ?: 0, it.nickname)
+            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
         }
 
         if (watchModel.song?.needChallenge == true) {
@@ -80,30 +78,6 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
 
         mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt
                 ?: 0L, System.currentTimeMillis())
-        var recomendTag = ""
-        if (watchModel.song?.needRecommentTag == true) {
-            recomendTag = "#小编推荐# "
-        }
-        var songTag = ""
-        watchModel.song?.tags?.let {
-            for (model in it) {
-                model?.tagDesc.let { tagDesc ->
-                    songTag = "$songTag#$tagDesc# "
-                }
-            }
-        }
-        val title = watchModel.song?.title ?: ""
-        if (TextUtils.isEmpty(recomendTag) && TextUtils.isEmpty(songTag) && TextUtils.isEmpty(title)) {
-            mContentTv.visibility = View.GONE
-        } else {
-            val stringBuilder = SpanUtils()
-                    .append(recomendTag).setForegroundColor(U.getColor(R.color.black_trans_50))
-                    .append(songTag).setForegroundColor(U.getColor(R.color.black_trans_50))
-                    .append(title).setForegroundColor(U.getColor(R.color.black_trans_80))
-                    .create()
-            mContentTv.visibility = View.VISIBLE
-            mContentTv.text = stringBuilder
-        }
     }
 
     override fun startPlay() {

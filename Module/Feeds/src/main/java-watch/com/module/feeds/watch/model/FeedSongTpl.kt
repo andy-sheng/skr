@@ -34,6 +34,8 @@ class FeedSongTpl : Serializable {
     var songNameChange: String? = null
     @JSONField(name = "tplID")
     var tplID: Int = 0
+    @JSONField(name = "singer")
+    var singer: String = ""
     @JSONField(name = "uploader")
     var uploader: FeedUserInfo? = null
 
@@ -55,11 +57,11 @@ class FeedSongTpl : Serializable {
         return result
     }
 
-    fun getDisplaySongName():String{
-        if(TextUtils.isEmpty(songNameChange)){
-            return songName?:""
-        }else{
-            return songNameChange?:""
+    fun getDisplaySongName(): String {
+        if (TextUtils.isEmpty(songNameChange)) {
+            return songName ?: ""
+        } else {
+            return songNameChange ?: ""
         }
     }
 }

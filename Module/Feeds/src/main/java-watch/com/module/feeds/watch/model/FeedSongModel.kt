@@ -21,6 +21,8 @@ class FeedSongModel : Serializable {
     var needChallenge: Boolean = false
     @JSONField(name = "needRecommentTag")
     var needRecommentTag: Boolean = false
+    @JSONField(name = "needShareTag")
+    var needShareTag: Boolean = false
     @JSONField(name = "playDurMs")
     var playDurMs: Int = 0 // 服务器返回的播放总时长
         get() {

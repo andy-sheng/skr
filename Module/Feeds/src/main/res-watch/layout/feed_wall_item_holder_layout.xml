@@ -10,6 +10,16 @@
     app:bl_shape="rectangle"
     app:bl_solid_color="@color/white">
 
+    <ImageView
+        android:id="@+id/more_iv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:padding="@dimen/view_20_dp"
+        android:src="@drawable/feed_more_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
+
     <com.common.view.ex.ExConstraintLayout
         android:id="@+id/tag_area"
         android:layout_width="wrap_content"
@@ -21,11 +31,12 @@
         app:bl_shape="rectangle"
         app:bl_solid_color="#9ED7FF"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/more_iv"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/classify_song_tv"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintRight_toLeftOf="@id/more_iv"
+        app:layout_constraintTop_toTopOf="@id/more_iv">
 
         <ImageView
             android:id="@+id/tag_iv"
@@ -54,24 +65,44 @@
 
     </com.common.view.ex.ExConstraintLayout>
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/classify_song_tv"
+    <TextView
+        android:id="@+id/share_tag"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
-        android:paddingLeft="@dimen/view_10_dp"
-        android:paddingRight="@dimen/view_10_dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#9ED7FF"
-        app:layout_constraintBottom_toBottomOf="@id/tag_area"
-        app:layout_constraintLeft_toRightOf="@id/tag_area"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/more_iv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/more_iv"
+        app:layout_constraintTop_toTopOf="@id/more_iv" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/tag_share_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tag_area,share_tag,more_iv" />
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tag_area" />
+        app:layout_constraintTop_toBottomOf="@id/tag_share_tag" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/song_area_bg"
@@ -82,7 +113,7 @@
         android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tag_area" />
+        app:layout_constraintTop_toBottomOf="@id/content_tv" />
 
     <com.common.view.ex.ExImageView
         android:layout_width="@dimen/view_0_dp"
@@ -152,38 +183,13 @@
         app:layout_constraintRight_toLeftOf="@id/record_view"
         app:layout_constraintTop_toTopOf="@id/song_area_bg" />
 
-    <!--播放次数-->
-    <TextView
-        android:id="@+id/play_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_10_dp"
-        android:gravity="center_vertical"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_10_dp"
-        app:layout_constraintBottom_toBottomOf="@id/song_area_bg"
-        app:layout_constraintLeft_toLeftOf="@id/song_area_bg" />
-
-    <ImageView
-        android:id="@+id/more_iv"
-        android:layout_width="@dimen/view_60_dp"
-        android:layout_height="@dimen/view_44_dp"
-        android:layout_marginTop="@dimen/view_3_dp"
-        android:layout_marginBottom="@dimen/view_3_dp"
-        android:padding="@dimen/view_20_dp"
-        android:src="@drawable/feed_more_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/song_area_bg"
-        app:layout_constraintVertical_bias="0" />
-
     <!--收藏-->
     <TextView
         android:id="@+id/collect_icon_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_50_dp"
-        android:drawableLeft="@drawable/feed_collect_normal_icon"
+        android:layout_marginRight="@dimen/view_100_dp"
+        android:drawableLeft="@drawable/feed_not_collection"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:padding="@dimen/view_16_dp"
@@ -192,9 +198,8 @@
         android:textSize="@dimen/textsize_12_dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
-
 
     <!--点赞数-->
     <TextView
@@ -210,9 +215,21 @@
         android:textSize="@dimen/textsize_12_dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
 
+    <!--播放次数-->
+    <TextView
+        android:id="@+id/play_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/like_num_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/like_num_tv" />
 
     <TextView
         android:id="@+id/check_tv"
@@ -232,8 +249,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_30_dp"
-        android:textColor="@color/red"
         android:gravity="right"
+        android:textColor="@color/red"
         android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
