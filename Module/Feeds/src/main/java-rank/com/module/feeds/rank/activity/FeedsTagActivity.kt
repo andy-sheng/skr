@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -87,7 +88,11 @@ class FeedsTagActivity : BaseActivity() {
     }
 
     private fun loadMoreData() {
-        getRecommendTagList(mOffset, false)
+        if (hasMore) {
+            getRecommendTagList(mOffset, false)
+        } else {
+            MyLog.d(TAG, "loadMoreData hasMore = false")
+        }
     }
 
     private fun getRecommendTagList(offset: Int, isClear: Boolean) {
