@@ -184,6 +184,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 mPersenter.initFeedLikeList(true)
+                getRecommendTagList()
             }
         })
 
@@ -286,7 +287,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
                 mAdapter.mRankTagList.clear()
-                if (!list.isNullOrEmpty()) {
+                if (list != null && list.size > 0) {
                     mAdapter.mRankTagList.addAll(list)
                 }
 
