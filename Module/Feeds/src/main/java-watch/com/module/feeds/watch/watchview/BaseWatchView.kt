@@ -444,6 +444,19 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                        // 此处代码主要用来是否需要重新计算当前页面播放，可以注释
+                        if (mAdapter.mCurrentPlayPosition >= 0) {
+                            val viewHolder = mRecyclerView.findViewHolderForAdapterPosition(mAdapter.mCurrentPlayPosition)
+                            if (viewHolder is FeedViewHolder) {
+                                val curPercents = getCDVisiblePercents(viewHolder)
+                                if (curPercents == 100f) {
+                                    // 当前的已经可以满足条件了 donothing
+                                    return
+                                }
+                            }
+                        }
+
+                        // 真正去找在屏幕上需要播放的view
                         var postion = -1
                         // 以光盘为界限，找光盘显示百分比最多的
                         val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
@@ -457,40 +470,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                 if (mRecyclerView.findViewHolderForAdapterPosition(i) != null) {
                                     val viewHolder = mRecyclerView.findViewHolderForAdapterPosition(i)
                                     if (viewHolder is FeedViewHolder) {
-                                        val cdView = viewHolder.mSongAreaBg
-                                        val itemView = viewHolder.itemView
-                                        val location1 = IntArray(2)
-                                        val location2 = IntArray(2)
-                                        val location3 = IntArray(2)
-                                        itemView.getLocationOnScreen(location1)
-                                        mRecyclerView.getLocationOnScreen(location2)
-                                        cdView.getLocationOnScreen(location3)
-                                        val top = location1[1] - location2[1]
-                                        val cdTopHeight = location3[1] - location1[1]  // cd在item中距离顶部距离
-                                        val cdHeight = cdView.height                   // 光盘高度
-                                        val cdBottomHeight = itemView.height - cdTopHeight - cdHeight   // cd在item中距离顶部的距离
-                                        when {
-                                            top < 0 -> {
-                                                // 顶部的
-                                                if ((itemView.height + top) >= (cdHeight + cdBottomHeight)) {
-                                                    percents[i - firstVisibleItem] = 100f
-                                                } else {
-                                                    percents[i - firstVisibleItem] = (itemView.height + top - cdBottomHeight).toFloat() / cdHeight.toFloat()
-                                                }
-                                            }
-                                            (top + itemView.height) < mRecyclerView.height -> {
-                                                // 全部显示的
-                                                percents[i - firstVisibleItem] = 100f
-                                            }
-                                            else -> {
-                                                // 底部的
-                                                if ((mRecyclerView.height - top) >= (itemView.height - cdBottomHeight)) {
-                                                    percents[i - firstVisibleItem] = 100f
-                                                } else {
-                                                    percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - cdBottomHeight).toFloat() / cdHeight.toFloat()
-                                                }
-                                            }
-                                        }
+                                        percents[i - firstVisibleItem] = getCDVisiblePercents(viewHolder)
                                         if (percents[i - firstVisibleItem] == 100f) {
                                             isFound = true
                                             maxPercent = 100f
@@ -514,6 +494,43 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
                     }
                     RecyclerView.SCROLL_STATE_SETTLING -> {
+                    }
+                }
+            }
+
+            private fun getCDVisiblePercents(viewHolder: FeedViewHolder): Float {
+                val cdView = viewHolder.mSongAreaBg
+                val itemView = viewHolder.itemView
+                val location1 = IntArray(2)
+                val location2 = IntArray(2)
+                val location3 = IntArray(2)
+                itemView.getLocationOnScreen(location1)
+                mRecyclerView.getLocationOnScreen(location2)
+                cdView.getLocationOnScreen(location3)
+                val top = location1[1] - location2[1]
+                val cdTopHeight = location3[1] - location1[1]  // cd在item中距离顶部距离
+                val cdHeight = cdView.height                   // 光盘高度
+                val cdBottomHeight = itemView.height - cdTopHeight - cdHeight   // cd在item中距离顶部的距离
+                when {
+                    top < 0 -> {
+                        // 顶部的
+                        if ((itemView.height + top) >= (cdHeight + cdBottomHeight)) {
+                            return 100f
+                        } else {
+                            return (itemView.height + top - cdBottomHeight).toFloat() / cdHeight.toFloat()
+                        }
+                    }
+                    (top + itemView.height) < mRecyclerView.height -> {
+                        // 全部显示的
+                        return 100f
+                    }
+                    else -> {
+                        // 底部的
+                        if ((mRecyclerView.height - top) >= (itemView.height - cdBottomHeight)) {
+                            return 100f
+                        } else {
+                            return (itemView.height - (mRecyclerView.height - top) - cdBottomHeight).toFloat() / cdHeight.toFloat()
+                        }
                     }
                 }
             }
