@@ -50,10 +50,13 @@ class FeedSongModel : Serializable {
     @JSONField(name = "songType")
     var songType: Int? = 0 //	- EST_UNKNOWN = 0 : 未知 - EST_HAS_ACCOMPANY = 1 : 带伴奏演唱 - EST_NO_ACCOMPANY = 2 : 无伴奏演唱
 
-    override fun toString(): String {
-        return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMsFromPlayerForDebug=$playDurMsFromPlayerForDebug, playURL=$playURL, playCurPos=$playCurPos, lyricStatus=$lyricStatus, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName, songType=$songType)"
-    }
+//    override fun toString(): String {
+//        return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMsFromPlayerForDebug=$playDurMsFromPlayerForDebug, playURL=$playURL, playCurPos=$playCurPos, lyricStatus=$lyricStatus, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName, songType=$songType)"
+//    }
 
+    override fun toString(): String {
+        return "FeedSongModel(feedID=$feedID, songID=$songID)"
+    }
 
     fun getDisplayName(): String? {
         if (challengeID == 0L) {

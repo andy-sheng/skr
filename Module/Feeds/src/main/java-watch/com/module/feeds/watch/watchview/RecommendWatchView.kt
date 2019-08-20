@@ -9,6 +9,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.videocache.MediaCacheManager
 import com.component.busilib.callback.EmptyCallback
+import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -17,7 +18,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_RECOMMEND) {
-
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
     private var mOffset = 0   //偏移量
@@ -72,53 +72,8 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
         }
     }
 
-    override fun findPreSong(userAction: Boolean): FeedSongModel? {
-        // 推荐
-        if (mAdapter.mCurrentPlayPosition < 2) {
-            return null
-        }
-
-        if (!mAdapter.mDataList.isNullOrEmpty()) {
-            if (mAdapter.mCurrentPlayPosition in 2..(mAdapter.mDataList.size + 1)) {
-                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition - 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition - 1]
-                return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                    // 未审核通过
-                    findPreSong(userAction)
-                } else {
-                    mAdapter.mCurrentPlayModel?.song
-                }
-            }
-        }
-
-        return null
-    }
-
-    override fun findNextSong(userAction: Boolean): FeedSongModel? {
-        // 补充推荐
-        if (mAdapter.mCurrentPlayPosition == mAdapter.mDataList.size - 1) {
-            getMoreFeeds()
-        }
-
-        if (!mAdapter.mDataList.isNullOrEmpty()) {
-            // 在合理范围内
-            if (mAdapter.mCurrentPlayPosition in 0 until mAdapter.mDataList.size) {
-                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition + 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition - 1]
-                return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                    // 继续找下一个
-                    findNextSong(userAction)
-                } else {
-                    mAdapter.mCurrentPlayModel?.song
-                }
-            }
-        }
-
-        return null
-    }
-
-    override fun getMoreFeeds() {
-        getRecommendFeedList(mOffset, false)
+    override fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
+        getRecommendFeedList(mOffset, false,dataOkCallback)
     }
 
     override fun initFeedList(flag: Boolean): Boolean {
@@ -152,7 +107,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
         }
     }
 
-    private fun getRecommendFeedList(offset: Int, isClear: Boolean) {
+    private fun getRecommendFeedList(offset: Int, isClear: Boolean,dataOkCallback: (() -> Unit)?=null) {
         launch {
             val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
                 mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
@@ -170,6 +125,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
+            dataOkCallback?.invoke()
         }
     }
 
@@ -180,6 +136,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
                 mAdapter.mDataList.addAll(list)
             }
             mAdapter.notifyDataSetChanged()
+            add2SongPlayModeManager(mSongPlayModeManager,mAdapter.mDataList,isClear)
             srollPositionToTop(0)
 
             if (mAdapter.mDataList.isNotEmpty()) {
@@ -197,6 +154,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
             if (list != null && list.isNotEmpty()) {
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
+                add2SongPlayModeManager(mSongPlayModeManager,list,isClear)
             }
         }
 

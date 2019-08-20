@@ -17,6 +17,7 @@ import com.component.busilib.event.FeedPublishSucessEvent
 import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
 import com.module.feeds.IPersonFeedsWall
+import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -25,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, val callBack: RequestCallBack?) : BaseWatchView(fragment, TYPE_PERSON), IPersonFeedsWall {
+
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
     var mTipsDialogView: TipsDialogView? = null
 
@@ -78,50 +80,6 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         }
     }
 
-    override fun findPreSong(userAction: Boolean): FeedSongModel? {
-        if (mAdapter.mCurrentPlayPosition == 0) {
-            return null
-        }
-
-        if (!mAdapter.mDataList.isNullOrEmpty()) {
-            if (mAdapter.mCurrentPlayPosition in 1..mAdapter.mDataList.size) {
-                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition - 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition]
-                return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                    // 未审核通过
-                    findPreSong(userAction)
-                } else {
-                    mAdapter.mCurrentPlayModel?.song
-                }
-            }
-        }
-
-        return null
-    }
-
-    override fun findNextSong(userAction: Boolean): FeedSongModel? {
-        if (mAdapter.mCurrentPlayPosition == mAdapter.mDataList.size - 2) {
-            // 已经到最后一个，需要去更新数据
-            getMoreFeeds()
-        }
-
-        if (!mAdapter.mDataList.isNullOrEmpty()) {
-            if (mAdapter.mCurrentPlayPosition in -1..(mAdapter.mDataList.size - 2)) {
-                // 在合理范围内
-                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition + 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition]
-                return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                    // 继续找下一个
-                    findNextSong(userAction)
-                } else {
-                    mAdapter.mCurrentPlayModel?.song
-                }
-            }
-        }
-
-        return null
-    }
-
     override fun getFeeds(flag: Boolean) {
         initFeedList(flag)
     }
@@ -136,8 +94,12 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
     }
 
     override fun getMoreFeeds() {
+        getMoreFeeds(null)
+    }
+
+    override fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
         if (hasMore) {
-            getPersonFeedList(mOffset, false)
+            getPersonFeedList(mOffset, false, dataOkCallback)
         } else {
             MyLog.d(TAG, "getMoreFeeds hasMore = false")
         }
@@ -167,7 +129,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         mHasInitData = false
     }
 
-    private fun getPersonFeedList(offset: Int, isClear: Boolean) {
+    private fun getPersonFeedList(offset: Int, isClear: Boolean, dataOkCallback: (() -> Unit)? = null) {
         var feedSongType = 1
         if (MyUserInfoManager.getInstance().uid.toInt() != userInfoModel.userId) {
             feedSongType = 2
@@ -189,6 +151,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
+            dataOkCallback?.invoke()
         }
     }
 
@@ -201,10 +164,12 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
             }
             mAdapter.notifyDataSetChanged()
             srollPositionToTop(0)
+            add2SongPlayModeManager(mSongPlayModeManager, mAdapter.mDataList,isClear)
         } else {
             if (list != null && list.isNotEmpty()) {
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
+                add2SongPlayModeManager(mSongPlayModeManager, list,isClear)
             }
         }
     }

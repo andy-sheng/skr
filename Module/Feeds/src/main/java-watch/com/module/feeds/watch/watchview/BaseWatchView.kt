@@ -21,7 +21,6 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
-import com.common.utils.dp
 import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
@@ -82,6 +81,8 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
 
     var mLoadService: LoadService<*>? = null
 
+    var mSongPlayModeManager:FeedSongPlayModeManager? = null
+
     companion object {
         const val TYPE_RECOMMEND = 1  // 推荐
         const val TYPE_FOLLOW = 2   // 关注
@@ -99,6 +100,17 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         mClassicsHeader = findViewById(R.id.classics_header)
         mRecyclerView = findViewById(R.id.recycler_view)
 
+        mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER,null,null)
+        mSongPlayModeManager?.supportCycle = false
+        mSongPlayModeManager?.loadMoreCallback = { size, callback ->
+            if (hasMore) {
+                getMoreFeeds {
+                    callback.invoke()
+                }
+            } else {
+                callback.invoke()
+            }
+        }
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
             override fun onClickRecommendTagMore() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
@@ -184,23 +196,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             }
 
             override fun onClickDetailListener(position: Int, watchModel: FeedsWatchModel?) {
-                // 详情  声音要连贯
-                // 这样返回时能 resume 上
-                if (watchModel != null && watchModel.status == 2) {
-                    startPlay(position, watchModel)
-                    fragment.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, FROM_HOME_PAGE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
-                            override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                                callback.invoke(findNextSong(userAction))
-                            }
-
-                            override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                                callback.invoke(findPreSong(userAction))
-                            }
-                        })
-                    }
-                }
-
+                goDetailPage(position,watchModel)
             }
 
             override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
@@ -312,6 +308,51 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
+    private fun goDetailPage(position: Int, watchModel: FeedsWatchModel?){
+        // 详情  声音要连贯
+        // 这样返回时能 resume 上
+        if (watchModel != null && watchModel.status == 2) {
+            startPlay(position, watchModel)
+            fragment.activity?.let { fragmentActivity ->
+                FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, FROM_HOME_PAGE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                    override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                        mSongPlayModeManager?.getNextSong(userAction){
+                            //查看
+                            if(it!=null){
+                                val pos = mSongPlayModeManager?.getCurPostionInOrigin()
+                                if(pos!=null){
+                                    // 没过审核？ 继续下一个
+                                    if(this@BaseWatchView.mAdapter.mDataList?.get(pos).status!=2){
+                                        getNextSong(userAction,callback)
+                                        return@getNextSong
+                                    }
+                                }
+                            }
+                            callback.invoke(it)
+                        }
+                    }
+
+                    override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                        mSongPlayModeManager?.getPreSong(userAction){
+                            //查看
+                            if(it!=null){
+                                val pos = mSongPlayModeManager?.getCurPostionInOrigin()
+                                if(pos!=null){
+                                    // 没过审核？ 继续下一个
+                                    if(this@BaseWatchView.mAdapter.mDataList?.get(pos).status!=2){
+                                        getPreSong(userAction,callback)
+                                        return@getPreSong
+                                    }
+                                }
+                            }
+                            callback.invoke(it)
+                        }
+                    }
+                })
+            }
+        }
+    }
+
     fun controlPlay(pos: Int, model: FeedsWatchModel?, isMustPlay: Boolean) {
         MyLog.d(TAG, "controlPlay isSeleted = $isSeleted")
         if (model != null && model != mAdapter.mCurrentPlayModel) {
@@ -341,6 +382,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         }
         model?.song?.playURL?.let {
             FeedsPlayStatistics.setCurPlayMode(model.feedID)
+            mSongPlayModeManager?.setCurrentPlayModel(model?.song)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -406,16 +448,10 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     abstract fun initFeedList(flag: Boolean): Boolean
 
     // 加载更多数据
-    abstract fun getMoreFeeds()
+    abstract fun getMoreFeeds(dataOkCallback:(()->Unit)? = null)
 
     // 点击更多
     abstract fun clickMore(position: Int, it: FeedsWatchModel)
-
-    // 上一首
-    abstract fun findPreSong(userAction: Boolean): FeedSongModel?
-
-    // 下一首
-    abstract fun findNextSong(userAction: Boolean): FeedSongModel?
 
     // 预加载
     abstract fun onPreparedMusic()

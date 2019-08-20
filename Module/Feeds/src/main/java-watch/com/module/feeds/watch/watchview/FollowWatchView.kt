@@ -11,6 +11,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.videocache.MediaCacheManager
 import com.component.busilib.callback.EmptyCallback
+import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -63,52 +64,9 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
         }
     }
 
-    override fun findPreSong(userAction: Boolean): FeedSongModel? {
-        if (mAdapter.mCurrentPlayPosition == 0) {
-            return null
-        }
-
-        if (!mAdapter.mDataList.isNullOrEmpty()) {
-            if (mAdapter.mCurrentPlayPosition in 1..(mAdapter.mDataList.size)) {
-                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition - 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition]
-                return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                    // 未审核通过
-                    findPreSong(userAction)
-                } else {
-                    mAdapter.mCurrentPlayModel?.song
-                }
-            }
-        }
-
-        return null
-    }
-
-    override fun findNextSong(userAction: Boolean): FeedSongModel? {
-        if (mAdapter.mCurrentPlayPosition == mAdapter.mDataList.size - 2) {
-            // 已经到最后一个，需要去更新数据
-            getMoreFeeds()
-        }
-
-        if (!mAdapter.mDataList.isNullOrEmpty()) {
-            if (mAdapter.mCurrentPlayPosition in 0..(mAdapter.mDataList.size - 2)) {
-                mAdapter.mCurrentPlayPosition = mAdapter.mCurrentPlayPosition + 1
-                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mAdapter.mCurrentPlayPosition]
-                return if (mAdapter.mCurrentPlayModel?.status != 2) {
-                    // 继续找下一个
-                    findNextSong(userAction)
-                } else {
-                    mAdapter.mCurrentPlayModel?.song
-                }
-            }
-        }
-
-        return null
-    }
-
-    override fun getMoreFeeds() {
+    override fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
         if (hasMore) {
-            getFollowFeedList(mOffset, true)
+            getFollowFeedList(mOffset, true,dataOkCallback)
         } else {
             MyLog.d(TAG, "getMoreFeeds hasMore = false")
         }
@@ -134,7 +92,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
         mHasInitData = false
     }
 
-    private fun getFollowFeedList(offset: Int, isClear: Boolean) {
+    private fun getFollowFeedList(offset: Int, isClear: Boolean,dataOkCallback: (() -> Unit)?=null) {
         launch {
             val result = subscribe(RequestControl("getFollowFeedList", ControlType.CancelThis)) {
                 mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
@@ -152,6 +110,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
             }
+            dataOkCallback?.invoke()
         }
     }
 
@@ -162,6 +121,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
                 mAdapter.mDataList.addAll(list)
             }
             mAdapter.notifyDataSetChanged()
+            add2SongPlayModeManager(mSongPlayModeManager,mAdapter.mDataList,isClear)
             srollPositionToTop(0)
             if (mAdapter.mDataList.isNotEmpty()) {
                 // delay 是因为2哥notify冲突
@@ -178,6 +138,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
             if (!list.isNullOrEmpty()) {
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
+                add2SongPlayModeManager(mSongPlayModeManager,list,isClear)
             }
         }
 

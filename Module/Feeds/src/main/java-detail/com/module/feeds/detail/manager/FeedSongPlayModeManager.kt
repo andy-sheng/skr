@@ -1,6 +1,8 @@
 package com.module.feeds.detail.manager
 
+import com.common.log.MyLog
 import com.module.feeds.watch.model.FeedSongModel
+import com.module.feeds.watch.model.FeedsWatchModel
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -12,7 +14,7 @@ import kotlin.collections.ArrayList
  *  提供不同模式的上一首 下一首逻辑
  */
 class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongList: List<FeedSongModel>?) : AbsPlayModeManager() {
-
+    val TAG = "FeedSongPlayModeManager"
     //当前播放
     private var mCur: FeedSongModel? = null
 
@@ -53,29 +55,46 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     }
 
     fun setCurrentPlayModel(model: FeedSongModel?) {
+        MyLog.d(TAG, "setCurrentPlayModel model = $model")
         mCur = model
-        mOriginalSongList.forEachIndexed { index, feedSongModel ->
-            if (feedSongModel == model) {
-                mOriginPosition = index
-                return@forEachIndexed
+        if (mMode == PlayMode.RANDOM) {
+            for (i in 0 until mShuffleSongList.size) {
+                if (mShuffleSongList[i].second == model) {
+                    mShufflePosition = i
+                    break
+                }
+            }
+        } else {
+            for (i in 0 until mOriginalSongList.size) {
+                if (mOriginalSongList[i] == model) {
+                    mOriginPosition = i
+                    break
+                }
             }
         }
-        mShuffleSongList.forEachIndexed { index, pair ->
-            if (pair.second == model) {
-                mShufflePosition = index
-                return@forEachIndexed
-            }
+        MyLog.d(TAG, "after setCurrentPlayModel mCur = $mCur , mOriginPosition = $mOriginPosition")
+    }
+
+    fun setCurrentPlayPostion(pos: Int) {
+        if (pos < mOriginalSongList.size) {
+            setCurrentPlayModel(mOriginalSongList[pos])
         }
     }
 
-    fun setOriginList(fsms: ArrayList<FeedSongModel>) {
-        mOriginalSongList.clear()
+    fun setOriginList(fsms: ArrayList<FeedSongModel>, clean: Boolean) {
+        MyLog.d(TAG, "setOriginList fsms.size = ${fsms.size} clean=$clean")
+        if (clean) {
+            mOriginalSongList.clear()
+        }
         mOriginalSongList.addAll(fsms)
         mShuffleSongList.clear()
         ensureHasShuffle(mCur)
-        mOriginPosition = 0
-        mShufflePosition = 0
-        setCurrentPlayModel(mCur)
+        if (clean) {
+            mOriginPosition = 0
+            mShufflePosition = 0
+        } else {
+
+        }
     }
 
     fun getCurPostionInOrigin(): Int {
@@ -91,31 +110,11 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
 
     override fun changeMode(mode: PlayMode) {
         mMode = mode
-        if (mCur == null) {
-            return
-        }
-        if (mMode == PlayMode.RANDOM) {
-            // 新的模式为随机，且之前的模式为顺序或者单曲
-            ensureHasShuffle(null)
-            mShuffleSongList.forEachIndexed { index, pair ->
-                if (pair.second == mCur) {
-                    mShufflePosition = index
-                    return@forEachIndexed
-                }
-            }
-        }
-
-        if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
-            mOriginalSongList.forEachIndexed { index, feedSongModel ->
-                if (feedSongModel == mCur) {
-                    mOriginPosition = index
-                    return@forEachIndexed
-                }
-            }
-        }
+        setCurrentPlayModel(mCur)
     }
 
     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+        MyLog.d(TAG, "getNextSong mCur = $mCur , mOriginPosition = $mOriginPosition")
         if (mCur == null) {
             getFirstSongWhenCurNull()
             callback?.invoke(mCur)
@@ -135,7 +134,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                             //请求准备数据，数据准备好了
                             if (mOriginPosition + 1 >= mOriginalSongList.size) {
                                 callback?.invoke(null)
-                            }else{
+                            } else {
                                 mOriginPosition++
                                 mCur = mOriginalSongList[mOriginPosition]
                                 callback?.invoke(mCur)
@@ -162,7 +161,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                         //请求准备数据，数据准备好了
                         if (mOriginPosition + 1 >= mOriginalSongList.size) {
                             callback?.invoke(null)
-                        }else{
+                        } else {
                             mOriginPosition++
                             mCur = mOriginalSongList[mOriginPosition]
                             callback?.invoke(mCur)
@@ -188,6 +187,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     }
 
     override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+        MyLog.d(TAG, "getPreSong mCur = $mCur, mOriginPosition = $mOriginPosition")
         if (mCur == null) {
             getFirstSongWhenCurNull()
             callback?.invoke(mCur)
@@ -272,12 +272,6 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
-    private fun addToList(list: List<FeedSongModel>) {
-        mOriginalSongList.addAll(list)
-        mShuffleSongList.clear()
-        ensureHasShuffle(mCur)
-    }
-
     enum class PlayMode(val model: Int) {
         //单曲播放
         SINGLE(0),
@@ -290,4 +284,16 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             get() = model
     }
 
+}
+
+fun add2SongPlayModeManager(mSongPlayModeManager: FeedSongPlayModeManager?, list: List<FeedsWatchModel>?, clean: Boolean) {
+    val fsms = ArrayList<FeedSongModel>()
+    list?.let { wms ->
+        wms.forEach { wm ->
+            wm.song?.let {
+                fsms.add(it)
+            }
+        }
+    }
+    mSongPlayModeManager?.setOriginList(fsms, clean)
 }

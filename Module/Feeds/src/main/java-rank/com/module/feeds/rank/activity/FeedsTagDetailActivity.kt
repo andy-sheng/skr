@@ -43,6 +43,7 @@ import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_FEED_TAG_DETAIL
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.rank.adapter.FeedTagDetailAdapter
@@ -83,7 +84,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     lateinit var ivBack: ExImageView
 
     var model: FeedRecommendTagModel? = null
-    lateinit var adapter: FeedTagDetailAdapter
+    lateinit var mAdapter: FeedTagDetailAdapter
 
     var lastVerticalOffset = Int.MAX_VALUE
     lateinit var maxDate: Date   // 最大的时间戳
@@ -256,11 +257,11 @@ class FeedsTagDetailActivity : BaseActivity() {
                 callback.invoke()
             }
         }
-        adapter = FeedTagDetailAdapter(object : FeedTagListener {
+        mAdapter = FeedTagDetailAdapter(object : FeedTagListener {
             override fun onClickItem(position: Int, model: FeedsWatchModel?) {
                 // 默认顺序就只是列表循环
-                adapter.mCurrentPlayPosition = position
-                adapter.mCurrentPlayModel = model
+                mAdapter.mCurrentPlayPosition = position
+                mAdapter.mCurrentPlayModel = model
                 model?.let {
                     FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, FROM_FEED_TAG_DETAIL, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
@@ -268,7 +269,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                                 if(sm!=null){
                                     val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
                                     curPos?.let {
-                                        adapter.startPlayModel(curPos)
+                                        mAdapter.startPlayModel(curPos)
                                     }
                                 }else{
 
@@ -282,7 +283,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                                 if(sm!=null){
                                     val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
                                     curPos?.let {
-                                        adapter.startPlayModel(curPos)
+                                        mAdapter.startPlayModel(curPos)
                                     }
                                 }else{
 
@@ -310,7 +311,7 @@ class FeedsTagDetailActivity : BaseActivity() {
             }
         })
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = mAdapter
         FrescoWorker.loadImage(imageBg, ImageFactory.newPathImage(model?.bigImgURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
@@ -457,25 +458,20 @@ class FeedsTagDetailActivity : BaseActivity() {
                 smartRefresh.setEnableLoadMore(hasMore)
 
                 if (isClean) {
-                    adapter.mDataList.clear()
+                    mAdapter.mDataList.clear()
                 }
 
                 if (!list.isNullOrEmpty()) {
-                    adapter.mDataList.addAll(list)
+                    mAdapter.mDataList.addAll(list)
                 }
 
-                adapter.notifyDataSetChanged()
+                mAdapter.notifyDataSetChanged()
 
-                val fsms = ArrayList<FeedSongModel>()
-                list?.let { wms ->
-                    wms.forEach { wm ->
-                        wm.song?.let {
-                            fsms.add(it)
-                        }
-                    }
+                if(isClean){
+                    add2SongPlayModeManager(mSongPlayModeManager,mAdapter.mDataList,true)
+                }else{
+                    add2SongPlayModeManager(mSongPlayModeManager,list,false)
                 }
-                // 重新调整列表
-                mSongPlayModeManager?.setOriginList(fsms)
                 // 一定要放在 mSongPlayModeManager 后面
                 dataOkListener?.invoke()
             } else {
@@ -517,7 +513,7 @@ class FeedsTagDetailActivity : BaseActivity() {
             if (result.errno == 0) {
                 model.isCollected = !model.isCollected
                 EventBus.getDefault().post(FeedsCollectChangeEvent(model.feedID, model.isCollected))
-                adapter?.update(position, model, FeedTagDetailAdapter.REFRESH_TYPE_COLLECT)
+                mAdapter?.update(position, model, FeedTagDetailAdapter.REFRESH_TYPE_COLLECT)
                 if (model.isCollected) {
                     U.getToastUtil().showShort("收藏成功")
                 } else {
@@ -538,10 +534,10 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedsCollectChangeEvent) {
-        adapter.mDataList.forEachIndexed { index, feedsWatchModel ->
+        mAdapter.mDataList.forEachIndexed { index, feedsWatchModel ->
             if (feedsWatchModel.feedID == event.feedID) {
                 feedsWatchModel.isCollected = event.isCollected
-                adapter.update(index, feedsWatchModel, FeedTagDetailAdapter.REFRESH_TYPE_COLLECT)
+                mAdapter.update(index, feedsWatchModel, FeedTagDetailAdapter.REFRESH_TYPE_COLLECT)
             }
         }
     }
@@ -556,10 +552,10 @@ class FeedsTagDetailActivity : BaseActivity() {
     }
 
     fun startPlay(it: FeedSongModel) {
-        adapter.mDataList.forEachIndexed { index, feed ->
+        mAdapter.mDataList.forEachIndexed { index, feed ->
             if (it.feedID == feed.song?.feedID && it.songID == feed.song?.songID) {
                 //todo 从详情页面返回，直接播放吧(继续播放)
-                adapter.startPlayModel(index, feed)
+                mAdapter.startPlayModel(index, feed)
                 feed.song?.playURL?.let {
                     FeedsPlayStatistics.setCurPlayMode(feed.feedID)
                     SinglePlayer.startPlay(playerTag, it)
