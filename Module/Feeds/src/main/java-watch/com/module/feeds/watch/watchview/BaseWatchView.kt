@@ -436,9 +436,6 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             var maxPercent = 0f
             var isFound = false
 
-            val cdHeight = 168.dp()   // 光盘高度
-            val bottomHeight = 50.dp()  // 底部高度
-
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
@@ -458,42 +455,51 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                             maxPercent = 0f
                             while (i <= lastVisibleItem && !isFound) {
                                 if (mRecyclerView.findViewHolderForAdapterPosition(i) != null) {
-                                    val itemView = mRecyclerView.findViewHolderForAdapterPosition(i).itemView
-                                    val location1 = IntArray(2)
-                                    val location2 = IntArray(2)
-                                    itemView.getLocationOnScreen(location1)
-                                    mRecyclerView.getLocationOnScreen(location2)
-                                    val top = location1[1] - location2[1]
-//                                    MyLog.d(TAG, "onScrollStateChangedrecyclerView i=$i, newState = $newState location1[1]=${location1[1]} location2[1]=${location2[1]}")
-                                    when {
-                                        top < 0 -> {
-                                            // 顶部的
-                                            if ((itemView.height + top) >= (cdHeight + bottomHeight)) {
+                                    val viewHolder = mRecyclerView.findViewHolderForAdapterPosition(i)
+                                    if (viewHolder is FeedViewHolder) {
+                                        val cdView = viewHolder.mSongAreaBg
+                                        val itemView = viewHolder.itemView
+                                        val location1 = IntArray(2)
+                                        val location2 = IntArray(2)
+                                        val location3 = IntArray(2)
+                                        itemView.getLocationOnScreen(location1)
+                                        mRecyclerView.getLocationOnScreen(location2)
+                                        cdView.getLocationOnScreen(location3)
+                                        val top = location1[1] - location2[1]
+                                        val cdTopHeight = location3[1] - location1[1]  // cd在item中距离顶部距离
+                                        val cdHeight = cdView.height                   // 光盘高度
+                                        val cdBottomHeight = itemView.height - cdTopHeight - cdHeight   // cd在item中距离顶部的距离
+                                        when {
+                                            top < 0 -> {
+                                                // 顶部的
+                                                if ((itemView.height + top) >= (cdHeight + cdBottomHeight)) {
+                                                    percents[i - firstVisibleItem] = 100f
+                                                } else {
+                                                    percents[i - firstVisibleItem] = (itemView.height + top - cdBottomHeight).toFloat() / cdHeight.toFloat()
+                                                }
+                                            }
+                                            (top + itemView.height) < mRecyclerView.height -> {
+                                                // 全部显示的
                                                 percents[i - firstVisibleItem] = 100f
-                                            } else {
-                                                percents[i - firstVisibleItem] = (itemView.height + top - bottomHeight).toFloat() / cdHeight.toFloat()
+                                            }
+                                            else -> {
+                                                // 底部的
+                                                if ((mRecyclerView.height - top) >= (itemView.height - cdBottomHeight)) {
+                                                    percents[i - firstVisibleItem] = 100f
+                                                } else {
+                                                    percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - cdBottomHeight).toFloat() / cdHeight.toFloat()
+                                                }
                                             }
                                         }
-                                        (top + itemView.height) < mRecyclerView.height -> {
-                                            percents[i - firstVisibleItem] = 100f
-                                        }
-                                        else -> {
-                                            // 底部的
-                                            if ((mRecyclerView.height - top) >= (itemView.height - bottomHeight)) {
-                                                percents[i - firstVisibleItem] = 100f
-                                            } else {
-                                                percents[i - firstVisibleItem] = (itemView.height - (mRecyclerView.height - top) - bottomHeight).toFloat() / cdHeight.toFloat()
-                                            }
-                                        }
-                                    }
-                                    if (percents[i - firstVisibleItem] == 100f) {
-                                        isFound = true
-                                        maxPercent = 100f
-                                        postion = i
-                                    } else {
-                                        if (percents[i - firstVisibleItem] > maxPercent) {
-                                            maxPercent = percents[i - firstVisibleItem]
+                                        if (percents[i - firstVisibleItem] == 100f) {
+                                            isFound = true
+                                            maxPercent = 100f
                                             postion = i
+                                        } else {
+                                            if (percents[i - firstVisibleItem] > maxPercent) {
+                                                maxPercent = percents[i - firstVisibleItem]
+                                                postion = i
+                                            }
                                         }
                                     }
                                 }
