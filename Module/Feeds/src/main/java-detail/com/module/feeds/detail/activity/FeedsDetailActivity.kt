@@ -10,21 +10,16 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
-import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.AbsPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {
 
     companion object {
         // 标记来源
-        val FROM_HOME_PAGE = 1     //推荐、关注、个人中心
-        val FROM_HOME_COLLECT = 2  //收藏
-        val FROM_FEED_RANK = 3     //排行
-        val FROM_SCHEME = 4 // scheme
-        val FROM_COMMENT_LIKE = 5  //评论或赞
-        val FROM_FEED_RANK_DETAL = 6      // 来自排行榜
-        val FROM_FEED_TAG_DETAIL = 7      // 来自标签详单
+        val FROM_SWITCH = 1     //只支持上下首切换
+        val FROM_SWITCH_MODE = 2  //即支持换模式又支持上下首切换
         var MANAGER: AbsPlayModeManager? = null
 
         fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
@@ -64,7 +59,7 @@ class FeedsDetailActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val feedID = intent.getIntExtra("feed_ID", -1)
-        val from = intent.getIntExtra("from", FROM_HOME_PAGE)
+        val from = intent.getIntExtra("from", FROM_SWITCH)
         val playType = intent.getSerializableExtra("playType") as FeedSongPlayModeManager.PlayMode?
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsDetailActivity, FeedsDetailFragment::class.java)
                 .setAddToBackStack(false)

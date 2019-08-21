@@ -148,7 +148,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mFeedsCommonLyricView?.showHalf()
             } else if (msg?.what == HIDE_CONTROL_AREA) {
                 mSongControlArea?.visibility = View.GONE
-                if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                if (mFrom == FeedsDetailActivity.FROM_SWITCH_MODE) {
                     mPlayTypeIv?.visibility = View.GONE
                 }
             } else if (msg?.what == AUTO_CHANGE_SONG) {
@@ -173,7 +173,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animSet = AnimatorSet()
             animSet.play(animator1).with(animator2).with(animator3)
 
-            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            if (mFrom == FeedsDetailActivity.FROM_SWITCH_MODE) {
                 val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 0f, 1f)
                 animSet.play(animator1).with(animator4)
                 mPlayTypeIv?.visibility = View.VISIBLE
@@ -188,7 +188,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 1f, 0f)
             val animSet = AnimatorSet()
             animSet.play(animator1).with(animator2).with(animator3)
-            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            if (mFrom == FeedsDetailActivity.FROM_SWITCH_MODE) {
                 val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 1f, 0f)
                 animSet.play(animator1).with(animator4)
             }
@@ -214,7 +214,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         override fun onCompletion() {
-            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            if (mFrom == FeedsDetailActivity.FROM_SWITCH_MODE) {
                 if (specialCase ?: false) {
                     mFeedsWatchModel?.let {
                         showFeedsWatchModel(it)
@@ -223,7 +223,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     toNextSongAction(false)
                 }
             } else {
-                stopSong()
+                mFeedsWatchModel?.let {
+                    showFeedsWatchModel(it)
+                }
             }
         }
 
@@ -349,7 +351,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
-                if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                if (mFrom == FeedsDetailActivity.FROM_SWITCH_MODE) {
                     mPlayTypeIv?.setOnClickListener {
                         when (mSongManager?.getCurMode()) {
                             FeedSongPlayModeManager.PlayMode.ORDER -> {
@@ -567,17 +569,38 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun toNextSongAction(userAction: Boolean) {
-        mSongManager?.getNextSong(userAction) { newModel ->
-            if (newModel == null) {
-                latestAction = null
-                U.getToastUtil().showShort("这已经是最后一首歌了")
-            } else {
-                newModel?.feedID?.let {
-                    tryLoadNewFeed(it)
-                    mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+        if (!userAction) {
+            if (mFrom == FeedsDetailActivity.FROM_SWITCH_MODE) {
+                mSongManager?.getNextSong(userAction) { newModel ->
+                    if (newModel == null) {
+                        latestAction = null
+                        U.getToastUtil().showShort("这已经是最后一首歌了")
+                    } else {
+                        newModel?.feedID?.let {
+                            tryLoadNewFeed(it)
+                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                        }
+                        latestAction = {
+                            toNextSongAction(true)
+                        }
+                    }
                 }
-                latestAction = {
-                    toNextSongAction(true)
+            } else {
+                tryLoadNewFeed(mFeedsWatchModel!!.feedID)
+            }
+        } else {
+            mSongManager?.getNextSong(userAction) { newModel ->
+                if (newModel == null) {
+                    latestAction = null
+                    U.getToastUtil().showShort("这已经是最后一首歌了")
+                } else {
+                    newModel?.feedID?.let {
+                        tryLoadNewFeed(it)
+                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                    }
+                    latestAction = {
+                        toNextSongAction(true)
+                    }
                 }
             }
         }

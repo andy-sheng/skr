@@ -28,7 +28,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
-import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_HOME_PAGE
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_SWITCH
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
@@ -314,7 +314,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         if (watchModel != null && watchModel.status == 2) {
             startPlay(position, watchModel)
             fragment.activity?.let { fragmentActivity ->
-                FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, FROM_HOME_PAGE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, FROM_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getNextSong(userAction){
                             //查看

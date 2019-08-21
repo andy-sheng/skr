@@ -11,7 +11,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.PopupWindow
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
@@ -166,7 +165,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         mAdapter.onClickItemListener = { model, _ ->
             model?.let {
                 //                pause()
-                FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.FROM_FEED_RANK_DETAL,
+                FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.FROM_SWITCH,
                         FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getNextSong(userAction) { sm ->

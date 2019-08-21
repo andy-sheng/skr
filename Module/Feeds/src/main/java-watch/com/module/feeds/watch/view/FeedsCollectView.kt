@@ -15,9 +15,6 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.image.fresco.FrescoWorker
-import com.common.image.model.BaseImage
-import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -30,14 +27,13 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.component.busilib.callback.EmptyCallback
-import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
-import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_HOME_COLLECT
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_SWITCH_MODE
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
@@ -132,7 +128,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 model?.let {
                     mIsNeedResumePlay = true
                     fragment?.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, FROM_HOME_COLLECT, mCurrentType, object : AbsPlayModeManager() {
+                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, FROM_SWITCH_MODE, mCurrentType, object : AbsPlayModeManager() {
                             override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                                 mSongPlayModeManager?.getNextSong(userAction,callback)
                             }
