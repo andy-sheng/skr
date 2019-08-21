@@ -57,6 +57,7 @@ import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedDetailChangeEvent
+import com.module.feeds.event.FeedDetailSwitchEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -833,6 +834,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun showFeedsWatchModel(model: FeedsWatchModel) {
         mFeedsWatchModel = model
+        EventBus.getDefault().post(FeedDetailSwitchEvent(mFeedsWatchModel))
 
         mXinIv?.setDebounceViewClickListener {
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
