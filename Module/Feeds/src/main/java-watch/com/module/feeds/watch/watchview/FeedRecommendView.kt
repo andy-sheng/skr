@@ -430,15 +430,22 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             //歌名和演唱
             if (!TextUtils.isEmpty(it.song?.songTpl?.songName)) {
                 songNameTv.visibility = View.VISIBLE
+                lyricTypesongNameTv.visibility = View.VISIBLE
                 songNameTv.text = "《${it.song?.workName}》"
+                lyricTypesongNameTv.text = "《${it.song?.workName}》"
             } else {
                 songNameTv.visibility = View.GONE
+                lyricTypesongNameTv.visibility = View.GONE
             }
+
             if (!TextUtils.isEmpty(it.song?.songTpl?.singer)) {
                 songDescTv.visibility = View.VISIBLE
+                lyricTypesongDescTv.visibility = View.VISIBLE
                 songDescTv.text = "演唱/${it.song?.songTpl?.singer}"
+                lyricTypesongDescTv.text = "演唱/${it.song?.songTpl?.singer}"
             } else {
                 songDescTv.visibility = View.GONE
+                lyricTypesongDescTv.visibility = View.GONE
             }
             //头像和昵称、评论
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(it.user?.avatar)
