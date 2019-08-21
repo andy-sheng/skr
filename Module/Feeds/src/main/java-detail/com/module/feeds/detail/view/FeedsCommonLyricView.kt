@@ -35,6 +35,9 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
             mFeedsManyLyricView = FeedsManyLyricView(viewStub)
             mFeedsManyLyricView?.showHalf()
         }
+
+        mFeedsManyLyricView?.visibility = View.GONE
+        mAutoScrollLyricView?.visibility = View.GONE
     }
     override fun setSongModel(feedSongModel: FeedSongModel, shift: Int) {
         mFeedSongModel = feedSongModel
@@ -45,10 +48,12 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
             mBaseFeedsLyricView = mFeedsManyLyricView
             mAutoScrollLyricView?.visibility = View.GONE
             mAutoScrollLyricView?.stop()
+            mFeedsManyLyricView?.visibility = View.VISIBLE
         } else {
             mBaseFeedsLyricView = mAutoScrollLyricView
             mFeedsManyLyricView?.visibility = View.GONE
             mFeedsManyLyricView?.stop()
+            mAutoScrollLyricView?.visibility = View.VISIBLE
         }
         mBaseFeedsLyricView?.loadLyric()
     }
@@ -69,7 +74,17 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
         mBaseFeedsLyricView?.showHalf()
     }
 
+    override fun setShowState(visibility: Int) {
+        if (View.GONE == visibility) {
+            mAutoScrollLyricView?.visibility = View.GONE
+            mFeedsManyLyricView?.visibility = View.GONE
+        } else {
+            mBaseFeedsLyricView?.setShowState(visibility)
+        }
+    }
+
     override fun showWhole() {
+
         mBaseFeedsLyricView?.showWhole()
     }
 

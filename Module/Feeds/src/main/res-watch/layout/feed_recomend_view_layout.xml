@@ -24,8 +24,8 @@
 
     <ImageView
         android:id="@+id/recommend_film"
-        android:layout_width="@dimen/view_208_dp"
-        android:layout_height="@dimen/view_208_dp"
+        android:layout_width="@dimen/view_176_dp"
+        android:layout_height="@dimen/view_176_dp"
         android:background="@drawable/recommend_film_icon"
         app:layout_constraintBottom_toTopOf="@id/song_name_tv"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -35,8 +35,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/record_cover"
-        android:layout_width="@dimen/view_132_dp"
-        android:layout_height="@dimen/view_132_dp"
+        android:layout_width="@dimen/view_111_dp"
+        android:layout_height="@dimen/view_111_dp"
         app:layout_constraintBottom_toBottomOf="@id/recommend_film"
         app:layout_constraintLeft_toLeftOf="@id/recommend_film"
         app:layout_constraintRight_toRightOf="@id/recommend_film"
@@ -107,8 +107,8 @@
         android:id="@+id/auto_scroll_lyric_view_layout_viewstub"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/view_110_dp"
-        android:layout_marginBottom="@dimen/view_100_dp"
+        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginBottom="@dimen/view_40_dp"
         android:layout="@layout/auto_scroll_lyric_view_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_area"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -119,8 +119,8 @@
         android:id="@+id/feeds_many_lyric_layout_viewstub"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/view_110_dp"
-        android:layout_marginBottom="@dimen/view_100_dp"
+        android:layout_marginTop="@dimen/view_90_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
         android:layout="@layout/feeds_detail_many_lyric_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_area"
         app:layout_constraintLeft_toLeftOf="parent"

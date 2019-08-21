@@ -16,7 +16,6 @@ import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 import com.module.feeds.watch.model.FeedSongModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 
@@ -122,6 +121,10 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     }
 
+    override fun setShowState(visibility: Int) {
+        setVisibility(visibility)
+    }
+
     override fun showHalf() {
         mManyLyricsView?.setDownLineNum(0)
         mManyLyricsView?.setUpLineNum(1)
@@ -139,6 +142,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
+        mManyLyricsView?.visibility = visibility
         if (visibility == View.GONE) {
             mManyLyricsView?.pause()
         }

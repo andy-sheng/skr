@@ -184,15 +184,23 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     fun toLyricType() {
         avatarTypeViews.visibility = View.GONE
         lyricTypeViews.visibility = View.VISIBLE
+        mFeedsCommonLyricView?.setShowState(View.VISIBLE)
     }
 
     fun toAvatarType() {
         avatarTypeViews.visibility = View.VISIBLE
         lyricTypeViews.visibility = View.GONE
+        mFeedsCommonLyricView?.setShowState(View.GONE)
     }
 
     fun toNextSongAction() {
+        seekBar?.progress = 0
+        playTimeTv?.text = "00:00"
+        mCurModel?.song?.playDurMs?.let {
+            totalTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+        }
 
+        startPlay()
     }
 
     init {
@@ -226,6 +234,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         lyricTypesongNameTv = this.findViewById(R.id.lyric_type_song_name_tv)
         lyricTypesongDescTv = this.findViewById(R.id.lyric_type_desc_tv)
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
+        mFeedsCommonLyricView?.setShowState(View.GONE)
 
         mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, null)
         mSongPlayModeManager?.supportCycle = false
@@ -238,6 +247,24 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 callback.invoke()
             }
         }
+
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    SinglePlayer.seekTo(playerTag, progress.toLong())
+                    mFeedsCommonLyricView?.seekTo(progress)
+                    playTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(progress.toLong(), "mm:ss")
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
 
         collectIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -330,11 +357,14 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             // 如果因为时间短没请求，继续往前播放,只有在首页才播
             // resumePlay
         }
+
+        startPlay()
     }
 
     open fun unselected() {
         MyLog.d(TAG, "unselected")
         isSeleted = false
+        pausePlay()
     }
 
     fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
@@ -447,12 +477,15 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         .create()
                 contentTv.text = stringBuilder
             }
+            mFeedsCommonLyricView?.setSongModel(mCurModel!!.song!!, -1)
             // 收藏和喜欢
             refreshCollect()
             refreshLike()
         }
 
-        startPlay()
+        if (isSeleted) {
+            startPlay()
+        }
     }
 
     private fun refreshCollect() {
@@ -556,6 +589,12 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
             if (SinglePlayer.isBufferingOk) {
                 mFeedsCommonLyricView?.playLyric()
+            }
+
+            if (showType == LYRIC_TYPE) {
+                toLyricType()
+            } else {
+                toAvatarType()
             }
         }
     }

@@ -179,6 +179,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         }
     }
 
+    override fun setShowState(visibility: Int) {
+        setVisibility(visibility)
+    }
+
     override fun showHalf() {
         scrollView?.layoutParams?.height = U.getDisplayUtils().dip2px(38f)
     }
@@ -189,6 +193,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
+        lyricTv?.visibility = visibility
         if (visibility == View.GONE) {
             pause()
         }

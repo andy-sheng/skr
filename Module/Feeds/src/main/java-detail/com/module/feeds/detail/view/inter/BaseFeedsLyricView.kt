@@ -14,4 +14,5 @@ interface BaseFeedsLyricView {
     fun destroy()
     fun showHalf()
     fun showWhole()
+    fun setShowState(visibility: Int)
 }
