@@ -45,6 +45,7 @@ import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.event.FeedDetailChangeEvent
+import com.module.feeds.event.FeedDetailSwitchEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
@@ -344,14 +345,20 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 mCurModel?.let {
                     FeedsDetailActivity.openActivity(context as Activity, it.feedID, FeedsDetailActivity.FROM_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                            mSongPlayModeManager?.getNextSong(true) {
-                                callback(it)
+                            mSongPlayModeManager?.getNextSong(true) { song ->
+                                mSongPlayModeManager?.getCurPostionInOrigin()?.let { pos ->
+                                    mCurModel = mDataList[pos]
+                                }
+                                callback(song)
                             }
                         }
 
                         override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                            mSongPlayModeManager?.getPreSong(true) {
-                                callback(it)
+                            mSongPlayModeManager?.getPreSong(true) { song ->
+                                mSongPlayModeManager?.getCurPostionInOrigin()?.let { pos ->
+                                    mCurModel = mDataList[pos]
+                                }
+                                callback(song)
                             }
                         }
                     })
@@ -391,11 +398,9 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         isSeleted = true
         // 该页面选中以及从详情页返回都会回调这个方法
         if (!initFeedList(false)) {
-            // 如果因为时间短没请求，继续往前播放,只有在首页才播
-            // resumePlay
+            // 恢复播放
+            bindCurFeedWatchModel(mCurModel)
         }
-
-        startPlay()
     }
 
     open fun unselected() {
@@ -684,7 +689,15 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     fun onEvent(event: FeedDetailChangeEvent) {
         // 数据要更新了
         event.model?.let {
+            updateDetailModel(it)
+        }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedDetailSwitchEvent) {
+        // 数据要更新了
+        event.model?.let {
+            updateDetailModel(it)
         }
     }
 
@@ -693,6 +706,18 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         if (mCurModel?.feedID == event.feedID) {
             mCurModel?.isCollected = event.isCollected
             refreshCollect()
+        }
+    }
+
+    private fun updateDetailModel(it: FeedsWatchModel) {
+        for (model in mDataList) {
+            if (it.feedID == model.feedID && it.song?.songID == model.song?.songID) {
+                // 更新数据
+                model.isLiked = it.isLiked
+                model.starCnt = it.starCnt
+                model.shareCnt = it.shareCnt
+                model.isCollected = it.isCollected
+            }
         }
     }
 
