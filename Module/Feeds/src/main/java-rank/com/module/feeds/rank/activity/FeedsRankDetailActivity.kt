@@ -27,11 +27,15 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.manager.AbsPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedRankDetailAdapter
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -67,8 +71,9 @@ class FeedsRankDetailActivity : BaseActivity() {
     val mCNT = 30
     var hasMore = true
 
-
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
+
+    var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
     private val playerTag = TAG + hashCode()
 
@@ -160,14 +165,45 @@ class FeedsRankDetailActivity : BaseActivity() {
         }
         mAdapter.onClickItemListener = { model, _ ->
             model?.let {
-//                pause()
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                        .withInt("feed_ID", it.feedID)
-                        .withInt("from", 3)
-                        .navigation()
+                //                pause()
+                FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.FROM_FEED_RANK_DETAL,
+                        FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                    override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                        mSongPlayModeManager?.getNextSong(userAction) { sm ->
+                            callback.invoke(sm)
+                        }
+                    }
+
+                    override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                        mSongPlayModeManager?.getPreSong(userAction) { sm ->
+                            callback.invoke(sm)
+                        }
+                    }
+
+                    override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
+                        mSongPlayModeManager?.changeMode(mode)
+                    }
+
+                    override fun getCurMode(): FeedSongPlayModeManager.PlayMode {
+                        return mSongPlayModeManager?.getCurMode()
+                                ?: FeedSongPlayModeManager.PlayMode.ORDER
+                    }
+                })
             }
         }
         initLoadData()
+
+        mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, null)
+        mSongPlayModeManager?.supportCycle = false
+        mSongPlayModeManager?.loadMoreCallback = { size, callback ->
+            if (hasMore) {
+                loadData(offset, false) {
+                    callback.invoke()
+                }
+            } else {
+                callback.invoke()
+            }
+        }
         SinglePlayer.reset(playerTag)
         SinglePlayer.addCallback(playerTag, playCallback)
     }
@@ -257,7 +293,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         loadData(offset, false)
     }
 
-    private fun loadData(off: Int, isClean: Boolean) {
+    private fun loadData(off: Int, isClean: Boolean, dataOkListener: (() -> Unit)? = null) {
         launch {
             val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID, if (mRankType == MOUTH_RANK) 1 else 2) }
             if (result.errno == 0) {
