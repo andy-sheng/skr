@@ -107,7 +107,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
             l = "《${mFeedSongModel?.workName}》\n ${l}"
         }
-        visibility = View.VISIBLE
+//        visibility = View.VISIBLE
         lyricTv?.text = l
         if (play) {
             startScroll()

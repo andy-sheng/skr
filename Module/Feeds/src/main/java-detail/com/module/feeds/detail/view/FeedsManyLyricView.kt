@@ -75,7 +75,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     private fun whenReaderLoad(play: Boolean) {
         if (mManyLyricsView != null) {
-            mManyLyricsView?.setVisibility(View.VISIBLE)
+//            mManyLyricsView?.setVisibility(View.VISIBLE)
             mManyLyricsView?.initLrcData()
         }
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
