@@ -32,8 +32,10 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
     init {
         topOne.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                if (modelList.isNotEmpty() && modelList.size >= 1) {
-                    toTagDetail(modelList[0])
+                if (view!!.visibility == View.VISIBLE) {
+                    if (modelList.isNotEmpty() && modelList.size >= 1) {
+                        toTagDetail(modelList[0])
+                    }
                 }
             }
         })
@@ -41,26 +43,34 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
         topTwo.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 if (modelList.isNotEmpty() && modelList.size >= 2) {
-                    toTagDetail(modelList[1])
+                    if (view!!.visibility == View.VISIBLE) {
+                        toTagDetail(modelList[1])
+                    }
                 }
             }
-
         })
 
         topThree.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                if (modelList.isNotEmpty() && modelList.size >= 3) {
-                    toTagDetail(modelList[2])
+                if (view!!.visibility == View.VISIBLE) {
+                    if (modelList.isNotEmpty() && modelList.size >= 3) {
+                        toTagDetail(modelList[2])
+                    }
                 }
             }
         })
 
         topMore.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                toMoreTag()
+                if (view!!.visibility == View.VISIBLE) {
+                    if (modelList.isNotEmpty() && modelList.size == 4) {
+                        toTagDetail(modelList[3])
+                    } else if (modelList.isNotEmpty() && modelList.size > 4) {
+                        toMoreTag()
+                    }
+                }
             }
         })
-
     }
 
     fun toTagDetail(model: FeedRecommendTagModel) {
@@ -103,7 +113,7 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
                     .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
                     .build<BaseImage>())
         } else {
-            topOne.visibility = View.GONE
+            topOne.visibility = View.INVISIBLE
         }
 
         if (modelList.isNotEmpty() && modelList.size >= 2) {
@@ -114,7 +124,7 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
                     .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
                     .build<BaseImage>())
         } else {
-            topTwo.visibility = View.GONE
+            topTwo.visibility = View.INVISIBLE
         }
 
         if (modelList.isNotEmpty() && modelList.size >= 3) {
@@ -125,12 +135,25 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
                     .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
                     .build<BaseImage>())
         } else {
-            topThree.visibility = View.GONE
+            topThree.visibility = View.INVISIBLE
         }
 
-        FrescoWorker.loadImage(topMore, ImageFactory.newResImage(R.drawable.feed_recomend_more_icon)
-                .setScaleType(ScalingUtils.ScaleType.FIT_XY)
-                .setCornerRadius(8.dp().toFloat())
-                .build<BaseImage>())
+        if (modelList.isNotEmpty() && modelList.size >= 4) {
+            topMore.visibility = View.VISIBLE
+            if (modelList.size == 4) {
+                FrescoWorker.loadImage(topMore, ImageFactory.newPathImage(modelList[3].smallImgURL)
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .setCornerRadius(8.dp().toFloat())
+                        .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_160)
+                        .build<BaseImage>())
+            } else {
+                FrescoWorker.loadImage(topMore, ImageFactory.newResImage(R.drawable.feed_recomend_more_icon)
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .setCornerRadius(8.dp().toFloat())
+                        .build<BaseImage>())
+            }
+        } else {
+            topMore.visibility = View.INVISIBLE
+        }
     }
 }
