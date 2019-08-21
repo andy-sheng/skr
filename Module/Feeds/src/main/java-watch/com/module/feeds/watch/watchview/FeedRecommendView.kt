@@ -1,5 +1,6 @@
 package com.module.feeds.watch.watchview
 
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -15,6 +16,8 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -424,10 +427,26 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                     .setCornerRadius(16.dp().toFloat())
                     .setBlur(true)
                     .build())
-            AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(it.user?.avatar)
-                    .setCircle(true)
-                    .build())
-            //歌名和演唱
+            if (it.song?.needShareTag == true) {
+                FrescoWorker.loadImage(recordCover, ImageFactory.newResImage(R.drawable.feed_share_cover_icon)
+                        .setCircle(true)
+                        .build())
+                if (!TextUtils.isEmpty(it.song?.songTpl?.singer)) {
+                    songDescTv.visibility = View.VISIBLE
+                    songDescTv.text = "演唱/${it.song?.songTpl?.singer}"
+                } else {
+                    songDescTv.visibility = View.GONE
+                }
+            } else {
+                AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(it.user?.avatar)
+                        .setCircle(true)
+                        .build())
+                songDescTv.visibility = View.VISIBLE
+                songDescTv.text = "演唱/${UserInfoManager.getInstance().getRemarkName(it.user?.userID
+                        ?: 0, it.user?.nickname)}"
+            }
+
+            //歌名
             if (!TextUtils.isEmpty(it.song?.songTpl?.songName)) {
                 songNameTv.visibility = View.VISIBLE
                 lyricTypesongNameTv.visibility = View.VISIBLE
@@ -438,18 +457,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 lyricTypesongNameTv.visibility = View.GONE
             }
 
-            if (!TextUtils.isEmpty(it.song?.songTpl?.singer)) {
-                songDescTv.visibility = View.VISIBLE
-                lyricTypesongDescTv.visibility = View.VISIBLE
-                songDescTv.text = "演唱/${it.song?.songTpl?.singer}"
-                lyricTypesongDescTv.text = "演唱/${it.song?.songTpl?.singer}"
-            } else {
-                songDescTv.visibility = View.GONE
-                lyricTypesongDescTv.visibility = View.GONE
-            }
             //头像和昵称、评论
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(it.user?.avatar)
                     .setCircle(true)
+                    .setBorderWidth(1.dp().toFloat())
+                    .setBorderColor(Color.WHITE)
                     .build())
             nameTv.text = UserInfoManager.getInstance().getRemarkName(it.user?.userID
                     ?: 0, it.user?.nickname)

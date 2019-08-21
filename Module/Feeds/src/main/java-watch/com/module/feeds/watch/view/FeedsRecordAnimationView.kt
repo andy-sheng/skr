@@ -15,6 +15,8 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.module.feeds.R
 
@@ -119,10 +121,16 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 //        rockerIv?.startAnimation(a)
     }
 
-    fun setAvatar(url: String) {
-        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(url)
-                .setCircle(true)
-                .build())
+    fun setAvatar(url: String, needShareTag: Boolean) {
+        if (needShareTag) {
+            FrescoWorker.loadImage(avatarIv, ImageFactory.newResImage(R.drawable.feed_share_cover_icon)
+                    .setCircle(true)
+                    .build())
+        } else {
+            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(url)
+                    .setCircle(true)
+                    .build())
+        }
     }
 
     fun play(isBufferingOk: Boolean) {
@@ -163,14 +171,14 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     fun buffering() {
-        MyLog.d(TAG,"buffering" )
+        MyLog.d(TAG, "buffering")
 
         mHandler.removeMessages(AVATAR_ANIM)
         avatarAnimation?.pause()
     }
 
     fun bufferEnd() {
-        MyLog.d(TAG,"bufferEnd" )
+        MyLog.d(TAG, "bufferEnd")
         if (!mHandler.hasMessages(AVATAR_ANIM)) {
             if (playing) {
                 if (avatarAnimation!!.isPaused) {
@@ -218,7 +226,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        MyLog.d(TAG,"onLayout hasLayouted=$hasLayouted" )
+        MyLog.d(TAG, "onLayout hasLayouted=$hasLayouted")
         if (!hasLayouted) {
             hasLayouted = true
             rockerIv.pivotX = (rockerXP ?: 0f) * rockerIv.width.toFloat()
@@ -266,7 +274,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
                     }
                 })
             }
-            MyLog.d(TAG,"onLayout wantPlaying=$wantPlaying" )
+            MyLog.d(TAG, "onLayout wantPlaying=$wantPlaying")
             if (wantPlaying) {
                 play()
             } else {
@@ -281,7 +289,7 @@ class FeedsRecordAnimationView(context: Context, attrs: AttributeSet?) : Constra
     }
 
     override fun onDetachedFromWindow() {
-        MyLog.d(TAG,"onDetachedFromWindow" )
+        MyLog.d(TAG, "onDetachedFromWindow")
         super.onDetachedFromWindow()
         playing = false
         hasLayouted = false

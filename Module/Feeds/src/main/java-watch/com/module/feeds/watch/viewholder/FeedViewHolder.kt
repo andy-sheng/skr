@@ -107,7 +107,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
                     .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                     .setBlur(true)
                     .build())
-            mRecordView.setAvatar(it.avatar ?: "")
+            mRecordView.setAvatar(it.avatar ?: "", watchModel.song?.needShareTag == true)
         }
 
         if (watchModel.song?.needChallenge == true) {
@@ -137,7 +137,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
                 mShareTag.visibility = View.GONE
             }
         }
-        
+
         refreshPlayNum()
         refreshLike()
         refreshCollects()

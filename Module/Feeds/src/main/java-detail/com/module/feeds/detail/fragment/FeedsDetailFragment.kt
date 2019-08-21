@@ -665,7 +665,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
 
         mFeedsWatchModel?.user?.avatar?.let {
-            mRadioView?.setAvatar(it)
+            mRadioView?.setAvatar(it, mFeedsWatchModel?.song?.needShareTag == true)
         }
         mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
         mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
@@ -678,7 +678,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     }
 
-    private fun showHitArea(){
+    private fun showHitArea() {
         if (mFeedsWatchModel?.song?.needChallenge == true) {
             //打榜歌曲
             mShareTag?.visibility = View.GONE
