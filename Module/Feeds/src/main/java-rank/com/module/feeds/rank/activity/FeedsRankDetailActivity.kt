@@ -165,6 +165,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         mAdapter.onClickItemListener = { model, _ ->
             model?.let {
                 //                pause()
+                mSongPlayModeManager?.setCurrentPlayModel(it.song)
                 FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.FROM_SWITCH,
                         FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
@@ -271,6 +272,7 @@ class FeedsRankDetailActivity : BaseActivity() {
     private fun play(model: FeedsWatchModel) {
         mAdapter.mCurrentPlayModel = model
         mAdapter.notifyDataSetChanged()
+        mSongPlayModeManager?.setCurrentPlayModel(model.song)
         model.song?.playURL?.let {
             FeedsPlayStatistics.setCurPlayMode(model?.feedID)
             SinglePlayer.startPlay(playerTag, it)

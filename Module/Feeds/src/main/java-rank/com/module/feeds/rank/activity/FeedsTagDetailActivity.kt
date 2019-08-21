@@ -262,6 +262,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.mCurrentPlayPosition = position
                 mAdapter.mCurrentPlayModel = model
                 model?.let {
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, FROM_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(userAction) { sm ->
@@ -555,6 +556,7 @@ class FeedsTagDetailActivity : BaseActivity() {
             if (it.feedID == feed.song?.feedID && it.songID == feed.song?.songID) {
                 //todo 从详情页面返回，直接播放吧(继续播放)
                 mAdapter.startPlayModel(index, feed)
+                mSongPlayModeManager?.setCurrentPlayModel(feed.song)
                 feed.song?.playURL?.let {
                     FeedsPlayStatistics.setCurPlayMode(feed.feedID)
                     SinglePlayer.startPlay(playerTag, it)

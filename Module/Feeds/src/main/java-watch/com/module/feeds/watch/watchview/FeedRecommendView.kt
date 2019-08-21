@@ -343,6 +343,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             override fun clickValid(v: View?) {
                 //todo 补充跳到详情的逻辑
                 mCurModel?.let {
+                    mSongPlayModeManager?.setCurrentPlayModel(mCurModel?.song)
                     FeedsDetailActivity.openActivity(context as Activity, it.feedID, FeedsDetailActivity.FROM_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(true) { song ->
@@ -660,6 +661,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 toAvatarType()
             }
             playAnimation()
+            mSongPlayModeManager?.setCurrentPlayModel(it.song)
         }
     }
 
