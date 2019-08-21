@@ -1,7 +1,7 @@
 package com.module.feeds.watch.watchview
 
-import android.graphics.Color
 import android.app.Activity
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -462,16 +462,19 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         ?: 0, it.user?.nickname)}"
             }
 
+            lyricTypesongDescTv.text = songDescTv.text
+            lyricTypesongDescTv.visibility = songDescTv.visibility
+
             //歌名
             if (!TextUtils.isEmpty(it.song?.songTpl?.songName)) {
                 songNameTv.visibility = View.VISIBLE
-                lyricTypesongNameTv.visibility = View.VISIBLE
                 songNameTv.text = "《${it.song?.workName}》"
-                lyricTypesongNameTv.text = "《${it.song?.workName}》"
             } else {
                 songNameTv.visibility = View.GONE
-                lyricTypesongNameTv.visibility = View.GONE
             }
+
+            lyricTypesongNameTv.text = songNameTv.text
+            lyricTypesongNameTv.visibility = songNameTv.visibility
 
             //头像和昵称、评论
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(it.user?.avatar)
