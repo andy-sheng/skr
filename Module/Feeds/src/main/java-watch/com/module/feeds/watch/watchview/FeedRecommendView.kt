@@ -1,6 +1,8 @@
 package com.module.feeds.watch.watchview
 
 import android.app.Activity
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,6 +10,8 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.Group
 import android.text.TextUtils
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -106,6 +110,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     var mDataList = ArrayList<FeedsWatchModel>()  // list列表
 
     var mSongPlayModeManager: FeedSongPlayModeManager? = null
+
+    val animatorSet: AnimatorSet
 
     val playerTag = TAG + hashCode()
 
@@ -353,6 +359,18 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             }
         })
 
+        // 初始化动画
+        animatorSet = AnimatorSet()
+        val recordAnimator = ObjectAnimator.ofFloat(recommendFilm, View.ROTATION, 0f, 360f)
+        recordAnimator.duration = 10000
+        recordAnimator.interpolator = LinearInterpolator()
+        recordAnimator.repeatCount = Animation.INFINITE
+        val coverAnimator = ObjectAnimator.ofFloat(recordCover, View.ROTATION, 0f, 360f)
+        coverAnimator.duration = 10000
+        coverAnimator.interpolator = LinearInterpolator()
+        coverAnimator.repeatCount = Animation.INFINITE
+        animatorSet.playTogether(recordAnimator, coverAnimator)
+
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
@@ -554,6 +572,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     open fun destroy() {
         cancel()
+        animatorSet.removeAllListeners()
+        animatorSet.cancel()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
@@ -634,7 +654,20 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             } else {
                 toAvatarType()
             }
+            playAnimation()
         }
+    }
+
+    private fun playAnimation() {
+        if (animatorSet.isStarted) {
+            animatorSet.resume()
+        } else {
+            animatorSet.start()
+        }
+    }
+
+    private fun pauseAnimation() {
+        animatorSet.pause()
     }
 
     private fun pausePlay() {
@@ -643,6 +676,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 //        mRadioView?.pause()
         SinglePlayer.pause(playerTag)
         mFeedsCommonLyricView?.pause()
+        pauseAnimation()
     }
 
 
