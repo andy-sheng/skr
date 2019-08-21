@@ -75,6 +75,72 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
+    <TextView
+        android:id="@+id/lyric_type_song_name_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_51_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        android:gravity="center"
+        android:text="《龙卷风》"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lyric_type_desc_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="演唱/地理懂了吧"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintEnd_toEndOf="@+id/lyric_type_song_name_tv"
+        app:layout_constraintStart_toStartOf="@+id/lyric_type_song_name_tv"
+        app:layout_constraintTop_toBottomOf="@+id/lyric_type_song_name_tv" />
+
+    <ViewStub
+        android:id="@+id/auto_scroll_lyric_view_layout_viewstub"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_110_dp"
+        android:layout_marginBottom="@dimen/view_100_dp"
+        android:layout="@layout/auto_scroll_lyric_view_layout"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_area"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ViewStub
+        android:id="@+id/feeds_many_lyric_layout_viewstub"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/view_110_dp"
+        android:layout_marginBottom="@dimen/view_100_dp"
+        android:layout="@layout/feeds_detail_many_lyric_layout"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_area"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/avatar_type_views"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="song_desc_tv, song_name_tv, record_cover, recommend_film" />
+
+    <android.support.constraint.Group
+        android:id="@+id/lyric_type_views"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="auto_scroll_lyric_view_layout_viewstub, feeds_many_lyric_layout_viewstub, lyric_type_song_name_tv, lyric_type_desc_tv" />
+
     <ImageView
         android:id="@+id/collect_iv"
         android:layout_width="@dimen/view_50_dp"
@@ -113,11 +179,12 @@
         app:layout_constraintRight_toLeftOf="@id/record_play_iv"
         app:layout_constraintTop_toTopOf="@id/record_play_iv" />
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/record_play_iv"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_50_dp"
-        android:background="@drawable/recommend_play_icon"
+        app:src_selected_drawable="@drawable/sq_bofang"
+        app:src_unSelected_drawable="@drawable/sq_zanting"
         app:layout_constraintBottom_toBottomOf="@id/collect_iv"
         app:layout_constraintLeft_toRightOf="@id/play_last_iv"
         app:layout_constraintRight_toLeftOf="@id/play_next_iv"
@@ -177,6 +244,13 @@
         app:layout_constraintBottom_toTopOf="@id/record_play_iv"
         app:layout_constraintLeft_toRightOf="@id/play_time_tv"
         app:layout_constraintRight_toLeftOf="@id/total_time_tv" />
+
+    <View
+        android:id="@+id/swich_mode_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_area"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.common.view.ex.ExConstraintLayout

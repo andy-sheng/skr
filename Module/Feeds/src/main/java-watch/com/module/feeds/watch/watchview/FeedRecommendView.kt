@@ -1,6 +1,8 @@
 package com.module.feeds.watch.watchview
 
+import android.media.MediaPlayer
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.Group
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
@@ -11,8 +13,9 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
-import com.common.log.DebugLogView
 import com.common.log.MyLog
+import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -22,29 +25,37 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
-import com.component.busilib.callback.EmptyCallback
 import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.add2SongPlayModeManager
+import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
+import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
-import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
-import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedsWatchModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
+import kotlin.collections.ArrayList
+import kotlin.collections.set
+import kotlin.properties.Delegates
 
 class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.context), CoroutineScope by MainScope() {
 
     val TAG = "FeedRecommendView"
+
+    val LYRIC_TYPE = 0
+    val AVATAR_TYPE = 1
 
     val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
@@ -53,10 +64,12 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     val recordCover: SimpleDraweeView
     val songNameTv: TextView
     val songDescTv: TextView
+    val lyricTypesongNameTv: TextView
+    val lyricTypesongDescTv: TextView
     val collectIv: ImageView
     val likeNumTv: TextView
     val playLastIv: ImageView
-    val recordPlayIv: ImageView
+    var recordPlayIv: ImageView? = null
     val playNextIv: ImageView
     val playTimeTv: TextView
     val totalTimeTv: TextView
@@ -66,6 +79,10 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     val commentNumTv: TextView
     val nameTv: TextView
     val contentTv: TextView
+    val swichModeView: View
+    val avatarTypeViews: Group
+    val lyricTypeViews: Group
+    var mFeedsCommonLyricView: FeedsCommonLyricView? = null
 
     private var mOffset = 0   //偏移量
     private val mCNT = 20  // 默认拉去的个数
@@ -73,11 +90,104 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     private var isSeleted = false  // 是否选中
     private var mHasInitData = false  //关注和推荐是否初始化过数据
 
+
     private var mCurModel: FeedsWatchModel? = null
 
     var mDataList = ArrayList<FeedsWatchModel>()  // list列表
 
     var mSongPlayModeManager: FeedSongPlayModeManager? = null
+
+    val playerTag = TAG + hashCode()
+
+    var playCallback = object : PlayerCallbackAdapter() {
+        override fun onPrepared() {
+            MyLog.d(TAG, "onPrepared")
+            if (recordPlayIv!!.isSelected) {
+                if (!mFeedsCommonLyricView!!.isStart()) {
+                    mFeedsCommonLyricView!!.playLyric()
+                } else {
+                    mFeedsCommonLyricView!!.resume()
+                }
+            } else {
+                SinglePlayer.pause(playerTag)
+            }
+        }
+
+        override fun onCompletion() {
+            toNextSongAction()
+        }
+
+        override fun onSeekComplete() {
+
+        }
+
+        override fun onError(what: Int, extra: Int) {
+            mFeedsCommonLyricView!!.pause()
+        }
+
+        override fun onBufferingUpdate(mp: MediaPlayer?, percent: Int) {
+            MyLog.d(TAG, "onBufferingUpdate percent=$percent")
+            if (percent == 100) {
+                if (SinglePlayer.isPlaying) {
+                    mFeedsCommonLyricView!!.resume()
+//                    mRadioView?.bufferEnd()
+                }
+            } else {
+                mFeedsCommonLyricView!!.pause()
+//                mRadioView?.buffering()
+            }
+        }
+
+        override fun openTimeFlyMonitor(): Boolean {
+            return true
+        }
+
+        override fun onTimeFlyMonitor(pos: Long, duration: Long) {
+            //歌曲还没加载到的时候这个会返回1毫秒，无意义，do not care
+            if (pos < 1000) {
+                return
+            }
+
+            onTimeFly(pos, duration)
+        }
+    }
+
+    // 保持 init Postion 一致
+    var showType: Int by Delegates.observable(AVATAR_TYPE, { _, oldPositon, newPosition ->
+        if (newPosition != oldPositon) {
+            if (newPosition == LYRIC_TYPE) {
+                toLyricType()
+            } else {
+                toAvatarType()
+            }
+        }
+    })
+
+    fun onTimeFly(pos: Long, duration: Long) {
+        playTimeTv!!.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
+        totalTimeTv!!.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
+        if (seekBar?.max != duration.toInt()) {
+            seekBar?.max = duration.toInt()
+        }
+        seekBar!!.progress = pos.toInt()
+        mCurModel?.song?.playDurMsFromPlayerForDebug = duration.toInt()
+        mFeedsCommonLyricView?.seekTo(pos.toInt())
+        FeedsPlayStatistics.updateCurProgress(pos, duration)
+    }
+
+    fun toLyricType() {
+        avatarTypeViews.visibility = View.GONE
+        lyricTypeViews.visibility = View.VISIBLE
+    }
+
+    fun toAvatarType() {
+        avatarTypeViews.visibility = View.VISIBLE
+        lyricTypeViews.visibility = View.GONE
+    }
+
+    fun toNextSongAction() {
+
+    }
 
     init {
         View.inflate(context, R.layout.feed_recomend_view_layout, this)
@@ -104,6 +214,12 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         commentNumTv = this.findViewById(R.id.comment_num_tv)
         nameTv = this.findViewById(R.id.name_tv)
         contentTv = this.findViewById(R.id.content_tv)
+        swichModeView = this.findViewById(R.id.swich_mode_view)
+        avatarTypeViews = this.findViewById(R.id.avatar_type_views)
+        lyricTypeViews = this.findViewById(R.id.lyric_type_views)
+        lyricTypesongNameTv = this.findViewById(R.id.lyric_type_song_name_tv)
+        lyricTypesongDescTv = this.findViewById(R.id.lyric_type_desc_tv)
+        mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
 
         mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, null)
         mSongPlayModeManager?.supportCycle = false
@@ -125,6 +241,16 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             }
         })
 
+        recordPlayIv?.setOnClickListener {
+            if (it.isSelected) {
+                pausePlay()
+                it.isSelected = false
+            } else {
+                startPlay()
+                it.isSelected = true
+            }
+        }
+
         likeNumTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mCurModel?.let {
@@ -132,6 +258,12 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 }
             }
         })
+
+        swichModeView.setOnClickListener {
+            showType = if (showType == LYRIC_TYPE) AVATAR_TYPE else LYRIC_TYPE
+        }
+
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
 
 
@@ -264,6 +396,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             refreshCollect()
             refreshLike()
         }
+
+        startPlay()
     }
 
     private fun refreshCollect() {
@@ -354,6 +488,29 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 }
             }
         }
+    }
+
+    private fun startPlay() {
+        mCurModel?.let {
+            recordPlayIv?.isSelected = true
+//        mRadioView?.play(SinglePlayer.isBufferingOk)
+            mCurModel?.song?.playURL?.let {
+                FeedsPlayStatistics.setCurPlayMode(mCurModel?.feedID ?: 0)
+                SinglePlayer.startPlay(playerTag, it)
+            }
+
+            if (SinglePlayer.isBufferingOk) {
+                mFeedsCommonLyricView?.playLyric()
+            }
+        }
+    }
+
+    private fun pausePlay() {
+        MyLog.d(TAG, "pausePlay")
+        recordPlayIv!!.isSelected = false
+//        mRadioView?.pause()
+        SinglePlayer.pause(playerTag)
+        mFeedsCommonLyricView?.pause()
     }
 
 
