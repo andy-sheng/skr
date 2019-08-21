@@ -1,6 +1,7 @@
 package com.module.feeds.watch.watchview
 
 import android.media.MediaPlayer
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.Group
 import android.text.TextUtils
@@ -8,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
@@ -27,7 +29,10 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.detail.view.FeedsCommonLyricView
@@ -35,6 +40,7 @@ import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
+import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -164,12 +170,12 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     })
 
     fun onTimeFly(pos: Long, duration: Long) {
-        playTimeTv!!.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
-        totalTimeTv!!.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
-        if (seekBar?.max != duration.toInt()) {
-            seekBar?.max = duration.toInt()
+        playTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
+        totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
+        if (seekBar.max != duration.toInt()) {
+            seekBar.max = duration.toInt()
         }
-        seekBar!!.progress = pos.toInt()
+        seekBar.progress = pos.toInt()
         mCurModel?.song?.playDurMsFromPlayerForDebug = duration.toInt()
         mFeedsCommonLyricView?.seekTo(pos.toInt())
         FeedsPlayStatistics.updateCurProgress(pos, duration)
@@ -263,7 +269,56 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             showType = if (showType == LYRIC_TYPE) AVATAR_TYPE else LYRIC_TYPE
         }
 
+        playNextIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mSongPlayModeManager?.getNextSong(true) {
+                    mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                        bindCurFeedWatchModel(mDataList[position])
+                    }
+                }
+            }
+        })
+
+        playLastIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mSongPlayModeManager?.getPreSong(true) {
+                    mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                        bindCurFeedWatchModel(mDataList[position])
+                    }
+                }
+            }
+        })
+
+        avatarIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                openPersonCenter()
+            }
+        })
+
+        nameTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                openPersonCenter()
+            }
+        })
+
+        bottomArea.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                //todo 补充跳到详情的逻辑
+            }
+        })
+
         SinglePlayer.addCallback(playerTag, playCallback)
+    }
+
+    private fun openPersonCenter() {
+        mCurModel?.let {
+            val bundle = Bundle()
+            bundle.putInt("bundle_user_id", it.user?.userID ?: 0)
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                    .with(bundle)
+                    .navigation()
+        }
     }
 
 
