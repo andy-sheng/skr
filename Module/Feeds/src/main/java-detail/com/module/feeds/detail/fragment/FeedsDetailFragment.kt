@@ -19,6 +19,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
@@ -35,6 +36,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -104,6 +106,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mFeedsCommentView: FeedsCommentView? = null
     var mRadioView: FeedsRecordAnimationView? = null
     var mCommonTitleBar: CommonTitleBar? = null
+
+    var mTagArea: ExConstraintLayout? = null
+    var mTagTv: TextView? = null
+    var mHitIv: ImageView? = null
+    var mShareTag: TextView? = null
+
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
     var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
@@ -306,6 +314,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mCollectionIv = rootView.findViewById(R.id.collection_iv)
+
+        mTagArea = rootView.findViewById(R.id.tag_area)
+        mTagTv = rootView.findViewById(R.id.tag_tv)
+        mHitIv = rootView.findViewById(R.id.hit_iv)
+        mShareTag = rootView.findViewById(R.id.share_tag)
 
         mSongControlArea = rootView.findViewById(R.id.song_control_arae)
         mPlayLastIv = rootView.findViewById(R.id.play_last_iv)
@@ -554,8 +567,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun toNextSongAction(userAction: Boolean) {
-        mSongManager?.getNextSong(userAction){
-            newModel->
+        mSongManager?.getNextSong(userAction) { newModel ->
             if (newModel == null) {
                 latestAction = null
                 U.getToastUtil().showShort("这已经是最后一首歌了")
@@ -572,8 +584,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun toPreSongAction(userAction: Boolean) {
-        mSongManager?.getPreSong(userAction){
-            newModel->
+        mSongManager?.getPreSong(userAction) { newModel ->
             if (newModel == null) {
                 U.getToastUtil().showShort("这已经是第一首歌了")
                 latestAction = null
@@ -606,7 +617,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     private fun setModelData() {
         mMoreDialogPlus?.dismiss()
-        mSeekBar?.max = mFeedsWatchModel?.song?.playDurMs ?: 60*1000
+        mSeekBar?.max = mFeedsWatchModel?.song?.playDurMs ?: 60 * 1000
         mSeekBar?.progress = 0
         mPassTimeTv?.text = "00:00"
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
@@ -642,6 +653,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
         }
 
+        showHitArea()
         showMainComment()
 
         mCommentTv?.setDebounceViewClickListener {
@@ -663,6 +675,39 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mCollectionIv?.isSelected = mFeedsWatchModel?.isCollected == true
 
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
+
+    }
+
+    private fun showHitArea(){
+        if (mFeedsWatchModel?.song?.needChallenge == true) {
+            //打榜歌曲
+            mShareTag?.visibility = View.GONE
+            mHitIv?.visibility = View.VISIBLE
+            if (mFeedsWatchModel?.rank != null) {
+                if (TextUtils.isEmpty(mFeedsWatchModel?.rank?.rankDesc)) {
+                    mTagArea?.visibility = View.GONE
+                } else {
+                    mTagTv?.text = mFeedsWatchModel?.rank?.rankDesc
+                    mTagArea?.visibility = View.VISIBLE
+                }
+            } else {
+                mTagArea?.visibility = View.GONE
+            }
+        } else {
+            //非打榜歌曲
+            mTagArea?.visibility = View.GONE
+            mHitIv?.visibility = View.GONE
+            if (mFeedsWatchModel?.song?.needShareTag == true) {
+                var singler = ""
+                if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.songTpl?.singer)) {
+                    singler = " 演唱/${mFeedsWatchModel?.song?.songTpl?.singer}"
+                }
+                mShareTag?.visibility = View.VISIBLE
+                mShareTag?.text = "#神曲分享#$singler"
+            } else {
+                mShareTag?.visibility = View.GONE
+            }
+        }
     }
 
     private fun showMainComment() {
