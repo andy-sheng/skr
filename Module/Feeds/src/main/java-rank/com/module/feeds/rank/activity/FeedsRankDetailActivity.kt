@@ -301,7 +301,9 @@ class FeedsRankDetailActivity : BaseActivity() {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
                 showDetailInfo(list, isClean)
+                dataOkListener?.invoke()
             } else {
+                dataOkListener?.invoke()
                 mRefreshLayout.finishLoadMore()
                 mRefreshLayout.finishRefresh()
             }
