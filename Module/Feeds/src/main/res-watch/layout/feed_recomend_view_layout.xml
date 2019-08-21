@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/view_10_dp">
+
+    <!--背景-->
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintLeft_toLeftOf="@id/background"
+        app:layout_constraintRight_toRightOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background" />
+
+    <ImageView
+        android:id="@+id/recommend_film"
+        android:layout_width="@dimen/view_208_dp"
+        android:layout_height="@dimen/view_208_dp"
+        android:background="@drawable/recommend_film_icon"
+        app:layout_constraintBottom_toTopOf="@id/song_name_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/record_cover"
+        android:layout_width="@dimen/view_132_dp"
+        android:layout_height="@dimen/view_132_dp"
+        app:layout_constraintBottom_toBottomOf="@id/recommend_film"
+        app:layout_constraintLeft_toLeftOf="@id/recommend_film"
+        app:layout_constraintRight_toRightOf="@id/recommend_film"
+        app:layout_constraintTop_toTopOf="@id/recommend_film" />
+
+    <TextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/textsize_10_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        android:gravity="center"
+        android:text="《龙卷风》"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/song_desc_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recommend_film" />
+
+    <TextView
+        android:id="@+id/song_desc_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:layout_marginRight="@dimen/view_30_dp"
+        android:gravity="center"
+        android:text="演唱/地理懂了吧"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_area"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
+
+    <ImageView
+        android:id="@+id/collect_iv"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/feed_collect_normal_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/like_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/feed_like_white_icon"
+        android:drawablePadding="@dimen/view_2_dp"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_16_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/collect_iv" />
+
+
+    <ImageView
+        android:id="@+id/play_last_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/recommend_play_last_icon"
+        app:layout_constraintBottom_toBottomOf="@id/record_play_iv"
+        app:layout_constraintLeft_toRightOf="@id/collect_iv"
+        app:layout_constraintRight_toLeftOf="@id/record_play_iv"
+        app:layout_constraintTop_toTopOf="@id/record_play_iv" />
+
+    <ImageView
+        android:id="@+id/record_play_iv"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        android:background="@drawable/recommend_play_icon"
+        app:layout_constraintBottom_toBottomOf="@id/collect_iv"
+        app:layout_constraintLeft_toRightOf="@id/play_last_iv"
+        app:layout_constraintRight_toLeftOf="@id/play_next_iv"
+        app:layout_constraintTop_toTopOf="@id/collect_iv" />
+
+    <ImageView
+        android:id="@+id/play_next_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/recomend_play_next_icon"
+        app:layout_constraintBottom_toBottomOf="@id/record_play_iv"
+        app:layout_constraintLeft_toRightOf="@id/record_play_iv"
+        app:layout_constraintRight_toLeftOf="@id/like_num_tv"
+        app:layout_constraintTop_toTopOf="@id/record_play_iv" />
+
+    <TextView
+        android:id="@+id/play_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_14_dp"
+        android:paddingLeft="@dimen/view_20_dp"
+        android:text="00:00"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/seek_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/seek_bar" />
+
+    <TextView
+        android:id="@+id/total_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_14_dp"
+        android:paddingRight="@dimen/view_20_dp"
+        android:text="00:00"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/seek_bar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/seek_bar" />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:max="200"
+        android:maxHeight="@dimen/view_2_dp"
+        android:min="0"
+        android:minHeight="@dimen/view_2_dp"
+        android:paddingLeft="@dimen/view_5_dp"
+        android:paddingTop="@dimen/view_16_dp"
+        android:paddingRight="@dimen/view_5_dp"
+        android:paddingBottom="@dimen/view_16_dp"
+        android:progressDrawable="@drawable/recommend_seekbar_bg"
+        android:thumb="@drawable/recommend_white_thumb"
+        app:layout_constraintBottom_toTopOf="@id/record_play_iv"
+        app:layout_constraintLeft_toRightOf="@id/play_time_tv"
+        app:layout_constraintRight_toLeftOf="@id/total_time_tv" />
+
+
+    <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/bottom_area"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_15_dp"
+        app:bl_corners_radius="@dimen/view_10_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_10"
+        app:layout_constraintBottom_toTopOf="@id/seek_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/avatar_iv"
+            android:layout_width="@dimen/view_26_dp"
+            android:layout_height="@dimen/view_26_dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/comment_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:text="34条评论"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_10_dp"
+            app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/avatar_iv" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:text="地理懂了吧"
+            android:textColor="@color/white_trans_80"
+            android:textSize="@dimen/textsize_14_dp"
+            app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+            app:layout_constraintRight_toLeftOf="@id/comment_num_tv"
+            app:layout_constraintTop_toTopOf="@id/avatar_iv" />
+
+        <TextView
+            android:id="@+id/content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_5_dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/view_3_dp"
+            android:maxLines="2"
+            android:text="周董的龙卷风席卷整个华语乐 周董的龙卷风席卷整个华语乐"
+            android:textColor="@color/white_trans_80"
+            android:textSize="@dimen/textsize_14_dp"
+            app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+
+    </com.common.view.ex.ExConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

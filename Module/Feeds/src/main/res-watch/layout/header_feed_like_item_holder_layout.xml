@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/include_view_header"
-        layout="@layout/feed_recommend_view_layout"
+        layout="@layout/feed_recommend_watch_view_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_14_dp"

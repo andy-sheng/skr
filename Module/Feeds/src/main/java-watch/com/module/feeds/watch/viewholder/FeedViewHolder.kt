@@ -23,7 +23,6 @@ import com.module.feeds.detail.view.FeedsManyLyricView
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
-import kotlin.math.sin
 
 
 open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(rootView) {
@@ -186,7 +185,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
     // 刷新喜欢图标和数字
     fun refreshLike() {
-        var drawble = U.getDrawable(R.drawable.feed_like_normal_icon)
+        var drawble = U.getDrawable(R.drawable.feed_like_black_icon)
         if (model?.isLiked == true) {
             drawble = U.getDrawable(R.drawable.feed_like_selected_icon)
         }

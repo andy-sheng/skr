@@ -22,8 +22,8 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
+import com.module.feeds.watch.watchview.FeedRecommendView
 import com.module.feeds.watch.watchview.FollowWatchView
-import com.module.feeds.watch.watchview.RecommendWatchView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,14 +34,16 @@ import kotlin.properties.Delegates
 class FeedsWatchFragment : BaseFragment() {
 
     private lateinit var mNavigationBgIv: ImageView
+    private lateinit var mDivider: View
     private lateinit var mFeedChallengeTv: ExTextView
+    private lateinit var mFeedPlaylistTv: ExTextView
     private lateinit var mFeedTab: SlidingTabLayout
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
     private var isBackground = false   // 是否在后台
 
     val mFollowFeesView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
-    val mRecommendFeedsView: RecommendWatchView by lazy { RecommendWatchView(this) }   //推荐
+    val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
 
     val initPostion = 1
@@ -52,13 +54,13 @@ class FeedsWatchFragment : BaseFragment() {
             delay(400)
             when (oldPositon) {
                 0 -> {
-                    mFollowFeesView?.unselected()
+                    mFollowFeesView.unselected()
                 }
                 1 -> {
-                    mRecommendFeedsView?.unselected()
+                    mRecommendFeedsView.unselected()
                 }
                 2 -> {
-                    mFeedsCollectView?.unselected()
+                    mFeedsCollectView.unselected()
                 }
             }
             onViewSelected(newPosition)
@@ -71,8 +73,10 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun initData(savedInstanceState: Bundle?) {
         mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
+        mDivider = rootView.findViewById(R.id.divider)
         mFeedTab = rootView.findViewById(R.id.feed_tab)
         mFeedChallengeTv = rootView.findViewById(R.id.feed_challenge_tv)
+        mFeedPlaylistTv = rootView.findViewById(R.id.feed_playlist_tv)
         mFeedVp = rootView.findViewById(R.id.feed_vp)
 
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
@@ -84,10 +88,18 @@ class FeedsWatchFragment : BaseFragment() {
             }
         })
 
+        mFeedPlaylistTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
+                        .withInt("from", 1)
+                        .navigation()
+            }
+        })
+
         mFeedTab.apply {
             setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
             setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
-            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
             setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
             setTitleSize(14f)
             setSelectedTitleSize(24f)
@@ -173,14 +185,17 @@ class FeedsWatchFragment : BaseFragment() {
         when (pos) {
             0 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
+                mDivider.visibility = View.VISIBLE
                 mFollowFeesView.selected()
             }
             1 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
+                mDivider.visibility = View.GONE
                 mRecommendFeedsView.selected()
             }
             2 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
+                mDivider.visibility = View.GONE
                 mFeedsCollectView.selected()
             }
         }

@@ -143,7 +143,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
                 FeedsWallViewHolder(view, listener)
             }
             mHomeTopType -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_recommend_view_layout, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_recommend_watch_view_layout, parent, false)
                 FeedRecommendTagHolder(view, listener)
             }
             else -> {

@@ -296,7 +296,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_50_dp"
         android:layout_marginLeft="@dimen/view_108_dp"
-        android:drawableLeft="@drawable/feed_like_normal_icon"
+        android:drawableLeft="@drawable/feed_like_black_icon"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:padding="@dimen/view_16_dp"

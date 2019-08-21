@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_12_dp"
         app:bl_selected_drawable="@drawable/feed_like_selected_icon"
-        app:bl_unSelected_drawable="@drawable/feed_like_normal_icon"
+        app:bl_unSelected_drawable="@drawable/feed_like_black_icon"
         app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
