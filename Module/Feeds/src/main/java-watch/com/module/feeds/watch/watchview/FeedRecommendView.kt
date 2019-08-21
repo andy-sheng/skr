@@ -1,6 +1,7 @@
 package com.module.feeds.watch.watchview
 
 import android.graphics.Color
+import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -334,6 +335,21 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         bottomArea.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 //todo 补充跳到详情的逻辑
+                mCurModel?.let {
+                    FeedsDetailActivity.openActivity(context as Activity, it.feedID, FeedsDetailActivity.FROM_HOME_PAGE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                        override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                            mSongPlayModeManager?.getNextSong(true) {
+                                callback(it)
+                            }
+                        }
+
+                        override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                            mSongPlayModeManager?.getPreSong(true) {
+                                callback(it)
+                            }
+                        }
+                    })
+                }
             }
         })
 
