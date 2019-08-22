@@ -175,10 +175,12 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         // 加载歌词
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
             feedAutoScrollLyricView.visibility = View.GONE
+            feedWatchManyLyricView.visibility = View.VISIBLE
             feedWatchManyLyricView.loadLyric()
         } else {
-            feedAutoScrollLyricView.loadLyric()
             feedWatchManyLyricView.visibility = View.GONE
+            feedAutoScrollLyricView.visibility = View.VISIBLE
+            feedAutoScrollLyricView.loadLyric()
         }
         tryBindDebugView()
     }
