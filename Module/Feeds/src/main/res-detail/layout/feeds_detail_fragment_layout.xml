@@ -174,11 +174,23 @@
                         app:src_selected_drawable="@drawable/sq_bofang"
                         app:src_unSelected_drawable="@drawable/sq_zanting" />
 
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/collection_iv_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/view_30_dp"
+                        android:padding="@dimen/view_4_dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/control_tv"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/control_tv"
+                        app:src_selected_drawable="@drawable/feed_collect_selected_icon"
+                        app:src_unSelected_drawable="@drawable/feed_not_collection" />
+
                     <android.support.constraint.Group
                         android:id="@+id/song_control_arae"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="play_next_iv, play_last_iv, control_tv"
+                        app:constraint_referenced_ids="play_next_iv, play_last_iv, control_tv, collection_iv_2"
                         tools:visibility="visible" />
 
                     <com.common.view.ex.ExTextView

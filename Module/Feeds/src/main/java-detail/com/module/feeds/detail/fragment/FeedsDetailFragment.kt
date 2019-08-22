@@ -87,6 +87,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mBlurBg: BaseImageView? = null
     var mXinIv: ExImageView? = null
     var mCollectionIv: ExImageView? = null
+    var mCollectionIv2: ExImageView? = null
     var mShareIv: ExImageView? = null
     var mBtnBack: ImageView? = null
     var mPlayTypeIv: ImageView? = null
@@ -177,8 +178,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 0f, 1f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 0f, 1f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 0f, 1f)
+            val animator5 = ObjectAnimator.ofFloat(mCollectionIv2, "alpha", 0f, 1f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.play(animator1).with(animator2).with(animator3).with(animator5)
 
             if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                 val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 0f, 1f)
@@ -193,8 +195,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 1f, 0f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 1f, 0f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 1f, 0f)
+            val animator5 = ObjectAnimator.ofFloat(mCollectionIv2, "alpha", 1f, 0f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.play(animator1).with(animator2).with(animator3).with(animator5)
             if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                 val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 1f, 0f)
                 animSet.play(animator1).with(animator4)
@@ -327,6 +330,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommonLyricView = FeedsCommonLyricView(rootView, true)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mCollectionIv = rootView.findViewById(R.id.collection_iv)
+        mCollectionIv2 = rootView.findViewById(R.id.collection_iv_2)
 
         mTagArea = rootView.findViewById(R.id.tag_area)
         mTagTv = rootView.findViewById(R.id.tag_tv)
@@ -536,6 +540,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mCollectionIv2?.setDebounceViewClickListener {
+            mFeedsWatchModel?.let {
+                mFeedsDetailPresenter?.collection(!it.isCollected, it.feedID)
+            }
+        }
+
         mFeedsCommentView?.mClickContentCallBack = {
             showCommentOp(it)
         }
@@ -710,6 +720,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
         mCollectionIv?.isSelected = mFeedsWatchModel?.isCollected == true
+        mCollectionIv2?.isSelected = mFeedsWatchModel?.isCollected == true
 
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
 
@@ -861,6 +872,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     override fun collectFinish(c: Boolean) {
         mCollectionIv?.isSelected = c
+        mCollectionIv2?.isSelected = c
         mFeedsWatchModel?.isCollected = c
     }
 
