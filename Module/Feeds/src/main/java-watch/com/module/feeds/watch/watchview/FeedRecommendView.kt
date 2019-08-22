@@ -209,7 +209,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     }
 
     fun onSongComplete() {
-        if (!U.getActivityUtils().isAppForeground) {
+        if (U.getActivityUtils().isAppForeground) {
             seekBar?.progress = 0
             playTimeTv?.text = "00:00"
             mFeedsCommonLyricView?.seekTo(0)
