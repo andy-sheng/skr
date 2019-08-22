@@ -172,9 +172,10 @@
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
         <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
-            android:name="com.common.sensor.SensorGuardService"
+            android:name="com.common.sensor.PlayerGuardService"
             android:process=":sensor"></service>
 
+        <receiver android:name="com.common.sensor.NotifitionPlayerActionReceiver"/>
         <!--魅族push应用定义消息receiver声明 -->
         <!--<receiver android:name="com.zq.live.MeizuTestReceiver">-->
         <!--<intent-filter>-->
