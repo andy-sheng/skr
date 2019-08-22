@@ -133,9 +133,9 @@ class FeedsPublishActivity : BaseActivity() {
             // 先看看发生异常会不会崩溃
             val result = subscribe {
                 feedsMakeServerApi.getFeedLikeList(
-                        when (CHALLENGE_TYPE_QUICK_SONG) {
-                            mFeedsMakeModel?.challengeType -> 1
-                            mFeedsMakeModel?.challengeType -> 2
+                        when (mFeedsMakeModel?.challengeType) {
+                            CHALLENGE_TYPE_QUICK_SONG -> 1
+                            CHALLENGE_TYPE_CHANGE_SONG -> 2
                             else -> 0
                         }
                 )
@@ -354,9 +354,9 @@ class FeedsPublishActivity : BaseActivity() {
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
                     "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
                     "lrcURL" to customLrcUrl,
-                    "playDurMs" to if((mFeedsMakeModel?.recordDuration?:0L)>0){
-                        mFeedsMakeModel?.recordDuration?.toInt()?:0
-                    }else{
+                    "playDurMs" to if ((mFeedsMakeModel?.recordDuration ?: 0L) > 0) {
+                        mFeedsMakeModel?.recordDuration?.toInt() ?: 0
+                    } else {
                         0
                     },
                     "playURL" to mFeedsMakeModel?.audioUploadUrl,
