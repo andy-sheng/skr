@@ -127,6 +127,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mFeedID: Int = -1   // 外部跳转传入mFeedID
     var mType: Int = -1  // 从外部跳转标记的来源
+    var mFrom: FeedPage? = null
     var mPlayType = FeedSongPlayModeManager.PlayMode.ORDER   // 播放模式，默认顺序播放
 
     var mFeedsWatchModel: FeedsWatchModel? = null  // 详细的数据model，通过请求去拉
@@ -226,7 +227,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 } else {
                     toNextSongAction(false)
                 }
-            } else {
+            } else if (mType == FeedsDetailActivity.TYPE_SWITCH) {
+                mFeedsWatchModel?.let {
+                    showFeedsWatchModel(it)
+                }
+            } else if (mType == FeedsDetailActivity.TYPE_NO) {
                 mFeedsWatchModel?.let {
                     showFeedsWatchModel(it)
                 }
@@ -998,6 +1003,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         } else if (type == 3) {
             data?.let {
                 mSongManager = data as AbsPlayModeManager
+            }
+        } else if (type == 4) {
+            data?.let {
+                mFrom = data as FeedPage
             }
         }
     }

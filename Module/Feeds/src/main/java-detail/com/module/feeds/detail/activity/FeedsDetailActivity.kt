@@ -21,6 +21,7 @@ class FeedsDetailActivity : BaseActivity() {
         // 标记来源
         val TYPE_SWITCH = 1     //只支持上下首切换
         val TYPE_SWITCH_MODE = 2  //即支持换模式又支持上下首切换
+        val TYPE_NO = 3  //上面两个都不支持
         var MANAGER: AbsPlayModeManager? = null
 
         fun openActivity(from: FeedPage, activity: Activity, feedID: Int, type: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
@@ -65,6 +66,11 @@ class FeedsDetailActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
         val feedID = intent.getIntExtra("feed_ID", -1)
         val type = intent.getIntExtra("type", TYPE_SWITCH)
+        var from: FeedPage? = null
+        intent.getSerializableExtra("type")?.let {
+            from = it as FeedPage
+        }
+
         val playType = intent.getSerializableExtra("playType") as FeedSongPlayModeManager.PlayMode?
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsDetailActivity, FeedsDetailFragment::class.java)
                 .setAddToBackStack(false)
@@ -73,6 +79,7 @@ class FeedsDetailActivity : BaseActivity() {
                 .addDataBeforeAdd(1, type)
                 .addDataBeforeAdd(2, playType)
                 .addDataBeforeAdd(3, MANAGER)
+                .addDataBeforeAdd(4, from)
                 .build())
         MANAGER = null
     }
