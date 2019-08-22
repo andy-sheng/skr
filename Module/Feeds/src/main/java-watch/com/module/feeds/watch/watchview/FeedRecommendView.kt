@@ -317,13 +317,17 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
                             seekBar.progress = 0
                             playTimeTv?.text = "00:00"
-                            song?.let {
+                            song.let {
                                 totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
                                 if (seekBar.max != it.playDurMs) {
                                     seekBar.max = it.playDurMs
                                 }
                             }
-                            bindCurFeedWatchModel(mDataList[position])
+                            if (position in 0 until mDataList.size) {
+                                bindCurFeedWatchModel(mDataList[position])
+                            } else {
+                                MyLog.e(TAG, "clickValidposition = $position  mDataList.size=${mDataList.size}")
+                            }
                         }
                     }
                 }
@@ -345,7 +349,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                                     seekBar.max = it.playDurMs
                                 }
                             }
-                            bindCurFeedWatchModel(mDataList[position])
+                            if (position in 0 until this@FeedRecommendView.mDataList.size) {
+                                bindCurFeedWatchModel(mDataList[position])
+                            } else {
+                                MyLog.d(TAG, "clickValidposition = $position mDataList.size = ${mDataList.size}")
+                            }
                         }
                     }
                 }
@@ -373,7 +381,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(true) { song ->
                                 mSongPlayModeManager?.getCurPostionInOrigin()?.let { pos ->
-                                    mCurModel = mDataList[pos]
+                                    if (pos in 0 until mDataList.size) {
+                                        mCurModel = mDataList[pos]
+                                    } else {
+                                        MyLog.e(TAG, "getNextSongpos = $pos mDataList.size = ${mDataList.size}")
+                                    }
                                 }
                                 callback(song)
                             }
@@ -382,7 +394,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getPreSong(true) { song ->
                                 mSongPlayModeManager?.getCurPostionInOrigin()?.let { pos ->
-                                    mCurModel = mDataList[pos]
+                                    if (pos in 0 until mDataList.size) {
+                                        mCurModel = mDataList[pos]
+                                    } else {
+                                        MyLog.e(TAG, "getPreSong = $pos mDataList.size = ${mDataList.size}")
+                                    }
                                 }
                                 callback(song)
                             }
@@ -475,7 +491,9 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 mDataList.addAll(list)
             }
             add2SongPlayModeManager(mSongPlayModeManager, mDataList, isClear)
-            bindCurFeedWatchModel(mDataList[0])
+            if (!mDataList.isNullOrEmpty()) {
+                bindCurFeedWatchModel(mDataList[0])
+            }
         } else {
             if (!list.isNullOrEmpty()) {
                 mDataList.addAll(list)
