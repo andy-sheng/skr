@@ -25,7 +25,7 @@
     <com.common.view.ex.ExImageView
         android:id="@+id/collect_icon"
         android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_62_dp"
         android:layout_marginRight="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/feed_not_collection"
