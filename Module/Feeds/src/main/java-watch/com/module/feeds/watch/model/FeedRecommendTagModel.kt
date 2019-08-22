@@ -21,5 +21,8 @@ class FeedRecommendTagModel : Serializable {
     var isSupportCollected: Boolean = false //歌单是否支持收藏
     @JSONField(name = "isCollected")
     var isCollected: Boolean = false //自己是否收藏过该歌单
+    @JSONField(name = "rankTagType")
+    var rankTagType: Int? = null   // 榜单类型  1是榜单 2是歌单
+
 
 }
