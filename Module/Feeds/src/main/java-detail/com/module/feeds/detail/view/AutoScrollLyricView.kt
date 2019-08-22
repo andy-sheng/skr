@@ -133,11 +133,6 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         mDisposable?.dispose()
     }
 
-    override fun onViewDetachedFromWindow(v: View?) {
-        super.onViewDetachedFromWindow(v)
-        mScrollJob?.cancel()
-    }
-
     private fun startScroll() {
         MyLog.d(TAG, "startScroll")
         mScrollJob?.cancel()
@@ -194,8 +189,5 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         lyricTv?.visibility = visibility
-        if (visibility == View.GONE) {
-            pause()
-        }
     }
 }

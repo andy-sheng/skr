@@ -101,6 +101,7 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     }
 
     override fun destroy() {
-        mBaseFeedsLyricView?.destroy()
+        mAutoScrollLyricView?.destroy()
+        mFeedsManyLyricView?.destroy()
     }
 }
