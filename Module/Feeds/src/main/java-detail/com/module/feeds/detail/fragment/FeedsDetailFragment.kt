@@ -127,7 +127,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     var mFeedID: Int = -1   // 外部跳转传入mFeedID
     var mType: Int = -1  // 从外部跳转标记的来源
-    var mFrom: FeedPage? = null
+    var mFrom: FeedPage = FeedPage.UNKNOW
     var mPlayType = FeedSongPlayModeManager.PlayMode.ORDER   // 播放模式，默认顺序播放
 
     var mFeedsWatchModel: FeedsWatchModel? = null  // 详细的数据model，通过请求去拉
@@ -898,7 +898,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
             //TODO 这里需要确定页面来源
-            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, FeedPage.UNKNOW,0)
+            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, mFrom,0)
             SinglePlayer.startPlay(playerTag, it)
         }
 
