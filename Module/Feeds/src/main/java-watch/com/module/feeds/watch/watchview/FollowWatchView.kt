@@ -66,7 +66,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
 
     override fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
         if (hasMore) {
-            getFollowFeedList(mOffset, true,dataOkCallback)
+            getFollowFeedList(mOffset, false, dataOkCallback)
         } else {
             MyLog.d(TAG, "getMoreFeeds hasMore = false")
         }
@@ -92,7 +92,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
         mHasInitData = false
     }
 
-    private fun getFollowFeedList(offset: Int, isClear: Boolean,dataOkCallback: (() -> Unit)?=null) {
+    private fun getFollowFeedList(offset: Int, isClear: Boolean, dataOkCallback: (() -> Unit)? = null) {
         launch {
             val result = subscribe(RequestControl("getFollowFeedList", ControlType.CancelThis)) {
                 mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
@@ -121,7 +121,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
                 mAdapter.mDataList.addAll(list)
             }
             mAdapter.notifyDataSetChanged()
-            add2SongPlayModeManager(mSongPlayModeManager,mAdapter.mDataList,isClear)
+            add2SongPlayModeManager(mSongPlayModeManager, mAdapter.mDataList, isClear)
             srollPositionToTop(0)
             if (mAdapter.mDataList.isNotEmpty()) {
                 // delay 是因为2哥notify冲突
@@ -138,7 +138,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
             if (!list.isNullOrEmpty()) {
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
-                add2SongPlayModeManager(mSongPlayModeManager,list,isClear)
+                add2SongPlayModeManager(mSongPlayModeManager, list, isClear)
             }
         }
 

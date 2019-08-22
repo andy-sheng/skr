@@ -451,11 +451,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         pausePlay()
     }
 
-    fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
+    private fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
         getRecommendFeedList(mOffset, false, dataOkCallback)
     }
 
-    fun initFeedList(flag: Boolean): Boolean {
+    private fun initFeedList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {
             // 不一定要刷新
             return false

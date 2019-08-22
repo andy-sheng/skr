@@ -94,7 +94,11 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
     }
 
     override fun getMoreFeeds() {
-        getMoreFeeds(null)
+        if (hasMore) {
+            getMoreFeeds(null)
+        } else {
+            MyLog.d(TAG, "getMoreFeeds hasMore = false")
+        }
     }
 
     override fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
@@ -164,12 +168,12 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
             }
             mAdapter.notifyDataSetChanged()
             srollPositionToTop(0)
-            add2SongPlayModeManager(mSongPlayModeManager, mAdapter.mDataList,isClear)
+            add2SongPlayModeManager(mSongPlayModeManager, mAdapter.mDataList, isClear)
         } else {
             if (list != null && list.isNotEmpty()) {
                 mAdapter.mDataList.addAll(list)
                 mAdapter.notifyDataSetChanged()
-                add2SongPlayModeManager(mSongPlayModeManager, list,isClear)
+                add2SongPlayModeManager(mSongPlayModeManager, list, isClear)
             }
         }
     }
