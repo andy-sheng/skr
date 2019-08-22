@@ -272,19 +272,21 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
             presenter.pause()
         }
         if (fragmentVisible) {
-            if(activity!!.isFinishing){
+            if (activity!!.isFinishing) {
                 onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
-            }else{
+            } else {
                 //TODO 如何 知道 是退到后台 还是到别的页面
                 val beforeSize = U.getActivityUtils().activityList.size
+                val beforeCount = U.getActivityUtils().mActivityStartCount
                 launch {
-                    for(i in 0..20){
+                    for (i in 0..20) {
                         delay(50)
                         val afterSize = U.getActivityUtils().activityList.size
-                        if(afterSize!=beforeSize){
-                            if(U.getActivityUtils().isAppForeground){
+                        val afterCount = U.getActivityUtils().mActivityStartCount
+                        if (afterSize != beforeSize || beforeCount != afterCount) {
+                            if (U.getActivityUtils().isAppForeground) {
                                 onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
-                            }else{
+                            } else {
                                 onFragmentInvisible(INVISIBLE_REASON_TO_DESKTOP)
                             }
                             break
@@ -465,6 +467,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
         return false
     }
 }
+
 const val INVISIBLE_REASON_IN_VIEWPAGER = 4 // Fragment在ViewPager里
 const val INVISIBLE_REASON_TO_OTHER_ACTIVITY = 3 // 到别的Activity
 const val INVISIBLE_REASON_TO_DESKTOP = 2 // 退到桌面或者熄屏幕

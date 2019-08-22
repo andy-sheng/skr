@@ -38,6 +38,7 @@ public class ActivityUtils {
 //    public static final int APP_EXIT = 5003;
     //管理所有存活的 Activity, 容器中的顺序仅仅是 Activity 的创建顺序, 并不能保证和 Activity 任务栈顺序一致
     private List<Activity> mActivityList;
+    public int mActivityStartCount = 0;
     //当前在前台的 Activity
     private Activity mCurrentActivity;
     private boolean mIsAppForeground;

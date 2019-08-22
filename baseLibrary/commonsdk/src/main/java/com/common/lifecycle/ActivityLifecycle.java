@@ -70,8 +70,6 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     }
 
 
-    int mActivityCount = 0;
-
     Handler mUiHanlder = new Handler();
 
     public ActivityLifecycle() {
@@ -100,8 +98,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityStarted(Activity activity) {
-        mActivityCount++;
-        if (mActivityCount == 1) {
+        U.getActivityUtils().mActivityStartCount++;
+        if (U.getActivityUtils().mActivityStartCount == 1) {
             U.getActivityUtils().setAppForeground(true);
         }
     }
@@ -118,8 +116,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityStopped(Activity activity) {
-        mActivityCount--;
-        if (mActivityCount == 0) {
+        U.getActivityUtils().mActivityStartCount--;
+        if (U.getActivityUtils().mActivityStartCount == 0) {
             U.getActivityUtils().setAppForeground(false);
         }
         if (U.getActivityUtils().getCurrentActivity() == activity) {
