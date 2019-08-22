@@ -559,7 +559,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             lyricTypesongDescTv.visibility = songDescTv.visibility
 
             //歌名
-            if (!TextUtils.isEmpty(it.song?.songTpl?.songName)) {
+            if (!TextUtils.isEmpty(it.song?.workName)) {
                 songNameTv.visibility = View.VISIBLE
                 songNameTv.text = "《${it.song?.workName}》"
             } else {
