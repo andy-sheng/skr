@@ -158,6 +158,12 @@ class FeedsTagDetailActivity : BaseActivity() {
                             model!!.isCollected = !model!!.isCollected
                             mCollectTv.text = if (model!!.isCollected) "取消收藏" else "收藏歌单"
                             EventBus.getDefault().post(FeedTagFollowStateEvent(model))
+
+                            if (model!!.isCollected) {
+                                U.getToastUtil().showShort("收藏成功")
+                            } else {
+                                U.getToastUtil().showShort("取消收藏成功")
+                            }
                         } else {
                             if (obj.errno == -2) {
                                 U.getToastUtil().showShort("网络出错了，请检查网络后重试")
