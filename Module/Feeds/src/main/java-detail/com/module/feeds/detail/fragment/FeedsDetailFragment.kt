@@ -22,6 +22,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.base.INVISIBLE_REASON_TO_DESKTOP
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
@@ -857,19 +858,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mResumeCall = null
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (SinglePlayer.isPlaying) {
-            mResumeCall = {
-                startPlay()
-            }
-        } else {
-            mResumeCall = null
-        }
-
-        pausePlay()
-    }
-
     override fun collectFinish(c: Boolean) {
         mCollectionIv?.isSelected = c
         mCollectionIv2?.isSelected = c
@@ -961,6 +949,36 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 isStrangerState()
             }
         }
+    }
+
+    override fun onFragmentInvisible(reason: Int) {
+        super.onFragmentInvisible(reason)
+
+        MyLog.d(TAG, "onFragmentInvisiblereason = $reason, mFrom is $mFrom")
+        if (mFrom == FeedPage.DETAIL_FROM_COLLECT || mFrom == FeedPage.DETAIL_FROM_RECOMMEND) {
+            //如果是从mFrom == FeedPage.DETAIL_FROM_COLLECT || mFrom == FeedPage.DETAIL_FROM_RECOMMEND  这两个渠道进来的，特殊处理
+            if (reason == INVISIBLE_REASON_TO_DESKTOP) {
+                //如果是退到后台，不需要做什么
+            } else {
+                //如果是跳转别的界面，保持之前的逻辑
+                pauseWhenInvisible()
+            }
+        } else {
+            //如果是别的渠道进来的
+            pauseWhenInvisible()
+        }
+    }
+
+    private fun pauseWhenInvisible() {
+        if (SinglePlayer.isPlaying) {
+            mResumeCall = {
+                startPlay()
+            }
+        } else {
+            mResumeCall = null
+        }
+
+        pausePlay()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
