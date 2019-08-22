@@ -60,6 +60,7 @@ import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedDetailSwitchEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -892,7 +893,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.isSelected = true
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0)
+            //TODO 这里需要确定页面来源
+            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, FeedPage.UNKNOW,0)
             SinglePlayer.startPlay(playerTag, it)
         }
 

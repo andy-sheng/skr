@@ -33,6 +33,7 @@ import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedRankDetailAdapter
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
@@ -274,7 +275,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         mAdapter.notifyDataSetChanged()
         mSongPlayModeManager?.setCurrentPlayModel(model.song)
         model.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.feedID)
+            FeedsPlayStatistics.setCurPlayMode(model?.feedID, FeedPage.SONG_ALBUM_RANK,0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }

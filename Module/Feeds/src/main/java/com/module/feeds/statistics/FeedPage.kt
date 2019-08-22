@@ -1,6 +1,7 @@
 package com.module.feeds.statistics
 
 enum class FeedPage(val from:Int) {
+    UNKNOW(0),
     RECOMMEND(1),//推荐
     FOLLOW(2),//关注
     COLLECT(3),//收藏

@@ -23,6 +23,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.event.FeedWatchTabRefreshEvent
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
 import com.module.feeds.watch.watchview.FeedRecommendView
@@ -223,7 +224,7 @@ class FeedsWatchFragment : BaseFragment() {
         //todo 因为切后台的事件会比不可见晚
         mUiHandler.sendEmptyMessageDelayed(BACKGROUNG_MSG, 200)
         if (from == 2) {
-            FeedsPlayStatistics.setCurPlayMode(0)
+            FeedsPlayStatistics.setCurPlayMode(0, FeedPage.UNKNOW,0)
             FeedsPlayStatistics.tryUpload(true)
         }
     }
