@@ -2,12 +2,17 @@ package com.module.feeds.rank.holder
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.BaseImage
+import com.common.image.model.ImageFactory
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.facebook.drawee.view.SimpleDraweeView
@@ -43,16 +48,22 @@ class FeedsRankViewHolder(item: View, val listener: FeedRankAdapter.Listener) : 
     fun bindData(position: Int, model: FeedRankInfoModel) {
         this.mPosition = position
         this.mModel = model
+        if (model.userInfo != null) {
+            AvatarUtils.loadAvatarByUrl(mCoverIv, AvatarUtils.newParamsBuilder(model.userInfo?.avatar)
+                    .setCornerRadius(8.dp().toFloat())
+                    .build())
+            val remarkName = UserInfoManager.getInstance().getRemarkName(model.userInfo?.userID
+                    ?: 0, model.userInfo?.nickname)
+            mOccupyTv.text = "$remarkName 占领"
+        } else {
+            FrescoWorker.loadImage(mCoverIv,
+                    ImageFactory.newResImage(R.drawable.feed_rank_empty_avatar)
+                            .setCornerRadius(8.dp().toFloat())
+                            .build<BaseImage>())
+            mOccupyTv.text = "无人占领"
+        }
 
-        AvatarUtils.loadAvatarByUrl(mCoverIv, AvatarUtils.newParamsBuilder(model.userInfo?.avatar)
-                .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                .setBorderColor(Color.WHITE)
-                .build())
         mNameTv.text = model.rankTitle
-        val remarkName = UserInfoManager.getInstance().getRemarkName(model.userInfo?.userID
-                ?: 0, model.userInfo?.nickname)
-        mOccupyTv.text = "$remarkName 占领"
         mJoinTv.text = "${model.userCnt}人参与"
     }
 }

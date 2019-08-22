@@ -1,12 +1,13 @@
 package com.module.feeds.rank.holder
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.BaseImage
+import com.common.image.model.ImageFactory
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -63,6 +64,7 @@ class FeedsDetailOneViewHolder(rootView: View,
                 AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(it.avatar).setCircle(true).build())
                 mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
             }
+            mSongPlayIv.visibility = View.VISIBLE
             mChampionTv.visibility = View.VISIBLE
             mLikeNumTv.visibility = View.VISIBLE
             mLikeNumTv.text = "${StringFromatUtils.formatTenThousand(model.starCnt)}赞"
@@ -73,6 +75,11 @@ class FeedsDetailOneViewHolder(rootView: View,
                     .build()
             mSongAreaBg.background = mEmptyDrawable
             mNameTv.text = "无人占领"
+            FrescoWorker.loadImage(mRecordCover,
+                    ImageFactory.newResImage(R.drawable.feed_rank_empty_avatar)
+                            .setCircle(true)
+                            .build<BaseImage>())
+            mSongPlayIv.visibility = View.GONE
             mChampionTv.visibility = View.GONE
             mLikeNumTv.visibility = View.GONE
         }
