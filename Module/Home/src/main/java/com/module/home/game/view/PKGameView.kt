@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.upgrade.UpgradeManager
 import com.common.core.userinfo.model.GameStatisModel
 import com.common.core.userinfo.model.UserLevelModel
 import com.common.core.userinfo.model.UserRankModel
@@ -261,16 +262,28 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
 fun openPlayWaysActivityByRank(ctx: Context) {
     GlobalScope.launch(Dispatchers.Main) {
+        var tipsDialogView: TipsDialogView? = null
         val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
         val apiResult = subscribe(RequestControl("getGameConfig", ControlType.CancelThis)) { api.getGameConfig(1, false) }
         if (apiResult.errno == 0) {
             val jo = apiResult.data.getJSONObject("detail")
-            if (jo!=null && !jo.getBooleanValue("isOpen")) {
-                TipsDialogView.Builder(ctx)
+            if (jo != null && !jo.getBooleanValue("isOpen")) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
                         .setMessageTip(jo.getString("content"))
                         .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                                if (jo.getBooleanValue("needUpdate")) {
+                                    UpgradeManager.getInstance().checkUpdate2()
+                                } else {
+                                    // donothing
+                                }
+                            }
+                        })
                         .build()
-                        .showByDialog()
+                tipsDialogView?.showByDialog()
             } else {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                         .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
