@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class PlayerGuardService : Service() {
     val TAG = "SensorGuardService"
+    val NOTIFICATION_ID = 110
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         MyLog.d(TAG, "onStartCommand intent=$intent flags=$flags startId=$startId")
@@ -47,7 +48,7 @@ class PlayerGuardService : Service() {
     private fun showPlayerNotification(jo: JSONObject?) {
 //        val notification = createNotification1(createPlayerView(jo))
         val notification = createNotification2()
-        startForeground(110, notification)
+        startForeground(NOTIFICATION_ID, notification)
     }
 
     private fun createPlayerView(jo: JSONObject?): RemoteViews {
@@ -151,8 +152,12 @@ class PlayerGuardService : Service() {
                 if (type == 1) {
                     //启动传感器
                     SensorManagerHelper.startSensor()
+                    showPlayerNotification(null)
                     this@PlayerGuardService.callback = callback
                 } else if (type == 2) {
+                    SensorManagerHelper.stopSensor()
+                    this@PlayerGuardService.stopForeground(true)
+                } else if (type == 3) {
                     val jo = JSON.parseObject(json)
                     showPlayerNotification(jo)
                 }
@@ -182,9 +187,18 @@ var sIpcService: IpcService? = null
 
 fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
     MyLog.d("SensorGuardService", "bindService")
-    if(sIpcService!=null){
-        callback?.invoke(sIpcService)
-        return
+    if (sIpcService != null) {
+        var alive = true
+        try {
+            sIpcService?.call(-1, null, null)
+        } catch (e: RemoteException) {
+            MyLog.w("SensorGuardService", "sIpcService 已经死了")
+            alive = false
+        }
+        if (alive) {
+            callback?.invoke(sIpcService)
+            return
+        }
     }
     val intent = Intent(U.app(), PlayerGuardService::class.java)
     U.app().startService(intent)
@@ -198,7 +212,7 @@ fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
             // stopService 也会回调这个方法
             if (!SensorManagerHelper.userSet.isEmpty()) {
                 bindSensorService(callback)
-            }else{
+            } else {
                 sIpcService = null
             }
         }
@@ -207,14 +221,18 @@ fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
 
 fun stopSensorService() {
     MyLog.d("SensorGuardService", "stopSensorService")
-    val intent = Intent(U.app(), PlayerGuardService::class.java)
-    U.app().stopService(intent)
-    sIpcService = null
+    if (sIpcService !== null) {
+        sIpcService?.call(2, null, null)
+    } else {
+        val intent = Intent(U.app(), PlayerGuardService::class.java)
+        U.app().stopService(intent)
+        sIpcService = null
+    }
 }
 
 fun tryUpdatePlayerNofication(songName: String?, playing: Boolean) {
     val js = JSONObject()
     js["songName"] = songName
     js["playing"] = playing
-    sIpcService?.call(2, js.toString(), null)
+    sIpcService?.call(3, js.toString(), null)
 }
