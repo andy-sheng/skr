@@ -67,7 +67,7 @@ class FeedsDetailActivity : BaseActivity() {
         val feedID = intent.getIntExtra("feed_ID", -1)
         val type = intent.getIntExtra("type", TYPE_SWITCH)
         var from: FeedPage? = null
-        intent.getSerializableExtra("type")?.let {
+        intent.getSerializableExtra("from")?.let {
             from = it as FeedPage
         }
 
