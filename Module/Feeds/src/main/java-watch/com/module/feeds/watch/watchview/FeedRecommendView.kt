@@ -540,7 +540,10 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         .create()
                 contentTv.text = stringBuilder
             }
-            mFeedsCommonLyricView?.setSongModel(mCurModel!!.song!!, -1)
+
+            if (mFeedsCommonLyricView?.mFeedSongModel != mCurModel!!.song!!) {
+                mFeedsCommonLyricView?.setSongModel(mCurModel!!.song!!, -1)
+            }
             // 收藏和喜欢
             refreshCollect()
             refreshLike()
