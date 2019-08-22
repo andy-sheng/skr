@@ -462,11 +462,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     open fun unselected(reason:Int) {
         MyLog.d(TAG, "unselected")
-        isSeleted = false
         when(reason){
             UNSELECT_REASON_SLIDE_OUT,
             UNSELECT_REASON_TO_OTHER_ACTIVITY,
             UNSELECT_REASON_TO_OTHER_TAB->{
+                isSeleted = false
                 pausePlay()
                 SensorManagerHelper.unregister(playerTag)
             }
