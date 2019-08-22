@@ -123,9 +123,12 @@ class PlayerGuardService : Service() {
             val manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
         }
-        val contentIntent = Intent()
-        contentIntent.data = Uri.parse("inframeskr://home/trywakeup")
-        val pendingContentIntent = PendingIntent.getActivity(this, 0,
+
+        val contentIntent = Intent(this, NotifitionPlayerActionReceiver::class.java)
+        contentIntent.action = TRY_WAKEUP_HOME_ACTION
+//        val contentIntent = Intent()
+//        contentIntent.data = Uri.parse("inframeskr://home/trywakeup")
+        val pendingContentIntent = PendingIntent.getBroadcast(this, 0,
                 contentIntent, 0)
 
         val notification = NotificationCompat.Builder(this, id)
