@@ -9,10 +9,10 @@ import com.zq.mediaengine.capture.AudioFileCapture;
 import com.zq.mediaengine.encoder.MediaCodecAudioEncoder;
 import com.zq.mediaengine.filter.audio.AudioFilterBase;
 import com.zq.mediaengine.filter.audio.AudioFilterMgt;
+import com.zq.mediaengine.filter.audio.AudioLevelMeterFilter;
 import com.zq.mediaengine.filter.audio.AudioMixer;
 import com.zq.mediaengine.filter.audio.AudioPreview;
 import com.zq.mediaengine.filter.audio.AudioResampleFilter;
-import com.zq.mediaengine.filter.audio.AudioTrackPlayer;
 import com.zq.mediaengine.filter.audio.IPcmPlayer;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
@@ -67,6 +67,12 @@ public class ZqAudioEditorKit {
     private int mLoopedCount;
     private String mComposePath;
 
+    // 电平归一化
+    private boolean mEnableAutoComposeLevel;
+    private float mAutoComposeLevelDB;
+    private boolean mIsInAmpEval;
+    private AudioLevelMeterFilter mAudioLevelMeterFilter;
+
     private OnPreviewInfoListener mOnPreviewInfoListener;
     private OnComposeInfoListener mOnComposeInfoListener;
     private OnErrorListener mOnErrorListener;
@@ -102,7 +108,12 @@ public class ZqAudioEditorKit {
          *
          * @param progress 当前的进度，取值在[0, 1]范围内
          */
-        void onProgress(float progress);
+        void onProgress(float progress, boolean isAudioLevelPassing);
+
+        /**
+         * 如果开启了合成时的电平归一化，在评估完成后触发该回调
+         */
+        void onAudioLevelPassCompletion();
 
         /**
          * 音频合成完成回调
@@ -129,6 +140,13 @@ public class ZqAudioEditorKit {
         mAudioPreview = new AudioPreview(context);
         mAudioPreview.setBlockingMode(true);
         mAudioMixer.getSrcPin().connect(mAudioPreview.getSinkPin());
+
+        // 默认开启合成时的自动增益控制
+        mEnableAutoComposeLevel = false;
+        mAutoComposeLevelDB = -3;
+        mAudioLevelMeterFilter = new AudioLevelMeterFilter();
+        mAudioLevelMeterFilter.setTag("compose");
+        mAudioMixer.getSrcPin().connect(mAudioLevelMeterFilter.getSinkPin());
 
         // 合成模块
         mAudioEncoder = new MediaCodecAudioEncoder();
@@ -314,10 +332,14 @@ public class ZqAudioEditorKit {
                 mState != STATE_PREVIEW_PREPARING) {
             return;
         }
-        for (int i = 0; i < MAX_CHN; i++) {
+        // 主音轨最后stop
+        for (int i = 1; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
                 mAudioSource[i].capture.stop();
             }
+        }
+        if (mAudioSource[0] != null) {
+            mAudioSource[0].capture.stop();
         }
         mAudioPreview.stop();
         mState = STATE_IDLE;
@@ -517,6 +539,27 @@ public class ZqAudioEditorKit {
     }
 
     /**
+     * 设置是否开启合成前的自动音量功能，开启后合成后的音频电平值被调整为-3dB
+     *
+     * @param enable enable
+     */
+    public void setEnableAutoComposeLevel(boolean enable) {
+        mEnableAutoComposeLevel = enable;
+    }
+
+    public boolean isEnableAutoComposeLevel() {
+        return mEnableAutoComposeLevel;
+    }
+
+    public void setAutoComposeLevelDB(float db) {
+        mAutoComposeLevelDB = db;
+    }
+
+    public float getAutoComposeLevelDB() {
+        return mAutoComposeLevelDB;
+    }
+
+    /**
      * 开始合成。
      */
     public synchronized void startCompose() {
@@ -534,6 +577,20 @@ public class ZqAudioEditorKit {
             return;
         }
 
+        mState = STATE_COMPOSING;
+
+        // 开启电平归一化时，先计算当前的电平
+        if (mEnableAutoComposeLevel) {
+            mIsInAmpEval = true;
+            mAudioLevelMeterFilter.setEnableLevelMeter(0, true);
+            mAudioLevelMeterFilter.updateMeter(0);
+            doStart();
+        } else {
+            doStartCompose(1.0f);
+        }
+    }
+
+    private void doStartCompose(float outVol) {
         // AutoWork模式下，采样率和声道数会根据实际参数配置
         AudioCodecFormat audioCodecFormat =
                 new AudioCodecFormat(AVConst.CODEC_ID_AAC,
@@ -544,8 +601,9 @@ public class ZqAudioEditorKit {
         mAudioEncoder.configure(audioCodecFormat);
         // 开始合成时再连接encoder
         mAudioMixer.getSrcPin().connect(mAudioEncoder.getSinkPin());
+        // 设置归一化音量
+        mAudioMixer.setOutputVolume(outVol);
 
-        mState = STATE_COMPOSING;
         mPublisher.start(mComposePath);
         doStart();
     }
@@ -696,7 +754,7 @@ public class ZqAudioEditorKit {
                     // Log.d(TAG, "onProgress: " + progress);
                     progress = progress > 1.0f ? 1.0f : progress;
                     if (mOnComposeInfoListener != null) {
-                        mOnComposeInfoListener.onProgress(progress);
+                        mOnComposeInfoListener.onProgress(progress, mIsInAmpEval);
                     }
                 }
             }
@@ -712,12 +770,43 @@ public class ZqAudioEditorKit {
                     if (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
                         handlePreviewCompletion();
                     } else if (mState == STATE_COMPOSING) {
+                        if (mIsInAmpEval) {
+                            mIsInAmpEval = false;
+                            handleAmpEvalCompletion();
+                        }
                         // 合成完成事件依靠Publisher类发出
                     }
                 }
             }
         }
     };
+
+    private void handleAmpEvalCompletion() {
+        float maxAmp = mAudioLevelMeterFilter.getMaxAmplitude(0);
+        mAudioLevelMeterFilter.setEnableLevelMeter(0, false);
+        for (int i = 0; i < MAX_CHN; i++) {
+            if (mAudioSource[i] != null) {
+                mAudioSource[i].capture.stop();
+            }
+        }
+
+        if (mOnComposeInfoListener != null) {
+            mOnComposeInfoListener.onProgress(1.0f, true);
+            mOnComposeInfoListener.onAudioLevelPassCompletion();
+        }
+
+        float dstAmp = getAmpFromDB(mAutoComposeLevelDB);
+        float outVol = 1.0f;
+        if (maxAmp < dstAmp) {
+            outVol = dstAmp / maxAmp;
+        }
+        Log.d(TAG, "maxAmp: " + maxAmp + " dstAmp: " + dstAmp + " outVol: " + outVol);
+        doStartCompose(outVol);
+    }
+
+    private float getAmpFromDB(float db) {
+        return (float) Math.pow(10, db / 20);
+    }
 
     private void handleError(int err) {
         if (mState == STATE_COMPOSING ||
@@ -770,7 +859,7 @@ public class ZqAudioEditorKit {
         }
         mState = STATE_IDLE;
         if (mOnComposeInfoListener != null) {
-            mOnComposeInfoListener.onProgress(1.0f);
+            mOnComposeInfoListener.onProgress(1.0f, false);
             mOnComposeInfoListener.onCompletion();
         }
     }

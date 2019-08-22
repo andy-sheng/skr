@@ -221,9 +221,12 @@ class FeedsEditorActivity : BaseActivity() {
                 // 开始合成
                 pausePreview()
                 progressView.visibility = View.VISIBLE
+                mZqAudioEditorKit.isEnableAutoComposeLevel = true
+                mZqAudioEditorKit.autoComposeLevelDB = -3f
                 mZqAudioEditorKit.startCompose()
             }
         })
+
         mZqAudioEditorKit.setOnErrorListener { what, msg1, msg2 ->
             MyLog.e(TAG, "onError what=$what msg1=$msg1 msg2=$msg2")
             launch {
@@ -247,10 +250,15 @@ class FeedsEditorActivity : BaseActivity() {
         })
 
         mZqAudioEditorKit.setOnComposeInfoListener(object : ZqAudioEditorKit.OnComposeInfoListener {
-            override fun onProgress(progress: Float) {
+            override fun onProgress(progress: Float, isAudioLevelPassing: Boolean) {
                 launch {
-                    progressView.setProgressText("合成进度 ${(progress * 100).toInt()}%")
+                    val text = if (isAudioLevelPassing) "正在分析" else "正在合成"
+                    progressView.setProgressText("$text ${(progress * 100).toInt()}%")
                 }
+            }
+
+            override fun onAudioLevelPassCompletion() {
+                MyLog.d(TAG, "onAudioLevelPassCompletion")
             }
 
             override fun onCompletion() {
