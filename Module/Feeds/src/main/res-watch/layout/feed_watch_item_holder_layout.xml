@@ -28,18 +28,19 @@
         android:gravity="center"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_14_dp"
+        BitmapTextView:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
         app:layout_constraintLeft_toRightOf="@id/avatar_iv"
         app:layout_constraintTop_toTopOf="@id/avatar_iv" />
 
-    <TextView
-        android:id="@+id/time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_14_dp"
-        android:gravity="center"
-        android:textColor="@color/black_trans_30"
-        android:textSize="@dimen/textsize_10_dp"
-        app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
-        app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
+    <!--<TextView-->
+        <!--android:id="@+id/time_tv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="@dimen/view_14_dp"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="@color/black_trans_30"-->
+        <!--android:textSize="@dimen/textsize_10_dp"-->
+        <!--app:layout_constraintLeft_toLeftOf="@id/nickname_tv"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/nickname_tv" />-->
 
     <ImageView
         android:id="@+id/more_iv"

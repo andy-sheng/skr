@@ -25,7 +25,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
 
     private val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
     private val mNicknameTv: TextView = itemView.findViewById(R.id.nickname_tv)
-    private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
+//    private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
     private val mHitIv: ImageView = itemView.findViewById(R.id.hit_iv)
 
     private val mCompleteGruop: Group = itemView.findViewById(R.id.complete_gruop)
@@ -77,8 +77,8 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             mHitIv.visibility = View.GONE
         }
 
-        mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt
-                ?: 0L, System.currentTimeMillis())
+//        mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt
+//                ?: 0L, System.currentTimeMillis())
     }
 
     override fun startPlay() {
