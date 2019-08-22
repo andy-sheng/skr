@@ -112,7 +112,7 @@ class FeedsMakeActivity : BaseActivity() {
                     if (it.recordingClick) {
                         if (it.recording) {
                             //真正在录制，除去前奏的长度
-                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 20 * 1000) {
+                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 30 * 1000) {
                                 U.getToastUtil().showSkrCustomShort(NoImageCommonToastView.Builder(U.app())
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
