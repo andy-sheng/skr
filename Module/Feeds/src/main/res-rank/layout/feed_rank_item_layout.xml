@@ -27,7 +27,7 @@
         android:id="@+id/name_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_22_dp"
-        android:layout_marginLeft="@dimen/view_6_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:ellipsize="end"
         android:gravity="left|center_vertical"
