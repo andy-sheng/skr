@@ -172,7 +172,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             mProducationWallView.stopPlay();
         }
         if (mFeedsWallView != null) {
-            mFeedsWallView.unselected();
+            mFeedsWallView.unselected(1);
         }
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
@@ -542,7 +542,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mPhotoWallView.getPhotos(false);
             }
             if (mFeedsWallView != null) {
-                mFeedsWallView.unselected();
+                mFeedsWallView.unselected(1);
             }
             if (mProducationWallView != null) {
                 mProducationWallView.stopPlay();
@@ -557,7 +557,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         } else if (position == 2) {
             if (mFeedsWallView != null) {
-                mFeedsWallView.unselected();
+                mFeedsWallView.unselected(1);
             }
             if (mProducationWallView != null) {
                 mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
