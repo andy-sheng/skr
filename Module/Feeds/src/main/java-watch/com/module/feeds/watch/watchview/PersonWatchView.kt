@@ -140,10 +140,10 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         }
         launch {
             var result = subscribe(RequestControl("getPersonFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId
-                        ?: 0, feedSongType)
+                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, feedSongType)
             }
             if (result.errno == 0) {
+                mHasInitData = true
                 mOffset = result.data.getIntValue("offset")
                 hasMore = result.data.getBoolean("hasMore")
                 val list = JSON.parseArray(result.data.getString("userSongs"), FeedsWatchModel::class.java)
