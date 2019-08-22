@@ -100,7 +100,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mSeekBar: SeekBar? = null
     var mSingerIv: BaseImageView? = null
     var mNameTv: ExTextView? = null
-    var mCommentTimeTv: ExTextView? = null
+//    var mCommentTimeTv: ExTextView? = null
     var mFollowTv: ExTextView? = null
     var mMainCommentTv: ExTextView? = null
     var mCommentTv: ExTextView? = null
@@ -312,7 +312,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSeekBar = rootView.findViewById(R.id.seek_bar)
         mSingerIv = rootView.findViewById(R.id.singer_iv)
         mNameTv = rootView.findViewById(R.id.name_tv)
-        mCommentTimeTv = rootView.findViewById(R.id.comment_time_tv)
+//        mCommentTimeTv = rootView.findViewById(R.id.comment_time_tv)
         mFollowTv = rootView.findViewById(R.id.follow_tv)
         mMainCommentTv = rootView.findViewById(R.id.main_comment_tv)
         mToolbar = rootView.findViewById(R.id.toolbar)
@@ -686,9 +686,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userID
                 ?: 0, mFeedsWatchModel?.user?.nickname)
-        mFeedsWatchModel?.song?.createdAt?.let {
-            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
-        }
+//        mFeedsWatchModel?.song?.createdAt?.let {
+//            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
+//        }
 
         showHitArea()
         showMainComment()

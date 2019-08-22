@@ -237,19 +237,20 @@
                         android:textColor="@color/black_trans_80"
                         android:textSize="@dimen/textsize_14_dp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/singer_iv"
                         app:layout_constraintLeft_toRightOf="@+id/singer_iv"
                         app:layout_constraintTop_toTopOf="@+id/singer_iv" />
 
-                    <com.common.view.ex.ExTextView
-                        android:id="@+id/comment_time_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/view_11_dp"
-                        android:text=""
-                        android:textColor="@color/black_trans_30"
-                        android:textSize="@dimen/textsize_10_dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/singer_iv"
-                        app:layout_constraintLeft_toRightOf="@+id/singer_iv" />
+                    <!--<com.common.view.ex.ExTextView-->
+                    <!--android:id="@+id/comment_time_tv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/view_11_dp"-->
+                    <!--android:text=""-->
+                    <!--android:textColor="@color/black_trans_30"-->
+                    <!--android:textSize="@dimen/textsize_10_dp"-->
+                    <!--app:layout_constraintBottom_toBottomOf="@+id/singer_iv"-->
+                    <!--app:layout_constraintLeft_toRightOf="@+id/singer_iv" />-->
 
                     <com.common.view.ex.ExTextView
                         android:id="@+id/follow_tv"
