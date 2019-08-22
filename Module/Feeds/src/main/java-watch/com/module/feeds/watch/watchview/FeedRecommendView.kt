@@ -147,11 +147,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             if (percent == 100) {
                 if (SinglePlayer.isPlaying) {
                     mFeedsCommonLyricView!!.resume()
-//                    mRadioView?.bufferEnd()
+                    playAnimation()
                 }
             } else {
                 mFeedsCommonLyricView!!.pause()
-//                mRadioView?.buffering()
+                pauseAnimation()
             }
         }
 
