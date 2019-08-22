@@ -55,6 +55,7 @@ import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.*
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
+import com.module.feeds.watch.view.FeedsMoreDialogView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -99,6 +100,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     val nameTv: TextView
     val contentTv: TextView
     val swichModeView: View
+    val moreIv: ImageView
     val avatarTypeViews: Group
     val lyricTypeViews: Group
     var mFeedsCommonLyricView: FeedsCommonLyricView? = null
@@ -109,8 +111,9 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     private var isSeleted = false  // 是否选中
     private var mHasInitData = false  //关注和推荐是否初始化过数据
 
-
     private var mCurModel: FeedsWatchModel? = null
+
+    var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
     var mDataList = ArrayList<FeedsWatchModel>()  // list列表
 
@@ -248,6 +251,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         playNumTv = this.findViewById(R.id.play_num_tv)
         nameTv = this.findViewById(R.id.name_tv)
         contentTv = this.findViewById(R.id.content_tv)
+        moreIv = this.findViewById(R.id.more_iv)
         swichModeView = this.findViewById(R.id.swich_mode_view)
         avatarTypeViews = this.findViewById(R.id.avatar_type_views)
         lyricTypeViews = this.findViewById(R.id.lyric_type_views)
@@ -359,6 +363,21 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         nameTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 openPersonCenter()
+            }
+        })
+
+        moreIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mCurModel?.let {
+                    mFeedsMoreDialogView?.dismiss(false)
+                    if (it.user?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
+                        mFeedsMoreDialogView?.showByDialog()
+                    } else {
+                        mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, null)
+                        mFeedsMoreDialogView?.showByDialog()
+                    }
+                }
             }
         })
 
@@ -651,6 +670,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     open fun destroy() {
         cancel()
+        mFeedsMoreDialogView?.dismiss(false)
         animatorSet.removeAllListeners()
         animatorSet.cancel()
         if (EventBus.getDefault().isRegistered(this)) {
