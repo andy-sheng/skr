@@ -52,7 +52,7 @@ class FeedsRankDetailActivity : BaseActivity() {
     val MOUTH_RANK = 0
     val YEAR_RANK = 1
 
-    var mRankType = MOUTH_RANK
+    var mRankType = YEAR_RANK
 
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mRefreshLayout: SmartRefreshLayout
