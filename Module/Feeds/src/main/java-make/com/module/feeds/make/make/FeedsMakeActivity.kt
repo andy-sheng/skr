@@ -137,7 +137,8 @@ class FeedsMakeActivity : BaseActivity() {
         resetIv?.isEnabled = false
         resetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                startRecord()
+                resetAll()
+                initViewByData()
             }
         })
         changeLyricIv?.setOnClickListener(object : DebounceViewClickListener() {
