@@ -131,7 +131,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         }
 
         override fun onCompletion() {
-            toNextSongAction()
+            onSongComplete()
         }
 
         override fun onSeekComplete() {
@@ -204,7 +204,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         mFeedsCommonLyricView?.setShowState(View.GONE)
     }
 
-    fun toNextSongAction() {
+    fun onSongComplete() {
         seekBar?.progress = 0
         playTimeTv?.text = "00:00"
         mFeedsCommonLyricView?.seekTo(0)
@@ -312,6 +312,14 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             override fun clickValid(v: View?) {
                 mSongPlayModeManager?.getNextSong(true) {
                     mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                        seekBar.progress = 0
+                        playTimeTv?.text = "00:00"
+                        it?.let {
+                            totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
+                            if (seekBar.max != it.playDurMs) {
+                                seekBar.max = it.playDurMs
+                            }
+                        }
                         bindCurFeedWatchModel(mDataList[position])
                     }
                 }
@@ -322,6 +330,14 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             override fun clickValid(v: View?) {
                 mSongPlayModeManager?.getPreSong(true) {
                     mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                        seekBar.progress = 0
+                        playTimeTv?.text = "00:00"
+                        it?.let {
+                            totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
+                            if (seekBar.max != it.playDurMs) {
+                                seekBar.max = it.playDurMs
+                            }
+                        }
                         bindCurFeedWatchModel(mDataList[position])
                     }
                 }
@@ -544,6 +560,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             if (mFeedsCommonLyricView?.mFeedSongModel != mCurModel!!.song!!) {
                 mFeedsCommonLyricView?.setSongModel(mCurModel!!.song!!, -1)
             }
+
             // 收藏和喜欢
             refreshCollect()
             refreshLike()
