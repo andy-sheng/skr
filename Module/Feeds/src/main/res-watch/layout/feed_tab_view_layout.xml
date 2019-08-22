@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
         android:gravity="bottom"
         android:paddingBottom="@dimen/view_4_dp"
         android:singleLine="true"
