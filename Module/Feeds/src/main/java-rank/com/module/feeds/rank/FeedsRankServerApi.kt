@@ -15,7 +15,7 @@ interface FeedsRankServerApi {
     fun getFeedsRankTags(): Call<ApiResult>
 
 
-    @GET("/v1/feed/rank-song-list")
+    @GET("/v2/feed/rank-song-list")
     fun getFeedRankInfoList(@Query("offset") offset: Int,
                             @Query("cnt") cnt: Int,
                             @Query("tagType") tagType: Int): Call<ApiResult>
@@ -29,6 +29,6 @@ interface FeedsRankServerApi {
                               @Query("tagType") tagType: Int): Call<ApiResult>
 
 
-    @GET("v1/feed/search-challenge")
+    @GET("v2/feed/search-challenge")
     fun searchChallenge(@Query("searchContent") searchContent: String): Observable<ApiResult>
 }
