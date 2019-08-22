@@ -211,9 +211,9 @@ class FeedsTagDetailActivity : BaseActivity() {
 
         appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
+            imageBg.translationY = verticalOffset.toFloat()
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
-                imageBg.translationY = verticalOffset.toFloat()
                 if (verticalOffset == 0) {
                     // 展开状态
                     if (toolbar.visibility != View.GONE) {

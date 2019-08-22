@@ -252,9 +252,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 // TODO: 2019-06-23  可以加效果，看产品需求
+                mImageBg.setTranslationY(verticalOffset);
                 if (lastVerticalOffset != verticalOffset) {
                     lastVerticalOffset = verticalOffset;
-                    mImageBg.setTranslationY(verticalOffset);
                     int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
                     if (U.getDeviceUtils().hasNotch(U.app())) {
                         srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());

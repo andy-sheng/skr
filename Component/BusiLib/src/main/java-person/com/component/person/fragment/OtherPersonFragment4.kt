@@ -239,9 +239,9 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mToolbar.visibility = View.GONE
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
+            mImageBg.translationY = verticalOffset.toFloat()
             if (lastVerticalOffset != verticalOffset) {
                 lastVerticalOffset = verticalOffset
-                mImageBg.translationY = verticalOffset.toFloat()
                 if (verticalOffset == 0) {
                     // 展开状态
                     if (mToolbar.visibility != View.GONE) {
