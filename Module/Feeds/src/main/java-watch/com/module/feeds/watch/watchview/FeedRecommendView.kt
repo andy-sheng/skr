@@ -182,7 +182,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     fun onTimeFly(pos: Long, duration: Long) {
         playTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
-        totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
+        totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(duration, "mm:ss")
         if (seekBar.max != duration.toInt()) {
             seekBar.max = duration.toInt()
         }

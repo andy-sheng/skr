@@ -265,7 +265,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
 
             mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(duration, "mm:ss")
             if (mSeekBar?.max != duration.toInt()) {
                 mSeekBar?.max = duration.toInt()
             }
