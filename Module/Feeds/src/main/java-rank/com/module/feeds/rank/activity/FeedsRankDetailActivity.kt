@@ -167,7 +167,7 @@ class FeedsRankDetailActivity : BaseActivity() {
             model?.let {
                 //                pause()
                 mSongPlayModeManager?.setCurrentPlayModel(it.song)
-                FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.TYPE_SWITCH,
+                FeedsDetailActivity.openActivity(FeedPage.DETAIL_FROM_SONG_ALBUM_CHANLLENGE, this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.TYPE_SWITCH,
                         FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getNextSong(userAction) { sm ->
@@ -275,7 +275,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         mAdapter.notifyDataSetChanged()
         mSongPlayModeManager?.setCurrentPlayModel(model.song)
         model.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.feedID, FeedPage.SONG_ALBUM_RANK,0)
+            FeedsPlayStatistics.setCurPlayMode(model?.feedID, FeedPage.SONG_ALBUM_RANK, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }

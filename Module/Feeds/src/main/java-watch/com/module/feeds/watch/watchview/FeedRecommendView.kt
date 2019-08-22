@@ -384,7 +384,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 //todo 补充跳到详情的逻辑
                 mCurModel?.let {
                     mSongPlayModeManager?.setCurrentPlayModel(mCurModel?.song)
-                    FeedsDetailActivity.openActivity(context as Activity, it.feedID, FeedsDetailActivity.TYPE_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                    FeedsDetailActivity.openActivity(FeedPage.DETAIL_FROM_RECOMMEND, context as Activity, it.feedID, FeedsDetailActivity.TYPE_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(true) { song ->
                                 mSongPlayModeManager?.getCurPostionInOrigin()?.let { pos ->
@@ -701,7 +701,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             recordPlayIv?.isSelected = true
 //        mRadioView?.play(SinglePlayer.isBufferingOk)
             mCurModel?.song?.playURL?.let {
-                FeedsPlayStatistics.setCurPlayMode(mCurModel?.feedID ?: 0, FeedPage.DETAIL_FROM_RECOMMEND,0)
+                FeedsPlayStatistics.setCurPlayMode(mCurModel?.feedID
+                        ?: 0, FeedPage.DETAIL_FROM_RECOMMEND, 0)
                 SinglePlayer.startPlay(playerTag, it)
             }
 

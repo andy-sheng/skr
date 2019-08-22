@@ -129,13 +129,13 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 model?.let {
                     mIsNeedResumePlay = true
                     fragment?.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, TYPE_SWITCH_MODE, mCurrentType, object : AbsPlayModeManager() {
+                        FeedsDetailActivity.openActivity(FeedPage.DETAIL_FROM_COLLECT, fragmentActivity, it.feedID, TYPE_SWITCH_MODE, mCurrentType, object : AbsPlayModeManager() {
                             override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                                mSongPlayModeManager?.getNextSong(userAction,callback)
+                                mSongPlayModeManager?.getNextSong(userAction, callback)
                             }
 
                             override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                                mSongPlayModeManager?.getPreSong(userAction,callback)
+                                mSongPlayModeManager?.getPreSong(userAction, callback)
                             }
 
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
@@ -155,7 +155,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                             }
 
                             override fun getCurMode(): FeedSongPlayModeManager.PlayMode {
-                                return mSongPlayModeManager?.getCurMode()?:FeedSongPlayModeManager.PlayMode.ORDER
+                                return mSongPlayModeManager?.getCurMode()
+                                        ?: FeedSongPlayModeManager.PlayMode.ORDER
                             }
                         })
                     }
@@ -367,7 +368,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0,FeedPage.COLLECT,0)
+            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0, FeedPage.COLLECT, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }

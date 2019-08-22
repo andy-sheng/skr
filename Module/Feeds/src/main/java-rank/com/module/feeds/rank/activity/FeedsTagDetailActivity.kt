@@ -264,7 +264,11 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.mCurrentPlayModel = model
                 model?.let {
                     mSongPlayModeManager?.setCurrentPlayModel(it.song)
-                    FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, TYPE_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                    var from = FeedPage.DETAIL_FROM_SONG_ALBUM_OP  // 默认是运营歌单
+                    if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {
+                        from = FeedPage.DETAIL_FROM_SONG_ALBUM_RANK
+                    }
+                    FeedsDetailActivity.openActivity(from, this@FeedsTagDetailActivity, it.feedID, TYPE_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(userAction) { sm ->
                                 if (sm != null) {
@@ -569,11 +573,13 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.startPlayModel(index, feed)
                 mSongPlayModeManager?.setCurrentPlayModel(feed.song)
                 feed.song?.playURL?.let {
-                    if(model?.isSupportCollected == true){
+                    if (model?.isSupportCollected == true) {
                         // 运营歌单
-                        FeedsPlayStatistics.setCurPlayMode(feed.feedID,FeedPage.SONG_ALBUM_OP,model?.rankID?:0)
-                    }else {
-                        FeedsPlayStatistics.setCurPlayMode(feed.feedID,FeedPage.SONG_ALBUM_RANK,model?.rankID?:0)
+                        FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_OP, model?.rankID
+                                ?: 0)
+                    } else {
+                        FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_RANK, model?.rankID
+                                ?: 0)
                     }
 
                     SinglePlayer.startPlay(playerTag, it)

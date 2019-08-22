@@ -41,21 +41,6 @@ class FeedsDetailActivity : BaseActivity() {
             }
             activity.startActivity(intent)
         }
-
-        fun openActivity(activity: Activity, feedID: Int, type: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
-            MANAGER = playModeManager
-            val intent = Intent(activity, FeedsDetailActivity::class.java)
-            intent.putExtra("feed_ID", feedID)
-
-            type?.let {
-                intent.putExtra("type", type)
-            }
-
-            playType?.let {
-                intent.putExtra("playType", playType)
-            }
-            activity.startActivity(intent)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -82,7 +82,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
 
     var mLoadService: LoadService<*>? = null
 
-    var mSongPlayModeManager:FeedSongPlayModeManager? = null
+    var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
     companion object {
         const val TYPE_RECOMMEND = 1  // 推荐
@@ -101,7 +101,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         mClassicsHeader = findViewById(R.id.classics_header)
         mRecyclerView = findViewById(R.id.recycler_view)
 
-        mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER,null,null)
+        mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, null)
         mSongPlayModeManager?.supportCycle = false
         mSongPlayModeManager?.loadMoreCallback = { size, callback ->
             if (hasMore) {
@@ -197,7 +197,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             }
 
             override fun onClickDetailListener(position: Int, watchModel: FeedsWatchModel?) {
-                goDetailPage(position,watchModel)
+                goDetailPage(position, watchModel)
             }
 
             override fun onClickCDListener(position: Int, watchModel: FeedsWatchModel?) {
@@ -309,22 +309,28 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
-    private fun goDetailPage(position: Int, watchModel: FeedsWatchModel?){
+    private fun goDetailPage(position: Int, watchModel: FeedsWatchModel?) {
         // 详情  声音要连贯
         // 这样返回时能 resume 上
         if (watchModel != null && watchModel.status == 2) {
             startPlay(position, watchModel)
             fragment.activity?.let { fragmentActivity ->
-                FeedsDetailActivity.openActivity(fragmentActivity, watchModel.feedID, TYPE_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                var from = FeedPage.UNKNOW
+                when (type) {
+                    TYPE_RECOMMEND -> from = FeedPage.DETAIL_FROM_RECOMMEND
+                    TYPE_FOLLOW -> from = FeedPage.DETAIL_FROM_FOLLOW
+                    TYPE_PERSON -> from = FeedPage.DETAIL_FROM_HOMEPAGE
+                }
+                FeedsDetailActivity.openActivity(from, fragmentActivity, watchModel.feedID, TYPE_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                        mSongPlayModeManager?.getNextSong(userAction){
+                        mSongPlayModeManager?.getNextSong(userAction) {
                             //查看
-                            if(it!=null){
+                            if (it != null) {
                                 val pos = mSongPlayModeManager?.getCurPostionInOrigin()
-                                if(pos!=null){
+                                if (pos != null) {
                                     // 没过审核？ 继续下一个
-                                    if(this@BaseWatchView.mAdapter.mDataList?.get(pos).status!=2){
-                                        getNextSong(userAction,callback)
+                                    if (this@BaseWatchView.mAdapter.mDataList?.get(pos).status != 2) {
+                                        getNextSong(userAction, callback)
                                         return@getNextSong
                                     }
                                 }
@@ -334,14 +340,14 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                     }
 
                     override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
-                        mSongPlayModeManager?.getPreSong(userAction){
+                        mSongPlayModeManager?.getPreSong(userAction) {
                             //查看
-                            if(it!=null){
+                            if (it != null) {
                                 val pos = mSongPlayModeManager?.getCurPostionInOrigin()
-                                if(pos!=null){
+                                if (pos != null) {
                                     // 没过审核？ 继续下一个
-                                    if(this@BaseWatchView.mAdapter.mDataList?.get(pos).status!=2){
-                                        getPreSong(userAction,callback)
+                                    if (this@BaseWatchView.mAdapter.mDataList?.get(pos).status != 2) {
+                                        getPreSong(userAction, callback)
                                         return@getPreSong
                                     }
                                 }
@@ -382,10 +388,10 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             return
         }
         model?.song?.playURL?.let {
-            if(type == TYPE_FOLLOW){
-                FeedsPlayStatistics.setCurPlayMode(model.feedID,FeedPage.FOLLOW,0)
-            }else if(type== TYPE_PERSON){
-                FeedsPlayStatistics.setCurPlayMode(model.feedID,FeedPage.HOMEPAGE,0)
+            if (type == TYPE_FOLLOW) {
+                FeedsPlayStatistics.setCurPlayMode(model.feedID, FeedPage.FOLLOW, 0)
+            } else if (type == TYPE_PERSON) {
+                FeedsPlayStatistics.setCurPlayMode(model.feedID, FeedPage.HOMEPAGE, 0)
             }
             mSongPlayModeManager?.setCurrentPlayModel(model?.song)
             SinglePlayer.startPlay(playerTag, it)
@@ -404,10 +410,10 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         mAdapter.resumePlayModel()
         mAdapter.mCurrentPlayModel?.song?.playURL?.let {
             val feedID = mAdapter.mCurrentPlayModel?.feedID ?: 0
-            if(type == TYPE_FOLLOW){
-                FeedsPlayStatistics.setCurPlayMode(feedID,FeedPage.FOLLOW,0)
-            }else if(type== TYPE_PERSON){
-                FeedsPlayStatistics.setCurPlayMode(feedID,FeedPage.HOMEPAGE,0)
+            if (type == TYPE_FOLLOW) {
+                FeedsPlayStatistics.setCurPlayMode(feedID, FeedPage.FOLLOW, 0)
+            } else if (type == TYPE_PERSON) {
+                FeedsPlayStatistics.setCurPlayMode(feedID, FeedPage.HOMEPAGE, 0)
             }
             SinglePlayer.startPlay(playerTag, it)
         }
@@ -458,7 +464,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     abstract fun initFeedList(flag: Boolean): Boolean
 
     // 加载更多数据
-    abstract fun getMoreFeeds(dataOkCallback:(()->Unit)? = null)
+    abstract fun getMoreFeeds(dataOkCallback: (() -> Unit)? = null)
 
     // 点击更多
     abstract fun clickMore(position: Int, it: FeedsWatchModel)
