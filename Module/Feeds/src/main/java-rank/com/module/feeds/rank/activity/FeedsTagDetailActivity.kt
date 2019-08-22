@@ -268,9 +268,8 @@ class FeedsTagDetailActivity : BaseActivity() {
         mAdapter = FeedTagDetailAdapter(object : FeedTagListener {
             override fun onClickItem(position: Int, model: FeedsWatchModel?) {
                 // 默认顺序就只是列表循环
-                mAdapter.mCurrentPlayPosition = position
-                mAdapter.mCurrentPlayModel = model
                 model?.let {
+                    mAdapter?.pausePlay()
                     mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     var from = FeedPage.DETAIL_FROM_SONG_ALBUM_OP  // 默认是运营歌单
                     if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {

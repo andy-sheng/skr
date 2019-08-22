@@ -14,6 +14,8 @@ import com.module.feeds.watch.model.FeedsWatchModel
 
 class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter<FeedDetailTagViewHolder>() {
 
+    val TAG = "FeedTagDetailAdapter"
+
     var mDataList = ArrayList<FeedsWatchModel>()
 
     var mCurrentPlayPosition = -1
@@ -86,10 +88,10 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
                 lastPos = mCurrentPlayPosition
                 mCurrentPlayPosition = pos
             }
-            MyLog.d("FeedsWatchViewAdapter", "now pos=$pos")
+            MyLog.d(TAG, "now pos=$pos")
             notifyItemChanged(pos, REFRESH_TYPE_PLAY)
             lastPos?.let {
-                MyLog.d("FeedsWatchViewAdapter", "last pos=$it")
+                MyLog.d(TAG, "last pos=$it")
                 uiHanlder.post {
                     notifyItemChanged(it, REFRESH_TYPE_PLAY)
                 }
