@@ -32,6 +32,8 @@ import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.sensor.SensorManagerHelper
+import com.common.sensor.event.ShakeEvent
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -575,6 +577,9 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         SinglePlayer.addCallback(playerTag, playCallback)
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+        if(mFrom==FeedPage.DETAIL_FROM_RECOMMEND || mFrom==FeedPage.DETAIL_FROM_COLLECT){
+            SensorManagerHelper.register(playerTag)
+        }
     }
 
     private fun toNextSongAction(userAction: Boolean) {
@@ -898,7 +903,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
             //TODO 这里需要确定页面来源
-            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, mFrom,0)
+            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, mFrom, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
 
@@ -950,6 +955,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedCommentBoardEvent) {
         specialCase = event.showing
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShakeEvent) {
+        if (SinglePlayer.startFrom == playerTag) {
+            toNextSongAction(true)
+        }
     }
 
     fun isFriendState() {
@@ -1038,7 +1050,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
         mSongManager = null
-
+        SensorManagerHelper.unregister(playerTag)
         EventBus.getDefault().post(FeedDetailChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
         }))

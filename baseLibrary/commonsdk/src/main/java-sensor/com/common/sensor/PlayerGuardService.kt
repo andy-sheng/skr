@@ -182,6 +182,10 @@ var sIpcService: IpcService? = null
 
 fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
     MyLog.d("SensorGuardService", "bindService")
+    if(sIpcService!=null){
+        callback?.invoke(sIpcService)
+        return
+    }
     val intent = Intent(U.app(), PlayerGuardService::class.java)
     U.app().startService(intent)
     U.app().bindService(intent, object : ServiceConnection {
@@ -194,6 +198,8 @@ fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
             // stopService 也会回调这个方法
             if (!SensorManagerHelper.userSet.isEmpty()) {
                 bindSensorService(callback)
+            }else{
+                sIpcService = null
             }
         }
     }, Context.BIND_IMPORTANT)
@@ -203,6 +209,7 @@ fun stopSensorService() {
     MyLog.d("SensorGuardService", "stopSensorService")
     val intent = Intent(U.app(), PlayerGuardService::class.java)
     U.app().stopService(intent)
+    sIpcService = null
 }
 
 fun tryUpdatePlayerNofication(songName: String?, playing: Boolean) {
