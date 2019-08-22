@@ -354,7 +354,11 @@ class FeedsPublishActivity : BaseActivity() {
                     "challengeID" to mFeedsMakeModel?.songModel?.challengeID,
                     "hasChangeLRC" to (mFeedsMakeModel?.hasChangeLyric == true),
                     "lrcURL" to customLrcUrl,
-                    "playDurMs" to mFeedsMakeModel?.recordDuration,
+                    "playDurMs" to if((mFeedsMakeModel?.recordDuration?:0L)>0){
+                        mFeedsMakeModel?.recordDuration?.toInt()?:0
+                    }else{
+                        0
+                    },
                     "playURL" to mFeedsMakeModel?.audioUploadUrl,
                     "songName" to mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
                     "songType" to if (mFeedsMakeModel?.withBgm == true) 1 else 2,

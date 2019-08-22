@@ -463,6 +463,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun goLyric(withacc: Boolean) {
+        mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
         if (manyLyricsView?.visibility == View.VISIBLE) {
             // 直接走
             qcProgressBarView?.visibility = View.GONE
@@ -482,7 +483,6 @@ class FeedsMakeActivity : BaseActivity() {
             configParams.manyLyricsView = manyLyricsView
 
             mLyricAndAccMatchManager.setArgs(configParams)
-
             mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
                 override fun onLyricParseSuccess(reader: LyricsReader) {
                     mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos?.get(0)?.startTime ?: 0
@@ -511,7 +511,6 @@ class FeedsMakeActivity : BaseActivity() {
             qcProgressBarView?.visibility = View.VISIBLE
             // 开始录音
             ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
-            mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
             mFeedsMakeModel?.recording = true
             val leave = 90 * 1000
             qcProgressBarView?.go(0, leave) {
