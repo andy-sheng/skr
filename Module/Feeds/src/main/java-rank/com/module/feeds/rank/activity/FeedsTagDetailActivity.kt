@@ -143,7 +143,7 @@ class FeedsTagDetailActivity : BaseActivity() {
         ivBack = findViewById(R.id.iv_back)
         mCollectTv = findViewById(R.id.collect_tv)
 
-        if (model?.isSupportCollected ?: false) {
+        if (model?.isSupportCollected == true) {
             mCollectTv.visibility = View.VISIBLE
             mCollectTv.setOnClickListener(object : AnimateClickListener() {
                 override fun click(view: View?) {
