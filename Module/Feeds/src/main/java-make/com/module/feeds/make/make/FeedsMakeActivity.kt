@@ -544,7 +544,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun recordOk() {
-        resetAll()
+        stopRecord()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
             recordOffsetTs = firstLyricShiftTs + musicFirstFrameTs - recordFirstFrameTs
