@@ -35,6 +35,7 @@ import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
@@ -58,12 +59,14 @@ import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedDetailSwitchEvent
+import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
+import kotlinx.android.synthetic.main.feeds_watch_fragment_layout.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -703,6 +706,25 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     private fun showHitArea() {
+        mHitIv?.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                SinglePlayer.reset(playerTag)
+                openFeedsMakeActivityFromChallenge(mFeedsWatchModel?.song?.challengeID)
+            }
+        })
+
+        mTagArea?.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                // 排行榜详情
+                mFeedsWatchModel?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                            .withString("rankTitle", it.rank?.rankTitle)
+                            .withLong("challengeID", it.song?.challengeID ?: 0L)
+                            .withLong("challengeCnt", it.challengeCnt.toLong())
+                            .navigation()
+                }
+            }
+        })
         if (mFeedsWatchModel?.song?.needChallenge == true) {
             //打榜歌曲
             mShareTag?.visibility = View.GONE
