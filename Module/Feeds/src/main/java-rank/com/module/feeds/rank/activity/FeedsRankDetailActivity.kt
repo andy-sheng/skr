@@ -167,7 +167,7 @@ class FeedsRankDetailActivity : BaseActivity() {
             model?.let {
                 //                pause()
                 mSongPlayModeManager?.setCurrentPlayModel(it.song)
-                FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.FROM_SWITCH,
+                FeedsDetailActivity.openActivity(this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.TYPE_SWITCH,
                         FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getNextSong(userAction) { sm ->

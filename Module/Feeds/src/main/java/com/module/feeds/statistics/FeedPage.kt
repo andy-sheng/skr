@@ -1,6 +1,8 @@
 package com.module.feeds.statistics
 
-enum class FeedPage(val from:Int) {
+import java.io.Serializable
+
+enum class FeedPage(val from: Int) : Serializable {
     UNKNOW(0),
     RECOMMEND(1),//推荐
     FOLLOW(2),//关注

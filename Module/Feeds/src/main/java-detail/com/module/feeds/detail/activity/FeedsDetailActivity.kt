@@ -18,17 +18,17 @@ class FeedsDetailActivity : BaseActivity() {
 
     companion object {
         // 标记来源
-        val FROM_SWITCH = 1     //只支持上下首切换
-        val FROM_SWITCH_MODE = 2  //即支持换模式又支持上下首切换
+        val TYPE_SWITCH = 1     //只支持上下首切换
+        val TYPE_SWITCH_MODE = 2  //即支持换模式又支持上下首切换
         var MANAGER: AbsPlayModeManager? = null
 
-        fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
+        fun openActivity(activity: Activity, feedID: Int, type: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
             MANAGER = playModeManager
             val intent = Intent(activity, FeedsDetailActivity::class.java)
             intent.putExtra("feed_ID", feedID)
 
-            from?.let {
-                intent.putExtra("from", from)
+            type?.let {
+                intent.putExtra("type", type)
             }
 
             playType?.let {
@@ -59,13 +59,13 @@ class FeedsDetailActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val feedID = intent.getIntExtra("feed_ID", -1)
-        val from = intent.getIntExtra("from", FROM_SWITCH)
+        val type = intent.getIntExtra("type", TYPE_SWITCH)
         val playType = intent.getSerializableExtra("playType") as FeedSongPlayModeManager.PlayMode?
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsDetailActivity, FeedsDetailFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, feedID)
-                .addDataBeforeAdd(1, from)
+                .addDataBeforeAdd(1, type)
                 .addDataBeforeAdd(2, playType)
                 .addDataBeforeAdd(3, MANAGER)
                 .build())

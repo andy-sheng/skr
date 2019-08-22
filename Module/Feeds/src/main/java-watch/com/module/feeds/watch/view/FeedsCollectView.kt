@@ -33,7 +33,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
-import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_SWITCH_MODE
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.TYPE_SWITCH_MODE
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
@@ -129,7 +129,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 model?.let {
                     mIsNeedResumePlay = true
                     fragment?.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, FROM_SWITCH_MODE, mCurrentType, object : AbsPlayModeManager() {
+                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, TYPE_SWITCH_MODE, mCurrentType, object : AbsPlayModeManager() {
                             override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                                 mSongPlayModeManager?.getNextSong(userAction,callback)
                             }

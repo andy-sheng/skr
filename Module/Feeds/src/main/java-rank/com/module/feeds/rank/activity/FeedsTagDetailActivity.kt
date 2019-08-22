@@ -40,7 +40,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
-import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.FROM_SWITCH_MODE
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.TYPE_SWITCH_MODE
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.add2SongPlayModeManager
@@ -264,7 +264,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.mCurrentPlayModel = model
                 model?.let {
                     mSongPlayModeManager?.setCurrentPlayModel(it.song)
-                    FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, FROM_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
+                    FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, TYPE_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(userAction) { sm ->
                                 if (sm != null) {
