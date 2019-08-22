@@ -39,8 +39,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     val mPlayNumTv: TextView = itemView.findViewById(R.id.play_num_tv)
     val mCollectIconTv: TextView = itemView.findViewById(R.id.collect_icon_tv)
     val mDebugTv: TextView = itemView.findViewById(R.id.debug_tv)
-    val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub))
-    val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub))
+    val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub), true)
+    val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub), true)
 
     val mFeedsClickView: View = itemView.findViewById(R.id.feeds_click_view)
 
