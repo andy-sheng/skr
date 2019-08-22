@@ -70,7 +70,9 @@ public class ZqAudioEditorKit {
     // 电平归一化
     private boolean mEnableAutoComposeLevel;
     private float mAutoComposeLevelDB;
-    private boolean mIsInAmpEval;
+    private boolean mIsAudioLevelPassing;
+    private long mPassingStartTime;
+    private long mComposeStartTime;
     private AudioLevelMeterFilter mAudioLevelMeterFilter;
 
     private OnPreviewInfoListener mOnPreviewInfoListener;
@@ -581,9 +583,10 @@ public class ZqAudioEditorKit {
 
         // 开启电平归一化时，先计算当前的电平
         if (mEnableAutoComposeLevel) {
-            mIsInAmpEval = true;
+            mIsAudioLevelPassing = true;
             mAudioLevelMeterFilter.setEnableLevelMeter(0, true);
             mAudioLevelMeterFilter.updateMeter(0);
+            mPassingStartTime = System.nanoTime() / 1000 / 1000;
             doStart();
         } else {
             doStartCompose(1.0f);
@@ -604,6 +607,7 @@ public class ZqAudioEditorKit {
         // 设置归一化音量
         mAudioMixer.setOutputVolume(outVol);
 
+        mComposeStartTime = System.nanoTime() / 1000 / 1000;
         mPublisher.start(mComposePath);
         doStart();
     }
@@ -754,7 +758,7 @@ public class ZqAudioEditorKit {
                     // Log.d(TAG, "onProgress: " + progress);
                     progress = progress > 1.0f ? 1.0f : progress;
                     if (mOnComposeInfoListener != null) {
-                        mOnComposeInfoListener.onProgress(progress, mIsInAmpEval);
+                        mOnComposeInfoListener.onProgress(progress, mIsAudioLevelPassing);
                     }
                 }
             }
@@ -770,8 +774,8 @@ public class ZqAudioEditorKit {
                     if (mState == STATE_PREVIEW_STARTED || mState == STATE_PREVIEW_PAUSED) {
                         handlePreviewCompletion();
                     } else if (mState == STATE_COMPOSING) {
-                        if (mIsInAmpEval) {
-                            mIsInAmpEval = false;
+                        if (mIsAudioLevelPassing) {
+                            mIsAudioLevelPassing = false;
                             handleAmpEvalCompletion();
                         }
                         // 合成完成事件依靠Publisher类发出
@@ -782,6 +786,9 @@ public class ZqAudioEditorKit {
     };
 
     private void handleAmpEvalCompletion() {
+        long passingDuration = System.nanoTime() / 1000 / 1000 - mPassingStartTime;
+        Log.i(TAG, "audio level passing duration: " + passingDuration);
+
         float maxAmp = mAudioLevelMeterFilter.getMaxAmplitude(0);
         mAudioLevelMeterFilter.setEnableLevelMeter(0, false);
         for (int i = 0; i < MAX_CHN; i++) {
@@ -852,6 +859,9 @@ public class ZqAudioEditorKit {
     };
 
     private void handleComposeCompletion() {
+        long composeDuration = System.nanoTime() / 1000 / 1000 - mComposeStartTime;
+        Log.i(TAG, "compose duration: " + composeDuration);
+
         for (int i = 0; i < MAX_CHN; i++) {
             if (mAudioSource[i] != null) {
                 mAudioSource[i].capture.stop();
