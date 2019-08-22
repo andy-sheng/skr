@@ -875,7 +875,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         if (SinglePlayer.isBufferingOk) {
-            mFeedsCommonLyricView?.playLyric()
+            if (!mFeedsCommonLyricView!!.isStart()) {
+                mFeedsCommonLyricView?.playLyric()
+            } else {
+                mFeedsCommonLyricView?.resume()
+            }
         }
     }
 

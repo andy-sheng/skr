@@ -1,8 +1,8 @@
 package com.module.feeds.watch.watchview
 
-import android.app.Activity
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -653,7 +653,11 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             }
 
             if (SinglePlayer.isBufferingOk) {
-                mFeedsCommonLyricView?.playLyric()
+                if (!mFeedsCommonLyricView!!.isStart()) {
+                    mFeedsCommonLyricView?.playLyric()
+                } else {
+                    mFeedsCommonLyricView?.resume()
+                }
             }
 
             if (showType == LYRIC_TYPE) {
