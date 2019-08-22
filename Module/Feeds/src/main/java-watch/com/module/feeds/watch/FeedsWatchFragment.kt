@@ -1,6 +1,9 @@
 package com.module.feeds.watch
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.View
@@ -32,7 +35,7 @@ import org.greenrobot.eventbus.ThreadMode
 import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
-
+    val BACKGROUNG_MSG = 0
     private lateinit var mNavigationBgIv: ImageView
     private lateinit var mDivider: View
     private lateinit var mFeedChallengeTv: ExTextView
@@ -45,6 +48,17 @@ class FeedsWatchFragment : BaseFragment() {
     val mFollowFeesView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
     val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
+
+    val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            if (msg?.what == BACKGROUNG_MSG) {
+                if (!isBackground) {
+                    mFeedsCollectView.unselected()
+                    mRecommendFeedsView.unselected()
+                }
+            }
+        }
+    }
 
     val initPostion = 1
     // 保持 init Postion 一致
@@ -174,6 +188,7 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
+        mUiHandler.removeMessages(BACKGROUNG_MSG)
         StatisticsAdapter.recordCountEvent("music_tab", "music_tab_expose", null)
         onViewSelected(mFeedVp.currentItem)
     }
@@ -205,13 +220,8 @@ class FeedsWatchFragment : BaseFragment() {
         super.onFragmentInvisible(from)
         MyLog.d(TAG, "onFragmentInvisible from=$from")
         mFollowFeesView.unselected()
-        mRecommendFeedsView.unselected()
         //todo 因为切后台的事件会比不可见晚
-        mFeedsCollectView.postDelayed({
-            if (!isBackground) {
-                mFeedsCollectView.unselected()
-            }
-        }, 200)
+        mUiHandler.sendEmptyMessageDelayed(BACKGROUNG_MSG, 200)
         if (from == 2) {
             FeedsPlayStatistics.setCurPlayMode(0)
             FeedsPlayStatistics.tryUpload(true)
