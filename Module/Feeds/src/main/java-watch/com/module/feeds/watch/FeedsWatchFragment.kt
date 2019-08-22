@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.base.INVISIBLE_REASON_IN_VIEWPAGER
+import com.common.base.INVISIBLE_REASON_TO_DESKTOP
+import com.common.base.INVISIBLE_REASON_TO_OTHER_ACTIVITY
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
@@ -49,57 +52,6 @@ class FeedsWatchFragment : BaseFragment() {
     val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
     val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
-    val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message?) {
-            if (msg?.what == BACKGROUNG_MSG) {
-                val reason = msg?.arg1
-                if (U.getActivityUtils().isAppForeground) {
-                    if (reason == 2) {
-                        // 不在feed的tab了
-                        when (mPagerPosition) {
-                            0 -> {
-                                mFollowFeedsView.unselected(UNSELECT_REASON_TO_OTHER_TAB)
-                            }
-                            1 -> {
-                                mRecommendFeedsView.unselected(UNSELECT_REASON_TO_OTHER_TAB)
-                            }
-                            2 -> {
-                                mFeedsCollectView.unselected(UNSELECT_REASON_TO_OTHER_TAB)
-                            }
-                        }
-                    } else {
-                        // 进入别的Activity
-                        when (mPagerPosition) {
-                            0 -> {
-                                mFollowFeedsView.unselected(UNSELECT_REASON_TO_OTHER_ACTIVITY)
-                            }
-                            1 -> {
-                                mRecommendFeedsView.unselected(UNSELECT_REASON_TO_OTHER_ACTIVITY)
-                            }
-                            2 -> {
-                                mFeedsCollectView.unselected(UNSELECT_REASON_TO_OTHER_ACTIVITY)
-                            }
-                        }
-                    }
-
-                } else {
-                    // 返回桌面
-                    when (mPagerPosition) {
-                        0 -> {
-                            mFollowFeedsView.unselected(UNSELECT_REASON_TO_DESKTOP)
-                        }
-                        1 -> {
-                            mRecommendFeedsView.unselected(UNSELECT_REASON_TO_DESKTOP)
-                        }
-                        2 -> {
-                            mFeedsCollectView.unselected(UNSELECT_REASON_TO_DESKTOP)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     val initPostion = 1
     // 保持 init Postion 一致
     var mPagerPosition: Int by Delegates.observable(initPostion, { _, oldPositon, newPosition ->
@@ -232,7 +184,6 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
-        mUiHandler.removeMessages(BACKGROUNG_MSG)
         StatisticsAdapter.recordCountEvent("music_tab", "music_tab_expose", null)
         onViewSelected(mFeedVp.currentItem)
     }
@@ -263,10 +214,26 @@ class FeedsWatchFragment : BaseFragment() {
     override fun onFragmentInvisible(reason: Int) {
         super.onFragmentInvisible(reason)
         MyLog.d(TAG, "onFragmentInvisible reason=$reason")
-        //todo 因为切后台的事件会比不可见晚
-        val msg = mUiHandler.obtainMessage(BACKGROUNG_MSG)
-        msg.arg1 = reason
-        mUiHandler.sendMessageDelayed(msg, 200)
+        var r = UNSELECT_REASON_SLIDE_OUT
+        if (reason == INVISIBLE_REASON_IN_VIEWPAGER) {
+            r = UNSELECT_REASON_TO_OTHER_TAB
+        } else if (reason == INVISIBLE_REASON_TO_OTHER_ACTIVITY) {
+            r = UNSELECT_REASON_TO_OTHER_ACTIVITY
+        } else if (reason == INVISIBLE_REASON_TO_DESKTOP) {
+            r = INVISIBLE_REASON_TO_DESKTOP
+        }
+        // 返回桌面
+        when (mPagerPosition) {
+            0 -> {
+                mFollowFeedsView.unselected(r)
+            }
+            1 -> {
+                mRecommendFeedsView.unselected(r)
+            }
+            2 -> {
+                mFeedsCollectView.unselected(r)
+            }
+        }
         if (reason == 2) {
             // 滑走导致的不可见
             FeedsPlayStatistics.setCurPlayMode(0, FeedPage.UNKNOW, 0)
@@ -308,6 +275,7 @@ class FeedsWatchFragment : BaseFragment() {
         }
     }
 }
+
 const val UNSELECT_REASON_SLIDE_OUT = 1 // tab滑走
 const val UNSELECT_REASON_TO_DESKTOP = 2  // 到桌面
 const val UNSELECT_REASON_TO_OTHER_ACTIVITY = 3 // 到别的activity
