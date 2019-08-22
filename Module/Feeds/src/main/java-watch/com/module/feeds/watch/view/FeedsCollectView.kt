@@ -541,8 +541,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShakeEvent) {
-        if(SinglePlayer.startFrom == playerTag){
-            playWithType(true,true)
+        if (SinglePlayer.startFrom == playerTag) {
+            playWithType(true, true)
         }
     }
 
@@ -561,24 +561,6 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
-        SensorManagerHelper.register(playerTag)
-    }
-
-    fun unselected(reason:Int) {
-        MyLog.d(TAG, "unselected")
-        when(reason){
-            UNSELECT_REASON_SLIDE_OUT,
-            UNSELECT_REASON_TO_OTHER_ACTIVITY,
-            UNSELECT_REASON_TO_OTHER_TAB ->{
-                SinglePlayer.reset(playerTag)
-                stopPlay()
-                SensorManagerHelper.unregister(playerTag)
-            }
-            UNSELECT_REASON_TO_DESKTOP ->{
-
-            }
-        }
-
     }
 
     fun selected() {
@@ -596,7 +578,24 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 SinglePlayer.reset(playerTag)
                 initData(false)
             }
+        }
+        SensorManagerHelper.register(playerTag)
+    }
 
+    fun unselected(reason: Int) {
+        MyLog.d(TAG, "unselected")
+        when (reason) {
+            UNSELECT_REASON_SLIDE_OUT,
+            UNSELECT_REASON_TO_OTHER_ACTIVITY,
+            UNSELECT_REASON_TO_OTHER_TAB -> {
+                SinglePlayer.reset(playerTag)
+                stopPlay()
+                SensorManagerHelper.unregister(playerTag)
+            }
+            UNSELECT_REASON_TO_DESKTOP -> {
+
+            }
         }
     }
+
 }

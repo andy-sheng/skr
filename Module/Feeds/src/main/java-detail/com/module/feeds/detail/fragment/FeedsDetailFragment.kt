@@ -902,7 +902,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.isSelected = true
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
-            //TODO 这里需要确定页面来源
             FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, mFrom, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
