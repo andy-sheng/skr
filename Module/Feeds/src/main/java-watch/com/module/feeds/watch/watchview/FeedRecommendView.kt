@@ -33,6 +33,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.component.person.utils.StringFromatUtils
@@ -285,26 +286,28 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             }
         })
 
-        collectIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        collectIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 mCurModel?.let {
                     collectOrUnCollectFeed(it)
                 }
             }
         })
 
-        recordPlayIv?.setOnClickListener {
-            if (it.isSelected) {
-                pausePlay()
-                it.isSelected = false
-            } else {
-                startPlay()
-                it.isSelected = true
-            }
-        }
-
-        likeNumTv.setOnClickListener(object : DebounceViewClickListener() {
+        recordPlayIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                if (recordPlayIv?.isSelected == true) {
+                    pausePlay()
+                    recordPlayIv?.isSelected = false
+                } else {
+                    startPlay()
+                    recordPlayIv?.isSelected = true
+                }
+            }
+        })
+
+        likeNumTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 mCurModel?.let {
                     feedLike(it)
                 }
@@ -315,8 +318,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             showType = if (showType == LYRIC_TYPE) AVATAR_TYPE else LYRIC_TYPE
         }
 
-        playNextIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        playNextIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 mSongPlayModeManager?.getNextSong(true) { song ->
                     if (song == null) {
                         U.getToastUtil().showShort("这已经是最后一首歌了")
@@ -341,8 +344,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             }
         })
 
-        playLastIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        playLastIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 mSongPlayModeManager?.getPreSong(true) { song ->
                     if (song == null) {
                         U.getToastUtil().showShort("这已经是最后一首歌了")
@@ -379,8 +382,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             }
         })
 
-        bottomArea.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
+        bottomArea.setOnClickListener(object : AnimateClickListener() {
+            override fun click(v: View?) {
                 //todo 补充跳到详情的逻辑
                 mCurModel?.let {
                     mSongPlayModeManager?.setCurrentPlayModel(mCurModel?.song)

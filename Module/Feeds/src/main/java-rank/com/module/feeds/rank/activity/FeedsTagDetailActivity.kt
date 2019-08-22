@@ -32,6 +32,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.ImageUtils
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -144,8 +145,8 @@ class FeedsTagDetailActivity : BaseActivity() {
 
         if (model?.isSupportCollected ?: false) {
             mCollectTv.visibility = View.VISIBLE
-            mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
-                override fun clickValid(v: View?) {
+            mCollectTv.setOnClickListener(object : AnimateClickListener() {
+                override fun click(view: View?) {
                     launch {
                         val obj = subscribe(RequestControl("FeedsTagDetailActivity", ControlType.CancelThis)) {
                             val map = mutableMapOf("albumID" to model!!.rankID, "isCollected" to !model!!.isCollected, "userID" to MyUserInfoManager.getInstance().uid)
