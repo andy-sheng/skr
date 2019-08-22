@@ -314,7 +314,7 @@ class FeedsTagDetailActivity : BaseActivity() {
         recyclerView.adapter = mAdapter
         FrescoWorker.loadImage(imageBg, ImageFactory.newPathImage(model?.bigImgURL)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
-                .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
                 .build<BaseImage>())
         topDesc.text = model?.rankDesc
         AvatarUtils.loadAvatarByUrl(topAreaBg, AvatarUtils.newParamsBuilder(model?.bigImgURL)
