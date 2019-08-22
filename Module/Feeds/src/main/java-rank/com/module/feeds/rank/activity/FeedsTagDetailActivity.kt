@@ -266,12 +266,12 @@ class FeedsTagDetailActivity : BaseActivity() {
                     FeedsDetailActivity.openActivity(this@FeedsTagDetailActivity, it.feedID, FROM_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getNextSong(userAction) { sm ->
-                                if(sm!=null){
+                                if (sm != null) {
                                     val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
                                     curPos?.let {
                                         mAdapter.startPlayModel(curPos)
                                     }
-                                }else{
+                                } else {
 
                                 }
                                 callback.invoke(sm)
@@ -280,12 +280,12 @@ class FeedsTagDetailActivity : BaseActivity() {
 
                         override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getPreSong(userAction) { sm ->
-                                if(sm!=null){
+                                if (sm != null) {
                                     val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
                                     curPos?.let {
                                         mAdapter.startPlayModel(curPos)
                                     }
-                                }else{
+                                } else {
 
                                 }
                                 callback.invoke(sm)
@@ -324,7 +324,13 @@ class FeedsTagDetailActivity : BaseActivity() {
         maxDate = Date(model?.timeMs ?: System.currentTimeMillis())
         curDate = Date(model?.timeMs ?: System.currentTimeMillis())
         queryDate = U.getDateTimeUtils().formatDateString(curDate)
-        timeTv.text = queryDate
+        if ((model?.timeMs ?: 0) > 0) {
+            timeTv.visibility = View.VISIBLE
+            timeTv.text = queryDate
+        } else {
+            timeTv.visibility = View.GONE
+        }
+
 
         loadInitData()
 
@@ -340,57 +346,61 @@ class FeedsTagDetailActivity : BaseActivity() {
         var star = Calendar.getInstance()
         //todo 月份需要减去一
         star.set(2019, 7, 1)
-        pvCustomTime = TimePickerBuilder(this, OnTimeSelectListener { date, v ->
-            changeDate(date)
-        })
-                .setType(booleanArrayOf(true, true, true, false, false, false))
-                .setDividerColor(Color.parseColor("#4c979797"))
-                .setBgColor(Color.parseColor("#EBEDF2"))
-                .setContentTextSize(16)
-                .setTextColorCenter(Color.BLACK)
-                .setLineSpacingMultiplier(2f)
-                .setDate(cur)
-                .setRangDate(star, max)
-                .setLayoutRes(R.layout.feed_time_picker_layout) {
-                    val cancleTv: TextView = it.findViewById(R.id.cancle_tv)
-                    val confirmTv: TextView = it.findViewById(R.id.confirm_tv)
+        if (star <= max && cur >= star && cur <= max) {
+            pvCustomTime = TimePickerBuilder(this, OnTimeSelectListener { date, v ->
+                changeDate(date)
+            })
+                    .setType(booleanArrayOf(true, true, true, false, false, false))
+                    .setDividerColor(Color.parseColor("#4c979797"))
+                    .setBgColor(Color.parseColor("#EBEDF2"))
+                    .setContentTextSize(16)
+                    .setTextColorCenter(Color.BLACK)
+                    .setLineSpacingMultiplier(2f)
+                    .setDate(cur)
+                    .setRangDate(star, max)
+                    .setLayoutRes(R.layout.feed_time_picker_layout) {
+                        val cancleTv: TextView = it.findViewById(R.id.cancle_tv)
+                        val confirmTv: TextView = it.findViewById(R.id.confirm_tv)
 
-                    cancleTv.setOnClickListener(object : DebounceViewClickListener() {
-                        override fun clickValid(v: View?) {
-                            pvCustomTime?.dismiss()
-                        }
-                    })
+                        cancleTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                pvCustomTime?.dismiss()
+                            }
+                        })
 
-                    confirmTv.setOnClickListener(object : DebounceViewClickListener() {
-                        override fun clickValid(v: View?) {
-                            pvCustomTime?.returnData()
-                            pvCustomTime?.dismiss()
-                        }
-                    })
+                        confirmTv.setOnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                pvCustomTime?.returnData()
+                                pvCustomTime?.dismiss()
+                            }
+                        })
 
+                    }
+                    .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
+                    .build()
+
+            val mDialog = pvCustomTime?.dialog
+            if (mDialog != null) {
+
+                val params = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        Gravity.BOTTOM)
+
+                params.leftMargin = 0
+                params.rightMargin = 0
+                pvCustomTime?.dialogContainerLayout?.layoutParams = params
+
+                val dialogWindow = mDialog.window
+                if (dialogWindow != null) {
+                    dialogWindow.setWindowAnimations(R.style.picker_view_slide_anim)//修改动画样式
+                    dialogWindow.setGravity(Gravity.BOTTOM)//改成Bottom,底部显示
                 }
-                .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
-                .build()
-
-        val mDialog = pvCustomTime?.dialog
-        if (mDialog != null) {
-
-            val params = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    Gravity.BOTTOM)
-
-            params.leftMargin = 0
-            params.rightMargin = 0
-            pvCustomTime?.dialogContainerLayout?.layoutParams = params
-
-            val dialogWindow = mDialog.window
-            if (dialogWindow != null) {
-                dialogWindow.setWindowAnimations(R.style.picker_view_slide_anim)//修改动画样式
-                dialogWindow.setGravity(Gravity.BOTTOM)//改成Bottom,底部显示
             }
+            pvCustomTime?.show()
+        } else {
+            MyLog.e(TAG, "showDatePicker time error")
         }
-        pvCustomTime?.show()
     }
 
 //    private fun findNextSong(userAction: Boolean): FeedSongModel? {
@@ -467,10 +477,10 @@ class FeedsTagDetailActivity : BaseActivity() {
 
                 mAdapter.notifyDataSetChanged()
 
-                if(isClean){
-                    add2SongPlayModeManager(mSongPlayModeManager,mAdapter.mDataList,true)
-                }else{
-                    add2SongPlayModeManager(mSongPlayModeManager,list,false)
+                if (isClean) {
+                    add2SongPlayModeManager(mSongPlayModeManager, mAdapter.mDataList, true)
+                } else {
+                    add2SongPlayModeManager(mSongPlayModeManager, list, false)
                 }
                 // 一定要放在 mSongPlayModeManager 后面
                 dataOkListener?.invoke()
