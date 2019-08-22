@@ -285,7 +285,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/comment_num_tv"
+            android:id="@+id/play_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="14dp"
             android:textColor="@color/white_trans_50"
@@ -305,7 +305,7 @@
             app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toRightOf="@id/avatar_iv"
-            app:layout_constraintRight_toLeftOf="@id/comment_num_tv"
+            app:layout_constraintRight_toLeftOf="@id/play_num_tv"
             app:layout_constraintTop_toTopOf="@id/avatar_iv" />
 
         <TextView

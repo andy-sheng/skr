@@ -95,7 +95,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     val seekBar: SeekBar
     val bottomArea: ExConstraintLayout
     val avatarIv: SimpleDraweeView
-    val commentNumTv: TextView
+    val playNumTv: TextView
     val nameTv: TextView
     val contentTv: TextView
     val swichModeView: View
@@ -245,7 +245,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         seekBar = this.findViewById(R.id.seek_bar)
         bottomArea = this.findViewById(R.id.bottom_area)
         avatarIv = this.findViewById(R.id.avatar_iv)
-        commentNumTv = this.findViewById(R.id.comment_num_tv)
+        playNumTv = this.findViewById(R.id.play_num_tv)
         nameTv = this.findViewById(R.id.name_tv)
         contentTv = this.findViewById(R.id.content_tv)
         swichModeView = this.findViewById(R.id.swich_mode_view)
@@ -413,7 +413,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
-    private fun goNextSong(){
+    private fun goNextSong() {
         mSongPlayModeManager?.getNextSong(true) { song ->
             if (song == null) {
                 U.getToastUtil().showShort("这已经是最后一首歌了")
@@ -460,17 +460,17 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         SensorManagerHelper.register(playerTag)
     }
 
-    open fun unselected(reason:Int) {
+    open fun unselected(reason: Int) {
         MyLog.d(TAG, "unselected")
-        when(reason){
+        when (reason) {
             UNSELECT_REASON_SLIDE_OUT,
             UNSELECT_REASON_TO_OTHER_ACTIVITY,
-            UNSELECT_REASON_TO_OTHER_TAB->{
+            UNSELECT_REASON_TO_OTHER_TAB -> {
                 isSeleted = false
                 pausePlay()
                 SensorManagerHelper.unregister(playerTag)
             }
-            UNSELECT_REASON_TO_DESKTOP->{
+            UNSELECT_REASON_TO_DESKTOP -> {
 
             }
         }
@@ -577,7 +577,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                     .build())
             nameTv.text = UserInfoManager.getInstance().getRemarkName(it.user?.userID
                     ?: 0, it.user?.nickname)
-            commentNumTv.text = "${it.commentCnt}条评论"
+            playNumTv.text = "${StringFromatUtils.formatTenThousand(it.exposure)} 收听"
             // 内容
             var recomendTag = ""
             if (it.song?.needRecommentTag == true) {
@@ -775,7 +775,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShakeEvent) {
-        if(SinglePlayer.startFrom == playerTag){
+        if (SinglePlayer.startFrom == playerTag) {
             goNextSong()
         }
     }
