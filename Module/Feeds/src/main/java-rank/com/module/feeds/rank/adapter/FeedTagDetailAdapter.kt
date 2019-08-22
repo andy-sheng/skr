@@ -10,9 +10,7 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.rank.holder.FeedDetailTagViewHolder
-import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.model.FeedsWatchModel
-import com.module.feeds.watch.watchview.BaseWatchView
 
 class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter<FeedDetailTagViewHolder>() {
 
@@ -89,11 +87,11 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
                 mCurrentPlayPosition = pos
             }
             MyLog.d("FeedsWatchViewAdapter", "now pos=$pos")
-            notifyItemChanged(pos, FeedsWatchViewAdapter.REFRESH_TYPE_PLAY)
+            notifyItemChanged(pos, REFRESH_TYPE_PLAY)
             lastPos?.let {
                 MyLog.d("FeedsWatchViewAdapter", "last pos=$it")
                 uiHanlder.post {
-                    notifyItemChanged(it, FeedsWatchViewAdapter.REFRESH_TYPE_PLAY)
+                    notifyItemChanged(it, REFRESH_TYPE_PLAY)
                 }
             }
         }
@@ -116,7 +114,7 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
     }
 }
 
-public interface FeedTagListener {
+interface FeedTagListener {
     fun onClickCollect(position: Int, model: FeedsWatchModel?)
 
     fun onClickItem(position: Int, model: FeedsWatchModel?)
