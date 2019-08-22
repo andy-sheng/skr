@@ -117,6 +117,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     val playerTag = TAG + hashCode()
 
+    var isBackground = false   // 是否在后台
+
     var playCallback = object : PlayerCallbackAdapter() {
         override fun onPrepared() {
             MyLog.d(TAG, "onPrepared")
@@ -206,14 +208,18 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     }
 
     fun onSongComplete() {
-        seekBar?.progress = 0
-        playTimeTv?.text = "00:00"
-        mFeedsCommonLyricView?.seekTo(0)
-        mCurModel?.song?.playDurMs?.let {
-            totalTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
-        }
+        if (!isBackground) {
+            seekBar?.progress = 0
+            playTimeTv?.text = "00:00"
+            mFeedsCommonLyricView?.seekTo(0)
+            mCurModel?.song?.playDurMs?.let {
+                totalTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+            }
 
-        startPlay()
+            startPlay()
+        } else {
+            playNextIv.callOnClick()
+        }
     }
 
     init {

@@ -31,6 +31,7 @@ import com.module.feeds.watch.watchview.FollowWatchView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.properties.Delegates
@@ -185,6 +186,10 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mFeedVp?.setCurrentItem(initPostion, false)
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun onFragmentVisible() {
@@ -246,12 +251,14 @@ class FeedsWatchFragment : BaseFragment() {
         mRecommendFeedsView.destroy()
         mFollowFeesView.destroy()
         mFeedsCollectView.destory()
+        EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
         MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
         isBackground = !event.foreground
+        mRecommendFeedsView.isBackground = isBackground
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
