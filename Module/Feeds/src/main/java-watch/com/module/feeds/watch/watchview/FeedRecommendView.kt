@@ -47,6 +47,7 @@ import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedDetailSwitchEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedSongModel
@@ -694,7 +695,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             recordPlayIv?.isSelected = true
 //        mRadioView?.play(SinglePlayer.isBufferingOk)
             mCurModel?.song?.playURL?.let {
-                FeedsPlayStatistics.setCurPlayMode(mCurModel?.feedID ?: 0)
+                FeedsPlayStatistics.setCurPlayMode(mCurModel?.feedID ?: 0, FeedPage.DETAIL_FROM_RECOMMEND,0)
                 SinglePlayer.startPlay(playerTag, it)
             }
 

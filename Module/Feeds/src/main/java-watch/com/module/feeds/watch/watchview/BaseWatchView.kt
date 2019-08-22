@@ -34,6 +34,7 @@ import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
@@ -381,7 +382,11 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             return
         }
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model.feedID)
+            if(type == TYPE_FOLLOW){
+                FeedsPlayStatistics.setCurPlayMode(model.feedID,FeedPage.FOLLOW,0)
+            }else if(type== TYPE_PERSON){
+                FeedsPlayStatistics.setCurPlayMode(model.feedID,FeedPage.HOMEPAGE,0)
+            }
             mSongPlayModeManager?.setCurrentPlayModel(model?.song)
             SinglePlayer.startPlay(playerTag, it)
         }
@@ -398,7 +403,12 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         }
         mAdapter.resumePlayModel()
         mAdapter.mCurrentPlayModel?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(mAdapter.mCurrentPlayModel?.feedID ?: 0)
+            val feedID = mAdapter.mCurrentPlayModel?.feedID ?: 0
+            if(type == TYPE_FOLLOW){
+                FeedsPlayStatistics.setCurPlayMode(feedID,FeedPage.FOLLOW,0)
+            }else if(type== TYPE_PERSON){
+                FeedsPlayStatistics.setCurPlayMode(feedID,FeedPage.HOMEPAGE,0)
+            }
             SinglePlayer.startPlay(playerTag, it)
         }
     }

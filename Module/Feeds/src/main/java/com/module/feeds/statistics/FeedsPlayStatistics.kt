@@ -24,20 +24,24 @@ object FeedsPlayStatistics {
     private var curProgress: Long = 0
     private var curDuration: Long = 0
     private var curFeedsId: Int = 0
+    private var curFromPage:Int = 0
+    private var curFromAlbumId:Int = 0
 
     private var mapNum = 0
     private var lastUploadTs = System.currentTimeMillis()
     /**
      * 传0可以触发打点统计
      */
-    fun setCurPlayMode(feedsId: Int) {
-        MyLog.d("FeedsPlayStatistics", "setCurPlayMode feedsId = $feedsId")
+    fun setCurPlayMode(feedsId: Int,fromPage:FeedPage,fromAlbumId:Int) {
+        MyLog.d("FeedsPlayStatistics", "setCurPlayMode feedsId = $feedsId, fromPage = $fromPage, fromAlbumId = $fromAlbumId")
         if (curFeedsId != 0) {
             if (curFeedsId != feedsId) {
                 add2Map()
             }
         }
         curFeedsId = feedsId
+        curFromPage = fromPage.from
+        curFromAlbumId = fromAlbumId
     }
 
     fun updateCurProgress(pos: Long, duration: Long) {
@@ -53,7 +57,7 @@ object FeedsPlayStatistics {
                 l = ArrayList<Item>()
                 infoMap[curFeedsId] = l
             }
-            l.add(Item(p, curProgress.toInt()))
+            l.add(Item(p, curProgress.toInt(), curFromPage, curFromAlbumId))
             mapNum++
             tryUpload(false)
         }
@@ -164,14 +168,16 @@ object FeedsPlayStatistics {
             val v = infoMap[it]
             val jo = JSONObject()
             jo["feedID"] = it
-            val arrs1 = JSONArray()
-            val arrs2 = JSONArray()
+            val jarrays = JSONArray()
             v?.forEach {
-                arrs1.add(it.progress)
-                arrs2.add(it.playPostion)
+                val job = JSONObject()
+                job["durations"] = it.playPostion
+                job["progress"] = it.progress
+                job["source"] = it.fromPage
+                job["sourceID"] = it.fromAlbumId
+                jarrays.add(job)
             }
-            jo["progress"] = arrs1
-            jo["durations"] = arrs2
+            jo["statistics"] = jarrays
             l1.add(jo)
         }
         infoMap.clear()
@@ -214,8 +220,8 @@ object FeedsPlayStatistics {
 }
 
 private interface FeedsStatisticsServerApi {
-    @PUT("/v2/feed/statistics")
+    @PUT("/v3/feed/statistics")
     fun uploadFeedsStatistics(@Body requestBody: RequestBody): Call<ApiResult>
 }
 
-private class Item(var progress: Float = 0f, var playPostion: Int = 0)
+private class Item(var progress: Float = 0f, var playPostion: Int = 0,var fromPage:Int,var fromAlbumId: Int)

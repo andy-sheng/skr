@@ -49,6 +49,7 @@ import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.rank.adapter.FeedTagDetailAdapter
 import com.module.feeds.rank.adapter.FeedTagListener
 import com.module.feeds.rank.event.FeedTagFollowStateEvent
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.model.FeedRecommendTagModel
@@ -568,7 +569,13 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.startPlayModel(index, feed)
                 mSongPlayModeManager?.setCurrentPlayModel(feed.song)
                 feed.song?.playURL?.let {
-                    FeedsPlayStatistics.setCurPlayMode(feed.feedID)
+                    if(model?.isSupportCollected == true){
+                        // 运营歌单
+                        FeedsPlayStatistics.setCurPlayMode(feed.feedID,FeedPage.SONG_ALBUM_OP,model?.rankID?:0)
+                    }else {
+                        FeedsPlayStatistics.setCurPlayMode(feed.feedID,FeedPage.SONG_ALBUM_RANK,model?.rankID?:0)
+                    }
+
                     SinglePlayer.startPlay(playerTag, it)
                 }
                 return@forEachIndexed

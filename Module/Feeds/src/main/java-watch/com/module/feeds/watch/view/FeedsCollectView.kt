@@ -39,6 +39,7 @@ import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.rank.event.FeedTagFollowStateEvent
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.FeedsWatchServerApi
 import com.module.feeds.watch.adapter.FeedCollectListener
@@ -366,7 +367,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0)
+            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0,FeedPage.COLLECT,0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -394,7 +395,6 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 }
             }
             mSongPlayModeManager = FeedSongPlayModeManager(mCurrentType, cur, feedSongModels)
-
 
             stopPlay()
             mAdapter.mDataList.clear()
