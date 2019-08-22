@@ -253,7 +253,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         lyricTypeViews = this.findViewById(R.id.lyric_type_views)
         lyricTypesongNameTv = this.findViewById(R.id.lyric_type_song_name_tv)
         lyricTypesongDescTv = this.findViewById(R.id.lyric_type_desc_tv)
-        mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
+        mFeedsCommonLyricView = FeedsCommonLyricView(rootView, false)
         mFeedsCommonLyricView?.setShowState(View.GONE)
 
         mSongPlayModeManager = FeedSongPlayModeManager(FeedSongPlayModeManager.PlayMode.ORDER, null, null)

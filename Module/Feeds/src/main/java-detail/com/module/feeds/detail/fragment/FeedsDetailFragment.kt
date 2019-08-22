@@ -322,7 +322,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mShareNumTv = rootView.findViewById(R.id.share_num_tv)
         mFeedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         mRadioView = rootView.findViewById(R.id.radio_view)
-        mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
+        mFeedsCommonLyricView = FeedsCommonLyricView(rootView, true)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mCollectionIv = rootView.findViewById(R.id.collection_iv)
 

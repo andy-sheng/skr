@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 
-class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+class FeedsManyLyricView(viewStub: ViewStub, var showName: Boolean = false) : ExViewStub(viewStub), BaseFeedsLyricView {
 
     val TAG = "FeedsManyLyricView"
     var mManyLyricsView: ManyLyricsView? = null
@@ -79,7 +79,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
             mManyLyricsView?.initLrcData()
         }
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
-        if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
+        if (!TextUtils.isEmpty(mFeedSongModel?.workName) && showName) {
             mManyLyricsView?.setSongName("《${mFeedSongModel?.workName}》")
         }
 

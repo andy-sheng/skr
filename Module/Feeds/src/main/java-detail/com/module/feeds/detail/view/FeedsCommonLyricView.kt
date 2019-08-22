@@ -11,7 +11,7 @@ import com.module.feeds.watch.model.FeedSongModel
 /**
  * 可以播伴奏清唱等多种歌词
  */
-class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
+class FeedsCommonLyricView(rootView: View, var showName: Boolean = false) : BaseFeedsLyricView {
 
     override fun loadLyric() {
         throw Exception("外部只要调用setSongModel就行了")
@@ -26,13 +26,13 @@ class FeedsCommonLyricView(rootView: View) : BaseFeedsLyricView {
     init {
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.auto_scroll_lyric_view_layout_viewstub)
-            mAutoScrollLyricView = AutoScrollLyricView(viewStub)
+            mAutoScrollLyricView = AutoScrollLyricView(viewStub, showName)
             mAutoScrollLyricView?.scrollView?.layoutParams?.height = U.getDisplayUtils().dip2px(74f)
         }
 
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.feeds_many_lyric_layout_viewstub)
-            mFeedsManyLyricView = FeedsManyLyricView(viewStub)
+            mFeedsManyLyricView = FeedsManyLyricView(viewStub, showName)
             mFeedsManyLyricView?.showHalf()
         }
 

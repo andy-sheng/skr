@@ -43,6 +43,8 @@
         app:layout_constraintTop_toTopOf="@id/recommend_film" />
 
     <TextView
+        android:ellipsize="end"
+        android:maxLines="1"
         android:id="@+id/song_name_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
@@ -59,6 +61,8 @@
         app:layout_constraintTop_toBottomOf="@id/recommend_film" />
 
     <TextView
+        android:ellipsize="end"
+        android:maxLines="1"
         android:id="@+id/song_desc_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
@@ -74,6 +78,8 @@
         app:layout_constraintTop_toBottomOf="@id/song_name_tv" />
 
     <TextView
+        android:ellipsize="end"
+        android:maxLines="1"
         android:id="@+id/lyric_type_song_name_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
@@ -89,6 +95,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:ellipsize="end"
+        android:maxLines="1"
         android:id="@+id/lyric_type_desc_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"

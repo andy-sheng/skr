@@ -16,7 +16,7 @@ import com.module.feeds.watch.model.FeedSongModel
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.*
 
-class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+class AutoScrollLyricView(viewStub: ViewStub, var showName: Boolean = false) : ExViewStub(viewStub), BaseFeedsLyricView {
     val TAG = "AutoScrollLyricView"
     var lyricTv: ExTextView? = null
     var scrollView: ScrollView? = null
@@ -104,7 +104,7 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     fun whenLoadLyric(play: Boolean) {
         var l = mFeedSongModel?.songTpl?.lrcTxtStr
-        if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
+        if (!TextUtils.isEmpty(mFeedSongModel?.workName) && showName) {
             l = "《${mFeedSongModel?.workName}》\n ${l}"
         }
 //        visibility = View.VISIBLE
