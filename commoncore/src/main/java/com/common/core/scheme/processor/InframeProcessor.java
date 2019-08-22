@@ -278,7 +278,7 @@ public class InframeProcessor implements ISchemeProcessor {
             if (feedID > 0) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withInt("feed_ID", feedID)
-                        .withInt("from", 4)
+//                        .withInt("from", 4)
                         .navigation();
             }
         } else {
