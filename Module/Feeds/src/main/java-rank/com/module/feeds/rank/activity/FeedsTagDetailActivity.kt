@@ -88,6 +88,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     lateinit var mAdapter: FeedTagDetailAdapter
 
     var lastVerticalOffset = Int.MAX_VALUE
+    lateinit var starDate: Date  // 榜单开始的时间
     lateinit var maxDate: Date   // 最大的时间戳
     lateinit var curDate: Date   // 当前选择的时间
     var queryDate: String = ""
@@ -333,6 +334,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 .setSizeType(ImageUtils.SIZE.SIZE_160)
                 .setBlur(true)
                 .build())
+        starDate = Date(model?.startTimeMs ?: System.currentTimeMillis())
         maxDate = Date(model?.timeMs ?: System.currentTimeMillis())
         curDate = Date(model?.timeMs ?: System.currentTimeMillis())
         queryDate = U.getDateTimeUtils().formatDateString(curDate)
@@ -356,9 +358,9 @@ class FeedsTagDetailActivity : BaseActivity() {
         var max = Calendar.getInstance()
         max.time = maxDate
         var star = Calendar.getInstance()
-        //todo 月份需要减去一
-        star.set(2019, 7, 1)
-        if (star <= max && cur >= star && cur <= max) {
+        star.time = starDate
+        if (star.time <= max.time && cur.time >= star.time && cur.time <= max.time) {
+            pvCustomTime?.dismiss()
             pvCustomTime = TimePickerBuilder(this, OnTimeSelectListener { date, v ->
                 changeDate(date)
             })
@@ -598,6 +600,7 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        pvCustomTime?.dismiss()
         SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
     }
