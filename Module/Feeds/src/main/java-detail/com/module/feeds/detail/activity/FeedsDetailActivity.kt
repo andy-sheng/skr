@@ -12,6 +12,7 @@ import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.statistics.FeedPage
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {
@@ -21,6 +22,25 @@ class FeedsDetailActivity : BaseActivity() {
         val TYPE_SWITCH = 1     //只支持上下首切换
         val TYPE_SWITCH_MODE = 2  //即支持换模式又支持上下首切换
         var MANAGER: AbsPlayModeManager? = null
+
+        fun openActivity(from: FeedPage, activity: Activity, feedID: Int, type: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
+            MANAGER = playModeManager
+            val intent = Intent(activity, FeedsDetailActivity::class.java)
+            intent.putExtra("feed_ID", feedID)
+
+            type?.let {
+                intent.putExtra("type", type)
+            }
+
+            from?.let {
+                intent.putExtra("from", it)
+            }
+
+            playType?.let {
+                intent.putExtra("playType", playType)
+            }
+            activity.startActivity(intent)
+        }
 
         fun openActivity(activity: Activity, feedID: Int, type: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
             MANAGER = playModeManager
