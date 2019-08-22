@@ -207,6 +207,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     fun toNextSongAction() {
         seekBar?.progress = 0
         playTimeTv?.text = "00:00"
+        mFeedsCommonLyricView?.seekTo(0)
         mCurModel?.song?.playDurMs?.let {
             totalTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
         }
