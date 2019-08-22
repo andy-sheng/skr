@@ -350,7 +350,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
      * from 1 表示从 onPause 导致不可见
      *      2 表示从 setUserVisibleHint ViewPager划走导致不可见
      */
-    protected open fun onFragmentInvisible(from: Int) {
+    protected open fun onFragmentInvisible(reason: Int) {
         MyLog.d(TAG, "onFragmentInvisible")
         StatisticsAdapter.recordPageEnd(activity, this.javaClass.simpleName)
     }

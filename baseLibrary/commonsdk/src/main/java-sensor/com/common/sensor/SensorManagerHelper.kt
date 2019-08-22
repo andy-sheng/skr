@@ -23,17 +23,31 @@ object SensorManagerHelper : SensorEventListener {
     // 手机震动
     private var vibrator: Vibrator? = null
     private var isShake = false
-    private val mUiHandler = object :Handler(Looper.getMainLooper()){
+    private val mUiHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
         }
     }
 
+    private val FORCE_THRESHOLD = 350
+    private val TIME_THRESHOLD = 100
+    private val SHAKE_TIMEOUT = 500
+    private val SHAKE_DURATION = 1000
+    private val SHAKE_COUNT = 3
+
+    private var mLastX = -1.0f
+    private var mLastY = -1.0f
+    private var mLastZ = -1.0f
+    private var mLastTime: Long = 0
+    private var mShakeCount = 0
+    private var mLastShake: Long = 0
+    private var mLastForce: Long = 0
+
     init {
 
     }
 
-    internal fun startSensor(){
+    internal fun startSensor() {
         MyLog.d(TAG, "startSensor")
         sensorManager = U.app().getSystemService(Context.SENSOR_SERVICE) as SensorManager?
         /**
@@ -53,7 +67,7 @@ object SensorManagerHelper : SensorEventListener {
         //wakeLock?.acquire()
     }
 
-    internal fun stopSensor(){
+    internal fun stopSensor() {
         MyLog.d(TAG, "stopSensor")
         sensorManager?.unregisterListener(this)
     }
@@ -90,19 +104,29 @@ object SensorManagerHelper : SensorEventListener {
         event1?.let { event ->
             val type = event.sensor.getType()
             if (type == Sensor.TYPE_ACCELEROMETER) {
-                //MyLog.d(TAG, "onSensorChanged TYPE_ACCELEROMETER values = ${printV(event.values)} accuracy = ${event.accuracy} timestamp = ${event.timestamp}")
-                //获取三个方向值
+                //MyLog.d(TAG, "onSensorChanged TYPE_STEP_DETECTOR values = ${printV(event.values)} accuracy = ${event.accuracy} timestamp = ${event.timestamp}")
+                val now = System.currentTimeMillis()
+                if (now - mLastForce > SHAKE_TIMEOUT) {
+                    mShakeCount = 0
+                }
                 val values = event.values
-                val x = values[0]
-                val y = values[1]
-                val z = values[2]
-                if ((Math.abs(x) > 17 || Math.abs(y) > 17 || Math.abs(z) > 17) && !isShake) {
-                    isShake = true
-                    vibrator?.vibrate(500)
-                    EventBus.getDefault().post(ShakeEvent())
-                    mUiHandler.postDelayed({
-                        isShake = false
-                    }, 500)
+                if (now - mLastTime > TIME_THRESHOLD) {
+                    val diff = now - mLastTime
+                    val speed = Math.abs(values[SensorManager.DATA_X] + values[SensorManager.DATA_Y] + values[SensorManager.DATA_Z] - mLastX - mLastY - mLastZ) / diff * 10000
+                    MyLog.d(TAG, "onSensorChanged TYPE_STEP_DETECTOR diff = $diff speed = $speed mShakeCount=$mShakeCount mLastShake=$mLastShake")
+                    if (speed > FORCE_THRESHOLD) {
+                        if (++mShakeCount >= SHAKE_COUNT && now - mLastShake > SHAKE_DURATION) {
+                            mLastShake = now
+                            mShakeCount = 0
+                            vibrator?.vibrate(500)
+                            EventBus.getDefault().post(ShakeEvent())
+                        }
+                        mLastForce = now
+                    }
+                    mLastTime = now
+                    mLastX = values[SensorManager.DATA_X]
+                    mLastY = values[SensorManager.DATA_Y]
+                    mLastZ = values[SensorManager.DATA_Z]
                 }
             } else if (type == Sensor.TYPE_STEP_DETECTOR) {
                 MyLog.d(TAG, "onSensorChanged TYPE_STEP_DETECTOR values = ${printV(event.values)} accuracy = ${event.accuracy} timestamp = ${event.timestamp}")
@@ -112,11 +136,11 @@ object SensorManagerHelper : SensorEventListener {
         }
     }
 
-    private fun printV(arr:FloatArray):String{
+    private fun printV(arr: FloatArray): String {
         var r = "["
         arr.forEach {
-            r+="$it,"
+            r += "$it,"
         }
-        return r+"]"
+        return r + "]"
     }
 }

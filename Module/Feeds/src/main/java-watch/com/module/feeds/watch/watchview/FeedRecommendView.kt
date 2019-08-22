@@ -30,6 +30,8 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.sensor.SensorManagerHelper
+import com.common.sensor.event.ShakeEvent
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -50,7 +52,7 @@ import com.module.feeds.event.FeedDetailSwitchEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.FeedsWatchServerApi
+import com.module.feeds.watch.*
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import kotlinx.coroutines.CoroutineScope
@@ -117,8 +119,6 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     val animatorSet: AnimatorSet
 
     val playerTag = TAG + hashCode()
-
-    var isBackground = false   // 是否在后台
 
     var playCallback = object : PlayerCallbackAdapter() {
         override fun onPrepared() {
@@ -209,7 +209,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     }
 
     fun onSongComplete() {
-        if (!isBackground) {
+        if (!U.getActivityUtils().isAppForeground) {
             seekBar?.progress = 0
             playTimeTv?.text = "00:00"
             mFeedsCommonLyricView?.seekTo(0)
@@ -219,7 +219,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
             startPlay()
         } else {
-            playNextIv.callOnClick()
+            goNextSong()
         }
     }
 
@@ -318,29 +318,9 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             showType = if (showType == LYRIC_TYPE) AVATAR_TYPE else LYRIC_TYPE
         }
 
-        playNextIv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(v: View?) {
-                mSongPlayModeManager?.getNextSong(true) { song ->
-                    if (song == null) {
-                        U.getToastUtil().showShort("这已经是最后一首歌了")
-                    } else {
-                        mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
-                            seekBar.progress = 0
-                            playTimeTv?.text = "00:00"
-                            song.let {
-                                totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
-                                if (seekBar.max != it.playDurMs) {
-                                    seekBar.max = it.playDurMs
-                                }
-                            }
-                            if (position in 0 until mDataList.size) {
-                                bindCurFeedWatchModel(mDataList[position])
-                            } else {
-                                MyLog.e(TAG, "clickValidposition = $position  mDataList.size=${mDataList.size}")
-                            }
-                        }
-                    }
-                }
+        playNextIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                goNextSong()
             }
         })
 
@@ -348,7 +328,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             override fun click(v: View?) {
                 mSongPlayModeManager?.getPreSong(true) { song ->
                     if (song == null) {
-                        U.getToastUtil().showShort("这已经是最后一首歌了")
+                        U.getToastUtil().showShort("这已经是第一首歌了")
                     } else {
                         mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
                             seekBar.progress = 0
@@ -433,6 +413,30 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         SinglePlayer.addCallback(playerTag, playCallback)
     }
 
+    private fun goNextSong(){
+        mSongPlayModeManager?.getNextSong(true) { song ->
+            if (song == null) {
+                U.getToastUtil().showShort("这已经是最后一首歌了")
+            } else {
+                mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                    seekBar.progress = 0
+                    playTimeTv?.text = "00:00"
+                    song.let {
+                        totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
+                        if (seekBar.max != it.playDurMs) {
+                            seekBar.max = it.playDurMs
+                        }
+                    }
+                    if (position in 0 until mDataList.size) {
+                        bindCurFeedWatchModel(mDataList[position])
+                    } else {
+                        MyLog.e(TAG, "clickValidposition = $position  mDataList.size=${mDataList.size}")
+                    }
+                }
+            }
+        }
+    }
+
     private fun openPersonCenter() {
         mCurModel?.let {
             val bundle = Bundle()
@@ -453,12 +457,24 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             // 恢复播放
             bindCurFeedWatchModel(mCurModel)
         }
+        SensorManagerHelper.register(playerTag)
     }
 
-    open fun unselected() {
+    open fun unselected(reason:Int) {
         MyLog.d(TAG, "unselected")
         isSeleted = false
-        pausePlay()
+        when(reason){
+            UNSELECT_REASON_SLIDE_OUT,
+            UNSELECT_REASON_TO_OTHER_ACTIVITY,
+            UNSELECT_REASON_TO_OTHER_TAB->{
+                pausePlay()
+                SensorManagerHelper.unregister(playerTag)
+            }
+            UNSELECT_REASON_TO_DESKTOP->{
+
+            }
+        }
+
     }
 
     private fun getMoreFeeds(dataOkCallback: (() -> Unit)?) {
@@ -754,6 +770,13 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         // 数据要更新了
         event.model?.let {
             updateDetailModel(it)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShakeEvent) {
+        if(SinglePlayer.startFrom == playerTag){
+            goNextSong()
         }
     }
 

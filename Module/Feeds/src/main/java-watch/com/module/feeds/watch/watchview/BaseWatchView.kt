@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.sensor.SensorManagerHelper
 import com.common.utils.U
 import com.component.busilib.callback.EmptyCallback
 import com.kingja.loadsir.callback.Callback
@@ -36,7 +37,7 @@ import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.FeedsWatchServerApi
+import com.module.feeds.watch.*
 import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedRecommendTagModel
@@ -440,7 +441,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         mRefreshLayout.autoRefresh()
     }
 
-    open fun unselected() {
+    open fun unselected(reason:Int) {
         MyLog.d(TAG, "unselected")
         isSeleted = false
         pausePlay()

@@ -22,6 +22,8 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.sensor.SensorManagerHelper
+import com.common.sensor.event.ShakeEvent
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
@@ -41,7 +43,7 @@ import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.rank.event.FeedTagFollowStateEvent
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.FeedsWatchServerApi
+import com.module.feeds.watch.*
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.model.FeedRecommendTagModel
@@ -55,6 +57,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 收藏view
@@ -536,6 +539,13 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShakeEvent) {
+        if(SinglePlayer.startFrom == playerTag){
+            playWithType(true,true)
+        }
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
     }
@@ -551,12 +561,24 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        SensorManagerHelper.register(playerTag)
     }
 
-    fun unselected() {
+    fun unselected(reason:Int) {
         MyLog.d(TAG, "unselected")
-        SinglePlayer.reset(playerTag)
-        stopPlay()
+        when(reason){
+            UNSELECT_REASON_SLIDE_OUT,
+            UNSELECT_REASON_TO_OTHER_ACTIVITY,
+            UNSELECT_REASON_TO_OTHER_TAB ->{
+                SinglePlayer.reset(playerTag)
+                stopPlay()
+                SensorManagerHelper.unregister(playerTag)
+            }
+            UNSELECT_REASON_TO_DESKTOP ->{
+
+            }
+        }
+
     }
 
     fun selected() {
