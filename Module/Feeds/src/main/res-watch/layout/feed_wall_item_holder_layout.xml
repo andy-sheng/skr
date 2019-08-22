@@ -234,15 +234,15 @@
     <TextView
         android:id="@+id/check_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_50_dp"
         android:layout_marginLeft="@dimen/view_18_dp"
+        android:gravity="center"
         android:text="审核中…"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/more_iv"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/more_iv" />
+        app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
 
     <TextView
         android:id="@+id/debug_tv"
