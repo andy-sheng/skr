@@ -310,17 +310,21 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
         playNextIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                mSongPlayModeManager?.getNextSong(true) {
-                    mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
-                        seekBar.progress = 0
-                        playTimeTv?.text = "00:00"
-                        it?.let {
-                            totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
-                            if (seekBar.max != it.playDurMs) {
-                                seekBar.max = it.playDurMs
+                mSongPlayModeManager?.getNextSong(true) { song ->
+                    if (song == null) {
+                        U.getToastUtil().showShort("这已经是最后一首歌了")
+                    } else {
+                        mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                            seekBar.progress = 0
+                            playTimeTv?.text = "00:00"
+                            song?.let {
+                                totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
+                                if (seekBar.max != it.playDurMs) {
+                                    seekBar.max = it.playDurMs
+                                }
                             }
+                            bindCurFeedWatchModel(mDataList[position])
                         }
-                        bindCurFeedWatchModel(mDataList[position])
                     }
                 }
             }
@@ -328,17 +332,21 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
         playLastIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                mSongPlayModeManager?.getPreSong(true) {
-                    mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
-                        seekBar.progress = 0
-                        playTimeTv?.text = "00:00"
-                        it?.let {
-                            totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
-                            if (seekBar.max != it.playDurMs) {
-                                seekBar.max = it.playDurMs
+                mSongPlayModeManager?.getPreSong(true) { song ->
+                    if (song == null) {
+                        U.getToastUtil().showShort("这已经是最后一首歌了")
+                    } else {
+                        mSongPlayModeManager?.getCurPostionInOrigin()?.let { position ->
+                            seekBar.progress = 0
+                            playTimeTv?.text = "00:00"
+                            song?.let {
+                                totalTimeTv.text = U.getDateTimeUtils().formatTimeStringForDate(it.playDurMs.toLong(), "mm:ss")
+                                if (seekBar.max != it.playDurMs) {
+                                    seekBar.max = it.playDurMs
+                                }
                             }
+                            bindCurFeedWatchModel(mDataList[position])
                         }
-                        bindCurFeedWatchModel(mDataList[position])
                     }
                 }
             }
