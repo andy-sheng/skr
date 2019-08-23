@@ -334,7 +334,16 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                     if (this@BaseWatchView.mAdapter.mDataList?.get(pos).status != 2) {
                                         getNextSong(userAction, callback)
                                         return@getNextSong
+                                    } else {
+                                        // 合理更新本地
+                                        mAdapter.mCurrentPlayPosition = pos
+                                        mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
                                     }
+                                }
+                            } else {
+                                // 纠正一下位置
+                                mAdapter.mCurrentPlayModel?.song?.let {
+                                    mSongPlayModeManager?.setCurrentPlayModel(it)
                                 }
                             }
                             callback.invoke(it)
@@ -355,7 +364,16 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                     if (this@BaseWatchView.mAdapter.mDataList?.get(pos).status != 2) {
                                         getPreSong(userAction, callback)
                                         return@getPreSong
+                                    } else {
+                                        // 合理更新本地
+                                        mAdapter.mCurrentPlayPosition = pos
+                                        mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
                                     }
+                                }
+                            } else {
+                                // 纠正一下位置
+                                mAdapter.mCurrentPlayModel?.song?.let {
+                                    mSongPlayModeManager?.setCurrentPlayModel(it)
                                 }
                             }
                             callback.invoke(it)
