@@ -587,7 +587,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.startPlayModel(index, feed)
                 mSongPlayModeManager?.setCurrentPlayModel(feed.song)
                 feed.song?.playURL?.let {
-                    if (model?.isSupportCollected == true) {
+                    if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {
                         // 运营歌单
                         FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_OP, model?.rankID
                                 ?: 0)

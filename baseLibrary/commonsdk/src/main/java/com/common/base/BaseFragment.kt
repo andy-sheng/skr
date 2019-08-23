@@ -279,6 +279,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
                 val beforeSize = U.getActivityUtils().activityList.size
                 val beforeCount = U.getActivityUtils().mActivityStartCount
                 launch {
+                    var exec = false
                     for (i in 0..20) {
                         delay(50)
                         val afterSize = U.getActivityUtils().activityList.size
@@ -289,8 +290,12 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
                             } else {
                                 onFragmentInvisible(INVISIBLE_REASON_TO_DESKTOP)
                             }
+                            exec =true
                             break
                         }
+                    }
+                    if(!exec){
+                        onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
                     }
                 }
             }

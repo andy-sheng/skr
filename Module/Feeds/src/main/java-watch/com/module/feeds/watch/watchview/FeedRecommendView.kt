@@ -741,7 +741,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 //        mRadioView?.play(SinglePlayer.isBufferingOk)
             mCurModel?.song?.playURL?.let {
                 FeedsPlayStatistics.setCurPlayMode(mCurModel?.feedID
-                        ?: 0, FeedPage.DETAIL_FROM_RECOMMEND, 0)
+                        ?: 0, FeedPage.RECOMMEND, 0)
                 SinglePlayer.startPlay(playerTag, it)
             }
 

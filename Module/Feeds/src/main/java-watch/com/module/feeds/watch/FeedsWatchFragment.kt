@@ -256,7 +256,7 @@ class FeedsWatchFragment : BaseFragment() {
                 mFeedsCollectView.unselected(r)
             }
         }
-        if (reason == 2) {
+        if (reason != INVISIBLE_REASON_TO_OTHER_ACTIVITY) {
             // 滑走导致的不可见
             FeedsPlayStatistics.setCurPlayMode(0, FeedPage.UNKNOW, 0)
             FeedsPlayStatistics.tryUpload(true)

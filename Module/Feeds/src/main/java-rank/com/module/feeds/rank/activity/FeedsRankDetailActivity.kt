@@ -275,7 +275,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         mAdapter.notifyDataSetChanged()
         mSongPlayModeManager?.setCurrentPlayModel(model.song)
         model.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.feedID, FeedPage.SONG_ALBUM_RANK, 0)
+            FeedsPlayStatistics.setCurPlayMode(model?.feedID, FeedPage.SONG_ALBUM_CHANLLENGE, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
