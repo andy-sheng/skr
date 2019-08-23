@@ -336,7 +336,7 @@
                         android:id="@+id/share_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/view_24_dp"
-                        android:layout_marginLeft="@dimen/view_10_dp"
+                        android:layout_marginLeft="@dimen/view_16_dp"
                         android:layout_marginTop="@dimen/view_8_dp"
                         android:layout_marginRight="@dimen/view_10_dp"
                         android:gravity="center"
@@ -347,7 +347,7 @@
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/hit_iv"
-                        app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+                        app:layout_constraintTop_toBottomOf="@id/singer_iv" />
 
                     <android.support.constraint.Barrier
                         android:id="@+id/tag_hint_area"
