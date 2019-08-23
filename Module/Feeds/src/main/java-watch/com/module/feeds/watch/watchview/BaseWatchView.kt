@@ -340,6 +340,10 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                         }
                     }
 
+                    override fun playState(isPlaying: Boolean) {
+
+                    }
+
                     override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getPreSong(userAction) {
                             //查看

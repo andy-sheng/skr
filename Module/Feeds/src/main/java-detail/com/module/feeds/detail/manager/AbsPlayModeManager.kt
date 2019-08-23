@@ -12,6 +12,8 @@ abstract class AbsPlayModeManager {
 
     abstract fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit)
 
+    abstract fun playState(isPlaying: Boolean)
+
     open fun getCurMode(): FeedSongPlayModeManager.PlayMode {
         return FeedSongPlayModeManager.PlayMode.ORDER
     }

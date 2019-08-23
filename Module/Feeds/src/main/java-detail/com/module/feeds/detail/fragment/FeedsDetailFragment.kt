@@ -913,6 +913,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mFeedsCommonLyricView?.resume()
             }
         }
+        mSongManager?.playState(true)
     }
 
     private fun pausePlay() {
@@ -921,6 +922,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mRadioView?.pause()
         SinglePlayer.pause(playerTag)
         mFeedsCommonLyricView?.pause()
+        mSongManager?.playState(false)
     }
 
     private fun stopSong() {
@@ -934,6 +936,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
         }
         mFeedsCommonLyricView?.stop()
+        mSongManager?.playState(false)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

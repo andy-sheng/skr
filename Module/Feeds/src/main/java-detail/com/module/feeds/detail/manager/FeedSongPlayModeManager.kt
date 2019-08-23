@@ -97,6 +97,10 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         }
     }
 
+    override fun playState(isPlaying: Boolean) {
+
+    }
+
     fun getCurPostionInOrigin(): Int {
         if (mMode == PlayMode.RANDOM) {
             return mShuffleSongList.get(mShufflePosition).first

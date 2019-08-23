@@ -412,6 +412,10 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                                 callback(song)
                             }
                         }
+
+                        override fun playState(isPlaying: Boolean) {
+
+                        }
                     })
                 }
             }

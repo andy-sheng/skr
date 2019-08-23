@@ -296,6 +296,10 @@ class FeedsTagDetailActivity : BaseActivity() {
                             }
                         }
 
+                        override fun playState(isPlaying: Boolean) {
+
+                        }
+
                         override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                             mSongPlayModeManager?.getPreSong(userAction) { sm ->
                                 if (sm != null) {

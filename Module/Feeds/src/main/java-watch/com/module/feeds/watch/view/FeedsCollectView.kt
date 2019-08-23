@@ -141,6 +141,10 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                                 mSongPlayModeManager?.getPreSong(userAction, callback)
                             }
 
+                            override fun playState(isPlaying: Boolean) {
+
+                            }
+
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
                                 mSongPlayModeManager?.changeMode(mode)
                                 mCurrentType = mode
