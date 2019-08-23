@@ -41,8 +41,13 @@ class FeedDetailTagViewHolder(itemView: View, val listener: FeedTagListener) : R
 
         rankSeqTv.text = mode.rankSeq.toString()
         songNameTv.text = mode.song?.songTpl?.songName
-        songDescTv.text = UserInfoManager.getInstance().getRemarkName(mode.user?.userID
-                ?: 0, mode.user?.nickname)
+        if (mode.song?.needShareTag == true) {
+            songDescTv.text = mode.song?.songTpl?.singer
+        } else {
+            songDescTv.text = UserInfoManager.getInstance().getRemarkName(mode.user?.userID
+                    ?: 0, mode.user?.nickname)
+        }
+
         refreshCollects()
     }
 
