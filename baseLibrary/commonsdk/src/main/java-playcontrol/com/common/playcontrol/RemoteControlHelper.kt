@@ -84,7 +84,11 @@ object RemoteControlHelper {
         if (keyEvent?.action == KeyEvent.ACTION_DOWN) {
             MyLog.d(TAG, "onReceive keyEvent?.keyCode = ${keyEvent?.keyCode} lastHeadsetHookTs=$lastHeadsetHookTs")
             when (keyEvent?.keyCode) {
-                KeyEvent.KEYCODE_HEADSETHOOK -> {
+                KeyEvent.KEYCODE_HEADSETHOOK,
+                KeyEvent.KEYCODE_MEDIA_PAUSE,
+                KeyEvent.KEYCODE_MEDIA_PLAY,
+                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
+                -> {
                     MyLog.d(TAG, "KeyEvent.KEYCODE_HEADSETHOOK")
                     val now = System.currentTimeMillis()
                     uiHanlder.removeMessages(MSG_PAUSE_OR_PLAY)
