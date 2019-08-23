@@ -65,10 +65,18 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                 }
             }
         } else {
-            for (i in 0 until mOriginalSongList.size) {
-                if (mOriginalSongList[i] == model) {
-                    mOriginPosition = i
-                    break
+            var f = false
+            if (mOriginPosition in 0..(mOriginalSongList.size - 1)) {
+                if (mOriginalSongList[mOriginPosition] == model) {
+                    f = true
+                }
+            }
+            if (!f) {
+                for (i in 0 until mOriginalSongList.size) {
+                    if (mOriginalSongList[i] == model) {
+                        mOriginPosition = i
+                        break
+                    }
                 }
             }
         }
