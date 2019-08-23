@@ -266,6 +266,9 @@ class FeedsMakeActivity : BaseActivity() {
         if(mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG){
             changeLyricTv?.visibility = View.GONE
             changeLyricIv?.visibility = View.GONE
+        }else{
+            changeLyricTv?.visibility = View.VISIBLE
+            changeLyricIv?.visibility = View.VISIBLE
         }
         mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()

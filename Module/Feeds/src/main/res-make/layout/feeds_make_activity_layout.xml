@@ -68,6 +68,7 @@
         android:src="@drawable/feeds_make_change_lyric"
         app:layout_constraintBottom_toBottomOf="@+id/begin_tv"
         app:layout_constraintLeft_toRightOf="@id/begin_tv"
+        android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/begin_tv" />
 
@@ -77,6 +78,7 @@
         android:layout_height="wrap_content"
         android:text="改编歌词"
         android:textColor="@color/white_trans_50"
+        android:visibility="gone"
         android:textSize="@dimen/view_12_dp"
         app:layout_constraintLeft_toLeftOf="@+id/change_lyric_iv"
         app:layout_constraintRight_toRightOf="@+id/change_lyric_iv"
