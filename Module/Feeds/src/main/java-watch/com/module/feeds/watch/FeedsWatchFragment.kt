@@ -196,6 +196,10 @@ class FeedsWatchFragment : BaseFragment() {
                             .setCancelable(true)
                             .setGravity(Gravity.CENTER)
                             .create()
+
+                    mWaitingDialogPlus?.findViewById(R.id.guide_iv)?.setOnClickListener {
+                        mWaitingDialogPlus?.dismiss()
+                    }
                 }
 
                 mWaitingDialogPlus?.show()
