@@ -127,6 +127,37 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         setCurrentPlayModel(mCur)
     }
 
+    var temporary: FeedSongModel? = null
+
+    fun getNextSong2(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit, canAcceptCall: ((songMode: FeedSongModel) -> Boolean)?) {
+        if (temporary == null) {
+            temporary = mCur
+        }
+
+        getNextSong(userAction) {
+            if (it != null) {
+                if (canAcceptCall == null) {
+                    temporary = null
+                    callback.invoke(it)
+                } else {
+                    canAcceptCall?.let { call ->
+                        val accept = call(it)
+                        if (accept) {
+                            temporary = null
+                            callback.invoke(it)
+                        } else {
+                            getNextSong2(userAction, callback, canAcceptCall)
+                        }
+                    }
+                }
+            } else {
+                setCurrentPlayModel(temporary)
+                temporary = null
+                callback.invoke(it)
+            }
+        }
+    }
+
     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
         MyLog.d(TAG, "getNextSong mCur = $mCur , mOriginPosition = $mOriginPosition")
         if (mCur == null) {
@@ -223,6 +254,35 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                 mShuffleSongList[p].second.playURL?.let {
                     MediaCacheManager.preCache(it)
                 }
+            }
+        }
+    }
+
+    fun getPreSong2(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit, canAcceptCall: ((songMode: FeedSongModel) -> Boolean)?) {
+        if (temporary == null) {
+            temporary = mCur
+        }
+
+        getPreSong(userAction) {
+            if (it != null) {
+                if (canAcceptCall == null) {
+                    temporary = null
+                    callback.invoke(it)
+                } else {
+                    canAcceptCall?.let { call ->
+                        val accept = call(it)
+                        if (accept) {
+                            temporary = null
+                            callback.invoke(it)
+                        } else {
+                            getPreSong2(userAction, callback, canAcceptCall)
+                        }
+                    }
+                }
+            } else {
+                setCurrentPlayModel(temporary)
+                temporary = null
+                callback.invoke(it)
             }
         }
     }
