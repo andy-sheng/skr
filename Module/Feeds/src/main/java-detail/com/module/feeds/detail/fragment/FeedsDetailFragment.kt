@@ -418,7 +418,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.setDebounceViewClickListener { view ->
             mFeedsWatchModel?.let {
                 if (view!!.isSelected) {
-                    pausePlay()
+                    pausePlay(true)
                 } else {
                     startPlay()
                 }
@@ -916,28 +916,30 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSongManager?.playState(true)
     }
 
-    private fun pausePlay() {
+    private fun pausePlay(userAction: Boolean) {
         MyLog.d(mTag, "pausePlay")
         mControlTv!!.isSelected = false
         mRadioView?.pause()
         SinglePlayer.pause(playerTag)
         mFeedsCommonLyricView?.pause()
-        mSongManager?.playState(false)
+        if (userAction) {
+            mSongManager?.playState(false)
+        }
     }
 
-    private fun stopSong() {
-        MyLog.d(mTag, "stopSong()")
-        SinglePlayer.stop(playerTag)
-        mControlTv!!.isSelected = false
-        mRadioView?.pause()
-        mSeekBar!!.progress = 0
-        mPassTimeTv?.text = "00:00"
-        mFeedsWatchModel?.song?.playDurMs?.let {
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
-        }
-        mFeedsCommonLyricView?.stop()
-        mSongManager?.playState(false)
-    }
+//    private fun stopSong() {
+//        MyLog.d(mTag, "stopSong()")
+//        SinglePlayer.stop(playerTag)
+//        mControlTv!!.isSelected = false
+//        mRadioView?.pause()
+//        mSeekBar!!.progress = 0
+//        mPassTimeTv?.text = "00:00"
+//        mFeedsWatchModel?.song?.playDurMs?.let {
+//            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+//        }
+//        mFeedsCommonLyricView?.stop()
+//        mSongManager?.playState(false)
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
@@ -981,7 +983,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mResumeCall = null
         }
 
-        pausePlay()
+        pausePlay(false)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
