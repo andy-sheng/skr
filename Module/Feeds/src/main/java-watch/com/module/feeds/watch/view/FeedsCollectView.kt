@@ -335,7 +335,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
             mAdapter.mCurrentPlayModel = null
             mAdapter.notifyDataSetChanged()
-            SinglePlayer.reset(playerTag)
+            SinglePlayer.pause(playerTag)
         }
     }
 
@@ -389,7 +389,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
-        SinglePlayer.reset(playerTag)
+        SinglePlayer.pause(playerTag)
     }
 
     override fun showCollectList(list: List<FeedsCollectModel>?) {
