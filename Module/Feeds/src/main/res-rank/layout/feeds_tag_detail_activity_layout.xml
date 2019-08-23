@@ -76,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
+                    android:minHeight="@dimen/view_80_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <android.support.constraint.ConstraintLayout
@@ -103,9 +104,8 @@
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/view_80_dp"
                         android:layout_gravity="top"
-                        android:visibility="gone"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">
