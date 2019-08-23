@@ -184,7 +184,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/control_tv"
                         app:src_selected_drawable="@drawable/feed_collect_selected_icon"
-                        app:src_unSelected_drawable="@drawable/feed_not_collection" />
+                        app:src_unSelected_drawable="@drawable/feed_collect_normal_icon" />
 
                     <android.support.constraint.Group
                         android:id="@+id/song_control_arae"
