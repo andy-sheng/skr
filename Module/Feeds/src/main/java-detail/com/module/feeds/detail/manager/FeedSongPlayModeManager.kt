@@ -213,13 +213,13 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
 
     private fun tryPreCache() {
         if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
-            val p  = (mOriginPosition + 1) % mOriginalSongList.size
+            val p = (mOriginPosition + 1) % mOriginalSongList.size
             mOriginalSongList[p].playURL?.let {
                 MediaCacheManager.preCache(it)
             }
         } else if (mMode == PlayMode.RANDOM) {
-            val p = mShufflePosition+1
-            if(p in 0 until mShuffleSongList.size){
+            val p = mShufflePosition + 1
+            if (p in 0 until mShuffleSongList.size) {
                 mShuffleSongList[p].second.playURL?.let {
                     MediaCacheManager.preCache(it)
                 }
@@ -306,9 +306,11 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             }
             Collections.shuffle(mShuffleSongList)
             //将列表混淆一下 避免本次的第一首歌 排在下一首的首位
-            if (avoidSong != null && mShuffleSongList[0].second == avoidSong) {
-                val p = mShuffleSongList.removeAt(0)
-                mShuffleSongList.add(p)
+            if (!mShuffleSongList.isNullOrEmpty()) {
+                if (avoidSong != null && mShuffleSongList[0].second == avoidSong) {
+                    val p = mShuffleSongList.removeAt(0)
+                    mShuffleSongList.add(p)
+                }
             }
         }
     }
