@@ -31,10 +31,12 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.sensor.SensorManagerHelper
-import com.common.sensor.event.ShakeEvent
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -589,7 +591,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         SinglePlayer.addCallback(playerTag, playCallback)
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
         if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND || mFrom == FeedPage.DETAIL_FROM_COLLECT) {
-            SensorManagerHelper.register(playerTag)
+            RemoteControlHelper.register(playerTag)
         }
     }
 
@@ -995,11 +997,23 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ShakeEvent) {
+    fun onEvent(event: RemoteControlEvent) {
         // 不在前台 或者 详情页在前台
         if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
             mFeedsInputContainerView?.hideSoftInput()
             toNextSongAction(true)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
+            if(SinglePlayer.isPlaying){
+                pausePlay(true)
+            }else{
+                startPlay()
+            }
         }
     }
 
@@ -1089,7 +1103,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
         mSongManager = null
-        SensorManagerHelper.unregister(playerTag)
+        RemoteControlHelper.unregister(playerTag)
         EventBus.getDefault().post(FeedDetailChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
         }))

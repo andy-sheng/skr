@@ -175,7 +175,13 @@
             android:name="com.common.sensor.PlayerGuardService"
             android:process=":sensor"></service>
 
-        <receiver android:name="com.common.sensor.NotifitionPlayerActionReceiver"/>
+        <receiver android:name="com.common.sensor.NotifitionPlayerActionReceiver" />
+        <receiver android:name="com.common.headset.MediaButtonReceiver"
+            >
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
         <!--魅族push应用定义消息receiver声明 -->
         <!--<receiver android:name="com.zq.live.MeizuTestReceiver">-->
         <!--<intent-filter>-->

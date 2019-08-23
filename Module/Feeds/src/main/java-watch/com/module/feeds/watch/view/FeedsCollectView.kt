@@ -16,6 +16,7 @@ import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -23,7 +24,8 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.sensor.SensorManagerHelper
-import com.common.sensor.event.ShakeEvent
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
@@ -545,11 +547,22 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ShakeEvent) {
+    fun onEvent(event: RemoteControlEvent) {
         if (SinglePlayer.startFrom == playerTag) {
             playWithType(true, true)
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        if (SinglePlayer.startFrom == playerTag) {
+            mTopModel?.let {
+                mSongPlayModeManager?.setCurrentPlayModel(it.song)
+                playOrPause(it, mTopPosition, false)
+            }
+        }
+    }
+
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
@@ -588,7 +601,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 initData(false)
             }
         }
-        SensorManagerHelper.register(playerTag)
+        RemoteControlHelper.register(playerTag)
     }
 
     fun unselected(reason: Int) {
@@ -599,7 +612,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             UNSELECT_REASON_TO_OTHER_TAB -> {
                 SinglePlayer.pause(playerTag)
                 stopPlay()
-                SensorManagerHelper.unregister(playerTag)
+                RemoteControlHelper.unregister(playerTag)
             }
             UNSELECT_REASON_TO_DESKTOP -> {
 

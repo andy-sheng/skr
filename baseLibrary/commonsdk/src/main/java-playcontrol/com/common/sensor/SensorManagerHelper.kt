@@ -8,15 +8,14 @@ import android.hardware.SensorManager
 import android.os.*
 import com.common.guard.IpcCallback
 import com.common.log.MyLog
-import com.common.sensor.event.ShakeEvent
+import com.common.playcontrol.RemoteControlEvent
 import com.common.utils.U
 import org.greenrobot.eventbus.EventBus
 
-object SensorManagerHelper : SensorEventListener {
+class SensorManagerHelper : SensorEventListener {
 
     val TAG = "SensorManagerHelper"
 
-    internal val userSet = HashSet<String>()
     // 传感器管理器
     private var sensorManager: SensorManager? = null
 
@@ -72,28 +71,20 @@ object SensorManagerHelper : SensorEventListener {
         sensorManager?.unregisterListener(this)
     }
 
-    fun register(tag: String) {
-        MyLog.d(TAG, "register tag = $tag")
-        if (userSet.isEmpty()) {
-            bindSensorService {
-                it?.call(1, null, object : IpcCallback.Stub() {
-                    override fun callback(type: Int, json: String?) {
-                        if (type == 2) {
-                            EventBus.getDefault().post(ShakeEvent())
-                        }
+    fun register(){
+        bindSensorService {
+            it?.call(1, null, object : IpcCallback.Stub() {
+                override fun callback(type: Int, json: String?) {
+                    if (type == 2) {
+                        EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
                     }
-                })
-            }
+                }
+            })
         }
-        userSet.add(tag)
     }
 
-    fun unregister(tag: String) {
-        MyLog.d(TAG, "unregister tag = $tag")
-        userSet.remove(tag)
-        if (userSet.isEmpty()) {
-            stopSensorService()
-        }
+    fun unregister(){
+        stopSensorService()
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -119,7 +110,7 @@ object SensorManagerHelper : SensorEventListener {
                             mLastShake = now
                             mShakeCount = 0
                             vibrator?.vibrate(500)
-                            EventBus.getDefault().post(ShakeEvent())
+                            EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
                         }
                         mLastForce = now
                     }

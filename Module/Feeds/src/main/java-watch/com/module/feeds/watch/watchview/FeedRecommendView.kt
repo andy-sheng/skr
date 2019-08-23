@@ -24,6 +24,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -31,7 +32,8 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.sensor.SensorManagerHelper
-import com.common.sensor.event.ShakeEvent
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -480,7 +482,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             // 恢复播放
             bindCurFeedWatchModel(mCurModel)
         }
-        SensorManagerHelper.register(playerTag)
+        RemoteControlHelper.register(playerTag)
     }
 
     open fun unselected(reason: Int) {
@@ -491,7 +493,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             UNSELECT_REASON_TO_OTHER_TAB -> {
                 isSeleted = false
                 pausePlay()
-                SensorManagerHelper.unregister(playerTag)
+                RemoteControlHelper.unregister(playerTag)
             }
             UNSELECT_REASON_TO_DESKTOP -> {
 
@@ -798,9 +800,20 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ShakeEvent) {
+    fun onEvent(event: RemoteControlEvent) {
         if (SinglePlayer.startFrom == playerTag) {
             goNextSong()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        if (SinglePlayer.startFrom == playerTag) {
+            if(SinglePlayer.isPlaying){
+                pausePlay()
+            }else{
+                startPlay()
+            }
         }
     }
 

@@ -23,7 +23,8 @@ import com.common.base.R
 import com.common.guard.IpcCallback
 import com.common.guard.IpcService
 import com.common.log.MyLog
-import com.common.sensor.event.ShakeEvent
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.utils.U
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -154,11 +155,11 @@ class PlayerGuardService : Service() {
                 MyLog.d(TAG, "call type=$type json=$json callback=$callback")
                 if (type == 1) {
                     //启动传感器
-                    SensorManagerHelper.startSensor()
+                    RemoteControlHelper.startSensor()
                     showPlayerNotification(null)
                     this@PlayerGuardService.callback = callback
                 } else if (type == 2) {
-                    SensorManagerHelper.stopSensor()
+                    RemoteControlHelper.stopSensor()
                     this@PlayerGuardService.stopForeground(true)
                 } else if (type == 3) {
                     val jo = JSON.parseObject(json)
@@ -172,7 +173,7 @@ class PlayerGuardService : Service() {
         MyLog.d(TAG, "onDestroy")
         super.onDestroy()
         callback = null
-        SensorManagerHelper.stopSensor()
+        RemoteControlHelper.stopSensor()
         EventBus.getDefault().unregister(this)
     }
 
@@ -181,7 +182,7 @@ class PlayerGuardService : Service() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(e: ShakeEvent) {
+    fun onEvent(e: RemoteControlEvent) {
         callback?.callback(2, null)
     }
 }
@@ -213,7 +214,7 @@ fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
 
         override fun onServiceDisconnected(name: ComponentName) {
             // stopService 也会回调这个方法
-            if (!SensorManagerHelper.userSet.isEmpty()) {
+            if (!RemoteControlHelper.userSet.isEmpty()) {
                 bindSensorService(callback)
             } else {
                 sIpcService = null
