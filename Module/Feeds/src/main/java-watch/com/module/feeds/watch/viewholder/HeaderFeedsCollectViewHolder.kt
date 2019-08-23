@@ -71,6 +71,9 @@ class HeaderFeedsCollectViewHolder(item: View, listener: FeedCollectListener) : 
                 }
             }
         })
+
+        headerView.setOnClickListener {}
+        countTv.setOnClickListener {}
     }
 
     fun toTagDetail(model: FeedRecommendTagModel) {
