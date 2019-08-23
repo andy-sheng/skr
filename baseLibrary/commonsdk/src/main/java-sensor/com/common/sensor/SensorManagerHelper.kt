@@ -29,11 +29,11 @@ object SensorManagerHelper : SensorEventListener {
         }
     }
 
-    private val FORCE_THRESHOLD = 1000
+    private val FORCE_THRESHOLD = 1200
     private val TIME_THRESHOLD = 100
-    private val SHAKE_TIMEOUT = 500
-    private val SHAKE_DURATION = 2000
-    private val SHAKE_COUNT = 3
+    private val SHAKE_TIMEOUT = 400
+    private val SHAKE_DURATION = 2500
+    private val SHAKE_COUNT = 4
 
     private var mLastX = -1.0f
     private var mLastY = -1.0f
