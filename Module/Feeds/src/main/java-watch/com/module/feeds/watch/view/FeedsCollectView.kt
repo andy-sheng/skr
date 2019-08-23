@@ -579,7 +579,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                         playOrPause(it, mTopPosition, true)
                     }
                 } else {
-                    
+
                 }
             } else {
                 // 停止播放

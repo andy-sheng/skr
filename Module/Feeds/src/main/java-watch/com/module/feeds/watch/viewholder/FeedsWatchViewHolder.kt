@@ -25,7 +25,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
 
     private val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
     private val mNicknameTv: TextView = itemView.findViewById(R.id.nickname_tv)
-//    private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
+    //    private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
     private val mHitIv: ImageView = itemView.findViewById(R.id.hit_iv)
 
     private val mCompleteGruop: Group = itemView.findViewById(R.id.complete_gruop)
@@ -56,7 +56,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
         mPlayAgainTv.setOnClickListener(object : AnimateClickListener() {
             override fun click(v: View?) {
                 // 触发上一次打点统计
-                FeedsPlayStatistics.setCurPlayMode(0,FeedPage.UNKNOW,0)
+                FeedsPlayStatistics.setCurPlayMode(0, FeedPage.UNKNOW, 0)
                 listener?.onClickCDListener(mPosition, model)
             }
         })
@@ -71,10 +71,14 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
         }
 
-        if (watchModel.song?.needChallenge == true) {
-            mHitIv.visibility = View.VISIBLE
-        } else {
+        if (watchModel.song?.needShareTag == true) {
             mHitIv.visibility = View.GONE
+        } else {
+            if (watchModel.song?.needChallenge == true) {
+                mHitIv.visibility = View.VISIBLE
+            } else {
+                mHitIv.visibility = View.GONE
+            }
         }
 
 //        mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(watchModel.song?.createdAt

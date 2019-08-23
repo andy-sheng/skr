@@ -110,21 +110,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             mRecordView.setAvatar(it.avatar ?: "", watchModel.song?.needShareTag == true)
         }
 
-        if (watchModel.song?.needChallenge == true) {
-            //打榜歌曲
-            mShareTag.visibility = View.GONE
-            if (watchModel.rank != null) {
-                if (TextUtils.isEmpty(watchModel.rank?.rankDesc)) {
-                    mTagArea.visibility = View.GONE
-                } else {
-                    mTagTv.text = watchModel.rank?.rankDesc
-                    mTagArea.visibility = View.VISIBLE
-                }
-            } else {
-                mTagArea.visibility = View.GONE
-            }
-        } else {
-            //非打榜歌曲
+        // 第一优先级显示 神曲分享
+        if (watchModel.song?.needShareTag == true) {
             mTagArea.visibility = View.GONE
             if (watchModel.song?.needShareTag == true) {
                 var singler = ""
@@ -135,6 +122,22 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
                 mShareTag.text = "#神曲分享#$singler"
             } else {
                 mShareTag.visibility = View.GONE
+            }
+        } else {
+            mShareTag.visibility = View.GONE
+            if (watchModel.song?.needChallenge == true) {
+                if (watchModel.rank != null) {
+                    if (TextUtils.isEmpty(watchModel.rank?.rankDesc)) {
+                        mTagArea.visibility = View.GONE
+                    } else {
+                        mTagTv.text = watchModel.rank?.rankDesc
+                        mTagArea.visibility = View.VISIBLE
+                    }
+                } else {
+                    mTagArea.visibility = View.GONE
+                }
+            } else {
+                mTagArea.visibility = View.GONE
             }
         }
 

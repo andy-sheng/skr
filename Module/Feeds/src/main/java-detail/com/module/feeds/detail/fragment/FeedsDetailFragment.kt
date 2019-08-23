@@ -102,7 +102,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mSeekBar: SeekBar? = null
     var mSingerIv: BaseImageView? = null
     var mNameTv: ExTextView? = null
-//    var mCommentTimeTv: ExTextView? = null
+    //    var mCommentTimeTv: ExTextView? = null
     var mFollowTv: ExTextView? = null
     var mMainCommentTv: ExTextView? = null
     var mCommentTv: ExTextView? = null
@@ -588,7 +588,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         SinglePlayer.addCallback(playerTag, playCallback)
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
-        if(mFrom==FeedPage.DETAIL_FROM_RECOMMEND || mFrom==FeedPage.DETAIL_FROM_COLLECT){
+        if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND || mFrom == FeedPage.DETAIL_FROM_COLLECT) {
             SensorManagerHelper.register(playerTag)
         }
     }
@@ -747,33 +747,36 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 }
             }
         })
-        if (mFeedsWatchModel?.song?.needChallenge == true) {
-            //打榜歌曲
-            mShareTag?.visibility = View.GONE
-            mHitIv?.visibility = View.VISIBLE
-            if (mFeedsWatchModel?.rank != null) {
-                if (TextUtils.isEmpty(mFeedsWatchModel?.rank?.rankDesc)) {
-                    mTagArea?.visibility = View.GONE
-                } else {
-                    mTagTv?.text = mFeedsWatchModel?.rank?.rankDesc
-                    mTagArea?.visibility = View.VISIBLE
-                }
-            } else {
-                mTagArea?.visibility = View.GONE
-            }
-        } else {
-            //非打榜歌曲
+
+        // 神曲分享为第一优先级
+        if (mFeedsWatchModel?.song?.needShareTag == true) {
             mTagArea?.visibility = View.GONE
             mHitIv?.visibility = View.GONE
-            if (mFeedsWatchModel?.song?.needShareTag == true) {
-                var singler = ""
-                if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.songTpl?.singer)) {
-                    singler = " 演唱/${mFeedsWatchModel?.song?.songTpl?.singer}"
+            var singler = ""
+            if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.songTpl?.singer)) {
+                singler = " 演唱/${mFeedsWatchModel?.song?.songTpl?.singer}"
+            }
+            mShareTag?.visibility = View.VISIBLE
+            mShareTag?.text = "#神曲分享#$singler"
+        } else {
+            mShareTag?.visibility = View.GONE
+            if (mFeedsWatchModel?.song?.needChallenge == true) {
+                //打榜歌曲
+                mHitIv?.visibility = View.VISIBLE
+                if (mFeedsWatchModel?.rank != null) {
+                    if (TextUtils.isEmpty(mFeedsWatchModel?.rank?.rankDesc)) {
+                        mTagArea?.visibility = View.GONE
+                    } else {
+                        mTagTv?.text = mFeedsWatchModel?.rank?.rankDesc
+                        mTagArea?.visibility = View.VISIBLE
+                    }
+                } else {
+                    mTagArea?.visibility = View.GONE
                 }
-                mShareTag?.visibility = View.VISIBLE
-                mShareTag?.text = "#神曲分享#$singler"
             } else {
-                mShareTag?.visibility = View.GONE
+                //非打榜歌曲
+                mHitIv?.visibility = View.GONE
+                mTagArea?.visibility = View.GONE
             }
         }
     }
