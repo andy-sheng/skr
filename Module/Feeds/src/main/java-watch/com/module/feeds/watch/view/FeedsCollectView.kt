@@ -584,7 +584,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             } else {
                 // 停止播放
                 MyLog.d(TAG, "selected 停止播放吧")
-                SinglePlayer.reset(playerTag)
+                SinglePlayer.pause(playerTag)
                 initData(false)
             }
         }
@@ -597,7 +597,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             UNSELECT_REASON_SLIDE_OUT,
             UNSELECT_REASON_TO_OTHER_ACTIVITY,
             UNSELECT_REASON_TO_OTHER_TAB -> {
-                SinglePlayer.reset(playerTag)
+                SinglePlayer.pause(playerTag)
                 stopPlay()
                 SensorManagerHelper.unregister(playerTag)
             }
