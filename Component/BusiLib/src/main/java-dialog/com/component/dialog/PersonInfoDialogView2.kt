@@ -42,6 +42,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -84,7 +85,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mCoordinator: CoordinatorLayout
 
     lateinit var mAppbar: AppBarLayout
-    lateinit var mToolbarLayout: CollapsingToolbarLayout
     lateinit var mUserInfoArea: ConstraintLayout
     lateinit var mAvatarIv: SimpleDraweeView
     lateinit var mMoreBtn: ExImageView
@@ -100,6 +100,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mFollowIv: ExTextView
 
     lateinit var mToolbar: Toolbar
+    lateinit var mToolbarLayout: ExConstraintLayout
     lateinit var mSrlAvatarIv: SimpleDraweeView
 
     lateinit var mPhotoView: RecyclerView
@@ -302,7 +303,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mSmartRefresh = this.findViewById<View>(R.id.smart_refresh) as SmartRefreshLayout
         mCoordinator = this.findViewById<View>(R.id.coordinator) as CoordinatorLayout
         mAppbar = this.findViewById<View>(R.id.appbar) as AppBarLayout
-        mToolbarLayout = this.findViewById<View>(R.id.toolbar_layout) as CollapsingToolbarLayout
+        mToolbarLayout = this.findViewById<View>(R.id.toolbar_layout) as ExConstraintLayout
 
         mSmartRefresh.setEnableRefresh(false)
         mSmartRefresh.setEnableLoadMore(true)
@@ -325,16 +326,19 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     // 展开状态
                     if (mToolbar.visibility != View.GONE) {
                         mToolbar.visibility = View.GONE
+                        mToolbarLayout.visibility = View.GONE
                     }
                 } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange - U.getDisplayUtils().dip2px(70f)) {
                     // 完全收缩状态
                     if (mToolbar.visibility != View.VISIBLE) {
                         mToolbar.visibility = View.VISIBLE
+                        mToolbarLayout.visibility = View.VISIBLE
                     }
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
                     if (mToolbar.visibility != View.GONE) {
                         mToolbar.visibility = View.GONE
+                        mToolbarLayout.visibility = View.GONE
                     }
                 }
             }

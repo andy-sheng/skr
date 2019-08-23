@@ -111,8 +111,10 @@
                         app:layout_collapseMode="pin">
 
                         <android.support.constraint.ConstraintLayout
+                            android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_80_dp">
+                            android:layout_height="@dimen/view_80_dp"
+                            android:visibility="gone">
 
                             <com.facebook.drawee.view.SimpleDraweeView
                                 android:id="@+id/top_area_bg"
@@ -164,7 +166,6 @@
         android:src="@drawable/img_back" />
 
     <com.common.view.ex.ExTextView
-        android:visibility="gone"
         android:id="@+id/collect_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,6 +175,7 @@
         android:layout_marginRight="@dimen/view_21_dp"
         android:text="收藏歌单"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

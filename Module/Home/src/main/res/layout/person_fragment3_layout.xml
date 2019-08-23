@@ -105,6 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
+                    android:minHeight="@dimen/view_96_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <com.common.view.ex.ExTextView
@@ -298,7 +299,7 @@
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/view_96_dp"
                         android:layout_gravity="top"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
@@ -309,7 +310,8 @@
                             android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_96_dp"
-                            android:background="#7088FF">
+                            android:background="#7088FF"
+                            android:visibility="gone">
 
                             <com.facebook.drawee.view.SimpleDraweeView
                                 android:id="@+id/srl_avatar_iv"

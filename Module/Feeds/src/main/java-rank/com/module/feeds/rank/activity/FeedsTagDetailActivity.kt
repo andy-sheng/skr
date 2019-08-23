@@ -2,6 +2,7 @@ package com.module.feeds.rank.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -78,6 +79,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     lateinit var appbar: AppBarLayout
 
     lateinit var toolbar: Toolbar
+    lateinit var toolbarLayout: ConstraintLayout
     lateinit var topAreaBg: SimpleDraweeView
     lateinit var topDesc: TextView
     lateinit var mCollectTv: ExTextView
@@ -139,6 +141,7 @@ class FeedsTagDetailActivity : BaseActivity() {
         recyclerView = findViewById(R.id.recycler_view)
         appbar = findViewById(R.id.appbar)
         toolbar = findViewById(R.id.toolbar)
+        toolbarLayout = findViewById(R.id.toolbar_layout)
         topAreaBg = findViewById(R.id.top_area_bg)
         topDesc = findViewById(R.id.top_desc)
         ivBack = findViewById(R.id.iv_back)
@@ -227,16 +230,19 @@ class FeedsTagDetailActivity : BaseActivity() {
                     // 展开状态
                     if (toolbar.visibility != View.GONE) {
                         toolbar.visibility = View.GONE
+                        toolbarLayout.visibility = View.GONE
                     }
                 } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
                     // 完全收缩状态
                     if (toolbar.visibility != View.VISIBLE) {
                         toolbar.visibility = View.VISIBLE
+                        toolbarLayout.visibility = View.VISIBLE
                     }
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
                     if (toolbar.visibility != View.GONE) {
                         toolbar.visibility = View.GONE
+                        toolbarLayout.visibility = View.GONE
                     }
                 }
             }

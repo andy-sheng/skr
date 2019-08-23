@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 
 import com.alibaba.android.arouter.launcher.ARouter
@@ -104,7 +105,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mImageBg: SimpleDraweeView
     lateinit var mSmartRefresh: SmartRefreshLayout
     lateinit var mAppbar: AppBarLayout
-    lateinit var mToolbarLayout: CollapsingToolbarLayout
     lateinit var mUserInfoArea: ConstraintLayout
 
     lateinit var mIvBack: ExImageView
@@ -121,6 +121,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mUseridTv: TextView
 
     lateinit var mToolbar: Toolbar
+    lateinit var mToolbarLayout: RelativeLayout
     lateinit var mSrlNameTv: TextView
 
     lateinit var mPersonTab: SlidingTabLayout
@@ -192,7 +193,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mImageBg = rootView.findViewById<View>(R.id.image_bg) as SimpleDraweeView
         mSmartRefresh = rootView.findViewById<View>(R.id.smart_refresh) as SmartRefreshLayout
         mAppbar = rootView.findViewById<View>(R.id.appbar) as AppBarLayout
-        mToolbarLayout = rootView.findViewById<View>(R.id.toolbar_layout) as CollapsingToolbarLayout
+        mToolbarLayout = rootView.findViewById<View>(R.id.toolbar_layout) as RelativeLayout
         mUserInfoArea = rootView.findViewById<View>(R.id.user_info_area) as ConstraintLayout
         mToolbar = rootView.findViewById<View>(R.id.toolbar) as Toolbar
         mSrlNameTv = rootView.findViewById<View>(R.id.srl_name_tv) as TextView
@@ -236,7 +237,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mToolbar.visibility = View.GONE
         mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
@@ -246,16 +246,19 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     // 展开状态
                     if (mToolbar.visibility != View.GONE) {
                         mToolbar.visibility = View.GONE
+                        mToolbarLayout.visibility = View.GONE
                     }
                 } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
                     // 完全收缩状态
                     if (mToolbar.visibility != View.VISIBLE) {
                         mToolbar.visibility = View.VISIBLE
+                        mToolbarLayout.visibility = View.VISIBLE
                     }
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
                     if (mToolbar.visibility != View.GONE) {
                         mToolbar.visibility = View.GONE
+                        mToolbarLayout.visibility = View.GONE
                     }
                 }
             }
