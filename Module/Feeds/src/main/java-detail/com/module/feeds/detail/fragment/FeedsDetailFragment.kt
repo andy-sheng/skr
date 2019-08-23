@@ -996,7 +996,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShakeEvent) {
-        if (SinglePlayer.startFrom == playerTag) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
             mFeedsInputContainerView?.hideSoftInput()
             toNextSongAction(true)
         }
