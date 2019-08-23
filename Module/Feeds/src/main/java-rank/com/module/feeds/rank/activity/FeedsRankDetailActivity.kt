@@ -29,6 +29,7 @@ import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
@@ -303,12 +304,11 @@ class FeedsRankDetailActivity : BaseActivity() {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
                 showDetailInfo(list, isClean)
-                dataOkListener?.invoke()
             } else {
-                dataOkListener?.invoke()
                 mRefreshLayout.finishLoadMore()
                 mRefreshLayout.finishRefresh()
             }
+            dataOkListener?.invoke()
         }
     }
 
@@ -331,6 +331,7 @@ class FeedsRankDetailActivity : BaseActivity() {
             mAdapter.mDataList.addAll(it)
         }
         mAdapter.notifyDataSetChanged()
+        add2SongPlayModeManager(mSongPlayModeManager,list,isClean)
     }
 
     override fun useEventBus(): Boolean {
