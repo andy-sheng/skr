@@ -322,7 +322,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                     TYPE_FOLLOW -> from = FeedPage.DETAIL_FROM_FOLLOW
                     TYPE_PERSON -> from = FeedPage.DETAIL_FROM_HOMEPAGE
                 }
-                mSongPlayModeManager.setCurrentPlayModel(watchModel.song)
+                mSongPlayModeManager?.setCurrentPlayModel(watchModel.song)
                 FeedsDetailActivity.openActivity(from, fragmentActivity, watchModel.feedID, TYPE_SWITCH, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getNextSong(userAction) {
