@@ -74,6 +74,8 @@ class FeedsRankDetailActivity : BaseActivity() {
 
     private val mFeedRankServerApi: FeedsRankServerApi = ApiManager.getInstance().createService(FeedsRankServerApi::class.java)
 
+    var isDetailPlaying = false  // 详情页面是否在播放
+
     var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
     private val playerTag = TAG + hashCode()
@@ -177,7 +179,7 @@ class FeedsRankDetailActivity : BaseActivity() {
                     }
 
                     override fun playState(isPlaying: Boolean) {
-
+                        isDetailPlaying = isPlaying
                     }
 
                     override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
@@ -340,7 +342,7 @@ class FeedsRankDetailActivity : BaseActivity() {
             mSongPlayModeManager?.setOriginList(feedList, false)
         }
         mAdapter.notifyDataSetChanged()
-        add2SongPlayModeManager(mSongPlayModeManager,list,isClean)
+        add2SongPlayModeManager(mSongPlayModeManager, list, isClean)
     }
 
     override fun useEventBus(): Boolean {
@@ -368,7 +370,11 @@ class FeedsRankDetailActivity : BaseActivity() {
         event.model?.song?.let {
             mAdapter.mDataList.forEachIndexed { _, feedModel ->
                 if (it.feedID == feedModel.song?.feedID && it.songID == feedModel.song?.songID) {
-                    play(feedModel)
+                    if (isDetailPlaying) {
+                        play(feedModel)
+                    } else {
+                        pause()
+                    }
                     return@forEachIndexed
                 }
             }

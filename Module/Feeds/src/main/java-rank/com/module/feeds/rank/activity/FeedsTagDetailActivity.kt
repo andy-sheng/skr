@@ -106,6 +106,8 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
+    var isDetailPlaying = false  // 详情页面是否在播放
+
     private val playCallback = object : PlayerCallbackAdapter() {
         override fun onCompletion() {
             super.onCompletion()
@@ -297,7 +299,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                         }
 
                         override fun playState(isPlaying: Boolean) {
-
+                            isDetailPlaying = isPlaying
                         }
 
                         override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
@@ -578,9 +580,11 @@ class FeedsTagDetailActivity : BaseActivity() {
     @Subscribe
     fun onEvent(event: FeedDetailChangeEvent) {
         // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
-        MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
+        MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event isDetailPlaying=$isDetailPlaying")
         event.model?.song?.let {
-            startPlay(it)
+            if (isDetailPlaying) {
+                startPlay(it)
+            }
         }
     }
 
