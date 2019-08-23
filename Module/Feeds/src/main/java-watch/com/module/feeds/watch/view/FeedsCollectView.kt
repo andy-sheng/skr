@@ -528,7 +528,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         mAdapter.notifyDataSetChanged()
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedDetailChangeEvent) {
         // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
         MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
