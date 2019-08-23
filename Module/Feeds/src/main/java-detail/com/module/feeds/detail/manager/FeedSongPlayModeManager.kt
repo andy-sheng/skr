@@ -175,7 +175,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             }
         } else if (mMode == PlayMode.RANDOM) {
             mShufflePosition += 1
-            //ensureHasShuffle(null)
+            ensureHasShuffle(null)
             if (mShufflePosition >= mShuffleSongList.size) {
                 mShuffleSongList.clear()
                 ensureHasShuffle(mCur)
