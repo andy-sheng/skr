@@ -1,11 +1,9 @@
 package com.module.feeds.watch
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,7 +14,6 @@ import com.common.base.INVISIBLE_REASON_TO_DESKTOP
 import com.common.base.INVISIBLE_REASON_TO_OTHER_ACTIVITY
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
-import com.common.utils.ActivityUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -31,6 +28,8 @@ import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
 import com.module.feeds.watch.watchview.FeedRecommendView
 import com.module.feeds.watch.watchview.FollowWatchView
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,6 +40,7 @@ import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
     val BACKGROUNG_MSG = 0
+    val PREF_KEY_SHOW_GUIDE = "need_show_watch_guide"
     private lateinit var mNavigationBgIv: ImageView
     private lateinit var mDivider: View
     private lateinit var mFeedChallengeTv: ExTextView
@@ -48,6 +48,8 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mFeedTab: SlidingTabLayout
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
+    var mWaitingDialogPlus: DialogPlus? = null
+    var mShowGuideCall: (() -> Unit)? = null
 
     val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
     val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
@@ -180,12 +182,32 @@ class FeedsWatchFragment : BaseFragment() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
+
+        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_SHOW_GUIDE, true)) {
+            mShowGuideCall = {
+                mShowGuideCall = null
+                U.getPreferenceUtils().setSettingBoolean(PREF_KEY_SHOW_GUIDE, false)
+                if (mWaitingDialogPlus == null) {
+                    mWaitingDialogPlus = DialogPlus.newDialog(context!!)
+                            .setContentHolder(ViewHolder(R.layout.watch_guide_layout))
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_50)
+                            .setExpanded(false)
+                            .setCancelable(true)
+                            .setGravity(Gravity.CENTER)
+                            .create()
+                }
+
+                mWaitingDialogPlus?.show()
+            }
+        }
     }
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         StatisticsAdapter.recordCountEvent("music_tab", "music_tab_expose", null)
         onViewSelected(mFeedVp.currentItem)
+        mShowGuideCall?.invoke()
     }
 
     fun onViewSelected(pos: Int) {
@@ -260,6 +282,7 @@ class FeedsWatchFragment : BaseFragment() {
         mRecommendFeedsView.destroy()
         mFollowFeedsView.destroy()
         mFeedsCollectView.destory()
+        mWaitingDialogPlus?.dismiss()
         EventBus.getDefault().unregister(this)
     }
 
