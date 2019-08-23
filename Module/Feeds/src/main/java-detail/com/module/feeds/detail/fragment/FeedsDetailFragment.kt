@@ -590,7 +590,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         SinglePlayer.addCallback(playerTag, playCallback)
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
-        if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND || mFrom == FeedPage.DETAIL_FROM_COLLECT) {
+        if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND
+                || mFrom == FeedPage.DETAIL_FROM_COLLECT
+                || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_OP
+                || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_RANK) {
             RemoteControlHelper.register(playerTag)
         }
     }

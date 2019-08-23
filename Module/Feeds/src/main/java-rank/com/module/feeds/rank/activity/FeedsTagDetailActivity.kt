@@ -24,6 +24,9 @@ import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -362,6 +365,7 @@ class FeedsTagDetailActivity : BaseActivity() {
 
         SinglePlayer.reset(playerTag)
         SinglePlayer.addCallback(playerTag, playCallback)
+        RemoteControlHelper.register(playerTag)
     }
 
     private fun showDatePicker() {
@@ -640,10 +644,37 @@ class FeedsTagDetailActivity : BaseActivity() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RemoteControlEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==this)) {
+            mSongPlayModeManager?.getNextSong(false) {
+                it?.let { sm ->
+                    startPlay(sm)
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==this)) {
+            if(SinglePlayer.isPlaying){
+                SinglePlayer.pause(playerTag)
+            }else{
+                mAdapter?.mCurrentPlayModel?.song?.let {
+                    startPlay(it)
+                }
+            }
+        }
+    }
+
     override fun destroy() {
         super.destroy()
         pvCustomTime?.dismiss()
         SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
+        RemoteControlHelper.unregister(playerTag)
     }
 }
