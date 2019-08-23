@@ -989,6 +989,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShakeEvent) {
         if (SinglePlayer.startFrom == playerTag) {
+            mFeedsInputContainerView?.hideSoftInput()
             toNextSongAction(true)
         }
     }
