@@ -72,6 +72,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
     var mTopModel: FeedsCollectModel? = null
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
     var mIsNeedResumePlay = false    // 标记是否需要恢复播放
+    var mIsDetailPlay = false      // 标记详情页面是否在播放
 
     var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
@@ -142,7 +143,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                             }
 
                             override fun playState(isPlaying: Boolean) {
-
+                                mIsDetailPlay = isPlaying
                             }
 
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
@@ -573,8 +574,12 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             if (mIsNeedResumePlay) {
                 // 恢复播放
                 mIsNeedResumePlay = false
-                mTopModel?.let {
-                    playOrPause(it, mTopPosition, true)
+                if (mIsDetailPlay) {
+                    mTopModel?.let {
+                        playOrPause(it, mTopPosition, true)
+                    }
+                } else {
+                    
                 }
             } else {
                 // 停止播放
