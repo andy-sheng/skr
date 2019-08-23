@@ -827,6 +827,8 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                 model.isLiked = it.isLiked
                 model.starCnt = it.starCnt
                 model.shareCnt = it.shareCnt
+                model.exposure = it.exposure
+                model.challengeCnt = it.challengeCnt
                 model.isCollected = it.isCollected
             }
         }

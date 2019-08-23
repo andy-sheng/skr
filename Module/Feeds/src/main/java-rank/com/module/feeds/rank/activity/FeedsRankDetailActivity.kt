@@ -31,6 +31,7 @@ import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
+import com.module.feeds.event.FeedDetailSwitchEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedRankDetailAdapter
@@ -174,6 +175,9 @@ class FeedsRankDetailActivity : BaseActivity() {
                         FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getNextSong(userAction) { sm ->
+                            if (mSongPlayModeManager?.getCurPostionInOrigin() in 0 until mAdapter.mDataList.size) {
+                                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mSongPlayModeManager?.getCurPostionInOrigin()!!]
+                            }
                             callback.invoke(sm)
                         }
                     }
@@ -184,6 +188,9 @@ class FeedsRankDetailActivity : BaseActivity() {
 
                     override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
                         mSongPlayModeManager?.getPreSong(userAction) { sm ->
+                            if (mSongPlayModeManager?.getCurPostionInOrigin() in 0 until mAdapter.mDataList.size) {
+                                mAdapter.mCurrentPlayModel = mAdapter.mDataList[mSongPlayModeManager?.getCurPostionInOrigin()!!]
+                            }
                             callback.invoke(sm)
                         }
                     }
@@ -365,18 +372,42 @@ class FeedsRankDetailActivity : BaseActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isDetailPlaying) {
+            mAdapter.mCurrentPlayModel?.let {
+                play(it)
+            }
+        } else {
+            pause()
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedDetailChangeEvent) {
-        event.model?.song?.let {
-            mAdapter.mDataList.forEachIndexed { _, feedModel ->
-                if (it.feedID == feedModel.song?.feedID && it.songID == feedModel.song?.songID) {
-                    if (isDetailPlaying) {
-                        play(feedModel)
-                    } else {
-                        pause()
-                    }
-                    return@forEachIndexed
-                }
+        event.model?.let {
+            updateDetailModel(it)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedDetailSwitchEvent) {
+        // 数据要更新了
+        event.model?.let {
+            updateDetailModel(it)
+        }
+    }
+
+    private fun updateDetailModel(it: FeedsWatchModel) {
+        for (model in mAdapter.mDataList) {
+            if (it.feedID == model.feedID && it.song?.songID == model.song?.songID) {
+                // 更新数据
+                model.isLiked = it.isLiked
+                model.starCnt = it.starCnt
+                model.shareCnt = it.shareCnt
+                model.exposure = it.exposure
+                model.challengeCnt = it.challengeCnt
+                model.isCollected = it.isCollected
             }
         }
     }
