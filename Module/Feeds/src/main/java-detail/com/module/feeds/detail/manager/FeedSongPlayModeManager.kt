@@ -1,6 +1,7 @@
 package com.module.feeds.detail.manager
 
 import com.common.log.MyLog
+import com.common.videocache.MediaCacheManager
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import java.util.*
@@ -80,6 +81,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                 }
             }
         }
+        tryPreCache()
         MyLog.d(TAG, "after setCurrentPlayModel mCur = $mCur , mOriginPosition = $mOriginPosition")
     }
 
@@ -130,6 +132,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
         if (mCur == null) {
             getFirstSongWhenCurNull()
             callback?.invoke(mCur)
+            tryPreCache()
             return
         }
 
@@ -139,6 +142,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                     mOriginPosition = (mOriginPosition + 1) % mOriginalSongList.size
                     mCur = mOriginalSongList[mOriginPosition]
                     callback?.invoke(mCur)
+                    tryPreCache()
                 } else {
                     if (mOriginPosition + 1 >= mOriginalSongList.size) {
                         // 拉没了
@@ -146,26 +150,31 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                             //请求准备数据，数据准备好了
                             if (mOriginPosition + 1 >= mOriginalSongList.size) {
                                 callback?.invoke(null)
+                                tryPreCache()
                             } else {
                                 mOriginPosition++
                                 mCur = mOriginalSongList[mOriginPosition]
                                 callback?.invoke(mCur)
+                                tryPreCache()
                             }
                         }
                     } else {
                         mOriginPosition++
                         mCur = mOriginalSongList[mOriginPosition]
                         callback?.invoke(mCur)
+                        tryPreCache()
                     }
                 }
             } else {
                 callback?.invoke(mCur)
+                tryPreCache()
             }
         } else if (mMode == PlayMode.ORDER) {
             if (supportCycle) {
                 mOriginPosition = (mOriginPosition + 1) % mOriginalSongList.size
                 mCur = mOriginalSongList[mOriginPosition]
                 callback?.invoke(mCur)
+                tryPreCache()
             } else {
                 if (mOriginPosition + 1 >= mOriginalSongList.size) {
                     // 拉没了
@@ -173,16 +182,19 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
                         //请求准备数据，数据准备好了
                         if (mOriginPosition + 1 >= mOriginalSongList.size) {
                             callback?.invoke(null)
+                            tryPreCache()
                         } else {
                             mOriginPosition++
                             mCur = mOriginalSongList[mOriginPosition]
                             callback?.invoke(mCur)
+                            tryPreCache()
                         }
                     }
                 } else {
                     mOriginPosition++
                     mCur = mOriginalSongList[mOriginPosition]
                     callback?.invoke(mCur)
+                    tryPreCache()
                 }
             }
         } else if (mMode == PlayMode.RANDOM) {
@@ -195,6 +207,23 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             }
             mCur = mShuffleSongList[mShufflePosition].second
             callback?.invoke(mCur)
+            tryPreCache()
+        }
+    }
+
+    private fun tryPreCache() {
+        if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
+            val p  = (mOriginPosition + 1) % mOriginalSongList.size
+            mOriginalSongList[p].playURL?.let {
+                MediaCacheManager.preCache(it)
+            }
+        } else if (mMode == PlayMode.RANDOM) {
+            val p = mShufflePosition+1
+            if(p in 0 until mShuffleSongList.size){
+                mShuffleSongList[p].second.playURL?.let {
+                    MediaCacheManager.preCache(it)
+                }
+            }
         }
     }
 

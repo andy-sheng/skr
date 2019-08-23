@@ -73,11 +73,11 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
     }
 
     override fun onPreparedMusic() {
-        if (mAdapter.mCurrentPlayPosition in -1..(mAdapter.mDataList.size - 2)) {
-            mAdapter.mDataList[mAdapter.mCurrentPlayPosition + 1].song?.playURL?.let { it2 ->
-                MediaCacheManager.preCache(it2)
-            }
-        }
+//        if (mAdapter.mCurrentPlayPosition in -1..(mAdapter.mDataList.size - 2)) {
+//            mAdapter.mDataList[mAdapter.mCurrentPlayPosition + 1].song?.playURL?.let { it2 ->
+//                MediaCacheManager.preCache(it2)
+//            }
+//        }
     }
 
     override fun getFeeds(flag: Boolean) {
