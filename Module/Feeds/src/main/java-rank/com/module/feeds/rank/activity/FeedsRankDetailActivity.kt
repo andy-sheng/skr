@@ -329,6 +329,11 @@ class FeedsRankDetailActivity : BaseActivity() {
 
         list?.let {
             mAdapter.mDataList.addAll(it)
+            var feedList: ArrayList<FeedSongModel> = ArrayList()
+            list.forEach {
+                feedList.add(it.song!!)
+            }
+            mSongPlayModeManager?.setOriginList(feedList, false)
         }
         mAdapter.notifyDataSetChanged()
         add2SongPlayModeManager(mSongPlayModeManager,list,isClean)
