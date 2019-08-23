@@ -8,10 +8,12 @@ import com.common.utils.U
 import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
+import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.watch.model.FeedsWatchModel
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCyclePresenter() {
@@ -106,6 +108,7 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     mIFeedsDetailView.collectFinish(colloct)
+                    EventBus.getDefault().post(FeedsCollectChangeEvent(feedID, colloct))
                     if (colloct) {
                         U.getToastUtil().showShort("收藏成功")
                     } else {
