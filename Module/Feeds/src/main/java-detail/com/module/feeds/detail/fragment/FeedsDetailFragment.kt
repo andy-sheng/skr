@@ -594,7 +594,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 || mFrom == FeedPage.DETAIL_FROM_COLLECT
                 || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_OP
                 || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_RANK) {
-            RemoteControlHelper.register(playerTag)
+            RemoteControlHelper.registerHeadsetControl(playerTag)
         }
     }
 
@@ -1106,7 +1106,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
         mSongManager = null
-        RemoteControlHelper.unregister(playerTag)
+        RemoteControlHelper.unregisterHeadsetControl(playerTag)
         EventBus.getDefault().post(FeedDetailChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
         }))

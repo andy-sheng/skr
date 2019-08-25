@@ -365,7 +365,7 @@ class FeedsTagDetailActivity : BaseActivity() {
 
         SinglePlayer.reset(playerTag)
         SinglePlayer.addCallback(playerTag, playCallback)
-        RemoteControlHelper.register(playerTag)
+        RemoteControlHelper.registerHeadsetControl(playerTag)
     }
 
     private fun showDatePicker() {
@@ -675,6 +675,6 @@ class FeedsTagDetailActivity : BaseActivity() {
         pvCustomTime?.dismiss()
         SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
-        RemoteControlHelper.unregister(playerTag)
+        RemoteControlHelper.unregisterHeadsetControl(playerTag)
     }
 }

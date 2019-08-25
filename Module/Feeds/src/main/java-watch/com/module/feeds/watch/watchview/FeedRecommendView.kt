@@ -31,7 +31,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.sensor.SensorManagerHelper
 import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
 import com.common.utils.SpanUtils
@@ -482,7 +481,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             // 恢复播放
             bindCurFeedWatchModel(mCurModel)
         }
-        RemoteControlHelper.register(playerTag)
+        RemoteControlHelper.registerHeadsetControl(playerTag)
     }
 
     open fun unselected(reason: Int) {
@@ -493,7 +492,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             UNSELECT_REASON_TO_OTHER_TAB -> {
                 isSeleted = false
                 pausePlay()
-                RemoteControlHelper.unregister(playerTag)
+                RemoteControlHelper.unregisterHeadsetControl(playerTag)
             }
             UNSELECT_REASON_TO_DESKTOP -> {
 

@@ -214,7 +214,7 @@ fun bindSensorService(callback: ((IpcService?) -> Unit)?) {
 
         override fun onServiceDisconnected(name: ComponentName) {
             // stopService 也会回调这个方法
-            if (!RemoteControlHelper.userSet.isEmpty()) {
+            if (!RemoteControlHelper.shakePageSet.isEmpty()) {
                 bindSensorService(callback)
             } else {
                 sIpcService = null

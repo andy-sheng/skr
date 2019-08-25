@@ -62,8 +62,13 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context!!), CoroutineScope by MainScope() {
-    val TAG = "FeedsWatchView"
+    val TAG = when (type) {
+        TYPE_PERSON -> "PersonWatchView"
+        TYPE_FOLLOW -> "FollowWatchView"
+        else -> "BaseWatchView"
+    }
     val playerTag = TAG + hashCode()
+
 
     val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
@@ -90,6 +95,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         const val TYPE_FOLLOW = 2   // 关注
         const val TYPE_PERSON = 3   // 个人中心
     }
+
 
     init {
         View.inflate(context, R.layout.feed_watch_view_layout, this)

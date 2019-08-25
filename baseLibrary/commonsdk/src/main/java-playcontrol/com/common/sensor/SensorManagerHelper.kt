@@ -43,7 +43,7 @@ class SensorManagerHelper : SensorEventListener {
     private var mLastForce: Long = 0
 
     init {
-
+        vibrator = U.app().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
     }
 
     internal fun startSensor() {
@@ -59,7 +59,7 @@ class SensorManagerHelper : SensorEventListener {
         sensorManager?.registerListener(this, sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI)
         //sensorManager?.registerListener(this, sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_UI)
         //sensorManager?.registerListener(this, sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR), SensorManager.SENSOR_DELAY_UI)
-        vibrator = U.app().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+
 
         //val pm = U.app().getSystemService(Context.POWER_SERVICE) as PowerManager?
         //val wakeLock = pm?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"com.zq.live:sensorlock")
@@ -71,19 +71,23 @@ class SensorManagerHelper : SensorEventListener {
         sensorManager?.unregisterListener(this)
     }
 
-    fun register(){
+    fun register() {
         bindSensorService {
             it?.call(1, null, object : IpcCallback.Stub() {
                 override fun callback(type: Int, json: String?) {
                     if (type == 2) {
-                        EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
+                        if (EventBus.getDefault().hasSubscriberForEvent(RemoteControlEvent::class.java)) {
+                            // 有监听者才发这个
+                            vibrator?.vibrate(500)
+                            EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
+                        }
                     }
                 }
             })
         }
     }
 
-    fun unregister(){
+    fun unregister() {
         stopSensorService()
     }
 
@@ -109,7 +113,6 @@ class SensorManagerHelper : SensorEventListener {
                         if (++mShakeCount >= SHAKE_COUNT && now - mLastShake > SHAKE_DURATION) {
                             mLastShake = now
                             mShakeCount = 0
-                            vibrator?.vibrate(500)
                             EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
                         }
                         mLastForce = now

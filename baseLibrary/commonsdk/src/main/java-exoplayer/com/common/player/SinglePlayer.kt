@@ -3,6 +3,7 @@ package com.common.player
 import android.media.MediaPlayer
 import android.os.Build
 import com.common.log.MyLog
+import com.common.playcontrol.RemoteControlHelper
 
 object SinglePlayer : IPlayerEx {
 
@@ -12,9 +13,9 @@ object SinglePlayer : IPlayerEx {
 
     init {
         // 根据系统版本决定使用哪个播放器
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             player.useAndroidMediaPlayer = false
-        }else{
+        } else {
             player.useAndroidMediaPlayer = false
         }
         player.setCallback(object : IPlayerCallback {
@@ -64,13 +65,22 @@ object SinglePlayer : IPlayerEx {
         callbackMap.remove(from)
     }
 
+
     override fun startPlay(from: String, path: String): Boolean {
         startFrom = from
         MyLog.d("SinglePlayer", "startPlayfrom = $from")
+        if (startFrom.startsWith("ProducationWallView")
+                || startFrom.startsWith("PersonWatchView")
+                || startFrom.startsWith("FollowWatchView")) {
+
+        } else {
+            RemoteControlHelper.registerShake(startFrom)
+        }
         return player.startPlay(path)
     }
 
     override fun pause(from: String?) {
+        RemoteControlHelper.unregisterShake(startFrom)
         MyLog.d("SinglePlayer", "pausefrom=$from startFrom=$startFrom")
         if (startFrom == from) {
             player.pause()
@@ -84,12 +94,14 @@ object SinglePlayer : IPlayerEx {
     }
 
     override fun stop(from: String?) {
+        RemoteControlHelper.unregisterShake(startFrom)
         if (startFrom == from) {
             player.stop()
         }
     }
 
     override fun reset(from: String?) {
+        RemoteControlHelper.unregisterShake(startFrom)
         MyLog.d("SinglePlayer", "resetfrom=$from startFrom=$startFrom")
         if (startFrom == from) {
             player.reset()

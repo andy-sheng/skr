@@ -17,37 +17,52 @@ object RemoteControlHelper {
     val TAG = "PlayControlHelper"
     val sensorManagerHelper = SensorManagerHelper()
     val mediaSessionHelper = MediaSessionHelper()
-    internal val userSet = HashSet<String>()
+    internal val shakePageSet = HashSet<String>()
+    internal val headsetControlSet = HashSet<String>()
 
     init {
         EventBus.getDefault().register(this)
     }
 
-    fun register(tag: String) {
+    // 注册摇一摇
+    fun registerShake(tag: String) {
         MyLog.d(TAG, "register tag = $tag")
-        if (userSet.isEmpty()) {
+        if (shakePageSet.isEmpty()) {
+            // 启动传感器
+            sensorManagerHelper.register()
+        }
+        shakePageSet.add(tag)
+    }
+
+    fun unregisterShake(tag: String) {
+        MyLog.d(TAG, "unregister tag = $tag")
+        shakePageSet.remove(tag)
+        if (shakePageSet.isEmpty()) {
+            sensorManagerHelper.unregister()
+        }
+    }
+
+    // 注册线控
+    fun registerHeadsetControl(tag: String) {
+        if (headsetControlSet.isEmpty()) {
             if (U.getDeviceUtils().headsetPlugOn) {
                 // 插着耳机的
                 mediaSessionHelper.register()
             }
-            // 启动传感器
-            sensorManagerHelper.register()
         }
-        userSet.add(tag)
+        headsetControlSet.add(tag)
     }
 
-    fun unregister(tag: String) {
-        MyLog.d(TAG, "unregister tag = $tag")
-        userSet.remove(tag)
-        if (userSet.isEmpty()) {
+    fun unregisterHeadsetControl(tag: String) {
+        headsetControlSet.remove(tag)
+        if (headsetControlSet.isEmpty()) {
             mediaSessionHelper.unregister()
-            sensorManagerHelper.unregister()
         }
     }
 
     @Subscribe
     fun onEvent(e: DeviceUtils.HeadsetPlugEvent) {
-        if (U.getDeviceUtils().headsetPlugOn && !userSet.isEmpty()) {
+        if (U.getDeviceUtils().headsetPlugOn && !headsetControlSet.isEmpty()) {
             mediaSessionHelper.register()
         } else {
             mediaSessionHelper.unregister()
@@ -77,7 +92,7 @@ object RemoteControlHelper {
     }
 
     internal fun handleKeyEvent(intent: Intent?) {
-        if (userSet.isEmpty()) {
+        if (headsetControlSet.isEmpty()) {
             return
         }
         val keyEvent = intent?.getParcelableExtra(Intent.EXTRA_KEY_EVENT) as KeyEvent?

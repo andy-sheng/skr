@@ -601,7 +601,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
                 initData(false)
             }
         }
-        RemoteControlHelper.register(playerTag)
+        RemoteControlHelper.registerHeadsetControl(playerTag)
     }
 
     fun unselected(reason: Int) {
@@ -612,7 +612,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             UNSELECT_REASON_TO_OTHER_TAB -> {
                 SinglePlayer.pause(playerTag)
                 stopPlay()
-                RemoteControlHelper.unregister(playerTag)
+                RemoteControlHelper.unregisterHeadsetControl(playerTag)
             }
             UNSELECT_REASON_TO_DESKTOP -> {
 
