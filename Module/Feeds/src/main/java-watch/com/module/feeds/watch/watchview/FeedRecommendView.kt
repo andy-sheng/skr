@@ -57,10 +57,7 @@ import com.module.feeds.watch.*
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -516,19 +513,25 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     private fun getRecommendFeedList(offset: Int, isClear: Boolean, dataOkCallback: (() -> Unit)? = null) {
         launch {
-            val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
-            }
-            if (obj.errno == 0) {
-                mHasInitData = true
-                val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
-                mOffset = obj.data.getIntValue("offset")
-                hasMore = obj.data.getBoolean("hasMore")
-                addRecommendWatchList(list, isClear)
-            } else {
-                if (obj.errno == -2) {
-                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+            for (i in 0..5) {
+                val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
+                    mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
                 }
+                if (obj.errno == 0) {
+                    mHasInitData = true
+                    val list = JSON.parseArray(obj.data.getString("recommends"), FeedsWatchModel::class.java)
+                    mOffset = obj.data.getIntValue("offset")
+                    hasMore = obj.data.getBoolean("hasMore")
+                    addRecommendWatchList(list, isClear)
+                    break
+                } else {
+                    if (obj.errno < 0) {
+                        U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                    } else {
+                        break
+                    }
+                }
+                delay(2000)
             }
             dataOkCallback?.invoke()
         }
@@ -808,9 +811,9 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PlayOrPauseEvent) {
         if (SinglePlayer.startFrom == playerTag) {
-            if(SinglePlayer.isPlaying){
+            if (SinglePlayer.isPlaying) {
                 pausePlay()
-            }else{
+            } else {
                 startPlay()
             }
         }
