@@ -1,6 +1,7 @@
 package com.module.feeds.rank.holder
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import com.common.core.userinfo.UserInfoManager
@@ -40,7 +41,15 @@ class FeedDetailTagViewHolder(itemView: View, val listener: FeedTagListener) : R
         this.mModel = mode
 
         rankSeqTv.text = mode.rankSeq.toString()
-        songNameTv.text = mode.song?.songTpl?.songName
+        if (!TextUtils.isEmpty(mode.song?.workName)) {
+            songNameTv.visibility = View.VISIBLE
+            songNameTv.text = mode.song?.workName
+        } else if (!TextUtils.isEmpty(mode.song?.songTpl?.songName)) {
+            songNameTv.visibility = View.VISIBLE
+            songNameTv.text = mode.song?.songTpl?.songName
+        } else {
+            songNameTv.visibility = View.GONE
+        }
         if (mode.song?.needShareTag == true) {
             songDescTv.text = mode.song?.songTpl?.singer
         } else {
