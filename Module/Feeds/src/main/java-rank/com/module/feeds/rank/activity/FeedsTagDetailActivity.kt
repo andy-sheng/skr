@@ -199,7 +199,7 @@ class FeedsTagDetailActivity : BaseActivity() {
         smartRefresh.apply {
             setEnableRefresh(true)
             setEnableLoadMore(true)
-            setEnableLoadMoreWhenContentNotFull(false)
+            setEnableLoadMoreWhenContentNotFull(true)
             setEnableOverScrollDrag(true)
             setHeaderMaxDragRate(1.5f)
             setOnMultiPurposeListener(object : SimpleMultiPurposeListener() {

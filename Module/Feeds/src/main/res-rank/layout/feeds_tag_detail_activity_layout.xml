@@ -129,9 +129,15 @@
 
                             <TextView
                                 android:id="@+id/top_desc"
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/view_0_dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/view_80_dp"
+                                android:layout_marginRight="@dimen/view_80_dp"
                                 android:layout_marginBottom="@dimen/view_20_dp"
+                                android:ellipsize="end"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:singleLine="true"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/textsize_16_dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
