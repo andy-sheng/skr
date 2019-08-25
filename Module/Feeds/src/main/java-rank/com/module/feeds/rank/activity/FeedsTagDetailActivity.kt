@@ -282,6 +282,9 @@ class FeedsTagDetailActivity : BaseActivity() {
                 // 默认顺序就只是列表循环
                 model?.let {
                     mAdapter?.pausePlay()
+                    // 同步下本地数据
+                    mAdapter?.mCurrentPlayPosition = position
+                    mAdapter?.mCurrentPlayModel = model
                     mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     var from = FeedPage.DETAIL_FROM_SONG_ALBUM_OP  // 默认是运营歌单
                     if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {
@@ -292,8 +295,9 @@ class FeedsTagDetailActivity : BaseActivity() {
                             mSongPlayModeManager?.getNextSong(userAction) { sm ->
                                 if (sm != null) {
                                     val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
-                                    curPos?.let {
-                                        mAdapter.startPlayModel(curPos)
+                                    curPos?.let { pos ->
+                                        mAdapter.mCurrentPlayPosition = pos
+                                        mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
                                     }
                                 } else {
 
@@ -310,8 +314,9 @@ class FeedsTagDetailActivity : BaseActivity() {
                             mSongPlayModeManager?.getPreSong(userAction) { sm ->
                                 if (sm != null) {
                                     val curPos = mSongPlayModeManager?.getCurPostionInOrigin()
-                                    curPos?.let {
-                                        mAdapter.startPlayModel(curPos)
+                                    curPos?.let { pos ->
+                                        mAdapter.mCurrentPlayPosition = pos
+                                        mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
                                     }
                                 } else {
 
@@ -432,40 +437,6 @@ class FeedsTagDetailActivity : BaseActivity() {
             MyLog.e(TAG, "showDatePicker time error")
         }
     }
-
-//    private fun findNextSong(userAction: Boolean): FeedSongModel? {
-//        if (adapter.mCurrentPlayPosition == adapter.mDataList.size - 2) {
-//            // 已经到最后一个，需要去更新数据
-//            loadMoreData()
-//        }
-//
-//        if (!adapter.mDataList.isNullOrEmpty()) {
-//            // 在合理范围内
-//            if (adapter.mCurrentPlayPosition in -1..(adapter.mDataList.size - 2)) {
-//                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition + 1
-//                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
-//                return adapter.mCurrentPlayModel?.song
-//            }
-//        }
-//
-//        return null
-//    }
-//
-//    private fun findPresong(userAction: Boolean): FeedSongModel? {
-//        if (adapter.mCurrentPlayPosition == 0) {
-//            return null
-//        }
-//
-//        if (!adapter.mDataList.isNullOrEmpty()) {
-//            if (adapter.mCurrentPlayPosition in 1..adapter.mDataList.size) {
-//                adapter.mCurrentPlayPosition = adapter.mCurrentPlayPosition - 1
-//                adapter.mCurrentPlayModel = adapter.mDataList[adapter.mCurrentPlayPosition]
-//                return adapter.mCurrentPlayModel?.song
-//            }
-//        }
-//        return null
-//    }
-
 
     private fun loadInitData() {
         getRecomendTagDetailList(0, queryDate, curDate, true)
@@ -647,7 +618,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RemoteControlEvent) {
         // 不在前台 或者 详情页在前台
-        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==this)) {
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity == this)) {
             mSongPlayModeManager?.getNextSong(false) {
                 it?.let { sm ->
                     startPlay(sm)
@@ -659,10 +630,10 @@ class FeedsTagDetailActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PlayOrPauseEvent) {
         // 不在前台 或者 详情页在前台
-        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==this)) {
-            if(SinglePlayer.isPlaying){
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity == this)) {
+            if (SinglePlayer.isPlaying) {
                 SinglePlayer.pause(playerTag)
-            }else{
+            } else {
                 mAdapter?.mCurrentPlayModel?.song?.let {
                     startPlay(it)
                 }
