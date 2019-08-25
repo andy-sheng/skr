@@ -376,7 +376,6 @@ class FeedsTagDetailActivity : BaseActivity() {
     }
 
     private fun pauseAndResetPlay() {
-        mAdapter.pausePlay()
         mAdapter.mCurrentPlayPosition = -1
         mAdapter.mCurrentPlayModel = null
         SinglePlayer.pause(playerTag)
