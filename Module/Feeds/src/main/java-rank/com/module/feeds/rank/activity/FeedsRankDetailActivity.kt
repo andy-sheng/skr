@@ -15,6 +15,9 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -222,6 +225,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         }
         SinglePlayer.reset(playerTag)
         SinglePlayer.addCallback(playerTag, playCallback)
+        RemoteControlHelper.registerHeadsetControl(playerTag)
     }
 
     private fun showRankWindow() {
@@ -399,6 +403,35 @@ class FeedsRankDetailActivity : BaseActivity() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RemoteControlEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity == this)) {
+            mSongPlayModeManager?.getNextSong(true) { sm ->
+                if (mSongPlayModeManager?.getCurPostionInOrigin() in 0 until mAdapter.mDataList.size) {
+                    mAdapter.mCurrentPlayModel = mAdapter.mDataList[mSongPlayModeManager?.getCurPostionInOrigin()!!]
+                }
+                mAdapter.mCurrentPlayModel?.let {
+                    play(it)
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity == this)) {
+            if (SinglePlayer.isPlaying) {
+                pause()
+            } else {
+                mAdapter.mCurrentPlayModel?.let {
+                    play(it)
+                }
+            }
+        }
+    }
+
     private fun updateDetailModel(it: FeedsWatchModel) {
         for (model in mAdapter.mDataList) {
             if (it.feedID == model.feedID && it.song?.songID == model.song?.songID) {
@@ -417,5 +450,6 @@ class FeedsRankDetailActivity : BaseActivity() {
         super.destroy()
         SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
+        RemoteControlHelper.unregisterHeadsetControl(playerTag)
     }
 }
