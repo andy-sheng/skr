@@ -36,7 +36,7 @@ import org.greenrobot.eventbus.ThreadMode
 class PlayerGuardService : Service() {
     val TAG = "SensorGuardService"
     val NOTIFICATION_ID = 110
-
+    //    val NOTIFICATION_ID = 0 // 改为0会弹不出通知，但也有前台保活的效果
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         MyLog.d(TAG, "onStartCommand intent=$intent flags=$flags startId=$startId")
         showPlayerNotification(null)
@@ -90,14 +90,22 @@ class PlayerGuardService : Service() {
         return remoteViews
     }
 
-    private fun createNotification1(remoteView: RemoteViews): Notification {
-        val id = "com.zq.live"
+    private fun createChannel(id: String) {
         val name = "player"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW)
             val manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            channel.enableLights(false)
+            channel.enableVibration(false)
+            channel.vibrationPattern = longArrayOf(0L)
+            channel.setSound(null, null)
             manager.createNotificationChannel(channel)
         }
+    }
+
+    private fun createNotification1(remoteView: RemoteViews): Notification {
+        val id = "com.zq.live"
+        createChannel(id)
         val contentIntent = Intent()
         contentIntent.data = Uri.parse("inframeskr://home/trywakeup")
         val pendingContentIntent = PendingIntent.getActivity(this, 0,
@@ -118,13 +126,7 @@ class PlayerGuardService : Service() {
 
     private fun createNotification2(): Notification {
         val id = "com.zq.live"
-        val name = "player"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW)
-            val manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
-        }
-
+        createChannel(id)
         val contentIntent = Intent(this, NotifitionPlayerActionReceiver::class.java)
         contentIntent.action = TRY_WAKEUP_HOME_ACTION
 //        val contentIntent = Intent()
@@ -138,7 +140,7 @@ class PlayerGuardService : Service() {
                 .setSmallIcon(R.drawable.app_icon) // 创建通知的小图标
                 .setLargeIcon(BitmapFactory.decodeResource(resources,
                         R.drawable.app_icon)) // 创建通知的大图标
-                .setDefaults(Notification.DEFAULT_ALL)  // 设置通知提醒方式为系统默认的提醒方式
+//                .setDefaults(Notification.DEFAULT_ALL)  // 设置通知提醒方式为系统默认的提醒方式
                 .setContentIntent(pendingContentIntent)
                 .build() // 创建通知（每个通知必须要调用这个方法来创建）
 
