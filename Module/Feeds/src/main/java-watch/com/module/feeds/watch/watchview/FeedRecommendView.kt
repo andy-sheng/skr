@@ -684,6 +684,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        SinglePlayer.removeCallback(playerTag)
     }
 
     // 收藏和取消收藏
