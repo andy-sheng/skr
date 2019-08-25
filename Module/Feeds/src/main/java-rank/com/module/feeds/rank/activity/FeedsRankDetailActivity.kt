@@ -321,6 +321,7 @@ class FeedsRankDetailActivity : BaseActivity() {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")
+                mSongPlayModeManager?.supportCycle = !hasMore
                 showDetailInfo(list, isClean)
             } else {
                 mRefreshLayout.finishLoadMore()

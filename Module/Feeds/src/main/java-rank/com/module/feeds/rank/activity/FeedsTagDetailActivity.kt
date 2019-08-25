@@ -468,6 +468,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 val list = JSON.parseArray(obj.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 mOffset = obj.data.getIntValue("offset")
                 hasMore = obj.data.getBooleanValue("hasMore")
+                mSongPlayModeManager?.supportCycle = !hasMore
                 if (date != curDate) {
                     queryDate = queryTime
                     curDate = date
