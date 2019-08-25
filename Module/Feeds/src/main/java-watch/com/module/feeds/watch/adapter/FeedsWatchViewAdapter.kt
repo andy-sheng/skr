@@ -53,65 +53,68 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : Recyc
             }
         } else {
             // 局部刷新
-            val refreshType = payloads[0] as Int
-            if (refreshType == REFRESH_SHOW_COMPLETE_AREA) {
-                if (holder is FeedsWatchViewHolder) {
-                    holder.showCompleteArea()
-                    holder.stopPlay(false)
-                }
-            } else if (refreshType == REFRESH_HIDE_COMPLETE_AREA) {
-                if (holder is FeedsWatchViewHolder) {
-                    holder.hideCompleteArea()
-                }
-            }
+            payloads.forEach { refreshType ->
+                if (refreshType is Int) {
+                    if (refreshType == REFRESH_SHOW_COMPLETE_AREA) {
+                        if (holder is FeedsWatchViewHolder) {
+                            holder.showCompleteArea()
+                            holder.stopPlay(false)
+                        }
+                    } else if (refreshType == REFRESH_HIDE_COMPLETE_AREA) {
+                        if (holder is FeedsWatchViewHolder) {
+                            holder.hideCompleteArea()
+                        }
+                    }
 
-            if (holder is FeedViewHolder) {
-                if (refreshType == REFRESH_TYPE_PLAY) {
-                    MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position type=$refreshType mCurrentPlayModel=$mCurrentPlayModel mCurrentPlayPosition=$mCurrentPlayPosition playing=$playing")
-                    if (mType == BaseWatchView.TYPE_RECOMMEND) {
-                        if (mDataList[position - 1] == mCurrentPlayModel && playing) {
-                            holder.startPlay()
-                        } else {
-                            holder.stopPlay(true)
-                        }
-                    } else {
-                        if (mDataList[position] == mCurrentPlayModel && playing) {
-                            holder.startPlay()
-                        } else {
-                            holder.stopPlay(true)
+                    if (holder is FeedViewHolder) {
+                        if (refreshType == REFRESH_TYPE_PLAY) {
+                            MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position type=$refreshType mCurrentPlayModel=$mCurrentPlayModel mCurrentPlayPosition=$mCurrentPlayPosition playing=$playing")
+                            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                                if (mDataList[position - 1] == mCurrentPlayModel && playing) {
+                                    holder.startPlay()
+                                } else {
+                                    holder.stopPlay(true)
+                                }
+                            } else {
+                                if (mDataList[position] == mCurrentPlayModel && playing) {
+                                    holder.startPlay()
+                                } else {
+                                    holder.stopPlay(true)
+                                }
+                            }
+                        } else if (refreshType == REFRESH_TYPE_LIKE) {
+                            holder.refreshLike()
+                        } else if (refreshType == REFRESH_TYPE_PLAY_NUM) {
+                            holder.refreshPlayNum()
+                        } else if (refreshType == REFRESH_TYPE_LYRIC) {
+                            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                                if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1] == mCurrentPlayModel) {
+                                    holder.playLyric()
+                                }
+                            } else {
+                                if (mDataList[position] == mCurrentPlayModel) {
+                                    holder.playLyric()
+                                }
+                            }
+                        } else if (refreshType == REFRESH_BUFFERING_STATE) {
+                            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                                // 真实数据对应为position-1
+                                if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1].song?.lyricStatus == 0) {
+                                    holder.pauseWhenBuffering()
+                                } else {
+                                    holder.resumeWhenBufferingEnd()
+                                }
+                            } else {
+                                if (mDataList[position].song?.lyricStatus == 0) {
+                                    holder.pauseWhenBuffering()
+                                } else {
+                                    holder.resumeWhenBufferingEnd()
+                                }
+                            }
+                        } else if (refreshType == REFRESH_TYPE_COLLECT) {
+                            holder.refreshCollects()
                         }
                     }
-                } else if (refreshType == REFRESH_TYPE_LIKE) {
-                    holder.refreshLike()
-                } else if (refreshType == REFRESH_TYPE_PLAY_NUM) {
-                    holder.refreshPlayNum()
-                } else if (refreshType == REFRESH_TYPE_LYRIC) {
-                    if (mType == BaseWatchView.TYPE_RECOMMEND) {
-                        if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1] == mCurrentPlayModel) {
-                            holder.playLyric()
-                        }
-                    } else {
-                        if (mDataList[position] == mCurrentPlayModel) {
-                            holder.playLyric()
-                        }
-                    }
-                } else if (refreshType == REFRESH_BUFFERING_STATE) {
-                    if (mType == BaseWatchView.TYPE_RECOMMEND) {
-                        // 真实数据对应为position-1
-                        if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1].song?.lyricStatus == 0) {
-                            holder.pauseWhenBuffering()
-                        } else {
-                            holder.resumeWhenBufferingEnd()
-                        }
-                    } else {
-                        if (mDataList[position].song?.lyricStatus == 0) {
-                            holder.pauseWhenBuffering()
-                        } else {
-                            holder.resumeWhenBufferingEnd()
-                        }
-                    }
-                } else if (refreshType == REFRESH_TYPE_COLLECT) {
-                    holder.refreshCollects()
                 }
             }
         }

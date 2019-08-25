@@ -42,15 +42,22 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
             holder.bindData(position, mDataList[position])
         } else {
             // 局部刷新
-            val refreshType = payloads[0] as Int
-            if (refreshType == REFRESH_TYPE_COLLECT) {
-                holder.refreshCollects()
-            } else if (refreshType == REFRESH_TYPE_PLAY) {
-                if (mCurrentPlayModel == mDataList[position] && isPlaying) {
-                    holder.songNameTv.setTextColor(Color.parseColor("#FFC15B"))
-                } else {
-                    holder.songNameTv.setTextColor(U.getColor(R.color.black_trans_80))
+            payloads.forEach {
+                if (it is Int) {
+                    refreshHolder(holder, position, it)
                 }
+            }
+        }
+    }
+
+    private fun refreshHolder(holder: FeedDetailTagViewHolder, position: Int, refreshType: Int) {
+        if (refreshType == REFRESH_TYPE_COLLECT) {
+            holder.refreshCollects()
+        } else if (refreshType == REFRESH_TYPE_PLAY) {
+            if (mCurrentPlayModel == mDataList[position] && isPlaying) {
+                holder.songNameTv.setTextColor(Color.parseColor("#FFC15B"))
+            } else {
+                holder.songNameTv.setTextColor(U.getColor(R.color.black_trans_80))
             }
         }
     }
