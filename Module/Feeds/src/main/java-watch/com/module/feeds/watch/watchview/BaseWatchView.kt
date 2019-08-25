@@ -314,6 +314,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         // 详情  声音要连贯
         // 这样返回时能 resume 上
         if (watchModel != null && watchModel.status == 2) {
+            isSeleted = false
             startPlay(position, watchModel)
             fragment.activity?.let { fragmentActivity ->
                 var from = FeedPage.UNKNOW
