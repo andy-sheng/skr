@@ -3,18 +3,10 @@ package com.common.webview;
 import android.util.Pair;
 
 import com.alibaba.fastjson.JSONObject;
-import com.common.base.BaseActivity;
-import com.common.base.BuildConfig;
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.jsbridge.BridgeHandler;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.CallBackFunction;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 public class JsRegister {
     public final String TAG = "JsRegister";
@@ -29,6 +21,7 @@ public class JsRegister {
     public static final String AUTH_SUCCESS = "authSuccess";
     public static final String FINISH = "finish";
     public static final String CHECK_CAMERA_PERM = "checkCameraPerm";
+    public static final String CHECK_AUDIO_PERM = "checkAudioPerm";
 
     BridgeWebView mBridgeWebView;
 
@@ -79,13 +72,22 @@ public class JsRegister {
             mJsBridgeImpl.finish(callBackFunction);
         } else if (CHECK_CAMERA_PERM.equals(opt)) {
 //            mJsBridgeImpl.checkCameraPerm(callBackFunction);
-             mBaseActivity.getSkrCameraPermission().ensurePermission(mBaseActivity,new Runnable() {
-                 @Override
-                 public void run() {
-                     callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
-                             new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("camera_perm", true)))).toJSONString());
-                 }
-             }, true);
+            mBaseActivity.getSkrCameraPermission().ensurePermission(mBaseActivity, new Runnable() {
+                @Override
+                public void run() {
+                    callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                            new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("camera_perm", true)))).toJSONString());
+                }
+            }, true);
+        } else if (CHECK_AUDIO_PERM.equals(opt)) {
+//            mJsBridgeImpl.checkCameraPerm(callBackFunction);
+            mBaseActivity.getSkrAudioPermission().ensurePermission(mBaseActivity, new Runnable() {
+                @Override
+                public void run() {
+                    callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                            new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("audio_perm", true)))).toJSONString());
+                }
+            }, true);
         } else {
             mJsBridgeImpl.noMethed(callBackFunction);
         }
