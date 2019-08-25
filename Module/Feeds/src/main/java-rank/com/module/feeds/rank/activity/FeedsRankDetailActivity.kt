@@ -170,6 +170,7 @@ class FeedsRankDetailActivity : BaseActivity() {
         mAdapter.onClickItemListener = { model, _ ->
             model?.let {
                 //                pause()
+                mAdapter?.mCurrentPlayModel = model
                 mSongPlayModeManager?.setCurrentPlayModel(it.song)
                 FeedsDetailActivity.openActivity(FeedPage.DETAIL_FROM_SONG_ALBUM_CHANLLENGE, this@FeedsRankDetailActivity, it.feedID, FeedsDetailActivity.TYPE_SWITCH,
                         FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
