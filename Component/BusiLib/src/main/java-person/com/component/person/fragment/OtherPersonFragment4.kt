@@ -556,6 +556,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         viewSelected(mPersonVp.currentItem)
     }
 
+    override fun onFragmentInvisible(reason: Int) {
+        super.onFragmentInvisible(reason)
+        mFeedsWallView?.unselected(1)
+    }
+
     private fun viewSelected(position: Int) {
         if (position == 0) {
             mOtherPhotoWallView?.mHasMore?.let {
