@@ -590,12 +590,19 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         SinglePlayer.addCallback(playerTag, playCallback)
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+        if (needContinueByFrom()) {
+            RemoteControlHelper.registerHeadsetControl(playerTag)
+        }
+    }
+
+    private fun needContinueByFrom():Boolean{
         if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND
                 || mFrom == FeedPage.DETAIL_FROM_COLLECT
                 || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_OP
                 || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_RANK) {
-            RemoteControlHelper.registerHeadsetControl(playerTag)
+            return true
         }
+        return false
     }
 
     private fun toNextSongAction(userAction: Boolean) {
@@ -968,7 +975,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         super.onFragmentInvisible(reason)
 
         MyLog.d(TAG, "onFragmentInvisiblereason = $reason, mFrom is $mFrom")
-        if (mFrom == FeedPage.DETAIL_FROM_COLLECT || mFrom == FeedPage.DETAIL_FROM_RECOMMEND) {
+        if (needContinueByFrom()) {
             //如果是从mFrom == FeedPage.DETAIL_FROM_COLLECT || mFrom == FeedPage.DETAIL_FROM_RECOMMEND  这两个渠道进来的，特殊处理
             if (reason == INVISIBLE_REASON_TO_DESKTOP) {
                 //如果是退到后台，不需要做什么

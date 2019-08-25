@@ -37,6 +37,7 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: FeedDetailTagViewHolder, position: Int, payloads: MutableList<Any>) {
+        MyLog.d(TAG, "onBindViewHolder holder = $holder, position = $position, payloads = $payloads")
         if (payloads.isEmpty()) {
             holder.bindData(position, mDataList[position])
         } else {

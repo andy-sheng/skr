@@ -563,6 +563,7 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        MyLog.d(TAG, "onResume isDetailPlaying=$isDetailPlaying")
         if (isDetailPlaying) {
             mAdapter.mCurrentPlayModel?.song?.let {
                 startPlay(it)
@@ -601,6 +602,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     }
 
     fun startPlay(it: FeedSongModel) {
+        MyLog.d(TAG, "startPlay it = $it")
         mAdapter.mDataList.forEachIndexed { index, feed ->
             if (it.feedID == feed.song?.feedID && it.songID == feed.song?.songID) {
                 //todo 从详情页面返回，直接播放吧(继续播放)
