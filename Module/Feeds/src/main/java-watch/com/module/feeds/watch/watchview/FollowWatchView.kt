@@ -102,6 +102,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
                 val list = JSON.parseArray(result.data.getString("follows"), FeedsWatchModel::class.java)
                 mOffset = result.data.getIntValue("offset")
                 hasMore = result.data.getBoolean("hasMore")
+                mSongPlayModeManager?.supportCycle = !hasMore
                 finishRefreshOrLoadMore()
                 addFollowWatchList(list, isClear)
             } else {

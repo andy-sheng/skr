@@ -146,6 +146,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
                 mHasInitData = true
                 mOffset = result.data.getIntValue("offset")
                 hasMore = result.data.getBoolean("hasMore")
+                mSongPlayModeManager?.supportCycle = !hasMore
                 val list = JSON.parseArray(result.data.getString("userSongs"), FeedsWatchModel::class.java)
                 finishRefreshOrLoadMore()
                 addPersonWatchList(list, isClear)
