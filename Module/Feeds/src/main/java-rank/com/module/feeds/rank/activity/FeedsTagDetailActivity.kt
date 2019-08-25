@@ -373,6 +373,13 @@ class FeedsTagDetailActivity : BaseActivity() {
         RemoteControlHelper.registerHeadsetControl(playerTag)
     }
 
+    private fun pauseAndResetPlay() {
+        mAdapter.pausePlay()
+        mAdapter.mCurrentPlayPosition = -1
+        mAdapter.mCurrentPlayModel = null
+        SinglePlayer.pause(playerTag)
+    }
+
     private fun showDatePicker() {
         var cur = Calendar.getInstance()
         cur.time = curDate
@@ -469,6 +476,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 smartRefresh.setEnableLoadMore(hasMore)
 
                 if (isClean) {
+                    pauseAndResetPlay()
                     mAdapter.mDataList.clear()
                 }
 
