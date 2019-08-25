@@ -21,6 +21,8 @@ class FeedSongModel : Serializable {
     var needChallenge: Boolean = false
     @JSONField(name = "needRecommentTag")
     var needRecommentTag: Boolean = false
+    @JSONField(name = "needShareTag")
+    var needShareTag: Boolean = false
     @JSONField(name = "playDurMs")
     var playDurMs: Int = 0 // 服务器返回的播放总时长
         get() {
@@ -50,8 +52,12 @@ class FeedSongModel : Serializable {
     @JSONField(name = "songType")
     var songType: Int? = 0 //	- EST_UNKNOWN = 0 : 未知 - EST_HAS_ACCOMPANY = 1 : 带伴奏演唱 - EST_NO_ACCOMPANY = 2 : 无伴奏演唱
 
+//    override fun toString(): String {
+//        return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMsFromPlayerForDebug=$playDurMsFromPlayerForDebug, playURL=$playURL, playCurPos=$playCurPos, lyricStatus=$lyricStatus, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName, songType=$songType)"
+//    }
+
     override fun toString(): String {
-        return "FeedSongModel(challengeID=$challengeID, createdAt=$createdAt, feedID=$feedID, needChallenge=$needChallenge, needRecommentTag=$needRecommentTag, playDurMsFromPlayerForDebug=$playDurMsFromPlayerForDebug, playURL=$playURL, playCurPos=$playCurPos, lyricStatus=$lyricStatus, songID=$songID, songTpl=$songTpl, tags=$tags, title=$title, userID=$userID, workName=$workName, songType=$songType)"
+        return "FeedSongModel(feedID=$feedID, songID=$songID)"
     }
 
     fun getDisplayName(): String? {
@@ -76,5 +82,23 @@ class FeedSongModel : Serializable {
             }
             return ""
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FeedSongModel
+
+        if (feedID != other.feedID) return false
+        if (songID != other.songID) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = feedID.hashCode()
+        result = 31 * result + songID
+        return result
     }
 }

@@ -43,9 +43,9 @@
                 app:elevation="@dimen/view_0_dp">
 
                 <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/toolbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="@dimen/view_60_dp"
                     android:fitsSystemWindows="true"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -182,8 +182,10 @@
                         app:layout_collapseMode="pin">
 
                         <com.common.view.ex.ExConstraintLayout
+                            android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:visibility="gone"
                             app:bl_corners_topLeftRadius="@dimen/view_16_dp"
                             app:bl_corners_topRightRadius="@dimen/view_16_dp"
                             app:bl_shape="rectangle"

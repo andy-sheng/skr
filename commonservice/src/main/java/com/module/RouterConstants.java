@@ -76,11 +76,13 @@ public interface RouterConstants {
     String ACTIVITY_FEEDS_REPORT = "/feeds/FeedsReportActivity";
     String ACTIVITY_FEEDS_COPY_REPORT = "/feeds/FeedCopyReportActivity";
     String ACTIVITY_FEEDS_RANK = "/feeds/FeedsRankActivity";
-    String ACTIVITY_FEEDS_RANK_DETAIL = "/feeds/FeedsDetailRankActivity";
+    String ACTIVITY_FEEDS_RANK_DETAIL = "/feeds/FeedsRankDetailActivity";
     String ACTIVITY_FEEDS_RANK_SEARCH = "/feeds/FeedsRankSearchActivity";
     String ACTIVITY_FEEDS_SELECT_MODE = "/feeds/FeedsSelectModeActivity";
     String ACTIVITY_FEEDS_SONG_MANAGE = "/feeds/FeedSongManagerActivity";
     String ACTIVITY_FEEDS_SONG_SEARCH = "/feeds/FeedSongSearchActivity";
+    String ACTIVITY_FEEDS_TAG = "/feeds/FeedsTagActivity";
+    String ACTIVITY_FEEDS_TAG_DETAIL = "/feeds/FeedsTagDetailActivity";
 
     String ACTIVITY_RACE_ROOM = "/race/RaceRoomActivity";
 

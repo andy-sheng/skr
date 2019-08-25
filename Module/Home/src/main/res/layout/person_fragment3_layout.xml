@@ -309,7 +309,8 @@
                             android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_96_dp"
-                            android:background="#7088FF">
+                            android:background="#7088FF"
+                            android:visibility="gone">
 
                             <com.facebook.drawee.view.SimpleDraweeView
                                 android:id="@+id/srl_avatar_iv"

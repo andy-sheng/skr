@@ -37,9 +37,9 @@ class FeedsMakeModel : Serializable {
     @Transient
     var hasChangeLyricOrSongNameThisTime = false // 本次是否改变了歌词，因为可能从草稿箱进去
 
-    var from:Int = FROM_QUICK_SING //来自哪个?打榜 快唱 改编
     var songModel: FeedSongModel? = null
-    var challengeID: Long = 0L
+    var challengeType:Int =  CHALLENGE_TYPE_QUICK_SONG // 1 是翻唱 2是改编
+    var challengeID: Long = 0L // 是否是打榜
     var audioUploadUrl: String? = null
     var draftUpdateTs = 0L // 对应的草稿箱更新睡哪
     var draftID = 0L //草稿箱ID
@@ -51,6 +51,10 @@ class FeedsMakeModel : Serializable {
         return "FeedsMakeModel(challengeID=$challengeID, songModel=$songModel, composeSavePath='$composeSavePath', bgmDownloadProgress=$bgmDownloadProgress, recordDuration=$recordDuration, recording=$recording, beginRecordTs=$beginRecordTs, recordSavePath='$recordSavePath', recordingClick=$recordingClick, withBgm=$withBgm)"
     }
 }
+
+const val CHALLENGE_TYPE_QUICK_SONG = 1
+const val CHALLENGE_TYPE_CHANGE_SONG = 2
+
 const val FROM_CHALLENGE = 1
 const val FROM_QUICK_SING = 2
 const val FROM_CHANGE_SING = 3

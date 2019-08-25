@@ -150,6 +150,9 @@ android {
             // java video cache
             java.srcDirs += 'src/main/java-video-cache'
 
+            // 传感器相关
+            java.srcDirs += 'src/main/java-playcontrol'
+
             if (UmengPushEnable.toBoolean()) {
                 // umengpush
                 java.srcDirs += 'src/main/java-push-umeng'
@@ -166,6 +169,7 @@ android {
             } else {
                 java.srcDirs += 'src/main/java-matrix-noop'
             }
+
         }
 
 //        release {

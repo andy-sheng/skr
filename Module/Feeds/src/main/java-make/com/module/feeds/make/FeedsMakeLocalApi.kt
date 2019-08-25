@@ -19,7 +19,11 @@ object FeedsMakeLocalApi {
                 .where(FeedsDraftDBDao.Properties.From.eq(FROM_CHALLENGE))
                 .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
         listDB.forEach {
-            list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
+            val makeModel = JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java)
+            if(makeModel.challengeType == 0 ){
+                makeModel.challengeType = CHALLENGE_TYPE_CHANGE_SONG
+            }
+            list.add(makeModel)
         }
         return list
     }
@@ -30,7 +34,11 @@ object FeedsMakeLocalApi {
                 .where(FeedsDraftDBDao.Properties.From.eq(FROM_QUICK_SING))
                 .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
         listDB.forEach {
-            list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
+            val makeModel = JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java)
+            if(makeModel.challengeType == 0 ){
+                makeModel.challengeType = CHALLENGE_TYPE_QUICK_SONG
+            }
+            list.add(makeModel)
         }
         return list
     }
@@ -41,7 +49,11 @@ object FeedsMakeLocalApi {
                 .where(FeedsDraftDBDao.Properties.From.eq(FROM_CHANGE_SING))
                 .orderDesc(FeedsDraftDBDao.Properties.UpdateTs).list()
         listDB.forEach {
-            list.add(JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java))
+            val makeModel = JSON.parseObject(it.feedsMakeModelJson, FeedsMakeModel::class.java)
+            if(makeModel.challengeType == 0 ){
+                makeModel.challengeType = CHALLENGE_TYPE_CHANGE_SONG
+            }
+            list.add(makeModel)
         }
         return list
     }
@@ -59,7 +71,15 @@ object FeedsMakeLocalApi {
         if (feedsMakeModel.draftID == 0L) {
             feedsMakeModel.draftID = draftDb.draftID
         }
-        draftDb.from = feedsMakeModel?.from
+        if(feedsMakeModel?.challengeID==0L){
+            if(feedsMakeModel?.challengeType== CHALLENGE_TYPE_QUICK_SONG){
+                draftDb.from = FROM_QUICK_SING
+            }else{
+                draftDb.from = FROM_CHANGE_SING
+            }
+        }else{
+            draftDb.from = FROM_CHALLENGE
+        }
         draftDb.feedsMakeModelJson = JSON.toJSONString(feedsMakeModel)
         draftDBDao.insertOrReplace(draftDb)
         EventBus.getDefault().post(FeedsDraftUpdateEvent())

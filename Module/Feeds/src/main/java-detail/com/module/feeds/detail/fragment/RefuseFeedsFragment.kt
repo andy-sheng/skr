@@ -22,6 +22,7 @@ import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.adapter.FeedClickListener
 import com.module.feeds.detail.adapter.FeedRefuseCommentAdapter
 import com.module.feeds.detail.model.RefuseCommentModel
+import com.module.feeds.statistics.FeedPage
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -76,7 +77,7 @@ class RefuseFeedsFragment : BaseFragment() {
                 model?.let {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                             .withInt("feed_ID", it.feedID)
-                            .withInt("from", 5)
+                            .withSerializable("from", FeedPage.DETAIL_FROM_HOMEPAGE)
                             .navigation()
                 }
             }

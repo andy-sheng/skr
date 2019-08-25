@@ -5,6 +5,7 @@ import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.SinkPin;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * APM filter.
@@ -75,6 +76,7 @@ public class APMFilter extends AudioFilterBase {
         if (outBuffer == null){
             return frame;
         }
+        outBuffer.order(ByteOrder.nativeOrder());
         return new AudioBufFrame(mApmWrapper.getAPMFormat(), outBuffer, frame.pts, frame.flags);
     }
 

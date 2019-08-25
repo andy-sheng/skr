@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/month_tv"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_42_dp"
+        android:gravity="center"
+        android:text="月榜"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:bl_corners_topLeftRadius="@dimen/view_8_dp"
+        app:bl_corners_topRightRadius="@dimen/view_8_dp"
+        app:bl_selected_textColor="#FFFF8AB6"
+        app:bl_solid_color="@color/white"
+        app:bl_unSelected_textColor="#FF000000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="#1e979797"
+        app:layout_constraintLeft_toLeftOf="@+id/month_tv"
+        app:layout_constraintRight_toRightOf="@+id/month_tv"
+        app:layout_constraintTop_toBottomOf="@+id/month_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/year_tv"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_42_dp"
+        android:gravity="center"
+        android:text="年榜"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+        app:bl_selected_textColor="#FFFF8AB6"
+        app:bl_solid_color="@color/white"
+        app:bl_unSelected_textColor="#FF000000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+</android.support.constraint.ConstraintLayout>

@@ -9,9 +9,7 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.feeds.R
-import com.module.feeds.make.FROM_CHALLENGE
-import com.module.feeds.make.FROM_CHANGE_SING
-import com.module.feeds.make.FeedsMakeModel
+import com.module.feeds.make.*
 import com.module.feeds.songmanage.adapter.FeedSongDraftsListener
 
 class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : RecyclerView.ViewHolder(item) {
@@ -44,7 +42,7 @@ class FeedSongDraftsViewHolder(item: View, listener: FeedSongDraftsListener) : R
 
         songDescTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model?.draftUpdateTs, System.currentTimeMillis())
         if (TextUtils.isEmpty(model?.audioUploadUrl)) {
-            if(model.from == FROM_CHANGE_SING){
+            if(model.challengeType == CHALLENGE_TYPE_CHANGE_SONG){
                 songSelectTv.text = "改词"
             }else{
                 songSelectTv.text = "演唱"

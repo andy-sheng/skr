@@ -14,11 +14,16 @@ interface FeedSongManageServerApi {
     fun getFeedSongTagList(): Call<ApiResult>
 
     /**
-     * 获取普通歌曲列表
+     * 获取翻唱歌曲列表
      */
-    @GET("/v1/feed/common-song-list")
-    fun getFeedSongList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("tagType") tagType: Int): Call<ApiResult>
+    @GET("/v1/feed/common-fanchang-list")
+    fun getFeedQuickSongList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("tagType") tagType: Int): Call<ApiResult>
 
+    /**
+     * 获取改编歌曲列表
+     */
+    @GET("/v1/feed/common-gaibian-list")
+    fun getFeedChangeSongList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("tagType") tagType: Int): Call<ApiResult>
 
     /**
      * 搜索普通歌曲

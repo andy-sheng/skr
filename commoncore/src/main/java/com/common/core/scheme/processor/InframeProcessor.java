@@ -113,7 +113,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     return ProcessResult.AcceptedAndReturn;
                 }
                 if ("/conversationlist".equals(path)) {
-                    EventBus.getDefault().post(new JumpHomeFromSchemeEvent(1));
+                    EventBus.getDefault().post(new JumpHomeFromSchemeEvent(2));
                 }
             }
         }
@@ -244,7 +244,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if ("/jump_person_center".equals(path)) {
             // 跳到个人中心
-            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(2));
+            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(3));
         }
     }
 
@@ -278,7 +278,7 @@ public class InframeProcessor implements ISchemeProcessor {
             if (feedID > 0) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
                         .withInt("feed_ID", feedID)
-                        .withInt("from", 4)
+//                        .withInt("from", 4)
                         .navigation();
             }
         } else {

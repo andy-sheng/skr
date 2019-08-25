@@ -103,10 +103,10 @@
                 app:elevation="@dimen/view_0_dp">
 
                 <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/toolbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
+                    android:minHeight="@dimen/view_70_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <com.common.view.ex.ExTextView
@@ -239,6 +239,7 @@
                         app:layout_collapseMode="pin">
 
                         <RelativeLayout
+                            android:id="@+id/toolbar_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="#7088FF">

@@ -335,6 +335,7 @@ public class AudioPlayerCapture {
      * @param volume the volume, should be 0.0f-1.0f
      */
     public void setVolume(float volume) {
+        Log.d(TAG, "setVolume: " + volume);
         mAudioFileCapture.setVolume(volume);
     }
 

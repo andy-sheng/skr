@@ -30,7 +30,7 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.rank.FeedsRankServerApi
-import com.module.feeds.rank.adapter.FeedsRankAdapter
+import com.module.feeds.rank.adapter.FeedRankAdapter
 import com.module.feeds.rank.model.FeedRankInfoModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -47,7 +47,7 @@ class FeedsRankSearchActivity : BaseActivity() {
     lateinit var mRefreshLayout: SmartRefreshLayout
     lateinit var mRecyclerView: RecyclerView
 
-    lateinit var mAdapter: FeedsRankAdapter
+    lateinit var mAdapter: FeedRankAdapter
     lateinit var mPublishSubject: PublishSubject<SearchModel>
 
     private var mLoadService: LoadService<*>? = null
@@ -84,7 +84,7 @@ class FeedsRankSearchActivity : BaseActivity() {
         })
 
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mAdapter = FeedsRankAdapter(object : FeedsRankAdapter.Listener {
+        mAdapter = FeedRankAdapter(object : FeedRankAdapter.Listener {
             override fun onClickHit(position: Int, model: FeedRankInfoModel?) {
                 // 直接去打榜
                 model?.let {

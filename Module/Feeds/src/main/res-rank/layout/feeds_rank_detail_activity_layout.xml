@@ -23,6 +23,21 @@
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/select_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_21_dp"
+        android:layout_marginBottom="@dimen/view_12_dp"
+        android:drawableRight="@drawable/bangdan_top"
+        android:drawablePadding="@dimen/view_6_dp"
+        android:text="年榜"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/titlebar"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"

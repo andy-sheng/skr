@@ -7,7 +7,7 @@ import com.module.feeds.R
 import com.module.feeds.rank.holder.FeedsRankViewHolder
 import com.module.feeds.rank.model.FeedRankInfoModel
 
-class FeedsRankAdapter(val listener: Listener) : RecyclerView.Adapter<FeedsRankViewHolder>() {
+class FeedRankAdapter(val listener: Listener) : RecyclerView.Adapter<FeedsRankViewHolder>() {
 
     var mDataList = ArrayList<FeedRankInfoModel>()
 

@@ -11,13 +11,24 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
+import com.common.sensor.SensorManagerHelper
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.component.busilib.callback.EmptyCallback
 import com.facebook.drawee.view.SimpleDraweeView
@@ -26,13 +37,18 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.feeds.R
 import com.module.feeds.detail.activity.FeedsDetailActivity
+import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.TYPE_SWITCH_MODE
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
+import com.module.feeds.rank.event.FeedTagFollowStateEvent
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.*
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
@@ -40,13 +56,15 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 收藏view
  */
-class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.context), IFeedCollectView {
+class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment.context!!), IFeedCollectView {
 
     val TAG = "FeedsCollectView"
 
@@ -56,8 +74,9 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     var mTopModel: FeedsCollectModel? = null
     var mTopPosition: Int = 0      // 顶部在播放队列中的位置
     var mIsNeedResumePlay = false    // 标记是否需要恢复播放
+    var mIsDetailPlay = false      // 标记详情页面是否在播放
 
-    var mSongManager: FeedSongPlayModeManager? = null
+    var mSongPlayModeManager: FeedSongPlayModeManager? = null
 
     private val mContainer: ConstraintLayout
     private val mTopAreaBg: SimpleDraweeView
@@ -85,6 +104,8 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     private val mLoadService: LoadService<*>
     private val playerTag = TAG + hashCode()
     private val playCallback: PlayerCallbackAdapter
+
+    private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
     init {
         View.inflate(context, R.layout.feed_like_view_layout, this)
@@ -114,30 +135,49 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                 model?.let {
                     mIsNeedResumePlay = true
                     fragment?.activity?.let { fragmentActivity ->
-                        FeedsDetailActivity.openActivity(fragmentActivity, it.feedID, 2, mCurrentType, object : AbsPlayModeManager() {
+                        FeedsDetailActivity.openActivity(FeedPage.DETAIL_FROM_COLLECT, fragmentActivity, it.feedID, TYPE_SWITCH_MODE, mCurrentType, object : AbsPlayModeManager() {
+                            override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                                mSongPlayModeManager?.getNextSong(userAction, callback)
+                            }
+
+                            override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
+                                mSongPlayModeManager?.getPreSong(userAction, callback)
+                            }
+
+                            override fun playState(isPlaying: Boolean) {
+                                mIsDetailPlay = isPlaying
+                            }
+
                             override fun changeMode(mode: FeedSongPlayModeManager.PlayMode) {
-                                mSongManager?.changeMode(mode)
-                            }
-
-                            override fun getNextSong(userAction: Boolean): FeedSongModel? {
-                                return mSongManager?.getNextSong(userAction)
-                            }
-
-                            override fun getPreSong(userAction: Boolean): FeedSongModel? {
-                                return mSongManager?.getPreSong(userAction)
+                                mSongPlayModeManager?.changeMode(mode)
+                                mCurrentType = mode
+                                when (mode) {
+                                    FeedSongPlayModeManager.PlayMode.ORDER -> {
+                                        mPlayTypeIv?.setImageResource(R.drawable.like_all_repeat_icon)
+                                    }
+                                    FeedSongPlayModeManager.PlayMode.SINGLE -> {
+                                        mPlayTypeIv?.setImageResource(R.drawable.like_single_repeat_icon)
+                                    }
+                                    FeedSongPlayModeManager.PlayMode.RANDOM -> {
+                                        mPlayTypeIv?.setImageResource(R.drawable.like_random_icon)
+                                    }
+                                }
                             }
 
                             override fun getCurMode(): FeedSongPlayModeManager.PlayMode {
-                                return mSongManager!!.getCurMode()
+                                return mSongPlayModeManager?.getCurMode()
+                                        ?: FeedSongPlayModeManager.PlayMode.ORDER
                             }
                         })
                     }
+
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                 }
             }
 
             override fun onClickPlayListener(model: FeedsCollectModel?, position: Int) {
                 model?.let {
-                    mSongManager?.setCurrentPlayModel(it.song)
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     playOrPause(it, position, false)
                 }
             }
@@ -157,6 +197,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 mPersenter.initFeedLikeList(true)
+                getRecommendTagList()
             }
         })
 
@@ -169,19 +210,19 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                         mCurrentType = FeedSongPlayModeManager.PlayMode.SINGLE
                         mPlayTypeIv.setImageResource(R.drawable.like_single_repeat_icon)
                         U.getToastUtil().showShort("单曲循环")
-                        mSongManager?.changeMode(mCurrentType)
+                        mSongPlayModeManager?.changeMode(mCurrentType)
                     }
                     FeedSongPlayModeManager.PlayMode.SINGLE -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.RANDOM
                         mPlayTypeIv.setImageResource(R.drawable.like_random_icon)
                         U.getToastUtil().showShort("随机播放")
-                        mSongManager?.changeMode(mCurrentType)
+                        mSongPlayModeManager?.changeMode(mCurrentType)
                     }
                     FeedSongPlayModeManager.PlayMode.RANDOM -> {
                         mCurrentType = FeedSongPlayModeManager.PlayMode.ORDER
                         mPlayTypeIv.setImageResource(R.drawable.like_all_repeat_icon)
                         U.getToastUtil().showShort("列表循环")
-                        mSongManager?.changeMode(mCurrentType)
+                        mSongPlayModeManager?.changeMode(mCurrentType)
                     }
                 }
             }
@@ -198,7 +239,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mRecordFilm.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mTopModel?.let {
-                    mSongManager?.setCurrentPlayModel(it.song)
+                    mSongPlayModeManager?.setCurrentPlayModel(it.song)
                     playOrPause(it, mTopPosition, false)
                 }
             }
@@ -248,6 +289,33 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             EventBus.getDefault().register(this)
         }
 
+        getRecommendTagList()
+    }
+
+    private fun getRecommendTagList() {
+        launch {
+            val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
+                mFeedServerApi.getAlbumCollectList(0, 10, MyUserInfoManager.getInstance().uid)
+            }
+            if (obj.errno == 0) {
+                val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
+                mAdapter.mRankTagList.clear()
+                if (list != null && list.size > 0) {
+                    mAdapter.mRankTagList.addAll(list)
+                }
+
+                mAdapter.notifyDataSetChanged()
+                if ((mAdapter.mDataList == null || mAdapter.mDataList.isEmpty()) && mAdapter.mRankTagList.isEmpty()) {
+                    mLoadService.showCallback(EmptyCallback::class.java)
+                } else {
+                    mLoadService.showSuccess()
+                }
+            } else {
+                if (obj.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
     }
 
     // 初始化数据
@@ -267,21 +335,23 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
             mAdapter.mCurrentPlayModel = null
             mAdapter.notifyDataSetChanged()
-            SinglePlayer.reset(playerTag)
+            SinglePlayer.pause(playerTag)
         }
     }
 
     private fun playWithType(isNext: Boolean, fromUser: Boolean) {
-        val songModel = if (isNext) {
-            mSongManager?.getNextSong(fromUser)
-        } else {
-            mSongManager?.getPreSong(fromUser)
-        }
-        mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
-            if (feedsCollectModel.feedID == songModel?.feedID) {
-                playOrPause(feedsCollectModel, index, true)
-                return@forEachIndexed
+        val f: (songModel: FeedSongModel?) -> Unit = {
+            mAdapter.mDataList.forEachIndexed { index, feedsCollectModel ->
+                if (feedsCollectModel.feedID == it?.feedID) {
+                    playOrPause(feedsCollectModel, index, true)
+                    return@forEachIndexed
+                }
             }
+        }
+        if (isNext) {
+            mSongPlayModeManager?.getNextSong(fromUser, f)
+        } else {
+            mSongPlayModeManager?.getPreSong(fromUser, f)
         }
     }
 
@@ -308,7 +378,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mAdapter.mCurrentPlayModel = mTopModel
         mAdapter.notifyDataSetChanged()
         model?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0)
+            FeedsPlayStatistics.setCurPlayMode(model?.song?.feedID ?: 0, FeedPage.COLLECT, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
     }
@@ -319,7 +389,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         mRecordPlayIv.background = U.getDrawable(R.drawable.like_record_play_icon)
         mAdapter.mCurrentPlayModel = null
         mAdapter.notifyDataSetChanged()
-        SinglePlayer.reset(playerTag)
+        SinglePlayer.pause(playerTag)
     }
 
     override fun showCollectList(list: List<FeedsCollectModel>?) {
@@ -335,8 +405,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
                     feedSongModels.add(feedSongModel)
                 }
             }
-            mSongManager = FeedSongPlayModeManager(mCurrentType, cur, feedSongModels)
-
+            mSongPlayModeManager = FeedSongPlayModeManager(mCurrentType, cur, feedSongModels)
 
             stopPlay()
             mAdapter.mDataList.clear()
@@ -350,8 +419,15 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             mAdapter.notifyDataSetChanged()
         }
 
-        if (mAdapter.mDataList == null || mAdapter.mDataList.isEmpty()) {
-            mLoadService.showCallback(EmptyCallback::class.java)
+        if ((mAdapter.mDataList == null || mAdapter.mDataList.isEmpty())) {
+            mTopModel = null
+            if (mAdapter.mRankTagList.isEmpty()) {
+                mLoadService.showCallback(EmptyCallback::class.java)
+            } else {
+                mLoadService.showSuccess()
+                mRecordCover.setImageDrawable(null)
+                mTopAreaBg.setImageDrawable(null)
+            }
         } else {
             mLoadService.showSuccess()
         }
@@ -434,6 +510,27 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
     }
 
     @Subscribe
+    fun onEvent(event: FeedTagFollowStateEvent) {
+        if (event.feedRecommendTagModel.isCollected) {
+            mAdapter.mRankTagList.add(event.feedRecommendTagModel)
+        } else {
+            var model: FeedRecommendTagModel? = null
+            mAdapter.mRankTagList.forEach {
+                if (it.rankID == event.feedRecommendTagModel.rankID) {
+                    model = it
+                    return@forEach
+                }
+            }
+
+            model?.let {
+                mAdapter.mRankTagList.remove(it)
+            }
+        }
+
+        mAdapter.notifyDataSetChanged()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedDetailChangeEvent) {
         // 播放的歌曲更新了,更新mTopModel 和 mTopPosition
         MyLog.d(TAG, "onEventevent FeedSongPlayEvent = $event")
@@ -448,6 +545,24 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RemoteControlEvent) {
+        if (SinglePlayer.startFrom == playerTag) {
+            playWithType(true, true)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        if (SinglePlayer.startFrom == playerTag) {
+            mTopModel?.let {
+                mSongPlayModeManager?.setCurrentPlayModel(it.song)
+                playOrPause(it, mTopPosition, false)
+            }
+        }
+    }
+
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
@@ -466,28 +581,43 @@ class FeedsCollectView(var fragment: BaseFragment) : ConstraintLayout(fragment.c
         }
     }
 
-    fun unselected() {
-        MyLog.d(TAG, "unselected")
-        SinglePlayer.reset(playerTag)
-        stopPlay()
-    }
-
     fun selected() {
         MyLog.d(TAG, "selected isPlaying=$isPlaying")
         if (!isPlaying) {
             if (mIsNeedResumePlay) {
                 // 恢复播放
                 mIsNeedResumePlay = false
-                mTopModel?.let {
-                    playOrPause(it, mTopPosition, true)
+                if (mIsDetailPlay) {
+                    mTopModel?.let {
+                        playOrPause(it, mTopPosition, true)
+                    }
+                } else {
+
                 }
             } else {
                 // 停止播放
                 MyLog.d(TAG, "selected 停止播放吧")
-                SinglePlayer.reset(playerTag)
+                SinglePlayer.pause(playerTag)
                 initData(false)
             }
+        }
+        RemoteControlHelper.registerHeadsetControl(playerTag)
+    }
 
+    fun unselected(reason: Int) {
+        MyLog.d(TAG, "unselected")
+        when (reason) {
+            UNSELECT_REASON_SLIDE_OUT,
+            UNSELECT_REASON_TO_OTHER_ACTIVITY,
+            UNSELECT_REASON_TO_OTHER_TAB -> {
+                SinglePlayer.pause(playerTag)
+                stopPlay()
+                RemoteControlHelper.unregisterHeadsetControl(playerTag)
+            }
+            UNSELECT_REASON_TO_DESKTOP -> {
+
+            }
         }
     }
+
 }

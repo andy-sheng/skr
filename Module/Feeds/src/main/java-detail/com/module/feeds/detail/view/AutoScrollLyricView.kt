@@ -16,7 +16,7 @@ import com.module.feeds.watch.model.FeedSongModel
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.*
 
-class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+class AutoScrollLyricView(viewStub: ViewStub, var showName: Boolean = false) : ExViewStub(viewStub), BaseFeedsLyricView {
     val TAG = "AutoScrollLyricView"
     var lyricTv: ExTextView? = null
     var scrollView: ScrollView? = null
@@ -104,10 +104,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     fun whenLoadLyric(play: Boolean) {
         var l = mFeedSongModel?.songTpl?.lrcTxtStr
-        if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
+        if (!TextUtils.isEmpty(mFeedSongModel?.workName) && showName) {
             l = "《${mFeedSongModel?.workName}》\n ${l}"
         }
-        visibility = View.VISIBLE
+//        visibility = View.VISIBLE
         lyricTv?.text = l
         if (play) {
             startScroll()
@@ -131,11 +131,6 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         scrollView?.smoothScrollTo(0, 0)
         mScrollJob?.cancel()
         mDisposable?.dispose()
-    }
-
-    override fun onViewDetachedFromWindow(v: View?) {
-        super.onViewDetachedFromWindow(v)
-        mScrollJob?.cancel()
     }
 
     private fun startScroll() {
@@ -179,6 +174,10 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
         }
     }
 
+    override fun setShowState(visibility: Int) {
+        setVisibility(visibility)
+    }
+
     override fun showHalf() {
         scrollView?.layoutParams?.height = U.getDisplayUtils().dip2px(38f)
     }
@@ -189,8 +188,6 @@ class AutoScrollLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsL
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
-        if (visibility == View.GONE) {
-            pause()
-        }
+        lyricTv?.visibility = visibility
     }
 }

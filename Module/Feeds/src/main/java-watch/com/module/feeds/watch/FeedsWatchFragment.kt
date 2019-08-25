@@ -3,14 +3,17 @@ package com.module.feeds.watch
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.base.INVISIBLE_REASON_IN_VIEWPAGER
+import com.common.base.INVISIBLE_REASON_TO_DESKTOP
+import com.common.base.INVISIBLE_REASON_TO_OTHER_ACTIVITY
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
-import com.common.utils.ActivityUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -20,29 +23,37 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.event.FeedWatchTabRefreshEvent
 import com.module.RouterConstants
 import com.module.feeds.R
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
-import com.module.feeds.watch.view.FeedsWatchView
+import com.module.feeds.watch.watchview.FeedRecommendView
+import com.module.feeds.watch.watchview.FollowWatchView
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.properties.Delegates
 
 class FeedsWatchFragment : BaseFragment() {
-
+    val BACKGROUNG_MSG = 0
+    val PREF_KEY_SHOW_GUIDE = "need_show_watch_guide"
     private lateinit var mNavigationBgIv: ImageView
+    private lateinit var mDivider: View
     private lateinit var mFeedChallengeTv: ExTextView
+    private lateinit var mFeedPlaylistTv: ExTextView
     private lateinit var mFeedTab: SlidingTabLayout
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
-    private var isBackground = false   // 是否在后台
+    var mWaitingDialogPlus: DialogPlus? = null
+    var mShowGuideCall: (() -> Unit)? = null
 
-    val mRecommendFeedsView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_RECOMMEND) }   //推荐
-    val mFollowFeesView: FeedsWatchView by lazy { FeedsWatchView(this, FeedsWatchView.TYPE_FOLLOW) }       //关注
+    val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
+    val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
-
     val initPostion = 1
     // 保持 init Postion 一致
     var mPagerPosition: Int by Delegates.observable(initPostion, { _, oldPositon, newPosition ->
@@ -51,13 +62,13 @@ class FeedsWatchFragment : BaseFragment() {
             delay(400)
             when (oldPositon) {
                 0 -> {
-                    mFollowFeesView?.unselected()
+                    mFollowFeedsView.unselected(UNSELECT_REASON_SLIDE_OUT)
                 }
                 1 -> {
-                    mRecommendFeedsView?.unselected()
+                    mRecommendFeedsView.unselected(UNSELECT_REASON_SLIDE_OUT)
                 }
                 2 -> {
-                    mFeedsCollectView?.unselected()
+                    mFeedsCollectView.unselected(UNSELECT_REASON_SLIDE_OUT)
                 }
             }
             onViewSelected(newPosition)
@@ -70,8 +81,10 @@ class FeedsWatchFragment : BaseFragment() {
 
     override fun initData(savedInstanceState: Bundle?) {
         mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
+        mDivider = rootView.findViewById(R.id.divider)
         mFeedTab = rootView.findViewById(R.id.feed_tab)
         mFeedChallengeTv = rootView.findViewById(R.id.feed_challenge_tv)
+        mFeedPlaylistTv = rootView.findViewById(R.id.feed_playlist_tv)
         mFeedVp = rootView.findViewById(R.id.feed_vp)
 
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
@@ -83,10 +96,18 @@ class FeedsWatchFragment : BaseFragment() {
             }
         })
 
+        mFeedPlaylistTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
+                        .withInt("from", 1)
+                        .navigation()
+            }
+        })
+
         mFeedTab.apply {
             setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
             setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
-            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
             setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
             setTitleSize(14f)
             setSelectedTitleSize(24f)
@@ -105,7 +126,7 @@ class FeedsWatchFragment : BaseFragment() {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
                 var view: View? = when (position) {
-                    0 -> mFollowFeesView
+                    0 -> mFollowFeedsView
                     1 -> mRecommendFeedsView
                     2 -> mFeedsCollectView
                     else -> null
@@ -157,12 +178,40 @@ class FeedsWatchFragment : BaseFragment() {
         mFeedTab.setViewPager(mFeedVp)
         mTabPagerAdapter.notifyDataSetChanged()
         mFeedVp?.setCurrentItem(initPostion, false)
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+
+        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_SHOW_GUIDE, true)) {
+            mShowGuideCall = {
+                mShowGuideCall = null
+                U.getPreferenceUtils().setSettingBoolean(PREF_KEY_SHOW_GUIDE, false)
+                if (mWaitingDialogPlus == null) {
+                    mWaitingDialogPlus = DialogPlus.newDialog(context!!)
+                            .setContentHolder(ViewHolder(R.layout.watch_guide_layout))
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_50)
+                            .setExpanded(false)
+                            .setCancelable(true)
+                            .setGravity(Gravity.CENTER)
+                            .create()
+
+                    mWaitingDialogPlus?.findViewById(R.id.guide_iv)?.setOnClickListener {
+                        mWaitingDialogPlus?.dismiss()
+                    }
+                }
+
+                mWaitingDialogPlus?.show()
+            }
+        }
     }
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         StatisticsAdapter.recordCountEvent("music_tab", "music_tab_expose", null)
         onViewSelected(mFeedVp.currentItem)
+        mShowGuideCall?.invoke()
     }
 
     fun onViewSelected(pos: Int) {
@@ -172,33 +221,51 @@ class FeedsWatchFragment : BaseFragment() {
         when (pos) {
             0 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
-                mFollowFeesView.selected()
+                mDivider.visibility = View.VISIBLE
+                mFollowFeedsView.selected()
             }
             1 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
+                mDivider.visibility = View.GONE
                 mRecommendFeedsView.selected()
             }
             2 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
+                mDivider.visibility = View.GONE
                 mFeedsCollectView.selected()
             }
         }
     }
 
-    override fun onFragmentInvisible(from: Int) {
-        super.onFragmentInvisible(from)
-        MyLog.d(TAG, "onFragmentInvisible from=$from")
-        mFollowFeesView.unselected()
-        mRecommendFeedsView.unselected()
-        //todo 因为切后台的事件会比不可见晚
-        mFeedsCollectView.postDelayed({
-            if (!isBackground) {
-                mFeedsCollectView.unselected()
+    override fun onFragmentInvisible(reason: Int) {
+        super.onFragmentInvisible(reason)
+        MyLog.d(TAG, "onFragmentInvisible reason=$reason")
+        var r = UNSELECT_REASON_SLIDE_OUT
+        if (reason == INVISIBLE_REASON_IN_VIEWPAGER) {
+            r = UNSELECT_REASON_TO_OTHER_TAB
+        } else if (reason == INVISIBLE_REASON_TO_OTHER_ACTIVITY) {
+            r = UNSELECT_REASON_TO_OTHER_ACTIVITY
+        } else if (reason == INVISIBLE_REASON_TO_DESKTOP) {
+            r = INVISIBLE_REASON_TO_DESKTOP
+        }
+        // 返回桌面
+        when (mPagerPosition) {
+            0 -> {
+                mFollowFeedsView.unselected(r)
             }
-        }, 200)
-        if (from == 2) {
-            FeedsPlayStatistics.setCurPlayMode(0)
+            1 -> {
+                mRecommendFeedsView.unselected(r)
+            }
+            2 -> {
+                mFeedsCollectView.unselected(r)
+            }
+        }
+        if (reason != INVISIBLE_REASON_TO_OTHER_ACTIVITY) {
+            // 滑走导致的不可见
+            FeedsPlayStatistics.setCurPlayMode(0, FeedPage.UNKNOW, 0)
             FeedsPlayStatistics.tryUpload(true)
+        } else {
+
         }
     }
 
@@ -217,14 +284,10 @@ class FeedsWatchFragment : BaseFragment() {
     override fun destroy() {
         super.destroy()
         mRecommendFeedsView.destroy()
-        mFollowFeesView.destroy()
+        mFollowFeedsView.destroy()
         mFeedsCollectView.destory()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
-        MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
-        isBackground = !event.foreground
+        mWaitingDialogPlus?.dismiss()
+        EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -232,10 +295,15 @@ class FeedsWatchFragment : BaseFragment() {
         // 首页重复点击了神曲，自动刷新一下吧
         if (mFeedVp.currentItem == 0) {
             // 关注自动刷新
-            mFollowFeesView.autoRefresh()
+            mFollowFeedsView.autoRefresh()
         } else if (mFeedVp.currentItem == 1) {
             // 推荐自动刷新
             mRecommendFeedsView.autoRefresh()
         }
     }
 }
+
+const val UNSELECT_REASON_SLIDE_OUT = 1 // tab滑走
+const val UNSELECT_REASON_TO_DESKTOP = 2  // 到桌面
+const val UNSELECT_REASON_TO_OTHER_ACTIVITY = 3 // 到别的activity
+const val UNSELECT_REASON_TO_OTHER_TAB = 4//  feed tab滑走

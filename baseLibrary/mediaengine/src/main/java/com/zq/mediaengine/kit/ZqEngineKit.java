@@ -1502,8 +1502,8 @@ public class ZqEngineKit implements AgoraOutCallback {
                         EventBus.getDefault().post(engineEvent);
                         if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
                             // 未加入房间时需要先开启音频采集
-                            if (!mInChannel) {
-                                if (mAudioCapture != null) {
+                            if (mConfig.isUseExternalAudioRecord()) {
+                                if (!mInChannel && mAudioCapture != null) {
                                     mAudioCapture.start();
                                 }
                             }

@@ -19,8 +19,6 @@ object MediaCacheManager {
         }
     }
 
-    private var cacheingNum = 0
-
     private val httpProxyCacheServer = HttpProxyCacheServer.Builder(U.app())
             .cacheDirectory(saveFile)
             .maxCacheSize(1024 * 1024 * 300)
@@ -40,17 +38,23 @@ object MediaCacheManager {
         return httpProxyCacheServer.getProxyUrl(url, allowFromCache)
     }
 
+    val preCacheingSet = HashSet<String>()
+
     fun preCache(url: String) {
-        MyLog.d(TAG, "preCache url=$url cacheingNum=$cacheingNum")
-        if (cacheingNum > 5) {
+        MyLog.d(TAG, "preCache url=$url cacheingNum=${preCacheingSet.size}")
+        if (preCacheingSet.size > 5) {
             return
         }
-        cacheingNum++
+        if (preCacheingSet.contains(url)) {
+            MyLog.d(TAG, "preCache url=$url 已经在下载 cancel")
+            return
+        }
+        preCacheingSet.add(url)
         Observable.create<Unit> {
             val outFile = File(saveFile, fileNameGenerator.generate(url))
             val outFileTemp = File(saveFile, fileNameGenerator.generate(url) + ".temp")
             if (!outFile.exists() && !outFileTemp.exists()) {
-                U.getHttpUtils().downloadFileSync(url, outFile, true, null,1024*1024*2)
+                U.getHttpUtils().downloadFileSync(url, outFile, true, null, 1024 * 1024 * 2)
             }
             it.onComplete()
         }
@@ -58,7 +62,7 @@ object MediaCacheManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
-                }, {}, { cacheingNum-- })
+                }, {}, { preCacheingSet.remove(url) })
 
     }
 }

@@ -6,26 +6,27 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.log.MyLog
-import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.watch.listener.FeedsListener
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedsWatchModel
-import com.module.feeds.watch.viewholder.EmptyFeedWallHolder
-import com.module.feeds.watch.viewholder.FeedViewHolder
-import com.module.feeds.watch.viewholder.FeedsWallViewHolder
-import com.module.feeds.watch.viewholder.FeedsWatchViewHolder
+import com.module.feeds.watch.viewholder.*
+import com.module.feeds.watch.watchview.BaseWatchView
 
-class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<FeedsWatchModel>()
+    // 只用来做推荐顶部的
+    var mRankTagList = ArrayList<FeedRecommendTagModel>()
 
-    var mCurrentPlayPosition: Int? = null
+    var mCurrentPlayPosition: Int = -1 // 默认给个无效值
     var mCurrentPlayModel: FeedsWatchModel? = null
     var playing = false
 
     private val mPersonEmptyItemType = 1
     private val mPersonNormalItemType = 2
     private val mHomeNormalItemType = 3
+    private val mHomeTopType = 4      // 推荐首页顶部
     private val uiHanlder = Handler(Looper.getMainLooper())
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -35,58 +36,103 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         if (payloads.isEmpty()) {
             MyLog.d("FeedsWatchViewAdapter", "onBindViewHolder position=$position playing=$playing")
             // 全部刷新的布局
-            if (holder is FeedViewHolder) {
-                holder.bindData(position, mDataList[position])
-                // notifyItemChanged 和 notifyDataSetChanged间隔时间很短一起使用时候，会导致notifyItemChanged不生效
-                if (mDataList[position] == mCurrentPlayModel && playing) {
-                    //todo 可以把播放状态需要做的操作都在这补一下
-                    MyLog.d("FeedsWatchViewAdapter", "notifyDataSetChanged startPlay")
-                    holder.startPlay()
+            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                if (position == 0) {
+                    if (holder is FeedRecommendTagHolder) {
+                        holder.bindData(mRankTagList)
+                    }
                 } else {
-                    holder.stopPlay(true)
+                    if (!mDataList.isNullOrEmpty() && (position - 1) < mDataList.size) {
+                        bindDataFeedViewHolder(holder, position, mDataList[position - 1])
+                    }
+                }
+            } else {
+                if (!mDataList.isNullOrEmpty() && position < mDataList.size) {
+                    bindDataFeedViewHolder(holder, position, mDataList[position])
                 }
             }
         } else {
             // 局部刷新
-            val type = payloads[0] as Int
-            if (type == REFRESH_SHOW_COMPLETE_AREA) {
-                if (holder is FeedsWatchViewHolder) {
-                    holder.showCompleteArea(position, mDataList[position])
-                    holder.stopPlay(false)
-                }
-            } else if (type == REFRESH_HIDE_COMPLETE_AREA) {
-                if (holder is FeedsWatchViewHolder) {
-                    holder.hideCompleteArea()
-                }
-            }
+            payloads.forEach { refreshType ->
+                if (refreshType is Int) {
+                    if (refreshType == REFRESH_SHOW_COMPLETE_AREA) {
+                        if (holder is FeedsWatchViewHolder) {
+                            holder.showCompleteArea()
+                            holder.stopPlay(false)
+                        }
+                    } else if (refreshType == REFRESH_HIDE_COMPLETE_AREA) {
+                        if (holder is FeedsWatchViewHolder) {
+                            holder.hideCompleteArea()
+                        }
+                    }
 
-            if (holder is FeedViewHolder) {
-                if (type == REFRESH_TYPE_PLAY) {
-                    MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position type=$type mCurrentPlayModel=$mCurrentPlayModel mCurrentPlayPosition=$mCurrentPlayPosition playing=$playing")
-                    if (mDataList[position] == mCurrentPlayModel && playing) {
-                        holder.startPlay()
-                    } else {
-                        holder.stopPlay(true)
+                    if (holder is FeedViewHolder) {
+                        if (refreshType == REFRESH_TYPE_PLAY) {
+                            MyLog.d("FeedsWatchViewAdapter", "notifyItemChanged startPlay position = $position type=$refreshType mCurrentPlayModel=$mCurrentPlayModel mCurrentPlayPosition=$mCurrentPlayPosition playing=$playing")
+                            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                                if (mDataList[position - 1] == mCurrentPlayModel && playing) {
+                                    holder.startPlay()
+                                } else {
+                                    holder.stopPlay(true)
+                                }
+                            } else {
+                                if (mDataList[position] == mCurrentPlayModel && playing) {
+                                    holder.startPlay()
+                                } else {
+                                    holder.stopPlay(true)
+                                }
+                            }
+                        } else if (refreshType == REFRESH_TYPE_LIKE) {
+                            holder.refreshLike()
+                        } else if (refreshType == REFRESH_TYPE_PLAY_NUM) {
+                            holder.refreshPlayNum()
+                        } else if (refreshType == REFRESH_TYPE_LYRIC) {
+                            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                                if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1] == mCurrentPlayModel) {
+                                    holder.playLyric()
+                                }
+                            } else {
+                                if (mDataList[position] == mCurrentPlayModel) {
+                                    holder.playLyric()
+                                }
+                            }
+                        } else if (refreshType == REFRESH_BUFFERING_STATE) {
+                            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                                // 真实数据对应为position-1
+                                if (position - 1 >= 0 && position - 1 < mDataList.size && mDataList[position - 1].song?.lyricStatus == 0) {
+                                    holder.pauseWhenBuffering()
+                                } else {
+                                    holder.resumeWhenBufferingEnd()
+                                }
+                            } else {
+                                if (mDataList[position].song?.lyricStatus == 0) {
+                                    holder.pauseWhenBuffering()
+                                } else {
+                                    holder.resumeWhenBufferingEnd()
+                                }
+                            }
+                        } else if (refreshType == REFRESH_TYPE_COLLECT) {
+                            holder.refreshCollects()
+                        }
                     }
-                } else if (type == REFRESH_TYPE_LIKE) {
-                    holder.refreshLike(position, mDataList[position])
-                } else if (type == REFRESH_TYPE_PLAY_NUM) {
-                    holder.refreshPlayNum(position, mDataList[position])
-                } else if (type == REFRESH_TYPE_LYRIC) {
-                    if (mDataList[position] == mCurrentPlayModel) {
-                        holder.playLyric(position, mDataList[position])
-                    }
-                } else if (type == REFRESH_BUFFERING_STATE) {
-                    if (mDataList[position].song?.lyricStatus == 0) {
-                        holder.pauseWhenBuffering(position, mDataList[position])
-                    } else {
-                        holder.resumeWhenBufferingEnd(position, mDataList[position])
-                    }
-                } else if (type == REFRESH_TYPE_COLLECT) {
-                    holder.refreshCollects(position, mDataList[position])
                 }
             }
         }
+    }
+
+    private fun bindDataFeedViewHolder(holder: RecyclerView.ViewHolder, position: Int, feedsWatchModel: FeedsWatchModel) {
+        if (holder is FeedViewHolder) {
+            holder.bindData(position, feedsWatchModel)
+            // notifyItemChanged 和 notifyDataSetChanged间隔时间很短一起使用时候，会导致notifyItemChanged不生效
+            if (feedsWatchModel == mCurrentPlayModel && playing) {
+                //todo 可以把播放状态需要做的操作都在这补一下
+                MyLog.d("FeedsWatchViewAdapter", "notifyDataSetChanged startPlay")
+                holder.startPlay()
+            } else {
+                holder.stopPlay(true)
+            }
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -99,6 +145,10 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_wall_item_holder_layout, parent, false)
                 FeedsWallViewHolder(view, listener)
             }
+            mHomeTopType -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_recommend_watch_view_layout, parent, false)
+                FeedRecommendTagHolder(view, listener)
+            }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_watch_item_holder_layout, parent, false)
                 FeedsWatchViewHolder(view, listener)
@@ -107,7 +157,9 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     override fun getItemCount(): Int {
-        return if (isHomePage) {
+        return if (mType == BaseWatchView.TYPE_RECOMMEND) {
+            mDataList.size + 1
+        } else if (mType == BaseWatchView.TYPE_FOLLOW) {
             mDataList.size
         } else {
             if (mDataList.isNotEmpty()) {
@@ -119,7 +171,13 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isHomePage) {
+        return if (mType == BaseWatchView.TYPE_RECOMMEND) {
+            if (position == 0) {
+                mHomeTopType
+            } else {
+                mHomeNormalItemType
+            }
+        } else if (mType == BaseWatchView.TYPE_FOLLOW) {
             mHomeNormalItemType
         } else {
             if (mDataList.isEmpty()) {
@@ -132,39 +190,61 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
 
     fun update(position: Int, model: FeedsWatchModel?, refreshType: Int) {
         if (mDataList.isNotEmpty()) {
-            if (position < mDataList.size && mDataList[position] == model) {
-                // 位置是对的
-                notifyItemChanged(position, refreshType)
-                return
+            if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                if (position in 1..mDataList.size && mDataList[position - 1] == model) {
+                    // 位置是对的
+                    notifyItemChanged(position, refreshType)
+                    return
+                } else {
+                    update(model, refreshType)
+                }
             } else {
-                update(model, refreshType)
+                if (position in 0 until mDataList.size && mDataList[position] == model) {
+                    // 位置是对的
+                    notifyItemChanged(position, refreshType)
+                    return
+                } else {
+                    update(model, refreshType)
+                }
             }
         } else {
             mCurrentPlayModel = null
-            mCurrentPlayPosition = null
+            mCurrentPlayPosition = -1
         }
     }
 
-    fun update(model: FeedsWatchModel?, refreshType: Int) {
+    private fun update(model: FeedsWatchModel?, refreshType: Int) {
         // 位置是错的
-        for (i in 0 until mDataList.size) {
-            if (mDataList[i] == model) {
-                notifyItemChanged(i, refreshType)
-                return
+        if (mType == BaseWatchView.TYPE_RECOMMEND) {
+            for (i in 0 until mDataList.size) {
+                if (mDataList[i] == model) {
+                    notifyItemChanged(i + 1, refreshType)
+                    return
+                }
+            }
+        } else {
+            for (i in 0 until mDataList.size) {
+                if (mDataList[i] == model) {
+                    notifyItemChanged(i, refreshType)
+                    return
+                }
             }
         }
+
     }
 
     // 将从detail中数据放到data中
     fun updateModelFromDetail(model: FeedsWatchModel) {
-        if (model != null) {
-            if (mCurrentPlayModel?.feedID == model.feedID && mCurrentPlayModel?.song?.songID == model.song?.songID) {
-                updateProperty(mCurrentPlayModel, model)
-            }
-            for (i in 0 until mDataList.size) {
-                if (mDataList[i].feedID == model.feedID
-                        && mDataList[i].song?.songID == model.song?.songID) {
-                    updateProperty(mDataList[i], model)
+        if (mCurrentPlayModel?.feedID == model.feedID && mCurrentPlayModel?.song?.songID == model.song?.songID) {
+            updateProperty(mCurrentPlayModel, model)
+        }
+        for (i in 0 until mDataList.size) {
+            if (mDataList[i].feedID == model.feedID
+                    && mDataList[i].song?.songID == model.song?.songID) {
+                updateProperty(mDataList[i], model)
+                if (mType == BaseWatchView.TYPE_RECOMMEND) {
+                    notifyItemChanged(i + 1)
+                } else {
                     notifyItemChanged(i)
                 }
             }
@@ -223,16 +303,21 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
     fun pausePlayModel() {
         if (playing) {
             playing = false
-            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_PLAY)
+            update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_TYPE_PLAY)
         }
     }
 
     fun playComplete() {
         MyLog.w("FeedsWatchViewAdapter", "playComplete playing=$playing")
-        if (playing) {
-            playing = false
-            update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_SHOW_COMPLETE_AREA)
+        if (mType == BaseWatchView.TYPE_PERSON) {
+            pausePlayModel()
+        } else {
+            if (playing) {
+                playing = false
+                update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_SHOW_COMPLETE_AREA)
+            }
         }
+
     }
 
     fun resumePlayModel() {
@@ -240,7 +325,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
         if (mCurrentPlayModel != null && mCurrentPlayPosition != null) {
             if (!playing) {
                 playing = true
-                update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_TYPE_PLAY)
+                update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_TYPE_PLAY)
             }
         }
     }
@@ -250,7 +335,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             mCurrentPlayModel?.song?.lyricStatus = 0
         }
 
-        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
+        update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
     }
 
     fun resumeWhenBufferingEnd() {
@@ -258,7 +343,7 @@ class FeedsWatchViewAdapter(var listener: FeedsListener, private val isHomePage:
             mCurrentPlayModel?.song?.lyricStatus = 1
         }
 
-        update(mCurrentPlayPosition ?: 0, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
+        update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_BUFFERING_STATE)
     }
 
     /**

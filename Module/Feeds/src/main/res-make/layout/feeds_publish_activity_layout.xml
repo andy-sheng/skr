@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_20_dp"
-        android:text="选择翻唱标签(非必填)"
+        android:text="选择歌曲标签(非必填)"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/view_14_dp"
         android:textStyle="bold"

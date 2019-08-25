@@ -112,7 +112,7 @@ class FeedsMakeActivity : BaseActivity() {
                     if (it.recordingClick) {
                         if (it.recording) {
                             //真正在录制，除去前奏的长度
-                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 20 * 1000) {
+                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 30 * 1000) {
                                 U.getToastUtil().showSkrCustomShort(NoImageCommonToastView.Builder(U.app())
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
@@ -137,7 +137,8 @@ class FeedsMakeActivity : BaseActivity() {
         resetIv?.isEnabled = false
         resetIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                startRecord()
+                resetAll()
+                initViewByData()
             }
         })
         changeLyricIv?.setOnClickListener(object : DebounceViewClickListener() {
@@ -176,10 +177,6 @@ class FeedsMakeActivity : BaseActivity() {
 
         val from = intent.getIntExtra("from", FROM_CHALLENGE)
         val isDraft = intent.getBooleanExtra("isDraft", false)
-        if(from == FROM_QUICK_SING){
-            changeLyricTv?.visibility = View.GONE
-            changeLyricIv?.visibility = View.GONE
-        }
         if(!isDraft){
             if (from == FROM_CHALLENGE) {
                 val challengeID = intent.getLongExtra("challengeID", 0)
@@ -193,6 +190,7 @@ class FeedsMakeActivity : BaseActivity() {
                                 val songTpl = JSON.parseObject(result.data.getString("songTpl"), FeedSongTpl::class.java)
                                 val workName = result.data.getString("workName")
                                 val challengeDesc = result.data.getString("challengeDesc")
+                                mFeedsMakeModel?.challengeType = result.data.getIntValue("challengeType")
                                 val songModel = FeedSongModel()
                                 songModel.challengeDesc = challengeDesc
                                 songModel.songTpl = songTpl
@@ -215,6 +213,11 @@ class FeedsMakeActivity : BaseActivity() {
             } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING) {
                 val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
                 mFeedsMakeModel = FeedsMakeModel()
+                if(from==FROM_QUICK_SING){
+                    mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_QUICK_SONG
+                }else if(from== FROM_CHANGE_SING){
+                    mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_CHANGE_SONG
+                }
                 mFeedsMakeModel?.songModel = feedSongModel
                 //mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.songTpl?.songName
                 whenDataOk()
@@ -246,7 +249,6 @@ class FeedsMakeActivity : BaseActivity() {
                         })
             }
         }
-        mFeedsMakeModel?.from = from
         if (mFeedsMakeModel == null) {
             U.getToastUtil().showShort("参数不正确")
             finish()
@@ -261,6 +263,13 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun whenDataOk() {
+        if(mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG){
+            changeLyricTv?.visibility = View.GONE
+            changeLyricIv?.visibility = View.GONE
+        }else{
+            changeLyricTv?.visibility = View.VISIBLE
+            changeLyricIv?.visibility = View.VISIBLE
+        }
         mFeedsMakeModel?.withBgm = U.getPreferenceUtils().getSettingBoolean("feeds_with_bgm", false)
                 && U.getDeviceUtils().getWiredHeadsetPlugOn()
                 && !TextUtils.isEmpty(mFeedsMakeModel?.songModel?.songTpl?.bgm)
@@ -458,6 +467,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun goLyric(withacc: Boolean) {
+        mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
         if (manyLyricsView?.visibility == View.VISIBLE) {
             // 直接走
             qcProgressBarView?.visibility = View.GONE
@@ -477,7 +487,6 @@ class FeedsMakeActivity : BaseActivity() {
             configParams.manyLyricsView = manyLyricsView
 
             mLyricAndAccMatchManager.setArgs(configParams)
-
             mLyricAndAccMatchManager.start(object : LyricAndAccMatchManager.Listener {
                 override fun onLyricParseSuccess(reader: LyricsReader) {
                     mFeedsMakeModel?.firstLyricShiftTs = reader.lrcLineInfos?.get(0)?.startTime ?: 0
@@ -506,7 +515,6 @@ class FeedsMakeActivity : BaseActivity() {
             qcProgressBarView?.visibility = View.VISIBLE
             // 开始录音
             ZqEngineKit.getInstance().startAudioRecording(mFeedsMakeModel?.recordSavePath, true)
-            mFeedsMakeModel?.beginRecordTs = System.currentTimeMillis()
             mFeedsMakeModel?.recording = true
             val leave = 90 * 1000
             qcProgressBarView?.go(0, leave) {
@@ -540,7 +548,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun recordOk() {
-        resetAll()
+        stopRecord()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
             recordOffsetTs = firstLyricShiftTs + musicFirstFrameTs - recordFirstFrameTs
@@ -570,12 +578,6 @@ class FeedsMakeActivity : BaseActivity() {
         mLyricAndAccMatchManager.stop()
         resetIv?.visibility = View.GONE
         resetTv?.visibility = View.GONE
-        if(mFeedsMakeModel?.from== FROM_QUICK_SING){
-
-        }else
-        {
-
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

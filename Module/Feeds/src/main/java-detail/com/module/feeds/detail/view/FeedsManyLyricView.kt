@@ -16,11 +16,10 @@ import com.module.feeds.detail.view.inter.BaseFeedsLyricView
 import com.module.feeds.watch.model.FeedSongModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 
-class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLyricView {
+class FeedsManyLyricView(viewStub: ViewStub, var showName: Boolean = false) : ExViewStub(viewStub), BaseFeedsLyricView {
 
     val TAG = "FeedsManyLyricView"
     var mManyLyricsView: ManyLyricsView? = null
@@ -76,11 +75,11 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     private fun whenReaderLoad(play: Boolean) {
         if (mManyLyricsView != null) {
-            mManyLyricsView?.setVisibility(View.VISIBLE)
+//            mManyLyricsView?.setVisibility(View.VISIBLE)
             mManyLyricsView?.initLrcData()
         }
         mManyLyricsView?.lyricsReader = mFeedSongModel?.songTpl?.lrcTsReader
-        if (!TextUtils.isEmpty(mFeedSongModel?.workName)) {
+        if (!TextUtils.isEmpty(mFeedSongModel?.workName) && showName) {
             mManyLyricsView?.setSongName("《${mFeedSongModel?.workName}》")
         }
 
@@ -122,6 +121,10 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     }
 
+    override fun setShowState(visibility: Int) {
+        setVisibility(visibility)
+    }
+
     override fun showHalf() {
         mManyLyricsView?.setDownLineNum(0)
         mManyLyricsView?.setUpLineNum(1)
@@ -139,6 +142,7 @@ class FeedsManyLyricView(viewStub: ViewStub) : ExViewStub(viewStub), BaseFeedsLy
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
+        mManyLyricsView?.visibility = visibility
         if (visibility == View.GONE) {
             mManyLyricsView?.pause()
         }

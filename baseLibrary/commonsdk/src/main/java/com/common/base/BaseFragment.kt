@@ -43,9 +43,7 @@ import java.util.HashSet
 
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 
 /**
  * ================================================
@@ -274,7 +272,33 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
             presenter.pause()
         }
         if (fragmentVisible) {
-            onFragmentInvisible(1)
+            if (activity!!.isFinishing) {
+                onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
+            } else {
+                //TODO 如何 知道 是退到后台 还是到别的页面
+                val beforeSize = U.getActivityUtils().activityList.size
+                val beforeCount = U.getActivityUtils().mActivityStartCount
+                launch {
+                    var exec = false
+                    for (i in 0..20) {
+                        delay(50)
+                        val afterSize = U.getActivityUtils().activityList.size
+                        val afterCount = U.getActivityUtils().mActivityStartCount
+                        if (afterSize != beforeSize || beforeCount != afterCount) {
+                            if (U.getActivityUtils().isAppForeground) {
+                                onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
+                            } else {
+                                onFragmentInvisible(INVISIBLE_REASON_TO_DESKTOP)
+                            }
+                            exec =true
+                            break
+                        }
+                    }
+                    if(!exec){
+                        onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
+                    }
+                }
+            }
         }
         if (activity!!.isFinishing && !isDestroyed) {
             destroy()
@@ -350,7 +374,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
      * from 1 表示从 onPause 导致不可见
      *      2 表示从 setUserVisibleHint ViewPager划走导致不可见
      */
-    protected open fun onFragmentInvisible(from: Int) {
+    protected open fun onFragmentInvisible(reason: Int) {
         MyLog.d(TAG, "onFragmentInvisible")
         StatisticsAdapter.recordPageEnd(activity, this.javaClass.simpleName)
     }
@@ -374,7 +398,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
         } else if (visible) {        // only at fragment onCreated
             fragmentOnCreated = true
         } else if (!visible && fragmentOnCreated) {// only when you go out of fragment screen
-            onFragmentInvisible(2)
+            onFragmentInvisible(INVISIBLE_REASON_IN_VIEWPAGER)
         }
     }
 
@@ -448,3 +472,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
         return false
     }
 }
+
+const val INVISIBLE_REASON_IN_VIEWPAGER = 4 // Fragment在ViewPager里
+const val INVISIBLE_REASON_TO_OTHER_ACTIVITY = 3 // 到别的Activity
+const val INVISIBLE_REASON_TO_DESKTOP = 2 // 退到桌面或者熄屏幕

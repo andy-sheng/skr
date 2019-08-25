@@ -6,33 +6,62 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.utils.U
 import com.module.feeds.R
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.viewholder.FeedsCollectViewHolder
+import com.module.feeds.watch.viewholder.HeaderFeedsCollectViewHolder
 
 class FeedsCollectViewAdapter(val listener: FeedCollectListener) : RecyclerView.Adapter<FeedsCollectViewHolder>() {
-
+    val NORMAL_TYPE = 0
+    val FIRST_TYPE = 1
     var mDataList = ArrayList<FeedsCollectModel>()
     var mCurrentPlayModel: FeedsCollectModel? = null
+    // 只用来做推荐顶部的
+    var mRankTagList = ArrayList<FeedRecommendTagModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedsCollectViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
-        return FeedsCollectViewHolder(view, listener)
+        if (viewType == NORMAL_TYPE) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_like_item_holder_layout, parent, false)
+            return FeedsCollectViewHolder(view, listener)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.header_feed_like_item_holder_layout, parent, false)
+            return HeaderFeedsCollectViewHolder(view, listener)
+        }
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
+        if (mDataList.size > 0) {
+            return mDataList.size
+        } else {
+            return 1
+        }
     }
 
     override fun onBindViewHolder(holder: FeedsCollectViewHolder, position: Int) {
-        holder.bindData(position, mDataList[position])
-        if (mDataList[position] == mCurrentPlayModel) {
-            holder.mSongPlayIv.isSelected = true
-            holder.mSongPlayIv.setImageResource(R.drawable.list_song_pause_icon)
-            holder.mSongNameTv.setTextColor(Color.parseColor("#FFC15B"))
+        if (mDataList.size > position) {
+            holder.bindData(position, mDataList[position])
+            if (mDataList[position] == mCurrentPlayModel) {
+                holder.mSongPlayIv.isSelected = true
+                holder.mSongPlayIv.setImageResource(R.drawable.list_song_pause_icon)
+                holder.mSongNameTv.setTextColor(Color.parseColor("#FFC15B"))
+            } else {
+                holder.mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80))
+                holder.mSongPlayIv.isSelected = false
+                holder.mSongPlayIv.setImageResource(R.drawable.list_song_play_icon)
+            }
+        }
+
+        if (holder is HeaderFeedsCollectViewHolder) {
+            holder.bindData(mRankTagList, mDataList.size)
+            holder.showContent(mDataList.size != 0)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (position == 0) {
+            return FIRST_TYPE
         } else {
-            holder.mSongNameTv.setTextColor(U.getColor(R.color.black_trans_80))
-            holder.mSongPlayIv.isSelected = false
-            holder.mSongPlayIv.setImageResource(R.drawable.list_song_play_icon)
+            return NORMAL_TYPE
         }
     }
 

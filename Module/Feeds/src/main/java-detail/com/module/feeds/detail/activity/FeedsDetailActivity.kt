@@ -10,28 +10,31 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.fragment.FeedsDetailFragment
-import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.detail.manager.AbsPlayModeManager
+import com.module.feeds.detail.manager.FeedSongPlayModeManager
+import com.module.feeds.statistics.FeedPage
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_DETAIL)
 class FeedsDetailActivity : BaseActivity() {
 
     companion object {
         // 标记来源
-        val FROM_HOME_PAGE = 1     //推荐、关注、个人中心
-        val FROM_HOME_COLLECT = 2  //收藏
-        val FROM_FEED_RANK = 3     //排行
-        val FROM_SCHEME = 4 // scheme
-        val FROM_COMMENT_LIKE = 5  //评论或赞
+        val TYPE_SWITCH = 1     //只支持上下首切换
+        val TYPE_SWITCH_MODE = 2  //即支持换模式又支持上下首切换
+        val TYPE_NO = 3  //上面两个都不支持
         var MANAGER: AbsPlayModeManager? = null
 
-        fun openActivity(activity: Activity, feedID: Int, from: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
+        fun openActivity(from: FeedPage, activity: Activity, feedID: Int, type: Int, playType: FeedSongPlayModeManager.PlayMode?, playModeManager: AbsPlayModeManager?) {
             MANAGER = playModeManager
             val intent = Intent(activity, FeedsDetailActivity::class.java)
             intent.putExtra("feed_ID", feedID)
 
+            type?.let {
+                intent.putExtra("type", type)
+            }
+
             from?.let {
-                intent.putExtra("from", from)
+                intent.putExtra("from", it)
             }
 
             playType?.let {
@@ -62,15 +65,21 @@ class FeedsDetailActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         val feedID = intent.getIntExtra("feed_ID", -1)
-        val from = intent.getIntExtra("from", FROM_HOME_PAGE)
+        val type = intent.getIntExtra("type", TYPE_SWITCH)
+        var from: FeedPage? = null
+        intent.getSerializableExtra("from")?.let {
+            from = it as FeedPage
+        }
+
         val playType = intent.getSerializableExtra("playType") as FeedSongPlayModeManager.PlayMode?
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@FeedsDetailActivity, FeedsDetailFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, feedID)
-                .addDataBeforeAdd(1, from)
+                .addDataBeforeAdd(1, type)
                 .addDataBeforeAdd(2, playType)
                 .addDataBeforeAdd(3, MANAGER)
+                .addDataBeforeAdd(4, from)
                 .build())
         MANAGER = null
     }

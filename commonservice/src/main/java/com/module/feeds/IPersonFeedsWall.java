@@ -10,7 +10,7 @@ public interface IPersonFeedsWall {
 
     void selected();
 
-    void unselected();
+    void unselected(int reason);
 
     boolean isHasMore();
 

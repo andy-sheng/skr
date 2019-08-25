@@ -66,7 +66,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".report.FeedCopyReportActivity"
+        <activity
+            android:name=".report.FeedCopyReportActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
@@ -77,7 +78,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".rank.activity.FeedsDetailRankActivity"
+            android:name=".rank.activity.FeedsRankDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
@@ -88,16 +89,27 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".songmanage.activity.FeedSongManagerActivity"
+        <activity
+            android:name=".songmanage.activity.FeedSongManagerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".songmanage.activity.FeedSongSearchActivity"
+        <activity
+            android:name=".songmanage.activity.FeedSongSearchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".rank.activity.FeedsTagActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".rank.activity.FeedsTagDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

@@ -172,7 +172,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             mProducationWallView.stopPlay();
         }
         if (mFeedsWallView != null) {
-            mFeedsWallView.unselected();
+            mFeedsWallView.unselected(1);
         }
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);
@@ -247,14 +247,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mToolbar.setVisibility(View.GONE);
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 // TODO: 2019-06-23  可以加效果，看产品需求
+                mImageBg.setTranslationY(verticalOffset);
                 if (lastVerticalOffset != verticalOffset) {
                     lastVerticalOffset = verticalOffset;
-                    mImageBg.setTranslationY(verticalOffset);
                     int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
                     if (U.getDeviceUtils().hasNotch(U.app())) {
                         srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());
@@ -263,6 +262,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         // 展开状态
                         if (mToolbar.getVisibility() != View.GONE) {
                             mToolbar.setVisibility(View.GONE);
+                            mToolbarLayout.setVisibility(View.GONE);
                         }
                     } else if (Math.abs(verticalOffset) >= srollLimit) {
                         // 完全收缩状态
@@ -274,11 +274,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                                 isInitToolbar = true;
                             }
                             mToolbar.setVisibility(View.VISIBLE);
+                            mToolbarLayout.setVisibility(View.VISIBLE);
                         }
                     } else {
                         // TODO: 2019/4/8 过程中，可以加动画，先直接显示
                         if (mToolbar.getVisibility() != View.GONE) {
                             mToolbar.setVisibility(View.GONE);
+                            mToolbarLayout.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -542,7 +544,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mPhotoWallView.getPhotos(false);
             }
             if (mFeedsWallView != null) {
-                mFeedsWallView.unselected();
+                mFeedsWallView.unselected(1);
             }
             if (mProducationWallView != null) {
                 mProducationWallView.stopPlay();
@@ -557,7 +559,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         } else if (position == 2) {
             if (mFeedsWallView != null) {
-                mFeedsWallView.unselected();
+                mFeedsWallView.unselected(1);
             }
             if (mProducationWallView != null) {
                 mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());

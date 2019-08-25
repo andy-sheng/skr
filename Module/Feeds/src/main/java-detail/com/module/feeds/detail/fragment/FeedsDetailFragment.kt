@@ -19,8 +19,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.base.INVISIBLE_REASON_TO_DESKTOP
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
@@ -29,12 +31,18 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.playcontrol.PlayOrPauseEvent
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.sensor.SensorManagerHelper
+import com.common.playcontrol.RemoteControlEvent
+import com.common.playcontrol.RemoteControlHelper
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
@@ -55,6 +63,9 @@ import com.module.feeds.detail.view.FeedsCommentView
 import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedDetailChangeEvent
+import com.module.feeds.event.FeedDetailSwitchEvent
+import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
+import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
@@ -72,12 +83,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     val DELAY_HIDE_CONTROL_AREA = 0
     val HIDE_CONTROL_AREA = 1
     val SHOW_CONTROL_AREA = 2
+    val AUTO_CHANGE_SONG = 3
     var mContainer: LinearLayout? = null
     var mAppbar: AppBarLayout? = null
     var mContentLayout: CollapsingToolbarLayout? = null
     var mBlurBg: BaseImageView? = null
     var mXinIv: ExImageView? = null
     var mCollectionIv: ExImageView? = null
+    var mCollectionIv2: ExImageView? = null
     var mShareIv: ExImageView? = null
     var mBtnBack: ImageView? = null
     var mPlayTypeIv: ImageView? = null
@@ -91,7 +104,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mSeekBar: SeekBar? = null
     var mSingerIv: BaseImageView? = null
     var mNameTv: ExTextView? = null
-    var mCommentTimeTv: ExTextView? = null
+    //    var mCommentTimeTv: ExTextView? = null
     var mFollowTv: ExTextView? = null
     var mMainCommentTv: ExTextView? = null
     var mCommentTv: ExTextView? = null
@@ -103,6 +116,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mFeedsCommentView: FeedsCommentView? = null
     var mRadioView: FeedsRecordAnimationView? = null
     var mCommonTitleBar: CommonTitleBar? = null
+
+    var mTagArea: ExConstraintLayout? = null
+    var mTagTv: TextView? = null
+    var mHitIv: ImageView? = null
+    var mShareTag: TextView? = null
+
     var mFeedsDetailPresenter: FeedsDetailPresenter? = null
     var mMoreDialogPlus: FeedsMoreDialogView? = null
     var mCommentMoreDialogPlus: FeedCommentMoreDialog? = null
@@ -113,7 +132,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mFeedsInputContainerView: FeedsInputContainerView? = null
 
     var mFeedID: Int = -1   // 外部跳转传入mFeedID
-    var mFrom: Int = -1  // 从外部跳转标记的来源
+    var mType: Int = -1  // 从外部跳转标记的来源
+    var mFrom: FeedPage = FeedPage.UNKNOW
     var mPlayType = FeedSongPlayModeManager.PlayMode.ORDER   // 播放模式，默认顺序播放
 
     var mFeedsWatchModel: FeedsWatchModel? = null  // 详细的数据model，通过请求去拉
@@ -127,7 +147,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var specialCase: Boolean? = false
 
     //某一个歌曲被删除了，以防死循环
-    var latestActionView: View? = null
+    var latestAction: (() -> Unit)? = null
 
     val mUiHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
@@ -139,8 +159,14 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 mFeedsCommonLyricView?.showHalf()
             } else if (msg?.what == HIDE_CONTROL_AREA) {
                 mSongControlArea?.visibility = View.GONE
-                if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                     mPlayTypeIv?.visibility = View.GONE
+                }
+            } else if (msg?.what == AUTO_CHANGE_SONG) {
+                if (latestAction == null) {
+                    toNextSongAction(true)
+                } else {
+                    latestAction?.invoke()
                 }
             }
         }
@@ -155,10 +181,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 0f, 1f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 0f, 1f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 0f, 1f)
+            val animator5 = ObjectAnimator.ofFloat(mCollectionIv2, "alpha", 0f, 1f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3)
+            animSet.play(animator1).with(animator2).with(animator3).with(animator5)
 
-            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                 val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 0f, 1f)
                 animSet.play(animator1).with(animator4)
                 mPlayTypeIv?.visibility = View.VISIBLE
@@ -171,9 +198,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             val animator1 = ObjectAnimator.ofFloat(mControlTv, "alpha", 1f, 0f)
             val animator2 = ObjectAnimator.ofFloat(mPlayLastIv, "alpha", 1f, 0f)
             val animator3 = ObjectAnimator.ofFloat(mPlayNextIv, "alpha", 1f, 0f)
+            val animator5 = ObjectAnimator.ofFloat(mCollectionIv2, "alpha", 1f, 0f)
             val animSet = AnimatorSet()
-            animSet.play(animator1).with(animator2).with(animator3)
-            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            animSet.play(animator1).with(animator2).with(animator3).with(animator5)
+            if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                 val animator4 = ObjectAnimator.ofFloat(mPlayTypeIv, "alpha", 1f, 0f)
                 animSet.play(animator1).with(animator4)
             }
@@ -199,19 +227,22 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         override fun onCompletion() {
-            if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+            if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                 if (specialCase ?: false) {
                     mFeedsWatchModel?.let {
                         showFeedsWatchModel(it)
                     }
                 } else {
-                    val newModel = mSongManager?.getNextSong(false)
-                    newModel?.feedID?.let {
-                        tryLoadNewFeed(it)
-                    }
+                    toNextSongAction(false)
                 }
-            } else {
-                stopSong()
+            } else if (mType == FeedsDetailActivity.TYPE_SWITCH) {
+                mFeedsWatchModel?.let {
+                    showFeedsWatchModel(it)
+                }
+            } else if (mType == FeedsDetailActivity.TYPE_NO) {
+                mFeedsWatchModel?.let {
+                    showFeedsWatchModel(it)
+                }
             }
         }
 
@@ -247,7 +278,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
 
             mPassTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(pos, "mm:ss")
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(duration - pos, "mm:ss")
+            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(duration, "mm:ss")
             if (mSeekBar?.max != duration.toInt()) {
                 mSeekBar?.max = duration.toInt()
             }
@@ -287,7 +318,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSeekBar = rootView.findViewById(R.id.seek_bar)
         mSingerIv = rootView.findViewById(R.id.singer_iv)
         mNameTv = rootView.findViewById(R.id.name_tv)
-        mCommentTimeTv = rootView.findViewById(R.id.comment_time_tv)
+//        mCommentTimeTv = rootView.findViewById(R.id.comment_time_tv)
         mFollowTv = rootView.findViewById(R.id.follow_tv)
         mMainCommentTv = rootView.findViewById(R.id.main_comment_tv)
         mToolbar = rootView.findViewById(R.id.toolbar)
@@ -299,9 +330,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mShareNumTv = rootView.findViewById(R.id.share_num_tv)
         mFeedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         mRadioView = rootView.findViewById(R.id.radio_view)
-        mFeedsCommonLyricView = FeedsCommonLyricView(rootView)
+        mFeedsCommonLyricView = FeedsCommonLyricView(rootView, true)
         mFeedsCommentView = rootView.findViewById(R.id.feedsCommentView)
         mCollectionIv = rootView.findViewById(R.id.collection_iv)
+        mCollectionIv2 = rootView.findViewById(R.id.collection_iv_2)
+
+        mTagArea = rootView.findViewById(R.id.tag_area)
+        mTagTv = rootView.findViewById(R.id.tag_tv)
+        mHitIv = rootView.findViewById(R.id.hit_iv)
+        mShareTag = rootView.findViewById(R.id.share_tag)
 
         mSongControlArea = rootView.findViewById(R.id.song_control_arae)
         mPlayLastIv = rootView.findViewById(R.id.play_last_iv)
@@ -315,30 +352,13 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 // 读收藏
                 mSongControlArea.visibility = View.VISIBLE
                 mPlayLastIv?.setDebounceViewClickListener {
-                    val newModel = mSongManager?.getPreSong(true)
-                    if (newModel == null) {
-                        U.getToastUtil().showShort("已经到头了，没有上一首了")
-                        latestActionView = null
-                    } else {
-                        newModel?.feedID?.let {
-                            tryLoadNewFeed(it)
-                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-                        }
-                        latestActionView = mPlayLastIv
-                    }
+                    mUiHandler.removeMessages(AUTO_CHANGE_SONG)
+                    toPreSongAction(true)
                 }
 
                 mPlayNextIv?.setDebounceViewClickListener {
-                    val newModel = mSongManager?.getNextSong(true)
-                    if (newModel == null) {
-                        latestActionView = null
-                    } else {
-                        newModel?.feedID?.let {
-                            tryLoadNewFeed(it)
-                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
-                        }
-                        latestActionView = mPlayNextIv
-                    }
+                    mUiHandler.removeMessages(AUTO_CHANGE_SONG)
+                    toNextSongAction(true)
                 }
 
                 mBlurBg?.setOnClickListener {
@@ -349,7 +369,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                     }
                 }
 
-                if (mFrom == FeedsDetailActivity.FROM_HOME_COLLECT) {
+                if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
                     mPlayTypeIv?.setOnClickListener {
                         when (mSongManager?.getCurMode()) {
                             FeedSongPlayModeManager.PlayMode.ORDER -> {
@@ -400,7 +420,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.setDebounceViewClickListener { view ->
             mFeedsWatchModel?.let {
                 if (view!!.isSelected) {
-                    pausePlay()
+                    pausePlay(true)
                 } else {
                     startPlay()
                 }
@@ -523,6 +543,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             }
         }
 
+        mCollectionIv2?.setDebounceViewClickListener {
+            mFeedsWatchModel?.let {
+                mFeedsDetailPresenter?.collection(!it.isCollected, it.feedID)
+            }
+        }
+
         mFeedsCommentView?.mClickContentCallBack = {
             showCommentOp(it)
         }
@@ -564,6 +590,75 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         SinglePlayer.addCallback(playerTag, playCallback)
         mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+        if (needContinueByFrom()) {
+            RemoteControlHelper.registerHeadsetControl(playerTag)
+        }
+    }
+
+    private fun needContinueByFrom():Boolean{
+        if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND
+                || mFrom == FeedPage.DETAIL_FROM_COLLECT
+                || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_OP
+                || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_RANK) {
+            return true
+        }
+        return false
+    }
+
+    private fun toNextSongAction(userAction: Boolean) {
+        if (!userAction) {
+            if (mType == FeedsDetailActivity.TYPE_SWITCH_MODE) {
+                mSongManager?.getNextSong(userAction) { newModel ->
+                    if (newModel == null) {
+                        latestAction = null
+                        U.getToastUtil().showShort("这已经是最后一首歌了")
+                    } else {
+                        newModel?.feedID?.let {
+                            tryLoadNewFeed(it)
+                            mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                        }
+                        latestAction = {
+                            toNextSongAction(true)
+                        }
+                    }
+                }
+            } else {
+                tryLoadNewFeed(mFeedsWatchModel!!.feedID)
+            }
+        } else {
+            mSongManager?.getNextSong(userAction) { newModel ->
+                if (newModel == null) {
+                    latestAction = null
+                    U.getToastUtil().showShort("这已经是最后一首歌了")
+                } else {
+                    newModel?.feedID?.let {
+                        tryLoadNewFeed(it)
+                        mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                    }
+                    latestAction = {
+                        toNextSongAction(true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun toPreSongAction(userAction: Boolean) {
+        mSongManager?.getPreSong(userAction) { newModel ->
+            if (newModel == null) {
+                U.getToastUtil().showShort("这已经是第一首歌了")
+                latestAction = null
+            } else {
+                newModel?.feedID?.let {
+                    tryLoadNewFeed(it)
+                    mUiHandler.sendEmptyMessage(SHOW_CONTROL_AREA)
+                }
+
+                latestAction = {
+                    toPreSongAction(true)
+                }
+            }
+        }
     }
 
     private fun tryLoadNewFeed(newFeedId: Int) {
@@ -582,7 +677,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     private fun setModelData() {
         mMoreDialogPlus?.dismiss()
-        mSeekBar?.max = mFeedsWatchModel?.song?.playDurMs ?: 60*1000
+        mSeekBar?.max = mFeedsWatchModel?.song?.playDurMs ?: 60 * 1000
         mSeekBar?.progress = 0
         mPassTimeTv?.text = "00:00"
         mFeedsCommentView?.setFeedsID(mFeedsWatchModel!!)
@@ -614,10 +709,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userID
                 ?: 0, mFeedsWatchModel?.user?.nickname)
-        mFeedsWatchModel?.song?.createdAt?.let {
-            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
-        }
+//        mFeedsWatchModel?.song?.createdAt?.let {
+//            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
+//        }
 
+        showHitArea()
         showMainComment()
 
         mCommentTv?.setDebounceViewClickListener {
@@ -629,7 +725,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
 
         mFeedsWatchModel?.user?.avatar?.let {
-            mRadioView?.setAvatar(it)
+            mRadioView?.setAvatar(it, mFeedsWatchModel?.song?.needShareTag == true)
         }
         mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt)
         mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
@@ -637,8 +733,64 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.feedsCommendAdapter?.mCommentNum = mFeedsWatchModel?.commentCnt!!
 
         mCollectionIv?.isSelected = mFeedsWatchModel?.isCollected == true
+        mCollectionIv2?.isSelected = mFeedsWatchModel?.isCollected == true
 
         mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
+
+    }
+
+    private fun showHitArea() {
+        mHitIv?.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                SinglePlayer.reset(playerTag)
+                openFeedsMakeActivityFromChallenge(mFeedsWatchModel?.song?.challengeID)
+            }
+        })
+
+        mTagArea?.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                // 排行榜详情
+                mFeedsWatchModel?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_RANK_DETAIL)
+                            .withString("rankTitle", it.rank?.rankTitle)
+                            .withLong("challengeID", it.song?.challengeID ?: 0L)
+                            .withLong("challengeCnt", it.challengeCnt.toLong())
+                            .navigation()
+                }
+            }
+        })
+
+        // 神曲分享为第一优先级
+        if (mFeedsWatchModel?.song?.needShareTag == true) {
+            mTagArea?.visibility = View.GONE
+            mHitIv?.visibility = View.GONE
+            var singler = ""
+            if (!TextUtils.isEmpty(mFeedsWatchModel?.song?.songTpl?.singer)) {
+                singler = " 演唱/${mFeedsWatchModel?.song?.songTpl?.singer}"
+            }
+            mShareTag?.visibility = View.VISIBLE
+            mShareTag?.text = "#神曲分享#$singler"
+        } else {
+            mShareTag?.visibility = View.GONE
+            if (mFeedsWatchModel?.song?.needChallenge == true) {
+                //打榜歌曲
+                mHitIv?.visibility = View.VISIBLE
+                if (mFeedsWatchModel?.rank != null) {
+                    if (TextUtils.isEmpty(mFeedsWatchModel?.rank?.rankDesc)) {
+                        mTagArea?.visibility = View.GONE
+                    } else {
+                        mTagTv?.text = mFeedsWatchModel?.rank?.rankDesc
+                        mTagArea?.visibility = View.VISIBLE
+                    }
+                } else {
+                    mTagArea?.visibility = View.GONE
+                }
+            } else {
+                //非打榜歌曲
+                mHitIv?.visibility = View.GONE
+                mTagArea?.visibility = View.GONE
+            }
+        }
     }
 
     private fun showMainComment() {
@@ -721,26 +873,15 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mResumeCall = null
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (SinglePlayer.isPlaying) {
-            mResumeCall = {
-                startPlay()
-            }
-        } else {
-            mResumeCall = null
-        }
-
-        pausePlay()
-    }
-
     override fun collectFinish(c: Boolean) {
         mCollectionIv?.isSelected = c
+        mCollectionIv2?.isSelected = c
         mFeedsWatchModel?.isCollected = c
     }
 
     override fun showFeedsWatchModel(model: FeedsWatchModel) {
         mFeedsWatchModel = model
+        EventBus.getDefault().post(FeedDetailSwitchEvent(mFeedsWatchModel))
 
         mXinIv?.setDebounceViewClickListener {
             mFeedsDetailPresenter?.likeFeeds(!mXinIv!!.isSelected, mFeedsWatchModel!!.feedID)
@@ -751,15 +892,12 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     }
 
     override fun finishWithModelError() {
+        mUiHandler.removeMessages(AUTO_CHANGE_SONG)
         if (mSongManager == null) {
 //            activity?.finish()
             MyLog.d(TAG, "finishWithModelError mSongManager == null")
         } else {
-            if (latestActionView == null) {
-                mPlayNextIv?.callOnClick()
-            } else {
-                latestActionView?.callOnClick()
-            }
+            mUiHandler.sendEmptyMessageDelayed(AUTO_CHANGE_SONG, 1000);
         }
     }
 
@@ -779,35 +917,44 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mControlTv?.isSelected = true
         mRadioView?.play(SinglePlayer.isBufferingOk)
         mFeedsWatchModel?.song?.playURL?.let {
-            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0)
+            FeedsPlayStatistics.setCurPlayMode(mFeedsWatchModel?.feedID ?: 0, mFrom, 0)
             SinglePlayer.startPlay(playerTag, it)
         }
 
         if (SinglePlayer.isBufferingOk) {
-            mFeedsCommonLyricView?.playLyric()
+            if (!mFeedsCommonLyricView!!.isStart()) {
+                mFeedsCommonLyricView?.playLyric()
+            } else {
+                mFeedsCommonLyricView?.resume()
+            }
         }
+        mSongManager?.playState(true)
     }
 
-    private fun pausePlay() {
+    private fun pausePlay(userAction: Boolean) {
         MyLog.d(mTag, "pausePlay")
         mControlTv!!.isSelected = false
         mRadioView?.pause()
         SinglePlayer.pause(playerTag)
         mFeedsCommonLyricView?.pause()
+        if (userAction) {
+            mSongManager?.playState(false)
+        }
     }
 
-    private fun stopSong() {
-        MyLog.d(mTag, "stopSong()")
-        SinglePlayer.stop(playerTag)
-        mControlTv!!.isSelected = false
-        mRadioView?.pause()
-        mSeekBar!!.progress = 0
-        mPassTimeTv?.text = "00:00"
-        mFeedsWatchModel?.song?.playDurMs?.let {
-            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
-        }
-        mFeedsCommonLyricView?.stop()
-    }
+//    private fun stopSong() {
+//        MyLog.d(mTag, "stopSong()")
+//        SinglePlayer.stop(playerTag)
+//        mControlTv!!.isSelected = false
+//        mRadioView?.pause()
+//        mSeekBar!!.progress = 0
+//        mPassTimeTv?.text = "00:00"
+//        mFeedsWatchModel?.song?.playDurMs?.let {
+//            mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
+//        }
+//        mFeedsCommonLyricView?.stop()
+//        mSongManager?.playState(false)
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
@@ -824,9 +971,60 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
+    override fun onFragmentInvisible(reason: Int) {
+        super.onFragmentInvisible(reason)
+
+        MyLog.d(TAG, "onFragmentInvisiblereason = $reason, mFrom is $mFrom")
+        if (needContinueByFrom()) {
+            //如果是从mFrom == FeedPage.DETAIL_FROM_COLLECT || mFrom == FeedPage.DETAIL_FROM_RECOMMEND  这两个渠道进来的，特殊处理
+            if (reason == INVISIBLE_REASON_TO_DESKTOP) {
+                //如果是退到后台，不需要做什么
+            } else {
+                //如果是跳转别的界面，保持之前的逻辑
+                pauseWhenInvisible()
+            }
+        } else {
+            //如果是别的渠道进来的
+            pauseWhenInvisible()
+        }
+    }
+
+    private fun pauseWhenInvisible() {
+        if (SinglePlayer.isPlaying) {
+            mResumeCall = {
+                startPlay()
+            }
+        } else {
+            mResumeCall = null
+        }
+
+        pausePlay(false)
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedCommentBoardEvent) {
         specialCase = event.showing
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RemoteControlEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
+            mFeedsInputContainerView?.hideSoftInput()
+            toNextSongAction(true)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PlayOrPauseEvent) {
+        // 不在前台 或者 详情页在前台
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
+            if(SinglePlayer.isPlaying){
+                pausePlay(true)
+            }else{
+                startPlay()
+            }
+        }
     }
 
     fun isFriendState() {
@@ -873,13 +1071,17 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         if (type == 0) {
             mFeedID = (data as Int?) ?: -1
         } else if (type == 1) {
-            mFrom = (data as Int?) ?: -1
+            mType = (data as Int?) ?: -1
         } else if (type == 2) {
             mPlayType = (data as FeedSongPlayModeManager.PlayMode?)
                     ?: FeedSongPlayModeManager.PlayMode.ORDER
         } else if (type == 3) {
             data?.let {
                 mSongManager = data as AbsPlayModeManager
+            }
+        } else if (type == 4) {
+            data?.let {
+                mFrom = data as FeedPage
             }
         }
     }
@@ -911,7 +1113,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsCommentView?.destroy()
         sharePanel?.setUMShareListener(null)
         mSongManager = null
-
+        RemoteControlHelper.unregisterHeadsetControl(playerTag)
         EventBus.getDefault().post(FeedDetailChangeEvent(mFeedsWatchModel?.apply {
             commentCnt = mFeedsCommentView?.feedsCommendAdapter?.mCommentNum ?: 0
         }))

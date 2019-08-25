@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 import com.common.rxretrofit.ERROR_NETWORK_BROKEN
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
@@ -28,7 +29,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class FeedSongManageView(context: Context, val model: FeedSongTagModel,val from:Int) : ConstraintLayout(context), CoroutineScope by MainScope() {
+
+class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from: Int) : ConstraintLayout(context), CoroutineScope by MainScope() {
 
     val refreshLayout: SmartRefreshLayout
     val recyclerView: RecyclerView
@@ -63,9 +65,9 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel,val from:
         adapter = FeedSongManageAdapter(object : FeedSongManageListener {
             override fun onClickSing(position: Int, model: FeedSongInfoModel?) {
                 model?.let {
-                    if(from== FROM_QUICK_SING){
+                    if (from == FROM_QUICK_SING) {
                         openFeedsMakeActivityFromQuickSong(it.song)
-                    }else if(from== FROM_CHANGE_SING){
+                    } else if (from == FROM_CHANGE_SING) {
                         openFeedsMakeActivityFromChangeSong(it.song)
                     }
                 }
@@ -85,14 +87,19 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel,val from:
 
     private fun loadData(offset: Int, isClear: Boolean) {
         launch {
-            val result = subscribe { feedSongManageServerApi.getFeedSongList(offset, mCNT, model.tagType) }
-            if (result.errno == 0) {
+            var result: ApiResult? = null
+            if (from == FROM_QUICK_SING) {
+                result = subscribe { feedSongManageServerApi.getFeedQuickSongList(offset, mCNT, model.tagType) }
+            } else if (from == FROM_CHANGE_SING) {
+                result = subscribe { feedSongManageServerApi.getFeedChangeSongList(offset, mCNT, model.tagType) }
+            }
+            if (result?.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("songs"), FeedSongInfoModel::class.java)
                 mOffset = result.data.getIntValue("offset")
                 mHasMore = result.data.getBooleanValue("hasMore")
                 addShowList(list, isClear)
             } else {
-                if (result.errno == ERROR_NETWORK_BROKEN) {
+                if (result?.errno == ERROR_NETWORK_BROKEN) {
                     U.getToastUtil().showShort("网络异常，请检查网络后重试")
                 }
             }

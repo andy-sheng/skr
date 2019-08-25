@@ -1,5 +1,6 @@
 package com.module.feeds.watch.listener
 
+import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedsWatchModel
 
 interface FeedsListener {
@@ -20,4 +21,8 @@ interface FeedsListener {
     fun onClickShareListener(position: Int, watchModel: FeedsWatchModel?)
 
     fun onClickCollectListener(position: Int, watchModel: FeedsWatchModel?)
+
+    fun onClickRecommendTag(model: FeedRecommendTagModel)
+
+    fun onClickRecommendTagMore()
 }
