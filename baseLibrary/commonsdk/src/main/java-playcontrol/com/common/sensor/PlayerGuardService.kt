@@ -29,6 +29,7 @@ import com.common.utils.U
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
 
 /**
  * 守护传感器的service 进程，以前台通知的权限运行
@@ -185,7 +186,11 @@ class PlayerGuardService : Service() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(e: RemoteControlEvent) {
-        callback?.callback(2, null)
+        try {
+            callback?.callback(2, null)
+        }catch (e:Exception){
+            MyLog.e(e)
+        }
     }
 }
 

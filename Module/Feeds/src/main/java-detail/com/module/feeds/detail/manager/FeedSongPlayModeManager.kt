@@ -67,7 +67,7 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
             }
         } else {
             var f = false
-            if (mOriginPosition in 0..(mOriginalSongList.size - 1)) {
+            if (mOriginPosition in 0 until mOriginalSongList.size) {
                 if (mOriginalSongList[mOriginPosition] == model) {
                     f = true
                 }
@@ -160,6 +160,10 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
 
     override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
         MyLog.d(TAG, "getNextSong mCur = $mCur , mOriginPosition = $mOriginPosition")
+        if (mOriginalSongList.isNullOrEmpty()) {
+            MyLog.e(TAG, "getNextSonguserAction = $userAction, callback = $callback mOriginalSongList = null")
+            return
+        }
         if (mCur == null) {
             getFirstSongWhenCurNull()
             callback?.invoke(mCur)
@@ -243,18 +247,22 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     }
 
     private fun tryPreCache() {
-        if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
-            val p = (mOriginPosition + 1) % mOriginalSongList.size
-            mOriginalSongList[p].playURL?.let {
-                MediaCacheManager.preCache(it)
-            }
-        } else if (mMode == PlayMode.RANDOM) {
-            val p = mShufflePosition + 1
-            if (p in 0 until mShuffleSongList.size) {
-                mShuffleSongList[p].second.playURL?.let {
+        if (!mOriginalSongList.isNullOrEmpty()) {
+            if (mMode == PlayMode.ORDER || mMode == PlayMode.SINGLE) {
+                val p = (mOriginPosition + 1) % mOriginalSongList.size
+                mOriginalSongList[p].playURL?.let {
                     MediaCacheManager.preCache(it)
                 }
+            } else if (mMode == PlayMode.RANDOM) {
+                val p = mShufflePosition + 1
+                if (p in 0 until mShuffleSongList.size) {
+                    mShuffleSongList[p].second.playURL?.let {
+                        MediaCacheManager.preCache(it)
+                    }
+                }
             }
+        } else {
+            MyLog.e(TAG, "tryPreCache mOriginalSongList = null")
         }
     }
 
@@ -289,6 +297,10 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
 
     override fun getPreSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
         MyLog.d(TAG, "getPreSong mCur = $mCur, mOriginPosition = $mOriginPosition")
+        if (mOriginalSongList.isNullOrEmpty()) {
+            MyLog.d(TAG, "getPreSonguserAction = $userAction, callback = $callback mOriginalSongList = null")
+            return
+        }
         if (mCur == null) {
             getFirstSongWhenCurNull()
             callback?.invoke(mCur)
@@ -342,14 +354,14 @@ class FeedSongPlayModeManager(mode: PlayMode, cur: FeedSongModel?, originalSongL
     private fun getFirstSongWhenCurNull(): FeedSongModel? {
         when (mMode) {
             PlayMode.SINGLE, PlayMode.ORDER -> {
-                if (!mOriginalSongList.isEmpty()) {
+                if (mOriginalSongList.isNotEmpty()) {
                     mCur = mOriginalSongList[0]
                     mOriginPosition = 0
                 }
             }
             PlayMode.RANDOM -> {
                 ensureHasShuffle(null)
-                if (!mShuffleSongList.isEmpty()) {
+                if (mShuffleSongList.isNotEmpty()) {
                     mCur = mShuffleSongList[0].second
                     mShufflePosition = 0
                 }

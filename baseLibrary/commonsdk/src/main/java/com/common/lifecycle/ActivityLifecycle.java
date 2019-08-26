@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.common.base.BaseFragment;
 import com.common.base.ConfigModule;
 import com.common.base.delegate.IActivity;
+import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 
@@ -99,6 +100,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityStarted(Activity activity) {
         U.getActivityUtils().mActivityStartCount++;
+        MyLog.d(TAG,"onActivityStarted" + " U.getActivityUtils().mActivityStartCount=" + U.getActivityUtils().mActivityStartCount);
         if (U.getActivityUtils().mActivityStartCount == 1) {
             U.getActivityUtils().setAppForeground(true);
         }
@@ -117,6 +119,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityStopped(Activity activity) {
         U.getActivityUtils().mActivityStartCount--;
+        MyLog.d(TAG,"onActivityStopped" + " U.getActivityUtils().mActivityStartCount=" + U.getActivityUtils().mActivityStartCount);
         if (U.getActivityUtils().mActivityStartCount == 0) {
             U.getActivityUtils().setAppForeground(false);
         }

@@ -199,7 +199,7 @@ class FeedsTagDetailActivity : BaseActivity() {
         smartRefresh.apply {
             setEnableRefresh(true)
             setEnableLoadMore(true)
-            setEnableLoadMoreWhenContentNotFull(false)
+            setEnableLoadMoreWhenContentNotFull(true)
             setEnableOverScrollDrag(true)
             setHeaderMaxDragRate(1.5f)
             setOnMultiPurposeListener(object : SimpleMultiPurposeListener() {
@@ -286,9 +286,11 @@ class FeedsTagDetailActivity : BaseActivity() {
                     mAdapter?.mCurrentPlayPosition = position
                     mAdapter?.mCurrentPlayModel = model
                     mSongPlayModeManager?.setCurrentPlayModel(it.song)
-                    var from = FeedPage.DETAIL_FROM_SONG_ALBUM_OP  // 默认是运营歌单
-                    if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {
+                    var from = FeedPage.UNKNOW
+                    if (this@FeedsTagDetailActivity.model?.rankTagType == 1) {
                         from = FeedPage.DETAIL_FROM_SONG_ALBUM_RANK
+                    } else if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {
+                        from = FeedPage.DETAIL_FROM_SONG_ALBUM_OP  // 运营歌单
                     }
                     FeedsDetailActivity.openActivity(from, this@FeedsTagDetailActivity, it.feedID, TYPE_SWITCH_MODE, FeedSongPlayModeManager.PlayMode.ORDER, object : AbsPlayModeManager() {
                         override fun getNextSong(userAction: Boolean, callback: (songMode: FeedSongModel?) -> Unit) {
@@ -374,7 +376,6 @@ class FeedsTagDetailActivity : BaseActivity() {
     }
 
     private fun pauseAndResetPlay() {
-        mAdapter.pausePlay()
         mAdapter.mCurrentPlayPosition = -1
         mAdapter.mCurrentPlayModel = null
         SinglePlayer.pause(playerTag)
@@ -466,6 +467,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 val list = JSON.parseArray(obj.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 mOffset = obj.data.getIntValue("offset")
                 hasMore = obj.data.getBooleanValue("hasMore")
+                mSongPlayModeManager?.supportCycle = !hasMore
                 if (date != curDate) {
                     queryDate = queryTime
                     curDate = date
@@ -609,12 +611,14 @@ class FeedsTagDetailActivity : BaseActivity() {
                 mAdapter.startPlayModel(index, feed)
                 mSongPlayModeManager?.setCurrentPlayModel(feed.song)
                 feed.song?.playURL?.let {
-                    if (this@FeedsTagDetailActivity.model?.rankTagType == 2) {
-                        // 运营歌单
-                        FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_OP, model?.rankID
+
+                    when {
+                        this@FeedsTagDetailActivity.model?.rankTagType == 1 -> FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_RANK, model?.rankID
                                 ?: 0)
-                    } else {
-                        FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_RANK, model?.rankID
+                        this@FeedsTagDetailActivity.model?.rankTagType == 2 -> // 运营歌单
+                            FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.SONG_ALBUM_OP, model?.rankID
+                                    ?: 0)
+                        else -> FeedsPlayStatistics.setCurPlayMode(feed.feedID, FeedPage.UNKNOW, model?.rankID
                                 ?: 0)
                     }
 

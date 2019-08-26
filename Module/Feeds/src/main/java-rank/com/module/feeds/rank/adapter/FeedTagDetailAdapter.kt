@@ -40,6 +40,11 @@ class FeedTagDetailAdapter(val listener: FeedTagListener) : RecyclerView.Adapter
         MyLog.d(TAG, "onBindViewHolder holder = $holder, position = $position, payloads = $payloads")
         if (payloads.isEmpty()) {
             holder.bindData(position, mDataList[position])
+            if (mCurrentPlayModel == mDataList[position] && isPlaying) {
+                holder.songNameTv.setTextColor(Color.parseColor("#FFC15B"))
+            } else {
+                holder.songNameTv.setTextColor(U.getColor(R.color.black_trans_80))
+            }
         } else {
             // 局部刷新
             payloads.forEach {

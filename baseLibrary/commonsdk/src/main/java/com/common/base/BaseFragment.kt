@@ -280,10 +280,11 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
                 val beforeCount = U.getActivityUtils().mActivityStartCount
                 launch {
                     var exec = false
-                    for (i in 0..20) {
-                        delay(50)
+                    for (i in 0..5) {
+                        delay(200)
                         val afterSize = U.getActivityUtils().activityList.size
                         val afterCount = U.getActivityUtils().mActivityStartCount
+                        MyLog.d(TAG, "onPause beforeSize=$beforeSize afterSize=$afterSize beforeCount=$beforeCount afterCount=$afterCount")
                         if (afterSize != beforeSize || beforeCount != afterCount) {
                             if (U.getActivityUtils().isAppForeground) {
                                 onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
@@ -294,6 +295,7 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
                             break
                         }
                     }
+                    MyLog.d(TAG, "onPause exec=$exec")
                     if(!exec){
                         onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
                     }
@@ -371,8 +373,9 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
 
     /**
      * 当Fragment不可见的时候的回调
-     * from 1 表示从 onPause 导致不可见
-     *      2 表示从 setUserVisibleHint ViewPager划走导致不可见
+     * const val INVISIBLE_REASON_IN_VIEWPAGER = 4 // Fragment在ViewPager里
+    const val INVISIBLE_REASON_TO_OTHER_ACTIVITY = 3 // 到别的Activity
+    const val INVISIBLE_REASON_TO_DESKTOP = 2 // 退到桌面或者熄屏幕
      */
     protected open fun onFragmentInvisible(reason: Int) {
         MyLog.d(TAG, "onFragmentInvisible")

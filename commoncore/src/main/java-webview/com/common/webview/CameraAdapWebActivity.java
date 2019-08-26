@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.webkit.ValueCallback;
 
 import com.common.base.BaseActivity;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.permission.SkrCameraPermission;
 import com.common.log.MyLog;
 
@@ -31,6 +32,7 @@ abstract class CameraAdapWebActivity extends BaseActivity {
     public Uri photoURI;
 
     SkrCameraPermission mSkrCameraPermission;
+    SkrAudioPermission mSkrAudioPermission;
 
     public File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
@@ -49,10 +51,15 @@ abstract class CameraAdapWebActivity extends BaseActivity {
         return mSkrCameraPermission;
     }
 
+    public SkrAudioPermission getSkrAudioPermission() {
+        return mSkrAudioPermission;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSkrCameraPermission = new SkrCameraPermission();
+        mSkrAudioPermission = new SkrAudioPermission();
     }
 
     @Override
