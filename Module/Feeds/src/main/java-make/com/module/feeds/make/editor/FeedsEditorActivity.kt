@@ -61,7 +61,7 @@ class FeedsEditorActivity : BaseActivity() {
     lateinit var cdBg: ImageView
     lateinit var cdAvatar: BaseImageView
     lateinit var txtLyricsView: TxtLyricScrollView
-    lateinit var manyLyricsView: ManyLyricsView
+    var manyLyricsView: ManyLyricsView? = null
     lateinit var renshengIv: ExImageView
     lateinit var effectIv: ExImageView
     lateinit var resetIv: ExImageView
@@ -119,7 +119,7 @@ class FeedsEditorActivity : BaseActivity() {
         mFeedsMakeModel = sFeedsMakeModelHolder
         sFeedsMakeModelHolder = null
         MyLog.d(TAG, "mFeedsMakeModel=$mFeedsMakeModel")
-        if(mFeedsMakeModel==null){
+        if (mFeedsMakeModel == null) {
             finish()
             return
         }
@@ -160,7 +160,8 @@ class FeedsEditorActivity : BaseActivity() {
                 resumePreview()
             }
         }
-        val realDuration = (mFeedsMakeModel?.recordDuration?.toInt()?:0) - (mFeedsMakeModel?.firstLyricShiftTs?:0)
+        val realDuration = (mFeedsMakeModel?.recordDuration?.toInt()
+                ?: 0) - (mFeedsMakeModel?.firstLyricShiftTs ?: 0)
         seekBar?.max = realDuration
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -363,7 +364,7 @@ class FeedsEditorActivity : BaseActivity() {
         mZqAudioEditorKit?.resumePreview()
         playBtn?.isSelected = true
 
-        if (manyLyricsView.visibility == View.VISIBLE) {
+        if (manyLyricsView?.visibility == View.VISIBLE) {
             manyLyricsView?.play(mZqAudioEditorKit.position.toInt())
         } else if (txtLyricsView.visibility == View.VISIBLE) {
             txtLyricsView?.play(mZqAudioEditorKit.position.toInt())
@@ -387,7 +388,7 @@ class FeedsEditorActivity : BaseActivity() {
         mPlayProgressJob = launch {
             for (i in 1..1000) {
                 nowTsTv.text = U.getDateTimeUtils().formatVideoTime(mZqAudioEditorKit.position)
-                if (manyLyricsView.visibility == View.VISIBLE) {
+                if (manyLyricsView?.visibility == View.VISIBLE) {
                     if (manyLyricsView?.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                         manyLyricsView?.resume()
                     }
@@ -421,8 +422,8 @@ class FeedsEditorActivity : BaseActivity() {
         super.onPause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun destroy() {
+        super.destroy()
         manyLyricsView?.release()
         mZqAudioEditorKit.release()
     }
