@@ -20,6 +20,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.presenter.RaceCorePresenter
+import com.module.playways.race.room.view.actor.RaceActorPanelView
 import com.module.playways.race.room.view.RaceInputContainerView
 import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.race.room.view.RaceTopOpView
@@ -49,11 +50,13 @@ class RaceRoomFragment : BaseFragment() {
     internal lateinit var mRaceTopOpView: RaceTopOpView
     internal lateinit var mRaceTopContentView: RaceTopContentView
 
+    internal lateinit var mRaceActorPanelView: RaceActorPanelView  //参与的人
+
     internal var mPersonInfoDialog: PersonInfoDialog? = null
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
 
-    val mUiHanlder = object:Handler(){
+    val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
         }
@@ -95,8 +98,11 @@ class RaceRoomFragment : BaseFragment() {
 
     private fun initBottomView() {
         run {
-            val viewStub = rootView.findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
-            mVoiceRecordTipsView = VoiceRecordTipsView(viewStub)
+            val voiceStub = rootView.findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
+            mVoiceRecordTipsView = VoiceRecordTipsView(voiceStub)
+
+            val actorStub = rootView.findViewById<ViewStub>(R.id.race_actor_panel_view_stub)
+            mRaceActorPanelView = RaceActorPanelView(actorStub, mRoomData)
         }
 //        mBottomBgVp = rootView.findViewById<ViewGroup>(R.id.bottom_bg_vp)
 //        val lp = mBottomBgVp.getLayoutParams() as RelativeLayout.LayoutParams
@@ -238,9 +244,9 @@ class RaceRoomFragment : BaseFragment() {
         mRaceTopContentView = rootView.findViewById(R.id.race_top_content_view)
         mRaceTopContentView.setRoomData(mRoomData)
 
-        mRaceTopContentView.setListener(object: RaceTopContentView.Listener {
+        mRaceTopContentView.setListener(object : RaceTopContentView.Listener {
             override fun clickMore() {
-                //todo 展示底部的弹窗
+                mRaceActorPanelView.show()
             }
 
             override fun clickArrow(open: Boolean) {
@@ -267,8 +273,8 @@ class RaceRoomFragment : BaseFragment() {
 
     private fun initCommentView() {
         mCommentView = rootView.findViewById(R.id.comment_view)
-        mCommentView.setListener(CommentViewItemListener {
-                        userId -> showPersonInfoView(userId)
+        mCommentView.setListener(CommentViewItemListener { userId ->
+            showPersonInfoView(userId)
         })
         mCommentView.roomData = mRoomData
         val layoutParams = mCommentView.layoutParams

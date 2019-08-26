@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/place_holder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/race_title_stl" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_304_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#404A9A"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/race_title_stl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toTopOf="@+id/race_vp" />
+
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/race_vp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_260_dp"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_58_dp">
+
+    <TextView
+        android:id="@+id/status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintBottom_toTopOf="@id/desc_tv"
+        app:layout_constraintHorizontal_bias="0"
+        android:text="KTV酒彪子"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintRight_toLeftOf="@id/status_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="钻石巨星3段"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintRight_toLeftOf="@id/status_tv"
+        app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/white_trans_10"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

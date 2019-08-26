@@ -118,4 +118,11 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/view_18_dp"
         android:layout="@layout/voice_record_tips_view_layout" />
+
+    <ViewStub
+        android:id="@+id/race_actor_panel_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/race_actor_panel_view_stub_layout" />
+
 </com.common.view.ex.ExConstraintLayout>
