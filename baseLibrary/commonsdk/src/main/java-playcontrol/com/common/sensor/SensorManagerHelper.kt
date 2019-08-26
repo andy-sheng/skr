@@ -11,6 +11,7 @@ import com.common.log.MyLog
 import com.common.playcontrol.RemoteControlEvent
 import com.common.utils.U
 import org.greenrobot.eventbus.EventBus
+import java.lang.Exception
 
 class SensorManagerHelper : SensorEventListener {
 
@@ -73,17 +74,22 @@ class SensorManagerHelper : SensorEventListener {
 
     fun register() {
         bindSensorService {
-            it?.call(1, null, object : IpcCallback.Stub() {
-                override fun callback(type: Int, json: String?) {
-                    if (type == 2) {
-                        if (EventBus.getDefault().hasSubscriberForEvent(RemoteControlEvent::class.java)) {
-                            // 有监听者才发这个
-                            vibrator?.vibrate(500)
-                            EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
+            try {
+                it?.call(1, null, object : IpcCallback.Stub() {
+                    override fun callback(type: Int, json: String?) {
+                        if (type == 2) {
+                            if (EventBus.getDefault().hasSubscriberForEvent(RemoteControlEvent::class.java)) {
+                                // 有监听者才发这个
+                                vibrator?.vibrate(500)
+                                EventBus.getDefault().post(RemoteControlEvent(RemoteControlEvent.FROM_SHAKE))
+                            }
                         }
                     }
-                }
-            })
+                })
+            }catch (e:Exception){
+                MyLog.e(e)
+            }
+
         }
     }
 
