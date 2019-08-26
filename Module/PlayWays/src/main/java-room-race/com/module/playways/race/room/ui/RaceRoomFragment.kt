@@ -3,11 +3,9 @@ package com.module.playways.race.room.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.constraint.ConstraintLayout
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
-import android.widget.RelativeLayout
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
@@ -23,7 +21,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.RaceInputContainerView
-import com.module.playways.race.room.view.RaceTopContentView
+import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.race.room.view.RaceTopOpView
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
@@ -240,7 +238,11 @@ class RaceRoomFragment : BaseFragment() {
         mRaceTopContentView = rootView.findViewById(R.id.race_top_content_view)
         mRaceTopContentView.setRoomData(mRoomData)
 
-        mRaceTopContentView.setListener(object:RaceTopContentView.Listener {
+        mRaceTopContentView.setListener(object: RaceTopContentView.Listener {
+            override fun clickMore() {
+                //todo 展示底部的弹窗
+            }
+
             override fun clickArrow(open: Boolean) {
                 if (open) {
                     mRaceWidgetAnimationController.open()

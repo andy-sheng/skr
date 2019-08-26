@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <!--包括嘉宾栏 和 观众栏-->
-    <com.module.playways.race.room.view.RaceTopContentView
+    <com.module.playways.race.room.view.topContent.RaceTopContentView
         android:id="@+id/race_top_content_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_120_dp"

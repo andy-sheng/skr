@@ -1,94 +1,82 @@
-package com.module.playways.race.room.view
+package com.module.playways.race.room.view.topContent
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
-
+import android.widget.TextView
+import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.common.utils.U
+
 import com.common.view.DebounceViewClickListener
-import com.component.busilib.constans.GrabRoomType
+import com.common.view.ex.ExImageView
 import com.engine.EngineEvent
-import com.engine.UserStatus
 import com.module.playways.R
-import com.module.playways.RoomDataUtils
-import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
-import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent
-import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent
-import com.module.playways.grab.room.event.LightOffAnimationOverEvent
-import com.module.playways.grab.room.event.SomeOneGrabEvent
-import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent
-import com.module.playways.grab.room.model.GrabPlayerInfoModel
-import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.module.playways.grab.room.model.MLightInfoModel
-import com.module.playways.grab.room.model.WantSingerInfo
-import com.module.playways.grab.room.top.GrabAudienceView
 import com.module.playways.grab.room.top.GrabTopItemView
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.room.prepare.model.PlayerInfoModel
-import com.zq.live.proto.Room.EQRoundStatus
+import com.module.playways.race.room.model.RacePlayerInfoModel
+import kotlinx.android.synthetic.main.race_top_content_view_layout.view.*
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-import java.util.ArrayList
-import java.util.LinkedHashMap
-
 class RaceTopContentView : ConstraintLayout {
     val TAG = "RaceTopContentView"
-//    private val mGrabTopItemViewArrayList = ArrayList<VP>(PLAYER_COUNT)
-//    internal var mGrabAudienceView: GrabAudienceView
-//    internal var mContentLl: LinearLayout
 
-//    private val mInfoMap = LinkedHashMap<Int, VP>()
-//    internal var mAnimatorAllSet: AnimatorSet? = null
-    internal lateinit var mArrowIv: ImageView
+    val arrowIv: ImageView
+    val backgroundIv: ExImageView
+    val recyclerView: RecyclerView
+    val maskIv: ExImageView
+    val moreTv: TextView
+
+    val adapter: RaceTopContentAdapter = RaceTopContentAdapter()
+
     internal var mIsOpen = true
     private var mRoomData: RaceRoomData? = null
 
     internal var mCurSeq = -2
-
     @Volatile
     internal var mHasBurst = false
 
     internal var mListener: Listener? = null
 
-    constructor(context: Context) : super(context) {
-        init()
-    }
+    constructor(context: Context) : super(context) {}
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init()
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init()
-    }
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
-    private fun init() {
+    init {
         View.inflate(context, R.layout.race_top_content_view_layout, this)
-//        mContentLl = this.findViewById<View>(R.id.content_ll) as LinearLayout
-//        mGrabAudienceView = this.findViewById<View>(R.id.grab_audience_view) as GrabAudienceView
-        mArrowIv = this.findViewById<View>(R.id.arrow_iv) as ImageView
+
+        arrowIv = rootView.findViewById(R.id.arrow_iv)
+        backgroundIv = rootView.findViewById(R.id.background_iv)
+        recyclerView = rootView.findViewById(R.id.recycler_view)
+        maskIv = rootView.findViewById(R.id.mask_iv)
+        moreTv = rootView.findViewById(R.id.more_tv)
+
         addChildView()
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
 
-        mArrowIv.setOnClickListener(object : DebounceViewClickListener() {
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = adapter
+
+        arrowIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                    mListener?.clickArrow(!mIsOpen)
+                mListener?.clickArrow(!mIsOpen)
+            }
+        })
+
+        moreTv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                mListener?.clickMore()
             }
         })
     }
@@ -97,11 +85,11 @@ class RaceTopContentView : ConstraintLayout {
         if (open) {
             // 展开状态
             mIsOpen = true
-            mArrowIv.setImageResource(R.drawable.yichangdaodi_dingbuzhankai)
+            arrowIv.setImageResource(R.drawable.yichangdaodi_dingbuzhankai)
         } else {
             // 折叠状态
             mIsOpen = false
-            mArrowIv.setImageResource(R.drawable.yichangdaodi_dingbushouqi)
+            arrowIv.setImageResource(R.drawable.yichangdaodi_dingbushouqi)
         }
     }
 
@@ -131,84 +119,41 @@ class RaceTopContentView : ConstraintLayout {
 
     //只有轮次切换的时候调用
     private fun initData() {
-//        if (!mRoomData!!.hasGameBegin()) {
-//            MyLog.d(TAG, "游戏未开始，不能用轮次信息里更新头像")
-//            resetAllGrabTopItemView()
-//            val list = mRoomData!!.getPlayerInfoList<GrabPlayerInfoModel>()
-//            var i = 0
-//            while (i < list!!.size && i < mGrabTopItemViewArrayList.size) {
-//                val vp = mGrabTopItemViewArrayList[i]
-//                val playerInfoModel = list[i]
-//                mInfoMap[playerInfoModel.userID] = vp
-//                vp.grabTopItemView!!.bindData(playerInfoModel, mRoomData!!.getOwnerId() === playerInfoModel.getUserID())
-//                i++
-//            }
-//        } else {
-//            val now = mRoomData!!.expectRoundInfo
-//            if (now == null) {
-//                MyLog.w(TAG, "initData data error")
-//                return
-//            }
-//            if (mCurSeq == now.roundSeq) {
-//                MyLog.w(TAG, "initdata 轮次一样，无需更新")
-//                return
-//            }
-//            mCurSeq = now.roundSeq
-//            for (i in mGrabTopItemViewArrayList.indices) {
-//                val vp = mGrabTopItemViewArrayList[i]
-//                vp.grabTopItemView!!.visibility = View.VISIBLE
-//            }
-//            resetAllGrabTopItemView()
-//            val playerInfoModels = now.getPlayUsers()
-//            mInfoMap.clear()
-//            MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size)
-//            var i = 0
-//            while (i < playerInfoModels.size && i < mGrabTopItemViewArrayList.size) {
-//                val vp = mGrabTopItemViewArrayList[i]
-//                val playerInfoModel = playerInfoModels.get(i)
-//                mInfoMap[playerInfoModel.getUserID()] = vp
-//                vp.grabTopItemView!!.bindData(playerInfoModel, mRoomData!!.getOwnerId() === playerInfoModel.getUserID())
-//                for (userId in now.getSingUserIds()) {
-//                    if (userId == playerInfoModel.getUserID() && now.isSingStatus()) {
-//                        if (vp.grabTopItemView != null) {
-//                            vp.grabTopItemView!!.setGetSingChance()
-//                        }
-//                        val finalGrabTopItemView = vp.grabTopItemView
-//                        finalGrabTopItemView!!.mCircleAnimationView.visibility = View.VISIBLE
-//                        finalGrabTopItemView.mCircleAnimationView.setProgress(100)
-//                        vp.grabTopItemView!!.mAvatarIv.scaleX = 1.08f
-//                        vp.grabTopItemView!!.mAvatarIv.scaleY = 1.08f
-//                        vp.grabTopItemView!!.setGrap(now.getWantSingType())
-//                    }
-//                }
-//                i++
-//            }
-//
-//            MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus())
-//            if (now.getStatus() == EQRoundStatus.QRS_INTRO.value) {
-//                for (wantSingerInfo in now.getWantSingInfos()) {
-//                    val vp = mInfoMap[wantSingerInfo.getUserID()]
-//                    if (vp != null && vp.grabTopItemView != null) {
-//                        vp.grabTopItemView!!.setGrap(wantSingerInfo.getWantSingType())
-//                    }
-//                }
-//            } else {
-//                MyLog.d(TAG, "initData else")
-//                for (vp in mGrabTopItemViewArrayList) {
-//                    if (vp != null && vp.grabTopItemView != null) {
-//                        MyLog.d(TAG, "initData else 2")
-//                        vp.grabTopItemView!!.hideGrabIcon()
-//                    }
-//                }
-//
-//                initLight()
-//                syncLight()
-//            }
-//        }
-//        val lp = mContentLl.layoutParams as ConstraintLayout.LayoutParams
-//        lp.leftMargin = U.getDisplayUtils().dip2px(7f)
-//        lp.rightMargin = U.getDisplayUtils().dip2px(48f)
-//        mContentLl.layoutParams = lp
+        val list = mRoomData?.getPlayerInfoList<RacePlayerInfoModel>()
+        if (!list.isNullOrEmpty()) {
+            adapter.mDataList.clear()
+            adapter.mDataList.addAll(list)
+            adapter.notifyDataSetChanged()
+
+            if (adapter.mDataList.size >= 7) {
+                moreTv.text = "${adapter.mDataList.size}人"
+                moreTv.visibility = View.VISIBLE
+                maskIv.visibility = View.VISIBLE
+            } else {
+                moreTv.visibility = View.GONE
+                maskIv.visibility = View.GONE
+            }
+        } else {
+            MyLog.e(TAG, "initData 没人？？？？")
+
+            // todo 加点测试数据
+            adapter.mDataList.clear()
+            for (i in 0..10) {
+                val race = RacePlayerInfoModel()
+                race.userID = MyUserInfoManager.getInstance().uid.toInt()
+                race.userInfo = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().myUserInfo)
+                adapter.mDataList.add(race)
+            }
+            adapter.notifyDataSetChanged()
+            if (adapter.mDataList.size >= 7) {
+                moreTv.text = "${adapter.mDataList.size}人"
+                moreTv.visibility = View.VISIBLE
+                maskIv.visibility = View.VISIBLE
+            } else {
+                moreTv.visibility = View.GONE
+                maskIv.visibility = View.GONE
+            }
+        }
     }
 
     //刚进来的时候初始化灯
@@ -330,38 +275,38 @@ class RaceTopContentView : ConstraintLayout {
 //            allAnimator.add(animatorSet123ss)
 //        }
 
-        // 等待47个节拍
-        //            {
-        //                // 放大透明度消失
-        //                ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(vp.grabTopItemView, View.ALPHA, 1, 0);
-        //                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.0f, 1.08f);
-        //                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.0f, 1.08f);
-        //
-        //                ValueAnimator objectAnimator4 = new ValueAnimator();
-        //                objectAnimator4.setFloatValues(1, 0);
-        //                objectAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-        //                    @Override
-        //                    public void onAnimationUpdate(ValueAnimator animation) {
-        //                        float weight = (float) animation.getAnimatedValue();
-        //                        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) finalGrabTopItemView.getLayoutParams();
-        //                        lp.weight = weight;
-        //                        finalGrabTopItemView.setLayoutParams(lp);
-        //
-        //                        RelativeLayout.LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
-        //                        int t = (int) (U.getDisplayUtils().dip2px(15) * weight);
-        //                        lp2.leftMargin = U.getDisplayUtils().dip2px(30) - t;
-        //                        lp2.rightMargin = U.getDisplayUtils().dip2px(30) - t;
-        //                        mContentLl.setLayoutParams(lp2);
-        //                    }
-        //                });
-        //                AnimatorSet animatorSet1234 = new AnimatorSet();
-        //                animatorSet1234.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
-        //                animatorSet1234.setDuration(9 * 33);
-        //                animatorSet1234.setStartDelay(47 * 33);
-        //                allAnimator.add(animatorSet1234);
-        //            }
+    // 等待47个节拍
+    //            {
+    //                // 放大透明度消失
+    //                ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(vp.grabTopItemView, View.ALPHA, 1, 0);
+    //                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.0f, 1.08f);
+    //                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.0f, 1.08f);
+    //
+    //                ValueAnimator objectAnimator4 = new ValueAnimator();
+    //                objectAnimator4.setFloatValues(1, 0);
+    //                objectAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    //                    @Override
+    //                    public void onAnimationUpdate(ValueAnimator animation) {
+    //                        float weight = (float) animation.getAnimatedValue();
+    //                        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) finalGrabTopItemView.getLayoutParams();
+    //                        lp.weight = weight;
+    //                        finalGrabTopItemView.setLayoutParams(lp);
+    //
+    //                        RelativeLayout.LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
+    //                        int t = (int) (U.getDisplayUtils().dip2px(15) * weight);
+    //                        lp2.leftMargin = U.getDisplayUtils().dip2px(30) - t;
+    //                        lp2.rightMargin = U.getDisplayUtils().dip2px(30) - t;
+    //                        mContentLl.setLayoutParams(lp2);
+    //                    }
+    //                });
+    //                AnimatorSet animatorSet1234 = new AnimatorSet();
+    //                animatorSet1234.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+    //                animatorSet1234.setDuration(9 * 33);
+    //                animatorSet1234.setStartDelay(47 * 33);
+    //                allAnimator.add(animatorSet1234);
+    //            }
 
-        // 等 125 个节拍 把灯变亮
+    // 等 125 个节拍 把灯变亮
 //        run {
 //            val liangdengList = ArrayList<Animator>()
 //            var i = 0
@@ -608,6 +553,7 @@ class RaceTopContentView : ConstraintLayout {
 
     fun setRoomData(roomData: RaceRoomData) {
         mRoomData = roomData
+        initData()
         //        mGrabAudienceView.setRoomData(mRoomData);
         //        if (mGrabTopItemViewArrayList.size() != 0) {
         //            VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
@@ -628,7 +574,6 @@ class RaceTopContentView : ConstraintLayout {
         //                }
         //            }
         //        }
-        //        initData();
     }
 
     override fun onAttachedToWindow() {
@@ -687,6 +632,7 @@ class RaceTopContentView : ConstraintLayout {
 
     interface Listener {
         fun clickArrow(open: Boolean)
+        fun clickMore()
     }
 
     companion object {
