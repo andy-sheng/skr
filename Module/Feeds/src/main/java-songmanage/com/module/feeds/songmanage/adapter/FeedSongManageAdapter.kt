@@ -24,10 +24,6 @@ class FeedSongManageAdapter(val listener: FeedSongManageListener) : RecyclerView
     override fun onBindViewHolder(holder: FeedSongViewHolder, position: Int) {
         holder.bindData(position, mDataList[position])
     }
-
-    override fun onBindViewHolder(holder: FeedSongViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
-    }
 }
 
 interface FeedSongManageListener {
