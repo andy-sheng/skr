@@ -3,29 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/view_148_dp"-->
-    <!--android:background="#404A9A" />-->
-
-    <LinearLayout
-        android:id="@+id/content_ll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/view_7_dp"
-        android:layout_marginRight="@dimen/view_48_dp"
-        android:clipChildren="false"
-        android:orientation="horizontal" />
-
-    <com.module.playways.grab.room.top.GrabAudienceView
-        android:id="@+id/grab_audience_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_60_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/arrow_iv"
         android:layout_width="@dimen/view_44_dp"
@@ -36,5 +13,53 @@
         android:src="@drawable/yichangdaodi_dingbuzhankai"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content_ll" />
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/background_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_32_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/black_trans_20"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv"
+        app:layout_constraintLeft_toLeftOf="@id/recycler_view"
+        app:layout_constraintRight_toRightOf="@id/more_tv" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_32_dp"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintRight_toLeftOf="@id/arrow_iv"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/mask_iv"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_32_dp"
+        app:bl_gradient_angle="360"
+        app:bl_gradient_endColor="#0C043F"
+        app:bl_gradient_startColor="#00160742"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
+        app:layout_constraintRight_toRightOf="@id/recycler_view"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/more_tv"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
+        app:layout_constraintLeft_toRightOf="@id/recycler_view"
+        app:layout_constraintTop_toTopOf="@id/arrow_iv"
+        android:visibility="gone"/>
 
 </merge>
