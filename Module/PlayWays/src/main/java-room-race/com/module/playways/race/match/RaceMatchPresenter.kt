@@ -38,7 +38,7 @@ class RaceMatchPresenter : RxLifeCyclePresenter() {
         joinRoom(e)
     }
 
-
+    // 进入房间
     fun joinRoom(e: RJoinActionEvent) {
         launch {
             val map = mutableMapOf(

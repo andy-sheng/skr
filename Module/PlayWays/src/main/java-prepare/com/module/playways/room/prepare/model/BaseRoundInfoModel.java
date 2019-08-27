@@ -8,6 +8,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
     public final String TAG = "RoundInfoModel";
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
+    public static final int TYPE_RACE = 3;
 
     protected int userID;// 本人在演唱的人
     protected int roundSeq;// 本局轮次

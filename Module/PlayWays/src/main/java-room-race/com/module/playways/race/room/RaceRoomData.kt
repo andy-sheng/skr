@@ -6,6 +6,7 @@ import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.event.GrabRoundChangeEvent
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
+import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.model.RaceConfigModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
@@ -34,10 +35,12 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
         if (RoomDataUtils.roundSeqLarger(this.expectRoundInfo, this.realRoundInfo) || this.realRoundInfo == null) {
             // TODO
+            val lastRound = this.realRoundInfo
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次结束事件)
             this.realRoundInfo = this.expectRoundInfo
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次开始事件)
             // TODO 发送轮次切换事件
+            EventBus.getDefault().post(RaceRoundChangeEvent(lastRound, this.realRoundInfo))
 //            EventBus.getDefault().post(GrabRoundChangeEvent(lastRoundInfoModel, mRealRoundInfo as GrabRoundInfoModel))
         }
     }
@@ -51,6 +54,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         this.gameId = rsp.roomID
         this.raceConfigModel = rsp.config
         this.expectRoundInfo = rsp.currentRound
+        this.expectRoundInfo.games = rsp.games
         this.realRoundInfo = null
         this.isIsGameFinish = false
         this.hasExitGame = false

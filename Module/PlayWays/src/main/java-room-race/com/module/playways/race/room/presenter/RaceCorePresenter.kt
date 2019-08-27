@@ -6,6 +6,8 @@ import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.statistics.StatisticsAdapter
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.event.RaceRoundChangeEvent
+import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
@@ -25,6 +27,26 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
         val commentSysModel = CommentSysModel("欢迎来到Race房间", CommentSysModel.TYPE_ENTER_ROOM)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+    }
+
+    fun onOpeningAnimationOver(){
+        mRoomData.checkRoundInEachMode()
+    }
+
+    /**
+     * 轮次切换事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event:RaceRoundChangeEvent){
+
+    }
+
+    /**
+     * 轮次内 状态切换事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event:RaceRoundStatusChangeEvent){
+
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
