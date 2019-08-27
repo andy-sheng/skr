@@ -39,6 +39,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.properties.Delegates
 
 class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mCorePresenter: RaceCorePresenter
@@ -67,6 +68,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal var mPersonInfoDialog: PersonInfoDialog? = null
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
+
+    var mLastSceneView: View by Delegates.observable(View(context), { _, oldSceneView, newSceneView ->
+        // 为了解决滑动卡顿
+        if (oldSceneView != newSceneView) {
+            oldSceneView?.visibility = View.GONE
+            newSceneView.visibility = View.VISIBLE
+        }
+    })
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -431,41 +440,47 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {
+        mLastSceneView = mRaceTopVsView
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingBySelf {
             mRaceTopVsView.visibility = View.GONE
             mRaceSelfSingLyricView.startFly()
+            mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
+        mLastSceneView = mRaceTopVsView
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
-            mRaceTopVsView.visibility = View.GONE
             mRaceSelfSingLyricView.startFly()
+            mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
 
     override fun singBySelfSecondRound(songModel: SongModel?) {
         mRaceTopVsView.startSingBySelf {
-            mRaceTopVsView.visibility = View.GONE
             mRaceSelfSingLyricView.startFly()
+            mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
         mRaceTopVsView.startSingByOther {
-            mRaceTopVsView.visibility = View.GONE
             mRaceSelfSingLyricView.startFly()
+            mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
 
     override fun roundOver(overReason: Int) {
+        mLastSceneView = mRaceMiddleResultView
         mRaceMiddleResultView.showResult()
     }
 
     override fun showWaiting(showAnimation: Boolean) {
+        mLastSceneView = mRaceWaitingCardView
         if (showAnimation) {
+            mLastSceneView = mRaceWaitingCardView
             mRaceWaitingCardView.animationEnter()
         } else {
             mRaceWaitingCardView.visibility = View.VISIBLE
@@ -474,18 +489,21 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun showChoicing(showNextRound: Boolean) {
         if (mRaceWaitingCardView.visibility == View.VISIBLE) {
+            mLastSceneView = mRaceWaitingCardView
             mRaceWaitingCardView.animationLeave(object : AnimationListener {
                 override fun onFinish() {
                     if (showNextRound) {
                         mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                             override fun onFinish() {
                                 mRaceSelectSongView.visibility = View.VISIBLE
+                                mLastSceneView = mRaceSelectSongView
                                 mRaceSelectSongView.setSongName()
                                 mRaceSelectSongView.updateSelectState()
                             }
                         })
                     } else {
                         mRaceSelectSongView.visibility = View.VISIBLE
+                        mLastSceneView = mRaceSelectSongView
                         mRaceSelectSongView.setSongName()
                         mRaceSelectSongView.updateSelectState()
                     }
@@ -493,9 +511,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             })
         } else {
             if (showNextRound) {
+                mLastSceneView = mRaceTurnInfoCardView
                 mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                     override fun onFinish() {
                         mRaceSelectSongView.visibility = View.VISIBLE
+                        mLastSceneView = mRaceSelectSongView
                         mRaceSelectSongView.setSongName()
                         mRaceSelectSongView.updateSelectState()
                     }
@@ -504,6 +524,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mRaceSelectSongView.visibility = View.VISIBLE
                 mRaceSelectSongView.setSongName()
                 mRaceSelectSongView.updateSelectState()
+                mLastSceneView = mRaceSelectSongView
             }
         }
     }
