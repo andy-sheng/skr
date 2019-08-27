@@ -5,10 +5,6 @@
 
     <application>
         <!-- 在组件集成宿主时, 由于宿主已经声明了 CommonSDK 的公有 ConfigModule, 所以在这里只需要声明业务组件自己的 ConfigModule -->
-        <meta-data
-            android:name="com.module.playways.PlayWaysConfiguration"
-            android:value="ConfigModule" />
-
         <activity
             android:name="com.module.playways.audition.AudioRoomActivity"
             android:launchMode="singleTask"
@@ -67,7 +63,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
-        <!-- 尝试修复hwui 问题，用户反馈点歌崩溃问题 -->
         <activity
             android:name=".songmanager.SongManagerActivity"
             android:launchMode="singleTask"
@@ -76,23 +71,7 @@
 
         </activity>
 
-        <!--<activity-->
-            <!--android:name="com.module.playways.grab.room.guide.activity.GrabGuideActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-
-        <!--</activity>-->
-
-        <!--<activity-->
-            <!--android:name="com.module.playways.grab.room.guide.activity.GrabGuideResultActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:windowSoftInputMode="adjustResize">-->
-
-        <!--</activity>-->
-
-
+        <!-- 尝试修复hwui 问题，用户反馈点歌崩溃问题 -->
         <activity
             android:name="com.module.playways.audition.AuditionActivity"
             android:launchMode="singleTask"
@@ -100,6 +79,23 @@
             android:windowSoftInputMode="adjustResize">
 
         </activity>
+
+        <!--<activity-->
+        <!--android:name="com.module.playways.grab.room.guide.activity.GrabGuideActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+
+        <!--</activity>-->
+
+        <!--<activity-->
+        <!--android:name="com.module.playways.grab.room.guide.activity.GrabGuideResultActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:windowSoftInputMode="adjustResize">-->
+
+        <!--</activity>-->
+
 
         <activity
             android:name="com.module.playways.grab.room.activity.GrabResultActivity"
@@ -134,12 +130,24 @@
         </activity>
 
         <activity
+            android:name="com.module.playways.race.room.RaceResultActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity
             android:name="com.module.playways.race.match.activity.RaceMatchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
 
         </activity>
+
+        <meta-data
+            android:name="com.module.playways.PlayWaysConfiguration"
+            android:value="ConfigModule" />
 
     </application>
 
