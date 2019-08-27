@@ -263,7 +263,7 @@ interface RaceRoomServerApi {
                   @Query("roundSeq") roundSeq: Int): Call<ApiResult>
 
     /*
-  导唱结束
+  演唱结束
   {
   "roomID": 0,
   "roundSeq": 0,

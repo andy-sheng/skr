@@ -6,6 +6,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.module.playways.race.RaceRoomServerApi
@@ -20,20 +21,20 @@ import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
-import com.module.playways.room.msg.event.raceroom.RBLightEvent
-import com.module.playways.room.msg.event.raceroom.RExitGameEvent
-import com.module.playways.room.msg.event.raceroom.RJoinNoticeEvent
-import com.module.playways.room.msg.event.raceroom.RWantSingChanceEvent
+import com.module.playways.room.msg.event.raceroom.*
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.RGetSingChanceMsg
+import io.reactivex.Observable
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import retrofit2.http.Body
+import retrofit2.http.PUT
 
 class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
@@ -51,27 +52,107 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         mRoomData.checkRoundInEachMode()
     }
 
+
     /**
-     * 选择歌曲
+     * 相当于告知服务器，我不抢
      */
-    fun wantSingChance(choiceID: Int, roomID: Int, roundSeq: Int) {
+    fun sendIntroOver() {
         launch {
             val map = mutableMapOf(
-                    "choiceID" to choiceID,
-                    "roomID" to roomID,
-                    "roundSeq" to roundSeq
+                    "roomID" to mRoomData.gameId,
+                    "roundSeq" to mRoomData.realRoundSeq
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.queryMatch(body) }
+            val result = subscribe { raceRoomServerApi.introOver(body) }
             if (result.errno == 0) {
-                if (roundSeq == mRoomData?.realRoundSeq) {
-                    mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
-                }
+
             } else {
 
             }
         }
     }
+
+    /**
+     * 选择歌曲
+     */
+    fun wantSingChance(choiceID: Int) {
+        launch {
+            val map = mutableMapOf(
+                    "choiceID" to choiceID,
+                    "roomID" to mRoomData.gameId,
+                    "roundSeq" to mRoomData.realRoundSeq
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.queryMatch(body) }
+            if (result.errno == 0) {
+                    mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
+            } else {
+
+            }
+        }
+    }
+
+    /**
+     * 爆灯&投票
+     */
+    fun sendBLight() {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId,
+                    "roundSeq" to mRoomData.realRoundSeq,
+                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.introOver(body) }
+            if (result.errno == 0) {
+
+            } else {
+
+            }
+        }
+    }
+
+    /**
+     * 放弃演唱
+     */
+    fun giveupSing() {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId,
+                    "roundSeq" to mRoomData.realRoundSeq,
+                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.giveup(body) }
+            if (result.errno == 0) {
+
+            } else {
+
+            }
+        }
+    }
+
+    /**
+     * 主动告诉服务器我演唱完毕
+     */
+    fun sendSingComplete(){
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId,
+                    "roundSeq" to mRoomData.realRoundSeq,
+                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.roundOver(body) }
+            if (result.errno == 0) {
+
+            } else {
+
+            }
+        }
+    }
+
+
 
     /**
      * 轮次切换事件
@@ -167,6 +248,15 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RBLightEvent) {
     }
+
+    /**
+     * 收到服务器的push sync
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: RSyncStatusEvent) {
+        
+    }
+
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(giftPresentEvent: GiftPresentEvent) {
