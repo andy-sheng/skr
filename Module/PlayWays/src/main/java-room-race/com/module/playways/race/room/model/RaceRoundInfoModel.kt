@@ -2,11 +2,9 @@ package com.module.playways.race.room.model
 
 import android.util.ArrayMap
 import com.common.log.MyLog
-import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
-import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
-import com.module.playways.race.room.event.RaceSubRoundChangeEvent
-import com.module.playways.race.room.event.RaceWantSingChanceEvent
+import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
+import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.RaceRoundInfo
 import org.greenrobot.eventbus.EventBus
@@ -28,6 +26,52 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         return TYPE_RACE
     }
 
+    /**
+     * 有人进入房间
+     */
+    fun joinUser(racePlayerInfoModel: RacePlayerInfoModel) {
+        if (racePlayerInfoModel.role == ERUserRole.ERUR_PLAY_USER.value) {
+            if (!playUsers?.contains(racePlayerInfoModel)) {
+                playUsers?.add(racePlayerInfoModel)
+                EventBus.getDefault().post(RacePlaySeatUpdateEvent(playUsers))
+            }
+        } else if (racePlayerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
+            if (!waitUsers?.contains(racePlayerInfoModel)) {
+                waitUsers?.add(racePlayerInfoModel)
+                EventBus.getDefault().post(RaceWaitSeatUpdateEvent(playUsers))
+            }
+        }
+    }
+
+    /**
+     * 有人离开房间
+     */
+    fun exitUser(userId: Int) {
+        kotlin.run {
+            var i = 0
+            for (p in playUsers) {
+                if (p.userInfo.userId == userId) {
+                    playUsers.removeAt(i)
+                    EventBus.getDefault().post(RacePlaySeatUpdateEvent(playUsers))
+                    return
+                }
+                i++
+            }
+        }
+        kotlin.run {
+            var i = 0
+            for (p in waitUsers) {
+                if (p.userInfo.userId == userId) {
+                    waitUsers.removeAt(i)
+                    EventBus.getDefault().post(RaceWaitSeatUpdateEvent(playUsers))
+                    break
+                }
+                i++
+            }
+        }
+
+    }
+
     fun updatePlayUsers(l: List<RacePlayerInfoModel>?) {
         playUsers?.clear()
         l?.let {
@@ -44,6 +88,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         EventBus.getDefault().post(RacePlaySeatUpdateEvent(waitUsers))
     }
 
+    /**
+     * wantSing 增加人
+     */
     fun addWantSingChange(choiceID: Int, userID: Int?) {
         var list = gamesChoiceMap[choiceID]
         if (list == null) {
@@ -56,6 +103,10 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                 EventBus.getDefault().post(RaceWantSingChanceEvent(choiceID, it))
             }
         }
+    }
+
+    fun addBLightUser(notify: Boolean, userID: Int, subRoundSeq: Int, bLightCnt: Int) {
+        scores.getOrNull(subRoundSeq - 1)?.addBLightUser(notify, userID, bLightCnt)
     }
 
     /**
@@ -142,6 +193,15 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
 
             }
         }
+
+        if (roundInfo.scores.size > 0) {
+            //有数据
+            if (this.scores.isEmpty()) {
+                this.scores.addAll(roundInfo.scores)
+            } else {
+                // 都有数据
+            }
+        }
         if (this.subRoundSeq != roundInfo.subRoundSeq && this.status == roundInfo.status) {
             val old = this.subRoundSeq
             this.subRoundSeq = roundInfo.subRoundSeq
@@ -152,7 +212,6 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         updateStatus(notify, roundInfo.status)
         return
     }
-
 
 }
 
