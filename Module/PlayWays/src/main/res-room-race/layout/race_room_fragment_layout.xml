@@ -143,6 +143,7 @@
         android:visibility="gone" />
 
     <com.module.playways.race.room.view.RaceSelectSongView
+        android:id="@+id/race_select_song_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_70_dp"

@@ -6,7 +6,6 @@ import android.os.Message
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
-import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
@@ -15,7 +14,6 @@ import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
-import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
@@ -45,7 +43,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showChoicing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceSelectSongView.visibility = View.VISIBLE
+        mRaceSelectSongView.setSongName()
+        mRaceSelectSongView.updateSelectState()
     }
 
     internal lateinit var mCorePresenter: RaceCorePresenter
@@ -61,6 +61,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView
     internal lateinit var mRaceTopVsView: RaceTopVsView
     internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView
+    internal lateinit var mRaceSelectSongView: RaceSelectSongView
 
     internal lateinit var mRaceActorPanelView: RaceActorPanelView  //参与的人
 
@@ -99,10 +100,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         initTopView()
         initTurnSenceView()
         initLyricView()
+        initSelectSongView()
 
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()
         }, 500)
+    }
+
+    private fun initSelectSongView() {
+        mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
+        mRaceSelectSongView.setRoomData(mRoomData)
+        mRaceSelectSongView.visibility = View.GONE
     }
 
     private fun initLyricView() {

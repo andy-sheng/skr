@@ -6,11 +6,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
+import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RaceGameInfo
 
 
 class RaceSelectSongItemView : ExConstraintLayout {
@@ -18,6 +21,7 @@ class RaceSelectSongItemView : ExConstraintLayout {
     lateinit var avatarIv1: BaseImageView
     lateinit var avatarIv2: BaseImageView
     lateinit var avatarIv3: BaseImageView
+    var roomData: RaceRoomData? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -40,8 +44,53 @@ class RaceSelectSongItemView : ExConstraintLayout {
         reset()
     }
 
-    fun bindData() {
+    fun setRaceRoomData(data: RaceRoomData) {
+        this.roomData = data
+    }
 
+    fun setSong(info: RaceGameInfo?) {
+        info?.let {
+            songNameTv.text = info.commonMusic?.itemName
+        }
+    }
+
+    fun bindData(list: ArrayList<Int>?) {
+        list?.let {
+            for (i in 0 until it.size) {
+                when (i) {
+                    0 -> {
+                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBlur(true)
+                                .build())
+                    }
+                    1 -> {
+                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBlur(true)
+                                .build())
+                    }
+                    2 -> {
+                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBlur(true)
+                                .build())
+                    }
+                }
+            }
+        }
+    }
+
+    fun getAvatarById(id: Int): String {
+        roomData?.let {
+            it.realRoundInfo?.playUsers?.forEach {
+                if (it.userInfo.userId == id) {
+                    return it.userInfo.avatar
+                }
+            }
+        }
+
+        return ""
     }
 
     fun startSelectedAnimation() {
