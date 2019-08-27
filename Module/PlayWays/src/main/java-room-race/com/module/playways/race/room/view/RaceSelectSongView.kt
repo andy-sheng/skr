@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-//选择歌曲页
+
 class RaceSelectSongView : ExConstraintLayout {
     val mTag = "RaceSelectSongView"
     var bg: ImageView

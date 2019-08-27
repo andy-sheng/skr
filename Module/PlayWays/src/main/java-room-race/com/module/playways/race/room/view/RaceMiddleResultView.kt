@@ -63,11 +63,11 @@ class RaceMiddleResultView : ExConstraintLayout {
 
 
         AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
+                .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                 .build())
 
         AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
+                .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                 .build())
     }
 

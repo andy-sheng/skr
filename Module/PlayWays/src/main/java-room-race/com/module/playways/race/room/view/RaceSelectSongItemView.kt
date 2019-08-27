@@ -10,7 +10,7 @@ import com.common.image.fresco.BaseImageView
 import com.common.view.ex.ExTextView
 
 
-//选择歌曲页
+
 class RaceSelectSongItemView : RelativeLayout {
     lateinit var songNameTv: ExTextView
     lateinit var avatarIv1: BaseImageView

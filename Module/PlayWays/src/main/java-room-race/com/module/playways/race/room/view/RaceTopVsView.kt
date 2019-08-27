@@ -16,7 +16,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 
 
-//选择歌曲页
+
 class RaceTopVsView : ExConstraintLayout {
     val mTag = "RaceTopVsView"
 
