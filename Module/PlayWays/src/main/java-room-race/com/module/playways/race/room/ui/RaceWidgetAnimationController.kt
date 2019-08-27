@@ -100,6 +100,7 @@ class RaceWidgetAnimationController(internal var mF: RaceRoomFragment) {
 
     internal fun fillView(viewList: MutableList<View>) {
         viewList.add(mF.mRaceTopContentView)
+        viewList.add(mF.mRaceTopVsView)
 //        viewList.add(mF.mPracticeFlagIv)
 //        viewList.add(mF.mGameTipsManager.getViewByKey(mF.TAG_SELF_SING_TIP_VIEW))
 //        viewList.add(mF.mRaceOpBtn)

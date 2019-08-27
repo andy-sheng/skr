@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--默认颜色-->
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="@color/transparent" />
+        </shape>
+    </item>
+    <!--进度颜色-->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="@dimen/view_5_dp" />
+                <solid android:color="#FF9680FF" />
+            </shape>
+        </clip>
+    </item>
+    <!--第二进度颜色-->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <solid android:color="@color/transparent" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

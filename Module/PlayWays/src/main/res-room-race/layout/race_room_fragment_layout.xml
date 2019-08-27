@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:gameType="http://schemas.android.com/tools"
     android:id="@+id/race_root_view"
+    android:background="@drawable/fangzhufangjian_fangzhushijiao"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -51,6 +52,22 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_120_dp"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <com.module.playways.race.room.view.RaceTopVsView
+        android:id="@+id/race_top_vs_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_50_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/race_top_content_view" />
+
+    <ViewStub
+        android:id="@+id/race_self_sing_lyric_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_140_dp"
+        android:layout="@layout/race_self_sing_lyric_layout" />
 
     <!--输入框区域-->
     <com.module.playways.race.room.view.RaceInputContainerView
@@ -111,6 +128,22 @@
         android:gravity="bottom"
         android:paddingLeft="@dimen/view_16_dp"
         android:visibility="gone" />
+
+    <com.module.playways.race.room.view.RaceTurnInfoCardView
+        android:id="@+id/race_turn_card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <com.module.playways.race.room.view.RaceSelectSongView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_70_dp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <ViewStub
         android:id="@+id/voice_record_tip_view_stub"

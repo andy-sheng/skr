@@ -6,6 +6,7 @@ import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.statistics.StatisticsAdapter
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -16,7 +17,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class RaceCorePresenter(var mRoomData: RaceRoomData) : RxLifeCyclePresenter() {
+class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
     init {
         if (!EventBus.getDefault().isRegistered(this)) {

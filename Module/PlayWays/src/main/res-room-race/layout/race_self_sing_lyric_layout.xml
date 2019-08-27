@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_220_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/race_lyric_bg" />
+
+    <com.module.playways.grab.room.view.SingCountDownView2
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp" />
+
+    <ScrollView
+        android:id="@+id/sv_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_180_dp"
+        android:layout_alignTop="@id/iv_bg"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:id="@+id/tv_lyric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.6"
+            android:gravity="center"
+            android:lineSpacingExtra="7dp"
+            android:paddingLeft="@dimen/view_40_dp"
+            android:paddingRight="@dimen/view_40_dp"
+            android:textColor="#364E7C"
+            android:textSize="@dimen/textsize_18_dp" />
+    </ScrollView>
+
+    <com.component.lyrics.widget.ManyLyricsView
+        android:id="@+id/many_lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_170_dp"
+        android:layout_alignTop="@id/iv_bg"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:visibility="visible"
+        app:ly_eable_scroll="false"
+        app:ly_eable_verbatim="true"
+        app:ly_high_light_paint_color_from="#DB4D84"
+        app:ly_high_light_paint_color_to="#DB4D84"
+        app:ly_high_light_paint_text_size="18.0"
+        app:ly_high_light_sub_paint_color="#665945"
+        app:ly_outline_paint_color="#665945"
+        app:ly_paint_color_from="@color/black_trans_30"
+        app:ly_paint_color_to="@color/black_trans_30"
+        app:ly_paint_text_size="16.0"
+        app:ly_show_author="true"
+        app:ly_top_line_num="2" />
+
+    <com.component.lyrics.widget.VoiceScaleView
+        android:id="@+id/voice_scale_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_below="@+id/many_lyrics_view"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="-27dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:visibility="visible"
+        app:leftBgPaintColor="@color/transparent"
+        app:leftPaintColor="@color/white"
+        app:redInnerpaintColor="#FFC15B"
+        app:redLinePaintColor="#D4AF72"
+        app:redOutpaintColor="#A9864E"
+        app:rightBgPaintColor="@color/transparent"
+        app:rightPaintColor="#D4AF72" />
+
+</RelativeLayout>

@@ -19,11 +19,13 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
+import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.actor.RaceActorPanelView
 import com.module.playways.race.room.view.RaceInputContainerView
 import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.race.room.view.RaceTopOpView
+import com.module.playways.race.room.view.*
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -37,7 +39,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class RaceRoomFragment : BaseFragment() {
+class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     internal lateinit var mCorePresenter: RaceCorePresenter
 
@@ -49,6 +51,9 @@ class RaceRoomFragment : BaseFragment() {
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mRaceTopOpView: RaceTopOpView
     internal lateinit var mRaceTopContentView: RaceTopContentView
+    internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView
+    internal lateinit var mRaceTopVsView: RaceTopVsView
+    internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView
 
     internal lateinit var mRaceActorPanelView: RaceActorPanelView  //参与的人
 
@@ -69,7 +74,7 @@ class RaceRoomFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mCorePresenter = RaceCorePresenter(mRoomData)
+        mCorePresenter = RaceCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
 
         // 请保证从下面的view往上面的view开始初始化
@@ -85,15 +90,26 @@ class RaceRoomFragment : BaseFragment() {
         initGiftPanelView()
         initGiftDisplayView()
         initTopView()
+        initTurnSenceView()
+        initLyricView()
 
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()
         }, 500)
     }
 
+    private fun initLyricView() {
+        mRaceSelfSingLyricView = RaceSelfSingLyricView(rootView.findViewById(R.id.race_self_sing_lyric_view_stub) as ViewStub, null)
+    }
+
     private fun initInputView() {
         mInputContainerView = rootView.findViewById(R.id.input_container_view)
         mInputContainerView.setRoomData(mRoomData)
+    }
+
+    private fun initTurnSenceView() {
+        mRaceTurnInfoCardView = rootView.findViewById(R.id.race_turn_card_view)
+        mRaceTurnInfoCardView.visibility = View.GONE
     }
 
     private fun initBottomView() {
@@ -269,6 +285,8 @@ class RaceRoomFragment : BaseFragment() {
 //            val topLayoutParams = mRaceTopContentView.getLayoutParams() as ConstraintLayout.LayoutParams
 //            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin
 //        }
+
+        mRaceTopVsView = rootView.findViewById(R.id.race_top_vs_view)
     }
 
     private fun initCommentView() {
