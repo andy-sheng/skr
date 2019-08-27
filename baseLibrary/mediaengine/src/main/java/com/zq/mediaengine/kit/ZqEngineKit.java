@@ -530,6 +530,15 @@ public class ZqEngineKit implements AgoraOutCallback {
                     EventBus.getDefault().post(engineEvent);
                 }
             });
+            mAudioPlayerCapture.setOnErrorListener(new AudioPlayerCapture.OnErrorListener() {
+                @Override
+                public void onError(AudioPlayerCapture audioPlayerCapture, int type, long msg) {
+                    MyLog.e(TAG, "AudioPlayerCapture error: " + type);
+                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_ERROR);
+                    engineEvent.setObj(type);
+                    EventBus.getDefault().post(engineEvent);
+                }
+            });
         } else {
             mAudioLocalSrcPin = mAgoraRTCAdapter.getLocalAudioSrcPin();
             mAudioRemoteSrcPin = mAgoraRTCAdapter.getRemoteAudioSrcPin();

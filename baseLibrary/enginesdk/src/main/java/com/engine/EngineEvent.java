@@ -18,6 +18,7 @@ public class EngineEvent {
     public static final int TYPE_MUSIC_PLAY_FINISH = 13;// 伴奏结束
     public static final int TYPE_MUSIC_PLAY_TIME_FLY_LISTENER = 14;// 伴奏时间流逝
     public static final int TYPE_MUSIC_PLAY_FIRST_PKT = 15; // 伴奏首帧开始播放，仅在自采集模式下生效
+    public static final int TYPE_MUSIC_PLAY_ERROR = 16; // 伴奏播放出错
 
     public static final int TYPE_ENGINE_INITED = 100;// 引擎初始化完毕
     public static final int TYPE_ENGINE_DESTROY = 99;// 引擎销毁完毕
@@ -187,6 +188,8 @@ public class EngineEvent {
                 return "MUSIC_PLAY_FINISH";
             case TYPE_MUSIC_PLAY_FIRST_PKT:
                 return "MUSIC_PLAY_FIRST_PKT";
+            case TYPE_MUSIC_PLAY_ERROR:
+                return "MUSIC_PLAY_ERROR";
             case TYPE_ENGINE_DESTROY:
                 return "ENGINE_DESTROY";
             case TYPE_ENGINE_INITED:

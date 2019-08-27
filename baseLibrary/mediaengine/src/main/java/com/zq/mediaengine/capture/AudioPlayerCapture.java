@@ -171,7 +171,11 @@ public class AudioPlayerCapture {
                     mPcmPlayer = new AudioTrackPlayer();
                 }
                 int atomSize = AudioUtil.getNativeBufferSize(mContext, mOutFormat.sampleRate);
-                mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate, mOutFormat.channels, atomSize, 40);
+                int err = mPcmPlayer.config(mOutFormat.sampleFormat, mOutFormat.sampleRate,
+                        mOutFormat.channels, atomSize, 40);
+                if (err < 0) {
+                    postError(ERROR_UNKNOWN, 0);
+                }
                 mPcmPlayer.setMute(mMute);
                 mPcmPlayer.start();
 

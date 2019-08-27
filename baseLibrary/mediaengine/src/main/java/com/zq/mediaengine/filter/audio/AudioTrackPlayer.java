@@ -27,6 +27,10 @@ public class AudioTrackPlayer implements IPcmPlayer {
         return 0;
     }
 
+    private boolean checkState() {
+        return mAudioTrack != null && mAudioTrack.getState() == AudioTrack.STATE_INITIALIZED;
+    }
+
     @Override
     public synchronized int config(int sampleFmt, int sampleRate, int channels,
                                    int bufferSamples, int fifoSizeInMs) {
@@ -42,9 +46,13 @@ public class AudioTrackPlayer implements IPcmPlayer {
                 AudioFormat.CHANNEL_OUT_STEREO;
         int minBufferSize = AudioTrack.getMinBufferSize(sampleRate, channel,
                 AudioFormat.ENCODING_PCM_16BIT);
-        Log.e(TAG, "minBufferSize: " + minBufferSize);
+        Log.i(TAG, "minBufferSize: " + minBufferSize);
         mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channel,
                 AudioFormat.ENCODING_PCM_16BIT, minBufferSize, AudioTrack.MODE_STREAM);
+        if (!checkState()) {
+            return -1;
+        }
+
         if (mMute) {
             mAudioTrack.setStereoVolume(0.0f, 0.0f);
         }
@@ -65,7 +73,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public synchronized int start() {
-        if (mAudioTrack != null) {
+        if (checkState()) {
             mAudioTrack.play();
         }
         mStart = true;
@@ -74,7 +82,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public synchronized int stop() {
-        if (mAudioTrack != null) {
+        if (checkState()) {
             mAudioTrack.stop();
         }
         mStart = false;
@@ -84,7 +92,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public int pause() {
-        if (mAudioTrack != null) {
+        if (checkState()) {
             mAudioTrack.pause();
         }
         return 0;
@@ -92,7 +100,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public int resume() {
-        if (mAudioTrack != null) {
+        if (checkState()) {
             mAudioTrack.play();
         }
         return 0;
@@ -100,7 +108,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public synchronized int write(ByteBuffer buffer) {
-        if (buffer == null || mAudioTrack == null) {
+        if (buffer == null || !checkState()) {
             return 0;
         }
 
@@ -114,7 +122,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public int flush() {
-        if (mAudioTrack != null) {
+        if (checkState()) {
             mAudioTrack.pause();
             mAudioTrack.flush();
             mAudioTrack.play();
@@ -124,7 +132,7 @@ public class AudioTrackPlayer implements IPcmPlayer {
 
     @Override
     public long getPosition() {
-        if (mAudioTrack != null) {
+        if (checkState()) {
             long samples = mAudioTrack.getPlaybackHeadPosition();
             return samples * 1000 / mSampleRate;
         }
