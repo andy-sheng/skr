@@ -62,6 +62,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/race_top_content_view" />
 
+    <com.module.playways.race.room.view.RaceMiddleResultView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_100_dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
     <ViewStub
         android:id="@+id/race_self_sing_lyric_view_stub"
         android:layout_width="match_parent"

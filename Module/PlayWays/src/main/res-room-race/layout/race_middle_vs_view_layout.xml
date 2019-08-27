@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:clipChildren="false"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="胜利"
+        android:textSize="@dimen/view_30_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/left_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_60_dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:background="@drawable/race_middle_left_bg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/left_ticket_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_58_dp"
+            android:text="06"
+            android:textColor="#ffffd693"
+            android:textSize="@dimen/textsize_30_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/left_avatar_iv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/left_avatar_iv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/left_ticket_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_16_dp"
+            android:text="票"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintLeft_toRightOf="@+id/left_ticket_count_tv"
+            app:layout_constraintTop_toTopOf="@+id/left_ticket_count_tv" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/left_avatar_iv"
+            android:layout_width="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_marginTop="@dimen/view_18_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            app:layout_constraintRight_toLeftOf="@+id/guidelineCenter"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/left_head_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_58_dp"
+            android:background="@drawable/race_huangguan"
+            app:layout_constraintBottom_toBottomOf="@+id/left_avatar_iv"
+            app:layout_constraintLeft_toLeftOf="@+id/left_avatar_iv"
+            app:layout_constraintRight_toRightOf="@+id/left_avatar_iv" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/right_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_60_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:background="@drawable/race_middle_right_bg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/right_ticket_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/view_58_dp"
+            android:text="06"
+            android:textColor="#ffffd693"
+            android:textSize="@dimen/textsize_30_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/right_avatar_iv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/right_avatar_iv" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/right_ticket_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_16_dp"
+            android:text="票"
+            android:textColor="@color/white_trans_50"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintLeft_toRightOf="@+id/right_ticket_count_tv"
+            app:layout_constraintTop_toTopOf="@+id/right_ticket_count_tv" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/right_avatar_iv"
+            android:layout_width="@dimen/view_64_dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginTop="@dimen/view_18_dp"
+            app:layout_constraintLeft_toRightOf="@+id/guidelineCenter2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/right_head_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_58_dp"
+            android:background="@drawable/race_huangguan"
+            app:layout_constraintBottom_toBottomOf="@+id/right_avatar_iv"
+            app:layout_constraintLeft_toLeftOf="@+id/right_avatar_iv"
+            app:layout_constraintRight_toRightOf="@+id/right_avatar_iv" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineCenter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/race_top_vs_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/race_top_vs"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
