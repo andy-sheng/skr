@@ -318,6 +318,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 //        }
 
         mRaceTopVsView = rootView.findViewById(R.id.race_top_vs_view)
+        mRaceTopVsView.setRaceRoomData(mRoomData)
     }
 
     private fun initCommentView() {
@@ -430,19 +431,33 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceTopVsView.startVs()
+        mRaceTopVsView.startSingBySelf {
+            mRaceTopVsView.visibility = View.GONE
+            mRaceSelfSingLyricView.startFly()
+        }
     }
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceTopVsView.startVs()
+        mRaceTopVsView.startSingByOther {
+            mRaceTopVsView.visibility = View.GONE
+            mRaceSelfSingLyricView.startFly()
+        }
     }
 
     override fun singBySelfSecondRound(songModel: SongModel?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceTopVsView.startSingBySelf {
+            mRaceTopVsView.visibility = View.GONE
+            mRaceSelfSingLyricView.startFly()
+        }
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceTopVsView.startSingByOther {
+            mRaceTopVsView.visibility = View.GONE
+            mRaceSelfSingLyricView.startFly()
+        }
     }
 
     override fun roundOver(overReason: Int) {

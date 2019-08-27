@@ -18,9 +18,9 @@ import com.component.lyrics.widget.VoiceScaleView;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.R;
-import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.SingCountDownView2;
+import com.module.playways.race.room.RaceRoomData;
+import com.module.playways.race.room.model.RaceRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.mediaengine.kit.ZqEngineKit;
@@ -38,14 +38,14 @@ public class RaceSelfSingLyricView extends ExViewStub {
     protected ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
-    protected GrabRoomData mRoomData;
+    protected RaceRoomData mRoomData;
     SongModel mSongModel;
     VoiceScaleView mVoiceScaleView;
     SingCountDownView2 mSingCountDownView2;
 
     LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
-    public RaceSelfSingLyricView(ViewStub viewStub, GrabRoomData roomData) {
+    public RaceSelfSingLyricView(ViewStub viewStub, RaceRoomData roomData) {
         super(viewStub);
         mRoomData = roomData;
     }
@@ -57,7 +57,6 @@ public class RaceSelfSingLyricView extends ExViewStub {
         mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view);
         mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view);
         mSingCountDownView2 = mParentView.findViewById(R.id.sing_count_down_view);
-
     }
 
     @Override
@@ -66,7 +65,7 @@ public class RaceSelfSingLyricView extends ExViewStub {
     }
 
     private void initLyric() {
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        RaceRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         mSvlyric.setVisibility(View.VISIBLE);
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.initLrcData();
@@ -76,7 +75,18 @@ public class RaceSelfSingLyricView extends ExViewStub {
         }
     }
 
-    public void playWithAcc(GrabRoundInfoModel infoModel, int totalTs) {
+    public void startFly() {
+//        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
+//            withAcc = true;
+//        }
+//        if (!withAcc) {
+//            mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
+//        } else {
+//            mSelfSingLyricView.playWithAcc(infoModel, totalTs);
+//        }
+    }
+
+    public void playWithAcc(RaceRoundInfoModel infoModel, int totalTs) {
         if (infoModel == null) {
             MyLog.w(TAG, "playWithAcc" + " infoModel = null totalTs=" + totalTs);
             return;
@@ -123,7 +133,7 @@ public class RaceSelfSingLyricView extends ExViewStub {
 
             @Override
             public void onLyricEventPost(int lineNum) {
-                mRoomData.setSongLineNum(lineNum);
+//                mRoomData.setSongLineNum(lineNum);
             }
 
         });

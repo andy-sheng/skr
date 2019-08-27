@@ -14,7 +14,7 @@ import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
-
+import com.module.playways.race.room.RaceRoomData
 
 
 class RaceTopVsView : ExConstraintLayout {
@@ -32,6 +32,7 @@ class RaceTopVsView : ExConstraintLayout {
     val rightCircleCountDownView: CircleCountDownView
 
     val raceTopVsIv: ImageView
+    var roomData: RaceRoomData? = null
 
     constructor(context: Context) : super(context)
 
@@ -62,19 +63,72 @@ class RaceTopVsView : ExConstraintLayout {
                 .build())
     }
 
-    fun bindData() {
+    fun setRaceRoomData(roomData: RaceRoomData) {
+        this.roomData = roomData
+    }
 
+    fun updateData() {
+        roomData?.realRoundInfo?.scores?.let {
+            leftTicketCountTv.text = it[0].bLightCnt.toString()
+        }
+
+        roomData?.realRoundInfo?.scores?.let {
+            rightTicketCountTv.text = it[1].bLightCnt.toString()
+        }
+    }
+
+    fun startSingBySelf(call: (() -> Unit)?) {
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            if (roomData?.getUserInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                leftCircleCountDownView.go(0, 3 * 1000) {
+                    call?.invoke()
+                }
+            } else {
+                rightCircleCountDownView.go(0, 3 * 1000) {
+                    call?.invoke()
+                }
+            }
+        }
+    }
+
+    fun startSingByOther(call: (() -> Unit)?) {
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            if (roomData?.getUserInfo(it[0].userID)?.userId != MyUserInfoManager.getInstance().uid.toInt()) {
+                leftCircleCountDownView.go(0, 3 * 1000) {
+                    call?.invoke()
+                }
+            } else {
+                rightCircleCountDownView.go(0, 3 * 1000) {
+                    call?.invoke()
+                }
+            }
+        }
+    }
+
+    private fun bindData() {
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[0].userID)?.avatar)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
+                    .build())
+        }
+
+        roomData?.realRoundInfo?.subRoundInfo?.let {
+            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[1].userID)?.avatar)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
+                    .build())
+        }
+
+        updateData()
     }
 
     fun startVs() {
+        visibility = View.VISIBLE
+        bindData()
         val animatorLeft = ObjectAnimator.ofFloat(leftConstraintLayout, "translationX", -(U.getDisplayUtils().phoneWidth.toFloat() / 2), 0f)
-
         val animatorRight = ObjectAnimator.ofFloat(rightConstraintLayout, "translationX", U.getDisplayUtils().phoneWidth.toFloat(), 0f)
-
         val animSet = AnimatorSet()
         animSet.play(animatorLeft).with(animatorRight)
         animSet.duration = 400
-
         animSet.start()
     }
 }
