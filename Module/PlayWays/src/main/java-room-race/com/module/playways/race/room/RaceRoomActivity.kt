@@ -9,6 +9,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.ui.RaceRoomFragment
 
 @Route(path = RouterConstants.ACTIVITY_RACE_ROOM)
@@ -24,6 +25,10 @@ class RaceRoomActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        val joinRaceRoomRspModel = intent.getSerializableExtra("JoinRaceRoomRspModel") as JoinRaceRoomRspModel?
+        joinRaceRoomRspModel?.let {
+            mRoomData.loadFromRsp(it)
+        }
         go()
         U.getStatusBarUtil().setTransparentBar(this, false)
     }

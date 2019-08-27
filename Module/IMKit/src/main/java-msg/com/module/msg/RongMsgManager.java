@@ -31,6 +31,8 @@ import com.module.msg.model.CustomChatCombineRoomMsg;
 import com.module.msg.model.CustomChatRoomLowLevelMsg;
 import com.module.msg.model.CustomChatRoomMsg;
 import com.module.msg.model.CustomNotificationMsg;
+import com.module.msg.model.RaceRoomHighMsg;
+import com.module.msg.model.RaceRoomLowMsg;
 import com.module.msg.model.SpecailOpMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,6 +60,7 @@ import io.rong.push.pushconfig.PushConfig;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
+import static com.module.msg.CustomMsgType.MSG_TYPE_RACE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
 public class RongMsgManager implements RongIM.UserInfoProvider {
@@ -166,6 +169,18 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
                 CustomChatCombineRoomLowLevelMsg customChatRoomMsg = (CustomChatCombineRoomLowLevelMsg) message.getContent();
                 dispatchCustomCombineRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof RaceRoomHighMsg) {
+
+                RaceRoomHighMsg customChatRoomMsg = (RaceRoomHighMsg) message.getContent();
+                dispatchRaceRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof RaceRoomLowMsg) {
+
+                RaceRoomHighMsg customChatRoomMsg = (RaceRoomHighMsg) message.getContent();
+                dispatchRaceRoomMsg(customChatRoomMsg);
 
                 return true;
             } else if (message.getContent() instanceof CustomNotificationMsg) {
@@ -281,6 +296,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         }
     }
 
+    private void dispatchRaceRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof RaceRoomHighMsg) {
+            RaceRoomHighMsg msg = (RaceRoomHighMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_RACE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_RACE_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof RaceRoomLowMsg) {
+            RaceRoomLowMsg msg = (RaceRoomLowMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_RACE_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_RACE_ROOM, data);
+                }
+            }
+        }
+    }
     // 是否初始化
     private boolean mIsInit = false;
 

@@ -100,7 +100,7 @@ class VoiceRecordTextView : ExTextView {
             MotionEvent.ACTION_DOWN -> {
                 MyLog.d(TAG, "ACTION_DOWN")
                 if (mRoomData is GrabRoomData) {
-                    val roundInfoModel = mRoomData?.getRealRoundInfo<GrabRoundInfoModel>()
+                    val roundInfoModel = mRoomData?.realRoundInfo as GrabRoundInfoModel
                     if (roundInfoModel != null && roundInfoModel!!.isSingStatus && roundInfoModel!!.singBySelf()) {
                         U.getToastUtil().showShort("演唱中无法录音")
                         return false

@@ -147,7 +147,7 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
         mExpectRoundInfo = expectRoundInfo;
     }
 
-    public <T extends BaseRoundInfoModel> T getRealRoundInfo() {
+    public T getRealRoundInfo() {
         return (T) mRealRoundInfo;
     }
 

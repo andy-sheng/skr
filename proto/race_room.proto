@@ -1,0 +1,229 @@
+syntax = "proto3";
+import "Common.proto";
+
+package com.zq.live.proto.RaceRoom;
+
+
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ race_room.proto
+
+*/
+
+// 擂台赛房间信令消息
+message RaceRoomMsg
+{
+    sint64 timeMs            = 1; //房间消息产生时间，单位毫秒
+    ERaceRoomMsgType msgType = 2; //消息类型
+    uint32 roomID            = 3; //房间ID
+
+    RJoinActionMsg rJoinActionMsg         = 100; //擂台赛：加入游戏指令消息
+    RJoinNoticeMsg rJoinNoticeMsg         = 101; //擂台赛：加入游戏通知消息
+    RExitGameMsg rExitGameMsg             = 102; //擂台赛：退出游戏
+    RBLightMsg rBLightMsg                 = 103; //擂台赛：爆灯通知
+    RWantSingChanceMsg rWantSingChanceMsg = 104; //擂台赛：想唱消息,即抢唱
+    RGetSingChanceMsg rGetSingChanceMsg   = 105; //擂台赛：获得抢唱的结果
+    RSyncStatusMsg rSyncStatusMsg         = 106; //擂台赛：同步状态
+    RaceRoundOverMsg rRoundOverMsg        = 107; //擂台赛：轮次结束
+}
+
+enum ERaceRoomMsgType {
+    RRM_UNKNOWN = 0; //未知消息
+
+    RRM_JOIN_ACTION = 100; //擂台赛：加入游戏指令消息
+    RRM_JOIN_NOTICE = 101; //擂台赛：加入游戏通知消息
+    RRM_EXIT_GAME   = 102; //擂台赛：退出游戏
+    RRM_B_LIGHT     = 103; //擂台赛：爆灯通知
+    RRM_WANT_SING   = 104; //擂台赛：想唱消息,即抢唱
+    RRM_GET_SING    = 105; //擂台赛：获得抢唱的结果
+    RRM_SYNC_STATUS = 106; //擂台赛：同步状态
+    RRM_ROUND_OVER  = 107; //擂台赛：主轮次结束
+}
+
+message RNextRoundIntroMsg
+{
+    uint32 roundSeq             = 1;
+    repeated RaceGameInfo games = 2;
+}
+
+message RaceRoundOverMsg
+{
+    sint64 roundOverTimeMs     = 1; //本轮次结束的毫秒时间戳
+    RaceRoundInfo currentRound = 2; //当前结束轮次的信息
+    RaceRoundInfo nextRound    = 3; //下个轮次的信息
+}
+
+message RExitGameMsg
+{
+    uint32 userID = 1; //用户id
+}
+
+message RSyncStatusMsg
+{
+    sint64 syncStatusTimeMs    = 1; //状态同步时的毫秒时间戳
+    RaceRoundInfo currentRound = 2; //当前轮次信息
+}
+
+message RGetSingChanceMsg
+{
+    RaceRoundInfo currentRound = 3; //当前轮次信息
+}
+
+message RWantSingChanceMsg
+{
+    uint32 userID   = 1; //用户id
+    uint32 roundSeq = 2; //轮次顺序
+    uint32 choiceID = 3; //选择标识
+}
+
+message RBLightMsg
+{
+    uint32 userID      = 1; //玩家id
+    uint32 RoundSeq    = 2; //主轮次顺序
+    uint32 subRoundSeq = 3; //子轮次顺序
+    uint32 bLightCnt   = 4; //当前爆灯总数量
+}
+
+message RJoinNoticeMsg
+{
+    Common.UserInfo user      = 1; //加入游戏的信息
+    sint64 joinTimeMs  = 2; //加入毫秒时间戳
+    ERUserRole role    = 3; //角色
+    bool newRoundBegin = 4; //新轮次开始(进入竞选曲目)
+}
+
+enum ERUserRole {
+    ERUR_UNKNOWN   = 0; //未知角色
+    ERUR_PLAY_USER = 1; //在玩的用户角色
+    ERUR_WAIT_USER = 2; //等待的用户角色
+}
+
+message ROnlineInfo
+{
+    Common.UserInfo user   = 1; //用户信息
+    bool isOnline   = 2; //是否在线
+    ERUserRole role = 3; //用户角色
+}
+
+message RJoinActionMsg
+{
+    uint32 gameID       = 1; //游戏ID
+    sint64 createTimeMs = 2; //创建毫秒时间戳
+    string agoraToken   = 3; //声网token
+    RGameConfig config  = 4; //配置信息
+}
+
+message RGameConfig
+{
+    //TODO:补充游戏配置
+}
+
+message RaceRoundInfo
+{
+    uint32 roundSeq                    = 1; //轮次顺序
+    uint32 subRoundSeq                 = 2; //子轮次
+    ERaceRoundStatus status            = 3; //轮次状态
+    ERaceRoundOverReason overReason    = 4; //切换轮次原因
+    repeated SubRoundInfo subRoundInfo = 5; //子轮次信息
+    repeated RoundScoreInfo scores     = 6; //得分信息
+    repeated ROnlineInfo waitUsers     = 7; //等待中用户列表
+    repeated ROnlineInfo playUsers     = 8; //当局玩的用户列表
+}
+
+message RoundScoreInfo
+{
+    uint32 bLightCnt     = 1; //爆灯数(投票数)
+    bool isEscape        = 2; //是否逃跑
+    ERaceWinType winType = 3; //胜负平等等
+}
+
+enum ERaceWinType {
+    RWT_UNKNOWN = 0; //未知
+    RWT_WIN     = 1; //胜
+    RWT_DRAW    = 2; //平
+    RWT_LOSE    = 3; //负
+}
+
+message SubRoundInfo
+{
+    uint32 userID                  = 1; //用户id
+    uint32 subRoundSeq             = 2; //子轮次
+    uint32 choiceID                = 3; //选择项
+    uint32 beginMs                 = 4; //开始相对时间（相对于startTimeMs时间）
+    uint32 endMs                   = 5; //结束相对时间（相对于startTimeMs时间）
+    ESubRoundOverReason overReason = 7; //子轮次切换原因
+}
+
+message RSubRoundInfo
+{
+    uint32 subRoundSeq = 2; //子轮次
+}
+
+message RaceGameInfo
+{
+    ERaceGameType roundGameType = 1; //游戏类型
+    Common.MusicInfo commonMusic = 2; //普通音乐
+}
+
+enum ERaceRoundStatus {
+    ERRS_UNKNOWN = 0; //未知
+    ERRS_WAITING = 1; //等待状态(暂停)
+    ERRS_CHOCING = 2; //选择曲目中
+    ERRS_ONGOINE = 3; //进行中
+    ERRS_END     = 4; //结束
+}
+
+enum ERaceGameType {
+    ERGT_UNKNOWN      = 0; //未知
+    ERGT_COMMON_MUSIC = 1; //普通排位音乐
+}
+
+//message RaceCommonMusic
+//{
+//    uint32 itemID           = 1; //音乐条目标识
+//    string itemName         = 2; //音乐条目名称
+//    string cover            = 3; //音乐条目封页图片
+//    string owner            = 4; //音乐条目所属（歌手）
+//    string lyric            = 5; //音乐条目对应歌词
+//    string ori              = 6; //原唱:origin
+//    string acc              = 7; //伴奏:accompany
+//    string midi             = 8; //音乐条目对应midi文件
+//    string zip              = 9; //资源压缩文件
+//    string rankBgm          = 10; //匹配玩法的伴奏
+//    uint32 beginMs          = 11; //beginTimeMs,匹配玩法的伴奏开始毫秒
+//    uint32 endMs            = 12; //endTimeMs,匹配玩法的伴奏结束毫秒
+//    string standIntro       = 13; //standIntro,擂台赛的导唱
+//    uint32 standIntroBeginT = 14; //standIntroBeginT,擂台赛导唱的开始毫秒
+//    uint32 standIntroEndT   = 15; //standIntroEndT,擂台赛导唱的结束毫秒
+//    uint32 totalMs          = 16; //totalTimeMs,匹配玩法伴奏总时长
+//    uint32 rankLrcBeginT    = 17; //rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
+//    uint32 standLrcBeginT   = 18; //standLrcBeginT,擂台赛第一句歌词的开始毫秒
+//    uint32 standLrcEndT     = 19; //standLrcEndT,擂台赛歌词的结束毫秒
+//    bool isBlank            = 20; //isBlank,是否擂台赛的白板item
+//    string standLrc         = 21; //standLrc,擂台赛歌词URL
+//    string rankUserVoice    = 22; //rankUserVoice,匹配进入游戏前的背景音乐
+//    uint32 rankLrcEndT      = 23; //rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
+//    uint32 task             = 24; //任务等级，若为0，表示非任务歌曲
+//    uint32 standTotalMs     = 25; //擂台赛伴奏模式的时长
+//}
+
+message QInnerRoundInfo
+{
+    uint32 userID                   = 1; //抢唱成功的玩家id
+    ERaceRoundOverReason overReason = 6; //切换轮次原因
+}
+
+enum ERaceRoundOverReason {
+    ERROR_UNKNOWN           = 0; //未知
+    ERROR_NO_ONE_SING       = 1; //没人抢唱
+    ERROR_NOT_ENOUTH_PLAYER = 2; //人数不够
+    ERROR_NORMAL_OVER       = 3; //正常结束
+}
+
+enum ESubRoundOverReason {
+    ESROR_UNKNOWN              = 0; //未知
+    ESROR_IN_ROUND_PLAYER_EXIT = 1; //当前玩家退出
+    ESROR_SELF_GIVE_UP         = 2; //自己放弃演唱
+}
