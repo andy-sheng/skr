@@ -59,6 +59,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
     internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
     internal lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
+    internal lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 别人唱
 
     internal lateinit var mRaceActorPanelView: RaceActorPanelView  //参与的人
 
@@ -97,6 +98,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         initTopView()
         initTurnSenceView()
         initSelectSongView()
+        initResuleView()
 
         initSingSenceView()
         initRightView()
@@ -105,6 +107,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()
         }, 500)
+    }
+
+    private fun initResuleView() {
+        mRaceMiddleResultView = rootView.findViewById(R.id.race_middle_result_view)
+        mRaceMiddleResultView.setRaceRoomData(mRoomData)
     }
 
 
@@ -438,7 +445,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun roundOver(overReason: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceMiddleResultView.showResult()
     }
 
     override fun showWaiting(showAnimation: Boolean) {

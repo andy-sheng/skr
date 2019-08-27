@@ -9,13 +9,16 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
+import com.module.playways.race.room.RaceRoomData
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import com.zq.live.proto.RaceRoom.ERaceWinType
 
 
 //选择歌曲页
@@ -36,6 +39,7 @@ class RaceMiddleResultView : ExConstraintLayout {
     val rightHeadIv: ExImageView
     val guidelineCenter2: Guideline
     val raceTopVsIv: ImageView
+    var roomData: RaceRoomData? = null
 
     constructor(context: Context) : super(context)
 
@@ -44,7 +48,7 @@ class RaceMiddleResultView : ExConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        View.inflate(context, com.module.playways.R.layout.race_middle_vs_view_layout, this)
+        View.inflate(context, R.layout.race_middle_vs_view_layout, this)
 
         resultTv = this.findViewById(R.id.result_tv)
         leftConstraintLayout = this.findViewById(R.id.left_constraintLayout)
@@ -60,19 +64,57 @@ class RaceMiddleResultView : ExConstraintLayout {
         rightHeadIv = this.findViewById(R.id.right_head_iv)
         guidelineCenter2 = this.findViewById(R.id.guidelineCenter2)
         raceTopVsIv = this.findViewById(R.id.race_top_vs_iv)
-
-
-        AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
-                .build())
-
-        AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
-                .build())
     }
 
-    fun bindData() {
+    fun setRaceRoomData(roomData: RaceRoomData) {
+        this.roomData = roomData
+    }
 
+    fun showResult() {
+        roomData?.realRoundInfo?.let {
+            if (it.status == ERaceRoundStatus.ERRS_END.value) {
+                leftTicketCountTv.text = it.scores[0].bLightCnt.toString()
+                if (it.scores[0].winType == ERaceWinType.RWT_WIN.value) {
+                    leftHeadIv.visibility = View.VISIBLE
+                } else {
+                    leftHeadIv.visibility = View.GONE
+                }
+
+                if (it.scores[0].isEscape) {
+                    leftTicketTv.visibility = View.GONE
+                    leftTicketCountTv.text = "逃跑"
+                } else {
+                    leftTicketTv.visibility = View.VISIBLE
+                }
+
+                AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[0].userID)?.avatar)
+                        .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
+                        .build())
+
+                rightTicketCountTv.text = it.scores[1].bLightCnt.toString()
+                if (it.scores[1].winType == ERaceWinType.RWT_WIN.value) {
+                    rightHeadIv.visibility = View.VISIBLE
+                } else {
+                    rightHeadIv.visibility = View.GONE
+                }
+
+                if (it.scores[1].isEscape) {
+                    rightTicketTv.visibility = View.GONE
+                    rightTicketCountTv.text = "逃跑"
+                } else {
+                    rightTicketTv.visibility = View.VISIBLE
+                }
+
+                AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[1].userID)?.avatar)
+                        .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
+                        .build())
+
+            } else {
+                MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
+            }
+        }
+
+        startVs()
     }
 
     fun startVs() {
