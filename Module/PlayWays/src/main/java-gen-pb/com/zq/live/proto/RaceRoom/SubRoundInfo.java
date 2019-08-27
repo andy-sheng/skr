@@ -62,7 +62,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   private final Integer choiceID;
 
   /**
-   * 开始相对时间（相对于startTimeMs时间）
+   * 开始相对时间（相对于createTimeMs时间）
    */
   @WireField(
       tag = 4,
@@ -71,7 +71,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   private final Integer beginMs;
 
   /**
-   * 结束相对时间（相对于startTimeMs时间）
+   * 结束相对时间（相对于createTimeMs时间）
    */
   @WireField(
       tag = 5,
@@ -200,7 +200,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
-   * 开始相对时间（相对于startTimeMs时间）
+   * 开始相对时间（相对于createTimeMs时间）
    */
   public Integer getBeginMs() {
     if(beginMs==null){
@@ -210,7 +210,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
-   * 结束相对时间（相对于startTimeMs时间）
+   * 结束相对时间（相对于createTimeMs时间）
    */
   public Integer getEndMs() {
     if(endMs==null){
@@ -251,14 +251,14 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
-   * 开始相对时间（相对于startTimeMs时间）
+   * 开始相对时间（相对于createTimeMs时间）
    */
   public boolean hasBeginMs() {
     return beginMs!=null;
   }
 
   /**
-   * 结束相对时间（相对于startTimeMs时间）
+   * 结束相对时间（相对于createTimeMs时间）
    */
   public boolean hasEndMs() {
     return endMs!=null;
@@ -312,7 +312,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     }
 
     /**
-     * 开始相对时间（相对于startTimeMs时间）
+     * 开始相对时间（相对于createTimeMs时间）
      */
     public Builder setBeginMs(Integer beginMs) {
       this.beginMs = beginMs;
@@ -320,7 +320,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     }
 
     /**
-     * 结束相对时间（相对于startTimeMs时间）
+     * 结束相对时间（相对于createTimeMs时间）
      */
     public Builder setEndMs(Integer endMs) {
       this.endMs = endMs;

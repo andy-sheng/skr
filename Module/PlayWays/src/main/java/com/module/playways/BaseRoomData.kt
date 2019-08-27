@@ -76,7 +76,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
                 '}'.toString()
     }
 
-    abstract fun <T : PlayerInfoModel> getPlayerInfoList(): List<T>?
+    abstract fun < T : PlayerInfoModel> getPlayerInfoList(): List<T>?
 
     fun getUserInfo(userID: Int): UserInfoModel? {
         if (userID == 0) {

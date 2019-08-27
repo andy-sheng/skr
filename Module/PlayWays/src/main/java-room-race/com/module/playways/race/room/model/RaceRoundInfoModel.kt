@@ -4,6 +4,7 @@ import android.util.ArrayMap
 import com.common.log.MyLog
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
+import com.module.playways.race.room.event.RaceSubRoundChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
@@ -15,8 +16,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     //    protected int overReason; // 结束的原因
     //  protected int roundSeq;// 本局轮次
     var status = ERaceRoundStatus.ERRS_UNKNOWN.value // 轮次状态在擂台赛中使用
-    var scores =  ArrayList<RaceScore>()
-    var subRoundSeq = 0
+    var scores = ArrayList<RaceScore>()
+    var subRoundSeq = 0 // 子轮次为1 代表第一轮A演唱 2 为第二轮B演唱
     var subRoundInfo = ArrayList<RaceSubRoundInfo>()
     var games = ArrayList<RaceGameInfo>()
     var playUsers = ArrayList<RacePlayerInfoModel>()
@@ -123,14 +124,29 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         if (roundInfo.overReason > 0) {
             this.overReason = roundInfo.overReason
         }
-        if(roundInfo.games.size>0){
+        if (roundInfo.games.size > 0) {
             //有数据
-            if(this.games.isEmpty()){
+            if (this.games.isEmpty()) {
                 this.games.addAll(roundInfo.games)
-            }else{
+            } else {
                 // 都有数据
 
             }
+        }
+        if (roundInfo.subRoundInfo.size > 0) {
+            //有数据
+            if (this.subRoundInfo.isEmpty()) {
+                this.subRoundInfo.addAll(roundInfo.subRoundInfo)
+            } else {
+                // 都有数据
+
+            }
+        }
+        if (this.subRoundSeq != roundInfo.subRoundSeq && this.status == roundInfo.status) {
+            val old = this.subRoundSeq
+            this.subRoundSeq = roundInfo.subRoundSeq
+            // 子轮次有切换
+            EventBus.getDefault().post(RaceSubRoundChangeEvent(this, old))
         }
         // 更新 sub
         updateStatus(notify, roundInfo.status)
@@ -151,7 +167,7 @@ internal fun getStatusPriority(status: Int): Int {
     return status
 }
 
-internal fun parseFromRoundInfoPB(pb: RaceRoundInfo):RaceRoundInfoModel {
+internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     val model = RaceRoundInfoModel()
     model.roundSeq = pb.roundSeq
     model.subRoundSeq = pb.subRoundSeq

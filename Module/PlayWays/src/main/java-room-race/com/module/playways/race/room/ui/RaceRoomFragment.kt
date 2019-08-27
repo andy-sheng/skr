@@ -10,6 +10,7 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -34,18 +35,11 @@ import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
+import com.module.playways.room.song.model.SongModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class RaceRoomFragment : BaseFragment(), IRaceRoomView {
-    override fun showWaiting() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showChoicing() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     internal lateinit var mCorePresenter: RaceCorePresenter
 
     internal lateinit var mInputContainerView: RaceInputContainerView
@@ -401,6 +395,34 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid)
+    }
+
+    override fun singBySelfFirstRound(songModel: SongModel?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun singBySelfSecondRound(songModel: SongModel?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun roundOver(overReason: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showWaiting() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showChoicing(showNextRound: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun useEventBus(): Boolean {

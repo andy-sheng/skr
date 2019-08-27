@@ -48,11 +48,19 @@ message RNextRoundIntroMsg
     repeated RaceGameInfo games = 2;
 }
 
+enum ERoundOverType {
+    EROT_UNKNOWN         = 0; //未知
+    EROT_SUB_ROUND_OVER  = 1; //子轮次结束
+    EROT_MAIN_ROUND_OVER = 2; //主轮次结束
+}
+
 message RaceRoundOverMsg
 {
-    sint64 roundOverTimeMs     = 1; //本轮次结束的毫秒时间戳
-    RaceRoundInfo currentRound = 2; //当前结束轮次的信息
-    RaceRoundInfo nextRound    = 3; //下个轮次的信息
+    sint64 roundOverTimeMs      = 1; //本轮次结束的毫秒时间戳
+    ERoundOverType overType     = 2; //轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound、games)
+    RaceRoundInfo currentRound  = 3; //当前结束轮次的信息
+    RaceRoundInfo nextRound     = 4; //下个轮次的信息
+    repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
 }
 
 message RExitGameMsg
@@ -122,14 +130,24 @@ message RGameConfig
 
 message RaceRoundInfo
 {
-    uint32 roundSeq                    = 1; //轮次顺序
-    uint32 subRoundSeq                 = 2; //子轮次
-    ERaceRoundStatus status            = 3; //轮次状态
-    ERaceRoundOverReason overReason    = 4; //切换轮次原因
-    repeated SubRoundInfo subRoundInfo = 5; //子轮次信息
-    repeated RoundScoreInfo scores     = 6; //得分信息
-    repeated ROnlineInfo waitUsers     = 7; //等待中用户列表
-    repeated ROnlineInfo playUsers     = 8; //当局玩的用户列表
+    uint32 roundSeq                      = 1; //轮次顺序
+    uint32 subRoundSeq                   = 2; //子轮次
+    ERaceRoundStatus status              = 3; //轮次状态
+    ERaceRoundOverReason overReason      = 4; //切换轮次原因
+    repeated SubRoundInfo subRoundInfo   = 5; //子轮次信息
+    repeated RoundScoreInfo scores       = 6; //得分信息
+    repeated ROnlineInfo waitUsers       = 7; //等待中用户列表
+    repeated ROnlineInfo playUsers       = 8; //当局玩的用户列表
+    uint32 introBeginMs                  = 9; //竞选开始相对时间（相对于createTimeMs时间）
+    uint32 introEndMs                    = 10; //竞选结束相对时间（相对于createTimeMs时间）
+    repeated RWantSingInfo wantSingInfos = 11; //竞选选择列表(当状态为ERRS_CHOCING时有效)
+}
+
+message RWantSingInfo
+{
+    uint32 userID   = 1; //玩家id
+    uint32 choiceID = 2; //选项id
+    sint64 timeMs   = 3; //选择时间戳
 }
 
 message RoundScoreInfo
@@ -151,8 +169,8 @@ message SubRoundInfo
     uint32 userID                  = 1; //用户id
     uint32 subRoundSeq             = 2; //子轮次
     uint32 choiceID                = 3; //选择项
-    uint32 beginMs                 = 4; //开始相对时间（相对于startTimeMs时间）
-    uint32 endMs                   = 5; //结束相对时间（相对于startTimeMs时间）
+    uint32 beginMs                 = 4; //开始相对时间（相对于createTimeMs时间）
+    uint32 endMs                   = 5; //结束相对时间（相对于createTimeMs时间）
     ESubRoundOverReason overReason = 7; //子轮次切换原因
 }
 
@@ -164,7 +182,7 @@ message RSubRoundInfo
 message RaceGameInfo
 {
     ERaceGameType roundGameType = 1; //游戏类型
-    Common.MusicInfo commonMusic = 2; //普通音乐
+    Common.MusicInfo commonMusic       = 2; //普通音乐
 }
 
 enum ERaceRoundStatus {
@@ -226,4 +244,5 @@ enum ESubRoundOverReason {
     ESROR_UNKNOWN              = 0; //未知
     ESROR_IN_ROUND_PLAYER_EXIT = 1; //当前玩家退出
     ESROR_SELF_GIVE_UP         = 2; //自己放弃演唱
+    ESROR_NORMAL_OVER          = 3; //正常结束
 }

@@ -12,6 +12,7 @@ import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
+import com.module.playways.race.room.event.RaceSubRoundChangeEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.model.parseFromRoundInfoPB
@@ -87,17 +88,40 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RaceRoundStatusChangeEvent) {
         processStatusChange(event.thisRound)
     }
+    /**
+     * 轮次内 演唱阶段子轮次切换事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceSubRoundChangeEvent) {
+        processStatusChange(event.thisRound)
+    }
 
     private fun processStatusChange(thisRound: RaceRoundInfoModel?) {
         if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
             mIRaceRoomView.showWaiting()
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
-            mIRaceRoomView.showChoicing()
+            mIRaceRoomView.showChoicing(true)
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-
-            // 演唱阶段
+            if(thisRound?.subRoundSeq==1){
+                // 变为演唱阶段，第一轮
+                val subRound1 = thisRound.subRoundInfo.get(0)
+                if(subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()){
+                    mIRaceRoomView.singBySelfFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID))
+                }else{
+                    mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID),mRoomData.getUserInfo(subRound1.userID))
+                }
+            }else if(thisRound?.subRoundSeq==2){
+                // 变为演唱阶段，第二轮
+                val subRound2 = thisRound.subRoundInfo.get(1)
+                if(subRound2.userID == MyUserInfoManager.getInstance().uid.toInt()){
+                    mIRaceRoomView.singBySelfSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID))
+                }else{
+                    mIRaceRoomView.singByOtherSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID),mRoomData.getUserInfo(subRound2.userID))
+                }
+            }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
             // 结束
+            mIRaceRoomView.roundOver(thisRound?.overReason)
         }
     }
 
@@ -118,7 +142,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RGetSingChanceMsg) {
         val roundInfoModel = parseFromRoundInfoPB(event.currentRound)
         if (roundInfoModel.roundSeq == mRoomData.realRoundSeq) {
-            // 轮次符合，切换
+            // 轮次符合，子轮次信息应该都有了
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(roundInfoModel, true)
         }
     }

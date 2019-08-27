@@ -15,6 +15,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundOverMsg.Builder> {
@@ -23,6 +24,8 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   private static final long serialVersionUID = 0L;
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
+
+  public static final ERoundOverType DEFAULT_OVERTYPE = ERoundOverType.EROT_UNKNOWN;
 
   /**
    * 本轮次结束的毫秒时间戳
@@ -34,10 +37,19 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   private final Long roundOverTimeMs;
 
   /**
-   * 当前结束轮次的信息
+   * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound、games)
    */
   @WireField(
       tag = 2,
+      adapter = "com.zq.live.proto.RaceRoom.ERoundOverType#ADAPTER"
+  )
+  private final ERoundOverType overType;
+
+  /**
+   * 当前结束轮次的信息
+   */
+  @WireField(
+      tag = 3,
       adapter = "com.zq.live.proto.RaceRoom.RaceRoundInfo#ADAPTER"
   )
   private final RaceRoundInfo currentRound;
@@ -46,30 +58,44 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
    * 下个轮次的信息
    */
   @WireField(
-      tag = 3,
+      tag = 4,
       adapter = "com.zq.live.proto.RaceRoom.RaceRoundInfo#ADAPTER"
   )
   private final RaceRoundInfo nextRound;
 
-  public RaceRoundOverMsg(Long roundOverTimeMs, RaceRoundInfo currentRound,
-      RaceRoundInfo nextRound) {
-    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
+  /**
+   * 下个轮次竞选游戏的列表
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.RaceRoom.RaceGameInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<RaceGameInfo> games;
+
+  public RaceRoundOverMsg(Long roundOverTimeMs, ERoundOverType overType, RaceRoundInfo currentRound,
+      RaceRoundInfo nextRound, List<RaceGameInfo> games) {
+    this(roundOverTimeMs, overType, currentRound, nextRound, games, ByteString.EMPTY);
   }
 
-  public RaceRoundOverMsg(Long roundOverTimeMs, RaceRoundInfo currentRound, RaceRoundInfo nextRound,
-      ByteString unknownFields) {
+  public RaceRoundOverMsg(Long roundOverTimeMs, ERoundOverType overType, RaceRoundInfo currentRound,
+      RaceRoundInfo nextRound, List<RaceGameInfo> games, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
+    this.overType = overType;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
+    this.games = Internal.immutableCopyOf("games", games);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.roundOverTimeMs = roundOverTimeMs;
+    builder.overType = overType;
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
+    builder.games = Internal.copyOf("games", games);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -81,8 +107,10 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     RaceRoundOverMsg o = (RaceRoundOverMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
+        && Internal.equals(overType, o.overType)
         && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(nextRound, o.nextRound);
+        && Internal.equals(nextRound, o.nextRound)
+        && games.equals(o.games);
   }
 
   @Override
@@ -91,8 +119,10 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
+      result = result * 37 + (overType != null ? overType.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
+      result = result * 37 + games.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -102,8 +132,10 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
+    if (overType != null) builder.append(", overType=").append(overType);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
+    if (!games.isEmpty()) builder.append(", games=").append(games);
     return builder.replace(0, 2, "RaceRoundOverMsg{").append('}').toString();
   }
 
@@ -128,6 +160,16 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   }
 
   /**
+   * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound、games)
+   */
+  public ERoundOverType getOverType() {
+    if(overType==null){
+        return new ERoundOverType.Builder().build();
+    }
+    return overType;
+  }
+
+  /**
    * 当前结束轮次的信息
    */
   public RaceRoundInfo getCurrentRound() {
@@ -148,10 +190,27 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   }
 
   /**
+   * 下个轮次竞选游戏的列表
+   */
+  public List<RaceGameInfo> getGamesList() {
+    if(games==null){
+        return new java.util.ArrayList<RaceGameInfo>();
+    }
+    return games;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
     return roundOverTimeMs!=null;
+  }
+
+  /**
+   * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound、games)
+   */
+  public boolean hasOverType() {
+    return overType!=null;
   }
 
   /**
@@ -168,14 +227,26 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     return nextRound!=null;
   }
 
+  /**
+   * 下个轮次竞选游戏的列表
+   */
+  public boolean hasGamesList() {
+    return games!=null;
+  }
+
   public static final class Builder extends Message.Builder<RaceRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
+
+    private ERoundOverType overType;
 
     private RaceRoundInfo currentRound;
 
     private RaceRoundInfo nextRound;
 
+    private List<RaceGameInfo> games;
+
     public Builder() {
+      games = Internal.newMutableList();
     }
 
     /**
@@ -183,6 +254,14 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
      */
     public Builder setRoundOverTimeMs(Long roundOverTimeMs) {
       this.roundOverTimeMs = roundOverTimeMs;
+      return this;
+    }
+
+    /**
+     * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound、games)
+     */
+    public Builder setOverType(ERoundOverType overType) {
+      this.overType = overType;
       return this;
     }
 
@@ -202,9 +281,18 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       return this;
     }
 
+    /**
+     * 下个轮次竞选游戏的列表
+     */
+    public Builder addAllGames(List<RaceGameInfo> games) {
+      Internal.checkElementsNotNull(games);
+      this.games = games;
+      return this;
+    }
+
     @Override
     public RaceRoundOverMsg build() {
-      return new RaceRoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
+      return new RaceRoundOverMsg(roundOverTimeMs, overType, currentRound, nextRound, games, super.buildUnknownFields());
     }
   }
 
@@ -216,16 +304,20 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     @Override
     public int encodedSize(RaceRoundOverMsg value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
-          + RaceRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
-          + RaceRoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
+          + ERoundOverType.ADAPTER.encodedSizeWithTag(2, value.overType)
+          + RaceRoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
+          + RaceRoundInfo.ADAPTER.encodedSizeWithTag(4, value.nextRound)
+          + RaceGameInfo.ADAPTER.asRepeated().encodedSizeWithTag(5, value.games)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RaceRoundOverMsg value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
-      RaceRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
-      RaceRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
+      ERoundOverType.ADAPTER.encodeWithTag(writer, 2, value.overType);
+      RaceRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
+      RaceRoundInfo.ADAPTER.encodeWithTag(writer, 4, value.nextRound);
+      RaceGameInfo.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.games);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -236,8 +328,17 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 2: builder.setCurrentRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
-          case 3: builder.setNextRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
+          case 2: {
+            try {
+              builder.setOverType(ERoundOverType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 3: builder.setCurrentRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.setNextRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
+          case 5: builder.games.add(RaceGameInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -254,6 +355,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       Builder builder = value.newBuilder();
       if (builder.currentRound != null) builder.currentRound = RaceRoundInfo.ADAPTER.redact(builder.currentRound);
       if (builder.nextRound != null) builder.nextRound = RaceRoundInfo.ADAPTER.redact(builder.nextRound);
+      Internal.redactElements(builder.games, RaceGameInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

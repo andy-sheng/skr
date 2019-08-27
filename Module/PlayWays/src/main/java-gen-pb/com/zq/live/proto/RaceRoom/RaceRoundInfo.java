@@ -31,6 +31,10 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
 
   public static final ERaceRoundOverReason DEFAULT_OVERREASON = ERaceRoundOverReason.ERROR_UNKNOWN;
 
+  public static final Integer DEFAULT_INTROBEGINMS = 0;
+
+  public static final Integer DEFAULT_INTROENDMS = 0;
+
   /**
    * 轮次顺序
    */
@@ -107,15 +111,45 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
   )
   private final List<ROnlineInfo> playUsers;
 
+  /**
+   * 竞选开始相对时间（相对于createTimeMs时间）
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer introBeginMs;
+
+  /**
+   * 竞选结束相对时间（相对于createTimeMs时间）
+   */
+  @WireField(
+      tag = 10,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer introEndMs;
+
+  /**
+   * 竞选选择列表(当状态为ERRS_CHOCING时有效)
+   */
+  @WireField(
+      tag = 11,
+      adapter = "com.zq.live.proto.RaceRoom.RWantSingInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<RWantSingInfo> wantSingInfos;
+
   public RaceRoundInfo(Integer roundSeq, Integer subRoundSeq, ERaceRoundStatus status,
       ERaceRoundOverReason overReason, List<SubRoundInfo> subRoundInfo, List<RoundScoreInfo> scores,
-      List<ROnlineInfo> waitUsers, List<ROnlineInfo> playUsers) {
-    this(roundSeq, subRoundSeq, status, overReason, subRoundInfo, scores, waitUsers, playUsers, ByteString.EMPTY);
+      List<ROnlineInfo> waitUsers, List<ROnlineInfo> playUsers, Integer introBeginMs,
+      Integer introEndMs, List<RWantSingInfo> wantSingInfos) {
+    this(roundSeq, subRoundSeq, status, overReason, subRoundInfo, scores, waitUsers, playUsers, introBeginMs, introEndMs, wantSingInfos, ByteString.EMPTY);
   }
 
   public RaceRoundInfo(Integer roundSeq, Integer subRoundSeq, ERaceRoundStatus status,
       ERaceRoundOverReason overReason, List<SubRoundInfo> subRoundInfo, List<RoundScoreInfo> scores,
-      List<ROnlineInfo> waitUsers, List<ROnlineInfo> playUsers, ByteString unknownFields) {
+      List<ROnlineInfo> waitUsers, List<ROnlineInfo> playUsers, Integer introBeginMs,
+      Integer introEndMs, List<RWantSingInfo> wantSingInfos, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundSeq = roundSeq;
     this.subRoundSeq = subRoundSeq;
@@ -125,6 +159,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
     this.scores = Internal.immutableCopyOf("scores", scores);
     this.waitUsers = Internal.immutableCopyOf("waitUsers", waitUsers);
     this.playUsers = Internal.immutableCopyOf("playUsers", playUsers);
+    this.introBeginMs = introBeginMs;
+    this.introEndMs = introEndMs;
+    this.wantSingInfos = Internal.immutableCopyOf("wantSingInfos", wantSingInfos);
   }
 
   @Override
@@ -138,6 +175,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
     builder.scores = Internal.copyOf("scores", scores);
     builder.waitUsers = Internal.copyOf("waitUsers", waitUsers);
     builder.playUsers = Internal.copyOf("playUsers", playUsers);
+    builder.introBeginMs = introBeginMs;
+    builder.introEndMs = introEndMs;
+    builder.wantSingInfos = Internal.copyOf("wantSingInfos", wantSingInfos);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -155,7 +195,10 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
         && subRoundInfo.equals(o.subRoundInfo)
         && scores.equals(o.scores)
         && waitUsers.equals(o.waitUsers)
-        && playUsers.equals(o.playUsers);
+        && playUsers.equals(o.playUsers)
+        && Internal.equals(introBeginMs, o.introBeginMs)
+        && Internal.equals(introEndMs, o.introEndMs)
+        && wantSingInfos.equals(o.wantSingInfos);
   }
 
   @Override
@@ -171,6 +214,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
       result = result * 37 + scores.hashCode();
       result = result * 37 + waitUsers.hashCode();
       result = result * 37 + playUsers.hashCode();
+      result = result * 37 + (introBeginMs != null ? introBeginMs.hashCode() : 0);
+      result = result * 37 + (introEndMs != null ? introEndMs.hashCode() : 0);
+      result = result * 37 + wantSingInfos.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -187,6 +233,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
     if (!scores.isEmpty()) builder.append(", scores=").append(scores);
     if (!waitUsers.isEmpty()) builder.append(", waitUsers=").append(waitUsers);
     if (!playUsers.isEmpty()) builder.append(", playUsers=").append(playUsers);
+    if (introBeginMs != null) builder.append(", introBeginMs=").append(introBeginMs);
+    if (introEndMs != null) builder.append(", introEndMs=").append(introEndMs);
+    if (!wantSingInfos.isEmpty()) builder.append(", wantSingInfos=").append(wantSingInfos);
     return builder.replace(0, 2, "RaceRoundInfo{").append('}').toString();
   }
 
@@ -281,6 +330,36 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
   }
 
   /**
+   * 竞选开始相对时间（相对于createTimeMs时间）
+   */
+  public Integer getIntroBeginMs() {
+    if(introBeginMs==null){
+        return DEFAULT_INTROBEGINMS;
+    }
+    return introBeginMs;
+  }
+
+  /**
+   * 竞选结束相对时间（相对于createTimeMs时间）
+   */
+  public Integer getIntroEndMs() {
+    if(introEndMs==null){
+        return DEFAULT_INTROENDMS;
+    }
+    return introEndMs;
+  }
+
+  /**
+   * 竞选选择列表(当状态为ERRS_CHOCING时有效)
+   */
+  public List<RWantSingInfo> getWantSingInfosList() {
+    if(wantSingInfos==null){
+        return new java.util.ArrayList<RWantSingInfo>();
+    }
+    return wantSingInfos;
+  }
+
+  /**
    * 轮次顺序
    */
   public boolean hasRoundSeq() {
@@ -336,6 +415,27 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
     return playUsers!=null;
   }
 
+  /**
+   * 竞选开始相对时间（相对于createTimeMs时间）
+   */
+  public boolean hasIntroBeginMs() {
+    return introBeginMs!=null;
+  }
+
+  /**
+   * 竞选结束相对时间（相对于createTimeMs时间）
+   */
+  public boolean hasIntroEndMs() {
+    return introEndMs!=null;
+  }
+
+  /**
+   * 竞选选择列表(当状态为ERRS_CHOCING时有效)
+   */
+  public boolean hasWantSingInfosList() {
+    return wantSingInfos!=null;
+  }
+
   public static final class Builder extends Message.Builder<RaceRoundInfo, Builder> {
     private Integer roundSeq;
 
@@ -353,11 +453,18 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
 
     private List<ROnlineInfo> playUsers;
 
+    private Integer introBeginMs;
+
+    private Integer introEndMs;
+
+    private List<RWantSingInfo> wantSingInfos;
+
     public Builder() {
       subRoundInfo = Internal.newMutableList();
       scores = Internal.newMutableList();
       waitUsers = Internal.newMutableList();
       playUsers = Internal.newMutableList();
+      wantSingInfos = Internal.newMutableList();
     }
 
     /**
@@ -428,9 +535,34 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
       return this;
     }
 
+    /**
+     * 竞选开始相对时间（相对于createTimeMs时间）
+     */
+    public Builder setIntroBeginMs(Integer introBeginMs) {
+      this.introBeginMs = introBeginMs;
+      return this;
+    }
+
+    /**
+     * 竞选结束相对时间（相对于createTimeMs时间）
+     */
+    public Builder setIntroEndMs(Integer introEndMs) {
+      this.introEndMs = introEndMs;
+      return this;
+    }
+
+    /**
+     * 竞选选择列表(当状态为ERRS_CHOCING时有效)
+     */
+    public Builder addAllWantSingInfos(List<RWantSingInfo> wantSingInfos) {
+      Internal.checkElementsNotNull(wantSingInfos);
+      this.wantSingInfos = wantSingInfos;
+      return this;
+    }
+
     @Override
     public RaceRoundInfo build() {
-      return new RaceRoundInfo(roundSeq, subRoundSeq, status, overReason, subRoundInfo, scores, waitUsers, playUsers, super.buildUnknownFields());
+      return new RaceRoundInfo(roundSeq, subRoundSeq, status, overReason, subRoundInfo, scores, waitUsers, playUsers, introBeginMs, introEndMs, wantSingInfos, super.buildUnknownFields());
     }
   }
 
@@ -449,6 +581,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
           + RoundScoreInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.scores)
           + ROnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.waitUsers)
           + ROnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(8, value.playUsers)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(9, value.introBeginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(10, value.introEndMs)
+          + RWantSingInfo.ADAPTER.asRepeated().encodedSizeWithTag(11, value.wantSingInfos)
           + value.unknownFields().size();
     }
 
@@ -462,6 +597,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
       RoundScoreInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.scores);
       ROnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.waitUsers);
       ROnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 8, value.playUsers);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 9, value.introBeginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 10, value.introEndMs);
+      RWantSingInfo.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.wantSingInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -493,6 +631,9 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
           case 6: builder.scores.add(RoundScoreInfo.ADAPTER.decode(reader)); break;
           case 7: builder.waitUsers.add(ROnlineInfo.ADAPTER.decode(reader)); break;
           case 8: builder.playUsers.add(ROnlineInfo.ADAPTER.decode(reader)); break;
+          case 9: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 10: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 11: builder.wantSingInfos.add(RWantSingInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -511,6 +652,7 @@ public final class RaceRoundInfo extends Message<RaceRoundInfo, RaceRoundInfo.Bu
       Internal.redactElements(builder.scores, RoundScoreInfo.ADAPTER);
       Internal.redactElements(builder.waitUsers, ROnlineInfo.ADAPTER);
       Internal.redactElements(builder.playUsers, ROnlineInfo.ADAPTER);
+      Internal.redactElements(builder.wantSingInfos, RWantSingInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

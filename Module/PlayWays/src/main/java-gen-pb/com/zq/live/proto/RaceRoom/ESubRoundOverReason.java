@@ -21,7 +21,12 @@ public enum ESubRoundOverReason implements WireEnum {
   /**
    * 自己放弃演唱
    */
-  ESROR_SELF_GIVE_UP(2);
+  ESROR_SELF_GIVE_UP(2),
+
+  /**
+   * 正常结束
+   */
+  ESROR_NORMAL_OVER(3);
 
   public static final ProtoAdapter<ESubRoundOverReason> ADAPTER = new ProtoAdapter_ESubRoundOverReason();
 
@@ -39,6 +44,7 @@ public enum ESubRoundOverReason implements WireEnum {
       case 0: return ESROR_UNKNOWN;
       case 1: return ESROR_IN_ROUND_PLAYER_EXIT;
       case 2: return ESROR_SELF_GIVE_UP;
+      case 3: return ESROR_NORMAL_OVER;
       default: return null;
     }
   }

@@ -8,12 +8,16 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.model.RaceConfigModel
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
+import com.module.playways.room.song.model.SongModel
 import org.greenrobot.eventbus.EventBus
 import java.util.ArrayList
 
 class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
+
+
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RACE
 
@@ -46,7 +50,15 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     override fun <T : PlayerInfoModel> getPlayerInfoList(): List<T>? {
         val l = ArrayList<T>()
+        realRoundInfo?.let {
+            l.addAll(it.playUsers as List<T>)
+            l.addAll(it.waitUsers as List<T>)
+        }
         return l
+    }
+
+    fun getChoiceInfoById(choiceID: Int): SongModel? {
+        return this.realRoundInfo?.games?.getOrNull(choiceID-1)?.commonMusic
     }
 
     fun loadFromRsp(rsp: JoinRaceRoomRspModel) {
@@ -64,4 +76,5 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         this.gameStartTs = rsp.gameStartTimeMs
 //        this.xxxx = rsp.newRoundBegin
     }
+
 }
