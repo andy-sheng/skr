@@ -9,6 +9,7 @@ class JoinRaceRoomRspModel {
     var config: RaceConfigModel?=null
     var currentRound:RaceRoundInfoModel?=null
     var elapsedTimeMs = 0
-    var gameStartTimeMs = 0
+    var gameStartTimeMs = 0L
     var games:List<RaceGameInfo>?=null
+    var newRoundBegin = false
 }
