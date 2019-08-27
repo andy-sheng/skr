@@ -2,7 +2,6 @@ package com.module.playways.race.room.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import com.common.view.ex.ExConstraintLayout
 
 
@@ -17,7 +16,7 @@ class RaceLyricView : ExConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        View.inflate(context, com.module.playways.R.layout.race_lyric_view_layout, this)
+//        View.inflate(context, com.module.playways.R.layout.race_lyric_view_layout, this)
 
     }
 }
