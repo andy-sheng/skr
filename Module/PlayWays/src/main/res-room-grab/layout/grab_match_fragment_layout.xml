@@ -53,20 +53,6 @@
             </com.common.view.ex.ExRelativeLayout>
         </FrameLayout>
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tv_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_40_dp"
-            android:gravity="center"
-            android:text=""
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_16_dp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
         <!--<com.common.view.ex.ExTextView-->
         <!--android:layout_marginRight="@dimen/view_77_dp"-->
         <!--android:layout_alignParentRight="true"-->

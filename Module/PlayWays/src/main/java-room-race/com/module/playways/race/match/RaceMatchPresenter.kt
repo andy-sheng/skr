@@ -9,26 +9,28 @@ import com.module.RouterConstants
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.room.msg.event.raceroom.RJoinActionEvent
-import com.zq.live.proto.RaceRoom.RJoinActionMsg
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class RaceMatchPresenter : RxLifeCyclePresenter() {
+class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCyclePresenter() {
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
     init {
 
     }
 
-    fun queryMatch() {
+    fun startLoopMatchTask() {
         launch {
-            val map = mutableMapOf("platform" to 20)
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.queryMatch(body) }
-            // 处理结果
+            repeat(Int.MAX_VALUE) {
+                val map = mutableMapOf("platform" to 20)
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe { raceRoomServerApi.queryMatch(body) }
+                delay(10000)
+            }
         }
     }
 
@@ -51,10 +53,16 @@ class RaceMatchPresenter : RxLifeCyclePresenter() {
                 val rsp = JSON.parseObject(result.data.toJSONString(), JoinRaceRoomRspModel::class.java)
                 rsp.roomID = e.pb.gameID
                 // TODO 跳到RaceRoomActivity
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_ROOM)
-                        .withSerializable("JoinRaceRoomRspModel", rsp)
-                        .navigation()
+                mIRaceMatchingView.matchRaceSucess(rsp)
             }
+        }
+    }
+
+    fun cancelMatch() {
+        launch {
+            val map = mutableMapOf("platform" to 20)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.cancelMatch(body) }
         }
     }
 }

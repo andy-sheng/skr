@@ -1,17 +1,10 @@
 package com.module.playways.race.room.model
 
 import com.common.log.MyLog
-import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
-import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent
-import com.module.playways.grab.room.model.GrabPlayerInfoModel
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
-import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import com.zq.live.proto.Room.EQRoundStatus
-import com.zq.live.proto.Room.EWantSingType
 import org.greenrobot.eventbus.EventBus
 
 class RaceRoundInfoModel : BaseRoundInfoModel() {
@@ -22,7 +15,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var scores: ArrayList<RaceScore>? = null
     var subRoundSeq = 0
     var subRoundInfo: ArrayList<RaceSubRoundInfo>? = null
-    var games: ArrayList<RaceGameInfo>? = null
+    var games: List<RaceGameInfo>? = null
     var playUsers: ArrayList<RacePlayerInfoModel>? = null
     var waitUsers: ArrayList<RacePlayerInfoModel>? = null
 
