@@ -8,4 +8,6 @@ public class GameModeType {
     public static final int GAME_MODE_FUNNY = 2; // 娱乐模式
 
     public static final int GAME_MODE_GRAB = 5; // 一唱到底模式
+
+    public static final int GAME_MODE_RACE = 6; // 一唱到底模式
 }
