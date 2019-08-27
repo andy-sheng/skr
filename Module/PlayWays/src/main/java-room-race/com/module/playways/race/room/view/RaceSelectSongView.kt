@@ -44,10 +44,10 @@ class RaceSelectSongView : ExConstraintLayout {
         secondSongItem = findViewById(com.module.playways.R.id.second_song_item) as RaceSelectSongItemView
         thirdSongItem = findViewById(com.module.playways.R.id.third_song_item) as RaceSelectSongItemView
         forthSongItem = findViewById(com.module.playways.R.id.forth_song_item) as RaceSelectSongItemView
-        itemList[0] = firstSongItem
-        itemList[1] = secondSongItem
-        itemList[2] = thirdSongItem
-        itemList[3] = forthSongItem
+        itemList.add(firstSongItem)
+        itemList.add(secondSongItem)
+        itemList.add(thirdSongItem)
+        itemList.add(forthSongItem)
         progressBar.max = 360
         progressBar.progress = 0
 
