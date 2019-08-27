@@ -133,6 +133,15 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     private fun initRightView() {
         mRaceRightOpView = rootView.findViewById(R.id.race_right_op_view)
+        mRaceRightOpView.setListener(object : RightOpListener {
+            override fun onClickGiveUp() {
+                // 放弃演唱
+            }
+
+            override fun onClickVote() {
+                // 投票
+            }
+        })
     }
 
     private fun initSingSenceView() {
@@ -441,6 +450,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun singBySelfFirstRound(songModel: SongModel?) {
         mLastSceneView = mRaceTopVsView
+        mRaceRightOpView.showGiveUp(false)
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingBySelf {
             mRaceTopVsView.visibility = View.GONE
@@ -451,6 +461,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
         mLastSceneView = mRaceTopVsView
+        // todo 需要判断我是否当前PK的参与者
+        mRaceRightOpView.showVote(false)
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
             mRaceSelfSingLyricView.startFly()
@@ -459,6 +471,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singBySelfSecondRound(songModel: SongModel?) {
+        mRaceRightOpView.showGiveUp(false)
         mRaceTopVsView.startSingBySelf {
             mRaceSelfSingLyricView.startFly()
             mLastSceneView = mRaceSelfSingLyricView.realView
@@ -466,6 +479,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
+        // todo 需要判断我是否当前PK的参与者
+        mRaceRightOpView.showVote(false)
         mRaceTopVsView.startSingByOther {
             mRaceSelfSingLyricView.startFly()
             mLastSceneView = mRaceSelfSingLyricView.realView

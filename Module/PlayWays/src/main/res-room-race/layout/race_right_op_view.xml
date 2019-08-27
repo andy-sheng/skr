@@ -11,7 +11,8 @@
         android:layout_width="@dimen/view_95_dp"
         android:layout_height="@dimen/view_48_dp"
         app:bl_unSelected_drawable="@drawable/race_vote_normal_icon"
-        app:bl_selected_drawable="@drawable/race_vote_selected_icon"/>
+        app:bl_selected_drawable="@drawable/race_vote_selected_icon"
+        android:visibility="gone"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/give_up_iv"
