@@ -1,21 +1,27 @@
 package com.module.playways.race.room.view
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
-import android.widget.RelativeLayout
+import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
+import com.common.utils.U
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
+import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RaceGameInfo
 
 
-
-class RaceSelectSongItemView : RelativeLayout {
+class RaceSelectSongItemView : ExConstraintLayout {
     lateinit var songNameTv: ExTextView
     lateinit var avatarIv1: BaseImageView
     lateinit var avatarIv2: BaseImageView
     lateinit var avatarIv3: BaseImageView
+    var roomData: RaceRoomData? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -35,13 +41,64 @@ class RaceSelectSongItemView : RelativeLayout {
         avatarIv1 = findViewById(com.module.playways.R.id.avatar_iv_1) as BaseImageView
         avatarIv2 = findViewById(com.module.playways.R.id.avatar_iv_2) as BaseImageView
         avatarIv3 = findViewById(com.module.playways.R.id.avatar_iv_3) as BaseImageView
+        reset()
     }
 
-    fun bindData() {
+    fun setRaceRoomData(data: RaceRoomData) {
+        this.roomData = data
+    }
 
+    fun setSong(info: RaceGameInfo?) {
+        info?.let {
+            songNameTv.text = info.commonMusic?.itemName
+        }
+    }
+
+    fun bindData(list: ArrayList<Int>?) {
+        list?.let {
+            for (i in 0 until it.size) {
+                when (i) {
+                    0 -> {
+                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBlur(true)
+                                .build())
+                    }
+                    1 -> {
+                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBlur(true)
+                                .build())
+                    }
+                    2 -> {
+                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                                .setBlur(true)
+                                .build())
+                    }
+                }
+            }
+        }
+    }
+
+    fun getAvatarById(id: Int): String {
+        roomData?.let {
+            it.realRoundInfo?.playUsers?.forEach {
+                if (it.userInfo.userId == id) {
+                    return it.userInfo.avatar
+                }
+            }
+        }
+
+        return ""
     }
 
     fun startSelectedAnimation() {
+        val drawable = DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#FFF8CBFF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                .build()
+        setBackground(drawable)
         val animation = ScaleAnimation(
                 1.0f, 1.1f, 1.0f, 1.1f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
@@ -53,6 +110,11 @@ class RaceSelectSongItemView : RelativeLayout {
 
     fun reset() {
         clearAnimation()
+        val drawable = DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#FFEBE7FF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(8f).toFloat())
+                .build()
+        setBackground(drawable)
         avatarIv1.visibility = View.GONE
         avatarIv2.visibility = View.GONE
         avatarIv3.visibility = View.GONE

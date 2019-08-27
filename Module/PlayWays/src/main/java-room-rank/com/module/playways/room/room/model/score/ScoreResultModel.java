@@ -78,6 +78,14 @@ public class ScoreResultModel implements Serializable {
         this.expChange = expChange;
     }
 
+    // 最新状态
+    public ScoreStateModel getLastState() {
+        if (states != null) {
+            return states.get(states.size() - 1);
+        }
+        return null;
+    }
+
     public void parse(UserScoreResult userScoreResult) {
         if (userScoreResult == null) {
             MyLog.d(TAG, "parse" + " userScoreResult=null ");

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     app:bl_corners_radius="@dimen/view_8_dp"
+    tools:parentTag="com.common.view.ex.ExConstraintLayout"
     app:bl_solid_color="#FFEBE7FF"
     android:layout_height="@dimen/view_40_dp">
 
@@ -50,4 +52,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</com.common.view.ex.ExConstraintLayout>
+</merge>

@@ -50,9 +50,15 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mRaceTopOpView: RaceTopOpView
     internal lateinit var mRaceTopContentView: RaceTopContentView
-    internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView
     internal lateinit var mRaceTopVsView: RaceTopVsView
-    internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView
+
+    internal lateinit var mRaceRightOpView : RaceRightOpView
+
+    internal lateinit var mRaceSelectSongView : RaceSelectSongView   // 选歌
+    internal lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
+    internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
+    internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
+    internal lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
 
     internal lateinit var mRaceActorPanelView: RaceActorPanelView  //参与的人
 
@@ -90,15 +96,31 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
-        initLyricView()
+        initSelectSongView()
+
+        initSingSenceView()
+        initRightView()
+
 
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()
         }, 500)
     }
 
-    private fun initLyricView() {
+
+    private fun initSelectSongView() {
+        mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
+        mRaceSelectSongView.setRoomData(mRoomData)
+        mRaceSelectSongView.visibility = View.GONE
+    }
+
+    private fun initRightView() {
+        mRaceRightOpView = rootView.findViewById(R.id.race_right_op_view)
+    }
+
+    private fun initSingSenceView() {
         mRaceSelfSingLyricView = RaceSelfSingLyricView(rootView.findViewById(R.id.race_self_sing_lyric_view_stub) as ViewStub, null)
+        mRaceOtherSingCardView = RaceOtherSingCardView(rootView.findViewById(R.id.race_other_sing_lyric_view_stub) as ViewStub, mRoomData)
     }
 
     private fun initInputView() {
@@ -107,6 +129,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     private fun initTurnSenceView() {
+        mRaceWaitingCardView = rootView.findViewById(R.id.race_wait_card_view)
+        mRaceWaitingCardView.visibility = View.GONE
         mRaceTurnInfoCardView = rootView.findViewById(R.id.race_turn_card_view)
         mRaceTurnInfoCardView.visibility = View.GONE
     }
@@ -422,7 +446,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showChoicing(showNextRound: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRaceSelectSongView.visibility = View.VISIBLE
+        mRaceSelectSongView.setSongName()
+        mRaceSelectSongView.updateSelectState()
     }
 
     override fun useEventBus(): Boolean {
