@@ -9,6 +9,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import com.common.utils.U
 import com.module.playways.R
+import com.module.playways.listener.AnimationListener
 
 /**
  * 等待中的卡片，只有一个离场的动画，无入场动画
@@ -22,6 +23,8 @@ class RaceWaitingCardView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     private val waitIv: ImageView
+
+    internal var mEnterTranslateAnimation: TranslateAnimation? = null // 飞入的进场动画
     internal var mLeaveTranslateAnimation: TranslateAnimation? = null // 飞出的离场动画
 
     init {
@@ -29,8 +32,29 @@ class RaceWaitingCardView : ConstraintLayout {
         waitIv = this.findViewById(R.id.wait_iv)
     }
 
+    // 入场动画
+    fun animationEnter() {
+        if (mEnterTranslateAnimation == null) {
+            mEnterTranslateAnimation = TranslateAnimation((-U.getDisplayUtils().screenWidth).toFloat(), 0.0f, 0.0f, 0.0f)
+            mEnterTranslateAnimation?.duration = 200
+        }
+        mEnterTranslateAnimation?.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationEnd(animation: Animation?) {
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+                visibility = View.VISIBLE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+        })
+        this.startAnimation(mEnterTranslateAnimation)
+    }
+
     // 离场动画
-    fun animationLeave() {
+    fun animationLeave(listener: AnimationListener?) {
         if (this != null && this.visibility == View.VISIBLE) {
             if (mLeaveTranslateAnimation == null) {
                 mLeaveTranslateAnimation = TranslateAnimation(0.0f, U.getDisplayUtils().screenWidth.toFloat(), 0.0f, 0.0f)
@@ -44,6 +68,7 @@ class RaceWaitingCardView : ConstraintLayout {
                 override fun onAnimationEnd(animation: Animation) {
                     clearAnimation()
                     visibility = View.GONE
+                    listener?.onFinish()
                 }
 
                 override fun onAnimationRepeat(animation: Animation) {

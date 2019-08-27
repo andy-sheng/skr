@@ -18,6 +18,7 @@ import com.component.report.fragment.QuickFeedbackFragment
 import com.module.playways.R
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.listener.AnimationListener
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.inter.IRaceRoomView
@@ -52,9 +53,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mRaceTopContentView: RaceTopContentView
     internal lateinit var mRaceTopVsView: RaceTopVsView
 
-    internal lateinit var mRaceRightOpView : RaceRightOpView
+    internal lateinit var mRaceRightOpView: RaceRightOpView
 
-    internal lateinit var mRaceSelectSongView : RaceSelectSongView   // 选歌
+    internal lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
     internal lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
     internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
     internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
@@ -449,13 +450,47 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showWaiting(showAnimation: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (showAnimation) {
+            mRaceWaitingCardView.animationEnter()
+        } else {
+            mRaceWaitingCardView.visibility = View.VISIBLE
+        }
     }
 
     override fun showChoicing(showNextRound: Boolean) {
-        mRaceSelectSongView.visibility = View.VISIBLE
-        mRaceSelectSongView.setSongName()
-        mRaceSelectSongView.updateSelectState()
+        if (mRaceWaitingCardView.visibility == View.VISIBLE) {
+            mRaceWaitingCardView.animationLeave(object : AnimationListener {
+                override fun onFinish() {
+                    if (showNextRound) {
+                        mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
+                            override fun onFinish() {
+                                mRaceSelectSongView.visibility = View.VISIBLE
+                                mRaceSelectSongView.setSongName()
+                                mRaceSelectSongView.updateSelectState()
+                            }
+                        })
+                    } else {
+                        mRaceSelectSongView.visibility = View.VISIBLE
+                        mRaceSelectSongView.setSongName()
+                        mRaceSelectSongView.updateSelectState()
+                    }
+                }
+            })
+        } else {
+            if (showNextRound) {
+                mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
+                    override fun onFinish() {
+                        mRaceSelectSongView.visibility = View.VISIBLE
+                        mRaceSelectSongView.setSongName()
+                        mRaceSelectSongView.updateSelectState()
+                    }
+                })
+            } else {
+                mRaceSelectSongView.visibility = View.VISIBLE
+                mRaceSelectSongView.setSongName()
+                mRaceSelectSongView.updateSelectState()
+            }
+        }
     }
 
     override fun useEventBus(): Boolean {
