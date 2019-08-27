@@ -61,9 +61,9 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
-        if (mExpectRoundInfo != null) {
-            l.addAll(mExpectRoundInfo.getPlayUsers());
-            l.addAll(mExpectRoundInfo.getWaitUsers());
+        if (getExpectRoundInfo() != null) {
+            l.addAll(getExpectRoundInfo().getPlayUsers());
+            l.addAll(getExpectRoundInfo().getWaitUsers());
         } else {
             GrabPlayerInfoModel p = new GrabPlayerInfoModel();
             p.setSkrer(false);
@@ -82,19 +82,19 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public List<GrabPlayerInfoModel> getInSeatPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
-        if (mExpectRoundInfo != null) {
-            l.addAll(mExpectRoundInfo.getPlayUsers());
+        if (getExpectRoundInfo() != null) {
+            l.addAll(getExpectRoundInfo().getPlayUsers());
         }
         return l;
     }
 
 
     public boolean isInPlayerList() {
-        if (mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null) {
+        if (getExpectRoundInfo() == null || getExpectRoundInfo().getPlayUsers() == null) {
             return false;
         }
 
-        List<GrabPlayerInfoModel> getPlayerInfoList = mExpectRoundInfo.getPlayUsers();
+        List<GrabPlayerInfoModel> getPlayerInfoList = getExpectRoundInfo().getPlayUsers();
         for (GrabPlayerInfoModel model :
                 getPlayerInfoList) {
             if (model.getUserID() == MyUserInfoManager.getInstance().getUid()) {
@@ -131,17 +131,17 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
      */
     @Override
     public void checkRoundInEachMode() {
-        if (mIsGameFinish) {
-            MyLog.d(TAG, "游戏结束了，不需要再checkRoundInEachMode");
+        if (getIsIsGameFinish()) {
+            MyLog.d(getTAG(), "游戏结束了，不需要再checkRoundInEachMode");
             return;
         }
-        if (mExpectRoundInfo == null) {
-            MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null");
+        if (getExpectRoundInfo() == null) {
+            MyLog.d(getTAG(), "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null");
             // 结束状态了
-            if (mRealRoundInfo != null) {
-                GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
+            if (getRealRoundInfo() != null) {
+                GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) getRealRoundInfo();
                 lastRoundInfoModel.updateStatus(false, EQRoundStatus.QRS_END.getValue());
-                mRealRoundInfo = null;
+                setRealRoundInfo(null);
 //                if (lastRoundInfoModel != null
 //                        && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
 //                        && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
@@ -152,16 +152,16 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             }
             return;
         }
-        MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + mExpectRoundInfo.getRoundSeq());
-        if (RoomDataUtils.roundSeqLarger(mExpectRoundInfo, mRealRoundInfo) || mRealRoundInfo == null) {
+        MyLog.d(getTAG(), "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + getExpectRoundInfo().getRoundSeq());
+        if (RoomDataUtils.roundSeqLarger(getExpectRoundInfo(), getRealRoundInfo()) || getRealRoundInfo() == null) {
             // 轮次大于，才切换
-            GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
+            GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) getRealRoundInfo();
             if (lastRoundInfoModel != null) {
                 lastRoundInfoModel.updateStatus(false, EQRoundStatus.QRS_END.getValue());
             }
-            mRealRoundInfo = mExpectRoundInfo;
-            if (mRealRoundInfo != null) {
-                ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, EQRoundStatus.QRS_INTRO.getValue());
+            setRealRoundInfo(getExpectRoundInfo());
+            if (getRealRoundInfo() != null) {
+                ((GrabRoundInfoModel) getRealRoundInfo()).updateStatus(false, EQRoundStatus.QRS_INTRO.getValue());
             }
             // 告知切换到新的轮次了
 //            if (lastRoundInfoModel != null
@@ -170,7 +170,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 //                // 一唱到底自动加金币
 //                setCoin(getCoin() + 1);
 //            }
-            EventBus.getDefault().post(new GrabRoundChangeEvent(lastRoundInfoModel, (GrabRoundInfoModel) mRealRoundInfo));
+            EventBus.getDefault().post(new GrabRoundChangeEvent(lastRoundInfoModel, (GrabRoundInfoModel) getRealRoundInfo()));
         }
     }
 
@@ -284,7 +284,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         if (rsp.getConfig() != null) {
             this.setGrabConfigModel(rsp.getConfig());
         } else {
-            MyLog.w(TAG, "JoinGrabRoomRspModel rsp==null");
+            MyLog.w(getTAG(), "JoinGrabRoomRspModel rsp==null");
         }
         GrabRoundInfoModel grabRoundInfoModel = rsp.getCurrentRound();
         if (grabRoundInfoModel != null) {
@@ -360,7 +360,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
                 ", roomType=" + roomType +
                 ", ownerId=" + ownerId +
                 ", hasGameBegin=" + hasGameBegin +
-                ", mAgoraToken=" + mAgoraToken +
+                ", mAgoraToken=" + getAgoraToken() +
                 '}';
     }
 
@@ -389,7 +389,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
         if (mOpenRecording == -1) {
             if (U.getDeviceUtils().getLevel().equals(DeviceUtils.LEVEL.BAD)) {
-                MyLog.w(TAG, "设备太差，不开启录制");
+                MyLog.w(getTAG(), "设备太差，不开启录制");
                 mOpenRecording = 0;
             } else {
                 mOpenRecording = 1;

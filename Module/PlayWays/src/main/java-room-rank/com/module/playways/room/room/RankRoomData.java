@@ -48,25 +48,25 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
      */
     @Override
     public void checkRoundInEachMode() {
-        MyLog.d(TAG, "checkRound mExcpectRoundInfo=" + mExpectRoundInfo + " mRealRoundInfo=" + mRealRoundInfo);
-        if (mIsGameFinish) {
-            MyLog.d(TAG, "游戏结束了，不需要再check");
+        MyLog.d(getTAG(), "checkRound mExcpectRoundInfo=" + getExpectRoundInfo() + " mRealRoundInfo=" + getRealRoundInfo());
+        if (getIsIsGameFinish()) {
+            MyLog.d(getTAG(), "游戏结束了，不需要再check");
             return;
         }
-        if (mExpectRoundInfo == null) {
+        if (getExpectRoundInfo() == null) {
             // 结束状态了
-            if (mRealRoundInfo != null) {
-                RankRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
-                mRealRoundInfo = null;
+            if (getRealRoundInfo() != null) {
+                RankRoundInfoModel lastRoundInfoModel = getRealRoundInfo();
+                setRealRoundInfo(null);
                 EventBus.getDefault().post(new RankRoundInfoChangeEvent(false, lastRoundInfoModel));
             }
             return;
         }
-        if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
+        if (!RoomDataUtils.roundInfoEqual(getExpectRoundInfo(), getRealRoundInfo())) {
             // 轮次需要更新了
-            RankRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
-            mRealRoundInfo = mExpectRoundInfo;
-            if (mRealRoundInfo.getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
+            RankRoundInfoModel lastRoundInfoModel = getRealRoundInfo();
+            setRealRoundInfo(getExpectRoundInfo());
+            if (getRealRoundInfo().getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
                 // 轮到自己唱了。开始发心跳，开始倒计时，3秒后 开始开始混伴奏，开始解除引擎mute，
                 EventBus.getDefault().post(new RankRoundInfoChangeEvent(true, lastRoundInfoModel));
             } else {
@@ -208,7 +208,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
         return "RankRoomData{" +
                 ", mGameConfigModel=" + mGameConfigModel +
                 ", mSongLineNum=" + mSongLineNum +
-                ", mAgoraToken=" + mAgoraToken +
+                ", mAgoraToken=" + getAgoraToken() +
                 "}\n" + super.toString();
     }
 }

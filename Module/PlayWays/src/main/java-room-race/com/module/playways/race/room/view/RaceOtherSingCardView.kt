@@ -95,7 +95,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
 
     fun bindData() {
         tryInflate()
-        val infoModel = roomData.getRealRoundInfo<RaceRoundInfoModel>()
+        val infoModel = roomData.realRoundInfo
         val userInfoModel = roomData.getUserInfo(infoModel.userID)
         mUiHandler!!.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false

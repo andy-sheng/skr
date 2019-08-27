@@ -95,7 +95,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
     fun startBuy(baseGift: BaseGift, receiver: UserInfoModel) {
         mBaseGift = baseGift
         mReceiver = receiver
-        val infoModel:GrabRoundInfoModel? = getGrabRoomData()?.getRealRoundInfo()
+        val infoModel:GrabRoundInfoModel? = getGrabRoomData()?.realRoundInfo
         if (infoModel != null) {
             if (baseGift.isCanContinue) {
                 mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()?:0L, getGrabRoomData()?.realRoundSeq?:0, infoModel?.isSingStatus(), receiver)
@@ -120,7 +120,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
         mBuyGiftPresenter = BuyGiftPresenter(this)
 
         setOnClickListener {
-            val grabRoundInfoModel:GrabRoundInfoModel? = getGrabRoomData()?.getRealRoundInfo()
+            val grabRoundInfoModel:GrabRoundInfoModel? = getGrabRoomData()?.realRoundInfo
             if (grabRoundInfoModel != null) {
                 mBuyGiftPresenter?.buyGift(mBaseGift, getGrabRoomData()?.gameId?.toLong()?:0L, getGrabRoomData()?.realRoundSeq?:0, grabRoundInfoModel?.isSingStatus(), mReceiver)
 

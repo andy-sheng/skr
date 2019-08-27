@@ -3,7 +3,9 @@ package com.module.playways.room.msg.process;
 import com.common.log.MyLog;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IPushMsgProcess;
+import com.module.playways.room.msg.event.raceroom.RGetSingChanceEvent;
 import com.module.playways.room.msg.event.raceroom.RJoinActionEvent;
+import com.module.playways.room.msg.event.raceroom.RWantSingChanceEvent;
 import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
 import com.zq.live.proto.CombineRoom.CombineRoomMsg;
 import com.zq.live.proto.RaceRoom.ERaceRoomMsgType;
@@ -45,6 +47,10 @@ public class RaceRoomMsgProcess implements IPushMsgProcess {
             }
             if(msg.getMsgType() == ERaceRoomMsgType.RRM_JOIN_ACTION){
                 EventBus.getDefault().post(new RJoinActionEvent(msg.getRJoinActionMsg()));
+            }else if(msg.getMsgType() == ERaceRoomMsgType.RRM_WANT_SING){
+                EventBus.getDefault().post(new RWantSingChanceEvent(msg.getRWantSingChanceMsg()));
+            }else if(msg.getMsgType() == ERaceRoomMsgType.RRM_GET_SING){
+                EventBus.getDefault().post(new RGetSingChanceEvent(msg.getRGetSingChanceMsg()));
             }
         } catch (IOException e) {
             MyLog.e(e);

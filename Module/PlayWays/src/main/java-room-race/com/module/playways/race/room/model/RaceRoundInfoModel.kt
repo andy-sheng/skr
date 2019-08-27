@@ -1,5 +1,6 @@
 package com.module.playways.race.room.model
 
+import android.util.ArrayMap
 import com.common.log.MyLog
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent
@@ -7,9 +8,11 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
+import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import com.zq.live.proto.RaceRoom.RaceRoundInfo
 import com.zq.live.proto.Room.EQRoundStatus
 import com.zq.live.proto.Room.EWantSingType
 import org.greenrobot.eventbus.EventBus
@@ -19,12 +22,13 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     //    protected int overReason; // 结束的原因
     //  protected int roundSeq;// 本局轮次
     var status = ERaceRoundStatus.ERRS_UNKNOWN.value // 轮次状态在擂台赛中使用
-    var scores: ArrayList<RaceScore>? = null
+    var scores =  ArrayList<RaceScore>()
     var subRoundSeq = 0
-    var subRoundInfo: ArrayList<RaceSubRoundInfo>? = null
-    var games: ArrayList<RaceGameInfo>? = null
-    var playUsers: ArrayList<RacePlayerInfoModel>? = null
-    var waitUsers: ArrayList<RacePlayerInfoModel>? = null
+    var subRoundInfo = ArrayList<RaceSubRoundInfo>()
+    var games = ArrayList<RaceGameInfo>()
+    var playUsers = ArrayList<RacePlayerInfoModel>()
+    var waitUsers = ArrayList<RacePlayerInfoModel>()
+    val gamesChoiceMap = ArrayMap<Int, ArrayList<Int>>()
 
     override fun getType(): Int {
         return TYPE_RACE
@@ -44,6 +48,20 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             waitUsers?.addAll(it)
         }
         EventBus.getDefault().post(RacePlaySeatUpdateEvent(waitUsers))
+    }
+
+    fun addWantSingChange(choiceID: Int, userID: Int?) {
+        var list = gamesChoiceMap[choiceID]
+        if (list == null) {
+            list = ArrayList()
+            gamesChoiceMap[choiceID] = list
+        }
+        if (!list.contains(userID)) {
+            userID?.let {
+                list.add(it)
+                EventBus.getDefault().post(RaceWantSingChanceEvent(choiceID, it))
+            }
+        }
     }
 
     /**
@@ -69,9 +87,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         // 观众席与玩家席更新，以最新的为准
         run {
             var needUpdate = false
-            if (playUsers?.size == roundInfo.playUsers?.size) {
+            if (playUsers.size == roundInfo.playUsers.size) {
                 var i = 0
-                while (i < (playUsers?.size ?: 0) && i < (roundInfo.playUsers?.size ?: 0)) {
+                while (i < playUsers.size && i < roundInfo.playUsers.size) {
                     val infoModel1 = playUsers?.get(i)
                     val infoModel2 = roundInfo.playUsers?.get(i)
                     if (infoModel1 != infoModel2) {
@@ -90,9 +108,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
 
         run {
             var needUpdate = false
-            if (waitUsers?.size == roundInfo.waitUsers?.size) {
+            if (waitUsers.size == roundInfo.waitUsers.size) {
                 var i = 0
-                while (i < (waitUsers?.size ?: 0) && i < (roundInfo.waitUsers?.size ?: 0)) {
+                while (i < waitUsers.size && i < roundInfo.waitUsers.size) {
                     val infoModel1 = waitUsers?.get(i)
                     val infoModel2 = roundInfo.waitUsers?.get(i)
                     if (infoModel1 != infoModel2) {
@@ -115,6 +133,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         updateStatus(notify, roundInfo.status)
         return
     }
+
+
 }
 
 
@@ -126,5 +146,26 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
  */
 internal fun getStatusPriority(status: Int): Int {
     return status
+}
+
+internal fun parseFromRoundInfoPB(pb: RaceRoundInfo):RaceRoundInfoModel {
+    val model = RaceRoundInfoModel()
+    model.roundSeq = pb.roundSeq
+    model.subRoundSeq = pb.subRoundSeq
+    model.status = pb.status.value
+    model.overReason = pb.overReason.value
+    pb.subRoundInfoList.forEach {
+        model.subRoundInfo.add(parseFromSubRoundInfoPB(it))
+    }
+    pb.scoresList.forEach {
+        model.scores.add(parseFromRoundScoreInfoPB(it))
+    }
+    pb.waitUsersList.forEach {
+        model.waitUsers.add(parseFromROnlineInfoPB(it))
+    }
+    pb.playUsersList.forEach {
+        model.playUsers.add(parseFromROnlineInfoPB(it))
+    }
+    return model
 }
 

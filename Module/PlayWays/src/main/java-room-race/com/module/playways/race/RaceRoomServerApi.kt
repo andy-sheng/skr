@@ -45,6 +45,7 @@ interface RaceRoomServerApi {
     "platform": "PF_UNKNOWN",
     "roomID": 0
     }
+
     {
         "data": {
         "config": {},

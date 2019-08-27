@@ -227,12 +227,12 @@ public class RoomDataUtils {
     }
 
     public static String getSaveAudioForAiFilePath() {
-        String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", BaseRoomData.AUDIO_FOR_AI_PATH);
+        String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", BaseRoomData.Companion.getAUDIO_FOR_AI_PATH());
         return saveAudioForAiFilePath;
     }
 
     public static String getSaveMatchingSocreForAiFilePath() {
-        String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", BaseRoomData.MATCHING_SCORE_FOR_AI_PATH);
+        String saveAudioForAiFilePath = U.getAppInfoUtils().getFilePathInSubDir("upload", BaseRoomData.Companion.getMATCHING_SCORE_FOR_AI_PATH());
         return saveAudioForAiFilePath;
     }
 

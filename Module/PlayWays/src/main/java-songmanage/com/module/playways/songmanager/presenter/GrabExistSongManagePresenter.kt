@@ -301,7 +301,7 @@ class GrabExistSongManagePresenter(internal var mIGrabSongManageView: IExistSong
          * 因为现在用Activity 里，所以这里的 mGrabRoomData 跟之前不是一个引用了
          */
         mGrabRoomData.expectRoundInfo = event.newRoundInfo
-        mGrabRoomData.setRealRoundInfo(event.newRoundInfo)
+        mGrabRoomData.realRoundInfo = event.newRoundInfo
         updateSongList()
     }
 

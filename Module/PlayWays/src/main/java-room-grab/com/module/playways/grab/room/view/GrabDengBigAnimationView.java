@@ -91,7 +91,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
         dengSvga.setVisibility(VISIBLE);
         dengSvga.setLoops(1);
-        SvgaParserAdapter.parse( BaseRoomData.GRAB_BURST_BIG_SVGA, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(BaseRoomData.Companion.getGRAB_BURST_BIG_SVGA(), new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete( SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);

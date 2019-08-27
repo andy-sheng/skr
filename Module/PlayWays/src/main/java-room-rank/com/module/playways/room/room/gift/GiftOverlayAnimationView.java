@@ -61,10 +61,10 @@ public class GiftOverlayAnimationView {
         if (giftPlayModel.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
             switch (giftPlayModel.getEmojiType()) {
                 case SP_EMOJI_TYPE_UNLIKE:
-                    url = BaseRoomData.ROOM_SPECAIL_EMOJI_DABIAN;
+                    url = BaseRoomData.Companion.getROOM_SPECAIL_EMOJI_DABIAN();
                     break;
                 case SP_EMOJI_TYPE_LIKE:
-                    url = BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
+                    url = BaseRoomData.Companion.getROOM_SPECAIL_EMOJI_AIXIN();
                     break;
             }
         } else {

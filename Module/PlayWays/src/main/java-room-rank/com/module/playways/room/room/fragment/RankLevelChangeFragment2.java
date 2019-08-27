@@ -169,13 +169,13 @@ public class RankLevelChangeFragment2 extends BaseFragment {
         mScoreStateModel = mRoomData.getRecordData().mScoreResultModel.getSeq(3);
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
             BgAnimationGo();
-            url = BaseRoomData.RANK_RESULT_WIN_SVGA;
+            url = BaseRoomData.Companion.getRANK_RESULT_WIN_SVGA();
             isWin = true;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
-            url = BaseRoomData.RANK_RESULT_DRAW_SVGA;
+            url = BaseRoomData.Companion.getRANK_RESULT_DRAW_SVGA();
             isWin = false;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
-            url = BaseRoomData.RANK_RESULT_LOSE_SVGA;
+            url = BaseRoomData.Companion.getRANK_RESULT_LOSE_SVGA();
             isWin = false;
         } else {
             // TODO: 2019/4/16  服务器给了个异常结果

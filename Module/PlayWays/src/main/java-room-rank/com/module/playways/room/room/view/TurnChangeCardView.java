@@ -107,7 +107,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SvgaParserAdapter.parse( BaseRoomData.RANK_BATTLE_START_SVGA, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(BaseRoomData.Companion.getRANK_BATTLE_START_SVGA(), new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete( SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));

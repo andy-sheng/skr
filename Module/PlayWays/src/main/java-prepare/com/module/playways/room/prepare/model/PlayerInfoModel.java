@@ -13,14 +13,24 @@ public abstract class PlayerInfoModel implements Serializable {
     protected int userID;
     protected UserInfoModel userInfo;
 
-    /**以下是只在排位赛才会用到的**/
+    /**
+     * 以下是只在排位赛才会用到的
+     **/
 
     public void setSkrer(boolean skrer) {
         isSkrer = skrer;
     }
 
     public int getUserID() {
-        return userID;
+        if (userID == 0) {
+            if (userInfo != null) {
+                return userInfo.getUserId();
+            } else {
+                return 0;
+            }
+        } else {
+            return userID;
+        }
     }
 
     public void setUserID(int userID) {
