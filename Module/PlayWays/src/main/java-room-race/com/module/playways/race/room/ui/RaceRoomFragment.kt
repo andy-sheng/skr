@@ -40,6 +40,13 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class RaceRoomFragment : BaseFragment(), IRaceRoomView {
+    override fun showWaiting() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showChoicing() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     internal lateinit var mCorePresenter: RaceCorePresenter
 

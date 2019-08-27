@@ -85,6 +85,7 @@ public interface RouterConstants {
     String ACTIVITY_FEEDS_TAG_DETAIL = "/feeds/FeedsTagDetailActivity";
 
     String ACTIVITY_RACE_ROOM = "/race/RaceRoomActivity";
+    String ACTIVITY_RACE_MATCH_ROOM = "/race/RaceMatchActivity";
 
     //WebViewActivity
     String ACTIVITY_WEB = "/common/ExpendWebActivity";

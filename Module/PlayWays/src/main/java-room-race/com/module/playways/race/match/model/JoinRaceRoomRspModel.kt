@@ -11,6 +11,6 @@ class JoinRaceRoomRspModel:Serializable{
     var currentRound:RaceRoundInfoModel?=null
     var elapsedTimeMs = 0
     var gameStartTimeMs = 0L
-    var games:List<RaceGameInfo>?=null
+    var games:ArrayList<RaceGameInfo>?=null
     var newRoundBegin = false
 }

@@ -43,10 +43,18 @@ class RaceSelectSongItemView : RelativeLayout {
 
     fun startSelectedAnimation() {
         val animation = ScaleAnimation(
-                1.0f, 1.15f, 1.0f, 1.15f,
+                1.0f, 1.1f, 1.0f, 1.1f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
 
         animation.duration = 500
+        animation.fillAfter = true
         startAnimation(animation)
+    }
+
+    fun reset() {
+        clearAnimation()
+        avatarIv1.visibility = View.GONE
+        avatarIv2.visibility = View.GONE
+        avatarIv3.visibility = View.GONE
     }
 }

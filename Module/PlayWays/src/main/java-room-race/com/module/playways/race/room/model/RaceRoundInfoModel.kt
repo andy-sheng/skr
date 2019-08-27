@@ -2,19 +2,12 @@ package com.module.playways.race.room.model
 
 import android.util.ArrayMap
 import com.common.log.MyLog
-import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
-import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent
-import com.module.playways.grab.room.model.GrabPlayerInfoModel
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
-import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.RaceRoundInfo
-import com.zq.live.proto.Room.EQRoundStatus
-import com.zq.live.proto.Room.EWantSingType
 import org.greenrobot.eventbus.EventBus
 
 class RaceRoundInfoModel : BaseRoundInfoModel() {

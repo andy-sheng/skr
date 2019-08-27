@@ -49,7 +49,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
     @Override
     public void checkRoundInEachMode() {
         MyLog.d(getTAG(), "checkRound mExcpectRoundInfo=" + getExpectRoundInfo() + " mRealRoundInfo=" + getRealRoundInfo());
-        if (getIsIsGameFinish()) {
+        if (isIsGameFinish()) {
             MyLog.d(getTAG(), "游戏结束了，不需要再check");
             return;
         }

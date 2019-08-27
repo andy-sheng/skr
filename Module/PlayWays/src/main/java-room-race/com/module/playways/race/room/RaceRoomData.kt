@@ -14,13 +14,12 @@ import org.greenrobot.eventbus.EventBus
 import java.util.ArrayList
 
 class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
+    override val gameType: Int
+        get() = GameModeType.GAME_MODE_RACE
 
     var raceConfigModel: RaceConfigModel? = null
     var hasExitGame = false
 
-    override fun getGameType(): Int {
-        return GameModeType.GAME_MODE_RACE
-    }
 
     /**
      * 检查轮次是否要更新
@@ -54,7 +53,9 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         this.gameId = rsp.roomID
         this.raceConfigModel = rsp.config
         this.expectRoundInfo = rsp.currentRound
-        this.expectRoundInfo.games = rsp.games
+        rsp.games?.let {
+            this.expectRoundInfo?.games = it
+        }
         this.realRoundInfo = null
         this.isIsGameFinish = false
         this.hasExitGame = false

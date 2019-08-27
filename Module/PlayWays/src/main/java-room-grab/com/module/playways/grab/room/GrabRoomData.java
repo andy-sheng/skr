@@ -131,7 +131,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
      */
     @Override
     public void checkRoundInEachMode() {
-        if (getIsIsGameFinish()) {
+        if (isIsGameFinish()) {
             MyLog.d(getTAG(), "游戏结束了，不需要再checkRoundInEachMode");
             return;
         }
