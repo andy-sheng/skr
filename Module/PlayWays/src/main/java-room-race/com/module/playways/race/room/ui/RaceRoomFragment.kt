@@ -21,11 +21,9 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.presenter.RaceCorePresenter
-import com.module.playways.race.room.view.actor.RaceActorPanelView
-import com.module.playways.race.room.view.RaceInputContainerView
-import com.module.playways.race.room.view.topContent.RaceTopContentView
-import com.module.playways.race.room.view.RaceTopOpView
 import com.module.playways.race.room.view.*
+import com.module.playways.race.room.view.actor.RaceActorPanelView
+import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView

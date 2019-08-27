@@ -44,27 +44,29 @@ import java.util.*
 class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
 
     val mTag = "RaceMatchFragment"
-    internal var mIvBack: ExImageView? = null
-    internal var mIvTop: ExImageView? = null
-    internal var mTvMatchedTime: ExTextView? = null
+    internal lateinit var mIvBack: ExImageView
+
+    internal lateinit var mIvTop: ExImageView
+
+    internal lateinit var mTvMatchedTime: ExTextView
     //    internal var mTvTip: ExTextView? = null
-    internal var mIvCancelMatch: ExTextView? = null
+    internal lateinit var mIvCancelMatch: ExTextView
+
+    internal var mMatchTimeTask: HandlerTaskTimer? = null
+
+    internal lateinit var mSdvOwnIcon: SimpleDraweeView
+
+    internal lateinit var mRlIcon1Root: ExRelativeLayout
+
+    internal lateinit var mSvgaMatchBg: SVGAImageView
+
+    internal lateinit var mExitDialog: DialogPlus
 
     internal var mIconAnimatorSet: AnimatorSet? = null
 
     internal var mMatchPresenter: RaceMatchPresenter? = null
 
     internal var mQuotationsArray: List<String>? = null
-
-    internal var mMatchTimeTask: HandlerTaskTimer? = null
-
-    internal var mSdvOwnIcon: SimpleDraweeView? = null
-
-    internal var mRlIcon1Root: ExRelativeLayout? = null
-
-    internal var mSvgaMatchBg: SVGAImageView? = null
-
-    internal var mExitDialog: DialogPlus? = null
 
     private var mControlTask: HandlerTaskTimer? = null
 
@@ -98,18 +100,18 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                 .setSolidColor(if (MyUserInfoManager.getInstance().sex == ESex.SX_MALE.value) U.getColor(R.color.color_man_stroke_color_trans_20) else U.getColor(R.color.color_woman_stroke_color_trans_20))
                 .build()
 
-        mRlIcon1Root?.background = drawable
+        mRlIcon1Root.background = drawable
 
         val res = resources
         mQuotationsArray = Arrays.asList(*res.getStringArray(R.array.match_quotations))
 
-        mIvCancelMatch?.setOnClickListener(object : DebounceViewClickListener() {
+        mIvCancelMatch.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 goBack()
             }
         })
 
-        mIvBack?.setOnClickListener(object : DebounceViewClickListener() {
+        mIvBack.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 goBack()
@@ -128,15 +130,15 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
     }
 
     fun showBackground() {
-        mSvgaMatchBg!!.visibility = View.VISIBLE
-        mSvgaMatchBg!!.loops = 1
+        mSvgaMatchBg.visibility = View.VISIBLE
+        mSvgaMatchBg.loops = 1
 
         SvgaParserAdapter.parse("grab_matching.svga", object : SVGAParser.ParseCompletion {
             override fun onComplete(@NotNull videoItem: SVGAVideoEntity) {
                 val drawable = SVGADrawable(videoItem)
-                mSvgaMatchBg!!.loops = -1
-                mSvgaMatchBg!!.setImageDrawable(drawable)
-                mSvgaMatchBg!!.startAnimation()
+                mSvgaMatchBg.loops = -1
+                mSvgaMatchBg.setImageDrawable(drawable)
+                mSvgaMatchBg.startAnimation()
             }
 
             override fun onError() {
@@ -193,7 +195,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                             return
                         }
 
-                        mTvMatchedTime?.text = String.format(U.app().getString(R.string.match_time_info), integer)
+                        mTvMatchedTime.text = String.format(U.app().getString(R.string.match_time_info), integer)
                     }
                 })
     }
@@ -229,15 +231,15 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
     override fun destroy() {
         super.destroy()
         if (mExitDialog != null && mExitDialog!!.isShowing) {
-            mExitDialog!!.dismiss()
+            mExitDialog.dismiss()
         }
         stopTimeTask()
         if (mControlTask != null) {
             mControlTask!!.dispose()
         }
         if (mSvgaMatchBg != null) {
-            mSvgaMatchBg!!.callback = null
-            mSvgaMatchBg!!.stopAnimation(true)
+            mSvgaMatchBg.callback = null
+            mSvgaMatchBg.stopAnimation(true)
         }
         U.getSoundUtils().release(TAG)
     }
@@ -264,7 +266,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                 .setCancelBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
                         if (mExitDialog != null) {
-                            mExitDialog!!.dismiss()
+                            mExitDialog.dismiss()
                         }
 
                         U.getSoundUtils().release(GrabMatchSuccessFragment.TAG)
@@ -280,7 +282,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                     override fun click(view: View) {
                         // 继续匹配
                         if (mExitDialog != null) {
-                            mExitDialog!!.dismiss()
+                            mExitDialog.dismiss()
                         }
                     }
                 })
@@ -293,7 +295,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
                 .create()
-        mExitDialog!!.show()
+        mExitDialog.show()
 
     }
 
@@ -358,8 +360,8 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
      * MatchSuccessFragment add后，动画播放完再remove掉匹配中页面
      */
     override fun notifyToHide() {
-        if (mExitDialog != null && mExitDialog!!.isShowing) {
-            mExitDialog!!.dismiss(false)
+        if (mExitDialog != null && mExitDialog.isShowing) {
+            mExitDialog.dismiss(false)
         }
         rootView.visibility = View.GONE
     }
