@@ -441,7 +441,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showWaiting() {
+    override fun showWaiting(showAnimation: Boolean) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

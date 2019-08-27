@@ -9,23 +9,22 @@ import android.widget.ProgressBar
 import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-
 class RaceSelectSongView : ExConstraintLayout {
     val mTag = "RaceSelectSongView"
     var bg: ImageView
-    val progressBg: ExImageView
-    val progressBar: ProgressBar
-    val forthSongItem: RaceSelectSongItemView
-    val firstSongItem: RaceSelectSongItemView
-    val secondSongItem: RaceSelectSongItemView
-    val thirdSongItem: RaceSelectSongItemView
-    val itemList: ArrayList<RaceSelectSongItemView> = ArrayList()
+    private val progressBg: ExImageView
+    private val progressBar: ProgressBar
+    private val forthSongItem: RaceSelectSongItemView
+    private val firstSongItem: RaceSelectSongItemView
+    private val secondSongItem: RaceSelectSongItemView
+    private val thirdSongItem: RaceSelectSongItemView
+    private val itemList: ArrayList<RaceSelectSongItemView> = ArrayList()
     var animator: ValueAnimator? = null
     var mRoomData: RaceRoomData? = null
 
@@ -36,14 +35,14 @@ class RaceSelectSongView : ExConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        View.inflate(context, com.module.playways.R.layout.race_select_song_layout, this)
-        bg = findViewById(com.module.playways.R.id.bg) as ImageView
-        progressBg = findViewById(com.module.playways.R.id.progress_bg) as ExImageView
-        progressBar = findViewById(com.module.playways.R.id.progress_bar) as ProgressBar
-        firstSongItem = findViewById(com.module.playways.R.id.first_song_item) as RaceSelectSongItemView
-        secondSongItem = findViewById(com.module.playways.R.id.second_song_item) as RaceSelectSongItemView
-        thirdSongItem = findViewById(com.module.playways.R.id.third_song_item) as RaceSelectSongItemView
-        forthSongItem = findViewById(com.module.playways.R.id.forth_song_item) as RaceSelectSongItemView
+        View.inflate(context, R.layout.race_select_song_layout, this)
+        bg = findViewById(R.id.bg)
+        progressBg = findViewById(R.id.progress_bg)
+        progressBar = findViewById(R.id.progress_bar)
+        firstSongItem = findViewById(R.id.first_song_item)
+        secondSongItem = findViewById(R.id.second_song_item)
+        thirdSongItem = findViewById(R.id.third_song_item)
+        forthSongItem = findViewById(R.id.forth_song_item)
         itemList.add(firstSongItem)
         itemList.add(secondSongItem)
         itemList.add(thirdSongItem)
@@ -100,7 +99,7 @@ class RaceSelectSongView : ExConstraintLayout {
         animator = ValueAnimator.ofInt(0, 360)
         animator?.duration = 6000
         animator?.addUpdateListener {
-            progressBar.progress = it.getAnimatedValue() as Int
+            progressBar.progress = it.animatedValue as Int
         }
         animator?.start()
     }

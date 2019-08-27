@@ -179,7 +179,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     private fun processStatusChange(thisRound: RaceRoundInfoModel?) {
         if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
-            mIRaceRoomView.showWaiting()
+            mIRaceRoomView.showWaiting(true)
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
             mIRaceRoomView.showChoicing(true)
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
