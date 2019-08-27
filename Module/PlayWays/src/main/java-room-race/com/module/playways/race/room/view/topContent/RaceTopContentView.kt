@@ -119,7 +119,7 @@ class RaceTopContentView : ConstraintLayout {
 
     //只有轮次切换的时候调用
     private fun initData() {
-        val list = mRoomData?.getPlayerInfoList<RacePlayerInfoModel>()
+        val list = mRoomData?.getAllPlayer()
         if (!list.isNullOrEmpty()) {
             adapter.mDataList.clear()
             adapter.mDataList.addAll(list)
@@ -135,24 +135,6 @@ class RaceTopContentView : ConstraintLayout {
             }
         } else {
             MyLog.e(TAG, "initData 没人？？？？")
-
-            // todo 加点测试数据
-            adapter.mDataList.clear()
-            for (i in 0..10) {
-                val race = RacePlayerInfoModel()
-                race.userID = MyUserInfoManager.getInstance().uid.toInt()
-                race.userInfo = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().myUserInfo)
-                adapter.mDataList.add(race)
-            }
-            adapter.notifyDataSetChanged()
-            if (adapter.mDataList.size >= 7) {
-                moreTv.text = "${adapter.mDataList.size}人"
-                moreTv.visibility = View.VISIBLE
-                maskIv.visibility = View.VISIBLE
-            } else {
-                moreTv.visibility = View.GONE
-                maskIv.visibility = View.GONE
-            }
         }
     }
 

@@ -84,6 +84,10 @@ class RaceWaitingCardView : ConstraintLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        mEnterTranslateAnimation?.setAnimationListener(null)
+        mEnterTranslateAnimation?.cancel()
 
+        mLeaveTranslateAnimation?.setAnimationListener(null)
+        mLeaveTranslateAnimation?.cancel()
     }
 }

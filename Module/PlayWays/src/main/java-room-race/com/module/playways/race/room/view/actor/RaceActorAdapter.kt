@@ -1,5 +1,6 @@
 package com.module.playways.race.room.view.actor
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import com.module.playways.race.room.model.RacePlayerInfoModel
 
 class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHolder>() {
 
-    var mDataList = ArrayList<RacePlayerInfoModel>()
+    var mDataList = ArrayList<RaceActorInfoModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RaceActorViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.race_actor_item_layout, parent, false)
@@ -39,20 +40,35 @@ class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHold
 
 
         var mPosition = 0
-        var mModel: RacePlayerInfoModel? = null
+        var mModel: RaceActorInfoModel? = null
 
-        fun bindData(pos: Int, model: RacePlayerInfoModel) {
+        fun bindData(pos: Int, model: RaceActorInfoModel) {
             this.mPosition = pos
             this.mModel = model
 
-            //TODO 描述怎么说？？
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.userInfo.avatar)
+            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.plyer?.userInfo?.avatar)
                     .setBorderColor(U.getColor(R.color.white))
                     .setBorderWidth(2.dp().toFloat())
                     .setCircle(true)
                     .build())
-            statusTv.text = "等待中"
-            nameTv.text = UserInfoManager.getInstance().getRemarkName(model.userInfo.userId, model.userInfo.nickname)
+            when {
+                model.status == 1 -> {
+                    statusTv.visibility = View.VISIBLE
+                    statusTv.setTextColor(Color.parseColor("#FFC15B"))
+                    statusTv.text = "演唱中"
+                }
+                model.status == 2 -> {
+                    statusTv.visibility = View.VISIBLE
+                    statusTv.setTextColor(U.getColor(R.color.white_trans_50))
+                    statusTv.text = "等待中"
+                }
+                else -> {
+                    statusTv.visibility = View.GONE
+                }
+            }
+            descTv.text = model.levelDesc
+            nameTv.text = UserInfoManager.getInstance().getRemarkName(model.plyer?.userInfo?.userId
+                    ?: 0, model.plyer?.userInfo?.nickname)
 
         }
     }

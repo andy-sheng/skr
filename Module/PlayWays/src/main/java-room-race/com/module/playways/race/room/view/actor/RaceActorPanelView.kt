@@ -29,7 +29,6 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
     lateinit var pagerAdapter: PagerAdapter
 
     var actorView: RaceActorView? = null   // 竞演者
-    var guestView: RaceActorView? = null  // 观众
 
     var mShowOrHideAnimator: ObjectAnimator? = null
 
@@ -50,7 +49,7 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
 
         pagerAdapter = object : PagerAdapter() {
             override fun getCount(): Int {
-                return 2
+                return 1
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -63,15 +62,6 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
                         container.addView(actorView)
                     }
                     return actorView!!
-                } else if (position == 1) {
-                    // 观众
-                    if (guestView == null) {
-                        guestView = RaceActorView(raceVp.context, mRoomData)
-                    }
-                    if (container.indexOfChild(guestView) == -1) {
-                        container.addView(guestView)
-                    }
-                    return guestView!!
                 }
                 return super.instantiateItem(container, position)
             }
@@ -83,8 +73,6 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
             override fun getPageTitle(position: Int): CharSequence? {
                 if (position == 0) {
                     return "竞演者"
-                } else if (position == 1) {
-                    return "观众"
                 }
                 return ""
             }
@@ -110,8 +98,6 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
                     // 竞演者
-                } else if (position == 1) {
-                    // 观众
                 }
             }
 
@@ -133,6 +119,7 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
 
     fun show() {
         tryInflate()
+        actorView?.initData()
         if (mShowOrHideAnimator != null) {
             mShowOrHideAnimator?.removeAllListeners()
             mShowOrHideAnimator?.cancel()

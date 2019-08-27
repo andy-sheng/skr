@@ -58,7 +58,20 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
     }
 
     fun getChoiceInfoById(choiceID: Int): SongModel? {
-        return this.realRoundInfo?.games?.getOrNull(choiceID-1)?.commonMusic
+        return this.realRoundInfo?.games?.getOrNull(choiceID - 1)?.commonMusic
+    }
+
+    fun getAllPlayer(): ArrayList<RacePlayerInfoModel> {
+        val list = ArrayList<RacePlayerInfoModel>()
+        val playUsers = realRoundInfo?.playUsers
+        val waitUsers = realRoundInfo?.waitUsers
+        if (!playUsers.isNullOrEmpty()) {
+            list.addAll(playUsers)
+        }
+        if (!waitUsers.isNullOrEmpty()) {
+            list.addAll(waitUsers)
+        }
+        return list
     }
 
     fun loadFromRsp(rsp: JoinRaceRoomRspModel) {
