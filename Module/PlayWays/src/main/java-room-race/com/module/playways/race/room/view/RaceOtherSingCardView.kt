@@ -18,14 +18,12 @@ import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
-import com.zq.live.proto.Room.EQRoundStatus
 import org.greenrobot.eventbus.EventBus
 
 class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : ExViewStub(viewStub){
@@ -95,7 +93,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
 
     fun bindData() {
         tryInflate()
-        val infoModel = roomData.getRealRoundInfo<RaceRoundInfoModel>()
+        val infoModel = roomData.getRealRoundInfo() as RaceRoundInfoModel
         val userInfoModel = roomData.getUserInfo(infoModel.userID)
         mUiHandler!!.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false

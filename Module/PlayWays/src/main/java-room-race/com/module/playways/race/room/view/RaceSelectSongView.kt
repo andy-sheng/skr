@@ -47,6 +47,10 @@ class RaceSelectSongView : ExConstraintLayout {
         launch {
             delay(1000)
             startCountDown()
+            firstSongItem.startSelectedAnimation()
+
+            delay(5000)
+            firstSongItem.reset()
         }
     }
 
