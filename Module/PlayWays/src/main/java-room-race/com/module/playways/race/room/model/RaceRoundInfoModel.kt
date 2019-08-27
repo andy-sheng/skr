@@ -123,6 +123,16 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         if (roundInfo.overReason > 0) {
             this.overReason = roundInfo.overReason
         }
+        if(roundInfo.games.size>0){
+            //有数据
+            if(this.games.isEmpty()){
+                this.games.addAll(roundInfo.games)
+            }else{
+                // 都有数据
+
+            }
+        }
+        // 更新 sub
         updateStatus(notify, roundInfo.status)
         return
     }

@@ -19,6 +19,9 @@ import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
+import com.module.playways.room.msg.event.raceroom.RBLightEvent
+import com.module.playways.room.msg.event.raceroom.RExitGameEvent
+import com.module.playways.room.msg.event.raceroom.RJoinNoticeEvent
 import com.module.playways.room.msg.event.raceroom.RWantSingChanceEvent
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
@@ -91,6 +94,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
             mIRaceRoomView.showChoicing()
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+
             // 演唱阶段
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
             // 结束
@@ -113,10 +117,31 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RGetSingChanceMsg) {
         val roundInfoModel = parseFromRoundInfoPB(event.currentRound)
-        if(roundInfoModel.roundSeq == mRoomData.realRoundSeq){
+        if (roundInfoModel.roundSeq == mRoomData.realRoundSeq) {
             // 轮次符合，切换
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(roundInfoModel,true)
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(roundInfoModel, true)
         }
+    }
+
+    /**
+     * 有人加入了房间
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: RJoinNoticeEvent) {
+    }
+
+    /**
+     * 有人退出了房间
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: RExitGameEvent) {
+    }
+
+    /**
+     * 用户爆灯投票
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: RBLightEvent) {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
