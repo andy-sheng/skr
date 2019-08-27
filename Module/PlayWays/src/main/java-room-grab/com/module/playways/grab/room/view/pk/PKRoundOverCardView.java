@@ -19,7 +19,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.common.view.ExViewStub;

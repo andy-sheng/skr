@@ -1,11 +1,8 @@
 package com.module.playways.grab.room.view.minigame;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
@@ -16,7 +13,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.glidebitmappool.BitmapFactoryAdapter;
 import com.module.playways.R;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;

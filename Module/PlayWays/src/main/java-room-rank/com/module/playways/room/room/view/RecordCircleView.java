@@ -25,6 +25,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.listener.AnimationListener;
 import com.module.playways.room.room.utils.ScoreAnimationHelp;
 import com.module.playways.R;
 
@@ -66,7 +67,7 @@ public class RecordCircleView extends View {
 
     boolean mFullLevel = false;
 
-    ScoreAnimationHelp.AnimationListener mAnimationListener;
+    AnimationListener mAnimationListener;
     /**
      * 由于真实的芝麻信用界面信用值不是线性排布，所以播放动画时若以信用值为参考，则会出现忽慢忽快
      * 的情况（开始以为是卡顿）。因此，先计算出最终到达角度，以扫过的角度为线性参考，动画就流畅了
@@ -366,7 +367,7 @@ public class RecordCircleView extends View {
         postInvalidate();
     }
 
-    public void setData(int min, int max, int cur, int target, int protect, ScoreAnimationHelp.AnimationListener listener) {
+    public void setData(int min, int max, int cur, int target, int protect, AnimationListener listener) {
         MyLog.d(TAG, "setData" + " min=" + min + " max=" + max + " cur=" + cur + " target=" + target + " protect=" + protect + " listener=" + listener);
         mFullLevel = false;
         mMin = 0;

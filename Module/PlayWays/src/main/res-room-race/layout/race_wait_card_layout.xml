@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,10 +7,10 @@
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <ImageView
-        android:id="@+id/next_iv"
+        android:id="@+id/wait_iv"
         android:layout_width="@dimen/view_335_dp"
         android:layout_height="@dimen/view_144_dp"
-        android:background="@drawable/race_next_round_icon"
+        android:background="@drawable/race_wait_begin_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

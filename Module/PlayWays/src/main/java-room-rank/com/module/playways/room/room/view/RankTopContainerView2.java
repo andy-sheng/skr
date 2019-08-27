@@ -16,7 +16,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.room.room.comment.model.CommentLightModel;
 import com.module.playways.room.room.model.RankGameConfigModel;
 import com.module.playways.room.room.model.PkScoreTipMsgModel;

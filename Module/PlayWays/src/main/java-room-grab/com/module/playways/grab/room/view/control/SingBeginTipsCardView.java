@@ -8,7 +8,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MINIGameRoundInfoModel;

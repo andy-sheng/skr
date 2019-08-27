@@ -15,7 +15,7 @@ import com.common.image.model.HttpImage;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.glidebitmappool.BitmapFactoryAdapter;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.room.song.model.SongModel;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;

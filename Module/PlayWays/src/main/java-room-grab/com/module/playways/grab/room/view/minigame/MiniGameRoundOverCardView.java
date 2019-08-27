@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.common.utils.U;
 import com.module.playways.R;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.common.view.ExViewStub;
 

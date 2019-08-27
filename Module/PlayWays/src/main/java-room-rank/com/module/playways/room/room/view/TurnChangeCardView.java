@@ -17,7 +17,7 @@ import com.common.image.model.HttpImage;
 import com.common.utils.U;
 import com.glidebitmappool.BitmapFactoryAdapter;
 import com.glidebitmappool.BitmapPoolAdapter;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.room.model.RankRoundInfoModel;

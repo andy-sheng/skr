@@ -56,7 +56,7 @@ import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.inter.IGrabRoomView;
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;

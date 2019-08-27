@@ -32,7 +32,7 @@ import com.component.lyrics.LyricsReader;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.component.lyrics.LyricAndAccMatchManager;
 import com.module.playways.room.prepare.model.OnlineInfoModel;

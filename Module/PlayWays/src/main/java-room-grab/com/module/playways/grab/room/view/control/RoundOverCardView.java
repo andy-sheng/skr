@@ -5,7 +5,7 @@ import android.view.ViewStub;
 
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.minigame.MiniGameRoundOverCardView;
 import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
