@@ -477,8 +477,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
         mLastSceneView = mRaceTopVsView
-        // todo 需要判断我是否当前PK的参与者
-        mRaceRightOpView.showVote(false)
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+            mRaceRightOpView.visibility = View.GONE
+        } else {
+            mRaceRightOpView.showVote(false)
+        }
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
             mRaceSelfSingLyricView.startFly()
@@ -495,8 +498,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
-        // todo 需要判断我是否当前PK的参与者
-        mRaceRightOpView.showVote(false)
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+            mRaceRightOpView.visibility = View.GONE
+        } else {
+            mRaceRightOpView.showVote(false)
+        }
         mRaceTopVsView.startSingByOther {
             mRaceSelfSingLyricView.startFly()
             mLastSceneView = mRaceSelfSingLyricView.realView

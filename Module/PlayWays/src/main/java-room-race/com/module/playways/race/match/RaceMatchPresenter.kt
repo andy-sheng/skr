@@ -1,14 +1,15 @@
 package com.module.playways.race.match
 
-import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
+import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
-import com.module.RouterConstants
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.room.msg.event.raceroom.RJoinActionEvent
+import com.zq.live.proto.RaceRoom.RJoinActionMsg
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -17,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCyclePresenter() {
+    val mTag = "RaceMatchPresenter"
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
     init {
@@ -29,6 +31,13 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
                 val map = mutableMapOf("platform" to 20)
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 val result = subscribe { raceRoomServerApi.queryMatch(body) }
+                if (result.errno == 0) {
+                    val model = JSON.parseObject(result.data.getString("mathedInfo"), JoinRaceRoomRspModel::class.java)
+                    if (model != null) {
+                        MyLog.d(mTag, "model is = $model")
+                        //joinRoom(model.roomID)
+                    }
+                }
                 delay(10000)
             }
         }
@@ -37,23 +46,24 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
     // 匹配到了
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(e: RJoinActionEvent) {
-        joinRoom(e)
+        MyLog.d(mTag, "onEvente = $e")
+        joinRoom(e.pb)
     }
 
     // 进入房间
-    fun joinRoom(e: RJoinActionEvent) {
+    fun joinRoom(pb: RJoinActionMsg) {
         launch {
             val map = mutableMapOf(
                     "platform" to 20,
-                    "roomID" to e.pb.gameID
+                    "roomID" to pb.gameID
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.joinRoom(body) }
             if (result.errno == 0) {
                 val rsp = JSON.parseObject(result.data.toJSONString(), JoinRaceRoomRspModel::class.java)
-                rsp.roomID = e.pb.gameID
-                rsp.gameCreateTimeMs = e.pb.createTimeMs
-                rsp.agoraToken = e.pb.agoraToken
+                rsp.roomID = pb.gameID
+                rsp.gameCreateTimeMs = pb.createTimeMs
+                rsp.agoraToken = pb.agoraToken
                 // TODO 跳到RaceRoomActivity
                 mIRaceMatchingView.matchRaceSucess(rsp)
             }
@@ -61,7 +71,7 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
     }
 
     fun cancelMatch() {
-        launch {
+        GlobalScope.launch {
             val map = mutableMapOf("platform" to 20)
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.cancelMatch(body) }

@@ -2,7 +2,6 @@ package com.module.playways.race.room.model
 
 import com.zq.live.proto.RaceRoom.ERWantSingType
 import com.zq.live.proto.RaceRoom.ESubRoundOverReason
-import com.zq.live.proto.RaceRoom.RaceRoundInfo
 import com.zq.live.proto.RaceRoom.SubRoundInfo
 
 class RaceSubRoundInfo {

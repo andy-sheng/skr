@@ -60,7 +60,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
 
     internal lateinit var mSvgaMatchBg: SVGAImageView
 
-    internal lateinit var mExitDialog: DialogPlus
+    internal var mExitDialog: DialogPlus? = null
 
     internal var mIconAnimatorSet: AnimatorSet? = null
 
@@ -231,7 +231,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
     override fun destroy() {
         super.destroy()
         if (mExitDialog != null && mExitDialog!!.isShowing) {
-            mExitDialog.dismiss()
+            mExitDialog?.dismiss()
         }
         stopTimeTask()
         if (mControlTask != null) {
@@ -266,7 +266,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                 .setCancelBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
                         if (mExitDialog != null) {
-                            mExitDialog.dismiss()
+                            mExitDialog?.dismiss()
                         }
 
                         U.getSoundUtils().release(GrabMatchSuccessFragment.TAG)
@@ -282,7 +282,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                     override fun click(view: View) {
                         // 继续匹配
                         if (mExitDialog != null) {
-                            mExitDialog.dismiss()
+                            mExitDialog?.dismiss()
                         }
                     }
                 })
@@ -295,7 +295,7 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
                 .create()
-        mExitDialog.show()
+        mExitDialog?.show()
 
     }
 
@@ -360,8 +360,8 @@ class RaceMatchFragment : BaseFragment(), IRaceMatchingView {
      * MatchSuccessFragment add后，动画播放完再remove掉匹配中页面
      */
     override fun notifyToHide() {
-        if (mExitDialog != null && mExitDialog.isShowing) {
-            mExitDialog.dismiss(false)
+        if (mExitDialog != null && mExitDialog?.isShowing ?: false) {
+            mExitDialog?.dismiss(false)
         }
         rootView.visibility = View.GONE
     }
