@@ -1,5 +1,7 @@
 package com.module.playways
 
+import android.util.ArrayMap
+import android.util.LruCache
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
@@ -78,15 +80,23 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     abstract fun < T : PlayerInfoModel> getPlayerInfoList(): List<T>?
 
+    private val userInfoMap = LruCache<Int,UserInfoModel>(20)
+
     fun getUserInfo(userID: Int?): UserInfoModel? {
         if (userID==null || userID == 0) {
             return null
         }
-        val l = getPlayerInfoList<PlayerInfoModel>() ?: return null
-        for (playerInfo in l) {
-            if (playerInfo.userInfo.userId == userID) {
-                return playerInfo.userInfo
+        val userInfo = userInfoMap[userID]
+        if(userInfo==null){
+            val l = getPlayerInfoList<PlayerInfoModel>() ?: return null
+            for (playerInfo in l) {
+                if (playerInfo.userInfo.userId == userID) {
+                    userInfoMap.put(playerInfo.userInfo.userId,playerInfo.userInfo)
+                    return playerInfo.userInfo
+                }
             }
+        }else{
+            return userInfo
         }
         return null
     }

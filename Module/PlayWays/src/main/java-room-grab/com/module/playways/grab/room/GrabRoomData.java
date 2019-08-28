@@ -58,6 +58,11 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
     }
 
+
+    /**
+     * 一般不用直接拿来用
+     * @return
+     */
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
