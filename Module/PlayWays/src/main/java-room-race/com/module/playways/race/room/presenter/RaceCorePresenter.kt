@@ -313,18 +313,20 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     private fun startHeartbeat() {
         heartbeatJob?.cancel()
         heartbeatJob = launch {
-            val map = mutableMapOf(
-                    "roomID" to mRoomData.gameId,
-                    "userID" to MyUserInfoManager.getInstance().uid
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.heartbeat(body) }
-            if (result.errno == 0) {
+            while (true) {
+                val map = mutableMapOf(
+                        "roomID" to mRoomData.gameId,
+                        "userID" to MyUserInfoManager.getInstance().uid
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe { raceRoomServerApi.heartbeat(body) }
+                if (result.errno == 0) {
 
-            } else {
+                } else {
 
+                }
+                delay(60 * 1000)
             }
-            delay(60 * 1000)
         }
     }
 
@@ -597,17 +599,19 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun startSyncRaceStatus() {
         syncJob?.cancel()
         syncJob = launch {
-            delay(8000)
-            val result = subscribe { raceRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
-            if (result.errno == 0) {
-                val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
-                if (syncStatusTimeMs > mRoomData.lastSyncTs) {
-                    mRoomData.lastSyncTs = syncStatusTimeMs
-                    val raceRoundInfoModel = JSON.parseObject(result.data.getString("currentRound"), RaceRoundInfoModel::class.java)
-                    processSyncResult(raceRoundInfoModel)
-                }
-            } else {
+            while (true) {
+                delay(8000)
+                val result = subscribe { raceRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
+                if (result.errno == 0) {
+                    val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
+                    if (syncStatusTimeMs > mRoomData.lastSyncTs) {
+                        mRoomData.lastSyncTs = syncStatusTimeMs
+                        val raceRoundInfoModel = JSON.parseObject(result.data.getString("currentRound"), RaceRoundInfoModel::class.java)
+                        processSyncResult(raceRoundInfoModel)
+                    }
+                } else {
 
+                }
             }
         }
     }
