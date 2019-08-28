@@ -11,6 +11,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -41,7 +42,6 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import kotlin.properties.Delegates
 
 class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mCorePresenter: RaceCorePresenter
@@ -72,6 +72,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
 
     var mLastSceneView: View? = null
+        set(value) {
+            MyLog.d(TAG, "mLastSceneView = $value")
+            if (value != mLastSceneView) {
+                mLastSceneView?.visibility = View.GONE
+                value?.visibility = View.VISIBLE
+                field = value
+            }
+        }
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
