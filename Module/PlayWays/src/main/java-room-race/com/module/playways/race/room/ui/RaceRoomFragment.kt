@@ -470,7 +470,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingBySelf {
             mRaceTopVsView.visibility = View.GONE
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly {
+                mCorePresenter.sendSingComplete()
+            }
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
@@ -484,7 +486,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly(null)
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
@@ -492,7 +494,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun singBySelfSecondRound(songModel: SongModel?) {
         mRaceRightOpView.showGiveUp(false)
         mRaceTopVsView.startSingBySelf {
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly {
+                mCorePresenter.sendSingComplete()
+            }
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
@@ -504,7 +508,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceRightOpView.showVote(false)
         }
         mRaceTopVsView.startSingByOther {
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly(null)
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
