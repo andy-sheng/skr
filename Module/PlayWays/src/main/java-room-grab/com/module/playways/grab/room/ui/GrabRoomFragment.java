@@ -282,7 +282,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                     onSingBeginTipsPlayOver();
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
-                    onRoundOverPlayOver(msg.arg1 == 1, (BaseRoundInfoModel) msg.obj);
+                    onRoundOverPlayOver(msg.arg1 == 1, (GrabRoundInfoModel) msg.obj);
                     break;
 //                case MSG_ENSURE_GAME_OVER:
 //                    onGrabGameOver("MSG_ENSURE_GAME_OVER");
@@ -1526,7 +1526,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         });
     }
 
-    private void onRoundOverPlayOver(boolean playNextSongInfoCard, BaseRoundInfoModel now) {
+    private void onRoundOverPlayOver(boolean playNextSongInfoCard, GrabRoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         mRoundOverCardView.setVisibility(GONE);
         if (playNextSongInfoCard) {

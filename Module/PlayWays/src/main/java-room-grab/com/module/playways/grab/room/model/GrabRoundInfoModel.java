@@ -82,6 +82,81 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     @JSONField(name = "MINIGAMERoundInfos")
     List<MINIGameRoundInfoModel> mMINIGameRoundInfoModels = new ArrayList<>();
 
+
+    protected int userID;// 本人在演唱的人
+    protected SongModel music;//本轮次要唱的歌儿的详细信息
+    protected int singBeginMs; // 轮次开始时间
+    protected int singEndMs; // 轮次结束时间
+    protected long startTs;// 开始时间，服务器的
+    protected long endTs;// 结束时间，服务器的
+    protected int sysScore;//本轮系统打分，先搞个默认60分
+    protected boolean hasSing = false;// 是否已经在演唱，依据时引擎等回调，不是作为是否演唱阶段的依据
+    public SongModel getMusic() {
+        return music;
+    }
+
+    public void setMusic(SongModel songModel) {
+        this.music = songModel;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getSingBeginMs() {
+        return singBeginMs;
+    }
+
+    public void setSingBeginMs(int singBeginMs) {
+        this.singBeginMs = singBeginMs;
+    }
+
+    public int getSingEndMs() {
+        return singEndMs;
+    }
+
+    public void setSingEndMs(int singEndMs) {
+        this.singEndMs = singEndMs;
+    }
+
+    public long getStartTs() {
+        return startTs;
+    }
+
+    public void setStartTs(long startTs) {
+        this.startTs = startTs;
+    }
+
+    public long getEndTs() {
+        return endTs;
+    }
+
+    public void setEndTs(long endTs) {
+        this.endTs = endTs;
+    }
+
+    public int getSysScore() {
+        return sysScore;
+    }
+
+    public void setSysScore(int sysScore) {
+        this.sysScore = sysScore;
+    }
+
+    public boolean isHasSing() {
+        return hasSing;
+    }
+
+    public void setHasSing(boolean hasSing) {
+        this.hasSing = hasSing;
+    }
+
+
+
     public GrabRoundInfoModel() {
 
     }
@@ -298,7 +373,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
         GrabRoundInfoModel roundInfo = (GrabRoundInfoModel) round;
         this.setUserID(roundInfo.getUserID());
-        this.setPlaybookID(roundInfo.getPlaybookID());
         this.setRoundSeq(roundInfo.getRoundSeq());
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
@@ -434,7 +508,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel();
         roundInfoModel.setUserID(roundInfo.getUserID());
-        roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
 
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
@@ -871,7 +944,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", status=" + status +
                 ", userID=" + userID +
                 ", wantSingType=" + wantSingType +
-                ", playbookID=" + playbookID +
                 ", songModel=" + (music == null ? "" : music.toSimpleString()) +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +

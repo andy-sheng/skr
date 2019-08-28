@@ -1030,78 +1030,78 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    /**
-     * 上传音频文件用作机器人
-     *
-     * @param roundInfoModel
-     */
-    private void uploadRes1ForAi(BaseRoundInfoModel roundInfoModel) {
-        if (mRobotScoreHelper != null) {
-            MyLog.d(TAG, "uploadRes1ForAi 开始上传资源 得分:" + roundInfoModel.getSysScore());
-            UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
-                    .setFileType(UploadParams.FileType.audioAi)
-                    .startUploadAsync(new UploadCallback() {
-                        @Override
-                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
+//    /**
+//     * 上传音频文件用作机器人
+//     *
+//     * @param roundInfoModel
+//     */
+//    private void uploadRes1ForAi(BaseRoundInfoModel roundInfoModel) {
+//        if (mRobotScoreHelper != null) {
+//            MyLog.d(TAG, "uploadRes1ForAi 开始上传资源 得分:" + roundInfoModel.getSysScore());
+//            UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
+//                    .setFileType(UploadParams.FileType.audioAi)
+//                    .startUploadAsync(new UploadCallback() {
+//                        @Override
+//                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onSuccessNotInUiThread(String url) {
+//                            MyLog.w(TAG, "uploadRes1ForAi 上传成功 url=" + url);
+//                            sendUploadRequest(roundInfoModel, url);
+//                        }
+//
+//                        @Override
+//                        public void onFailureNotInUiThread(String msg) {
+//
+//                        }
+//                    });
+//        }
+//    }
 
-                        }
-
-                        @Override
-                        public void onSuccessNotInUiThread(String url) {
-                            MyLog.w(TAG, "uploadRes1ForAi 上传成功 url=" + url);
-                            sendUploadRequest(roundInfoModel, url);
-                        }
-
-                        @Override
-                        public void onFailureNotInUiThread(String msg) {
-
-                        }
-                    });
-        }
-    }
-
-    /**
-     * 上传机器人资源相关文件到服务器
-     *
-     * @param roundInfoModel
-     * @param audioUrl
-     */
-    private void sendUploadRequest(BaseRoundInfoModel roundInfoModel, String audioUrl) {
-        long timeMs = System.currentTimeMillis();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", mRoomData.getGameId());
-        map.put("itemID", roundInfoModel.getPlaybookID());
-        map.put("sysScore", roundInfoModel.getSysScore());
-        map.put("audioURL", audioUrl);
-//        map.put("midiURL", midiUrl);
-        map.put("timeMs", timeMs);
-        StringBuilder sb = new StringBuilder();
-        sb.append("skrer")
-                .append("|").append(mRoomData.getGameId())
-                .append("|").append(roundInfoModel.getPlaybookID())
-                .append("|").append(roundInfoModel.getSysScore())
-                .append("|").append(audioUrl)
-//                .append("|").append(midiUrl)
-                .append("|").append(timeMs);
-        String sign = U.getMD5Utils().MD5_32(sb.toString());
-        map.put("sign", sign);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.saveRes(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    MyLog.e(TAG, "sendAiUploadRequest success");
-                } else {
-                    MyLog.e(TAG, "sendAiUploadRequest failed， errno is " + result.getErrmsg());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, "sendUploadRequest error " + e);
-            }
-        }, this);
-    }
+//    /**
+//     * 上传机器人资源相关文件到服务器
+//     *
+//     * @param roundInfoModel
+//     * @param audioUrl
+//     */
+//    private void sendUploadRequest(BaseRoundInfoModel roundInfoModel, String audioUrl) {
+//        long timeMs = System.currentTimeMillis();
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("roomID", mRoomData.getGameId());
+//        map.put("itemID", roundInfoModel.getPlaybookID());
+//        map.put("sysScore", roundInfoModel.getSysScore());
+//        map.put("audioURL", audioUrl);
+////        map.put("midiURL", midiUrl);
+//        map.put("timeMs", timeMs);
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("skrer")
+//                .append("|").append(mRoomData.getGameId())
+//                .append("|").append(roundInfoModel.getPlaybookID())
+//                .append("|").append(roundInfoModel.getSysScore())
+//                .append("|").append(audioUrl)
+////                .append("|").append(midiUrl)
+//                .append("|").append(timeMs);
+//        String sign = U.getMD5Utils().MD5_32(sb.toString());
+//        map.put("sign", sign);
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+//        ApiMethods.subscribe(mRoomServerApi.saveRes(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    MyLog.e(TAG, "sendAiUploadRequest success");
+//                } else {
+//                    MyLog.e(TAG, "sendAiUploadRequest failed， errno is " + result.getErrmsg());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(TAG, "sendUploadRequest error " + e);
+//            }
+//        }, this);
+//    }
 
     @Override
     public void destroy() {
@@ -2587,9 +2587,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private int estimateOverTsThisRound() {
-        int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
-        MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
-        return pt;
+//        int pt = RoomDataUtils.estimateTs2End(mRoomData, mRoomData.getRealRoundInfo());
+//        MyLog.w(TAG, "估算出距离本轮结束还有" + pt + "ms");
+        return 0;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

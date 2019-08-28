@@ -720,7 +720,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     //属于需要上传音频文件的状态
                     // 上一轮是我的轮次，暂停录音
                     ZqEngineKit.getInstance().stopAudioRecording();
-                    BaseRoundInfoModel myRoundInfoModel = event.getLastRoundInfoModel();
+                    RankRoundInfoModel myRoundInfoModel = event.getLastRoundInfoModel();
                     if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()) {
                         myRoundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
                         uploadRes1ForAi(myRoundInfoModel);
@@ -739,7 +739,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        int uid = RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo());
+                        int uid =0;
+                        if(mRoomData.getRealRoundInfo()!=null){
+                            uid = mRoomData.getRealRoundInfo().getUserID();
+                        }
                         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
                         String avatar = "";
                         if (playerInfoModel != null) {
@@ -953,7 +956,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
      *
      * @param roundInfoModel
      */
-    private void uploadRes1ForAi(BaseRoundInfoModel roundInfoModel) {
+    private void uploadRes1ForAi(RankRoundInfoModel roundInfoModel) {
         if (mRobotScoreHelper != null && mRobotScoreHelper.vilid()) {
             UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
                     .setFileType(UploadParams.FileType.audioAi)
@@ -982,7 +985,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
      * @param roundInfoModel
      * @param audioUrl
      */
-    private void uploadRes2ForAi(BaseRoundInfoModel roundInfoModel, String audioUrl) {
+    private void uploadRes2ForAi(RankRoundInfoModel roundInfoModel, String audioUrl) {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -1021,7 +1024,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
      * @param audioUrl
      * @param midiUrl
      */
-    private void sendUploadRequest(BaseRoundInfoModel roundInfoModel, String audioUrl, String midiUrl) {
+    private void sendUploadRequest(RankRoundInfoModel roundInfoModel, String audioUrl, String midiUrl) {
         long timeMs = System.currentTimeMillis();
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
@@ -1281,7 +1284,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
      * 其他用户真正开始演唱了
      */
     private void othersBeginSinging() {
-        BaseRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (infoModel != null && !infoModel.isHasSing()) {
             infoModel.setHasSing(true);
             mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
@@ -1292,7 +1295,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void startLastTwoSecondTask() {
-        final BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        final RankRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel != null) {
             mUiHandler.removeMessages(MSG_START_LAST_TWO_SECONDS_TASK);
             Message message = mUiHandler.obtainMessage(MSG_START_LAST_TWO_SECONDS_TASK);

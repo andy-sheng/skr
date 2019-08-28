@@ -78,8 +78,8 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     abstract fun < T : PlayerInfoModel> getPlayerInfoList(): List<T>?
 
-    fun getUserInfo(userID: Int): UserInfoModel? {
-        if (userID == 0) {
+    fun getUserInfo(userID: Int?): UserInfoModel? {
+        if (userID==null || userID == 0) {
             return null
         }
         val l = getPlayerInfoList<PlayerInfoModel>() ?: return null

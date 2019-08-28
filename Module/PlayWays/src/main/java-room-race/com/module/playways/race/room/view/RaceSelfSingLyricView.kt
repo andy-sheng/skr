@@ -20,6 +20,7 @@ import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.song.model.SongModel
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.Room.EQRoundStatus
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.disposables.Disposable
@@ -72,7 +73,7 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
                 withAcc = true
             }
             if (!withAcc) {
-                playWithNoAcc(infoModel.music)
+                playWithNoAcc(infoModel.getSongModelNow())
             } else {
                 playWithAcc(infoModel, infoModel.getSingTotalMs())
             }
@@ -86,17 +87,8 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
         }
         tryInflate()
         initLyric()
-        mSongModel = infoModel.music
-        if (mSongModel == null) {
-            MyLog.w(TAG, "playWithAcc mSongModel = null totalTs=$totalTs")
-            return
-        }
+        mSongModel = infoModel.getSongModelNow()
         var curSong = mSongModel
-        if (infoModel.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
-            if (mSongModel!!.pkMusic != null) {
-                curSong = mSongModel!!.pkMusic
-            }
-        }
         if (curSong == null) {
             MyLog.w(TAG, "playWithAcc curSong = null totalTs=$totalTs")
             return

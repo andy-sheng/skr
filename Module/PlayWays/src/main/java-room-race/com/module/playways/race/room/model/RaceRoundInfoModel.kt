@@ -295,6 +295,10 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         }
         return totalMs
     }
+
+    fun getSingerIdNow(): Int {
+        return subRoundInfo.getOrNull(subRoundSeq - 1)?.userID ?:0
+    }
 }
 
 
