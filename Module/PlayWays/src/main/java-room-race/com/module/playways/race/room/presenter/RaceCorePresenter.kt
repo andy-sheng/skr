@@ -88,7 +88,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     init {
         if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this)
+            EventBus.getDefault().register(this)
         }
         //添加房间消息过滤器
         RaceRoomMsgManager.addFilter(mPushMsgFilter)
@@ -113,7 +113,8 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             if (reInit) {
                 val params = Params.getFromPref().apply {
                     scene = Params.Scene.grab
-                    isEnableAudio = false
+                    isEnableAudio = true
+                    isEnableVideo = false
                 }
                 ZqEngineKit.getInstance().init("raceroom", params)
             }
@@ -144,11 +145,12 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
         if (mRoomData.gameId > 0) {
             ModuleServiceManager.getInstance().msgService.joinChatRoom(mRoomData.gameId.toString(), -1, object : ICallback {
-                override fun onSucess(obj: Any) {
+
+                override fun onSucess(obj: Any?) {
                     MyLog.d(TAG, "加入融云房间成功")
                 }
 
-                override fun onFailed(obj: Any, errcode: Int, message: String) {
+                override fun onFailed(obj: Any?, errcode: Int, message: String?) {
                     MyLog.d(TAG, "加入融云房间失败， msg is $message, errcode is $errcode")
                     joinRcRoom(deep + 1)
                 }
@@ -420,6 +422,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         processStatusChange(1, event.lastRound, event.thisRound)
     }
 
@@ -428,6 +431,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundStatusChangeEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         processStatusChange(2, null, event.thisRound)
     }
 
@@ -436,6 +440,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceSubRoundChangeEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         processStatusChange(3, null, event.thisRound)
     }
 

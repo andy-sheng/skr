@@ -299,6 +299,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 Params params = Params.getFromPref();
 //            params.setStyleEnum(Params.AudioEffect.none);
                 params.setScene(Params.Scene.grab);
+                params.setEnableAudio(true);
                 params.setEnableVideo(mRoomData.isVideoRoom());
                 ZqEngineKit.getInstance().init("grabroom", params);
             }

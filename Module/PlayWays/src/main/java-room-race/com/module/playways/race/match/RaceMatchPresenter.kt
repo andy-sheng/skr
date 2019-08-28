@@ -46,7 +46,7 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
     // 匹配到了
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(e: RJoinActionEvent) {
-        MyLog.d(mTag, "onEvente = $e")
+        MyLog.d(mTag, "onEvente = ${e.pb}")
         joinRoom(LocalRJoinActionMsg.toLocalModel(e.pb))
     }
 
