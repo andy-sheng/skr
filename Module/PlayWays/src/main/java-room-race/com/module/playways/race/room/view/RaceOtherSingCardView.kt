@@ -135,23 +135,24 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             }
         })
 
-        //todo 等接口再来补全逻辑
-//        val grabRoundInfoModel = mGrabRoomData.getRealRoundInfo<GrabRoundInfoModel>() ?: return
-//        mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-//        mCircleCountDownView!!.cancelAnim()
-//        mCircleCountDownView!!.max = 360
-//        mCircleCountDownView!!.progress = 0
-//        if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.enterStatus == EQRoundStatus.QRS_SING.value) {
-//            mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
-//            countDown("中途进来")
-//        } else {
-//            mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
-//            mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
-//        }
+        roomData.realRoundInfo?.let {
+            mCountDownStatus = COUNT_DOWN_STATUS_WAIT
+            circleCountDownView.cancelAnim()
+            circleCountDownView.max = 360
+            circleCountDownView.progress = 0
+            // todo 判断某个人是不是中途进来，补全逻辑
+//            if () {
+//                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
+//                countDown("中途进来")
+//            } else {
+//                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
+//                mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
+//            }
+        }
     }
 
     fun tryStartCountDown() {
-        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
+        if (mParentView == null || mParentView.visibility == View.GONE) {
             return
         }
         MyLog.d(TAG, "tryStartCountDown")

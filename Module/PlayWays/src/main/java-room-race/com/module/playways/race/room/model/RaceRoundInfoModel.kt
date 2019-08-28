@@ -276,6 +276,22 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     fun isAccRoundBySubRoundSeq(subRoundSeq: Int): Boolean {
         return subRoundInfo.getOrNull(subRoundSeq - 1)?.wantSingType == ERWantSingType.ERWST_ACCOMPANY.value
     }
+
+    /**
+     *  当前轮次的总时间
+     */
+    fun getSingTotalMs(): Int {
+        var totalMs = 0
+        if (!subRoundInfo.isNullOrEmpty() && (subRoundSeq in 1..subRoundInfo.size)) {
+            totalMs = subRoundInfo[subRoundSeq - 1].endMs - subRoundInfo[subRoundSeq - 1].beginMs
+        }
+
+        if (totalMs <= 0) {
+            //todo 是否需要对服务器做个容错逻辑
+            MyLog.e(TAG, "getSingTotalMs error totalMs <= 0")
+        }
+        return totalMs
+    }
 }
 
 
