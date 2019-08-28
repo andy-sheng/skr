@@ -117,6 +117,7 @@ class RaceTopVsView : ExConstraintLayout {
     }
 
     fun startVs() {
+        raceTopVsIv.visibility = View.GONE
         visibility = View.VISIBLE
         bindData()
         val animatorLeft = ObjectAnimator.ofFloat(leftConstraintLayout, "translationX", -(U.getDisplayUtils().phoneWidth.toFloat() / 2), 0f)

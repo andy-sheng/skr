@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.Guideline
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
@@ -19,6 +20,8 @@ import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.ERaceWinType
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 //选择歌曲页
@@ -118,6 +121,7 @@ class RaceMiddleResultView : ExConstraintLayout {
     }
 
     fun startVs() {
+        raceTopVsIv.visibility = View.GONE
         val animatorLeft = ObjectAnimator.ofFloat(leftConstraintLayout, "translationX", -(U.getDisplayUtils().phoneWidth.toFloat() / 2), 0f)
 
         val animatorRight = ObjectAnimator.ofFloat(rightConstraintLayout, "translationX", U.getDisplayUtils().phoneWidth.toFloat(), 0f)
@@ -127,5 +131,17 @@ class RaceMiddleResultView : ExConstraintLayout {
         animSet.duration = 400
 
         animSet.start()
+
+        launch {
+            delay(350)
+            val animatorSet = AnimatorSet()
+            val scaleX = ObjectAnimator.ofFloat(raceTopVsIv, "scaleX", 2.0f, 1f)
+            val scaleY = ObjectAnimator.ofFloat(raceTopVsIv, "scaleY", 2.0f, 1f)
+            raceTopVsIv.visibility = View.VISIBLE
+            animatorSet.setDuration(500)
+            animatorSet.setInterpolator(OvershootInterpolator())
+            animatorSet.play(scaleX).with(scaleY);//两个动画同时开始
+            animatorSet.start()
+        }
     }
 }

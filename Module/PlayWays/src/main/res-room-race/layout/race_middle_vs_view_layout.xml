@@ -151,13 +151,13 @@
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
+        android:layout_marginTop="@dimen/view_28_dp"
         android:id="@+id/race_top_vs_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/race_top_vs"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/right_constraintLayout" />
 </merge>
