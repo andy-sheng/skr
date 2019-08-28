@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import com.common.base.BaseFragment
 import com.common.utils.U
 import com.common.utils.dp
-import com.common.view.DebounceViewClickListener
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
@@ -25,13 +24,13 @@ import com.orhanobut.dialogplus.ViewHolder
  */
 class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : ConstraintLayout(fragment.context) {
 
-    val raceTitleStl: SlidingTabLayout
-    val raceVp: NestViewPager
+    private val raceTitleStl: SlidingTabLayout
+    private val raceVp: NestViewPager
 
-    val pagerAdapter: PagerAdapter
+    private val pagerAdapter: PagerAdapter
 
     var actorView: RaceActorView? = null   // 竞演者
-    internal var mDialogPlus: DialogPlus? = null
+    private var mDialogPlus: DialogPlus? = null
 
     init {
         View.inflate(context, R.layout.race_actor_panel_view_stub_layout, this)

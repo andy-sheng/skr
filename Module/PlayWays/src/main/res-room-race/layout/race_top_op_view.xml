@@ -8,74 +8,32 @@
     android:orientation="vertical"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_change_room"
-        android:layout_width="@dimen/view_70_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:gravity="center"
-        android:text="换房间"
-        android:textColor="#404A9A"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#7E8AE6" />
-
-    <RelativeLayout
-        android:id="@+id/control_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/tv_change_room">
-
-        <ImageView
-            android:id="@+id/camera_iv"
-            android:layout_width="@dimen/view_35_dp"
-            android:layout_height="@dimen/view_24_dp"
-            android:background="@drawable/yichangdaodi_shipin" />
-
-        <ImageView
-            android:id="@+id/iv_voice_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_24_dp"
-            android:layout_toRightOf="@+id/camera_iv"
-            android:background="@drawable/yichangdaodi_yinyue_video" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="@dimen/view_1_dp"
-            android:layout_height="@dimen/view_24_dp"
-            android:layout_marginLeft="-0.33dp"
-            android:layout_toRightOf="@+id/camera_iv"
-            android:background="#404A9A" />
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/game_rule_iv"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_24_dp"
+        android:layout_width="@dimen/view_41_dp"
+        android:layout_height="@dimen/view_26_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_toRightOf="@+id/control_area"
-        android:background="@drawable/yichangdaddi_guize" />
+        android:background="@drawable/race_rule_icon" />
 
     <ImageView
         android:id="@+id/feed_back_iv"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_24_dp"
+        android:layout_width="@dimen/view_41_dp"
+        android:layout_height="@dimen/view_26_dp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/game_rule_iv"
-        android:background="@drawable/yichangdaodi_fankui" />
+        android:background="@drawable/race_feed_back_icon" />
 
-    <View
-        android:layout_width="@dimen/view_1_dp"
-        android:layout_height="@dimen/view_24_dp"
+    <ImageView
+        android:id="@+id/iv_voice_setting"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_26_dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="-0.33dp"
-        android:layout_toRightOf="@+id/game_rule_iv"
-        android:background="#404A9A" />
+        android:layout_toRightOf="@id/feed_back_iv"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/race_voice_icon" />
+
 
     <com.common.view.ex.ExTextView
         android:id="@+id/exit_tv"
@@ -86,10 +44,12 @@
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
         android:text="退出房间"
-        android:textColor="#404A9A"
+        android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_solid_color="#7E8AE6" />
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:bl_solid_color="@color/transparent" />
 
 </merge>

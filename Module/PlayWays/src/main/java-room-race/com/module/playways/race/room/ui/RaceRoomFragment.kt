@@ -13,6 +13,7 @@ import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -71,9 +72,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
 
+    // 都是dialogplus
     private var mRaceActorPanelView: RaceActorPanelView? = null  //参与的人
+    private var mPersonInfoDialog: PersonInfoDialog? = null
+    private var mRaceVoiceControlPanelView: RaceVoiceControlPanelView? = null
 
-    internal var mPersonInfoDialog: PersonInfoDialog? = null
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
 
@@ -233,55 +236,31 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopOpView = rootView.findViewById(R.id.race_top_op_view)
         mRaceTopOpView.setRoomData(mRoomData)
         mRaceTopOpView.setListener(object : RaceTopOpView.Listener {
-            override fun changeRoom() {
-//                val grabRoundInfoModel = mRoomData.getRealRoundInfo<GrabRoundInfoModel>()
-//                if (grabRoundInfoModel != null) {
-//                    for (wantSingerInfo in grabRoundInfoModel.wantSingInfos) {
-//                        if (wantSingerInfo.userID.toLong() == MyUserInfoManager.getInstance().uid) {
-//                            U.getToastUtil().showShort("演唱时不能切换房间哦～")
-//                            return
-//                        }
-//                    }
-//                }
-//                mBeginChangeRoomTs = System.currentTimeMillis()
-//                mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE)
-//                mCorePresenter.changeRoom()
-//                mGrabGiveupView.hideWithAnimation(false)
-            }
-
             override fun onClickVoiceAudition() {
+                // 调音面板
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-//                if (mGrabVoiceControlPanelView == null) {
-//                    mGrabVoiceControlPanelView = GrabVoiceControlPanelView(context)
-//                    mGrabVoiceControlPanelView.setRoomData(mRoomData)
-//                }
-//                mGrabVoiceControlPanelView.bindData()
-//                if (mVoiceControlDialog == null) {
-//                    mVoiceControlDialog = DialogPlus.newDialog(context)
-//                            .setContentHolder(ViewHolder(mGrabVoiceControlPanelView))
-//                            .setContentBackgroundResource(R.color.transparent)
-//                            .setOverlayBackgroundResource(R.color.black_trans_50)
-//                            .setExpanded(false)
-//                            .setCancelable(true)
-//                            .setGravity(Gravity.BOTTOM)
-//                            .create()
-//                }
-//                mVoiceControlDialog.show()
+                if (mRaceVoiceControlPanelView == null) {
+                    mRaceVoiceControlPanelView = RaceVoiceControlPanelView(this@RaceRoomFragment)
+                    mRaceVoiceControlPanelView?.setRoomData(mRoomData)
+                }
+                mRaceVoiceControlPanelView?.showByDialog()
             }
 
             override fun onClickFeedBack() {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RANK_ROOM)
-//                                .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
-//                                .setEnterAnim(R.anim.slide_in_bottom)
-//                                .setExitAnim(R.anim.slide_out_bottom)
-//                                .build())
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(activity, QuickFeedbackFragment::class.java)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RACE_ROOM)
+                                .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
+                                .addDataBeforeAdd(3, mRoomData.gameId)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build())
             }
 
             override fun closeBtnClick() {
+                // todo 退出游戏
 //                if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size >= 2) {
 //                    quitGame()
 //                } else {
@@ -289,43 +268,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 //                }
             }
 
-            override fun onVoiceChange(voiceOpen: Boolean) {
-//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true)
-            }
-
             override fun onClickGameRule() {
+                // todo 显示游戏规则
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-//                if (mGameRuleDialog != null) {
-//                    mGameRuleDialog.dismiss()
-//                }
-//                mGameRuleDialog = DialogPlus.newDialog(context)
-//                        .setContentHolder(ViewHolder(R.layout.grab_game_rule_view_layout))
-//                        .setContentBackgroundResource(R.color.transparent)
-//                        .setOverlayBackgroundResource(R.color.black_trans_50)
-//                        .setExpanded(false)
-//                        .setGravity(Gravity.CENTER)
-//                        .create()
-//                mGameRuleDialog.show()
-            }
-
-            override fun onClickCamera() {
-//                if (mRoomData.isVideoRoom()) {
-//                    val grabRoundInfoModel = mRoomData.getRealRoundInfo<GrabRoundInfoModel>()
-//                    if (grabRoundInfoModel != null) {
-//                        if (grabRoundInfoModel.isSelfGrab) {
-//                            return
-//                        }
-//                    }
-//                    // 进入视频预览 判断是否实名验证过
-//                    mSkrCameraPermission.ensurePermission(Runnable {
-//                        ARouter.getInstance()
-//                                .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-//                                .withInt("mFrom", JumpBeautyFromKt.FROM_IN_GRAB_ROOM)
-//                                .navigation()
-//                    }, true)
-//                } else {
-//                    U.getToastUtil().showShort("只在视频房间才能开启视频设置")
-//                }
             }
         })
 
@@ -540,7 +485,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value ){
             // 无人应战
             mLastSceneView = mRaceNoSingCardView
-            mRaceNoSingCardView.showAnimation(object : AnimationListener{
+            mRaceNoSingCardView.showAnimation(object : AnimationListener {
                 override fun onFinish() {
                     continueOp?.invoke()
                 }

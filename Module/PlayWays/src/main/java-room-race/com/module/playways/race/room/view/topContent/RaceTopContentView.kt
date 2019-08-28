@@ -80,11 +80,11 @@ class RaceTopContentView : ConstraintLayout {
         if (open) {
             // 展开状态
             mIsOpen = true
-            arrowIv.setImageResource(R.drawable.yichangdaodi_dingbuzhankai)
+            arrowIv.setImageResource(R.drawable.race_expand_icon)
         } else {
             // 折叠状态
             mIsOpen = false
-            arrowIv.setImageResource(R.drawable.yichangdaodi_dingbushouqi)
+            arrowIv.setImageResource(R.drawable.race_shrink_icon)
         }
     }
 

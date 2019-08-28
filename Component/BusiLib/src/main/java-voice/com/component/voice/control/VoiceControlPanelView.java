@@ -48,27 +48,26 @@ public class VoiceControlPanelView extends ScrollView {
 
     public VoiceControlPanelView(Context context) {
         super(context);
-        init(context, null);
+        init(context);
     }
 
     public VoiceControlPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
-    }
-
-    protected int getLayout(){
-        return R.layout.voice_control_panel_layout;
-    }
-
-    protected int getMarginLeft(){
-        return U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
-    }
-
-    public void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VoiceControlPanelView);
         isShowACC = typedArray.getBoolean(R.styleable.VoiceControlPanelView_isShowACC, true);
         typedArray.recycle();
+        init(context);
+    }
 
+    protected int getLayout() {
+        return R.layout.voice_control_panel_layout;
+    }
+
+    protected int getMarginLeft() {
+        return U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
+    }
+
+    public void init(Context context) {
         inflate(getContext(), getLayout(), this);
 
         mPeopleVoice = (ExTextView) this.findViewById(R.id.people_voice);
@@ -99,7 +98,7 @@ public class VoiceControlPanelView extends ScrollView {
         setListener();
     }
 
-    protected void setListener(){
+    protected void setListener() {
         mPeopleVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

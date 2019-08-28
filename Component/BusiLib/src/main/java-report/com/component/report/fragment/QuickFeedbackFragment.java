@@ -67,6 +67,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     public static final int FROM_RANK_ROOM = 1;  //标记来源
     public static final int FROM_GRAB_ROOM = 2;
     public static final int FROM_DOUBLE_ROOM = 3;
+    public static final int FROM_RACE_ROOM = 4;
 
     private int mFrom;  //标记举报来源
     int mActionType;
@@ -286,6 +287,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 1);
         } else if (mFrom == FROM_DOUBLE_ROOM) {
             map.put("source", 3);
+        } else if (mFrom == FROM_RACE_ROOM) {
+            map.put("source", 8);
         }
         map.put("type", typeList);
         map.put("content", content);

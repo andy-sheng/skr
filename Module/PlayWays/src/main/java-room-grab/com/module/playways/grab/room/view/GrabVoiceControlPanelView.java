@@ -40,8 +40,8 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
     }
 
     @Override
-    public void init(Context context, AttributeSet attrs) {
-        super.init(context, attrs);
+    public void init(Context context) {
+        super.init(context);
         mLlSwitchContainer = findViewById(R.id.ll_switch_container);
         mSbAcc = findViewById(R.id.sb_acc);
 
