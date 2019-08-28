@@ -105,7 +105,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun initData(savedInstanceState: Bundle?) {
         mCorePresenter = RaceCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
-        mCorePresenter.onOpeningAnimationOver()
         // 请保证从下面的view往上面的view开始初始化
         rootView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -126,6 +125,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         initSingSenceView()
         initRightView()
 
+        mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()

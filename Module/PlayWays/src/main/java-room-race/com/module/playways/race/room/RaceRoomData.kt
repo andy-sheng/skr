@@ -52,9 +52,16 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     override fun <T : PlayerInfoModel> getPlayerInfoList(): List<T>? {
         val l = ArrayList<T>()
-        realRoundInfo?.let {
-            l.addAll(it.playUsers as List<T>)
-            l.addAll(it.waitUsers as List<T>)
+        if (realRoundInfo != null) {
+            realRoundInfo?.let {
+                l.addAll(it.playUsers as List<T>)
+                l.addAll(it.waitUsers as List<T>)
+            }
+        } else {
+            expectRoundInfo?.let {
+                l.addAll(it.playUsers as List<T>)
+                l.addAll(it.waitUsers as List<T>)
+            }
         }
         return l
     }
