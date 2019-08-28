@@ -76,40 +76,25 @@ class RaceSelectSongItemView : ExConstraintLayout {
                 when (i) {
                     0 -> {
                         avatarIv1.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
-                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                                .setBlur(true)
+                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[i].userID)?.avatar)
+                                .setCornerRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                                 .build())
                     }
                     1 -> {
                         avatarIv2.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
-                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                                .setBlur(true)
+                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[i].userID)?.avatar)
+                                .setCornerRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                                 .build())
                     }
                     2 -> {
                         avatarIv3.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
-                                .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                                .setBlur(true)
+                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[i].userID)?.avatar)
+                                .setCornerRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                                 .build())
                     }
                 }
             }
         }
-    }
-
-    fun getAvatarById(id: Int): String {
-        roomData?.let {
-            it.realRoundInfo?.playUsers?.forEach {
-                if (it.userInfo.userId == id) {
-                    return it.userInfo.avatar
-                }
-            }
-        }
-
-        return ""
     }
 
     fun startSelectedAnimation() {
