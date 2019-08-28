@@ -1,6 +1,5 @@
 package com.module.playways.race.room.model
 
-import android.util.ArrayMap
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.module.playways.race.room.event.*
@@ -20,7 +19,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var scores = ArrayList<RaceScore>()
     var subRoundSeq = 0 // 子轮次为1 代表第一轮A演唱 2 为第二轮B演唱
     var subRoundInfo = ArrayList<RaceSubRoundInfo>() //子轮次信息
-    var games = ArrayList<RaceGameInfo>() // choice 可选择的歌曲
+    var games = ArrayList<RaceGamePlayInfo>() // choice 可选择的歌曲
     var playUsers = ArrayList<RacePlayerInfoModel>() // 选手
     var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
     var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）

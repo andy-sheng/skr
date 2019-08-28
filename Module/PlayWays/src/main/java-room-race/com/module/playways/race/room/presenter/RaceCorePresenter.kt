@@ -28,6 +28,7 @@ import com.module.playways.race.room.event.RaceSubRoundChangeEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.module.playways.race.room.model.parseFromGameInfoPB
 import com.module.playways.race.room.model.parseFromRoundInfoPB
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
@@ -40,10 +41,7 @@ import com.module.playways.room.room.SwapStatusType
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.room.song.model.SongModel
-import com.zq.live.proto.RaceRoom.ERUserRole
-import com.zq.live.proto.RaceRoom.ERWantSingType
-import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import com.zq.live.proto.RaceRoom.RGetSingChanceMsg
+import com.zq.live.proto.RaceRoom.*
 import com.zq.live.proto.Room.EQRoundStatus
 import com.zq.live.proto.Room.RoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -441,6 +439,32 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
         }
     }
+
+    /**
+     * 轮次结束
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: RRoundOverEvent) {
+        ensureInRcRoom()
+        MyLog.d(TAG, "onEvent event = $event")
+        if(event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER){
+            // 主轮次结束
+            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
+            val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
+            event.pb.gamesList.forEach {
+                nextRoundInfo.games.add(parseFromGameInfoPB(it))
+            }
+            if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
+//            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo,true)
+                mRoomData.expectRoundInfo = nextRoundInfo
+                mRoomData.checkRoundInEachMode()
+            }
+        }else if(event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER){
+            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo,true)
+        }
+    }
+
 
     var syncJob: Job? = null
 

@@ -14,7 +14,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.model.RaceGameInfo
+import com.module.playways.race.room.model.RaceGamePlayInfo
 
 
 class RaceSelectSongItemView : ExConstraintLayout {
@@ -23,7 +23,7 @@ class RaceSelectSongItemView : ExConstraintLayout {
     lateinit var avatarIv2: BaseImageView
     lateinit var avatarIv3: BaseImageView
     var roomData: RaceRoomData? = null
-    var info: RaceGameInfo? = null
+    var info: RaceGamePlayInfo? = null
     var hasAnimate: Boolean = false
 
     constructor(context: Context) : super(context) {
@@ -51,14 +51,14 @@ class RaceSelectSongItemView : ExConstraintLayout {
         this.roomData = data
     }
 
-    fun setSong(info: RaceGameInfo?) {
+    fun setSong(info: RaceGamePlayInfo?) {
         info?.let {
             this.info = it
             songNameTv.text = info.commonMusic?.itemName
         }
     }
 
-    fun getSong(): RaceGameInfo? {
+    fun getSong(): RaceGamePlayInfo? {
         return info
     }
 
