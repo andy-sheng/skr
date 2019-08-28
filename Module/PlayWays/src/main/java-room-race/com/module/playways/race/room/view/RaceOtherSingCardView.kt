@@ -24,16 +24,17 @@ import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
 
-class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : ExViewStub(viewStub){
+class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : ExViewStub(viewStub) {
 
     val TAG = "RaceOtherSingCardView"
 
-    lateinit var raceStageView:SVGAImageView
-    lateinit var circleCountDownView:CircleCountDownView
-    lateinit var singAvatarView:BaseImageView
-    lateinit var descTv:ExTextView
+    lateinit var raceStageView: SVGAImageView
+    lateinit var circleCountDownView: CircleCountDownView
+    lateinit var singAvatarView: BaseImageView
+    lateinit var descTv: ExTextView
 
     internal val MSG_ENSURE_PLAY = 1
 
@@ -94,10 +95,11 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
     fun bindData() {
         tryInflate()
         val infoModel = roomData.realRoundInfo
-        val userInfoModel = roomData.getUserInfo(infoModel?.userID?:0)
+        val userInfoModel = roomData.getUserInfo(infoModel?.userID ?: 0)
         mUiHandler!!.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false
         visibility = View.VISIBLE
+        descTv.text = "《${infoModel?.getSongModelNow()}》"
         if (userInfoModel != null) {
             this.mUseId = userInfoModel.userId
             AvatarUtils.loadAvatarByUrl(singAvatarView,
@@ -106,8 +108,6 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
                             .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
                             .setCircle(true)
                             .build())
-            // todo 得改成歌得名字
-            descTv.text = userInfoModel.nicknameRemark
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败")
         }
@@ -140,14 +140,13 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             circleCountDownView.cancelAnim()
             circleCountDownView.max = 360
             circleCountDownView.progress = 0
-            // todo 判断某个人是不是中途进来，补全逻辑
-//            if () {
-//                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
-//                countDown("中途进来")
-//            } else {
-//                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
-//                mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
-//            }
+            if (!it.isParticipant && it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
+                countDown("中途进来")
+            } else {
+                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
+                mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
+            }
         }
     }
 
@@ -165,21 +164,21 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
 
     private fun countDown(from: String) {
         MyLog.d(TAG, "countDown from=$from")
-        //todo 等接口补全倒计时
-//        val infoModel = mGrabRoomData.getRealRoundInfo<GrabRoundInfoModel>() ?: return
-//        val totalMs = infoModel.singTotalMs
-//        val progress: Int  //当前进度条
-//        val leaveTime: Int //剩余时间
-//        MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant + " enterStatus=" + infoModel.enterStatus)
-//        if (!infoModel.isParticipant && infoModel.enterStatus == EQRoundStatus.QRS_SING.value) {
-//            MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多")
-//            progress = infoModel.elapsedTimeMs * 100 / totalMs
-//            leaveTime = totalMs - infoModel.elapsedTimeMs
-//        } else {
-//            progress = 1
-//            leaveTime = totalMs
-//        }
-//        mCircleCountDownView!!.go(progress, leaveTime)
+        roomData.realRoundInfo?.let {
+            val totalMs = it.getSingTotalMs()
+            val progress: Int  //当前进度条
+            val leaveTime: Int //剩余时间
+            MyLog.d(TAG, "countDown isParticipant:" + it.isParticipant + " enterStatus=" + it.enterStatus)
+            if (!it.isParticipant && it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多")
+                progress = it.elapsedTimeMs * 100 / totalMs
+                leaveTime = totalMs - it.elapsedTimeMs
+            } else {
+                progress = 1
+                leaveTime = totalMs
+            }
+            circleCountDownView.go(progress, leaveTime)
+        }
     }
 
     fun hide() {
