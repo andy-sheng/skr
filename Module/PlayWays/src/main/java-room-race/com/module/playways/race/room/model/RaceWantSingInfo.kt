@@ -1,10 +1,15 @@
 package com.module.playways.race.room.model
 
+import com.alibaba.fastjson.annotation.JSONField
 import com.zq.live.proto.RaceRoom.RWantSingInfo
+import java.io.Serializable
 
-class RaceWantSingInfo {
+class RaceWantSingInfo : Serializable {
+    @JSONField(name = "userID")
     var userID = 0
+    @JSONField(name = "choiceID")
     var choiceID = 0
+    @JSONField(name = "timeMs")
     var timeMs = 0L
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

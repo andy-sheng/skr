@@ -3,8 +3,9 @@ package com.module.playways.race.room.model
 import com.zq.live.proto.RaceRoom.ERWantSingType
 import com.zq.live.proto.RaceRoom.ESubRoundOverReason
 import com.zq.live.proto.RaceRoom.SubRoundInfo
+import java.io.Serializable
 
-class RaceSubRoundInfo {
+class RaceSubRoundInfo : Serializable {
     var beginMs = 0
     var endMs = 0
     var choiceID = 0

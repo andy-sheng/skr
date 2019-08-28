@@ -3,8 +3,9 @@ package com.module.playways.race.room.model
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.zq.live.proto.RaceRoom.RoundScoreInfo
 import org.greenrobot.eventbus.EventBus
+import java.io.Serializable
 
-class RaceScore {
+class RaceScore : Serializable {
 
     var bLightCnt = 0
     var isEscape = false
