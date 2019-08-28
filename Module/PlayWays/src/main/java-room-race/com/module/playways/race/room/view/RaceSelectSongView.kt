@@ -132,7 +132,7 @@ class RaceSelectSongView : ExConstraintLayout {
             countDownTv.visibility = View.VISIBLE
 
             repeat(3) {
-                countDownTv.text = (it + 1).toString()
+                countDownTv.text = (3 - it).toString()
                 delay(1000)
             }
 

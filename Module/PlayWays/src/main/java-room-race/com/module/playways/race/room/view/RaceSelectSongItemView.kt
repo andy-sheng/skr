@@ -65,6 +65,9 @@ class RaceSelectSongItemView : ExConstraintLayout {
 
     fun bindData(list: ArrayList<RaceWantSingInfo>?) {
         list?.let {
+            avatarIv1.visibility = View.GONE
+            avatarIv2.visibility = View.GONE
+            avatarIv3.visibility = View.GONE
             for (i in 0 until it.size) {
                 if (roomData?.getUserInfo(it[i].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
                     startSelectedAnimation()
@@ -72,18 +75,21 @@ class RaceSelectSongItemView : ExConstraintLayout {
 
                 when (i) {
                     0 -> {
+                        avatarIv1.visibility = View.VISIBLE
                         AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                                 .setBlur(true)
                                 .build())
                     }
                     1 -> {
+                        avatarIv2.visibility = View.VISIBLE
                         AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                                 .setBlur(true)
                                 .build())
                     }
                     2 -> {
+                        avatarIv3.visibility = View.VISIBLE
                         AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                                 .setBlur(true)
