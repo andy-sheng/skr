@@ -973,8 +973,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         FragmentUtils.newAddParamsBuilder(getActivity(), QuickFeedbackFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
-                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_RANK_ROOM)
+                                .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_GRAB_ROOM)
                                 .addDataBeforeAdd(1, QuickFeedbackFragment.FEED_BACK)
+                                .addDataBeforeAdd(3, mRoomData.getGameId())
                                 .setEnterAnim(R.anim.slide_in_bottom)
                                 .setExitAnim(R.anim.slide_out_bottom)
                                 .build());

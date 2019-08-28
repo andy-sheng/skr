@@ -11,6 +11,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
@@ -22,6 +23,7 @@ import com.module.playways.listener.AnimationListener
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
+import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -40,7 +42,6 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import kotlin.properties.Delegates
 
 class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     internal lateinit var mCorePresenter: RaceCorePresenter
@@ -70,13 +71,15 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
 
-    var mLastSceneView: View by Delegates.observable(View(context), { _, oldSceneView, newSceneView ->
-        // 为了解决滑动卡顿
-        if (oldSceneView != newSceneView) {
-            oldSceneView?.visibility = View.GONE
-            newSceneView.visibility = View.VISIBLE
+    var mLastSceneView: View? = null
+        set(value) {
+            MyLog.d(TAG, "mLastSceneView = $value")
+            if (value != mLastSceneView) {
+                mLastSceneView?.visibility = View.GONE
+                value?.visibility = View.VISIBLE
+                field = value
+            }
         }
-    })
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -128,7 +131,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     private fun initSelectSongView() {
         mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
-        mRaceSelectSongView.setRoomData(mRoomData)
+        mRaceSelectSongView.setRoomData(mRoomData) {
+            mCorePresenter.wantSingChance(it)
+        }
         mRaceSelectSongView.visibility = View.GONE
     }
 
@@ -454,6 +459,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.updateData()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceWantSingChanceEvent) {
+        mRaceSelectSongView.updateSelectState()
+    }
+
     override fun singBySelfFirstRound(songModel: SongModel?) {
         mLastSceneView = mRaceTopVsView
         mRaceRightOpView.showGiveUp(false)
@@ -516,17 +526,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                     if (showNextRound) {
                         mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                             override fun onFinish() {
-                                mRaceSelectSongView.visibility = View.VISIBLE
-                                mLastSceneView = mRaceSelectSongView
-                                mRaceSelectSongView.setSongName()
-                                mRaceSelectSongView.updateSelectState()
+                                showSelectSongView()
                             }
                         })
                     } else {
-                        mRaceSelectSongView.visibility = View.VISIBLE
-                        mLastSceneView = mRaceSelectSongView
-                        mRaceSelectSongView.setSongName()
-                        mRaceSelectSongView.updateSelectState()
+                        showSelectSongView()
                     }
                 }
             })
@@ -535,18 +539,20 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mLastSceneView = mRaceTurnInfoCardView
                 mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                     override fun onFinish() {
-                        mRaceSelectSongView.visibility = View.VISIBLE
-                        mLastSceneView = mRaceSelectSongView
-                        mRaceSelectSongView.setSongName()
-                        mRaceSelectSongView.updateSelectState()
+                        showSelectSongView()
                     }
                 })
             } else {
-                mRaceSelectSongView.visibility = View.VISIBLE
-                mRaceSelectSongView.setSongName()
-                mRaceSelectSongView.updateSelectState()
-                mLastSceneView = mRaceSelectSongView
+                showSelectSongView()
             }
+        }
+    }
+
+    private fun showSelectSongView() {
+        mRaceSelectSongView.visibility = View.VISIBLE
+        mLastSceneView = mRaceSelectSongView
+        mRaceSelectSongView.setSongName {
+            mCorePresenter.giveupSing()
         }
     }
 
