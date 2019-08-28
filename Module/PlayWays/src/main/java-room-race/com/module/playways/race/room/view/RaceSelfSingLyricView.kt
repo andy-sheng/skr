@@ -31,7 +31,7 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
     protected lateinit var mSvlyric: ScrollView
     protected lateinit var mTvLyric: TextView
     protected lateinit var mManyLyricsView: ManyLyricsView
-    internal lateinit var mSingCountDownView2: SingCountDownView2
+//    internal lateinit var mSingCountDownView2: SingCountDownView2
     internal lateinit var mVoiceScaleView: VoiceScaleView
 
     internal var mDisposable: Disposable? = null
@@ -43,7 +43,7 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
         mTvLyric = mParentView.findViewById(R.id.tv_lyric)
         mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view)
         mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view)
-        mSingCountDownView2 = mParentView.findViewById(R.id.sing_count_down_view)
+//        mSingCountDownView2 = mParentView.findViewById(R.id.sing_count_down_view)
     }
 
     override fun layoutDesc(): Int {
@@ -62,10 +62,10 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
 
     fun startFly(call: (() -> Unit)?) {
         val infoModel = mRoomData!!.realRoundInfo
-        mSingCountDownView2.startPlay(0, infoModel!!.getSingTotalMs(), true)
-        mSingCountDownView2.setListener(SelfSingCardView.Listener {
-            call?.invoke()
-        })
+//        mSingCountDownView2.startPlay(0, infoModel!!.getSingTotalMs(), true)
+//        mSingCountDownView2.setListener(SelfSingCardView.Listener {
+//            call?.invoke()
+//        })
 
         var withAcc = false
         if (infoModel != null) {
