@@ -142,10 +142,24 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceRightOpView.setListener(object : RightOpListener {
             override fun onClickGiveUp() {
                 // 放弃演唱
+                mCorePresenter.sendBLight {
+                    if (it) {
+                        mRaceRightOpView.showGiveUp(true)
+                    } else {
+                        MyLog.e(TAG, "onClickGiveUp 请求失败了")
+                    }
+                }
             }
 
             override fun onClickVote() {
                 // 投票
+                mCorePresenter.giveupSing {
+                    if (it) {
+                        mRaceRightOpView.showVote(true)
+                    } else {
+                        MyLog.e(TAG, "onClickVote 请求失败了")
+                    }
+                }
             }
         })
     }
@@ -470,7 +484,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingBySelf {
             mRaceTopVsView.visibility = View.GONE
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly {
+                mCorePresenter.sendSingComplete()
+            }
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
@@ -484,7 +500,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly(null)
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
@@ -492,7 +508,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun singBySelfSecondRound(songModel: SongModel?) {
         mRaceRightOpView.showGiveUp(false)
         mRaceTopVsView.startSingBySelf {
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly {
+                mCorePresenter.sendSingComplete()
+            }
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
@@ -504,17 +522,19 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceRightOpView.showVote(false)
         }
         mRaceTopVsView.startSingByOther {
-            mRaceSelfSingLyricView.startFly()
+            mRaceSelfSingLyricView.startFly(null)
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
     }
 
     override fun roundOver(overReason: Int) {
+        mRaceRightOpView.visibility = View.GONE
         mLastSceneView = mRaceMiddleResultView
         mRaceMiddleResultView.showResult()
     }
 
     override fun showWaiting(showAnimation: Boolean) {
+        mRaceRightOpView.visibility = View.GONE
         mLastSceneView = mRaceWaitingCardView
         if (showAnimation) {
             mLastSceneView = mRaceWaitingCardView
@@ -525,6 +545,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showChoicing(showNextRound: Boolean) {
+        mRaceRightOpView.visibility = View.GONE
         if (mRaceWaitingCardView.visibility == View.VISIBLE) {
             mLastSceneView = mRaceWaitingCardView
             mRaceWaitingCardView.animationLeave(object : AnimationListener {

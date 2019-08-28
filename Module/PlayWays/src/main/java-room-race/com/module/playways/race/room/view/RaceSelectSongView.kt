@@ -154,6 +154,13 @@ class RaceSelectSongView : ExConstraintLayout {
         })
     }
 
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility == View.GONE) {
+            animator?.cancel()
+        }
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         animator?.cancel()

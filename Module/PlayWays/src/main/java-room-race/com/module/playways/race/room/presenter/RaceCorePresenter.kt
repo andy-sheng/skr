@@ -225,7 +225,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     /**
      * 爆灯&投票
      */
-    fun sendBLight() {
+    fun sendBLight(callback: ((isSucess: Boolean) -> Unit)?) {
         launch {
             val map = mutableMapOf(
                     "roomID" to mRoomData.gameId,
@@ -235,9 +235,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.bLight(body) }
             if (result.errno == 0) {
-
+                callback?.invoke(true)
             } else {
-
+                callback?.invoke(false)
             }
         }
     }
@@ -245,7 +245,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     /**
      * 放弃演唱
      */
-    fun giveupSing() {
+    fun giveupSing(callback: ((isSucess: Boolean) -> Unit)?) {
         launch {
             val map = mutableMapOf(
                     "roomID" to mRoomData.gameId,
@@ -255,9 +255,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.giveup(body) }
             if (result.errno == 0) {
-
+                callback?.invoke(true)
             } else {
-
+                callback?.invoke(false)
             }
         }
     }
