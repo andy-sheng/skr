@@ -21,6 +21,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
+import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -446,6 +447,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceScoreChangeEvent) {
+        mRaceTopVsView.updateData()
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {

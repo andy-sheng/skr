@@ -53,14 +53,6 @@ class RaceTopVsView : ExConstraintLayout {
         rightAvatarIv = this.findViewById(com.module.playways.R.id.right_avatar_iv)
         rightCircleCountDownView = this.findViewById(com.module.playways.R.id.right_circle_count_down_view)
         raceTopVsIv = this.findViewById(com.module.playways.R.id.race_top_vs_iv)
-
-        AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
-                .build())
-
-        AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
-                .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
-                .build())
     }
 
     fun setRaceRoomData(roomData: RaceRoomData) {
