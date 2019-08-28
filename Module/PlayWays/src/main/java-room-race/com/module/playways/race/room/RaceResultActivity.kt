@@ -18,6 +18,7 @@ import com.component.level.view.NormalLevelView2
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.race.RaceRoomServerApi
+import com.module.playways.race.room.model.RaceResultModel
 import com.module.playways.room.room.model.score.ScoreResultModel
 import kotlinx.coroutines.launch
 
@@ -77,14 +78,10 @@ class RaceResultActivity : BaseActivity() {
         launch {
             val result = subscribe { raceRoomServerApi.getResult(roomID, MyUserInfoManager.getInstance().uid, roundSeq) }
             if (result.errno == 0) {
-                val list = JSON.parseArray(result.data.getString("userScoreResult"), ScoreResultModel::class.java)
-                if (!list.isNullOrEmpty()) {
-                    for (scoreResultModel in list) {
-                        if (scoreResultModel.userID.toLong() == MyUserInfoManager.getInstance().uid) {
-                            showResult(scoreResultModel)
-                            return@launch
-                        }
-                    }
+                val raceResultModel = JSON.parseObject(result.data.getString("userScoreChange"), RaceResultModel::class.java)
+                if (raceResultModel != null) {
+                    showResult(raceResultModel)
+                    return@launch
                 } else {
                     MyLog.e(TAG, "getResult erro 服务器数据为空")
                 }
@@ -94,8 +91,12 @@ class RaceResultActivity : BaseActivity() {
         }
     }
 
-    private fun showResult(scoreResultModel: ScoreResultModel) {
-        val scoreState = scoreResultModel.lastState
+    private fun showResult(raceResultModel: RaceResultModel) {
+
+        descTv.text = "距离下次升段还需${raceResultModel.gap}积分"
+        changeTv.text = raceResultModel.get.toString()
+
+        val scoreState = raceResultModel.getLastState()
         scoreState?.let {
             levelDescTv.text = it.rankingDesc
             var progress = 0
@@ -103,7 +104,6 @@ class RaceResultActivity : BaseActivity() {
                 progress = it.currExp * 100 / it.maxExp
             }
             levelProgress.setCurProgress(progress)
-            descTv.text = "距离下次升段还需${it.maxExp - it.currExp}积分"
             levelView.bindData(it.mainRanking, it.subRanking)
         }
     }
