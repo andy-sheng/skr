@@ -160,6 +160,7 @@
 
     <!--结果-->
     <com.module.playways.race.room.view.RaceMiddleResultView
+        android:visibility="gone"
         android:id="@+id/race_middle_result_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
