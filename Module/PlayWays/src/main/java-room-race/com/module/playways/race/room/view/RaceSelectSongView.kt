@@ -11,10 +11,14 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.model.RaceWantSingInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class RaceSelectSongView : ExConstraintLayout {
     val mTag = "RaceSelectSongView"
@@ -25,6 +29,7 @@ class RaceSelectSongView : ExConstraintLayout {
     private val firstSongItem: RaceSelectSongItemView
     private val secondSongItem: RaceSelectSongItemView
     private val thirdSongItem: RaceSelectSongItemView
+    var countDownTv: ExTextView
     private val itemList: ArrayList<RaceSelectSongItemView> = ArrayList()
     var animator: ValueAnimator? = null
     var mRoomData: RaceRoomData? = null
@@ -46,6 +51,8 @@ class RaceSelectSongView : ExConstraintLayout {
         secondSongItem = findViewById(R.id.second_song_item)
         thirdSongItem = findViewById(R.id.third_song_item)
         forthSongItem = findViewById(R.id.forth_song_item)
+        countDownTv = rootView.findViewById(R.id.count_down_tv)
+
         itemList.add(firstSongItem)
         itemList.add(secondSongItem)
         itemList.add(thirdSongItem)
@@ -107,8 +114,22 @@ class RaceSelectSongView : ExConstraintLayout {
             }
         }
 
+        launch(Dispatchers.Main) {
+            firstSongItem.isEnabled = false
+            secondSongItem.isEnabled = false
+            thirdSongItem.isEnabled = false
+            forthSongItem.isEnabled = false
+            countDownTv.visibility = View.VISIBLE
+
+            repeat(3) {
+                countDownTv.text = (it + 1).toString()
+                delay(1000)
+            }
+
+            countDownTv.visibility = View.GONE
+            startCountDown()
+        }
         updateSelectState()
-        startCountDown()
     }
 
     fun updateSelectState() {
@@ -134,6 +155,10 @@ class RaceSelectSongView : ExConstraintLayout {
 
     fun startCountDown() {
         MyLog.d(mTag, "startCountDown")
+        firstSongItem.isEnabled = true
+        secondSongItem.isEnabled = true
+        thirdSongItem.isEnabled = true
+        forthSongItem.isEnabled = true
         animator = ValueAnimator.ofInt(0, 360)
         animator?.duration = 6000
         animator?.addUpdateListener {
