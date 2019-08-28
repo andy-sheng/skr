@@ -80,6 +80,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     abstract fun < T : PlayerInfoModel> getPlayerInfoList(): List<T>?
 
+    @Transient
     private val userInfoMap = LruCache<Int,UserInfoModel>(20)
 
     fun getUserInfo(userID: Int?): UserInfoModel? {
