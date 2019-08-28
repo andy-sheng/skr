@@ -22,6 +22,7 @@ import com.module.playways.listener.AnimationListener
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
+import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -70,13 +71,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
 
-    var mLastSceneView: View by Delegates.observable(View(context), { _, oldSceneView, newSceneView ->
-        // 为了解决滑动卡顿
-        if (oldSceneView != newSceneView) {
-            oldSceneView?.visibility = View.GONE
-            newSceneView.visibility = View.VISIBLE
-        }
-    })
+    var mLastSceneView: View? = null
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -128,7 +123,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     private fun initSelectSongView() {
         mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
-        mRaceSelectSongView.setRoomData(mRoomData)
+        mRaceSelectSongView.setRoomData(mRoomData) {
+            mCorePresenter.wantSingChance(it)
+        }
         mRaceSelectSongView.visibility = View.GONE
     }
 
@@ -454,6 +451,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.updateData()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceWantSingChanceEvent) {
+        mRaceSelectSongView.updateSelectState()
+    }
+
     override fun singBySelfFirstRound(songModel: SongModel?) {
         mLastSceneView = mRaceTopVsView
         mRaceRightOpView.showGiveUp(false)
@@ -519,14 +521,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                                 mRaceSelectSongView.visibility = View.VISIBLE
                                 mLastSceneView = mRaceSelectSongView
                                 mRaceSelectSongView.setSongName()
-                                mRaceSelectSongView.updateSelectState()
                             }
                         })
                     } else {
                         mRaceSelectSongView.visibility = View.VISIBLE
                         mLastSceneView = mRaceSelectSongView
                         mRaceSelectSongView.setSongName()
-                        mRaceSelectSongView.updateSelectState()
                     }
                 }
             })
@@ -538,13 +538,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                         mRaceSelectSongView.visibility = View.VISIBLE
                         mLastSceneView = mRaceSelectSongView
                         mRaceSelectSongView.setSongName()
-                        mRaceSelectSongView.updateSelectState()
                     }
                 })
             } else {
                 mRaceSelectSongView.visibility = View.VISIBLE
                 mRaceSelectSongView.setSongName()
-                mRaceSelectSongView.updateSelectState()
                 mLastSceneView = mRaceSelectSongView
             }
         }

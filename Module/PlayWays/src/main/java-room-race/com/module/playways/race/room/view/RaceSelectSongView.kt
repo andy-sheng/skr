@@ -6,14 +6,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class RaceSelectSongView : ExConstraintLayout {
     val mTag = "RaceSelectSongView"
@@ -27,6 +26,7 @@ class RaceSelectSongView : ExConstraintLayout {
     private val itemList: ArrayList<RaceSelectSongItemView> = ArrayList()
     var animator: ValueAnimator? = null
     var mRoomData: RaceRoomData? = null
+    var mSelectCall: ((Int) -> Unit)? = null
 
     constructor(context: Context) : super(context)
 
@@ -49,26 +49,45 @@ class RaceSelectSongView : ExConstraintLayout {
         itemList.add(forthSongItem)
         progressBar.max = 360
         progressBar.progress = 0
+        firstSongItem.setDebounceViewClickListener {
+            firstSongItem.getSong()?.let {
+                mSelectCall?.invoke(1)
+            }
+        }
 
-        launch {
-            delay(1000)
-            startCountDown()
-            firstSongItem.startSelectedAnimation()
+        secondSongItem.setDebounceViewClickListener {
+            secondSongItem.getSong()?.let {
+                mSelectCall?.invoke(2)
+            }
+        }
 
-            delay(5000)
-            firstSongItem.reset()
+        thirdSongItem.setDebounceViewClickListener {
+            thirdSongItem.getSong()?.let {
+                mSelectCall?.invoke(3)
+            }
+        }
+
+        forthSongItem.setDebounceViewClickListener {
+            forthSongItem.getSong()?.let {
+                mSelectCall?.invoke(4)
+            }
         }
     }
 
-    fun setRoomData(roomData: RaceRoomData) {
+    fun setRoomData(roomData: RaceRoomData, selectCall: ((Int) -> Unit)) {
         mRoomData = roomData
-        firstSongItem.roomData = roomData
-        secondSongItem.roomData = roomData
-        thirdSongItem.roomData = roomData
-        forthSongItem.roomData = roomData
+        firstSongItem.setRaceRoomData(roomData)
+        secondSongItem.setRaceRoomData(roomData)
+        thirdSongItem.setRaceRoomData(roomData)
+        forthSongItem.setRaceRoomData(roomData)
+        mSelectCall = selectCall
     }
 
     fun setSongName() {
+        firstSongItem.reset()
+        secondSongItem.reset()
+        thirdSongItem.reset()
+        forthSongItem.reset()
         mRoomData?.let {
             val info = it.realRoundInfo as RaceRoundInfoModel
             info?.let {
@@ -79,6 +98,7 @@ class RaceSelectSongView : ExConstraintLayout {
                 }
             }
         }
+        updateSelectState()
     }
 
     fun updateSelectState() {

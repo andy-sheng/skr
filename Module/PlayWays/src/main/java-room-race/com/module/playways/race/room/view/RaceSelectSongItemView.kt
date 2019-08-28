@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
@@ -22,6 +23,8 @@ class RaceSelectSongItemView : ExConstraintLayout {
     lateinit var avatarIv2: BaseImageView
     lateinit var avatarIv3: BaseImageView
     var roomData: RaceRoomData? = null
+    var info: RaceGameInfo? = null
+    var hasAnimate: Boolean = false
 
     constructor(context: Context) : super(context) {
         init()
@@ -50,13 +53,22 @@ class RaceSelectSongItemView : ExConstraintLayout {
 
     fun setSong(info: RaceGameInfo?) {
         info?.let {
+            this.info = it
             songNameTv.text = info.commonMusic?.itemName
         }
+    }
+
+    fun getSong(): RaceGameInfo? {
+        return info
     }
 
     fun bindData(list: ArrayList<Int>?) {
         list?.let {
             for (i in 0 until it.size) {
+                if (roomData?.getUserInfo(it[i])?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
+                    startSelectedAnimation()
+                }
+
                 when (i) {
                     0 -> {
                         AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
@@ -94,6 +106,7 @@ class RaceSelectSongItemView : ExConstraintLayout {
     }
 
     fun startSelectedAnimation() {
+        hasAnimate = true
         val drawable = DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#FFF8CBFF"))
                 .setCornersRadius(U.getDisplayUtils().dip2px(8f).toFloat())
@@ -118,5 +131,6 @@ class RaceSelectSongItemView : ExConstraintLayout {
         avatarIv1.visibility = View.GONE
         avatarIv2.visibility = View.GONE
         avatarIv3.visibility = View.GONE
+        hasAnimate = false
     }
 }
