@@ -562,7 +562,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceSelectSongView.visibility = View.VISIBLE
         mLastSceneView = mRaceSelectSongView
         mRaceSelectSongView.setSongName {
-            mCorePresenter.giveupSing()
+            mCorePresenter.sendIntroOver()
         }
     }
 
