@@ -287,14 +287,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
      *  当前轮次的总时间
      */
     fun getSingTotalMs(): Int {
-        var totalMs = 0
-        if (!subRoundInfo.isNullOrEmpty() && (subRoundSeq in 1..subRoundInfo.size)) {
-            totalMs = subRoundInfo[subRoundSeq - 1].endMs - subRoundInfo[subRoundSeq - 1].beginMs
-        }
-
+        val endMs = subRoundInfo.getOrNull(subRoundSeq - 1)?.endMs ?: 0
+        val beginMs = subRoundInfo.getOrNull(subRoundSeq - 1)?.beginMs ?: 0
+        var totalMs = endMs - beginMs
         if (totalMs <= 0) {
-            //todo 是否需要对服务器做个容错逻辑
-            MyLog.e(TAG, "getSingTotalMs error totalMs <= 0")
+            totalMs = 20 * 1000
         }
         return totalMs
     }

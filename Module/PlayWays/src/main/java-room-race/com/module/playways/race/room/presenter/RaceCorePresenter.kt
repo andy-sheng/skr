@@ -1,23 +1,26 @@
 package com.module.playways.race.room.presenter
 
-import android.animation.ValueAnimator
 import android.os.Handler
 import android.os.Message
 import android.support.annotation.CallSuper
-import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.engine.ScoreConfig
 import com.common.jiguang.JiGuangPush
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
+import com.common.utils.U
+import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
 import com.engine.Params
+import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.race.RaceRoomServerApi
@@ -37,15 +40,13 @@ import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.event.raceroom.*
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RaceRoomMsgManager
-import com.module.playways.room.room.SwapStatusType
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.module.playways.room.song.model.SongModel
-import com.zq.live.proto.RaceRoom.*
-import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.live.proto.RaceRoom.ERWantSingType
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import com.zq.live.proto.RaceRoom.ERoundOverType
 import com.zq.live.proto.Room.RoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
-import io.reactivex.Observable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -54,9 +55,6 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import retrofit2.http.Body
-import retrofit2.http.PUT
-import java.util.HashMap
 
 class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
@@ -113,10 +111,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 reInit = true
             }
             if (reInit) {
-                val params = Params.getFromPref()
-                //            params.setStyleEnum(Params.AudioEffect.none);
-                params.scene = Params.Scene.grab
-                params.isEnableVideo = false
+                val params = Params.getFromPref().apply {
+                    scene = Params.Scene.grab
+                    isEnableAudio = false
+                }
                 ZqEngineKit.getInstance().init("raceroom", params)
             }
             ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), false, mRoomData.agoraToken)
@@ -324,6 +322,95 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     /**
+     * 如果确定是自己唱了,预先可以做的操作
+     */
+    private fun preOpWhenSelfRound() {
+        var needAcc = false
+        var needScore = false
+        val p = ZqEngineKit.getInstance().params
+        if (p != null) {
+            p.isGrabSingNoAcc = false
+        }
+        if (mRoomData.isAccEnable) {
+            needAcc = true
+            needScore = true
+        } else {
+            if (p != null) {
+                p.isGrabSingNoAcc = true
+                needScore = true
+            }
+        }
+        val songModel = mRoomData?.realRoundInfo?.getSongModelNow()
+        if (needAcc) {
+            // 1. 开启伴奏的，预先下载 melp 资源
+            songModel?.let {
+                val midiFile = SongResUtils.getMIDIFileByUrl(it.midi)
+                if (midiFile != null && !midiFile.exists()) {
+                    U.getHttpUtils().downloadFileAsync(it.midi, midiFile, true, null)
+                }
+            }
+
+        }
+        if (!ZqEngineKit.getInstance().params.isAnchor) {
+            ZqEngineKit.getInstance().setClientRole(true)
+            ZqEngineKit.getInstance().muteLocalAudioStream(false)
+            if (needAcc) {
+                // 如果需要播放伴奏，一定要在角色切换成功才能播
+                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000)
+            }
+        } else {
+            // 如果是房主,不在这里 解禁，会录进去音效的声音 延后一些再解开
+            mUiHandler.postDelayed({
+                ZqEngineKit.getInstance().muteLocalAudioStream(false)
+                onChangeBroadcastSuccess()
+            }, 500)
+        }
+
+        songModel?.let {
+            // 开始acr打分
+            if (ScoreConfig.isAcrEnable()) {
+                if (needAcc) {
+                    ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                            .setSongName(it.itemName)
+                            .setArtist(it.owner)
+                            .setMode(RecognizeConfig.MODE_MANUAL)
+                            .build())
+                } else {
+                    if (needScore) {
+                        // 清唱还需要打分，那就只用 acr 打分
+                        ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                                .setSongName(it.itemName)
+                                .setArtist(it.owner)
+                                .setMode(RecognizeConfig.MODE_AUTO)
+                                .setAutoTimes(3)
+                                .setMResultListener { result, list, targetSongInfo, lineNo ->
+                                    var mAcrScore = 0
+                                    if (targetSongInfo != null) {
+                                        mAcrScore = (targetSongInfo.score * 100).toInt()
+                                    }
+                                    EventBus.getDefault().post(LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound", -1, mAcrScore, 0))
+                                }
+                                .build())
+                    } else {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun closeEngine() {
+        if (mRoomData.gameId > 0) {
+            ZqEngineKit.getInstance().stopAudioMixing()
+            ZqEngineKit.getInstance().stopAudioRecording()
+            if (ZqEngineKit.getInstance().params.isAnchor) {
+                ZqEngineKit.getInstance().setClientRole(false)
+            }
+        }
+    }
+
+    /**
      * 轮次切换事件
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -348,6 +435,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processStatusChange(thisRound: RaceRoundInfoModel?) {
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
+        closeEngine()
+        ZqEngineKit.getInstance().stopRecognize()
         if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
             mIRaceRoomView.showWaiting(true)
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
@@ -358,6 +448,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 val subRound1 = thisRound.subRoundInfo.get(0)
                 if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
                     mIRaceRoomView.singBySelfFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID))
+                    preOpWhenSelfRound()
                 } else {
                     mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID), mRoomData.getUserInfo(subRound1.userID))
                 }
@@ -366,6 +457,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 val subRound2 = thisRound.subRoundInfo.get(1)
                 if (subRound2.userID == MyUserInfoManager.getInstance().uid.toInt()) {
                     mIRaceRoomView.singBySelfSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID))
+                    preOpWhenSelfRound()
                 } else {
                     mIRaceRoomView.singByOtherSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID), mRoomData.getUserInfo(subRound2.userID))
                 }
@@ -447,7 +539,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     fun onEvent(event: RRoundOverEvent) {
         ensureInRcRoom()
         MyLog.d(TAG, "onEvent event = $event")
-        if(event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER){
+        if (event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
             // 主轮次结束
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
             val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
@@ -459,9 +551,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 mRoomData.expectRoundInfo = nextRoundInfo
                 mRoomData.checkRoundInEachMode()
             }
-        }else if(event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER){
+        } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo,true)
+            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
         }
     }
 
@@ -638,6 +730,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         if (!mRoomData.hasExitGame) {
             exitRoom("destroy")
         }
+        mUiHandler.removeCallbacksAndMessages(null)
         Params.save2Pref(ZqEngineKit.getInstance().params)
         ZqEngineKit.getInstance().destroy("raceroom")
         RaceRoomMsgManager.removeFilter(mPushMsgFilter)
