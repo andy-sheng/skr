@@ -526,15 +526,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                     if (showNextRound) {
                         mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                             override fun onFinish() {
-                                mRaceSelectSongView.visibility = View.VISIBLE
-                                mLastSceneView = mRaceSelectSongView
-                                mRaceSelectSongView.setSongName()
+                                showSelectSongView()
                             }
                         })
                     } else {
-                        mRaceSelectSongView.visibility = View.VISIBLE
-                        mLastSceneView = mRaceSelectSongView
-                        mRaceSelectSongView.setSongName()
+                        showSelectSongView()
                     }
                 }
             })
@@ -543,16 +539,20 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mLastSceneView = mRaceTurnInfoCardView
                 mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                     override fun onFinish() {
-                        mRaceSelectSongView.visibility = View.VISIBLE
-                        mLastSceneView = mRaceSelectSongView
-                        mRaceSelectSongView.setSongName()
+                        showSelectSongView()
                     }
                 })
             } else {
-                mRaceSelectSongView.visibility = View.VISIBLE
-                mRaceSelectSongView.setSongName()
-                mLastSceneView = mRaceSelectSongView
+                showSelectSongView()
             }
+        }
+    }
+
+    private fun showSelectSongView() {
+        mRaceSelectSongView.visibility = View.VISIBLE
+        mLastSceneView = mRaceSelectSongView
+        mRaceSelectSongView.setSongName {
+            mCorePresenter.giveupSing()
         }
     }
 

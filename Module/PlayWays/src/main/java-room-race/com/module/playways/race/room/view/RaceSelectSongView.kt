@@ -1,5 +1,6 @@
 package com.module.playways.race.room.view
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
@@ -27,6 +28,7 @@ class RaceSelectSongView : ExConstraintLayout {
     var animator: ValueAnimator? = null
     var mRoomData: RaceRoomData? = null
     var mSelectCall: ((Int) -> Unit)? = null
+    var mNoSelectCall: (() -> Unit)? = null
 
     constructor(context: Context) : super(context)
 
@@ -52,24 +54,28 @@ class RaceSelectSongView : ExConstraintLayout {
         firstSongItem.setDebounceViewClickListener {
             firstSongItem.getSong()?.let {
                 mSelectCall?.invoke(1)
+                mNoSelectCall = null
             }
         }
 
         secondSongItem.setDebounceViewClickListener {
             secondSongItem.getSong()?.let {
                 mSelectCall?.invoke(2)
+                mNoSelectCall = null
             }
         }
 
         thirdSongItem.setDebounceViewClickListener {
             thirdSongItem.getSong()?.let {
                 mSelectCall?.invoke(3)
+                mNoSelectCall = null
             }
         }
 
         forthSongItem.setDebounceViewClickListener {
             forthSongItem.getSong()?.let {
                 mSelectCall?.invoke(4)
+                mNoSelectCall = null
             }
         }
     }
@@ -83,7 +89,8 @@ class RaceSelectSongView : ExConstraintLayout {
         mSelectCall = selectCall
     }
 
-    fun setSongName() {
+    fun setSongName(noSelectCall: (() -> Unit)?) {
+        mNoSelectCall = noSelectCall
         firstSongItem.reset()
         secondSongItem.reset()
         thirdSongItem.reset()
@@ -98,7 +105,9 @@ class RaceSelectSongView : ExConstraintLayout {
                 }
             }
         }
+
         updateSelectState()
+        startCountDown()
     }
 
     fun updateSelectState() {
@@ -122,6 +131,23 @@ class RaceSelectSongView : ExConstraintLayout {
             progressBar.progress = it.animatedValue as Int
         }
         animator?.start()
+        animator?.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                mNoSelectCall?.invoke()
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+
+            }
+        })
     }
 
     override fun onDetachedFromWindow() {
