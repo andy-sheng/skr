@@ -1,12 +1,16 @@
 package com.module.playways.race.room.view
 
 import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.ProgressBar
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
@@ -98,6 +102,15 @@ class RaceSelectSongView : ExConstraintLayout {
     }
 
     fun setSongName(noSelectCall: (() -> Unit)?) {
+        val animatorSet = AnimatorSet()
+        val scaleX = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleX", 0.85f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleY", 0.85f, 1f)
+        val alpha = ObjectAnimator.ofFloat(this@RaceSelectSongView, "alpha", 0.6f, 1f)
+        animatorSet.setDuration(500)
+        animatorSet.setInterpolator(OvershootInterpolator())
+        animatorSet.play(scaleX).with(scaleY).with(alpha)
+        animatorSet.start()
+
         mNoSelectCall = noSelectCall
         firstSongItem.reset()
         secondSongItem.reset()
@@ -115,10 +128,7 @@ class RaceSelectSongView : ExConstraintLayout {
         }
 
         launch(Dispatchers.Main) {
-            firstSongItem.isEnabled = false
-            secondSongItem.isEnabled = false
-            thirdSongItem.isEnabled = false
-            forthSongItem.isEnabled = false
+            enableSelectSong(false)
             countDownTv.visibility = View.VISIBLE
 
             repeat(3) {
@@ -132,6 +142,13 @@ class RaceSelectSongView : ExConstraintLayout {
         updateSelectState()
     }
 
+    private fun enableSelectSong(isEnabled: Boolean) {
+        firstSongItem.isEnabled = isEnabled
+        secondSongItem.isEnabled = isEnabled
+        thirdSongItem.isEnabled = isEnabled
+        forthSongItem.isEnabled = isEnabled
+    }
+
     fun updateSelectState() {
         mRoomData?.let {
             it.realRoundInfo?.let { raceRoundInfoModel ->
@@ -142,6 +159,9 @@ class RaceSelectSongView : ExConstraintLayout {
                 map.put(4, ArrayList<RaceWantSingInfo>())
                 raceRoundInfoModel.wantSingInfos.forEach {
                     map[it.choiceID]?.add(it)
+                    if (MyUserInfoManager.getInstance().uid == it.userID.toLong()) {
+                        enableSelectSong(false)
+                    }
                 }
 
                 for (i in 0 until map.size) {
@@ -155,10 +175,7 @@ class RaceSelectSongView : ExConstraintLayout {
 
     fun startCountDown() {
         MyLog.d(mTag, "startCountDown")
-        firstSongItem.isEnabled = true
-        secondSongItem.isEnabled = true
-        thirdSongItem.isEnabled = true
-        forthSongItem.isEnabled = true
+        enableSelectSong(true)
         animator = ValueAnimator.ofInt(0, 360)
         animator?.duration = 6000
         animator?.addUpdateListener {
