@@ -358,59 +358,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             return
         }
         mInputContainerView.hideSoftInput()
-
-        val mShowKick: Boolean = false
-//        if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
-//            // 普通房
-//            mShowKick = true
-//        } else {
-//            if (mRoomData.isOwner()) {
-//                mShowKick = true
-//            } else {
-//                mShowKick = false
-//            }
-//        }
-
-        mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, true)
+        mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_RACE_ROOM, userID, false, false)
                 .setRoomID(mRoomData.gameId)
-                .setInviteDoubleListener { userInfoModel ->
-                    if (userInfoModel.isFriend) {
-//                        mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.userId)
-                    } else {
-                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
-                            override fun onServerSucess(isFans: Boolean?) {
-//                                if (isFans!!) {
-//                                    mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.userId)
-//                                } else {
-//                                    mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
-//                                            .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
-//                                            .setConfirmTip("邀请")
-//                                            .setCancelTip("取消")
-//                                            .setConfirmBtnClickListener(object : AnimateClickListener() {
-//                                                override fun click(view: View) {
-//                                                    mDoubleRoomInvitePresenter.inviteToDoubleRoom(userInfoModel.userId)
-//                                                    mTipsDialogView.dismiss()
-//                                                }
-//                                            })
-//                                            .setCancelBtnClickListener(object : AnimateClickListener() {
-//                                                override fun click(view: View) {
-//                                                    mTipsDialogView.dismiss()
-//                                                }
-//                                            })
-//                                            .build()
-//                                    mTipsDialogView.showByDialog()
-//                                }
-                            }
-
-                            override fun onServerFailed() {
-
-                            }
-                        })
-                    }
-                }
-                .setKickListener { userInfoModel ->
-                    //                    showKickConfirmDialog(userInfoModel)
-                }
                 .build()
         mPersonInfoDialog?.show()
     }
