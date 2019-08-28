@@ -119,7 +119,7 @@ class RaceTopContentView : ConstraintLayout {
 
     //只有轮次切换的时候调用
     private fun initData() {
-        val list = mRoomData?.getAllPlayer()
+        val list = mRoomData?.getPlayerInfoList<RacePlayerInfoModel>()
         if (!list.isNullOrEmpty()) {
             adapter.mDataList.clear()
             adapter.mDataList.addAll(list)

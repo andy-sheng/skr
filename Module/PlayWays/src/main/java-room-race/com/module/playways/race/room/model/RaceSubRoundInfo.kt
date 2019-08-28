@@ -23,5 +23,6 @@ internal fun parseFromSubRoundInfoPB(pb: SubRoundInfo): RaceSubRoundInfo {
     model.beginMs = pb.beginMs
     model.endMs = pb.endMs
     model.overReason = pb.overReason.value
+    model.wantSingType = pb.wantSingType.value
     return model
 }
