@@ -334,4 +334,10 @@ interface RaceRoomServerApi {
     */
     @PUT("http://dev.game.inframe.mobi/v1/racegame/want-sing-chance")
     fun wantSingChance(@Body body: RequestBody): Call<ApiResult>
+
+    /*
+
+     */
+    @GET("http://dev.game.inframe.mobi/v1/racegame/game-choices")
+    fun getGameChoices(@Query("roomID") roomID: Int, @Query("roundSeq") roundSeq: Int): Call<ApiResult>
 }

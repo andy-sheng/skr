@@ -29,9 +29,7 @@ import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
 import com.module.playways.race.room.event.RaceSubRoundChangeEvent
 import com.module.playways.race.room.inter.IRaceRoomView
-import com.module.playways.race.room.model.RacePlayerInfoModel
-import com.module.playways.race.room.model.RaceRoundInfoModel
-import com.module.playways.race.room.model.parseFromGameInfoPB
+import com.module.playways.race.room.model.*
 import com.module.playways.race.room.model.parseFromRoundInfoPB
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
@@ -636,6 +634,21 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(raceRoundInfoModel, true)
         } else if (raceRoundInfoModel.roundSeq > mRoomData.realRoundSeq) {
             MyLog.w(TAG, "sync 回来的轮次大，要替换 roundinfo 了")
+            // 主轮次结束
+            launch {
+                if (raceRoundInfoModel.games.isEmpty()) {
+                    val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
+                    if (result.errno == 0) {
+                        val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
+                        raceRoundInfoModel.games.addAll(games)
+                    } else {
+
+                    }
+                }
+                mRoomData.expectRoundInfo = raceRoundInfoModel
+                mRoomData.checkRoundInEachMode()
+            }
+
         }
     }
 
