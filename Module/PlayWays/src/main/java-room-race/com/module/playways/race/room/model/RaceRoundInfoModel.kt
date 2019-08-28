@@ -213,6 +213,29 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         return
     }
 
+    /**
+     * 看这个userID 是不是这个大轮次的演唱者
+     *
+     */
+    fun isSingerByUserId(userId: Int): Boolean {
+        if (this.subRoundInfo.getOrNull(0)?.userID == userId) {
+            return true
+        }
+        if (this.subRoundInfo.getOrNull(1)?.userID == userId) {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 当前子轮次是不是正由 userID 在演唱
+     */
+    fun isSingerNowByUserId(userId: Int): Boolean {
+        if (this.subRoundInfo.getOrNull(subRoundSeq - 1)?.userID == userId) {
+            return true
+        }
+        return false
+    }
 }
 
 
