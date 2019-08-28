@@ -65,7 +65,6 @@ public class RaceSelfSingLyricView extends ExViewStub {
     }
 
     private void initLyric() {
-        RaceRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         mSvlyric.setVisibility(View.VISIBLE);
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.initLrcData();
@@ -76,14 +75,18 @@ public class RaceSelfSingLyricView extends ExViewStub {
     }
 
     public void startFly() {
-//        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
-//            withAcc = true;
-//        }
-//        if (!withAcc) {
-//            mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
-//        } else {
-//            mSelfSingLyricView.playWithAcc(infoModel, totalTs);
-//        }
+        RaceRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        boolean withAcc = false;
+        if (infoModel != null) {
+            if (infoModel.isAccRoundNow() && mRoomData != null && mRoomData.isAccEnable()) {
+                withAcc = true;
+            }
+            if (!withAcc) {
+                playWithNoAcc(infoModel.getMusic());
+            } else {
+                playWithAcc(infoModel, infoModel.getMusic().getTotalMs());
+            }
+        }
     }
 
     public void playWithAcc(RaceRoundInfoModel infoModel, int totalTs) {
