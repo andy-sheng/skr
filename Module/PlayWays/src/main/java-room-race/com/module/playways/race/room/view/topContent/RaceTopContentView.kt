@@ -18,6 +18,9 @@ import com.engine.EngineEvent
 import com.module.playways.R
 import com.module.playways.grab.room.top.GrabTopItemView
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
+import com.module.playways.race.room.event.RaceRoundChangeEvent
+import com.module.playways.race.room.event.RaceWaitSeatUpdateEvent
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import kotlinx.android.synthetic.main.race_top_content_view_layout.view.*
 
@@ -128,6 +131,21 @@ class RaceTopContentView : ConstraintLayout {
 
     fun setListener(listener: Listener) {
         mListener = listener
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RacePlaySeatUpdateEvent) {
+        initData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceWaitSeatUpdateEvent) {
+        initData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceRoundChangeEvent) {
+        initData()
     }
 
     interface Listener {
