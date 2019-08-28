@@ -14,6 +14,7 @@ import com.common.view.ex.ExImageView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.module.playways.race.room.model.RaceWantSingInfo
 
 class RaceSelectSongView : ExConstraintLayout {
     val mTag = "RaceSelectSongView"
@@ -111,20 +112,24 @@ class RaceSelectSongView : ExConstraintLayout {
     }
 
     fun updateSelectState() {
-        //TODO
-//        mRoomData?.let {
-//            val info = it.realRoundInfo as RaceRoundInfoModel
-//            info?.let {
-//                for(info in it.wantSingInfos){
-//                    itemList[info.choiceID-1].bindData()
-//                }
-//                for (i in 0 until it.wantSingInfos.size) {
-//                    if (i < 4) {
-//                        itemList[i].bindData(it.gamesChoiceMap[i])
-//                    }
-//                }
-//            }
-//        }
+        mRoomData?.let {
+            it.realRoundInfo?.let { raceRoundInfoModel ->
+                val map = HashMap<Int, ArrayList<RaceWantSingInfo>>()
+                map.put(1, ArrayList<RaceWantSingInfo>())
+                map.put(2, ArrayList<RaceWantSingInfo>())
+                map.put(3, ArrayList<RaceWantSingInfo>())
+                map.put(4, ArrayList<RaceWantSingInfo>())
+                raceRoundInfoModel.wantSingInfos.forEach {
+                    map[it.choiceID]?.add(it)
+                }
+
+                for (i in 0 until map.size) {
+                    if (i < 4) {
+                        itemList[i].bindData(map[i + 1])
+                    }
+                }
+            }
+        }
     }
 
     fun startCountDown() {

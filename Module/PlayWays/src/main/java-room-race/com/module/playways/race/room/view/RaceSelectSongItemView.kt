@@ -15,6 +15,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceGamePlayInfo
+import com.module.playways.race.room.model.RaceWantSingInfo
 
 
 class RaceSelectSongItemView : ExConstraintLayout {
@@ -62,28 +63,28 @@ class RaceSelectSongItemView : ExConstraintLayout {
         return info
     }
 
-    fun bindData(list: ArrayList<Int>?) {
+    fun bindData(list: ArrayList<RaceWantSingInfo>?) {
         list?.let {
             for (i in 0 until it.size) {
-                if (roomData?.getUserInfo(it[i])?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
+                if (roomData?.getUserInfo(it[i].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
                     startSelectedAnimation()
                 }
 
                 when (i) {
                     0 -> {
-                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                                 .setBlur(true)
                                 .build())
                     }
                     1 -> {
-                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                                 .setBlur(true)
                                 .build())
                     }
                     2 -> {
-                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(getAvatarById(it[i]))
+                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(getAvatarById(it[i].userID))
                                 .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                                 .setBlur(true)
                                 .build())
