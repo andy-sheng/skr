@@ -2,8 +2,9 @@ package com.module.playways.race.room.model
 
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.RaceGameInfo
+import java.io.Serializable
 
-class RaceGamePlayInfo {
+class RaceGamePlayInfo : Serializable {
     var commonMusic: SongModel? = null
     var roundGameType = 0
 }
