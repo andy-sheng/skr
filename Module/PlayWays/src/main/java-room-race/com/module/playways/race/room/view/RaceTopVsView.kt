@@ -6,6 +6,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -15,6 +16,8 @@ import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.module.playways.race.room.RaceRoomData
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class RaceTopVsView : ExConstraintLayout {
@@ -122,5 +125,17 @@ class RaceTopVsView : ExConstraintLayout {
         animSet.play(animatorLeft).with(animatorRight)
         animSet.duration = 400
         animSet.start()
+
+        launch {
+            delay(350)
+            val animatorSet = AnimatorSet()
+            val scaleX = ObjectAnimator.ofFloat(raceTopVsIv, "scaleX", 2.0f, 1f)
+            val scaleY = ObjectAnimator.ofFloat(raceTopVsIv, "scaleY", 2.0f, 1f)
+            raceTopVsIv.visibility = View.VISIBLE
+            animatorSet.setDuration(500)
+            animatorSet.setInterpolator(OvershootInterpolator())
+            animatorSet.play(scaleX).with(scaleY);//两个动画同时开始
+            animatorSet.start()
+        }
     }
 }

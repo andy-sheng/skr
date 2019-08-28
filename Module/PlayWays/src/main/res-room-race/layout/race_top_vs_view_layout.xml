@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:parentTag="com.common.view.ex.ExConstraintLayout"
+    tools:parentTag="android.support.constraint.ConstraintLayout"
     android:layout_height="wrap_content">
 
     <com.common.view.ex.ExImageView
@@ -62,6 +62,7 @@
             app:layout_constraintTop_toTopOf="@+id/left_ticket_count_tv" />
 
         <com.common.view.countdown.CircleCountDownView
+            android:visibility="gone"
             android:id="@+id/left_circle_count_down_view"
             android:layout_width="@dimen/view_50_dp"
             android:layout_height="@dimen/view_50_dp"
@@ -125,6 +126,7 @@
             app:layout_constraintTop_toTopOf="@+id/right_ticket_count_tv" />
 
         <com.common.view.countdown.CircleCountDownView
+            android:visibility="gone"
             android:id="@+id/right_circle_count_down_view"
             android:layout_width="@dimen/view_50_dp"
             android:layout_height="@dimen/view_50_dp"
