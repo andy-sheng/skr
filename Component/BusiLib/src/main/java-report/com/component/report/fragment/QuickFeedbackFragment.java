@@ -69,6 +69,9 @@ public class QuickFeedbackFragment extends BaseFragment {
     public static final int FROM_DOUBLE_ROOM = 3;
 
     private int mFrom;  //标记举报来源
+    int mActionType;
+    int mTargetId;
+    int mRoomID;  //快速反馈时加上
 
     ExRelativeLayout mContainer;
     FeedbackView mFeedBackView;
@@ -80,8 +83,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     String mLogUrl = "";
     int mFeedBackViewHeight;
     int mTopMargin;
-    int mActionType;
-    int mTargetId;
+
 
     Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -289,6 +291,7 @@ public class QuickFeedbackFragment extends BaseFragment {
         map.put("content", content);
         map.put("appLog", logUrl);
         map.put("screenshot", picUrls);
+        map.put("roomID", mRoomID);
 
         FeedbackServerApi feedbackServerApi = ApiManager.getInstance().createService(FeedbackServerApi.class);
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -376,6 +379,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             mActionType = (int) data;
         } else if (type == 2) {
             mTargetId = (int) data;
+        } else if (type == 3) {
+            mRoomID = (int) data;
         }
     }
 
