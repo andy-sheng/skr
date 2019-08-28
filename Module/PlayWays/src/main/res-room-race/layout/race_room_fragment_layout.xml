@@ -5,7 +5,7 @@
     android:id="@+id/race_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#181447">
+    android:background="#1B134B">
 
     <ImageView
         android:id="@+id/top_background"
