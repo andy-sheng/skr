@@ -13,7 +13,6 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
-
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.utils.U
@@ -25,16 +24,19 @@ import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.inter.IContinueSendView
 import com.module.playways.room.gift.model.BaseGift
 import com.module.playways.room.gift.presenter.BuyGiftPresenter
-
+import com.module.playways.room.gift.presenter.BuyGiftPresenter.*
 import org.greenrobot.eventbus.EventBus
-
-import com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrCoinNotEnough
-import com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrPresentObjLeave
-import com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrSystem
-import com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrZSNotEnough
 
 class ContinueSendView : FrameLayout, IContinueSendView {
     val TAG = "ContinueSendView"
+
+    enum class EGameScene(val scene: Int) {
+        GS_Stand(0),
+        GS_Race(1);
+
+        val value: Int
+            get() = scene
+    }
 
     internal lateinit var mIvBg: ImageView
     internal lateinit var mTvContinueNum: ContinueTextView
@@ -54,6 +56,8 @@ class ContinueSendView : FrameLayout, IContinueSendView {
     internal var mOnVisibleStateListener: OnVisibleStateListener? = null
 
     private val mCanContinueDuration: Long = 3000L
+
+    var mScene: EGameScene = EGameScene.GS_Stand
 
     internal var mHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -98,13 +102,17 @@ class ContinueSendView : FrameLayout, IContinueSendView {
         val infoModel:GrabRoundInfoModel? = getGrabRoomData()?.realRoundInfo
         if (infoModel != null) {
             if (baseGift.isCanContinue) {
-                mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()?:0L, getGrabRoomData()?.realRoundSeq?:0, infoModel?.isSingStatus(), receiver)
+                mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()
+                        ?: 0L, getGrabRoomData()?.realRoundSeq
+                        ?: 0, infoModel?.isSingStatus(), receiver, mScene.value)
                 visibility = View.VISIBLE
 
                 mHandler.removeMessages(MSG_HIDE)
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration)
             } else {
-                mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()?:0L, getGrabRoomData()?.realRoundSeq?:0, infoModel?.isSingStatus(), receiver)
+                mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()
+                        ?: 0L, getGrabRoomData()?.realRoundSeq
+                        ?: 0, infoModel?.isSingStatus(), receiver, mScene.value)
             }
         } else {
             MyLog.w(TAG, "startBuy baseGift=$baseGift receiver=$receiver")
@@ -122,7 +130,9 @@ class ContinueSendView : FrameLayout, IContinueSendView {
         setOnClickListener {
             val grabRoundInfoModel:GrabRoundInfoModel? = getGrabRoomData()?.realRoundInfo
             if (grabRoundInfoModel != null) {
-                mBuyGiftPresenter?.buyGift(mBaseGift, getGrabRoomData()?.gameId?.toLong()?:0L, getGrabRoomData()?.realRoundSeq?:0, grabRoundInfoModel?.isSingStatus(), mReceiver)
+                mBuyGiftPresenter?.buyGift(mBaseGift, getGrabRoomData()?.gameId?.toLong()
+                        ?: 0L, getGrabRoomData()?.realRoundSeq
+                        ?: 0, grabRoundInfoModel?.isSingStatus(), mReceiver, mScene.value)
 
                 if (mScaleAnimatorSet != null) {
                     mScaleAnimatorSet!!.cancel()

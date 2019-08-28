@@ -326,6 +326,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mGiftPanelView = rootView.findViewById<View>(R.id.gift_panel_view) as GiftPanelView
         mGiftPanelView.setRoomData(mRoomData)
         mContinueSendView = rootView.findViewById<View>(R.id.continue_send_view) as ContinueSendView
+        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Race
         mContinueSendView.setRoomData(mRoomData)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {

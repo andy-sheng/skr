@@ -68,7 +68,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
         addToLifeCycle();
     }
 
-    public void buyGift(BaseGift baseGift, long roomId, int seq, boolean isSingBegin, UserInfoModel userInfoModel) {
+    public void buyGift(BaseGift baseGift, long roomId, int seq, boolean isSingBegin, UserInfoModel userInfoModel, int scene) {
         MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userInfoModel.getUserId());
 
         final int[] continueCount = new int[1];
@@ -98,6 +98,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 map.put("timestamp", ts);
                 map.put("roundSeq", seq);
                 map.put("isSingBegin", isSingBegin);
+                map.put("gameScene", scene);
 
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
@@ -112,7 +113,8 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         + " roomID=" + roomId
                         + " timestamp=" + ts
                         + " roundSeq=" + seq
-                        + " isSingBegin=" + isSingBegin);
+                        + " isSingBegin=" + isSingBegin
+                        + " gameScene=" + scene);
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 emitter.onNext(body);
