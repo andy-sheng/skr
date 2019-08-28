@@ -52,6 +52,8 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
             if (result.errno == 0) {
                 val rsp = JSON.parseObject(result.data.toJSONString(), JoinRaceRoomRspModel::class.java)
                 rsp.roomID = e.pb.gameID
+                rsp.gameCreateTimeMs = e.pb.createTimeMs
+                rsp.agoraToken = e.pb.agoraToken
                 // TODO 跳到RaceRoomActivity
                 mIRaceMatchingView.matchRaceSucess(rsp)
             }

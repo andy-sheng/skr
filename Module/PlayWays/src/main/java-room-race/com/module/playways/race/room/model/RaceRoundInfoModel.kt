@@ -26,6 +26,12 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
     var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
 
+    // 以下不是服务器返回的
+    var isParticipant = true// 我是不是这局的参与者，能不能抢唱，投票
+    var elapsedTimeMs: Int = 0//这个轮次当前状态已经经过的时间，一般用于中途加入者使用,相对于子轮次开始的相对时间
+    var enterStatus: Int = ERaceRoundStatus.ERRS_UNKNOWN.value//你进入房间当前轮次处于的状态
+
+
     override fun getType(): Int {
         return TYPE_RACE
     }

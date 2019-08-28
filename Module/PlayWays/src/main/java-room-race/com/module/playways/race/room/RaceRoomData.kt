@@ -12,6 +12,7 @@ import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
 import java.util.ArrayList
 
@@ -72,10 +73,19 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         this.realRoundInfo = null
         this.isIsGameFinish = false
         this.hasExitGame = false
-        //this.agoraToken = rsp.agoraToken
-//        this.gameCreateTs = rsp.gameStartTimeMs
+        this.agoraToken = rsp.agoraToken
+        this.gameCreateTs = rsp.gameCreateTimeMs
         this.gameStartTs = rsp.gameStartTimeMs
-//        this.xxxx = rsp.newRoundBegin
+
+        this.expectRoundInfo?.enterStatus = this.expectRoundInfo?.status
+                ?: ERaceRoundStatus.ERRS_UNKNOWN.value
+        if (rsp.elapsedTimeMs > 0) {
+            // 演唱轮次进来，不能是本局参与者
+            this.expectRoundInfo?.isParticipant = false
+            this.expectRoundInfo?.elapsedTimeMs = rsp.elapsedTimeMs
+        } else {
+            this.expectRoundInfo?.isParticipant = true
+        }
     }
 
 }

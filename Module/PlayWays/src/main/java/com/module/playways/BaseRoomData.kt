@@ -29,9 +29,9 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
      */
     var shiftTs: Int = 0// 本地时间比服务器快多少毫秒，比如快1秒，mShiftTs = 1000;
 
-    var gameCreateTs: Long = 0// 游戏创建时间,服务器的
+    var gameCreateTs: Long = 0// 游戏创建时间,服务器的,绝对时间
 
-    var gameStartTs: Long = 0// 游戏开始时间,服务器的
+    var gameStartTs: Long = 0// 游戏开始时间,服务器的，相对于 gameCreateTs 的相对时间
 
     var gameOverTs: Long = 0// 游戏结束时间,服务器的
 
