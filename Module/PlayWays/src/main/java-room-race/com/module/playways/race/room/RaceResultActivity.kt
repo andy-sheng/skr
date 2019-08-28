@@ -35,7 +35,7 @@ class RaceResultActivity : BaseActivity() {
 
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
-    var roomID: Long = -1L
+    var roomID: Int = -1
     var roundSeq: Int = -1
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -43,9 +43,9 @@ class RaceResultActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        roomID = intent.getLongExtra("roomID", -1L)
+        roomID = intent.getIntExtra("roomID", -1)
         roundSeq = intent.getIntExtra("roundSeq", -1)
-        if (roomID == -1L || roundSeq == -1) {
+        if (roomID == -1 || roundSeq == -1) {
             MyLog.e(TAG, "no roomID or roundSeq")
             finish()
             return
@@ -76,7 +76,7 @@ class RaceResultActivity : BaseActivity() {
 
     private fun getResult() {
         launch {
-            val result = subscribe { raceRoomServerApi.getResult(roomID, MyUserInfoManager.getInstance().uid, roundSeq) }
+            val result = subscribe { raceRoomServerApi.getResult(roomID, MyUserInfoManager.getInstance().uid.toInt(), roundSeq) }
             if (result.errno == 0) {
                 val raceResultModel = JSON.parseObject(result.data.getString("userScoreChange"), RaceResultModel::class.java)
                 if (raceResultModel != null) {

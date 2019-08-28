@@ -6,7 +6,7 @@
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <ImageView
-        android:id="@+id/next_iv"
+        android:id="@+id/result_iv"
         android:layout_width="@dimen/view_335_dp"
         android:layout_height="@dimen/view_144_dp"
         android:background="@drawable/race_next_round_icon"

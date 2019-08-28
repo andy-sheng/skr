@@ -6,6 +6,7 @@ import android.os.Message
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
@@ -16,6 +17,7 @@ import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
+import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
@@ -25,6 +27,7 @@ import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.inter.IRaceRoomView
+import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
 import com.module.playways.race.room.view.actor.RaceActorPanelView
@@ -45,6 +48,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class RaceRoomFragment : BaseFragment(), IRaceRoomView {
+
     internal lateinit var mCorePresenter: RaceCorePresenter
 
     internal lateinit var mInputContainerView: RaceInputContainerView
@@ -530,19 +534,22 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
     }
 
-    override fun roundOver(overReason: Int) {
+    override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp:(()->Unit)?) {
         mRaceRightOpView.visibility = View.GONE
-        if (overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value || overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
-            // 无人应站
+        if(lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
+                lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value ){
+            // 无人应战
             mLastSceneView = mRaceNoSingCardView
             mRaceNoSingCardView.showAnimation(object : AnimationListener{
                 override fun onFinish() {
-                    // todo 播完之后呢？
+                    continueOp?.invoke()
                 }
             })
         } else {
             mLastSceneView = mRaceMiddleResultView
-            mRaceMiddleResultView.showResult()
+            mRaceMiddleResultView.showResult(lastRoundInfo){
+                continueOp?.invoke()
+            }
         }
     }
 
@@ -594,6 +601,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceSelectSongView.setSongName {
             mCorePresenter.sendIntroOver()
         }
+    }
+
+    override fun goResultPage(lastRound: RaceRoundInfoModel) {
+        finish()
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_RESULT)
+                .withInt("roomID",mRoomData.gameId)
+                .withInt("roundSeq",lastRound.roundSeq)
+                .navigation()
     }
 
     override fun useEventBus(): Boolean {

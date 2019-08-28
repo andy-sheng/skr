@@ -18,6 +18,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.ERaceWinType
 import kotlinx.coroutines.delay
@@ -73,8 +74,8 @@ class RaceMiddleResultView : ExConstraintLayout {
         this.roomData = roomData
     }
 
-    fun showResult() {
-        roomData?.realRoundInfo?.let {
+    fun showResult(lastRound:RaceRoundInfoModel,animationOverListener:()->Unit) {
+        lastRound?.let {
             if (it.status == ERaceRoundStatus.ERRS_END.value) {
                 leftTicketCountTv.text = it.scores[0].bLightCnt.toString()
                 if (it.scores[0].winType == ERaceWinType.RWT_WIN.value) {
@@ -116,8 +117,12 @@ class RaceMiddleResultView : ExConstraintLayout {
                 MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
             }
         }
-
         startVs()
+        launch {
+            delay(4000)
+            // 让显示4秒钟
+            animationOverListener.invoke()
+        }
     }
 
     fun startVs() {

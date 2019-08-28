@@ -22,7 +22,7 @@ class RaceNoSingerCardView : ConstraintLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
-    private val nextIv: ImageView
+    private val resultIv: ImageView
 
     internal var mEnterTranslateAnimation: TranslateAnimation? = null // 飞入的进场动画
     internal var mLeaveTranslateAnimation: TranslateAnimation? = null // 飞出的离场动画
@@ -31,14 +31,14 @@ class RaceNoSingerCardView : ConstraintLayout {
 
     init {
         View.inflate(context, R.layout.race_turn_info_card_layout, this);
-        nextIv = this.findViewById(R.id.next_iv)
+        resultIv = this.findViewById(R.id.result_iv)
     }
 
     fun showAnimation(listener: AnimationListener) {
         // 入场，停一秒，离场, 肯定是一次播完的
         mListener = listener
         animationEnter()
-        nextIv.postDelayed({
+        resultIv.postDelayed({
             animationLeave()
         }, 1200)
     }

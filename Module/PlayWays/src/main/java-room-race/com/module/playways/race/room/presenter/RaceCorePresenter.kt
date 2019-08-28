@@ -301,6 +301,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
+    fun goResultPage(lastRound: RaceRoundInfoModel) {
+        exitRoom("goResultPage")
+        mIRaceRoomView.goResultPage(lastRound)
+    }
+
     var heartbeatJob: Job? = null
 
     private fun startHeartbeat() {
@@ -415,7 +420,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
-        processStatusChange(event.thisRound)
+        processStatusChange(1, event.lastRound, event.thisRound)
     }
 
     /**
@@ -423,7 +428,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundStatusChangeEvent) {
-        processStatusChange(event.thisRound)
+        processStatusChange(2, null, event.thisRound)
     }
 
     /**
@@ -431,17 +436,41 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceSubRoundChangeEvent) {
-        processStatusChange(event.thisRound)
+        processStatusChange(3, null, event.thisRound)
     }
 
-    private fun processStatusChange(thisRound: RaceRoundInfoModel?) {
+    private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
         if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
-            mIRaceRoomView.showWaiting(true)
+            if (lastRound != null) {
+                // 有上一轮，等待中要飞过来
+                mIRaceRoomView.showRoundOver(lastRound) {
+                    //如果我是上一轮的演唱者，要退出房间
+                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+                        goResultPage(lastRound)
+                    } else {
+                        mIRaceRoomView.showWaiting(true)
+                    }
+                }
+            } else {
+                mIRaceRoomView.showWaiting(false)
+            }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
-            mIRaceRoomView.showChoicing(true)
+            if (lastRound != null) {
+                // 有上一轮，等待中要飞过来
+                mIRaceRoomView.showRoundOver(lastRound) {
+                    //如果我是上一轮的演唱者，要退出房间
+                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+                        goResultPage(lastRound)
+                    } else {
+                        mIRaceRoomView.showChoicing(true)
+                    }
+                }
+            } else {
+                mIRaceRoomView.showChoicing(false)
+            }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             if (thisRound?.subRoundSeq == 1) {
                 // 变为演唱阶段，第一轮
@@ -464,7 +493,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
             // 结束
-            mIRaceRoomView.roundOver(thisRound?.overReason)
+//            mIRaceRoomView.roundOver(thisRound?.overReason)
         }
     }
 

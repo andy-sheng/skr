@@ -32,7 +32,7 @@ class RaceTurnInfoCardView : ConstraintLayout {
 
     init {
         View.inflate(context, R.layout.race_turn_info_card_layout, this);
-        nextIv = this.findViewById(R.id.next_iv)
+        nextIv = this.findViewById(R.id.result_iv)
     }
 
     fun showAnimation(listener: AnimationListener) {

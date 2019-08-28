@@ -258,8 +258,8 @@ interface RaceRoomServerApi {
     }
   */
     @GET("http://dev.game.inframe.mobi/v1/racegame/result")
-    fun getResult(@Query("roomID") roomID: Long,
-                  @Query("userID") userID: Long,
+    fun getResult(@Query("roomID") roomID: Int,
+                  @Query("userID") userID: Int,
                   @Query("roundSeq") roundSeq: Int): Call<ApiResult>
 
     /*
