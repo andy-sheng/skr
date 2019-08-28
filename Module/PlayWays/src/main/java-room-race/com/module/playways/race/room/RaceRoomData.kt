@@ -23,6 +23,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     var raceConfigModel: RaceConfigModel? = null
     var hasExitGame = false
+    var isAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
 
 
     /**
@@ -59,19 +60,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     fun getChoiceInfoById(choiceID: Int): SongModel? {
         return this.realRoundInfo?.games?.getOrNull(choiceID - 1)?.commonMusic
-    }
-
-    fun getAllPlayer(): ArrayList<RacePlayerInfoModel> {
-        val list = ArrayList<RacePlayerInfoModel>()
-        val playUsers = realRoundInfo?.playUsers
-        val waitUsers = realRoundInfo?.waitUsers
-        if (!playUsers.isNullOrEmpty()) {
-            list.addAll(playUsers)
-        }
-        if (!waitUsers.isNullOrEmpty()) {
-            list.addAll(waitUsers)
-        }
-        return list
     }
 
     fun loadFromRsp(rsp: JoinRaceRoomRspModel) {

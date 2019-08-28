@@ -28,6 +28,8 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
 
   public static final Integer DEFAULT_CHOICEID = 0;
 
+  public static final ERWantSingType DEFAULT_WANTSINGTYPE = ERWantSingType.ERWST_DEFAULT;
+
   /**
    * 用户id
    */
@@ -55,16 +57,27 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
   )
   private final Integer choiceID;
 
-  public RWantSingChanceMsg(Integer userID, Integer roundSeq, Integer choiceID) {
-    this(userID, roundSeq, choiceID, ByteString.EMPTY);
+  /**
+   * 想唱方式
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.RaceRoom.ERWantSingType#ADAPTER"
+  )
+  private final ERWantSingType wantSingType;
+
+  public RWantSingChanceMsg(Integer userID, Integer roundSeq, Integer choiceID,
+      ERWantSingType wantSingType) {
+    this(userID, roundSeq, choiceID, wantSingType, ByteString.EMPTY);
   }
 
   public RWantSingChanceMsg(Integer userID, Integer roundSeq, Integer choiceID,
-      ByteString unknownFields) {
+      ERWantSingType wantSingType, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
     this.choiceID = choiceID;
+    this.wantSingType = wantSingType;
   }
 
   @Override
@@ -73,6 +86,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     builder.userID = userID;
     builder.roundSeq = roundSeq;
     builder.choiceID = choiceID;
+    builder.wantSingType = wantSingType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -85,7 +99,8 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(roundSeq, o.roundSeq)
-        && Internal.equals(choiceID, o.choiceID);
+        && Internal.equals(choiceID, o.choiceID)
+        && Internal.equals(wantSingType, o.wantSingType);
   }
 
   @Override
@@ -96,6 +111,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (choiceID != null ? choiceID.hashCode() : 0);
+      result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -107,6 +123,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     if (userID != null) builder.append(", userID=").append(userID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (choiceID != null) builder.append(", choiceID=").append(choiceID);
+    if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     return builder.replace(0, 2, "RWantSingChanceMsg{").append('}').toString();
   }
 
@@ -151,6 +168,16 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
   }
 
   /**
+   * 想唱方式
+   */
+  public ERWantSingType getWantSingType() {
+    if(wantSingType==null){
+        return new ERWantSingType.Builder().build();
+    }
+    return wantSingType;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
@@ -171,12 +198,21 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     return choiceID!=null;
   }
 
+  /**
+   * 想唱方式
+   */
+  public boolean hasWantSingType() {
+    return wantSingType!=null;
+  }
+
   public static final class Builder extends Message.Builder<RWantSingChanceMsg, Builder> {
     private Integer userID;
 
     private Integer roundSeq;
 
     private Integer choiceID;
+
+    private ERWantSingType wantSingType;
 
     public Builder() {
     }
@@ -205,9 +241,17 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       return this;
     }
 
+    /**
+     * 想唱方式
+     */
+    public Builder setWantSingType(ERWantSingType wantSingType) {
+      this.wantSingType = wantSingType;
+      return this;
+    }
+
     @Override
     public RWantSingChanceMsg build() {
-      return new RWantSingChanceMsg(userID, roundSeq, choiceID, super.buildUnknownFields());
+      return new RWantSingChanceMsg(userID, roundSeq, choiceID, wantSingType, super.buildUnknownFields());
     }
   }
 
@@ -221,6 +265,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.choiceID)
+          + ERWantSingType.ADAPTER.encodedSizeWithTag(4, value.wantSingType)
           + value.unknownFields().size();
     }
 
@@ -229,6 +274,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.choiceID);
+      ERWantSingType.ADAPTER.encodeWithTag(writer, 4, value.wantSingType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -241,6 +287,14 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setChoiceID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: {
+            try {
+              builder.setWantSingType(ERWantSingType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

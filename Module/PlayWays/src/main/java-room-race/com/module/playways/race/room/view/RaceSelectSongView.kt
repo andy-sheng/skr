@@ -82,16 +82,20 @@ class RaceSelectSongView : ExConstraintLayout {
     }
 
     fun updateSelectState() {
-        mRoomData?.let {
-            val info = it.realRoundInfo as RaceRoundInfoModel
-            info?.let {
-                for (i in 0 until it.gamesChoiceMap.size) {
-                    if (i < 4) {
-                        itemList[i].bindData(it.gamesChoiceMap[i])
-                    }
-                }
-            }
-        }
+        //TODO
+//        mRoomData?.let {
+//            val info = it.realRoundInfo as RaceRoundInfoModel
+//            info?.let {
+//                for(info in it.wantSingInfos){
+//                    itemList[info.choiceID-1].bindData()
+//                }
+//                for (i in 0 until it.wantSingInfos.size) {
+//                    if (i < 4) {
+//                        itemList[i].bindData(it.gamesChoiceMap[i])
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun startCountDown() {

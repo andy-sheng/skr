@@ -114,7 +114,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         initSingSenceView()
         initRightView()
 
-
+        mCorePresenter.onOpeningAnimationOver()
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()
         }, 500)

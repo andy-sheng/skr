@@ -1,15 +1,25 @@
 package com.module.playways.race.room.presenter
 
+import android.animation.ValueAnimator
+import android.os.Handler
+import android.os.Message
 import android.support.annotation.CallSuper
+import android.text.TextUtils
 import com.alibaba.fastjson.JSON
+import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.jiguang.JiGuangPush
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiResult
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.ActivityUtils
+import com.component.lyrics.utils.SongResUtils
+import com.engine.EngineEvent
+import com.engine.Params
+import com.module.ModuleServiceManager
+import com.module.common.ICallback
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RaceRoundChangeEvent
@@ -24,11 +34,19 @@ import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.event.raceroom.*
+import com.module.playways.room.msg.filter.PushMsgFilter
+import com.module.playways.room.msg.manager.RaceRoomMsgManager
+import com.module.playways.room.room.SwapStatusType
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERUserRole
+import com.zq.live.proto.RaceRoom.ERWantSingType
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.RGetSingChanceMsg
+import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.live.proto.Room.RoomMsg
+import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -40,21 +58,125 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.http.Body
 import retrofit2.http.PUT
+import java.util.HashMap
 
 class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
+    internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
+
+    internal val MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21 // 确保用户切换成主播成功，防止引擎不回调的保护
+
+    internal var mUiHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when (msg.what) {
+                MSG_ENSURE_IN_RC_ROOM -> {
+                    MyLog.d(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错")
+                    ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString() + "")
+                    joinRcRoom(0)
+                    ensureInRcRoom()
+                }
+                MSG_ENSURE_SWITCH_BROADCAST_SUCCESS -> {
+//                    onChangeBroadcastSuccess()
+                }
+            }
+        }
+    }
+
+    internal var mPushMsgFilter: PushMsgFilter<*> = PushMsgFilter<RoomMsg> { msg ->
+        val b = msg != null && msg.roomID == mRoomData.gameId
+        b
+    }
+
     init {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+        //添加房间消息过滤器
+        RaceRoomMsgManager.addFilter(mPushMsgFilter)
         val commentSysModel = CommentSysModel("欢迎来到Race房间", CommentSysModel.TYPE_ENTER_ROOM)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+        joinRoomAndInit(true)
     }
 
+    /**
+     * 加入引擎房间
+     * 加入融云房间
+     * 系统消息弹幕
+     */
+    private fun joinRoomAndInit(first: Boolean) {
+        MyLog.w(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.gameId)
+
+        if (mRoomData.gameId > 0) {
+            var reInit = false
+            if (first) {
+                reInit = true
+            }
+            if (reInit) {
+                val params = Params.getFromPref()
+                //            params.setStyleEnum(Params.AudioEffect.none);
+                params.scene = Params.Scene.grab
+                params.isEnableVideo = false
+                ZqEngineKit.getInstance().init("raceroom", params)
+            }
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), false, mRoomData.agoraToken)
+            // 不发送本地音频, 会造成第一次抢没声音
+            ZqEngineKit.getInstance().muteLocalAudioStream(true)
+        }
+        joinRcRoom(-1)
+        if (mRoomData.gameId > 0) {
+            mRoomData.getPlayerInfoList<RacePlayerInfoModel>()?.let {
+                for (playerInfoModel in it) {
+                    if (!playerInfoModel.isOnline()) {
+                        continue
+                    }
+//                    pretendEnterRoom(playerInfoModel)
+                }
+            }
+//            pretendRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM)
+        }
+        startHeartbeat()
+        startSyncRaceStatus()
+    }
+
+    private fun joinRcRoom(deep: Int) {
+        if (deep > 4) {
+            MyLog.d(TAG, "加入融云房间，重试5次仍然失败，放弃")
+            return
+        }
+        if (mRoomData.gameId > 0) {
+            ModuleServiceManager.getInstance().msgService.joinChatRoom(mRoomData.gameId.toString(), -1, object : ICallback {
+                override fun onSucess(obj: Any) {
+                    MyLog.d(TAG, "加入融云房间成功")
+                }
+
+                override fun onFailed(obj: Any, errcode: Int, message: String) {
+                    MyLog.d(TAG, "加入融云房间失败， msg is $message, errcode is $errcode")
+                    joinRcRoom(deep + 1)
+                }
+            })
+            if (deep == -1) {
+                /**
+                 * 说明是初始化时那次加入房间，这时加入极光房间做个备份，使用tag的方案
+                 */
+                JiGuangPush.joinSkrRoomId(mRoomData.gameId.toString())
+            }
+        }
+    }
+
+    private fun ensureInRcRoom() {
+        mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM)
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, (30 * 1000).toLong())
+    }
+
+    /**
+     * 开场动画播放完毕
+     */
     fun onOpeningAnimationOver() {
         mRoomData.checkRoundInEachMode()
+        ensureInRcRoom()
     }
 
 
@@ -81,11 +203,18 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 选择歌曲
      */
     fun wantSingChance(choiceID: Int) {
+        var wantSingType = ERWantSingType.ERWST_DEFAULT.value
+
+        val songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
+        if (mRoomData.isAccEnable && (songModel?.acc?.isNotBlank() == true)) {
+            wantSingType = ERWantSingType.ERWST_ACCOMPANY.value
+        }
         launch {
             val map = mutableMapOf(
                     "choiceID" to choiceID,
                     "roomID" to mRoomData.gameId,
-                    "roundSeq" to mRoomData.realRoundSeq
+                    "roundSeq" to mRoomData.realRoundSeq,
+                    "wantSingType" to wantSingType
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.wantSingChance(body) }
@@ -157,6 +286,44 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
+    /**
+     * 退出房间
+     */
+    fun exitRoom(from: String) {
+        MyLog.d(TAG, "exitRoom from = $from")
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.exitRoom(body) }
+            if (result.errno == 0) {
+                mRoomData.hasExitGame = true
+            } else {
+
+            }
+        }
+    }
+
+    var heartbeatJob: Job? = null
+
+    private fun startHeartbeat() {
+        heartbeatJob?.cancel()
+        heartbeatJob = launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId,
+                    "userID" to MyUserInfoManager.getInstance().uid
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.heartbeat(body) }
+            if (result.errno == 0) {
+
+            } else {
+
+            }
+            delay(60 * 1000)
+        }
+    }
 
     /**
      * 轮次切换事件
@@ -216,6 +383,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RWantSingChanceEvent) {
+        ensureInRcRoom()
         if (event.pb.roundSeq == mRoomData.realRoundSeq) {
             mRoomData?.realRoundInfo?.addWantSingChange(event.pb.choiceID, event.pb.userID)
         }
@@ -226,6 +394,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RGetSingChanceEvent) {
+        ensureInRcRoom()
         val roundInfoModel = parseFromRoundInfoPB(event.pb.currentRound)
         if (roundInfoModel.roundSeq == mRoomData.realRoundSeq) {
             // 轮次符合，子轮次信息应该都有了
@@ -238,15 +407,16 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RJoinNoticeEvent) {
+        ensureInRcRoom()
         val racePlayerInfoModel = RacePlayerInfoModel()
         racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.user)
         racePlayerInfoModel.role = event.pb.role.value
         mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
 
-        if(event.pb.newRoundBegin){
+        if (event.pb.newRoundBegin) {
             // 游戏开始了
-            if(mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value){
-                mRoomData.realRoundInfo?.updateStatus(true,ERaceRoundStatus.ERRS_CHOCING.value)
+            if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value) {
+                mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
             }
         }
     }
@@ -256,6 +426,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RExitGameEvent) {
+        ensureInRcRoom()
         mRoomData.realRoundInfo?.exitUser(event.pb.userID)
     }
 
@@ -264,9 +435,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RBLightEvent) {
+        ensureInRcRoom()
         MyLog.d(TAG, "onEvent event = $event")
-        if(event.pb.roundSeq == mRoomData.realRoundSeq){
-            mRoomData.realRoundInfo?.addBLightUser(true,event.pb.userID,event.pb.subRoundSeq,event.pb.bLightCnt)
+        if (event.pb.roundSeq == mRoomData.realRoundSeq) {
+            mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
         }
     }
 
@@ -295,6 +467,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RSyncStatusEvent) {
+        ensureInRcRoom()
         syncJob?.cancel()
         startSyncRaceStatus()
         if (event.pb.syncStatusTimeMs > mRoomData.lastSyncTs) {
@@ -343,9 +516,109 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
+    /**
+     * 游戏切后台或切回来
+     *
+     * @param out 切出去
+     * @param in  切回来
+     */
+    fun swapGame(out: Boolean, inB: Boolean) {
+    }
+
+    fun muteAllRemoteAudioStreams(mute: Boolean, fromUser: Boolean) {
+        if (fromUser) {
+            mRoomData.isMute = mute
+        }
+        ZqEngineKit.getInstance().muteAllRemoteAudioStreams(mute)
+        // 如果是机器人的话
+        if (mute) {
+            // 如果是静音
+//            if (mExoPlayer != null) {
+//                mExoPlayer.setMuteAudio(true)
+//            }
+        } else {
+            // 如果打开静音
+//            if (mExoPlayer != null) {
+//                mExoPlayer.setMuteAudio(false)
+//            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
+        MyLog.w(TAG, if (event.foreground) "切换到前台" else "切换到后台")
+        swapGame(!event.foreground, event.foreground)
+        if (event.foreground) {
+            muteAllRemoteAudioStreams(mRoomData.isMute, false)
+        } else {
+            muteAllRemoteAudioStreams(true, false)
+        }
+    }
+
+    /**
+     * 引擎相关事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: EngineEvent) {
+        if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
+            if (roleChangeInfo.newRole == 1) {
+                val roundInfoModel = mRoomData.realRoundInfo
+                if (roundInfoModel != null && roundInfoModel.isSingerNowBySelf()) {
+                    MyLog.d(TAG, "演唱环节切换主播成功")
+                    onChangeBroadcastSuccess()
+                }
+            }
+        } else {
+            // 可以考虑监听下房主的说话提示 做下容错
+        }
+    }
+
+    /**
+     * 成功切换为主播
+     */
+    private fun onChangeBroadcastSuccess() {
+        MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节")
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
+        mUiHandler.post(Runnable {
+            if (mRoomData.realRoundInfo?.isSingerNowBySelf() == false) {
+                MyLog.d(TAG, "onChangeBroadcastSuccess,但已经不是你的轮次了，cancel")
+                return@Runnable
+            }
+            var songModel = mRoomData?.realRoundInfo?.getSongModelNow()
+            if (songModel == null) {
+                return@Runnable
+            }
+            // 开始开始混伴奏，开始解除引擎mute
+            val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
+            // midi不需要在这下，只要下好，native就会解析，打分就能恢复
+            val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
+
+            if (mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRoundNow() == true)) {
+                val songBeginTs = songModel.beginMs
+                if (accFile != null && accFile.exists()) {
+                    // 伴奏文件存在
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                } else {
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                }
+            }
+        })
+    }
+
     @CallSuper
     override fun destroy() {
         super.destroy()
+        if (!mRoomData.hasExitGame) {
+            exitRoom("destroy")
+        }
+        Params.save2Pref(ZqEngineKit.getInstance().params)
+        ZqEngineKit.getInstance().destroy("raceroom")
+        RaceRoomMsgManager.removeFilter(mPushMsgFilter)
+        ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString())
+        JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }

@@ -1,10 +1,13 @@
 package com.module.playways.race.room.model
 
 import android.util.ArrayMap
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.module.playways.race.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
+import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERUserRole
+import com.zq.live.proto.RaceRoom.ERWantSingType
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.RaceRoundInfo
 import org.greenrobot.eventbus.EventBus
@@ -16,11 +19,13 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var status = ERaceRoundStatus.ERRS_UNKNOWN.value // 轮次状态在擂台赛中使用
     var scores = ArrayList<RaceScore>()
     var subRoundSeq = 0 // 子轮次为1 代表第一轮A演唱 2 为第二轮B演唱
-    var subRoundInfo = ArrayList<RaceSubRoundInfo>()
-    var games = ArrayList<RaceGameInfo>()
-    var playUsers = ArrayList<RacePlayerInfoModel>()
-    var waitUsers = ArrayList<RacePlayerInfoModel>()
-    val gamesChoiceMap = ArrayMap<Int, ArrayList<Int>>()
+    var subRoundInfo = ArrayList<RaceSubRoundInfo>() //子轮次信息
+    var games = ArrayList<RaceGameInfo>() // choice 可选择的歌曲
+    var playUsers = ArrayList<RacePlayerInfoModel>() // 选手
+    var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
+    var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）
+    var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
+    var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
 
     override fun getType(): Int {
         return TYPE_RACE
@@ -91,15 +96,16 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     /**
      * wantSing 增加人
      */
-    fun addWantSingChange(choiceID: Int, userID: Int?) {
-        var list = gamesChoiceMap[choiceID]
-        if (list == null) {
-            list = ArrayList()
-            gamesChoiceMap[choiceID] = list
+    fun addWantSingChange(choiceID: Int, userID: Int) {
+        val raceWantSingInfo = RaceWantSingInfo().apply {
+            this.choiceID = choiceID
+            this.userID = userID
+            this.timeMs = System.currentTimeMillis()
         }
-        if (!list.contains(userID)) {
+
+        if (!wantSingInfos.contains(raceWantSingInfo)) {
             userID?.let {
-                list.add(it)
+                wantSingInfos.add(raceWantSingInfo)
                 EventBus.getDefault().post(RaceWantSingChanceEvent(choiceID, it))
             }
         }
@@ -236,6 +242,41 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         }
         return false
     }
+
+    /**
+     * 此时此刻是否由自己演唱
+     */
+    fun isSingerNowBySelf(): Boolean {
+        return isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+    }
+
+    /**
+     * 此时此刻演唱的歌曲信息
+     */
+    fun getSongModelNow(): SongModel? {
+        return getSongModelByChoiceId(subRoundInfo.getOrNull(subRoundSeq - 1)?.choiceID ?: 0)
+    }
+
+    /**
+     * 此时此刻演唱的歌曲信息 根据 choiceID 查找
+     */
+    fun getSongModelByChoiceId(choiceID: Int): SongModel? {
+        return games.getOrNull(choiceID - 1)?.commonMusic
+    }
+
+    /**
+     * 此时此刻的轮次是否是伴奏模式
+     */
+    fun isAccRoundNow(): Boolean {
+        return isAccRoundBySubRoundSeq(subRoundSeq)
+    }
+
+    /**
+     * * 轮次是否是伴奏模式 更具子轮次 seq 查找
+     */
+    fun isAccRoundBySubRoundSeq(subRoundSeq: Int): Boolean {
+        return subRoundInfo.getOrNull(subRoundSeq - 1)?.wantSingType == ERWantSingType.ERWST_ACCOMPANY.value
+    }
 }
 
 
@@ -266,6 +307,11 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     }
     pb.playUsersList.forEach {
         model.playUsers.add(parseFromROnlineInfoPB(it))
+    }
+    model.introBeginMs = pb.introBeginMs
+    model.introEndMs = pb.introEndMs
+    pb.wantSingInfosList.forEach {
+        model.wantSingInfos.add(parseFromWantSingInfoPB(it))
     }
     return model
 }

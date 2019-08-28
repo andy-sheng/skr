@@ -27,6 +27,7 @@ import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
 import com.module.playways.room.msg.manager.ChatRoomMsgManager;
 import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
+import com.module.playways.room.msg.manager.RaceRoomMsgManager;
 import com.module.playways.room.msg.process.RaceRoomMsgProcess;
 import com.module.playways.room.msg.process.pushprocess.ChatRoomChatMsgProcess;
 import com.module.playways.room.msg.process.pushprocess.ChatRoomGameMsgProcess;
@@ -77,6 +78,7 @@ public class PlayWaysConfiguration implements ConfigModule {
                     DoubleRoomMsgManager.getInstance().addChatRoomMsgProcessor(new DoubleRoomGameMsgProcess());
 
                     msgService.addMsgProcessor(new RaceRoomMsgProcess());
+                    RaceRoomMsgManager.INSTANCE.addChatRoomMsgProcessor(new com.module.playways.room.msg.process.pushprocess.RaceRoomMsgProcess());
                 }
             }
 

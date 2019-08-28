@@ -39,13 +39,17 @@ enum ERaceRoomMsgType {
     RRM_WANT_SING   = 104; //擂台赛：想唱消息,即抢唱
     RRM_GET_SING    = 105; //擂台赛：获得抢唱的结果
     RRM_SYNC_STATUS = 106; //擂台赛：同步状态
-    RRM_ROUND_OVER  = 107; //擂台赛：主轮次结束
+    RRM_ROUND_OVER  = 107; //擂台赛：主轮次or子轮次结束
 }
 
-message RNextRoundIntroMsg
+enum ERWantSingType {
+    ERWST_DEFAULT   = 0; //默认抢唱类型：普通
+    ERWST_ACCOMPANY = 1; //带伴奏抢唱
+}
+
+message RaceGameChoices
 {
-    uint32 roundSeq             = 1;
-    repeated RaceGameInfo games = 2;
+    repeated RaceGameInfo games = 1;
 }
 
 enum ERoundOverType {
@@ -81,9 +85,10 @@ message RGetSingChanceMsg
 
 message RWantSingChanceMsg
 {
-    uint32 userID   = 1; //用户id
-    uint32 roundSeq = 2; //轮次顺序
-    uint32 choiceID = 3; //选择标识
+    uint32 userID               = 1; //用户id
+    uint32 roundSeq             = 2; //轮次顺序
+    uint32 choiceID             = 3; //选择标识
+    ERWantSingType wantSingType = 4; //想唱方式
 }
 
 message RBLightMsg
@@ -172,6 +177,7 @@ message SubRoundInfo
     uint32 beginMs                 = 4; //开始相对时间（相对于createTimeMs时间）
     uint32 endMs                   = 5; //结束相对时间（相对于createTimeMs时间）
     ESubRoundOverReason overReason = 7; //子轮次切换原因
+    ERWantSingType wantSingType    = 8; //想唱方式
 }
 
 message RSubRoundInfo

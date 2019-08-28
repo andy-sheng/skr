@@ -34,6 +34,8 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
 
   public static final ESubRoundOverReason DEFAULT_OVERREASON = ESubRoundOverReason.ESROR_UNKNOWN;
 
+  public static final ERWantSingType DEFAULT_WANTSINGTYPE = ERWantSingType.ERWST_DEFAULT;
+
   /**
    * 用户id
    */
@@ -88,13 +90,23 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   )
   private final ESubRoundOverReason overReason;
 
+  /**
+   * 想唱方式
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.zq.live.proto.RaceRoom.ERWantSingType#ADAPTER"
+  )
+  private final ERWantSingType wantSingType;
+
   public SubRoundInfo(Integer userID, Integer subRoundSeq, Integer choiceID, Integer beginMs,
-      Integer endMs, ESubRoundOverReason overReason) {
-    this(userID, subRoundSeq, choiceID, beginMs, endMs, overReason, ByteString.EMPTY);
+      Integer endMs, ESubRoundOverReason overReason, ERWantSingType wantSingType) {
+    this(userID, subRoundSeq, choiceID, beginMs, endMs, overReason, wantSingType, ByteString.EMPTY);
   }
 
   public SubRoundInfo(Integer userID, Integer subRoundSeq, Integer choiceID, Integer beginMs,
-      Integer endMs, ESubRoundOverReason overReason, ByteString unknownFields) {
+      Integer endMs, ESubRoundOverReason overReason, ERWantSingType wantSingType,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.subRoundSeq = subRoundSeq;
@@ -102,6 +114,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     this.beginMs = beginMs;
     this.endMs = endMs;
     this.overReason = overReason;
+    this.wantSingType = wantSingType;
   }
 
   @Override
@@ -113,6 +126,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     builder.beginMs = beginMs;
     builder.endMs = endMs;
     builder.overReason = overReason;
+    builder.wantSingType = wantSingType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -128,7 +142,8 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
         && Internal.equals(choiceID, o.choiceID)
         && Internal.equals(beginMs, o.beginMs)
         && Internal.equals(endMs, o.endMs)
-        && Internal.equals(overReason, o.overReason);
+        && Internal.equals(overReason, o.overReason)
+        && Internal.equals(wantSingType, o.wantSingType);
   }
 
   @Override
@@ -142,6 +157,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
       result = result * 37 + (beginMs != null ? beginMs.hashCode() : 0);
       result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
+      result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -156,6 +172,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     if (beginMs != null) builder.append(", beginMs=").append(beginMs);
     if (endMs != null) builder.append(", endMs=").append(endMs);
     if (overReason != null) builder.append(", overReason=").append(overReason);
+    if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     return builder.replace(0, 2, "SubRoundInfo{").append('}').toString();
   }
 
@@ -230,6 +247,16 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
+   * 想唱方式
+   */
+  public ERWantSingType getWantSingType() {
+    if(wantSingType==null){
+        return new ERWantSingType.Builder().build();
+    }
+    return wantSingType;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
@@ -271,6 +298,13 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     return overReason!=null;
   }
 
+  /**
+   * 想唱方式
+   */
+  public boolean hasWantSingType() {
+    return wantSingType!=null;
+  }
+
   public static final class Builder extends Message.Builder<SubRoundInfo, Builder> {
     private Integer userID;
 
@@ -283,6 +317,8 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     private Integer endMs;
 
     private ESubRoundOverReason overReason;
+
+    private ERWantSingType wantSingType;
 
     public Builder() {
     }
@@ -335,9 +371,17 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
       return this;
     }
 
+    /**
+     * 想唱方式
+     */
+    public Builder setWantSingType(ERWantSingType wantSingType) {
+      this.wantSingType = wantSingType;
+      return this;
+    }
+
     @Override
     public SubRoundInfo build() {
-      return new SubRoundInfo(userID, subRoundSeq, choiceID, beginMs, endMs, overReason, super.buildUnknownFields());
+      return new SubRoundInfo(userID, subRoundSeq, choiceID, beginMs, endMs, overReason, wantSingType, super.buildUnknownFields());
     }
   }
 
@@ -354,6 +398,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.beginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.endMs)
           + ESubRoundOverReason.ADAPTER.encodedSizeWithTag(7, value.overReason)
+          + ERWantSingType.ADAPTER.encodedSizeWithTag(8, value.wantSingType)
           + value.unknownFields().size();
     }
 
@@ -365,6 +410,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.beginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.endMs);
       ESubRoundOverReason.ADAPTER.encodeWithTag(writer, 7, value.overReason);
+      ERWantSingType.ADAPTER.encodeWithTag(writer, 8, value.wantSingType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -382,6 +428,14 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
           case 7: {
             try {
               builder.setOverReason(ESubRoundOverReason.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 8: {
+            try {
+              builder.setWantSingType(ERWantSingType.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
               builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
             }

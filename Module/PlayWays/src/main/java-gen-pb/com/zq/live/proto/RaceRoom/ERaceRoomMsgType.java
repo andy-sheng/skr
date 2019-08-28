@@ -49,7 +49,7 @@ public enum ERaceRoomMsgType implements WireEnum {
   RRM_SYNC_STATUS(106),
 
   /**
-   * 擂台赛：主轮次结束
+   * 擂台赛：主轮次or子轮次结束
    */
   RRM_ROUND_OVER(107);
 
