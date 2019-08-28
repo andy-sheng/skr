@@ -40,6 +40,7 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
+import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -63,7 +64,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     private lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
     private lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
     private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
-    private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 别人唱
+    private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
+    private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
 
     private var mRaceActorPanelView: RaceActorPanelView? = null  //参与的人
 
@@ -124,6 +126,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     private fun initResuleView() {
+        mRaceNoSingCardView = rootView.findViewById(R.id.race_nosinger_result_view)
         mRaceMiddleResultView = rootView.findViewById(R.id.race_middle_result_view)
         mRaceMiddleResultView.setRaceRoomData(mRoomData)
     }
@@ -529,8 +532,18 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun roundOver(overReason: Int) {
         mRaceRightOpView.visibility = View.GONE
-        mLastSceneView = mRaceMiddleResultView
-        mRaceMiddleResultView.showResult()
+        if (overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value || overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
+            // 无人应站
+            mLastSceneView = mRaceNoSingCardView
+            mRaceNoSingCardView.showAnimation(object : AnimationListener{
+                override fun onFinish() {
+                    // todo 播完之后呢？
+                }
+            })
+        } else {
+            mLastSceneView = mRaceMiddleResultView
+            mRaceMiddleResultView.showResult()
+        }
     }
 
     override fun showWaiting(showAnimation: Boolean) {
