@@ -58,14 +58,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     internal lateinit var mRaceRightOpView: RaceRightOpView
 
-    internal lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
-    internal lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
-    internal lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
-    internal lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
-    internal lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
-    internal lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 别人唱
+    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
+    private lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
+    private lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
+    private lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
+    private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
+    private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 别人唱
 
-    internal lateinit var mRaceActorPanelView: RaceActorPanelView  //参与的人
+    private var mRaceActorPanelView: RaceActorPanelView? = null  //参与的人
 
     internal var mPersonInfoDialog: PersonInfoDialog? = null
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
@@ -185,9 +185,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         run {
             val voiceStub = rootView.findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
             mVoiceRecordTipsView = VoiceRecordTipsView(voiceStub)
-
-            val actorStub = rootView.findViewById<ViewStub>(R.id.race_actor_panel_view_stub)
-            mRaceActorPanelView = RaceActorPanelView(actorStub, mRoomData)
         }
 //        mBottomBgVp = rootView.findViewById<ViewGroup>(R.id.bottom_bg_vp)
 //        val lp = mBottomBgVp.getLayoutParams() as RelativeLayout.LayoutParams
@@ -331,7 +328,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
         mRaceTopContentView.setListener(object : RaceTopContentView.Listener {
             override fun clickMore() {
-                mRaceActorPanelView.show()
+                if (mRaceActorPanelView == null) {
+                    mRaceActorPanelView = RaceActorPanelView(this@RaceRoomFragment, mRoomData)
+                }
+                mRaceActorPanelView?.showByDialog()
             }
 
             override fun clickArrow(open: Boolean) {
@@ -585,5 +585,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun useEventBus(): Boolean {
         return true
+    }
+
+    override fun destroy() {
+        super.destroy()
+        mRaceActorPanelView?.dismiss(false)
     }
 }

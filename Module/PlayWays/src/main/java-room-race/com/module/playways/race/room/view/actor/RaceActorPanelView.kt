@@ -3,40 +3,41 @@ package com.module.playways.race.room.view.actor
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.support.constraint.ConstraintLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewStub
+import com.common.base.BaseFragment
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
-import com.common.view.ExViewStub
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 
 /**
  * 展示竞演者的view
  */
-class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExViewStub(viewStub) {
+class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : ConstraintLayout(fragment.context) {
 
-    lateinit var placeHolderView: View
-    lateinit var raceTitleStl: SlidingTabLayout
-    lateinit var raceVp: NestViewPager
+    val raceTitleStl: SlidingTabLayout
+    val raceVp: NestViewPager
 
-    lateinit var pagerAdapter: PagerAdapter
+    val pagerAdapter: PagerAdapter
 
     var actorView: RaceActorView? = null   // 竞演者
+    internal var mDialogPlus: DialogPlus? = null
 
-    var mShowOrHideAnimator: ObjectAnimator? = null
+    init {
+        View.inflate(context, R.layout.race_actor_panel_view_stub_layout, this)
 
-    override fun init(parentView: View?) {
-
-        placeHolderView = mParentView.findViewById(R.id.place_holder_view)
-        raceVp = mParentView.findViewById(R.id.race_vp)
-        raceTitleStl = mParentView.findViewById(R.id.race_title_stl)
+        raceVp = findViewById(R.id.race_vp)
+        raceTitleStl = findViewById(R.id.race_title_stl)
 
         raceTitleStl.setCustomTabView(R.layout.race_actor_tab_view, R.id.tab_tv)
         raceTitleStl.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
@@ -105,62 +106,35 @@ class RaceActorPanelView(viewStub: ViewStub, val mRoomData: RaceRoomData) : ExVi
 
             }
         })
-
-        placeHolderView.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View) {
-                hide()
-            }
-        })
     }
 
-    override fun layoutDesc(): Int {
-        return R.layout.race_actor_panel_view_stub_layout
+    /**
+     * 以后tips dialog 不要在外部单独写 dialog 了。
+     * 可以不
+     */
+    fun showByDialog() {
+        showByDialog(true)
     }
 
-    fun show() {
-        tryInflate()
+    fun showByDialog(canCancel: Boolean) {
+        mDialogPlus?.dismiss(false)
         actorView?.initData()
-        if (mShowOrHideAnimator != null) {
-            mShowOrHideAnimator?.removeAllListeners()
-            mShowOrHideAnimator?.cancel()
-        }
-
-        mShowOrHideAnimator = ObjectAnimator.ofFloat<View>(mParentView, View.TRANSLATION_Y, mParentView.height.toFloat(), 0f)
-        mShowOrHideAnimator?.duration = 300
-        mShowOrHideAnimator?.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                super.onAnimationStart(animation)
-                mParentView.visibility = View.VISIBLE
-            }
-        })
-        mShowOrHideAnimator?.start()
+        mDialogPlus = DialogPlus.newDialog(context)
+                .setContentHolder(ViewHolder(this))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(com.common.base.R.color.transparent)
+                .setOverlayBackgroundResource(com.common.base.R.color.transparent)
+                .setExpanded(false)
+                .setCancelable(canCancel)
+                .create()
+        mDialogPlus?.show()
     }
 
-    fun hide() {
-        if (mShowOrHideAnimator != null) {
-            mShowOrHideAnimator?.removeAllListeners()
-            mShowOrHideAnimator?.cancel()
-        }
+    fun dismiss() {
+        mDialogPlus?.dismiss()
+    }
 
-        mShowOrHideAnimator = ObjectAnimator.ofFloat<View>(mParentView, View.TRANSLATION_Y, 0f, mParentView.height.toFloat())
-        mShowOrHideAnimator?.duration = 300
-        mShowOrHideAnimator?.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                super.onAnimationStart(animation)
-                mParentView.visibility = View.VISIBLE
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
-                mParentView.visibility = View.GONE
-            }
-
-            override fun onAnimationCancel(animation: Animator) {
-                super.onAnimationCancel(animation)
-                mParentView.visibility = View.GONE
-            }
-
-        })
-        mShowOrHideAnimator?.start()
+    fun dismiss(isAnimation: Boolean) {
+        mDialogPlus?.dismiss(isAnimation)
     }
 }
