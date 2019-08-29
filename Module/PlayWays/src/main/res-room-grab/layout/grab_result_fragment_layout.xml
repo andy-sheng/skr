@@ -4,19 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:levelView2="http://schemas.android.com/apk/res-auto"
-    android:background="#353B6D">
+    android:background="@drawable/race_result_bg">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/result_bg"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_0_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_88_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:background="@drawable/grab_result_content_icon"
         android:layout_marginBottom="@dimen/view_20_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#566CD9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,9 +23,9 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_0_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_marginTop="@dimen/view_85_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
         android:layout_marginBottom="@dimen/view_80_dp"
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
@@ -41,7 +39,7 @@
             android:layout_height="match_parent"
             app:bl_corners_radius="@dimen/view_8_dp"
             app:bl_shape="rectangle"
-            app:bl_solid_color="@color/black_trans_10">
+            app:bl_solid_color="#4456AD">
 
                 <ImageView
                     android:id="@+id/level_background"
@@ -55,19 +53,18 @@
 
                 <com.component.level.view.NormalLevelView2
                     android:id="@+id/level_view"
-                    android:layout_width="@dimen/view_125_dp"
-                    android:layout_height="@dimen/view_109_dp"
+                    android:layout_width="@dimen/view_92_dp"
+                    android:layout_height="@dimen/view_80_dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_8_dp"
                     app:layout_constraintLeft_toLeftOf="@id/level_background"
                     app:layout_constraintRight_toRightOf="@id/level_background"
                     app:layout_constraintTop_toTopOf="@id/level_background"
                     app:layout_constraintBottom_toBottomOf="@id/level_background"
-                    levelView2:mainHeight2="@dimen/view_109_dp"
-                    levelView2:mainWidth2="@dimen/view_125_dp"
-                    levelView2:subBottom2="@dimen/view_6_dp"
-                    levelView2:subHeight2="@dimen/view_13_dp"
-                    levelView2:subWidth2="@dimen/view_24_dp" />
+                    levelView2:mainHeight2="@dimen/view_80_dp"
+                    levelView2:mainWidth2="@dimen/view_92_dp"
+                    levelView2:subBottom2="@dimen/view_5_dp"
+                    levelView2:subHeight2="@dimen/view_10_dp"
+                    levelView2:subWidth2="@dimen/view_18_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/level_desc_tv"
@@ -426,13 +423,13 @@
     </android.support.v4.widget.NestedScrollView>
 
     <ImageView
-        android:layout_width="@dimen/view_306_dp"
-        android:layout_height="@dimen/view_126_dp"
-        android:layout_marginTop="@dimen/view_35_dp"
+        android:layout_width="@dimen/view_259_dp"
+        android:layout_height="@dimen/view_92_dp"
         android:background="@drawable/grab_result_top_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/result_bg"
+        app:layout_constraintTop_toTopOf="@id/result_bg"/>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_back"

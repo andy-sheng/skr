@@ -189,10 +189,10 @@ public class GrabResultFragment extends BaseFragment {
 
             if (mGrabResultData.mLevelResultModel != null) {
                 mDescTv.setText("距离下次升段还需" + mGrabResultData.mLevelResultModel.getGap() + "积分");
-                if (mGrabResultData.mLevelResultModel.getGap() >= 0) {
-                    mChangeTv.setText("+" + mGrabResultData.mLevelResultModel.getGap());
+                if (mGrabResultData.mLevelResultModel.getGet() >= 0) {
+                    mChangeTv.setText("+" + mGrabResultData.mLevelResultModel.getGet());
                 } else {
-                    mChangeTv.setText(String.valueOf(mGrabResultData.mLevelResultModel.getGap()));
+                    mChangeTv.setText(String.valueOf(mGrabResultData.mLevelResultModel.getGet()));
                 }
                 ScoreStateModel stateModel = mGrabResultData.mLevelResultModel.getLastState();
                 if (stateModel != null) {
