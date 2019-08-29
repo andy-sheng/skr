@@ -451,6 +451,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun singBySelfSecondRound(songModel: SongModel?) {
         MyLog.d(TAG, "singBySelfSecondRound songModel = ${songModel?.toSimpleString()}")
         hideAllSceneView()
+        mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.startSingBySelf {
             mRaceRightOpView.showGiveUp(false)
             mRaceSelfSingLyricView.startFly {
@@ -464,6 +465,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
         MyLog.d(TAG, "singByOtherSecondRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
         hideAllSceneView()
+        mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.startSingByOther {
             if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
                 mRaceRightOpView.visibility = View.GONE
