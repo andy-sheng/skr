@@ -18,8 +18,7 @@ import com.component.level.view.NormalLevelView2
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.race.RaceRoomServerApi
-import com.module.playways.race.room.model.RaceResultModel
-import com.module.playways.room.room.model.score.ScoreResultModel
+import com.module.playways.race.room.model.LevelResultModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -79,7 +78,7 @@ class RaceResultActivity : BaseActivity() {
         launch {
             val result = subscribe { raceRoomServerApi.getResult(roomID, MyUserInfoManager.getInstance().uid.toInt(), roundSeq) }
             if (result.errno == 0) {
-                val raceResultModel = JSON.parseObject(result.data.getString("userScoreChange"), RaceResultModel::class.java)
+                val raceResultModel = JSON.parseObject(result.data.getString("userScoreChange"), LevelResultModel::class.java)
                 if (raceResultModel != null) {
                     showResult(raceResultModel)
                     return@launch
@@ -92,7 +91,7 @@ class RaceResultActivity : BaseActivity() {
         }
     }
 
-    private fun showResult(raceResultModel: RaceResultModel) {
+    private fun showResult(raceResultModel: LevelResultModel) {
         descTv.text = "距离下次升段还需${raceResultModel.gap}积分"
         changeTv.text = raceResultModel.get.toString()
 

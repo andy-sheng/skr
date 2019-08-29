@@ -21,13 +21,17 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
+import com.component.level.view.LevelStarProgressBar;
+import com.component.level.view.NormalLevelView2;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.NumericDetailModel;
+import com.module.playways.race.room.model.LevelResultModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.R;
+import com.module.playways.room.room.model.score.ScoreStateModel;
 
 import java.util.List;
 
@@ -37,6 +41,12 @@ import java.util.List;
 public class GrabResultFragment extends BaseFragment {
 
     public final String TAG = "GrabResultFragment";
+
+    NormalLevelView2 mLevelView;
+    ExTextView mLevelDescTv;
+    LevelStarProgressBar mLevelProgress;
+    TextView mChangeTv;
+    TextView mDescTv;
 
     GrabRoomData mRoomData;
     GrabResultData mGrabResultData;
@@ -71,6 +81,12 @@ public class GrabResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
+        mLevelView = getRootView().findViewById(R.id.level_view);
+        mLevelDescTv = getRootView().findViewById(R.id.level_desc_tv);
+        mLevelProgress = getRootView().findViewById(R.id.level_progress);
+        mChangeTv = getRootView().findViewById(R.id.change_tv);
+        mDescTv = getRootView().findViewById(R.id.desc_tv);
 
         mGrabNumArea = getRootView().findViewById(R.id.grab_num_area);
         mGrabNumTv = getRootView().findViewById(R.id.grab_num_tv);
@@ -170,6 +186,25 @@ public class GrabResultFragment extends BaseFragment {
             bindData(mCoinArea, mCoinNumTv, coinModel, "+", "枚");
             NumericDetailModel hzModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_HONGZHUAN);
             bindData(mHzArea, mHzNumTv, hzModel, "+", "枚");
+
+            if (mGrabResultData.mLevelResultModel != null) {
+                mDescTv.setText("距离下次升段还需" + mGrabResultData.mLevelResultModel.getGap() + "积分");
+                if (mGrabResultData.mLevelResultModel.getGap() >= 0) {
+                    mChangeTv.setText("+" + mGrabResultData.mLevelResultModel.getGap());
+                } else {
+                    mChangeTv.setText(String.valueOf(mGrabResultData.mLevelResultModel.getGap()));
+                }
+                ScoreStateModel stateModel = mGrabResultData.mLevelResultModel.getLastState();
+                if (stateModel != null) {
+                    mLevelDescTv.setText(stateModel.getRankingDesc());
+                    int progress = 0;
+                    if (stateModel.getMaxExp() != 0) {
+                        progress = stateModel.getCurrExp() * 100 / stateModel.getMaxExp();
+                    }
+                    mLevelProgress.setCurProgress(progress);
+                    mLevelView.bindData(stateModel.getMainRanking(), stateModel.getSubRanking());
+                }
+            }
         } else {
             MyLog.w(TAG, "bindData 数据为空了");
         }
@@ -204,8 +239,9 @@ public class GrabResultFragment extends BaseFragment {
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
                         List<NumericDetailModel> models = JSON.parseArray(result.getData().getString("numericDetail"), NumericDetailModel.class);
+                        LevelResultModel levelResultModel = JSON.parseObject(result.getData().getString("userScoreChange"), LevelResultModel.class);
                         if (models != null) {
-                            mGrabResultData = new GrabResultData(models);
+                            mGrabResultData = new GrabResultData(models, levelResultModel);
                             mRoomData.setGrabResultData(mGrabResultData);
                             bindData();
                         } else {

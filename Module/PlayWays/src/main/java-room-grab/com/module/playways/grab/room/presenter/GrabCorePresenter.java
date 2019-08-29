@@ -76,6 +76,7 @@ import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.WorksUploadModel;
+import com.module.playways.race.room.model.LevelResultModel;
 import com.module.playways.songmanager.event.MuteAllVoiceEvent;
 import com.module.playways.songmanager.event.RoomNameChangeEvent;
 import com.component.lyrics.LyricAndAccMatchManager;
@@ -1418,9 +1419,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     mRoomData.setHasExitGame(true);
                     List<NumericDetailModel> models = JSON.parseArray(result.getData().getString("numericDetail"), NumericDetailModel.class);
+                    LevelResultModel levelResultModel = JSON.parseObject(result.getData().getString("userScoreChange"), LevelResultModel.class);
                     if (models != null) {
                         // 得到结果
-                        mRoomData.setGrabResultData(new GrabResultData(models));
+                        mRoomData.setGrabResultData(new GrabResultData(models, levelResultModel));
                         mIGrabView.onGetGameResult(true);
                     } else {
                         mIGrabView.onGetGameResult(false);

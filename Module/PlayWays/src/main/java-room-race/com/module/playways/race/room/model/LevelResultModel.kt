@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 import com.module.playways.room.room.model.score.ScoreStateModel
 import java.io.Serializable
 
-class RaceResultModel : Serializable {
+class LevelResultModel : Serializable {
     @JSONField(name = "gap")
     var gap: Int = 0
     @JSONField(name = "get")
