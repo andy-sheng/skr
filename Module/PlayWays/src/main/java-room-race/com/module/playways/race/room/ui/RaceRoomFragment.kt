@@ -395,7 +395,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun singBySelfFirstRound(songModel: SongModel?) {
         MyLog.d(TAG, "singBySelfFirstRound songModel = ${songModel?.toSimpleString()}")
-//        mLastSceneView = mRaceTopVsView
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.startVs()
@@ -405,7 +404,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceSelfSingLyricView.startFly {
                 mCorePresenter.sendSingComplete()
             }
-//            mLastSceneView = mRaceSelfSingLyricView.realView
             hideAllSceneView()
             mRaceSelfSingLyricView.realView.visibility = View.VISIBLE
         }
@@ -435,7 +433,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
         MyLog.d(TAG, "singByOtherFirstRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
-//        mLastSceneView = mRaceTopVsView
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.startVs()
@@ -446,7 +443,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mRaceRightOpView.showVote(false)
             }
             mRaceOtherSingCardView.bindData()
-//            mLastSceneView = mRaceOtherSingCardView.realView
             hideAllSceneView()
             mRaceOtherSingCardView.realView.visibility = View.VISIBLE
         }
@@ -460,7 +456,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceSelfSingLyricView.startFly {
                 mCorePresenter.sendSingComplete()
             }
-//            mLastSceneView = mRaceSelfSingLyricView.realView
             hideAllSceneView()
             mRaceSelfSingLyricView.realView.visibility = View.VISIBLE
         }
@@ -476,7 +471,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mRaceRightOpView.showVote(false)
             }
             mRaceOtherSingCardView.bindData()
-//            mLastSceneView = mRaceOtherSingCardView.realView
             hideAllSceneView()
             mRaceOtherSingCardView.realView.visibility = View.VISIBLE
         }
@@ -490,7 +484,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
             // 无人应战
-//            mLastSceneView = mRaceNoSingCardView
             hideAllSceneView()
             mRaceNoSingCardView.visibility = View.VISIBLE
             mRaceNoSingCardView.showAnimation(object : AnimationListener {
@@ -499,7 +492,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 }
             })
         } else {
-            //            mLastSceneView = mRaceMiddleResultView
             hideAllSceneView()
             mRaceMiddleResultView.visibility = View.VISIBLE
             mRaceMiddleResultView.showResult(lastRoundInfo) {
@@ -511,7 +503,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun showWaiting(showAnimation: Boolean) {
         MyLog.d(TAG, "showWaiting showAnimation = $showAnimation")
         mRaceRightOpView.visibility = View.GONE
-//        mLastSceneView = mRaceWaitingCardView
         hideAllSceneView()
         mRaceWaitingCardView.visibility = View.VISIBLE
         if (showAnimation) {
@@ -527,7 +518,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
 
         if (showNextRound) {
-//                mLastSceneView = mRaceTurnInfoCardView
             hideAllSceneView()
             mRaceTurnInfoCardView.visibility = View.VISIBLE
             mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
@@ -542,7 +532,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     private fun showSelectSongView() {
         mRaceSelectSongView.visibility = View.VISIBLE
-//        mLastSceneView = mRaceSelectSongView
         hideAllSceneView()
         mRaceSelectSongView.visibility = View.VISIBLE
         mRaceSelectSongView.setSongName {
