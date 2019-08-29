@@ -204,6 +204,7 @@ class RaceSelectSongView : ExConstraintLayout {
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
+            mNoSelectCall = null
             animator?.cancel()
         }
     }
