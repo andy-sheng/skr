@@ -24,6 +24,20 @@ class RaceScore : Serializable {
         return "RaceScore(bLightCnt=$bLightCnt, isEscape=$isEscape, winType=$winType)"
     }
 
+    fun tryUpdateInfoModel(model: RaceScore?) {
+        model?.let {
+            if (it.bLightCnt > this.bLightCnt) {
+                this.bLightCnt = it.bLightCnt
+            }
+            if (it.isEscape) {
+                this.isEscape = true
+            }
+            if (it.winType > 0) {
+                this.winType = it.winType
+            }
+        }
+    }
+
 }
 
 internal fun parseFromRoundScoreInfoPB(pb: RoundScoreInfo): RaceScore {

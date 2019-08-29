@@ -11,6 +11,8 @@ class RaceWantSingInfo : Serializable {
     var choiceID = 0
     @JSONField(name = "timeMs")
     var timeMs = 0L
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -24,6 +26,10 @@ class RaceWantSingInfo : Serializable {
 
     override fun hashCode(): Int {
         return userID
+    }
+
+    override fun toString(): String {
+        return "RaceWantSingInfo(userID=$userID, choiceID=$choiceID, timeMs=$timeMs)"
     }
 
 }

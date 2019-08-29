@@ -17,6 +17,16 @@ class RaceSubRoundInfo : Serializable {
         return "RaceSubRoundInfo(beginMs=$beginMs, endMs=$endMs, choiceID=$choiceID, overReason=$overReason, subRoundSeq=$subRoundSeq, userID=$userID, wantSingType=$wantSingType)"
     }
 
+    fun tryUpdateInfoModel(model: RaceSubRoundInfo?) {
+        model?.let {
+            if(overReason==0){
+                overReason = it.overReason
+            }
+            beginMs = it.beginMs
+            endMs = it.endMs
+        }
+    }
+
 }
 
 internal fun parseFromSubRoundInfoPB(pb: SubRoundInfo): RaceSubRoundInfo {
