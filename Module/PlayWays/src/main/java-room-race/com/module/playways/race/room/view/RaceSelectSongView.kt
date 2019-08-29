@@ -104,6 +104,7 @@ class RaceSelectSongView : ExConstraintLayout {
     var scaleAnimatorSet: AnimatorSet? = null
 
     fun setSongName(noSelectCall: (() -> Unit)?) {
+        progressBar.progress = 0
         scaleAnimatorSet = AnimatorSet()
         val scaleX = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleX", 0.85f, 1f)
         val scaleY = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleY", 0.85f, 1f)
