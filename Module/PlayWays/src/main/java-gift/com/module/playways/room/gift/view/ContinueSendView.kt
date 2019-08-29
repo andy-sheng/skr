@@ -105,7 +105,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
             if (baseGift.isCanContinue) {
                 mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()
                         ?: 0L, getGrabRoomData()?.realRoundSeq
-                        ?: 0, true, receiver, mScene.value)
+                        ?: 0, receiver, mScene.value)
                 visibility = View.VISIBLE
 
                 mHandler.removeMessages(MSG_HIDE)
@@ -113,7 +113,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
             } else {
                 mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()
                         ?: 0L, getGrabRoomData()?.realRoundSeq
-                        ?: 0, true, receiver, mScene.value)
+                        ?: 0, receiver, mScene.value)
             }
         } else {
             MyLog.w(TAG, "startBuy baseGift=$baseGift receiver=$receiver")
@@ -133,7 +133,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
             if (grabRoundInfoModel != null) {
                 mBuyGiftPresenter?.buyGift(mBaseGift, getGrabRoomData()?.gameId?.toLong()
                         ?: 0L, getGrabRoomData()?.realRoundSeq
-                        ?: 0, true, mReceiver, mScene.value)
+                        ?: 0, mReceiver, mScene.value)
 
                 if (mScaleAnimatorSet != null) {
                     mScaleAnimatorSet!!.cancel()
