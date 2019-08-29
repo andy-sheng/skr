@@ -425,6 +425,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
         MyLog.d(TAG, "onRaceRoundChangeEvent = $event")
+        DebugLogView.println(TAG,"\n新一轮 roundSeq=${event.thisRound?.roundSeq}")
         processStatusChange(1, event.lastRound, event.thisRound)
     }
 
