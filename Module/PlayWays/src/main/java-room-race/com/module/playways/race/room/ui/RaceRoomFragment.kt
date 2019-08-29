@@ -434,7 +434,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
-            //todo 这里头像开始转
+            mRaceOtherSingCardView.bindData()
+            mLastSceneView = mRaceOtherSingCardView.realView
         }
     }
 
@@ -456,8 +457,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         } else {
             mRaceRightOpView.showVote(false)
         }
+        mLastSceneView = mRaceTopVsView
         mRaceTopVsView.startSingByOther {
-            //todo 这里头像开始转
+            mRaceOtherSingCardView.bindData()
+            mLastSceneView = mRaceOtherSingCardView.realView
         }
     }
 

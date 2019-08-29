@@ -117,7 +117,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/title_bar"
-        android:layout_marginTop="@dimen/view_40_dp"
         android:layout="@layout/race_other_sing_card_stub_layout"/>
 
     <!--无人想唱-->

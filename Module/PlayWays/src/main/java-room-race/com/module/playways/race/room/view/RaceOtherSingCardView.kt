@@ -99,7 +99,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         mUiHandler!!.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false
         visibility = View.VISIBLE
-        descTv.text = "《${infoModel?.getSongModelNow()}》"
+        descTv.text = "《${infoModel?.getSongModelNow()?.displaySongName}》"
         if (userInfoModel != null) {
             this.mUseId = userInfoModel.userId
             AvatarUtils.loadAvatarByUrl(singAvatarView,
