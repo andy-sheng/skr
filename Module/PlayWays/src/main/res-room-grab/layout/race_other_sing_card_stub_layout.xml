@@ -26,9 +26,9 @@
         app:layout_constraintRight_toRightOf="@id/sing_avatar_view"
         app:bg_color="@color/transparent"
         app:inner_color="#FFC15B"
-        app:inner_stroke_raduis="@dimen/view_64_dp"
-        app:inner_stroke_width="@dimen/view_6_dp"
-        app:stroke_bg_color="#353E89"
+        app:inner_stroke_raduis="@dimen/view_58_dp"
+        app:inner_stroke_width="@dimen/view_4_dp"
+        app:stroke_bg_color="#240D65"
         app:stroke_bg_width="@dimen/view_8_dp" />
 
     <com.common.image.fresco.BaseImageView
@@ -51,7 +51,7 @@
         android:paddingRight="@dimen/view_10_dp"
         android:paddingBottom="@dimen/view_2_dp"
         android:singleLine="true"
-        android:textColor="#FFC15B"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_43_dp"
