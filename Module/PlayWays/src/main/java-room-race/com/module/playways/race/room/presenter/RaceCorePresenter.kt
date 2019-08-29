@@ -601,7 +601,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
-                delay(8000)
+                delay(10*1000)
                 val result = subscribe { raceRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
                     val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
