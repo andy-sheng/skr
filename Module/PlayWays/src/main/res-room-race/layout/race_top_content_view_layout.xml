@@ -56,6 +56,8 @@
         android:layout_height="@dimen/view_32_dp"
         android:gravity="center_vertical"
         android:textColor="@color/white"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:drawableRight="@drawable/race_more_actor_icon"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
         app:layout_constraintLeft_toRightOf="@id/recycler_view"
