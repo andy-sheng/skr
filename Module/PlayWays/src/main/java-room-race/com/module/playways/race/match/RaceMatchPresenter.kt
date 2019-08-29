@@ -46,13 +46,13 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
     // 匹配到了
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(e: RJoinActionEvent) {
-        MyLog.d(mTag, "onEvente = ${e.pb}")
+        MyLog.d(mTag, "onEvent e = ${e.pb}")
         joinRoom(LocalRJoinActionMsg.toLocalModel(e.pb))
     }
 
     // 进入房间
     fun joinRoom(localRJoinActionMsg: LocalRJoinActionMsg?) {
-        MyLog.w(TAG, "joinRoompb = $localRJoinActionMsg")
+        MyLog.w(TAG, "joinRoom pb = $localRJoinActionMsg")
         localRJoinActionMsg?.let {
             launch {
                 val map = mutableMapOf(

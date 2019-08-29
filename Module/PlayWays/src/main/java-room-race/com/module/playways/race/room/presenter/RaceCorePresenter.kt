@@ -73,7 +73,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     ensureInRcRoom()
                 }
                 MSG_ENSURE_SWITCH_BROADCAST_SUCCESS -> {
-//                    onChangeBroadcastSuccess()
+                    onChangeBroadcastSuccess()
                 }
             }
         }
@@ -385,7 +385,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                             .build())
                 } else {
                     if (needScore) {
-                        // 清唱还需要打分，那就只用 acr 打分
+                        // 清唱还需要打分，那就只用 acr 自动打分
                         ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
                                 .setSongName(it.itemName)
                                 .setArtist(it.owner)
