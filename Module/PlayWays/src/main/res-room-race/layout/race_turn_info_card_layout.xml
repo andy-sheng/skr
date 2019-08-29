@@ -9,7 +9,7 @@
         android:id="@+id/result_iv"
         android:layout_width="@dimen/view_335_dp"
         android:layout_height="@dimen/view_144_dp"
-        android:background="@drawable/race_no_singer_icon"
+        android:background="@drawable/race_next_round_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

@@ -460,22 +460,22 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun showChoicing(showNextRound: Boolean) {
         MyLog.d(TAG, "showChoicing showNextRound = $showNextRound")
         mRaceRightOpView.visibility = View.GONE
-        if (mRaceWaitingCardView.visibility == View.VISIBLE) {
-            mLastSceneView = mRaceWaitingCardView
-            mRaceWaitingCardView.animationLeave(object : AnimationListener {
-                override fun onFinish() {
-                    if (showNextRound) {
-                        mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
-                            override fun onFinish() {
-                                showSelectSongView()
-                            }
-                        })
-                    } else {
-                        showSelectSongView()
-                    }
-                }
-            })
-        } else {
+//        if (mRaceWaitingCardView.visibility == View.VISIBLE) {
+//            mLastSceneView = mRaceWaitingCardView
+//            mRaceWaitingCardView.animationLeave(object : AnimationListener {
+//                override fun onFinish() {
+//                    if (showNextRound) {
+//                        mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
+//                            override fun onFinish() {
+//                                showSelectSongView()
+//                            }
+//                        })
+//                    } else {
+//                        showSelectSongView()
+//                    }
+//                }
+//            })
+//        } else {
             if (showNextRound) {
                 mLastSceneView = mRaceTurnInfoCardView
                 mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
@@ -486,7 +486,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             } else {
                 showSelectSongView()
             }
-        }
+//        }
     }
 
     private fun showSelectSongView() {

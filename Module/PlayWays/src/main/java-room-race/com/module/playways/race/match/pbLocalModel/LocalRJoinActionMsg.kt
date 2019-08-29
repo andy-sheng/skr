@@ -11,12 +11,11 @@ class LocalRJoinActionMsg {
         fun toLocalModel(msg: RJoinActionMsg?): LocalRJoinActionMsg? {
             msg?.let {
                 return LocalRJoinActionMsg().apply {
-                    it.gameID
-                    it.createTimeMs
-                    it.agoraToken
+                    this.gameID = it.gameID
+                    this.createTimeMs = it.createTimeMs
+                    this.agoraToken = it.agoraToken
                 }
             }
-
             return null
         }
     }
