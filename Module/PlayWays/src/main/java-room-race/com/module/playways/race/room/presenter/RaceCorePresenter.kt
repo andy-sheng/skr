@@ -507,6 +507,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RWantSingChanceEvent) {
+        MyLog.d(TAG, "onEvent event = ${event.pb}")
         ensureInRcRoom()
         if (event.pb.roundSeq == mRoomData.realRoundSeq) {
             mRoomData?.realRoundInfo?.addWantSingChange(event.pb.choiceID, event.pb.userID)

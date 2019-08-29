@@ -352,6 +352,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(CustomChatCombineRoomMsg.class);
             RongIM.registerMessageType(CustomChatCombineRoomLowLevelMsg.class);
             RongIM.registerMessageType(CustomNotificationMsg.class);
+            RongIM.registerMessageType(RaceRoomHighMsg.class);
+            RongIM.registerMessageType(RaceRoomLowMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
