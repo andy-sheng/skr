@@ -12,9 +12,6 @@ interface IOtherPersonView {
     // 展示homepage回来的结果
     fun showHomePageInfo(userInfoModel: UserInfoModel,
                          relationNumModels: List<RelationNumModel>?,
-                         userRankModels: List<UserRankModel>?,
-                         userLevelModels: List<UserLevelModel>?,
-                         gameStatisModels: List<GameStatisModel>?,
                          isFriend: Boolean, isFollow: Boolean,
                          meiLiCntTotal: Int)
 

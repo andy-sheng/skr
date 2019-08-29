@@ -626,16 +626,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  userRankModels: List<UserRankModel>?,
-                                  userLevelModels: List<UserLevelModel>?,
-                                  gameStatisModels: List<GameStatisModel>?,
                                   isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
-        showReginRank(userRankModels)
         showUserRelation(isFriend, isFollow)
-        showUserLevel(userLevelModels)
         showCharms(meiLiCntTotal)
     }
 

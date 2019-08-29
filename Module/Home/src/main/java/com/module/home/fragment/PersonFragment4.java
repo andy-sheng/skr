@@ -591,11 +591,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels
-            , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels, int meiLiCntTotal) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels,int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showCharmsTotal(meiLiCntTotal);
-        showUserLevel(userLevelModels);
         showRelationNum(relationNumModels);
     }
 

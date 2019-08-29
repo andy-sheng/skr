@@ -1,20 +1,12 @@
 package com.module.home.view;
 
-import com.common.core.userinfo.model.GameStatisModel;
-import com.common.core.userinfo.model.UserRankModel;
-
 import com.component.person.model.RelationNumModel;
-
-import com.common.core.userinfo.model.UserLevelModel;
 
 import java.util.List;
 
 public interface IPersonView {
     // 展示homepage回来的结果
     void showHomePageInfo(List<RelationNumModel> relationNumModels,
-                          List<UserRankModel> userRankModels,
-                          List<UserLevelModel> userLevelModels,
-                          List<GameStatisModel> gameStatisModels,
                           int meiLiCntTotal);
 
     void loadHomePageFailed();

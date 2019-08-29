@@ -56,10 +56,11 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     mLastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
-                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
-                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
-                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
+
+//                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
+//                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
+//                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
 //                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
 //                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
@@ -69,7 +70,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
-                    mView.showHomePageInfo(relationNumModes, userRankModels, userLevelModels, userGameStatisModels, meiLiCntTotal);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal);
                 } else {
                     mView.loadHomePageFailed();
                 }

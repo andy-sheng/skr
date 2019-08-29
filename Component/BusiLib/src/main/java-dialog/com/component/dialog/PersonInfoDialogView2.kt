@@ -240,7 +240,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     val userInfoModel = JSON.parseObject(result.data!!.getString("userBaseInfo"), UserInfoModel::class.java)
                     //                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
                     val relationNumModes = JSON.parseArray(result.data!!.getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel::class.java)
-                    val userLevelModels = JSON.parseArray(result.data!!.getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel::class.java)
+//                    val userLevelModels = JSON.parseArray(result.data!!.getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel::class.java)
                     //                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
 
                     val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
@@ -255,7 +255,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     }
                     showUserInfo(userInfoModel)
                     showUserRelationNum(relationNumModes)
-                    showUserLevel(userLevelModels)
                     showUserRelation(isFriend, isFollow)
                     showCharmsTag(meiLiCntTotal)
                 }

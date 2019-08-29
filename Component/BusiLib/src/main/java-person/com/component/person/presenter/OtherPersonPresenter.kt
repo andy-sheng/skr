@@ -26,10 +26,10 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val userInfoModel = JSON.parseObject(result.data?.getString("userBaseInfo"), UserInfoModel::class.java)
-                    val userRankModels = JSON.parseArray(result.data?.getJSONObject("userRankInfo")?.getString("seqInfo"), UserRankModel::class.java)
                     val relationNumModes = JSON.parseArray(result.data?.getJSONObject("userRelationCntInfo")?.getString("cnt"), RelationNumModel::class.java)
-                    val userLevelModels = JSON.parseArray(result.data?.getJSONObject("userScoreInfo")?.getString("userScore"), UserLevelModel::class.java)
-                    val userGameStatisModels = JSON.parseArray(result.data?.getJSONObject("userGameStatisticsInfo")?.getString("statistic"), GameStatisModel::class.java)
+//                    val userRankModels = JSON.parseArray(result.data?.getJSONObject("userRankInfo")?.getString("seqInfo"), UserRankModel::class.java)
+//                    val userLevelModels = JSON.parseArray(result.data?.getJSONObject("userScoreInfo")?.getString("userScore"), UserLevelModel::class.java)
+//                    val userGameStatisModels = JSON.parseArray(result.data?.getJSONObject("userGameStatisticsInfo")?.getString("statistic"), GameStatisModel::class.java)
 
                     val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
                     val isFollow = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFollow")
@@ -42,7 +42,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
 
                     val meiLiCntTotal = result.data!!.getIntValue("meiLiCntTotal")
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels, isFriend, isFollow, meiLiCntTotal)
+                    view.showHomePageInfo(userInfoModel, relationNumModes,isFriend, isFollow, meiLiCntTotal)
                 } else {
                     view.getHomePageFail()
                 }
