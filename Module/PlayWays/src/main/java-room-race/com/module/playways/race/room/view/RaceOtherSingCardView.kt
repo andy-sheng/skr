@@ -141,7 +141,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             circleCountDownView.cancelAnim()
             circleCountDownView.max = 360
             circleCountDownView.progress = 0
-            if (!it.isParticipant && it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq==it.subRoundSeq) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
             } else {
@@ -169,8 +169,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             val totalMs = it.getSingTotalMs()
             val progress: Int  //当前进度条
             val leaveTime: Int //剩余时间
-            MyLog.d(TAG, "countDown isParticipant:" + it.isParticipant + " enterStatus=" + it.enterStatus)
-            if (!it.isParticipant && it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq==it.subRoundSeq) {
                 MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多")
                 progress = it.elapsedTimeMs * 100 / totalMs
                 leaveTime = totalMs - it.elapsedTimeMs

@@ -87,12 +87,13 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
         this.expectRoundInfo?.enterStatus = this.expectRoundInfo?.status
                 ?: ERaceRoundStatus.ERRS_UNKNOWN.value
+        this.expectRoundInfo?.enterSubRoundSeq = this.expectRoundInfo?.subRoundSeq ?: 0
         if (rsp.elapsedTimeMs > 0) {
             // 演唱轮次进来，不能是本局参与者
-            this.expectRoundInfo?.isParticipant = false
+            //this.expectRoundInfo?.isParticipant = false
             this.expectRoundInfo?.elapsedTimeMs = rsp.elapsedTimeMs
         } else {
-            this.expectRoundInfo?.isParticipant = true
+            //this.expectRoundInfo?.isParticipant = true
         }
     }
 
