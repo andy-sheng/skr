@@ -423,7 +423,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
-        MyLog.d(TAG, "onEvent event = $event")
+        MyLog.d(TAG, "onRaceRoundChangeEvent = $event")
         processStatusChange(1, event.lastRound, event.thisRound)
     }
 
@@ -432,7 +432,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundStatusChangeEvent) {
-        MyLog.d(TAG, "onEvent event = $event")
+        MyLog.d(TAG, "onRaceRoundStatusChangeEvent = $event")
         processStatusChange(2, null, event.thisRound)
     }
 
@@ -441,11 +441,12 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceSubRoundChangeEvent) {
-        MyLog.d(TAG, "onEvent event = $event")
+        MyLog.d(TAG, "onRaceSubRoundChangeEvent = $event")
         processStatusChange(3, null, event.thisRound)
     }
 
     private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
+        MyLog.d(TAG, "processStatusChange from = $from, lastRound = $lastRound, thisRound = $thisRound")
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
@@ -574,7 +575,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RRoundOverEvent) {
         ensureInRcRoom()
-        MyLog.d(TAG, "onEvent event = $event")
+        MyLog.d(TAG, "onEvent event = ${event.pb}")
         if (event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
             // 主轮次结束
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
@@ -583,7 +584,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 nextRoundInfo.games.add(parseFromGameInfoPB(it))
             }
             if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
-//            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo,true)
+                mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, false)
                 mRoomData.expectRoundInfo = nextRoundInfo
                 mRoomData.checkRoundInEachMode()
             }

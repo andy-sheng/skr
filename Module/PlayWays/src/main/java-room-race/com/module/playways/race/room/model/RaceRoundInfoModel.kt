@@ -297,8 +297,14 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     }
 
     fun getSingerIdNow(): Int {
-        return subRoundInfo.getOrNull(subRoundSeq - 1)?.userID ?:0
+        return subRoundInfo.getOrNull(subRoundSeq - 1)?.userID ?: 0
     }
+
+    override fun toString(): String {
+        return "RaceRoundInfoModel(roundSeq=$roundSeq, status=$status, overreason=$overReason scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, wantSingInfos=$wantSingInfos, isParticipant=$isParticipant, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus)"
+    }
+
+
 }
 
 

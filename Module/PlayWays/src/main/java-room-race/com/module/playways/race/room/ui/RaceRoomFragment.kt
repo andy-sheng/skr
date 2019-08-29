@@ -426,6 +426,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp:(()->Unit)?) {
+        MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
         if(lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value ){
@@ -445,6 +446,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showWaiting(showAnimation: Boolean) {
+        MyLog.d(TAG, "showWaiting showAnimation = $showAnimation")
         mRaceRightOpView.visibility = View.GONE
         mLastSceneView = mRaceWaitingCardView
         if (showAnimation) {
@@ -456,6 +458,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun showChoicing(showNextRound: Boolean) {
+        MyLog.d(TAG, "showChoicing showNextRound = $showNextRound")
         mRaceRightOpView.visibility = View.GONE
         if (mRaceWaitingCardView.visibility == View.VISIBLE) {
             mLastSceneView = mRaceWaitingCardView

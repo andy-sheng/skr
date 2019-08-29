@@ -6,6 +6,10 @@ import com.zq.live.proto.RaceRoom.ROnlineInfo
 
 class RacePlayerInfoModel : PlayerInfoModel() {
     var role = 0
+    override fun toString(): String {
+        return "${userInfo.toSimpleString()}"
+    }
+
 }
 
 internal fun parseFromROnlineInfoPB(pb: ROnlineInfo): RacePlayerInfoModel {
