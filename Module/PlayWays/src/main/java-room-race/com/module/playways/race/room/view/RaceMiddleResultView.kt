@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 //选择歌曲页
 class RaceMiddleResultView : ExConstraintLayout {
-    val mTag = "RaceTopVsView"
+    val TAG = "RaceTopVsView"
 
     val resultTv: ExTextView
     val leftConstraintLayout: ConstraintLayout
@@ -121,7 +121,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                         .build())
 
             } else {
-                MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
+                MyLog.w(TAG, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
             }
         }
         startVs()
