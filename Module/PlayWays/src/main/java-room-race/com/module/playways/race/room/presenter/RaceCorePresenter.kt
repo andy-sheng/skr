@@ -9,6 +9,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.engine.ScoreConfig
 import com.common.jiguang.JiGuangPush
+import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
@@ -68,7 +69,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             super.handleMessage(msg)
             when (msg.what) {
                 MSG_ENSURE_IN_RC_ROOM -> {
-                    MyLog.d(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错")
+                    DebugLogView.println(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错")
                     ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString() + "")
                     joinRcRoom(0)
                     ensureInRcRoom()
@@ -102,7 +103,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 系统消息弹幕
      */
     private fun joinRoomAndInit(first: Boolean) {
-        MyLog.w(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.gameId)
+        DebugLogView.println(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.gameId)
 
         if (mRoomData.gameId > 0) {
             var reInit = false
@@ -146,7 +147,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             ModuleServiceManager.getInstance().msgService.joinChatRoom(mRoomData.gameId.toString(), -1, object : ICallback {
 
                 override fun onSucess(obj: Any?) {
-                    MyLog.d(TAG, "加入融云房间成功")
+                    DebugLogView.println(TAG, "加入融云房间成功")
                 }
 
                 override fun onFailed(obj: Any?, errcode: Int, message: String?) {
@@ -446,7 +447,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
-        MyLog.d(TAG, "processStatusChange from = $from, lastRound = $lastRound, thisRound = $thisRound")
+        DebugLogView.println(TAG, "状态更新 from = $from, thisRound = $thisRound \n lastRoundOverReason = ${lastRound?.overReason}")
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
@@ -521,6 +522,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RGetSingChanceEvent) {
+        DebugLogView.println(TAG, "RGetSingChanceEvent 确定演唱者")
         ensureInRcRoom()
         val roundInfoModel = parseFromRoundInfoPB(event.pb.currentRound)
         if (roundInfoModel.roundSeq == mRoomData.realRoundSeq) {
@@ -534,6 +536,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RJoinNoticeEvent) {
+        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.pb.user.userID} 加入房间")
         ensureInRcRoom()
         val racePlayerInfoModel = RacePlayerInfoModel()
         racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.user)
@@ -553,6 +556,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RExitGameEvent) {
+        DebugLogView.println(TAG, "RExitGameEvent ${event.pb.userID} 退出房间")
         ensureInRcRoom()
         mRoomData.realRoundInfo?.exitUser(event.pb.userID)
     }
@@ -562,6 +566,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RBLightEvent) {
+        DebugLogView.println(TAG, "RBLightEvent ${event.pb.userID} 爆灯")
         ensureInRcRoom()
         MyLog.d(TAG, "onEvent event = $event")
         if (event.pb.roundSeq == mRoomData.realRoundSeq) {
@@ -575,8 +580,8 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RRoundOverEvent) {
         ensureInRcRoom()
-        MyLog.d(TAG, "onEvent event = ${event.pb}")
         if (event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
+            DebugLogView.println(TAG, "RRoundOverEvent 主轮次结束 reason=${event.pb.currentRound.overReason}")
             // 主轮次结束
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
             val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
@@ -589,6 +594,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 mRoomData.checkRoundInEachMode()
             }
         } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
+            DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
         }
@@ -622,6 +628,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RSyncStatusEvent) {
+        DebugLogView.println(TAG, "RSyncStatusEvent")
         ensureInRcRoom()
         syncJob?.cancel()
         startSyncRaceStatus()

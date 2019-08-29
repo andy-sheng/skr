@@ -11,6 +11,7 @@ import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -131,6 +132,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mUiHanlder.postDelayed(Runnable {
             mRaceWidgetAnimationController.close()
         }, 500)
+        if (MyLog.isDebugLogOpen()) {
+            val viewStub = rootView.findViewById<ViewStub>(R.id.debug_log_view_stub)
+            val debugLogView = DebugLogView(viewStub)
+            debugLogView.tryInflate()
+        }
+
     }
 
     private fun initResuleView() {

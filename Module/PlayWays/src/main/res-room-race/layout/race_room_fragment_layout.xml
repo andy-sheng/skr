@@ -214,4 +214,11 @@
         android:layout_marginBottom="@dimen/view_18_dp"
         android:layout="@layout/voice_record_tips_view_layout" />
 
+    <ViewStub
+        android:id="@+id/debug_log_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/debug_log_view"
+        android:layout="@layout/debug_log_view_stub_layout" />
+
 </android.support.constraint.ConstraintLayout>
