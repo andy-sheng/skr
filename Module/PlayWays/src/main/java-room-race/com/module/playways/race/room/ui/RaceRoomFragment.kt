@@ -268,12 +268,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
 
             override fun closeBtnClick() {
-                // todo 退出游戏
-//                if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size >= 2) {
-//                    quitGame()
-//                } else {
-//                    mCorePresenter.exitRoom("closeBtnClick")
-//                }
+                quitGame()
             }
 
             override fun onClickGameRule() {
@@ -557,6 +552,15 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
     }
 
+    override fun onBackPressed(): Boolean {
+        quitGame()
+        return true
+    }
+
+    fun quitGame(){
+        mCorePresenter.exitRoom("quitGame")
+        finish()
+    }
     override fun destroy() {
         super.destroy()
         mRaceActorPanelView?.dismiss(false)
