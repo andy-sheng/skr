@@ -34,6 +34,7 @@ class RaceSelectSongView : ExConstraintLayout {
     private val secondSongItem: RaceSelectSongItemView
     private val thirdSongItem: RaceSelectSongItemView
     var countDownTv: ExTextView
+    var blurBg: ImageView
     private val itemList: ArrayList<RaceSelectSongItemView> = ArrayList()
     var animator: ValueAnimator? = null
     var mRoomData: RaceRoomData? = null
@@ -56,6 +57,7 @@ class RaceSelectSongView : ExConstraintLayout {
         thirdSongItem = findViewById(R.id.third_song_item)
         forthSongItem = findViewById(R.id.forth_song_item)
         countDownTv = rootView.findViewById(R.id.count_down_tv)
+        blurBg = rootView.findViewById(R.id.blur_bg)
 
         itemList.add(firstSongItem)
         itemList.add(secondSongItem)
@@ -133,6 +135,7 @@ class RaceSelectSongView : ExConstraintLayout {
         launch(Dispatchers.Main) {
             enableSelectSong(false)
             countDownTv.visibility = View.VISIBLE
+            blurBg.visibility = View.VISIBLE
 
             repeat(3) {
                 countDownTv.text = (3 - it).toString()
@@ -140,6 +143,7 @@ class RaceSelectSongView : ExConstraintLayout {
             }
 
             countDownTv.visibility = View.GONE
+            blurBg.visibility = View.GONE
             startCountDown()
         }
         updateSelectState()
