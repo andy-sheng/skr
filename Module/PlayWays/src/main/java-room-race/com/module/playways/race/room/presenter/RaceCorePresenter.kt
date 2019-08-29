@@ -425,7 +425,15 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
         MyLog.d(TAG, "onRaceRoundChangeEvent = $event")
-        DebugLogView.println(TAG,"\n新一轮 roundSeq=${event.thisRound?.roundSeq}")
+        if (event.lastRound != null) {
+            DebugLogView.println(TAG, "上一轮结果 overReason = ${event.lastRound?.overReason} " +
+                    "subReason1 = ${event.lastRound?.subRoundInfo.getOrNull(0)?.overReason} " +
+                    "subReason2 = ${event.lastRound?.subRoundInfo.getOrNull(1)?.overReason} " +
+                    "票数 ${event.lastRound?.scores.getOrNull(0)?.bLightCnt}:${event.lastRound?.scores.getOrNull(1)?.bLightCnt}" +
+                    "win ${event.lastRound?.scores.getOrNull(0)?.winType}:${event.lastRound?.scores.getOrNull(1)?.winType}")
+
+        }
+        DebugLogView.println(TAG, "新一轮 roundSeq=${event.thisRound?.roundSeq}")
         processStatusChange(1, event.lastRound, event.thisRound)
     }
 
@@ -448,7 +456,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
-        DebugLogView.println(TAG, "状态更新 from = $from, status = ${thisRound?.status} subRoundSeq = ${thisRound?.subRoundSeq} \n lastRoundOverReason = ${lastRound?.overReason}")
+        DebugLogView.println(TAG, "状态更新 from = $from, status = ${thisRound?.status} subRoundSeq = ${thisRound?.subRoundSeq}")
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
@@ -608,7 +616,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
-                delay(10*1000)
+                delay(10 * 1000)
                 val result = subscribe { raceRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
                     val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")

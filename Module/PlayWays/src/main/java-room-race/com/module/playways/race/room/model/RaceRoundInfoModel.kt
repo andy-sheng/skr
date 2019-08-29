@@ -203,7 +203,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             } else {
                 // 都有数据
                 for (i in 0 until this.subRoundInfo.size){
-                    this.subRoundInfo[i].tryUpdateInfoModel(this.subRoundInfo.getOrNull(i))
+                    this.subRoundInfo[i].tryUpdateInfoModel(roundInfo.subRoundInfo.getOrNull(i))
                 }
             }
         }
@@ -216,7 +216,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                 // 都有数据
                 // 都有数据
                 for (i in 0 until this.scores.size){
-                    this.scores[i].tryUpdateInfoModel(this.scores.getOrNull(i))
+                    this.scores[i].tryUpdateInfoModel(roundInfo.scores.getOrNull(i))
                 }
             }
         }
