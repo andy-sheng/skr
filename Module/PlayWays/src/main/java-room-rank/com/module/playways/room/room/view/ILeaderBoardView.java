@@ -1,7 +1,7 @@
 package com.module.playways.room.room.view;
 
-import com.common.core.userinfo.model.RankInfoModel;
-import com.common.core.userinfo.model.UserRankModel;
+import com.module.playways.room.room.model.RankInfoModel;
+import com.component.person.model.UserRankModel;
 
 import java.util.List;
 

@@ -13,9 +13,7 @@ import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.upgrade.UpgradeManager
-import com.common.core.userinfo.model.GameStatisModel
-import com.common.core.userinfo.model.UserLevelModel
-import com.common.core.userinfo.model.UserRankModel
+import com.component.person.model.UserRankModel
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl

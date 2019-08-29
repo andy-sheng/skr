@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.RankInfoModel;
+import com.module.playways.room.room.model.RankInfoModel;
 
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;

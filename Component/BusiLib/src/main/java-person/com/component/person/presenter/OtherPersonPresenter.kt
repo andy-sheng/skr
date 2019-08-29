@@ -2,10 +2,8 @@ package com.component.person.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoManager
-import com.common.core.userinfo.model.GameStatisModel
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.userinfo.UserInfoServerApi
-import com.common.core.userinfo.model.UserRankModel
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -14,8 +12,6 @@ import com.common.rxretrofit.ApiResult
 import com.component.person.view.IOtherPersonView
 
 import com.component.person.model.RelationNumModel
-
-import com.common.core.userinfo.model.UserLevelModel
 
 class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePresenter() {
 
@@ -27,9 +23,6 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                 if (result.errno == 0) {
                     val userInfoModel = JSON.parseObject(result.data?.getString("userBaseInfo"), UserInfoModel::class.java)
                     val relationNumModes = JSON.parseArray(result.data?.getJSONObject("userRelationCntInfo")?.getString("cnt"), RelationNumModel::class.java)
-//                    val userRankModels = JSON.parseArray(result.data?.getJSONObject("userRankInfo")?.getString("seqInfo"), UserRankModel::class.java)
-//                    val userLevelModels = JSON.parseArray(result.data?.getJSONObject("userScoreInfo")?.getString("userScore"), UserLevelModel::class.java)
-//                    val userGameStatisModels = JSON.parseArray(result.data?.getJSONObject("userGameStatisticsInfo")?.getString("statistic"), GameStatisModel::class.java)
 
                     val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
                     val isFollow = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFollow")

@@ -2,8 +2,8 @@ package com.module.playways.room.room.presenter;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.RankInfoModel;
-import com.common.core.userinfo.model.UserRankModel;
+import com.module.playways.room.room.model.RankInfoModel;
+import com.component.person.model.UserRankModel;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;

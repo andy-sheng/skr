@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -28,10 +27,8 @@ import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
-import com.common.core.userinfo.model.GameStatisModel
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.core.userinfo.model.UserLevelModel
-import com.common.core.userinfo.model.UserRankModel
+import com.component.person.model.UserRankModel
 import com.common.flowlayout.FlowLayout
 import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
@@ -639,21 +636,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         mHashMap.put(CHARM_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
         refreshTag()
-    }
-
-    private fun showUserLevel(list: List<UserLevelModel>?) {
-        var mainRank = 0
-        var subRank = 0
-        if (list != null && list.isNotEmpty()) {
-            for (userLevelModel in list) {
-                if (userLevelModel.type == UserLevelModel.RANKING_TYPE) {
-                    mainRank = userLevelModel.score
-                } else if (userLevelModel.type == UserLevelModel.SUB_RANKING_TYPE) {
-                    subRank = userLevelModel.score
-                }
-            }
-        }
-        mLevelView.bindData(mainRank, subRank)
     }
 
     override fun getHomePageFail() {

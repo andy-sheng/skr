@@ -1,4 +1,4 @@
-package com.common.core.userinfo.model;
+package com.component.person.model;
 
 import java.io.Serializable;
 

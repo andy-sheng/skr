@@ -1,12 +1,8 @@
 package com.component.person.view
 
-import com.common.core.userinfo.model.GameStatisModel
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.core.userinfo.model.UserRankModel
 
 import com.component.person.model.RelationNumModel
-
-import com.common.core.userinfo.model.UserLevelModel
 
 interface IOtherPersonView {
     // 展示homepage回来的结果

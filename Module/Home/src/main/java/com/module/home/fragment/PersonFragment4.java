@@ -27,10 +27,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.UserLevelModel;
-import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
@@ -601,21 +598,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mCharmNum = meiLiCntTotal;
         mCharmTv.setText("魅力：" + StringFromatUtils.formatMillion(meiLiCntTotal));
         mSrlCharmTv.setText("魅力：" + StringFromatUtils.formatMillion(meiLiCntTotal));
-    }
-
-    public void showUserLevel(List<UserLevelModel> list) {
-        int mainRank = 0;
-        int subRank = 0;
-        if (list != null && list.size() > 0) {
-            for (UserLevelModel userLevelModel : list) {
-                if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                    mainRank = userLevelModel.getScore();
-                } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                    subRank = userLevelModel.getScore();
-                }
-            }
-        }
-        mLevelView.bindData(mainRank, subRank);
     }
 
     public void showRelationNum(List<RelationNumModel> list) {

@@ -1,4 +1,4 @@
-package com.common.core.userinfo.model;
+package com.module.playways.room.room.model;
 
 import java.io.Serializable;
 

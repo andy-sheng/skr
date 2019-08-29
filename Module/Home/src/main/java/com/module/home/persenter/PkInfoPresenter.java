@@ -3,9 +3,7 @@ package com.module.home.persenter;
 import com.alibaba.fastjson.JSON;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.GameStatisModel;
-import com.common.core.userinfo.model.UserLevelModel;
-import com.common.core.userinfo.model.UserRankModel;
+import com.component.person.model.UserRankModel;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -18,8 +16,6 @@ import com.module.home.view.IPkInfoView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 public class PkInfoPresenter extends RxLifeCyclePresenter {
 

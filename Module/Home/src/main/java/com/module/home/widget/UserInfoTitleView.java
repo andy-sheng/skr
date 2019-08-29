@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.model.UserRankModel;
+import com.component.person.model.UserRankModel;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;

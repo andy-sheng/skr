@@ -5,9 +5,7 @@ import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.UserRankModel;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -19,8 +17,6 @@ import com.component.person.model.RelationNumModel;
 import com.module.home.view.IPersonView;
 
 import java.util.List;
-
-import com.common.core.userinfo.model.UserLevelModel;
 
 // TODO: 2019-06-19 需要优化，新的设计里面其实只有魅力值需要从服务器去取，等服务器接口优化
 public class PersonCorePresenter extends RxLifeCyclePresenter {
@@ -57,12 +53,6 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     mLastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
-
-//                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
-//                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
-//                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
-//                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
-//                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);

@@ -1,9 +1,7 @@
 package com.module.home.view;
 
-import com.common.core.userinfo.model.UserRankModel;
+import com.component.person.model.UserRankModel;
 import com.component.person.model.ScoreStateModel;
-
-import java.util.List;
 
 public interface IPkInfoView {
     // 展示段位信息

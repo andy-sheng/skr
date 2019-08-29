@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayoutManager
@@ -28,7 +27,6 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.core.userinfo.model.UserLevelModel
 import com.common.flowlayout.FlowLayout
 import com.common.flowlayout.TagAdapter
 import com.common.flowlayout.TagFlowLayout
@@ -683,20 +681,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mHashMap.put(CHARMS_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
 
         refreshTag()
-    }
-
-    fun showUserLevel(list: List<UserLevelModel>) {
-        var mainRank = 0
-        var subRank = 0
-        for (userLevelModel in list) {
-            if (userLevelModel.type == UserLevelModel.RANKING_TYPE) {
-                mainRank = userLevelModel.score
-            } else if (userLevelModel.type == UserLevelModel.SUB_RANKING_TYPE) {
-                subRank = userLevelModel.score
-            }
-        }
-
-        mLevelView.bindData(mainRank, subRank)
     }
 
     fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
