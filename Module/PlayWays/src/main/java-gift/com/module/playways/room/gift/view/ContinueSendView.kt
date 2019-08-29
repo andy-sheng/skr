@@ -19,12 +19,13 @@ import com.common.utils.U
 import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.grab.room.model.GrabRoundInfoModel
+import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.inter.IContinueSendView
 import com.module.playways.room.gift.model.BaseGift
 import com.module.playways.room.gift.presenter.BuyGiftPresenter
 import com.module.playways.room.gift.presenter.BuyGiftPresenter.*
+import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import org.greenrobot.eventbus.EventBus
 
 class ContinueSendView : FrameLayout, IContinueSendView {
@@ -85,9 +86,9 @@ class ContinueSendView : FrameLayout, IContinueSendView {
         mRoomData = roomData
     }
 
-    fun getGrabRoomData():GrabRoomData? {
-        if(mRoomData is GrabRoomData?){
-            return mRoomData as GrabRoomData?
+    fun getGrabRoomData(): BaseRoomData<*>? {
+        if (mRoomData is GrabRoomData? || mRoomData is RaceRoomData?) {
+            return mRoomData
         }
         return null
     }
@@ -99,12 +100,12 @@ class ContinueSendView : FrameLayout, IContinueSendView {
     fun startBuy(baseGift: BaseGift, receiver: UserInfoModel) {
         mBaseGift = baseGift
         mReceiver = receiver
-        val infoModel:GrabRoundInfoModel? = getGrabRoomData()?.realRoundInfo
+        val infoModel: BaseRoundInfoModel? = getGrabRoomData()?.realRoundInfo
         if (infoModel != null) {
             if (baseGift.isCanContinue) {
                 mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()
                         ?: 0L, getGrabRoomData()?.realRoundSeq
-                        ?: 0, infoModel?.isSingStatus(), receiver, mScene.value)
+                        ?: 0, true, receiver, mScene.value)
                 visibility = View.VISIBLE
 
                 mHandler.removeMessages(MSG_HIDE)
@@ -112,7 +113,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
             } else {
                 mBuyGiftPresenter?.buyGift(baseGift, getGrabRoomData()?.gameId?.toLong()
                         ?: 0L, getGrabRoomData()?.realRoundSeq
-                        ?: 0, infoModel?.isSingStatus(), receiver, mScene.value)
+                        ?: 0, true, receiver, mScene.value)
             }
         } else {
             MyLog.w(TAG, "startBuy baseGift=$baseGift receiver=$receiver")
@@ -128,11 +129,11 @@ class ContinueSendView : FrameLayout, IContinueSendView {
         mBuyGiftPresenter = BuyGiftPresenter(this)
 
         setOnClickListener {
-            val grabRoundInfoModel:GrabRoundInfoModel? = getGrabRoomData()?.realRoundInfo
+            val grabRoundInfoModel: BaseRoundInfoModel? = getGrabRoomData()?.realRoundInfo
             if (grabRoundInfoModel != null) {
                 mBuyGiftPresenter?.buyGift(mBaseGift, getGrabRoomData()?.gameId?.toLong()
                         ?: 0L, getGrabRoomData()?.realRoundSeq
-                        ?: 0, grabRoundInfoModel?.isSingStatus(), mReceiver, mScene.value)
+                        ?: 0, true, mReceiver, mScene.value)
 
                 if (mScaleAnimatorSet != null) {
                     mScaleAnimatorSet!!.cancel()

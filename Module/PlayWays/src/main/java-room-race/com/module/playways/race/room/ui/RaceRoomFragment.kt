@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
+import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
@@ -17,7 +18,9 @@ import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
 import com.module.RouterConstants
+import com.module.home.IHomeService
 import com.module.playways.R
+import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
@@ -31,6 +34,8 @@ import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
 import com.module.playways.race.room.view.actor.RaceActorPanelView
 import com.module.playways.race.room.view.topContent.RaceTopContentView
+import com.module.playways.room.gift.event.BuyGiftEvent
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -95,7 +100,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
 
-    var mRoomData = RaceRoomData()
+    var mRoomData: RaceRoomData = RaceRoomData()
     override fun initView(): Int {
         return R.layout.race_room_fragment_layout
     }
@@ -378,6 +383,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceSelectSongView.updateSelectState()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: BuyGiftEvent) {
+        mContinueSendView.startBuy(event.baseGift, event.receiver)
+    }
+
     override fun singBySelfFirstRound(songModel: SongModel?) {
         MyLog.d(TAG, "singBySelfFirstRound songModel = ${songModel?.toSimpleString()}")
         mLastSceneView = mRaceTopVsView
@@ -390,6 +400,28 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
             mLastSceneView = mRaceSelfSingLyricView.realView
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowHalfRechargeFragmentEvent) {
+        val channelService = ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation() as IHomeService
+        val baseFragmentClass = channelService.getData(2, null) as Class<android.support.v4.app.Fragment>
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(activity, baseFragmentClass)
+                        .setEnterAnim(R.anim.slide_in_bottom)
+                        .setExitAnim(R.anim.slide_out_bottom)
+                        .setAddToBackStack(true)
+                        .setFragmentDataListener(object : FragmentDataListener {
+                            override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                                //充值成功
+                                if (requestCode == 100 && resultCode == 0) {
+                                    mGiftPanelView.updateZS()
+                                    mGiftPanelView.show(null)
+                                }
+                            }
+                        })
+                        .setHasAnimation(true)
+                        .build())
     }
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
