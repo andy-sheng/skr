@@ -30,7 +30,7 @@ class RaceNoSingerCardView : ConstraintLayout {
     var mListener: AnimationListener? = null
 
     init {
-        View.inflate(context, R.layout.race_turn_info_card_layout, this);
+        View.inflate(context, R.layout.race_result_info_card_layout, this);
         resultIv = this.findViewById(R.id.result_iv)
     }
 
