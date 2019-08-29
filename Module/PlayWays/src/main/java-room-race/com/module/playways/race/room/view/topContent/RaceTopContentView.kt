@@ -8,22 +8,15 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.core.myinfo.MyUserInfo
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.engine.EngineEvent
 import com.module.playways.R
-import com.module.playways.grab.room.top.GrabTopItemView
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceWaitSeatUpdateEvent
 import com.module.playways.race.room.model.RacePlayerInfoModel
-import kotlinx.android.synthetic.main.race_top_content_view_layout.view.*
-
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -119,14 +112,14 @@ class RaceTopContentView : ConstraintLayout {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this)
-//        }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-//        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 
     fun setListener(listener: Listener) {
