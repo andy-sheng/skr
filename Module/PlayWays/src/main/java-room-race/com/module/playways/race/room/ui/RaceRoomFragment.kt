@@ -288,9 +288,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
         mRaceTopContentView.setListener(object : RaceTopContentView.Listener {
             override fun clickMore() {
-                if (mRaceActorPanelView == null) {
-                    mRaceActorPanelView = RaceActorPanelView(this@RaceRoomFragment, mRoomData)
-                }
+                mRaceActorPanelView = RaceActorPanelView(this@RaceRoomFragment, mRoomData)
                 mRaceActorPanelView?.showByDialog()
             }
 

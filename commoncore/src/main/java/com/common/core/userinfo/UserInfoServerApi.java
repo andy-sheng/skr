@@ -2,6 +2,8 @@ package com.common.core.userinfo;
 
 import com.common.rxretrofit.ApiResult;
 
+import java.util.ArrayList;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -372,4 +374,8 @@ public interface UserInfoServerApi {
 
     @GET("/v2/score/detail")
     Observable<ApiResult> getLevelDetail(@Query("userID") long userID);
+
+    @GET("v1/score/rankings")
+    Call<ApiResult> getRankings(@Query("userIDs")ArrayList<Integer> userIDs);
+
 }

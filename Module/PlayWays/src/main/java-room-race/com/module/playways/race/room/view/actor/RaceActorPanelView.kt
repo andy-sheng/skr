@@ -1,8 +1,5 @@
 package com.module.playways.race.room.view.actor
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.support.constraint.ConstraintLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -117,7 +114,6 @@ class RaceActorPanelView(fragment: BaseFragment, val mRoomData: RaceRoomData) : 
 
     fun showByDialog(canCancel: Boolean) {
         mDialogPlus?.dismiss(false)
-        actorView?.initData()
         mDialogPlus = DialogPlus.newDialog(context)
                 .setContentHolder(ViewHolder(this))
                 .setGravity(Gravity.BOTTOM)

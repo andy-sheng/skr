@@ -66,7 +66,7 @@ class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHold
                     statusTv.visibility = View.GONE
                 }
             }
-            descTv.text = model.levelDesc
+            descTv.text = model.scoreState?.rankingDesc
             nameTv.text = UserInfoManager.getInstance().getRemarkName(model.plyer?.userInfo?.userId
                     ?: 0, model.plyer?.userInfo?.nickname)
 
