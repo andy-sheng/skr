@@ -43,6 +43,7 @@ import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RaceRoom.ERWantSingType
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.ERoundOverType
+import com.zq.live.proto.RaceRoom.RaceRoomMsg
 import com.zq.live.proto.Room.RoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Job
@@ -79,7 +80,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
-    internal var mPushMsgFilter: PushMsgFilter<*> = PushMsgFilter<RoomMsg> { msg ->
+    internal var mPushMsgFilter: PushMsgFilter<*> = PushMsgFilter<RaceRoomMsg> { msg ->
         val b = msg != null && msg.roomID == mRoomData.gameId
         b
     }
