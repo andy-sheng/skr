@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
@@ -67,7 +68,7 @@ class RaceResultActivity : BaseActivity() {
 
         playAgainTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                // todo 再来一局，重新开始匹配
+                goMatchPage()
             }
         })
 
@@ -108,11 +109,18 @@ class RaceResultActivity : BaseActivity() {
 
         launch {
             repeat(5) {
-                countDownTv.text = "${6 - it}后自动进入下一场挑战"
+                countDownTv.text = "${5 - it}后自动进入下一场挑战"
                 delay(1000)
             }
             // todo 开始下一句游戏(待补充)
+            goMatchPage()
         }
+    }
+
+    private fun goMatchPage() {
+        finish()
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+                .navigation()
     }
 
     override fun useEventBus(): Boolean {
