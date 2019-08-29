@@ -52,9 +52,9 @@ class RaceTopContentView : ConstraintLayout {
         maskIv = rootView.findViewById(R.id.mask_iv)
         moreTv = rootView.findViewById(R.id.more_tv)
 
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this)
-//        }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
 
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
@@ -119,11 +119,14 @@ class RaceTopContentView : ConstraintLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        EventBus.getDefault().unregister(this)
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 
-    fun setListener(listener: Listener) {
-        mListener = listener
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceRoundChangeEvent) {
+        initData()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -135,10 +138,9 @@ class RaceTopContentView : ConstraintLayout {
     fun onEvent(event: RaceWaitSeatUpdateEvent) {
         initData()
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceRoundChangeEvent) {
-        initData()
+    
+    fun setListener(listener: Listener) {
+        mListener = listener
     }
 
     interface Listener {

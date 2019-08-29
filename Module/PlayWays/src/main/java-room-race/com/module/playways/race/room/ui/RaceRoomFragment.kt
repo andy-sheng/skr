@@ -87,7 +87,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         set(value) {
             MyLog.d(TAG, "mLastSceneView = $value")
             if (value != mLastSceneView) {
-                mLastSceneView?.visibility = View.GONE
+                if (mLastSceneView == mRaceOtherSingCardView.realView) {
+                    mRaceOtherSingCardView.hide()
+                }else{
+                    mLastSceneView?.visibility = View.GONE
+                }
                 value?.visibility = View.VISIBLE
                 field = value
             }
@@ -464,11 +468,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
     }
 
-    override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp:(()->Unit)?) {
+    override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
-        if(lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
-                lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value ){
+        if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
+                lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
             // 无人应战
             mLastSceneView = mRaceNoSingCardView
             mRaceNoSingCardView.showAnimation(object : AnimationListener {
@@ -478,7 +482,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             })
         } else {
             mLastSceneView = mRaceMiddleResultView
-            mRaceMiddleResultView.showResult(lastRoundInfo){
+            mRaceMiddleResultView.showResult(lastRoundInfo) {
                 continueOp?.invoke()
             }
         }
@@ -515,16 +519,16 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 //                }
 //            })
 //        } else {
-            if (showNextRound) {
-                mLastSceneView = mRaceTurnInfoCardView
-                mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
-                    override fun onFinish() {
-                        showSelectSongView()
-                    }
-                })
-            } else {
-                showSelectSongView()
-            }
+        if (showNextRound) {
+            mLastSceneView = mRaceTurnInfoCardView
+            mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
+                override fun onFinish() {
+                    showSelectSongView()
+                }
+            })
+        } else {
+            showSelectSongView()
+        }
 //        }
     }
 
@@ -539,8 +543,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun goResultPage(lastRound: RaceRoundInfoModel) {
         activity?.finish()
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_RESULT)
-                .withInt("roomID",mRoomData.gameId)
-                .withInt("roundSeq",lastRound.roundSeq)
+                .withInt("roomID", mRoomData.gameId)
+                .withInt("roundSeq", lastRound.roundSeq)
                 .navigation()
     }
 
@@ -549,7 +553,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun setData(type: Int, data: Any?) {
-        if(type==0){
+        if (type == 0) {
             mRoomData = data as RaceRoomData
         }
     }

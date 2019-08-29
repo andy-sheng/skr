@@ -96,6 +96,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         tryInflate()
         val infoModel = roomData.realRoundInfo
         val userInfoModel = roomData.getUserInfo(infoModel?.getSingerIdNow())
+        mParentView.clearAnimation()
         mUiHandler!!.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false
         visibility = View.VISIBLE
