@@ -26,9 +26,9 @@
         app:layout_constraintRight_toRightOf="@id/sing_avatar_view"
         app:bg_color="@color/transparent"
         app:inner_color="#FFC15B"
-        app:inner_stroke_raduis="@dimen/view_58_dp"
-        app:inner_stroke_width="@dimen/view_4_dp"
-        app:stroke_bg_color="#240D65"
+        app:inner_stroke_raduis="@dimen/view_53_dp"
+        app:inner_stroke_width="@dimen/view_3_dp"
+        app:stroke_bg_color="@color/black_trans_30"
         app:stroke_bg_width="@dimen/view_8_dp" />
 
     <com.common.image.fresco.BaseImageView
