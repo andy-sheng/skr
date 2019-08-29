@@ -447,7 +447,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
-        DebugLogView.println(TAG, "状态更新 from = $from, thisRound = $thisRound \n lastRoundOverReason = ${lastRound?.overReason}")
+        DebugLogView.println(TAG, "状态更新 from = $from, thisRound = ${thisRound?.status} \n lastRoundOverReason = ${lastRound?.overReason}")
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
@@ -522,7 +522,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RGetSingChanceEvent) {
-        DebugLogView.println(TAG, "RGetSingChanceEvent 确定演唱者")
+        DebugLogView.println(TAG, "RGetSingChanceEvent 确定演唱者 ${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID} pk ${event.pb.currentRound.subRoundInfoList.getOrNull(1)?.userID}")
         ensureInRcRoom()
         val roundInfoModel = parseFromRoundInfoPB(event.pb.currentRound)
         if (roundInfoModel.roundSeq == mRoomData.realRoundSeq) {

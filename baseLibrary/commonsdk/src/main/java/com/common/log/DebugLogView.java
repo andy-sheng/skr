@@ -1,5 +1,6 @@
 package com.common.log;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
@@ -18,6 +19,7 @@ public class DebugLogView extends ExViewStub {
     TextView mLogView;
     TextView mPlayBtn;
     TextView mClearBtn;
+    TextView mColorBtn;
     boolean playing = true;
 
     public DebugLogView(ViewStub viewStub) {
@@ -44,6 +46,21 @@ public class DebugLogView extends ExViewStub {
             @Override
             public void clickValid(View v) {
                 mLogView.setText("");
+            }
+        });
+        mColorBtn = parentView.findViewById(R.id.color_btn);
+        mColorBtn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mColorBtn.getText().equals("白色")) {
+                    mColorBtn.setText("红色");
+                    mColorBtn.setTextColor(Color.RED);
+                    mLogView.setTextColor(Color.RED);
+                } else if (mColorBtn.getText().equals("红色")) {
+                    mColorBtn.setText("白色");
+                    mColorBtn.setTextColor(Color.WHITE);
+                    mLogView.setTextColor(Color.WHITE);
+                }
             }
         });
         if (!EventBus.getDefault().isRegistered(this)) {
