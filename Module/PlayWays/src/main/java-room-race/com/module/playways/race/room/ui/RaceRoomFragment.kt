@@ -150,7 +150,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceRightOpView.setListener(object : RightOpListener {
             override fun onClickGiveUp() {
                 // 放弃演唱
-                mCorePresenter.sendBLight {
+                mCorePresenter.giveupSing {
                     if (it) {
                         mRaceRightOpView.showGiveUp(true)
                     } else {
@@ -161,7 +161,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
             override fun onClickVote() {
                 // 投票
-                mCorePresenter.giveupSing {
+                mCorePresenter.sendBLight {
                     if (it) {
                         mRaceRightOpView.showVote(true)
                     } else {
