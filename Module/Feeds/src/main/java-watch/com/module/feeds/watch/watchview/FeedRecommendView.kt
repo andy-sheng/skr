@@ -39,6 +39,7 @@ import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
+import com.component.busilib.recommend.RA
 import com.component.person.utils.StringFromatUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
@@ -515,7 +516,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         launch {
             for (i in 0..5) {
                 val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
-                    mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+                    mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), RA.getVars(), RA.getTestList())
                 }
                 if (obj.errno == 0) {
                     mHasInitData = true

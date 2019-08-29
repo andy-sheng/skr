@@ -8,6 +8,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.utils.U
+import com.component.busilib.recommend.RA
 import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -24,15 +25,15 @@ object FeedsPlayStatistics {
     private var curProgress: Long = 0
     private var curDuration: Long = 0
     private var curFeedsId: Int = 0
-    private var curFromPage:Int = 0
-    private var curFromAlbumId:Int = 0
+    private var curFromPage: Int = 0
+    private var curFromAlbumId: Int = 0
 
     private var mapNum = 0
     private var lastUploadTs = System.currentTimeMillis()
     /**
      * 传0可以触发打点统计
      */
-    fun setCurPlayMode(feedsId: Int,fromPage:FeedPage,fromAlbumId:Int) {
+    fun setCurPlayMode(feedsId: Int, fromPage: FeedPage, fromAlbumId: Int) {
         MyLog.d("FeedsPlayStatistics", "setCurPlayMode feedsId = $feedsId, fromPage = $fromPage, fromAlbumId = $fromAlbumId")
         if (curFeedsId != 0) {
             if (curFeedsId != feedsId) {
@@ -198,7 +199,9 @@ object FeedsPlayStatistics {
         val mutableSet1 = mapOf(
                 "stats" to l1,
                 "userID" to MyUserInfoManager.getInstance().uid,
-                "platform" to 20
+                "platform" to 20,
+                "vars" to RA.getVars(),
+                "testList" to RA.getTestList()
         )
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
@@ -224,4 +227,4 @@ private interface FeedsStatisticsServerApi {
     fun uploadFeedsStatistics(@Body requestBody: RequestBody): Call<ApiResult>
 }
 
-private class Item(var progress: Float = 0f, var playPostion: Int = 0,var fromPage:Int,var fromAlbumId: Int)
+private class Item(var progress: Float = 0f, var playPostion: Int = 0, var fromPage: Int, var fromAlbumId: Int)

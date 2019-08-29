@@ -9,6 +9,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.videocache.MediaCacheManager
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.recommend.RA
 import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
@@ -110,7 +111,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
     private fun getRecommendFeedList(offset: Int, isClear: Boolean,dataOkCallback: (() -> Unit)?=null) {
         launch {
             val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+                mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(),RA.getVars(),RA.getTestList())
             }
             if (obj.errno == 0) {
                 mHasInitData = true
