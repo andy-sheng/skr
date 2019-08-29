@@ -75,11 +75,15 @@ class RaceTopVsView : ExConstraintLayout {
     fun startSingBySelf(call: (() -> Unit)?) {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             if (roomData?.getUserInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                leftCircleCountDownView.visibility = View.VISIBLE
                 leftCircleCountDownView.go(0, 3 * 1000) {
+                    leftCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
             } else {
+                rightCircleCountDownView.visibility = View.VISIBLE
                 rightCircleCountDownView.go(0, 3 * 1000) {
+                    rightCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
             }
@@ -89,11 +93,15 @@ class RaceTopVsView : ExConstraintLayout {
     fun startSingByOther(call: (() -> Unit)?) {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             if (roomData?.getUserInfo(it[0].userID)?.userId != MyUserInfoManager.getInstance().uid.toInt()) {
+                leftCircleCountDownView.visibility = View.VISIBLE
                 leftCircleCountDownView.go(0, 3 * 1000) {
+                    leftCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
             } else {
+                rightCircleCountDownView.visibility = View.VISIBLE
                 rightCircleCountDownView.go(0, 3 * 1000) {
+                    rightCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
             }
@@ -101,6 +109,8 @@ class RaceTopVsView : ExConstraintLayout {
     }
 
     private fun bindData() {
+        leftCircleCountDownView.visibility = View.GONE
+        rightCircleCountDownView.visibility = View.GONE
         roomData?.realRoundInfo?.subRoundInfo?.let {
             AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[0].userID)?.avatar)
                     .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())

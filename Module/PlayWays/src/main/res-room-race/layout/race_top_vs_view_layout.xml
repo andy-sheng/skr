@@ -67,14 +67,14 @@
             android:layout_width="@dimen/view_50_dp"
             android:layout_height="@dimen/view_50_dp"
             app:bg_color="@color/transparent"
-            app:inner_color="@color/transparent"
+            app:inner_color="@color/white_trans_50"
             app:inner_stroke_raduis="@dimen/view_22_dp"
-            app:inner_stroke_width="@dimen/view_6_dp"
+            app:inner_stroke_width="@dimen/view_3_dp"
             app:layout_constraintBottom_toBottomOf="@+id/left_avatar_iv"
             app:layout_constraintLeft_toLeftOf="@+id/left_avatar_iv"
             app:layout_constraintRight_toRightOf="@+id/left_avatar_iv"
             app:layout_constraintTop_toTopOf="@+id/left_avatar_iv"
-            app:stroke_bg_color="@color/white_trans_50"
+            app:stroke_bg_color="@color/transparent"
             app:stroke_bg_width="@dimen/view_3_dp" />
 
     </android.support.constraint.ConstraintLayout>
@@ -131,14 +131,14 @@
             android:layout_width="@dimen/view_50_dp"
             android:layout_height="@dimen/view_50_dp"
             app:bg_color="@color/transparent"
-            app:inner_color="@color/transparent"
+            app:inner_color="@color/white_trans_50"
             app:inner_stroke_raduis="@dimen/view_22_dp"
-            app:inner_stroke_width="@dimen/view_6_dp"
+            app:inner_stroke_width="@dimen/view_3_dp"
             app:layout_constraintBottom_toBottomOf="@+id/right_avatar_iv"
             app:layout_constraintLeft_toLeftOf="@+id/right_avatar_iv"
             app:layout_constraintRight_toRightOf="@+id/right_avatar_iv"
             app:layout_constraintTop_toTopOf="@+id/right_avatar_iv"
-            app:stroke_bg_color="@color/white_trans_50"
+            app:stroke_bg_color="@color/transparent"
             app:stroke_bg_width="@dimen/view_3_dp" />
 
     </android.support.constraint.ConstraintLayout>
