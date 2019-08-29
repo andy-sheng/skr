@@ -9,8 +9,6 @@ import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.ResponseCallBack
-import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
@@ -402,8 +400,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingByOther {
-            mRaceSelfSingLyricView.startFly(null)
-            mLastSceneView = mRaceSelfSingLyricView.realView
+            //todo 这里头像开始转
         }
     }
 
@@ -424,8 +421,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceRightOpView.showVote(false)
         }
         mRaceTopVsView.startSingByOther {
-            mRaceSelfSingLyricView.startFly(null)
-            mLastSceneView = mRaceSelfSingLyricView.realView
+            //todo 这里头像开始转
         }
     }
 
