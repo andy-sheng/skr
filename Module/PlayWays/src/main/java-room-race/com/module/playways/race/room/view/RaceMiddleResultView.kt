@@ -77,11 +77,18 @@ class RaceMiddleResultView : ExConstraintLayout {
     fun showResult(lastRound:RaceRoundInfoModel,animationOverListener:()->Unit) {
         lastRound?.let {
             if (it.status == ERaceRoundStatus.ERRS_END.value) {
+                resultTv.visibility = View.GONE
                 leftTicketCountTv.text = it.scores[0].bLightCnt.toString()
                 if (it.scores[0].winType == ERaceWinType.RWT_WIN.value) {
                     leftHeadIv.visibility = View.VISIBLE
                 } else {
                     leftHeadIv.visibility = View.GONE
+                }
+
+                if (it.scores[0].winType == ERaceWinType.RWT_WIN.value || it.scores[0].winType == ERaceWinType.RWT_LOSE.value) {
+                    resultTv.background = U.getDrawable(R.drawable.race_result_win)
+                } else {
+                    resultTv.background = U.getDrawable(R.drawable.race_result_draw)
                 }
 
                 if (it.scores[0].isEscape) {
@@ -139,6 +146,7 @@ class RaceMiddleResultView : ExConstraintLayout {
 
         launch {
             delay(350)
+            resultTv.visibility = View.VISIBLE
             val animatorSet = AnimatorSet()
             val scaleX = ObjectAnimator.ofFloat(raceTopVsIv, "scaleX", 2.0f, 1f)
             val scaleY = ObjectAnimator.ofFloat(raceTopVsIv, "scaleY", 2.0f, 1f)
