@@ -559,7 +559,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     fun quitGame(){
         mCorePresenter.exitRoom("quitGame")
-        finish()
+        activity?.finish()
     }
     override fun destroy() {
         super.destroy()
