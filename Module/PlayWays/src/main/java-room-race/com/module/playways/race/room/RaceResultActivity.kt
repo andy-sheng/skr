@@ -94,7 +94,11 @@ class RaceResultActivity : BaseActivity() {
 
     private fun showResult(raceResultModel: LevelResultModel) {
         descTv.text = "距离下次升段还需${raceResultModel.gap}积分"
-        changeTv.text = raceResultModel.get.toString()
+        if (raceResultModel.get >= 0) {
+            changeTv.text = "+${raceResultModel.get}"
+        }else{
+            changeTv.text = raceResultModel.get.toString()
+        }
 
         val scoreState = raceResultModel.getLastState()
         scoreState?.let {
