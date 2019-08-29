@@ -534,7 +534,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun goResultPage(lastRound: RaceRoundInfoModel) {
-        finish()
+        activity?.finish()
         ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_RESULT)
                 .withInt("roomID",mRoomData.gameId)
                 .withInt("roundSeq",lastRound.roundSeq)
