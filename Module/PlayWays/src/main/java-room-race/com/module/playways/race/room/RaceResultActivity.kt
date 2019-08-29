@@ -20,6 +20,7 @@ import com.module.playways.R
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.model.RaceResultModel
 import com.module.playways.room.room.model.score.ScoreResultModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_RACE_RESULT)
@@ -92,7 +93,6 @@ class RaceResultActivity : BaseActivity() {
     }
 
     private fun showResult(raceResultModel: RaceResultModel) {
-
         descTv.text = "距离下次升段还需${raceResultModel.gap}积分"
         changeTv.text = raceResultModel.get.toString()
 
@@ -105,6 +105,14 @@ class RaceResultActivity : BaseActivity() {
             }
             levelProgress.setCurProgress(progress)
             levelView.bindData(it.mainRanking, it.subRanking)
+        }
+
+        launch {
+            repeat(5) {
+                countDownTv.text = "${6 - it}后自动进入下一场挑战"
+                delay(1000)
+            }
+            // todo 开始下一句游戏(待补充)
         }
     }
 

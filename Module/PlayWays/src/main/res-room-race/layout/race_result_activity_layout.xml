@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/race_result_bg">
 
-    <TextView
-        android:id="@+id/change_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_152_dp"
-        android:textColor="#FFD693"
-        android:textSize="@dimen/textsize_24_dp"
+    <ImageView
+        android:id="@+id/level_background"
+        android:layout_width="@dimen/view_144_dp"
+        android:layout_height="@dimen/view_156_dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/view_146_dp"
+        android:background="@drawable/level_bg_icon"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.component.level.view.NormalLevelView2
         android:id="@+id/level_view"
@@ -23,9 +22,10 @@
         android:layout_height="@dimen/view_109_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_8_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/change_tv"
+        app:layout_constraintLeft_toLeftOf="@id/level_background"
+        app:layout_constraintRight_toRightOf="@id/level_background"
+        app:layout_constraintTop_toTopOf="@id/level_background"
+        app:layout_constraintBottom_toBottomOf="@id/level_background"
         levelView2:mainHeight2="@dimen/view_109_dp"
         levelView2:mainWidth2="@dimen/view_125_dp"
         levelView2:subBottom2="@dimen/view_6_dp"
@@ -37,29 +37,36 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_10_dp"
         android:gravity="center"
-        android:text="钻石巨星5段"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp"
+        android:textColor="#ccFFC15B"
+        android:textSize="@dimen/textsize_16_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/level_view" />
+        app:layout_constraintTop_toBottomOf="@id/level_background" />
 
     <com.component.level.view.LevelStarProgressBar
         android:id="@+id/level_progress"
         android:layout_width="@dimen/view_140_dp"
         android:layout_height="@dimen/view_34_dp"
-        android:layout_centerHorizontal="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/level_desc_tv" />
 
     <TextView
+        android:id="@+id/change_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFD693"
+        android:textSize="@dimen/textsize_24_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintLeft_toRightOf="@id/level_progress"
+        app:layout_constraintTop_toTopOf="@id/level_progress"
+        app:layout_constraintBottom_toBottomOf="@id/level_progress"/>
+
+    <TextView
         android:id="@+id/desc_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="距离下次升段还需25积分"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -71,7 +78,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_15_dp"
-        android:text="3秒后自动进入下一场挑战"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toTopOf="@id/play_again_tv"
