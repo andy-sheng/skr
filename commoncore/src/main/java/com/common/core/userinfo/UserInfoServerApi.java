@@ -369,4 +369,7 @@ public interface UserInfoServerApi {
 
     @GET("/v1/msgbox/latest-news")
     Observable<ApiResult> getLatestNews(@Query("userID") long userID);
+
+    @GET("/v2/score/detail")
+    Observable<ApiResult> getLevelDetail(@Query("userID") long userID);
 }

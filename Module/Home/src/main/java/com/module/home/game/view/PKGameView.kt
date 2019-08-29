@@ -42,6 +42,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.component.level.view.NormalLevelView2
+import com.component.person.model.ScoreStateModel
 import com.dialog.view.TipsDialogView
 import com.module.home.MainPageSlideApi
 import kotlinx.coroutines.Dispatchers
@@ -69,13 +70,6 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
     private val mRankText: ExTextView
     private val mRankDiffIv: ExImageView
     private val mMedalIv: ExImageView
-
-
-    private var rank = 0           //当前父段位
-    private var subRank = 0        //当前子段位
-    private var starNum = 0        //当前星星
-    private var starLimit = 0      //当前星星上限
-    private var levelDesc: String = ""
 
     private var mPkInfoPresenter: PkInfoPresenter? = null
 
@@ -188,50 +182,32 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         }
     }
 
-    override fun showGameStatic(list: MutableList<GameStatisModel>?) {
+    override fun showGameStatic(raceTicketCnt: Long, standLightCnt: Long) {
         mSmartRefreshLayout.finishRefresh()
-        if (list != null && list.size > 0) {
-            for (gameStatisModel in list) {
-                if (gameStatisModel.mode == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                    val stringBuilder = SpanUtils()
-                            .append(gameStatisModel.totalTimes.toString()).setFontSize(14, true)
-                            .append("场").setFontSize(10, true)
-                            .create()
-                    mRankNumTv.text = stringBuilder
-                } else if (gameStatisModel.mode == GameModeType.GAME_MODE_GRAB) {
-                    val stringBuilder = SpanUtils()
-                            .append(gameStatisModel.totalTimes.toString()).setFontSize(14, true)
-                            .append("首").setFontSize(10, true)
-                            .create()
-                    mSingendNumTv.text = stringBuilder
-                }
-            }
-        }
+
+        val raceStringBuilder = SpanUtils()
+                .append(raceTicketCnt.toString()).setFontSize(14, true)
+                .create()
+        mRankNumTv.text = raceStringBuilder
+        val standStringBuilder = SpanUtils()
+                .append(standLightCnt.toString()).setFontSize(14, true)
+                .create()
+        mSingendNumTv.text = standStringBuilder
+
     }
 
     fun initData(flag: Boolean) {
         refreshBaseInfo()
-        mPkInfoPresenter?.getHomePage(MyUserInfoManager.getInstance().uid, flag)
+        mPkInfoPresenter?.getLevelPage(MyUserInfoManager.getInstance().uid, flag)
     }
 
-    override fun showUserLevel(list: MutableList<UserLevelModel>?) {
+    override fun showUserLevel(model: ScoreStateModel?) {
         mSmartRefreshLayout.finishRefresh()
         // 展示段位信息
-        if (list != null && list.size > 0) {
-            for (userLevelModel in list) {
-                when {
-                    userLevelModel.type == UserLevelModel.RANKING_TYPE -> rank = userLevelModel.score
-                    userLevelModel.type == UserLevelModel.SUB_RANKING_TYPE -> {
-                        subRank = userLevelModel.score
-                        levelDesc = userLevelModel.desc
-                    }
-                    userLevelModel.type == UserLevelModel.TOTAL_RANKING_STAR_TYPE -> starNum = userLevelModel.score
-                    userLevelModel.type == UserLevelModel.REAL_RANKING_STAR_TYPE -> starLimit = userLevelModel.score
-                }
-            }
+        model?.let {
+            mLevelView.bindData(it.mainRanking, it.subRanking)
+            mLevelTv.text = it.rankingDesc
         }
-        mLevelView.bindData(rank, subRank)
-        mLevelTv.text = levelDesc
     }
 
     override fun refreshBaseInfo() {

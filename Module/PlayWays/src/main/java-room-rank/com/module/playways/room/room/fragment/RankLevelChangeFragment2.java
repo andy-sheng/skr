@@ -41,7 +41,7 @@ import com.module.playways.room.room.model.UserGameResultModel;
 import com.module.playways.room.room.model.VoteInfoModel;
 import com.module.playways.room.room.model.score.ScoreItemModel;
 import com.module.playways.room.room.model.score.ScoreResultModel;
-import com.module.playways.room.room.model.score.ScoreStateModel;
+import com.component.person.model.ScoreStateModel;
 import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;

@@ -31,7 +31,7 @@ import com.module.playways.grab.room.model.NumericDetailModel;
 import com.module.playways.race.room.model.LevelResultModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.R;
-import com.module.playways.room.room.model.score.ScoreStateModel;
+import com.component.person.model.ScoreStateModel;
 
 import java.util.List;
 

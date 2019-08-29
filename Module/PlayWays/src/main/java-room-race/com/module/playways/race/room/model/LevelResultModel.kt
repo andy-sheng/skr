@@ -1,7 +1,7 @@
 package com.module.playways.race.room.model
 
 import com.alibaba.fastjson.annotation.JSONField
-import com.module.playways.room.room.model.score.ScoreStateModel
+import com.component.person.model.ScoreStateModel
 import java.io.Serializable
 
 class LevelResultModel : Serializable {

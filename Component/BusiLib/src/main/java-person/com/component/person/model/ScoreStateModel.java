@@ -1,7 +1,4 @@
-package com.module.playways.room.room.model.score;
-
-import com.common.log.MyLog;
-import com.zq.live.proto.Room.ScoreState;
+package com.component.person.model;
 
 import java.io.Serializable;
 
@@ -124,27 +121,6 @@ public class ScoreStateModel implements Serializable {
 
     public void setRankingDesc(String rankingDesc) {
         this.rankingDesc = rankingDesc;
-    }
-
-    public void parse(ScoreState scoreState) {
-        if (scoreState == null) {
-            MyLog.e("VoteInfoModel VoteInfo == null");
-            return;
-        }
-
-        this.setUserID(scoreState.getUserID());
-        this.setSeq(scoreState.getSeq());
-        this.setMainRanking(scoreState.getMainRanking().intValue());
-        this.setSubRanking(scoreState.getSubRanking().intValue());
-        this.setCurrStar(scoreState.getCurrStar().intValue());
-        this.setMaxStar(scoreState.getMaxStar().intValue());
-        this.setProtectBattleIndex(scoreState.getProtectBattleIndex().intValue());
-        this.setCurrBattleIndex(scoreState.getCurrBattleIndex().intValue());
-        this.setMaxBattleIndex(scoreState.getMaxBattleIndex().intValue());
-        this.setTotalScore(scoreState.getTotalScore().intValue());
-        this.setCurrExp(scoreState.getCurrExp().intValue());
-        this.setMaxExp(scoreState.getMaxExp().intValue());
-        this.setRankingDesc(scoreState.getRankingDesc());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.module.playways.room.room.model.score;
 
 import com.common.log.MyLog;
+import com.component.person.model.ScoreStateModel;
 import com.zq.live.proto.Room.EFightForceWhy;
 import com.zq.live.proto.Room.ScoreItem;
 import com.zq.live.proto.Room.ScoreState;
@@ -88,9 +89,7 @@ public class ScoreResultModel implements Serializable {
 
         List<ScoreStateModel> scoreStateModels = new ArrayList<>();
         for (ScoreState scoreState : userScoreResult.getStatesList()) {
-            ScoreStateModel scoreStateModel = new ScoreStateModel();
-            scoreStateModel.parse(scoreState);
-            scoreStateModels.add(scoreStateModel);
+            scoreStateModels.add(ScoreStateUtils.parse(scoreState));
         }
         this.setStates(scoreStateModels);
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import com.common.log.MyLog;
 import com.module.playways.listener.AnimationListener;
 import com.module.playways.room.room.model.score.ScoreResultModel;
-import com.module.playways.room.room.model.score.ScoreStateModel;
+import com.component.person.model.ScoreStateModel;
 import com.module.playways.room.room.view.RecordCircleView;
 import com.component.level.view.NormalLevelView;
 
