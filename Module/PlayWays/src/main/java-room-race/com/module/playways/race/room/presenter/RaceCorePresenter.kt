@@ -448,7 +448,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
-        DebugLogView.println(TAG, "状态更新 from = $from, thisRound = ${thisRound?.status} \n lastRoundOverReason = ${lastRound?.overReason}")
+        DebugLogView.println(TAG, "状态更新 from = $from, thisRoundStatus = ${thisRound?.status} \n lastRoundOverReason = ${lastRound?.overReason}")
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
