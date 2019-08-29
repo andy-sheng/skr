@@ -1,12 +1,13 @@
 package com.module.playways
 
-import android.util.ArrayMap
 import android.util.LruCache
 import com.common.core.userinfo.model.UserInfoModel
-import com.module.playways.room.prepare.model.PlayerInfoModel
+import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
+import com.module.playways.room.gift.event.UpdateHZEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
-
+import org.greenrobot.eventbus.EventBus
 import java.io.Serializable
 
 
@@ -53,12 +54,46 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     abstract val gameType: Int
 
+    private var lastHzTs: Long = -1 // 红钻更新的时间戳
+
+    protected var mCoin: Int = 0// 金币数
+    protected var mHzCount: Float = 0.toFloat()// 金币数
+
     val realRoundSeq: Int
         get() = if (realRoundInfo != null) {
             realRoundInfo!!.roundSeq
         } else -1
 
     abstract fun checkRoundInEachMode()
+
+    fun getCoin(): Int {
+        return mCoin
+    }
+
+    fun setCoin(coin: Int) {
+        if (this.mCoin != coin) {
+            EventBus.getDefault().post(GrabMyCoinChangeEvent(coin, coin - this.mCoin))
+            this.mCoin = coin
+        }
+    }
+
+    fun setCoinNoEvent(coin: Int) {
+        if (this.mCoin != coin) {
+            this.mCoin = coin
+        }
+    }
+
+    fun setHzCount(hzCount: Float, ts: Long) {
+        if (lastHzTs < ts) {
+            lastHzTs = ts
+            mHzCount = hzCount
+            UpdateHZEvent.sendEvent(hzCount, ts)
+        }
+    }
+
+    fun getHzCount(): Float {
+        return mHzCount
+    }
 
     override fun toString(): String {
         return "RoomData{" +
@@ -100,6 +135,10 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
             return userInfo
         }
         return null
+    }
+
+    open fun <User : PlayerInfoModel> getInSeatPlayerInfoList(): List<User>? {
+        return ArrayList()
     }
 
     companion object {

@@ -3,7 +3,6 @@ package com.module.playways.room.gift.view
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Message
 import android.support.v7.widget.LinearLayoutManager
@@ -16,7 +15,6 @@ import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
-
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
@@ -24,12 +22,7 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
@@ -38,28 +31,17 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.BitmapTextView
 import com.module.playways.BaseRoomData
 import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
-import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import com.module.playways.room.gift.GiftServerApi
 import com.module.playways.room.gift.adapter.GiftAllPlayersAdapter
-import com.module.playways.room.gift.event.BuyGiftEvent
-import com.module.playways.room.gift.event.CancelGiftCountDownEvent
-import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
-import com.module.playways.room.gift.event.StartGiftCountDownEvent
-import com.module.playways.room.gift.event.UpdateCoinEvent
-import com.module.playways.room.gift.event.UpdateDiamondEvent
-import com.module.playways.room.gift.event.UpdateHZEvent
+import com.module.playways.room.gift.event.*
 import com.module.playways.room.prepare.model.PlayerInfoModel
-
+import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-
-import io.reactivex.disposables.Disposable
+import java.util.*
 
 class GiftPanelView : FrameLayout {
     val TAG = "GiftPanelView"
@@ -119,9 +101,10 @@ class GiftPanelView : FrameLayout {
         }
     }
 
-    private val firstPlayerInfo: GrabPlayerInfoModel?
+    private val firstPlayerInfo: PlayerInfoModel?
         get() {
-            val grabPlayerInfoModelList = getGrabRoomData()?.getInSeatPlayerInfoList()?:ArrayList()
+            val grabPlayerInfoModelList = getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()
+                    ?: ArrayList()
 
             for (grabPlayerInfoModel in grabPlayerInfoModelList) {
                 if (grabPlayerInfoModel.getUserID().toLong() != MyUserInfoManager.getInstance().uid) {
@@ -132,9 +115,10 @@ class GiftPanelView : FrameLayout {
             return null
         }
 
-    private val playerInfoListExpectSelf: List<GrabPlayerInfoModel>
+    private val playerInfoListExpectSelf: List<PlayerInfoModel>
         get() {
-            val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getInSeatPlayerInfoList()?:ArrayList())
+            val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()
+                    ?: ArrayList())
 
             val it = grabPlayerInfoModelList.iterator()
             while (it.hasNext()) {
@@ -449,7 +433,7 @@ class GiftPanelView : FrameLayout {
     }
 
     private fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
-        if (getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
+        if (getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()?.size === 0 || getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
             //只有自己
             mRlPlayerSelectArea.visibility = View.GONE
         } else {
@@ -570,11 +554,8 @@ class GiftPanelView : FrameLayout {
         mTvSelectedName.text = mCurMicroMan!!.userInfo.nicknameRemark
     }
 
-    fun getGrabRoomData():GrabRoomData?{
-        if(mRoomData is GrabRoomData?){
-            return mRoomData as GrabRoomData?
-        }
-        return null
+    fun getGrabRoomData(): BaseRoomData<*>? {
+        return mRoomData
     }
 
     fun onBackPressed(): Boolean {

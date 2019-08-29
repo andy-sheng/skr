@@ -3,18 +3,15 @@ package com.module.playways.race.room
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
-import com.module.playways.grab.room.event.GrabRoundChangeEvent
-import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.model.RaceConfigModel
-import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
-import java.util.ArrayList
+import java.util.*
 
 class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
@@ -64,6 +61,10 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
             }
         }
         return l
+    }
+
+    override fun <User : PlayerInfoModel> getInSeatPlayerInfoList(): List<User>? {
+        return getPlayerInfoList()
     }
 
     fun getChoiceInfoById(choiceID: Int): SongModel? {

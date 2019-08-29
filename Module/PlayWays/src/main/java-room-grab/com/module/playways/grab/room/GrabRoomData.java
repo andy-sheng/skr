@@ -27,8 +27,6 @@ import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     //    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
-    protected int mCoin;// 金币数
-    protected float mHzCount;// 金币数
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
@@ -49,8 +47,6 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private int mOpenRecording = -1; // 是否开启高光时刻
 
     private List<WorksUploadModel> mWorksUploadList = new ArrayList<>();// 作品时刻本地录音文件路径
-
-    private long lastHzTs = -1; // 红钻更新的时间戳
 
     private boolean videoRoom = false; // 是否是个音频房间
 
@@ -185,35 +181,6 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setTagId(int tagId) {
         this.mTagId = tagId;
-    }
-
-    public int getCoin() {
-        return mCoin;
-    }
-
-    public void setCoin(int coin) {
-        if (this.mCoin != coin) {
-            EventBus.getDefault().post(new GrabMyCoinChangeEvent(coin, coin - this.mCoin));
-            this.mCoin = coin;
-        }
-    }
-
-    public void setCoinNoEvent(int coin) {
-        if (this.mCoin != coin) {
-            this.mCoin = coin;
-        }
-    }
-
-    public void setHzCount(float hzCount, long ts) {
-        if (lastHzTs < ts) {
-            lastHzTs = ts;
-            mHzCount = hzCount;
-            UpdateHZEvent.sendEvent(hzCount, ts);
-        }
-    }
-
-    public float getHzCount() {
-        return mHzCount;
     }
 
     public boolean isAccEnable() {
