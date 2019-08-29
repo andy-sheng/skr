@@ -13,6 +13,10 @@ class RaceSubRoundInfo : Serializable {
     var subRoundSeq = 0
     var userID = 0
     var wantSingType = ERWantSingType.ERWST_DEFAULT.value
+    override fun toString(): String {
+        return "RaceSubRoundInfo(beginMs=$beginMs, endMs=$endMs, choiceID=$choiceID, overReason=$overReason, subRoundSeq=$subRoundSeq, userID=$userID, wantSingType=$wantSingType)"
+    }
+
 }
 
 internal fun parseFromSubRoundInfoPB(pb: SubRoundInfo): RaceSubRoundInfo {

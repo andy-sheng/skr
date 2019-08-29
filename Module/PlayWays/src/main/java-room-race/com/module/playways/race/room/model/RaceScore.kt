@@ -19,6 +19,11 @@ class RaceScore : Serializable {
             }
         }
     }
+
+    override fun toString(): String {
+        return "RaceScore(bLightCnt=$bLightCnt, isEscape=$isEscape, winType=$winType)"
+    }
+
 }
 
 internal fun parseFromRoundScoreInfoPB(pb: RoundScoreInfo): RaceScore {

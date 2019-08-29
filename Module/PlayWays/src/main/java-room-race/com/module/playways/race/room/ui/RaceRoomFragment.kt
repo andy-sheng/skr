@@ -379,6 +379,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singBySelfFirstRound(songModel: SongModel?) {
+        MyLog.d(TAG, "singBySelfFirstRound songModel = ${songModel?.toSimpleString()}")
         mLastSceneView = mRaceTopVsView
         mRaceRightOpView.showGiveUp(false)
         mRaceTopVsView.startVs()
@@ -392,6 +393,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
+        MyLog.d(TAG, "singByOtherFirstRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
         mLastSceneView = mRaceTopVsView
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
             mRaceRightOpView.visibility = View.GONE
@@ -405,6 +407,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singBySelfSecondRound(songModel: SongModel?) {
+        MyLog.d(TAG, "singBySelfSecondRound songModel = ${songModel?.toSimpleString()}")
         mRaceRightOpView.showGiveUp(false)
         mRaceTopVsView.startSingBySelf {
             mRaceSelfSingLyricView.startFly {
@@ -415,6 +418,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
+        MyLog.d(TAG, "singByOtherSecondRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
             mRaceRightOpView.visibility = View.GONE
         } else {
