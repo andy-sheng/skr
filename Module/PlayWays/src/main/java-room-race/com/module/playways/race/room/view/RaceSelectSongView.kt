@@ -101,15 +101,17 @@ class RaceSelectSongView : ExConstraintLayout {
         mSelectCall = selectCall
     }
 
+    var scaleAnimatorSet: AnimatorSet? = null
+
     fun setSongName(noSelectCall: (() -> Unit)?) {
-        val animatorSet = AnimatorSet()
+        scaleAnimatorSet = AnimatorSet()
         val scaleX = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleX", 0.85f, 1f)
         val scaleY = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleY", 0.85f, 1f)
         val alpha = ObjectAnimator.ofFloat(this@RaceSelectSongView, "alpha", 0.6f, 1f)
-        animatorSet.setDuration(500)
-        animatorSet.setInterpolator(OvershootInterpolator())
-        animatorSet.play(scaleX).with(scaleY).with(alpha)
-        animatorSet.start()
+        scaleAnimatorSet?.setDuration(500)
+        scaleAnimatorSet?.setInterpolator(OvershootInterpolator())
+        scaleAnimatorSet?.play(scaleX)?.with(scaleY)?.with(alpha)
+        scaleAnimatorSet?.start()
 
         mNoSelectCall = noSelectCall
         firstSongItem.reset()
@@ -206,11 +208,14 @@ class RaceSelectSongView : ExConstraintLayout {
         if (visibility == View.GONE) {
             mNoSelectCall = null
             animator?.cancel()
+            scaleAnimatorSet?.cancel()
         }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        mNoSelectCall = null
         animator?.cancel()
+        scaleAnimatorSet?.cancel()
     }
 }
