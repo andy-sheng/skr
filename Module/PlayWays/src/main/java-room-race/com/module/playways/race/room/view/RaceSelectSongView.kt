@@ -11,7 +11,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.ProgressBar
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.view.setDebounceViewClickListener
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
@@ -63,28 +63,28 @@ class RaceSelectSongView : ExConstraintLayout {
         itemList.add(forthSongItem)
         progressBar.max = 360
         progressBar.progress = 0
-        firstSongItem.setDebounceViewClickListener {
+        firstSongItem.setAnimateDebounceViewClickListener {
             firstSongItem.getSong()?.let {
                 mSelectCall?.invoke(1)
                 mNoSelectCall = null
             }
         }
 
-        secondSongItem.setDebounceViewClickListener {
+        secondSongItem.setAnimateDebounceViewClickListener {
             secondSongItem.getSong()?.let {
                 mSelectCall?.invoke(2)
                 mNoSelectCall = null
             }
         }
 
-        thirdSongItem.setDebounceViewClickListener {
+        thirdSongItem.setAnimateDebounceViewClickListener {
             thirdSongItem.getSong()?.let {
                 mSelectCall?.invoke(3)
                 mNoSelectCall = null
             }
         }
 
-        forthSongItem.setDebounceViewClickListener {
+        forthSongItem.setAnimateDebounceViewClickListener {
             forthSongItem.getSong()?.let {
                 mSelectCall?.invoke(4)
                 mNoSelectCall = null
