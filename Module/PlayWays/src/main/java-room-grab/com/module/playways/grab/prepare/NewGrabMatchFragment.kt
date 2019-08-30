@@ -1,17 +1,14 @@
 package com.module.playways.grab.prepare
 
 import android.animation.AnimatorSet
-import android.content.res.Resources
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
-
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.base.BaseFragment
-import com.common.base.FragmentDataListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -29,6 +26,7 @@ import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.manager.BgMusicManager
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
+import com.module.playways.R
 import com.module.playways.grab.prepare.presenter.RankMatchPresenter
 import com.module.playways.room.msg.event.JoinActionEvent
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
@@ -37,20 +35,16 @@ import com.module.playways.room.prepare.presenter.BaseMatchPresenter
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter
 import com.module.playways.room.prepare.view.IGrabMatchingView
 import com.module.playways.room.prepare.view.IRankMatchingView
-import com.module.playways.R
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.greendao.annotation.NotNull
-
-import java.util.Arrays
-import java.util.Collections
+import java.util.*
 
 //这个是匹配界面，之前的FastMatchingSence
 class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingView {

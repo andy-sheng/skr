@@ -1,7 +1,8 @@
 package com.module.playways.room.gift.view
 
-import android.animation.AnimatorSet
+import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -42,17 +43,17 @@ class ContinueSendView : FrameLayout, IContinueSendView {
     internal lateinit var mIvBg: ImageView
     internal lateinit var mTvContinueNum: ContinueTextView
 
-    internal var mBaseGift: BaseGift?=null
+    internal var mBaseGift: BaseGift? = null
 
-    internal var mRoomData: BaseRoomData<*>?=null
+    internal var mRoomData: BaseRoomData<*>? = null
 
-    internal var mBuyGiftPresenter: BuyGiftPresenter?=null
+    internal var mBuyGiftPresenter: BuyGiftPresenter? = null
 
-    internal var mScaleAnimatorSet: AnimatorSet? = null
+    internal var mScaleAnimatorSet: Animator? = null
 
-    internal var mJumpAnimatorSet: AnimatorSet? = null
+    internal var mJumpAnimatorSet: Animator? = null
 
-    internal var mReceiver: UserInfoModel?=null
+    internal var mReceiver: UserInfoModel? = null
 
     internal var mOnVisibleStateListener: OnVisibleStateListener? = null
 
@@ -135,14 +136,11 @@ class ContinueSendView : FrameLayout, IContinueSendView {
                         ?: 0L, getGrabRoomData()?.realRoundSeq
                         ?: 0, mReceiver, mScene.value)
 
-                if (mScaleAnimatorSet != null) {
-                    mScaleAnimatorSet!!.cancel()
-                }
+                mScaleAnimatorSet?.cancel()
 
-                val objectAnimator1 = ObjectAnimator.ofFloat(this@ContinueSendView, "scaleX", 1.0f, 0.8f, 1.0f)
-                val objectAnimator2 = ObjectAnimator.ofFloat(this@ContinueSendView, "scaleY", 1.0f, 0.8f, 1.0f)
-                mScaleAnimatorSet = AnimatorSet()
-                mScaleAnimatorSet!!.play(objectAnimator1).with(objectAnimator2)
+                mScaleAnimatorSet = ObjectAnimator.ofPropertyValuesHolder(this@ContinueSendView
+                        , PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0f, 0.8f, 1.0f)
+                        , PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0f, 0.8f, 1.0f))
                 mScaleAnimatorSet!!.duration = 500
                 mScaleAnimatorSet!!.start()
 
@@ -156,15 +154,14 @@ class ContinueSendView : FrameLayout, IContinueSendView {
 
     override fun buySuccess(baseGift: BaseGift, continueCount: Int) {
         mTvContinueNum.setText(continueCount.toString())
-        val objectAnimator1 = ObjectAnimator.ofFloat(mTvContinueNum, View.TRANSLATION_Y, 0.0f, -40f)
-        val objectAnimator2 = ObjectAnimator.ofFloat(mTvContinueNum, View.ALPHA, 1.0f, 0.7f, 0.0f)
 
         if (mJumpAnimatorSet != null) {
             mJumpAnimatorSet!!.cancel()
         }
 
-        mJumpAnimatorSet = AnimatorSet()
-        mJumpAnimatorSet!!.play(objectAnimator1).with(objectAnimator2)
+        mJumpAnimatorSet = ObjectAnimator.ofPropertyValuesHolder(mTvContinueNum
+                , PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0.0f, -40f)
+                , PropertyValuesHolder.ofFloat(View.ALPHA, 1.0f, 0.7f, 0.0f))
         mJumpAnimatorSet!!.duration = 500
         mJumpAnimatorSet!!.start()
     }
@@ -196,12 +193,8 @@ class ContinueSendView : FrameLayout, IContinueSendView {
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
-            if (mScaleAnimatorSet != null) {
-                mScaleAnimatorSet!!.cancel()
-            }
-            if (mJumpAnimatorSet != null) {
-                mJumpAnimatorSet!!.cancel()
-            }
+            mScaleAnimatorSet?.cancel()
+            mJumpAnimatorSet?.cancel()
 
             mIvBg.clearAnimation()
 
@@ -225,12 +218,8 @@ class ContinueSendView : FrameLayout, IContinueSendView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (mScaleAnimatorSet != null) {
-            mScaleAnimatorSet!!.cancel()
-        }
-        if (mJumpAnimatorSet != null) {
-            mJumpAnimatorSet!!.cancel()
-        }
+        mScaleAnimatorSet?.cancel()
+        mJumpAnimatorSet?.cancel()
         mIvBg.clearAnimation()
     }
 
