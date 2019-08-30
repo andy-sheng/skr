@@ -12,6 +12,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.R;
+import com.module.playways.race.match.fragment.RaceGuideFragment;
 import com.module.playways.race.match.fragment.RaceMatchFragment;
 import com.module.playways.room.prepare.model.PrepareData;
 
@@ -48,12 +49,19 @@ public class RaceMatchActivity extends BaseActivity {
 //            return;
 //        }
 
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, RaceMatchFragment.class)
-                        .setAddToBackStack(false)
-                        .setHasAnimation(false)
-                        .build()
-        );
+        if (U.getPreferenceUtils().getSettingBoolean("is_first_race", true)) {
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(this, RaceGuideFragment.class)
+                            .setAddToBackStack(false)
+                            .setHasAnimation(false)
+                            .build());
+        } else {
+            U.getFragmentUtils().addFragment(
+                    FragmentUtils.newAddParamsBuilder(this, RaceMatchFragment.class)
+                            .setAddToBackStack(false)
+                            .setHasAnimation(false)
+                            .build());
+        }
         U.getStatusBarUtil().setTransparentBar(this, false);
     }
 
