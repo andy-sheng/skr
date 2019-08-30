@@ -3,6 +3,7 @@ package com.module.playways.race.room.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewStub
@@ -47,6 +48,8 @@ import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -79,6 +82,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     private var mRaceActorPanelView: RaceActorPanelView? = null  //参与的人
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mRaceVoiceControlPanelView: RaceVoiceControlPanelView? = null
+    private var mGameRuleDialog: DialogPlus? = null
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
@@ -272,8 +276,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
 
             override fun onClickGameRule() {
-                // todo 显示游戏规则
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
+                mGameRuleDialog?.dismiss(false)
+                mGameRuleDialog = DialogPlus.newDialog(context!!)
+                        .setContentHolder(ViewHolder(R.layout.race_game_rule_view_layout))
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setMargin(U.getDisplayUtils().dip2px(16f),-1,U.getDisplayUtils().dip2px(16f),-1)
+                        .setExpanded(false)
+                        .setGravity(Gravity.CENTER)
+                        .create()
+                mGameRuleDialog?.show()
             }
         })
 
@@ -564,5 +577,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun destroy() {
         super.destroy()
         mRaceActorPanelView?.dismiss(false)
+        mPersonInfoDialog?.dismiss(false)
+        mRaceVoiceControlPanelView?.dismiss(false)
+        mGameRuleDialog?.dismiss(false)
     }
 }

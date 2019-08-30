@@ -1005,6 +1005,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                         .setContentHolder(new ViewHolder(R.layout.grab_game_rule_view_layout))
                         .setContentBackgroundResource(R.color.transparent)
                         .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setMargin(U.getDisplayUtils().dip2px(16f),-1,U.getDisplayUtils().dip2px(16f),-1)
                         .setExpanded(false)
                         .setGravity(Gravity.CENTER)
                         .create();

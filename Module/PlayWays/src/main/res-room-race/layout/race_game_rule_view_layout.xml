@@ -7,13 +7,16 @@
     app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_solid_color="#7187FF">
 
-    <com.common.view.ex.ExImageView
+    <TextView
         android:id="@+id/iv_title"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:background="@drawable/grab_guize_title" />
+        android:textStyle="bold"
+        android:text="比赛规则介绍"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textColor="@color/white"/>
 
     <com.common.view.ex.ExLinearLayout
         android:layout_width="match_parent"
@@ -22,6 +25,8 @@
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_8_dp"
         android:layout_marginBottom="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_30_dp"
+        android:paddingBottom="@dimen/view_30_dp"
         android:orientation="vertical"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="#576FE3">
@@ -31,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_title"
             android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_21_dp"
             android:layout_marginRight="@dimen/view_12_dp"
             android:orientation="horizontal">
 
@@ -44,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="点击【抢唱】、【合唱】或【PK】按钮抢机会"
+                android:text="比赛资格：白银以上段位用户可以参加排位赛。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -66,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="完成演唱或收到爆灯即可一唱到底"
+                android:text="比赛规则：每轮比赛开始，选手在下发的4首歌中，抢选自己的竞演歌曲。最快抢选的2位选手，将会获得竞演机会。没有抢到竞演机会的选手不要气馁，你们可以作为裁判为喜欢的歌声投票。每轮竞演，针对每位竞演选手都有一次投票机会，投票不记名。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -88,52 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="演唱中超过半数用户灭灯即挑战失败"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_12_dp"
-            android:layout_marginRight="@dimen/view_13_dp"
-            android:orientation="horizontal">
-
-            <com.common.view.ex.ExImageView
-                android:layout_width="@dimen/view_21_dp"
-                android:layout_height="@dimen/view_21_dp"
-                android:background="@drawable/grab_guize_4" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="单人一唱到底加金币，合唱成功、PK获胜加更多金币，给别人爆灯减金币"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_12_dp"
-            android:layout_marginRight="@dimen/view_13_dp"
-            android:layout_marginBottom="@dimen/view_30_dp"
-            android:orientation="horizontal">
-
-            <com.common.view.ex.ExImageView
-                android:layout_width="@dimen/view_21_dp"
-                android:layout_height="@dimen/view_21_dp"
-                android:background="@drawable/grab_guize_5" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="1人练习房金币不加减、段位不升降"
+                android:text="胜负规则：演唱完毕后，两位竞演选手比拼投票票数，票数较多一方胜出。胜出一方加5点经验，落败一方减5点经验，平局则不加不减。比赛中逃跑的行为会被惩罚，扣除经验值。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
