@@ -20,6 +20,7 @@ import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.model.RaceWantSingInfo
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -105,6 +106,7 @@ class RaceSelectSongView : ExConstraintLayout {
 
     var scaleAnimatorSet: AnimatorSet? = null
 
+    //倒计时3秒，选择6秒
     fun setSongName(noSelectCall: (() -> Unit)?) {
         progressBar.progress = 0
         scaleAnimatorSet = AnimatorSet()
@@ -132,19 +134,40 @@ class RaceSelectSongView : ExConstraintLayout {
             }
         }
 
-        launch(Dispatchers.Main) {
-            enableSelectSong(false)
-            countDownTv.visibility = View.VISIBLE
-            blurBg.visibility = View.VISIBLE
+        var lastedTime = 9000
+        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value
+                && mRoomData?.realRoundInfo?.enterSubRoundSeq == mRoomData?.realRoundInfo?.subRoundSeq) {
+            mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
+                lastedTime = 9000 - 4000
+                MyLog.d(mTag, "setSongName elapsedTimeMs is $it")
+                if (lastedTime < 0) {
+                    lastedTime = 9000
+                }
+            }
+        }
 
-            repeat(3) {
-                countDownTv.text = (3 - it).toString()
-                delay(1000)
+        launch(Dispatchers.Main) {
+            countDownTv.visibility = View.GONE
+            enableSelectSong(false)
+            var countDownSecond = (lastedTime - 6000) / 1000
+            if (countDownSecond > 0) {
+                countDownTv.visibility = View.VISIBLE
+                blurBg.visibility = View.VISIBLE
+
+                repeat(countDownSecond) {
+                    countDownTv.text = (countDownSecond - it).toString()
+                    delay(1000)
+                }
+
+                countDownTv.visibility = View.GONE
+                blurBg.visibility = View.GONE
             }
 
-            countDownTv.visibility = View.GONE
-            blurBg.visibility = View.GONE
-            startCountDown()
+            if (lastedTime > 6000) {
+                startCountDown(6000)
+            } else {
+                startCountDown(lastedTime)
+            }
         }
         updateSelectState()
     }
@@ -180,11 +203,11 @@ class RaceSelectSongView : ExConstraintLayout {
         }
     }
 
-    fun startCountDown() {
-        MyLog.d(mTag, "startCountDown")
+    fun startCountDown(countDownMic: Int) {
+        MyLog.d(mTag, "startCountDown countDownMic is $countDownMic")
         enableSelectSong(true)
-        animator = ValueAnimator.ofInt(0, 360)
-        animator?.duration = 6000
+        animator = ValueAnimator.ofInt(((6000 - countDownMic) * 360) / 6000, 360)
+        animator?.duration = countDownMic.toLong()
         animator?.addUpdateListener {
             progressBar.progress = it.animatedValue as Int
         }
