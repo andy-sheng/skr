@@ -483,6 +483,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     @Override
     public void destroy() {
         super.destroy();
+        mPopupWindow.dismiss();
         U.getSoundUtils().release(TAG);
     }
 
