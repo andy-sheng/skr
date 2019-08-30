@@ -2,6 +2,7 @@ package com.module.playways.race.room.view
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.Guideline
@@ -147,13 +148,12 @@ class RaceMiddleResultView : ExConstraintLayout {
         launch {
             delay(350)
             resultTv.visibility = View.VISIBLE
-            val animatorSet = AnimatorSet()
-            val scaleX = ObjectAnimator.ofFloat(raceTopVsIv, "scaleX", 2.0f, 1f)
-            val scaleY = ObjectAnimator.ofFloat(raceTopVsIv, "scaleY", 2.0f, 1f)
+            val animatorSet = ObjectAnimator.ofPropertyValuesHolder(raceTopVsIv,
+                    PropertyValuesHolder.ofFloat("scaleX", 2.0f, 1f),
+                    PropertyValuesHolder.ofFloat("scaleY", 2.0f, 1f))
             raceTopVsIv.visibility = View.VISIBLE
-            animatorSet.setDuration(500)
-            animatorSet.setInterpolator(OvershootInterpolator())
-            animatorSet.play(scaleX).with(scaleY);//两个动画同时开始
+            animatorSet.duration = 500
+            animatorSet.interpolator = OvershootInterpolator()
             animatorSet.start()
         }
     }

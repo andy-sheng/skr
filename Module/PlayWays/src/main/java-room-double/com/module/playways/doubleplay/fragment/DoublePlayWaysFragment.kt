@@ -1,7 +1,8 @@
 package com.module.playways.doubleplay.fragment
 
-import android.animation.AnimatorSet
+import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -92,7 +93,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     lateinit var mDoubleCorePresenter: DoubleCorePresenter
 
-    private var mCountDownScaleAnimators: AnimatorSet? = null
+    private var mCountDownScaleAnimators: Animator? = null
 
     var mRoomData: DoubleRoomData? = null
 
@@ -274,11 +275,11 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             startCountDown()
         }
 
-        val objectAnimator1 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_X, 1.5f, 1.0f)
-        val objectAnimator2 = ObjectAnimator.ofFloat<View>(mCountDownTv, View.SCALE_Y, 1.5f, 1.0f)
-        mCountDownScaleAnimators = AnimatorSet();
-        mCountDownScaleAnimators?.setDuration(1000)
-        mCountDownScaleAnimators?.playTogether(objectAnimator1, objectAnimator2)
+        mCountDownScaleAnimators = ObjectAnimator.ofPropertyValuesHolder(mCountDownTv,
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1.5f, 1.0f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.5f, 1.0f))
+        mCountDownScaleAnimators?.duration = 1000
+        mCountDownScaleAnimators?.start()
         mDoubleGameSenceView?.setFirstGamePanelInfo(mRoomData!!.localGamePanelInfo)
     }
 

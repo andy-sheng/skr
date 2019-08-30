@@ -1,9 +1,6 @@
 package com.module.playways.race.room.view
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -104,18 +101,19 @@ class RaceSelectSongView : ExConstraintLayout {
         mSelectCall = selectCall
     }
 
-    var scaleAnimatorSet: AnimatorSet? = null
+    var scaleAnimatorSet: Animator? = null
 
     //倒计时3秒，选择6秒
     fun setSongName(noSelectCall: (() -> Unit)?) {
         progressBar.progress = 0
-        scaleAnimatorSet = AnimatorSet()
-        val scaleX = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleX", 0.85f, 1f)
-        val scaleY = ObjectAnimator.ofFloat(this@RaceSelectSongView, "scaleY", 0.85f, 1f)
-        val alpha = ObjectAnimator.ofFloat(this@RaceSelectSongView, "alpha", 0.6f, 1f)
-        scaleAnimatorSet?.setDuration(500)
-        scaleAnimatorSet?.setInterpolator(OvershootInterpolator())
-        scaleAnimatorSet?.play(scaleX)?.with(scaleY)?.with(alpha)
+        scaleAnimatorSet = ObjectAnimator.ofPropertyValuesHolder(
+                this@RaceSelectSongView,
+                PropertyValuesHolder.ofFloat("scaleX", 0.85f, 1f),
+                PropertyValuesHolder.ofFloat("scaleY", 0.85f, 1f),
+                PropertyValuesHolder.ofFloat("alpha", 0.6f, 1f)
+        )
+        scaleAnimatorSet?.duration = 500
+        scaleAnimatorSet?.interpolator = OvershootInterpolator()
         scaleAnimatorSet?.start()
 
         mNoSelectCall = noSelectCall

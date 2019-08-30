@@ -423,13 +423,12 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         // 初始化动画
         animatorSet = AnimatorSet()
         val recordAnimator = ObjectAnimator.ofFloat(recommendFilm, View.ROTATION, 0f, 360f)
-        recordAnimator.duration = 10000
         recordAnimator.interpolator = LinearInterpolator()
         recordAnimator.repeatCount = Animation.INFINITE
         val coverAnimator = ObjectAnimator.ofFloat(recordCover, View.ROTATION, 0f, 360f)
-        coverAnimator.duration = 10000
         coverAnimator.interpolator = LinearInterpolator()
         coverAnimator.repeatCount = Animation.INFINITE
+        animatorSet.duration = 10*1000
         animatorSet.playTogether(recordAnimator, coverAnimator)
 
         SinglePlayer.addCallback(playerTag, playCallback)

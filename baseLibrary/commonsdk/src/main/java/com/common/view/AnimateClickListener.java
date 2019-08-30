@@ -16,10 +16,10 @@ public abstract class AnimateClickListener extends DebounceViewClickListener {
 
     @Override
     public void clickValid(View view) {
-        PropertyValuesHolder pvhSX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0.95f, 1f);
-        PropertyValuesHolder pvhSY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0.95f, 1f);
 
-        ObjectAnimator o1 = ObjectAnimator.ofPropertyValuesHolder(view, pvhSX, pvhSY);
+        ObjectAnimator o1 = ObjectAnimator.ofPropertyValuesHolder(view,
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0.95f, 1f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0.95f, 1f));
         o1.setDuration(80);
         o1.addListener(new Animator.AnimatorListener() {
             @Override
