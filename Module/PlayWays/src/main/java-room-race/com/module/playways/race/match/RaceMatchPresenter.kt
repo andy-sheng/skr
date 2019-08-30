@@ -82,10 +82,16 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
     }
 
     fun cancelMatch() {
-        GlobalScope.launch {
-            val map = mutableMapOf("platform" to 20)
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            subscribe { raceRoomServerApi.cancelMatch(body) }
+        Companion.cancelMatch(raceRoomServerApi)
+    }
+
+    companion object {
+        fun cancelMatch(raceRoomServerApi: RaceRoomServerApi) {
+            GlobalScope.launch {
+                val map = mutableMapOf("platform" to 20)
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                subscribe { raceRoomServerApi.cancelMatch(body) }
+            }
         }
     }
 }
