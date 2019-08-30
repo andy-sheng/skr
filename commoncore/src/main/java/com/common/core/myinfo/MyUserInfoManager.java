@@ -213,6 +213,13 @@ public class MyUserInfoManager {
             }
         }
 
+        if (updateParams.realLocation != null) {
+            map.put("location2", updateParams.realLocation);
+            if (updateLocalIfServerFailed) {
+                mUser.setLocation2(updateParams.realLocation);
+            }
+        }
+
         if (updateParams.ageStage != 0) {
             map.put("ageStage", updateParams.ageStage);
             if (updateLocalIfServerFailed) {
@@ -246,6 +253,9 @@ public class MyUserInfoManager {
                         if (updateParams.location != null) {
                             mUser.setLocation(updateParams.location);
                         }
+                        if (updateParams.realLocation != null) {
+                            mUser.setLocation2(updateParams.realLocation);
+                        }
                         if (updateParams.ageStage != 0) {
                             mUser.setAgeStage(updateParams.ageStage);
                         }
@@ -258,6 +268,7 @@ public class MyUserInfoManager {
                         mUser.setAvatar(userInfoModel.getAvatar());
                         mUser.setBirthday(userInfoModel.getBirthday());
                         mUser.setLocation(userInfoModel.getLocation());
+                        mUser.setLocation2(userInfoModel.getLocation2());
                         mUser.setSex(userInfoModel.getSex());
                         mUser.setSignature(userInfoModel.getSignature());
                         mUser.setUserDisplayname(userInfoModel.getNickname());
@@ -389,6 +400,10 @@ public class MyUserInfoManager {
         return mUser.getLocation();
     }
 
+    public Location getRealLocation() {
+        return mUser.getLocation2();
+    }
+
     public String getLocationDesc() {
         if (!hasLocation()) {
             return "火星";
@@ -411,28 +426,32 @@ public class MyUserInfoManager {
         return mUser.getLocation() != null && mUser.getLocation().getDesc().length() > 0;
     }
 
-    public void trySyncLocation() {
+    public boolean hasRealLocation() {
+        return mUser.getLocation2() != null && mUser.getLocation2().getDesc().length() > 0;
+    }
+
+    public void trySyncRealLocation() {
         if (!MyUserInfoManager.getInstance().hasLocation()) {
             // 没有地理位置
-            uploadLocation();
+            uploadRealLocation();
         }
         // TODO: 2019/2/8 去掉位置更新策略，除了第一次，让用户主动触发 
 //        else {
 //            long lastUpdateLocationTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_UPDATE_LACATION_TS, 0);
 //            if (System.currentTimeMillis() - lastUpdateLocationTs > 3600 * 1000 * 6) {
-//                uploadLocation();
+//                uploadRealLocation();
 //            }
 //        }
     }
 
-    public void uploadLocation() {
-        uploadLocation(null);
+    public void uploadRealLocation() {
+        uploadRealLocation(null);
     }
 
     /**
-     * 上传地理位置
+     * 上传真实地理位置
      */
-    public void uploadLocation(final LbsUtils.Callback callback) {
+    public void uploadRealLocation(final LbsUtils.Callback callback) {
         U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
             @Override
             public void onReceive(LbsUtils.Location location) {
@@ -444,7 +463,7 @@ public class MyUserInfoManager {
                     l.setDistrict(location.getDistrict());
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
                             .newMyInfoUpdateParamsBuilder()
-                            .setLocation(l)
+                            .setRealLocation(l)
                             .build(), true);
                 }
                 if (callback != null) {
@@ -525,7 +544,8 @@ public class MyUserInfoManager {
         String birthday;
         String avatar;
         String sign;
-        Location location;
+        Location location;  // 显示位置
+        Location realLocation;   // 真实位置
         int ageStage;
 
         private MyInfoUpdateParams() {
@@ -576,6 +596,15 @@ public class MyUserInfoManager {
             this.location = location;
         }
 
+
+        public Location getRealLocation() {
+            return realLocation;
+        }
+
+        public void setRealLocation(Location realLocation) {
+            this.realLocation = realLocation;
+        }
+
         public int getAgeStage() {
             return ageStage;
         }
@@ -617,6 +646,11 @@ public class MyUserInfoManager {
 
             public Builder setLocation(Location location) {
                 mParams.setLocation(location);
+                return this;
+            }
+
+            public Builder setRealLocation(Location location) {
+                mParams.setRealLocation(location);
                 return this;
             }
 

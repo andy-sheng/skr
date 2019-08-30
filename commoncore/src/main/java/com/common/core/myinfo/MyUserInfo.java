@@ -28,6 +28,7 @@ public class MyUserInfo implements Serializable {
     private String signature;     // 签名
 
     private Location location;
+    private Location location2;
     private int ageStage = 0;
 
     private String phoneNum;
@@ -126,6 +127,15 @@ public class MyUserInfo implements Serializable {
         this.location = location;
     }
 
+
+    public Location getLocation2() {
+        return location2;
+    }
+
+    public void setLocation2(Location location2) {
+        this.location2 = location2;
+    }
+
     public int getAgeStage() {
         return ageStage;
     }
@@ -141,6 +151,7 @@ public class MyUserInfo implements Serializable {
         myUserInfo.setAvatar(userInfoModel.getAvatar());
         myUserInfo.setBirthday(userInfoModel.getBirthday());
         myUserInfo.setLocation(userInfoModel.getLocation());
+        myUserInfo.setLocation2(userInfoModel.getLocation2());
         myUserInfo.setSex(userInfoModel.getSex());
         myUserInfo.setSignature(userInfoModel.getSignature());
         myUserInfo.setUserDisplayname(userInfoModel.getNickname());
@@ -157,6 +168,7 @@ public class MyUserInfo implements Serializable {
             userInfoModel.setAvatar(myUserInfo.getAvatar());
             userInfoModel.setBirthday(myUserInfo.getBirthday());
             userInfoModel.setLocation(myUserInfo.getLocation());
+            userInfoModel.setLoaction2(myUserInfo.getLocation2());
             userInfoModel.setSex(myUserInfo.getSex());
             userInfoModel.setSignature(myUserInfo.getSignature());
         }
@@ -180,6 +192,10 @@ public class MyUserInfo implements Serializable {
                 Location location = myUserInfo.getLocation();
                 if (location != null) {
                     jsonObject.put("location", location);
+                }
+                Location location2 = myUserInfo.getLocation2();
+                if (location2 != null) {
+                    jsonObject.put("location2", location2);
                 }
                 jsonObject.put("phoneNum", myUserInfo.getPhoneNum());
                 jsonObject.put("ext", myUserInfo.getExt());
@@ -217,6 +233,9 @@ public class MyUserInfo implements Serializable {
                 Location location = jsonObject.getObject("location", Location.class);
                 myInfoModel.setLocation(location);
 
+                Location location2 = jsonObject.getObject("location2", Location.class);
+                myInfoModel.setLocation2(location2);
+
                 int ageStage = jsonObject.getIntValue("ageStage");
                 myInfoModel.setAgeStage(ageStage);
             }
@@ -237,6 +256,7 @@ public class MyUserInfo implements Serializable {
                 ", birthday='" + birthday + '\'' +
                 ", signature='" + signature + '\'' +
                 ", location=" + location +
+                ", location2=" + location2 +
                 ", ageStage=" + ageStage +
                 ", phoneNum='" + phoneNum + '\'' +
                 ", ext='" + ext + '\'' +

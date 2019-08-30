@@ -232,22 +232,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
     }
 
-    private void onClickLocationRefresh() {
-        mLocationTv.setText("获取位置中");
-        String origin = MyUserInfoManager.getInstance().getLocationDesc();
-
-        MyUserInfoManager.getInstance().uploadLocation(new LbsUtils.Callback() {
-            @Override
-            public void onReceive(LbsUtils.Location location) {
-                if (location != null && location.isValid()) {
-
-                } else {
-                    mLocationTv.setText(origin);
-                }
-            }
-        });
-    }
-
     @Override
     public boolean canSlide() {
         return false;

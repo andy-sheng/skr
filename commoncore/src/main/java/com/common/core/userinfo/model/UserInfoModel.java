@@ -42,7 +42,8 @@ public class UserInfoModel implements Serializable, Cloneable {
     private String birthday;
     private String avatar;
     private String signature;
-    private Location location;
+    private Location location;  //展示位置
+    private Location location2;  //真实位置
     private String letter;
     private boolean mIsSystem;
     private boolean isFriend;
@@ -128,6 +129,14 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Location getLocation2() {
+        return location2;
+    }
+
+    public void setLoaction2(Location location2) {
+        this.location2 = location2;
     }
 
     public String getLetter() {
@@ -323,8 +332,8 @@ public class UserInfoModel implements Serializable, Cloneable {
             }
 
             JSONObject jsonObject = new JSONObject();
-            Location location = userInfModel.getLocation();
-            jsonObject.put("location", location);
+            jsonObject.put("location", userInfModel.getLocation());
+            jsonObject.put("location2", userInfModel.getLocation2());
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
@@ -356,6 +365,8 @@ public class UserInfoModel implements Serializable, Cloneable {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
                 Location location = jsonObject.getObject("location", Location.class);
                 userInfoModel.setLocation(location);
+                Location location2 = jsonObject.getObject("location2", Location.class);
+                userInfoModel.setLoaction2(location2);
                 int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
             }
@@ -373,6 +384,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", avatar='" + avatar + '\'' +
                 ", signature='" + signature + '\'' +
                 ", location=" + location +
+                ", location2=" + location2 +
                 ", letter='" + letter + '\'' +
                 ", mIsSystem=" + mIsSystem +
                 ", isFriend=" + isFriend +

@@ -6,16 +6,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.Location;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.log.MyLog;
+import com.common.utils.LbsUtils;
 import com.module.playways.room.room.model.RankInfoModel;
 import com.component.person.model.UserRankModel;
 import com.common.statistics.StatisticsAdapter;
@@ -71,6 +78,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     ExTextView mChanpainLevelTv;
 
     TextView mTvArea;
+    TextView mRefreshLocation;
     ExImageView mIvBack;
 
     SmartRefreshLayout mRefreshLayout;
@@ -83,6 +91,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     View mOwnInfoItem;
 
     SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
+
+    PopupWindow mPopupWindow;
+    LinearLayout mLlAreaContainer;
+    ExTextView mTvOtherArea;
+
+    int mRankMode = UserRankModel.COUNTRY;
 
     @Override
     public int initView() {
@@ -121,7 +135,13 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvRankRight = (ImageView) getRootView().findViewById(R.id.iv_rank_right);
         mRefreshLayout = getRootView().findViewById(R.id.refreshLayout);
         mTvArea = (ExTextView) getRootView().findViewById(R.id.tv_area);
+        mRefreshLocation = (TextView) getRootView().findViewById(R.id.refresh_location);
         mIvBack = (ExImageView) getRootView().findViewById(R.id.iv_back);
+
+        mLlAreaContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_select_popup_window_layout, null);
+        mTvOtherArea = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_other_area);
+        mPopupWindow = new PopupWindow(mLlAreaContainer);
+        mPopupWindow.setOutsideTouchable(true);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
@@ -133,7 +153,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 if (mHasMore) {
-                    mLeaderboardPresenter.getLeaderBoardInfo();
+                    mLeaderboardPresenter.getLeaderBoardInfo(mRankMode);
                 } else {
                     U.getToastUtil().showShort("没有更多数据了");
                 }
@@ -160,9 +180,139 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             }
         });
 
-        mLeaderboardPresenter.getOwnInfo();
-        mLeaderboardPresenter.getLeaderBoardInfo();
+        mTvArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                showPopWindow();
+            }
+        });
+
+        mTvOtherArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mPopupWindow.dismiss();
+                changeRank();
+            }
+        });
+
+        mRefreshLocation.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                refreshLocation();
+            }
+        });
+
+        if (MyUserInfoManager.getInstance().hasRealLocation()) {
+            // 有地理位置，显示地理榜单
+            mRankMode = UserRankModel.REGION;
+            mRefreshLocation.setVisibility(View.VISIBLE);
+            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+            mLeaderboardPresenter.reset();
+            refreshData();
+        } else {
+            // 无地理位置，显示全国榜单
+            mRankMode = UserRankModel.COUNTRY;
+            mRefreshLocation.setVisibility(View.GONE);
+            mTvArea.setText("全国榜");
+            mLeaderboardPresenter.reset();
+            refreshData();
+        }
         StatisticsAdapter.recordCountEvent("rank", "ranklist", null);
+    }
+
+    private void refreshData() {
+        mLeaderboardPresenter.getOwnInfo(mRankMode);
+        mLeaderboardPresenter.getLeaderBoardInfo(mRankMode);
+    }
+
+    private void changeRank() {
+        // 切换榜单
+        if (mRankMode == UserRankModel.COUNTRY) {
+            // 切成地域榜
+            if (MyUserInfoManager.getInstance().hasRealLocation()) {
+                mRankMode = UserRankModel.REGION;
+                mRefreshLocation.setVisibility(View.VISIBLE);
+                mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+                mLeaderboardPresenter.reset();
+                refreshData();
+            } else {
+                refreshLocation();
+            }
+        } else if (mRankMode == UserRankModel.REGION) {
+            // 切成全国榜
+            mRankMode = UserRankModel.COUNTRY;
+            mRefreshLocation.setVisibility(View.GONE);
+            mTvArea.setText("全国榜");
+            mLeaderboardPresenter.reset();
+            refreshData();
+        }
+    }
+
+    private void refreshLocation() {
+        mSkrLocationPermission.ensurePermission(new Runnable() {
+            @Override
+            public void run() {
+                U.getLbsUtils().getLocation(false, new LbsUtils.Callback() {
+                    @Override
+                    public void onReceive(LbsUtils.Location location) {
+                        MyLog.d(TAG, "onReceive" + " location=" + location);
+                        if (location != null && location.isValid()) {
+                            Location l = new Location();
+                            l.setProvince(location.getProvince());
+                            l.setCity(location.getCity());
+                            l.setDistrict(location.getDistrict());
+                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                    .newMyInfoUpdateParamsBuilder()
+                                    .setRealLocation(l)
+                                    .build(), true, false, new MyUserInfoManager.ServerCallback() {
+                                @Override
+                                public void onSucess() {
+                                    // todo 可以加个优化
+                                    mRankMode = UserRankModel.REGION;
+                                    mRefreshLocation.setVisibility(View.VISIBLE);
+                                    mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+                                    mLeaderboardPresenter.reset();
+                                    refreshData();
+                                }
+
+                                @Override
+                                public void onFail() {
+                                    U.getToastUtil().showShort("位置更新失败");
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }, true);
+    }
+
+    private void showPopWindow() {
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        } else {
+            mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
+            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(32));
+            mPopupWindow.showAsDropDown(mTvArea);
+        }
+        if (mRankMode == UserRankModel.COUNTRY) {
+            if (MyUserInfoManager.getInstance().hasRealLocation()) {
+                mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+            } else {
+                mTvOtherArea.setText("地域榜");
+            }
+        } else if (mRankMode == UserRankModel.REGION) {
+            mTvOtherArea.setText("全国榜");
+        }
+        mTvOtherArea.setSelected(false);
+    }
+
+    private String getAreaFromLocation(Location location) {
+        if (location != null && !TextUtils.isEmpty(location.getDistrict())) {
+            return location.getDistrict() + "榜";
+        } else {
+            return "未知位置";
+        }
     }
 
     @Override
@@ -183,7 +333,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     public void onEvent(NetworkUtils.NetworkChangeEvent event) {
         if (event.type != -1) {
             if (mLeaderBoardAdapter.getDataList() == null && mLeaderBoardAdapter.getDataList().size() == 0) {
-                mLeaderboardPresenter.getLeaderBoardInfo();
+                mLeaderboardPresenter.getLeaderBoardInfo(mRankMode);
             }
         }
     }

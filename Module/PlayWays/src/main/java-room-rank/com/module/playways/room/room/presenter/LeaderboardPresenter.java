@@ -24,11 +24,7 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
     private ILeaderBoardView mILeaderBoardView;
 
     private int mOffset = 0;
-
     private int mLimit = 20;
-
-    int mRankMode = UserRankModel.COUNTRY;
-
     List<RankInfoModel> mRankInfoModelList;
 
     public LeaderboardPresenter(ILeaderBoardView ILeaderBoardView) {
@@ -37,13 +33,18 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
         this.mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
-    public void getLeaderBoardInfo() {
+    public void reset() {
+        mOffset = 0;
+        mRankInfoModelList.clear();
+    }
+
+    public void getLeaderBoardInfo(int rankMode) {
         if (!U.getNetworkUtils().hasNetwork()) {
             mILeaderBoardView.noNetWork();
             return;
         }
 
-        ApiMethods.subscribe(mUserInfoServerApi.getReginRankList(mRankMode, mOffset, mLimit), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getReginRankList(rankMode, mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -83,13 +84,13 @@ public class LeaderboardPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getOwnInfo() {
+    public void getOwnInfo(int rankMode) {
         if (!U.getNetworkUtils().hasNetwork()) {
             mILeaderBoardView.noNetWork();
             return;
         }
 
-        ApiMethods.subscribe(mUserInfoServerApi.getMyRegion(mRankMode), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getMyRegion(rankMode), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

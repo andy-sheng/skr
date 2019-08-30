@@ -51,6 +51,9 @@ public class UserInfoDataUtils {
         if (newUserInfo.getLocation() == null) {
             newUserInfo.setLocation(userInfoDB.getLocation());
         }
+        if (newUserInfo.getLocation2() == null) {
+            newUserInfo.setLoaction2(userInfoDB.getLocation2());
+        }
         if (newUserInfo.getLetter() == null) {
             newUserInfo.setLetter(userInfoDB.getLetter());
         }
@@ -94,11 +97,16 @@ public class UserInfoDataUtils {
         if (TextUtils.isEmpty(newUserInfo.getPhoneNum())) {
             newUserInfo.setPhoneNum(userInfoDB.getPhoneNum());
         }
+
+        if (newUserInfo.getLocation2() == null) {
+            newUserInfo.setLocation2(userInfoDB.getLocation2());
+        }
     }
 
 
     /**
      * 注意必须保持 属性名的一致
+     *
      * @param list
      * @return
      */
