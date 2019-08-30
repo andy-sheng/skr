@@ -79,11 +79,11 @@
         android:layout_marginRight="@dimen/view_20_dp"
         android:visibility="visible"
         app:leftBgPaintColor="@color/transparent"
-        app:leftPaintColor="@color/white"
-        app:redInnerpaintColor="#FFC15B"
-        app:redLinePaintColor="#D4AF72"
-        app:redOutpaintColor="#A9864E"
+        app:leftPaintColor="#FFFFC15B"
+        app:redInnerpaintColor="#FFFFC15B"
+        app:redLinePaintColor="#1e404A9A"
+        app:redOutpaintColor="#FFFFC15B"
         app:rightBgPaintColor="@color/transparent"
-        app:rightPaintColor="#D4AF72" />
+        app:rightPaintColor="#143A5489" />
 
 </RelativeLayout>
