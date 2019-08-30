@@ -55,13 +55,11 @@ class RaceGuideFragment : BaseFragment() {
 
         beginRace.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                U.getFragmentUtils().popFragment(this@RaceGuideFragment)
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(activity, RaceMatchFragment::class.java)
-                                .setAddToBackStack(false)
+                                .setAddToBackStack(true)
                                 .setHasAnimation(true)
-                                .build()
-                )
+                                .build())
             }
         })
 
