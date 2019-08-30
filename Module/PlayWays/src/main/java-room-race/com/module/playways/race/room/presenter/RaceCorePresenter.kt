@@ -17,6 +17,7 @@ import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
@@ -91,7 +92,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
         //添加房间消息过滤器
         RaceRoomMsgManager.addFilter(mPushMsgFilter)
-        val commentSysModel = CommentSysModel("欢迎来到Race房间", CommentSysModel.TYPE_ENTER_ROOM)
+        val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "欢迎加入撕歌排位赛，撕歌倡导文明竞演、理性投票，如遇恶意玩家请点击头像进行举报")
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
         joinRoomAndInit(true)
     }
