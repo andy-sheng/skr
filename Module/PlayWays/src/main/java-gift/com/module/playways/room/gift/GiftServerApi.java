@@ -21,7 +21,7 @@ public interface GiftServerApi {
                                       @Query("limit") int limit
     );
 
-    @PUT("/v2/gift/present-gift")
+    @PUT("/v3/gift/present-gift")
     Observable<ApiResult> buyGift(@Body RequestBody body);
 
     /**
