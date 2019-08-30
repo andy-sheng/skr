@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -21,8 +22,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
-import com.module.playways.R;
 import com.component.person.event.ShowPersonCardEvent;
+import com.module.playways.R;
 import com.module.playways.room.gift.event.OverlayGiftBrushMsgEvent;
 import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.comment.model.CommentGiftModel;
@@ -231,10 +232,11 @@ public class GiftContinuousView extends RelativeLayout {
         mGiftNumTv.setVisibility(VISIBLE);
         mGiftNumTv.setText(String.valueOf(count));
         if (mStep2Animator == null) {
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_X, 1.2f, 0.9f, 1);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_Y, 1.2f, 0.9f, 1);
+            PropertyValuesHolder propertyValuesHolder1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.2f, 0.9f, 1);
+            PropertyValuesHolder propertyValuesHolder2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.2f, 0.9f, 1);
+            ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mGiftNumTv, propertyValuesHolder1, propertyValuesHolder2);
             mStep2Animator = new AnimatorSet();
-            mStep2Animator.playTogether(objectAnimator1, objectAnimator2);
+            mStep2Animator.playTogether(objectAnimator);
             mStep2Animator.setDuration(300);
             mStep2Animator.addListener(new AnimatorListenerAdapter() {
                 @Override

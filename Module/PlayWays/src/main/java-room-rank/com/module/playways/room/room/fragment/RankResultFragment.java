@@ -3,6 +3,7 @@ package com.module.playways.room.room.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -12,19 +13,18 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
+import com.common.player.ExoPlayer;
 import com.common.player.IPlayer;
 import com.common.player.PlayerCallbackAdapter;
-import com.common.player.VideoPlayerAdapter;
-import com.common.player.ExoPlayer;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.view.RankResultView2;
-import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Room.EWinType;
@@ -136,22 +136,25 @@ public class RankResultFragment extends BaseFragment {
 
     private void animationEnterGo() {
         AnimatorSet set = new AnimatorSet();
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_X, 0.5f, 1f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_Y, 0.5f, 1f);
-        ObjectAnimator a3 = ObjectAnimator.ofFloat(mResultInfoArea, View.ALPHA, 0f, 1f);
+        PropertyValuesHolder objectAnimator1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 0.5f, 1f);
+        PropertyValuesHolder objectAnimator2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.5f, 1f);
+        PropertyValuesHolder objectAnimator3 = PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f);
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mResultInfoArea, objectAnimator1, objectAnimator2, objectAnimator3);
         set.setDuration(300);
-        set.playTogether(a1, a2, a3);
+        set.playTogether(objectAnimator);
         set.start();
     }
 
 
     private void animationExitGo() {
         AnimatorSet set = new AnimatorSet();
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_X, 1f, 0.5f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_Y, 1f, 0.5f);
-        ObjectAnimator a3 = ObjectAnimator.ofFloat(mResultInfoArea, View.ALPHA, 1f, 0f);
+        PropertyValuesHolder objectAnimator1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0.5f);
+        PropertyValuesHolder objectAnimator2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0.5f);
+        PropertyValuesHolder objectAnimator3 = PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mResultInfoArea, objectAnimator1, objectAnimator2, objectAnimator3);
         set.setDuration(300);
-        set.playTogether(a1, a2, a3);
+        set.playTogether(objectAnimator);
         set.start();
 
         set.addListener(new Animator.AnimatorListener() {

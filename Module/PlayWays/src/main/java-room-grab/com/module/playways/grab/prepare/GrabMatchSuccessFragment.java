@@ -2,6 +2,7 @@ package com.module.playways.grab.prepare;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -28,23 +29,20 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
-
 import com.module.RouterConstants;
+import com.module.playways.R;
 import com.module.playways.room.prepare.model.GameReadyModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.prepare.model.ReadyInfoModel;
 import com.module.playways.room.prepare.presenter.MatchSucessPresenter;
 import com.module.playways.room.prepare.view.IMatchSucessView;
-
-import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-
 
 import java.util.List;
 
@@ -219,22 +217,30 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     private void playScaleAnim(View simpleDraweeView, long delay) {
         AnimatorSet animatorSet = new AnimatorSet();//组合动画
-        ObjectAnimator scaleXPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 1.0f, 0.5f);
-        ObjectAnimator scaleYPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 1.0f, 0.5f);
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 0.5f, 1.0f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 0.5f, 1.0f);
-        scaleX.setInterpolator(new OvershootInterpolator(2));
-        scaleY.setInterpolator(new OvershootInterpolator(2));
-        scaleX.setDuration(500);
-        scaleY.setDuration(500);
-        scaleX.setStartDelay(delay);
-        scaleY.setStartDelay(delay);
-        scaleXPre.setDuration(0);
-        scaleYPre.setDuration(0);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(simpleDraweeView, "alpha", 0.5f, 1.0f);
-        alpha.setDuration(500);
-        alpha.setStartDelay(delay);
-        animatorSet.play(scaleX).with(scaleY).with(alpha).with(scaleXPre).with(scaleYPre);
+
+        PropertyValuesHolder scaleXPre = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.5f);
+        PropertyValuesHolder scaleYPre = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.5f);
+        ObjectAnimator objectAnimatorPre = ObjectAnimator.ofPropertyValuesHolder(simpleDraweeView, scaleXPre, scaleYPre);
+
+//        ObjectAnimator scaleXPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 1.0f, 0.5f);
+//        ObjectAnimator scaleYPre = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 1.0f, 0.5f);
+
+        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0.5f, 1.0f);
+        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0.5f, 1.0f);
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.5f, 1.0f);
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(simpleDraweeView, scaleX, scaleY, alpha);
+//        ObjectAnimator scaleX = ObjectAnimator.ofFloat(simpleDraweeView, "scaleX", 0.5f, 1.0f);
+//        ObjectAnimator scaleY = ObjectAnimator.ofFloat(simpleDraweeView, "scaleY", 0.5f, 1.0f);
+        objectAnimator.setInterpolator(new OvershootInterpolator(2));
+        objectAnimator.setDuration(500);
+        objectAnimator.setStartDelay(delay);
+        objectAnimatorPre.setDuration(0);
+//
+//        ObjectAnimator alpha = ObjectAnimator.ofFloat(simpleDraweeView, "alpha", 0.5f, 1.0f);
+//        alpha.setDuration(500);
+//        alpha.setStartDelay(delay);
+        animatorSet.play(objectAnimatorPre).with(objectAnimator);
         animatorSet.start();
     }
 

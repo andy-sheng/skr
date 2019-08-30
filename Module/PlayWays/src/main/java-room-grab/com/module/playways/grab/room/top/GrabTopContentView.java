@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -334,10 +335,11 @@ public class GrabTopContentView extends ConstraintLayout {
                     });
 
                     // 接下来是头像放大一点的动画
-                    ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.08f);
-                    ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.08f);
+                    PropertyValuesHolder propertyValuesHolder1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1, 1.08f);
+                    PropertyValuesHolder propertyValuesHolder2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1, 1.08f);
+                    ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(vp.grabTopItemView.mAvatarIv, propertyValuesHolder1, propertyValuesHolder2);
                     AnimatorSet animatorSet23 = new AnimatorSet();
-                    animatorSet23.playTogether(objectAnimator2, objectAnimator3);
+                    animatorSet23.playTogether(objectAnimator);
                     animatorSet23.setDuration(4 * 33);
 
                     AnimatorSet animatorSet123 = new AnimatorSet();

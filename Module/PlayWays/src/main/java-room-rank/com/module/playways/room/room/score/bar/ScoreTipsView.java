@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -95,12 +96,15 @@ public class ScoreTipsView extends RelativeLayout {
         {
             int scaleB = 3;
             int scaleE = 1;
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(this, View.SCALE_X, scaleB, scaleE);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(this, View.SCALE_Y, scaleB, scaleE);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(this, View.ALPHA, 0.1f, 1);
-            ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, U.getDisplayUtils().dip2px(7), 0);
+
+            PropertyValuesHolder propertyValuesHolder1 = PropertyValuesHolder.ofFloat(View.SCALE_X, scaleB, scaleE);
+            PropertyValuesHolder propertyValuesHolder2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, scaleB, scaleE);
+            PropertyValuesHolder propertyValuesHolder3 = PropertyValuesHolder.ofFloat(View.ALPHA, 0.1f, 1);
+            PropertyValuesHolder propertyValuesHolder4 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, U.getDisplayUtils().dip2px(7), 0);
+            ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(this, propertyValuesHolder1, propertyValuesHolder2, propertyValuesHolder3, propertyValuesHolder4);
+
             AnimatorSet animatorSet1 = new AnimatorSet();
-            animatorSet1.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+            animatorSet1.playTogether(objectAnimator);
             animatorSet1.setDuration(300);
             animatorSet1.setInterpolator(new AccelerateDecelerateInterpolator());
             animatorSetList.add(animatorSet1);
@@ -119,24 +123,28 @@ public class ScoreTipsView extends RelativeLayout {
 
 
         {
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(this, View.SCALE_X, 1, 0.8f);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(this, View.SCALE_Y, 1, 0.8f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(this, View.ALPHA, 1f, 0.7f);
-            ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, 0, -U.getDisplayUtils().dip2px(7));
+            PropertyValuesHolder propertyValuesHolder1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1, 0.8f);
+            PropertyValuesHolder propertyValuesHolder2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1, 0.8f);
+            PropertyValuesHolder propertyValuesHolder3 = PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0.7f);
+            PropertyValuesHolder propertyValuesHolder4 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0, -U.getDisplayUtils().dip2px(7));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(this, propertyValuesHolder1, propertyValuesHolder2, propertyValuesHolder3, propertyValuesHolder4);
+
             AnimatorSet animatorSet1 = new AnimatorSet();
-            animatorSet1.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+            animatorSet1.playTogether(objectAnimator);
             animatorSet1.setInterpolator(new LinearInterpolator());
             animatorSet1.setDuration(800);
             animatorSetList.add(animatorSet1);
         }
 
         {
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(this, View.SCALE_X, 0.8f, 0.2f);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(this, View.SCALE_Y, 0.8f, 0.2f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(this, View.ALPHA, 0.7f, 0.1f);
-            ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, -U.getDisplayUtils().dip2px(7), -U.getDisplayUtils().dip2px(33));
+            PropertyValuesHolder propertyValuesHolder1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 0.8f, 0.2f);
+            PropertyValuesHolder propertyValuesHolder2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.8f, 0.2f);
+            PropertyValuesHolder propertyValuesHolder3 = PropertyValuesHolder.ofFloat(View.ALPHA, 0.7f, 0.1f);
+            PropertyValuesHolder propertyValuesHolder4 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, -U.getDisplayUtils().dip2px(7), -U.getDisplayUtils().dip2px(33));
+            ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(this, propertyValuesHolder1, propertyValuesHolder2, propertyValuesHolder3, propertyValuesHolder4);
+
             AnimatorSet animatorSet1 = new AnimatorSet();
-            animatorSet1.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+            animatorSet1.playTogether(objectAnimator);
             animatorSet1.setInterpolator(new AccelerateInterpolator());
             animatorSet1.setDuration(300);
             animatorSetList.add(animatorSet1);

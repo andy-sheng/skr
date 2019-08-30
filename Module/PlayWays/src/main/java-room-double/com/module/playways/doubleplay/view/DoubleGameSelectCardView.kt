@@ -2,6 +2,7 @@ package com.module.playways.doubleplay.view
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -100,12 +101,12 @@ class DoubleGameSelectCardView : ExConstraintLayout {
 
     private fun startAnimation() {
         val animatorSet = AnimatorSet()
-        val scaleX = ObjectAnimator.ofFloat(this, "scaleX", 1.0f, 1.15f, 1.0f)
-        val scaleY = ObjectAnimator.ofFloat(this, "scaleY", 1.0f, 1.15f, 1.0f)
-
+        val propertyValuesHolder1 = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 1.15f, 1.0f)
+        val propertyValuesHolder2 = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 1.15f, 1.0f)
+        val objectAnimator = ObjectAnimator.ofPropertyValuesHolder(this, propertyValuesHolder1, propertyValuesHolder2)
         animatorSet.setDuration(500)
         animatorSet.interpolator = OvershootInterpolator()
-        animatorSet.play(scaleX).with(scaleY)
+        animatorSet.play(objectAnimator)
         animatorSet.start()
     }
 
