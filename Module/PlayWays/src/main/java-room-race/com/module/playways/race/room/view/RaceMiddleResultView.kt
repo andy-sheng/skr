@@ -78,6 +78,8 @@ class RaceMiddleResultView : ExConstraintLayout {
     fun showResult(lastRound:RaceRoundInfoModel,animationOverListener:()->Unit) {
         lastRound?.let {
             if (it.status == ERaceRoundStatus.ERRS_END.value) {
+                leftConstraintLayout.alpha = 1.0f
+                rightConstraintLayout.alpha = 1.0f
                 resultTv.visibility = View.GONE
                 leftTicketCountTv.text = it.scores[0].bLightCnt.toString()
                 if (it.scores[0].winType == ERaceWinType.RWT_WIN.value) {
@@ -95,6 +97,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                 if (it.scores[0].isEscape) {
                     leftTicketTv.visibility = View.GONE
                     leftTicketCountTv.text = "逃跑"
+                    leftConstraintLayout.alpha = 0.7f
                 } else {
                     leftTicketTv.visibility = View.VISIBLE
                 }
@@ -113,6 +116,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                 if (it.scores[1].isEscape) {
                     rightTicketTv.visibility = View.GONE
                     rightTicketCountTv.text = "逃跑"
+                    rightConstraintLayout.alpha = 0.7f
                 } else {
                     rightTicketTv.visibility = View.VISIBLE
                 }
