@@ -31,7 +31,6 @@ import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
 import com.module.playways.race.room.event.RaceSubRoundChangeEvent
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.model.*
-import com.module.playways.race.room.model.parseFromRoundInfoPB
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -45,8 +44,8 @@ import com.zq.live.proto.RaceRoom.ERWantSingType
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import com.zq.live.proto.RaceRoom.ERoundOverType
 import com.zq.live.proto.RaceRoom.RaceRoomMsg
-import com.zq.live.proto.Room.RoomMsg
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -284,23 +283,26 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
-    /**
-     * 退出房间
-     */
-    fun exitRoom(from: String) {
-        MyLog.d(TAG, "exitRoom from = $from")
-        launch {
-            val map = mutableMapOf(
-                    "roomID" to mRoomData.gameId
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.exitRoom(body) }
-            if (result.errno == 0) {
-                mRoomData.hasExitGame = true
-            } else {
-
+    companion object {
+        /**
+         * 退出房间
+         */
+        fun ComExitRoom(from: String, gameID: Int, raceRoomServerApi: RaceRoomServerApi) {
+            MyLog.d("RaceCorePresenter", "exitRoom from = $from")
+            GlobalScope.launch {
+                val map = mutableMapOf(
+                        "roomID" to gameID
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                subscribe { raceRoomServerApi.exitRoom(body) }
             }
         }
+    }
+
+    fun exitRoom(from: String) {
+        MyLog.d("RaceCorePresenter", "exitRoom from = $from")
+        mRoomData.hasExitGame = true
+        ComExitRoom(from, mRoomData.gameId, raceRoomServerApi)
     }
 
     fun goResultPage(lastRound: RaceRoundInfoModel) {
