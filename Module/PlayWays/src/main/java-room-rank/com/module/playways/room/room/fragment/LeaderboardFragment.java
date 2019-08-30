@@ -1,6 +1,7 @@
 package com.module.playways.room.room.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -142,6 +143,15 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mTvOtherArea = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_other_area);
         mPopupWindow = new PopupWindow(mLlAreaContainer);
         mPopupWindow.setOutsideTouchable(true);
+
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                Drawable drawable = U.getDrawable(R.drawable.triangle_up_icon);
+                drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(11), U.getDisplayUtils().dip2px(8));
+                mTvArea.setCompoundDrawables(null, null, drawable, null);
+            }
+        });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
@@ -293,6 +303,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         } else {
             mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
             mPopupWindow.setHeight(U.getDisplayUtils().dip2px(32));
+            Drawable drawable = U.getDrawable(R.drawable.triangle_down_icon);
+            drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(11), U.getDisplayUtils().dip2px(8));
+            mTvArea.setCompoundDrawables(null, null, drawable, null);
             mPopupWindow.showAsDropDown(mTvArea);
         }
         if (mRankMode == UserRankModel.COUNTRY) {

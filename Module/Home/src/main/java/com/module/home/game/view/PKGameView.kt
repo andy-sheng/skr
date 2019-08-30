@@ -8,6 +8,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
@@ -56,6 +57,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
     private val mIvVoiceRoom: ExImageView
     private val mIvAthleticsPk: ExImageView
     private val mUserInfoTitle: UserInfoTitleView
+    private val mLevelGapTv: TextView
     private val mClassicsHeader: ClassicsHeader
     private val mMedalLayout: ExRelativeLayout
     private val mLevelView: NormalLevelView2
@@ -78,6 +80,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         mClassicsHeader = findViewById(R.id.classics_header)
 
         mUserInfoTitle = findViewById(R.id.user_info_title)
+        mLevelGapTv = findViewById(R.id.level_gap_tv)
         mMedalLayout = findViewById(R.id.medal_layout)
         mLevelView = findViewById(R.id.level_view)
         mLevelTv = findViewById(R.id.level_tv)
@@ -205,6 +208,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         model?.let {
             mLevelView.bindData(it.mainRanking, it.subRanking)
             mLevelTv.text = it.rankingDesc
+            mLevelGapTv.text = "距离下次升段还需${it.maxExp - it.currExp}积分"
         }
     }
 
@@ -259,9 +263,11 @@ fun openPlayWaysActivityByRank(ctx: Context) {
                         .build()
                 tipsDialogView?.showByDialog()
             } else {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                        .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
-                        .withBoolean("selectSong", true)
+//                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+//                        .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
+//                        .withBoolean("selectSong", true)
+//                        .navigation()
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
                         .navigation()
             }
         }

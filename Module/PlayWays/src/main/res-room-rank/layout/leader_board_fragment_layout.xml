@@ -26,19 +26,21 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_area"
-            android:layout_width="@dimen/view_126_dp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/view_32_dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_25_dp"
             android:ellipsize="marquee"
             android:maxWidth="@dimen/view_180_dp"
-            android:paddingLeft="@dimen/view_10_dp"
-            android:paddingRight="@dimen/view_10_dp"
+            android:paddingLeft="@dimen/view_32_dp"
+            android:paddingRight="@dimen/view_25_dp"
+            android:drawablePadding="@dimen/view_10_dp"
+            android:drawableRight="@drawable/triangle_up_icon"
             android:singleLine="true"
             android:gravity="center"
             android:text="全国榜"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_20_dp"
+            android:textSize="@dimen/textsize_16_dp"
             app:bl_corners_radius="@dimen/view_6_dp"
             app:bl_solid_color="@color/black_trans_30" />
 
