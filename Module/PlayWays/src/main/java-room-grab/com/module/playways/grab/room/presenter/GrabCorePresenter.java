@@ -436,10 +436,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 如果确定是自己唱了,预先可以做的操作
      */
     void preOpWhenSelfRound() {
-        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         boolean needAcc = false;
         boolean needScore = false;
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        SongModel songModel = null;
         if (now != null) {
+            songModel = now.getMusic();
+            if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                songModel = songModel.getPkMusic();
+            }
             Params p = ZqEngineKit.getInstance().getParams();
             if (p != null) {
                 p.setGrabSingNoAcc(false);
@@ -453,7 +458,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             } else if (now.getWantSingType() == EWantSingType.EWST_MIN_GAME.getValue()) {
                 needAcc = false;
                 needScore = false;
-            } else if (mRoomData.isAccEnable()) {
+            } else if (mRoomData.isAccEnable() && songModel!=null && !TextUtils.isEmpty(songModel.getAcc())) {
                 needAcc = true;
                 needScore = true;
             } else {
@@ -465,8 +470,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         if (needAcc) {
             // 1. 开启伴奏的，预先下载 melp 资源
-            if (now != null) {
-                File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
+            if (songModel != null) {
+                File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
                 if (midiFile != null && !midiFile.exists()) {
                     U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile, true, null);
                 }
@@ -1490,7 +1495,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mSwitchRooming = false;
                 mIGrabView.onChangeRoomResult(false, "网络错误");
             }
-        }, this,new RequestControl("changeRoom", ControlType.CancelThis));
+        }, this, new RequestControl("changeRoom", ControlType.CancelThis));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

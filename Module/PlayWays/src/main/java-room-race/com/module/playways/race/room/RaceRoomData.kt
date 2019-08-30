@@ -1,5 +1,6 @@
 package com.module.playways.race.room
 
+import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
@@ -21,8 +22,16 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     var raceConfigModel: RaceConfigModel? = null
     var hasExitGame = false
-    var isAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
+    var isAccEnable = false
+        // 是否开启伴奏,只代表设置里伴奏开关
+        set(value) {
+            field = value
+            U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", value)
+        }
 
+    init {
+        isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
+    }
 
     /**
      * 检查轮次是否要更新

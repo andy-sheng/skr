@@ -337,31 +337,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     private fun preOpWhenSelfRound() {
         var needAcc = false
-        var needScore = false
-        val p = ZqEngineKit.getInstance().params
-        if (p != null) {
-            p.isGrabSingNoAcc = false
-        }
-        if (mRoomData.isAccEnable) {
-            needAcc = true
-            needScore = true
-        } else {
-            if (p != null) {
-                p.isGrabSingNoAcc = true
-                needScore = true
-            }
-        }
         val songModel = mRoomData?.realRoundInfo?.getSongModelNow()
-        if (needAcc) {
-            // 1. 开启伴奏的，预先下载 melp 资源
-            songModel?.let {
-                val midiFile = SongResUtils.getMIDIFileByUrl(it.midi)
-                if (midiFile != null && !midiFile.exists()) {
-                    U.getHttpUtils().downloadFileAsync(it.midi, midiFile, true, null)
-                }
-            }
-
+        if(mRoomData.isAccEnable && mRoomData?.realRoundInfo?.isAccRoundNow()==true){
+            needAcc = true
         }
+
+        val p = ZqEngineKit.getInstance().params
+        p.isGrabSingNoAcc = !needAcc
         if (!ZqEngineKit.getInstance().params.isAnchor) {
             ZqEngineKit.getInstance().setClientRole(true)
             ZqEngineKit.getInstance().muteLocalAudioStream(false)
@@ -378,37 +360,37 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }, 500)
         }
 
-        songModel?.let {
-            // 开始acr打分
-            if (ScoreConfig.isAcrEnable()) {
-                if (needAcc) {
-                    ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                            .setSongName(it.itemName)
-                            .setArtist(it.owner)
-                            .setMode(RecognizeConfig.MODE_MANUAL)
-                            .build())
-                } else {
-                    if (needScore) {
-                        // 清唱还需要打分，那就只用 acr 自动打分
-                        ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                                .setSongName(it.itemName)
-                                .setArtist(it.owner)
-                                .setMode(RecognizeConfig.MODE_AUTO)
-                                .setAutoTimes(3)
-                                .setMResultListener { result, list, targetSongInfo, lineNo ->
-                                    var mAcrScore = 0
-                                    if (targetSongInfo != null) {
-                                        mAcrScore = (targetSongInfo.score * 100).toInt()
-                                    }
-                                    EventBus.getDefault().post(LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound", -1, mAcrScore, 0))
-                                }
-                                .build())
-                    } else {
-
-                    }
-                }
-            }
-        }
+//        songModel?.let {
+//            // 开始acr打分
+//            if (ScoreConfig.isAcrEnable()) {
+//                if (needAcc) {
+//                    ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+//                            .setSongName(it.itemName)
+//                            .setArtist(it.owner)
+//                            .setMode(RecognizeConfig.MODE_MANUAL)
+//                            .build())
+//                } else {
+//                    if (needScore) {
+//                        // 清唱还需要打分，那就只用 acr 自动打分
+//                        ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+//                                .setSongName(it.itemName)
+//                                .setArtist(it.owner)
+//                                .setMode(RecognizeConfig.MODE_AUTO)
+//                                .setAutoTimes(3)
+//                                .setMResultListener { result, list, targetSongInfo, lineNo ->
+//                                    var mAcrScore = 0
+//                                    if (targetSongInfo != null) {
+//                                        mAcrScore = (targetSongInfo.score * 100).toInt()
+//                                    }
+//                                    EventBus.getDefault().post(LyricAndAccMatchManager.ScoreResultEvent("preOpWhenSelfRound", -1, mAcrScore, 0))
+//                                }
+//                                .build())
+//                    } else {
+//
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun closeEngine() {
@@ -768,7 +750,6 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 成功切换为主播
      */
     private fun onChangeBroadcastSuccess() {
-        MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节")
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         mUiHandler.post(Runnable {
             if (mRoomData.realRoundInfo?.isSingerNowBySelf() == false) {
@@ -783,7 +764,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
             // midi不需要在这下，只要下好，native就会解析，打分就能恢复
             val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
-
+            MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} accRound=${mRoomData?.realRoundInfo?.isAccRoundNow()} mRoomData.isAccEnable=${mRoomData.isAccEnable}")
             if (mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRoundNow() == true)) {
                 val songBeginTs = songModel.beginMs
                 if (accFile != null && accFile.exists()) {
