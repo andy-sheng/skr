@@ -33,12 +33,12 @@
             android:id="@+id/left_ticket_count_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_58_dp"
+            android:layout_marginRight="@dimen/view_35_dp"
             android:text="0"
             android:textColor="#ffffd693"
             android:textSize="@dimen/textsize_30_dp"
             app:layout_constraintBottom_toBottomOf="@+id/left_avatar_iv"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/left_avatar_iv"
             app:layout_constraintTop_toTopOf="@+id/left_avatar_iv" />
 
         <com.common.view.ex.ExTextView
@@ -97,15 +97,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.ex.ExTextView
+            android:layout_marginLeft="@dimen/view_30_dp"
             android:id="@+id/right_ticket_count_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/view_58_dp"
             android:text="0"
             android:textColor="#ffffd693"
             android:textSize="@dimen/textsize_30_dp"
             app:layout_constraintBottom_toBottomOf="@+id/right_avatar_iv"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/right_avatar_iv"
             app:layout_constraintTop_toTopOf="@+id/right_avatar_iv" />
 
         <com.common.view.ex.ExTextView
