@@ -135,10 +135,9 @@ class RaceSelectSongView : ExConstraintLayout {
         }
 
         var lastedTime = 9000
-        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value
-                && mRoomData?.realRoundInfo?.enterSubRoundSeq == mRoomData?.realRoundInfo?.subRoundSeq) {
+        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
             mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
-                lastedTime = 9000 - 4000
+                lastedTime = 9000 - it
                 MyLog.d(mTag, "setSongName elapsedTimeMs is $it")
                 if (lastedTime < 0) {
                     lastedTime = 9000
