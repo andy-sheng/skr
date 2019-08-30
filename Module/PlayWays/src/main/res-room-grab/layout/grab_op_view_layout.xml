@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_57_dp"
         android:layout_below="@+id/grab_container"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_20_dp">
 
@@ -55,7 +55,7 @@
             android:layout_width="@dimen/view_87_dp"
             android:layout_height="@dimen/view_45_dp"
             android:layout_alignLeft="@+id/grab2_iv"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/coin_flag_iv"

@@ -526,7 +526,7 @@ public class GrabOpView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
-        if (mSeq == event.getRoundInfo().getRoundSeq()) {
+        if (mSeq == event.getRoundInfo().getRoundSeq() && event.uid == MyUserInfoManager.getInstance().getUid()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();
         }
