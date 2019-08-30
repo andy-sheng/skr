@@ -529,6 +529,8 @@ public class GrabOpView extends RelativeLayout {
         if (mSeq == event.getRoundInfo().getRoundSeq() && event.uid == MyUserInfoManager.getInstance().getUid()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();
+        } else {
+            mIvLightOff.setVisibility(View.GONE);
         }
     }
 
