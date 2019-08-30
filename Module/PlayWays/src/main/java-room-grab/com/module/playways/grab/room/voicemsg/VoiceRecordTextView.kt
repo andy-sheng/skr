@@ -19,6 +19,8 @@ import com.common.view.ex.ExTextView
 import com.module.playways.BaseRoomData
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.model.GrabRoundInfoModel
+import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.room.RankRoomServerApi
@@ -117,6 +119,22 @@ class VoiceRecordTextView : ExTextView {
                         // 是主播切开麦不能录音
                         U.getToastUtil().showShort("在麦上无法录音")
                         return false
+                    }
+                }
+
+                if (mRoomData is RaceRoomData) {
+                    val roundInfoModel = mRoomData?.realRoundInfo as RaceRoundInfoModel?
+                    roundInfoModel?.let {
+                        if (it.isSingerNowBySelf()) {
+                            U.getToastUtil().showShort("演唱中无法录音")
+                            return false
+                        }
+
+                        if (ZqEngineKit.getInstance().params.isAnchor && !ZqEngineKit.getInstance().params.isLocalAudioStreamMute) {
+                            // 是主播切开麦不能录音
+                            U.getToastUtil().showShort("在麦上无法录音")
+                            return false
+                        }
                     }
                 }
 

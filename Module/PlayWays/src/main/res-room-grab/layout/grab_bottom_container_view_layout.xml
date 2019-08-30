@@ -92,7 +92,7 @@
         android:layout_toRightOf="@+id/input_btn"
         android:gravity="center"
         android:singleLine="true"
-        android:text="按住说话"
+        android:text="TAG"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_16_dp"
         android:visibility="gone"
