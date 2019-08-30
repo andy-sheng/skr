@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_170_dp"
         android:layout_alignTop="@id/iv_bg"
-        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
@@ -69,14 +69,24 @@
         app:ly_show_author="true"
         app:ly_top_line_num="2" />
 
+    <View
+        android:id="@+id/voice_scale_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/voice_scale_view"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginBottom="@dimen/view_56_dp"
+        android:background="#1e404A9A" />
+
     <com.component.lyrics.widget.VoiceScaleView
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_56_dp"
         android:layout_below="@+id/many_lyrics_view"
-        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="-27dp"
-        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:visibility="visible"
         app:leftBgPaintColor="@color/transparent"
         app:leftPaintColor="#FFFFC15B"
