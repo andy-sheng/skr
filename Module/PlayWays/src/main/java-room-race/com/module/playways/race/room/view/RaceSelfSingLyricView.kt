@@ -180,12 +180,9 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
     }
 
     fun reset() {
-        if (mManyLyricsView != null) {
-            mManyLyricsView!!.lyricsReader = null
-        }
-        if (mLyricAndAccMatchManager != null) {
-            mLyricAndAccMatchManager!!.stop()
-        }
+        mManyLyricsView?.lyricsReader = null
+        mLyricAndAccMatchManager?.stop()
+        mSingCountDownView2?.reset()
     }
 
     override fun setVisibility(visibility: Int) {

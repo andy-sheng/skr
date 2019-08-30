@@ -266,7 +266,8 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     /**
      * 主动告诉服务器我演唱完毕
      */
-    fun sendSingComplete() {
+    fun sendSingComplete(from:String) {
+        MyLog.d(TAG, "sendSingComplete from = $from")
         launch {
             val map = mutableMapOf(
                     "roomID" to mRoomData.gameId,

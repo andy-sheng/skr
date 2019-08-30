@@ -408,7 +408,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceRightOpView.showGiveUp(false)
             //            mRaceTopVsView.visibility = View.GONE
             mRaceSelfSingLyricView.startFly {
-                mCorePresenter.sendSingComplete()
+                mCorePresenter.sendSingComplete("singBySelfFirstRound")
             }
             hideAllSceneView()
             mRaceSelfSingLyricView.realView.visibility = View.VISIBLE
@@ -461,7 +461,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.startSingBySelf {
             mRaceRightOpView.showGiveUp(false)
             mRaceSelfSingLyricView.startFly {
-                mCorePresenter.sendSingComplete()
+                mCorePresenter.sendSingComplete("singBySelfSecondRound")
             }
             hideAllSceneView()
             mRaceSelfSingLyricView.realView.visibility = View.VISIBLE

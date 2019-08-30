@@ -31,6 +31,7 @@ class SingCountDownView2 : RelativeLayout {
         circle_count_down_view.setProgress(0)
         circle_count_down_view.max = 360
         circle_count_down_view.cancelAnim()
+        this.mListener = null
         mCounDownTask?.dispose()
     }
 
