@@ -57,6 +57,7 @@ class RaceRightOpView : ConstraintLayout {
         giveUpIv.visibility = View.GONE
         voteIv.visibility = View.VISIBLE
         voteIv.isSelected = isSelected
+        voteIv.isClickable = !isSelected
     }
 
     fun showGiveUp(isSelected: Boolean) {
@@ -64,6 +65,7 @@ class RaceRightOpView : ConstraintLayout {
         voteIv.visibility = View.GONE
         giveUpIv.visibility = View.VISIBLE
         giveUpIv.isSelected = isSelected
+        giveUpIv.isClickable = !isSelected
     }
 
     fun setListener(listener: RightOpListener) {
