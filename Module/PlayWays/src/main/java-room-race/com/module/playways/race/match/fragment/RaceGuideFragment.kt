@@ -91,4 +91,9 @@ class RaceGuideFragment : BaseFragment() {
     override fun useEventBus(): Boolean {
         return false
     }
+
+    override fun onBackPressed(): Boolean {
+        activity?.finish()
+        return true
+    }
 }
