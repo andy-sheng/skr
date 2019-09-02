@@ -71,6 +71,7 @@ import java.util.ArrayList
 import java.util.HashMap
 
 import com.component.person.model.RelationNumModel
+import com.component.person.model.ScoreDetailModel
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
 
@@ -241,6 +242,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 //                    val userLevelModels = JSON.parseArray(result.data!!.getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel::class.java)
                     //                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
 
+                    val scoreDetailModel = JSON.parseObject(result.data.getString("scoreDetail"), ScoreDetailModel::class.java)
                     val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
                     val isFollow = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFollow")
 
@@ -252,12 +254,20 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                         UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
                     }
                     showUserInfo(userInfoModel)
+                    showUserLevel(scoreDetailModel)
                     showUserRelationNum(relationNumModes)
                     showUserRelation(isFriend, isFollow)
                     showCharmsTag(meiLiCntTotal)
                 }
             }
         }, mContext as BaseActivity)
+    }
+
+    private fun showUserLevel(scoreDetailModel: ScoreDetailModel?) {
+        scoreDetailModel?.scoreStateModel?.let {
+            mLevelView.visibility = View.VISIBLE
+            mLevelView.bindData(it.mainRanking, it.subRanking)
+        }
     }
 
     @JvmOverloads

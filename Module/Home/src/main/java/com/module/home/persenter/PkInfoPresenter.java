@@ -3,6 +3,7 @@ package com.module.home.persenter;
 import com.alibaba.fastjson.JSON;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.component.person.model.ScoreDetailModel;
 import com.component.person.model.UserRankModel;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -55,11 +56,12 @@ public class PkInfoPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mLastUpdateTime = System.currentTimeMillis();
-                    ScoreStateModel stateModel = JSON.parseObject(result.getData().getString("ranking"), ScoreStateModel.class);
-                    long raceTicketCnt = result.getData().getLongValue("raceTicketCnt");
-                    long standLightCnt = result.getData().getLongValue("standLightCnt");
-                    mView.showUserLevel(stateModel);
-                    mView.showGameStatic(raceTicketCnt, standLightCnt);
+                    ScoreDetailModel scoreDetailModel = JSON.parseObject(result.getData().toJSONString(), ScoreDetailModel.class);
+//                    ScoreStateModel stateModel = JSON.parseObject(result.getData().getString("ranking"), ScoreStateModel.class);
+//                    long raceTicketCnt = result.getData().getLongValue("raceTicketCnt");
+//                    long standLightCnt = result.getData().getLongValue("standLightCnt");
+                    mView.showUserLevel(scoreDetailModel.getScoreStateModel());
+                    mView.showGameStatic(scoreDetailModel.getRaceTicketCnt(), scoreDetailModel.getStandLightCnt());
                 }
             }
         }, this);
