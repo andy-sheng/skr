@@ -5,6 +5,7 @@ import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.match.pbLocalModel.LocalRJoinActionMsg
@@ -45,6 +46,8 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
                         MyLog.d(mTag, "model is = $model")
                         joinRoom(model)
                     }
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
                 }
                 delay(10000)
             }
