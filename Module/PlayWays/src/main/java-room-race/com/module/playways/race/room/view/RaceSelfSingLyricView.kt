@@ -24,7 +24,7 @@ import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.disposables.Disposable
 
 class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoomData?) : ExViewStub(viewStub) {
-    val TAG = "SelfSingLyricView"
+    val TAG = "RaceSelfSingLyricView"
 
     protected lateinit var mSvlyric: ScrollView
     protected lateinit var mTvLyric: TextView
@@ -173,15 +173,22 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
     }
 
     fun reset() {
-        mManyLyricsView?.lyricsReader = null
-        mLyricAndAccMatchManager?.stop()
-        mSingCountDownView2?.reset()
+        if (mParentView != null) {
+            MyLog.d(TAG, "reset")
+            mManyLyricsView?.lyricsReader = null
+            mLyricAndAccMatchManager?.stop()
+            mSingCountDownView2?.reset()
+        }
     }
 
     override fun setVisibility(visibility: Int) {
-        super.setVisibility(visibility)
         if (visibility == View.GONE) {
-            reset()
+            if (View.GONE != getVisibility()) {
+                super.setVisibility(visibility)
+                reset()
+            }
+        } else {
+            super.setVisibility(visibility)
         }
     }
 }

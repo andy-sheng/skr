@@ -97,8 +97,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     private fun hideAllSceneView() {
-        mRaceSelfSingLyricView?.realView?.visibility = View.GONE
-        mRaceOtherSingCardView.realView?.visibility = View.GONE
+        mRaceSelfSingLyricView?.visibility = View.GONE
+        mRaceOtherSingCardView.visibility = View.GONE
         mRaceNoSingCardView?.visibility = View.GONE
         mRaceMiddleResultView?.visibility = View.GONE
         mRaceSelectSongView?.visibility = View.GONE
@@ -408,13 +408,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.startVs()
         mRaceTopVsView.startSingBySelf {
+            hideAllSceneView()
             mRaceRightOpView.showGiveUp(false)
             //            mRaceTopVsView.visibility = View.GONE
             mRaceSelfSingLyricView.startFly {
                 mCorePresenter.sendSingComplete("singBySelfFirstRound")
             }
-            hideAllSceneView()
-            mRaceSelfSingLyricView.realView.visibility = View.VISIBLE
+            mRaceSelfSingLyricView.visibility = View.VISIBLE
         }
     }
 
@@ -453,14 +453,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 showRightVote()
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
-                mRaceOtherSingCardView.realView.visibility = View.VISIBLE
+                mRaceOtherSingCardView.visibility = View.VISIBLE
             } else {
                 mRaceTopVsView.startVs()
                 mRaceTopVsView.startSingByOther(1) {
                     showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
-                    mRaceOtherSingCardView.realView.visibility = View.VISIBLE
+                    mRaceOtherSingCardView.visibility = View.VISIBLE
                 }
             }
         }
@@ -485,12 +485,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.bindData()
         mRaceTopVsView.startSingBySelf {
+            hideAllSceneView()
             mRaceRightOpView.showGiveUp(false)
             mRaceSelfSingLyricView.startFly {
                 mCorePresenter.sendSingComplete("singBySelfSecondRound")
             }
-            hideAllSceneView()
-            mRaceSelfSingLyricView.realView.visibility = View.VISIBLE
+            mRaceSelfSingLyricView.visibility = View.VISIBLE
         }
     }
 
@@ -506,13 +506,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mRaceTopVsView.bindData()
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
-                mRaceOtherSingCardView.realView.visibility = View.VISIBLE
+                mRaceOtherSingCardView.visibility = View.VISIBLE
             } else {
                 mRaceTopVsView.startSingByOther(2) {
                     showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
-                    mRaceOtherSingCardView.realView.visibility = View.VISIBLE
+                    mRaceOtherSingCardView.visibility = View.VISIBLE
                 }
             }
         }
