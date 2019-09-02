@@ -248,63 +248,39 @@ fun openPlayWaysActivityByRank(ctx: Context) {
     GlobalScope.launch(Dispatchers.Main) {
         var tipsDialogView: TipsDialogView? = null
         val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
-        val apiResult = subscribe(RequestControl("getGameConfig", ControlType.CancelThis)) { api.getGameConfig(1, false) }
-        if (apiResult.errno == 0) {
-            val jo = apiResult.data.getJSONObject("detail")
-            if (jo != null && !jo.getBooleanValue("isOpen")) {
+        val check = subscribe(RequestControl("", ControlType.CancelThis)) { api.checkRank(1) }
+        if (check.errno == 0) {
+            // 可以进房间
+            val skrAudioPermission = SkrAudioPermission()
+            skrAudioPermission.ensurePermission({
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+                        .navigation()
+            }, true)
+        } else {
+            if (check.errno == ERROR_NETWORK_BROKEN) {
                 tipsDialogView?.dismiss()
                 tipsDialogView = TipsDialogView.Builder(ctx)
-                        .setMessageTip(jo.getString("content"))
+                        .setMessageTip("网络连接不可用，请检查网络后重试")
                         .setOkBtnTip("确定")
                         .setOkBtnClickListener(object : DebounceViewClickListener() {
                             override fun clickValid(v: View?) {
                                 tipsDialogView?.dismiss()
-                                if (jo.getBooleanValue("needUpdate")) {
-                                    UpgradeManager.getInstance().checkUpdate2()
-                                } else {
-                                    // donothing
-                                }
                             }
                         })
                         .build()
                 tipsDialogView?.showByDialog()
             } else {
-                val check = subscribe(RequestControl("", ControlType.CancelThis)) { api.checkRank(1) }
-                if (check.errno == 0) {
-                    // 可以进
-                    val skrAudioPermission = SkrAudioPermission()
-                    skrAudioPermission.ensurePermission({
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
-                                .navigation()
-                    }, true)
-                } else {
-                    if (check.errno == ERROR_NETWORK_BROKEN) {
-                        tipsDialogView?.dismiss()
-                        tipsDialogView = TipsDialogView.Builder(ctx)
-                                .setMessageTip("网络连接不可用，请检查网络后重试")
-                                .setOkBtnTip("确定")
-                                .setOkBtnClickListener(object : DebounceViewClickListener() {
-                                    override fun clickValid(v: View?) {
-                                        tipsDialogView?.dismiss()
-                                    }
-                                })
-                                .build()
-                        tipsDialogView?.showByDialog()
-                    } else {
-                        tipsDialogView?.dismiss()
-                        tipsDialogView = TipsDialogView.Builder(ctx)
-                                .setMessageTip(check.errmsg)
-                                .setOkBtnTip("确定")
-                                .setOkBtnClickListener(object : DebounceViewClickListener() {
-                                    override fun clickValid(v: View?) {
-                                        tipsDialogView?.dismiss()
-                                    }
-                                })
-                                .build()
-                        tipsDialogView?.showByDialog()
-                    }
-                }
-
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
+                        .setMessageTip(check.errmsg)
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                            }
+                        })
+                        .build()
+                tipsDialogView?.showByDialog()
             }
         }
     }
