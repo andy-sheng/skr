@@ -248,7 +248,7 @@ fun openPlayWaysActivityByRank(ctx: Context) {
     GlobalScope.launch(Dispatchers.Main) {
         var tipsDialogView: TipsDialogView? = null
         val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
-        val check = subscribe(RequestControl("", ControlType.CancelThis)) { api.checkRank(1) }
+        val check = subscribe(RequestControl("checkRank", ControlType.CancelThis)) { api.checkRank(1) }
         if (check.errno == 0) {
             // 可以进房间
             val skrAudioPermission = SkrAudioPermission()
@@ -269,7 +269,7 @@ fun openPlayWaysActivityByRank(ctx: Context) {
                         })
                         .build()
                 tipsDialogView?.showByDialog()
-            } else {
+            } else if (check.errno > 0){
                 tipsDialogView?.dismiss()
                 tipsDialogView = TipsDialogView.Builder(ctx)
                         .setMessageTip(check.errmsg)
