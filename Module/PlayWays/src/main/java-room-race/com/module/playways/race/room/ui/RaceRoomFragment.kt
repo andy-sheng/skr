@@ -220,9 +220,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mBottomContainerView.setRoomData(mRoomData)
         mBottomContainerView.setListener(object : BottomContainerView.Listener() {
             override fun showInputBtnClick() {
-                if (mPersonInfoDialog?.isShowing() == true) {
-                    mPersonInfoDialog?.dismiss()
-                }
+                dismissDialog()
                 mInputContainerView.showSoftInput()
             }
 
@@ -252,6 +250,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             override fun onClickVoiceAudition() {
                 // 调音面板
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
+                dismissDialog()
                 if (mRaceVoiceControlPanelView == null) {
                     mRaceVoiceControlPanelView = RaceVoiceControlPanelView(this@RaceRoomFragment)
                     mRaceVoiceControlPanelView?.setRoomData(mRoomData)
@@ -278,12 +277,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-                mGameRuleDialog?.dismiss(false)
+                dismissDialog()
                 mGameRuleDialog = DialogPlus.newDialog(context!!)
                         .setContentHolder(ViewHolder(R.layout.race_game_rule_view_layout))
                         .setContentBackgroundResource(R.color.transparent)
                         .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setMargin(U.getDisplayUtils().dip2px(16f),-1,U.getDisplayUtils().dip2px(16f),-1)
+                        .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
                         .setExpanded(false)
                         .setGravity(Gravity.CENTER)
                         .create()
@@ -297,6 +296,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
         mRaceTopContentView.setListener(object : RaceTopContentView.Listener {
             override fun clickMore() {
+                dismissDialog()
                 mRaceActorPanelView = RaceActorPanelView(this@RaceRoomFragment, mRoomData)
                 mRaceActorPanelView?.showByDialog()
             }
@@ -608,12 +608,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         return true
     }
 
-    fun quitGame(){
+    fun quitGame() {
         mCorePresenter.exitRoom("quitGame")
         activity?.finish()
     }
+
     override fun destroy() {
         super.destroy()
+        dismissDialog()
+    }
+
+    private fun dismissDialog() {
         mRaceActorPanelView?.dismiss(false)
         mPersonInfoDialog?.dismiss(false)
         mRaceVoiceControlPanelView?.dismiss(false)
