@@ -52,7 +52,7 @@ public class RaceMatchActivity extends BaseActivity {
         if (U.getPreferenceUtils().getSettingBoolean("is_first_race", true)) {
             U.getFragmentUtils().addFragment(
                     FragmentUtils.newAddParamsBuilder(this, RaceGuideFragment.class)
-                            .setAddToBackStack(true)
+                            .setAddToBackStack(false)
                             .setHasAnimation(false)
                             .build());
         } else {
