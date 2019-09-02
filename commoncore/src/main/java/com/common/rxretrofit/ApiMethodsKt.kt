@@ -17,6 +17,12 @@ val requestMap = ArrayMap<String, Call<ApiResult>>()
 const val ERROR_NETWORK_BROKEN = -2
 
 suspend fun subscribe(rc: RequestControl? = null, api: () -> Call<ApiResult>): ApiResult {
+    if(!U.getNetworkUtils().hasNetwork()){
+        return ApiResult().apply {
+            errno = ERROR_NETWORK_BROKEN
+            errmsg = "网络链接不可用"
+        }
+    }
     rc?.let {
         MyLog.d("ApiObserverKt", "${rc.key}请求")
         val job = requestMap[rc.key]
