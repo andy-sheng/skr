@@ -442,7 +442,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
         mRaceTopVsView.startVs()
-        mRaceTopVsView.startSingByOther {
+        mRaceTopVsView.startSingByOther(1) {
             if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
                 mRaceRightOpView.visibility = View.GONE
             } else {
@@ -472,7 +472,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         MyLog.d(TAG, "singByOtherSecondRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
-        mRaceTopVsView.startSingByOther {
+        mRaceTopVsView.startSingByOther(2) {
             if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
                 mRaceRightOpView.visibility = View.GONE
             } else {

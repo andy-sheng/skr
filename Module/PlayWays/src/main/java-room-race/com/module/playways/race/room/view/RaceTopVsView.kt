@@ -91,9 +91,9 @@ class RaceTopVsView : ExConstraintLayout {
         }
     }
 
-    fun startSingByOther(call: (() -> Unit)?) {
+    fun startSingByOther(round: Int, call: (() -> Unit)?) {
         roomData?.realRoundInfo?.subRoundInfo?.let {
-            if (roomData?.getUserInfo(it[0].userID)?.userId != MyUserInfoManager.getInstance().uid.toInt()) {
+            if (round == 1) {
                 leftCircleCountDownView.visibility = View.VISIBLE
                 leftCircleCountDownView.go(0, 3 * 1000) {
                     leftCircleCountDownView.visibility = View.GONE
