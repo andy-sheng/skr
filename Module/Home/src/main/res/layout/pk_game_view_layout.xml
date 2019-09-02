@@ -216,7 +216,7 @@
                 <com.common.view.ex.ExImageView
                     android:id="@+id/iv_athletics_pk"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/view_232_dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
                     android:src="@drawable/paiweisai" />
@@ -224,7 +224,7 @@
                 <com.common.view.ex.ExImageView
                     android:id="@+id/iv_voice_room"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/view_232_dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/view_15_dp"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
