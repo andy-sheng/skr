@@ -11,14 +11,17 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
+import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.race.room.RaceRoomData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 
 class RaceTopVsView : ExConstraintLayout {
@@ -57,6 +60,22 @@ class RaceTopVsView : ExConstraintLayout {
         rightAvatarIv = this.findViewById(com.module.playways.R.id.right_avatar_iv)
         rightCircleCountDownView = this.findViewById(com.module.playways.R.id.right_circle_count_down_view)
         raceTopVsIv = this.findViewById(com.module.playways.R.id.race_top_vs_iv)
+
+        leftAvatarIv.setDebounceViewClickListener {
+            roomData?.realRoundInfo?.subRoundInfo?.let {
+                if (it.size == 2) {
+                    EventBus.getDefault().post(ShowPersonCardEvent(it[0].userID))
+                }
+            }
+        }
+
+        rightAvatarIv.setDebounceViewClickListener {
+            roomData?.realRoundInfo?.subRoundInfo?.let {
+                if (it.size == 2) {
+                    EventBus.getDefault().post(ShowPersonCardEvent(it[1].userID))
+                }
+            }
+        }
     }
 
     fun setRaceRoomData(roomData: RaceRoomData) {
