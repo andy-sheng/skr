@@ -41,6 +41,7 @@ class RaceSelectSongView : ExConstraintLayout {
     var mRoomData: RaceRoomData? = null
     var mSelectCall: ((Int) -> Unit)? = null
     var mNoSelectCall: (() -> Unit)? = null
+    var mSeq = -1
 
     constructor(context: Context) : super(context)
 
@@ -68,29 +69,37 @@ class RaceSelectSongView : ExConstraintLayout {
         progressBar.progress = 0
         firstSongItem.setDebounceViewClickListener {
             firstSongItem.getSong()?.let {
-                mSelectCall?.invoke(1)
-                mNoSelectCall = null
+                if (mRoomData?.realRoundSeq == mSeq) {
+                    mSelectCall?.invoke(1)
+                    mNoSelectCall = null
+                }
             }
         }
 
         secondSongItem.setDebounceViewClickListener {
             secondSongItem.getSong()?.let {
-                mSelectCall?.invoke(2)
-                mNoSelectCall = null
+                if (mRoomData?.realRoundSeq == mSeq) {
+                    mSelectCall?.invoke(2)
+                    mNoSelectCall = null
+                }
             }
         }
 
         thirdSongItem.setDebounceViewClickListener {
             thirdSongItem.getSong()?.let {
-                mSelectCall?.invoke(3)
-                mNoSelectCall = null
+                if (mRoomData?.realRoundSeq == mSeq) {
+                    mSelectCall?.invoke(3)
+                    mNoSelectCall = null
+                }
             }
         }
 
         forthSongItem.setDebounceViewClickListener {
             forthSongItem.getSong()?.let {
-                mSelectCall?.invoke(4)
-                mNoSelectCall = null
+                if (mRoomData?.realRoundSeq == mSeq) {
+                    mSelectCall?.invoke(4)
+                    mNoSelectCall = null
+                }
             }
         }
     }
@@ -107,8 +116,9 @@ class RaceSelectSongView : ExConstraintLayout {
     var scaleAnimatorSet: Animator? = null
 
     //倒计时3秒，选择6秒
-    fun setSongName(noSelectCall: (() -> Unit)?) {
+    fun setSongName(seq: Int, noSelectCall: (() -> Unit)?) {
         progressBar.progress = 0
+        mSeq = seq
         scaleAnimatorSet = ObjectAnimator.ofPropertyValuesHolder(
                 this@RaceSelectSongView,
                 PropertyValuesHolder.ofFloat("scaleX", 0.85f, 1f),

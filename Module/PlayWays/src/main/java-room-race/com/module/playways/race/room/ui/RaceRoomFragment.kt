@@ -576,7 +576,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceSelectSongView.visibility = View.VISIBLE
         hideAllSceneView()
         mRaceSelectSongView.visibility = View.VISIBLE
-        mRaceSelectSongView.setSongName {
+        mRaceSelectSongView.setSongName(mRoomData.realRoundSeq) {
             mCorePresenter.sendIntroOver()
         }
     }
