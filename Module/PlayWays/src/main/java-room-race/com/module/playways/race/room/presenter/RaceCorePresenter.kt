@@ -19,6 +19,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.videocache.MediaCacheManager
 import com.component.busilib.constans.GameModeType
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
@@ -47,15 +48,14 @@ import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RaceRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import okhttp3.Dispatcher
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.Runnable
 
 class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
@@ -483,6 +483,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             if (thisRound?.subRoundSeq == 1) {
+                tryDownloadAccIfSelfSing()
                 // 变为演唱阶段，第一轮
                 val subRound1 = thisRound.subRoundInfo.get(0)
                 if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
@@ -505,6 +506,50 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             // 结束
 //            mIRaceRoomView.roundOver(thisRound?.overReason)
         }
+    }
+
+    private fun tryDownloadAccIfSelfSing() {
+        /**
+         * 有的网络伴奏在线播有问题，比如公司网络，这里尝试提前下载一下伴奏
+         */
+        var accUrl: String? = null
+        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            // 第一轮是自己唱
+            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(1) == true) {
+                // 第一轮是伴奏演唱
+                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.choiceID?.let {
+                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
+                    songModel?.acc?.let {
+                        accUrl = it
+                    }
+                }
+            }
+        }
+        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            // 第一轮是自己唱
+            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(2) == true) {
+                // 第一轮是伴奏演唱
+                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.choiceID?.let {
+                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
+                    songModel?.acc?.let {
+                        accUrl = it
+                    }
+                }
+            }
+        }
+        accUrl?.let {
+            //尝试下载伴奏
+            launch(Dispatchers.IO) {
+                val f = SongResUtils.getAccFileByUrl(it)
+                if (f != null && !f.exists()) {
+                    if (!U.getHttpUtils().isDownloading(it)) {
+                        MyLog.d(TAG, "tryDownloadAccIfSelfSing 开始下载伴奏 acc=${it}")
+                        U.getHttpUtils().downloadFileSync(it, f, true, null)
+                    }
+                }
+            }
+        }
+
     }
 
     /**

@@ -305,6 +305,21 @@ public class HttpUtils {
         }
     }
 
+    /**
+     * 某个请求正在下载
+     *
+     * @param url
+     * @return
+     */
+    public boolean isDownloading(String url) {
+        DownloadParams downloadParams = mDownLoadMap.get(url);
+        if (downloadParams != null && downloadParams.hasCancel == false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void cancelDownload(String bucketName, String objectkey) {
         String urlStr = bucketName + "_" + objectkey;
         DownloadParams downloadParams = mDownLoadMap.get(urlStr);

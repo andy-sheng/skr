@@ -9,6 +9,7 @@ import android.view.animation.ScaleAnimation
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
@@ -55,7 +56,16 @@ class RaceSelectSongItemView : ExConstraintLayout {
     fun setSong(info: RaceGamePlayInfo?) {
         info?.let {
             this.info = it
-            songNameTv.text = "《${info.commonMusic?.itemName}》"
+            if (MyLog.isDebugLogOpen()) {
+                if(info.commonMusic?.acc.isNullOrEmpty()){
+                    songNameTv.text = "《${info.commonMusic?.itemName}》无伴奏"
+                }else{
+                    songNameTv.text = "《${info.commonMusic?.itemName}》有伴奏${info.commonMusic?.acc}"
+                }
+
+            } else {
+                songNameTv.text = "《${info.commonMusic?.itemName}》"
+            }
         }
     }
 
