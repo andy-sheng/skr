@@ -30,6 +30,7 @@ import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.inter.IRaceRoomView
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -50,6 +51,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.Subscribe
@@ -448,26 +450,30 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 //中途进来的
                 mRaceTopVsView.bindData()
                 mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
-                if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-                    mRaceRightOpView.visibility = View.GONE
-                } else {
-                    mRaceRightOpView.showVote(false)
-                }
+                showRightVote()
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
                 mRaceOtherSingCardView.realView.visibility = View.VISIBLE
             } else {
                 mRaceTopVsView.startVs()
                 mRaceTopVsView.startSingByOther(1) {
-                    if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-                        mRaceRightOpView.visibility = View.GONE
-                    } else {
-                        mRaceRightOpView.showVote(false)
-                    }
+                    showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
                     mRaceOtherSingCardView.realView.visibility = View.VISIBLE
                 }
+            }
+        }
+    }
+
+    private fun showRightVote(){
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+            mRaceRightOpView.visibility = View.GONE
+        } else {
+            if (mRoomData.getPlayerInfoModel<RacePlayerInfoModel>(MyUserInfoManager.getInstance().uid.toInt())?.role == ERUserRole.ERUR_PLAY_USER.value) {
+                mRaceRightOpView.showVote(false)
+            } else {
+                mRaceRightOpView.visibility = View.GONE
             }
         }
     }
@@ -495,11 +501,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.visibility = View.VISIBLE
         mRoomData.realRoundInfo?.let {
             if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
-                if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-                    mRaceRightOpView.visibility = View.GONE
-                } else {
-                    mRaceRightOpView.showVote(false)
-                }
+                showRightVote()
                 mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
                 mRaceTopVsView.bindData()
                 mRaceOtherSingCardView.bindData()
@@ -507,11 +509,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mRaceOtherSingCardView.realView.visibility = View.VISIBLE
             } else {
                 mRaceTopVsView.startSingByOther(2) {
-                    if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-                        mRaceRightOpView.visibility = View.GONE
-                    } else {
-                        mRaceRightOpView.showVote(false)
-                    }
+                    showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
                     mRaceOtherSingCardView.realView.visibility = View.VISIBLE
