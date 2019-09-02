@@ -109,7 +109,7 @@ class RaceTopVsView : ExConstraintLayout {
         }
     }
 
-    private fun bindData() {
+    fun bindData() {
         leftCircleCountDownView.visibility = View.GONE
         rightCircleCountDownView.visibility = View.GONE
         roomData?.realRoundInfo?.subRoundInfo?.let {

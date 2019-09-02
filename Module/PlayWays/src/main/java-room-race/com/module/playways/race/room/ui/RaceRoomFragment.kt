@@ -51,6 +51,7 @@ import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -441,16 +442,34 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         MyLog.d(TAG, "singByOtherFirstRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
-        mRaceTopVsView.startVs()
-        mRaceTopVsView.startSingByOther(1) {
-            if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-                mRaceRightOpView.visibility = View.GONE
+        mRoomData.realRoundInfo?.let {
+            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
+                MyLog.d(TAG, "singBySelfFirstRound 唱歌的时候进来的, $it")
+                //中途进来的
+                mRaceTopVsView.bindData()
+                mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
+                if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+                    mRaceRightOpView.visibility = View.GONE
+                } else {
+                    mRaceRightOpView.showVote(false)
+                }
+                mRaceOtherSingCardView.bindData()
+                hideAllSceneView()
+                mRaceOtherSingCardView.realView.visibility = View.VISIBLE
             } else {
-                mRaceRightOpView.showVote(false)
+                MyLog.d(TAG, "singBySelfFirstRound ssss, $it")
+                mRaceTopVsView.startVs()
+                mRaceTopVsView.startSingByOther(1) {
+                    if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+                        mRaceRightOpView.visibility = View.GONE
+                    } else {
+                        mRaceRightOpView.showVote(false)
+                    }
+                    mRaceOtherSingCardView.bindData()
+                    hideAllSceneView()
+                    mRaceOtherSingCardView.realView.visibility = View.VISIBLE
+                }
             }
-            mRaceOtherSingCardView.bindData()
-            hideAllSceneView()
-            mRaceOtherSingCardView.realView.visibility = View.VISIBLE
         }
     }
 
@@ -458,6 +477,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         MyLog.d(TAG, "singBySelfSecondRound songModel = ${songModel?.toSimpleString()}")
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
+        mRaceTopVsView.bindData()
         mRaceTopVsView.startSingBySelf {
             mRaceRightOpView.showGiveUp(false)
             mRaceSelfSingLyricView.startFly {
@@ -472,15 +492,30 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         MyLog.d(TAG, "singByOtherSecondRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
         hideAllSceneView()
         mRaceTopVsView.visibility = View.VISIBLE
-        mRaceTopVsView.startSingByOther(2) {
-            if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-                mRaceRightOpView.visibility = View.GONE
+        mRoomData.realRoundInfo?.let {
+            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
+                if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+                    mRaceRightOpView.visibility = View.GONE
+                } else {
+                    mRaceRightOpView.showVote(false)
+                }
+                mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
+                mRaceTopVsView.bindData()
+                mRaceOtherSingCardView.bindData()
+                hideAllSceneView()
+                mRaceOtherSingCardView.realView.visibility = View.VISIBLE
             } else {
-                mRaceRightOpView.showVote(false)
+                mRaceTopVsView.startSingByOther(2) {
+                    if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+                        mRaceRightOpView.visibility = View.GONE
+                    } else {
+                        mRaceRightOpView.showVote(false)
+                    }
+                    mRaceOtherSingCardView.bindData()
+                    hideAllSceneView()
+                    mRaceOtherSingCardView.realView.visibility = View.VISIBLE
+                }
             }
-            mRaceOtherSingCardView.bindData()
-            hideAllSceneView()
-            mRaceOtherSingCardView.realView.visibility = View.VISIBLE
         }
     }
 
