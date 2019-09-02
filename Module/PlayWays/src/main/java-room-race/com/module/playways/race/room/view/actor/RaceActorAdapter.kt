@@ -14,10 +14,12 @@ import com.common.view.DebounceViewClickListener
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RacePlayerInfoModel
+import com.zq.live.proto.RaceRoom.ERUserRole
 import org.greenrobot.eventbus.EventBus
 
-class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHolder>() {
+class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHolder>() {
 
     var mDataList = ArrayList<RaceActorInfoModel>()
 
@@ -41,7 +43,6 @@ class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHold
         val descTv: TextView = item.findViewById(R.id.desc_tv)
         val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
 
-
         var mPosition = 0
         var mModel: RaceActorInfoModel? = null
 
@@ -64,19 +65,21 @@ class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHold
                     .setBorderWidth(2.dp().toFloat())
                     .setCircle(true)
                     .build())
-            when {
-                model.status == 1 -> {
-                    statusTv.visibility = View.VISIBLE
-                    statusTv.setTextColor(Color.parseColor("#FFC15B"))
-                    statusTv.text = "演唱中"
-                }
-                model.status == 2 -> {
-                    statusTv.visibility = View.VISIBLE
-                    statusTv.setTextColor(U.getColor(R.color.white_trans_50))
-                    statusTv.text = "等待中"
-                }
-                else -> {
-                    statusTv.visibility = View.GONE
+            if (mRoomDate.realRoundInfo?.isSingerByUserId(model.plyer.userID) == true) {
+                // 是当前轮次的演唱者
+                statusTv.visibility = View.VISIBLE
+                statusTv.setTextColor(Color.parseColor("#FFC15B"))
+                statusTv.text = "演唱中"
+            } else {
+                when {
+                    model.plyer.role == ERUserRole.ERUR_WAIT_USER.value -> {
+                        statusTv.visibility = View.VISIBLE
+                        statusTv.setTextColor(U.getColor(R.color.white_trans_50))
+                        statusTv.text = "等待中"
+                    }
+                    else -> {
+                        statusTv.visibility = View.GONE
+                    }
                 }
             }
             descTv.text = model.scoreState?.rankingDesc

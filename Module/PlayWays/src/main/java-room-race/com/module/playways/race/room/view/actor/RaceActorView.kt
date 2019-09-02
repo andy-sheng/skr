@@ -15,6 +15,7 @@ import com.common.rxretrofit.subscribe
 import com.component.person.model.ScoreStateModel
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintLayout(context), CoroutineScope by MainScope() {
 
     private val recyclerView: RecyclerView
-    val adapter = RaceActorAdapter()
+    val adapter = RaceActorAdapter(mRoomData)
 
     val userServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
@@ -39,24 +40,10 @@ class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintL
 
     fun initData() {
         val list = ArrayList<RaceActorInfoModel>()
-        mRoomData.realRoundInfo?.playUsers?.let {
+        val playList = mRoomData.getPlayerInfoList<RacePlayerInfoModel>()
+        playList?.let {
             for (model in it) {
-                var isSing = false
-                for (subRoundInfo in mRoomData.realRoundInfo!!.subRoundInfo) {
-                    if (model.userID == subRoundInfo.userID) {
-                        isSing = true
-                    }
-                }
-                if (isSing) {
-                    list.add(RaceActorInfoModel(model, 1))
-                } else {
-                    list.add(RaceActorInfoModel(model, 0))
-                }
-            }
-        }
-        mRoomData.realRoundInfo?.waitUsers?.let {
-            for (model in it) {
-                list.add(RaceActorInfoModel(model, 2))
+                list.add(RaceActorInfoModel(model))
             }
         }
 
