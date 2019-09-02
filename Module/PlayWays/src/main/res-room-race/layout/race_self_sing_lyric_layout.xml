@@ -35,6 +35,7 @@
         android:scrollbars="vertical">
 
         <TextView
+            android:layout_marginTop="@dimen/view_15_dp"
             android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
