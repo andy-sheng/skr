@@ -2,10 +2,11 @@ package com.module.playways.race.room.model
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
+import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ROnlineInfo
 
 class RacePlayerInfoModel : PlayerInfoModel() {
-    var role = 0
+    var role = ERUserRole.ERUR_UNKNOWN.value
     override fun toString(): String {
         return "${userInfo.toSimpleString()}"
     }

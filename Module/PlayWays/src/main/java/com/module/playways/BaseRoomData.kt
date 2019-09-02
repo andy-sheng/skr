@@ -20,7 +20,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var gameId: Int = 0 // 房间id
 
-    var sysAvatar: String?=null // 系统头像
+    var sysAvatar: String? = null // 系统头像
 
     /**
      * 当要拿服务器时间和本地时间比较时，请将服务器时间加上这个矫正值
@@ -40,9 +40,9 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var lastSyncTs: Long = 0// 上次同步服务器状态时间,服务器的
 
-    var songModel: SongModel?=null // 歌曲信息
+    var songModel: SongModel? = null // 歌曲信息
 
-    var expectRoundInfo: T?=null// 按理的 期望的当前的轮次
+    var expectRoundInfo: T? = null// 按理的 期望的当前的轮次
 
     var realRoundInfo: T? = null// 实际的当前轮次信息
 
@@ -50,7 +50,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var isMute = false//是否mute
 
-    var agoraToken: String?=null // 声网token
+    var agoraToken: String? = null // 声网token
 
     abstract val gameType: Int
 
@@ -113,26 +113,45 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
                 '}'.toString()
     }
 
-    abstract fun < T : PlayerInfoModel> getPlayerInfoList(): List<T>?
+    abstract fun <T : PlayerInfoModel> getPlayerInfoList(): List<T>?
 
     @Transient
-    private val userInfoMap = LruCache<Int,UserInfoModel>(20)
+    private val userInfoMap = LruCache<Int, PlayerInfoModel>(20)
 
     fun getUserInfo(userID: Int?): UserInfoModel? {
-        if (userID==null || userID == 0) {
+        if (userID == null || userID == 0) {
             return null
         }
-        val userInfo = userInfoMap[userID]
-        if(userInfo==null){
+        val playerInfoModel = userInfoMap[userID]
+        if (playerInfoModel == null) {
             val l = getPlayerInfoList<PlayerInfoModel>() ?: return null
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
-                    userInfoMap.put(playerInfo.userInfo.userId,playerInfo.userInfo)
+                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
                     return playerInfo.userInfo
                 }
             }
-        }else{
-            return userInfo
+        } else {
+            return playerInfoModel.userInfo
+        }
+        return null
+    }
+
+    fun <T : PlayerInfoModel> getPlayerInfoModel(userID: Int?): T? {
+        if (userID == null || userID == 0) {
+            return null
+        }
+        val playerInfoModel = userInfoMap[userID]
+        if (playerInfoModel == null) {
+            val l = getPlayerInfoList<PlayerInfoModel>() ?: return null
+            for (playerInfo in l) {
+                if (playerInfo.userInfo.userId == userID) {
+                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+                    return playerInfo as T?
+                }
+            }
+        } else {
+            return playerInfoModel as T?
         }
         return null
     }
