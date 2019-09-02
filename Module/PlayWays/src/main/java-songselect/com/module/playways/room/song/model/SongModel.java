@@ -479,6 +479,7 @@ public class SongModel implements Serializable {
         return "SongModel{" +
                 "itemID=" + itemID +
                 ", itemName='" + itemName + '\'' +
+                ", acc='" + acc + '\'' +
 //                ", totalMs=" + totalMs +
 //                ", StandIntro='" + StandIntro + '\'' +
 //                ", StandIntroBeginT=" + StandIntroBeginT +
