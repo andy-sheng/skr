@@ -511,20 +511,21 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     private fun tryDownloadAccIfSelfSing() {
         /**
          * 有的网络伴奏在线播有问题，比如公司网络，这里尝试提前下载一下伴奏
+         * 下载第一轮伴奏来不及，在第一轮下载第二轮伴奏才差不多
          */
         var accUrl: String? = null
-        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            // 第一轮是自己唱
-            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(1) == true) {
-                // 第一轮是伴奏演唱
-                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.choiceID?.let {
-                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
-                    songModel?.acc?.let {
-                        accUrl = it
-                    }
-                }
-            }
-        }
+//        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+//            // 第一轮是自己唱
+//            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(1) == true) {
+//                // 第一轮是伴奏演唱
+//                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.choiceID?.let {
+//                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
+//                    songModel?.acc?.let {
+//                        accUrl = it
+//                    }
+//                }
+//            }
+//        }
         if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
             // 第一轮是自己唱
             if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(2) == true) {

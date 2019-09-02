@@ -129,7 +129,7 @@ object LyricsManager {
 
             lyricsReader
         }
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(U.getThreadUtils().urgentIO())
                 .retryWhen(RxRetryAssist(5, ""))
                 .observeOn(AndroidSchedulers.mainThread())
     }
