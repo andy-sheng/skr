@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -69,6 +70,7 @@ class RaceSelectSongView : ExConstraintLayout {
         progressBar.progress = 0
         firstSongItem.setDebounceViewClickListener {
             firstSongItem.getSong()?.let {
+                U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
                 if (mRoomData?.realRoundSeq == mSeq) {
                     mSelectCall?.invoke(1)
                     mNoSelectCall = null
@@ -79,6 +81,7 @@ class RaceSelectSongView : ExConstraintLayout {
         secondSongItem.setDebounceViewClickListener {
             secondSongItem.getSong()?.let {
                 if (mRoomData?.realRoundSeq == mSeq) {
+                    U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
                     mSelectCall?.invoke(2)
                     mNoSelectCall = null
                 }
@@ -88,6 +91,7 @@ class RaceSelectSongView : ExConstraintLayout {
         thirdSongItem.setDebounceViewClickListener {
             thirdSongItem.getSong()?.let {
                 if (mRoomData?.realRoundSeq == mSeq) {
+                    U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
                     mSelectCall?.invoke(3)
                     mNoSelectCall = null
                 }
@@ -96,12 +100,15 @@ class RaceSelectSongView : ExConstraintLayout {
 
         forthSongItem.setDebounceViewClickListener {
             forthSongItem.getSong()?.let {
+                U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
                 if (mRoomData?.realRoundSeq == mSeq) {
                     mSelectCall?.invoke(4)
                     mNoSelectCall = null
                 }
             }
         }
+
+        U.getSoundUtils().preLoad(mTag, R.raw.newrank_picksong)
     }
 
     fun setRoomData(roomData: RaceRoomData, selectCall: ((Int) -> Unit)) {
@@ -258,5 +265,6 @@ class RaceSelectSongView : ExConstraintLayout {
         mNoSelectCall = null
         animator?.cancel()
         scaleAnimatorSet?.cancel()
+        U.getSoundUtils().release(mTag)
     }
 }
