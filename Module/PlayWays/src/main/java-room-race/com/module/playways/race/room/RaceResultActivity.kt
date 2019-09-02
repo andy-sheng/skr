@@ -112,8 +112,8 @@ class RaceResultActivity : BaseActivity() {
         }
 
         launch {
-            repeat(5) {
-                countDownTv.text = "${5 - it}后自动进入下一场挑战"
+            repeat(8) {
+                countDownTv.text = "${8 - it}后自动进入下一场挑战"
                 delay(1000)
             }
             // todo 开始下一句游戏(待补充)
