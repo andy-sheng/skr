@@ -334,8 +334,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             showPersonInfoView(userId)
         })
         mCommentView.roomData = mRoomData
-        val layoutParams = mCommentView.layoutParams
-        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px((430 + 60).toFloat())
         mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
     }
 
