@@ -182,13 +182,9 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
     }
 
     override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
         if (visibility == View.GONE) {
-            if (View.GONE != getVisibility()) {
-                super.setVisibility(visibility)
-                reset()
-            }
-        } else {
-            super.setVisibility(visibility)
+            reset()
         }
     }
 }
