@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.upgrade.UpgradeManager
 import com.component.person.model.UserRankModel
 import com.common.rxretrofit.ApiManager
@@ -143,7 +144,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
                     fragment.activity, MyUserInfoManager.getInstance().avatar)
         }
 
-        mLevelGapTv.setOnClickListener(object : DebounceViewClickListener(){
+        mLevelGapTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3gf3ujzxsw97z.html")
@@ -271,12 +272,11 @@ fun openPlayWaysActivityByRank(ctx: Context) {
                         .build()
                 tipsDialogView?.showByDialog()
             } else {
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-//                        .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
-//                        .withBoolean("selectSong", true)
-//                        .navigation()
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
-                        .navigation()
+                val skrAudioPermission = SkrAudioPermission()
+                skrAudioPermission.ensurePermission({
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+                            .navigation()
+                }, true)
             }
         }
     }
