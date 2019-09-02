@@ -239,7 +239,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             if (result.errno == 0) {
                 callback?.invoke(true)
             } else {
-                callback?.invoke(false)
+                if (result.errno == 8412159) {
+                    // 已经投过票
+                    U.getToastUtil().showShort(result.errmsg)
+                    callback?.invoke(true)
+                } else {
+                    callback?.invoke(false)
+                }
             }
         }
     }
@@ -267,7 +273,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     /**
      * 主动告诉服务器我演唱完毕
      */
-    fun sendSingComplete(from:String) {
+    fun sendSingComplete(from: String) {
         MyLog.d(TAG, "sendSingComplete from = $from")
         launch {
             val map = mutableMapOf(
@@ -340,7 +346,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     private fun preOpWhenSelfRound() {
         var needAcc = false
         val songModel = mRoomData?.realRoundInfo?.getSongModelNow()
-        if(mRoomData.isAccEnable && mRoomData?.realRoundInfo?.isAccRoundNow()==true){
+        if (mRoomData.isAccEnable && mRoomData?.realRoundInfo?.isAccRoundNow() == true) {
             needAcc = true
         }
 
