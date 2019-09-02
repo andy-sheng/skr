@@ -10,9 +10,12 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.DebounceViewClickListener
+import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.race.room.model.RacePlayerInfoModel
+import org.greenrobot.eventbus.EventBus
 
 class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHolder>() {
 
@@ -41,6 +44,16 @@ class RaceActorAdapter : RecyclerView.Adapter<RaceActorAdapter.RaceActorViewHold
 
         var mPosition = 0
         var mModel: RaceActorInfoModel? = null
+
+        init {
+            item.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    mModel?.let {
+                        EventBus.getDefault().post(ShowPersonCardEvent(it.plyer.userID))
+                    }
+                }
+            })
+        }
 
         fun bindData(pos: Int, model: RaceActorInfoModel) {
             this.mPosition = pos
