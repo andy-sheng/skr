@@ -15,11 +15,8 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.upgrade.UpgradeManager
+import com.common.rxretrofit.*
 import com.component.person.model.UserRankModel
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.SpanUtils
@@ -272,11 +269,42 @@ fun openPlayWaysActivityByRank(ctx: Context) {
                         .build()
                 tipsDialogView?.showByDialog()
             } else {
-                val skrAudioPermission = SkrAudioPermission()
-                skrAudioPermission.ensurePermission({
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
-                            .navigation()
-                }, true)
+                val check = subscribe(RequestControl("", ControlType.CancelThis)) { api.checkRank(1) }
+                if (check.errno == 0) {
+                    // 可以进
+                    val skrAudioPermission = SkrAudioPermission()
+                    skrAudioPermission.ensurePermission({
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+                                .navigation()
+                    }, true)
+                } else {
+                    if (check.errno == ERROR_NETWORK_BROKEN) {
+                        tipsDialogView?.dismiss()
+                        tipsDialogView = TipsDialogView.Builder(ctx)
+                                .setMessageTip("网络连接不可用，请检查网络后重试")
+                                .setOkBtnTip("确定")
+                                .setOkBtnClickListener(object : DebounceViewClickListener() {
+                                    override fun clickValid(v: View?) {
+                                        tipsDialogView?.dismiss()
+                                    }
+                                })
+                                .build()
+                        tipsDialogView?.showByDialog()
+                    } else {
+                        tipsDialogView?.dismiss()
+                        tipsDialogView = TipsDialogView.Builder(ctx)
+                                .setMessageTip(check.errmsg)
+                                .setOkBtnTip("确定")
+                                .setOkBtnClickListener(object : DebounceViewClickListener() {
+                                    override fun clickValid(v: View?) {
+                                        tipsDialogView?.dismiss()
+                                    }
+                                })
+                                .build()
+                        tipsDialogView?.showByDialog()
+                    }
+                }
+
             }
         }
     }
