@@ -158,16 +158,4 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.375" />
 
-    <ImageView
-        android:id="@+id/feed_tips_iv"
-        android:layout_width="@dimen/view_128_dp"
-        android:layout_height="@dimen/view_38_dp"
-        android:layout_above="@id/bottom_container"
-        android:layout_marginBottom="@dimen/view_8_dp"
-        android:background="@drawable/feed_tips_icon"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/bottom_container"
-        app:layout_constraintLeft_toLeftOf="@id/tips_guide"
-        app:layout_constraintRight_toRightOf="@id/tips_guide" />
-
 </android.support.constraint.ConstraintLayout>

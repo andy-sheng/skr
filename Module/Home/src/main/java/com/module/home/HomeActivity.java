@@ -83,7 +83,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mFeedArea;
     ExTextView mFeedBtn;
     NestViewPager mMainVp;
-    ImageView mFeedTipsIv;
 
     IMsgService mMsgService;
     IFeedsModuleService mIFeedsModuleService;
@@ -155,7 +154,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
         mMainVp = findViewById(R.id.main_vp);
-        mFeedTipsIv = findViewById(R.id.feed_tips_iv);
         mNManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -340,7 +338,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             case 1:
                 drawable1 = U.getDrawable(R.drawable.ic_feed_selected);
                 mFeedBtn.setSelected(true);
-                mFeedTipsIv.setVisibility(View.GONE);
                 break;
             case 2:
                 drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
@@ -452,16 +449,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         if (UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
-            if (!U.getPreferenceUtils().getSettingBoolean("feed_tips_has_show", false)) {
-                mFeedTipsIv.setVisibility(View.VISIBLE);
-                U.getPreferenceUtils().setSettingBoolean("feed_tips_has_show", true);
-                mFeedTipsIv.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFeedTipsIv.setVisibility(View.GONE);
-                    }
-                }, 3000);
-            }
         }
     }
 
