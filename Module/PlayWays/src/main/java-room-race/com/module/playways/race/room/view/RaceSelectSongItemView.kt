@@ -55,7 +55,7 @@ class RaceSelectSongItemView : ExConstraintLayout {
     fun setSong(info: RaceGamePlayInfo?) {
         info?.let {
             this.info = it
-            songNameTv.text = info.commonMusic?.itemName
+            songNameTv.text = "《${info.commonMusic?.itemName}》"
         }
     }
 

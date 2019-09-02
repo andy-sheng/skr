@@ -39,6 +39,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:textStyle="bold"
         android:maxWidth="@dimen/view_300_dp"
         android:maxLines="1"
         android:id="@+id/song_name_tv"
