@@ -77,13 +77,13 @@ class RaceTopVsView : ExConstraintLayout {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             if (roomData?.getUserInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                 leftCircleCountDownView.visibility = View.VISIBLE
-                leftCircleCountDownView.go(0, 3 * 1000) {
+                leftCircleCountDownView.go(0, 1 * 1000) {
                     leftCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
             } else {
                 rightCircleCountDownView.visibility = View.VISIBLE
-                rightCircleCountDownView.go(0, 3 * 1000) {
+                rightCircleCountDownView.go(0, 1 * 1000) {
                     rightCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
@@ -95,13 +95,13 @@ class RaceTopVsView : ExConstraintLayout {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             if (round == 1) {
                 leftCircleCountDownView.visibility = View.VISIBLE
-                leftCircleCountDownView.go(0, 3 * 1000) {
+                leftCircleCountDownView.go(0, 1 * 1000) {
                     leftCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
             } else {
                 rightCircleCountDownView.visibility = View.VISIBLE
-                rightCircleCountDownView.go(0, 3 * 1000) {
+                rightCircleCountDownView.go(0, 1 * 1000) {
                     rightCircleCountDownView.visibility = View.GONE
                     call?.invoke()
                 }
