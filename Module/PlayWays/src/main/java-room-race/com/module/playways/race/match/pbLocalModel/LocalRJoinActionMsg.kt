@@ -1,11 +1,13 @@
 package com.module.playways.race.match.pbLocalModel
 
 import com.zq.live.proto.RaceRoom.RJoinActionMsg
+import java.io.Serializable
 
-class LocalRJoinActionMsg {
+class LocalRJoinActionMsg : Serializable {
     var gameID: Int = 0
     var createTimeMs: Long = 0
     var agoraToken: String = ""
+
 
     companion object {
         fun toLocalModel(msg: RJoinActionMsg?): LocalRJoinActionMsg? {
@@ -18,5 +20,9 @@ class LocalRJoinActionMsg {
             }
             return null
         }
+    }
+
+    override fun toString(): String {
+        return "LocalRJoinActionMsg(gameID=$gameID, createTimeMs=$createTimeMs, agoraToken='$agoraToken')"
     }
 }
