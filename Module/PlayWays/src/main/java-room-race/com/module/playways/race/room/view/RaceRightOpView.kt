@@ -12,6 +12,8 @@ import com.module.playways.R
 // 右边操作区域，投票
 class RaceRightOpView : ConstraintLayout {
 
+    val mTag = "RaceRightOpView"
+
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -35,6 +37,7 @@ class RaceRightOpView : ConstraintLayout {
                     U.getToastUtil().showShort("已经投过票了")
                 } else {
                     // 投票
+                    U.getSoundUtils().play(mTag, R.raw.newrank_vote)
                     mListener?.onClickVote()
                 }
             }
@@ -50,6 +53,8 @@ class RaceRightOpView : ConstraintLayout {
                 }
             }
         })
+
+        U.getSoundUtils().preLoad(mTag, R.raw.newrank_vote)
     }
 
     fun showVote(isSelected: Boolean) {
@@ -70,6 +75,11 @@ class RaceRightOpView : ConstraintLayout {
 
     fun setListener(listener: RightOpListener) {
         mListener = listener
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        U.getSoundUtils().release(mTag)
     }
 }
 

@@ -26,9 +26,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-//选择歌曲页
+//结果页面
 class RaceMiddleResultView : ExConstraintLayout {
-    val TAG = "RaceTopVsView"
+    val mTag = "RaceTopVsView"
 
     val resultTv: ExTextView
     val leftConstraintLayout: ConstraintLayout
@@ -69,6 +69,8 @@ class RaceMiddleResultView : ExConstraintLayout {
         rightHeadIv = this.findViewById(R.id.right_head_iv)
         guidelineCenter2 = this.findViewById(R.id.guidelineCenter2)
         raceTopVsIv = this.findViewById(R.id.race_top_vs_iv)
+
+        U.getSoundUtils().preLoad(mTag, R.raw.newrank_resultanimation)
     }
 
     fun setRaceRoomData(roomData: RaceRoomData) {
@@ -126,7 +128,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                         .build())
 
             } else {
-                MyLog.w(TAG, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
+                MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
             }
         }
         startVs()
@@ -137,7 +139,8 @@ class RaceMiddleResultView : ExConstraintLayout {
         }
     }
 
-    fun startVs() {
+    private fun startVs() {
+        U.getSoundUtils().play(mTag, R.raw.newrank_resultanimation)
         raceTopVsIv.visibility = View.GONE
         val animatorLeft = ObjectAnimator.ofFloat(leftConstraintLayout, "translationX", -(U.getDisplayUtils().phoneWidth.toFloat() / 2), 0f)
 
@@ -160,5 +163,10 @@ class RaceMiddleResultView : ExConstraintLayout {
             animatorSet.interpolator = OvershootInterpolator()
             animatorSet.start()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        U.getSoundUtils().release(mTag)
     }
 }

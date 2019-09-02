@@ -11,6 +11,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -25,6 +26,9 @@ import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_RACE_RESULT)
 class RaceResultActivity : BaseActivity() {
+
+    val mTag = "RaceRightOpView"
+
     lateinit var changeTv: TextView
     lateinit var levelView: NormalLevelView2
     lateinit var levelDescTv: ExTextView
@@ -44,6 +48,8 @@ class RaceResultActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getSoundUtils().preLoad(mTag, R.raw.newrank_resultpage)
+
         roomID = intent.getIntExtra("roomID", -1)
         roundSeq = intent.getIntExtra("roundSeq", -1)
         if (roomID == -1 || roundSeq == -1) {
@@ -93,6 +99,7 @@ class RaceResultActivity : BaseActivity() {
     }
 
     private fun showResult(raceResultModel: LevelResultModel) {
+        U.getSoundUtils().play(mTag, R.raw.newrank_resultpage)
         descTv.text = "距离下次升段还需${raceResultModel.gap}积分"
         if (raceResultModel.get >= 0) {
             changeTv.text = "+${raceResultModel.get}"
@@ -116,7 +123,6 @@ class RaceResultActivity : BaseActivity() {
                 countDownTv.text = "${8 - it}后自动进入下一场挑战"
                 delay(1000)
             }
-            // todo 开始下一句游戏(待补充)
             goMatchPage()
         }
     }
@@ -129,5 +135,10 @@ class RaceResultActivity : BaseActivity() {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun destroy() {
+        super.destroy()
+        U.getSoundUtils().release(mTag)
     }
 }
