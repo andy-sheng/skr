@@ -48,8 +48,6 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mFeedTab: SlidingTabLayout
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
-    var mWaitingDialogPlus: DialogPlus? = null
-    var mShowGuideCall: (() -> Unit)? = null
 
     val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
     val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
@@ -182,36 +180,12 @@ class FeedsWatchFragment : BaseFragment() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
-
-        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_SHOW_GUIDE, true)) {
-            mShowGuideCall = {
-                mShowGuideCall = null
-                U.getPreferenceUtils().setSettingBoolean(PREF_KEY_SHOW_GUIDE, false)
-                if (mWaitingDialogPlus == null) {
-                    mWaitingDialogPlus = DialogPlus.newDialog(context!!)
-                            .setContentHolder(ViewHolder(R.layout.watch_guide_layout))
-                            .setContentBackgroundResource(R.color.transparent)
-                            .setOverlayBackgroundResource(R.color.black_trans_50)
-                            .setExpanded(false)
-                            .setCancelable(true)
-                            .setGravity(Gravity.CENTER)
-                            .create()
-
-                    mWaitingDialogPlus?.findViewById(R.id.guide_iv)?.setOnClickListener {
-                        mWaitingDialogPlus?.dismiss()
-                    }
-                }
-
-                mWaitingDialogPlus?.show()
-            }
-        }
     }
 
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         StatisticsAdapter.recordCountEvent("music_tab", "music_tab_expose", null)
         onViewSelected(mFeedVp.currentItem)
-        mShowGuideCall?.invoke()
     }
 
     fun onViewSelected(pos: Int) {
@@ -286,7 +260,6 @@ class FeedsWatchFragment : BaseFragment() {
         mRecommendFeedsView.destroy()
         mFollowFeedsView.destroy()
         mFeedsCollectView.destory()
-        mWaitingDialogPlus?.dismiss()
         EventBus.getDefault().unregister(this)
     }
 
