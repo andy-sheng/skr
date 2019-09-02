@@ -271,25 +271,32 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             l.setProvince(location.getProvince());
                             l.setCity(location.getCity());
                             l.setDistrict(location.getDistrict());
-                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
-                                    .newMyInfoUpdateParamsBuilder()
-                                    .setRealLocation(l)
-                                    .build(), true, false, new MyUserInfoManager.ServerCallback() {
-                                @Override
-                                public void onSucess() {
-                                    // todo 可以加个优化
-                                    mRankMode = UserRankModel.REGION;
-                                    mRefreshLocation.setVisibility(View.VISIBLE);
-                                    mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
-                                    mLeaderboardPresenter.reset();
-                                    refreshData();
-                                }
 
-                                @Override
-                                public void onFail() {
-                                    U.getToastUtil().showShort("位置更新失败");
-                                }
-                            });
+                            if (l.getProvince().equals(MyUserInfoManager.getInstance().getRealLocation().getProvince())
+                                    && l.getCity().equals(MyUserInfoManager.getInstance().getRealLocation().getCity())
+                                    && l.getDistrict().equals(MyUserInfoManager.getInstance().getRealLocation().getDistrict())) {
+                                U.getToastUtil().showShort("定位位置与当前位置一致");
+                            } else {
+                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                        .newMyInfoUpdateParamsBuilder()
+                                        .setRealLocation(l)
+                                        .build(), true, false, new MyUserInfoManager.ServerCallback() {
+                                    @Override
+                                    public void onSucess() {
+                                        U.getToastUtil().showShort("位置更新成功");
+                                        mRankMode = UserRankModel.REGION;
+                                        mRefreshLocation.setVisibility(View.VISIBLE);
+                                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+                                        mLeaderboardPresenter.reset();
+                                        refreshData();
+                                    }
+
+                                    @Override
+                                    public void onFail() {
+                                        U.getToastUtil().showShort("位置更新失败");
+                                    }
+                                });
+                            }
                         }
                     }
                 });
