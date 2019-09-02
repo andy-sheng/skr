@@ -49,6 +49,10 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         } else if (racePlayerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
             if (!waitUsers?.contains(racePlayerInfoModel)) {
                 waitUsers?.add(racePlayerInfoModel)
+                // 如果选手席还有这人，则移除
+                if (playUsers?.contains(racePlayerInfoModel)) {
+                    playUsers.remove(racePlayerInfoModel)
+                }
                 EventBus.getDefault().post(RaceWaitSeatUpdateEvent(playUsers))
             }
         }
@@ -202,7 +206,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                 this.subRoundInfo.addAll(roundInfo.subRoundInfo)
             } else {
                 // 都有数据
-                for (i in 0 until this.subRoundInfo.size){
+                for (i in 0 until this.subRoundInfo.size) {
                     this.subRoundInfo[i].tryUpdateInfoModel(roundInfo.subRoundInfo.getOrNull(i))
                 }
             }
@@ -215,7 +219,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             } else {
                 // 都有数据
                 // 都有数据
-                for (i in 0 until this.scores.size){
+                for (i in 0 until this.scores.size) {
                     this.scores[i].tryUpdateInfoModel(roundInfo.scores.getOrNull(i))
                 }
             }
