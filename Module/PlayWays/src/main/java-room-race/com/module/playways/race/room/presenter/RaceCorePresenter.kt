@@ -3,6 +3,7 @@ package com.module.playways.race.room.presenter
 import android.os.Handler
 import android.os.Message
 import android.support.annotation.CallSuper
+import android.text.SpannableStringBuilder
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -16,6 +17,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.lyrics.LyricAndAccMatchManager
@@ -39,12 +41,11 @@ import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.event.raceroom.*
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RaceRoomMsgManager
+import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
+import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.zq.live.proto.RaceRoom.ERWantSingType
-import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import com.zq.live.proto.RaceRoom.ERoundOverType
-import com.zq.live.proto.RaceRoom.RaceRoomMsg
+import com.zq.live.proto.RaceRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -594,10 +595,35 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 mRoomData.expectRoundInfo = nextRoundInfo
                 mRoomData.checkRoundInEachMode()
             }
+            // 第二轮次结束原因
+            if (curRoundInfo.subRoundInfo.getOrNull(1)?.overReason == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
+                pretendGiveUp(mRoomData.getUserInfo(curRoundInfo.subRoundInfo.getOrNull(1)?.userID))
+            }
         } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
             DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
+            // 第一轮次结束原因
+            if (event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason?.value == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
+                pretendGiveUp(mRoomData.getUserInfo(event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID))
+            }
+        }
+    }
+
+    private fun pretendGiveUp(userInfoModel: UserInfoModel?) {
+        if (userInfoModel != null) {
+            val commentModel = CommentTextModel()
+            commentModel.userId = userInfoModel.userId
+            commentModel.avatar = userInfoModel.avatar
+            commentModel.userName = userInfoModel.nicknameRemark
+            commentModel.avatarColor = CommentModel.AVATAR_COLOR
+            val stringBuilder: SpannableStringBuilder
+            val spanUtils = SpanUtils()
+                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+            stringBuilder = spanUtils.create()
+            commentModel.stringBuilder = stringBuilder
+            EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
     }
 
