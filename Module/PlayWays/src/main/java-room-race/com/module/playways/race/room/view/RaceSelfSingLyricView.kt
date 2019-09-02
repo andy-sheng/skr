@@ -31,7 +31,6 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
     protected lateinit var mManyLyricsView: ManyLyricsView
     internal lateinit var mSingCountDownView2: SingCountDownView2
     internal lateinit var mVoiceScaleView: VoiceScaleView
-    lateinit var voiceScaleDivider: View
 
     internal var mDisposable: Disposable? = null
     internal var mSongModel: SongModel? = null
@@ -43,7 +42,6 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
         mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view)
         mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view)
         mSingCountDownView2 = mParentView.findViewById(R.id.sing_count_down_view)
-        voiceScaleDivider = mParentView.findViewById(R.id.voice_scale_divider)
     }
 
     override fun layoutDesc(): Int {
@@ -79,11 +77,6 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
                 playWithAcc(infoModel, infoModel.getSingTotalMs())
             }
         }
-    }
-
-    fun VoiceScaleView.setVisibility(visibility: Int) {
-        this.visibility = visibility
-        voiceScaleDivider.visibility = visibility
     }
 
     fun playWithAcc(infoModel: RaceRoundInfoModel?, totalTs: Int) {

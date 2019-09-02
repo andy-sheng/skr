@@ -50,7 +50,8 @@ public class VoiceScaleView extends View {
     int mRedInnerpaintColor = Color.parseColor("#CA2C60");
     int mLeftPaintColor = Color.parseColor("#F5A623");
     int mRightPaintColor = Color.parseColor("#474A5F");
-    boolean mShowTopBottomBound = false;
+    boolean mShowTopBound = false;
+    boolean mShowBottomBound = false;
 
     public VoiceScaleView(Context context) {
         this(context, null);
@@ -77,7 +78,8 @@ public class VoiceScaleView extends View {
         mRedInnerpaintColor = typedArray.getColor(R.styleable.VoiceScaleView_redInnerpaintColor, mRedInnerpaintColor);
         mLeftPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_leftPaintColor, mLeftPaintColor);
         mRightPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_rightPaintColor, mRightPaintColor);
-        mShowTopBottomBound = typedArray.getBoolean(R.styleable.VoiceScaleView_showTopBottomBound, false);
+        mShowTopBound = typedArray.getBoolean(R.styleable.VoiceScaleView_showTopBound, false);
+        mShowBottomBound = typedArray.getBoolean(R.styleable.VoiceScaleView_showBottomBound, false);
 
         typedArray.recycle();
 
@@ -234,23 +236,22 @@ public class VoiceScaleView extends View {
         redLineF.bottom = mHeight;
         canvas.drawRect(redLineF, mRedLinePaint);
 
-        if (mShowTopBottomBound) {
+        if (mShowTopBound) {
             RectF topBound = new RectF();
             topBound.left = 0;
             topBound.right = mWidth;
             topBound.top = 0;
             topBound.bottom = 1;
             canvas.drawRect(topBound, mRedLinePaint);
+        }
 
-
+        if (mShowBottomBound) {
             RectF bottomBound = new RectF();
             bottomBound.left = 0;
             bottomBound.right = mWidth;
             bottomBound.top = mHeight - 1;
             bottomBound.bottom = mHeight;
             canvas.drawRect(bottomBound, mRedLinePaint);
-
-
         }
     }
 

@@ -15,8 +15,10 @@
         <attr name="redOutpaintColor" format="color" />
         <!--红点内圈颜色-->
         <attr name="redInnerpaintColor" format="color" />
-        <!--显示上下边框-->
-        <attr name="showTopBottomBound" format="boolean" />
+        <!--显示上边框-->
+        <attr name="showTopBound" format="boolean" />
+        <!--显示下边框-->
+        <attr name="showBottomBound" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="TxtLyricScrollView">

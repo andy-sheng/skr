@@ -129,7 +129,8 @@
         app:redInnerpaintColor="#FFC15B"
         app:redOutpaintColor="@color/transparent"
         app:rightBgPaintColor="@color/transparent"
-        app:showTopBottomBound="true" />
+        app:showBottomBound="true"
+        app:showTopBound="true" />
 
     <!--正在唱的人的歌词-->
     <com.component.lyrics.widget.ManyLyricsView
