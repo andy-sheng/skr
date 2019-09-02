@@ -566,6 +566,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun onBackPressed(): Boolean {
+        if (mGiftPanelView.onBackPressed()) {
+            return true
+        }
         quitGame()
         return true
     }

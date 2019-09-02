@@ -273,6 +273,7 @@ class GiftPanelView : FrameLayout {
         })
 
         getZSBalance()
+        getCoinBalance()
 
         mTvCoin.setText(getGrabRoomData()?.getCoin()?.toString())
         //        mTvHz.setText(String.format("%.1f", mGrabRoomData.getHzCount()));
@@ -341,7 +342,20 @@ class GiftPanelView : FrameLayout {
                     mTvDiamond.setText(amount)
                 }
             }
-        }, RequestControl("getZSBalance", ControlType.CancelThis))
+        }, RequestControl(TAG + "getZSBalance", ControlType.CancelThis))
+    }
+
+    private fun getCoinBalance() {
+        ApiMethods.subscribe(mGiftServerApi?.coinNum, object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult) {
+                MyLog.w(TAG, "getCoinBalance process obj=$obj")
+                if (obj.errno == 0) {
+                    val coinNum = obj.data!!.getIntValue("coin")
+                    mTvCoin.setText(coinNum.toString())
+                    mCoin = coinNum
+                }
+            }
+        }, RequestControl(TAG + "getCoinBalance", ControlType.CancelThis))
     }
 
     fun setRoomData(grabRoomData: BaseRoomData<*>) {
