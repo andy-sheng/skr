@@ -444,7 +444,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceTopVsView.visibility = View.VISIBLE
         mRoomData.realRoundInfo?.let {
             if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
-                MyLog.d(TAG, "singBySelfFirstRound 唱歌的时候进来的, $it")
+                MyLog.d(TAG, "singByOtherFirstRound 中途进来的, $it")
                 //中途进来的
                 mRaceTopVsView.bindData()
                 mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
@@ -457,7 +457,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 hideAllSceneView()
                 mRaceOtherSingCardView.realView.visibility = View.VISIBLE
             } else {
-                MyLog.d(TAG, "singBySelfFirstRound ssss, $it")
                 mRaceTopVsView.startVs()
                 mRaceTopVsView.startSingByOther(1) {
                     if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
