@@ -131,7 +131,7 @@ class RaceMiddleResultView : ExConstraintLayout {
         }
         startVs()
         launch {
-            delay(4000)
+            delay(3000)
             // 让显示4秒钟
             animationOverListener.invoke()
         }

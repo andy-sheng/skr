@@ -1,6 +1,9 @@
 package com.module.playways.race.room.view
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -135,10 +138,13 @@ class RaceSelectSongView : ExConstraintLayout {
         var lastedTime = 9000
         if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
             mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
-                lastedTime = 9000 - it
+                //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
+                lastedTime = 12000 - it
                 MyLog.d(mTag, "setSongName elapsedTimeMs is $it")
                 if (lastedTime < 0) {
-                    lastedTime = 9000
+                    lastedTime = 1000
+                } else if (lastedTime > 9000) {
+
                 }
             }
         }
