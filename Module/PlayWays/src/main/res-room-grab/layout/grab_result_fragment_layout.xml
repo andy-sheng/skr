@@ -433,9 +433,8 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_back"
-        android:layout_width="@dimen/view_152_dp"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_40_dp"
-        android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/view_20_dp"
         android:gravity="center"
         android:text="返回"
@@ -446,27 +445,32 @@
         app:bl_shape="rectangle"
         app:bl_solid_color="#FF8AB6"
         app:borderColor="#cc5883"
+        app:layout_constrainedWidth="true"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
         app:layout_constraintBottom_toBottomOf="@id/result_bg"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/result_bg"
         app:layout_constraintRight_toLeftOf="@id/tv_again" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_again"
-        android:layout_width="@dimen/view_152_dp"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="@dimen/view_40_dp"
-        android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/view_20_dp"
         android:gravity="center"
         android:text="再来一局"
+        android:layout_marginLeft="@dimen/view_12_dp"
         android:textColor="#AD6C00"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#FFC15B"
+        android:layout_marginRight="@dimen/view_16_dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/result_bg"
         app:layout_constraintLeft_toRightOf="@id/tv_back"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/result_bg" />
 
 
 </android.support.constraint.ConstraintLayout>
