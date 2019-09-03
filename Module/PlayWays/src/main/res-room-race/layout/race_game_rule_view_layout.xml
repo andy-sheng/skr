@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="比赛规则：每轮比赛开始，选手在下发的4首歌中，抢选自己的竞演歌曲。最快抢选的2位选手，将会获得竞演机会。没有抢到竞演机会的选手不要气馁，你们可以作为裁判为喜欢的歌声投票。每轮竞演，针对每位竞演选手都有一次投票机会，投票不记名。"
+                android:text="比赛规则：每轮竞演开始，选手在下发的4首歌中，抢选自己的竞演歌曲，最快抢选的2位选手会获得竞演机会。竞演过程中，除竞演选手外，其余用户可以为自己喜欢的歌声点赞支持。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="胜负规则：演唱完毕后，两位竞演选手比拼投票票数，票数较多一方胜出。胜出一方加5点经验，落败一方减5点经验，平局则不加不减。比赛中逃跑的行为会被惩罚，扣除经验值。"
+                android:text="胜负规则：竞演完毕后，两位竞演选手比拼获得赞数，赞数较多一方胜出。胜出一方加5点经验，落败一方减5点经验，平局则不加不减。比赛中逃跑的行为会被惩罚，扣除经验。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
