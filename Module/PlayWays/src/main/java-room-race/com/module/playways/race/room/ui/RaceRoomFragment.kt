@@ -284,21 +284,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
 
             override fun closeBtnClick() {
-                dismissDialog()
-                mTipsDialogView = TipsDialogView.Builder(context)
-                        .setMessageTip("确定要退出排位赛吗")
-                        .setConfirmTip("确定")
-                        .setCancelTip("取消")
-                        .setConfirmBtnClickListener {
-                            mTipsDialogView?.dismiss(false)
-                            quitGame()
-                        }
-                        .setCancelBtnClickListener {
-                            mTipsDialogView?.dismiss()
-                        }
-                        .build()
-                mTipsDialogView?.showByDialog()
-
+                quitGame()
             }
 
             override fun onClickGameRule() {
@@ -637,7 +623,20 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         if (mGiftPanelView.onBackPressed()) {
             return true
         }
-        quitGame()
+        dismissDialog()
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("确定要退出排位赛吗")
+                .setConfirmTip("确定")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener {
+                    mTipsDialogView?.dismiss(false)
+                    quitGame()
+                }
+                .setCancelBtnClickListener {
+                    mTipsDialogView?.dismiss()
+                }
+                .build()
+        mTipsDialogView?.showByDialog()
         return true
     }
 
