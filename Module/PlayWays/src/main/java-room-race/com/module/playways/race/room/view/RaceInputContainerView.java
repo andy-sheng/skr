@@ -34,7 +34,6 @@ import com.module.playways.room.room.RankRoomServerApi;
 import com.module.playways.room.room.view.InputContainerView;
 import com.zq.live.proto.Common.UserInfo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -158,7 +157,7 @@ public class RaceInputContainerView extends InputContainerView {
     }
 
     private List<RacePlayerInfoModel> getPlayerInfoListExpectSelf() {
-        List<RacePlayerInfoModel> racePlayerInfoModelList = new ArrayList<>();
+        List<RacePlayerInfoModel> racePlayerInfoModelList = mRoomData.getInSeatPlayerInfoList();
         Iterator<RacePlayerInfoModel> it = racePlayerInfoModelList.iterator();
         while (it.hasNext()) {
             RacePlayerInfoModel racePlayerInfoModel = it.next();
