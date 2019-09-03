@@ -166,7 +166,7 @@ class RaceSelectSongView : ExConstraintLayout {
                 if (lastedTime < 0) {
                     lastedTime = 1000
                 } else if (lastedTime > 9000) {
-
+                    lastedTime = 9000
                 }
             }
         }
