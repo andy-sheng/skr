@@ -491,11 +491,15 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     private fun showRightVote() {
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+            MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            if (mRoomData.getPlayerInfoModel<RacePlayerInfoModel>(MyUserInfoManager.getInstance().uid.toInt())?.role == ERUserRole.ERUR_PLAY_USER.value) {
+            val role = mRoomData.getPlayerInfoModel<RacePlayerInfoModel>(MyUserInfoManager.getInstance().uid.toInt())?.role
+            if (role == ERUserRole.ERUR_PLAY_USER.value) {
+                MyLog.d(TAG, "showRightVote 当前身份是play")
                 mRaceRightOpView.showVote(false)
             } else {
+                MyLog.d(TAG, "showRightVote 当前身份role=$role")
                 mRaceRightOpView.visibility = View.GONE
             }
         }
