@@ -553,6 +553,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                     continueOp?.invoke()
                 }
             })
+        } else if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_UNKNOWN.value) {
+            hideAllSceneView()
+            continueOp?.invoke()
         } else {
             hideAllSceneView()
             mRaceMiddleResultView.visibility = View.VISIBLE
