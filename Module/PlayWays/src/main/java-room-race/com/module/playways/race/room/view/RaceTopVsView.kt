@@ -97,7 +97,7 @@ class RaceTopVsView : ExConstraintLayout {
         roomData?.realRoundInfo?.scores?.let {
             if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
                             ?: false)) {
-                MyLog.d(TAG, "updateData 1")
+
                 leftTicketGroup.visibility = View.VISIBLE
                 rightTicketGroup.visibility = View.VISIBLE
                 leftState.visibility = View.GONE
@@ -114,29 +114,29 @@ class RaceTopVsView : ExConstraintLayout {
                 rightState.text = ""
 
                 if (roomData?.realRoundInfo?.subRoundSeq == 1) {
-                    MyLog.d(TAG, "updateData 2")
+
                     if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
                                     ?: true) {
-                        MyLog.d(TAG, "updateData 3")
+
                         leftTicketCountTv.text = it[0].bLightCnt.toString()
                         leftTicketGroup.visibility = View.VISIBLE
                     } else {
-                        MyLog.d(TAG, "updateData 4")
-                        leftState.text = "投票中"
+
+                        leftState.text = "**桃心"
                     }
                 } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
-                    MyLog.d(TAG, "updateData 5")
+
                     if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
                                     ?: true) {
-                        MyLog.d(TAG, "updateData 6")
-                        leftState.text = "锁票"
+
+                        leftState.text = "**桃心"
                         rightTicketGroup.visibility = View.VISIBLE
                         rightTicketCountTv.text = it[1].bLightCnt.toString()
                     } else {
-                        MyLog.d(TAG, "updateData 7")
+
                         leftTicketGroup.visibility = View.VISIBLE
                         leftTicketCountTv.text = it[0].bLightCnt.toString()
-                        rightState.text = "投票中"
+                        rightState.text = "**桃心"
                     }
                 }
             }
