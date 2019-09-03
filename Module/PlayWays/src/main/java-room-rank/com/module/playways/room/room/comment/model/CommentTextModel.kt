@@ -1,8 +1,5 @@
 package com.module.playways.room.room.comment.model
 
-import android.text.SpannableStringBuilder
-
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
@@ -36,7 +33,7 @@ class CommentTextModel : CommentModel() {
                 }
             }
 
-            if (roomData != null && roomData.gameType == GameModeType.GAME_MODE_GRAB) {
+            if (roomData != null && (roomData.gameType == GameModeType.GAME_MODE_GRAB || roomData.gameType == GameModeType.GAME_MODE_RACE)) {
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
                     val ssb = SpanUtils()
                             .append(commentModel.userName + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)

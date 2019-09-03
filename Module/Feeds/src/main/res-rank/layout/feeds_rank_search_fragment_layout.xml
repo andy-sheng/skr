@@ -40,6 +40,7 @@
         android:layout_marginBottom="@dimen/view_16_dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:maxLength="20"
         android:gravity="left|center_vertical"
         android:hint="搜索榜单"
         android:imeOptions="actionSearch"

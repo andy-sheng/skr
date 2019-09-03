@@ -19,9 +19,11 @@ import com.common.utils.U
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
+import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
@@ -86,6 +88,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mRaceVoiceControlPanelView: RaceVoiceControlPanelView? = null
     private var mGameRuleDialog: DialogPlus? = null
+    private var mTipsDialogView: TipsDialogView? = null
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)
@@ -239,8 +242,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
 
             override fun showGiftPanel() {
-                mGiftPanelView.show(null)
                 mContinueSendView.setVisibility(View.GONE)
+                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID.toLong()))
+                } else {
+                    mGiftPanelView.show(null)
+                }
             }
         })
     }
@@ -274,7 +281,21 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
 
             override fun closeBtnClick() {
-                quitGame()
+                dismissDialog()
+                mTipsDialogView = TipsDialogView.Builder(context)
+                        .setMessageTip("确定要退出排位赛吗")
+                        .setConfirmTip("确定")
+                        .setCancelTip("取消")
+                        .setConfirmBtnClickListener {
+                            mTipsDialogView?.dismiss(false)
+                            quitGame()
+                        }
+                        .setCancelBtnClickListener {
+                            mTipsDialogView?.dismiss()
+                        }
+                        .build()
+                mTipsDialogView?.showByDialog()
+
             }
 
             override fun onClickGameRule() {
@@ -430,7 +451,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
-                                    mGiftPanelView.show(null)
+                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID.toLong()))
+                                    } else {
+                                        mGiftPanelView.show(null)
+                                    }
                                 }
                             }
                         })
@@ -464,13 +489,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         }
     }
 
-    private fun showRightVote(){
+    private fun showRightVote() {
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+            MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            if (mRoomData.getPlayerInfoModel<RacePlayerInfoModel>(MyUserInfoManager.getInstance().uid.toInt())?.role == ERUserRole.ERUR_PLAY_USER.value) {
+            val role = mRoomData.getPlayerInfoModel<RacePlayerInfoModel>(MyUserInfoManager.getInstance().uid.toInt())?.role
+            if (role == ERUserRole.ERUR_PLAY_USER.value) {
+                MyLog.d(TAG, "showRightVote 当前身份是play")
                 mRaceRightOpView.showVote(false)
             } else {
+                MyLog.d(TAG, "showRightVote 当前身份role=$role")
                 mRaceRightOpView.visibility = View.GONE
             }
         }
@@ -620,5 +649,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mPersonInfoDialog?.dismiss(false)
         mRaceVoiceControlPanelView?.dismiss(false)
         mGameRuleDialog?.dismiss(false)
+        mTipsDialogView?.dismiss(false)
     }
 }
