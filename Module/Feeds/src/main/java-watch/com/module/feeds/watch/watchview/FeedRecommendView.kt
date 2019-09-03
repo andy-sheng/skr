@@ -69,6 +69,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.set
 import kotlin.properties.Delegates
 
+// 全屏幕
 class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.context), CoroutineScope by MainScope() {
 
     val TAG = "FeedRecommendView"

@@ -3,7 +3,6 @@ package com.module.feeds.watch
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -26,10 +25,8 @@ import com.module.feeds.R
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.view.FeedsCollectView
-import com.module.feeds.watch.watchview.FeedRecommendView
 import com.module.feeds.watch.watchview.FollowWatchView
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
+import com.module.feeds.watch.watchview.RecommendWatchView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -50,7 +47,7 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mTabPagerAdapter: PagerAdapter
 
     val mFollowFeedsView: FollowWatchView by lazy { FollowWatchView(this) }       //关注
-    val mRecommendFeedsView: FeedRecommendView by lazy { FeedRecommendView(this) }   //推荐
+    val mRecommendFeedsView: RecommendWatchView by lazy { RecommendWatchView(this) }   //推荐
     val mFeedsCollectView: FeedsCollectView by lazy { FeedsCollectView(this) } //喜欢
     val initPostion = 1
     // 保持 init Postion 一致
