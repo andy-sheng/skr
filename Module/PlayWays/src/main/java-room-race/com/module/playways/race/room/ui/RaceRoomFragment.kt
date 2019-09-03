@@ -22,6 +22,7 @@ import com.component.report.fragment.QuickFeedbackFragment
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
+import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
@@ -239,8 +240,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             }
 
             override fun showGiftPanel() {
-                mGiftPanelView.show(null)
                 mContinueSendView.setVisibility(View.GONE)
+                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID.toLong()))
+                } else {
+                    mGiftPanelView.show(null)
+                }
             }
         })
     }
@@ -430,7 +435,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
-                                    mGiftPanelView.show(null)
+                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID.toLong()))
+                                    } else {
+                                        mGiftPanelView.show(null)
+                                    }
                                 }
                             }
                         })
