@@ -65,6 +65,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     val TAG = when (type) {
         TYPE_PERSON -> "PersonWatchView"
         TYPE_FOLLOW -> "FollowWatchView"
+        TYPE_RECOMMEND->"RecommendWatchView"
         else -> "BaseWatchView"
     }
     val playerTag = TAG + hashCode()

@@ -71,7 +71,9 @@ object SinglePlayer : IPlayerEx {
         MyLog.d("SinglePlayer", "startPlayfrom = $from")
         if (startFrom.startsWith("ProducationWallView")
                 || startFrom.startsWith("PersonWatchView")
-                || startFrom.startsWith("FollowWatchView")) {
+                || startFrom.startsWith("FollowWatchView")
+                || startFrom.startsWith("RecommendWatchView")
+        ) {
 
         } else {
             RemoteControlHelper.registerShake(startFrom)
