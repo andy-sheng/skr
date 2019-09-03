@@ -272,7 +272,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             l.setCity(location.getCity());
                             l.setDistrict(location.getDistrict());
 
-                            if (l.getProvince().equals(MyUserInfoManager.getInstance().getRealLocation().getProvince())
+                            if (MyUserInfoManager.getInstance().hasRealLocation() 
+                                    && l.getProvince().equals(MyUserInfoManager.getInstance().getRealLocation().getProvince())
                                     && l.getCity().equals(MyUserInfoManager.getInstance().getRealLocation().getCity())
                                     && l.getDistrict().equals(MyUserInfoManager.getInstance().getRealLocation().getDistrict())) {
                                 U.getToastUtil().showShort("定位位置与当前位置一致");
