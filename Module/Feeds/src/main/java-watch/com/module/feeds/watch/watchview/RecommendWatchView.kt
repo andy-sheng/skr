@@ -18,6 +18,7 @@ import com.module.feeds.watch.view.FeedsMoreDialogView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// 流布局
 class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_RECOMMEND) {
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
 
