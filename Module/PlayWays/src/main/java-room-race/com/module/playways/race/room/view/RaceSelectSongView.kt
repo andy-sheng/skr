@@ -161,12 +161,12 @@ class RaceSelectSongView : ExConstraintLayout {
         if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
             mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
                 //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
-                lastedTime = 12000 - it
+                lastedTime = 13400 - it
                 MyLog.d(TAG, "setSongName elapsedTimeMs is $it")
                 if (lastedTime < 0) {
                     lastedTime = 1000
                 } else if (lastedTime > 9000) {
-                    lastedTime = 9000
+//                    lastedTime = 9000
                 }
             }
         }
