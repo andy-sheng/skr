@@ -148,6 +148,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             debugLogView.tryInflate()
         }
 
+        if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_raceroom", true)) {
+            U.getPreferenceUtils().setSettingBoolean("is_first_enter_raceroom", false)
+            showGameRuleDialog()
+        }
     }
 
     private fun initResuleView() {
@@ -300,16 +304,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-                dismissDialog()
-                mGameRuleDialog = DialogPlus.newDialog(context!!)
-                        .setContentHolder(ViewHolder(R.layout.race_game_rule_view_layout))
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
-                        .setExpanded(false)
-                        .setGravity(Gravity.CENTER)
-                        .create()
-                mGameRuleDialog?.show()
+                showGameRuleDialog()
             }
         })
 
@@ -347,6 +342,19 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
         mRaceTopVsView = rootView.findViewById(R.id.race_top_vs_view)
         mRaceTopVsView.setRaceRoomData(mRoomData)
+    }
+
+    private fun showGameRuleDialog() {
+        dismissDialog()
+        mGameRuleDialog = DialogPlus.newDialog(context!!)
+                .setContentHolder(ViewHolder(R.layout.race_game_rule_view_layout))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                .setExpanded(false)
+                .setGravity(Gravity.CENTER)
+                .create()
+        mGameRuleDialog?.show()
     }
 
     private fun initCommentView() {
