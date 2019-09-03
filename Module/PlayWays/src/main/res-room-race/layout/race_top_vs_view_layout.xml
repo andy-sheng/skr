@@ -29,6 +29,18 @@
             android:background="@drawable/race_top_left_vs_bg" />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/left_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:text=""
+            android:textColor="#FFFFD693"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/left_avatar_iv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/left_avatar_iv" />
+
+        <com.common.view.ex.ExTextView
             android:id="@+id/left_ticket_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,14 +64,22 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <android.support.constraint.Group
+            android:id="@+id/left_ticket_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="left_ticket_count_tv, left_ticket_tv" />
+
         <com.common.image.fresco.BaseImageView
+            android:layout_marginBottom="@dimen/view_10_dp"
             android:id="@+id/left_avatar_iv"
             android:layout_width="@dimen/view_35_dp"
             android:layout_height="@dimen/view_35_dp"
             android:layout_marginRight="@dimen/view_34_dp"
-            app:layout_constraintBottom_toBottomOf="@+id/left_ticket_count_tv"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/left_ticket_count_tv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.countdown.CircleCountDownView
             android:visibility="gone"
@@ -94,6 +114,18 @@
             android:background="@drawable/race_top_right_vs_bg" />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/right_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_16_dp"
+            android:textColor="#FFFFD693"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/right_avatar_iv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/right_avatar_iv" />
+
+        <com.common.view.ex.ExTextView
             android:id="@+id/right_ticket_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,14 +148,22 @@
             app:layout_constraintRight_toLeftOf="@+id/right_ticket_tv"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <android.support.constraint.Group
+            android:id="@+id/right_ticket_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="right_ticket_count_tv, right_ticket_tv" />
+
         <com.common.image.fresco.BaseImageView
+            android:layout_marginBottom="@dimen/view_10_dp"
             android:id="@+id/right_avatar_iv"
             android:layout_width="@dimen/view_35_dp"
             android:layout_height="@dimen/view_35_dp"
             android:layout_marginLeft="@dimen/view_34_dp"
-            app:layout_constraintBottom_toBottomOf="@+id/right_ticket_count_tv"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/right_ticket_count_tv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.countdown.CircleCountDownView
             android:visibility="gone"

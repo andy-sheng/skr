@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.Group
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.OvershootInterpolator
@@ -13,11 +14,13 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
+import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +28,7 @@ import org.greenrobot.eventbus.EventBus
 
 
 class RaceTopVsView : ExConstraintLayout {
-    val mTag = "RaceTopVsView"
+    val TAG = "RaceTopVsView"
 
     val leftConstraintLayout: ConstraintLayout
     val leftTicketTv: ExTextView
@@ -37,6 +40,10 @@ class RaceTopVsView : ExConstraintLayout {
     val rightTicketCountTv: ExTextView
     val rightAvatarIv: BaseImageView
     val rightCircleCountDownView: CircleCountDownView
+    val leftState: ExTextView
+    val leftTicketGroup: Group
+    val rightState: ExTextView
+    val rightTicketGroup: Group
 
     val raceTopVsIv: ImageView
     var roomData: RaceRoomData? = null
@@ -60,6 +67,10 @@ class RaceTopVsView : ExConstraintLayout {
         rightAvatarIv = this.findViewById(com.module.playways.R.id.right_avatar_iv)
         rightCircleCountDownView = this.findViewById(com.module.playways.R.id.right_circle_count_down_view)
         raceTopVsIv = this.findViewById(com.module.playways.R.id.race_top_vs_iv)
+        leftState = this.findViewById(R.id.left_state)
+        leftTicketGroup = this.findViewById(R.id.left_ticket_group)
+        rightState = this.findViewById(R.id.right_state)
+        rightTicketGroup = this.findViewById(R.id.right_ticket_group)
 
         leftAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
@@ -84,11 +95,51 @@ class RaceTopVsView : ExConstraintLayout {
 
     fun updateData() {
         roomData?.realRoundInfo?.scores?.let {
-            leftTicketCountTv.text = it[0].bLightCnt.toString()
-        }
+            if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                            ?: false)) {
+                MyLog.d(TAG, "updateData 1")
+                leftTicketGroup.visibility = View.VISIBLE
+                rightTicketGroup.visibility = View.VISIBLE
+                leftState.visibility = View.GONE
+                rightState.visibility = View.GONE
 
-        roomData?.realRoundInfo?.scores?.let {
-            rightTicketCountTv.text = it[1].bLightCnt.toString()
+                leftTicketCountTv.text = it[0].bLightCnt.toString()
+                rightTicketCountTv.text = it[1].bLightCnt.toString()
+            } else {
+                leftTicketGroup.visibility = View.GONE
+                rightTicketGroup.visibility = View.GONE
+                leftState.visibility = View.VISIBLE
+                rightState.visibility = View.VISIBLE
+                leftState.text = ""
+                rightState.text = ""
+
+                if (roomData?.realRoundInfo?.subRoundSeq == 1) {
+                    MyLog.d(TAG, "updateData 2")
+                    if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                                    ?: true) {
+                        MyLog.d(TAG, "updateData 3")
+                        leftTicketCountTv.text = it[0].bLightCnt.toString()
+                        leftTicketGroup.visibility = View.VISIBLE
+                    } else {
+                        MyLog.d(TAG, "updateData 4")
+                        leftState.text = "投票中"
+                    }
+                } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
+                    MyLog.d(TAG, "updateData 5")
+                    if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                                    ?: true) {
+                        MyLog.d(TAG, "updateData 6")
+                        leftState.text = "锁票"
+                        rightTicketGroup.visibility = View.VISIBLE
+                        rightTicketCountTv.text = it[1].bLightCnt.toString()
+                    } else {
+                        MyLog.d(TAG, "updateData 7")
+                        leftTicketGroup.visibility = View.VISIBLE
+                        leftTicketCountTv.text = it[0].bLightCnt.toString()
+                        rightState.text = "投票中"
+                    }
+                }
+            }
         }
     }
 
@@ -99,12 +150,14 @@ class RaceTopVsView : ExConstraintLayout {
                 leftCircleCountDownView.go(0, 1 * 1000) {
                     leftCircleCountDownView.visibility = View.GONE
                     call?.invoke()
+                    updateData()
                 }
             } else {
                 rightCircleCountDownView.visibility = View.VISIBLE
                 rightCircleCountDownView.go(0, 1 * 1000) {
                     rightCircleCountDownView.visibility = View.GONE
                     call?.invoke()
+                    updateData()
                 }
             }
         }
@@ -117,12 +170,14 @@ class RaceTopVsView : ExConstraintLayout {
                 leftCircleCountDownView.go(0, 1 * 1000) {
                     leftCircleCountDownView.visibility = View.GONE
                     call?.invoke()
+                    updateData()
                 }
             } else {
                 rightCircleCountDownView.visibility = View.VISIBLE
                 rightCircleCountDownView.go(0, 1 * 1000) {
                     rightCircleCountDownView.visibility = View.GONE
                     call?.invoke()
+                    updateData()
                 }
             }
         }
@@ -159,6 +214,7 @@ class RaceTopVsView : ExConstraintLayout {
 
         launch {
             delay(350)
+            updateData()
             val animatorSet = ObjectAnimator.ofPropertyValuesHolder(raceTopVsIv,
                     PropertyValuesHolder.ofFloat("scaleX", 2.0f, 1f),
                     PropertyValuesHolder.ofFloat("scaleY", 2.0f, 1f))
