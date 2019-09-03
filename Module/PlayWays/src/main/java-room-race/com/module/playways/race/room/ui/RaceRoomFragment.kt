@@ -32,7 +32,6 @@ import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.inter.IRaceRoomView
-import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -163,8 +162,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
     private fun initSelectSongView() {
         mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
-        mRaceSelectSongView.setRoomData(mRoomData) {
-            mCorePresenter.wantSingChance(it)
+        mRaceSelectSongView.setRoomData(mRoomData) { choiceID, seq ->
+            mCorePresenter.wantSingChance(choiceID, seq)
         }
         mRaceSelectSongView.visibility = View.GONE
     }

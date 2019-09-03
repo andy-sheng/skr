@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.engine.ScoreConfig
 import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
@@ -19,13 +18,10 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
-import com.common.videocache.MediaCacheManager
 import com.component.busilib.constans.GameModeType
-import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
 import com.engine.Params
-import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.race.RaceRoomServerApi
@@ -49,7 +45,6 @@ import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.zq.live.proto.RaceRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
-import okhttp3.Dispatcher
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -201,7 +196,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     /**
      * 选择歌曲
      */
-    fun wantSingChance(choiceID: Int) {
+    fun wantSingChance(choiceID: Int, seq: Int) {
+        if (seq != mRoomData.realRoundSeq) {
+            return
+        }
+
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
 
         val songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
@@ -212,13 +211,15 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val map = mutableMapOf(
                     "choiceID" to choiceID,
                     "roomID" to mRoomData.gameId,
-                    "roundSeq" to mRoomData.realRoundSeq,
+                    "roundSeq" to seq,
                     "wantSingType" to wantSingType
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.wantSingChance(body) }
             if (result.errno == 0) {
-                mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
+                if (seq == mRoomData.realRoundSeq) {
+                    mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
+                }
             } else {
 
             }

@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RaceSelectSongView : ExConstraintLayout {
-    val mTag = "RaceSelectSongView"
+    val TAG = "RaceSelectSongView"
     var bg: ImageView
     private val progressBg: ExImageView
     private val progressBar: ProgressBar
@@ -40,7 +40,7 @@ class RaceSelectSongView : ExConstraintLayout {
     private val itemList: ArrayList<RaceSelectSongItemView> = ArrayList()
     var animator: ValueAnimator? = null
     var mRoomData: RaceRoomData? = null
-    var mSelectCall: ((Int) -> Unit)? = null
+    var mSelectCall: ((Int, Int) -> Unit)? = null
     var mNoSelectCall: (() -> Unit)? = null
     var mSeq = -1
 
@@ -70,9 +70,10 @@ class RaceSelectSongView : ExConstraintLayout {
         progressBar.progress = 0
         firstSongItem.setDebounceViewClickListener {
             firstSongItem.getSong()?.let {
-                U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
+                U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                 if (mRoomData?.realRoundSeq == mSeq) {
-                    mSelectCall?.invoke(1)
+                    MyLog.d(TAG, "mSeq is $mSeq")
+                    mSelectCall?.invoke(1, mSeq)
                     mNoSelectCall = null
                 }
             }
@@ -81,8 +82,9 @@ class RaceSelectSongView : ExConstraintLayout {
         secondSongItem.setDebounceViewClickListener {
             secondSongItem.getSong()?.let {
                 if (mRoomData?.realRoundSeq == mSeq) {
-                    U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
-                    mSelectCall?.invoke(2)
+                    MyLog.d(TAG, "mSeq is $mSeq")
+                    U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
+                    mSelectCall?.invoke(2, mSeq)
                     mNoSelectCall = null
                 }
             }
@@ -91,8 +93,9 @@ class RaceSelectSongView : ExConstraintLayout {
         thirdSongItem.setDebounceViewClickListener {
             thirdSongItem.getSong()?.let {
                 if (mRoomData?.realRoundSeq == mSeq) {
-                    U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
-                    mSelectCall?.invoke(3)
+                    MyLog.d(TAG, "mSeq is $mSeq")
+                    U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
+                    mSelectCall?.invoke(3, mSeq)
                     mNoSelectCall = null
                 }
             }
@@ -100,18 +103,19 @@ class RaceSelectSongView : ExConstraintLayout {
 
         forthSongItem.setDebounceViewClickListener {
             forthSongItem.getSong()?.let {
-                U.getSoundUtils().play(mTag, R.raw.newrank_picksong)
+                U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                 if (mRoomData?.realRoundSeq == mSeq) {
-                    mSelectCall?.invoke(4)
+                    MyLog.d(TAG, "mSeq is $mSeq")
+                    mSelectCall?.invoke(4, mSeq)
                     mNoSelectCall = null
                 }
             }
         }
 
-        U.getSoundUtils().preLoad(mTag, R.raw.newrank_picksong)
+        U.getSoundUtils().preLoad(TAG, R.raw.newrank_picksong)
     }
 
-    fun setRoomData(roomData: RaceRoomData, selectCall: ((Int) -> Unit)) {
+    fun setRoomData(roomData: RaceRoomData, selectCall: ((Int, Int) -> Unit)) {
         mRoomData = roomData
         firstSongItem.setRaceRoomData(roomData)
         secondSongItem.setRaceRoomData(roomData)
@@ -124,6 +128,7 @@ class RaceSelectSongView : ExConstraintLayout {
 
     //倒计时3秒，选择6秒
     fun setSongName(seq: Int, noSelectCall: (() -> Unit)?) {
+        MyLog.d(TAG, "setSongName seq = $seq, noSelectCall = $noSelectCall")
         progressBar.progress = 0
         mSeq = seq
         scaleAnimatorSet = ObjectAnimator.ofPropertyValuesHolder(
@@ -157,7 +162,7 @@ class RaceSelectSongView : ExConstraintLayout {
             mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
                 //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
                 lastedTime = 12000 - it
-                MyLog.d(mTag, "setSongName elapsedTimeMs is $it")
+                MyLog.d(TAG, "setSongName elapsedTimeMs is $it")
                 if (lastedTime < 0) {
                     lastedTime = 1000
                 } else if (lastedTime > 9000) {
@@ -224,7 +229,7 @@ class RaceSelectSongView : ExConstraintLayout {
     }
 
     fun startCountDown(countDownMic: Int) {
-        MyLog.d(mTag, "startCountDown countDownMic is $countDownMic")
+        MyLog.d(TAG, "startCountDown countDownMic is $countDownMic")
         enableSelectSong(true)
         animator = ValueAnimator.ofInt(((6000 - countDownMic) * 360) / 6000, 360)
         animator?.duration = countDownMic.toLong()
@@ -265,6 +270,6 @@ class RaceSelectSongView : ExConstraintLayout {
         mNoSelectCall = null
         animator?.cancel()
         scaleAnimatorSet?.cancel()
-        U.getSoundUtils().release(mTag)
+        U.getSoundUtils().release(TAG)
     }
 }
