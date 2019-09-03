@@ -127,11 +127,12 @@ class RaceMiddleResultView : ExConstraintLayout {
                         .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                         .build())
 
+                startVs()
             } else {
                 MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
             }
         }
-        startVs()
+
         launch {
             delay(3000)
             // 让显示4秒钟
