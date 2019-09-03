@@ -100,7 +100,7 @@ class RaceResultActivity : BaseActivity() {
 
     private fun showResult(raceResultModel: LevelResultModel) {
         U.getSoundUtils().play(mTag, R.raw.newrank_resultpage)
-        descTv.text = "距离下次升段还需${raceResultModel.gap}积分"
+        descTv.text = "距离下次升段还需${raceResultModel.gap}经验"
         if (raceResultModel.get >= 0) {
             changeTv.text = "+${raceResultModel.get}"
         }else{

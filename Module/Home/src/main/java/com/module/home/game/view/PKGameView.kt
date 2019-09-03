@@ -214,7 +214,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         model?.let {
             mLevelView.bindData(it.mainRanking, it.subRanking)
             mLevelTv.text = it.rankingDesc
-            mLevelGapTv.text = "距离下次升段还需${it.maxExp - it.currExp}积分"
+            mLevelGapTv.text = "距离下次升段还需${it.maxExp - it.currExp}经验"
         }
     }
 

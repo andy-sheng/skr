@@ -188,7 +188,7 @@ public class GrabResultFragment extends BaseFragment {
             bindData(mHzArea, mHzNumTv, hzModel, "+", "枚");
 
             if (mGrabResultData.mLevelResultModel != null) {
-                mDescTv.setText("距离下次升段还需" + mGrabResultData.mLevelResultModel.getGap() + "积分");
+                mDescTv.setText("距离下次升段还需" + mGrabResultData.mLevelResultModel.getGap() + "经验");
                 if (mGrabResultData.mLevelResultModel.getGet() >= 0) {
                     mChangeTv.setText("+" + mGrabResultData.mLevelResultModel.getGet());
                 } else {
