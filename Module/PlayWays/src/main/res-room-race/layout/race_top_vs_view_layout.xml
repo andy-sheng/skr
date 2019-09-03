@@ -42,11 +42,11 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/left_ticket_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_12_dp"
+            android:background="@drawable/race_zan"
             android:layout_marginLeft="@dimen/view_3_dp"
             android:layout_marginTop="@dimen/view_22_dp"
-            android:text="票"
             android:textColor="@color/white_trans_50"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintLeft_toRightOf="@+id/left_ticket_count_tv"
@@ -127,11 +127,11 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/right_ticket_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_22_dp"
             android:layout_marginRight="@dimen/view_13_dp"
-            android:text="票"
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_12_dp"
+            android:background="@drawable/race_zan"
             android:textColor="@color/white_trans_50"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintRight_toRightOf="parent"

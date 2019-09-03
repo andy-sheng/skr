@@ -42,11 +42,11 @@
             app:layout_constraintTop_toTopOf="@+id/left_avatar_iv" />
 
         <com.common.view.ex.ExTextView
+            android:layout_width="@dimen/view_14_dp"
             android:id="@+id/left_ticket_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_16_dp"
-            android:text="票"
+            android:layout_height="@dimen/view_12_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:background="@drawable/race_zan"
             android:textColor="@color/white_trans_50"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintLeft_toRightOf="@+id/left_ticket_count_tv"
@@ -109,11 +109,11 @@
             app:layout_constraintTop_toTopOf="@+id/right_avatar_iv" />
 
         <com.common.view.ex.ExTextView
+            android:layout_width="@dimen/view_14_dp"
             android:id="@+id/right_ticket_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_16_dp"
-            android:text="票"
+            android:layout_height="@dimen/view_12_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:background="@drawable/race_zan"
             android:textColor="@color/white_trans_50"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintLeft_toRightOf="@+id/right_ticket_count_tv"
