@@ -502,7 +502,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            val role = mRoomData.getPlayerInfoModel<RacePlayerInfoModel>(MyUserInfoManager.getInstance().uid.toInt())?.role
+            val role = mRoomData.getPlayerInfoModel(MyUserInfoManager.getInstance().uid.toInt())?.role
             if (role == ERUserRole.ERUR_PLAY_USER.value) {
                 MyLog.d(TAG, "showRightVote 当前身份是play")
                 mRaceRightOpView.showVote(false)

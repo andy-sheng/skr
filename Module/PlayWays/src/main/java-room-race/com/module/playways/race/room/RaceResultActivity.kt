@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @Route(path = RouterConstants.ACTIVITY_RACE_RESULT)
 class RaceResultActivity : BaseActivity() {
 
-    val mTag = "RaceRightOpView"
+    val mTag = "RaceResultActivity"
 
     lateinit var changeTv: TextView
     lateinit var levelView: NormalLevelView2
@@ -48,8 +48,6 @@ class RaceResultActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        U.getSoundUtils().preLoad(mTag, R.raw.newrank_resultpage)
-
         roomID = intent.getIntExtra("roomID", -1)
         roundSeq = intent.getIntExtra("roundSeq", -1)
         if (roomID == -1 || roundSeq == -1) {
@@ -79,6 +77,11 @@ class RaceResultActivity : BaseActivity() {
         })
 
         getResult()
+        U.getSoundUtils().preLoad(mTag, R.raw.newrank_resultpage)
+        launch {
+            delay(200)
+            U.getSoundUtils().play(mTag, R.raw.newrank_resultpage)
+        }
     }
 
     private fun getResult() {
@@ -99,7 +102,6 @@ class RaceResultActivity : BaseActivity() {
     }
 
     private fun showResult(raceResultModel: LevelResultModel) {
-        U.getSoundUtils().play(mTag, R.raw.newrank_resultpage)
         descTv.text = "距离下次升段还需${raceResultModel.gap}经验"
         if (raceResultModel.get >= 0) {
             changeTv.text = "+${raceResultModel.get}"
