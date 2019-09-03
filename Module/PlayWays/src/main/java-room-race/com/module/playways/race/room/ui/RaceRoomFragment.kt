@@ -620,6 +620,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     override fun onBackPressed(): Boolean {
+        if (mInputContainerView.onBackPressed()){
+            return true
+        }
         if (mGiftPanelView.onBackPressed()) {
             return true
         }
