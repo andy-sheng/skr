@@ -34,8 +34,10 @@ class FeedsWatchModel : Serializable {
     var status: Int = 2  //0 未知 1待审核 2审核通过
     @JSONField(name = "isCollected")
     var isCollected = false  // 默认未收藏
+    @JSONField(name = "feedLikeUserList")
+    var feedLikeUserList: MutableList<FeedUserInfo> = ArrayList<FeedUserInfo>()
 
     override fun toString(): String {
-        return "FeedsWatchModel(exposure=$exposure, commentCnt=$commentCnt, feedID=$feedID, feedType=$feedType, hasFollow=$hasFollow, isLiked=$isLiked, rankSeq=$rankSeq, rank=$rank, song=$song, starCnt=$starCnt, shareCnt=$shareCnt, challengeCnt=$challengeCnt, user=$user, status=$status, isCollected=$isCollected)"
+        return "FeedsWatchModel(exposure=$exposure, commentCnt=$commentCnt, feedID=$feedID, feedType=$feedType, hasFollow=$hasFollow, isLiked=$isLiked, rankSeq=$rankSeq, rank=$rank, song=$song, starCnt=$starCnt, shareCnt=$shareCnt, challengeCnt=$challengeCnt, user=$user, status=$status, isCollected=$isCollected, feedLikeUserList=$feedLikeUserList)"
     }
 }

@@ -23,6 +23,7 @@ import com.common.rxretrofit.subscribe
 import com.common.sensor.SensorManagerHelper
 import com.common.utils.U
 import com.component.busilib.callback.EmptyCallback
+import com.component.person.event.ShowPersonCenterEvent
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -33,6 +34,7 @@ import com.module.feeds.detail.activity.FeedsDetailActivity.Companion.TYPE_SWITC
 import com.module.feeds.detail.manager.AbsPlayModeManager
 import com.module.feeds.detail.manager.FeedSongPlayModeManager
 import com.module.feeds.event.FeedDetailChangeEvent
+import com.module.feeds.event.FeedLikeChangeEvent
 import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.statistics.FeedPage
@@ -42,6 +44,7 @@ import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
+import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.FeedViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -640,6 +643,45 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedLikeChangeEvent) {
+        // 喜欢状态更新，更新赞的列表
+        if (event.isLike) {
+            val feedUserInfo = FeedUserInfo()
+                    .apply {
+                        userID = MyUserInfoManager.getInstance().uid.toInt()
+                        avatar = MyUserInfoManager.getInstance().avatar
+                        nickname = MyUserInfoManager.getInstance().nickName
+                    }
+            for (watchModel in mAdapter.mDataList) {
+                if (watchModel.feedID == event.feedID) {
+                    watchModel.feedLikeUserList.add(0, feedUserInfo)
+                }
+            }
+        } else {
+            for (watchModel in mAdapter.mDataList) {
+                if (watchModel.feedID == event.feedID) {
+                    for (like in watchModel.feedLikeUserList) {
+                        if (like.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                            watchModel.feedLikeUserList.remove(like)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ShowPersonCenterEvent) {
+        val bundle = Bundle()
+        bundle.putInt("bundle_user_id", event.uid)
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                .with(bundle)
+                .navigation()
+    }
+
     // 收藏和取消收藏
     private fun collectOrUnCollectFeed(position: Int, model: FeedsWatchModel) {
         launch {
@@ -685,8 +727,21 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 model.isLiked = !model.isLiked
                 if (model.isLiked) {
                     model.starCnt = model.starCnt.plus(1)
+                    val feedUserInfo = FeedUserInfo()
+                            .apply {
+                                userID = MyUserInfoManager.getInstance().uid.toInt()
+                                avatar = MyUserInfoManager.getInstance().avatar
+                                nickname = MyUserInfoManager.getInstance().nickName
+                            }
+                    model.feedLikeUserList.add(0, feedUserInfo)
                 } else {
                     model.starCnt = model.starCnt.minus(1)
+                    for (like in model.feedLikeUserList) {
+                        if (like.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                            model.feedLikeUserList.remove(like)
+                            break
+                        }
+                    }
                 }
                 mAdapter.update(position, model, FeedsWatchViewAdapter.REFRESH_TYPE_LIKE)
             } else {

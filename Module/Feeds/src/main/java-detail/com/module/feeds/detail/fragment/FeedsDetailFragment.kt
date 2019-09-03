@@ -64,9 +64,11 @@ import com.module.feeds.detail.view.FeedsCommonLyricView
 import com.module.feeds.detail.view.FeedsInputContainerView
 import com.module.feeds.event.FeedDetailChangeEvent
 import com.module.feeds.event.FeedDetailSwitchEvent
+import com.module.feeds.event.FeedLikeChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
+import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
@@ -595,7 +597,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
-    private fun needContinueByFrom():Boolean{
+    private fun needContinueByFrom(): Boolean {
         if (mFrom == FeedPage.DETAIL_FROM_RECOMMEND
                 || mFrom == FeedPage.DETAIL_FROM_COLLECT
                 || mFrom == FeedPage.DETAIL_FROM_SONG_ALBUM_OP
@@ -862,6 +864,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         } else {
             mFeedsWatchModel!!.starCnt--
         }
+        EventBus.getDefault().post(FeedLikeChangeEvent(mFeedsWatchModel!!.feedID, like))
 
         mFeedsWatchModel?.isLiked = like
         mXinNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.starCnt)
@@ -1009,7 +1012,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RemoteControlEvent) {
         // 不在前台 或者 详情页在前台
-        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity == activity)) {
             mFeedsInputContainerView?.hideSoftInput()
             toNextSongAction(true)
         }
@@ -1018,10 +1021,10 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PlayOrPauseEvent) {
         // 不在前台 或者 详情页在前台
-        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity==activity)) {
-            if(SinglePlayer.isPlaying){
+        if (SinglePlayer.startFrom == playerTag && (!U.getActivityUtils().isAppForeground || U.getActivityUtils().topActivity == activity)) {
+            if (SinglePlayer.isPlaying) {
                 pausePlay(true)
-            }else{
+            } else {
                 startPlay()
             }
         }

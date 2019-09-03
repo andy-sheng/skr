@@ -23,6 +23,7 @@ import com.module.feeds.detail.view.FeedsManyLyricView
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsRecordAnimationView
+import com.module.feeds.watch.watchview.FeedLikeView
 
 
 open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : RecyclerView.ViewHolder(rootView) {
@@ -41,6 +42,9 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
     val mDebugTv: TextView = itemView.findViewById(R.id.debug_tv)
     val feedAutoScrollLyricView = AutoScrollLyricView(itemView.findViewById(R.id.auto_scroll_lyric_view_layout_viewstub), true)
     val feedWatchManyLyricView = FeedsManyLyricView(itemView.findViewById(R.id.feeds_watch_many_lyric_layout_viewstub), true)
+
+    val mTvLikes: FeedLikeView = itemView.findViewById(R.id.tv_likes)
+    val mTvLikesDivider: View = itemView.findViewById(R.id.tv_likes_divider)
 
     val mFeedsClickView: View = itemView.findViewById(R.id.feeds_click_view)
 
@@ -188,7 +192,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         tryBindDebugView()
     }
 
-    // 刷新喜欢图标和数字
+    // 刷新喜欢图标和数字和喜欢的人
     fun refreshLike() {
         var drawble = U.getDrawable(R.drawable.feed_like_black_icon)
         if (model?.isLiked == true) {
@@ -197,6 +201,13 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         drawble.setBounds(0, 0, 20.dp(), 18.dp())
         mLikeNumTv.setCompoundDrawables(drawble, null, null, null)
         mLikeNumTv.text = StringFromatUtils.formatTenThousand(model?.starCnt ?: 0)
+
+        if (model?.feedLikeUserList.isNullOrEmpty()) {
+            mTvLikesDivider.visibility = View.GONE
+        } else {
+            mTvLikesDivider.visibility = View.VISIBLE
+        }
+        mTvLikes.setLikeUsers(model?.feedLikeUserList, model?.starCnt ?: 0)
     }
 
     // 刷新播放次数

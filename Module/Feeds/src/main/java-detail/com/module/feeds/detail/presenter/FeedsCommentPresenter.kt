@@ -87,16 +87,4 @@ class FeedsCommentPresenter(var mFeedId: Int, val mIFirstLevelCommentView: IFirs
             }
         }, this, RequestControl(TAG + "likeComment", ControlType.CancelThis))
     }
-
-    fun likeFeeds(like: Boolean, feedID: Int) {
-        val map = mapOf("feedID" to feedID, "like" to like)
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(mFeedsDetailServerApi.likeFeed(body), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult?) {
-                if (obj?.errno == 0) {
-
-                }
-            }
-        }, this, RequestControl(TAG + "likeFeeds", ControlType.CancelThis))
-    }
 }
