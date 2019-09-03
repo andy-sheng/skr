@@ -7,9 +7,11 @@ import com.module.playways.RoomDataUtils
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.model.RaceConfigModel
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
+import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
 import java.util.*
@@ -70,6 +72,25 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
             }
         }
         return l
+    }
+
+    fun getPlayerInfoModel(userID: Int?): RacePlayerInfoModel? {
+        if (userID == null || userID == 0) {
+            return null
+        }
+        val playerInfoModel = userInfoMap[userID] as RacePlayerInfoModel?
+        if (playerInfoModel == null || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
+            val l = getPlayerInfoList<PlayerInfoModel>() ?: return null
+            for (playerInfo in l) {
+                if (playerInfo.userInfo.userId == userID) {
+                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+                    return playerInfo as RacePlayerInfoModel?
+                }
+            }
+        } else {
+            return playerInfoModel
+        }
+        return null
     }
 
     override fun <User : PlayerInfoModel> getInSeatPlayerInfoList(): List<User>? {
