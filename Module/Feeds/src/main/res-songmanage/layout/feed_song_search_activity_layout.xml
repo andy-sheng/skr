@@ -42,6 +42,7 @@
         android:focusableInTouchMode="true"
         android:gravity="left|center_vertical"
         android:hint="搜索歌名或歌手"
+        android:maxLength="20"
         android:imeOptions="actionSearch"
         android:paddingLeft="@dimen/view_35_dp"
         android:paddingTop="@dimen/view_0_dp"
