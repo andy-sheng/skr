@@ -197,7 +197,6 @@
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
 
@@ -214,7 +213,6 @@
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/song_area_bg" />
 

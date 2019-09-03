@@ -70,7 +70,7 @@ public class FeedLikeView extends TextView {
                 SpannableStringBuilder spannableStringBuilder;
                 if (i == 0) {
                     spannableStringBuilder = new SpanUtils()
-                            .appendImage(U.getDrawable(R.drawable.feed_like_name_icon), SpanUtils.ALIGN_BOTTOM)
+                            .appendImage(U.getDrawable(R.drawable.feed_like_name_icon), SpanUtils.ALIGN_CENTER)
                             .append(" " + clickText).setForegroundColor(Color.parseColor("#4A90E2"))
                             .setClickSpan(new ClickableSpan() {
                                 @Override
@@ -104,11 +104,14 @@ public class FeedLikeView extends TextView {
                 }
                 append(spannableStringBuilder);
             }
-            String moreStr = "等" + likeNum + "人赞过";
-            SpannableStringBuilder mSpannableString = new SpanUtils()
-                    .append(moreStr).setForegroundColor(U.getColor(R.color.black_trans_50))
-                    .create();
-            append(mSpannableString);
+
+            if (topics.size() > 8) {
+                String moreStr = "等" + likeNum + "人赞过";
+                SpannableStringBuilder mSpannableString = new SpanUtils()
+                        .append(moreStr).setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .create();
+                append(mSpannableString);
+            }
         } else {
             setVisibility(GONE);
         }
