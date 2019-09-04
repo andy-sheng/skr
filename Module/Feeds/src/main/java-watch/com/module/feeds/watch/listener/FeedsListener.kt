@@ -25,4 +25,6 @@ interface FeedsListener {
     fun onClickRecommendTag(model: FeedRecommendTagModel)
 
     fun onClickRecommendTagMore()
+
+    fun onClickNameListener(userID: Int)
 }

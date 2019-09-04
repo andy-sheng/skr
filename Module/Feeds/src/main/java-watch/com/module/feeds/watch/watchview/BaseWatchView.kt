@@ -124,6 +124,15 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             }
         }
         mAdapter = FeedsWatchViewAdapter(object : FeedsListener {
+            override fun onClickNameListener(userID: Int) {
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", userID)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
+
             override fun onClickRecommendTagMore() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
                         .withInt("from", 1)
@@ -670,16 +679,6 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 }
             }
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ShowPersonCenterEvent) {
-        val bundle = Bundle()
-        bundle.putInt("bundle_user_id", event.uid)
-        ARouter.getInstance()
-                .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                .with(bundle)
-                .navigation()
     }
 
     // 收藏和取消收藏

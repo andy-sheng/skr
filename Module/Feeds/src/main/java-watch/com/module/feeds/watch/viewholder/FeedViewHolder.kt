@@ -95,6 +95,11 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
             }
         })
 
+        mTvLikes.onClickNameListener = {
+            listener?.onClickNameListener(it)
+        }
+
+
         if (MyLog.isDebugLogOpen()) {
             mDebugTv.visibility = View.VISIBLE
         } else {
