@@ -3,6 +3,7 @@ package com.module.feeds.watch.watchview
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -47,7 +48,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
 
     override fun resumePlay() {
         super.resumePlay()
-        srollPositionToTop(mAdapter.mCurrentPlayPosition ?: 0)
+        srollPositionToTop(mAdapter.mCurrentPlayPosition)
     }
 
     override fun recyclerIdlePosition(position: Int) {

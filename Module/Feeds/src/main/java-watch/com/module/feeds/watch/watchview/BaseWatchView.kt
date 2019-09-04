@@ -68,7 +68,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     val TAG = when (type) {
         TYPE_PERSON -> "PersonWatchView"
         TYPE_FOLLOW -> "FollowWatchView"
-        TYPE_RECOMMEND->"RecommendWatchView"
+        TYPE_RECOMMEND -> "RecommendWatchView"
         else -> "BaseWatchView"
     }
     val playerTag = TAG + hashCode()
@@ -356,8 +356,13 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                         return@getNextSong
                                     } else {
                                         // 合理更新本地
-                                        mAdapter.mCurrentPlayPosition = pos
-                                        mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
+                                        if (type == TYPE_RECOMMEND) {
+                                            mAdapter.mCurrentPlayPosition = pos + 1
+                                            mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
+                                        } else {
+                                            mAdapter.mCurrentPlayPosition = pos
+                                            mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
+                                        }
                                     }
                                 }
                             } else {
@@ -386,8 +391,13 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                         return@getPreSong
                                     } else {
                                         // 合理更新本地
-                                        mAdapter.mCurrentPlayPosition = pos
-                                        mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
+                                        if (type == TYPE_RECOMMEND) {
+                                            mAdapter.mCurrentPlayPosition = pos + 1
+                                            mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
+                                        } else {
+                                            mAdapter.mCurrentPlayPosition = pos
+                                            mAdapter.mCurrentPlayModel = mAdapter.mDataList[pos]
+                                        }
                                     }
                                 }
                             } else {
