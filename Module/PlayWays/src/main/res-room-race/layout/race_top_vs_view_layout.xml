@@ -29,6 +29,8 @@
             android:background="@drawable/race_top_left_vs_bg" />
 
         <com.common.view.ex.ExTextView
+            android:drawableRight="@drawable/race_zan"
+            android:drawablePadding="@dimen/view_5_dp"
             android:id="@+id/left_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,6 +116,8 @@
             android:background="@drawable/race_top_right_vs_bg" />
 
         <com.common.view.ex.ExTextView
+            android:drawableRight="@drawable/race_zan"
+            android:drawablePadding="@dimen/view_5_dp"
             android:id="@+id/right_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

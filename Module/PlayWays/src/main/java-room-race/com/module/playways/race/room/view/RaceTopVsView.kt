@@ -14,7 +14,6 @@ import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
-import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
@@ -122,21 +121,21 @@ class RaceTopVsView : ExConstraintLayout {
                         leftTicketGroup.visibility = View.VISIBLE
                     } else {
 
-                        leftState.text = "**桃心"
+                        leftState.text = "**"
                     }
                 } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
 
                     if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
                                     ?: true) {
 
-                        leftState.text = "**桃心"
+                        leftState.text = "**"
                         rightTicketGroup.visibility = View.VISIBLE
                         rightTicketCountTv.text = it[1].bLightCnt.toString()
                     } else {
 
                         leftTicketGroup.visibility = View.VISIBLE
                         leftTicketCountTv.text = it[0].bLightCnt.toString()
-                        rightState.text = "**桃心"
+                        rightState.text = "**"
                     }
                 }
             }
