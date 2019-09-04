@@ -76,8 +76,8 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 var view: View? = when (position) {
                     0 -> mGrabGameView
                     1 -> mQuickGameView
-                    2 -> mDoubleRoomGameView
-                    3 -> mPkGameView
+                    2 -> mPkGameView
+                    3 -> mDoubleRoomGameView
                     else -> null
                 }
                 if (container.indexOfChild(view) == -1) {
@@ -98,8 +98,8 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 return when (position) {
                     0 -> "抢唱"
                     1 -> "首页"
-                    2 -> "唱聊"
-                    3 -> "排位"
+                    2 -> "排位"
+                    3 -> "唱聊"
                     else -> super.getPageTitle(position)
                 }
             }
@@ -122,28 +122,28 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                     0 -> {
                         animation(color, Color.parseColor("#7088FF"))
                         mGrabGameView.initData(false)
-                        mQuickGameView?.stopTimer()
+                        mQuickGameView.stopTimer()
 //                        mFriendRoomGameView?.initData(false)
                         StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
                     }
                     1 -> {
                         animation(color, Color.parseColor("#7088FF"))
 //                        mFriendRoomGameView?.stopTimer()
-                        mQuickGameView?.initData(false)
+                        mQuickGameView.initData(false)
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
                     2 -> {
+                        mQuickGameView.stopTimer()
+                        animation(color, Color.parseColor("#7088FF"))
+//                        mFriendRoomGameView?.stopTimer()
+                        mPkGameView.initData(false)
+                    }
+                    3 -> {
                         animation(color, Color.parseColor("#122042"))
-                        mQuickGameView?.stopTimer()
+                        mQuickGameView.stopTimer()
 //                        mFriendRoomGameView?.stopTimer()
                         mDoubleRoomGameView?.initData()
                         StatisticsAdapter.recordCountEvent("grab", "1.3expose", null)
-                    }
-                    3 -> {
-                        mQuickGameView?.stopTimer()
-                        animation(color, Color.parseColor("#7088FF"))
-//                        mFriendRoomGameView?.stopTimer()
-                        mPkGameView?.initData(false)
                     }
                 }
             }
@@ -184,26 +184,26 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         when {
             mGameVp.currentItem == 0 -> {
                 mGrabGameView.initData(false)
-                mQuickGameView?.stopTimer()
+                mQuickGameView.stopTimer()
 //                mFriendRoomGameView?.initData(false)
                 StatisticsAdapter.recordCountEvent("game", "grab_expose", null)
             }
             mGameVp.currentItem == 1 -> {
 //                mFriendRoomGameView?.stopTimer()
-                mQuickGameView?.initData(false)
+                mQuickGameView.initData(false)
                 StatisticsAdapter.recordCountEvent("game", "express_expose", null)
             }
             mGameVp.currentItem == 2 -> {
-                mQuickGameView?.stopTimer()
+                mQuickGameView.stopTimer()
 //                mFriendRoomGameView?.stopTimer()
-                mDoubleRoomGameView?.initData()
-                StatisticsAdapter.recordCountEvent("game", "cp_expose", null)
+                mPkGameView.initData(false)
+                StatisticsAdapter.recordCountEvent("game", "rank_expose", null)
             }
             mGameVp.currentItem == 3 -> {
-                mQuickGameView?.stopTimer()
+                mQuickGameView.stopTimer()
 //                mFriendRoomGameView?.stopTimer()
-                mPkGameView?.initData(false)
-                StatisticsAdapter.recordCountEvent("game", "rank_expose", null)
+                mDoubleRoomGameView.initData()
+                StatisticsAdapter.recordCountEvent("game", "cp_expose", null)
             }
         }
         StatisticsAdapter.recordCountEvent("game", "all_expose", null)
@@ -228,11 +228,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     }
 
     override fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean) {
-        mQuickGameView?.showRedOperationView(homepagesitefirstBean)
+        mQuickGameView.showRedOperationView(homepagesitefirstBean)
     }
 
     override fun hideRedOperationView() {
-        mQuickGameView?.hideRedOperationView()
+        mQuickGameView.hideRedOperationView()
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -242,7 +242,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: JumpHomeDoubleChatPageEvent) {
-        mGameVp.setCurrentItem(2, false)
+        mGameVp.setCurrentItem(3, false)
     }
 
     override fun useEventBus(): Boolean {
@@ -255,11 +255,11 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun destroy() {
         super.destroy()
-        mGrabGameView?.destory()
-        mQuickGameView?.destory()
+        mGrabGameView.destory()
+        mQuickGameView.destory()
 //        mFriendRoomGameView?.destory()
-        mDoubleRoomGameView?.destory()
-        mPkGameView?.destory()
+        mDoubleRoomGameView.destory()
+        mPkGameView.destory()
         alphaAnimation?.cancel()
     }
 }
