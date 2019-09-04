@@ -2,26 +2,18 @@ package com.module.playways.race.match.fragment
 
 import android.animation.AnimatorSet
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
-import com.alibaba.fastjson.JSON
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.base.BaseFragment
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ApiMethods
-import com.common.rxretrofit.ApiObserver
-import com.common.rxretrofit.ApiResult
 import com.common.utils.ActivityUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
-import com.component.busilib.constans.GameModeType
-import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.manager.BgMusicManager
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -30,7 +22,6 @@ import com.module.playways.grab.prepare.GrabMatchSuccessFragment
 import com.module.playways.race.match.IRaceMatchingView
 import com.module.playways.race.match.RaceMatchPresenter
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
-import com.module.playways.room.prepare.model.PrepareData
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
@@ -53,7 +44,6 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
     lateinit var mQuotationsArray: List<String>
 
     internal var mIconAnimatorSet: AnimatorSet? = null
-    internal var mPrepareData: PrepareData? = null
     internal var mMatchTimeTask: HandlerTaskTimer? = null
 
     internal var mSvgaMatchBg: SVGAImageView? = null
@@ -156,19 +146,19 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
                             U.getToastUtil().showShort("现在小伙伴有点少，稍后再匹配试试吧～")
                             mMatchPresenter?.cancelMatch()
                             stopTimeTask()
-                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
-                                BgMusicManager.getInstance().destory()
-                            }
+//                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
+//                                BgMusicManager.getInstance().destory()
+//                            }
                             if (activity != null) {
                                 activity!!.finish()
                             }
 
-                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                                        .withInt("key_game_type", mPrepareData!!.gameType)
-                                        .withBoolean("selectSong", true)
-                                        .navigation()
-                            }
+//                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
+//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+//                                        .withInt("key_game_type", mPrepareData!!.gameType)
+//                                        .withBoolean("selectSong", true)
+//                                        .navigation()
+//                            }
                             return
                         }
 
@@ -197,13 +187,6 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
             BgMusicManager.getInstance().destory()
         }
 
-    }
-
-    override fun setData(type: Int, data: Any?) {
-        super.setData(type, data)
-        if (type == 0) {
-            mPrepareData = data as PrepareData?
-        }
     }
 
     override fun destroy() {
@@ -255,9 +238,9 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
                         }
                         U.getSoundUtils().release(GrabMatchSuccessFragment.TAG)
                         mMatchPresenter?.cancelMatch()
-                        if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
-                            BgMusicManager.getInstance().destory()
-                        }
+//                        if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
+//                            BgMusicManager.getInstance().destory()
+//                        }
                         stopTimeTask()
                         if (activity != null) {
                             activity!!.finish()
@@ -306,30 +289,30 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
     }
 
     private fun playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying && mPrepareData != null && this@NewRaceMatchFragment.fragmentVisible) {
-            if (!TextUtils.isEmpty(mPrepareData!!.bgMusic)) {
-                BgMusicManager.getInstance().starPlay(mPrepareData!!.bgMusic, 0, "GrabMatchFragment1")
-            } else {
-                val grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
-                ApiMethods.subscribe(grabSongApi.sepcialBgVoice, object : ApiObserver<ApiResult>() {
-                    override fun process(result: ApiResult) {
-                        if (result.errno == 0) {
-                            val musicURLs = JSON.parseArray(result.data!!.getString("musicURL"), String::class.java)
-                            if (musicURLs != null && !musicURLs.isEmpty()) {
-                                mPrepareData!!.bgMusic = musicURLs[0]
-                                BgMusicManager.getInstance().starPlay(mPrepareData!!.bgMusic, 0, "GrabMatchFragment2")
-                            }
-                        } else {
-
-                        }
-                    }
-
-                    override fun onNetworkError(errorType: ApiObserver.ErrorType) {
-                        super.onNetworkError(errorType)
-                    }
-                }, this)
-            }
-        }
+//        if (!BgMusicManager.getInstance().isPlaying && mPrepareData != null && this@NewRaceMatchFragment.fragmentVisible) {
+//            if (!TextUtils.isEmpty(mPrepareData!!.bgMusic)) {
+//                BgMusicManager.getInstance().starPlay(mPrepareData!!.bgMusic, 0, "GrabMatchFragment1")
+//            } else {
+//                val grabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
+//                ApiMethods.subscribe(grabSongApi.sepcialBgVoice, object : ApiObserver<ApiResult>() {
+//                    override fun process(result: ApiResult) {
+//                        if (result.errno == 0) {
+//                            val musicURLs = JSON.parseArray(result.data!!.getString("musicURL"), String::class.java)
+//                            if (musicURLs != null && !musicURLs.isEmpty()) {
+//                                mPrepareData!!.bgMusic = musicURLs[0]
+//                                BgMusicManager.getInstance().starPlay(mPrepareData!!.bgMusic, 0, "GrabMatchFragment2")
+//                            }
+//                        } else {
+//
+//                        }
+//                    }
+//
+//                    override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+//                        super.onNetworkError(errorType)
+//                    }
+//                }, this)
+//            }
+//        }
     }
 
     /**
