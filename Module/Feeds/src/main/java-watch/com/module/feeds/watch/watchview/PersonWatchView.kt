@@ -89,6 +89,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
             // 不一定要刷新
             return false
         }
+        pausePlay()
         getPersonFeedList(0, true)
         return true
     }
