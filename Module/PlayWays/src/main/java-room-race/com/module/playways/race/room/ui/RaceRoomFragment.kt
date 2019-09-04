@@ -387,6 +387,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!")
             return
         }
+        dismissDialog()
         mInputContainerView.hideSoftInput()
         mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_RACE_ROOM, userID, false, false)
                 .setRoomID(mRoomData.gameId)
