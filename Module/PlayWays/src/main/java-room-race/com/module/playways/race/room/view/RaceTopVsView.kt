@@ -107,8 +107,8 @@ class RaceTopVsView : ExConstraintLayout {
             } else {
                 leftTicketGroup.visibility = View.GONE
                 rightTicketGroup.visibility = View.GONE
-                leftState.visibility = View.VISIBLE
-                rightState.visibility = View.VISIBLE
+                leftState.visibility = View.GONE
+                rightState.visibility = View.GONE
                 leftState.text = ""
                 rightState.text = ""
 
@@ -122,6 +122,7 @@ class RaceTopVsView : ExConstraintLayout {
                     } else {
 
                         leftState.text = "**"
+                        leftState.visibility = View.VISIBLE
                     }
                 } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
 
@@ -129,6 +130,7 @@ class RaceTopVsView : ExConstraintLayout {
                                     ?: true) {
 
                         leftState.text = "**"
+                        leftState.visibility = View.VISIBLE
                         rightTicketGroup.visibility = View.VISIBLE
                         rightTicketCountTv.text = it[1].bLightCnt.toString()
                     } else {
@@ -136,6 +138,7 @@ class RaceTopVsView : ExConstraintLayout {
                         leftTicketGroup.visibility = View.VISIBLE
                         leftTicketCountTv.text = it[0].bLightCnt.toString()
                         rightState.text = "**"
+                        rightState.visibility = View.VISIBLE
                     }
                 }
             }
