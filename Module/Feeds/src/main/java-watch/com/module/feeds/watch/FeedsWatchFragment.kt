@@ -182,17 +182,14 @@ class FeedsWatchFragment : BaseFragment() {
         when (pos) {
             0 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "follow_tab_expose", null)
-                mDivider.visibility = View.VISIBLE
                 mFollowFeedsView.selected()
             }
             1 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "recommend_tab_expose", null)
-                mDivider.visibility = View.GONE
                 mRecommendFeedsView.selected()
             }
             2 -> {
                 StatisticsAdapter.recordCountEvent("music_tab", "like_tab_expose", null)
-                mDivider.visibility = View.GONE
                 mFeedsCollectView.selected()
             }
         }
