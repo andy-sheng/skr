@@ -259,7 +259,7 @@ public class UserAccountManager {
                             @Override
                             public void run() {
                                 if (callback != null) {
-                                    callback.onCallback(1,obj);
+                                    callback.onCallback(1, obj);
                                 }
                             }
                         });
@@ -316,7 +316,7 @@ public class UserAccountManager {
                             @Override
                             public void run() {
                                 if (callback != null) {
-                                    callback.onCallback(1,obj);
+                                    callback.onCallback(1, obj);
                                 }
                             }
                         });
@@ -344,6 +344,7 @@ public class UserAccountManager {
         String avatar = profileJO.getString("avatar");
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
+        Location location2 = JSON.parseObject(profileJO.getString("location2"), Location.class);
         int ageStage = profileJO.getIntValue("ageStage");
 
         boolean isFirstLogin = jsonObject.getBooleanValue("isFirstLogin");
@@ -364,6 +365,7 @@ public class UserAccountManager {
         myUserInfo.setAvatar(avatar);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
+        myUserInfo.setLocation2(location2);
         myUserInfo.setAgeStage(ageStage);
         MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
         MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
@@ -385,8 +387,8 @@ public class UserAccountManager {
     /**
      * 用户主动退出登录
      */
-    public void logoff(int from,Callback callback) {
-        logoff(from,false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true,callback);
+    public void logoff(int from, Callback callback) {
+        logoff(from, false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true, callback);
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
@@ -394,7 +396,7 @@ public class UserAccountManager {
      * 收到账号过期的通知，被踢下线等等
      */
     public void notifyAccountExpired() {
-        logoff(1,false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false,null);
+        logoff(1, false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false, null);
     }
 
     /**
@@ -422,7 +424,7 @@ public class UserAccountManager {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
-                        if(from==2){
+                        if (from == 2) {
                             U.getToastUtil().showShort("登出成功了");
                         }
                     }
@@ -459,7 +461,7 @@ public class UserAccountManager {
                         @Override
                         public void run() {
                             if (callback != null) {
-                                callback.onCallback(1,null);
+                                callback.onCallback(1, null);
                             }
                         }
                     });
