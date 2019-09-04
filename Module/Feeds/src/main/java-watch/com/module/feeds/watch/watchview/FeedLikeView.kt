@@ -94,7 +94,7 @@ class FeedLikeView : TextView {
                 append(spannableStringBuilder)
             }
 
-            if (topics.size > 8) {
+            if (likeNum > 8) {
                 val moreStr = "等" + likeNum + "人赞过"
                 val mSpannableString = SpanUtils()
                         .append(moreStr).setForegroundColor(U.getColor(R.color.black_trans_50))
