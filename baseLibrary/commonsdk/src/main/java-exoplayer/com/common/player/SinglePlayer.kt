@@ -76,7 +76,7 @@ object SinglePlayer : IPlayerEx {
         ) {
 
         } else {
-            RemoteControlHelper.registerShake(startFrom)
+            //RemoteControlHelper.registerShake(startFrom)
         }
         return player.startPlay(path)
     }

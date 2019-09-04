@@ -36,9 +36,11 @@ object RemoteControlHelper {
 
     fun unregisterShake(tag: String) {
         MyLog.d(TAG, "unregister tag = $tag")
-        shakePageSet.remove(tag)
-        if (shakePageSet.isEmpty()) {
-            sensorManagerHelper.unregister()
+        if(!shakePageSet.isEmpty()){
+            shakePageSet.remove(tag)
+            if (shakePageSet.isEmpty()) {
+                sensorManagerHelper.unregister()
+            }
         }
     }
 
