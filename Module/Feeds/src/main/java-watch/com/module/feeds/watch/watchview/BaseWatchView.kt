@@ -478,7 +478,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         if (position >= 0) {
             val firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
             val lastVisibleItem = mLayoutManager.findLastVisibleItemPosition()
-            if (position < firstVisibleItem || position > lastVisibleItem) {
+            if (position <= firstVisibleItem || position >= lastVisibleItem) {
                 mLayoutManager.scrollToPositionWithOffset(position, 0)
             }
         }
