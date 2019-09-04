@@ -35,9 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_36_dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/view_80_dp"
         android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_80_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
@@ -55,20 +53,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/feed_tab"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/feed_playlist_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/feed_playlist_icon"
-        android:drawablePadding="@dimen/view_5_dp"
-        android:gravity="center"
-        android:paddingLeft="@dimen/view_10_dp"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/feed_tab"
-        app:layout_constraintLeft_toLeftOf="parent" />
 
     <com.common.view.viewpager.NestViewPager
         android:id="@+id/feed_vp"

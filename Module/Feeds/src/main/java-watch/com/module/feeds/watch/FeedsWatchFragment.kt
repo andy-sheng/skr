@@ -41,7 +41,6 @@ class FeedsWatchFragment : BaseFragment() {
     private lateinit var mNavigationBgIv: ImageView
     private lateinit var mDivider: View
     private lateinit var mFeedChallengeTv: ExTextView
-    private lateinit var mFeedPlaylistTv: ExTextView
     private lateinit var mFeedTab: SlidingTabLayout
     private lateinit var mFeedVp: NestViewPager
     private lateinit var mTabPagerAdapter: PagerAdapter
@@ -79,7 +78,6 @@ class FeedsWatchFragment : BaseFragment() {
         mDivider = rootView.findViewById(R.id.divider)
         mFeedTab = rootView.findViewById(R.id.feed_tab)
         mFeedChallengeTv = rootView.findViewById(R.id.feed_challenge_tv)
-        mFeedPlaylistTv = rootView.findViewById(R.id.feed_playlist_tv)
         mFeedVp = rootView.findViewById(R.id.feed_vp)
 
         mFeedChallengeTv.setOnClickListener(object : DebounceViewClickListener() {
@@ -91,18 +89,10 @@ class FeedsWatchFragment : BaseFragment() {
             }
         })
 
-        mFeedPlaylistTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_TAG)
-                        .withInt("from", 1)
-                        .navigation()
-            }
-        })
-
         mFeedTab.apply {
             setCustomTabView(R.layout.feed_tab_view_layout, R.id.tab_tv)
             setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
-            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
+            setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
             setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
             setTitleSize(14f)
             setSelectedTitleSize(24f)
