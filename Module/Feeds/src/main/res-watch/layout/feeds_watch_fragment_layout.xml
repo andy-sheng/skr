@@ -48,6 +48,7 @@
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center"
         android:paddingRight="@dimen/view_10_dp"
+        android:text="发布"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
