@@ -72,4 +72,5 @@ freeline_*.json
 # python pyc
 *.pyc
 a.txt
+trace.html
 moduletest/src/main/assets/resource.zip
