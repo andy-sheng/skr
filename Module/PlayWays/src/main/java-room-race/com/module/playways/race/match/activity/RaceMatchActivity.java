@@ -12,8 +12,8 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.R;
+import com.module.playways.race.match.fragment.NewRaceMatchFragment;
 import com.module.playways.race.match.fragment.RaceGuideFragment;
-import com.module.playways.race.match.fragment.RaceMatchFragment;
 import com.module.playways.room.prepare.model.PrepareData;
 
 @Route(path = RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
@@ -57,7 +57,7 @@ public class RaceMatchActivity extends BaseActivity {
                             .build());
         } else {
             U.getFragmentUtils().addFragment(
-                    FragmentUtils.newAddParamsBuilder(this, RaceMatchFragment.class)
+                    FragmentUtils.newAddParamsBuilder(this, NewRaceMatchFragment.class)
                             .setAddToBackStack(false)
                             .setHasAnimation(false)
                             .build());
