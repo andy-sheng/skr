@@ -18,6 +18,9 @@ import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.gles.GLRender;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -1071,6 +1074,30 @@ public class AgoraRTCAdapter {
     public void startAudioMixing(String filePath, String melPath, boolean loopback, boolean replace, int cycle) {
         if (mRtcEngine == null) {
             return;
+        }
+        // 为了解决302 声网探测不过 无法播放问题
+        if(filePath.startsWith("http://") || filePath.startsWith("https://")){
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection con = null;
+            try {
+                con = (HttpURLConnection)(new URL(filePath).openConnection());
+                con.setConnectTimeout(3*1000);
+                con.setReadTimeout(3*1000);
+                con.connect();
+                if(con.getResponseCode() == 302){
+                    String location = con.getHeaderField("Location");
+                    MyLog.d(TAG,"startAudioMixing " + " filePath=" + filePath + " 302 Location="+location);
+                    if(!TextUtils.isEmpty(location)){
+                        filePath = location;
+                    }
+                }
+            } catch (IOException e) {
+                MyLog.d(TAG,e);
+            }finally {
+                if(con!=null){
+                    con.disconnect();
+                }
+            }
         }
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
     }
