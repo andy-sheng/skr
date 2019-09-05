@@ -251,6 +251,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        if (mRoomData == null) {
+            Log.w(TAG, "initData，mRoomData == null, 直接finish Activity")
+            activity?.finish()
+            return
+        }
+
         if (System.currentTimeMillis() - mRoomData!!.gameStartTs > 3 * 60 * 1000) {
             Log.w(TAG, "隔了很久从后台返回的，直接finish Activity")
             if (activity != null) {
