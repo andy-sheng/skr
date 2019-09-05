@@ -30,11 +30,6 @@
                 app:autoPlay="false"
                 app:loopCount="-1" />
 
-            <!--<com.module.playways.grab.room.view.WaveView-->
-            <!--android:id="@+id/wave_view"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
-
             <com.common.view.ex.ExRelativeLayout
                 android:id="@+id/rl_icon1_root"
                 android:layout_width="@dimen/view_90_dp"
@@ -53,20 +48,6 @@
                     android:tag="icon_1" />
             </com.common.view.ex.ExRelativeLayout>
         </FrameLayout>
-
-        <!--<com.common.view.ex.ExTextView-->
-        <!--android:layout_marginRight="@dimen/view_77_dp"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginBottom="@dimen/view_96_dp"-->
-        <!--android:alpha="0.5"-->
-        <!--android:layout_above="@+id/iv_cancel_match"-->
-        <!--android:textSize="@dimen/textsize_12_dp"-->
-        <!--android:textColor="#0C2275"-->
-        <!--android:textStyle="bold"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:text="——撕歌语录"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
 
     </RelativeLayout>
 
