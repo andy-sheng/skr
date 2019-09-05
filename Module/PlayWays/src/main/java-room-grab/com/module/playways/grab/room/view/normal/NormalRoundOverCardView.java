@@ -185,7 +185,7 @@ public class NormalRoundOverCardView extends ExViewStub {
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
 
-        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengewin);
+        U.getSoundUtils().play(GrabRoomFragment.Companion.getTAG(), R.raw.grab_challengewin);
 
         playAnimation();
     }
@@ -198,7 +198,7 @@ public class NormalRoundOverCardView extends ExViewStub {
         lp.topMargin = U.getDisplayUtils().dip2px(139);
         mSingResultSvga.setLayoutParams(lp);
 
-        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengelose);
+        U.getSoundUtils().play(GrabRoomFragment.Companion.getTAG(), R.raw.grab_challengelose);
 
         playAnimation();
     }

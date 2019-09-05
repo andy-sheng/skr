@@ -65,16 +65,16 @@ public class GrabWidgetAnimationController {
         for (View view : viewList) {
             if (view != null) {
                 ObjectAnimator objectAnimator = null;
-                if (view == mF.mGrabVideoDisplayView.getRealView()) {
+                if (view == mF.getMGrabVideoDisplayView().getRealView()) {
                     // 要多下移一个顶部状态栏的高度，才能和 ContentView对齐
-                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() + mF.mGrabVideoDisplayView.getExtraTranslateYWhenOpen(mOpenType));
+                    objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType() + mF.getMGrabVideoDisplayView().getExtraTranslateYWhenOpen(mOpenType));
                 } else {
                     objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, view.getTranslationY(), getTranslateByOpenType());
                 }
                 animators.add(objectAnimator);
             }
         }
-        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(true, mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
+        List<Animator> animators2 = mF.getMGrabVideoDisplayView().getInnerAnimator(true, mF.getMGrabTopContentView().getVisibility() == View.VISIBLE);
         if (animators2 != null) {
             animators.addAll(animators2);
         }
@@ -95,38 +95,38 @@ public class GrabWidgetAnimationController {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mF.mGrabTopContentView.setArrowIcon(true);
+                mF.getMGrabTopContentView().setArrowIcon(true);
                 if (mOpenType == OPEN_TYPE_FOR_NORMAL) {
-                    mF.mGrabTopOpView.setVisibility(View.VISIBLE);
-                    mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
+                    mF.getMGrabTopOpView().setVisibility(View.VISIBLE);
+                    mF.getMGrabVideoSelfSingCardView().setVisibility(View.GONE);
                 } else if (mOpenType == OPEN_TYPE_FOR_LYRIC) {
-                    mF.mGrabTopOpView.setVisibility(View.GONE);
-                    mF.mGrabVideoSelfSingCardView.setVisibility(View.VISIBLE);
+                    mF.getMGrabTopOpView().setVisibility(View.GONE);
+                    mF.getMGrabVideoSelfSingCardView().setVisibility(View.VISIBLE);
                 }
                 mIsOpen = true;
             }
         });
         mMainAnimatorSet.start();
-        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, getTranslateByOpenType());
+        mF.getMGameTipsManager().setBaseTranslateY(mF.getTAG_INVITE_TIP_VIEW(), getTranslateByOpenType());
     }
 
     void fillView(List<View> viewList) {
-        viewList.add(mF.mGrabTopContentView);
-        viewList.add(mF.mPracticeFlagIv);
-        viewList.add(mF.mGameTipsManager.getViewByKey(mF.TAG_SELF_SING_TIP_VIEW));
-        viewList.add(mF.mGrabOpBtn);
-        viewList.add(mF.mGrabGiveupView);
-        viewList.add(mF.mTurnInfoCardView);
-        viewList.add(mF.mSongInfoCardView);
-        viewList.addAll(mF.mRoundOverCardView.getRealViews());
-        viewList.add(mF.mGiftContinueViewGroup);
+        viewList.add(mF.getMGrabTopContentView());
+        viewList.add(mF.getMPracticeFlagIv());
+        viewList.add(mF.getMGameTipsManager().getViewByKey(mF.getTAG_SELF_SING_TIP_VIEW()));
+        viewList.add(mF.getMGrabOpBtn());
+        viewList.add(mF.getMGrabGiveupView());
+        viewList.add(mF.getMTurnInfoCardView());
+        viewList.add(mF.getMSongInfoCardView());
+        viewList.addAll(mF.getMRoundOverCardView().getRealViews());
+        viewList.add(mF.getMGiftContinueViewGroup());
 
-        if (mF.mRoomData.isVideoRoom()) {
-            viewList.add(mF.mGrabVideoDisplayView.getRealView());
+        if (mF.getMRoomData().isVideoRoom()) {
+            viewList.add(mF.getMGrabVideoDisplayView().getRealView());
         } else {
-            viewList.addAll(mF.mOthersSingCardView.getRealViews());
+            viewList.addAll(mF.getMOthersSingCardView().getRealViews());
         }
-        viewList.addAll(mF.mSelfSingCardView.getRealViews());
+        viewList.addAll(mF.getMSelfSingCardView().getRealViews());
     }
 
     /**
@@ -146,7 +146,7 @@ public class GrabWidgetAnimationController {
                 animators.add(objectAnimator);
             }
         }
-        List<Animator> animators2 = mF.mGrabVideoDisplayView.getInnerAnimator(false, mF.mGrabTopContentView.getVisibility() == View.VISIBLE);
+        List<Animator> animators2 = mF.getMGrabVideoDisplayView().getInnerAnimator(false, mF.getMGrabTopContentView().getVisibility() == View.VISIBLE);
         if (animators2 != null) {
             animators.addAll(animators2);
         }
@@ -157,8 +157,8 @@ public class GrabWidgetAnimationController {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mF.mGrabTopOpView.setVisibility(View.GONE);
-                mF.mGrabVideoSelfSingCardView.setVisibility(View.GONE);
+                mF.getMGrabTopOpView().setVisibility(View.GONE);
+                mF.getMGrabVideoSelfSingCardView().setVisibility(View.GONE);
             }
 
             @Override
@@ -169,12 +169,12 @@ public class GrabWidgetAnimationController {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mF.mGrabTopContentView.setArrowIcon(false);
+                mF.getMGrabTopContentView().setArrowIcon(false);
                 mIsOpen = false;
             }
         });
         mMainAnimatorSet.start();
-        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, 0);
+        mF.getMGameTipsManager().setBaseTranslateY(mF.getTAG_INVITE_TIP_VIEW(), 0);
 
     }
 

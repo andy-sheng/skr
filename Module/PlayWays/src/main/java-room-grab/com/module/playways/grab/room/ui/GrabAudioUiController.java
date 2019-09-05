@@ -19,23 +19,23 @@ public class GrabAudioUiController extends GrabBaseUiController{
     @Override
     public void singBySelf() {
 // 显示歌词
-        mF.mSelfSingCardView.setVisibility(View.VISIBLE);
-        mF.mOthersSingCardView.setVisibility(GONE);
-        mF.mSelfSingCardView.playLyric();
-        if(mF.mGrabWidgetAnimationController.isOpen()){
-            mF.mSelfSingCardView.setTranslateY(mF.mGrabWidgetAnimationController.getTranslateByOpenType());
+        mF.getMSelfSingCardView().setVisibility(View.VISIBLE);
+        mF.getMOthersSingCardView().setVisibility(GONE);
+        mF.getMSelfSingCardView().playLyric();
+        if(mF.getMGrabWidgetAnimationController().isOpen()){
+            mF.getMSelfSingCardView().setTranslateY(mF.getMGrabWidgetAnimationController().getTranslateByOpenType());
         }else{
-            mF.mSelfSingCardView.setTranslateY(0);
+            mF.getMSelfSingCardView().setTranslateY(0);
         }
-        if (mF.mRoomData.isNewUser()) {
+        if (mF.getMRoomData().isNewUser()) {
             mF.tryShowGrabSelfSingTipView();
 
-            GrabRoundInfoModel infoModel = mF.mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel infoModel = mF.getMRoomData().getRealRoundInfo();
             if (infoModel == null) {
                 return;
             }
             boolean withAcc = false;
-            if (infoModel.isAccRound() && mF.mRoomData != null && mF.mRoomData.isAccEnable()) {
+            if (infoModel.isAccRound() && mF.getMRoomData() != null && mF.getMRoomData().isAccEnable()) {
                 withAcc = true;
             }
             if (!withAcc) {
@@ -47,26 +47,26 @@ public class GrabAudioUiController extends GrabBaseUiController{
     @Override
     public void singByOthers() {
         // 显示收音机
-        mF.mSelfSingCardView.setVisibility(GONE);
-        mF.mOthersSingCardView.setVisibility(View.VISIBLE);
-        mF.mOthersSingCardView.bindData();
-        if(mF.mGrabWidgetAnimationController.isOpen()){
-            mF.mOthersSingCardView.setTranslateY(mF.mGrabWidgetAnimationController.getTranslateByOpenType());
+        mF.getMSelfSingCardView().setVisibility(GONE);
+        mF.getMOthersSingCardView().setVisibility(View.VISIBLE);
+        mF.getMOthersSingCardView().bindData();
+        if(mF.getMGrabWidgetAnimationController().isOpen()){
+            mF.getMOthersSingCardView().setTranslateY(mF.getMGrabWidgetAnimationController().getTranslateByOpenType());
         }else{
-            mF.mOthersSingCardView.setTranslateY(0);
+            mF.getMOthersSingCardView().setTranslateY(0);
         }
     }
 
     @Override
     public void roundOver() {
-        mF.mSelfSingCardView.setVisibility(GONE);
-        mF.mOthersSingCardView.hide();
+        mF.getMSelfSingCardView().setVisibility(GONE);
+        mF.getMOthersSingCardView().hide();
     }
 
     @Override
     public void destroy() {
-        if (mF.mSelfSingCardView != null) {
-            mF.mSelfSingCardView.destroy();
+        if (mF.getMSelfSingCardView() != null) {
+            mF.getMSelfSingCardView().destroy();
         }
     }
 
