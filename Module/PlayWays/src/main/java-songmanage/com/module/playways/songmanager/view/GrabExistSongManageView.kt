@@ -90,8 +90,8 @@ class GrabExistSongManageView(context: Context, internal var mRoomData: GrabRoom
 
     fun initData() {
         initListener()
-        if (mRoomData.specialModel != null) {
-            setTagTv(mRoomData.specialModel)
+        mRoomData.specialModel?.let {
+            setTagTv(it)
         }
         mGrabSongManagePresenter.getPlayBookList()
     }

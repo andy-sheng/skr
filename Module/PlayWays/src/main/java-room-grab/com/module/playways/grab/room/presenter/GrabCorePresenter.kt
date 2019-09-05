@@ -208,7 +208,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-            for (playerInfoModel in mRoomData.playerInfoList!!) {
+            for (playerInfoModel in mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline) {
                     continue
                 }
@@ -258,7 +258,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
-    private fun pretendRoomNameSystemMsg(roomName: String, type: Int) {
+    private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
         val commentSysModel = CommentSysModel(roomName, type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }

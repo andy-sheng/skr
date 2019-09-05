@@ -103,7 +103,7 @@ class GiftPanelView : FrameLayout {
 
     private val firstPlayerInfo: PlayerInfoModel?
         get() {
-            val grabPlayerInfoModelList = getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()
+            val grabPlayerInfoModelList = getGrabRoomData()?.getInSeatPlayerInfoList()
                     ?: ArrayList()
 
             for (grabPlayerInfoModel in grabPlayerInfoModelList) {
@@ -117,7 +117,7 @@ class GiftPanelView : FrameLayout {
 
     private val playerInfoListExpectSelf: List<PlayerInfoModel>
         get() {
-            val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()
+            val grabPlayerInfoModelList = ArrayList(getGrabRoomData()?.getInSeatPlayerInfoList()
                     ?: ArrayList())
 
             val it = grabPlayerInfoModelList.iterator()
@@ -447,7 +447,7 @@ class GiftPanelView : FrameLayout {
     }
 
     private fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
-        if (getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()?.size === 0 || getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList<PlayerInfoModel>()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
+        if (getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
             //只有自己
             mRlPlayerSelectArea.visibility = View.GONE
         } else {

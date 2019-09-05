@@ -272,7 +272,7 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
     }
 
     private fun showEditRoomDialog() {
-        val grabEditView = GrabEditRoomNameView(context!!, mRoomData!!.roomName)
+        val grabEditView = GrabEditRoomNameView(context!!, mRoomData?.roomName ?:"")
         grabEditView.onClickCancel = {
             mEditRoomDialog?.dismiss()
         }

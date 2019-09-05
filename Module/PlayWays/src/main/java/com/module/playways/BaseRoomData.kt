@@ -113,7 +113,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
                 '}'.toString()
     }
 
-    abstract fun <T : PlayerInfoModel> getPlayerInfoList(): List<T>?
+    abstract fun getPlayerInfoList(): List<PlayerInfoModel>
 
     @Transient
     protected val userInfoMap = LruCache<Int, PlayerInfoModel>(20)
@@ -124,7 +124,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         }
         val playerInfoModel = userInfoMap[userID]
         if (playerInfoModel == null) {
-            val l = getPlayerInfoList<PlayerInfoModel>() ?: return null
+            val l = getPlayerInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
                     userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
@@ -137,7 +137,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         return null
     }
 
-    open fun <User : PlayerInfoModel> getInSeatPlayerInfoList(): List<User>? {
+    open fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
         return ArrayList()
     }
 

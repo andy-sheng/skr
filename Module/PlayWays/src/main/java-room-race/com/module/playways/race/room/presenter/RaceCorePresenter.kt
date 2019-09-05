@@ -120,13 +120,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-            mRoomData.getPlayerInfoList<RacePlayerInfoModel>()?.let {
-                for (playerInfoModel in it) {
-                    if (!playerInfoModel.isOnline()) {
-                        continue
-                    }
-//                    pretendEnterRoom(playerInfoModel)
+            for (playerInfoModel in mRoomData.getPlayerInfoList()) {
+                if (!playerInfoModel.isOnline) {
+                    continue
                 }
+//                    pretendEnterRoom(playerInfoModel)
             }
 //            pretendRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM)
         }

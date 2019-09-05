@@ -40,7 +40,7 @@ class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintL
 
     fun initData() {
         val list = ArrayList<RaceActorInfoModel>()
-        val playList = mRoomData.getPlayerInfoList<RacePlayerInfoModel>()
+        val playList = mRoomData.getPlayerInfoList()
         playList?.let {
             for (model in it) {
                 list.add(RaceActorInfoModel(model))
