@@ -144,7 +144,7 @@ public interface UserInfoServerApi {
      * @param limit    数量
      * @return
      */
-    @GET("/v1/rank/region-list")
+    @GET("/v2/rank/region-list")
     Observable<ApiResult> getReginRankList(@Query("category") int category,
                                            @Query("offset") int offset,
                                            @Query("limit") int limit);
@@ -164,7 +164,7 @@ public interface UserInfoServerApi {
      *
      * @return
      */
-    @GET("/v1/rank/region-mine")
+    @GET("/v2/rank/region-mine")
     Observable<ApiResult> getMyRegion(@Query("category") int category);
 
 
@@ -183,7 +183,7 @@ public interface UserInfoServerApi {
      *
      * @return
      */
-    @GET("/v1/rank/region-diff")
+    @GET("/v2/rank/region-diff")
     Observable<ApiResult> getReginDiff();
 
 
