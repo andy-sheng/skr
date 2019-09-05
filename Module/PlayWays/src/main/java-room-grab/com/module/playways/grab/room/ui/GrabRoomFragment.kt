@@ -121,7 +121,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mBottomBgVp: ViewGroup
 
-    internal var mBottomContainerView: GrabBottomContainerView? = null
+    lateinit var mBottomContainerView: GrabBottomContainerView
 
     //    GiftTimerPresenter mGiftTimerPresenter;
 
@@ -182,11 +182,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     internal var mGrabVoiceControlPanelView: GrabVoiceControlPanelView? = null
 
-    internal var mGiftPanelView: GiftPanelView? = null
+    lateinit var mGiftPanelView: GiftPanelView
 
     lateinit var mGiftContinueViewGroup: GiftContinueViewGroup
 
-    internal var mContinueSendView: ContinueSendView? = null
+    lateinit var mContinueSendView: ContinueSendView
 
     internal var mVoiceControlDialog: DialogPlus? = null
 
@@ -196,13 +196,13 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     var mGrabVideoSelfSingCardView: GrabVideoSelfSingCardView? = null // 视频模式下 自己演唱时的歌词面板view
 
-    internal var mBeautyControlPanelView: BeautyControlPanelView? = null
+    lateinit var mBeautyControlPanelView: BeautyControlPanelView
 
     lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
 
     internal var mVoiceRecordUiController: VoiceRecordUiController? = null
 
-    internal var mAnimatorList: MutableList<Animator>? = ArrayList()  //存放所有需要尝试取消的动画
+    internal var mAnimatorList: MutableList<Animator> = ArrayList()  //存放所有需要尝试取消的动画
 
     internal var mIsGameEndAniamtionShow = false // 标记对战结束动画是否播放
 
@@ -222,7 +222,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     internal var mGrabBaseUiController: GrabBaseUiController = mGrabAudioUiController
 
-    var mGrabWidgetAnimationController: GrabWidgetAnimationController? = GrabWidgetAnimationController(this)
+    var mGrabWidgetAnimationController: GrabWidgetAnimationController = GrabWidgetAnimationController(this)
 
     internal var mUiHanlder: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -327,11 +327,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             onBattleBeginPlayOver()
             var openOpBarTimes = U.getPreferenceUtils().getSettingInt("key_open_op_bar_times", 0)
             if (openOpBarTimes < 2) {
-                mGrabWidgetAnimationController!!.open()
+                mGrabWidgetAnimationController.open()
                 openOpBarTimes++
                 U.getPreferenceUtils().setSettingInt("key_open_op_bar_times", openOpBarTimes)
             } else {
-                mGrabWidgetAnimationController!!.close()
+                mGrabWidgetAnimationController.close()
             }
         }, 500)
 
@@ -340,7 +340,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             if (!mRoomData!!.hasGameBegin() && mOwnerBeginGameIv == null) {
                 // 是房主并且游戏未开始，增加一个 开始游戏 的按钮
                 mOwnerBeginGameIv = ExImageView(context)
-                mOwnerBeginGameIv!!.setImageResource(R.drawable.fz_kaishiyouxi)
+                mOwnerBeginGameIv?.setImageResource(R.drawable.fz_kaishiyouxi)
                 val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
                 lp.rightMargin = U.getDisplayUtils().dip2px(10f)
@@ -348,7 +348,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 lp.topMargin = -U.getDisplayUtils().dip2px(55f)
                 val index = mGrabRootView.indexOfChild(mInputContainerView)
                 mGrabRootView.addView(mOwnerBeginGameIv, index, lp)
-                mOwnerBeginGameIv!!.setOnClickListener(object : DebounceViewClickListener() {
+                mOwnerBeginGameIv?.setOnClickListener(object : DebounceViewClickListener() {
                     override fun clickValid(v: View) {
                         mCorePresenter?.ownerBeginGame()
                     }
@@ -383,7 +383,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 .addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1)
                 .hasAnimation(true)
                 .setShowCount(3)
-                .setBaseTranslateY(if (mGrabWidgetAnimationController!!.isOpen) U.getDisplayUtils().dip2px(32f) else 0)
+                .setBaseTranslateY(if (mGrabWidgetAnimationController.isOpen) U.getDisplayUtils().dip2px(32f) else 0)
                 .setTag(TAG_INVITE_TIP_VIEW)
                 .tryShow(mGameTipsManager)
     }
@@ -450,7 +450,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 .addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1)
                 .addRule(RelativeLayout.ALIGN_PARENT_TOP, -1)
                 .setMargins(U.getDisplayUtils().dip2px(70f), U.getDisplayUtils().dip2px(28f), 0, 0)
-                .setBaseTranslateY(if (mGrabWidgetAnimationController!!.isOpen) U.getDisplayUtils().dip2px(32f) else 0)
+                .setBaseTranslateY(if (mGrabWidgetAnimationController.isOpen) U.getDisplayUtils().dip2px(32f) else 0)
                 .hasAnimation(false)
                 .setTag(TAG_SELF_SING_TIP_VIEW)
                 .setShowCount(1)
@@ -560,17 +560,17 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     private fun initGiftPanelView() {
         mGiftPanelView = rootView.findViewById<View>(R.id.gift_panel_view) as GiftPanelView
-        mGiftPanelView!!.setRoomData(mRoomData!!)
+        mGiftPanelView.setRoomData(mRoomData!!)
         mContinueSendView = rootView.findViewById<View>(R.id.continue_send_view) as ContinueSendView
-        mContinueSendView!!.mScene = ContinueSendView.EGameScene.GS_Stand
-        mContinueSendView!!.setRoomData(mRoomData!!)
-        mContinueSendView!!.setObserver(object : ContinueSendView.OnVisibleStateListener {
+        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Stand
+        mContinueSendView.setRoomData(mRoomData!!)
+        mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
-                mBottomContainerView!!.setOpVisible(!isVisible)
+                mBottomContainerView.setOpVisible(!isVisible)
             }
         })
 
-        mGiftPanelView!!.setIGetGiftCountDownListener(GiftDisplayView.IGetGiftCountDownListener {
+        mGiftPanelView.setIGetGiftCountDownListener(GiftDisplayView.IGetGiftCountDownListener {
             //                return mGiftTimerPresenter.getCountDownSecond();
             0
         })
@@ -582,9 +582,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mGrabVideoDisplayView = GrabVideoDisplayView(viewStub, mRoomData!!)
             mGrabVideoDisplayView.setSelfSingCardListener { mCorePresenter?.sendRoundOverInfo() }
             mGrabVideoDisplayView.setListener {
-                if (mBeautyControlPanelView != null) {
-                    mBeautyControlPanelView!!.show()
-                }
+                    mBeautyControlPanelView?.show()
             }
         }
         mGrabVideoSelfSingCardView = GrabVideoSelfSingCardView(rootView, mRoomData!!)
@@ -614,7 +612,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         lp.height = U.getDisplayUtils().screenHeight * 284 / 667
 
         mBottomContainerView = rootView.findViewById<View>(R.id.bottom_container_view) as GrabBottomContainerView
-        mBottomContainerView!!.setListener(object : BottomContainerView.Listener() {
+        mBottomContainerView.setListener(object : BottomContainerView.Listener() {
             override fun showInputBtnClick() {
                 if (mPersonInfoDialog != null && mPersonInfoDialog!!.isShowing) {
                     mPersonInfoDialog!!.dismiss()
@@ -641,24 +639,24 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         if (now.isPKRound && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
                             if (now.getsPkRoundInfoModels().size == 2) {
                                 val userId = now.getsPkRoundInfoModels()[1].userID
-                                mGiftPanelView!!.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId.toLong()))
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId.toLong()))
                             } else {
-                                mGiftPanelView!!.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID.toLong()))
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID.toLong()))
                             }
                         } else {
-                            mGiftPanelView!!.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID.toLong()))
+                            mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID.toLong()))
                         }
                     } else {
-                        mGiftPanelView!!.show(null)
+                        mGiftPanelView.show(null)
                     }
                 } else {
-                    mGiftPanelView!!.show(null)
+                    mGiftPanelView.show(null)
                 }
 
-                mContinueSendView!!.visibility = GONE
+                mContinueSendView.visibility = GONE
             }
         })
-        mBottomContainerView!!.setRoomData(mRoomData!!)
+        mBottomContainerView.setRoomData(mRoomData!!)
     }
 
     private fun initCommentView() {
@@ -667,7 +665,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mCommentView.roomData = mRoomData!!
         //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
-        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView!!.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
+        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
     }
 
     private fun initChangeRoomTransitionView() {
@@ -691,7 +689,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView!!.startBuy(event.baseGift, event.receiver)
+        mContinueSendView.startBuy(event.baseGift, event.receiver)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -754,16 +752,16 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                                             .setConfirmBtnClickListener(object : AnimateClickListener() {
                                                 override fun click(view: View) {
                                                     mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
-                                                    mTipsDialogView!!.dismiss()
+                                                    mTipsDialogView?.dismiss()
                                                 }
                                             })
                                             .setCancelBtnClickListener(object : AnimateClickListener() {
                                                 override fun click(view: View) {
-                                                    mTipsDialogView!!.dismiss()
+                                                    mTipsDialogView?.dismiss()
                                                 }
                                             })
                                             .build()
-                                    mTipsDialogView!!.showByDialog()
+                                    mTipsDialogView?.showByDialog()
                                 }
                             }
 
@@ -775,7 +773,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 }
                 .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }
                 .build()
-        mPersonInfoDialog!!.show()
+        mPersonInfoDialog?.show()
     }
 
     override fun getCashSuccess(cash: Float) {
@@ -791,7 +789,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 .create()
 
         val textView = dialogPlus.findViewById(R.id.tv_cash) as TextView?
-        textView!!.text = cash.toString()
+        textView?.text = cash.toString()
         dialogPlus.show()
     }
 
@@ -801,7 +799,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 .setOkBtnTip("确定")
                 .setOkBtnClickListener {
                     if (mGetRedPkgFailedDialog != null) {
-                        mGetRedPkgFailedDialog!!.dismiss()
+                        mGetRedPkgFailedDialog?.dismiss()
                     }
                 }
                 .build()
@@ -816,7 +814,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     .create()
         }
 
-        mGetRedPkgFailedDialog!!.show()
+        mGetRedPkgFailedDialog?.show()
     }
 
     private fun initTopView() {
@@ -888,9 +886,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
 
             override fun onClickGameRule() {
-                if (mGameRuleDialog != null) {
-                    mGameRuleDialog!!.dismiss()
-                }
+
+                mGameRuleDialog?.dismiss()
+
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                 mGameRuleDialog = DialogPlus.newDialog(context!!)
                         .setContentHolder(ViewHolder(R.layout.grab_game_rule_view_layout))
@@ -900,7 +898,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         .setExpanded(false)
                         .setGravity(Gravity.CENTER)
                         .create()
-                mGameRuleDialog!!.show()
+                mGameRuleDialog?.show()
             }
 
             override fun onClickCamera() {
@@ -925,9 +923,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         })
         mGrabTopContentView.setListener { open ->
             if (open) {
-                mGrabWidgetAnimationController!!.open()
+                mGrabWidgetAnimationController.open()
             } else {
-                mGrabWidgetAnimationController!!.close()
+                mGrabWidgetAnimationController.close()
             }
         }
         mPracticeFlagIv = rootView.findViewById(R.id.practice_flag_iv)
@@ -1104,8 +1102,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                             override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
-                                    mGiftPanelView!!.updateZS()
-                                    mGiftPanelView!!.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.userID.toLong()))
+                                    mGiftPanelView?.updateZS()
+                                    mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, (mRoomData!!.realRoundInfo?.userID
+                                            ?: 0).toLong()))
                                 }
                             }
                         })
@@ -1387,7 +1386,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         MyLog.d(TAG, "destroy")
         dismissDialog()
         if (mQuitTipsDialog != null && mQuitTipsDialog!!.isShowing) {
-            mQuitTipsDialog!!.dismiss(false)
+            mQuitTipsDialog?.dismiss(false)
             mQuitTipsDialog = null
         }
         mGrabAudioUiController.destroy()
@@ -1395,25 +1394,25 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mUiHanlder.removeCallbacksAndMessages(null)
         mIsGameEndAniamtionShow = false
         if (mAnimatorList != null) {
-            for (animator in mAnimatorList!!) {
+            for (animator in mAnimatorList) {
                 animator?.cancel()
             }
-            mAnimatorList!!.clear()
+            mAnimatorList.clear()
         }
 
-        if (mContinueSendView != null) {
-            mContinueSendView!!.destroy()
-        }
 
-        if (mGiftPanelView != null) {
-            mGiftPanelView!!.destroy()
-        }
+        mContinueSendView?.destroy()
+
+
+
+        mGiftPanelView?.destroy()
+
 
         mGameTipsManager.destory()
 
-        if (mGrabWidgetAnimationController != null) {
-            mGrabWidgetAnimationController!!.destroy()
-        }
+
+        mGrabWidgetAnimationController.destroy()
+
         U.getSoundUtils().release(TAG)
         BgMusicManager.getInstance().isRoom = false
     }
@@ -1423,10 +1422,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             return true
         }
 
-        if (mGiftPanelView!!.onBackPressed()) {
+        if (mGiftPanelView.onBackPressed()) {
             return true
         }
-        if (mBeautyControlPanelView!!.onBackPressed()) {
+        if (mBeautyControlPanelView.onBackPressed()) {
             return true
         }
         quitGame()
@@ -1453,15 +1452,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     .setConfirmTip("确定")
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener {
-                        if (mQuitTipsDialog != null) {
-                            mQuitTipsDialog!!.dismiss(false)
-                        }
+                        mQuitTipsDialog?.dismiss(false)
                         mCorePresenter?.exitRoom("quitGame tipsDialog")
                     }
                     .setCancelBtnClickListener {
-                        if (mQuitTipsDialog != null) {
-                            mQuitTipsDialog!!.dismiss()
-                        }
+                        mQuitTipsDialog?.dismiss()
                     }
                     .build()
 
@@ -1473,7 +1468,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     .setExpanded(false)
                     .create()
         }
-        mQuitTipsDialog!!.show()
+        mQuitTipsDialog?.show()
     }
 
     override fun gameFinish() {
@@ -1522,7 +1517,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             initBgView()
             hideAllCardView()
             // 重新决定显示mic按钮
-            mBottomContainerView!!.setRoomData(mRoomData!!)
+            mBottomContainerView.setRoomData(mRoomData!!)
         }
     }
 
@@ -1583,32 +1578,32 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         } else {
             mGrabKickDialog = ConfirmDialog(U.getActivityUtils().topActivity, userInfoModel, type, mRoomData!!.grabConfigModel.kickUserConsumCoinCnt)
         }
-        mGrabKickDialog!!.setListener { userInfoModel ->
+        mGrabKickDialog?.setListener { userInfoModel ->
             // 发起踢人请求
             mCorePresenter?.reqKickUser(userInfoModel.userId)
         }
-        mGrabKickDialog!!.show()
+        mGrabKickDialog?.show()
     }
 
     private fun dismissDialog() {
-        if (mGameRuleDialog != null) {
-            mGameRuleDialog!!.dismiss(false)
-        }
-        if (mBottomContainerView != null) {
-            mBottomContainerView!!.dismissPopWindow()
-        }
-        if (mPersonInfoDialog != null) {
-            mPersonInfoDialog!!.dismiss()
-        }
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog!!.dismiss(false)
-        }
-        if (mVoiceControlDialog != null) {
-            mVoiceControlDialog!!.dismiss(false)
-        }
-        if (mTipsDialogView != null) {
-            mTipsDialogView!!.dismiss(false)
-        }
+
+        mGameRuleDialog?.dismiss(false)
+
+
+        mBottomContainerView?.dismissPopWindow()
+
+
+        mPersonInfoDialog?.dismiss()
+
+
+        mGrabKickDialog?.dismiss(false)
+
+
+        mVoiceControlDialog?.dismiss(false)
+
+
+        mTipsDialogView?.dismiss(false)
+
     }
 
     // 请求踢人弹窗
@@ -1621,11 +1616,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (playerInfoModel != null) {
             val userInfoModel = playerInfoModel.userInfo
             mGrabKickDialog = ConfirmDialog(U.getActivityUtils().topActivity, userInfoModel, ConfirmDialog.TYPE_KICK_REQUEST, 5)
-            mGrabKickDialog!!.setListener {
+            mGrabKickDialog?.setListener {
                 // 同意踢人
                 mCorePresenter?.voteKickUser(true, userId, sourceUserId)
             }
-            mGrabKickDialog!!.show()
+            mGrabKickDialog?.show()
         }
     }
 
@@ -1640,9 +1635,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     override fun dimissKickDialog() {
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog!!.dismiss()
-        }
+
+        mGrabKickDialog?.dismiss()
+
     }
 
     override fun showPracticeFlag(flag: Boolean) {
@@ -1672,7 +1667,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                 .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://app.inframe.mobi/oauth?from=singer"))
                 .greenChannel().navigation()
-        activity!!.finish()
+        activity?.finish()
     }
 
     override fun changeRoomMode(isVideo: Boolean) {
