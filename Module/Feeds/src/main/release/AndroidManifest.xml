@@ -103,11 +103,13 @@
 
         <activity
             android:name=".rank.activity.FeedsTagActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".rank.activity.FeedsTagDetailActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
     </application>
