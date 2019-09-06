@@ -8,6 +8,7 @@ import com.common.core.avatar.AvatarUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -37,7 +38,7 @@ class RaceTopContentAdapter : RecyclerView.Adapter<RaceTopContentAdapter.RaceTop
 
     inner class RaceTopViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
+        private val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
 
         var mPostion = 0
         var mModel: RacePlayerInfoModel? = null
@@ -56,11 +57,7 @@ class RaceTopContentAdapter : RecyclerView.Adapter<RaceTopContentAdapter.RaceTop
             this.mPostion = position
             this.mModel = model
 
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.userInfo.avatar)
-                    .setBorderColor(U.getColor(R.color.white))
-                    .setBorderWidth(1.dp().toFloat())
-                    .setCircle(true)
-                    .build())
+            avatarIv.bindData(model.userInfo)
         }
     }
 }

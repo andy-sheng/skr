@@ -11,6 +11,7 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -38,10 +39,10 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
 
     inner class RaceActorViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        val statusTv: TextView = item.findViewById(R.id.status_tv)
-        val nameTv: TextView = item.findViewById(R.id.name_tv)
-        val descTv: TextView = item.findViewById(R.id.desc_tv)
-        val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
+        private val statusTv: TextView = item.findViewById(R.id.status_tv)
+        private val nameTv: TextView = item.findViewById(R.id.name_tv)
+        private val descTv: TextView = item.findViewById(R.id.desc_tv)
+        private val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
 
         var mPosition = 0
         var mModel: RaceActorInfoModel? = null
@@ -59,12 +60,9 @@ class RaceActorAdapter(val mRoomDate: RaceRoomData) : RecyclerView.Adapter<RaceA
         fun bindData(pos: Int, model: RaceActorInfoModel) {
             this.mPosition = pos
             this.mModel = model
+            
+            avatarIv.bindData(model.plyer.userInfo)
 
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.plyer?.userInfo?.avatar)
-                    .setBorderColor(U.getColor(R.color.white))
-                    .setBorderWidth(2.dp().toFloat())
-                    .setCircle(true)
-                    .build())
             if (mRoomDate.realRoundInfo?.isSingerByUserId(model.plyer.userID) == true) {
                 // 是当前轮次的演唱者
                 statusTv.visibility = View.VISIBLE

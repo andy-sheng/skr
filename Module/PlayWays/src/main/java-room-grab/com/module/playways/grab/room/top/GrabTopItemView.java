@@ -10,13 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.component.busilib.view.AvatarView;
 import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.component.person.event.ShowPersonCardEvent;
@@ -31,7 +31,7 @@ public class GrabTopItemView extends RelativeLayout {
     public static final int MODE_SING = 2;
 
     public CircleAnimationView mCircleAnimationView;
-    public BaseImageView mAvatarIv;
+    public AvatarView mAvatarIv;
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
     public AnimationDrawable mFlickerAnim;
@@ -62,11 +62,11 @@ public class GrabTopItemView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_top_view_holder_layout, this);
-        mCircleAnimationView = (CircleAnimationView) this.findViewById(R.id.circle_animation_view);
-        mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
-        mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
+        mCircleAnimationView = this.findViewById(R.id.circle_animation_view);
+        mAvatarIv = this.findViewById(R.id.avatar_iv);
+        mFlagIv = this.findViewById(R.id.flag_iv);
         mOwnerIconIv = findViewById(R.id.owner_icon_iv);
-        mTvIconBg = (ExTextView) findViewById(R.id.tv_icon_bg);
+        mTvIconBg = findViewById(R.id.tv_icon_bg);
         mSpeakingTipsAnimationView = findViewById(R.id.speaker_animation_iv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
@@ -112,13 +112,7 @@ public class GrabTopItemView extends RelativeLayout {
             }
         }
         if (hasUpdate) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
-                    .setCircle(true)
-                    .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                    .setBorderColor(U.getColor(R.color.white))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                    .build()
-            );
+            mAvatarIv.bindData(mPlayerInfoModel.getUserInfo(), mPlayerInfoModel.isOnline() ? false : true);
             mShowEmptySeat = false;
         }
     }
@@ -128,13 +122,7 @@ public class GrabTopItemView extends RelativeLayout {
             return;
         }
         mPlayerInfoModel = userInfoModel;
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
-                .setCircle(true)
-                .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                .setBorderColor(U.getColor(R.color.white))
-                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .build()
-        );
+        mAvatarIv.bindData(mPlayerInfoModel.getUserInfo(), mPlayerInfoModel.isOnline() ? false : true);
         mShowEmptySeat = false;
 
         mFlagIv.setVisibility(GONE);

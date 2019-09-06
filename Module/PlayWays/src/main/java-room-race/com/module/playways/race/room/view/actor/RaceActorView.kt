@@ -26,7 +26,7 @@ class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintL
     private val recyclerView: RecyclerView
     val adapter = RaceActorAdapter(mRoomData)
 
-    val userServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+    private val userServerApi: UserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
     init {
         View.inflate(context, R.layout.race_actor_view_layout, this)

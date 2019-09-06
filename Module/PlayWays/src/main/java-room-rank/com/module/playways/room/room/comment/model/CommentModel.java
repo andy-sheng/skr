@@ -3,6 +3,7 @@ package com.module.playways.room.room.comment.model;
 import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.R;
 
@@ -83,5 +84,13 @@ public abstract class CommentModel {
 
     public void setAvatarColor(int avatarColor) {
         this.avatarColor = avatarColor;
+    }
+
+    public UserInfoModel toUserInfoModel(){
+        UserInfoModel model = new UserInfoModel();
+        model.setUserId(userId);
+        model.setNickname(userName);
+        model.setAvatar(avatar);
+        return model;
     }
 }
