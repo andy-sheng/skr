@@ -94,51 +94,53 @@ class RaceTopVsView : ExConstraintLayout {
 
     fun updateData() {
         roomData?.realRoundInfo?.scores?.let {
-            if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
-                            ?: false)) {
+            if (it.size == 2) {
+                if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                                ?: false)) {
 
-                leftTicketGroup.visibility = View.VISIBLE
-                rightTicketGroup.visibility = View.VISIBLE
-                leftState.visibility = View.GONE
-                rightState.visibility = View.GONE
+                    leftTicketGroup.visibility = View.VISIBLE
+                    rightTicketGroup.visibility = View.VISIBLE
+                    leftState.visibility = View.GONE
+                    rightState.visibility = View.GONE
 
-                leftTicketCountTv.text = it[0].bLightCnt.toString()
-                rightTicketCountTv.text = it[1].bLightCnt.toString()
-            } else {
-                leftTicketGroup.visibility = View.GONE
-                rightTicketGroup.visibility = View.GONE
-                leftState.visibility = View.GONE
-                rightState.visibility = View.GONE
-                leftState.text = ""
-                rightState.text = ""
+                    leftTicketCountTv.text = it[0].bLightCnt.toString()
+                    rightTicketCountTv.text = it[1].bLightCnt.toString()
+                } else {
+                    leftTicketGroup.visibility = View.GONE
+                    rightTicketGroup.visibility = View.GONE
+                    leftState.visibility = View.GONE
+                    rightState.visibility = View.GONE
+                    leftState.text = ""
+                    rightState.text = ""
 
-                if (roomData?.realRoundInfo?.subRoundSeq == 1) {
+                    if (roomData?.realRoundInfo?.subRoundSeq == 1) {
 
-                    if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
-                                    ?: true) {
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                                        ?: true) {
 
-                        leftTicketCountTv.text = it[0].bLightCnt.toString()
-                        leftTicketGroup.visibility = View.VISIBLE
-                    } else {
+                            leftTicketCountTv.text = it[0].bLightCnt.toString()
+                            leftTicketGroup.visibility = View.VISIBLE
+                        } else {
 
-                        leftState.text = "**"
-                        leftState.visibility = View.VISIBLE
-                    }
-                } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
+                            leftState.text = "**"
+                            leftState.visibility = View.VISIBLE
+                        }
+                    } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
 
-                    if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
-                                    ?: true) {
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                                        ?: true) {
 
-                        leftState.text = "**"
-                        leftState.visibility = View.VISIBLE
-                        rightTicketGroup.visibility = View.VISIBLE
-                        rightTicketCountTv.text = it[1].bLightCnt.toString()
-                    } else {
+                            leftState.text = "**"
+                            leftState.visibility = View.VISIBLE
+                            rightTicketGroup.visibility = View.VISIBLE
+                            rightTicketCountTv.text = it[1].bLightCnt.toString()
+                        } else {
 
-                        leftTicketGroup.visibility = View.VISIBLE
-                        leftTicketCountTv.text = it[0].bLightCnt.toString()
-                        rightState.text = "**"
-                        rightState.visibility = View.VISIBLE
+                            leftTicketGroup.visibility = View.VISIBLE
+                            leftTicketCountTv.text = it[0].bLightCnt.toString()
+                            rightState.text = "**"
+                            rightState.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -147,19 +149,21 @@ class RaceTopVsView : ExConstraintLayout {
 
     fun startSingBySelf(call: (() -> Unit)?) {
         roomData?.realRoundInfo?.subRoundInfo?.let {
-            if (roomData?.getUserInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                leftCircleCountDownView.visibility = View.VISIBLE
-                leftCircleCountDownView.go(0, 1 * 1000) {
-                    leftCircleCountDownView.visibility = View.GONE
-                    call?.invoke()
-                    updateData()
-                }
-            } else {
-                rightCircleCountDownView.visibility = View.VISIBLE
-                rightCircleCountDownView.go(0, 1 * 1000) {
-                    rightCircleCountDownView.visibility = View.GONE
-                    call?.invoke()
-                    updateData()
+            if (it.size == 2) {
+                if (roomData?.getUserInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    leftCircleCountDownView.visibility = View.VISIBLE
+                    leftCircleCountDownView.go(0, 1 * 1000) {
+                        leftCircleCountDownView.visibility = View.GONE
+                        call?.invoke()
+                        updateData()
+                    }
+                } else {
+                    rightCircleCountDownView.visibility = View.VISIBLE
+                    rightCircleCountDownView.go(0, 1 * 1000) {
+                        rightCircleCountDownView.visibility = View.GONE
+                        call?.invoke()
+                        updateData()
+                    }
                 }
             }
         }
