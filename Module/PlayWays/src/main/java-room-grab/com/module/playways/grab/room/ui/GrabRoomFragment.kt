@@ -53,11 +53,13 @@ import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent
 import com.module.playways.grab.room.event.GrabWantInviteEvent
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent
 import com.module.playways.grab.room.inter.IGrabRoomView
+import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter
 import com.module.playways.grab.room.presenter.GrabCorePresenter
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter
+import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.top.GrabTopContentView
 import com.module.playways.grab.room.top.GrabTopOpView
 import com.module.playways.grab.room.view.*
@@ -97,7 +99,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView {
+class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IUpdateFreeGiftCountView, IGrabVipView {
 
     val TAG_MANAGE_SONG_TIP_VIEW = "ownerShowTimes"
     val TAG_INVITE_TIP_VIEW = "inviteShowTimes"
@@ -140,6 +142,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     lateinit var mPracticeFlagIv: ExImageView // 练习中
 
     internal var mCorePresenter: GrabCorePresenter? = null
+
+    internal var mVipEnterPresenter: VipEnterPresenter? = null
 
     internal var mGrabRedPkgPresenter: GrabRedPkgPresenter? = null
 
@@ -210,6 +214,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     internal var mBeginChangeRoomTs: Long = 0
 
     internal var mOwnerBeginGameIv: ImageView? = null
+
+    internal var mVIPEnterView: VIPEnterView? = null
 
     var mGameTipsManager = GameTipsManager()
 
@@ -297,6 +303,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         initScoreView()
         initGiftPanelView()
         initVideoView()
+        initVipEnterView()
         if (MyLog.isDebugLogOpen()) {
             val viewStub = rootView.findViewById<ViewStub>(R.id.debug_log_view_stub)
             val debugLogView = DebugLogView(viewStub)
@@ -311,9 +318,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mCorePresenter?.setGrabRedPkgPresenter(mGrabRedPkgPresenter!!)
         mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
         addPresent(mDoubleRoomInvitePresenter)
-        //        mGiftTimerPresenter = new GiftTimerPresenter(this);
-        //        addPresent(mGiftTimerPresenter);
-        //        mGiftTimerPresenter.startTimer();
+        mVipEnterPresenter = VipEnterPresenter(this)
+        addPresent(mVipEnterPresenter)
 
         if (mRoomData!!.isVideoRoom) {
             mGrabBaseUiController = mGrabVideoUiController
@@ -580,6 +586,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         })
     }
 
+    private fun initVipEnterView() {
+        mVIPEnterView = VIPEnterView(rootView.findViewById(R.id.vip_enter_view_stub))
+    }
+
     private fun initVideoView() {
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.grab_video_display_view_stub)
@@ -717,6 +727,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     fun onEvent(event: ChangeTagSuccessEvent) {
         mRoomData!!.specialModel = event.specialModel
         mRoomData!!.tagId = event.specialModel.tagID
+    }
+
+    override fun startEnterAnimation(finishCall: () -> Unit) {
+        mVIPEnterView?.enter(finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {

@@ -243,6 +243,13 @@
         android:paddingLeft="@dimen/view_16_dp"
         android:visibility="gone" />
 
+    <ViewStub
+        android:id="@+id/vip_enter_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:layout="@layout/vip_enter_view_layout" />
+
     <!--抢按钮以及倒计时按钮-->
     <com.module.playways.grab.room.view.GrabOpView
         android:id="@+id/grab_op_btn"

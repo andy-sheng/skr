@@ -1,17 +1,17 @@
 package com.module.playways.grab.room.view
 
 
-import android.content.Context
-import android.util.AttributeSet
 import android.view.View
+import android.view.ViewStub
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.view.animation.TranslateAnimation
-import com.common.view.ex.ExConstraintLayout
+import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -19,31 +19,35 @@ import kotlinx.coroutines.launch
 /**
  * 转场时的歌曲信息页
  */
-class VIPEnterView : ExConstraintLayout {
-    val mTag = "VIPEnterView"
-    val vipLevelIv: ExImageView
-    val nameTv: ExTextView
+class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
+    val TAG = "VIPEnterView"
 
-    constructor(context: Context) : super(context) {}
+    var vipLevelIv: ExImageView? = null
+    var nameTv: ExTextView? = null
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    override fun init(parentView: View) {
+        parentView?.let {
+            it.visibility = View.GONE
+            vipLevelIv = parentView.findViewById(R.id.vip_level_iv)
+            nameTv = parentView.findViewById(R.id.name_tv)
+        }
+    }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
-
-    init {
-        View.inflate(context, R.layout.vip_enter_view_layout, this)
-        vipLevelIv = this.findViewById(R.id.vip_level_iv)
-        nameTv = this.findViewById(R.id.name_tv)
+    override fun layoutDesc(): Int {
+        return R.layout.vip_enter_view_layout
     }
 
     fun enter(finishCall: (() -> Unit)?) {
-        launch {
+        launch(Dispatchers.Main) {
+            tryInflate()
+            mParentView?.clearAnimation()
+            mParentView?.visibility = View.VISIBLE
             val animationEnter = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                     Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
 
             animationEnter.duration = 500
             animationEnter.interpolator = OvershootInterpolator()
-            startAnimation(animationEnter)
+            mParentView?.startAnimation(animationEnter)
 
             delay(1000)
 
@@ -51,14 +55,12 @@ class VIPEnterView : ExConstraintLayout {
                     Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
             animationExit.interpolator = LinearInterpolator()
             animationExit.duration = 500
-            startAnimation(animationExit)
+            mParentView?.startAnimation(animationExit)
             delay(500)
+            mParentView?.clearAnimation()
             finishCall?.invoke()
+            mParentView?.visibility = View.GONE
         }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
     }
 }
 

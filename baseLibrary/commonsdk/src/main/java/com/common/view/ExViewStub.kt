@@ -2,22 +2,20 @@ package com.common.view
 
 import android.view.View
 import android.view.ViewStub
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
 /**
  * 包裹懒加载view的一些常用方法
  */
-abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachStateChangeListener {
+abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachStateChangeListener, CoroutineScope by MainScope() {
     protected var mParentView: View? = null
 
     val realView: View?
         get() = if (mParentView == null) {
             mViewStub
         } else mParentView
-
-    val isShow: Boolean
-        get() = if (mParentView != null && mParentView!!.visibility == View.VISIBLE) {
-            true
-        } else false
 
     fun tryInflate() {
         if (mParentView == null) {
@@ -59,7 +57,7 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
     }
 
     override fun onViewDetachedFromWindow(v: View) {
-
+        cancel()
     }
 
     fun setTranslateY(ty: Float) {

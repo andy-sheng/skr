@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/view_44_dp"
-    android:paddingRight="@dimen/view_48_dp">
+    android:paddingLeft="@dimen/view_34_dp"
+    android:paddingRight="@dimen/view_38_dp">
 
     <com.common.view.ex.ExImageView
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_25_dp"
+        android:background="@drawable/fangjian_gaoduanwei"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -16,7 +17,7 @@
         android:id="@+id/vip_level_iv"
         android:layout_width="@dimen/view_49_dp"
         android:layout_height="@dimen/view_42_dp"
-        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginLeft="@dimen/view_38_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
