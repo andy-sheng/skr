@@ -69,6 +69,7 @@ import com.module.playways.grab.room.view.video.GrabVideoDisplayView
 import com.module.playways.grab.room.view.video.GrabVideoSelfSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.listener.SVGAListener
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent
@@ -273,12 +274,15 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         //                mInputContainerView.hideSoftInput();
         //            }
         //        });
-        mGrabRootView.addOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                mInputContainerView.hideSoftInput()
+        mGrabRootView.addOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                if (event?.action == MotionEvent.ACTION_DOWN) {
+                    mInputContainerView.hideSoftInput()
+                }
+                return false
             }
-            false
-        }
+        })
+
         initBgView()
         initInputView()
         initBottomView()
@@ -299,12 +303,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             debugLogView.tryInflate()
         }
 
-        mCorePresenter = GrabCorePresenter(this, mRoomData!!, activity as BaseActivity?)
+        mCorePresenter = GrabCorePresenter(this, mRoomData!!, activity!! as BaseActivity)
         addPresent(mCorePresenter)
         mGrabRedPkgPresenter = GrabRedPkgPresenter(this)
         addPresent(mGrabRedPkgPresenter)
         mGrabRedPkgPresenter?.checkRedPkg()
-        mCorePresenter?.setGrabRedPkgPresenter(mGrabRedPkgPresenter)
+        mCorePresenter?.setGrabRedPkgPresenter(mGrabRedPkgPresenter!!)
         mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
         addPresent(mDoubleRoomInvitePresenter)
         //        mGiftTimerPresenter = new GiftTimerPresenter(this);
@@ -874,7 +878,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
 
             override fun closeBtnClick() {
-                if (mRoomData!!.isOwner && mRoomData!!.playerInfoList!!.size >= 2) {
+                if (mRoomData!!.isOwner && mRoomData!!.getPlayerInfoList()!!.size >= 2) {
                     quitGame()
                 } else {
                     mCorePresenter?.exitRoom("closeBtnClick")
@@ -1042,16 +1046,18 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabOpBtn.hide("initGrabOpView")
 
         mGrabGiveupView = rootView.findViewById<View>(R.id.grab_giveup_view) as GrabGiveupView
-        mGrabGiveupView.setListener { ownerControl ->
-            val infoModel = mRoomData!!.realRoundInfo
-            //                if (infoModel != null) {
-            //                    HashMap map = new HashMap();
-            //                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-            //                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-            //                            "give_up_sing", map);
-            //                }
-            mCorePresenter?.giveUpSing(ownerControl)
-        }
+        mGrabGiveupView.setListener(object : GrabGiveupView.Listener {
+            override fun giveUp(ownerControl: Boolean) {
+                val infoModel = mRoomData!!.realRoundInfo
+                //                if (infoModel != null) {
+                //                    HashMap map = new HashMap();
+                //                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
+                //                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                //                            "give_up_sing", map);
+                //                }
+                mCorePresenter?.giveUpSing(ownerControl)
+            }
+        })
         mGrabGiveupView.hideWithAnimation(false)
 
         mMiniOwnerMicIv = rootView.findViewById(R.id.mini_owner_mic_iv)
@@ -1177,10 +1183,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mTurnInfoCardView.visibility = GONE
             onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData)
         } else {
-            mTurnInfoCardView.setModeSongSeq(seq == 1) {
-                mTurnInfoCardView.visibility = GONE
-                onSongInfoCardPlayOver("动画结束进来", pendingPlaySongCardData)
-            }
+            mTurnInfoCardView.setModeSongSeq(seq == 1, object : SVGAListener {
+                override fun onFinished() {
+                    mTurnInfoCardView.visibility = GONE
+                    onSongInfoCardPlayOver("动画结束进来", pendingPlaySongCardData)
+                }
+            })
         }
         mGrabTopContentView.setModeGrab()
     }
@@ -1482,10 +1490,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mSingBeginTipsCardView.visibility = GONE
         mRoundOverCardView.setVisibility(GONE)
         mGrabGameOverView.visibility = View.VISIBLE
-        mGrabGameOverView.starAnimation {
-            mCorePresenter?.exitRoom("gameFinish")
-            //onGrabGameOver("onFinished");
-        }
+        mGrabGameOverView.starSVGAAnimation(object : SVGAListener {
+            override fun onFinished() {
+                mCorePresenter?.exitRoom("gameFinish")
+                //onGrabGameOver("onFinished");
+            }
+        })
     }
 
     override fun onGetGameResult(success: Boolean) {

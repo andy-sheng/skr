@@ -35,7 +35,7 @@ class GrabGameOverView : RelativeLayout {
         mEndGameIv = findViewById(R.id.end_game_iv)
     }
 
-    fun starAnimation(listener: SVGAListener) {
+    fun starSVGAAnimation(listener: SVGAListener) {
         this.mSVGAListener = listener
         mEndGameIv.clearAnimation()
         mEndGameIv.visibility = View.VISIBLE
