@@ -42,6 +42,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -89,7 +90,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     SimpleDraweeView mImageBg;
     ImageView mSexIv;
-    SimpleDraweeView mAvatarIv;
+    AvatarView mAvatarIv;
     NormalLevelView2 mLevelView;
     ExTextView mCharmTv;
 
@@ -110,7 +111,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     Toolbar mToolbar;
     ConstraintLayout mToolbarLayout;
 
-    SimpleDraweeView mSrlAvatarIv;
+    AvatarView mSrlAvatarIv;
     TextView mSrlNameTv;
     ImageView mSrlSexIv;
     ExTextView mSrlCharmTv;
@@ -187,7 +188,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSrlAvatarIv = getRootView().findViewById(R.id.srl_avatar_iv);
         mSrlNameTv = getRootView().findViewById(R.id.srl_name_tv);
         mSrlSexIv = getRootView().findViewById(R.id.srl_sex_iv);
-        mSrlCharmTv = (ExTextView) getRootView().findViewById(R.id.srl_charm_tv);
+        mSrlCharmTv =  getRootView().findViewById(R.id.srl_charm_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
                 .build());
@@ -286,12 +287,12 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initUserInfoArea() {
-        mAvatarIv = (SimpleDraweeView) getRootView().findViewById(R.id.avatar_iv);
-        mLevelView = (NormalLevelView2) getRootView().findViewById(R.id.level_view);
-        mNameTv = (ExTextView) getRootView().findViewById(R.id.name_tv);
-        mSexIv = (ImageView) getRootView().findViewById(R.id.sex_iv);
-        mSignTv = (ExTextView) getRootView().findViewById(R.id.sign_tv);
-        mCharmTv = (ExTextView) getRootView().findViewById(R.id.charm_tv);
+        mAvatarIv = getRootView().findViewById(R.id.avatar_iv);
+        mLevelView = getRootView().findViewById(R.id.level_view);
+        mNameTv = getRootView().findViewById(R.id.name_tv);
+        mSexIv = getRootView().findViewById(R.id.sex_iv);
+        mSignTv = getRootView().findViewById(R.id.sign_tv);
+        mCharmTv = getRootView().findViewById(R.id.charm_tv);
 
         mBusinessCard = (ImageView) getRootView().findViewById(R.id.business_card);
 
@@ -591,7 +592,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels,int meiLiCntTotal) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal) {
         mSmartRefresh.finishRefresh();
         showCharmsTotal(meiLiCntTotal);
         showRelationNum(relationNumModels);
@@ -644,16 +645,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void refreshUserInfoView() {
         if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                    .setBorderColor(Color.WHITE)
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2f))
-                    .setCircle(true)
-                    .build());
-            AvatarUtils.loadAvatarByUrl(mSrlAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                    .setBorderColor(Color.WHITE)
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2f))
-                    .setCircle(true)
-                    .build());
+            mAvatarIv.bindData(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
+            mSrlAvatarIv.bindData(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {

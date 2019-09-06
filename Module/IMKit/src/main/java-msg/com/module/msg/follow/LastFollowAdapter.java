@@ -13,12 +13,14 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 
@@ -73,7 +75,7 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
         LastFollowModel lastFollowModel;
 
         RelativeLayout mContent;
-        SimpleDraweeView mAvatarIv;
+        AvatarView mAvatarIv;
         ExTextView mNameTv;
         ExTextView mStatusDescTv;
         ImageView mSexIv;
@@ -83,12 +85,12 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
         public LastFollowViewHodler(View itemView) {
             super(itemView);
 
-            mContent = (RelativeLayout) itemView.findViewById(R.id.content);
-            mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
-            mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
-            mStatusDescTv = (ExTextView) itemView.findViewById(R.id.status_desc_tv);
-            mSexIv = (ImageView) itemView.findViewById(R.id.sex_iv);
-            mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
+            mContent = itemView.findViewById(R.id.content);
+            mAvatarIv = itemView.findViewById(R.id.avatar_iv);
+            mNameTv = itemView.findViewById(R.id.name_tv);
+            mStatusDescTv = itemView.findViewById(R.id.status_desc_tv);
+            mSexIv = itemView.findViewById(R.id.sex_iv);
+            mFollowTv = itemView.findViewById(R.id.follow_tv);
 
             mContent.setOnClickListener(new DebounceViewClickListener() {
                 @Override
@@ -113,12 +115,7 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
             this.postion = postion;
             this.lastFollowModel = lastFollowModel;
 
-            AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(lastFollowModel.getAvatar())
-                            .setBorderColor(Color.WHITE)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
-                            .setCircle(true)
-                            .build());
+            mAvatarIv.bindData(lastFollowModel.toUserInfoModel());
             mNameTv.setText(UserInfoManager.getInstance().getRemarkName(lastFollowModel.getUserID(), lastFollowModel.getNickname()));
             mStatusDescTv.setText(lastFollowModel.getStatusDesc());
             if (lastFollowModel.getSex() == ESex.SX_MALE.getValue()) {

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:levelView2="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7088FF">
@@ -133,14 +134,16 @@
                         app:bl_shape="rectangle"
                         app:bl_solid_color="#7088FF">
 
-                        <com.facebook.drawee.view.SimpleDraweeView
+                        <com.component.busilib.view.AvatarView
                             android:id="@+id/avatar_iv"
                             android:layout_width="@dimen/view_60_dp"
                             android:layout_height="@dimen/view_60_dp"
                             android:layout_marginLeft="@dimen/view_20_dp"
                             android:layout_marginTop="@dimen/view_20_dp"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            avatarView:borderColor="@color/white"
+                            avatarView:borderWidth="@dimen/view_2_dp"/>
 
                         <com.component.level.view.NormalLevelView2
                             android:id="@+id/level_view"
@@ -312,14 +315,16 @@
                             android:background="#7088FF"
                             android:visibility="gone">
 
-                            <com.facebook.drawee.view.SimpleDraweeView
+                            <com.component.busilib.view.AvatarView
                                 android:id="@+id/srl_avatar_iv"
                                 android:layout_width="@dimen/view_60_dp"
                                 android:layout_height="@dimen/view_60_dp"
                                 android:layout_marginLeft="@dimen/view_20_dp"
                                 android:layout_marginBottom="@dimen/view_10_dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent" />
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                avatarView:borderColor="@color/white"
+                                avatarView:borderWidth="@dimen/view_2_dp"/>
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/srl_name_tv"

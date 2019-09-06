@@ -15,13 +15,14 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 import com.component.relation.adapter.RelationAdapter;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     ConstraintLayout mContent;
-    SimpleDraweeView mAvatarIv;
+    AvatarView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mFollowTv;
@@ -65,12 +66,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.position = position;
         this.userInfoModel = userInfoModel;
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
-                        .setBorderColor(Color.WHITE)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2f))
-                        .setCircle(true)
-                        .build());
+        mAvatarIv.bindData(userInfoModel);
         mNameTv.setText(userInfoModel.getNicknameRemark());
         if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(View.VISIBLE);

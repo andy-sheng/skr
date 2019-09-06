@@ -14,6 +14,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
+import com.component.busilib.view.AvatarView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.model.FeedLikeModel
@@ -34,7 +35,7 @@ class LikeWorkAdapter(val listener: FeedLikeListener) : DiffAdapter<FeedLikeMode
     }
 
     inner class LikeWorkHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mAvatarIv: BaseImageView
+        val mAvatarIv: AvatarView
         val mTitleTv: ExTextView
         val mSubTitleTv: ExTextView
         val mTimeTv: ExTextView
@@ -55,12 +56,7 @@ class LikeWorkAdapter(val listener: FeedLikeListener) : DiffAdapter<FeedLikeMode
 
         fun bindData(model: FeedLikeModel) {
             this.model = model
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(model.avatar)
-                    .setBorderColor(Color.WHITE)
-                    .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                    .setCircle(true)
-                    .build())
-
+            mAvatarIv.bindData(model.toUserInfoModel())
             mTitleTv.text = UserInfoManager.getInstance().getRemarkName(model.userID, model.nickname)
             mSubTitleTv.text = model.actionDesc
             mTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.timeMs, System.currentTimeMillis())

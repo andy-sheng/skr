@@ -14,10 +14,11 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.component.busilib.view.AvatarView;
 import com.zq.live.proto.Common.ESex;
 
 public class DoubleInviteNotifyView extends ConstraintLayout {
-    BaseImageView mAvatarIv;
+    AvatarView mAvatarIv;
     ExTextView mInviterNameTv;
     ExImageView mSexIv;
     ExTextView mSubTitleTv;
@@ -45,21 +46,17 @@ public class DoubleInviteNotifyView extends ConstraintLayout {
     private void init() {
         inflate(getContext(), R.layout.double_invite_notification_view_layout, this);
 
-        mAvatarIv = (BaseImageView) findViewById(R.id.avatar_iv);
-        mInviterNameTv = (ExTextView) findViewById(R.id.inviter_name_tv);
-        mSexIv = (ExImageView) findViewById(R.id.sex_iv);
-        mSubTitleTv = (ExTextView) findViewById(R.id.sub_title_tv);
-        mAgreeButton = (ExTextView) findViewById(R.id.agree_button);
+        mAvatarIv = findViewById(R.id.avatar_iv);
+        mInviterNameTv = findViewById(R.id.inviter_name_tv);
+        mSexIv = findViewById(R.id.sex_iv);
+        mSubTitleTv = findViewById(R.id.sub_title_tv);
+        mAgreeButton = findViewById(R.id.agree_button);
     }
 
     public void bindData(UserInfoModel userInfoModel, String extra) {
         this.mUserInfoModel = userInfoModel;
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
-                .setCircle(true)
-                .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                .setBorderColor(Color.WHITE)
-                .build());
 
+        mAvatarIv.bindData(userInfoModel);
         mInviterNameTv.setText(userInfoModel.getNickname());
         mSubTitleTv.setText(extra);
 

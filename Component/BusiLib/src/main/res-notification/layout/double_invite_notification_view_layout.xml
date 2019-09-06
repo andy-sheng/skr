@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_72_dp"
     android:layout_marginLeft="@dimen/view_10_dp"
@@ -9,14 +10,16 @@
     app:bl_shape="rectangle"
     app:bl_solid_color="#D0EFFF">
 
-    <com.common.image.fresco.BaseImageView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_46_dp"
         android:layout_height="@dimen/view_46_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_2_dp"/>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/inviter_name_tv"

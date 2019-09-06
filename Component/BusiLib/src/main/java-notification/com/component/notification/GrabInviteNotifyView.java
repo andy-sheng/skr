@@ -11,6 +11,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 
@@ -19,7 +20,7 @@ import com.zq.live.proto.Common.ESex;
  */
 public class GrabInviteNotifyView extends RelativeLayout {
 
-    SimpleDraweeView mAvatarIv;
+    AvatarView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mHintTv;
@@ -75,12 +76,7 @@ public class GrabInviteNotifyView extends RelativeLayout {
     public void bindData(UserInfoModel userInfoModel) {
         this.mUserInfoModel = userInfoModel;
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
-                        .setCircle(true)
-                        .setBorderColorBySex(mUserInfoModel.getSex() == ESex.SX_MALE.getValue())
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .build());
+        mAvatarIv.bindData(userInfoModel);
         mNameTv.setText(mUserInfoModel.getNicknameRemark());
         if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(VISIBLE);

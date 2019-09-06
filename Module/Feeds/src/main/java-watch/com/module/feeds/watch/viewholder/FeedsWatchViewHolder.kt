@@ -14,6 +14,7 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.AvatarView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.feeds.R
 import com.module.feeds.statistics.FeedPage
@@ -23,7 +24,7 @@ import com.module.feeds.watch.model.FeedsWatchModel
 
 open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it, l) {
 
-    private val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
+    private val mAvatarIv: AvatarView = itemView.findViewById(R.id.avatar_iv)
     private val mNicknameTv: TextView = itemView.findViewById(R.id.nickname_tv)
     //    private val mTimeTv: TextView = itemView.findViewById(R.id.time_tv)
     private val mHitIv: ImageView = itemView.findViewById(R.id.hit_iv)
@@ -65,9 +66,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
     override fun bindData(position: Int, watchModel: FeedsWatchModel) {
         super.bindData(position, watchModel)
         watchModel.user?.let {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
-                    .setCircle(true)
-                    .build())
+            mAvatarIv.bindData(it)
             mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userId, it.nickname)
         }
 

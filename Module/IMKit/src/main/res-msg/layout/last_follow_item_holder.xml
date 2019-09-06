@@ -1,16 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_70_dp">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_44_dp"
         android:layout_height="@dimen/view_44_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_12_dp"
-        android:layout_marginTop="@dimen/view_3_dp" />
+        android:layout_marginTop="@dimen/view_3_dp"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_2_dp"/>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/name_tv"

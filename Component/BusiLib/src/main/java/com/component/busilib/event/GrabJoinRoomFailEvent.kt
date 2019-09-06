@@ -1,4 +1,4 @@
-package com.component.busilib
+package com.component.busilib.event
 
 class GrabJoinRoomFailEvent constructor(var roomID: Int, var type: Int) {
 

@@ -19,6 +19,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.R;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.live.proto.Common.ESex;
 
@@ -29,7 +30,7 @@ public class FollowNotifyView extends RelativeLayout {
 
     public final String TAG = "FollowNotifyView";
 
-    SimpleDraweeView mAvatarIv;
+    AvatarView mAvatarIv;
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mHintTv;
@@ -105,12 +106,7 @@ public class FollowNotifyView extends RelativeLayout {
     public void bindData(UserInfoModel userInfoModel) {
         this.mUserInfoModel = userInfoModel;
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2f))
-                        .setBorderColor(Color.WHITE)
-                        .build());
+        mAvatarIv.bindData(userInfoModel);
         mNameTv.setText(mUserInfoModel.getNicknameRemark());
         if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
             mSexIv.setVisibility(VISIBLE);

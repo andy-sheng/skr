@@ -11,7 +11,7 @@
     app:bl_shape="rectangle"
     app:bl_solid_color="@color/white">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_36_dp"

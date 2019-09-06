@@ -45,6 +45,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
+import com.component.busilib.view.AvatarView
 
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -108,7 +109,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mMoreBtn: ExImageView
     private var mPersonMoreOpView: PersonMoreOpView? = null
 
-    lateinit var mAvatarIv: SimpleDraweeView
+    lateinit var mAvatarIv: AvatarView
     lateinit var mLevelView: NormalLevelView2
     lateinit var mNameTv: ExTextView
     lateinit var mSexIv: ImageView
@@ -394,14 +395,14 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     private fun initUserInfoArea() {
-        mAvatarIv = rootView.findViewById<View>(R.id.avatar_iv) as SimpleDraweeView
-        mLevelView = rootView.findViewById<View>(R.id.level_view) as NormalLevelView2
-        mNameTv = rootView.findViewById<View>(R.id.name_tv) as ExTextView
-        mSexIv = rootView.findViewById<View>(R.id.sex_iv) as ImageView
-        mBusinessCard = rootView.findViewById<View>(R.id.business_card) as ImageView
-        mUseridTv = rootView.findViewById<View>(R.id.userid_tv) as ExTextView
-        mSignTv = rootView.findViewById<View>(R.id.sign_tv) as ExTextView
-        mFlowlayout = rootView.findViewById<View>(R.id.flowlayout) as TagFlowLayout
+        mAvatarIv = rootView.findViewById(R.id.avatar_iv)
+        mLevelView = rootView.findViewById(R.id.level_view)
+        mNameTv = rootView.findViewById(R.id.name_tv)
+        mSexIv = rootView.findViewById(R.id.sex_iv)
+        mBusinessCard = rootView.findViewById(R.id.business_card)
+        mUseridTv = rootView.findViewById(R.id.userid_tv)
+        mSignTv = rootView.findViewById(R.id.sign_tv)
+        mFlowlayout = rootView.findViewById(R.id.flowlayout)
 
         mTagAdapter = object : TagAdapter<TagModel>(mTags) {
             override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
@@ -645,12 +646,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private fun showUserInfo(model: UserInfoModel) {
         this.mUserInfoModel = model
         mFeedsWallView?.setUserInfoModel(model)
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(model.avatar)
-                        .setBorderColor(Color.WHITE)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                        .setCircle(true)
-                        .build())
+        mAvatarIv.bindData(model)
 
         mNameTv.text = model.nicknameRemark
         mUseridTv.text = "ID:" + model.userId

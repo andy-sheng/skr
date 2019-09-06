@@ -16,7 +16,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.component.busilib.GrabJoinRoomFailEvent;
+import com.component.busilib.event.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.recommend.RA;
 import com.module.RouterConstants;

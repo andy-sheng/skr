@@ -21,4 +21,14 @@
         <!--进度条有动画-->
         <attr name="hasAnimation" format="boolean"/>
     </declare-styleable>
+
+    <!-- AvatarView 的属性(头像都是圆的：丁一)-->
+    <declare-styleable name="avatarView">
+        <!--头像是否圆形-->
+        <attr name="isCircle" format="boolean"/>
+        <!--头像边框颜色-->
+        <attr name="borderColor" format="color"/>
+        <!--头像边框宽度-->
+        <attr name="borderWidth" format="dimension"/>
+    </declare-styleable>
 </resources>

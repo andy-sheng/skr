@@ -1,5 +1,7 @@
 package com.module.msg.follow;
 
+import com.common.core.userinfo.model.UserInfoModel;
+
 import java.io.Serializable;
 
 public class LastFollowModel implements Serializable {
@@ -113,5 +115,13 @@ public class LastFollowModel implements Serializable {
                 ", statusDesc='" + statusDesc + '\'' +
                 ", relation=" + relation +
                 '}';
+    }
+
+    public UserInfoModel toUserInfoModel(){
+        UserInfoModel userInfoModel = new UserInfoModel();
+        userInfoModel.setUserId(this.userID);
+        userInfoModel.setAvatar(this.avatar);
+        userInfoModel.setNickname(this.nickname);
+        return userInfoModel;
     }
 }

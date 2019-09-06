@@ -1,5 +1,7 @@
 package com.module.feeds.detail.model;
 
+import com.common.core.userinfo.model.UserInfoModel;
+
 import java.io.Serializable;
 
 public class FeedLikeModel implements Serializable {
@@ -75,5 +77,13 @@ public class FeedLikeModel implements Serializable {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public UserInfoModel toUserInfoModel(){
+        UserInfoModel userInfoModel = new UserInfoModel();
+        userInfoModel.setUserId(userID);
+        userInfoModel.setAvatar(avatar);
+        userInfoModel.setNickname(nickname);
+        return userInfoModel;
     }
 }

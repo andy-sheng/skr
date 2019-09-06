@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_70_dp">
 
-    <com.common.image.fresco.BaseImageView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_12_dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_2_dp"/>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/title_tv"
