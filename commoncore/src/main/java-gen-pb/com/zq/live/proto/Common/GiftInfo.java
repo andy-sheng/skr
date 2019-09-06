@@ -9,9 +9,15 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
+import java.lang.Boolean;
+import java.lang.Float;
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.Object;
+import java.lang.Override;
+import java.lang.String;
+import java.lang.StringBuilder;
 import okio.ByteString;
 
 public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
@@ -705,7 +711,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           case 7: {
             try {
               builder.setGiftType(EGiftType.ADAPTER.decode(reader));
-            } catch (EnumConstantNotFoundException e) {
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
               builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
             }
             break;
@@ -718,7 +724,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           case 13: {
             try {
               builder.setDisplayType(EGiftDisplayType.ADAPTER.decode(reader));
-            } catch (EnumConstantNotFoundException e) {
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
               builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
             }
             break;

@@ -18,6 +18,25 @@ message UserInfo {
     string description = 5; //个人描述
     bool isSystem = 6; //是否为系统
     uint32 mainLevel = 7; //主段位
+    EVIPType vipType    = 8; //vip类型
+    UserRanking ranking = 9; //排位信息
+}
+
+//段位描述
+message UserRanking
+{
+    uint32 mainRanking = 1; //主段位
+    uint32 subRanking  = 2; //子段位
+    int64 currExp      = 3; //进度条当前分值
+    int64 maxExp       = 4; //进度条总分值
+    string rankingDesc = 5; //段位描述。例如：白银歌者4段
+}
+
+//加v类型
+enum EVIPType {
+    EVT_UNKNOWN  = 0; //未知：没有加v`
+    EVT_RED_V    = 1; //红v
+    EVT_GOLDEN_V = 2; //金v
 }
 
 // 音乐信息

@@ -9,9 +9,12 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.Override;
+import java.lang.String;
+import java.lang.StringBuilder;
 import okio.ByteString;
 
 public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Builder> {
@@ -337,7 +340,7 @@ public final class MiniGameInfo extends Message<MiniGameInfo, MiniGameInfo.Build
           case 4: {
             try {
               builder.setGamePlayType(EMiniGamePlayType.ADAPTER.decode(reader));
-            } catch (EnumConstantNotFoundException e) {
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
               builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
             }
             break;

@@ -9,9 +9,13 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
+import java.lang.Boolean;
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.Override;
+import java.lang.String;
+import java.lang.StringBuilder;
 import okio.ByteString;
 
 /**
@@ -37,6 +41,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   public static final Boolean DEFAULT_ISSYSTEM = false;
 
   public static final Integer DEFAULT_MAINLEVEL = 0;
+
+  public static final EVIPType DEFAULT_VIPTYPE = EVIPType.EVT_UNKNOWN;
 
   /**
    * 用户ID
@@ -101,13 +107,32 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   )
   private final Integer mainLevel;
 
+  /**
+   * vip类型
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.zq.live.proto.Common.EVIPType#ADAPTER"
+  )
+  private final EVIPType vipType;
+
+  /**
+   * 排位信息
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.zq.live.proto.Common.UserRanking#ADAPTER"
+  )
+  private final UserRanking ranking;
+
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
-      Boolean isSystem, Integer mainLevel) {
-    this(userID, nickName, avatar, sex, description, isSystem, mainLevel, ByteString.EMPTY);
+      Boolean isSystem, Integer mainLevel, EVIPType vipType, UserRanking ranking) {
+    this(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipType, ranking, ByteString.EMPTY);
   }
 
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
-      Boolean isSystem, Integer mainLevel, ByteString unknownFields) {
+      Boolean isSystem, Integer mainLevel, EVIPType vipType, UserRanking ranking,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.nickName = nickName;
@@ -116,6 +141,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     this.description = description;
     this.isSystem = isSystem;
     this.mainLevel = mainLevel;
+    this.vipType = vipType;
+    this.ranking = ranking;
   }
 
   @Override
@@ -128,6 +155,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     builder.description = description;
     builder.isSystem = isSystem;
     builder.mainLevel = mainLevel;
+    builder.vipType = vipType;
+    builder.ranking = ranking;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -144,7 +173,9 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
         && Internal.equals(sex, o.sex)
         && Internal.equals(description, o.description)
         && Internal.equals(isSystem, o.isSystem)
-        && Internal.equals(mainLevel, o.mainLevel);
+        && Internal.equals(mainLevel, o.mainLevel)
+        && Internal.equals(vipType, o.vipType)
+        && Internal.equals(ranking, o.ranking);
   }
 
   @Override
@@ -159,6 +190,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       result = result * 37 + (description != null ? description.hashCode() : 0);
       result = result * 37 + (isSystem != null ? isSystem.hashCode() : 0);
       result = result * 37 + (mainLevel != null ? mainLevel.hashCode() : 0);
+      result = result * 37 + (vipType != null ? vipType.hashCode() : 0);
+      result = result * 37 + (ranking != null ? ranking.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -174,6 +207,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     if (description != null) builder.append(", description=").append(description);
     if (isSystem != null) builder.append(", isSystem=").append(isSystem);
     if (mainLevel != null) builder.append(", mainLevel=").append(mainLevel);
+    if (vipType != null) builder.append(", vipType=").append(vipType);
+    if (ranking != null) builder.append(", ranking=").append(ranking);
     return builder.replace(0, 2, "UserInfo{").append('}').toString();
   }
 
@@ -258,6 +293,26 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   }
 
   /**
+   * vip类型
+   */
+  public EVIPType getVipType() {
+    if(vipType==null){
+        return new EVIPType.Builder().build();
+    }
+    return vipType;
+  }
+
+  /**
+   * 排位信息
+   */
+  public UserRanking getRanking() {
+    if(ranking==null){
+        return new UserRanking.Builder().build();
+    }
+    return ranking;
+  }
+
+  /**
    * 用户ID
    */
   public boolean hasUserID() {
@@ -306,6 +361,20 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     return mainLevel!=null;
   }
 
+  /**
+   * vip类型
+   */
+  public boolean hasVipType() {
+    return vipType!=null;
+  }
+
+  /**
+   * 排位信息
+   */
+  public boolean hasRanking() {
+    return ranking!=null;
+  }
+
   public static final class Builder extends Message.Builder<UserInfo, Builder> {
     private Integer userID;
 
@@ -320,6 +389,10 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     private Boolean isSystem;
 
     private Integer mainLevel;
+
+    private EVIPType vipType;
+
+    private UserRanking ranking;
 
     public Builder() {
     }
@@ -380,9 +453,25 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       return this;
     }
 
+    /**
+     * vip类型
+     */
+    public Builder setVipType(EVIPType vipType) {
+      this.vipType = vipType;
+      return this;
+    }
+
+    /**
+     * 排位信息
+     */
+    public Builder setRanking(UserRanking ranking) {
+      this.ranking = ranking;
+      return this;
+    }
+
     @Override
     public UserInfo build() {
-      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, mainLevel, super.buildUnknownFields());
+      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipType, ranking, super.buildUnknownFields());
     }
   }
 
@@ -400,6 +489,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.description)
           + ProtoAdapter.BOOL.encodedSizeWithTag(6, value.isSystem)
           + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.mainLevel)
+          + EVIPType.ADAPTER.encodedSizeWithTag(8, value.vipType)
+          + UserRanking.ADAPTER.encodedSizeWithTag(9, value.ranking)
           + value.unknownFields().size();
     }
 
@@ -412,6 +503,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.description);
       ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.isSystem);
       ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.mainLevel);
+      EVIPType.ADAPTER.encodeWithTag(writer, 8, value.vipType);
+      UserRanking.ADAPTER.encodeWithTag(writer, 9, value.ranking);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -427,7 +520,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           case 4: {
             try {
               builder.setSex(ESex.ADAPTER.decode(reader));
-            } catch (EnumConstantNotFoundException e) {
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
               builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
             }
             break;
@@ -435,6 +528,15 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           case 5: builder.setDescription(ProtoAdapter.STRING.decode(reader)); break;
           case 6: builder.setIsSystem(ProtoAdapter.BOOL.decode(reader)); break;
           case 7: builder.setMainLevel(ProtoAdapter.UINT32.decode(reader)); break;
+          case 8: {
+            try {
+              builder.setVipType(EVIPType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
+          case 9: builder.setRanking(UserRanking.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -449,6 +551,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     @Override
     public UserInfo redact(UserInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.ranking != null) builder.ranking = UserRanking.ADAPTER.redact(builder.ranking);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -9,10 +9,14 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
+import java.lang.Boolean;
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.Override;
+import java.lang.String;
+import java.lang.StringBuilder;
 import java.util.List;
-
 import okio.ByteString;
 
 /**
@@ -1585,7 +1589,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 27: {
             try {
               builder.setPlayType(StandPlayType.ADAPTER.decode(reader));
-            } catch (EnumConstantNotFoundException e) {
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
               builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
             }
             break;
