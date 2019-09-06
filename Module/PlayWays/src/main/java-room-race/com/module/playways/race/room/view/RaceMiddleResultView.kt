@@ -79,57 +79,59 @@ class RaceMiddleResultView : ExConstraintLayout {
 
     fun showResult(lastRound:RaceRoundInfoModel,animationOverListener:()->Unit) {
         lastRound?.let {
-            if (it.status == ERaceRoundStatus.ERRS_END.value) {
-                leftConstraintLayout.alpha = 1.0f
-                rightConstraintLayout.alpha = 1.0f
-                resultTv.visibility = View.GONE
-                leftTicketCountTv.text = it.scores[0].bLightCnt.toString()
-                if (it.scores[0].winType == ERaceWinType.RWT_WIN.value) {
-                    leftHeadIv.visibility = View.VISIBLE
+            if (it.scores.size == 2) {
+                if (it.status == ERaceRoundStatus.ERRS_END.value) {
+                    leftConstraintLayout.alpha = 1.0f
+                    rightConstraintLayout.alpha = 1.0f
+                    resultTv.visibility = View.GONE
+                    leftTicketCountTv.text = it.scores[0].bLightCnt.toString()
+                    if (it.scores[0].winType == ERaceWinType.RWT_WIN.value) {
+                        leftHeadIv.visibility = View.VISIBLE
+                    } else {
+                        leftHeadIv.visibility = View.GONE
+                    }
+
+                    if (it.scores[0].winType == ERaceWinType.RWT_WIN.value || it.scores[0].winType == ERaceWinType.RWT_LOSE.value) {
+                        resultTv.background = U.getDrawable(R.drawable.race_result_win)
+                    } else {
+                        resultTv.background = U.getDrawable(R.drawable.race_result_draw)
+                    }
+
+                    if (it.scores[0].isEscape) {
+                        leftTicketTv.visibility = View.GONE
+                        leftTicketCountTv.text = "逃跑"
+                        leftConstraintLayout.alpha = 0.7f
+                    } else {
+                        leftTicketTv.visibility = View.VISIBLE
+                    }
+
+                    AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[0].userID)?.avatar)
+                            .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
+                            .build())
+
+                    rightTicketCountTv.text = it.scores[1].bLightCnt.toString()
+                    if (it.scores[1].winType == ERaceWinType.RWT_WIN.value) {
+                        rightHeadIv.visibility = View.VISIBLE
+                    } else {
+                        rightHeadIv.visibility = View.GONE
+                    }
+
+                    if (it.scores[1].isEscape) {
+                        rightTicketTv.visibility = View.GONE
+                        rightTicketCountTv.text = "逃跑"
+                        rightConstraintLayout.alpha = 0.7f
+                    } else {
+                        rightTicketTv.visibility = View.VISIBLE
+                    }
+
+                    AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[1].userID)?.avatar)
+                            .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
+                            .build())
+
+                    startVs()
                 } else {
-                    leftHeadIv.visibility = View.GONE
+                    MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
                 }
-
-                if (it.scores[0].winType == ERaceWinType.RWT_WIN.value || it.scores[0].winType == ERaceWinType.RWT_LOSE.value) {
-                    resultTv.background = U.getDrawable(R.drawable.race_result_win)
-                } else {
-                    resultTv.background = U.getDrawable(R.drawable.race_result_draw)
-                }
-
-                if (it.scores[0].isEscape) {
-                    leftTicketTv.visibility = View.GONE
-                    leftTicketCountTv.text = "逃跑"
-                    leftConstraintLayout.alpha = 0.7f
-                } else {
-                    leftTicketTv.visibility = View.VISIBLE
-                }
-
-                AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[0].userID)?.avatar)
-                        .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
-                        .build())
-
-                rightTicketCountTv.text = it.scores[1].bLightCnt.toString()
-                if (it.scores[1].winType == ERaceWinType.RWT_WIN.value) {
-                    rightHeadIv.visibility = View.VISIBLE
-                } else {
-                    rightHeadIv.visibility = View.GONE
-                }
-
-                if (it.scores[1].isEscape) {
-                    rightTicketTv.visibility = View.GONE
-                    rightTicketCountTv.text = "逃跑"
-                    rightConstraintLayout.alpha = 0.7f
-                } else {
-                    rightTicketTv.visibility = View.VISIBLE
-                }
-
-                AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[1].userID)?.avatar)
-                        .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
-                        .build())
-
-                startVs()
-            } else {
-                MyLog.w(mTag, "showResult, 不是结束状态， value is ${ERaceRoundStatus.ERRS_END.value}")
             }
         }
 
