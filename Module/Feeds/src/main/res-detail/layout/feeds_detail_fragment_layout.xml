@@ -230,7 +230,7 @@
                         android:thumb="@drawable/shenqu_jindu"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.common.image.fresco.BaseImageView
+                    <com.component.busilib.view.AvatarView
                         android:id="@+id/singer_iv"
                         android:layout_width="@dimen/view_32_dp"
                         android:layout_height="@dimen/view_32_dp"

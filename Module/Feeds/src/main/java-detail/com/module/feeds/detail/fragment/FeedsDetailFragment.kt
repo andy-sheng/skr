@@ -46,6 +46,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.AvatarView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -102,7 +103,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     var mPassTimeTv: ExTextView? = null
     var mLastTimeTv: ExTextView? = null
     var mSeekBar: SeekBar? = null
-    var mSingerIv: BaseImageView? = null
+    var mSingerIv: AvatarView? = null
     var mNameTv: ExTextView? = null
     //    var mCommentTimeTv: ExTextView? = null
     var mFollowTv: ExTextView? = null
@@ -702,10 +703,8 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mLastTimeTv?.text = U.getDateTimeUtils().formatTimeStringForDate(it.toLong(), "mm:ss")
         }
 
-        AvatarUtils.loadAvatarByUrl(mSingerIv, AvatarUtils.newParamsBuilder(mFeedsWatchModel?.user?.avatar)
-                .setCircle(true)
-                .build())
 
+        mSingerIv?.bindData(mFeedsWatchModel?.user)
 
         mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userId
                 ?: 0, mFeedsWatchModel?.user?.nickname)

@@ -19,6 +19,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
+import com.component.busilib.view.AvatarView
 import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
@@ -32,26 +33,30 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
         const val TYPE_REF_CTN = 2
     }
 
-    val mCommentType = 0
-    val mCountType = 1
-    val mEmptyType = 2
+    private val mCommentType = 0
+    private val mCountType = 1
+    private val mEmptyType = 2
     var mIFirstLevelCommentListener: IFirstLevelCommentListener? = null
     var mCommentNum: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
-        if (viewType == mCommentType) {
-            view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_comment_item_view_layout, parent, false)
-            return CommentHolder(view!!)
-        } else if (viewType == mCountType) {
-            view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_comment_num_item_view_layout, parent, false)
-            return CommentNumHolder(view!!)
-        } else if (viewType == mEmptyType) {
-            view = LayoutInflater.from(parent.context).inflate(com.module.feeds.R.layout.feeds_empty_item_view_layout, parent, false)
-            return EmptyHolder(view!!)
+        when (viewType) {
+            mCommentType -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_comment_item_view_layout, parent, false)
+                return CommentHolder(view!!)
+            }
+            mCountType -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_comment_num_item_view_layout, parent, false)
+                return CommentNumHolder(view!!)
+            }
+            mEmptyType -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.feeds_empty_item_view_layout, parent, false)
+                return EmptyHolder(view!!)
+            }
+            else -> return CommentHolder(view!!)
         }
 
-        return CommentHolder(view!!)
     }
 
     override fun getItemCount(): Int {
@@ -112,27 +117,17 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
     }
 
     inner class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mCommenterAvaterIv: BaseImageView
-        val mNameTv: ExTextView
-        val mBottomDivider: View
-        val mCommentTimeTv: ExTextView
-        val mXinIv: ExImageView
-        val mLikeNum: ExTextView
-        val mContentTv: ExTextView
-        val mReplyNum: ExTextView
+        private val mCommenterAvaterIv: AvatarView = itemView.findViewById(R.id.commenter_avater_iv)
+        private val mNameTv: ExTextView = itemView.findViewById(R.id.name_tv)
+        private val mBottomDivider: View = itemView.findViewById(R.id.bottom_divider)
+        private val mCommentTimeTv: ExTextView = itemView.findViewById(R.id.comment_time_tv)
+        val mXinIv: ExImageView = itemView.findViewById(R.id.xin_iv)
+        val mLikeNum: ExTextView  = itemView.findViewById(R.id.like_num)
+        private val mContentTv: ExTextView = itemView.findViewById(R.id.content_tv)
+        private val mReplyNum: ExTextView= itemView.findViewById(R.id.reply_num)
+
         var mModel: FirstLevelCommentModel? = null
         var mPosition: Int? = null
-
-        init {
-            mCommenterAvaterIv = itemView.findViewById(com.module.feeds.R.id.commenter_avater_iv)
-            mNameTv = itemView.findViewById(com.module.feeds.R.id.name_tv)
-            mCommentTimeTv = itemView.findViewById(com.module.feeds.R.id.comment_time_tv)
-            mXinIv = itemView.findViewById(com.module.feeds.R.id.xin_iv)
-            mLikeNum = itemView.findViewById(com.module.feeds.R.id.like_num)
-            mContentTv = itemView.findViewById(com.module.feeds.R.id.content_tv)
-            mReplyNum = itemView.findViewById(com.module.feeds.R.id.reply_num)
-            mBottomDivider = itemView.findViewById(com.module.feeds.R.id.bottom_divider)
-        }
 
         fun updateRefCount() {
             mModel?.let {
@@ -163,10 +158,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
             } else {
                 mBottomDivider.setBackgroundColor(U.getColor(R.color.black_trans_10))
             }
-
-            AvatarUtils.loadAvatarByUrl(mCommenterAvaterIv, AvatarUtils.newParamsBuilder(mModel?.commentUser?.avatar)
-                    .setCircle(true)
-                    .build())
+            mCommenterAvaterIv.bindData(mModel?.commentUser)
 
             mNameTv.text = UserInfoManager.getInstance().getRemarkName(model.commentUser.userId, model.commentUser?.nickname)
             mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt

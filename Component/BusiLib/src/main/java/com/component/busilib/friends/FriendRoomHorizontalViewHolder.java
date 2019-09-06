@@ -14,6 +14,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -21,7 +22,7 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
     RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
-    SimpleDraweeView mAvatarIv;
+    AvatarView mAvatarIv;
     ExTextView mNicknameTv;
     SimpleDraweeView mRecommendTagSdv;
 
@@ -31,9 +32,9 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
     public FriendRoomHorizontalViewHolder(View itemView) {
         super(itemView);
 
-        mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
-        mNicknameTv = (ExTextView) itemView.findViewById(R.id.nickname_tv);
-        mRecommendTagSdv = (SimpleDraweeView) itemView.findViewById(R.id.recommend_tag_sdv);
+        mAvatarIv = itemView.findViewById(R.id.avatar_iv);
+        mNicknameTv = itemView.findViewById(R.id.nickname_tv);
+        mRecommendTagSdv = itemView.findViewById(R.id.recommend_tag_sdv);
 
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -55,13 +56,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         this.position = position;
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
-
-            AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f))
-                            .setBorderColor(Color.WHITE)
-                            .setCircle(true)
-                            .build());
+            
+            mAvatarIv.bindData(mFriendRoomModel.getUserInfo());
             String disName = mFriendRoomModel.getUserInfo().getNickname();
             if (mFriendRoomModel.getUserInfo() != null) {
                 disName = UserInfoManager.getInstance().getRemarkName(mFriendRoomModel.getUserInfo().getUserId(), disName);

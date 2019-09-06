@@ -47,8 +47,8 @@ class AvatarView : ConstraintLayout {
         typedArray.recycle()
     }
 
-    fun bindData(model: UserInfoModel) {
-        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.avatar)
+    fun bindData(model: UserInfoModel?) {
+        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model?.avatar)
                 .setBorderColor(borderColor)
                 .setBorderWidth(borderWidth.toFloat())
                 .setCircle(isCircle)

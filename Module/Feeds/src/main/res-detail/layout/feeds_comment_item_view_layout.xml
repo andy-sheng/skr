@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:layout_height="wrap_content">
 
-    <com.common.image.fresco.BaseImageView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/commenter_avater_iv"
         android:layout_width="@dimen/view_32_dp"
         android:layout_height="@dimen/view_32_dp"
