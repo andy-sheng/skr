@@ -13,6 +13,8 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.share.SharePanel
 import com.common.core.share.ShareType
+
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -20,10 +22,10 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.sensor.SensorManagerHelper
+
 import com.common.utils.U
 import com.component.busilib.callback.EmptyCallback
-import com.component.person.event.ShowPersonCenterEvent
+
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -44,7 +46,6 @@ import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedSongModel
-import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.FeedViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -161,7 +162,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                                 mDes = it.user?.nickname
                                 mPlayMusicUrl = it.song?.playURL
                                 mUrl = String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d",
-                                        it.song?.songID, it.user?.userID)
+                                        it.song?.songID, it.user?.userId)
                             }
                     mSharePanel?.show(ShareType.MUSIC)
                     mSharePanel?.setUMShareListener(object : UMShareListener {
@@ -187,7 +188,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             override fun onClickAvatarListener(watchModel: FeedsWatchModel?) {
                 watchModel?.user?.let {
                     val bundle = Bundle()
-                    bundle.putInt("bundle_user_id", it.userID)
+                    bundle.putInt("bundle_user_id", it.userId)
                     ARouter.getInstance()
                             .build(RouterConstants.ACTIVITY_OTHER_PERSON)
                             .with(bundle)
@@ -666,9 +667,9 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     fun onEvent(event: FeedLikeChangeEvent) {
         // 喜欢状态更新，更新赞的列表
         if (event.isLike) {
-            val feedUserInfo = FeedUserInfo()
+            val feedUserInfo = UserInfoModel()
                     .apply {
-                        userID = MyUserInfoManager.getInstance().uid.toInt()
+                        userId = MyUserInfoManager.getInstance().uid.toInt()
                         avatar = MyUserInfoManager.getInstance().avatar
                         nickname = MyUserInfoManager.getInstance().nickName
                     }
@@ -681,7 +682,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             for (watchModel in mAdapter.mDataList) {
                 if (watchModel.feedID == event.feedID) {
                     for (like in watchModel.feedLikeUserList) {
-                        if (like.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                        if (like.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                             watchModel.feedLikeUserList.remove(like)
                             break
                         }
@@ -736,9 +737,9 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 model.isLiked = !model.isLiked
                 if (model.isLiked) {
                     model.starCnt = model.starCnt.plus(1)
-                    val feedUserInfo = FeedUserInfo()
+                    val feedUserInfo = UserInfoModel()
                             .apply {
-                                userID = MyUserInfoManager.getInstance().uid.toInt()
+                                userId = MyUserInfoManager.getInstance().uid.toInt()
                                 avatar = MyUserInfoManager.getInstance().avatar
                                 nickname = MyUserInfoManager.getInstance().nickName
                             }
@@ -746,7 +747,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 } else {
                     model.starCnt = model.starCnt.minus(1)
                     for (like in model.feedLikeUserList) {
-                        if (like.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                        if (like.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                             model.feedLikeUserList.remove(like)
                             break
                         }

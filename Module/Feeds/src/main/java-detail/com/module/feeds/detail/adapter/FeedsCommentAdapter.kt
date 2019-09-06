@@ -168,7 +168,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                     .setCircle(true)
                     .build())
 
-            mNameTv.text = UserInfoManager.getInstance().getRemarkName(model.commentUser.userID, model.commentUser?.nickname)
+            mNameTv.text = UserInfoManager.getInstance().getRemarkName(model.commentUser.userId, model.commentUser?.nickname)
             mCommentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt
                     ?: 0L, System.currentTimeMillis())
             mLikeNum.text = StringFromatUtils.formatTenThousand(model.comment.likedCnt)
@@ -192,7 +192,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                             .append(model.commentUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
-                                    bundle.putInt("bundle_user_id", model.commentUser.userID!!)
+                                    bundle.putInt("bundle_user_id", model.commentUser.userId)
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_OTHER_PERSON)
                                             .with(bundle)
@@ -208,7 +208,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
                             .append(model.replyUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
-                                    bundle.putInt("bundle_user_id", model.replyUser.userID!!)
+                                    bundle.putInt("bundle_user_id", model.replyUser.userId)
                                     ARouter.getInstance()
                                             .build(RouterConstants.ACTIVITY_OTHER_PERSON)
                                             .with(bundle)
@@ -248,7 +248,7 @@ class FeedsCommentAdapter(val mIsSecond: Boolean) : DiffAdapter<Any, RecyclerVie
 
             mCommenterAvaterIv.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    mModel!!.commentUser?.userID?.let {
+                    mModel!!.commentUser?.userId?.let {
                         mIFirstLevelCommentListener?.onClickIcon(it)
                     }
                 }

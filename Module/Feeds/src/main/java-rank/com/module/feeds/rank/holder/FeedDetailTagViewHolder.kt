@@ -53,7 +53,7 @@ class FeedDetailTagViewHolder(itemView: View, val listener: FeedTagListener) : R
         if (mode.song?.needShareTag == true) {
             songDescTv.text = mode.song?.songTpl?.singer
         } else {
-            songDescTv.text = UserInfoManager.getInstance().getRemarkName(mode.user?.userID
+            songDescTv.text = UserInfoManager.getInstance().getRemarkName(mode.user?.userId
                     ?: 0, mode.user?.nickname)
         }
 

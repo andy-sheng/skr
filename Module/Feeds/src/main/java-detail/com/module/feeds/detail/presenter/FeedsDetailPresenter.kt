@@ -2,6 +2,7 @@ package com.module.feeds.detail.presenter
 
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
 import com.common.utils.U
@@ -9,7 +10,6 @@ import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.inter.IFeedsDetailView
 import com.module.feeds.detail.model.FirstLevelCommentModel
 import com.module.feeds.event.FeedsCollectChangeEvent
-import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.watch.model.FeedsWatchModel
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -34,10 +34,10 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                         val firstLevelCommentModel = FirstLevelCommentModel()
                         firstLevelCommentModel.comment = model
                         firstLevelCommentModel.comment.content = content
-                        firstLevelCommentModel.commentUser = FeedUserInfo()
+                        firstLevelCommentModel.commentUser = UserInfoModel()
                         firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
                         firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-                        firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
+                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
                         mIFeedsDetailView.addCommentSuccess(firstLevelCommentModel)
                     }
                 } else {
@@ -64,10 +64,10 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                         val firstLevelCommentModel = FirstLevelCommentModel()
                         firstLevelCommentModel.comment = model
                         firstLevelCommentModel.comment.content = content
-                        firstLevelCommentModel.commentUser = FeedUserInfo()
+                        firstLevelCommentModel.commentUser = UserInfoModel()
                         firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
                         firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-                        firstLevelCommentModel.commentUser.userID = MyUserInfoManager.getInstance().uid.toInt()
+                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
                         firstLevelCommentModel.replyUser = refuseModel.commentUser
                         callBack.invoke(firstLevelCommentModel)
                     }

@@ -2,6 +2,7 @@ package com.module.feeds.watch.model
 
 import android.text.TextUtils
 import com.alibaba.fastjson.annotation.JSONField
+import com.common.core.userinfo.model.UserInfoModel
 import com.component.lyrics.LyricsReader
 import java.io.Serializable
 
@@ -37,7 +38,7 @@ class FeedSongTpl : Serializable {
     @JSONField(name = "singer")
     var singer: String = ""
     @JSONField(name = "uploader")
-    var uploader: FeedUserInfo? = null
+    var uploader: UserInfoModel? = null
 
     override fun toString(): String {
         return "FeedSongTpl(bgm=$bgm, bgmDurMs=$bgmDurMs, composer=$composer, cover=$cover, createdAt=$createdAt, lrcTs=$lrcTs, lrcTxt=$lrcTxt, lrcType=$lrcType, lyricist=$lyricist, songName=$songName, tplID=$tplID, uploader=$uploader)"

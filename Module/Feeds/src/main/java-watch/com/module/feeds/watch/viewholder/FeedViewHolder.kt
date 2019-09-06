@@ -252,7 +252,7 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
 
     private fun tryBindDebugView() {
         if (MyLog.isDebugLogOpen()) {
-            mDebugTv.text = "uid:${model?.user?.userID}\n" +
+            mDebugTv.text = "uid:${model?.user?.userId}\n" +
                     "feedId:${model?.feedID}\n" +
                     "songId:${model?.song?.songID}\n" +
                     "songtype:${model?.song?.songType}\n" +

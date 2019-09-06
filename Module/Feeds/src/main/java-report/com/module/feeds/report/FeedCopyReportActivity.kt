@@ -31,7 +31,7 @@ class FeedCopyReportActivity : BaseActivity() {
                         .setAddToBackStack(false)
                         .setHasAnimation(false)
                         .addDataBeforeAdd(0, 2)
-                        .addDataBeforeAdd(1, model.user?.userID)
+                        .addDataBeforeAdd(1, model.user?.userId)
                         .addDataBeforeAdd(2, model.feedID)
                         .addDataBeforeAdd(3, model.song?.songID)
                         .setFragmentDataListener(object : FragmentDataListener {

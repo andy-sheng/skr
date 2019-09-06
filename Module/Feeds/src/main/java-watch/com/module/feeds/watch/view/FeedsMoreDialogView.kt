@@ -21,7 +21,6 @@ import com.common.view.DebounceViewClickListener
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.common.view.ex.ExTextView
-import com.component.person.utils.StringFromatUtils
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.event.FeedsCollectChangeEvent
@@ -107,7 +106,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_REPORT)
                         .withInt("from", type)
-                        .withInt("targetID", model.user?.userID ?: 0)
+                        .withInt("targetID", model.user?.userId ?: 0)
                         .withInt("songID", model.song?.songID ?: 0)
                         .withInt("feedID", model.feedID)
                         .navigation()
@@ -138,7 +137,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             override fun clickValid(v: View?) {
                 // 关注Ta
                 dismiss(false)
-                UserInfoManager.getInstance().mateRelation(model.user?.userID
+                UserInfoManager.getInstance().mateRelation(model.user?.userId
                         ?: 0, UserInfoManager.RA_BUILD
                         , false, object : ResponseCallBack<Boolean>() {
                     override fun onServerFailed() {
@@ -202,7 +201,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                     mDes = model.user?.nickname
                     mPlayMusicUrl = model.song?.playURL
                     mUrl = String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d",
-                            model.song?.songID, model.user?.userID)
+                            model.song?.songID, model.user?.userId)
                 }
         mSharePanel?.show(ShareType.MUSIC)
         mSharePanel?.setUMShareListener(object : UMShareListener {
@@ -330,7 +329,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             // 没有取
             mFollowTv.visibility = View.GONE
             mDividerFollow.visibility = View.GONE
-            UserInfoManager.getInstance().getUserRelationByUuid(model.user?.userID
+            UserInfoManager.getInstance().getUserRelationByUuid(model.user?.userId
                     ?: 0, object : ResultCallback<UserInfoModel>() {
                 override fun onGetServer(t: UserInfoModel?): Boolean {
                     checkFollow(t?.isFollow ?: false)

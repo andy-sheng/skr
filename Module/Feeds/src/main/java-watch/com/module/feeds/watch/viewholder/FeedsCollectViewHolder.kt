@@ -48,7 +48,7 @@ open class FeedsCollectViewHolder(item: View, val listener: FeedCollectListener)
                 AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                         .build())
-                mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userID
+                mSongWriterTv.text = UserInfoManager.getInstance().getRemarkName(it.userId
                         ?: 0, it.nickname)
             }
         } else {

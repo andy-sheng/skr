@@ -49,7 +49,7 @@ class FeedCommentMoreDialog(var activity: Activity, val model: FirstLevelComment
                 dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_REPORT)
                         .withInt("from", FROM_COMMENT)
-                        .withInt("targetID", model.commentUser.userID)
+                        .withInt("targetID", model.commentUser.userId)
                         .withInt("commentID", model.comment.commentID)
                         .withInt("feedID", model.comment.feedID)
                         .navigation()

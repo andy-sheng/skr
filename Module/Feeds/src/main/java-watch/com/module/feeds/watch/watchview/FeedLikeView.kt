@@ -13,11 +13,11 @@ import android.view.View
 import android.widget.TextView
 
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.module.feeds.R
-import com.module.feeds.watch.model.FeedUserInfo
 
 /**
  * 点赞的神曲，每一项可以点击
@@ -49,7 +49,7 @@ class FeedLikeView : TextView {
      * @param topics
      * @return
      */
-    fun setLikeUsers(topics: List<FeedUserInfo>?, likeNum: Int) {
+    fun setLikeUsers(topics: List<UserInfoModel>?, likeNum: Int) {
         text = ""
         if (topics != null && topics.isNotEmpty()) {
             visibility = View.VISIBLE
@@ -57,7 +57,7 @@ class FeedLikeView : TextView {
             for (i in 0 until length) {
                 val clickText: String
                 val feedUserInfo = topics[i]
-                val name = UserInfoManager.getInstance().getRemarkName(feedUserInfo.userID, feedUserInfo.nickname)
+                val name = UserInfoManager.getInstance().getRemarkName(feedUserInfo.userId, feedUserInfo.nickname)
                 clickText = if (i == length - 1) {
                     name
                 } else {
@@ -71,7 +71,7 @@ class FeedLikeView : TextView {
                                 .append(" $clickText").setForegroundColor(Color.parseColor("#4A90E2"))
                                 .setClickSpan(object : ClickableSpan() {
                                     override fun onClick(widget: View) {
-                                        onClickNameListener?.invoke(feedUserInfo.userID)
+                                        onClickNameListener?.invoke(feedUserInfo.userId)
                                     }
 
                                     override fun updateDrawState(ds: TextPaint) {
@@ -85,7 +85,7 @@ class FeedLikeView : TextView {
                                 .append(clickText).setForegroundColor(Color.parseColor("#4A90E2"))
                                 .setClickSpan(object : ClickableSpan() {
                                     override fun onClick(widget: View) {
-                                        onClickNameListener?.invoke(feedUserInfo.userID)
+                                        onClickNameListener?.invoke(feedUserInfo.userId)
                                     }
 
                                     override fun updateDrawState(ds: TextPaint) {

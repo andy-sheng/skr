@@ -1,6 +1,6 @@
 package com.module.feeds.detail.model;
 
-import com.module.feeds.watch.model.FeedUserInfo;
+import com.common.core.userinfo.model.UserInfoModel;
 
 import java.io.Serializable;
 
@@ -12,8 +12,8 @@ public class FirstLevelCommentModel implements Serializable {
      */
 
     private CommentBean comment;
-    private FeedUserInfo replyUser;
-    private FeedUserInfo commentUser;
+    private UserInfoModel replyUser;
+    private UserInfoModel commentUser;
     public boolean isLiked;
 
     public FirstLevelCommentModel() {
@@ -27,19 +27,19 @@ public class FirstLevelCommentModel implements Serializable {
         this.comment = comment;
     }
 
-    public FeedUserInfo getReplyUser() {
+    public UserInfoModel getReplyUser() {
         return replyUser;
     }
 
-    public void setReplyUser(FeedUserInfo replyUser) {
+    public void setReplyUser(UserInfoModel replyUser) {
         this.replyUser = replyUser;
     }
 
-    public FeedUserInfo getCommentUser() {
+    public UserInfoModel getCommentUser() {
         return commentUser;
     }
 
-    public void setCommentUser(FeedUserInfo commentUser) {
+    public void setCommentUser(UserInfoModel commentUser) {
         this.commentUser = commentUser;
     }
 

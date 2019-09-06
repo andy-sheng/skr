@@ -68,7 +68,7 @@ open class FeedsWatchViewHolder(it: View, l: FeedsListener?) : FeedViewHolder(it
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCircle(true)
                     .build())
-            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+            mNicknameTv.text = UserInfoManager.getInstance().getRemarkName(it.userId, it.nickname)
         }
 
         if (watchModel.song?.needShareTag == true) {

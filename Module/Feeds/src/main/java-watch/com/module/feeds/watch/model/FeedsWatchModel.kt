@@ -1,6 +1,7 @@
 package com.module.feeds.watch.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.common.core.userinfo.model.UserInfoModel
 import java.io.Serializable
 
 class FeedsWatchModel : Serializable {
@@ -29,13 +30,13 @@ class FeedsWatchModel : Serializable {
     @JSONField(name = "challengeCnt")
     var challengeCnt: Int = 0
     @JSONField(name = "user")
-    var user: FeedUserInfo? = null
+    var user: UserInfoModel? = null
     @JSONField(name = "status")
     var status: Int = 2  //0 未知 1待审核 2审核通过
     @JSONField(name = "isCollected")
     var isCollected = false  // 默认未收藏
     @JSONField(name = "feedLikeUserList")
-    var feedLikeUserList: MutableList<FeedUserInfo> = ArrayList<FeedUserInfo>()
+    var feedLikeUserList: MutableList<UserInfoModel> = ArrayList<UserInfoModel>()
 
     override fun toString(): String {
         return "FeedsWatchModel(exposure=$exposure, commentCnt=$commentCnt, feedID=$feedID, feedType=$feedType, hasFollow=$hasFollow, isLiked=$isLiked, rankSeq=$rankSeq, rank=$rank, song=$song, starCnt=$starCnt, shareCnt=$shareCnt, challengeCnt=$challengeCnt, user=$user, status=$status, isCollected=$isCollected, feedLikeUserList=$feedLikeUserList)"

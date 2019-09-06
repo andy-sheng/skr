@@ -49,7 +49,7 @@ class FeedsDetailRankViewHolder(item: View,
             AvatarUtils.loadAvatarByUrl(mSongCoverSdv, AvatarUtils.newParamsBuilder(it.avatar)
                     .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                     .build())
-            mSongNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+            mSongNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userId, it.nickname)
         }
     }
 }

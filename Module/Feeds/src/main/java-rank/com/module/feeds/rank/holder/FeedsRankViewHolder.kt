@@ -52,7 +52,7 @@ class FeedsRankViewHolder(item: View, val listener: FeedRankAdapter.Listener) : 
             AvatarUtils.loadAvatarByUrl(mCoverIv, AvatarUtils.newParamsBuilder(model.userInfo?.avatar)
                     .setCornerRadius(8.dp().toFloat())
                     .build())
-            val remarkName = UserInfoManager.getInstance().getRemarkName(model.userInfo?.userID
+            val remarkName = UserInfoManager.getInstance().getRemarkName(model.userInfo?.userId
                     ?: 0, model.userInfo?.nickname)
             mOccupyTv.text = "$remarkName 占领"
         } else {

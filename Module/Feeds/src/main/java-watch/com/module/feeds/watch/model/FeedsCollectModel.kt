@@ -3,6 +3,7 @@ package com.module.feeds.watch.model
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.annotation.JSONField
+import com.common.core.userinfo.model.UserInfoModel
 import com.module.feeds.watch.manager.FeedCollectDB
 import java.io.Serializable
 
@@ -29,7 +30,7 @@ class FeedsCollectModel : Serializable {
                 feedCollectModel.feedType = it.feedType.toInt()
                 feedCollectModel.timeMs = it.timeMs
                 feedCollectModel.song = JSON.parseObject(it.feedSong, FeedSongModel::class.java)
-                feedCollectModel.user = JSON.parseObject(it.user, FeedUserInfo::class.java)
+                feedCollectModel.user = JSON.parseObject(it.user, UserInfoModel::class.java)
             }
             return feedCollectModel
         }
@@ -45,7 +46,7 @@ class FeedsCollectModel : Serializable {
     @JSONField(name = "feedSong")
     var song: FeedSongModel? = null
     @JSONField(name = "user")
-    var user: FeedUserInfo? = null
+    var user: UserInfoModel? = null
 
     var isLiked = true   // 标记是否喜欢，默认从服务器拿的都是喜欢
 

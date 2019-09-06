@@ -78,7 +78,7 @@ class FeedsDetailTopViewHolder(rootView: View,
                         .setBorderWidth(2.dp().toFloat())
                         .build())
                 mNameTv.setTextColor(U.getColor(R.color.black_trans_80))
-                mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+                mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userId, it.nickname)
             }
             mLikeNumTv.text = "${StringFromatUtils.formatTenThousand(model.starCnt)}赞"
             mSeqBtv.setText(model.rankSeq.toString())

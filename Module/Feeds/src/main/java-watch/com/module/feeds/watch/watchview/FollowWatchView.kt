@@ -38,7 +38,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
 
     override fun clickMore(position: Int, it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
-        if (it.user?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+        if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
             mFeedsMoreDialogView?.showByDialog()
         } else {

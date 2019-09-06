@@ -34,7 +34,6 @@ import com.common.log.MyLog
 import com.common.playcontrol.PlayOrPauseEvent
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
-import com.common.sensor.SensorManagerHelper
 import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
 import com.common.statistics.StatisticsAdapter
@@ -68,7 +67,6 @@ import com.module.feeds.event.FeedLikeChangeEvent
 import com.module.feeds.make.make.openFeedsMakeActivityFromChallenge
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.model.FeedUserInfo
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import com.module.feeds.watch.view.FeedsRecordAnimationView
@@ -500,7 +498,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                         ?: ""
                 mTitle = mFeedsWatchModel!!.song?.workName
                 mDes = mFeedsWatchModel!!.user?.nickname
-                mUrl = (String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userID))
+                mUrl = (String.format("http://www.skrer.mobi/feed/song?songID=%d&userID=%d", mFeedsWatchModel!!.song?.songID, mFeedsWatchModel!!.user?.userId))
                 mPlayMusicUrl = mFeedsWatchModel?.song?.playURL
             }
 
@@ -582,7 +580,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mSingerIv?.setDebounceViewClickListener {
             mFeedsWatchModel?.let {
                 val bundle = Bundle()
-                bundle.putInt("bundle_user_id", mFeedsWatchModel?.user?.userID ?: 0)
+                bundle.putInt("bundle_user_id", mFeedsWatchModel?.user?.userId ?: 0)
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_OTHER_PERSON)
                         .with(bundle)
@@ -709,7 +707,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 .build())
 
 
-        mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userID
+        mNameTv?.text = UserInfoManager.getInstance().getRemarkName(mFeedsWatchModel?.user?.userId
                 ?: 0, mFeedsWatchModel?.user?.nickname)
 //        mFeedsWatchModel?.song?.createdAt?.let {
 //            mCommentTimeTv?.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it, System.currentTimeMillis())
@@ -724,7 +722,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mFeedsInputContainerView?.setETHint("回复 ${mFeedsWatchModel?.user?.nickname}")
         }
 
-        mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userID != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
+        mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userId != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
 
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it, mFeedsWatchModel?.song?.needShareTag == true)
@@ -737,7 +735,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mCollectionIv?.isSelected = mFeedsWatchModel?.isCollected == true
         mCollectionIv2?.isSelected = mFeedsWatchModel?.isCollected == true
 
-        mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userID)
+        mFeedsDetailPresenter?.getRelation(mFeedsWatchModel!!.user!!.userId)
 
     }
 
@@ -961,7 +959,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
-        if (mFeedsWatchModel?.user?.userID == event.useId) {
+        if (mFeedsWatchModel?.user?.userId == event.useId) {
             if (event.isFriend) {
                 isFriendState()
                 mFollowTv?.setOnClickListener(null)
@@ -1066,7 +1064,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFollowTv?.background = followState
         mFollowTv?.setTextColor(Color.parseColor("#AD6C00"))
         mFollowTv?.setDebounceViewClickListener {
-            UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userID, UserInfoManager.RA_BUILD, false, 0, null)
+            UserInfoManager.getInstance().mateRelation(mFeedsWatchModel!!.user!!.userId, UserInfoManager.RA_BUILD, false, 0, null)
         }
     }
 
@@ -1102,7 +1100,6 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     override fun useEventBus(): Boolean {
         return true
     }
-
     private fun dismissDialog() {
         mMoreDialogPlus?.dismiss(false)
         mCommentMoreDialogPlus?.dismiss(false)

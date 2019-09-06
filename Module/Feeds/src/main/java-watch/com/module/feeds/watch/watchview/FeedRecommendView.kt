@@ -370,7 +370,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             override fun clickValid(v: View?) {
                 mCurModel?.let {
                     mFeedsMoreDialogView?.dismiss(false)
-                    if (it.user?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                         mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
                         mFeedsMoreDialogView?.showByDialog()
                     } else {
@@ -462,7 +462,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
     private fun openPersonCenter() {
         mCurModel?.let {
             val bundle = Bundle()
-            bundle.putInt("bundle_user_id", it.user?.userID ?: 0)
+            bundle.putInt("bundle_user_id", it.user?.userId ?: 0)
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_OTHER_PERSON)
                     .with(bundle)
@@ -579,7 +579,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                         .setCircle(true)
                         .build())
                 songDescTv.visibility = View.VISIBLE
-                songDescTv.text = "演唱/${UserInfoManager.getInstance().getRemarkName(it.user?.userID
+                songDescTv.text = "演唱/${UserInfoManager.getInstance().getRemarkName(it.user?.userId
                         ?: 0, it.user?.nickname)}"
             }
 
@@ -603,7 +603,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
                     .setBorderWidth(1.dp().toFloat())
                     .setBorderColor(Color.WHITE)
                     .build())
-            nameTv.text = UserInfoManager.getInstance().getRemarkName(it.user?.userID
+            nameTv.text = UserInfoManager.getInstance().getRemarkName(it.user?.userId
                     ?: 0, it.user?.nickname)
             playNumTv.text = "${StringFromatUtils.formatTenThousand(it.exposure)} 收听"
             // 内容

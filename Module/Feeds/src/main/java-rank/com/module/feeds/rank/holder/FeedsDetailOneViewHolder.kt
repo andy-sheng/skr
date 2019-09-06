@@ -62,7 +62,7 @@ class FeedsDetailOneViewHolder(rootView: View,
                         .setBlur(true)
                         .build())
                 AvatarUtils.loadAvatarByUrl(mRecordCover, AvatarUtils.newParamsBuilder(it.avatar).setCircle(true).build())
-                mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userID, it.nickname)
+                mNameTv.text = UserInfoManager.getInstance().getRemarkName(it.userId, it.nickname)
             }
             mSongPlayIv.visibility = View.VISIBLE
             mChampionTv.visibility = View.VISIBLE
