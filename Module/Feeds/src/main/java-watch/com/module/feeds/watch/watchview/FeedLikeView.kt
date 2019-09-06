@@ -2,15 +2,18 @@ package com.module.feeds.watch.watchview
 
 import android.content.Context
 import android.graphics.Color
+import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 
 import com.common.core.userinfo.UserInfoManager
+import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.module.feeds.R
@@ -36,7 +39,7 @@ class FeedLikeView : TextView {
     }
 
     private fun initView() {
-        movementMethod = LinkMovementMethod.getInstance()
+        movementMethod = MyLinkMovementMethod
         highlightColor = resources.getColor(R.color.transparent)
     }
 
@@ -55,43 +58,45 @@ class FeedLikeView : TextView {
                 val clickText: String
                 val feedUserInfo = topics[i]
                 val name = UserInfoManager.getInstance().getRemarkName(feedUserInfo.userID, feedUserInfo.nickname)
-                if (i == length - 1) {
-                    clickText = name
+                clickText = if (i == length - 1) {
+                    name
                 } else {
-                    clickText = "$name、"
+                    "$name、"
                 }
-                val spannableStringBuilder: SpannableStringBuilder
-                if (i == 0) {
-                    spannableStringBuilder = SpanUtils()
-                            .appendImage(U.getDrawable(R.drawable.feed_like_name_icon), SpanUtils.ALIGN_CENTER)
-                            .append(" $clickText").setForegroundColor(Color.parseColor("#4A90E2"))
-                            .setClickSpan(object : ClickableSpan() {
-                                override fun onClick(widget: View) {
-                                    onClickNameListener?.invoke(feedUserInfo.userID)
-                                }
+                if (clickText.isNotBlank()) {
+                    val spannableStringBuilder: SpannableStringBuilder
+                    if (i == 0) {
+                        spannableStringBuilder = SpanUtils()
+                                .appendImage(U.getDrawable(R.drawable.feed_like_name_icon), SpanUtils.ALIGN_CENTER)
+                                .append(" $clickText").setForegroundColor(Color.parseColor("#4A90E2"))
+                                .setClickSpan(object : ClickableSpan() {
+                                    override fun onClick(widget: View) {
+                                        onClickNameListener?.invoke(feedUserInfo.userID)
+                                    }
 
-                                override fun updateDrawState(ds: TextPaint) {
-                                    ds.color = Color.parseColor("#4A90E2")
-                                    ds.isUnderlineText = false
-                                }
-                            })
-                            .create()
-                } else {
-                    spannableStringBuilder = SpanUtils()
-                            .append(clickText).setForegroundColor(Color.parseColor("#4A90E2"))
-                            .setClickSpan(object : ClickableSpan() {
-                                override fun onClick(widget: View) {
-                                    onClickNameListener?.invoke(feedUserInfo.userID)
-                                }
+                                    override fun updateDrawState(ds: TextPaint) {
+                                        ds.color = Color.parseColor("#4A90E2")
+                                        ds.isUnderlineText = false
+                                    }
+                                })
+                                .create()
+                    } else {
+                        spannableStringBuilder = SpanUtils()
+                                .append(clickText).setForegroundColor(Color.parseColor("#4A90E2"))
+                                .setClickSpan(object : ClickableSpan() {
+                                    override fun onClick(widget: View) {
+                                        onClickNameListener?.invoke(feedUserInfo.userID)
+                                    }
 
-                                override fun updateDrawState(ds: TextPaint) {
-                                    ds.color = Color.parseColor("#4A90E2")
-                                    ds.isUnderlineText = false
-                                }
-                            })
-                            .create()
+                                    override fun updateDrawState(ds: TextPaint) {
+                                        ds.color = Color.parseColor("#4A90E2")
+                                        ds.isUnderlineText = false
+                                    }
+                                })
+                                .create()
+                    }
+                    append(spannableStringBuilder)
                 }
-                append(spannableStringBuilder)
             }
 
             if (likeNum > 8) {
@@ -104,5 +109,17 @@ class FeedLikeView : TextView {
         } else {
             visibility = View.GONE
         }
+    }
+}
+
+object MyLinkMovementMethod : LinkMovementMethod() {
+    override fun onTouchEvent(widget: TextView?, buffer: Spannable?, event: MotionEvent?): Boolean {
+        try {
+            val b = super.onTouchEvent(widget, buffer, event)
+            return b
+        } catch (e: Exception) {
+            MyLog.d("MyLinkMovementMethod", e)
+        }
+        return false
     }
 }
