@@ -453,6 +453,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
                     }
                     if (container.indexOfChild(mPhotoWallView) == -1) {
+                        if (mPhotoWallView.getParent() != null) {
+                            ((ViewGroup) mPhotoWallView.getParent()).removeView(mPhotoWallView);
+                        }
                         container.addView(mPhotoWallView);
                     }
                     return mPhotoWallView;
