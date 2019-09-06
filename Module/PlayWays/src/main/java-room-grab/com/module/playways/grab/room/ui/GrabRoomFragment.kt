@@ -596,7 +596,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mGrabVideoDisplayView = GrabVideoDisplayView(viewStub, mRoomData!!)
             mGrabVideoDisplayView.setSelfSingCardListener { mCorePresenter?.sendRoundOverInfo() }
             mGrabVideoDisplayView.setListener {
-                    mBeautyControlPanelView?.show()
+                mBeautyControlPanelView?.show()
             }
         }
         mGrabVideoSelfSingCardView = GrabVideoSelfSingCardView(rootView, mRoomData!!)
@@ -1351,7 +1351,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    override fun roundOver(lastInfoModel: GrabRoundInfoModel, playNextSongInfoCard: Boolean, now: GrabRoundInfoModel) {
+    override fun roundOver(lastInfoModel: GrabRoundInfoModel?, playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
         removeAllEnsureMsg()
         val msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER)
         msg.arg1 = if (playNextSongInfoCard) 1 else 0
@@ -1364,10 +1364,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabOpBtn.hide("roundOver")
         mGrabGiveupView.hideWithAnimation(false)
         mGrabBaseUiController.roundOver()
-        if (lastInfoModel.isFreeMicRound) {
+        if (lastInfoModel?.isFreeMicRound == true) {
             mSelfSingCardView.setVisibility(GONE)
         }
-        mRoundOverCardView.bindData(lastInfoModel) { onRoundOverPlayOver(playNextSongInfoCard, now) }
+        mRoundOverCardView.bindData(lastInfoModel) {
+            now?.let {
+                onRoundOverPlayOver(playNextSongInfoCard, now)
+            }
+        }
     }
 
     private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel) {
@@ -1522,7 +1526,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         //        }
     }
 
-    override fun onChangeRoomResult(success: Boolean, errMsg: String) {
+    override fun onChangeRoomResult(success: Boolean, errMsg: String?) {
         val t = System.currentTimeMillis() - mBeginChangeRoomTs
         if (t > 1500) {
             mGrabChangeRoomTransitionView.visibility = GONE
