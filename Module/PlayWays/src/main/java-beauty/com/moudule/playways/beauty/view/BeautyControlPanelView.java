@@ -47,7 +47,7 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
 
     @Override
     protected void init(View parentView) {
-        mBeautyTitleStl = mParentView.findViewById(R.id.beauty_title_stl);
+        mBeautyTitleStl = getMParentView().findViewById(R.id.beauty_title_stl);
         mBeautyTitleStl.setCustomTabView(R.layout.beauty_tab_view, R.id.tab_tv);
         mBeautyTitleStl.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mBeautyTitleStl.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
@@ -57,7 +57,7 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
         mBeautyTitleStl.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f));
         mBeautyTitleStl.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f));
 
-        mBeautyVp = mParentView.findViewById(R.id.beauty_vp);
+        mBeautyVp = getMParentView().findViewById(R.id.beauty_vp);
         mPagerAdapter = new PagerAdapter() {
             @Override
             public int getCount() {
@@ -125,7 +125,7 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
         mBeautyVp.setAdapter(mPagerAdapter);
         mBeautyTitleStl.setViewPager(mBeautyVp);
         mPagerAdapter.notifyDataSetChanged();
-        mPlaceHolderView = mParentView.findViewById(R.id.place_holder_view);
+        mPlaceHolderView = getMParentView().findViewById(R.id.place_holder_view);
         mPlaceHolderView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -199,13 +199,13 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
             mShowOrHideAnimator.cancel();
         }
 
-        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView, View.TRANSLATION_Y, mParentView.getHeight(), 0f);
+        mShowOrHideAnimator = ObjectAnimator.ofFloat(getMParentView(), View.TRANSLATION_Y, getMParentView().getHeight(), 0f);
         mShowOrHideAnimator.setDuration(300);
         mShowOrHideAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mParentView.setVisibility(View.VISIBLE);
+                getMParentView().setVisibility(View.VISIBLE);
             }
         });
         mShowOrHideAnimator.start();
@@ -230,24 +230,24 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
             mShowOrHideAnimator.cancel();
         }
 
-        mShowOrHideAnimator = ObjectAnimator.ofFloat(mParentView, View.TRANSLATION_Y, 0f, mParentView.getHeight());
+        mShowOrHideAnimator = ObjectAnimator.ofFloat(getMParentView(), View.TRANSLATION_Y, 0f, getMParentView().getHeight());
         mShowOrHideAnimator.setDuration(300);
         mShowOrHideAnimator.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mParentView.setVisibility(View.VISIBLE);
+                getMParentView().setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mParentView.setVisibility(View.GONE);
+                getMParentView().setVisibility(View.GONE);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
-                mParentView.setVisibility(View.GONE);
+                getMParentView().setVisibility(View.GONE);
             }
 
         });
@@ -267,7 +267,7 @@ public class BeautyControlPanelView extends ExViewStub implements BeautyFiterSti
     }
 
     public boolean onBackPressed() {
-        if (mParentView != null && mParentView.getVisibility() == View.VISIBLE) {
+        if (getMParentView() != null && getMParentView().getVisibility() == View.VISIBLE) {
             hide();
             return true;
         }

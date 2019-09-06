@@ -19,7 +19,6 @@ import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
@@ -96,10 +95,10 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         tryInflate()
         val infoModel = roomData.realRoundInfo
         val userInfoModel = roomData.getUserInfo(infoModel?.getSingerIdNow())
-        mParentView.clearAnimation()
+        mParentView?.clearAnimation()
         mUiHandler!!.removeCallbacksAndMessages(null)
         mHasPlayFullAnimation = false
-        visibility = View.VISIBLE
+        setVisibility(View.VISIBLE)
         descTv.text = "《${infoModel?.getSongModelNow()?.displaySongName}》"
         if (userInfoModel != null) {
             this.mUseId = userInfoModel.userId
@@ -118,7 +117,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             mEnterAlphaAnimation = AlphaAnimation(0f, 1f)
             mEnterAlphaAnimation!!.duration = 1000
         }
-        mParentView.startAnimation(mEnterAlphaAnimation)
+        mParentView?.startAnimation(mEnterAlphaAnimation)
 
         raceStageView.visibility = View.VISIBLE
         raceStageView.loops = 1
@@ -152,7 +151,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
     }
 
     fun tryStartCountDown() {
-        if (mParentView == null || mParentView.visibility == View.GONE) {
+        if (mParentView == null || mParentView?.visibility == View.GONE) {
             return
         }
         MyLog.d(TAG, "tryStartCountDown")
@@ -186,20 +185,20 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
         mHasPlayFullAnimation = false
         mUiHandler!!.removeCallbacksAndMessages(null)
         if (mParentView != null) {
-            if (mParentView.visibility == View.VISIBLE) {
+            if (mParentView?.visibility == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = TranslateAnimation(0.0f, U.getDisplayUtils().screenWidth.toFloat(), 0.0f, 0.0f)
                     mLeaveTranslateAnimation!!.duration = 200
                 }
-                mParentView.startAnimation(mLeaveTranslateAnimation)
+                mParentView?.startAnimation(mLeaveTranslateAnimation)
                 mLeaveTranslateAnimation!!.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {
 
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        mParentView.clearAnimation()
-                        visibility = View.GONE
+                        mParentView?.clearAnimation()
+                        setVisibility(View.GONE)
                     }
 
                     override fun onAnimationRepeat(animation: Animation) {
@@ -207,8 +206,8 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
                     }
                 })
             } else {
-                mParentView.clearAnimation()
-                visibility = View.GONE
+                mParentView?.clearAnimation()
+                setVisibility(View.GONE)
             }
             if (circleCountDownView != null) {
                 circleCountDownView.cancelAnim()

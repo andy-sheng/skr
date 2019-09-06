@@ -36,8 +36,8 @@ class FeedsCommonLyricView(rootView: View, var showName: Boolean = false) : Base
             mFeedsManyLyricView?.showHalf()
         }
 
-        mFeedsManyLyricView?.visibility = View.GONE
-        mAutoScrollLyricView?.visibility = View.GONE
+        mFeedsManyLyricView?.setVisibility(View.GONE)
+        mAutoScrollLyricView?.setVisibility(View.GONE)
     }
     override fun setSongModel(feedSongModel: FeedSongModel, shift: Int) {
         mFeedSongModel = feedSongModel
@@ -46,14 +46,14 @@ class FeedsCommonLyricView(rootView: View, var showName: Boolean = false) : Base
         if (!TextUtils.isEmpty(feedSongModel.songTpl?.lrcTs) && feedSongModel.songType == 1) {
             // 只要有伴奏文件，不管清唱和伴奏都是这个view
             mBaseFeedsLyricView = mFeedsManyLyricView
-            mAutoScrollLyricView?.visibility = View.GONE
+            mAutoScrollLyricView?.setVisibility(View.GONE)
             mAutoScrollLyricView?.stop()
-            mFeedsManyLyricView?.visibility = View.VISIBLE
+            mFeedsManyLyricView?.setVisibility(View.VISIBLE)
         } else {
             mBaseFeedsLyricView = mAutoScrollLyricView
-            mFeedsManyLyricView?.visibility = View.GONE
+            mFeedsManyLyricView?.setVisibility(View.GONE)
             mFeedsManyLyricView?.stop()
-            mAutoScrollLyricView?.visibility = View.VISIBLE
+            mAutoScrollLyricView?.setVisibility(View.VISIBLE)
         }
         mBaseFeedsLyricView?.loadLyric()
     }
@@ -76,8 +76,8 @@ class FeedsCommonLyricView(rootView: View, var showName: Boolean = false) : Base
 
     override fun setShowState(visibility: Int) {
         if (View.GONE == visibility) {
-            mAutoScrollLyricView?.visibility = View.GONE
-            mFeedsManyLyricView?.visibility = View.GONE
+            mAutoScrollLyricView?.setVisibility(View.GONE)
+            mFeedsManyLyricView?.setVisibility(View.GONE)
         } else {
             mBaseFeedsLyricView?.setShowState(visibility)
         }

@@ -200,7 +200,7 @@ public class PKRoundOverCardView extends ExViewStub {
      * 入场动画
      */
     private void playCardEnterAnimation() {
-        mParentView.setVisibility(View.VISIBLE);
+        getMParentView().setVisibility(View.VISIBLE);
         if (mEnterTranslateAnimation == null) {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
@@ -221,7 +221,7 @@ public class PKRoundOverCardView extends ExViewStub {
 
             }
         });
-        mParentView.startAnimation(mEnterTranslateAnimation);
+        getMParentView().startAnimation(mEnterTranslateAnimation);
 
         mUiHandler.postDelayed(new Runnable() {
             @Override
@@ -305,8 +305,8 @@ public class PKRoundOverCardView extends ExViewStub {
      */
     public void hide() {
         mUiHandler.removeCallbacksAndMessages(null);
-        if(mParentView != null){
-            if (mParentView.getVisibility() == View.VISIBLE) {
+        if(getMParentView() != null){
+            if (getMParentView().getVisibility() == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                     mLeaveTranslateAnimation.setDuration(200);
@@ -319,7 +319,7 @@ public class PKRoundOverCardView extends ExViewStub {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        mParentView.clearAnimation();
+                        getMParentView().clearAnimation();
                         setVisibility(View.GONE);
                         if (mSVGAListener != null) {
                             mSVGAListener.onFinished();
@@ -331,9 +331,9 @@ public class PKRoundOverCardView extends ExViewStub {
 
                     }
                 });
-                mParentView.startAnimation(mLeaveTranslateAnimation);
+                getMParentView().startAnimation(mLeaveTranslateAnimation);
             } else {
-                mParentView.clearAnimation();
+                getMParentView().clearAnimation();
                 setVisibility(View.GONE);
             }
         }

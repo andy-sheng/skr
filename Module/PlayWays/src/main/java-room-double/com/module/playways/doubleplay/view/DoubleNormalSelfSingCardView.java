@@ -52,7 +52,7 @@ public class DoubleNormalSelfSingCardView extends ExViewStub {
             mLyricTv = parentView.findViewById(R.id.lyric_tv);
             mScrollView = parentView.findViewById(R.id.scrollView);
         }
-        mParentView.setClickable(true);
+        getMParentView().setClickable(true);
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LyricLoadErrorCallBack())

@@ -55,8 +55,8 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mLyricRecycleView = mParentView.findViewById(R.id.lyric_recycle_view);
-        mLyricRecycleView.setLayoutManager(new LinearLayoutManager(mParentView.getContext(), LinearLayoutManager.VERTICAL, false));
+        mLyricRecycleView = getMParentView().findViewById(R.id.lyric_recycle_view);
+        mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getMParentView().getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight, false, mRoomData);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
         LoadSir mLoadSir = new LoadSir.Builder()

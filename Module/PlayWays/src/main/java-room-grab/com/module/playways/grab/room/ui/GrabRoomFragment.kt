@@ -1196,7 +1196,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     internal fun onSongInfoCardPlayOver(from: String, pendingPlaySongCardData: PendingPlaySongCardData) {
         MyLog.d(TAG, "onSongInfoCardPlayOver pendingPlaySongCardData=$pendingPlaySongCardData from=$from")
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER)
-        mSingBeginTipsCardView.visibility = GONE
+        mSingBeginTipsCardView.setVisibility(GONE)
         mGrabGiveupView.hideWithAnimation(false)
         val grabRoundInfoModel = mRoomData!!.realRoundInfo
         if (grabRoundInfoModel != null && grabRoundInfoModel.isFreeMicRound) {
@@ -1228,7 +1228,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabTopContentView.setModeSing()
         mSongInfoCardView.hide()
 
-        mSingBeginTipsCardView.visibility = View.VISIBLE
+        mSingBeginTipsCardView.setVisibility(View.VISIBLE)
 
         mGrabOpBtn.hide("singBySelf")
         mGrabOpBtn.setGrabPreRound(true)
@@ -1254,7 +1254,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabOpBtn.hide("singByOthers")
         mGrabOpBtn.setGrabPreRound(false)
         mGrabGiveupView.hideWithAnimation(false)
-        mSingBeginTipsCardView.visibility = View.VISIBLE
+        mSingBeginTipsCardView.setVisibility(View.VISIBLE)
 
         val msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER)
         mUiHanlder.sendMessageDelayed(msg, 2600)
@@ -1306,7 +1306,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     private fun onSingBeginTipsPlayOver() {
         MyLog.d(TAG, "onSingBeginTipsPlayOver")
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER)
-        mSingBeginTipsCardView.visibility = GONE
+        mSingBeginTipsCardView.setVisibility(GONE)
         mGrabScoreTipsView.reset()
         val now = mRoomData!!.realRoundInfo
         if (now != null) {
@@ -1487,7 +1487,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mSelfSingCardView.setVisibility(GONE)
         mOthersSingCardView.hide()
         mTurnInfoCardView.visibility = GONE
-        mSingBeginTipsCardView.visibility = GONE
+        mSingBeginTipsCardView.setVisibility(GONE)
         mRoundOverCardView.setVisibility(GONE)
         mGrabGameOverView.visibility = View.VISIBLE
         mGrabGameOverView.starSVGAAnimation(object : SVGAListener {
@@ -1670,7 +1670,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mRoundOverCardView.setVisibility(GONE)
         mOthersSingCardView.setVisibility(GONE)
         mSelfSingCardView.setVisibility(GONE)
-        mSingBeginTipsCardView.visibility = GONE
+        mSingBeginTipsCardView.setVisibility(GONE)
     }
 
     override fun beginOuath() {

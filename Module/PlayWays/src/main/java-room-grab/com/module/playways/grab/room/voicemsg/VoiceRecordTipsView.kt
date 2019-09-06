@@ -6,8 +6,8 @@ import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.utils.U
-import com.module.playways.R
 import com.common.view.ExViewStub
+import com.module.playways.R
 
 class VoiceRecordTipsView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
@@ -16,7 +16,7 @@ class VoiceRecordTipsView(viewStub: ViewStub) : ExViewStub(viewStub) {
     var mVoiceVolumeView: VoiceVolumeView? = null
     var mHandler: Handler? = null
 
-    override fun init(parentView: View?) {
+    override fun init(parentView: View) {
         mHintText = parentView?.findViewById(R.id.hint_text)
         mVoiceHintIv = parentView?.findViewById(R.id.voice_hint_iv)
         mVoiceVolumeView = parentView?.findViewById(R.id.voice_volume_view)
@@ -37,11 +37,11 @@ class VoiceRecordTipsView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mVoiceVolumeView?.setVoiceLevel(1)
         mVoiceVolumeView?.visibility = View.VISIBLE
         mHandler?.removeCallbacksAndMessages(null)
-        mParentView.visibility = View.VISIBLE
+        mParentView?.visibility = View.VISIBLE
     }
 
     fun hide() {
-        mParentView.visibility = View.GONE
+        mParentView?.visibility = View.GONE
     }
 
     fun changeVoiceLevel(level: Int) {

@@ -37,11 +37,13 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
     internal var mLyricAndAccMatchManager: LyricAndAccMatchManager? = LyricAndAccMatchManager()
 
     override fun init(parentView: View) {
-        mSvlyric = mParentView.findViewById(R.id.sv_lyric)
-        mTvLyric = mParentView.findViewById(R.id.tv_lyric)
-        mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view)
-        mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view)
-        mSingCountDownView2 = mParentView.findViewById(R.id.sing_count_down_view)
+        parentView?.let {
+            mSvlyric = it.findViewById(R.id.sv_lyric)
+            mTvLyric = it.findViewById(R.id.tv_lyric)
+            mManyLyricsView = it.findViewById(R.id.many_lyrics_view)
+            mVoiceScaleView = it.findViewById(R.id.voice_scale_view)
+            mSingCountDownView2 = it.findViewById(R.id.sing_count_down_view)
+        }
     }
 
     override fun layoutDesc(): Int {

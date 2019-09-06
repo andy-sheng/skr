@@ -186,12 +186,12 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
         // 加载歌词
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
-            feedAutoScrollLyricView.visibility = View.GONE
-            feedWatchManyLyricView.visibility = View.VISIBLE
+            feedAutoScrollLyricView.setVisibility(View.GONE)
+            feedWatchManyLyricView.setVisibility(View.VISIBLE)
             feedWatchManyLyricView.loadLyric()
         } else {
-            feedWatchManyLyricView.visibility = View.GONE
-            feedAutoScrollLyricView.visibility = View.VISIBLE
+            feedWatchManyLyricView.setVisibility(View.GONE)
+            feedAutoScrollLyricView.setVisibility(View.VISIBLE)
             feedAutoScrollLyricView.loadLyric()
         }
         tryBindDebugView()
@@ -239,13 +239,13 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         // 播放歌词 不一定是从头开始播
         // 有可能从头播 也有可能继续播
         if (!TextUtils.isEmpty(model?.song?.songTpl?.lrcTs) && model?.song?.songType == 1) {
-            feedAutoScrollLyricView.visibility = View.GONE
+            feedAutoScrollLyricView.setVisibility(View.GONE)
             feedWatchManyLyricView.seekTo(model?.song?.playCurPos ?: 0)
             feedWatchManyLyricView.resume()
         } else {
             feedAutoScrollLyricView.seekTo(model?.song?.playCurPos ?: 0)
             feedAutoScrollLyricView.resume()
-            feedWatchManyLyricView.visibility = View.GONE
+            feedWatchManyLyricView.setVisibility(View.GONE)
         }
         tryBindDebugView()
     }

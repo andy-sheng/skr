@@ -61,9 +61,9 @@ public class PKOthersSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mPkCardView = (PKSingCardView) mParentView.findViewById(R.id.pk_card_view);
+        mPkCardView = (PKSingCardView) getMParentView().findViewById(R.id.pk_card_view);
         mPkCardView.setRoomData(mGrabRoomData);
-        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView = getMParentView().findViewById(R.id.sing_count_down_view);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class PKOthersSingCardView extends ExViewStub {
         }
         mHasPlayFullAnimation = false;
         mUiHandler.removeCallbacksAndMessages(null);
-        mParentView.setVisibility(View.VISIBLE);
+        getMParentView().setVisibility(View.VISIBLE);
         // 绑定数据
         mPkCardView.bindData();
         if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
@@ -162,8 +162,8 @@ public class PKOthersSingCardView extends ExViewStub {
 
             }
         });
-        if (mParentView != null) {
-            mParentView.startAnimation(mEnterTranslateAnimation);
+        if (getMParentView() != null) {
+            getMParentView().startAnimation(mEnterTranslateAnimation);
         }
     }
 
@@ -171,8 +171,8 @@ public class PKOthersSingCardView extends ExViewStub {
      * 离场动画
      */
     public void hide() {
-        if(mParentView!=null){
-            if (mParentView.getVisibility() == View.VISIBLE) {
+        if(getMParentView() !=null){
+            if (getMParentView().getVisibility() == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                     mLeaveTranslateAnimation.setDuration(200);
@@ -187,8 +187,8 @@ public class PKOthersSingCardView extends ExViewStub {
                     public void onAnimationEnd(Animation animation) {
                         destoryAnimation();
                         mSingCountDownView.reset();
-                        mParentView.clearAnimation();
-                        mParentView.setVisibility(View.GONE);
+                        getMParentView().clearAnimation();
+                        getMParentView().setVisibility(View.GONE);
                     }
 
                     @Override
@@ -196,12 +196,12 @@ public class PKOthersSingCardView extends ExViewStub {
 
                     }
                 });
-                mParentView.startAnimation(mLeaveTranslateAnimation);
+                getMParentView().startAnimation(mLeaveTranslateAnimation);
             } else {
                 destoryAnimation();
                 mSingCountDownView.reset();
-                mParentView.clearAnimation();
-                mParentView.setVisibility(View.GONE);
+                getMParentView().clearAnimation();
+                getMParentView().setVisibility(View.GONE);
             }
         }
     }

@@ -74,10 +74,10 @@ public class NormalOthersSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mGrabStageView = (SVGAImageView) mParentView.findViewById(R.id.grab_stage_view);
-        mSingAvatarView = (BaseImageView) mParentView.findViewById(R.id.sing_avatar_view);
-        mCircleCountDownView = (CircleCountDownView) mParentView.findViewById(R.id.circle_count_down_view);
-        mTvSingerName = (ExTextView) mParentView.findViewById(R.id.tv_singer_name);
+        mGrabStageView = (SVGAImageView) getMParentView().findViewById(R.id.grab_stage_view);
+        mSingAvatarView = (BaseImageView) getMParentView().findViewById(R.id.sing_avatar_view);
+        mCircleCountDownView = (CircleCountDownView) getMParentView().findViewById(R.id.circle_count_down_view);
+        mTvSingerName = (ExTextView) getMParentView().findViewById(R.id.tv_singer_name);
 
         mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -135,7 +135,7 @@ public class NormalOthersSingCardView extends ExViewStub {
             mEnterAlphaAnimation = new AlphaAnimation(0f, 1f);
             mEnterAlphaAnimation.setDuration(1000);
         }
-        mParentView.startAnimation(mEnterAlphaAnimation);
+        getMParentView().startAnimation(mEnterAlphaAnimation);
 
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
@@ -173,7 +173,7 @@ public class NormalOthersSingCardView extends ExViewStub {
     }
 
     public void tryStartCountDown() {
-        if (mParentView==null || mParentView.getVisibility() == View.GONE) {
+        if (getMParentView() ==null || getMParentView().getVisibility() == View.GONE) {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");
@@ -209,13 +209,13 @@ public class NormalOthersSingCardView extends ExViewStub {
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
         mHasPlayFullAnimation = false;
         mUiHandler.removeCallbacksAndMessages(null);
-        if(mParentView != null){
-            if ( mParentView.getVisibility() == View.VISIBLE) {
+        if(getMParentView() != null){
+            if ( getMParentView().getVisibility() == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                     mLeaveTranslateAnimation.setDuration(200);
                 }
-                mParentView.startAnimation(mLeaveTranslateAnimation);
+                getMParentView().startAnimation(mLeaveTranslateAnimation);
                 mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -224,7 +224,7 @@ public class NormalOthersSingCardView extends ExViewStub {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        mParentView.clearAnimation();
+                        getMParentView().clearAnimation();
                         setVisibility(View.GONE);
                     }
 
@@ -234,7 +234,7 @@ public class NormalOthersSingCardView extends ExViewStub {
                     }
                 });
             } else {
-                mParentView.clearAnimation();
+                getMParentView().clearAnimation();
                 setVisibility(View.GONE);
             }
             if (mCircleCountDownView != null) {

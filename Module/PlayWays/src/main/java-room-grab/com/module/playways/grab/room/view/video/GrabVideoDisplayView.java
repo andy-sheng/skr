@@ -103,33 +103,33 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mMainVideoView = mParentView.findViewById(R.id.main_video_view);
+        mMainVideoView = getMParentView().findViewById(R.id.main_video_view);
         {
-            mLeftAvatarIv = mParentView.findViewById(R.id.left_avatar_iv);
+            mLeftAvatarIv = getMParentView().findViewById(R.id.left_avatar_iv);
             ViewGroup.LayoutParams lp = mLeftAvatarIv.getLayoutParams();
             lp.width = U.getDisplayUtils().getScreenWidth() / 2;
-            mLeftTipsTv = mParentView.findViewById(R.id.left_tips_tv);
-            mLeftNameTv = mParentView.findViewById(R.id.left_name_tv);
+            mLeftTipsTv = getMParentView().findViewById(R.id.left_tips_tv);
+            mLeftNameTv = getMParentView().findViewById(R.id.left_name_tv);
         }
         {
-            mRightAvatarIv = mParentView.findViewById(R.id.right_avatar_iv);
+            mRightAvatarIv = getMParentView().findViewById(R.id.right_avatar_iv);
             ViewGroup.LayoutParams lp = mRightAvatarIv.getLayoutParams();
             lp.width = U.getDisplayUtils().getScreenWidth() / 2;
-            mRightTipsTv = mParentView.findViewById(R.id.right_tips_tv);
-            mRightNameTv = mParentView.findViewById(R.id.right_name_tv);
+            mRightTipsTv = getMParentView().findViewById(R.id.right_tips_tv);
+            mRightNameTv = getMParentView().findViewById(R.id.right_name_tv);
         }
         {
-            mMiddleAvatarIv = mParentView.findViewById(R.id.middle_avatar_iv);
-            mMiddleTipsTv = mParentView.findViewById(R.id.middle_tips_tv);
+            mMiddleAvatarIv = getMParentView().findViewById(R.id.middle_avatar_iv);
+            mMiddleTipsTv = getMParentView().findViewById(R.id.middle_tips_tv);
 
         }
         {
-            mBg1View = mParentView.findViewById(R.id.bg1_view);
-            mBg2View = mParentView.findViewById(R.id.bg2_view);
+            mBg1View = getMParentView().findViewById(R.id.bg1_view);
+            mBg2View = getMParentView().findViewById(R.id.bg2_view);
         }
-        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView = getMParentView().findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mSelfSingCardListener);
-        mBeautySettingBtn = mParentView.findViewById(R.id.beauty_setting_btn);
+        mBeautySettingBtn = getMParentView().findViewById(R.id.beauty_setting_btn);
         mBeautySettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,8 +138,8 @@ public class GrabVideoDisplayView extends ExViewStub {
                 }
             }
         });
-        mPkBeginTipsView = mParentView.findViewById(R.id.pk_begin_tips_view);
-        mMiddleGuide = mParentView.findViewById(R.id.middle_guide);
+        mPkBeginTipsView = getMParentView().findViewById(R.id.pk_begin_tips_view);
+        mMiddleGuide = getMParentView().findViewById(R.id.middle_guide);
         config();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -178,7 +178,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         ensureBindDisplayView();
         setVisibility(View.VISIBLE);
         {
-            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+            ViewGroup.LayoutParams lp = getMParentView().getLayoutParams();
             lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         {
@@ -220,7 +220,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         mRightNameTv.setVisibility(View.VISIBLE);
         mLeftNameTv.setText(userID1.getNicknameRemark());
         mRightNameTv.setText(userID2.getNicknameRemark());
-        ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+        ViewGroup.LayoutParams lp = getMParentView().getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(315);
         mBg1View.setVisibility(View.GONE);
         mBg2View.setVisibility(View.GONE);
@@ -332,7 +332,7 @@ public class GrabVideoDisplayView extends ExViewStub {
         mMainUserId = 0;
         mLeftUserId = 0;
         mRightUserId = 0;
-        if (mParentView != null) {
+        if (getMParentView() != null) {
             mLeftAvatarIv.setVisibility(View.GONE);
             mLeftTipsTv.setVisibility(View.GONE);
             mLeftNameTv.setVisibility(View.GONE);
@@ -449,7 +449,7 @@ public class GrabVideoDisplayView extends ExViewStub {
                 && event.type != EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             DebugLogView.println(TAG, event.toString());
         }
-        if (mParentView == null || mParentView.getVisibility() != View.VISIBLE) {
+        if (getMParentView() == null || getMParentView().getVisibility() != View.VISIBLE) {
             return;
         }
         if (event.getType() == EngineEvent.TYPE_FIRST_REMOTE_VIDEO_DECODED) {
@@ -554,8 +554,8 @@ public class GrabVideoDisplayView extends ExViewStub {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReturnFromBeautyActivityEvent event) {
-        if (mParentView != null) {
-            if (mParentView.getVisibility() == View.VISIBLE) {
+        if (getMParentView() != null) {
+            if (getMParentView().getVisibility() == View.VISIBLE) {
                 ensureBindDisplayView();
                 tryBindMainVideoStream(false);
                 tryBindLeftVideoStream(false);
@@ -639,8 +639,8 @@ public class GrabVideoDisplayView extends ExViewStub {
 
     private int getTranslateY(boolean open, boolean topContentViewVisiable) {
         int ty = 0;
-        if (mParentView != null) {
-            ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+        if (getMParentView() != null) {
+            ViewGroup.LayoutParams lp = getMParentView().getLayoutParams();
             if (open) {
                 if (topContentViewVisiable && lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                     ty = U.getDisplayUtils().dip2px(58);
@@ -659,8 +659,8 @@ public class GrabVideoDisplayView extends ExViewStub {
     }
 
     public void setMarginTop(int px) {
-        if (mParentView != null) {
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mParentView.getLayoutParams();
+        if (getMParentView() != null) {
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getMParentView().getLayoutParams();
             lp.topMargin = px;
         }
     }
@@ -676,8 +676,8 @@ public class GrabVideoDisplayView extends ExViewStub {
             return U.getStatusBarUtil().getStatusBarHeight(U.app());
         } else {
             // 非演唱者
-            if (mParentView != null) {
-                ViewGroup.LayoutParams lp = mParentView.getLayoutParams();
+            if (getMParentView() != null) {
+                ViewGroup.LayoutParams lp = getMParentView().getLayoutParams();
                 if (lp.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                     return U.getStatusBarUtil().getStatusBarHeight(U.app());
                 } else {

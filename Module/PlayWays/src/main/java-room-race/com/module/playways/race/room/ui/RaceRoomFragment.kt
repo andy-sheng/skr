@@ -99,8 +99,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     }
 
     private fun hideAllSceneView() {
-        mRaceSelfSingLyricView?.visibility = View.GONE
-        mRaceOtherSingCardView.visibility = View.GONE
+        mRaceSelfSingLyricView?.setVisibility(View.GONE)
+        mRaceOtherSingCardView.setVisibility(View.GONE)
         mRaceNoSingCardView?.visibility = View.GONE
         mRaceMiddleResultView?.visibility = View.GONE
         mRaceSelectSongView?.visibility = View.GONE
@@ -427,7 +427,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceSelfSingLyricView.startFly {
                 mCorePresenter.sendSingComplete("singBySelfFirstRound")
             }
-            mRaceSelfSingLyricView.visibility = View.VISIBLE
+            mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
         }
     }
 
@@ -470,14 +470,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 showRightVote()
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
-                mRaceOtherSingCardView.visibility = View.VISIBLE
+                mRaceOtherSingCardView.setVisibility(View.VISIBLE)
             } else {
                 mRaceTopVsView.startVs()
                 mRaceTopVsView.startSingByOther(1) {
                     showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
-                    mRaceOtherSingCardView.visibility = View.VISIBLE
+                    mRaceOtherSingCardView.setVisibility(View.VISIBLE)
                 }
             }
         }
@@ -511,7 +511,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
             mRaceSelfSingLyricView.startFly {
                 mCorePresenter.sendSingComplete("singBySelfSecondRound")
             }
-            mRaceSelfSingLyricView.visibility = View.VISIBLE
+            mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
         }
     }
 
@@ -527,13 +527,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 mRaceTopVsView.bindData()
                 mRaceOtherSingCardView.bindData()
                 hideAllSceneView()
-                mRaceOtherSingCardView.visibility = View.VISIBLE
+                mRaceOtherSingCardView.setVisibility(View.VISIBLE)
             } else {
                 mRaceTopVsView.startSingByOther(2) {
                     showRightVote()
                     mRaceOtherSingCardView.bindData()
                     hideAllSceneView()
-                    mRaceOtherSingCardView.visibility = View.VISIBLE
+                    mRaceOtherSingCardView.setVisibility(View.VISIBLE)
                 }
             }
         }

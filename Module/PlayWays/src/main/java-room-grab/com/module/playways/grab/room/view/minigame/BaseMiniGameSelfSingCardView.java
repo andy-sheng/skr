@@ -50,10 +50,10 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mSvLyric = mParentView.findViewById(R.id.sv_lyric);
-        mAvatarIv = mParentView.findViewById(R.id.avatar_iv);
-        mFirstTipsTv = mParentView.findViewById(R.id.first_tips_tv);
-        mTvLyric = mParentView.findViewById(R.id.tv_lyric);
+        mSvLyric = getMParentView().findViewById(R.id.sv_lyric);
+        mAvatarIv = getMParentView().findViewById(R.id.avatar_iv);
+        mFirstTipsTv = getMParentView().findViewById(R.id.first_tips_tv);
+        mTvLyric = getMParentView().findViewById(R.id.tv_lyric);
     }
 
     public void setListener(SelfSingCardView.Listener l) {

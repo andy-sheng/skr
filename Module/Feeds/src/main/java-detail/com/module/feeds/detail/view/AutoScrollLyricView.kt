@@ -27,7 +27,7 @@ class AutoScrollLyricView(viewStub: ViewStub, var showName: Boolean = false) : E
     var mScrollJob: Job? = null
     private var shift = 0
 
-    override fun init(parentView: View?) {
+    override fun init(parentView: View) {
         lyricTv = parentView!!.findViewById(R.id.lyric_tv)
         scrollView = parentView!!.findViewById(R.id.scroll_view)
     }

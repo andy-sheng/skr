@@ -58,7 +58,7 @@ public class NormalRoundOverCardView extends ExViewStub {
         int reason = lastRoundInfo.getOverReason();
         int resultType = lastRoundInfo.getResultType();
         this.mSVGAListener = listener;
-        mParentView.setVisibility(View.VISIBLE);
+        getMParentView().setVisibility(View.VISIBLE);
 
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             // 无人想唱

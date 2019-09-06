@@ -45,10 +45,10 @@ public class PKSelfSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        ViewStub viewStub = mParentView.findViewById(R.id.pk_self_sing_lyric_view_stub);
+        ViewStub viewStub = getMParentView().findViewById(R.id.pk_self_sing_lyric_view_stub);
         mPkSelfSingLyricView = new SelfSingLyricView(viewStub,mRoomData);
-        mPkSingCardView = mParentView.findViewById(R.id.pk_sing_card_view);
-        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mPkSingCardView = getMParentView().findViewById(R.id.pk_sing_card_view);
+        mSingCountDownView = getMParentView().findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
         mPkSingCardView.setRoomData(mRoomData);
     }
@@ -151,7 +151,7 @@ public class PKSelfSingCardView extends ExViewStub {
 
             }
         });
-        mParentView.startAnimation(mEnterTranslateAnimation);
+        getMParentView().startAnimation(mEnterTranslateAnimation);
     }
 
 //

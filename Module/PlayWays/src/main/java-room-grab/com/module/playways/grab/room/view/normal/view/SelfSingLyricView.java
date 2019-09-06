@@ -55,11 +55,11 @@ public class SelfSingLyricView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mSvlyric = mParentView.findViewById(R.id.sv_lyric);
-        mTvLyric = mParentView.findViewById(R.id.tv_lyric);
-        mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view);
-        mVoiceScaleView = mParentView.findViewById(R.id.voice_scale_view);
-        mIvChallengeIcon = mParentView.findViewById(R.id.iv_challenge_icon);
+        mSvlyric = getMParentView().findViewById(R.id.sv_lyric);
+        mTvLyric = getMParentView().findViewById(R.id.tv_lyric);
+        mManyLyricsView = getMParentView().findViewById(R.id.many_lyrics_view);
+        mVoiceScaleView = getMParentView().findViewById(R.id.voice_scale_view);
+        mIvChallengeIcon = getMParentView().findViewById(R.id.iv_challenge_icon);
     }
 
     @Override

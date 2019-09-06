@@ -28,7 +28,7 @@ class FeedsManyLyricView(viewStub: ViewStub, var showName: Boolean = false) : Ex
     private var mIsStart: Boolean = false
     private var shift = 0
     override fun init(parentView: View) {
-        mManyLyricsView = mParentView.findViewById(R.id.many_lyrics_view)
+        mManyLyricsView = mParentView?.findViewById(R.id.many_lyrics_view)
         mManyLyricsView?.spaceLineHeight = U.getDisplayUtils().dip2px(15f).toFloat()
     }
 

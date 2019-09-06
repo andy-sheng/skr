@@ -33,10 +33,10 @@ public class NormalSelfSingCardView extends ExViewStub {
     @Override
     protected void init(View parentView) {
         {
-            ViewStub viewStub = mParentView.findViewById(R.id.self_sing_lyric_view_stub);
+            ViewStub viewStub = getMParentView().findViewById(R.id.self_sing_lyric_view_stub);
             mSelfSingLyricView = new SelfSingLyricView(viewStub, mRoomData);
         }
-        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView = getMParentView().findViewById(R.id.sing_count_down_view);
         mSingCountDownView.setListener(mListener);
     }
 

@@ -43,7 +43,7 @@ public class MiniGameRoundOverCardView extends ExViewStub {
         }
         tryInflate();
         this.mSVGAListener = listener;
-        mParentView.setVisibility(View.VISIBLE);
+        getMParentView().setVisibility(View.VISIBLE);
 
 //        if (reason == EQRoundOverReason.ROR_MIN_GAME_NOT_ENOUTH_PLAYER.getValue()) {
 //            // 连麦小游戏人数不够
@@ -72,15 +72,15 @@ public class MiniGameRoundOverCardView extends ExViewStub {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
         }
-        mParentView.startAnimation(mEnterTranslateAnimation);
+        getMParentView().startAnimation(mEnterTranslateAnimation);
     }
 
     /**
      * 离场动画
      */
     public void animationLeave() {
-        if (mParentView != null) {
-            if (mParentView.getVisibility() == View.VISIBLE) {
+        if (getMParentView() != null) {
+            if (getMParentView().getVisibility() == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                     mLeaveTranslateAnimation.setDuration(200);
@@ -93,7 +93,7 @@ public class MiniGameRoundOverCardView extends ExViewStub {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        mParentView.clearAnimation();
+                        getMParentView().clearAnimation();
                         setVisibility(View.GONE);
                         if (mSVGAListener != null) {
                             mSVGAListener.onFinished();
@@ -106,9 +106,9 @@ public class MiniGameRoundOverCardView extends ExViewStub {
 
                     }
                 });
-                mParentView.startAnimation(mLeaveTranslateAnimation);
+                getMParentView().startAnimation(mLeaveTranslateAnimation);
             } else {
-                mParentView.clearAnimation();
+                getMParentView().clearAnimation();
                 setVisibility(View.GONE);
                 if (mSVGAListener != null) {
                     mSVGAListener.onFinished();

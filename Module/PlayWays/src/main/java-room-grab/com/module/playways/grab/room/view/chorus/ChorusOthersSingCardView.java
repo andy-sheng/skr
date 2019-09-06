@@ -102,21 +102,21 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mChorusOtherArea = (LinearLayout) mParentView.findViewById(R.id.chorus_other_area);
-        mLeftSingSvga = (SVGAImageView) mParentView.findViewById(R.id.left_sing_svga);
-        mRightSingSvga = (SVGAImageView) mParentView.findViewById(R.id.right_sing_svga);
+        mChorusOtherArea = (LinearLayout) getMParentView().findViewById(R.id.chorus_other_area);
+        mLeftSingSvga = (SVGAImageView) getMParentView().findViewById(R.id.left_sing_svga);
+        mRightSingSvga = (SVGAImageView) getMParentView().findViewById(R.id.right_sing_svga);
 
-        mLeftStatusArea = (ExRelativeLayout) mParentView.findViewById(R.id.left_status_area);
-        mLeftIv = (SimpleDraweeView) mParentView.findViewById(R.id.left_iv);
-        mLeftStatus = (ExTextView) mParentView.findViewById(R.id.left_status);
-        mLeftName = (ExTextView) mParentView.findViewById(R.id.left_name);
+        mLeftStatusArea = (ExRelativeLayout) getMParentView().findViewById(R.id.left_status_area);
+        mLeftIv = (SimpleDraweeView) getMParentView().findViewById(R.id.left_iv);
+        mLeftStatus = (ExTextView) getMParentView().findViewById(R.id.left_status);
+        mLeftName = (ExTextView) getMParentView().findViewById(R.id.left_name);
 
-        mRightStatusArea = (ExRelativeLayout) mParentView.findViewById(R.id.right_status_area);
-        mRightIv = (SimpleDraweeView) mParentView.findViewById(R.id.right_iv);
-        mRightStatus = (ExTextView) mParentView.findViewById(R.id.right_status);
-        mRightName = (ExTextView) mParentView.findViewById(R.id.right_name);
+        mRightStatusArea = (ExRelativeLayout) getMParentView().findViewById(R.id.right_status_area);
+        mRightIv = (SimpleDraweeView) getMParentView().findViewById(R.id.right_iv);
+        mRightStatus = (ExTextView) getMParentView().findViewById(R.id.right_status);
+        mRightName = (ExTextView) getMParentView().findViewById(R.id.right_name);
 
-        mSingCountDownView = mParentView.findViewById(R.id.sing_count_down_view);
+        mSingCountDownView = getMParentView().findViewById(R.id.sing_count_down_view);
 
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
         mLeftSingSvga.setTranslationX(-offsetX);
@@ -204,7 +204,7 @@ public class ChorusOthersSingCardView extends ExViewStub {
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
-            mParentView.setVisibility(View.VISIBLE);
+            getMParentView().setVisibility(View.VISIBLE);
             AvatarUtils.loadAvatarByUrl(mLeftIv,
                     AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
@@ -313,7 +313,7 @@ public class ChorusOthersSingCardView extends ExViewStub {
     }
 
     public void tryStartCountDown() {
-        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
+        if (getMParentView() == null || getMParentView().getVisibility() == View.GONE) {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");
@@ -350,15 +350,15 @@ public class ChorusOthersSingCardView extends ExViewStub {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
         }
-        mParentView.startAnimation(mEnterTranslateAnimation);
+        getMParentView().startAnimation(mEnterTranslateAnimation);
     }
 
     /**
      * 离场动画
      */
     public void hide() {
-        if (mParentView != null) {
-            if (mParentView.getVisibility() == View.VISIBLE) {
+        if (getMParentView() != null) {
+            if (getMParentView().getVisibility() == View.VISIBLE) {
                 if (mLeaveTranslateAnimation == null) {
                     mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                     mLeaveTranslateAnimation.setDuration(200);
@@ -371,8 +371,8 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        mParentView.clearAnimation();
-                        mParentView.setVisibility(View.GONE);
+                        getMParentView().clearAnimation();
+                        getMParentView().setVisibility(View.GONE);
                     }
 
                     @Override
@@ -380,17 +380,17 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
                     }
                 });
-                mParentView.startAnimation(mLeaveTranslateAnimation);
+                getMParentView().startAnimation(mLeaveTranslateAnimation);
             } else {
-                mParentView.clearAnimation();
-                mParentView.setVisibility(View.GONE);
+                getMParentView().clearAnimation();
+                getMParentView().setVisibility(View.GONE);
             }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabChorusUserStatusChangeEvent event) {
-        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
+        if (getMParentView() == null || getMParentView().getVisibility() == View.GONE) {
             return;
         }
 
@@ -408,7 +408,7 @@ public class ChorusOthersSingCardView extends ExViewStub {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {
-        if (mParentView == null || mParentView.getVisibility() == View.GONE) {
+        if (getMParentView() == null || getMParentView().getVisibility() == View.GONE) {
             return;
         }
         switch (event.getType()) {

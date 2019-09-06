@@ -40,8 +40,8 @@ public class SingBeginTipsCardView extends ExViewStub {
 
     @Override
     protected void init(View parentView) {
-        mSVGAImageView = mParentView.findViewById(R.id.sing_begin_svga);
-        mParentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+        mSVGAImageView = getMParentView().findViewById(R.id.sing_begin_svga);
+        getMParentView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
 
