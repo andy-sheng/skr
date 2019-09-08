@@ -147,6 +147,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private int rightTextColor;                         // 右边TextView颜色
     private float rightTextSize;                        // 右边TextView文字大小
     private int rightTextType;                          // 右边TextView文字风格
+    private int rightDrawable;                          // 右边TextView drawableRight资源
+    private float rightDrawablePadding;                   // 右边TextView drawablePadding
     private int rightImageResource;                     // 右边图片资源
     private int rightCustomViewRes;                     // 右边自定义视图布局资源
 
@@ -240,6 +242,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             rightTextColor = array.getColor(R.styleable.CommonTitleBar_rightTextColor, getResources().getColor(R.color.comm_titlebar_text_selector));
             rightTextSize = array.getDimension(R.styleable.CommonTitleBar_rightTextSize, U.getDisplayUtils().dip2px(context, 16));
             rightTextType = array.getInt(R.styleable.CommonTitleBar_rightTextStyle, 0);
+            rightDrawable = array.getResourceId(R.styleable.CommonTitleBar_rightDrawable, 0);
+            rightDrawablePadding = array.getDimension(R.styleable.CommonTitleBar_rightDrawablePadding, 5);
         } else if (rightType == TYPE_RIGHT_IMAGEBUTTON) {
             rightImageResource = array.getResourceId(R.styleable.CommonTitleBar_rightImageResource, 0);
         } else if (rightType == TYPE_RIGHT_CUSTOM_VIEW) {
@@ -433,6 +437,15 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             tvRight.setTypeface(Typeface.defaultFromStyle(rightTextType));
             tvRight.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
             tvRight.setSingleLine(true);
+            // 设置DrawableRight及DrawablePadding
+            if (rightDrawable != 0) {
+                tvRight.setCompoundDrawablePadding((int) rightDrawablePadding);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    tvRight.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, rightDrawable, 0);
+                } else {
+                    tvRight.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
+                }
+            }
             tvRight.setPadding(PADDING_12, 0, PADDING_12, 0);
             tvRight.setOnClickListener(this);
             rlMain.addView(tvRight, rightInnerParams);

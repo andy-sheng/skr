@@ -33,6 +33,8 @@
         <attr name="leftTextSize" format="dimension" />
         <!-- TextView 左边图片, 对应leftType_TextView -->
         <attr name="leftDrawable" format="reference" />
+        <!-- TextView 左边padding, 对应leftType_TextView -->
+        <attr name="leftDrawablePadding" format="dimension" />
         <!-- TextView 字体风格, 对应leftType_TextView-->
         <attr name="leftTextStyle" format="enum">
             <enum name="NORMAL" value="0" />
@@ -40,8 +42,6 @@
             <enum name="ITALIC" value="2" />
             <enum name="BOLD_ITALIC" value="3" />
         </attr>
-        <!-- TextView 左边padding, 对应leftType_TextView -->
-        <attr name="leftDrawablePadding" format="dimension" />
         <!-- ImageView 资源, 对应leftType_ImageBotton -->
         <attr name="leftImageResource" format="reference" />
         <!-- 左边自定义布局, 对应leftType_CustomView -->
@@ -60,6 +60,10 @@
         <attr name="rightTextColor" format="color" />
         <!-- TextView 字体大小, 对应rightType_TextView -->
         <attr name="rightTextSize" format="dimension" />
+        <!-- TextView 右边图片, 对应rightType_TextView -->
+        <attr name="rightDrawable" format="reference" />
+        <!-- TextView 右边padding, 对应rightType_TextView -->
+        <attr name="rightDrawablePadding" format="dimension" />
         <!-- TextView 字体风格, 对应rightType_TextView-->
         <attr name="rightTextStyle" format="enum">
             <enum name="NORMAL" value="0" />
