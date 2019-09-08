@@ -42,6 +42,7 @@ import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.zq.live.proto.RaceRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
@@ -821,6 +822,21 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         } else {
             // 可以考虑监听下房主的说话提示 做下容错
+        }
+    }
+
+    /**
+     * 录制小游戏事件，防止录进去背景音
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MuteAllVoiceEvent) {
+        MyLog.d(TAG, "onEvent event=$event")
+        if (event.begin) {
+            muteAllRemoteAudioStreams(true, false)
+        } else {
+            muteAllRemoteAudioStreams(mRoomData.isMute, false)
         }
     }
 
