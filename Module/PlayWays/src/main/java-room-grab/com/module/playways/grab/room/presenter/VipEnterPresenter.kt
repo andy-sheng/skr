@@ -2,6 +2,7 @@ package com.module.playways.grab.room.presenter
 
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.userinfo.model.UserLevelType.SKRER_LEVEL_POTENTIAL
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.utils.U
@@ -56,7 +57,9 @@ class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxL
     }
 
     fun addNotice(playerInfoModel: UserInfoModel) {
-        mVipEnterObjectPlayControlTemplate.add(playerInfoModel, true)
+        if (playerInfoModel.mainLevel >= SKRER_LEVEL_POTENTIAL) {
+            mVipEnterObjectPlayControlTemplate.add(playerInfoModel, true)
+        }
     }
 
     override fun destroy() {

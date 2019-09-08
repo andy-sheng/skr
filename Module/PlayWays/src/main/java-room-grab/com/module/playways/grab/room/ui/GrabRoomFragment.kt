@@ -1139,9 +1139,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
         playerInfoModel?.let {
-            if (playerInfoModel.mainLevel >= 0) {
-                mVipEnterPresenter?.addNotice(playerInfoModel)
-            }
+            mVipEnterPresenter?.addNotice(playerInfoModel)
         }
     }
 
