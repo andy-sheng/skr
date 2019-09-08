@@ -27,6 +27,7 @@ import com.module.common.ICallback;
 import com.module.msg.activity.ConversationActivity;
 import com.module.msg.custom.MyPrivateConversationProvider;
 import com.module.msg.listener.MyConversationClickListener;
+import com.module.msg.model.BroadcastRoomMsg;
 import com.module.msg.model.CustomChatCombineRoomLowLevelMsg;
 import com.module.msg.model.CustomChatCombineRoomMsg;
 import com.module.msg.model.CustomChatRoomLowLevelMsg;
@@ -59,6 +60,7 @@ import io.rong.imlib.model.UserInfo;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
 
+import static com.module.msg.CustomMsgType.MSG_TYPE_BROADCAST;
 import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
 import static com.module.msg.CustomMsgType.MSG_TYPE_RACE_ROOM;
@@ -196,7 +198,17 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
 
                 return true;
-            } else if (message.getContent() instanceof SpecailOpMsg) {
+            } else if(message.getContent() instanceof BroadcastRoomMsg){
+                BroadcastRoomMsg notificationMsg = (BroadcastRoomMsg) message.getContent();
+                byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
+                HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_BROADCAST);
+                if (processors != null) {
+                    for (IPushMsgProcess process : processors) {
+                        process.process(MSG_TYPE_BROADCAST, data);
+                    }
+                }
+                return true;
+            }else if (message.getContent() instanceof SpecailOpMsg) {
                 /**
                  * 要求别人上传日志，并将结果返回
                  */
@@ -356,6 +368,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(CustomNotificationMsg.class);
             RongIM.registerMessageType(RaceRoomHighMsg.class);
             RongIM.registerMessageType(RaceRoomLowMsg.class);
+            RongIM.registerMessageType(BroadcastRoomMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());

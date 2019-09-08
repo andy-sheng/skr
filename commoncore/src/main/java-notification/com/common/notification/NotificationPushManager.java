@@ -7,6 +7,7 @@ import com.common.notification.event.CRSendInviteUserNotifyEvent;
 import com.common.notification.event.CRStartByCreateNotifyEvent;
 import com.common.notification.event.CRStartByMatchPushEvent;
 import com.common.notification.event.CRSyncInviteUserNotifyEvent;
+import com.common.notification.event.EStandFullStarEvent;
 import com.common.notification.event.FeedCommentAddNotifyEvent;
 import com.common.notification.event.FeedCommentLikeNotifyEvent;
 import com.common.notification.event.FeedLikeNotifyEvent;
@@ -27,6 +28,9 @@ import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
 import com.zq.live.proto.Notification.SysWarningMsg;
+import com.zq.live.proto.broadcast.ERoomBroadcastMsgType;
+import com.zq.live.proto.broadcast.RoomBroadcastMsg;
+import com.zq.live.proto.broadcast.StandFullStar;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,6 +53,18 @@ public class NotificationPushManager {
 
     public static final NotificationPushManager getInstance() {
         return NotificationAdapterHolder.INSTANCE;
+    }
+
+    /**
+     * 处理广播消息
+     *
+     * @param msg
+     */
+    public void processBroadcastMsg(RoomBroadcastMsg msg) {
+        if (msg.getMsgType() == ERoomBroadcastMsgType.RBRT_STAND_FULL_STAR) {
+            StandFullStar pb = msg.getStandFullStar();
+            EventBus.getDefault().post(new EStandFullStarEvent(pb));
+        }
     }
 
     /**

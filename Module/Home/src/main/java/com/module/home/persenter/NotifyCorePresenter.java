@@ -743,6 +743,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .build();
     }
 
+
     public static class FloatWindowData {
         private UserInfoModel mUserInfoModel;
         private Type mType;

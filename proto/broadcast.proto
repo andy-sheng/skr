@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package com.zq.live.proto.broadcast;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./commoncore/src/main/java-gen-pb/ broadcast.proto
+
+*/
+//房间广播消息
+message RoomBroadcastMsg
+{
+    sint64 timeMs                 = 1; //房间消息产生时间，单位毫秒
+    ERoomBroadcastMsgType msgType = 2; //消息类型
+    StandFullStar standFullStar   = 10; //歌单战：5星评级通知
+}
+
+enum ERoomBroadcastMsgType {
+    RBRT_UNKNOWN         = 0; //未知消息
+    RBRT_STAND_FULL_STAR = 1; //歌单战5星评级
+}
+
+message StandFullStar
+{
+    string content = 1; //通知内容
+}
