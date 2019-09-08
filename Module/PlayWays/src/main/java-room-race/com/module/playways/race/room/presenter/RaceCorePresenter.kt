@@ -422,7 +422,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             DebugLogView.println(TAG, "上一轮结果 overReason = ${event.lastRound?.overReason} " +
                     "subReason1 = ${event.lastRound?.subRoundInfo.getOrNull(0)?.overReason} " +
                     "subReason2 = ${event.lastRound?.subRoundInfo.getOrNull(1)?.overReason} " +
-                    "票数 ${event.lastRound?.scores.getOrNull(0)?.bLightCnt}:${event.lastRound?.scores.getOrNull(1)?.bLightCnt}" +
+                    "票数 ${event.lastRound?.scores.getOrNull(0)?.bLightCnt}:${event.lastRound?.scores.getOrNull(1)?.bLightCnt} " +
                     "win ${event.lastRound?.scores.getOrNull(0)?.winType}:${event.lastRound?.scores.getOrNull(1)?.winType}")
 
         }
