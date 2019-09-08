@@ -101,4 +101,6 @@ public interface RouterConstants {
     String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
 
     String ACTIVITY_FOR_TEST = "/test/ForTestActivity";
+
+    String ACTIVITY_BATTLE_LIST = "/battle/BattleListActivity";
 }

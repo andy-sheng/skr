@@ -104,6 +104,9 @@ android {
 
             java.srcDirs += 'src/main/java-room-race'
             res.srcDirs += 'src/main/res-room-race'
+
+            java.srcDirs += 'src/main/java-room-battle'
+            res.srcDirs += 'src/main/res-room-battle'
         }
     }
 }
