@@ -12,9 +12,7 @@ public class CommentAiModel extends CommentModel {
 
     public CommentAiModel(PlayerInfoModel ai, String text) {
         setCommentType(CommentModel.TYPE_AI);
-        setUserId(ai.getUserInfo().getUserId());
-        setUserName(ai.getUserInfo().getNicknameRemark());
-        setAvatar(ai.getUserInfo().getAvatar());
+        setUserInfo(ai.getUserInfo());
         setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder stringBuilder = new SpanUtils()
                 .append("AI裁判 ").setForegroundColor(CommentModel.RANK_NAME_COLOR)

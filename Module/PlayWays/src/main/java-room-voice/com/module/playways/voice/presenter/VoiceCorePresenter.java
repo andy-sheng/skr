@@ -158,9 +158,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         UserInfoModel userInfo = mRoomData.getUserInfo(userId);
         if (userInfo != null) {
             CommentTextModel commentModel = new CommentTextModel();
-            commentModel.setUserId(userInfo.getUserId());
-            commentModel.setAvatar(userInfo.getAvatar());
-            commentModel.setUserName(userInfo.getNicknameRemark());
+            commentModel.setUserInfo(userInfo);
             commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(userInfo.getNicknameRemark() + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)

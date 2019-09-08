@@ -31,7 +31,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (mCommentItemListener != null) {
-                    mCommentItemListener.clickAvatar(mCommentModel.getUserId());
+                    mCommentItemListener.clickAvatar(mCommentModel.getUserInfo().getUserId());
                 }
             }
         });
@@ -41,7 +41,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         mPostion = position;
         mCommentModel = model;
 
-        mAvatarIv.bindData(model.toUserInfoModel());
+        mAvatarIv.bindData(model.getUserInfo());
         mCommentTv.setText(model.getStringBuilder());
     }
 }

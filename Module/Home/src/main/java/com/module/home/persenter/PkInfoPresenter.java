@@ -11,7 +11,6 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.component.person.model.ScoreStateModel;
 import com.module.home.view.IPkInfoView;
 
 import org.greenrobot.eventbus.EventBus;

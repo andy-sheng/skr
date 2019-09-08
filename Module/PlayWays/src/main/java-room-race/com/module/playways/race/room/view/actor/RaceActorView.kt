@@ -7,15 +7,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import com.alibaba.fastjson.JSON
-import com.common.core.myinfo.MyUserInfo
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
-import com.component.person.model.ScoreStateModel
+import com.common.core.userinfo.model.ScoreStateModel
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.model.RacePlayerInfoModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel

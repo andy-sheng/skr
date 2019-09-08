@@ -14,7 +14,6 @@ import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
-import com.common.core.upgrade.UpgradeManager
 import com.common.rxretrofit.*
 import com.component.person.model.UserRankModel
 import com.common.statistics.StatisticsAdapter
@@ -26,7 +25,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExRelativeLayout
 import com.common.view.ex.ExTextView
-import com.component.busilib.constans.GameModeType
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.module.RouterConstants
 import com.module.home.R
@@ -39,7 +37,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.component.level.view.NormalLevelView2
-import com.component.person.model.ScoreStateModel
+import com.common.core.userinfo.model.ScoreStateModel
 import com.dialog.view.TipsDialogView
 import com.module.home.MainPageSlideApi
 import kotlinx.coroutines.Dispatchers

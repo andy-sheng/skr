@@ -18,9 +18,8 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.level.view.NormalLevelView2
-import com.component.person.model.ScoreStateModel
+import com.common.core.userinfo.model.ScoreStateModel
 import com.module.playways.R
-import kotlinx.coroutines.launch
 
 class RaceGuideFragment : BaseFragment() {
 

@@ -1,7 +1,7 @@
 package com.module.playways.room.room.model.score;
 
 import com.common.log.MyLog;
-import com.component.person.model.ScoreStateModel;
+import com.common.core.userinfo.model.ScoreStateModel;
 import com.zq.live.proto.Room.EFightForceWhy;
 import com.zq.live.proto.Room.ScoreItem;
 import com.zq.live.proto.Room.ScoreState;

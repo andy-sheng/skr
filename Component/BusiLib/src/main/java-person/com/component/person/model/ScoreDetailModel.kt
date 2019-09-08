@@ -1,6 +1,7 @@
 package com.component.person.model
 
 import com.alibaba.fastjson.annotation.JSONField
+import com.common.core.userinfo.model.ScoreStateModel
 import java.io.Serializable
 
 class ScoreDetailModel : Serializable {

@@ -266,6 +266,7 @@ public class MyUserInfoManager {
                         mUser.setUserId(userInfoModel.getUserId());
                         mUser.setUserNickname(userInfoModel.getNickname());
                         mUser.setAvatar(userInfoModel.getAvatar());
+                        mUser.setVipType(userInfoModel.getVipType());
                         mUser.setBirthday(userInfoModel.getBirthday());
                         mUser.setLocation(userInfoModel.getLocation());
                         mUser.setLocation2(userInfoModel.getLocation2());
@@ -382,6 +383,10 @@ public class MyUserInfoManager {
 
     public String getAvatar() {
         return mUser != null ? mUser.getAvatar() : "";
+    }
+
+    public int getVipType() {
+        return mUser != null ? mUser.getVipType() : 0;
     }
 
     public String getSignature() {

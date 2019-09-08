@@ -20,9 +20,7 @@ public class CommentLightModel extends CommentModel {
         this.voter = voter;
         this.singer = singer;
 
-        setUserId(voter.getUserID());
-        setAvatar(voter.getUserInfo().getAvatar());
-        setUserName(voter.getUserInfo().getNicknameRemark());
+        setUserInfo(voter.getUserInfo());
         setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder stringBuilder = null;
         if (mGameType == GameModeType.GAME_MODE_GRAB) {

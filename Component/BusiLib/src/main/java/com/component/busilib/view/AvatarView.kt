@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -13,13 +14,14 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.U
 import com.component.busilib.R
 import com.facebook.drawee.view.SimpleDraweeView
+import com.zq.live.proto.Common.EVIPType
 
 // 所有的头像
 class AvatarView : ConstraintLayout {
     val mTag = "AvatarView"
 
     private val avatarIv: SimpleDraweeView
-    private val text: TextView
+    private val vipIv: ImageView
 
     private var isCircle = true
     private var borderWidth = 0
@@ -40,7 +42,7 @@ class AvatarView : ConstraintLayout {
     init {
         View.inflate(context, R.layout.avatar_view_layout, this)
         avatarIv = findViewById(R.id.avatar)
-        text = findViewById(R.id.text)
+        vipIv = findViewById(R.id.vip_iv)
     }
 
     private fun initView(attrs: AttributeSet?) {
@@ -52,27 +54,50 @@ class AvatarView : ConstraintLayout {
     }
 
     fun bindData(model: UserInfoModel?) {
-        text.visibility = View.VISIBLE
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model?.avatar)
                 .setBorderColor(borderColor)
                 .setBorderWidth(borderWidth.toFloat())
                 .setCircle(isCircle)
                 .build())
-
+        when {
+            model?.vipType == EVIPType.EVT_RED_V.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_red_icon)
+            }
+            model?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_gold_icon)
+            }
+            else -> {
+                vipIv.visibility = View.GONE
+            }
+        }
     }
 
     fun bindData(model: UserInfoModel?, isOnline: Boolean) {
-        text.visibility = View.VISIBLE
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model?.avatar)
                 .setBorderColor(borderColor)
                 .setGray(isOnline)
                 .setBorderWidth(borderWidth.toFloat())
                 .setCircle(isCircle)
                 .build())
+        when {
+            model?.vipType == EVIPType.EVT_RED_V.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_red_icon)
+            }
+            model?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
+                vipIv.visibility = View.VISIBLE
+                vipIv.setImageResource(R.drawable.vip_gold_icon)
+            }
+            else -> {
+                vipIv.visibility = View.GONE
+            }
+        }
     }
 
     fun setImageDrawable(drawble: Drawable) {
-        text.visibility = View.GONE
         avatarIv.setImageDrawable(drawble)
+        vipIv.visibility = View.GONE
     }
 }

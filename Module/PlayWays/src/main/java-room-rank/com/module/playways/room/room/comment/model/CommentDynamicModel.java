@@ -1,7 +1,5 @@
 package com.module.playways.room.room.comment.model;
 
-import android.text.TextUtils;
-
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.dynamicmsg.DynamicModel;
@@ -18,21 +16,13 @@ public class CommentDynamicModel extends CommentModel {
     // 动态表情消息
     public static CommentDynamicModel parseFromEvent(DynamicEmojiMsgEvent event, BaseRoomData roomData) {
         CommentDynamicModel commentModel = new CommentDynamicModel();
-        commentModel.setUserId(event.info.getSender().getUserID());
-        if (!TextUtils.isEmpty(event.info.getSender().getNickName())) {
-            commentModel.setUserName(event.info.getSender().getNickName());
-        } else {
-            UserInfoModel userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
-            commentModel.setUserName(userInfoModel.getNicknameRemark());
-        }
-
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
             commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
             if (sender != null) {
-                commentModel.setAvatar(sender.getAvatar());
+                commentModel.setUserInfo(sender);
             } else {
-                commentModel.setAvatar(event.info.getSender().getAvatar());
+                commentModel.setUserInfo(UserInfoModel.parseFromPB(event.info.getSender()));
             }
         }
 

@@ -54,6 +54,9 @@ public class UserInfoModel implements Serializable, Cloneable {
     private String statusDesc;  //状态描述
     private int ageStage;   // 年龄段（目前只有homepage的接口里面带）
 
+    private int vipType;  // 加v
+    private ScoreStateModel ranking;  // 段位描述
+
     public UserInfoModel() {
     }
 
@@ -191,6 +194,22 @@ public class UserInfoModel implements Serializable, Cloneable {
         return ageStage;
     }
 
+    public int getVipType() {
+        return vipType;
+    }
+
+    public void setVipType(int vipType) {
+        this.vipType = vipType;
+    }
+
+    public ScoreStateModel getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(ScoreStateModel ranking) {
+        this.ranking = ranking;
+    }
+
     public String getAgeStageString() {
         if (ageStage != 0) {
             if (ageStage == 1) {
@@ -306,6 +325,8 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setSignature(model.getDescription());
             userInfoModel.setIsSystem(model.getIsSystem());
             userInfoModel.setMainLevel(model.getMainLevel());
+            userInfoModel.setVipType(model.getVipType().getValue());
+            userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getRanking()));
         }
         return userInfoModel;
     }
@@ -335,6 +356,8 @@ public class UserInfoModel implements Serializable, Cloneable {
             jsonObject.put("location", userInfModel.getLocation());
             jsonObject.put("location2", userInfModel.getLocation2());
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
+            jsonObject.put("vipType",userInfModel.getVipType());
+            jsonObject.put("ranking",userInfModel.getRanking());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -369,6 +392,10 @@ public class UserInfoModel implements Serializable, Cloneable {
                 userInfoModel.setLoaction2(location2);
                 int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
+                int vipType = jsonObject.getIntValue("vipType");
+                userInfoModel.setVipType(vipType);
+                ScoreStateModel stateModel = jsonObject.getObject("ranking", ScoreStateModel.class);
+                userInfoModel.setRanking(stateModel);
             }
         }
         return userInfoModel;

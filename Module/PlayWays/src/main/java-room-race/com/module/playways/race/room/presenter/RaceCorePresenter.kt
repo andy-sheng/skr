@@ -658,9 +658,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     private fun pretendGiveUp(userInfoModel: UserInfoModel?) {
         if (userInfoModel != null) {
             val commentModel = CommentTextModel()
-            commentModel.userId = userInfoModel.userId
-            commentModel.avatar = userInfoModel.avatar
-            commentModel.userName = userInfoModel.nicknameRemark
+            commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
             val stringBuilder: SpannableStringBuilder
             val spanUtils = SpanUtils()

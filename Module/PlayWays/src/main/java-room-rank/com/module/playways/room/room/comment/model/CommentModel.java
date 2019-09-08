@@ -32,9 +32,12 @@ public abstract class CommentModel {
     public static final int GRAB_SYSTEM_HIGH_COLOR = Color.parseColor("#FF8AB6");  // 系统文案的高亮颜色（抢唱)
 
     private int commentType = 0;                   //消息类型
-    private int userId;                            //消息发送者
-    private String avatar;                         //消息发送者头像
-    private String userName;                       //消息发送者昵称
+
+    //    private int userId;                            //消息发送者
+//    private String avatar;                         //消息发送者头像
+//    private String userName;                       //消息发送者昵称
+//    private int vipType;                           //消息发送者vip
+    private UserInfoModel userInfo;                //消息发送者信息(头像，昵称，vip和id)
     private int avatarColor;                       //消息发送者头像颜色
     private SpannableStringBuilder mStringBuilder; //消息的内容
 
@@ -54,29 +57,45 @@ public abstract class CommentModel {
         this.commentType = commentType;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserInfoModel getUserInfo() {
+        return userInfo;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setUserInfo(UserInfoModel userInfo) {
+        this.userInfo = userInfo;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+//    public int getUserId() {
+//        return userId;
+//    }
+//
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName) {
+//        this.userName = userName;
+//    }
+//
+//    public void setUserId(int userId) {
+//        this.userId = userId;
+//    }
+//
+//    public String getAvatar() {
+//        return avatar;
+//    }
+//
+//    public void setAvatar(String avatar) {
+//        this.avatar = avatar;
+//    }
+//
+//    public int getVipType() {
+//        return vipType;
+//    }
+//
+//    public void setVipType(int vipType) {
+//        this.vipType = vipType;
+//    }
 
     public int getAvatarColor() {
         return avatarColor;
@@ -84,13 +103,5 @@ public abstract class CommentModel {
 
     public void setAvatarColor(int avatarColor) {
         this.avatarColor = avatarColor;
-    }
-
-    public UserInfoModel toUserInfoModel(){
-        UserInfoModel model = new UserInfoModel();
-        model.setUserId(userId);
-        model.setNickname(userName);
-        model.setAvatar(avatar);
-        return model;
     }
 }

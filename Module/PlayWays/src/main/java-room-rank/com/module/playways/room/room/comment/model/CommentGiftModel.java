@@ -10,9 +10,7 @@ public class CommentGiftModel extends CommentModel {
 
     public CommentGiftModel(GPrensentGiftMsgModel giftMsgModel) {
         setCommentType(CommentModel.TYPE_GIFT);
-        setUserId(giftMsgModel.getSendUserInfo().getUserId());
-        setUserName(giftMsgModel.getSendUserInfo().getNicknameRemark());
-        setAvatar(giftMsgModel.getSendUserInfo().getAvatar());
+        setUserInfo(giftMsgModel.getSendUserInfo());
         setAvatarColor(CommentModel.AVATAR_COLOR);
 
         if (giftMsgModel.getReceiveUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
@@ -36,9 +34,7 @@ public class CommentGiftModel extends CommentModel {
 
     public CommentGiftModel(GiftPlayModel giftPlayModel) {
         setCommentType(CommentModel.TYPE_GIFT);
-        setUserId(giftPlayModel.getSender().getUserId());
-        setUserName(giftPlayModel.getSender().getNicknameRemark());
-        setAvatar(giftPlayModel.getSender().getAvatar());
+        setUserInfo(giftPlayModel.getSender());
         setAvatarColor(CommentModel.AVATAR_COLOR);
 
         if (giftPlayModel.getReceiver().getUserId() == MyUserInfoManager.getInstance().getUid()) {

@@ -33,7 +33,7 @@ public class CommentDynamicHolder extends RecyclerView.ViewHolder {
             @Override
             public void clickValid(View v) {
                 if (mCommentItemListener != null) {
-                    mCommentItemListener.clickAvatar(commentModel.getUserId());
+                    mCommentItemListener.clickAvatar(commentModel.getUserInfo().getUserId());
                 }
             }
         });
@@ -44,7 +44,7 @@ public class CommentDynamicHolder extends RecyclerView.ViewHolder {
         this.position = position;
         this.commentModel = commentModel;
 
-        mAvatarIv.bindData(commentModel.toUserInfoModel());
+        mAvatarIv.bindData(commentModel.getUserInfo());
         FrescoWorker.loadImage(mCommentSdv, ImageFactory.newPathImage(commentModel.getDynamicModel().getBigEmojiURL())
                 .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                 .setFitDrawable(true)

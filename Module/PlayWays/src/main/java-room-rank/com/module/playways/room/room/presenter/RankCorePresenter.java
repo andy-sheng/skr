@@ -250,9 +250,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     private void pretenEnterRoom(PlayerInfoModel playerInfoModel, int index) {
         CommentTextModel commentTextModel = new CommentTextModel();
-        commentTextModel.setUserId(playerInfoModel.getUserInfo().getUserId());
-        commentTextModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
-        commentTextModel.setUserName(playerInfoModel.getUserInfo().getNicknameRemark());
+        commentTextModel.setUserInfo(playerInfoModel.getUserInfo());
         commentTextModel.setAvatarColor(CommentModel.AVATAR_COLOR);
         SpannableStringBuilder ssb = new SpanUtils()
                 .append(playerInfoModel.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)

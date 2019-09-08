@@ -1,6 +1,5 @@
 package com.module.playways.room.room.comment.model;
 
-import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 
 import com.common.core.account.UserAccountManager;
@@ -15,9 +14,7 @@ public class CommentSysModel extends CommentModel {
     // 普通系统消息
     public CommentSysModel(int gameType, String text) {
         setCommentType(CommentModel.TYPE_SYSTEM);
-        setUserId(UserAccountManager.SYSTEM_ID);
-        setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        setUserName("系统消息");
+        setUserInfo(UserAccountManager.getInstance().getSystemModel());
         setAvatarColor(CommentModel.AVATAR_COLOR);
 
         if (gameType == GameModeType.GAME_MODE_GRAB) {
@@ -39,11 +36,8 @@ public class CommentSysModel extends CommentModel {
     // 进入房间消息 一唱到底
     public CommentSysModel(String roomName, int type) {
         setCommentType(CommentModel.TYPE_SYSTEM);
-        setUserId(UserAccountManager.SYSTEM_ID);
-        setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        setUserName("系统消息");
         setAvatarColor(CommentModel.AVATAR_COLOR);
-
+        setUserInfo(UserAccountManager.getInstance().getSystemModel());
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
         if (type == TYPE_ENTER_ROOM) {
             stringBuilder = new SpanUtils()
@@ -64,9 +58,7 @@ public class CommentSysModel extends CommentModel {
     // 离开系统消息
     public CommentSysModel(String nickName, String leaveText) {
         setCommentType(CommentModel.TYPE_SYSTEM);
-        setUserId(UserAccountManager.SYSTEM_ID);
-        setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        setUserName("系统消息");
+        setUserInfo(UserAccountManager.getInstance().getSystemModel());
         setAvatarColor(CommentModel.AVATAR_COLOR);
 
         SpannableStringBuilder stringBuilder = new SpanUtils()

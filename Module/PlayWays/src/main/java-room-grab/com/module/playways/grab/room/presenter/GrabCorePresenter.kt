@@ -2123,9 +2123,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     private fun pretendGiveUp(userInfoModel: UserInfoModel?) {
         if (userInfoModel != null) {
             val commentModel = CommentTextModel()
-            commentModel.userId = userInfoModel.userId
-            commentModel.avatar = userInfoModel.avatar
-            commentModel.userName = userInfoModel.nicknameRemark
+            commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
             val stringBuilder: SpannableStringBuilder
             val spanUtils = SpanUtils()
@@ -2139,9 +2137,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
     private fun pretendEnterRoom(playerInfoModel: GrabPlayerInfoModel) {
         val commentModel = CommentTextModel()
-        commentModel.userId = playerInfoModel.userInfo.userId
-        commentModel.avatar = playerInfoModel.userInfo.avatar
-        commentModel.userName = playerInfoModel.userInfo.nicknameRemark
+        commentModel.userInfo = playerInfoModel.userInfo
         commentModel.avatarColor = CommentModel.AVATAR_COLOR
         val stringBuilder: SpannableStringBuilder
         if (playerInfoModel.userInfo.userId == UserAccountManager.SYSTEM_GRAB_ID) {

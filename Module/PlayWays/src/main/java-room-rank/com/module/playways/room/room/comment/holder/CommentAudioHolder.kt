@@ -36,7 +36,9 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
     init {
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                listener?.clickAvatar(mCommentAudioModel!!.userId)
+                mCommentAudioModel?.let {
+                    listener?.clickAvatar(it.userInfo.userId)
+                }
             }
         })
 
@@ -74,7 +76,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         }
         mNameTv.text = model.stringBuilder
         mAudioTv.text = duration.toInt().toString() + "s"
-        mAvatarIv.bindData(model.toUserInfoModel())
+        mAvatarIv.bindData(model.userInfo)
     }
 
 

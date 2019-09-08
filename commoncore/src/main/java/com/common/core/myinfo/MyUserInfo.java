@@ -26,6 +26,7 @@ public class MyUserInfo implements Serializable {
     private int sex = -1;         // 性别
     private String birthday;      // 生日
     private String signature;     // 签名
+    private int vipType;          // vip类型
 
     private Location location;
     private Location location2;
@@ -33,7 +34,6 @@ public class MyUserInfo implements Serializable {
 
     private String phoneNum;
     private String ext; //待扩展
-
 
     public MyUserInfo() {
     }
@@ -102,7 +102,6 @@ public class MyUserInfo implements Serializable {
         this.signature = signature;
     }
 
-
     public String getPhoneNum() {
         return phoneNum;
     }
@@ -127,7 +126,6 @@ public class MyUserInfo implements Serializable {
         this.location = location;
     }
 
-
     public Location getLocation2() {
         return location2;
     }
@@ -144,6 +142,14 @@ public class MyUserInfo implements Serializable {
         this.ageStage = ageStage;
     }
 
+    public int getVipType() {
+        return vipType;
+    }
+
+    public void setVipType(int vipType) {
+        this.vipType = vipType;
+    }
+
     public static MyUserInfo parseFromUserInfoModel(UserInfoModel userInfoModel) {
         MyUserInfo myUserInfo = new MyUserInfo();
         myUserInfo.setUserId(userInfoModel.getUserId());
@@ -156,6 +162,7 @@ public class MyUserInfo implements Serializable {
         myUserInfo.setSignature(userInfoModel.getSignature());
         myUserInfo.setUserDisplayname(userInfoModel.getNickname());
         myUserInfo.setAgeStage(userInfoModel.getAgeStage());
+        myUserInfo.setVipType(userInfoModel.getVipType());
         return myUserInfo;
     }
 
@@ -166,6 +173,7 @@ public class MyUserInfo implements Serializable {
             userInfoModel.setUserId((int) myUserInfo.getUserId());
             userInfoModel.setNickname(myUserInfo.getUserNickname());
             userInfoModel.setAvatar(myUserInfo.getAvatar());
+            userInfoModel.setVipType(myUserInfo.getVipType());
             userInfoModel.setBirthday(myUserInfo.getBirthday());
             userInfoModel.setLocation(myUserInfo.getLocation());
             userInfoModel.setLoaction2(myUserInfo.getLocation2());
@@ -200,6 +208,7 @@ public class MyUserInfo implements Serializable {
                 jsonObject.put("phoneNum", myUserInfo.getPhoneNum());
                 jsonObject.put("ext", myUserInfo.getExt());
                 jsonObject.put("ageStage", myUserInfo.getAgeStage());
+                jsonObject.put("vipType", myUserInfo.getVipType());
 
             } catch (JSONException e) {
                 MyLog.d(e);
@@ -224,20 +233,12 @@ public class MyUserInfo implements Serializable {
             String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
-                String phoneNum = jsonObject.getString("phoneNum");
-                myInfoModel.setPhoneNum(phoneNum);
-
-                String ext = jsonObject.getString("ext");
-                myInfoModel.setExt(ext);
-
-                Location location = jsonObject.getObject("location", Location.class);
-                myInfoModel.setLocation(location);
-
-                Location location2 = jsonObject.getObject("location2", Location.class);
-                myInfoModel.setLocation2(location2);
-
-                int ageStage = jsonObject.getIntValue("ageStage");
-                myInfoModel.setAgeStage(ageStage);
+                myInfoModel.setPhoneNum(jsonObject.getString("phoneNum"));
+                myInfoModel.setExt(jsonObject.getString("ext"));
+                myInfoModel.setLocation(jsonObject.getObject("location", Location.class));
+                myInfoModel.setLocation2(jsonObject.getObject("location2", Location.class));
+                myInfoModel.setAgeStage(jsonObject.getIntValue("ageStage"));
+                myInfoModel.setVipType(jsonObject.getIntValue("vipType"));
             }
         }
         return myInfoModel;

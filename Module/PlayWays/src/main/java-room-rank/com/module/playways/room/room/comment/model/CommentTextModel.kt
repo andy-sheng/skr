@@ -1,5 +1,6 @@
 package com.module.playways.room.room.comment.model
 
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.component.busilib.constans.GameModeType
 import com.module.playways.BaseRoomData
@@ -10,7 +11,7 @@ import com.module.playways.room.msg.event.CommentMsgEvent
  */
 class CommentTextModel : CommentModel() {
     init {
-        commentType = CommentModel.TYPE_TEXT
+        commentType = TYPE_TEXT
     }
 
     companion object {
@@ -18,41 +19,36 @@ class CommentTextModel : CommentModel() {
         // 处理真的消息，即聊天消息
         fun parseFromEvent(event: CommentMsgEvent, roomData: BaseRoomData<*>?): CommentTextModel {
             val commentModel = CommentTextModel()
-            commentModel.userId = event.info.sender.userID!!
 
             if (roomData != null) {
                 val sender = roomData.getUserInfo(event.info.sender.userID!!)
-                commentModel.userName = sender?.nicknameRemark?:""
-                commentModel.avatarColor = CommentModel.AVATAR_COLOR
+                commentModel.avatarColor = AVATAR_COLOR
                 if (sender != null) {
-                    commentModel.avatar = sender.avatar
-                    commentModel.userName = sender.nicknameRemark
+                    commentModel.userInfo = sender
                 } else {
-                    commentModel.avatar = event.info.sender.avatar
-                    commentModel.userName = event.info.sender.nickName
+                    commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
                 }
             }
-
             if (roomData != null && (roomData.gameType == GameModeType.GAME_MODE_GRAB || roomData.gameType == GameModeType.GAME_MODE_RACE)) {
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
                     val ssb = SpanUtils()
-                            .append(commentModel.userName + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                            .append(event.text).setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                            .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
+                            .append(event.text).setForegroundColor(GRAB_TEXT_COLOR)
                             .create()
                     commentModel.stringBuilder = ssb
                 } else {
                     val ssb = SpanUtils()
-                            .append(commentModel.userName + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                            .append("@ ").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                            .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                            .append("@ ").setForegroundColor(GRAB_TEXT_COLOR)
                             .append(event.mUserInfoModelList[0].nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                            .append(event.text).setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                            .append(event.text).setForegroundColor(GRAB_TEXT_COLOR)
                             .create()
                     commentModel.stringBuilder = ssb
                 }
             } else {
                 val ssb = SpanUtils()
-                        .append(commentModel.userName + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
-                        .append(event.text).setForegroundColor(CommentModel.RANK_TEXT_COLOR)
+                        .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                        .append(event.text).setForegroundColor(RANK_TEXT_COLOR)
                         .create()
                 commentModel.stringBuilder = ssb
             }

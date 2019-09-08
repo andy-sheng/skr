@@ -1,6 +1,6 @@
 package com.module.playways.race.room.view.actor
 
-import com.component.person.model.ScoreStateModel
+import com.common.core.userinfo.model.ScoreStateModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 
 class RaceActorInfoModel(var plyer: RacePlayerInfoModel) {
