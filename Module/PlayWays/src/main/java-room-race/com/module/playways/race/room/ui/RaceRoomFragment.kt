@@ -10,6 +10,7 @@ import android.view.ViewStub
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
+import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.DebugLogView
@@ -159,6 +160,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (U.getPreferenceUtils().getSettingBoolean("is_first_enter_raceroom", true)) {
             U.getPreferenceUtils().setSettingBoolean("is_first_enter_raceroom", false)
             showGameRuleDialog()
+        }
+
+        MyUserInfoManager.getInstance().myUserInfo?.let {
+            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
         }
     }
 

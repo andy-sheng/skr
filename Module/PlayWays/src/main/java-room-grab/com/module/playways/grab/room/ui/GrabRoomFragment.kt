@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
+import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
@@ -79,7 +80,6 @@ import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.prepare.model.OnlineInfoModel
-import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
@@ -371,6 +371,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
         }
         enterRoomEvent()
+
+        MyUserInfoManager.getInstance().myUserInfo?.let {
+            mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
+        }
     }
 
     private fun enterRoomEvent() {
