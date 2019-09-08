@@ -1,6 +1,7 @@
 package com.module.msg.follow;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.model.VipInfo;
 
 import java.io.Serializable;
 
@@ -23,6 +24,7 @@ public class LastFollowModel implements Serializable {
     private int userID;
     private String avatar;
     private String nickname;
+    private VipInfo vipInfo;
     private long timeMs;
     private boolean isFriend;
     private boolean isFollow;
@@ -52,6 +54,14 @@ public class LastFollowModel implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public VipInfo getVipInfo() {
+        return vipInfo;
+    }
+
+    public void setVipInfo(VipInfo vipInfo) {
+        this.vipInfo = vipInfo;
     }
 
     public long getTimeMs() {
@@ -108,6 +118,7 @@ public class LastFollowModel implements Serializable {
                 "userID=" + userID +
                 ", avatar='" + avatar + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", vipInfo=" + vipInfo +
                 ", timeMs=" + timeMs +
                 ", isFriend=" + isFriend +
                 ", isFollow=" + isFollow +
@@ -122,6 +133,7 @@ public class LastFollowModel implements Serializable {
         userInfoModel.setUserId(this.userID);
         userInfoModel.setAvatar(this.avatar);
         userInfoModel.setNickname(this.nickname);
+        userInfoModel.setVipInfo(this.vipInfo);
         return userInfoModel;
     }
 }

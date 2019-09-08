@@ -394,7 +394,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 userInfoModel.setLoaction2(location2);
                 int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
-                VipInfo vipInfo = JSON.parseObject("vipInfo", VipInfo.class);
+                VipInfo vipInfo = jsonObject.getObject("vipInfo", VipInfo.class);
                 userInfoModel.setVipInfo(vipInfo);
                 ScoreStateModel stateModel = jsonObject.getObject("ranking", ScoreStateModel.class);
                 userInfoModel.setRanking(stateModel);
