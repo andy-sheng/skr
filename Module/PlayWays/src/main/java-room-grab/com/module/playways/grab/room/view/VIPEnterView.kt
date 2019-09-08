@@ -9,9 +9,11 @@ import android.view.animation.OvershootInterpolator
 import android.view.animation.TranslateAnimation
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.utils.U
 import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -51,9 +53,11 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
         enterJob = launch(Dispatchers.Main) {
             tryInflate()
             nameTv?.text = UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)
-            when (playerInfoModel.mainLevel) {
-                //TODO 头像设置
-//                vipLevelIv
+            if (LevelConfigUtils.getImageResoucesLevel(playerInfoModel.mainLevel) != 0) {
+                vipLevelIv?.visibility = View.VISIBLE
+                vipLevelIv?.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(playerInfoModel.mainLevel))
+            } else {
+                vipLevelIv?.visibility = View.GONE
             }
             mParentView?.clearAnimation()
             mParentView?.visibility = View.VISIBLE
