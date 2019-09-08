@@ -245,7 +245,7 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     // 会话列表的Fragment
     private Fragment initConversationList() {
         if (mConversationListFragment == null) {
-            ConversationListFragment listFragment = new ConversationListFragment();
+            ConversationListFragment listFragment = new MyConversationListFragment();
             Uri uri = Uri.parse("io.rong://" + U.getAppInfoUtils().getPackageName()).buildUpon()
                     .appendPath("conversation_list_activity")
                     .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示

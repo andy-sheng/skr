@@ -3,11 +3,13 @@ package com.common.core.userinfo.cache;
 
 import android.os.Build;
 
+import com.alibaba.fastjson.JSONObject;
 import com.common.cache.LruCache;
 import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.model.VipInfo;
 import com.common.log.MyLog;
 import com.module.ModuleServiceManager;
 
@@ -80,7 +82,9 @@ public class BuddyCache {
             return;
         }
 
-        ModuleServiceManager.getInstance().getMsgService().refreshUserInfoCache(buddyCacheEntry.getUuid(), buddyCacheEntry.getName(), buddyCacheEntry.getAvatar());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("vipInfo", buddyCacheEntry.vipInfo);
+        ModuleServiceManager.getInstance().getMsgService().refreshUserInfoCache(buddyCacheEntry.getUuid(), buddyCacheEntry.getName(), buddyCacheEntry.getAvatar(), jsonObject.toJSONString());
         mLruCache.put(buddyCacheEntry.getUuid(), buddyCacheEntry);
     }
 
@@ -132,7 +136,7 @@ public class BuddyCache {
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 UserInfoModel userInfoModel = UserInfoLocalApi.getUserInfoByUUid(uuid);
                 if (userInfoModel != null) {
-                    BuddyCacheEntry buddyCacheEntry = new BuddyCacheEntry(userInfoModel.getUserId(), userInfoModel.getNicknameRemark(), userInfoModel.getAvatar());
+                    BuddyCacheEntry buddyCacheEntry = new BuddyCacheEntry(userInfoModel.getUserId(), userInfoModel.getNicknameRemark(), userInfoModel.getAvatar(), userInfoModel.getVipInfo());
                     putBuddy(buddyCacheEntry);
                 }
                 emitter.onComplete();
@@ -151,6 +155,8 @@ public class BuddyCache {
         private int uuid;
         private String name;
         private String avatar;
+
+        private VipInfo vipInfo;
 
         public int getUuid() {
             return uuid;
@@ -176,6 +182,14 @@ public class BuddyCache {
             this.avatar = avatar;
         }
 
+        public VipInfo getVipInfo() {
+            return vipInfo;
+        }
+
+        public void setVipInfo(VipInfo vipInfo) {
+            this.vipInfo = vipInfo;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (o == null) {
@@ -194,10 +208,11 @@ public class BuddyCache {
             return this.uuid == data.uuid;
         }
 
-        public BuddyCacheEntry(int uuid, String name, String avatar) {
+        public BuddyCacheEntry(int uuid, String name, String avatar, VipInfo vipInfo) {
             this.uuid = uuid;
             this.name = name;
             this.avatar = avatar;
+            this.vipInfo = vipInfo;
         }
 
         public BuddyCacheEntry(UserInfoModel userInfoModel) {
@@ -207,14 +222,7 @@ public class BuddyCache {
             this.uuid = userInfoModel.getUserId();
             this.name = userInfoModel.getNicknameRemark();
             this.avatar = userInfoModel.getAvatar();
-        }
-
-        public UserInfoModel parseUserInfoMode() {
-            UserInfoModel userInfoModel = new UserInfoModel();
-            userInfoModel.setNickname(name);
-            userInfoModel.setUserId(uuid);
-            userInfoModel.setAvatar(avatar);
-            return userInfoModel;
+            this.vipInfo = userInfoModel.getVipInfo();
         }
 
         @Override

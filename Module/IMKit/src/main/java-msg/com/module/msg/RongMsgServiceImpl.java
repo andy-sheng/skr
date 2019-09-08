@@ -59,8 +59,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void refreshUserInfoCache(int userId, String nickName, String avatar) {
-        RongMsgManager.getInstance().refreshUserInfoCache(userId, nickName, avatar);
+    public void refreshUserInfoCache(int userId, String nickName, String avatar, String extra) {
+        RongMsgManager.getInstance().refreshUserInfoCache(userId, nickName, avatar, extra);
     }
 
     @Override

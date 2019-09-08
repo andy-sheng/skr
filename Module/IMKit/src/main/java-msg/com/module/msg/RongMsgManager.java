@@ -12,6 +12,7 @@ import android.util.Pair;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoManager;
@@ -319,6 +320,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             }
         }
     }
+
     // 是否初始化
     private boolean mIsInit = false;
 
@@ -441,8 +443,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     public UserInfo getUserInfo(String useId) {
         MyLog.d(TAG, "getUserInfo" + " useId = " + useId);
         if (MyUserInfoManager.getInstance().getUid() == Integer.valueOf(useId)) {
-            UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
-                    MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
+            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
             RongIM.getInstance().refreshUserInfoCache(userInfo);
             return userInfo;
         }
@@ -452,8 +453,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             @Override
             public boolean onGetLocalDB(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
-                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                    RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
                 }
                 return false;
             }
@@ -461,8 +461,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             @Override
             public boolean onGetServer(UserInfoModel userInfoModel) {
                 if (userInfoModel != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
-                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                    RongIM.getInstance().refreshUserInfoCache(toRongUserInfo(userInfoModel));
                 }
                 return false;
             }
@@ -474,8 +473,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             // TODO: 2019/4/16 此时靠 RongIM.getInstance().refreshUserInfoCache去更新
             return null;
         }
+    }
 
-
+    private UserInfo toRongUserInfo(UserInfoModel userInfoModel) {
+        UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("vipInfo", userInfoModel.getVipInfo());
+        userInfo.setExtra(jsonObject.toJSONString());
+        return userInfo;
     }
 
     public synchronized void addMsgProcessor(IPushMsgProcess processor) {
@@ -590,8 +595,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         RongIM.getInstance().joinChatRoom(roomId, defMessageCount, mOperationCallback);
     }
 
-    public void refreshUserInfoCache(int userId, String nickName, String avatar) {
+    public void refreshUserInfoCache(int userId, String nickName, String avatar, String extra) {
         UserInfo userInfo = new UserInfo(String.valueOf(userId), nickName, Uri.parse(avatar));
+        userInfo.setExtra(extra);
         RongIM.getInstance().refreshUserInfoCache(userInfo);
     }
 
@@ -730,8 +736,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public void updateCurrentUserInfo() {
         if (RongContext.getInstance() != null) {
-            UserInfo userInfo = new UserInfo(String.valueOf(MyUserInfoManager.getInstance().getUid()),
-                    MyUserInfoManager.getInstance().getNickName(), Uri.parse(MyUserInfoManager.getInstance().getAvatar()));
+            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
             RongIM.getInstance().setCurrentUserInfo(userInfo);
             RongIM.getInstance().refreshUserInfoCache(userInfo);
         }

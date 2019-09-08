@@ -93,7 +93,7 @@ public interface IMsgService extends IProvider {
      * @param nickName
      * @param avatar
      */
-    void refreshUserInfoCache(int userId, String nickName, String avatar);
+    void refreshUserInfoCache(int userId, String nickName, String avatar, String extra);
 
 
     /**
