@@ -59,12 +59,13 @@ class AvatarView : ConstraintLayout {
                 .setBorderWidth(borderWidth.toFloat())
                 .setCircle(isCircle)
                 .build())
+
         when {
-            model?.vipType == EVIPType.EVT_RED_V.value -> {
+            model?.vipInfo?.vipType == EVIPType.EVT_RED_V.value -> {
                 vipIv.visibility = View.VISIBLE
                 vipIv.setImageResource(R.drawable.vip_red_icon)
             }
-            model?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
+            model?.vipInfo?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
                 vipIv.visibility = View.VISIBLE
                 vipIv.setImageResource(R.drawable.vip_gold_icon)
             }
@@ -82,11 +83,11 @@ class AvatarView : ConstraintLayout {
                 .setCircle(isCircle)
                 .build())
         when {
-            model?.vipType == EVIPType.EVT_RED_V.value -> {
+            model?.vipInfo?.vipType == EVIPType.EVT_RED_V.value -> {
                 vipIv.visibility = View.VISIBLE
                 vipIv.setImageResource(R.drawable.vip_red_icon)
             }
-            model?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
+            model?.vipInfo?.vipType == EVIPType.EVT_GOLDEN_V.value -> {
                 vipIv.visibility = View.VISIBLE
                 vipIv.setImageResource(R.drawable.vip_gold_icon)
             }

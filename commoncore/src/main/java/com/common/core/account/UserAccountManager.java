@@ -20,6 +20,7 @@ import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.model.VipInfo;
 import com.common.core.userinfo.remark.RemarkLocalApi;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
@@ -104,7 +105,6 @@ public class UserAccountManager {
         system.setUserId(UserAccountManager.SYSTEM_ID);
         system.setAvatar(UserAccountManager.SYSTEM_AVATAR);
         system.setNickname("系统消息");
-        system.setVipType(EVIPType.EVT_UNKNOWN.getValue());
         return system;
     }
 
@@ -353,7 +353,7 @@ public class UserAccountManager {
         int sex = profileJO.getIntValue("sex");
         String birthday = profileJO.getString("birthday");
         String avatar = profileJO.getString("avatar");
-        int vipType = profileJO.getIntValue("vipType");
+        VipInfo vipInfo = profileJO.getObject("vipInfo", VipInfo.class);
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
         Location location2 = JSON.parseObject(profileJO.getString("location2"), Location.class);
@@ -375,7 +375,7 @@ public class UserAccountManager {
         myUserInfo.setSex(sex);
         myUserInfo.setBirthday(birthday);
         myUserInfo.setAvatar(avatar);
-        myUserInfo.setVipType(vipType);
+        myUserInfo.setVipInfo(vipInfo);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
         myUserInfo.setLocation2(location2);
