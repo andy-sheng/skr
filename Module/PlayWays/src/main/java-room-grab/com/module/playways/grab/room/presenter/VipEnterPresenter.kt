@@ -1,26 +1,66 @@
 package com.module.playways.grab.room.presenter
 
+import com.common.anim.ObjectPlayControlTemplate
+import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.utils.ActivityUtils
+import com.common.utils.U
+import com.module.playways.BaseRoomData
 import com.module.playways.grab.room.inter.IGrabVipView
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
-class VipEnterPresenter(val view: IGrabVipView) : RxLifeCyclePresenter() {
+class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxLifeCyclePresenter() {
     val mTag = "VipEnterPresenter"
+    var canAccept = true
 
-    init {
-        EventBus.getDefault().register(this)
+    internal val mVipEnterObjectPlayControlTemplate: ObjectPlayControlTemplate<UserInfoModel, VipEnterPresenter> = object : ObjectPlayControlTemplate<UserInfoModel, VipEnterPresenter>() {
+        override fun accept(cur: UserInfoModel): VipEnterPresenter? {
+            if (!U.getActivityUtils().isAppForeground) {
+                MyLog.d(TAG, "在后台，不弹出通知")
+                return null
+            }
+
+            if (!canAccept) {
+                MyLog.d(TAG, "不可接受")
+                return null
+            }
+            return this@VipEnterPresenter
+        }
+
+        override fun onStart(playerInfoModel: UserInfoModel, floatWindow: VipEnterPresenter) {
+            MyLog.d(mTag, "onStart playerInfoModel = $playerInfoModel, floatWindow = $floatWindow")
+            var inSeat = false
+            canAccept = false
+            roomData.getPlayerInfoList()?.forEach {
+                if (it.userID == playerInfoModel.userId) {
+                    inSeat = true
+                    view.startEnterAnimation(playerInfoModel) {
+                        canAccept = true
+                        endCurrent(playerInfoModel)
+                    }
+                }
+            }
+
+            if (!inSeat) {
+                canAccept = true
+                endCurrent(playerInfoModel)
+            }
+        }
+
+        override fun onEnd(floatWindowData: UserInfoModel) {
+
+        }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ActivityUtils.ForeOrBackgroundChange) {
+    fun switchRoom() {
+        mVipEnterObjectPlayControlTemplate.reset()
+    }
 
+    fun addNotice(playerInfoModel: UserInfoModel) {
+        mVipEnterObjectPlayControlTemplate.add(playerInfoModel, true)
     }
 
     override fun destroy() {
         super.destroy()
-        EventBus.getDefault().unregister(this)
+        mVipEnterObjectPlayControlTemplate.destroy()
     }
 }

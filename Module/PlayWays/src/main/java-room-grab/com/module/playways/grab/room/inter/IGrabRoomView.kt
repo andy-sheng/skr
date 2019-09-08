@@ -1,7 +1,9 @@
 package com.module.playways.grab.room.inter
 
+import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.room.prepare.model.OnlineInfoModel
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
 
 interface IGrabRoomView {
@@ -77,4 +79,6 @@ interface IGrabRoomView {
     fun beginOuath()
 
     fun changeRoomMode(isVideo: Boolean)
+
+    fun joinNotice(playerInfoModel: UserInfoModel?)
 }

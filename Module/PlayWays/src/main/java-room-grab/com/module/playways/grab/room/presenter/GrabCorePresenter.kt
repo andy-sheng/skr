@@ -1997,6 +1997,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         if (canAdd) {
             //  加入房间不提示
             //pretendEnterRoom(playerInfoModel);
+            mIGrabView.joinNotice(event.infoModel.userInfo)
         }
     }
 

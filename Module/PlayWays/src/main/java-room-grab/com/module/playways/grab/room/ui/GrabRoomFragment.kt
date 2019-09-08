@@ -79,6 +79,7 @@ import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.prepare.model.OnlineInfoModel
+import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
@@ -318,7 +319,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mCorePresenter?.setGrabRedPkgPresenter(mGrabRedPkgPresenter!!)
         mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
         addPresent(mDoubleRoomInvitePresenter)
-        mVipEnterPresenter = VipEnterPresenter(this)
+        mVipEnterPresenter = VipEnterPresenter(this, mRoomData!!)
         addPresent(mVipEnterPresenter)
 
         if (mRoomData!!.isVideoRoom) {
@@ -729,8 +730,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mRoomData!!.tagId = event.specialModel.tagID
     }
 
-    override fun startEnterAnimation(finishCall: () -> Unit) {
-        mVIPEnterView?.enter(finishCall)
+    override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
+        mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {
@@ -1130,6 +1131,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         })
                         .setHasAnimation(true)
                         .build())
+    }
+
+    override fun joinNotice(playerInfoModel: UserInfoModel?) {
+        playerInfoModel?.let {
+            if (playerInfoModel.mainLevel >= 0) {
+                mVipEnterPresenter?.addNotice(playerInfoModel)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1544,6 +1553,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (success) {
             initBgView()
             hideAllCardView()
+            mVipEnterPresenter?.switchRoom()
+            mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮
             mBottomContainerView.setRoomData(mRoomData!!)
         }

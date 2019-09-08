@@ -24,6 +24,9 @@ import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
 import com.module.playways.RoomDataUtils
+import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.presenter.VipEnterPresenter
+import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
@@ -58,7 +61,7 @@ import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class RaceRoomFragment : BaseFragment(), IRaceRoomView {
+class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     internal lateinit var mCorePresenter: RaceCorePresenter
 
@@ -82,10 +85,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
 
+    internal var mVIPEnterView: VIPEnterView? = null
+
     // 都是dialogplus
     private var mRaceActorPanelView: RaceActorPanelView? = null  //参与的人
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mRaceVoiceControlPanelView: RaceVoiceControlPanelView? = null
+    internal var mVipEnterPresenter: VipEnterPresenter? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
 
@@ -116,6 +122,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
     override fun initData(savedInstanceState: Bundle?) {
         mCorePresenter = RaceCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
+        mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
+        addPresent(mVipEnterPresenter)
         // 请保证从下面的view往上面的view开始初始化
         rootView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -135,6 +143,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
 
         initSingSenceView()
         initRightView()
+        initVipEnterView()
 
         mCorePresenter.onOpeningAnimationOver()
 
@@ -193,6 +202,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
                 }
             }
         })
+    }
+
+    private fun initVipEnterView() {
+        mVIPEnterView = VIPEnterView(rootView.findViewById(R.id.vip_enter_view_stub))
     }
 
     private fun initSingSenceView() {
@@ -380,6 +393,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         val giftBigContinueView = rootView.findViewById<GiftBigContinuousView>(R.id.gift_big_continue_view)
         giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView)
         //mDengBigAnimation = rootView.findViewById<View>(R.id.deng_big_animation) as GrabDengBigAnimationView
+    }
+
+    override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
+        mVIPEnterView?.enter(playerInfoModel, finishCall)
     }
 
     private fun showPersonInfoView(userID: Int) {
@@ -602,6 +619,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView {
         mRaceSelectSongView.visibility = View.VISIBLE
         mRaceSelectSongView.setSongName(mRoomData.realRoundSeq) {
             mCorePresenter.sendIntroOver()
+        }
+    }
+
+    override fun joinNotice(playerInfoModel: UserInfoModel?) {
+        playerInfoModel?.let {
+            mVipEnterPresenter?.addNotice(it)
         }
     }
 

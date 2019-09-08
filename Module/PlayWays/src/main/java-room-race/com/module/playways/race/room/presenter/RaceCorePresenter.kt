@@ -596,6 +596,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
             }
         }
+        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.pb.user))
     }
 
     /**
