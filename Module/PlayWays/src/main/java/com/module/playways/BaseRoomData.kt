@@ -3,6 +3,7 @@ package com.module.playways
 import android.util.LruCache
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent
+import com.module.playways.race.match.pbLocalModel.LocalRGameConfigMsg
 import com.module.playways.room.gift.event.UpdateHZEvent
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
@@ -63,6 +64,8 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         get() = if (realRoundInfo != null) {
             realRoundInfo!!.roundSeq
         } else -1
+
+    var gameConfigMsg: LocalRGameConfigMsg? = null
 
     abstract fun checkRoundInEachMode()
 

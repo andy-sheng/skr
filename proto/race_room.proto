@@ -130,7 +130,13 @@ message RJoinActionMsg
 
 message RGameConfig
 {
-    //TODO:补充游戏配置
+    repeated RGetSingDelay getSingDelay = 1; //抢唱延迟配置
+}
+
+message RGetSingDelay
+{
+    uint32 roundNum    = 1; //轮次数
+    uint32 delayTimeMs = 2; //延迟时间（毫秒）
 }
 
 message RaceRoundInfo

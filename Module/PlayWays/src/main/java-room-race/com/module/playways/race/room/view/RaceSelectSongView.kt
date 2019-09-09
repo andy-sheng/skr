@@ -189,7 +189,8 @@ class RaceSelectSongView : ExConstraintLayout {
 
                 repeat(countDownSecond) {
                     countDownTv.text = (countDownSecond - it).toString()
-                    delay(1000)
+                    delay(mRoomData?.gameConfigMsg?.getDelayTime(mRoomData!!.runningRoundCount!!)
+                            ?: 1000)
                 }
 
                 countDownTv.visibility = View.GONE

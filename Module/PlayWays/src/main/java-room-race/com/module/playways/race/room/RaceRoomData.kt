@@ -6,10 +6,8 @@ import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
-import com.module.playways.race.room.model.RaceConfigModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
-import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
@@ -22,7 +20,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RACE
 
-    var raceConfigModel: RaceConfigModel? = null
     var hasExitGame = false
     var isAccEnable = false
         // 是否开启伴奏,只代表设置里伴奏开关
@@ -113,7 +110,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     fun loadFromRsp(rsp: JoinRaceRoomRspModel) {
         this.gameId = rsp.roomID
-        this.raceConfigModel = rsp.config
         this.expectRoundInfo = rsp.currentRound
         rsp.games?.let {
             this.expectRoundInfo?.games = it
@@ -128,6 +124,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         this.expectRoundInfo?.enterStatus = this.expectRoundInfo?.status
                 ?: ERaceRoundStatus.ERRS_UNKNOWN.value
         this.expectRoundInfo?.enterSubRoundSeq = this.expectRoundInfo?.subRoundSeq ?: 0
+        this.gameConfigMsg = rsp.config
         if (rsp.elapsedTimeMs > 0) {
             // 演唱轮次进来，不能是本局参与者
             //this.expectRoundInfo?.isParticipant = false

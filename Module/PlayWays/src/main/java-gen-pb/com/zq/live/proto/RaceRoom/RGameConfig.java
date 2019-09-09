@@ -7,11 +7,14 @@ import com.squareup.wire.Message;
 import com.squareup.wire.ProtoAdapter;
 import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
+import com.squareup.wire.WireField;
+import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class RGameConfig extends Message<RGameConfig, RGameConfig.Builder> {
@@ -19,34 +22,57 @@ public final class RGameConfig extends Message<RGameConfig, RGameConfig.Builder>
 
   private static final long serialVersionUID = 0L;
 
-  public RGameConfig() {
-    this(ByteString.EMPTY);
+  /**
+   * 抢唱延迟配置
+   */
+  @WireField(
+      tag = 1,
+      adapter = "com.zq.live.proto.RaceRoom.RGetSingDelay#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<RGetSingDelay> getSingDelay;
+
+  public RGameConfig(List<RGetSingDelay> getSingDelay) {
+    this(getSingDelay, ByteString.EMPTY);
   }
 
-  public RGameConfig(ByteString unknownFields) {
+  public RGameConfig(List<RGetSingDelay> getSingDelay, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
+    this.getSingDelay = Internal.immutableCopyOf("getSingDelay", getSingDelay);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
+    builder.getSingDelay = Internal.copyOf("getSingDelay", getSingDelay);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
 
   @Override
   public boolean equals(Object other) {
-    return other instanceof RGameConfig;
+    if (other == this) return true;
+    if (!(other instanceof RGameConfig)) return false;
+    RGameConfig o = (RGameConfig) other;
+    return unknownFields().equals(o.unknownFields())
+        && getSingDelay.equals(o.getSingDelay);
   }
 
   @Override
   public int hashCode() {
-    return unknownFields().hashCode();
+    int result = super.hashCode;
+    if (result == 0) {
+      result = unknownFields().hashCode();
+      result = result * 37 + getSingDelay.hashCode();
+      super.hashCode = result;
+    }
+    return result;
   }
 
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    if (!getSingDelay.isEmpty()) builder.append(", getSingDelay=").append(getSingDelay);
     return builder.replace(0, 2, "RGameConfig{").append('}').toString();
   }
 
@@ -60,13 +86,42 @@ public final class RGameConfig extends Message<RGameConfig, RGameConfig.Builder>
     return c;
   }
 
+  /**
+   * 抢唱延迟配置
+   */
+  public List<RGetSingDelay> getGetSingDelayList() {
+    if(getSingDelay==null){
+        return new java.util.ArrayList<RGetSingDelay>();
+    }
+    return getSingDelay;
+  }
+
+  /**
+   * 抢唱延迟配置
+   */
+  public boolean hasGetSingDelayList() {
+    return getSingDelay!=null;
+  }
+
   public static final class Builder extends Message.Builder<RGameConfig, Builder> {
+    private List<RGetSingDelay> getSingDelay;
+
     public Builder() {
+      getSingDelay = Internal.newMutableList();
+    }
+
+    /**
+     * 抢唱延迟配置
+     */
+    public Builder addAllGetSingDelay(List<RGetSingDelay> getSingDelay) {
+      Internal.checkElementsNotNull(getSingDelay);
+      this.getSingDelay = getSingDelay;
+      return this;
     }
 
     @Override
     public RGameConfig build() {
-      return new RGameConfig(super.buildUnknownFields());
+      return new RGameConfig(getSingDelay, super.buildUnknownFields());
     }
   }
 
@@ -77,11 +132,13 @@ public final class RGameConfig extends Message<RGameConfig, RGameConfig.Builder>
 
     @Override
     public int encodedSize(RGameConfig value) {
-      return value.unknownFields().size();
+      return RGetSingDelay.ADAPTER.asRepeated().encodedSizeWithTag(1, value.getSingDelay)
+          + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RGameConfig value) throws IOException {
+      RGetSingDelay.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.getSingDelay);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -91,6 +148,7 @@ public final class RGameConfig extends Message<RGameConfig, RGameConfig.Builder>
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
+          case 1: builder.getSingDelay.add(RGetSingDelay.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -105,6 +163,7 @@ public final class RGameConfig extends Message<RGameConfig, RGameConfig.Builder>
     @Override
     public RGameConfig redact(RGameConfig value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.getSingDelay, RGetSingDelay.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

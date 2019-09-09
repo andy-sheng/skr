@@ -1,7 +1,7 @@
 package com.module.playways.race.match.model
 
 import com.alibaba.fastjson.annotation.JSONField
-import com.module.playways.race.room.model.RaceConfigModel
+import com.module.playways.race.match.pbLocalModel.LocalRGameConfigMsg
 import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import java.io.Serializable
@@ -9,8 +9,6 @@ import java.io.Serializable
 class JoinRaceRoomRspModel : Serializable {
     @JSONField(name = "roomID")
     var roomID = 0
-    @JSONField(name = "config")
-    var config: RaceConfigModel? = null
     @JSONField(name = "currentRound")
     var currentRound: RaceRoundInfoModel? = null
     @JSONField(name = "gameCreateTimeMs")
@@ -25,4 +23,6 @@ class JoinRaceRoomRspModel : Serializable {
     var newRoundBegin = false
     @JSONField(name = "agoraToken")
     var agoraToken: String? = null
+    @JSONField(name = "config")
+    var config: LocalRGameConfigMsg? = null
 }
