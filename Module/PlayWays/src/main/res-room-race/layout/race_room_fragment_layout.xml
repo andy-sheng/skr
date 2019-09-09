@@ -146,13 +146,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/view_196_dp"/>
 
-    <!--输入框区域-->
-    <com.module.playways.race.room.view.RaceInputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"
@@ -217,6 +210,13 @@
         android:gravity="bottom"
         android:paddingLeft="@dimen/view_16_dp"
         android:visibility="gone" />
+
+    <!--输入框区域-->
+    <com.module.playways.race.room.view.RaceInputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ViewStub
         android:id="@+id/voice_record_tip_view_stub"
