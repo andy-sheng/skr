@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_72_dp">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/seq_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/view_34_dp"/>
+
+    <TextView
+        android:id="@+id/seq_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_24_dp"
+        android:textColor="#EF9D00"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/seq_guide"
+        app:layout_constraintRight_toRightOf="@id/seq_guide"/>
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        app:layout_constraintLeft_toRightOf="@id/seq_guide"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    
+    <android.support.constraint.Guideline
+        android:id="@+id/result_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/view_58_dp"/>
+
+    <TextView
+        android:id="@+id/blight_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@id/star_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/result_guide"
+        app:layout_constraintRight_toRightOf="@id/result_guide"/>
+
+   <com.module.playways.battle.songlist.view.BattleStarView
+       android:id="@+id/star_view"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="@dimen/view_6_dp"
+       app:layout_constraintTop_toBottomOf="@id/blight_tv"
+       app:layout_constraintLeft_toLeftOf="@id/result_guide"
+       app:layout_constraintRight_toRightOf="@id/result_guide"
+       app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="left|center_vertical"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textColor="#cc111E60"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/level_tv"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintRight_toLeftOf="@id/blight_tv"/>
+
+    <TextView
+        android:id="@+id/level_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#80111E60"
+        app:layout_constraintTop_toBottomOf="@id/name_tv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
