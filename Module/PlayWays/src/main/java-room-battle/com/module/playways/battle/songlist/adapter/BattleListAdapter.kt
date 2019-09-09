@@ -1,9 +1,11 @@
-package com.module.playways.battle.songlist
+package com.module.playways.battle.songlist.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.module.playways.R
+import com.module.playways.battle.songlist.viewholer.BattleListViewHolder
+import com.module.playways.battle.songlist.model.BattleTagModel
 
 class BattleListAdapter : RecyclerView.Adapter<BattleListViewHolder>() {
 

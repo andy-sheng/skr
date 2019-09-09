@@ -20,6 +20,9 @@ import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.battle.BattleServerApi
+import com.module.playways.battle.songlist.adapter.BattleListAdapter
+import com.module.playways.battle.songlist.model.BattleTagModel
+import com.module.playways.battle.songlist.view.SongListCardView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -38,6 +41,7 @@ class BattleListActivity : BaseActivity() {
     lateinit var recyclerView: RecyclerView
 
     private var mGameRuleDialog: DialogPlus? = null
+    private var mSongListCardView: SongListCardView? = null
 
     val adapter: BattleListAdapter = BattleListAdapter()
 
@@ -90,7 +94,7 @@ class BattleListActivity : BaseActivity() {
         recyclerView.adapter = adapter
         adapter.onClickListener = { model, _ ->
             model?.let {
-                // 打开预览也么
+                showSongCard(it)
             }
         }
 
@@ -142,6 +146,7 @@ class BattleListActivity : BaseActivity() {
     }
 
     private fun showBattleRule() {
+        dismissDialog()
         mGameRuleDialog = DialogPlus.newDialog(this@BattleListActivity)
                 .setContentHolder(ViewHolder(R.layout.battle_game_rule_view_layout))
                 .setContentBackgroundResource(R.color.transparent)
@@ -151,6 +156,16 @@ class BattleListActivity : BaseActivity() {
                 .setGravity(Gravity.CENTER)
                 .create()
         mGameRuleDialog?.show()
+    }
+
+    private fun showSongCard(tagModel: BattleTagModel) {
+        mSongListCardView = SongListCardView(tagModel, this)
+        mSongListCardView?.showByDialog()
+    }
+
+    private fun dismissDialog() {
+        mGameRuleDialog?.dismiss(false)
+        mSongListCardView?.dismiss(false)
     }
 
     override fun useEventBus(): Boolean {

@@ -1,21 +1,15 @@
-package com.module.playways.battle.songlist
+package com.module.playways.battle.songlist.viewholer
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
-import com.common.image.fresco.FrescoWorker
-import com.common.image.model.BaseImage
-import com.common.image.model.ImageFactory
-import com.common.utils.ImageUtils
-import com.common.utils.U
-import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
-import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.battle.songlist.model.BattleTagModel
 import com.module.playways.battle.songlist.view.BattleStarView
 
 class BattleListViewHolder(item: View, listener: ((model: BattleTagModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
