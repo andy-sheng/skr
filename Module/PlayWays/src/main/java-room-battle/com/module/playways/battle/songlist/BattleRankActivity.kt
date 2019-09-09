@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
@@ -21,12 +22,16 @@ import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.busilib.view.BitmapTextView
+import com.component.person.view.UserInfoTitleView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.battle.BattleServerApi
 import com.module.playways.battle.songlist.model.BattleRankInfoModel
 import com.module.playways.battle.songlist.model.BattleRankTagModel
 import com.module.playways.battle.songlist.view.BattleRankView
+import com.module.playways.battle.songlist.view.BattleStarView
+import kotlinx.android.synthetic.main.double_normal_lyric_stub_layout.*
 import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_BATTLE_RANK)
@@ -34,6 +39,14 @@ class BattleRankActivity : BaseActivity() {
 
     lateinit var title: CommonTitleBar
     lateinit var selfArea: ExImageView
+
+    lateinit var seqTv: BitmapTextView
+    lateinit var seqHint: TextView
+    lateinit var userInfoTitle:UserInfoTitleView
+    lateinit var blightTv:BitmapTextView
+    lateinit var blightHint:TextView
+    lateinit var mineStarView: BattleStarView
+
     lateinit var tagTab: SlidingTabLayout
     lateinit var viewpager: NestViewPager
     lateinit var ivBack: ImageView
@@ -52,6 +65,12 @@ class BattleRankActivity : BaseActivity() {
 
         title = findViewById(R.id.title)
         selfArea = findViewById(R.id.self_area)
+        seqTv = findViewById(R.id.seq_tv)
+        seqHint = findViewById(R.id.seq_hint)
+        userInfoTitle = findViewById(R.id.user_info_title)
+        blightTv = findViewById(R.id.blight_tv)
+        blightHint = findViewById(R.id.blight_hint)
+        mineStarView = findViewById(R.id.mine_star_view)
         tagTab = findViewById(R.id.tag_tab)
         viewpager = findViewById(R.id.viewpager)
         ivBack = findViewById(R.id.iv_back)
@@ -94,7 +113,15 @@ class BattleRankActivity : BaseActivity() {
     }
 
     private fun showMineRank(mineRank: BattleRankInfoModel?) {
-
+        mineRank?.let {
+            seqTv.setText(it.rankSeq.toString())
+            blightTv.setText(it.blightCnt.toString())
+            mineStarView.bindData(it.starCnt, it.starCnt)
+            it.user?.ranking?.let { scoreStateModel ->
+                userInfoTitle.showScoreView(scoreStateModel)
+                userInfoTitle.showBaseInfo()
+            }
+        }
     }
 
     private fun showBattleRankTags(list: List<BattleRankTagModel>?) {
@@ -121,7 +148,7 @@ class BattleRankActivity : BaseActivity() {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 val rankTagModel = list[position]
                 if (!battleRankViews.containsKey(rankTagModel.tabType)) {
-                    battleRankViews[rankTagModel.tabType] = BattleRankView(this@BattleRankActivity, rankTagModel,tagID)
+                    battleRankViews[rankTagModel.tabType] = BattleRankView(this@BattleRankActivity, rankTagModel, tagID)
                 }
                 val view = battleRankViews[rankTagModel.tabType]
                 if (position == 0) {

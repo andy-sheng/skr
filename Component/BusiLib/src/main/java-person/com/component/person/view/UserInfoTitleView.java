@@ -1,4 +1,4 @@
-package com.module.home.widget;
+package com.component.person.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,18 +9,18 @@ import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.ScoreStateModel;
+import com.component.busilib.R;
 import com.component.person.model.UserRankModel;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.home.R;
 import com.component.level.utils.LevelConfigUtils;
 
 public class UserInfoTitleView extends RelativeLayout {
 
     public final String TAG = "UserInfoTitleView";
 
-    ImageView mTopUserBg;
     ImageView mLevelBg;
     SimpleDraweeView mIvUserIcon;
     ExTextView mUserLevelTv;
@@ -42,7 +42,6 @@ public class UserInfoTitleView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.user_info_title_layout, this);
-        mTopUserBg = (ImageView) findViewById(R.id.top_user_bg);
         mLevelBg = (ImageView) findViewById(R.id.level_bg);
         mIvUserIcon = (SimpleDraweeView) findViewById(R.id.iv_user_icon);
         mUserLevelTv = (ExTextView) findViewById(R.id.user_level_tv);
@@ -63,14 +62,16 @@ public class UserInfoTitleView extends RelativeLayout {
     }
 
     public void showRankView(UserRankModel userRankModel) {
-        mTopUserBg.setBackground(getResources().getDrawable(LevelConfigUtils.getHomePageLevelTopBg(userRankModel.getMainRanking())));
+
         mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(userRankModel.getMainRanking())));
         mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(userRankModel.getMainRanking())));
         mUserLevelTv.setText(userRankModel.getLevelDesc());
     }
 
-    public ImageView getTopUserBg() {
-        return mTopUserBg;
+    public void showScoreView(ScoreStateModel scoreStateModel){
+        mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreStateModel.getMainRanking())));
+        mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(scoreStateModel.getMainRanking())));
+        mUserLevelTv.setText(scoreStateModel.getRankingDesc());
     }
 
     public void showBaseInfo() {

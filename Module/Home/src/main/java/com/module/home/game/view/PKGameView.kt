@@ -30,7 +30,7 @@ import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.persenter.PkInfoPresenter
 import com.module.home.view.IPkInfoView
-import com.module.home.widget.UserInfoTitleView
+import com.component.person.view.UserInfoTitleView
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -90,7 +90,6 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
         mIvAthleticsPk = findViewById(R.id.iv_athletics_pk)
         mIvVoiceRoom = findViewById(R.id.iv_voice_room)
         mMedalIv = findViewById(R.id.medal_iv)
-        mUserInfoTitle.topUserBg.visibility = View.GONE
         mSmartRefreshLayout.setEnableRefresh(true)
         mSmartRefreshLayout.setEnableLoadMore(false)
         mSmartRefreshLayout.setEnableLoadMoreWhenContentNotFull(true)

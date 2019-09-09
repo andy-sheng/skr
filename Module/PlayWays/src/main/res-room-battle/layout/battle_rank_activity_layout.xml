@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,6 +30,73 @@
         app:bl_gradient_startColor="#AEBFFF"
         app:bl_gradient_endColor="#98A7F1"
         app:bl_corners_radius="@dimen/view_8_dp"/>
+
+    <com.component.busilib.view.BitmapTextView
+        android:id="@+id/seq_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        BitmapTextView:scale="0.6"
+        BitmapTextView:text_color="#111E60"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="@id/self_area"
+        app:layout_constraintBottom_toTopOf="@id/seq_hint"
+        app:layout_constraintLeft_toLeftOf="@id/self_area"
+        app:layout_constraintRight_toLeftOf="@id/user_info_title"/>
+
+    <TextView
+        android:id="@+id/seq_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全国排名"
+        android:textColor="#80111E60"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintTop_toBottomOf="@id/seq_tv"
+        app:layout_constraintLeft_toLeftOf="@id/seq_tv"
+        app:layout_constraintRight_toRightOf="@id/seq_tv"
+        app:layout_constraintBottom_toBottomOf="@id/self_area" />
+
+    <com.component.person.view.UserInfoTitleView
+        android:id="@+id/user_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        app:layout_constraintTop_toTopOf="@id/self_area"
+        app:layout_constraintLeft_toRightOf="@id/seq_tv"
+        app:layout_constraintRight_toLeftOf="@id/blight_tv"/>
+
+    <com.component.busilib.view.BitmapTextView
+        android:id="@+id/blight_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        BitmapTextView:scale="0.6"
+        BitmapTextView:text_color="#111E60"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="@id/self_area"
+        app:layout_constraintBottom_toTopOf="@id/blight_hint"
+        app:layout_constraintLeft_toRightOf="@id/user_info_title"
+        app:layout_constraintRight_toRightOf="@id/self_area"/>
+
+    <TextView
+        android:id="@+id/blight_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="爆灯"
+        android:textColor="#80111E60"
+        app:layout_constraintTop_toBottomOf="@id/blight_tv"
+        app:layout_constraintBottom_toBottomOf="@id/self_area"
+        app:layout_constraintLeft_toLeftOf="@id/blight_tv"
+        app:layout_constraintRight_toRightOf="@id/blight_tv"
+        android:textSize="@dimen/textsize_12_dp"/>
+
+    <com.module.playways.battle.songlist.view.BattleStarView
+        android:id="@+id/mine_star_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/self_area"
+        app:layout_constraintRight_toRightOf="@id/self_area"
+        app:layout_constraintBottom_toBottomOf="@id/self_area"
+        android:layout_marginBottom="@dimen/view_18_dp" />
 
     <com.common.view.viewpager.SlidingTabLayout
         android:id="@+id/tag_tab"

@@ -26,10 +26,11 @@
             android:layout_height="match_parent"
             android:clipChildren="false">
 
-            <com.module.home.widget.UserInfoTitleView
+            <com.component.person.view.UserInfoTitleView
                 android:id="@+id/user_info_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/view_26_dp"
                 android:layout_centerHorizontal="true" />
 
             <TextView
