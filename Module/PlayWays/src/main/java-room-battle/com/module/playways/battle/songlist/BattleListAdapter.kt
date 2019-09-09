@@ -7,9 +7,9 @@ import com.module.playways.R
 
 class BattleListAdapter : RecyclerView.Adapter<BattleListViewHolder>() {
 
-    var mDataList = ArrayList<BattleModel>()
+    var mDataList = ArrayList<BattleTagModel>()
 
-    var onClickListener: ((model: BattleModel?, position:Int)  -> Unit)? = null
+    var onClickListener: ((model: BattleTagModel?, position:Int)  -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BattleListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.battle_song_item_layout, parent, false)

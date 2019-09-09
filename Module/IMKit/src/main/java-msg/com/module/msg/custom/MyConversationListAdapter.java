@@ -56,7 +56,7 @@ public class MyConversationListAdapter extends ConversationListAdapter {
         super.bindView(v, position, data);
         MyConversationListAdapter.ViewHolder holder = (MyConversationListAdapter.ViewHolder) v.getTag();
         UserInfo target = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
-        if (!TextUtils.isEmpty(target.getExtra())) {
+        if (target!=null && !TextUtils.isEmpty(target.getExtra())) {
             JSONObject jsonObject = JSON.parseObject(target.getExtra(), JSONObject.class);
             VipInfo vipInfo = jsonObject.getObject("vipInfo", VipInfo.class);
             if (vipInfo != null) {
@@ -72,6 +72,8 @@ public class MyConversationListAdapter extends ConversationListAdapter {
             } else {
                 holder.vipIv.setVisibility(View.GONE);
             }
+        }else {
+            holder.vipIv.setVisibility(View.GONE);
         }
     }
 

@@ -45,6 +45,7 @@
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_area">
 
         <android.support.v7.widget.RecyclerView
