@@ -54,7 +54,7 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
             execUploadPhoto(pm)
         }
 
-        override fun onEnd(pm: PhotoModel) {
+        override fun onEnd(pm: PhotoModel?) {
             MyLog.d(TAG, "onEnd 上传结束 PhotoModel=$pm")
         }
     }

@@ -47,7 +47,7 @@ class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxL
             }
         }
 
-        override fun onEnd(floatWindowData: UserInfoModel) {
+        override fun onEnd(floatWindowData: UserInfoModel?) {
 
         }
     }

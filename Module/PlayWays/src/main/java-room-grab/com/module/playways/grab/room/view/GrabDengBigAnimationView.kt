@@ -36,7 +36,7 @@ class GrabDengBigAnimationView : RelativeLayout {
             playBurstAnimationInner(playData, svgaImageView)
         }
 
-        override fun onEnd(playData: PlayData) {
+        override fun onEnd(playData: PlayData?) {
 
         }
     }

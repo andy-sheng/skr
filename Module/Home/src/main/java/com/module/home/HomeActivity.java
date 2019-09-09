@@ -35,6 +35,7 @@ import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
+import com.common.notification.event.EStandFullStarEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
@@ -58,6 +59,7 @@ import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
+import com.zq.live.proto.broadcast.StandFullStar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -245,6 +247,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
+                StandFullStar standFullStar = new StandFullStar("asdjlajsadadadald");
+                EventBus.getDefault().post(new EStandFullStarEvent(standFullStar));
                 mMainVp.setCurrentItem(2, false);
                 selectTab(2);
 

@@ -83,7 +83,7 @@ class VoiceRecordTextView : ExTextView {
             execUploadAudio(file)
         }
 
-        override fun onEnd(file: AudioFile) {
+        override fun onEnd(file: AudioFile?) {
             MyLog.d(TAG, "onEnd 上传结束 File=$file")
         }
     }
