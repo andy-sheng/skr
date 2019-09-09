@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.core.userinfo.model.VipInfo;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.rxretrofit.ApiManager;
@@ -387,6 +388,10 @@ public class MyUserInfoManager {
 
     public int getVipType() {
         return (mUser != null && mUser.getVipInfo() != null) ? mUser.getVipInfo().getVipType() : 0;
+    }
+
+    public VipInfo getVipInfo() {
+        return mUser != null ? mUser.getVipInfo() : null;
     }
 
     public String getSignature() {

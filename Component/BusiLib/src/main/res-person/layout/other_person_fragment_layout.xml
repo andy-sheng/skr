@@ -210,7 +210,6 @@
                             android:id="@+id/userid_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_20_dp"
-                            android:layout_marginLeft="@dimen/view_6_dp"
                             android:layout_marginTop="@dimen/view_6_dp"
                             android:gravity="center"
                             android:textColor="@color/white_trans_80"
@@ -218,6 +217,26 @@
                             app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
                             app:layout_constraintLeft_toLeftOf="@id/name_tv"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+                        <TextView
+                            android:id="@+id/vip_tv"
+                            android:layout_width="@dimen/view_0_dp"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginTop="@dimen/view_6_dp"
+                            android:textSize="@dimen/textsize_14_dp"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textColor="@color/white_trans_50"
+                            android:text="ahafhafhafafhafhahgagagaggag"
+                            android:drawableLeft="@drawable/gerenxinxi_sigerenzheng"
+                            android:drawablePadding="@dimen/view_8_dp"
+                            android:gravity="left|center_vertical"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
+                            app:layout_constraintLeft_toLeftOf="@id/name_tv"
+                            app:layout_constraintRight_toLeftOf="@id/business_card"
+                            app:layout_constraintTop_toBottomOf="@id/name_tv"/>
 
                         <com.common.flowlayout.TagFlowLayout
                             android:id="@+id/flowlayout"

@@ -117,6 +117,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mSignTv: ExTextView
     lateinit var mFlowlayout: TagFlowLayout
     lateinit var mUseridTv: TextView
+    lateinit var mVipTv: TextView
 
     lateinit var mToolbar: Toolbar
     lateinit var mToolbarLayout: RelativeLayout
@@ -401,6 +402,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mSexIv = rootView.findViewById(R.id.sex_iv)
         mBusinessCard = rootView.findViewById(R.id.business_card)
         mUseridTv = rootView.findViewById(R.id.userid_tv)
+        mVipTv = rootView.findViewById(R.id.vip_tv);
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mFlowlayout = rootView.findViewById(R.id.flowlayout)
 
@@ -650,14 +652,16 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         mNameTv.text = model.nicknameRemark
         mUseridTv.text = "ID:" + model.userId
-        if (model.sex == ESex.SX_MALE.value) {
-            mSexIv.visibility = View.VISIBLE
-            mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
-        } else if (model.sex == ESex.SX_FEMALE.value) {
-            mSexIv.visibility = View.VISIBLE
-            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
-        } else {
-            mSexIv.visibility = View.GONE
+        when {
+            model.sex == ESex.SX_MALE.value -> {
+                mSexIv.visibility = View.VISIBLE
+                mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
+            }
+            model.sex == ESex.SX_FEMALE.value -> {
+                mSexIv.visibility = View.VISIBLE
+                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
+            }
+            else -> mSexIv.visibility = View.GONE
         }
 
         mSrlNameTv.text = model.nicknameRemark
@@ -667,6 +671,16 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             mHashMap.put(LOCATION_TAG, model.location.province)
         } else {
             mHashMap.put(LOCATION_TAG, "火星")
+        }
+
+        if (model.vipInfo != null && model.vipInfo.vipType > 0) {
+            mVipTv.visibility = View.VISIBLE
+            mUseridTv.visibility = View.INVISIBLE
+
+            mVipTv.text = model.vipInfo.vipDesc
+        } else {
+            mVipTv.visibility = View.GONE
+            mUseridTv.visibility = View.VISIBLE
         }
 
         refreshTag()

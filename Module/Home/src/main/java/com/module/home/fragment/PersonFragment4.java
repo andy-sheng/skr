@@ -93,6 +93,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     AvatarView mAvatarIv;
     NormalLevelView2 mLevelView;
     ExTextView mCharmTv;
+    TextView mVipTv;
 
     ExTextView mNameTv;
     ExTextView mSignTv;
@@ -115,6 +116,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     TextView mSrlNameTv;
     ImageView mSrlSexIv;
     ExTextView mSrlCharmTv;
+    TextView mSrlVipTv;
 
     PersonCorePresenter mPresenter;
 
@@ -188,7 +190,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSrlAvatarIv = getRootView().findViewById(R.id.srl_avatar_iv);
         mSrlNameTv = getRootView().findViewById(R.id.srl_name_tv);
         mSrlSexIv = getRootView().findViewById(R.id.srl_sex_iv);
-        mSrlCharmTv =  getRootView().findViewById(R.id.srl_charm_tv);
+        mSrlCharmTv = getRootView().findViewById(R.id.srl_charm_tv);
+        mSrlVipTv = getRootView().findViewById(R.id.srl_vip_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
                 .build());
@@ -293,6 +296,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSexIv = getRootView().findViewById(R.id.sex_iv);
         mSignTv = getRootView().findViewById(R.id.sign_tv);
         mCharmTv = getRootView().findViewById(R.id.charm_tv);
+        mVipTv = getRootView().findViewById(R.id.vip_tv);
 
         mBusinessCard = (ImageView) getRootView().findViewById(R.id.business_card);
 
@@ -664,6 +668,24 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mSrlSexIv.setVisibility(View.GONE);
             }
             mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
+
+            if (MyUserInfoManager.getInstance().getVipInfo() != null && MyUserInfoManager.getInstance().getVipType() > 0) {
+                // 展示vip
+                mCharmTv.setVisibility(View.GONE);
+                mSrlCharmTv.setVisibility(View.GONE);
+
+                mVipTv.setVisibility(View.VISIBLE);
+                mSrlVipTv.setVisibility(View.VISIBLE);
+                mVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
+                mSrlVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
+            } else {
+                // 展示魅力值
+                mCharmTv.setVisibility(View.VISIBLE);
+                mSrlCharmTv.setVisibility(View.VISIBLE);
+
+                mVipTv.setVisibility(View.GONE);
+                mSrlVipTv.setVisibility(View.GONE);
+            }
         }
     }
 
