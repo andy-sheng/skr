@@ -103,4 +103,5 @@ public interface RouterConstants {
     String ACTIVITY_FOR_TEST = "/test/ForTestActivity";
 
     String ACTIVITY_BATTLE_LIST = "/battle/BattleListActivity";
+    String ACTIVITY_BATTLE_RANK = "/battle/BattleRankActivity";
 }
