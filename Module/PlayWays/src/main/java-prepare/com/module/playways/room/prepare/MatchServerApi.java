@@ -5,6 +5,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -107,7 +108,7 @@ public interface MatchServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/join-room")
-    Observable<ApiResult> joinGrabRoom(@Body RequestBody body);
+    Call<ApiResult> joinGrabRoom(@Body RequestBody body);
 
     /**
      * 请求匹配
@@ -117,7 +118,7 @@ public interface MatchServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/query-match")
-    Observable<ApiResult> startGrabMatch(@Body RequestBody body);
+    Call<ApiResult> startGrabMatch(@Body RequestBody body);
 
 
     /**
@@ -126,5 +127,25 @@ public interface MatchServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/cancel-match")
-    Observable<ApiResult> cancleGrabMatch(@Body RequestBody body);
+    Call<ApiResult> cancleGrabMatch(@Body RequestBody body);
+
+
+    /**
+     * 请求匹配 歌单战
+     * @param body 包含mode 游戏类型(必选)
+     *             包含playbookItemID 演唱歌曲id(必选)
+     *             包含platform 平台类型(必选)
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/stand-playbook-match")
+    Call<ApiResult> startPlaybookMatch(@Body RequestBody body);
+
+
+    /**
+     * 取消匹配 歌单战
+     * @param body  游戏类型 mode (必选)
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/stand-playbook-cancel-match")
+    Call<ApiResult> canclePlayBookMatch(@Body RequestBody body);
 }

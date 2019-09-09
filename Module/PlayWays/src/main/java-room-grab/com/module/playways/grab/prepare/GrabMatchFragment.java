@@ -145,13 +145,13 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         });
 
         if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            mMatchPresenter = new RankMatchPresenter(this);
+            mMatchPresenter = new RankMatchPresenter(this,mPrepareData);
             addPresent(mMatchPresenter);
-            mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
+            mMatchPresenter.startLoopMatchTask();
         } else if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-            mMatchPresenter = new GrabMatchPresenter(this, mPrepareData.isNewUser());
+            mMatchPresenter = new GrabMatchPresenter(this, mPrepareData);
             addPresent(mMatchPresenter);
-            mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
+            mMatchPresenter.startLoopMatchTask();
         }
 
         startTimeTask();

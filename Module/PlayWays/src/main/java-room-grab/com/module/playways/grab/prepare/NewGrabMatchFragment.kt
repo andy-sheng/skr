@@ -89,14 +89,18 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingVie
             }
         })
 
-        if (mPrepareData!!.gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            mMatchPresenter = RankMatchPresenter(this)
-            addPresent(mMatchPresenter)
-            mMatchPresenter.startLoopMatchTask(mPrepareData!!.songModel.itemID, mPrepareData!!.gameType)
-        } else if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
-            mMatchPresenter = GrabMatchPresenter(this, mPrepareData!!.isNewUser)
-            addPresent(mMatchPresenter)
-            mMatchPresenter.startLoopMatchTask(mPrepareData!!.tagId, mPrepareData!!.gameType)
+        if (mPrepareData?.gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
+            mPrepareData?.let {
+                mMatchPresenter = RankMatchPresenter(this,it)
+                addPresent(mMatchPresenter)
+                mMatchPresenter.startLoopMatchTask()
+            }
+        } else if (mPrepareData?.gameType == GameModeType.GAME_MODE_GRAB || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
+            mPrepareData?.let {
+                mMatchPresenter = GrabMatchPresenter(this, it)
+                addPresent(mMatchPresenter)
+                mMatchPresenter.startLoopMatchTask()
+            }
         }
 
         startTimeTask()

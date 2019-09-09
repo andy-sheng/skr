@@ -29,8 +29,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     // 以下不是服务器返回的
     //var isParticipant = true// 我是不是这局的参与者，能不能抢唱，投票
     var elapsedTimeMs: Int = 0//这个轮次当前状态已经经过的时间，一般用于中途加入者使用,相对于子轮次开始的相对时间
-    var enterStatus: Int = ERaceRoundStatus.ERRS_UNKNOWN.value//你进入房间当前轮次处于的状态
-    var enterSubRoundSeq: Int = 0 //中途加入时的子轮次 只在  @ERaceRoundStatus.ERRS_ONGOINE
+    var enterStatus: Int = ERaceRoundStatus.ERRS_UNKNOWN.value//你进入房间时当前轮次处于的状态，是一个快照
+    var enterSubRoundSeq: Int = 0 //中途加入时的子轮次 只在  enterStatus == ERaceRoundStatus.ERRS_ONGOINE 有意义
 
 
     override fun getType(): Int {

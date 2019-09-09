@@ -188,7 +188,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int tagID;// 剧本游戏
     private boolean isNewGame;// 是否是一局新游戏
     private String agoraToken;// 声网token
-    private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
+    private int roomType;// 一唱到底房间类型，公开，好友，私密，普通 5是歌单
     private int ownerID;// 房主id
     private long gameStartTimeMs;// 游戏创建时间,<=0 代表游戏未创建
     private boolean hasGameBegin = true;// 游戏是否已经开始
