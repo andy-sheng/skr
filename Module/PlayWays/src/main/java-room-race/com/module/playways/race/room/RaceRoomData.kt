@@ -31,6 +31,8 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
             U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", value)
         }
 
+    var runningRoundCount = 0 // 本人在这个房间里已经待了多少轮了
+
     init {
         isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
     }
@@ -46,12 +48,16 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
             // 发送游戏结束
             return
         }
-        if (RoomDataUtils.roundSeqLarger(this.expectRoundInfo, this.realRoundInfo) || this.realRoundInfo == null) {
+        val larger = RoomDataUtils.roundSeqLarger(this.expectRoundInfo, this.realRoundInfo)
+        if (larger || this.realRoundInfo == null) {
             // TODO
             val lastRound = this.realRoundInfo
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次结束事件)
             this.realRoundInfo = this.expectRoundInfo
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次开始事件)
+            if(larger) {
+                this.runningRoundCount++
+            }
             // TODO 发送轮次切换事件
             EventBus.getDefault().post(RaceRoundChangeEvent(lastRound, this.realRoundInfo))
 //            EventBus.getDefault().post(GrabRoundChangeEvent(lastRoundInfoModel, mRealRoundInfo as GrabRoundInfoModel))
