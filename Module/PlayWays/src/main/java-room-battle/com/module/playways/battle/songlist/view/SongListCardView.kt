@@ -2,54 +2,140 @@ package com.module.playways.battle.songlist.view
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.Group
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
+import com.alibaba.fastjson.JSON
+import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
+import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.battle.BattleServerApi
 import com.module.playways.battle.songlist.adapter.SongListCardAdapter
+import com.module.playways.battle.songlist.model.BattleSongModel
 import com.module.playways.battle.songlist.model.BattleTagModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 //歌单详情页面
-class SongListCardView(val model: BattleTagModel, context: Context) : ConstraintLayout(context) {
+class SongListCardView(val model: BattleTagModel, context: Context) : ConstraintLayout(context), CoroutineScope by MainScope() {
     val mTag = "SongListCardView"
 
-    private val avatarBg: BaseImageView
-    private val avatarIv: BaseImageView
+    private val recordFilm: ImageView
+    private val recordCover: SimpleDraweeView
     private val songNameTv: ExTextView
     private val hasSingTv: ExTextView
     private val lightCountTv: ExTextView
+    private val unlockGroup: Group
+    private val starView: BattleStarView
     private val starBg: ExImageView
     private val startSongList: ExTextView
     private val recyclerView: RecyclerView
+    private val cancelIv: ImageView
 
     val adapter = SongListCardAdapter()
+    private val battleServerApi: BattleServerApi = ApiManager.getInstance().createService(BattleServerApi::class.java)
 
     private var mDialogPlus: DialogPlus? = null
 
+    var blightCnt = 0  // 爆灯数
+    var getSongCnt = 0  // 唱过
+
     init {
         View.inflate(context, R.layout.song_list_card_view, this)
-        avatarBg = this.findViewById(R.id.avatar_bg)
-        avatarIv = this.findViewById(R.id.avatar_iv)
+        recordFilm = this.findViewById(R.id.record_film)
+        recordCover = this.findViewById(R.id.record_cover)
         songNameTv = this.findViewById(R.id.song_name_tv)
         hasSingTv = this.findViewById(R.id.has_sing_tv)
         lightCountTv = this.findViewById(R.id.light_count_tv)
+        unlockGroup = this.findViewById(R.id.unlock_group)
         starBg = this.findViewById(R.id.star_bg)
+        starView = this.findViewById(R.id.star_view)
         startSongList = this.findViewById(R.id.start_song_list)
         recyclerView = this.findViewById(R.id.recycler_view)
+        cancelIv = this.findViewById(R.id.cancel_iv)
 
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
+
+        startSongList.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                //todo 开启歌单
+            }
+        })
+
+        starBg.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                //todo 再次演唱
+            }
+        })
+
+        cancelIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                dismiss()
+            }
+        })
+
+        getStandSongList()
     }
 
+    private fun getStandSongList() {
+        launch {
+            val result = subscribe(RequestControl("getStandSongList", ControlType.CancelThis)) {
+                battleServerApi.getStandSongList(MyUserInfoManager.getInstance().uid, model.tagID)
+            }
+            if (result.errno == 0) {
+                blightCnt = result.data.getIntValue("blightCnt")
+                getSongCnt = result.data.getIntValue("getSongCnt")
+                val list = JSON.parseArray(result.data.getString("details"), BattleSongModel::class.java)
+                showSongCard(list)
+            } else {
+
+            }
+        }
+    }
+
+    private fun showSongCard(list: List<BattleSongModel>?) {
+        adapter.mDataList.clear()
+        if (!list.isNullOrEmpty()) {
+            adapter.mDataList.addAll(list)
+        }
+        adapter.notifyDataSetChanged()
+
+        songNameTv.text = model.tagName
+        hasSingTv.text = getSongCnt.toString()
+        lightCountTv.text = blightCnt.toString()
+        AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model.coverURL)
+                .setCircle(true)
+                .build())
+        if (model.status == BattleTagModel.SST_LOCK) {
+            unlockGroup.visibility = View.GONE
+            startSongList.visibility = View.VISIBLE
+        } else {
+            unlockGroup.visibility = View.VISIBLE
+            startSongList.visibility = View.GONE
+            starView.bindData(model.starCnt, 5)
+        }
+    }
 
     fun showByDialog() {
         showByDialog(true)
@@ -60,9 +146,9 @@ class SongListCardView(val model: BattleTagModel, context: Context) : Constraint
         mDialogPlus = DialogPlus.newDialog(context)
                 .setContentHolder(ViewHolder(this))
                 .setGravity(Gravity.BOTTOM)
+                .setContentHeight(U.getDisplayUtils().phoneHeight - 68.dp())
                 .setContentBackgroundResource(com.common.base.R.color.transparent)
                 .setOverlayBackgroundResource(com.common.base.R.color.black_trans_80)
-                .setMargin(10.dp(), 68.dp(), 10.dp(), -1)
                 .setExpanded(false)
                 .setCancelable(canCancel)
                 .create()
@@ -70,10 +156,12 @@ class SongListCardView(val model: BattleTagModel, context: Context) : Constraint
     }
 
     fun dismiss() {
+        cancel()
         mDialogPlus?.dismiss()
     }
 
     fun dismiss(isAnimation: Boolean) {
+        cancel()
         mDialogPlus?.dismiss(isAnimation)
     }
 }
