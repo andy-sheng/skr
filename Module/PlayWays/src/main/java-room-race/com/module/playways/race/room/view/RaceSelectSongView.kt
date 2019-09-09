@@ -71,7 +71,7 @@ class RaceSelectSongView : ExConstraintLayout {
         firstSongItem.setDebounceViewClickListener {
             firstSongItem.getSong()?.let {
                 U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
-                if (mRoomData?.realRoundSeq == mSeq) {
+                if (canSelectSong()) {
                     MyLog.d(TAG, "mSeq is $mSeq")
                     mSelectCall?.invoke(1, mSeq)
                     mNoSelectCall = null
@@ -81,7 +81,7 @@ class RaceSelectSongView : ExConstraintLayout {
 
         secondSongItem.setDebounceViewClickListener {
             secondSongItem.getSong()?.let {
-                if (mRoomData?.realRoundSeq == mSeq) {
+                if (canSelectSong()) {
                     MyLog.d(TAG, "mSeq is $mSeq")
                     U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                     mSelectCall?.invoke(2, mSeq)
@@ -92,7 +92,7 @@ class RaceSelectSongView : ExConstraintLayout {
 
         thirdSongItem.setDebounceViewClickListener {
             thirdSongItem.getSong()?.let {
-                if (mRoomData?.realRoundSeq == mSeq) {
+                if (canSelectSong()) {
                     MyLog.d(TAG, "mSeq is $mSeq")
                     U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                     mSelectCall?.invoke(3, mSeq)
@@ -104,7 +104,7 @@ class RaceSelectSongView : ExConstraintLayout {
         forthSongItem.setDebounceViewClickListener {
             forthSongItem.getSong()?.let {
                 U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
-                if (mRoomData?.realRoundSeq == mSeq) {
+                if (canSelectSong()) {
                     MyLog.d(TAG, "mSeq is $mSeq")
                     mSelectCall?.invoke(4, mSeq)
                     mNoSelectCall = null
@@ -113,6 +113,14 @@ class RaceSelectSongView : ExConstraintLayout {
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.newrank_picksong)
+    }
+
+    fun canSelectSong(): Boolean {
+        if (mRoomData?.realRoundSeq == mSeq && mRoomData?.realRoundInfo?.enterStatus ?: 0 < ERaceRoundStatus.ERRS_CHOCING.value) {
+            return true
+        }
+
+        return false
     }
 
     fun setRoomData(roomData: RaceRoomData, selectCall: ((Int, Int) -> Unit)) {
