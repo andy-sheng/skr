@@ -87,6 +87,7 @@
         app:layout_constraintTop_toTopOf="@+id/zuiduobaodeng_textview" />
 
     <ImageView
+        android:id="@+id/rank_iv"
         android:layout_width="@dimen/view_23_dp"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginRight="@dimen/view_23_dp"

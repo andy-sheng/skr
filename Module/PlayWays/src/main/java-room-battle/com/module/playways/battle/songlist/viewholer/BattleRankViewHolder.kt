@@ -2,6 +2,7 @@ package com.module.playways.battle.songlist.viewholer
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import com.common.utils.SpanUtils
@@ -43,7 +44,13 @@ class BattleRankViewHolder(item: View, var listener: ((model: BattleRankInfoMode
         }
         avatarIv.bindData(model.user)
         nameTv.text = model.user?.nicknameRemark
-        levelTv.text = model.user?.ranking?.rankingDesc
+        if(TextUtils.isEmpty(model.user?.ranking?.rankingDesc)){
+            levelTv.visibility = View.GONE
+        }else{
+            levelTv.visibility = View.VISIBLE
+            levelTv.text = model.user?.ranking?.rankingDesc
+        }
+
         starView.bindData(model.starCnt, model.starCnt)
 
         val spanStringBuilder = SpanUtils()

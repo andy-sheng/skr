@@ -12,4 +12,17 @@ interface BattleServerApi {
 
     @GET("v1/playbook/stand-song-list")
     fun getStandSongList(@Query("userID") userID: Long, @Query("tagID") tagID: Int): Call<ApiResult>
+
+    @GET("v1/playbook/stand-mine")
+    fun getStandRankMine(@Query("userID") userID: Long, @Query("tagID") tagID: Int): Call<ApiResult>
+
+    @GET("v1/playbook/stand-rank-tabs")
+    fun getStandRankTag(): Call<ApiResult>
+
+    @GET("v1/playbook/stand-rank-list")
+    fun getStandRankList(@Query("userID") userID: Long,
+                         @Query("tagID") tagID: Int,
+                         @Query("offset") offset: Int,
+                         @Query("cnt") cnt: Int,
+                         @Query("tabType") tabType: Int): Call<ApiResult>
 }

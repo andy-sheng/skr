@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
@@ -22,6 +23,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.battle.BattleServerApi
 import com.module.playways.battle.songlist.adapter.SongListCardAdapter
@@ -41,6 +43,7 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
     private val recordCover: SimpleDraweeView
     private val songNameTv: ExTextView
     private val hasSingTv: ExTextView
+    private val rankIv: ImageView
     private val lightCountTv: ExTextView
     private val unlockGroup: Group
     private val starView: BattleStarView
@@ -64,6 +67,7 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
         recordCover = this.findViewById(R.id.record_cover)
         songNameTv = this.findViewById(R.id.song_name_tv)
         hasSingTv = this.findViewById(R.id.has_sing_tv)
+        rankIv = this.findViewById(R.id.rank_iv)
         lightCountTv = this.findViewById(R.id.light_count_tv)
         unlockGroup = this.findViewById(R.id.unlock_group)
         starBg = this.findViewById(R.id.star_bg)
@@ -90,6 +94,14 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
         cancelIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 dismiss()
+            }
+        })
+
+        rankIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_RANK)
+                        .withInt("tagID", model.tagID)
+                        .navigation()
             }
         })
 
