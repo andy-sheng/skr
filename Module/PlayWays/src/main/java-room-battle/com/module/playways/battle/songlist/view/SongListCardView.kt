@@ -1,18 +1,16 @@
 package com.module.playways.battle.songlist.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.constraint.Group
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.alibaba.fastjson.JSON
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.image.fresco.BaseImageView
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -33,11 +31,10 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 //歌单详情页面
-class SongListCardView(val model: BattleTagModel, context: Context) : ConstraintLayout(context), CoroutineScope by MainScope() {
+class SongListCardView(val model: BattleTagModel, context: Context) : ExConstraintLayout(context), CoroutineScope by MainScope() {
     val mTag = "SongListCardView"
 
     private val recordFilm: ImageView
@@ -62,6 +59,7 @@ class SongListCardView(val model: BattleTagModel, context: Context) : Constraint
 
     init {
         View.inflate(context, R.layout.song_list_card_view, this)
+        background = (U.getDrawable(R.drawable.gedan_yulan_bj))
         recordFilm = this.findViewById(R.id.record_film)
         recordCover = this.findViewById(R.id.record_cover)
         songNameTv = this.findViewById(R.id.song_name_tv)
@@ -96,6 +94,12 @@ class SongListCardView(val model: BattleTagModel, context: Context) : Constraint
         })
 
         getStandSongList()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        (layoutParams as (FrameLayout.LayoutParams)).leftMargin = U.getDisplayUtils().dip2px(10f)
+        (layoutParams as (FrameLayout.LayoutParams)).rightMargin = U.getDisplayUtils().dip2px(10f)
     }
 
     private fun getStandSongList() {
@@ -156,12 +160,10 @@ class SongListCardView(val model: BattleTagModel, context: Context) : Constraint
     }
 
     fun dismiss() {
-        cancel()
         mDialogPlus?.dismiss()
     }
 
     fun dismiss(isAnimation: Boolean) {
-        cancel()
         mDialogPlus?.dismiss(isAnimation)
     }
 }
