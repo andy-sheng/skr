@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_72_dp">
 
@@ -11,13 +13,12 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="@dimen/view_34_dp"/>
 
-    <TextView
+    <com.component.busilib.view.BitmapTextView
         android:id="@+id/seq_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textsize_24_dp"
-        android:textColor="#EF9D00"
-        android:textStyle="bold"
+        BitmapTextView:scale="0.6"
+        BitmapTextView:text_color="#EF9D00"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/seq_guide"
@@ -30,7 +31,9 @@
         android:layout_marginLeft="@dimen/view_20_dp"
         app:layout_constraintLeft_toRightOf="@id/seq_guide"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        avatarView:borderWidth="@dimen/view_2_dp"
+        avatarView:borderColor="@color/white"/>
     
     <android.support.constraint.Guideline
         android:id="@+id/result_guide"
@@ -39,15 +42,29 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/view_58_dp"/>
 
-    <TextView
+    <com.component.busilib.view.BitmapTextView
         android:id="@+id/blight_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        BitmapTextView:scale="0.6"
+        BitmapTextView:text_color="#cc111E60"
         app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintBottom_toTopOf="@id/star_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/result_guide"
-        app:layout_constraintRight_toRightOf="@id/result_guide"/>
+        app:layout_constraintRight_toLeftOf="@id/blight_hint"/>
+
+    <TextView
+        android:id="@+id/blight_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#80111E60"
+        android:textSize="@dimen/textsize_10_dp"
+        android:text="爆灯"
+        app:layout_constraintLeft_toRightOf="@id/blight_tv"
+        app:layout_constraintRight_toRightOf="@id/result_guide"
+        app:layout_constraintBottom_toBottomOf="@id/blight_tv" />
 
    <com.module.playways.battle.songlist.view.BattleStarView
        android:id="@+id/star_view"

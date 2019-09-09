@@ -142,6 +142,9 @@ public class BitmapTextView extends View {
         }
     }
 
+    public void setDrawTextColor(int color){
+        textColor = color;
+    }
     public void setText(String text) {
         mWidth = 0;
         mHeight = 0;
