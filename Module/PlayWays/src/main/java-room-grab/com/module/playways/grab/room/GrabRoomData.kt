@@ -6,6 +6,7 @@ import com.common.log.MyLog
 import com.common.utils.DeviceUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
+import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.friends.SpecialModel
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
@@ -27,7 +28,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     var isHasExitGame = false// 是否已经正常退出房间
     private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
     var songLineNum: Int = 0// 歌词总行数
-    var roomType: Int = 0// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
+    var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
     var ownerId: Int = 0// 房主id
     private var hasGameBegin = true// 游戏是否已经开始
     var specialModel: SpecialModel?=null
