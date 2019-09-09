@@ -91,7 +91,7 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingVie
 
         if (mPrepareData?.gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
             mPrepareData?.let {
-                mMatchPresenter = RankMatchPresenter(this,it)
+                mMatchPresenter = RankMatchPresenter(this, it)
                 addPresent(mMatchPresenter)
                 mMatchPresenter.startLoopMatchTask()
             }
@@ -170,7 +170,8 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingVie
                             U.getToastUtil().showShort("现在小伙伴有点少，稍后再匹配试试吧～")
                             mMatchPresenter.cancelMatch()
                             stopTimeTask()
-                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
+                            if (mPrepareData?.gameType == GameModeType.GAME_MODE_GRAB
+                                    || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
                                 BgMusicManager.getInstance().destory()
                             }
                             if (activity != null) {
@@ -269,7 +270,8 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingVie
                         }
                         U.getSoundUtils().release(GrabMatchSuccessFragment.TAG)
                         mMatchPresenter.cancelMatch()
-                        if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
+                        if (mPrepareData?.gameType == GameModeType.GAME_MODE_GRAB
+                                || mPrepareData?.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
                             BgMusicManager.getInstance().destory()
                         }
                         stopTimeTask()
@@ -332,9 +334,7 @@ class NewGrabMatchFragment : BaseFragment(), IGrabMatchingView, IRankMatchingVie
                 .navigation()
 
         //结束当前Activity
-        if (activity != null) {
-            activity!!.finish()
-        }
+        activity?.finish()
     }
 
     override fun channelIsOffLine() {
