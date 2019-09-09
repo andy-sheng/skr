@@ -247,8 +247,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                StandFullStar standFullStar = new StandFullStar("asdjlajsadadadald");
-                EventBus.getDefault().post(new EStandFullStarEvent(standFullStar));
+//                StandFullStar standFullStar = new StandFullStar("asdjlajsadadadald");
+//                EventBus.getDefault().post(new EStandFullStarEvent(standFullStar));
                 mMainVp.setCurrentItem(2, false);
                 selectTab(2);
 

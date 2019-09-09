@@ -19,6 +19,7 @@ class GrabFullStarNotifyView(context: Context) : ExConstraintLayout(context) {
         View.inflate(context, R.layout.full_star_notify_view_layout, this)
         bgIv = this.findViewById(R.id.bg_iv)
         contentTv = this.findViewById(R.id.content_tv)
+        //setBackgroundResource(R.color.Green)
     }
 
     fun bindData(content:String?){

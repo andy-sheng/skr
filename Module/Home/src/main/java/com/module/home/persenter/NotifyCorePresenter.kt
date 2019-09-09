@@ -610,7 +610,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .setView(view)
                 .setMoveType(MoveType.canRemove)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
-                .setHeight(Screen.height, 0.2f)
+                .setHeight(Screen.height, 0.1f)
                 .setViewStateListener(object : ViewStateListenerAdapter() {
                     override fun onDismiss(dismissReason: Int) {
                         mFloatWindowDataFloatWindowObjectPlayControlTemplate?.endCurrent(floatWindowData)
