@@ -453,6 +453,12 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
+        if(thisRound==null){
+            // 游戏结束了
+            mIRaceRoomView.gameOver(lastRound)
+            return
+        }
+
         if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
             if (lastRound != null) {
                 // 有上一轮，等待中要飞过来
@@ -682,11 +688,18 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 delay(10 * 1000)
                 val result = subscribe { raceRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
-                    val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
-                    if (syncStatusTimeMs > mRoomData.lastSyncTs) {
-                        mRoomData.lastSyncTs = syncStatusTimeMs
-                        val raceRoundInfoModel = JSON.parseObject(result.data.getString("currentRound"), RaceRoundInfoModel::class.java)
-                        processSyncResult(raceRoundInfoModel)
+                    val gameOverTimeMs = result.data.getLong("gameOverTimeMs")
+                    if(gameOverTimeMs>0){
+                        // 游戏结束了，停服了
+                        mRoomData.expectRoundInfo = null
+                        mRoomData.checkRoundInEachMode()
+                    }else{
+                        val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
+                        if (syncStatusTimeMs > mRoomData.lastSyncTs) {
+                            mRoomData.lastSyncTs = syncStatusTimeMs
+                            val raceRoundInfoModel = JSON.parseObject(result.data.getString("currentRound"), RaceRoundInfoModel::class.java)
+                            processSyncResult(raceRoundInfoModel)
+                        }
                     }
                 } else {
 

@@ -2,7 +2,6 @@ package com.module.playways.race.room.inter
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
-import com.module.playways.room.prepare.model.PlayerInfoModel
 import com.module.playways.room.song.model.SongModel
 
 interface IRaceRoomView {
@@ -15,4 +14,5 @@ interface IRaceRoomView {
     fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?)
     fun goResultPage(lastRound: RaceRoundInfoModel)
     fun joinNotice(playerInfoModel: UserInfoModel?)
+    fun gameOver(lastRound: RaceRoundInfoModel?)
 }

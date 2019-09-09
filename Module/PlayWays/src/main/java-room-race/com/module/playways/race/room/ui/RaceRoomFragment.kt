@@ -675,6 +675,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         return true
     }
 
+    override fun gameOver(lastRound: RaceRoundInfoModel?){
+        quitGame()
+    }
+
     fun quitGame() {
         mCorePresenter.exitRoom("quitGame")
         activity?.finish()

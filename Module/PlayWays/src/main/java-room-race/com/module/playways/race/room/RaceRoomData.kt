@@ -46,6 +46,10 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
         if (this.expectRoundInfo == null && this.realRoundInfo != null) {
             // 发送游戏结束
+            // TODO 发送轮次切换事件
+            val lastRound = this.realRoundInfo
+            this.realRoundInfo = this.expectRoundInfo
+            EventBus.getDefault().post(RaceRoundChangeEvent(lastRound, this.realRoundInfo))
             return
         }
         val larger = RoomDataUtils.roundSeqLarger(this.expectRoundInfo, this.realRoundInfo)

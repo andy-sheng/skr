@@ -22,6 +22,7 @@ import com.common.view.AnimateClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.constans.GameModeType
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.playways.R
@@ -29,6 +30,7 @@ import com.module.playways.battle.BattleServerApi
 import com.module.playways.battle.songlist.adapter.SongListCardAdapter
 import com.module.playways.battle.songlist.model.BattleSongModel
 import com.module.playways.battle.songlist.model.BattleTagModel
+import com.module.playways.room.prepare.model.PrepareData
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.CoroutineScope
@@ -88,6 +90,15 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
         starBg.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 //todo 再次演唱
+                val prepareData = PrepareData()
+                prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK)
+//                prepareData.setTagId(model.tagID)
+                prepareData.setTagId(8)
+
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                        .withSerializable("prepare_data", prepareData)
+                        .navigation()
             }
         })
 
