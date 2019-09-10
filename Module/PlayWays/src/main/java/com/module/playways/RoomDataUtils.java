@@ -9,6 +9,7 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.race.room.RaceRoomData;
+import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.race.room.model.RaceRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
@@ -182,7 +183,7 @@ public class RoomDataUtils {
         if (infoModel instanceof RankRoundInfoModel) {
             return ((RankRoundInfoModel) infoModel).getUserID() == MyUserInfoManager.getInstance().getUid();
         }
-        if (infoModel instanceof RaceRoundInfoModel){
+        if (infoModel instanceof RaceRoundInfoModel) {
             return ((RaceRoundInfoModel) infoModel).isSingerNowBySelf();
         }
         return false;
@@ -200,8 +201,12 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static PlayerInfoModel getPlayerInfoById(RaceRoomData roomData, long uid) {
-        for (PlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
+    public static RacePlayerInfoModel getPlayerInfoById(RaceRoomData roomData, int uid) {
+        return roomData.getPlayerOrWaiterInfoModel(uid);
+    }
+
+    public static RankPlayerInfoModel getPlayerInfoById(RankRoomData roomData, int uid) {
+        for (RankPlayerInfoModel playerInfo : roomData.getPlayerAndWaiterInfoList()) {
             if (playerInfo.getUserInfo().getUserId() == uid) {
                 return playerInfo;
             }
@@ -209,22 +214,8 @@ public class RoomDataUtils {
         return null;
     }
 
-    public static RankPlayerInfoModel getPlayerInfoById(RankRoomData roomData, long uid) {
-        for (RankPlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
-            if (playerInfo.getUserInfo().getUserId() == uid) {
-                return playerInfo;
-            }
-        }
-        return null;
-    }
-
-    public static GrabPlayerInfoModel getPlayerInfoById(GrabRoomData roomData, long uid) {
-        for (GrabPlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
-            if (playerInfo.getUserInfo().getUserId() == uid) {
-                return playerInfo;
-            }
-        }
-        return null;
+    public static GrabPlayerInfoModel getPlayerInfoById(GrabRoomData roomData, int uid) {
+        return roomData.getPlayerOrWaiterInfoModel(uid);
     }
 
 

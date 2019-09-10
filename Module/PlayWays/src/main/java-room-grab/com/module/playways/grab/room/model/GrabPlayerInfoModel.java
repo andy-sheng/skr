@@ -6,8 +6,6 @@ import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QJoinNoticeMsg;
 
 public class GrabPlayerInfoModel extends PlayerInfoModel {
-    public static final int ROLE_PLAY = 1;//在玩的
-    public static final int ROLE_WAIT = 2;//等待的
     protected int role;
 
     public int getRole() {

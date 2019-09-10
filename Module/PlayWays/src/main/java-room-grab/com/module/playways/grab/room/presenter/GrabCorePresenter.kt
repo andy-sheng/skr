@@ -209,7 +209,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-            for (playerInfoModel in mRoomData.getPlayerInfoList()) {
+            for (playerInfoModel in mRoomData.getPlayerAndWaiterInfoList()) {
                 if (!playerInfoModel.isOnline) {
                     continue
                 }
@@ -414,7 +414,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
     }
 
-    fun preOpWhenOtherRound(uid: Long) {
+    fun preOpWhenOtherRound(uid: Int) {
         val playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid)
         if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空")
@@ -1577,7 +1577,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 preOpWhenSelfRound()
             } else {
                 mUiHandler.post { mIGrabView.singByOthers() }
-                preOpWhenOtherRound(now.userID.toLong())
+                preOpWhenOtherRound(now.userID)
             }
         } else if (now.status == EQRoundStatus.QRS_END.value) {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.roundSeq)
@@ -1665,7 +1665,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 preOpWhenSelfRound()
             } else {
                 mUiHandler.post { mIGrabView.singByOthers() }
-                preOpWhenOtherRound(now.userID.toLong())
+                preOpWhenOtherRound(now.userID)
             }
         }
     }
@@ -1952,8 +1952,8 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      * @param uid      灭灯操作者
      */
     private fun pretendLightMsgComment(singerId: Int, uid: Int, isBao: Boolean) {
-        val singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, singerId.toLong())
-        val playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid.toLong())
+        val singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, singerId)
+        val playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid)
         MyLog.d(TAG, "pretendLightMsgComment singerId=$singerModel uid=$playerInfoModel isBao=$isBao")
         if (singerModel != null && playerInfoModel != null) {
             var isChorus = false
@@ -2036,7 +2036,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 if (event.mPlayerInfoModel != null) {
                     if (chorusRoundInfoModel.userID == event.mPlayerInfoModel.userID) {
                         chorusRoundInfoModel.userExit()
-                        pretendGiveUp(mRoomData.getUserInfo(event.mPlayerInfoModel.userID))
+                        pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.mPlayerInfoModel.userID))
                     }
                 }
             }
@@ -2075,7 +2075,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 if (list != null) {
                     for (chorusRoundInfoModel in list) {
                         if (chorusRoundInfoModel.userID == event.userID) {
-                            val userInfoModel = mRoomData.getUserInfo(event.userID)
+                            val userInfoModel = mRoomData.getPlayerOrWaiterInfo(event.userID)
                             if (event.userID.toLong() == MyUserInfoManager.getInstance().uid) {
                                 // 是我自己不唱了
                                 U.getToastUtil().showShort("你已经退出合唱")
@@ -2112,13 +2112,13 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 //                // PK 第一个人不唱了 加个弹幕
                 if (now.getsPkRoundInfoModels().size > 0) {
                     if (now.getsPkRoundInfoModels()[0].overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.value) {
-                        val userInfoModel = mRoomData.getUserInfo(now.getsPkRoundInfoModels()[0].userID)
+                        val userInfoModel = mRoomData.getPlayerOrWaiterInfo(now.getsPkRoundInfoModels()[0].userID)
                         pretendGiveUp(userInfoModel)
                     }
                 }
                 if (now.getsPkRoundInfoModels().size > 1) {
                     if (now.getsPkRoundInfoModels()[1].overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.value) {
-                        val userInfoModel = mRoomData.getUserInfo(now.getsPkRoundInfoModels()[1].userID)
+                        val userInfoModel = mRoomData.getPlayerOrWaiterInfo(now.getsPkRoundInfoModels()[1].userID)
                         pretendGiveUp(userInfoModel)
                     }
                 }
@@ -2192,7 +2192,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             val infoModel = mRoomData.realRoundInfo
             if (!infoModel!!.isPKRound && !infoModel.isChorusRound) {
                 if (infoModel.overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.value) {
-                    pretendGiveUp(mRoomData.getUserInfo(infoModel.userID))
+                    pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(infoModel.userID))
                 }
             }
         }

@@ -79,26 +79,26 @@ class RaceSelectSongItemView : ExConstraintLayout {
             avatarIv2.visibility = View.GONE
             avatarIv3.visibility = View.GONE
             for (i in 0 until it.size) {
-                if (roomData?.getUserInfo(it[i].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
+                if (roomData?.getPlayerOrWaiterInfo(it[i].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
                     startSelectedAnimation()
                 }
 
                 when (i) {
                     0 -> {
                         avatarIv1.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[i].userID)?.avatar)
+                        AvatarUtils.loadAvatarByUrl(avatarIv1, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it[i].userID)?.avatar)
                                 .setCornerRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                                 .build())
                     }
                     1 -> {
                         avatarIv2.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[i].userID)?.avatar)
+                        AvatarUtils.loadAvatarByUrl(avatarIv2, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it[i].userID)?.avatar)
                                 .setCornerRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                                 .build())
                     }
                     2 -> {
                         avatarIv3.visibility = View.VISIBLE
-                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[i].userID)?.avatar)
+                        AvatarUtils.loadAvatarByUrl(avatarIv3, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it[i].userID)?.avatar)
                                 .setCornerRadius(U.getDisplayUtils().dip2px(20f).toFloat())
                                 .build())
                     }

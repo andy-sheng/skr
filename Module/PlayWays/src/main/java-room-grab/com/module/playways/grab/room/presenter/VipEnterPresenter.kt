@@ -29,19 +29,13 @@ class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxL
 
         override fun onStart(playerInfoModel: UserInfoModel, floatWindow: VipEnterPresenter) {
             MyLog.d(mTag, "onStart playerInfoModel = $playerInfoModel, floatWindow = $floatWindow")
-            var inSeat = false
             canAccept = false
-            roomData.getPlayerInfoList()?.forEach {
-                if (it.userID == playerInfoModel.userId) {
-                    inSeat = true
-                    view.startEnterAnimation(playerInfoModel) {
-                        canAccept = true
-                        endCurrent(playerInfoModel)
-                    }
+            if (roomData.inPlayerOrWaiterInfoList(playerInfoModel.userId)) {
+                view.startEnterAnimation(playerInfoModel) {
+                    canAccept = true
+                    endCurrent(playerInfoModel)
                 }
-            }
-
-            if (!inSeat) {
+            } else {
                 canAccept = true
                 endCurrent(playerInfoModel)
             }

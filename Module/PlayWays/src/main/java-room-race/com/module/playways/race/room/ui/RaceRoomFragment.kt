@@ -276,7 +276,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             override fun showGiftPanel() {
                 mContinueSendView.setVisibility(View.GONE)
                 if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID.toLong()))
+                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
                 } else {
                     mGiftPanelView.show(null)
                 }
@@ -479,7 +479,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
                                     if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID.toLong()))
+                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
                                     } else {
                                         mGiftPanelView.show(null)
                                     }
@@ -521,7 +521,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            val role = mRoomData.getPlayerInfoModel(MyUserInfoManager.getInstance().uid.toInt())?.role
+            val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())?.role
             if (role == ERUserRole.ERUR_PLAY_USER.value) {
                 MyLog.d(TAG, "showRightVote 当前身份是play")
                 mRaceRightOpView.showVote(false)

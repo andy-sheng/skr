@@ -17,7 +17,7 @@ public class CommentDynamicModel extends CommentModel {
     public static CommentDynamicModel parseFromEvent(DynamicEmojiMsgEvent event, BaseRoomData roomData) {
         CommentDynamicModel commentModel = new CommentDynamicModel();
         if (roomData != null) {
-            UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
+            UserInfoModel sender = roomData.getPlayerOrWaiterInfo(event.info.getSender().getUserID());
             commentModel.setAvatarColor(CommentModel.AVATAR_COLOR);
             if (sender != null) {
                 commentModel.setUserInfo(sender);

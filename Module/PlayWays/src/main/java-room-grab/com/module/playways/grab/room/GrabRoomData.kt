@@ -16,8 +16,11 @@ import com.module.playways.grab.room.model.GrabConfigModel
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.model.WorksUploadModel
+import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
+import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.live.proto.Room.EQUserRole
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
@@ -47,20 +50,15 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
 
     var isVideoRoom = false // 是否是个音频房间
 
-
+    /**
+     * 是否在选手席位
+     */
     val isInPlayerList: Boolean
         get() {
-            if (expectRoundInfo == null || expectRoundInfo!!.playUsers == null) {
-                return false
+            val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())
+            if(p!=null && p.role == EQUserRole.EQUR_PLAY_USER.value){
+                return true
             }
-
-            val getPlayerInfoList = expectRoundInfo!!.playUsers
-            for (model in getPlayerInfoList) {
-                if (model.userID.toLong() == MyUserInfoManager.getInstance().uid) {
-                    return true
-                }
-            }
-
             return false
         }
 
@@ -94,7 +92,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
      * 一般不用直接拿来用
      * @return
      */
-    override fun getPlayerInfoList(): List<GrabPlayerInfoModel> {
+    override fun getPlayerAndWaiterInfoList(): List<GrabPlayerInfoModel> {
         val l = ArrayList<GrabPlayerInfoModel>()
         if (expectRoundInfo != null) {
             l.addAll(expectRoundInfo!!.playUsers)
@@ -106,7 +104,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
                 val p = GrabPlayerInfoModel()
                 p.isSkrer = false
                 p.isOnline = true
-                p.role = GrabPlayerInfoModel.ROLE_PLAY
+                p.role = EQUserRole.EQUR_PLAY_USER.value
                 p.userID = MyUserInfoManager.getInstance().uid.toInt()
                 val userInfoModel = UserInfoModel()
                 userInfoModel.userId = MyUserInfoManager.getInstance().uid.toInt()
@@ -117,6 +115,25 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
             }
         }
         return l
+    }
+
+    fun getPlayerOrWaiterInfoModel(userID: Int?): GrabPlayerInfoModel? {
+        if (userID == null || userID == 0) {
+            return null
+        }
+        val playerInfoModel = userInfoMap[userID] as GrabPlayerInfoModel?
+        if (playerInfoModel == null || playerInfoModel.role == EQUserRole.EQUR_WAIT_USER.value) {
+            val l = getPlayerAndWaiterInfoList()
+            for (playerInfo in l) {
+                if (playerInfo.userInfo.userId == userID) {
+                    userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
+                    return playerInfo
+                }
+            }
+        } else {
+            return playerInfoModel
+        }
+        return null
     }
 
     override fun getInSeatPlayerInfoList(): List<GrabPlayerInfoModel> {

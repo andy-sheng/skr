@@ -37,7 +37,7 @@ class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintL
 
     fun initData() {
         val list = ArrayList<RaceActorInfoModel>()
-        val playList = mRoomData.getPlayerInfoList()
+        val playList = mRoomData.getPlayerAndWaiterInfoList()
         playList?.let {
             for (model in it) {
                 list.add(RaceActorInfoModel(model))
@@ -47,7 +47,7 @@ class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintL
         launch {
             val userIDs = ArrayList<Int>()
             for (model in list) {
-                userIDs.add(model.plyer.userID)
+                userIDs.add(model.player.userID)
             }
             val result = subscribe { userServerApi.getRankings(userIDs) }
             if (result.errno == 0) {
@@ -60,7 +60,7 @@ class RaceActorView(context: Context, val mRoomData: RaceRoomData) : ConstraintL
                 }
                 if (!list.isNullOrEmpty()) {
                     for (model in list) {
-                        model.scoreState = map[model.plyer.userID]
+                        model.scoreState = map[model.player.userID]
                     }
                 }
                 adapter.mDataList.clear()

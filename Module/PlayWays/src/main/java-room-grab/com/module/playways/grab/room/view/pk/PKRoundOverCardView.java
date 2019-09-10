@@ -117,12 +117,12 @@ public class PKRoundOverCardView extends ExViewStub {
         this.mSVGAListener = svgaListener;
         List<SPkRoundInfoModel> list = roundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
-            mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
+            mLeftUserInfoModel = mRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
             this.mLeftScore = String.format("%.1f", list.get(0).getScore());
             this.mLeftOverReason = list.get(0).getOverReason();
             this.mLeftWin = list.get(0).isWin();
 
-            mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
+            mRightUserInfoModel = mRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
             this.mRightScore = String.format("%.1f", list.get(1).getScore());
             this.mRightOverReason = list.get(1).getOverReason();
             this.mRightWin = list.get(1).isWin();

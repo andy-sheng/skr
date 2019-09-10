@@ -87,8 +87,8 @@ public class PKOthersSingCardView extends ExViewStub {
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
-            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
-            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+            mLeftUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
+            mRightUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
         }
         mHasPlayFullAnimation = false;
         mUiHandler.removeCallbacksAndMessages(null);

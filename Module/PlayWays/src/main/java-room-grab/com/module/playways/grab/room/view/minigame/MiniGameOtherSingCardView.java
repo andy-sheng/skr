@@ -188,8 +188,8 @@ public class MiniGameOtherSingCardView extends ExViewStub {
         if (list != null && list.size() >= 2) {
             mLeftMINIGameRoundInfoModel = list.get(0);
             mRightMINIGameRoundInfoModel = list.get(1);
-            mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftMINIGameRoundInfoModel.getUserID());
-            mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightMINIGameRoundInfoModel.getUserID());
+            mLeftUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(mLeftMINIGameRoundInfoModel.getUserID());
+            mRightUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(mRightMINIGameRoundInfoModel.getUserID());
             mMiniGameInfoModel = now.getMusic().getMiniGame();
         }
 

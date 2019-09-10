@@ -18,6 +18,7 @@ import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.StandPlayType;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EQUserRole;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
@@ -187,6 +188,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return playUsers;
     }
 
+    /**
+     * 是否还在房间，用来sync优化
+     * @return
+     */
     public boolean isContainInRoom() {
         for (GrabPlayerInfoModel grabPlayerInfoModel : playUsers) {
             if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
@@ -579,9 +584,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public boolean addUser(boolean b, GrabPlayerInfoModel playerInfoModel) {
-        if (playerInfoModel.getRole() == GrabPlayerInfoModel.ROLE_PLAY) {
+        if (playerInfoModel.getRole() == EQUserRole.EQUR_PLAY_USER.getValue()) {
             return addPlayUser(b, playerInfoModel);
-        } else if (playerInfoModel.getRole() == GrabPlayerInfoModel.ROLE_WAIT) {
+        } else if (playerInfoModel.getRole() == EQUserRole.EQUR_WAIT_USER.getValue()) {
             return addWaitUser(b, playerInfoModel);
         }
         return false;

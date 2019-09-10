@@ -157,10 +157,10 @@ public class PKSingCardView extends RelativeLayout {
 
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
-            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
+            mLeftUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
             mLeftOverReason = list.get(0).getOverReason();
 
-            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+            mRightUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
             mRightOverReason = list.get(1).getOverReason();
         }
         setVisibility(VISIBLE);

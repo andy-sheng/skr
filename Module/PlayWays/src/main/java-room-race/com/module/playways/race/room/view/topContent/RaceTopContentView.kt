@@ -16,7 +16,6 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceWaitSeatUpdateEvent
-import com.module.playways.race.room.model.RacePlayerInfoModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -86,7 +85,7 @@ class RaceTopContentView : ConstraintLayout {
 
     //只有轮次切换的时候调用
     private fun initData() {
-        val list = mRoomData?.getPlayerInfoList()
+        val list = mRoomData?.getPlayerAndWaiterInfoList()
         if (!list.isNullOrEmpty()) {
             adapter.mDataList.clear()
             adapter.mDataList.addAll(list)

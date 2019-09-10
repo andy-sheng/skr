@@ -116,18 +116,33 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
                 '}'.toString()
     }
 
-    abstract fun getPlayerInfoList(): List<PlayerInfoModel>
+    /**
+     * 所有选手信息，包括waiters和playerers
+     */
+    abstract fun getPlayerAndWaiterInfoList(): List<PlayerInfoModel>
+
+    /**
+     * 是否在 waiters 或者 playerers 里
+     */
+    fun inPlayerOrWaiterInfoList(userId:Int):Boolean{
+        for(p in getPlayerAndWaiterInfoList()){
+            if(p.userInfo.userId == userId){
+                return true
+            }
+        }
+        return false
+    }
 
     @Transient
     protected val userInfoMap = LruCache<Int, PlayerInfoModel>(20)
 
-    fun getUserInfo(userID: Int?): UserInfoModel? {
+    fun getPlayerOrWaiterInfo(userID: Int?): UserInfoModel? {
         if (userID == null || userID == 0) {
             return null
         }
         val playerInfoModel = userInfoMap[userID]
         if (playerInfoModel == null) {
-            val l = getPlayerInfoList()
+            val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
                     userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
@@ -140,9 +155,10 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         return null
     }
 
-    open fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
-        return ArrayList()
-    }
+    /**
+     * 所有在位置上的选手，不算等待者
+     */
+    abstract fun getInSeatPlayerInfoList(): List<PlayerInfoModel>
 
     companion object {
 

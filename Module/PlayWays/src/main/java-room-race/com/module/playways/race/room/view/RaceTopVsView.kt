@@ -272,7 +272,7 @@ class RaceTopVsView : ExConstraintLayout {
     fun startSingBySelf(call: (() -> Unit)?) {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             if (it.size == 2) {
-                if (roomData?.getUserInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                if (roomData?.getPlayerOrWaiterInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                     leftCircleCountDownView.visibility = View.VISIBLE
                     leftCircleCountDownView.go(0, 1 * 1000) {
                         leftCircleCountDownView.visibility = View.GONE
@@ -323,13 +323,13 @@ class RaceTopVsView : ExConstraintLayout {
         leftCircleCountDownView.visibility = View.GONE
         rightCircleCountDownView.visibility = View.GONE
         roomData?.realRoundInfo?.subRoundInfo?.let {
-            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[0].userID)?.avatar)
+            AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it[0].userID)?.avatar)
                     .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
                     .build())
         }
 
         roomData?.realRoundInfo?.subRoundInfo?.let {
-            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it[1].userID)?.avatar)
+            AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it[1].userID)?.avatar)
                     .setCornerRadius(U.getDisplayUtils().dip2px(18f).toFloat())
                     .build())
         }

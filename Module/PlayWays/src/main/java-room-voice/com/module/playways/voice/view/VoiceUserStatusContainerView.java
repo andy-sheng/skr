@@ -76,7 +76,7 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
     }
 
     private void bindData() {
-        for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+        for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerAndWaiterInfoList()) {
             if (playerInfoModel.isAI()) {
                 continue;
             }

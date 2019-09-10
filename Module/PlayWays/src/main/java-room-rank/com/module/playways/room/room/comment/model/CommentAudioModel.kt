@@ -21,7 +21,7 @@ class CommentAudioModel : CommentModel() {
         fun parseFromEvent(event: AudioMsgEvent, roomData: BaseRoomData<*>?): CommentAudioModel {
             val commentModel = CommentAudioModel()
             if (roomData != null) {
-                val sender = roomData.getUserInfo(event.mInfo.sender.userID!!)
+                val sender = roomData.getPlayerOrWaiterInfo(event.mInfo.sender.userID!!)
 
                 commentModel.avatarColor = AVATAR_COLOR
                 if (sender != null) {

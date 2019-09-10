@@ -105,7 +105,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                         leftTicketTv.visibility = View.VISIBLE
                     }
 
-                    AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[0].userID)?.avatar)
+                    AvatarUtils.loadAvatarByUrl(leftAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.subRoundInfo[0].userID)?.avatar)
                             .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                             .build())
 
@@ -124,7 +124,7 @@ class RaceMiddleResultView : ExConstraintLayout {
                         rightTicketTv.visibility = View.VISIBLE
                     }
 
-                    AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getUserInfo(it.subRoundInfo[1].userID)?.avatar)
+                    AvatarUtils.loadAvatarByUrl(rightAvatarIv, AvatarUtils.newParamsBuilder(roomData?.getPlayerOrWaiterInfo(it.subRoundInfo[1].userID)?.avatar)
                             .setCornerRadius(U.getDisplayUtils().dip2px(32f).toFloat())
                             .build())
 

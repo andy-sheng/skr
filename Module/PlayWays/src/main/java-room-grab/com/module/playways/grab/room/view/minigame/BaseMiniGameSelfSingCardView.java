@@ -85,7 +85,7 @@ public abstract class BaseMiniGameSelfSingCardView extends ExViewStub {
 //        mSingCountDownView.startPlay(0, totalTs, true);
 
         if (infoModel.getMINIGameRoundInfoModels() != null && infoModel.getMINIGameRoundInfoModels().size() > 0) {
-            UserInfoModel userInfoModel = mGrabRoomData.getUserInfo(infoModel.getMINIGameRoundInfoModels().get(0).getUserID());
+            UserInfoModel userInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(infoModel.getMINIGameRoundInfoModels().get(0).getUserID());
             if (userInfoModel != null) {
                 AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                         .setCircle(true)

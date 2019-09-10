@@ -65,7 +65,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
     }
 
-    override fun getPlayerInfoList(): List<RacePlayerInfoModel> {
+    override fun getPlayerAndWaiterInfoList(): List<RacePlayerInfoModel> {
         val l = ArrayList<RacePlayerInfoModel>()
         if (realRoundInfo != null) {
             realRoundInfo?.let {
@@ -81,13 +81,13 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return l
     }
 
-    fun getPlayerInfoModel(userID: Int?): RacePlayerInfoModel? {
+    fun getPlayerOrWaiterInfoModel(userID: Int?): RacePlayerInfoModel? {
         if (userID == null || userID == 0) {
             return null
         }
         val playerInfoModel = userInfoMap[userID] as RacePlayerInfoModel?
         if (playerInfoModel == null || playerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
-            val l = getPlayerInfoList()
+            val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
                 if (playerInfo.userInfo.userId == userID) {
                     userInfoMap.put(playerInfo.userInfo.userId, playerInfo)
@@ -101,7 +101,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
     }
 
     override fun getInSeatPlayerInfoList(): List<RacePlayerInfoModel> {
-        return getPlayerInfoList()
+        return getPlayerAndWaiterInfoList()
     }
 
     fun getChoiceInfoById(choiceID: Int): SongModel? {

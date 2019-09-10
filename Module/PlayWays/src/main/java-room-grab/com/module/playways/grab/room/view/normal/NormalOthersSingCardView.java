@@ -113,7 +113,7 @@ public class NormalOthersSingCardView extends ExViewStub {
     public void bindData() {
         tryInflate();
         GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
-        UserInfoModel userInfoModel = mGrabRoomData.getUserInfo(infoModel.getUserID());
+        UserInfoModel userInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(infoModel.getUserID());
         mUiHandler.removeCallbacksAndMessages(null);
         mHasPlayFullAnimation = false;
         setVisibility(View.VISIBLE);

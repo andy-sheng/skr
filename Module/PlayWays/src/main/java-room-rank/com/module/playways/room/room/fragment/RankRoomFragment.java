@@ -205,7 +205,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             public void onFailed() {
 
             }
-        }, mRoomData.getPlayerInfoList());
+        }, mRoomData.getPlayerAndWaiterInfoList());
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
         U.getSoundUtils().preLoad(TAG, R.raw.rank_readygo, R.raw.rank_gameover);
@@ -437,13 +437,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator(int userId) {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        if (mRoomData.getUserInfo(userId) == null) {
+        if (mRoomData.getPlayerOrWaiterInfo(userId) == null) {
             return;
         }
 
         mStageView.setVisibility(View.VISIBLE);
 
-        String avatar = mRoomData.getUserInfo(userId).getAvatar();
+        String avatar = mRoomData.getPlayerOrWaiterInfo(userId).getAvatar();
 
         mStageView.setLoops(0);
         SvgaParserAdapter.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {

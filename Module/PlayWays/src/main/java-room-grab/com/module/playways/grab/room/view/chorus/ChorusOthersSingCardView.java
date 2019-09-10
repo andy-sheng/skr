@@ -197,8 +197,8 @@ public class ChorusOthersSingCardView extends ExViewStub {
         if (list != null && list.size() >= 2) {
             mLeftChorusRoundInfoModel = list.get(0);
             mRightChorusRoundInfoModel = list.get(1);
-            mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftChorusRoundInfoModel.getUserID());
-            mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightChorusRoundInfoModel.getUserID());
+            mLeftUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(mLeftChorusRoundInfoModel.getUserID());
+            mRightUserInfoModel = mGrabRoomData.getPlayerOrWaiterInfo(mRightChorusRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {

@@ -82,8 +82,8 @@ public class SingBeginTipsCardView extends ExViewStub {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
                 List<ChorusRoundInfoModel> list = grabRoundInfoModel.getChorusRoundInfoModels();
                 if (list != null && list.size() >= 2) {
-                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
-                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
+                    UserInfoModel userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
+                    UserInfoModel userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
                     ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
                     lp.height = U.getDisplayUtils().dip2px(154);
                     mChorusSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener);
@@ -91,8 +91,8 @@ public class SingBeginTipsCardView extends ExViewStub {
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
                 List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
                 if (list != null && list.size() >= 2) {
-                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
-                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
+                    UserInfoModel userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
+                    UserInfoModel userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
                     ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
                     lp.height = U.getDisplayUtils().dip2px(181);
                     mPKSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener);
@@ -100,8 +100,8 @@ public class SingBeginTipsCardView extends ExViewStub {
             } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
                 List<MINIGameRoundInfoModel> list = grabRoundInfoModel.getMINIGameRoundInfoModels();
                 if (list != null && list.size() >= 2) {
-                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
-                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
+                    UserInfoModel userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
+                    UserInfoModel userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
                     ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
                     lp.height = U.getDisplayUtils().dip2px(154);
                     mMiniGameSingBegin.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener);
@@ -109,7 +109,7 @@ public class SingBeginTipsCardView extends ExViewStub {
             } else {
                 ViewGroup.LayoutParams lp = mSVGAImageView.getLayoutParams();
                 lp.height = U.getDisplayUtils().dip2px(181);
-                mNormalSingBeginTipsCardView.bindData(mSVGAImageView, mRoomData.getUserInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());
+                mNormalSingBeginTipsCardView.bindData(mSVGAImageView, mRoomData.getPlayerOrWaiterInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());
             }
         }
     }

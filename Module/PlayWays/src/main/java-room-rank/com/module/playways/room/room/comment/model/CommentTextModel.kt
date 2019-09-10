@@ -21,7 +21,7 @@ class CommentTextModel : CommentModel() {
             val commentModel = CommentTextModel()
 
             if (roomData != null) {
-                val sender = roomData.getUserInfo(event.info.sender.userID!!)
+                val sender = roomData.getPlayerOrWaiterInfo(event.info.sender.userID!!)
                 commentModel.avatarColor = AVATAR_COLOR
                 if (sender != null) {
                     commentModel.userInfo = sender

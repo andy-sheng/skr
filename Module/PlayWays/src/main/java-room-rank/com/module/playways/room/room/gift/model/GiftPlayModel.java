@@ -36,7 +36,7 @@ public class GiftPlayModel {
 
         UserInfoModel userInfoModel;
         if (roomData != null) {
-            userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
+            userInfoModel = roomData.getPlayerOrWaiterInfo(event.info.getSender().getUserID());
             if (userInfoModel == null) {
                 userInfoModel = UserInfoModel.parseFromPB(event.info.getSender());
             }

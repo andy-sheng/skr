@@ -146,7 +146,7 @@ public class GrabTopContentView extends ConstraintLayout {
         if (!mRoomData.hasGameBegin()) {
             MyLog.d(TAG, "游戏未开始，不能用轮次信息里更新头像");
             resetAllGrabTopItemView();
-            List<GrabPlayerInfoModel> list = mRoomData.getPlayerInfoList();
+            List<GrabPlayerInfoModel> list = mRoomData.getPlayerAndWaiterInfoList();
             for (int i = 0; i < list.size() && i < mGrabTopItemViewArrayList.size(); i++) {
                 VP vp = mGrabTopItemViewArrayList.get(i);
                 GrabPlayerInfoModel playerInfoModel = list.get(i);

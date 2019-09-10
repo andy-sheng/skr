@@ -72,11 +72,11 @@ public class GrabVideoUiController extends GrabBaseUiController {
     }
 
     Pair<UserInfoModel, UserInfoModel> getUserInfoModel(int userID1, int userID2) {
-        UserInfoModel userInfoModel1 = mF.getMRoomData().getUserInfo(userID1);
+        UserInfoModel userInfoModel1 = mF.getMRoomData().getPlayerOrWaiterInfo(userID1);
         if (userInfoModel1 == null) {
             userInfoModel1 = new UserInfoModel(userID1);
         }
-        UserInfoModel userInfoModel2 = mF.getMRoomData().getUserInfo(userID2);
+        UserInfoModel userInfoModel2 = mF.getMRoomData().getPlayerOrWaiterInfo(userID2);
         if (userInfoModel2 == null) {
             userInfoModel2 = new UserInfoModel(userID2);
         }
@@ -84,7 +84,7 @@ public class GrabVideoUiController extends GrabBaseUiController {
     }
 
     UserInfoModel getUserInfoModel(int userID) {
-        UserInfoModel userInfoModel1 = mF.getMRoomData().getUserInfo(userID);
+        UserInfoModel userInfoModel1 = mF.getMRoomData().getPlayerOrWaiterInfo(userID);
         if (userInfoModel1 == null) {
             userInfoModel1 = new UserInfoModel(userID);
         }

@@ -674,12 +674,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         if (now.isPKRound && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
                             if (now.getsPkRoundInfoModels().size == 2) {
                                 val userId = now.getsPkRoundInfoModels()[1].userID
-                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId.toLong()))
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId))
                             } else {
-                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID.toLong()))
+                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
                             }
                         } else {
-                            mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID.toLong()))
+                            mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
                         }
                     } else {
                         mGiftPanelView.show(null)
@@ -913,7 +913,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
 
             override fun closeBtnClick() {
-                if (mRoomData!!.isOwner && mRoomData!!.getPlayerInfoList()!!.size >= 2) {
+                if (mRoomData!!.isOwner && mRoomData!!.getPlayerAndWaiterInfoList()!!.size >= 2) {
                     quitGame()
                 } else {
                     mCorePresenter?.exitRoom("closeBtnClick")
@@ -1144,8 +1144,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView?.updateZS()
-                                    mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, (mRoomData!!.realRoundInfo?.userID
-                                            ?: 0).toLong()))
+                                    mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo?.userID
+                                            ?: 0))
                                 }
                             }
                         })
@@ -1674,7 +1674,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         dismissDialog()
         U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
 
-        val playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId.toLong())
+        val playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId)
         if (playerInfoModel != null) {
             val userInfoModel = playerInfoModel.userInfo
             mGrabKickDialog = ConfirmDialog(U.getActivityUtils().topActivity, userInfoModel, ConfirmDialog.TYPE_KICK_REQUEST, 5)

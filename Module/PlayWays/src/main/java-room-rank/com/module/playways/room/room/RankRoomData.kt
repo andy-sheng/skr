@@ -19,6 +19,9 @@ import com.module.playways.room.room.model.RecordData
 import org.greenrobot.eventbus.EventBus
 
 class RankRoomData : BaseRoomData<RankRoundInfoModel>() {
+    override fun getInSeatPlayerInfoList(): List<PlayerInfoModel> {
+        return arrayListOf()
+    }
 
     var roundInfoModelList: List<RankRoundInfoModel>? = null //所有的轮次信息
 
@@ -51,8 +54,8 @@ class RankRoomData : BaseRoomData<RankRoundInfoModel>() {
 
     val aiJudgeInfo: PlayerInfoModel?
         get() {
-            if (getPlayerInfoList() != null && getPlayerInfoList().size > 0) {
-                for (playerInfoModel in getPlayerInfoList()) {
+            if (getPlayerAndWaiterInfoList() != null && getPlayerAndWaiterInfoList().size > 0) {
+                for (playerInfoModel in getPlayerAndWaiterInfoList()) {
                     if (playerInfoModel.isAI()) {
                         return playerInfoModel
                     }
@@ -107,7 +110,7 @@ class RankRoomData : BaseRoomData<RankRoundInfoModel>() {
         mPlayerInfoList = playerInfoList
     }
 
-    override fun getPlayerInfoList(): List<RankPlayerInfoModel> {
+    override fun getPlayerAndWaiterInfoList(): List<RankPlayerInfoModel> {
         return mPlayerInfoList ?: ArrayList()
     }
 

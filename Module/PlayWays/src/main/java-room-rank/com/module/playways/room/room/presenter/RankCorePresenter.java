@@ -84,7 +84,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.agora.rtc.Constants;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -882,7 +881,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void checkMachineUser(long uid) {
+    private void checkMachineUser(int uid) {
         PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         if (playerInfo == null) {
             MyLog.w(TAG, "切换别人的时候PlayerInfo为空");
@@ -1287,7 +1286,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             infoModel.setHasSing(true);
             mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
             //mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
-            mIGameRuleView.onOtherStartSing(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()));
+            mIGameRuleView.onOtherStartSing(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerAndWaiterInfoList(), infoModel.getUserID()));
             startLastTwoSecondTask();
         }
     }
@@ -1442,7 +1441,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
-        UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
+        UserInfoModel userInfo = mRoomData.getPlayerOrWaiterInfo(event.model.getUserID());
         CommentSysModel commentSysModel = new CommentSysModel(userInfo.getNicknameRemark(), "偷偷溜走了");
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
 
@@ -1479,7 +1478,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         /**
          * 机器人的轮次
          */
-        if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
+        if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerAndWaiterInfoList())) {
             // 尝试算机器人的演唱得分
             if (mRobotScoreHelper != null) {
                 int score = mRobotScoreHelper.tryGetScoreByLine(event.lineNum);
@@ -1569,7 +1568,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         int itemID = infoModel.getPlaybookID();
         map.put("itemID", itemID);
         int mainLevel = 0;
-        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
+        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (playerInfoModel != null) {
             mainLevel = playerInfoModel.getUserInfo().getMainLevel();
         }

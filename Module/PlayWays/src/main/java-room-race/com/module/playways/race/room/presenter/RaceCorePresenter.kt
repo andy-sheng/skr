@@ -121,7 +121,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
         joinRcRoom(-1)
         if (mRoomData.gameId > 0) {
-            for (playerInfoModel in mRoomData.getPlayerInfoList()) {
+            for (playerInfoModel in mRoomData.getPlayerAndWaiterInfoList()) {
                 if (!playerInfoModel.isOnline) {
                     continue
                 }
@@ -496,7 +496,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     mIRaceRoomView.singBySelfFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID))
                     preOpWhenSelfRound()
                 } else {
-                    mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID), mRoomData.getUserInfo(subRound1.userID))
+                    mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID), mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
                 }
             } else if (thisRound?.subRoundSeq == 2) {
                 // 变为演唱阶段，第二轮
@@ -505,7 +505,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     mIRaceRoomView.singBySelfSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID))
                     preOpWhenSelfRound()
                 } else {
-                    mIRaceRoomView.singByOtherSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID), mRoomData.getUserInfo(subRound2.userID))
+                    mIRaceRoomView.singByOtherSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID), mRoomData.getPlayerOrWaiterInfo(subRound2.userID))
                 }
             }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
@@ -650,7 +650,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
             // 第二轮次结束原因
             if (curRoundInfo.subRoundInfo.getOrNull(1)?.overReason == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
-                pretendGiveUp(mRoomData.getUserInfo(curRoundInfo.subRoundInfo.getOrNull(1)?.userID))
+                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(curRoundInfo.subRoundInfo.getOrNull(1)?.userID))
             }
         } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
             DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
@@ -658,7 +658,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
             // 第一轮次结束原因
             if (event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason?.value == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
-                pretendGiveUp(mRoomData.getUserInfo(event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID))
+                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID))
             }
         }
     }

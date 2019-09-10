@@ -80,7 +80,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             ZqEngineKit.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
-            for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+            for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerAndWaiterInfoList()) {
                 if (playerInfoModel.isSkrer() && playerInfoModel.isOnline()) {
                     // 是机器人
                     mUiHanlder.postDelayed(new Runnable() {
@@ -155,7 +155,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void pretentLeaveMsg(int userId) {
-        UserInfoModel userInfo = mRoomData.getUserInfo(userId);
+        UserInfoModel userInfo = mRoomData.getPlayerOrWaiterInfo(userId);
         if (userInfo != null) {
             CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserInfo(userInfo);

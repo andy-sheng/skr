@@ -68,8 +68,8 @@ public class PKSelfSingCardView extends ExViewStub {
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
-            mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
-            mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
+            mLeftUserInfoModel = mRoomData.getPlayerOrWaiterInfo(list.get(0).getUserID());
+            mRightUserInfoModel = mRoomData.getPlayerOrWaiterInfo(list.get(1).getUserID());
         }
         setVisibility(View.VISIBLE);
         // 绑定数据
