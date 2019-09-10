@@ -8,6 +8,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrNotificationPermission;
 import com.common.core.userinfo.ResponseCallBack;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -25,6 +26,7 @@ import com.dialog.list.ListDialog;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.module.msg.api.IMsgServerApi;
+import com.zq.live.proto.Common.EVIPType;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -128,6 +130,10 @@ public class ConversationActivity extends BaseActivity {
 
 
     private void checkMsgTimes() {
+        if (MyUserInfoManager.getInstance().getVipType() == EVIPType.EVT_GOLDEN_V.getValue()) {
+            return;
+        }
+
         if (mIsFriend) {
 
         } else {
@@ -219,7 +225,7 @@ public class ConversationActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        if(!U.getActivityUtils().isHomeActivityExist()){
+        if (!U.getActivityUtils().isHomeActivityExist()) {
             /**
              * 可能是通过离线push打开的
              */
