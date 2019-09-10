@@ -30,6 +30,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -373,9 +374,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             if (mRoomData?.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && mRoomData?.hasGameBegin() == false) {
                 // 歌单战，游戏未开始
                 playbookWaitStatusIv = ExImageView(context)
-                playbookWaitStatusIv?.setImageResource(R.drawable.race_wait_begin_icon)
-                val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                lp.addRule(RelativeLayout.CENTER_IN_PARENT)
+                playbookWaitStatusIv?.setBackgroundResource(R.drawable.race_wait_begin_icon)
+
+                val lp = RelativeLayout.LayoutParams(355.dp(),144.dp())
+                lp.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                lp.topMargin = 182.dp()
 //                lp.rightMargin = U.getDisplayUtils().dip2px(10f)
 //                lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp)
 //                lp.topMargin = -U.getDisplayUtils().dip2px(55f)

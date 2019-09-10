@@ -671,7 +671,7 @@ public class GrabVideoDisplayView extends ExViewStub {
      * @return
      */
     public int getExtraTranslateYWhenOpen(int openType) {
-        if (openType == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC) {
+        if (openType == GrabWidgetAnimationController.Companion.getOPEN_TYPE_FOR_LYRIC()) {
             // 演唱者
             return U.getStatusBarUtil().getStatusBarHeight(U.app());
         } else {

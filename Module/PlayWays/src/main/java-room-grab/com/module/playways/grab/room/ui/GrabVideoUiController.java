@@ -160,13 +160,13 @@ public class GrabVideoUiController extends GrabBaseUiController {
         mF.getMGrabVideoSelfSingCardView().setVisibility(View.GONE);
         mF.getMGrabTopContentView().setVisibility(View.VISIBLE);
         if (mF.getMGrabWidgetAnimationController().isOpen()){
-            if(mF.getMGrabWidgetAnimationController().getOpenType() == GrabWidgetAnimationController.OPEN_TYPE_FOR_LYRIC){
+            if(mF.getMGrabWidgetAnimationController().getOpenType() == GrabWidgetAnimationController.Companion.getOPEN_TYPE_FOR_LYRIC()){
                 mF.getMGrabWidgetAnimationController().close();//关闭
             }else{
                 mF.getMGrabTopOpView().setVisibility(View.VISIBLE);
             }
         }
-        mF.getMGrabWidgetAnimationController().setOpenType(GrabWidgetAnimationController.OPEN_TYPE_FOR_NORMAL);
+        mF.getMGrabWidgetAnimationController().setOpenType(GrabWidgetAnimationController.Companion.getOPEN_TYPE_FOR_NORMAL());
     }
 
     @Override
