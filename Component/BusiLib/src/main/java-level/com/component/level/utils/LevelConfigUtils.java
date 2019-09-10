@@ -155,6 +155,27 @@ public class LevelConfigUtils {
         }
     }
 
+    // 父段位资源
+    public static int getSmallImageResoucesLevel(int level) {
+        switch (level) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return R.drawable.small_qianli;
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return R.drawable.small_baiyin;
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return R.drawable.small_jinpai;
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return R.drawable.small_bojin;
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return R.drawable.small_zuanshi;
+            case UserLevelType.SKRER_LEVEL_KING:
+                return R.drawable.small_gewang;
+            default:
+                MyLog.w(TAG, "getImageResoucesLevel null" + " level = " + level);
+                return 0;
+        }
+    }
+
     // 子段位资源
     public static int getImageResoucesSubLevel(int level, int subLevel) {
         switch (level) {

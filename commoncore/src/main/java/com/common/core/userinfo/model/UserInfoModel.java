@@ -48,7 +48,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean mIsSystem;
     private boolean isFriend;
     private boolean isFollow;
-    private int mainLevel; // 主段位
+    private int mainLevel; // 主段位 (被废弃了)
     private int status;    // 状态 在线  离线
     private long statusTs;// 在线或者离线的时间
     private String statusDesc;  //状态描述
@@ -328,7 +328,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             VipInfo vipInfo = new VipInfo();
             vipInfo.setVipType(model.getVipType().getValue());
             userInfoModel.setVipInfo(vipInfo);
-            userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getRanking()));
+            userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getUserID(),model.getRanking()));
         }
         return userInfoModel;
     }
