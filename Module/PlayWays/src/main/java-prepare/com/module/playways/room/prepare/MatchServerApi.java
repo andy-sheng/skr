@@ -111,6 +111,15 @@ public interface MatchServerApi {
     Call<ApiResult> joinGrabRoom(@Body RequestBody body);
 
     /**
+     *  请求发JoinNotice的push
+     *
+     * @param body 游戏标识 gameID (必选)
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/stand-playbook-join-room")
+    Call<ApiResult> joinGrabPlaybookRoom(@Body RequestBody body);
+
+    /**
      * 请求匹配
      * @param body 包含mode 游戏类型(必选)
      *             包含playbookItemID 演唱歌曲id(必选)

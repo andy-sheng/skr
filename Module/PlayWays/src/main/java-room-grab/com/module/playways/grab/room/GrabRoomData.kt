@@ -29,11 +29,12 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
     var songLineNum: Int = 0// 歌词总行数
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
+    var playbookRoomDataWhenNotStart: PlaybookRoomDataWhenNotStart? = null // 只针对歌单战，游戏未开始时的一些信息
     var ownerId: Int = 0// 房主id
     private var hasGameBegin = true// 游戏是否已经开始
-    var specialModel: SpecialModel?=null
+    var specialModel: SpecialModel? = null
 
-    var grabResultData: GrabResultData?=null   // 游戏结果
+    var grabResultData: GrabResultData? = null   // 游戏结果
     var isSpeaking: Boolean = false // 是否正在抢麦说话，一般用于主播控场
     var isChallengeAvailable: Boolean = false
     var roomName: String = ""  // 房间名称
@@ -99,17 +100,21 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
             l.addAll(expectRoundInfo!!.playUsers)
             l.addAll(expectRoundInfo!!.waitUsers)
         } else {
-            val p = GrabPlayerInfoModel()
-            p.isSkrer = false
-            p.isOnline = true
-            p.role = GrabPlayerInfoModel.ROLE_PLAY
-            p.userID = MyUserInfoManager.getInstance().uid.toInt()
-            val userInfoModel = UserInfoModel()
-            userInfoModel.userId = MyUserInfoManager.getInstance().uid.toInt()
-            userInfoModel.avatar = MyUserInfoManager.getInstance().avatar
-            userInfoModel.nickname = MyUserInfoManager.getInstance().nickName
-            p.userInfo = userInfoModel
-            l.add(p)
+            if (roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && !hasGameBegin) {
+                return playbookRoomDataWhenNotStart!!.getPlayerInfoList()
+            } else {
+                val p = GrabPlayerInfoModel()
+                p.isSkrer = false
+                p.isOnline = true
+                p.role = GrabPlayerInfoModel.ROLE_PLAY
+                p.userID = MyUserInfoManager.getInstance().uid.toInt()
+                val userInfoModel = UserInfoModel()
+                userInfoModel.userId = MyUserInfoManager.getInstance().uid.toInt()
+                userInfoModel.avatar = MyUserInfoManager.getInstance().avatar
+                userInfoModel.nickname = MyUserInfoManager.getInstance().nickName
+                p.userInfo = userInfoModel
+                l.add(p)
+            }
         }
         return l
     }
@@ -180,7 +185,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         this.setCoin(rsp.coin)
         this.setHzCount(rsp.hongZuan, 0)
         if (rsp.config != null) {
-            this.grabConfigModel = rsp.config
+            this.grabConfigModel = rsp.config ?: GrabConfigModel()
         } else {
             MyLog.w(TAG, "JoinGrabRoomRspModel rsp==null")
         }
@@ -199,23 +204,35 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         //            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
         this.tagId = rsp.tagID
 
-        isIsGameFinish = false
-        isHasExitGame = false
+        this.isIsGameFinish = false
+        this.isHasExitGame = false
         this.agoraToken = rsp.agoraToken
         this.roomType = rsp.roomType
         this.ownerId = rsp.ownerID
-
         if (this.gameCreateTs == 0L) {
             this.gameCreateTs = System.currentTimeMillis()
         }
-        if (this.gameStartTs == 0L) {
-            this.gameStartTs = this.gameCreateTs
-        }
+        this.gameStartTs = rsp.gameStartTimeMs
         // 游戏未开始
-        this.setHasGameBegin(rsp.hasGameBegin())
+        if (rsp.isHasGameBegin == null) {
+            if (this.gameStartTs > 0) {
+                this.setHasGameBegin(true)
+            } else {
+                this.setHasGameBegin(false)
+            }
+        } else {
+            this.setHasGameBegin(rsp.isHasGameBegin!!)
+        }
+
         this.isChallengeAvailable = rsp.isChallengeAvailable
-        this.roomName = rsp.roomName
+        this.roomName = rsp.roomName ?: ""
         this.isVideoRoom = rsp.mediaType == 2
+        if (roomType == GameModeType.GAME_MODE_PLAYBOOK && !hasGameBegin) {
+            playbookRoomDataWhenNotStart = PlaybookRoomDataWhenNotStart()
+            rsp.waitUsers?.let {
+                playbookRoomDataWhenNotStart?.waitUsers?.addAll(it)
+            }
+        }
     }
 
     override fun toString(): String {

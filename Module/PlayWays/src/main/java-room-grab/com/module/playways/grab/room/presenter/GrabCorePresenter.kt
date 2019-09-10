@@ -28,6 +28,7 @@ import com.common.utils.HandlerTaskTimer
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
+import com.component.busilib.constans.GrabRoomType
 import com.component.busilib.recommend.RA
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
@@ -318,7 +319,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      * 停止播放导唱
      */
     fun stopGuide() {
-            mExoPlayer?.stop()
+        mExoPlayer?.stop()
     }
 
     /**
@@ -719,7 +720,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             return
         }
         if (RA.hasTestList()) {
-            val map = HashMap<String,String>()
+            val map = HashMap<String, String>()
             map.put("testList", RA.getTestList())
             StatisticsAdapter.recordCountEvent("ra", "burst", map)
         }
@@ -1990,6 +1991,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             }
         } else if (!mRoomData.hasGameBegin()) {
             canAdd = true
+            if (mRoomData.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                mRoomData?.playbookRoomDataWhenNotStart?.addUser(true, playerInfoModel)
+            }
         } else {
             MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.expectRoundInfo)
         }

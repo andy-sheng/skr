@@ -182,8 +182,14 @@ class GrabMatchPresenter(@param:NonNull internal var mView: IGrabMatchingView, i
             map["testList"] = RA.getTestList()
 
             val body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe {
-                mMatchServerApi.joinGrabRoom(body)
+            val result = if (mPrepareData.gameType == GameModeType.GAME_MODE_PLAYBOOK) {
+                subscribe {
+                    mMatchServerApi.joinGrabPlaybookRoom(body)
+                }
+            } else {
+                subscribe {
+                    mMatchServerApi.joinGrabRoom(body)
+                }
             }
             MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.errno + " traceId = " + result.traceId + " ")
             if (result.errno == 0) {

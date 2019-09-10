@@ -216,6 +216,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     internal var mOwnerBeginGameIv: ImageView? = null
 
+    internal var playbookWaitStatusIv: ImageView? = null
+
     internal var mVIPEnterView: VIPEnterView? = null
 
     var mGameTipsManager = GameTipsManager()
@@ -365,10 +367,21 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     }
                 })
             }
-
             tryShowInviteTipView()
             tryShowManageSongTipView()
-
+        } else {
+            if (mRoomData?.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && mRoomData?.hasGameBegin() == false) {
+                // 歌单战，游戏未开始
+                playbookWaitStatusIv = ExImageView(context)
+                playbookWaitStatusIv?.setImageResource(R.drawable.race_wait_begin_icon)
+                val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                lp.addRule(RelativeLayout.CENTER_IN_PARENT)
+//                lp.rightMargin = U.getDisplayUtils().dip2px(10f)
+//                lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp)
+//                lp.topMargin = -U.getDisplayUtils().dip2px(55f)
+                val index = mGrabRootView.indexOfChild(mInputContainerView)
+                mGrabRootView.addView(playbookWaitStatusIv, index, lp)
+            }
         }
         enterRoomEvent()
 
@@ -1187,6 +1200,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (mOwnerBeginGameIv != null) {
             // 如果房主开始游戏的按钮还在的话，将其移除
             mGrabRootView.removeView(mOwnerBeginGameIv)
+            mOwnerBeginGameIv = null
+        }
+        if (playbookWaitStatusIv != null) {
+            mGrabRootView.removeView(playbookWaitStatusIv)
+            playbookWaitStatusIv = null
         }
         // 播放3秒导唱
         mOthersSingCardView.setVisibility(GONE)
