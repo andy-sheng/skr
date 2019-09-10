@@ -3,10 +3,7 @@ package com.module.playways.race.room.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewStub
+import android.view.*
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
@@ -85,6 +82,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
+    private lateinit var mNextSongStartTipTv: View
 
     internal var mVIPEnterView: VIPEnterView? = null
 
@@ -145,6 +143,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initSingSenceView()
         initRightView()
         initVipEnterView()
+
+        mNextSongStartTipTv = rootView.findViewById(R.id.next_song_start_tip_tv);
 
         mCorePresenter.onOpeningAnimationOver()
 
@@ -565,6 +565,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
         mRaceTopVsView.visibility = View.GONE
+        activity?.let {
+            if (!it.isDestroyed() && !it.isFinishing()) {
+                (rootView as ViewGroup).removeView(mNextSongStartTipTv)
+            }
+        }
 
         if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {

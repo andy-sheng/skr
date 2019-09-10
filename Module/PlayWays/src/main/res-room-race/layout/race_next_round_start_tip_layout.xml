@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingLeft="@dimen/view_12_dp"
+    android:paddingTop="@dimen/view_6_dp"
+    android:paddingRight="@dimen/view_12_dp"
+    android:paddingBottom="@dimen/view_6_dp"
+    android:text="房间已经开始，下一首即可参与抢唱"
+    android:textColor="@color/black_trans_80"
+    android:textSize="@dimen/textsize_14_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#7FDAF5FF">
+
+</com.common.view.ex.ExTextView>

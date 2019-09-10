@@ -102,6 +102,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
+    <include
+        android:id="@+id/next_song_start_tip_tv"
+        layout="@layout/race_next_round_start_tip_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        app:layout_constraintBottom_toTopOf="@+id/comment_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <!--自己唱的view-->
     <ViewStub
         android:id="@+id/race_self_sing_lyric_view_stub"
