@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    xmlns:battleStar="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_72_dp">
 
@@ -74,7 +75,11 @@
        app:layout_constraintTop_toBottomOf="@id/blight_tv"
        app:layout_constraintLeft_toLeftOf="@id/result_guide"
        app:layout_constraintRight_toRightOf="@id/result_guide"
-       app:layout_constraintBottom_toBottomOf="parent"/>
+       app:layout_constraintBottom_toBottomOf="parent"
+       battleStar:width="@dimen/view_11_dp"
+       battleStar:height="@dimen/view_11_dp"
+       battleStar:normalDrawable="@drawable/battle_rank_star_icon"
+       battleStar:selectedDrawable="@drawable/battle_rank_star_icon"/>
 
     <TextView
         android:id="@+id/name_tv"
