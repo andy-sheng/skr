@@ -130,7 +130,8 @@ public class GrabTopOpView extends RelativeLayout {
         } else {
             // 观众的话，私密房间也不能切
             if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET ||
-                    mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
+                    mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND ||
+                    mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
                 setChangeRoomBtnVisiable(false);
             } else {
                 setChangeRoomBtnVisiable(true);
