@@ -28,6 +28,7 @@ import com.module.playways.battle.songlist.model.BattleSongModel
 import com.module.playways.battle.songlist.model.BattleTagModel
 import com.module.playways.battle.songlist.view.BattleStarView
 import com.module.playways.room.prepare.model.PrepareData
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.MediaType
@@ -94,6 +95,8 @@ class BattleSongListCardFragment : BaseFragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
 
+        refreshView()
+        
         startSongList.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 enableStandTag(false)
@@ -127,6 +130,21 @@ class BattleSongListCardFragment : BaseFragment() {
             }
         })
         getStandSongList()
+    }
+
+    private fun refreshView() {
+        songNameTv.text = model?.tagName
+        AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model?.coverURL)
+                .setCircle(true)
+                .build())
+        if (model?.status == BattleTagModel.SST_LOCK) {
+            unlockGroup.visibility = View.GONE
+            startSongList.visibility = View.VISIBLE
+        } else {
+            unlockGroup.visibility = View.VISIBLE
+            startSongList.visibility = View.GONE
+            starView.bindData(model?.starCnt ?: 0, 5)
+        }
     }
 
     override fun destroy() {
@@ -192,6 +210,7 @@ class BattleSongListCardFragment : BaseFragment() {
 
     private fun getStandSongList() {
         launch {
+            delay(200)
             val result = subscribe(RequestControl("getStandSongList", ControlType.CancelThis)) {
                 battleServerApi.getStandSongList(MyUserInfoManager.getInstance().uid, model?.tagID
                         ?: 0)
@@ -214,19 +233,7 @@ class BattleSongListCardFragment : BaseFragment() {
         }
         adapter.notifyDataSetChanged()
 
-        songNameTv.text = model?.tagName
         hasSingTv.text = getSongCnt.toString()
         lightCountTv.text = blightCnt.toString()
-        AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model?.coverURL)
-                .setCircle(true)
-                .build())
-        if (model?.status == BattleTagModel.SST_LOCK) {
-            unlockGroup.visibility = View.GONE
-            startSongList.visibility = View.VISIBLE
-        } else {
-            unlockGroup.visibility = View.VISIBLE
-            startSongList.visibility = View.GONE
-            starView.bindData(model?.starCnt ?: 0, 5)
-        }
     }
 }
