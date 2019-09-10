@@ -242,7 +242,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 MSG_ENSURE_BATTLE_BEGIN_OVER -> onBattleBeginPlayOver()
                 MSG_ENSURE_SONGCARD_OVER -> onSongInfoCardPlayOver("MSG_ENSURE_SONGCARD_OVER", msg.obj as PendingPlaySongCardData)
                 MSG_ENSURE_SING_BEGIN_TIPS_OVER -> onSingBeginTipsPlayOver()
-                MSG_ENSURE_ROUND_OVER_PLAY_OVER -> onRoundOverPlayOver(msg.arg1 == 1, msg.obj as GrabRoundInfoModel)
+                MSG_ENSURE_ROUND_OVER_PLAY_OVER -> onRoundOverPlayOver(msg.arg1 == 1, msg.obj as GrabRoundInfoModel?)
             }//                case MSG_ENSURE_GAME_OVER:
             //                    onGrabGameOver("MSG_ENSURE_GAME_OVER");
             //                    break;
@@ -1385,10 +1385,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel) {
+    private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER)
         mRoundOverCardView.setVisibility(GONE)
-        if (playNextSongInfoCard) {
+        if (playNextSongInfoCard && now != null) {
             grabBegin(now.roundSeq, now.music)
         }
     }
