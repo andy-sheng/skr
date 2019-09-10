@@ -15,12 +15,15 @@ class GameTypeViewHolder(itemView: View,
                          onDoubleRoomListener: (() -> Unit)?,
                          onPkRoomListener: (() -> Unit)?,
                          onCreateRoomListener: (() -> Unit)?,
-                         onGrabRoomListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+                         onGrabRoomListener: (() -> Unit)?,
+                         onBattleRoomListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
 
     val mDoubleIv: ImageView = itemView.findViewById(R.id.double_iv)
     val mPkIv: ImageView = itemView.findViewById(R.id.pk_iv)
     val mCreateRoomIv: ImageView = itemView.findViewById(R.id.create_room_iv)
     val mGrabIv: ImageView = itemView.findViewById(R.id.grab_iv)
+    val mBattleIv: ImageView = itemView.findViewById(R.id.battle_iv)
+
 
     var mGameTypeModel: GameTypeModel? = null
 
@@ -51,6 +54,12 @@ class GameTypeViewHolder(itemView: View,
         mGrabIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 onGrabRoomListener?.invoke()
+            }
+        })
+
+        mBattleIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                onBattleRoomListener?.invoke()
             }
         })
     }

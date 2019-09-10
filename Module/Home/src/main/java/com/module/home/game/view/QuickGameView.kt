@@ -268,6 +268,12 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
         }
 
+        mGameAdapter.onBattleRoomListener = {
+            // 歌单抢唱
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
+                    .navigation()
+        }
+
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycler_view.adapter = mGameAdapter
     }

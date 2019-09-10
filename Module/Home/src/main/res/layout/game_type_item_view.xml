@@ -58,5 +58,18 @@
         app:layout_constraintRight_toRightOf="@id/create_room_iv"
         app:layout_constraintTop_toBottomOf="@id/create_room_iv" />
 
+    <ImageView
+        android:id="@+id/battle_iv"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:src="@drawable/grab_tag_home_icon"
+        app:layout_constraintLeft_toRightOf="@id/double_iv"
+        app:layout_constraintTop_toBottomOf="@id/grab_iv"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 
 </android.support.constraint.ConstraintLayout>
