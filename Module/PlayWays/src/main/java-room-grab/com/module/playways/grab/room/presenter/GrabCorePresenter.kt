@@ -1255,9 +1255,10 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     mRoomData.isHasExitGame = true
                     val models = JSON.parseArray(result.data!!.getString("numericDetail"), NumericDetailModel::class.java)
                     val levelResultModel = JSON.parseObject(result.data!!.getString("userScoreChange"), LevelResultModel::class.java)
+                    val starCnt = result.data.getInteger("starCnt")
                     if (models != null) {
                         // 得到结果
-                        mRoomData.grabResultData = GrabResultData(models, levelResultModel)
+                        mRoomData.grabResultData = GrabResultData(models, levelResultModel, starCnt)
                         mIGrabView.onGetGameResult(true)
                     } else {
                         mIGrabView.onGetGameResult(false)

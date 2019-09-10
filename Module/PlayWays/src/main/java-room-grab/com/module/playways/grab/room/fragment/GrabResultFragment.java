@@ -21,9 +21,11 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.constans.GrabRoomType;
 import com.component.level.view.LevelStarProgressBar;
 import com.component.level.view.NormalLevelView2;
 import com.module.RouterConstants;
+import com.module.playways.battle.songlist.view.BattleStarView;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -50,6 +52,9 @@ public class GrabResultFragment extends BaseFragment {
 
     GrabRoomData mRoomData;
     GrabResultData mGrabResultData;
+
+    ConstraintLayout mGrabStarArea;
+    BattleStarView mGrabStarView;
 
     ConstraintLayout mGrabNumArea;
     TextView mGrabNumTv;
@@ -87,6 +92,9 @@ public class GrabResultFragment extends BaseFragment {
         mLevelProgress = getRootView().findViewById(R.id.level_progress);
         mChangeTv = getRootView().findViewById(R.id.change_tv);
         mDescTv = getRootView().findViewById(R.id.desc_tv);
+
+        mGrabStarArea = getRootView().findViewById(R.id.grab_star_area);
+        mGrabStarView = getRootView().findViewById(R.id.grab_star_view);
 
         mGrabNumArea = getRootView().findViewById(R.id.grab_num_area);
         mGrabNumTv = getRootView().findViewById(R.id.grab_num_tv);
@@ -174,6 +182,13 @@ public class GrabResultFragment extends BaseFragment {
         }
 
         if (mGrabResultData != null) {
+            if (mGrabResultData.starCnt != null && mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                mGrabStarArea.setVisibility(View.VISIBLE);
+                mGrabStarView.bindData(mGrabResultData.starCnt, 5);
+            } else {
+                mGrabStarArea.setVisibility(View.GONE);
+            }
+
             NumericDetailModel standModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_SUCCESS_STAND);
             bindData(mGrabNumArea, mGrabNumTv, standModel, "", "首");
             NumericDetailModel blightModel = mGrabResultData.getNumericDetailModel(NumericDetailModel.RNT_GET_BLIGHT);
@@ -240,8 +255,9 @@ public class GrabResultFragment extends BaseFragment {
                     if (result.getErrno() == 0) {
                         List<NumericDetailModel> models = JSON.parseArray(result.getData().getString("numericDetail"), NumericDetailModel.class);
                         LevelResultModel levelResultModel = JSON.parseObject(result.getData().getString("userScoreChange"), LevelResultModel.class);
+                        Integer starCnt = result.getData().getInteger("starCnt");
                         if (models != null) {
-                            mGrabResultData = new GrabResultData(models, levelResultModel);
+                            mGrabResultData = new GrabResultData(models, levelResultModel, starCnt);
                             mRoomData.setGrabResultData(mGrabResultData);
                             bindData();
                         } else {

@@ -10,10 +10,12 @@ public class GrabResultData implements Serializable {
 
     List<NumericDetailModel> mDetailModels;
     public LevelResultModel mLevelResultModel;
+    public Integer starCnt;
 
-    public GrabResultData(List<NumericDetailModel> modelList, LevelResultModel model) {
+    public GrabResultData(List<NumericDetailModel> modelList, LevelResultModel model, Integer starCnt) {
         this.mDetailModels = modelList;
         this.mLevelResultModel = model;
+        this.starCnt = starCnt;
     }
 
     public NumericDetailModel getNumericDetailModel(int numericType) {
