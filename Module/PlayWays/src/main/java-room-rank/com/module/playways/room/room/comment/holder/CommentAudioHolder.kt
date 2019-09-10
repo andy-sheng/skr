@@ -5,13 +5,16 @@ import android.view.View
 import android.widget.ImageView
 
 import com.common.core.avatar.AvatarUtils
+import com.common.core.userinfo.model.UserLevelType
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentAudioModel
@@ -74,8 +77,21 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         } else {
             mRedIv.visibility = View.VISIBLE
         }
-        mNameTv.text = model.stringBuilder
-        mAudioTv.text = duration.toInt().toString() + "s"
+
+        if (model.userInfo != null
+                && model.userInfo.ranking != null
+                && model.userInfo.ranking.mainRanking >= UserLevelType.SKRER_LEVEL_SILVER) {
+            val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking))
+            drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22f), U.getDisplayUtils().dip2px(19f))
+            val spannableStringBuilder = SpanUtils()
+                    .appendImage(drawable, SpanUtils.ALIGN_CENTER)
+                    .append(model.stringBuilder)
+                    .create()
+            mNameTv.text = spannableStringBuilder
+        } else {
+            mNameTv.text = model.stringBuilder
+        }
+        mAudioTv.text = duration.toString() + "s"
         mAvatarIv.bindData(model.userInfo)
     }
 

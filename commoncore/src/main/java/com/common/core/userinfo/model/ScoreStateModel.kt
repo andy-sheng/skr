@@ -38,9 +38,15 @@ class ScoreStateModel : Serializable {
                 '}'.toString()
     }
 
-    companion object{
-        fun parseFromPB(model: UserRanking): ScoreStateModel {
+    companion object {
+        fun parseFromPB(userId: Int, model: UserRanking): ScoreStateModel {
             val scoreStateModel = ScoreStateModel()
+            scoreStateModel.userID = userId
+            scoreStateModel.mainRanking = model.mainRanking
+            scoreStateModel.subRanking = model.subRanking
+            scoreStateModel.currExp = model.currExp.toInt()
+            scoreStateModel.maxExp = model.maxExp.toInt()
+            scoreStateModel.rankingDesc = model.rankingDesc
             return scoreStateModel
         }
     }
