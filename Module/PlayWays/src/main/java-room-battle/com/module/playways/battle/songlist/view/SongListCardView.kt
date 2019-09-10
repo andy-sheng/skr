@@ -36,6 +36,9 @@ import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.HashMap
 
 //歌单详情页面
 class SongListCardView(val model: BattleTagModel, context: Context) : ExConstraintLayout(context), CoroutineScope by MainScope() {
@@ -83,7 +86,7 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
 
         startSongList.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                //todo 开启歌单
+                enableStandTag()
             }
         })
 
@@ -117,6 +120,31 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
         })
 
         getStandSongList()
+    }
+
+    private fun enableStandTag() {
+        launch {
+            val map = HashMap<String, Any>()
+            map["tagID"] = model.tagID
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("enableStandTag", ControlType.CancelThis)) {
+                battleServerApi.enableStandTag(body)
+            }
+            if (result.errno == 0) {
+                //todo 进入演唱
+                val prepareData = PrepareData()
+                prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK)
+//                prepareData.setTagId(model.tagID)
+                prepareData.setTagId(8)
+
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                        .withSerializable("prepare_data", prepareData)
+                        .navigation()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     override fun onAttachedToWindow() {

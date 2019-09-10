@@ -1,8 +1,11 @@
 package com.module.playways.battle
 
 import com.common.rxretrofit.ApiResult
+import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface BattleServerApi {
@@ -25,4 +28,8 @@ interface BattleServerApi {
                          @Query("offset") offset: Int,
                          @Query("cnt") cnt: Int,
                          @Query("tabType") tabType: Int): Call<ApiResult>
+
+    // 开启歌单
+    @PUT("v1/playbook/stand-tag-enable")
+    fun enableStandTag(@Body body: RequestBody): Call<ApiResult>
 }
