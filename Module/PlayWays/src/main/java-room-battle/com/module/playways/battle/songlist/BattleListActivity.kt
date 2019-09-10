@@ -9,20 +9,22 @@ import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.audition.fragment.PlayRecordFragment
 import com.module.playways.battle.BattleServerApi
 import com.module.playways.battle.songlist.adapter.BattleListAdapter
 import com.module.playways.battle.songlist.model.BattleTagModel
-import com.module.playways.battle.songlist.view.SongListCardView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -39,9 +41,9 @@ class BattleListActivity : BaseActivity() {
     lateinit var titlebar: CommonTitleBar
     lateinit var smartRefresh: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
+    lateinit var maskIv: View
 
     private var mGameRuleDialog: DialogPlus? = null
-    private var mSongListCardView: SongListCardView? = null
 
     val adapter: BattleListAdapter = BattleListAdapter()
 
@@ -59,6 +61,7 @@ class BattleListActivity : BaseActivity() {
         titlebar = findViewById(R.id.titlebar)
         smartRefresh = findViewById(R.id.smart_refresh)
         recyclerView = findViewById(R.id.recycler_view)
+        maskIv = findViewById(R.id.mask_iv)
 
         titlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -159,13 +162,23 @@ class BattleListActivity : BaseActivity() {
     }
 
     private fun showSongCard(tagModel: BattleTagModel) {
-        mSongListCardView = SongListCardView(tagModel, this)
-        mSongListCardView?.showByDialog()
+        maskIv.visibility = View.VISIBLE
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, BattleSongListCardFragment::class.java)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .setEnterAnim(R.anim.slide_in_bottom)
+                .setExitAnim(R.anim.slide_out_bottom)
+                .addDataBeforeAdd(0, tagModel)
+                .setFragmentDataListener(object : FragmentDataListener {
+                    override fun onFragmentResult(requestCode: Int, resultCode: Int, bundle: Bundle?, obj: Any?) {
+                        maskIv.visibility = View.GONE
+                    }
+                })
+                .build())
     }
 
     private fun dismissDialog() {
         mGameRuleDialog?.dismiss(false)
-        mSongListCardView?.dismiss(false)
     }
 
     override fun useEventBus(): Boolean {
