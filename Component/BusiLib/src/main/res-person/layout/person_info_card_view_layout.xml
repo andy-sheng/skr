@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:levelView2="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -54,14 +55,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.facebook.drawee.view.SimpleDraweeView
+                        <com.component.busilib.view.AvatarView
                             android:id="@+id/avatar_iv"
                             android:layout_width="@dimen/view_60_dp"
                             android:layout_height="@dimen/view_60_dp"
                             android:layout_marginLeft="@dimen/view_10_dp"
                             android:layout_marginTop="@dimen/view_20_dp"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            avatarView:borderColor="@color/white"
+                            avatarView:borderWidth="@dimen/view_2_dp"/>
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/more_btn"
@@ -129,6 +132,24 @@
                             android:textSize="@dimen/textsize_14_dp"
                             app:layout_constraintStart_toStartOf="@id/level_view"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+                        <TextView
+                            android:id="@+id/vip_tv"
+                            android:layout_width="@dimen/view_0_dp"
+                            android:layout_height="@dimen/view_20_dp"
+                            android:layout_marginTop="@dimen/view_4_dp"
+                            android:textSize="@dimen/textsize_14_dp"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textColor="@color/white_trans_50"
+                            android:text="ahafhafhafafhafhahgagagaggag"
+                            android:drawableLeft="@drawable/gerenxinxi_sigerenzheng"
+                            android:drawablePadding="@dimen/view_8_dp"
+                            android:gravity="left|center_vertical"
+                            app:layout_constraintStart_toStartOf="@id/level_view"
+                            app:layout_constraintTop_toBottomOf="@id/name_tv"
+                            android:visibility="gone"/>
 
                         <com.common.flowlayout.TagFlowLayout
                             android:id="@+id/flowlayout"

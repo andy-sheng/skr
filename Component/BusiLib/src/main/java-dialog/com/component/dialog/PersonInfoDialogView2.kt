@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
@@ -45,6 +46,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.R
+import com.component.busilib.view.AvatarView
 import com.component.busilib.view.MarqueeTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.ImageBrowseView
@@ -72,6 +74,7 @@ import java.util.HashMap
 
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
+import kotlinx.android.synthetic.main.photo_item_view_layout.view.*
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
 
@@ -85,13 +88,14 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     lateinit var mAppbar: AppBarLayout
     lateinit var mUserInfoArea: ConstraintLayout
-    lateinit var mAvatarIv: SimpleDraweeView
+    lateinit var mAvatarIv: AvatarView
     lateinit var mMoreBtn: ExImageView
 
     lateinit var mLevelView: NormalLevelView2
     lateinit var mNameTv: ExTextView
     lateinit var mSexIv: ImageView
     lateinit var mSignTv: MarqueeTextView
+    lateinit var mVipTv: TextView
     lateinit var mFlowlayout: TagFlowLayout
 
     lateinit var mFunctionArea: ConstraintLayout
@@ -353,15 +357,16 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     }
 
     private fun initUserInfo() {
-        mUserInfoArea = this.findViewById<View>(R.id.user_info_area) as ConstraintLayout
-        mAvatarIv = this.findViewById<View>(R.id.avatar_iv) as SimpleDraweeView
-        mMoreBtn = this.findViewById<View>(R.id.more_btn) as ExImageView
-        mLevelView = this.findViewById<View>(R.id.level_view) as NormalLevelView2
-        mNameTv = this.findViewById<View>(R.id.name_tv) as ExTextView
-        mNameTv = this.findViewById<View>(R.id.name_tv) as ExTextView
-        mSexIv = this.findViewById<View>(R.id.sex_iv) as ImageView
-        mSignTv = this.findViewById<View>(R.id.sign_tv) as MarqueeTextView
-        mFlowlayout = this.findViewById<View>(R.id.flowlayout) as TagFlowLayout
+        mUserInfoArea = this.findViewById(R.id.user_info_area)
+        mAvatarIv = this.findViewById(R.id.avatar_iv)
+        mMoreBtn = this.findViewById(R.id.more_btn)
+        mLevelView = this.findViewById(R.id.level_view)
+        mNameTv = this.findViewById(R.id.name_tv)
+        mNameTv = this.findViewById(R.id.name_tv)
+        mSexIv = this.findViewById(R.id.sex_iv)
+        mSignTv = this.findViewById(R.id.sign_tv)
+        mVipTv = this.findViewById(R.id.vip_tv)
+        mFlowlayout = this.findViewById(R.id.flowlayout)
 
         mTagAdapter = object : TagAdapter<TagModel>(mTags) {
             override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
@@ -636,12 +641,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     fun showUserInfo(model: UserInfoModel?) {
         if (model != null) {
             mUserInfoModel = model
-            AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(model.avatar)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                            .setBorderColor(Color.WHITE)
-                            .setCircle(true)
-                            .build())
+            mAvatarIv.bindData(model)
             AvatarUtils.loadAvatarByUrl(mSrlAvatarIv,
                     AvatarUtils.newParamsBuilder(model.avatar)
                             .setBorderColor(Color.WHITE)
@@ -651,14 +651,26 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
             mNameTv.text = model.nicknameRemark
             mSignTv.text = model.signature
-            if (model.sex == ESex.SX_MALE.value) {
-                mSexIv.visibility = View.VISIBLE
-                mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
-            } else if (model.sex == ESex.SX_FEMALE.value) {
-                mSexIv.visibility = View.VISIBLE
-                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
+
+            if (model.vipInfo != null && model.vipInfo.vipType > 0) {
+                mSignTv.visibility = View.GONE
+                mVipTv.visibility = View.VISIBLE
+                mVipTv.text = model.vipInfo.vipDesc
             } else {
-                mSexIv.visibility = View.GONE
+                mSignTv.visibility = View.VISIBLE
+                mVipTv.visibility = View.GONE
+            }
+
+            when {
+                model.sex == ESex.SX_MALE.value -> {
+                    mSexIv.visibility = View.VISIBLE
+                    mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
+                }
+                model.sex == ESex.SX_FEMALE.value -> {
+                    mSexIv.visibility = View.VISIBLE
+                    mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
+                }
+                else -> mSexIv.visibility = View.GONE
             }
 
             if (model.location != null && !TextUtils.isEmpty(model.location.province)) {
