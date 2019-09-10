@@ -1,16 +1,19 @@
 package com.module.playways.battle.songlist.view
 
 import android.content.Context
+import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.battle.BattleServerApi
 import com.module.playways.battle.songlist.adapter.BattleRankAdapter
@@ -62,7 +65,12 @@ class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: I
         recyclerView.adapter = adapter
         adapter.onClickListener = { model, _ ->
             model?.user?.let {
-                // todo 跳到个人中心
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", it.userId)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
             }
         }
     }
