@@ -10,10 +10,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
+import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
@@ -21,6 +23,7 @@ import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.opensource.svgaplayer.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -43,9 +46,17 @@ class RaceTopVsView : ExConstraintLayout {
     val leftTicketGroup: Group
     val rightState: ExTextView
     val rightTicketGroup: Group
+    val leftSvgaIv: SVGAImageView
+    val rightSvgaIv: SVGAImageView
 
     val raceTopVsIv: ImageView
     var roomData: RaceRoomData? = null
+
+    var leftPlayCount = 0
+    var rightPlayCount = 0
+
+    var leftPlaying = false
+    var rightPlaying = false
 
     constructor(context: Context) : super(context)
 
@@ -70,6 +81,8 @@ class RaceTopVsView : ExConstraintLayout {
         leftTicketGroup = this.findViewById(R.id.left_ticket_group)
         rightState = this.findViewById(R.id.right_state)
         rightTicketGroup = this.findViewById(R.id.right_ticket_group)
+        leftSvgaIv = this.findViewById(R.id.left_svga_iv)
+        rightSvgaIv = this.findViewById(R.id.right_svga_iv)
 
         leftAvatarIv.setDebounceViewClickListener {
             roomData?.realRoundInfo?.subRoundInfo?.let {
@@ -92,6 +105,96 @@ class RaceTopVsView : ExConstraintLayout {
         this.roomData = roomData
     }
 
+    private fun tryPlayLeftAnima() {
+        MyLog.d(TAG, "tryPlayLeftAnima")
+        if (!leftPlaying) {
+            leftPlaying = true
+            leftPlayCount--
+            MyLog.d(TAG, "tryPlayLeftAnima leftPlayCount is $leftPlayCount")
+            leftSvgaIv.clearAnimation()
+            leftSvgaIv.visibility = View.VISIBLE
+            leftSvgaIv.loops = 1
+            SvgaParserAdapter.parse("vote_star.svga", object : SVGAParser.ParseCompletion {
+                override fun onComplete(videoItem: SVGAVideoEntity) {
+                    MyLog.d(TAG, "tryPlayLeftAnima SvgaParserAdapter.parse")
+                    val drawable = SVGADrawable(videoItem)
+                    leftSvgaIv.setImageDrawable(drawable)
+                    leftSvgaIv.startAnimation()
+                }
+
+                override fun onError() {
+
+                }
+            })
+
+            leftSvgaIv.callback = object : SVGACallback {
+                override fun onPause() {
+
+                }
+
+                override fun onFinished() {
+                    MyLog.d(TAG, "tryPlayLeftAnima onFinished")
+                    leftSvgaIv.visibility = View.GONE
+                    leftPlaying = false
+                    if (leftPlayCount > 0) {
+                        tryPlayLeftAnima()
+                    }
+                }
+
+                override fun onRepeat() {
+
+                }
+
+                override fun onStep(i: Int, v: Double) {
+
+                }
+            }
+        }
+    }
+
+    private fun tryPlayRightAnima() {
+        if (!rightPlaying) {
+            rightPlaying = true
+            rightPlayCount--
+            rightSvgaIv.clearAnimation()
+            rightSvgaIv.visibility = View.VISIBLE
+            rightSvgaIv.loops = 1
+            SvgaParserAdapter.parse("vote_star.svga", object : SVGAParser.ParseCompletion {
+                override fun onComplete(videoItem: SVGAVideoEntity) {
+                    val drawable = SVGADrawable(videoItem)
+                    rightSvgaIv.setImageDrawable(drawable)
+                    rightSvgaIv.startAnimation()
+                }
+
+                override fun onError() {
+
+                }
+            })
+
+            rightSvgaIv.callback = object : SVGACallback {
+                override fun onPause() {
+
+                }
+
+                override fun onFinished() {
+                    rightSvgaIv.visibility = View.GONE
+                    rightPlaying = false
+                    if (rightPlayCount > 0) {
+                        tryPlayRightAnima()
+                    }
+                }
+
+                override fun onRepeat() {
+
+                }
+
+                override fun onStep(i: Int, v: Double) {
+
+                }
+            }
+        }
+    }
+
     fun updateData() {
         roomData?.realRoundInfo?.scores?.let {
             if (it.size == 2) {
@@ -103,7 +206,9 @@ class RaceTopVsView : ExConstraintLayout {
                     leftState.visibility = View.GONE
                     rightState.visibility = View.GONE
 
+                    resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
                     leftTicketCountTv.text = it[0].bLightCnt.toString()
+                    resetRightPlayCount(it[1].bLightCnt - rightTicketCountTv.text.toString().toInt())
                     rightTicketCountTv.text = it[1].bLightCnt.toString()
                 } else {
                     leftTicketGroup.visibility = View.GONE
@@ -118,6 +223,7 @@ class RaceTopVsView : ExConstraintLayout {
                         if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
                                         ?: true) {
 
+                            resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
                             leftTicketCountTv.text = it[0].bLightCnt.toString()
                             leftTicketGroup.visibility = View.VISIBLE
                         } else {
@@ -133,10 +239,12 @@ class RaceTopVsView : ExConstraintLayout {
                             leftState.text = "**"
                             leftState.visibility = View.VISIBLE
                             rightTicketGroup.visibility = View.VISIBLE
+                            resetRightPlayCount(it[1].bLightCnt - rightTicketCountTv.text.toString().toInt())
                             rightTicketCountTv.text = it[1].bLightCnt.toString()
                         } else {
 
                             leftTicketGroup.visibility = View.VISIBLE
+                            resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
                             leftTicketCountTv.text = it[0].bLightCnt.toString()
                             rightState.text = "**"
                             rightState.visibility = View.VISIBLE
@@ -144,6 +252,20 @@ class RaceTopVsView : ExConstraintLayout {
                     }
                 }
             }
+        }
+    }
+
+    private fun resetLeftPlayCount(addCount: Int) {
+        if (addCount > 0) {
+            leftPlayCount = leftPlayCount + addCount
+            tryPlayLeftAnima()
+        }
+    }
+
+    private fun resetRightPlayCount(addCount: Int) {
+        if (addCount > 0) {
+            rightPlayCount = rightPlayCount + addCount
+            tryPlayRightAnima()
         }
     }
 
@@ -187,6 +309,14 @@ class RaceTopVsView : ExConstraintLayout {
                 }
             }
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        leftSvgaIv.stopAnimation()
+        rightSvgaIv.stopAnimation()
+        leftPlayCount = 0
+        rightPlayCount = 0
     }
 
     fun bindData() {
