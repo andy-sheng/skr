@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
@@ -12,22 +13,26 @@ import android.widget.ImageView
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
+import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.home.R
 import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.*
 import com.module.home.model.GameKConfigModel
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import com.common.view.titlebar.CommonTitleBar
 
 
 // 主页
 class GameFragment3 : BaseFragment(), IGameView3 {
+    val PREF_KEY_BALLTLE_DIALOG = "battle_dialog"
 
     lateinit var mTitle: CommonTitleBar
     lateinit var mNavigationBgIv: ImageView
@@ -43,6 +48,8 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     val mPkGameView: PKGameView by lazy { PKGameView(this) }
 
     private var alphaAnimation: AlphaAnimation? = null
+
+    var mWaitingDialogPlus: DialogPlus? = null
 
     override fun initView(): Int {
         return R.layout.game3_fragment_layout
@@ -163,6 +170,30 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         addPresent(mPresenter)
     }
 
+    private fun showSongListBattleDialog() {
+        if (!U.getPreferenceUtils().getSettingBoolean(PREF_KEY_BALLTLE_DIALOG, false)) {
+            if (mWaitingDialogPlus == null) {
+                activity?.let {
+                    mWaitingDialogPlus = DialogPlus.newDialog(it)
+                            .setContentHolder(ViewHolder(R.layout.battle_first_tip_layout))
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_50)
+                            .setExpanded(false)
+                            .setCancelable(true)
+                            .setGravity(Gravity.CENTER)
+                            .create()
+
+                    mWaitingDialogPlus?.findViewById(R.id.bg_iv)?.setDebounceViewClickListener {
+                        mWaitingDialogPlus?.dismiss()
+                    }
+                }
+            }
+
+            mWaitingDialogPlus?.show()
+            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_BALLTLE_DIALOG, true)
+        }
+    }
+
     fun animation(startColor: Int, endColor: Int) {
         if (startColor == endColor) {
             return
@@ -181,6 +212,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
+        showSongListBattleDialog()
         when {
             mGameVp.currentItem == 0 -> {
                 mGrabGameView.initData(false)
