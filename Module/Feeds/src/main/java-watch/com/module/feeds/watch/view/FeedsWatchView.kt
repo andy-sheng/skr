@@ -260,7 +260,7 @@
 //        if (isHomePage()) {
 //            addOnScrollListenerToRv()
 //            val mLoadSir = LoadSir.Builder()
-//                    .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无神曲发布", "#802F2F30"))
+//                    .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "暂无神曲发布", "#802F2F30"))
 //                    .build()
 //            mLoadService = mLoadSir.register(mRefreshLayout, Callback.OnReloadListener {
 //                getFeeds(true)

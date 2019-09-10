@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
@@ -13,6 +14,10 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.battle.BattleServerApi
@@ -27,7 +32,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: Int) : ConstraintLayout(context), CoroutineScope by MainScope() {
+class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: Int) : RelativeLayout(context), CoroutineScope by MainScope() {
 
     private val refreshLayout: SmartRefreshLayout
     private val recyclerView: RecyclerView
@@ -38,6 +43,8 @@ class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: I
     var offset = 0
     val mCNT = 20
     var hasMore = true
+
+    val mLoadService: LoadService<*>
 
     init {
         View.inflate(context, R.layout.battle_rank_view_layout, this)
@@ -73,6 +80,13 @@ class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: I
                         .navigation()
             }
         }
+
+        val mLoadSir = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "暂无用户上榜", "#993B4E79"))
+                .build()
+        mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
+            tryLoadData()
+        })
     }
 
     fun tryLoadData() {
@@ -115,6 +129,12 @@ class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: I
                 adapter.mDataList.addAll(list)
                 adapter.notifyDataSetChanged()
             }
+        }
+
+        if (adapter.mDataList.isNullOrEmpty()) {
+            mLoadService.showCallback(EmptyCallback::class.java)
+        } else {
+            mLoadService.showSuccess()
         }
     }
 

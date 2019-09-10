@@ -23,7 +23,6 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.sensor.SensorManagerHelper
 import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
 import com.common.utils.U
@@ -261,7 +260,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
         })
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.feed_home_list_empty_icon, "暂无收藏的神曲", "#802F2F30"))
+                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "暂无收藏的神曲", "#802F2F30"))
                 .build()
 
         mLoadService = mLoadSir.register(mContainer, Callback.OnReloadListener {

@@ -41,10 +41,11 @@ class BattleRankActivity : BaseActivity() {
     lateinit var selfArea: ExImageView
 
     lateinit var seqTv: BitmapTextView
+    lateinit var noSeqTv: TextView
     lateinit var seqHint: TextView
-    lateinit var userInfoTitle:UserInfoTitleView
-    lateinit var blightTv:BitmapTextView
-    lateinit var blightHint:TextView
+    lateinit var userInfoTitle: UserInfoTitleView
+    lateinit var blightTv: BitmapTextView
+    lateinit var blightHint: TextView
     lateinit var mineStarView: BattleStarView
 
     lateinit var tagTab: SlidingTabLayout
@@ -66,6 +67,7 @@ class BattleRankActivity : BaseActivity() {
         title = findViewById(R.id.title)
         selfArea = findViewById(R.id.self_area)
         seqTv = findViewById(R.id.seq_tv)
+        noSeqTv = findViewById(R.id.no_seq_tv)
         seqHint = findViewById(R.id.seq_hint)
         userInfoTitle = findViewById(R.id.user_info_title)
         blightTv = findViewById(R.id.blight_tv)
@@ -82,6 +84,7 @@ class BattleRankActivity : BaseActivity() {
         })
 
         getBattleRankTags()
+        getMineRank()
     }
 
     private fun getBattleRankTags() {
@@ -98,23 +101,32 @@ class BattleRankActivity : BaseActivity() {
         }
     }
 
-    private fun getMineRank(tag: BattleRankTagModel) {
+    private fun getMineRank() {
         launch {
             val result = subscribe(RequestControl("getMineRank", ControlType.CancelThis)) {
                 battleServerApi.getStandRankMine(MyUserInfoManager.getInstance().uid, tagID)
             }
             if (result.errno == 0) {
-                val mineRank = JSON.parseObject(result.data.toJSONString(), BattleRankInfoModel::class.java)
-                showMineRank(mineRank)
+                val mineRank = JSON.parseObject(result.data.getString("detail"), BattleRankInfoModel::class.java)
+                val tagModel = JSON.parseObject(result.data.getString("tab"), BattleRankTagModel::class.java)
+                showMineRank(mineRank, tagModel)
             } else {
                 //todo 失败怎么处理
             }
         }
     }
 
-    private fun showMineRank(mineRank: BattleRankInfoModel?) {
+    private fun showMineRank(mineRank: BattleRankInfoModel?, tagModel: BattleRankTagModel?) {
         mineRank?.let {
-            seqTv.setText(it.rankSeq.toString())
+            if (it.rankSeq == 0) {
+                noSeqTv.visibility = View.VISIBLE
+            } else {
+                noSeqTv.visibility = View.GONE
+                seqTv.setText(it.rankSeq.toString())
+            }
+            if (tagModel != null) {
+                seqHint.text = "${tagModel.tabDesc}排名"
+            }
             blightTv.setText(it.blightCnt.toString())
             mineStarView.bindData(it.starCnt, it.starCnt)
             it.user?.ranking?.let { scoreStateModel ->
@@ -153,7 +165,6 @@ class BattleRankActivity : BaseActivity() {
                 val view = battleRankViews[rankTagModel.tabType]
                 if (position == 0) {
                     view?.tryLoadData()
-                    getMineRank(rankTagModel)
                 }
                 if (container.indexOfChild(view) == -1) {
                     container.addView(view)
@@ -182,7 +193,6 @@ class BattleRankActivity : BaseActivity() {
             override fun onPageSelected(position: Int) {
                 var tagModel = list[position]
                 battleRankViews[tagModel.tabType]?.tryLoadData()
-                getMineRank(tagModel)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
