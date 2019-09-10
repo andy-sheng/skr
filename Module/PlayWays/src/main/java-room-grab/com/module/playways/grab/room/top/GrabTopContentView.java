@@ -652,7 +652,11 @@ public class GrabTopContentView extends ConstraintLayout {
                     }
                 } else {
                     // 普通房
-                    vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                    if(mRoomData.getRoomType()==GrabRoomType.ROOM_TYPE_PLAYBOOK){
+                        vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+                    }else{
+                        vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+                    }
                 }
             }
         }

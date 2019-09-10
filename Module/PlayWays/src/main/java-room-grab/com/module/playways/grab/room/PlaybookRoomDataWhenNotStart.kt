@@ -3,6 +3,8 @@ package com.module.playways.grab.room
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.component.busilib.constans.GrabRoomType
+import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
+import com.module.playways.grab.room.event.SomeOneJoinPlaySeatEvent
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import org.greenrobot.eventbus.EventBus
@@ -16,7 +18,7 @@ class PlaybookRoomDataWhenNotStart :Serializable{
         if (!waitUsers.contains(grabPlayerInfoModel)) {
             waitUsers.add(grabPlayerInfoModel)
             if (notify) {
-                val event = SomeOneJoinWaitSeatEvent(grabPlayerInfoModel)
+                val event = GrabPlaySeatUpdateEvent(waitUsers)
                 EventBus.getDefault().post(event)
             }
             return true
