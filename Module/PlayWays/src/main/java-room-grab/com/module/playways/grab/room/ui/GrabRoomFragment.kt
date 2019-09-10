@@ -267,7 +267,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             return
         }
 
-        if (System.currentTimeMillis() - mRoomData!!.gameStartTs > 3 * 60 * 1000) {
+        if (mRoomData!!.gameStartTs > 0 && System.currentTimeMillis() - mRoomData!!.gameStartTs > 3 * 60 * 1000) {
             Log.w(TAG, "隔了很久从后台返回的，直接finish Activity")
             if (activity != null) {
                 activity!!.finish()

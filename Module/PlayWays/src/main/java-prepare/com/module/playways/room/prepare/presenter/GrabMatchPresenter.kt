@@ -196,7 +196,7 @@ class GrabMatchPresenter(@param:NonNull internal var mView: IGrabMatchingView, i
                 if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                     mMatchState = MatchState.JoinGameSuccess
                     val grabCurGameStateModel = JSON.parseObject(result.data!!.toString(), JoinGrabRoomRspModel::class.java)
-                    grabCurGameStateModel.gameStartTimeMs = this@GrabMatchPresenter.mJoinActionEvent?.gameCreateMs
+                    grabCurGameStateModel.gameCreateTimeMs = this@GrabMatchPresenter.mJoinActionEvent?.gameCreateMs
                             ?: 0L
                     mView.matchGrabSucess(grabCurGameStateModel)
                 } else {

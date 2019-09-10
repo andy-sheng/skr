@@ -6,10 +6,11 @@ import com.component.busilib.constans.GrabRoomType
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import org.greenrobot.eventbus.EventBus
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlaybookRoomDataWhenNotStart {
+class PlaybookRoomDataWhenNotStart :Serializable{
 
     fun addUser(notify: Boolean, grabPlayerInfoModel: GrabPlayerInfoModel): Boolean {
         if (!waitUsers.contains(grabPlayerInfoModel)) {

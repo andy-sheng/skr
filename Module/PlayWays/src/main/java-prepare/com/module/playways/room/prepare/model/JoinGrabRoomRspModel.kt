@@ -191,7 +191,8 @@ class JoinGrabRoomRspModel : Serializable {
     var agoraToken: String? = null// 声网token
     var roomType: Int = 0// 一唱到底房间类型，公开，好友，私密，普通 5是歌单
     var ownerID: Int = 0// 房主id
-    var gameStartTimeMs: Long = 0// 游戏创建时间,<=0 代表游戏未创建
+    var gameCreateTimeMs: Long = 0// 房间创建时间，绝对时间
+    var gameStartTimeMs: Long = 0// 游戏开始时间，相对时间，状态机运行时间，相对于 gameCreateTimeMs
     var isHasGameBegin:Boolean? = null// 游戏是否已经开始
     var isChallengeAvailable = false// 是否有挑战资格
     var roomName: String? = null    //房间名称

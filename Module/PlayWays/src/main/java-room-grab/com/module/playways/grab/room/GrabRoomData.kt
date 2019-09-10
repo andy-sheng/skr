@@ -209,9 +209,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         this.agoraToken = rsp.agoraToken
         this.roomType = rsp.roomType
         this.ownerId = rsp.ownerID
-        if (this.gameCreateTs == 0L) {
-            this.gameCreateTs = System.currentTimeMillis()
-        }
+        this.gameCreateTs = rsp.gameCreateTimeMs
         this.gameStartTs = rsp.gameStartTimeMs
         // 游戏未开始
         if (rsp.isHasGameBegin == null) {
@@ -227,7 +225,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         this.isChallengeAvailable = rsp.isChallengeAvailable
         this.roomName = rsp.roomName ?: ""
         this.isVideoRoom = rsp.mediaType == 2
-        if (roomType == GameModeType.GAME_MODE_PLAYBOOK && !hasGameBegin) {
+        if (roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && !hasGameBegin) {
             playbookRoomDataWhenNotStart = PlaybookRoomDataWhenNotStart()
             rsp.waitUsers?.let {
                 playbookRoomDataWhenNotStart?.waitUsers?.addAll(it)

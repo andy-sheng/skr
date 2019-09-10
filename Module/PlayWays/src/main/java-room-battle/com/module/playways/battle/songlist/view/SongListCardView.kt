@@ -92,16 +92,7 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
 
         starBg.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                //todo 再次演唱
-                val prepareData = PrepareData()
-                prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK)
-//                prepareData.setTagId(model.tagID)
-                prepareData.setTagId(8)
-
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                        .withSerializable("prepare_data", prepareData)
-                        .navigation()
+                goPlaybookMatch()
             }
         })
 
@@ -118,8 +109,19 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
                         .navigation()
             }
         })
-
         getStandSongList()
+    }
+
+    private fun goPlaybookMatch() {
+        val prepareData = PrepareData()
+        prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK)
+        prepareData.setTagId(model.tagID)
+//        prepareData.setTagId(8)
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation()
     }
 
     private fun enableStandTag() {
@@ -131,16 +133,7 @@ class SongListCardView(val model: BattleTagModel, context: Context) : ExConstrai
                 battleServerApi.enableStandTag(body)
             }
             if (result.errno == 0) {
-                //todo 进入演唱
-                val prepareData = PrepareData()
-                prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK)
-//                prepareData.setTagId(model.tagID)
-                prepareData.setTagId(8)
-
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                        .withSerializable("prepare_data", prepareData)
-                        .navigation()
+                goPlaybookMatch()
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
