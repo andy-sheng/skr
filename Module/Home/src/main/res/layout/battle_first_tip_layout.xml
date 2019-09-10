@@ -14,20 +14,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.common.view.ex.ExTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_30_dp"
-        android:layout_marginTop="@dimen/view_188_dp"
-        android:layout_marginRight="@dimen/view_30_dp"
-        android:lineSpacingExtra="@dimen/view_5_dp"
-        android:text="每日开启新歌单，演唱新歌曲，获得新成就，认识新朋友
-爆灯得5星评级，全平台小喇叭让你的荣耀更荣耀
-还等什么，快来歌单抢唱挑战吧！"
-        android:textColor="#FF062074"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
-        app:layout_constraintRight_toRightOf="@+id/bg_iv"
-        app:layout_constraintTop_toTopOf="@+id/bg_iv" />
 </android.support.constraint.ConstraintLayout>
