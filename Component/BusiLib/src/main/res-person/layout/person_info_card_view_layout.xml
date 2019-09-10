@@ -142,7 +142,7 @@
                             android:maxLines="1"
                             android:singleLine="true"
                             android:ellipsize="end"
-                            android:textColor="@color/white_trans_50"
+                            android:textColor="#cc3B4E79"
                             android:text="ahafhafhafafhafhahgagagaggag"
                             android:drawableLeft="@drawable/gerenxinxi_sigerenzheng"
                             android:drawablePadding="@dimen/view_8_dp"
