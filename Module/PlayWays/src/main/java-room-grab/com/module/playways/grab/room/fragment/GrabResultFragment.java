@@ -145,7 +145,11 @@ public class GrabResultFragment extends BaseFragment {
             @Override
             public void click(View view) {
                 PrepareData prepareData = new PrepareData();
-                prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+                if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                    prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK);
+                } else {
+                    prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+                }
                 prepareData.setTagId(mRoomData.getTagId());
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
