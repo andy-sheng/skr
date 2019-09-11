@@ -376,7 +376,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 playbookWaitStatusIv = ExImageView(context)
                 playbookWaitStatusIv?.setBackgroundResource(R.drawable.race_wait_begin_icon)
 
-                val lp = RelativeLayout.LayoutParams(355.dp(), 144.dp())
+                val lp = RelativeLayout.LayoutParams(335.dp(), 144.dp())
                 lp.addRule(RelativeLayout.CENTER_HORIZONTAL)
                 lp.topMargin = 182.dp()
 //                lp.rightMargin = U.getDisplayUtils().dip2px(10f)
