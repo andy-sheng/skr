@@ -1,7 +1,5 @@
 package com.component.busilib.friends;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -19,6 +17,7 @@ import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -34,7 +33,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     ExConstraintLayout mBackground;
     SimpleDraweeView mRecommendTagSdv;
     SimpleDraweeView mMediaTagSdv;
-    SimpleDraweeView mAvatarIv;
+    AvatarView mAvatarIv;
     ExTextView mNameTv;
     ExTextView mRoomPlayerNumTv;
     ExTextView mRoomInfoTv;
@@ -78,13 +77,8 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         } else {
             mBackground.setBackground(FriendRoomVerticalAdapter.mDrawable4);
         }
-
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(1.5f))
-                        .setBorderColor(U.getColor(R.color.white))
-                        .build());
+        
+        mAvatarIv.bindData(friendRoomModel.getUserInfo());
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
             if (!TextUtils.isEmpty(mFriendRoomModel.getRoomInfo().getRoomTagURL())) {
