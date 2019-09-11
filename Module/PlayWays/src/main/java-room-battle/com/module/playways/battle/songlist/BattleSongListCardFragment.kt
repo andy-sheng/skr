@@ -189,7 +189,7 @@ class BattleSongListCardFragment : BaseFragment() {
                     tipsDialogView?.dismiss(false)
                     tipsDialogView = TipsDialogView.Builder(context)
                             .setMessageTip(result.errmsg)
-                            .setConfirmTip("确定")
+                            .setConfirmTip("金币解锁")
                             .setCancelTip("取消")
                             .setConfirmBtnClickListener(object : AnimateClickListener() {
                                 override fun click(view: View) {
