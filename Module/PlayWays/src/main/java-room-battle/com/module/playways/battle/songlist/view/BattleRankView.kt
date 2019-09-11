@@ -82,7 +82,7 @@ class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: I
         }
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "暂无用户上榜", "#993B4E79"))
+                .addCallback(EmptyCallback(R.drawable.battle_rank_empty_icon, "暂无用户上榜", "#993B4E79"))
                 .build()
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             tryLoadData()
