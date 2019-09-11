@@ -90,9 +90,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private var mRaceActorPanelView: RaceActorPanelView? = null  //参与的人
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mRaceVoiceControlPanelView: RaceVoiceControlPanelView? = null
-    internal var mVipEnterPresenter: VipEnterPresenter? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
+
+    internal var mVipEnterPresenter: VipEnterPresenter? = null
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mRaceWidgetAnimationController = RaceWidgetAnimationController(this)

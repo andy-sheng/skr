@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="胜负规则：竞演完毕后，两位竞演选手比拼获得赞数，赞数较多一方胜出。胜出一方加5点经验，落败一方减5点经验，平局则不加不减。比赛中逃跑的行为会被惩罚，扣除经验。"
+                android:text="胜负规则：竞演完毕后，两位竞演选手比拼获得赞数，赞数较多一方胜出。胜出一方加经验，落败一方减经验，平局则不加不减。比赛中逃跑的行为会被惩罚，扣除经验。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
