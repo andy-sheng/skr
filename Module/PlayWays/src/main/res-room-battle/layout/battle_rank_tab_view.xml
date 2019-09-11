@@ -14,6 +14,7 @@
         android:paddingRight="@dimen/view_14_dp"
         android:singleLine="true"
         android:textSize="@dimen/textsize_14_dp"
+        android:textStyle="bold"
         app:bl_selected_textColor="#b3111E60"
         app:bl_unSelected_textColor="#80111E60" />
 
