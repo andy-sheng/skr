@@ -70,8 +70,8 @@ class RaceSelectSongView : ExConstraintLayout {
         progressBar.progress = 0
         firstSongItem.setDebounceViewClickListener {
             firstSongItem.getSong()?.let {
-                U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                 if (canSelectSong()) {
+                    U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                     MyLog.d(TAG, "mSeq is $mSeq")
                     mSelectCall?.invoke(1, mSeq)
                     mNoSelectCall = null
@@ -103,8 +103,8 @@ class RaceSelectSongView : ExConstraintLayout {
 
         forthSongItem.setDebounceViewClickListener {
             forthSongItem.getSong()?.let {
-                U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                 if (canSelectSong()) {
+                    U.getSoundUtils().play(TAG, R.raw.newrank_picksong)
                     MyLog.d(TAG, "mSeq is $mSeq")
                     mSelectCall?.invoke(4, mSeq)
                     mNoSelectCall = null
