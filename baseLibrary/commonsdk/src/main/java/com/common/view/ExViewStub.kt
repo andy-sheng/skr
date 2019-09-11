@@ -33,7 +33,7 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
     open fun setVisibility(visibility: Int) {
         if (visibility == View.GONE) {
             if (mParentView != null) {
-                mParentView?.setVisibility(View.GONE)
+                mParentView?.visibility = View.GONE
                 mParentView?.clearAnimation()
             }
         } else {

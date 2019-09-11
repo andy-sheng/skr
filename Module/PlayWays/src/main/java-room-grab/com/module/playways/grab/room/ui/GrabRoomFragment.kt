@@ -766,11 +766,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             // 普通房
             mShowKick = true
         } else {
-            if (mRoomData!!.isOwner) {
-                mShowKick = true
-            } else {
-                mShowKick = false
-            }
+            mShowKick = mRoomData!!.isOwner
         }
 
         mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, true)
