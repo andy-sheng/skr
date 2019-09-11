@@ -376,7 +376,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 playbookWaitStatusIv = ExImageView(context)
                 playbookWaitStatusIv?.setBackgroundResource(R.drawable.race_wait_begin_icon)
 
-                val lp = RelativeLayout.LayoutParams(355.dp(),144.dp())
+                val lp = RelativeLayout.LayoutParams(355.dp(), 144.dp())
                 lp.addRule(RelativeLayout.CENTER_HORIZONTAL)
                 lp.topMargin = 182.dp()
 //                lp.rightMargin = U.getDisplayUtils().dip2px(10f)
@@ -863,16 +863,21 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabTopContentView.setRoomData(mRoomData!!)
         mGrabTopOpView.setListener(object : GrabTopOpView.Listener {
             override fun changeRoom() {
-                val grabRoundInfoModel = mRoomData!!.realRoundInfo
-                if (grabRoundInfoModel != null) {
-                    for (wantSingerInfo in grabRoundInfoModel.wantSingInfos) {
-                        if (wantSingerInfo.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                mRoomData?.realRoundInfo?.let {
+                    if (it.status == EQRoundStatus.QRS_INTRO.value) {
+                        for (wantSingerInfo in it.wantSingInfos) {
+                            if (wantSingerInfo.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                                U.getToastUtil().showShort("抢唱了不能切换房间哦～")
+                                return
+                            }
+                        }
+                    } else {
+                        if (it.singBySelf()) {
                             U.getToastUtil().showShort("演唱时不能切换房间哦～")
                             return
                         }
                     }
                 }
-
                 mBeginChangeRoomTs = System.currentTimeMillis()
                 mGrabChangeRoomTransitionView.visibility = View.VISIBLE
                 mCorePresenter?.changeRoom()
