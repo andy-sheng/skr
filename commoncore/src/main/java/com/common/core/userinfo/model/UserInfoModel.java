@@ -325,9 +325,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setSignature(model.getDescription());
             userInfoModel.setIsSystem(model.getIsSystem());
             userInfoModel.setMainLevel(model.getMainLevel());
-            VipInfo vipInfo = new VipInfo();
-            vipInfo.setVipType(model.getVipType().getValue());
-            userInfoModel.setVipInfo(vipInfo);
+            userInfoModel.setVipInfo(VipInfo.Companion.parseFromPB(model.getVipInfo()));
             userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getUserID(),model.getRanking()));
         }
         return userInfoModel;

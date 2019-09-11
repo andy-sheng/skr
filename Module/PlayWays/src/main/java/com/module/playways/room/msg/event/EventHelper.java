@@ -2,6 +2,7 @@ package com.module.playways.room.msg.event;
 
 import android.text.TextUtils;
 
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.grab.room.dynamicmsg.DynamicModel;
@@ -9,6 +10,7 @@ import com.module.playways.room.msg.BasePushInfo;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.EVIPType;
 import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Common.VipInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,7 +38,6 @@ public class EventHelper {
             } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
                 sex = ESex.SX_FEMALE;
             }
-
             UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
                     , MyUserInfoManager.getInstance().getNickName()
                     , MyUserInfoManager.getInstance().getAvatar()
@@ -44,7 +45,7 @@ public class EventHelper {
                     , ""
                     , false
                     , 0
-                    , EVIPType.EVT_GOLDEN_V, null);
+                    , null, null);
 
             basePushInfo.setSender(userInfo);
             CommentMsgEvent commentMsgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
@@ -71,12 +72,6 @@ public class EventHelper {
             } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
                 sex = ESex.SX_FEMALE;
             }
-            EVIPType vipType = EVIPType.EVT_UNKNOWN;
-            if (MyUserInfoManager.getInstance().getVipType() == EVIPType.EVT_RED_V.getValue()) {
-                vipType = EVIPType.EVT_RED_V;
-            } else if (MyUserInfoManager.getInstance().getVipType() == EVIPType.EVT_GOLDEN_V.getValue()) {
-                vipType = EVIPType.EVT_GOLDEN_V;
-            }
             UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
                     , MyUserInfoManager.getInstance().getNickName()
                     , MyUserInfoManager.getInstance().getAvatar()
@@ -84,7 +79,7 @@ public class EventHelper {
                     , ""
                     , false
                     , 0
-                    , vipType, null);
+                    , null, null);
 
             basePushInfo.setSender(userInfo);
             EventBus.getDefault().post(new DynamicEmojiMsgEvent(basePushInfo, DynamicEmojiMsgEvent.MSG_TYPE_SEND, dynamicModel));
@@ -102,12 +97,7 @@ public class EventHelper {
         } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
             sex = ESex.SX_FEMALE;
         }
-        EVIPType vipType = EVIPType.EVT_UNKNOWN;
-        if (MyUserInfoManager.getInstance().getVipType() == EVIPType.EVT_RED_V.getValue()) {
-            vipType = EVIPType.EVT_RED_V;
-        } else if (MyUserInfoManager.getInstance().getVipType() == EVIPType.EVT_GOLDEN_V.getValue()) {
-            vipType = EVIPType.EVT_GOLDEN_V;
-        }
+
         UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
                 , MyUserInfoManager.getInstance().getNickName()
                 , MyUserInfoManager.getInstance().getAvatar()
@@ -115,7 +105,7 @@ public class EventHelper {
                 , ""
                 , false
                 , 0
-                , vipType, null);
+                , null, null);
         basePushInfo.setSender(userInfo);
         EventBus.getDefault().post(new AudioMsgEvent(basePushInfo, AudioMsgEvent.MSG_TYPE_SEND, localPath, duration, url));
     }

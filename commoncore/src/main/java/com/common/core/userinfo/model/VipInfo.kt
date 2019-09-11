@@ -13,4 +13,12 @@ class VipInfo : Serializable {
         return "VipInfo(vipType=$vipType, vipDesc='$vipDesc')"
     }
 
+    companion object {
+        fun parseFromPB(vipInfo: com.zq.live.proto.Common.VipInfo): VipInfo {
+            val result = VipInfo()
+            result.vipType = vipInfo.vipType.value
+            result.vipDesc = vipInfo.desc
+            return result
+        }
+    }
 }

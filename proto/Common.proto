@@ -18,7 +18,7 @@ message UserInfo {
     string description = 5; //个人描述
     bool isSystem = 6; //是否为系统
     uint32 mainLevel = 7; //主段位
-    EVIPType vipType    = 8; //vip类型
+    VipInfo vipInfo    = 8; //vip类型
     UserRanking ranking = 9; //排位信息
 }
 
@@ -30,6 +30,12 @@ message UserRanking
     int64 currExp      = 3; //进度条当前分值
     int64 maxExp       = 4; //进度条总分值
     string rankingDesc = 5; //段位描述。例如：白银歌者4段
+}
+
+message VipInfo
+{
+    EVIPType vipType = 1;  //认证类型
+    string desc = 2;       // 认证描述
 }
 
 //加v类型
