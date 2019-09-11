@@ -16,6 +16,6 @@
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
         app:bl_selected_textColor="#b3111E60"
-        app:bl_unSelected_textColor="#80111E60" />
+        app:bl_unSelected_textColor="#66111E60" />
 
 </RelativeLayout>
