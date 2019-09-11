@@ -54,7 +54,14 @@
             android:id="@+id/unlock_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="star_bg,star_view,play_again_tv" />
+            app:constraint_referenced_ids="star_bg,star_view,play_again_tv, changguo_textview, has_sing_tv, zuiduobaodeng_textview, light_count_tv" />
+
+        <android.support.constraint.Group
+            android:id="@+id/lock_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="start_song_list, not_open_tv" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -135,6 +142,18 @@
             app:layout_constraintTop_toTopOf="@+id/zuiduobaodeng_textview" />
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/not_open_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_marginBottom="@dimen/view_10_dp"
+            android:text="暂未开启"
+            android:textColor="@color/black_trans_50"
+            android:textSize="@dimen/textsize_12_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/record_film"
+            app:layout_constraintLeft_toRightOf="@+id/record_film" />
+
+        <com.common.view.ex.ExTextView
             android:id="@+id/play_again_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,7 +176,6 @@
             android:text="开启歌单"
             android:textColor="#ffffffff"
             android:textSize="@dimen/textsize_16_dp"
-            android:visibility="gone"
             app:bl_corners_radius="@dimen/view_26_dp"
             app:bl_solid_color="#FFFFAA1F"
             app:layout_constraintTop_toBottomOf="@+id/record_film" />

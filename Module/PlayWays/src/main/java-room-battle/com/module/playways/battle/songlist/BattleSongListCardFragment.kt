@@ -30,10 +30,9 @@ import com.module.playways.battle.songlist.view.BattleStarView
 import com.module.playways.room.prepare.model.PrepareData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.util.HashMap
+import java.util.*
 
 //歌单详情页面
 class BattleSongListCardFragment : BaseFragment() {
@@ -47,6 +46,7 @@ class BattleSongListCardFragment : BaseFragment() {
     lateinit var rankIv: ImageView
     lateinit var lightCountTv: ExTextView
     lateinit var unlockGroup: Group
+    lateinit var lockGroup: Group
     lateinit var starView: BattleStarView
     lateinit var starBg: ExImageView
     lateinit var startSongList: ExTextView
@@ -86,6 +86,7 @@ class BattleSongListCardFragment : BaseFragment() {
         rankIv = rootView.findViewById(R.id.rank_iv)
         lightCountTv = rootView.findViewById(R.id.light_count_tv)
         unlockGroup = rootView.findViewById(R.id.unlock_group)
+        lockGroup = rootView.findViewById(R.id.lock_group)
         starBg = rootView.findViewById(R.id.star_bg)
         starView = rootView.findViewById(R.id.star_view)
         startSongList = rootView.findViewById(R.id.start_song_list)
@@ -139,10 +140,10 @@ class BattleSongListCardFragment : BaseFragment() {
                 .build())
         if (model?.status == BattleTagModel.SST_LOCK) {
             unlockGroup.visibility = View.GONE
-            startSongList.visibility = View.VISIBLE
+            lockGroup.visibility = View.VISIBLE
         } else {
             unlockGroup.visibility = View.VISIBLE
-            startSongList.visibility = View.GONE
+            lockGroup.visibility = View.GONE
             starView.bindData(model?.starCnt ?: 0, 5)
         }
     }
