@@ -13,7 +13,16 @@ import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlaybookRoomDataWhenNotStart :Serializable{
+class PlaybookRoomDataWhenNotStart : Serializable {
+
+    fun addAllUser(notify: Boolean, waiters: List<GrabPlayerInfoModel>) {
+        waitUsers.clear()
+        waitUsers.addAll(waiters)
+        if (notify) {
+            val event = GrabPlaySeatUpdateEvent(waitUsers)
+            EventBus.getDefault().post(event)
+        }
+    }
 
     fun addUser(notify: Boolean, grabPlayerInfoModel: GrabPlayerInfoModel): Boolean {
         if (!waitUsers.contains(grabPlayerInfoModel)) {

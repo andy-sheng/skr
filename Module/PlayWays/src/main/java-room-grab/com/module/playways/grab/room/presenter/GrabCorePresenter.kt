@@ -2001,7 +2001,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         } else if (!mRoomData.hasGameBegin()) {
             canAdd = true
             if (mRoomData.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
-                mRoomData?.playbookRoomDataWhenNotStart?.addUser(true, playerInfoModel)
+                mRoomData?.playbookRoomDataWhenNotStart?.addAllUser(true, event.waitUsers)
             }
         } else {
             MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.expectRoundInfo)
@@ -2025,7 +2025,6 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             MyLog.d(TAG, "有人离开房间,id=" + event.userID)
             val grabRoundInfoModel = mRoomData.expectRoundInfo
             grabRoundInfoModel!!.removeUser(true, event.userID)
-
         } else {
             MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.expectRoundInfo)
         }
