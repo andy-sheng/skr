@@ -1291,7 +1291,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             // pk的第二轮，没有 vs 的演唱开始提示了
             onSingBeginTipsPlayOver()
         } else {
-            singBeginTipsPlay(Runnable { onSingBeginTipsPlayOver() })
+            singBeginTipsPlay { onSingBeginTipsPlayOver() }
         }
 
         StatisticsAdapter.recordCountEvent("grab", "game_sing", null)
@@ -1323,7 +1323,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
             onSingBeginTipsPlayOver()
         } else {
-            singBeginTipsPlay(Runnable {
+            singBeginTipsPlay {
                 val grabRoundInfoModel = mRoomData!!.realRoundInfo
                 if (grabRoundInfoModel != null
                         && grabRoundInfoModel.isParticipant
@@ -1336,18 +1336,18 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     mGrabOpBtn.hide("singByOthers2")
                 }
                 onSingBeginTipsPlayOver()
-            })
+            }
         }
     }
 
-    private fun singBeginTipsPlay(runnable: Runnable) {
+    private fun singBeginTipsPlay(runnable: () -> Unit) {
         val grabRoundInfoModel = mRoomData!!.realRoundInfo
         if (grabRoundInfoModel != null) {
             if (!grabRoundInfoModel.isParticipant && grabRoundInfoModel.isEnterInSingStatus) {
                 MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了")
-                runnable.run()
+                runnable.invoke()
             } else {
-                mSingBeginTipsCardView.bindData { runnable.run() }
+                mSingBeginTipsCardView.bindData { runnable.invoke() }
             }
         } else {
             MyLog.w(TAG, "singBeginTipsPlay" + " grabRoundInfoModel = null ")

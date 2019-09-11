@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrabConfigModel implements Serializable {
-    int enableShowBLightWaitTimeMs = 5;
-    int enableShowMLightWaitTimeMs = 2;
+    int enableShowBLightWaitTimeMs = 5000;
+    int enableShowMLightWaitTimeMs = 5000;
     int totalGameRoundSeq = 100;
     int wantSingDelayTimeMs = 500;
     List<GrabScoreTipMsgModel> qScoreTipMsg = new ArrayList<>();
