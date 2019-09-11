@@ -27,6 +27,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.recommend.RA;
+import com.component.busilib.view.AvatarView;
 import com.module.playways.R;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.room.msg.event.EventHelper;
@@ -113,10 +114,10 @@ public class RaceInputContainerView extends InputContainerView {
                                     EventHelper.pretendCommentPush(content, mRoomData.getGameId());
                                 }
                             }
-                            if(RA.hasTestList()){
+                            if (RA.hasTestList()) {
                                 HashMap map = new HashMap();
                                 map.put("testList", RA.getTestList());
-                                StatisticsAdapter.recordCountEvent("ra","sendmsg",map);
+                                StatisticsAdapter.recordCountEvent("ra", "sendmsg", map);
                             }
                         }
                     }
@@ -194,7 +195,7 @@ public class RaceInputContainerView extends InputContainerView {
 
         private class WalletRecordItemHolder extends RecyclerView.ViewHolder {
 
-            BaseImageView mPlayerIv;
+            AvatarView mPlayerIv;
             ExTextView mSelected;
 
             RacePlayerInfoModel mWalletRecordModel;
@@ -202,8 +203,8 @@ public class RaceInputContainerView extends InputContainerView {
             public WalletRecordItemHolder(View itemView) {
                 super(itemView);
 
-                mPlayerIv = (BaseImageView) itemView.findViewById(R.id.player_iv);
-                mSelected = (ExTextView) itemView.findViewById(R.id.selected_icon_tv);
+                mPlayerIv = itemView.findViewById(R.id.player_iv);
+                mSelected = itemView.findViewById(R.id.selected_icon_tv);
                 itemView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -241,10 +242,7 @@ public class RaceInputContainerView extends InputContainerView {
                 if (TextUtils.isEmpty(avatar)) {
                     mPlayerIv.setImageDrawable(U.getDrawable(R.drawable.tubiao_all));
                 } else {
-                    AvatarUtils.loadAvatarByUrl(mPlayerIv,
-                            AvatarUtils.newParamsBuilder(model.getUserInfo().getAvatar())
-                                    .setCircle(true)
-                                    .build());
+                    mPlayerIv.bindData(model.getUserInfo());
                 }
             }
         }
