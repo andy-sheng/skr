@@ -2,15 +2,14 @@ package com.module.playways.grab.room.presenter
 
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.core.userinfo.model.UserLevelType.SKRER_LEVEL_PLATINUM
-import com.common.core.userinfo.model.UserLevelType.SKRER_LEVEL_POTENTIAL
+import com.common.core.userinfo.model.UserLevelType
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.utils.U
 import com.module.playways.BaseRoomData
 import com.module.playways.grab.room.inter.IGrabVipView
 
-class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxLifeCyclePresenter() {
+class VipEnterPresenter(val view: IGrabVipView, val roomData: BaseRoomData<*>) : RxLifeCyclePresenter() {
     val mTag = "VipEnterPresenter"
     var canAccept = true
 
@@ -52,8 +51,13 @@ class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxL
     }
 
     fun addNotice(playerInfoModel: UserInfoModel) {
-        if (playerInfoModel.ranking != null && playerInfoModel.ranking.mainRanking >= SKRER_LEVEL_PLATINUM) {
-            mVipEnterObjectPlayControlTemplate.add(playerInfoModel, true)
+        roomData.getPlayerAndWaiterInfoList()?.forEach {
+            if (it.userID == playerInfoModel.userId) {
+                if ((it.userInfo?.ranking?.mainRanking
+                                ?: 0) >= UserLevelType.SKRER_LEVEL_PLATINUM) {
+                    mVipEnterObjectPlayControlTemplate.add(it.userInfo, true)
+                }
+            }
         }
     }
 
