@@ -48,6 +48,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean mIsSystem;
     private boolean isFriend;
     private boolean isFollow;
+    @Deprecated
     private int mainLevel; // 主段位 (被废弃了)
     private int status;    // 状态 在线  离线
     private long statusTs;// 在线或者离线的时间
