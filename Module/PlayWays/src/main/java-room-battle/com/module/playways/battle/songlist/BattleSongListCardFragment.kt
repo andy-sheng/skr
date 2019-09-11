@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.rxretrofit.*
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -55,6 +56,7 @@ class BattleSongListCardFragment : BaseFragment() {
 
     val adapter = SongListCardAdapter()
     private val battleServerApi: BattleServerApi = ApiManager.getInstance().createService(BattleServerApi::class.java)
+    var mSkrAudioPermission: SkrAudioPermission = SkrAudioPermission()
 
     var model: BattleTagModel? = null
     var tipsDialogView: TipsDialogView? = null
@@ -97,7 +99,7 @@ class BattleSongListCardFragment : BaseFragment() {
         recyclerView.adapter = adapter
 
         refreshView()
-        
+
         startSongList.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 enableStandTag(false)
@@ -155,15 +157,15 @@ class BattleSongListCardFragment : BaseFragment() {
     }
 
     private fun goPlaybookMatch() {
-        val prepareData = PrepareData()
-        prepareData.setGameType(GameModeType.GAME_MODE_PLAYBOOK)
-        prepareData.setTagId(model?.tagID ?: 0)
-//        prepareData.setTagId(8)
-
-        ARouter.getInstance()
-                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                .withSerializable("prepare_data", prepareData)
-                .navigation()
+        mSkrAudioPermission.ensurePermission({
+            val prepareData = PrepareData()
+            prepareData.gameType = GameModeType.GAME_MODE_PLAYBOOK
+            prepareData.tagId = model?.tagID ?: 0
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                    .withSerializable("prepare_data", prepareData)
+                    .navigation()
+        }, true)
     }
 
     // 是否花费金币解锁
