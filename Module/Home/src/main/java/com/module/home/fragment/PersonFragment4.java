@@ -116,6 +116,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     TextView mSrlNameTv;
     ImageView mSrlSexIv;
     ExTextView mSrlCharmTv;
+    ExTextView mSrlSignTv;
     TextView mSrlVipTv;
 
     PersonCorePresenter mPresenter;
@@ -191,6 +192,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mSrlNameTv = getRootView().findViewById(R.id.srl_name_tv);
         mSrlSexIv = getRootView().findViewById(R.id.srl_sex_iv);
         mSrlCharmTv = getRootView().findViewById(R.id.srl_charm_tv);
+        mSrlSignTv = getRootView().findViewById(R.id.srl_sign_tv);
         mSrlVipTv = getRootView().findViewById(R.id.srl_vip_tv);
 
         FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
@@ -667,21 +669,22 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mSexIv.setVisibility(View.GONE);
                 mSrlSexIv.setVisibility(View.GONE);
             }
+            mSrlSignTv.setText(MyUserInfoManager.getInstance().getSignature());
             mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
 
             if (MyUserInfoManager.getInstance().getVipInfo() != null && MyUserInfoManager.getInstance().getVipType() > 0) {
                 // 展示vip
-                mCharmTv.setVisibility(View.GONE);
-                mSrlCharmTv.setVisibility(View.GONE);
+                mSignTv.setVisibility(View.GONE);
+                mSrlSignTv.setVisibility(View.GONE);
 
                 mVipTv.setVisibility(View.VISIBLE);
                 mSrlVipTv.setVisibility(View.VISIBLE);
                 mVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
                 mSrlVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
             } else {
-                // 展示魅力值
-                mCharmTv.setVisibility(View.VISIBLE);
-                mSrlCharmTv.setVisibility(View.VISIBLE);
+                // 展示签名
+                mSignTv.setVisibility(View.VISIBLE);
+                mSrlSignTv.setVisibility(View.VISIBLE);
 
                 mVipTv.setVisibility(View.GONE);
                 mSrlVipTv.setVisibility(View.GONE);

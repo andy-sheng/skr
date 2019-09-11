@@ -108,21 +108,6 @@
                     android:fitsSystemWindows="true"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <com.common.view.ex.ExTextView
-                        android:id="@+id/sign_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/view_20_dp"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="@dimen/view_184_dp"
-                        android:layout_marginRight="@dimen/view_16_dp"
-                        android:ellipsize="end"
-                        android:gravity="left|center_vertical"
-                        android:maxEms="14"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textColor="@color/white_trans_80"
-                        android:textSize="@dimen/textsize_14_dp" />
-
                     <com.common.view.ex.ExConstraintLayout
                         android:id="@+id/user_info_area"
                         android:layout_width="match_parent"
@@ -220,9 +205,27 @@
                             app:bl_corners_radius="@dimen/view_12_dp"
                             app:bl_shape="rectangle"
                             app:bl_solid_color="@color/black_trans_10"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
                             app:layout_constraintLeft_toLeftOf="@id/name_tv"
                             app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/sign_tv"
+                            android:layout_width="@dimen/view_0_dp"
+                            android:layout_height="@dimen/view_20_dp"
+                            android:ellipsize="end"
+                            android:gravity="left|center_vertical"
+                            android:maxEms="14"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textColor="@color/white_trans_80"
+                            android:textSize="@dimen/textsize_14_dp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintRight_toLeftOf="@id/business_card"
+                            app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
+                            app:layout_constraintLeft_toLeftOf="@id/name_tv"
+                            app:layout_constraintTop_toBottomOf="@id/name_tv"/>
 
                         <TextView
                             android:id="@+id/vip_tv"
@@ -376,11 +379,30 @@
                                 android:drawablePadding="@dimen/view_3_dp"
                                 android:drawableLeft="@drawable/grab_charm_icon"
                                 android:textColor="@color/white"
+                                android:visibility="gone"
                                 app:bl_corners_radius="@dimen/view_12_dp"
                                 app:bl_shape="rectangle"
                                 app:bl_solid_color="@color/black_trans_10"
                                 app:layout_constraintLeft_toLeftOf="@id/srl_name_tv"
                                 app:layout_constraintTop_toBottomOf="@id/srl_name_tv" />
+
+                            <com.common.view.ex.ExTextView
+                                android:id="@+id/srl_sign_tv"
+                                android:layout_width="@dimen/view_0_dp"
+                                android:layout_height="@dimen/view_20_dp"
+                                android:layout_marginTop="@dimen/view_6_dp"
+                                android:layout_marginRight="@dimen/view_10_dp"
+                                android:ellipsize="end"
+                                android:gravity="left|center_vertical"
+                                android:maxEms="14"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textColor="@color/white_trans_80"
+                                android:textSize="@dimen/textsize_14_dp"
+                                app:layout_constrainedWidth="true"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintLeft_toLeftOf="@id/srl_name_tv"
+                                app:layout_constraintTop_toBottomOf="@id/srl_name_tv"/>
 
                             <TextView
                                 android:id="@+id/srl_vip_tv"
