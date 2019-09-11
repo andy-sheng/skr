@@ -31,8 +31,8 @@ public class CommentSysModel extends CommentModel {
     }
 
     public static final int TYPE_ENTER_ROOM = 1;
-    public static final int TYPE_MODIF_ROOM_NAME = 2;
-
+    public static final int TYPE_MODIFY_ROOM_NAME = 2;
+    public static final int TYPE_ENTER_ROOM_PLAYBOOK = 3;
     // 进入房间消息 一唱到底
     public CommentSysModel(String roomName, int type) {
         setCommentType(CommentModel.TYPE_SYSTEM);
@@ -45,7 +45,11 @@ public class CommentSysModel extends CommentModel {
                     .append(roomName + "").setForegroundColor(CommentModel.GRAB_SYSTEM_HIGH_COLOR)
                     .append("房间 撕歌倡导文明游戏，遇到恶意玩家们可以发起投票将ta踢出房间哦～").setForegroundColor(CommentModel.GRAB_SYSTEM_COLOR)
                     .create();
-        } else if (type == TYPE_MODIF_ROOM_NAME) {
+        }  else if (type == TYPE_ENTER_ROOM_PLAYBOOK) {
+            stringBuilder = new SpanUtils()
+                    .append("欢迎加入撕歌歌单挑战赛，撕歌倡导文明游戏，若遇到恶意玩家请点击头像进行举报").setForegroundColor(CommentModel.GRAB_SYSTEM_COLOR)
+                    .create();
+        }else if (type == TYPE_MODIFY_ROOM_NAME) {
             stringBuilder = new SpanUtils()
                     .append("房主已将房间名称修改为 ").setForegroundColor(CommentModel.GRAB_SYSTEM_COLOR)
                     .append(roomName + "").setForegroundColor(CommentModel.GRAB_SYSTEM_HIGH_COLOR)

@@ -215,7 +215,11 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 }
                 pretendEnterRoom(playerInfoModel)
             }
-            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
+            if (mRoomData.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM_PLAYBOOK)
+            } else {
+                pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
+            }
         }
         if (mRoomData.hasGameBegin()) {
             startSyncGameStateTask(sSyncStateTaskInterval)
@@ -2318,7 +2322,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     fun onEvent(event: QChangeRoomNameEvent) {
         MyLog.d(TAG, "onEvent QChangeRoomNameEvent !!改变房间名 $event")
         if (mRoomData.gameId == event.info.roomID) {
-            pretendRoomNameSystemMsg(event.newName, CommentSysModel.TYPE_MODIF_ROOM_NAME)
+            pretendRoomNameSystemMsg(event.newName, CommentSysModel.TYPE_MODIFY_ROOM_NAME)
         }
     }
 
