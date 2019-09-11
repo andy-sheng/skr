@@ -20,9 +20,9 @@ public class NotificationMsgProcess implements IPushMsgProcess {
             case CustomMsgType.MSG_TYPE_NOTIFICATION:
                 processNotificationMsg(data);
                 break;
-                case CustomMsgType.MSG_TYPE_BROADCAST:
-                    processBroadcastMsg(data);
-                    break;
+            case CustomMsgType.MSG_TYPE_BROADCAST:
+                processBroadcastMsg(data);
+                break;
         }
     }
 
@@ -40,7 +40,7 @@ public class NotificationMsgProcess implements IPushMsgProcess {
         try {
             NotificationMsg msg = NotificationMsg.parseFrom(data);
 
-            if (msg == null){
+            if (msg == null) {
                 MyLog.e(TAG, "processRoomMsg" + " msg == null ");
                 return;
             }
@@ -55,7 +55,7 @@ public class NotificationMsgProcess implements IPushMsgProcess {
     private void processBroadcastMsg(byte[] data) {
         try {
             RoomBroadcastMsg msg = RoomBroadcastMsg.parseFrom(data);
-            if (msg == null){
+            if (msg == null) {
                 MyLog.e(TAG, "processRoomMsg" + " msg == null ");
                 return;
             }

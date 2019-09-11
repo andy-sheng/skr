@@ -34,6 +34,9 @@ import com.zq.live.proto.broadcast.StandFullStar;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
  * 通知管理器
  */
@@ -55,15 +58,27 @@ public class NotificationPushManager {
         return NotificationAdapterHolder.INSTANCE;
     }
 
+    ArrayList<Long> broadcastFilterList = new ArrayList<>(10);
+
     /**
      * 处理广播消息
      *
      * @param msg
      */
     public void processBroadcastMsg(RoomBroadcastMsg msg) {
+        MyLog.d(TAG, "processBroadcastMsg" + " msg=" + msg);
         if (msg.getMsgType() == ERoomBroadcastMsgType.RBRT_STAND_FULL_STAR) {
-            StandFullStar pb = msg.getStandFullStar();
-            EventBus.getDefault().post(new EStandFullStarEvent(pb));
+            Long ts = msg.getTimeMs();
+            if (broadcastFilterList.contains(ts)) {
+                MyLog.d(TAG, "processBroadcastMsg 这条是重复的广播消息，过滤掉");
+            } else {
+                broadcastFilterList.add(ts);
+                if (broadcastFilterList.size() > 10) {
+                    broadcastFilterList.remove(0);
+                }
+                StandFullStar pb = msg.getStandFullStar();
+                EventBus.getDefault().post(new EStandFullStarEvent(pb));
+            }
         }
     }
 
