@@ -18,7 +18,7 @@ class BattleListViewHolder(item: View, listener: ((model: BattleTagModel?, posit
     val recordCover: SimpleDraweeView = item.findViewById(R.id.record_cover)
     val nameTv: TextView = item.findViewById(R.id.name_tv)
     val starView: BattleStarView = item.findViewById(R.id.star_view)
-    val lockTv: ExTextView = item.findViewById(R.id.lock_tv)
+    val lockIv: ImageView = item.findViewById(R.id.lock_iv)
 
     var mModel: BattleTagModel? = null
     var mPosition: Int = 0
@@ -41,23 +41,17 @@ class BattleListViewHolder(item: View, listener: ((model: BattleTagModel?, posit
         nameTv.text = model.tagName
         when {
             model.status == BattleTagModel.SST_LOCK -> {
-                lockTv.visibility = View.VISIBLE
+                lockIv.visibility = View.VISIBLE
                 starView.visibility = View.GONE
-                recordFilm.alpha = 0.2f
-                recordCover.alpha = 0.2f
             }
             model.status == BattleTagModel.SST_UNLOCK -> {
-                lockTv.visibility = View.GONE
+                lockIv.visibility = View.GONE
                 starView.visibility = View.VISIBLE
-                starView.bindData(model.starCnt, 5)
-                recordFilm.alpha = 1f
-                recordCover.alpha = 1f
+                starView.bindData(model.starCnt, model.starCnt)
             }
             else -> {
                 starView.visibility = View.INVISIBLE
-                lockTv.visibility = View.INVISIBLE
-                recordFilm.alpha = 1f
-                recordCover.alpha = 1f
+                lockIv.visibility = View.INVISIBLE
             }
         }
 
