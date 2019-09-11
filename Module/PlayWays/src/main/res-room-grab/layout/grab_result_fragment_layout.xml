@@ -125,9 +125,9 @@
 
                 <ImageView
                     android:id="@+id/grab_star_icon"
-                    android:layout_width="@dimen/view_30_dp"
-                    android:layout_height="@dimen/view_30_dp"
-                    android:layout_marginLeft="@dimen/view_24_dp"
+                    android:layout_width="@dimen/view_23_dp"
+                    android:layout_height="@dimen/view_23_dp"
+                    android:layout_marginLeft="@dimen/view_30_dp"
                     android:background="@drawable/grab_result_star_icon"
                     app:layout_constraintBottom_toBottomOf="@id/grab_star_area"
                     app:layout_constraintLeft_toLeftOf="@id/grab_star_area"
