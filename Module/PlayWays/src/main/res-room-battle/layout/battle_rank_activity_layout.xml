@@ -124,6 +124,15 @@
         battleStar:normalDrawable="@drawable/battle_rank_star_icon"
         battleStar:selectedDrawable="@drawable/battle_rank_star_icon"/>
 
+    <ImageView
+        android:layout_width="@dimen/view_260_dp"
+        android:layout_height="@dimen/view_88_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toLeftOf="@id/self_area"
+        app:layout_constraintRight_toRightOf="@id/self_area"
+        android:background="@drawable/battle_result_top_icon"/>
+
     <com.common.view.viewpager.SlidingTabLayout
         android:id="@+id/tag_tab"
         android:layout_width="match_parent"
