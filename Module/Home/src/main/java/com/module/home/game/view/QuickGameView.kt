@@ -269,6 +269,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
 
         mGameAdapter.onBattleRoomListener = {
+            StatisticsAdapter.recordCountEvent("game", "express_grab_song_list", null)
             // 歌单抢唱
             ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
                     .navigation()
