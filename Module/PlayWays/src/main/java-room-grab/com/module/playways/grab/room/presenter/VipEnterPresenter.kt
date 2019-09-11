@@ -52,7 +52,7 @@ class VipEnterPresenter(val view: IGrabVipView, roomData: BaseRoomData<*>) : RxL
     }
 
     fun addNotice(playerInfoModel: UserInfoModel) {
-        if (playerInfoModel.mainLevel >= SKRER_LEVEL_PLATINUM) {
+        if (playerInfoModel.ranking.mainRanking >= SKRER_LEVEL_PLATINUM) {
             mVipEnterObjectPlayControlTemplate.add(playerInfoModel, true)
         }
     }

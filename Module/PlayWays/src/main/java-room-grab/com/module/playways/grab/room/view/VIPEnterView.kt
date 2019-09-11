@@ -53,9 +53,9 @@ class VIPEnterView(viewStub: ViewStub) : ExViewStub(viewStub) {
         enterJob = launch(Dispatchers.Main) {
             tryInflate()
             nameTv?.text = UserInfoManager.getInstance().getRemarkName(playerInfoModel.userId, playerInfoModel.nickname)
-            if (LevelConfigUtils.getImageResoucesLevel(playerInfoModel.mainLevel) != 0) {
+            if (LevelConfigUtils.getImageResoucesLevel(playerInfoModel.ranking.mainRanking) != 0) {
                 vipLevelIv?.visibility = View.VISIBLE
-                vipLevelIv?.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(playerInfoModel.mainLevel))
+                vipLevelIv?.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(playerInfoModel.ranking.mainRanking))
             } else {
                 vipLevelIv?.visibility = View.GONE
             }

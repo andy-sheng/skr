@@ -1570,7 +1570,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         int mainLevel = 0;
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (playerInfoModel != null) {
-            mainLevel = playerInfoModel.getUserInfo().getMainLevel();
+            mainLevel = playerInfoModel.getUserInfo().getRanking().getMainRanking();
         }
         map.put("mainLevel", mainLevel);
         map.put("no", line);

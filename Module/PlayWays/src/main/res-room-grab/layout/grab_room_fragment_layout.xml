@@ -244,10 +244,11 @@
         android:visibility="gone" />
 
     <ViewStub
+        android:layout_above="@+id/bottom_bg_vp"
+        android:layout_marginBottom="-8dp"
         android:id="@+id/vip_enter_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_80_dp"
         android:layout="@layout/vip_enter_view_layout" />
 
     <!--抢按钮以及倒计时按钮-->
