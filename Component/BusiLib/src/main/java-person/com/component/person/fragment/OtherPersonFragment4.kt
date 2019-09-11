@@ -675,12 +675,12 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         if (model.vipInfo != null && model.vipInfo.vipType > 0) {
             mVipTv.visibility = View.VISIBLE
-            mUseridTv.visibility = View.INVISIBLE
+            mSignTv.visibility = View.GONE
 
             mVipTv.text = model.vipInfo.vipDesc
         } else {
             mVipTv.visibility = View.GONE
-            mUseridTv.visibility = View.VISIBLE
+            mSignTv.visibility = View.VISIBLE
         }
 
         refreshTag()
