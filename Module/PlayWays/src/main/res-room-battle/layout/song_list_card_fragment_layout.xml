@@ -74,17 +74,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.ex.ExImageView
+            android:background="@drawable/gedan_zaiciyanchang"
             android:id="@+id/star_bg"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_40_dp"
             android:layout_marginLeft="@dimen/view_20_dp"
             android:layout_marginTop="@dimen/view_21_dp"
             android:layout_marginRight="@dimen/view_20_dp"
-            app:bl_corners_radius="@dimen/view_26_dp"
-            app:bl_solid_color="#FFFFE5BA"
             app:layout_constraintTop_toBottomOf="@+id/record_film" />
 
         <com.common.view.ex.ExTextView
+            android:textStyle="bold"
             android:id="@+id/song_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -154,18 +154,6 @@
             app:layout_constraintLeft_toRightOf="@+id/record_film" />
 
         <com.common.view.ex.ExTextView
-            android:id="@+id/play_again_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/view_26_dp"
-            android:text="再次演唱"
-            android:textColor="#ffeb7000"
-            android:textSize="@dimen/textsize_16_dp"
-            app:layout_constraintBottom_toBottomOf="@+id/star_bg"
-            app:layout_constraintRight_toRightOf="@+id/star_bg"
-            app:layout_constraintTop_toTopOf="@+id/star_bg" />
-
-        <com.common.view.ex.ExTextView
             android:id="@+id/start_song_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_40_dp"
@@ -173,11 +161,7 @@
             android:layout_marginTop="@dimen/view_21_dp"
             android:layout_marginRight="@dimen/view_20_dp"
             android:gravity="center"
-            android:text="开启歌单"
-            android:textColor="#ffffffff"
-            android:textSize="@dimen/textsize_16_dp"
-            app:bl_corners_radius="@dimen/view_26_dp"
-            app:bl_solid_color="#FFFFAA1F"
+            android:background="@drawable/gedan_kaiqigedan"
             app:layout_constraintTop_toBottomOf="@+id/record_film" />
 
         <com.facebook.drawee.view.SimpleDraweeView

@@ -14,7 +14,7 @@ class SongListCardViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     fun bindData(model: BattleSongModel, pos: Int) {
         songNameTv.text = model.songName
         if (model.hasSing == true) {
-            songNameTv.setTextColor(Color.parseColor("#AFE1FF"))
+            songNameTv.setTextColor(Color.parseColor("#4A90E2"))
         } else {
             songNameTv.setTextColor(Color.parseColor("#9B9B9B"))
         }
