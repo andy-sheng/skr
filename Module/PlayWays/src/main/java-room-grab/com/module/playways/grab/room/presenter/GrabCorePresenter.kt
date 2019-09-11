@@ -1559,7 +1559,11 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 size++
             }
             val finalSize = size
-            mUiHandler.post { mIGrabView.showPracticeFlag(finalSize <= 1) }
+            if(mRoomData.roomType==GrabRoomType.ROOM_TYPE_PLAYBOOK){
+
+            }else{
+                mUiHandler.post { mIGrabView.showPracticeFlag(finalSize <= 1) }
+            }
         }
 
         if (now!!.status == EQRoundStatus.QRS_INTRO.value) {

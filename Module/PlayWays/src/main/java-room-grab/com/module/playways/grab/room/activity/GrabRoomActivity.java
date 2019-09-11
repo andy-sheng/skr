@@ -19,8 +19,11 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.component.busilib.constans.GameModeType;
+import com.component.busilib.constans.GrabRoomType;
 import com.module.RouterConstants;
 import com.component.busilib.friends.SpecialModel;
+import com.module.playways.battle.songlist.BattleListActivity;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
@@ -158,6 +161,11 @@ public class GrabRoomActivity extends BaseActivity {
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
                 continue;
+            }
+            if(mRoomData.getRoomType()== GrabRoomType.ROOM_TYPE_PLAYBOOK){
+                if(activity instanceof BattleListActivity){
+                    continue;
+                }
             }
             activity.finish();
         }

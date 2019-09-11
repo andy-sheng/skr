@@ -15,6 +15,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.R;
+import com.module.playways.battle.songlist.BattleListActivity;
 import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.playways.grab.prepare.NewGrabMatchFragment;
 import com.module.playways.room.prepare.model.PrepareData;
@@ -37,6 +38,13 @@ public class GrabMatchActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
+        if (prepareData == null) {
+            MyLog.e("GrabMatchActivity", "initData prepareData is null");
+            finish();
+            return;
+        }
+
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (U.getActivityUtils().isHomeActivity(activity)) {
                 continue;
@@ -44,13 +52,12 @@ public class GrabMatchActivity extends BaseActivity {
             if (activity == this) {
                 continue;
             }
+            if(prepareData.getGameType()==GameModeType.GAME_MODE_PLAYBOOK){
+                if(activity instanceof BattleListActivity){
+                    continue;
+                }
+            }
             activity.finish();
-        }
-        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
-        if (prepareData == null) {
-            MyLog.e("GrabMatchActivity", "initData prepareData is null");
-            finish();
-            return;
         }
 
         if (prepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
