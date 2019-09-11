@@ -79,17 +79,24 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         }
 
         if (model.userInfo != null
-                && model.userInfo.ranking != null
-                && model.userInfo.ranking.mainRanking >= UserLevelType.SKRER_LEVEL_SILVER) {
+                && model.userInfo.ranking != null) {
             val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking))
             drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22f), U.getDisplayUtils().dip2px(19f))
+            // 为了保证书写从左到右
             val spannableStringBuilder = SpanUtils()
+                    .append("\u202D")
                     .appendImage(drawable, SpanUtils.ALIGN_CENTER)
                     .append(model.stringBuilder)
+                    .append("\u202C")
                     .create()
             mNameTv.text = spannableStringBuilder
         } else {
-            mNameTv.text = model.stringBuilder
+            val spannableStringBuilder = SpanUtils()
+                    .append("\u202D")
+                    .append(model.stringBuilder)
+                    .append("\u202C")
+                    .create()
+            mNameTv.text = spannableStringBuilder
         }
         mAudioTv.text = duration.toString() + "s"
         mAvatarIv.bindData(model.userInfo)

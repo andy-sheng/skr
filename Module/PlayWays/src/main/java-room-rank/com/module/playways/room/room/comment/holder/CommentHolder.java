@@ -49,17 +49,23 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         mAvatarIv.bindData(model.getUserInfo());
 
         if (model.getUserInfo() != null
-                && model.getUserInfo().getRanking() != null
-                && model.getUserInfo().getRanking().getMainRanking() >= UserLevelType.SKRER_LEVEL_SILVER) {
+                && model.getUserInfo().getRanking() != null) {
             Drawable drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.getUserInfo().getRanking().getMainRanking()));
             drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22), U.getDisplayUtils().dip2px(19));
             SpannableStringBuilder spannableStringBuilder = new SpanUtils()
+                    .append("\u202D")
                     .appendImage(drawable, SpanUtils.ALIGN_CENTER)
                     .append(model.getStringBuilder())
+                    .append("\u202C")
                     .create();
             mCommentTv.setText(spannableStringBuilder);
         } else {
-            mCommentTv.setText(model.getStringBuilder());
+            SpannableStringBuilder spannableStringBuilder = new SpanUtils()
+                    .append("\u202D")
+                    .append(model.getStringBuilder())
+                    .append("\u202C")
+                    .create();
+            mCommentTv.setText(spannableStringBuilder);
         }
     }
 }
