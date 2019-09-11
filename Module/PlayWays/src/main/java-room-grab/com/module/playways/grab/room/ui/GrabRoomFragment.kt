@@ -926,18 +926,27 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
 
             override fun onClickGameRule() {
-
                 mGameRuleDialog?.dismiss()
-
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
-                mGameRuleDialog = DialogPlus.newDialog(context!!)
-                        .setContentHolder(ViewHolder(R.layout.grab_game_rule_view_layout))
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
-                        .setExpanded(false)
-                        .setGravity(Gravity.CENTER)
-                        .create()
+                if (mRoomData?.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
+                    mGameRuleDialog = DialogPlus.newDialog(context!!)
+                            .setContentHolder(ViewHolder(R.layout.battle_game_rule_view_layout))
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_50)
+                            .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                            .setExpanded(false)
+                            .setGravity(Gravity.CENTER)
+                            .create()
+                } else {
+                    mGameRuleDialog = DialogPlus.newDialog(context!!)
+                            .setContentHolder(ViewHolder(R.layout.grab_game_rule_view_layout))
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_50)
+                            .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                            .setExpanded(false)
+                            .setGravity(Gravity.CENTER)
+                            .create()
+                }
                 mGameRuleDialog?.show()
             }
 
