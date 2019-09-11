@@ -103,14 +103,13 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <include
+        android:layout_marginTop="@dimen/view_430_dp"
         android:visibility="gone"
         android:id="@+id/next_song_start_tip_tv"
         layout="@layout/race_next_round_start_tip_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_8_dp"
-        android:layout_marginBottom="@dimen/view_8_dp"
-        app:layout_constraintBottom_toTopOf="@+id/comment_view"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
