@@ -131,6 +131,7 @@
             app:layout_constraintTop_toTopOf="@+id/changguo_textview" />
 
         <com.common.view.ex.ExTextView
+            android:textSize="@dimen/textsize_18_dp"
             android:id="@+id/light_count_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
