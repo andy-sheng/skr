@@ -244,14 +244,6 @@
         android:paddingLeft="@dimen/view_16_dp"
         android:visibility="gone" />
 
-    <ViewStub
-        android:layout_above="@+id/bottom_bg_vp"
-        android:layout_marginBottom="-8dp"
-        android:id="@+id/vip_enter_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout="@layout/vip_enter_view_layout" />
-
     <!--抢按钮以及倒计时按钮-->
     <com.module.playways.grab.room.view.GrabOpView
         android:id="@+id/grab_op_btn"
@@ -297,6 +289,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
+    <ViewStub
+        android:layout_above="@+id/bottom_bg_vp"
+        android:layout_marginBottom="-8dp"
+        android:id="@+id/vip_enter_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/vip_enter_view_layout" />
 
     <ViewStub
         android:id="@+id/voice_record_tip_view_stub"
