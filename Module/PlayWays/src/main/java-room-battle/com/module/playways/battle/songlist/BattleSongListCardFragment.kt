@@ -98,8 +98,6 @@ class BattleSongListCardFragment : BaseFragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = adapter
 
-        refreshView()
-
         startSongList.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 enableStandTag(false)
@@ -132,6 +130,13 @@ class BattleSongListCardFragment : BaseFragment() {
                         .navigation()
             }
         })
+
+
+        songNameTv.text = model?.tagName
+        AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model?.coverURL)
+                .setCircle(true)
+                .build())
+        refreshView()
     }
 
     override fun onFragmentVisible() {
@@ -140,10 +145,6 @@ class BattleSongListCardFragment : BaseFragment() {
     }
 
     private fun refreshView() {
-        songNameTv.text = model?.tagName
-        AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model?.coverURL)
-                .setCircle(true)
-                .build())
         if (model?.status == BattleTagModel.SST_LOCK) {
             unlockGroup.visibility = View.GONE
             lockGroup.visibility = View.VISIBLE
@@ -152,6 +153,8 @@ class BattleSongListCardFragment : BaseFragment() {
             lockGroup.visibility = View.GONE
             starView.bindData(model?.starCnt ?: 0, 5)
         }
+        hasSingTv.text = getSongCnt.toString()
+        lightCountTv.text = blightCnt.toString()
     }
 
     override fun destroy() {
@@ -225,6 +228,11 @@ class BattleSongListCardFragment : BaseFragment() {
             if (result.errno == 0) {
                 blightCnt = result.data.getIntValue("blightCnt")
                 getSongCnt = result.data.getIntValue("getSongCnt")
+                val starCnt = result.data.getIntValue("starCnt")
+                val status = result.data.getIntValue("status")
+                model?.starCnt = starCnt
+                model?.status = status
+                refreshView()
                 val list = JSON.parseArray(result.data.getString("details"), BattleSongModel::class.java)
                 showSongCard(list)
             } else {
@@ -239,8 +247,5 @@ class BattleSongListCardFragment : BaseFragment() {
             adapter.mDataList.addAll(list)
         }
         adapter.notifyDataSetChanged()
-
-        hasSingTv.text = getSongCnt.toString()
-        lightCountTv.text = blightCnt.toString()
     }
 }

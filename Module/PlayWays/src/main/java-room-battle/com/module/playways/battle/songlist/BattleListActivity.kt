@@ -105,6 +105,7 @@ class BattleListActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        hasMore = true
         getStandTagList(0, true)
     }
 
