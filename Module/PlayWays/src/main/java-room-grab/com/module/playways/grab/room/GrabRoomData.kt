@@ -56,7 +56,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     val isInPlayerList: Boolean
         get() {
             val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())
-            if(p!=null && p.role == EQUserRole.EQUR_PLAY_USER.value){
+            if(p!=null && (p.role == EQUserRole.EQUR_PLAY_USER.value || p.role==EQUserRole.EQUR_ROOM_OWNER.value)){
                 return true
             }
             return false

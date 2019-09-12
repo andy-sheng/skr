@@ -584,7 +584,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public boolean addUser(boolean b, GrabPlayerInfoModel playerInfoModel) {
-        if (playerInfoModel.getRole() == EQUserRole.EQUR_PLAY_USER.getValue()) {
+        if (playerInfoModel.getRole() == EQUserRole.EQUR_PLAY_USER.getValue() || playerInfoModel.getRole() == EQUserRole.EQUR_ROOM_OWNER.getValue()) {
             return addPlayUser(b, playerInfoModel);
         } else if (playerInfoModel.getRole() == EQUserRole.EQUR_WAIT_USER.getValue()) {
             return addWaitUser(b, playerInfoModel);

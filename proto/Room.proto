@@ -700,6 +700,7 @@ enum EQUserRole {
     EQUR_UNKNOWN = 0; //未知角色
     EQUR_PLAY_USER = 1; //在玩的用户角色
     EQUR_WAIT_USER = 2; //等待的用户角色
+    EQUR_ROOM_OWNER = 3; //房主
 }
 
 message GameStartInfo {

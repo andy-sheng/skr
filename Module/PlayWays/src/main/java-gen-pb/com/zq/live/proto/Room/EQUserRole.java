@@ -21,7 +21,12 @@ public enum EQUserRole implements WireEnum {
   /**
    * 等待的用户角色
    */
-  EQUR_WAIT_USER(2);
+  EQUR_WAIT_USER(2),
+
+  /**
+   * 房主
+   */
+  EQUR_ROOM_OWNER(3);
 
   public static final ProtoAdapter<EQUserRole> ADAPTER = new ProtoAdapter_EQUserRole();
 
@@ -39,6 +44,7 @@ public enum EQUserRole implements WireEnum {
       case 0: return EQUR_UNKNOWN;
       case 1: return EQUR_PLAY_USER;
       case 2: return EQUR_WAIT_USER;
+      case 3: return EQUR_ROOM_OWNER;
       default: return null;
     }
   }
