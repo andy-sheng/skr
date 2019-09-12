@@ -59,7 +59,10 @@ public class GiftPlayModel {
         giftPlayModel.setBeginCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setEndCount(gPrensentGiftMsg.getContinueCnt());
         giftPlayModel.setTimeMs(System.currentTimeMillis());
-        UserInfoModel userInfoModel = gPrensentGiftMsg.getSendUserInfo();
+        UserInfoModel userInfoModel = roomData.getPlayerOrWaiterInfo(gPrensentGiftMsg.getSendUserInfo().getUserId());
+        if (userInfoModel == null) {
+            userInfoModel = gPrensentGiftMsg.getSendUserInfo();
+        }
         giftPlayModel.setSender(userInfoModel);
         UserInfoModel receiverModel = gPrensentGiftMsg.getReceiveUserInfo();
         giftPlayModel.setReceiver(receiverModel);
