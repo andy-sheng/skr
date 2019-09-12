@@ -35,7 +35,7 @@
         android:maxWidth="@dimen/view_80_dp"
         android:maxLines="1"
         android:text="芝麻是只猫"
-        android:textColor="#ff6be3ff"
+        android:textColor="#FFFFC15B"
         android:textSize="@dimen/view_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/bg"
