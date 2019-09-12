@@ -23,7 +23,6 @@ import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
-import kotlinx.android.synthetic.main.game_recommend_room_item_view.view.*
 
 // 抢唱
 class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {

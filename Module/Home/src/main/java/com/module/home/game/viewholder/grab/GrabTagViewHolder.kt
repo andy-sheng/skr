@@ -38,10 +38,11 @@ class GrabTagViewHolder(itemView: View, onClickTagListener: ((model: GrabSpecial
         this.pos = position
 
         model.model?.biggest?.let {
-            var lp = mBackground.layoutParams //此为父布局
-            lp.width = U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(6f)
-            lp.height = (it.h) * (U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(6f)) / (it.w)
-            mBackground.layoutParams = lp
+            var lp = mImageSdv.layoutParams
+            // 左边12 右边6
+            lp.width = U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(18f)
+            lp.height = (it.h) * lp.width / (it.w)
+            mImageSdv.layoutParams = lp
 
             FrescoWorker.loadImage(mImageSdv, ImageFactory.newPathImage(it.url)
                     .setScaleType(ScalingUtils.ScaleType.FIT_XY)
