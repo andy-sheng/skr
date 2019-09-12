@@ -66,6 +66,8 @@
         android:id="@+id/desc_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/view_4_dp"
+        android:drawableRight="@drawable/level_gap_dec_icon"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintLeft_toLeftOf="parent"
