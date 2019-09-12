@@ -132,6 +132,10 @@ class BattleSongListCardFragment : BaseFragment() {
                         .navigation()
             }
         })
+    }
+
+    override fun onFragmentVisible() {
+        super.onFragmentVisible()
         getStandSongList()
     }
 

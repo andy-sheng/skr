@@ -101,6 +101,10 @@ class BattleListActivity : BaseActivity() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         getStandTagList(0, true)
     }
 
