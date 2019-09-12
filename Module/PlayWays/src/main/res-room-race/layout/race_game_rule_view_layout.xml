@@ -48,28 +48,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="比赛资格：白银以上段位用户可以参加排位赛。"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_12_dp"
-            android:layout_marginRight="@dimen/view_13_dp"
-            android:orientation="horizontal">
-
-            <com.common.view.ex.ExImageView
-                android:layout_width="@dimen/view_21_dp"
-                android:layout_height="@dimen/view_21_dp"
-                android:background="@drawable/grab_guize_2" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_8_dp"
                 android:text="比赛规则：每轮竞演开始，选手在下发的4首歌中，抢选自己的竞演歌曲，最快抢选的2位选手会获得竞演机会。竞演过程中，除竞演选手外，其余用户可以为自己喜欢的歌声点赞支持。"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
@@ -86,7 +64,7 @@
             <com.common.view.ex.ExImageView
                 android:layout_width="@dimen/view_21_dp"
                 android:layout_height="@dimen/view_21_dp"
-                android:background="@drawable/grab_guize_3" />
+                android:background="@drawable/grab_guize_2" />
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
