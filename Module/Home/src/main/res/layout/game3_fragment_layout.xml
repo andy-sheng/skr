@@ -36,7 +36,7 @@
         android:id="@+id/game_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:layout_weight="1"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
