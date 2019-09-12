@@ -140,6 +140,12 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         val l = ArrayList<GrabPlayerInfoModel>()
         if (expectRoundInfo != null) {
             l.addAll(expectRoundInfo!!.playUsers)
+        }else{
+            if (roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && !hasGameBegin) {
+                playbookRoomDataWhenNotStart?.let {
+                    l.addAll(it.waitUsers)
+                }
+            }
         }
         return l
     }
