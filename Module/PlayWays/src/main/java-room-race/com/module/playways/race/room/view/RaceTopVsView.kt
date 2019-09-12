@@ -226,8 +226,11 @@ class RaceTopVsView : ExConstraintLayout {
                             resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
                             leftTicketCountTv.text = it[0].bLightCnt.toString()
                             leftTicketGroup.visibility = View.VISIBLE
+                            rightState.visibility = View.VISIBLE
+                            rightState.text = "**"
                         } else {
-
+                            rightState.text = "**"
+                            rightState.visibility = View.VISIBLE
                             leftState.text = "**"
                             leftState.visibility = View.VISIBLE
                         }
