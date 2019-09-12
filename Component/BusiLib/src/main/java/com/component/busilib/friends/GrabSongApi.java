@@ -38,6 +38,14 @@ public interface GrabSongApi {
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
+     * 新的首页抢唱专场接口
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/home/sing-tab-blocks")
+    Observable<ApiResult> getGrabSpecial();
+
+
+    /**
      * 获取一唱到底匹配中播放的音乐
      *
      * @return

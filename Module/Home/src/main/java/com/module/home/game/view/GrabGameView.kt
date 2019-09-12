@@ -10,17 +10,20 @@ import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.U
 import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.game.adapter.GrabGameAdapter
+import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.presenter.GrabGamePresenter
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
+import kotlinx.android.synthetic.main.game_recommend_room_item_view.view.*
 
 // 抢唱
 class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
@@ -56,45 +59,59 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
 
         mPresenter = GrabGamePresenter(this)
         mGrabGameAdapter = GrabGameAdapter()
-        mGrabGameAdapter.onClickCreateListener = {
-            // 创建房间
-            MyLog.d(TAG, "createRoom")
-            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService?.tryGoCreateRoom()
-            StatisticsAdapter.recordCountEvent("game", "grab_create", null)
-        }
         mGrabGameAdapter.onClickTagListener = {
             // 点击专场
-            MyLog.d(TAG, "selectSpecial specialModel=$it")
+            MyLog.d(TAG, "selectSpecial grabSpecialModel=$it")
             it?.let {
-                if (it.tagType == SpecialModel.TYPE_VIDEO) {
-                    mSkrAudioPermission.ensurePermission({
-                        mCameraPermission.ensurePermission({
-                            mRealNameVerifyUtils.checkJoinVideoPermission {
-                                mRealNameVerifyUtils.checkAgeSettingState {
-                                    // 进入视频预览
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                            .withInt("mFrom", FROM_MATCH)
-                                            .withSerializable("mSpecialModel", it)
-                                            .navigation()
-                                }
-                            }
-                        }, true)
-                    }, true)
-                } else {
-                    mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinAudioPermission(it.tagID) {
-                            mRealNameVerifyUtils.checkAgeSettingState {
-                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                                if (iRankingModeService != null) {
-                                    if (it != null) {
-                                        iRankingModeService.tryGoGrabMatch(it.tagID)
+                when {
+                    it.type == GrabSpecialModel.TBT_STANDCREATE -> {
+                        // 创建房间
+                        MyLog.d(TAG, "createRoom")
+                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                        iRankingModeService?.tryGoCreateRoom()
+                        StatisticsAdapter.recordCountEvent("game", "grab_create", null)
+
+                    }
+                    it.type == GrabSpecialModel.TBT_PLAYBOOK -> {
+                        // 歌单战
+                    }
+                    it.type == GrabSpecialModel.TBT_SPECIAL -> {
+                        // 进入视频预览
+                        it.model?.let { specialModel ->
+                            if (specialModel.tagType == SpecialModel.TYPE_VIDEO) {
+                                mSkrAudioPermission.ensurePermission({
+                                    mCameraPermission.ensurePermission({
+                                        mRealNameVerifyUtils.checkJoinVideoPermission {
+                                            mRealNameVerifyUtils.checkAgeSettingState {
+                                                // 进入视频预览
+                                                ARouter.getInstance()
+                                                        .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                                        .withInt("mFrom", FROM_MATCH)
+                                                        .withSerializable("mSpecialModel", specialModel)
+                                                        .navigation()
+                                            }
+                                        }
+                                    }, true)
+                                }, true)
+                            } else {
+                                mSkrAudioPermission.ensurePermission({
+                                    mRealNameVerifyUtils.checkJoinAudioPermission(specialModel.tagID) {
+                                        mRealNameVerifyUtils.checkAgeSettingState {
+                                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                                            if (iRankingModeService != null) {
+                                                if (it != null) {
+                                                    iRankingModeService.tryGoGrabMatch(specialModel.tagID)
+                                                }
+                                            }
+                                        }
                                     }
-                                }
+                                }, true)
                             }
                         }
-                    }, true)
+                    }
+                    else ->{
+                        U.getToastUtil().showShort("未知类型")
+                    }
                 }
             }
             StatisticsAdapter.recordCountEvent("game", "grab_category", null)
@@ -106,15 +123,16 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
         mPresenter.initQuickRoom(flag)
     }
 
-    override fun setQuickRoom(list: MutableList<SpecialModel>?, offset: Int) {
-        MyLog.d(TAG, "setQuickRoom list=$list offset=$offset")
+    override fun setQuickRoom(list: MutableList<GrabSpecialModel>?) {
+        MyLog.d(TAG, "setQuickRoom list=$list")
         // TODO: 2019/4/1 过滤一下空的背景
         if (list != null && list.size > 0) {
             val iterator = list.iterator()
             while (iterator.hasNext()) {
                 val specialModel = iterator.next()
                 if (specialModel != null) {
-                    if (specialModel.biggest == null || specialModel.longer == null) {
+                    if (specialModel.type == null || specialModel.model == null
+                            || specialModel.model?.biggest == null) {
                         iterator.remove()
                     }
                 }

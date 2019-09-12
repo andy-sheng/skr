@@ -10,6 +10,7 @@ import com.common.rxretrofit.*
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.SpecialModel
+import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.view.IGrabGameView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -31,24 +32,23 @@ class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCycleP
     fun initQuickRoom(isFlag: Boolean) {
         MyLog.d(TAG, "initQuickRoom isFlag=$isFlag")
         val now = System.currentTimeMillis()
-        if (!isFlag) {
-            // 半个小时更新一次吧
-            if (now - mLastUpdateQuickInfo < 30 * 60 * 1000) {
-                return
-            }
-        }
+//        if (!isFlag) {
+//            // 半个小时更新一次吧
+//            if (now - mLastUpdateQuickInfo < 30 * 60 * 1000) {
+//                return
+//            }
+//        }
 
         var spResult = ""
         if (mIsFirstQuick) {
             // 先用SP里面的
             mIsFirstQuick = false
-            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "grab_game_tags", "")
+            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "grab_game_tags1", "")
             if (!TextUtils.isEmpty(spResult)) {
                 try {
                     var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
-                    var list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel::class.java)
-                    var offset = jsonObject.getIntValue("offset")
-                    grabGameView.setQuickRoom(list, offset)
+                    var list = JSON.parseArray(jsonObject.getString("items"), GrabSpecialModel::class.java)
+                    grabGameView.setQuickRoom(list)
                 } catch (e: Exception) {
                 }
 
@@ -56,15 +56,14 @@ class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCycleP
         }
 
         val finalSpResult = spResult
-        ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 20), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getGrabSpecial(), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     mLastUpdateQuickInfo = System.currentTimeMillis()
                     if (obj.data!!.toJSONString() != finalSpResult) {
-                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "grab_game_tags", obj.data!!.toJSONString())
-                        val list = JSON.parseArray(obj.data!!.getString("tags"), SpecialModel::class.java)
-                        val offset = obj.data!!.getIntValue("offset")
-                        grabGameView.setQuickRoom(list, offset)
+                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "grab_game_tags1", obj.data!!.toJSONString())
+                        val list = JSON.parseArray(obj.data!!.getString("items"), GrabSpecialModel::class.java)
+                        grabGameView.setQuickRoom(list)
                     }
                 }
             }
