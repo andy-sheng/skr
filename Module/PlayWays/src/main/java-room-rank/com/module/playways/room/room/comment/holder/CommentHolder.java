@@ -49,7 +49,8 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         mAvatarIv.bindData(model.getUserInfo());
 
         if (model.getUserInfo() != null
-                && model.getUserInfo().getRanking() != null) {
+                && model.getUserInfo().getRanking() != null
+                && LevelConfigUtils.getSmallImageResoucesLevel(model.getUserInfo().getRanking().getMainRanking()) > 0) {
             Drawable drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.getUserInfo().getRanking().getMainRanking()));
             drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22), U.getDisplayUtils().dip2px(19));
             SpannableStringBuilder spannableStringBuilder = new SpanUtils()

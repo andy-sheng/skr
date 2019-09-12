@@ -79,7 +79,8 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
         }
 
         if (model.userInfo != null
-                && model.userInfo.ranking != null) {
+                && model.userInfo.ranking != null
+                && LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking) > 0) {
             val drawable = U.getDrawable(LevelConfigUtils.getSmallImageResoucesLevel(model.userInfo.ranking.mainRanking))
             drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(22f), U.getDisplayUtils().dip2px(19f))
             // 为了保证书写从左到右
