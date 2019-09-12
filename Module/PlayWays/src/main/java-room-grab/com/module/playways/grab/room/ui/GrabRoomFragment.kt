@@ -761,15 +761,14 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         mInputContainerView.hideSoftInput()
 
-        val mShowKick: Boolean
-        if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_COMMON) {
-            // 普通房
-            mShowKick = true
+        val mShowKick: Boolean = if (mRoomData!!.roomType != GrabRoomType.ROOM_TYPE_COMMON) {
+            mRoomData!!.isOwner
         } else {
-            mShowKick = mRoomData!!.isOwner
+            // 普通房
+            true
         }
 
-        mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, true)
+        mPersonInfoDialog = PersonInfoDialog.Builder(activity, QuickFeedbackFragment.FROM_GRAB_ROOM, userID, mShowKick, mRoomData?.roomType != GrabRoomType.ROOM_TYPE_PLAYBOOK)
                 .setRoomID(mRoomData!!.gameId)
                 .setInviteDoubleListener { userInfoModel ->
                     if (userInfoModel.isFriend) {
