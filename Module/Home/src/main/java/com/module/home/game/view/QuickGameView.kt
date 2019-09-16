@@ -365,7 +365,7 @@ fun openBattleActivity(ctx: Context) {
     GlobalScope.launch(Dispatchers.Main) {
         var tipsDialogView: TipsDialogView? = null
         val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
-        val check = subscribe(RequestControl("CheckGameConfig", ControlType.CancelThis)) { api.getGameConfig(6, false) }
+        val check = subscribe(RequestControl("CheckGameConfig", ControlType.CancelThis)) { api.getGameConfig(6, MyLog.isDebugLogOpen()) }
         if (check.errno == 0) {
             val supprot = check.data.getBooleanValue("isSupport")
             val jo = check.data.getJSONObject("detail")
