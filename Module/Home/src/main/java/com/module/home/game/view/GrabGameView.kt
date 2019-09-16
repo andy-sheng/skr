@@ -74,8 +74,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
                     it.type == GrabSpecialModel.TBT_PLAYBOOK -> {
                         // 歌单战
                         StatisticsAdapter.recordCountEvent("game_grab", "song_list", null)
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
-                                .navigation()
+                        openBattleActivity(context)
                     }
                     it.type == GrabSpecialModel.TBT_SPECIAL -> {
                         // 进入视频预览

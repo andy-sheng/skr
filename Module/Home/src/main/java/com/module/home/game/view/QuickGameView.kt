@@ -1,5 +1,6 @@
 package com.module.home.game.view
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
@@ -10,12 +11,12 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
+import com.common.core.upgrade.UpgradeManager
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
@@ -28,6 +29,7 @@ import com.component.busilib.friends.FriendMoreRoomFragment
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
@@ -74,7 +76,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     init {
         View.inflate(context, R.layout.quick_game_view_layout, this)
-        mQuickGamePresenter = QuickGamePresenter(fragment,this)
+        mQuickGamePresenter = QuickGamePresenter(fragment, this)
         mSkrAudioPermission = SkrAudioPermission()
         mCameraPermission = SkrCameraPermission()
 
@@ -271,8 +273,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mGameAdapter.onBattleRoomListener = {
             StatisticsAdapter.recordCountEvent("game", "express_grab_song_list", null)
             // 歌单抢唱
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
-                    .navigation()
+            openBattleActivity(context)
         }
 
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -405,5 +406,64 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     fun destory() {
         mQuickGamePresenter?.destroy()
+    }
+}
+
+fun openBattleActivity(ctx: Context) {
+    GlobalScope.launch(Dispatchers.Main) {
+        var tipsDialogView: TipsDialogView? = null
+        val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
+        val check = subscribe(RequestControl("CheckGameConfig", ControlType.CancelThis)) { api.getGameConfig(6, false) }
+        if (check.errno == 0) {
+            val supprot = check.data.getBooleanValue("isSupport")
+            val jo = check.data.getJSONObject("detail")
+            if (supprot && jo != null && !jo.getBooleanValue("isOpen")) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
+                        .setMessageTip(jo.getString("content"))
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                                if (jo.getBooleanValue("needUpdate")) {
+                                    UpgradeManager.getInstance().checkUpdate2()
+                                } else {
+                                    // donothing
+                                }
+                            }
+                        })
+                        .build()
+                tipsDialogView?.showByDialog()
+            } else {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
+                        .navigation()
+            }
+        } else {
+            if (check.errno == ERROR_NETWORK_BROKEN) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
+                        .setMessageTip("网络连接不可用，请检查网络后重试")
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                            }
+                        })
+                        .build()
+                tipsDialogView?.showByDialog()
+            } else if (check.errno > 0) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
+                        .setMessageTip(check.errmsg)
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                            }
+                        })
+                        .build()
+                tipsDialogView?.showByDialog()
+            }
+        }
     }
 }
