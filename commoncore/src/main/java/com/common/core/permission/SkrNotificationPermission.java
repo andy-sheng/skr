@@ -1,6 +1,5 @@
 package com.common.core.permission;
 
-import android.Manifest;
 import android.app.Activity;
 
 import com.common.utils.U;
@@ -13,6 +12,10 @@ public class SkrNotificationPermission extends SkrBasePermission {
 
     @Override
     public void ensurePermission(Activity activity, Runnable ifAgreeAction, boolean goSettingIfRefuse) {
+        if (activity == null) {
+            return;
+        }
+
         if (U.getPermissionUtils().checkNotification(activity)) {
             if (ifAgreeAction != null) {
                 ifAgreeAction.run();
