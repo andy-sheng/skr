@@ -126,7 +126,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mBottomBgVp: ViewGroup
 
-    lateinit var mBottomContainerView: GrabBottomContainerView
+    var mBottomContainerView: GrabBottomContainerView? = null
 
     //    GiftTimerPresenter mGiftTimerPresenter;
 
@@ -597,7 +597,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mContinueSendView.setRoomData(mRoomData!!)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
-                mBottomContainerView.setOpVisible(!isVisible)
+                mBottomContainerView?.setOpVisible(!isVisible)
             }
         })
 
@@ -647,7 +647,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         lp.height = U.getDisplayUtils().screenHeight * 284 / 667
 
         mBottomContainerView = rootView.findViewById<View>(R.id.bottom_container_view) as GrabBottomContainerView
-        mBottomContainerView.setListener(object : BottomContainerView.Listener() {
+        mBottomContainerView?.setListener(object : BottomContainerView.Listener() {
             override fun showInputBtnClick() {
                 if (mPersonInfoDialog != null && mPersonInfoDialog!!.isShowing) {
                     mPersonInfoDialog!!.dismiss()
@@ -691,7 +691,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mContinueSendView.visibility = GONE
             }
         })
-        mBottomContainerView.setRoomData(mRoomData!!)
+        mBottomContainerView?.setRoomData(mRoomData!!)
     }
 
     private fun initCommentView() {
@@ -700,7 +700,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mCommentView.roomData = mRoomData!!
         //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
-        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
+        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView?.mVoiceRecordBtn!!, mVoiceRecordTipsView, mCommentView)
     }
 
     private fun initChangeRoomTransitionView() {
@@ -1588,7 +1588,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mVipEnterPresenter?.switchRoom()
             mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮
-            mBottomContainerView.setRoomData(mRoomData!!)
+            mBottomContainerView?.setRoomData(mRoomData!!)
         }
     }
 
