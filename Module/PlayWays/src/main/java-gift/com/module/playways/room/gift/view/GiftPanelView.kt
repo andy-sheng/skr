@@ -447,7 +447,9 @@ class GiftPanelView : FrameLayout {
     }
 
     private fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
-        if (getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
+        if (mRoomData?.realRoundInfo == null
+                || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0
+                || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
             //只有自己
             mRlPlayerSelectArea.visibility = View.GONE
         } else {
