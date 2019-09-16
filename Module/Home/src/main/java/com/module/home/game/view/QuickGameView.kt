@@ -29,6 +29,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
+import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.model.BannerModel
 import com.module.home.game.model.FuncationModel
@@ -87,154 +88,159 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 initData(true)
             }
         })
-        mGameAdapter = GameAdapter(fragment)
-        mGameAdapter.onCreateRoomListener = {
-            // 创建房间
-            MyLog.d(TAG, "createRoom")
-            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-            iRankingModeService?.tryGoCreateRoom()
-            StatisticsAdapter.recordCountEvent("game", "express_create", null)
+        mGameAdapter = GameAdapter(fragment, object : ClickGameListener{
+            override fun onClickTaskListener() {
+                // 进入任务
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
+                        .navigation()
+                StatisticsAdapter.recordCountEvent("game", "express_tasks", null)
+            }
 
-        }
-        mGameAdapter.onMoreRoomListener = {
-            // 更多房间
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_FRIEND_ROOM)
-                    .navigation()
-        }
-        mGameAdapter.onEnterRoomListener = {
-            // 进入房间
-            if (it.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
-                mSkrAudioPermission.ensurePermission({
-                    mCameraPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinVideoPermission {
-                            // 进入视频预览
-                            ARouter.getInstance()
-                                    .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                    .withInt("mFrom", FROM_FRIEND_RECOMMEND)
-                                    .withInt("mRoomId", it.roomInfo.roomID)
-                                    .withInt("mInviteType", 0)
-                                    .navigation()
+            override fun onClickRankListener() {
+                // 新的排行榜
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKED)
+                        .navigation()
+                StatisticsAdapter.recordCountEvent("game", "express_ranklist", null)
+            }
+
+            override fun onClickPracticeListener() {
+                // 进入练歌房
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
+                        .withBoolean("selectSong", true)
+                        .navigation()
+                StatisticsAdapter.recordCountEvent("game", "express_practice", null)
+            }
+
+            override fun onMoreRoomListener() {
+                // 更多房间
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_FRIEND_ROOM)
+                        .navigation()
+            }
+
+            override fun onEnterRoomListener(model: RecommendModel) {
+                // 进入房间
+                if (model.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
+                    mSkrAudioPermission.ensurePermission({
+                        mCameraPermission.ensurePermission({
+                            mRealNameVerifyUtils.checkJoinVideoPermission {
+                                // 进入视频预览
+                                ARouter.getInstance()
+                                        .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                        .withInt("mFrom", FROM_FRIEND_RECOMMEND)
+                                        .withInt("mRoomId", model.roomInfo.roomID)
+                                        .withInt("mInviteType", 0)
+                                        .navigation()
+                            }
+                        }, true)
+                    }, true)
+                } else {
+                    mSkrAudioPermission.ensurePermission({
+                        mRealNameVerifyUtils.checkJoinAudioPermission(model.roomInfo.tagID) {
+                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                            iRankingModeService?.tryGoGrabRoom(model.roomInfo.roomID, 0)
                         }
                     }, true)
-                }, true)
-            } else {
-                mSkrAudioPermission.ensurePermission({
-                    mRealNameVerifyUtils.checkJoinAudioPermission(it.roomInfo.tagID) {
-                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                        iRankingModeService?.tryGoGrabRoom(it.roomInfo.roomID, 0)
-                    }
-                }, true)
+                }
+                StatisticsAdapter.recordCountEvent("game", "express_room_outsideclick", null)
             }
-            StatisticsAdapter.recordCountEvent("game", "express_room_outsideclick", null)
-        }
-        mGameAdapter.onClickTaskListener = {
-            // 进入任务
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                    .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
-                    .navigation()
-            StatisticsAdapter.recordCountEvent("game", "express_tasks", null)
-        }
-        mGameAdapter.onClickRankListener = {
-            // 新的排行榜
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_RANKED)
-                    .navigation()
-            StatisticsAdapter.recordCountEvent("game", "express_ranklist", null)
-        }
-        mGameAdapter.onClickPracticeListener = {
-            // 进入练歌房
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
-                    .withBoolean("selectSong", true)
-                    .navigation()
-            StatisticsAdapter.recordCountEvent("game", "express_practice", null)
-        }
 
-        mGameAdapter.onPkRoomListener = {
-            StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-            openPlayWaysActivityByRank(context)
-        }
+            override fun onCreateRoomListener() {
+                // 创建房间
+                MyLog.d(TAG, "createRoom")
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                iRankingModeService?.tryGoCreateRoom()
+                StatisticsAdapter.recordCountEvent("game", "express_create", null)
+            }
 
-        mGameAdapter.onDoubleRoomListener = {
-            StatisticsAdapter.recordCountEvent("game", "express_cp", null)
-            if (!U.getNetworkUtils().hasNetwork()) {
-                U.getToastUtil().showLong("网络连接失败 请检查网络")
-            } else {
-                mSkrAudioPermission.ensurePermission({
-                    mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                        /**
-                         * 判断有没有年龄段
-                         */
-                        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-                                    .withInt("from", 0)
-                                    .navigation()
-                        } else {
-                            val sex = object {
-                                var mIsFindMale: Boolean? = null
-                                var mMeIsMale: Boolean? = null
-                            }
+            override fun onPkRoomListener() {
+                StatisticsAdapter.recordCountEvent("game", "express_rank", null)
+                openPlayWaysActivityByRank(context)
+            }
 
-                            Observable.create<Boolean> {
-                                if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
-                                    sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
-                                    sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
-                                    it.onNext(true)
-                                } else {
-                                    it.onNext(false)
+            override fun onDoubleRoomListener() {
+                StatisticsAdapter.recordCountEvent("game", "express_cp", null)
+                if (!U.getNetworkUtils().hasNetwork()) {
+                    U.getToastUtil().showLong("网络连接失败 请检查网络")
+                } else {
+                    mSkrAudioPermission.ensurePermission({
+                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                            /**
+                             * 判断有没有年龄段
+                             */
+                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+                                        .withInt("from", 0)
+                                        .navigation()
+                            } else {
+                                val sex = object {
+                                    var mIsFindMale: Boolean? = null
+                                    var mMeIsMale: Boolean? = null
                                 }
 
-                                it.onComplete()
-                            }.subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe({
-                                        if (it) {
-                                            val bundle = Bundle()
-                                            bundle.putBoolean("is_find_male", sex.mIsFindMale
-                                                    ?: true)
-                                            bundle.putBoolean("is_me_male", sex.mMeIsMale
-                                                    ?: true)
-                                            ARouter.getInstance()
-                                                    .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                                    .withBundle("bundle", bundle)
-                                                    .navigation()
-                                        } else {
-                                            showSexFilterView(true)
-                                        }
-                                    }, {
-                                        MyLog.e("SelectSexDialogView", it)
-                                    })
+                                Observable.create<Boolean> {
+                                    if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
+                                        sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
+                                        sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
+                                        it.onNext(true)
+                                    } else {
+                                        it.onNext(false)
+                                    }
+
+                                    it.onComplete()
+                                }.subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe({
+                                            if (it) {
+                                                val bundle = Bundle()
+                                                bundle.putBoolean("is_find_male", sex.mIsFindMale
+                                                        ?: true)
+                                                bundle.putBoolean("is_me_male", sex.mMeIsMale
+                                                        ?: true)
+                                                ARouter.getInstance()
+                                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+                                                        .withBundle("bundle", bundle)
+                                                        .navigation()
+                                            } else {
+                                                showSexFilterView(true)
+                                            }
+                                        }, {
+                                            MyLog.e("SelectSexDialogView", it)
+                                        })
+                            }
+                        }
+                    }, true)
+                }
+            }
+
+            override fun onBattleRoomListener() {
+                StatisticsAdapter.recordCountEvent("game", "express_grab_song_list", null)
+                // 歌单抢唱
+                openBattleActivity(context)
+            }
+
+            override fun onGrabRoomListener() {
+                var tagID = when {
+                    MyUserInfoManager.getInstance().ageStage == 1 -> 44
+                    MyUserInfoManager.getInstance().ageStage == 2 -> 45
+                    MyUserInfoManager.getInstance().ageStage == 3 -> 47
+                    MyUserInfoManager.getInstance().ageStage == 4 -> 48
+                    else -> 47
+                }
+                mSkrAudioPermission.ensurePermission({
+                    mRealNameVerifyUtils.checkJoinAudioPermission(tagID) {
+                        mRealNameVerifyUtils.checkAgeSettingState {
+                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                            iRankingModeService?.tryGoGrabMatch(tagID)
                         }
                     }
                 }, true)
+                /**
+                 * 点击首页热门
+                 */
+                StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
             }
-        }
-
-        mGameAdapter.onGrabRoomListener = {
-            var tagID = when {
-                MyUserInfoManager.getInstance().ageStage == 1 -> 44
-                MyUserInfoManager.getInstance().ageStage == 2 -> 45
-                MyUserInfoManager.getInstance().ageStage == 3 -> 47
-                MyUserInfoManager.getInstance().ageStage == 4 -> 48
-                else -> 47
-            }
-            mSkrAudioPermission.ensurePermission({
-                mRealNameVerifyUtils.checkJoinAudioPermission(tagID) {
-                    mRealNameVerifyUtils.checkAgeSettingState {
-                        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                        iRankingModeService?.tryGoGrabMatch(tagID)
-                    }
-                }
-            }, true)
-            /**
-             * 点击首页热门
-             */
-            StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
-        }
-
-        mGameAdapter.onBattleRoomListener = {
-            StatisticsAdapter.recordCountEvent("game", "express_grab_song_list", null)
-            // 歌单抢唱
-            openBattleActivity(context)
-        }
+        })
 
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycler_view.adapter = mGameAdapter

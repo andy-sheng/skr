@@ -6,13 +6,12 @@ import android.view.View
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.module.home.R
+import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.model.FuncationModel
 
 class FuncationAreaViewHolder(itemView: View,
-                              onClickTaskListener: (() -> Unit)?,
-                              onClickPracticeListener: (() -> Unit)?,
-                              onClickRankListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+                              listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {
     private val mTaskRedIv: ExImageView
 
     init {
@@ -24,19 +23,19 @@ class FuncationAreaViewHolder(itemView: View,
 
         mTaskIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                onClickTaskListener?.invoke()
+                listener.onClickTaskListener()
             }
         })
 
         mRankIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                onClickRankListener?.invoke()
+                listener.onClickRankListener()
             }
         })
 
         mPracticeIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                onClickPracticeListener?.invoke()
+                listener.onClickPracticeListener()
             }
         })
 

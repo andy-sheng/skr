@@ -9,14 +9,11 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.friends.SpecialModel
 import com.module.home.R
+import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.model.GameTypeModel
 
 class GameTypeViewHolder(itemView: View,
-                         onDoubleRoomListener: (() -> Unit)?,
-                         onPkRoomListener: (() -> Unit)?,
-                         onCreateRoomListener: (() -> Unit)?,
-                         onGrabRoomListener: (() -> Unit)?,
-                         onBattleRoomListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+                         val listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {
 
     val mDoubleIv: ImageView = itemView.findViewById(R.id.double_iv)
     val mPkIv: ImageView = itemView.findViewById(R.id.pk_iv)
@@ -31,7 +28,7 @@ class GameTypeViewHolder(itemView: View,
         mDoubleIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
                 if ((mGameTypeModel?.mRemainTime) ?: 0 > 0) {
-                    onDoubleRoomListener?.invoke()
+                    listener.onDoubleRoomListener()
                 } else {
                     U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
                 }
@@ -41,25 +38,25 @@ class GameTypeViewHolder(itemView: View,
 
         mPkIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onPkRoomListener?.invoke()
+                listener.onPkRoomListener()
             }
         })
 
         mCreateRoomIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onCreateRoomListener?.invoke()
+                listener.onCreateRoomListener()
             }
         })
 
         mGrabIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onGrabRoomListener?.invoke()
+                listener.onGrabRoomListener()
             }
         })
 
         mBattleIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                onBattleRoomListener?.invoke()
+                listener.onBattleRoomListener()
             }
         })
     }
