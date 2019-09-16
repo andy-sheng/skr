@@ -284,12 +284,6 @@
         android:background="@color/black_trans_80"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.GrabInputContainerView
-        android:id="@+id/input_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
     <ViewStub
         android:layout_above="@+id/bottom_bg_vp"
         android:layout_marginBottom="-8dp"
@@ -297,6 +291,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout="@layout/vip_enter_view_layout" />
+
+    <com.module.playways.grab.room.view.GrabInputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
     <ViewStub
         android:id="@+id/voice_record_tip_view_stub"
