@@ -65,7 +65,8 @@ buildscript {
         if(MatrixEnable.toBoolean()){
             classpath ("com.tencent.matrix:matrix-gradle-plugin:${MATRIX_VERSION}") { changing = true }
         }
-
+        // SuperTextView需要
+        //classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
 //        if (aliFeedback.toBoolean()) {
 //            classpath 'com.aliyun.ams:emas-services:1.0.1'
 //        }

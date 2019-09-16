@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
+import com.coorchice.library.SuperTextView;
+
 /**
  * AppCompatTextView 自适应字体大小
  * 这段文档中最后一段比较重要，Android官方提示开发者，如果开发者在xml布局中写了一个过去传统的Android的TextView，
@@ -14,7 +16,7 @@ import android.util.AttributeSet;
  *
  * 属性的定义参考这 https://github.com/JavaNoober/BackgroundLibrary
  */
-public class ExTextView extends android.support.v7.widget.AppCompatTextView {
+public class ExTextView extends SuperTextView {
 
     public ExTextView(Context context) {
         super(context);

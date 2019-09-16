@@ -1,5 +1,5 @@
 include ':app', ':commonservice', ':commoncore', ':moduletest'
-include ':baseLibrary:commonsdk', 'baseLibrary:enginesdk', 'baseLibrary:mediaengine',':baseLibrary:effectsdk', ':baseLibrary:android-gif-drawable'
+include ':baseLibrary:commonsdk', 'baseLibrary:enginesdk', 'baseLibrary:mediaengine',':baseLibrary:effectsdk', ':baseLibrary:android-gif-drawable', ':baseLibrary:SuperTextView'
 //include ':modulewatch', ':modulechannel'
 include ':Module:Home', ':Module:PlayWays', ':Module:IMKit', ':Module:Feeds'
 

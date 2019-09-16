@@ -63,17 +63,14 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/message_btn"
+            <com.common.view.ex.ExImageView
+                android:id="@+id/message_red_dot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableTop="@drawable/ic_chat_normal"
-                android:gravity="center"
-                android:text="消息"
-                android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#54855F"
-                app:bl_unSelected_textColor="#7897A5" />
+                android:layout_alignTop="@id/message_btn"
+                android:layout_alignRight="@+id/message_btn"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/unread_num_tv"
@@ -91,14 +88,17 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#FF8AB6" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/message_red_dot"
+            <com.common.view.ex.ExTextView
+                android:id="@+id/message_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/message_btn"
-                android:layout_alignRight="@+id/message_btn"
-                android:src="@drawable/reddot"
-                android:visibility="gone" />
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/ic_chat_normal"
+                android:gravity="center"
+                android:text="消息"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#54855F"
+                app:bl_unSelected_textColor="#7897A5" />
 
         </RelativeLayout>
 
@@ -109,6 +109,15 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/person_info_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/person_info_btn"
+                android:layout_alignRight="@+id/person_info_btn"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/person_info_btn"
@@ -122,15 +131,6 @@
                 android:textSize="@dimen/textsize_10_dp"
                 app:bl_selected_textColor="#BC3A6B"
                 app:bl_unSelected_textColor="#7897A5" />
-
-            <com.common.view.ex.ExImageView
-                android:id="@+id/person_info_red_dot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/person_info_btn"
-                android:layout_alignRight="@+id/person_info_btn"
-                android:src="@drawable/reddot"
-                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -142,6 +142,50 @@
         android:background="#F0E9E5"
         app:layout_constraintTop_toTopOf="@id/bottom_container" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/tips_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.375" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/game_btn1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:text="首页"
+        android:textSize="@dimen/textsize_30_dp"
+        app:bl_selected_textColor="#5865A6"
+        app:bl_unSelected_textColor="#7897A5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:stv_text_stroke="true"
+        app:stv_stroke_width="100dp"
+        app:stv_text_stroke_color="@color/red"
+        app:stv_text_stroke_width="1dp"
+
+        app:stv_isShowState="true"
+        app:stv_state_drawable="@drawable/baiyin"
+        app:stv_state_drawable_mode="left"
+        app:stv_state_drawable_rotate="90"
+        app:stv_state_drawable_tint="@color/Yellow"
+
+        app:stv_shaderMode="bottomToTop"
+        app:stv_shaderEnable="false"
+        app:stv_shaderStartColor="#00ff00"
+        app:stv_shaderEndColor="#00f1ff"
+
+
+
+        />
+
+
     <com.common.view.viewpager.NestViewPager
         android:id="@+id/main_vp"
         android:layout_width="match_parent"
@@ -150,12 +194,5 @@
         android:background="#F9F4F1"
         app:layout_constraintBottom_toTopOf="@id/bottom_container"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/tips_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.375" />
 
 </android.support.constraint.ConstraintLayout>
