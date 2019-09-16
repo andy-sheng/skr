@@ -3,7 +3,6 @@ package com.module.home.game.view
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
@@ -18,14 +17,11 @@ import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
-import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.beauty.FROM_MATCH
-import com.component.busilib.constans.GameModeType
-import com.component.busilib.friends.FriendMoreRoomFragment
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
@@ -36,7 +32,6 @@ import com.module.home.R
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.model.BannerModel
 import com.module.home.game.model.FuncationModel
-import com.module.home.game.model.QuickJoinRoomModel
 import com.module.home.game.model.RecommendRoomModel
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
@@ -151,41 +146,6 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                     .withBoolean("selectSong", true)
                     .navigation()
             StatisticsAdapter.recordCountEvent("game", "express_practice", null)
-        }
-        mGameAdapter.onSelectSpecialListener = { it ->
-            // 选择专场
-            MyLog.d(TAG, "selectSpecial specialModel=$it")
-            it?.let {
-                if (it.tagType == SpecialModel.TYPE_VIDEO) {
-                    mSkrAudioPermission.ensurePermission({
-                        mCameraPermission.ensurePermission({
-                            mRealNameVerifyUtils.checkJoinVideoPermission {
-                                mRealNameVerifyUtils.checkAgeSettingState {
-                                    // 进入视频预览
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                            .withInt("mFrom", FROM_MATCH)
-                                            .withSerializable("mSpecialModel", it)
-                                            .navigation()
-                                }
-                            }
-                        }, true)
-                    }, true)
-                } else {
-                    mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinAudioPermission(it.tagID) {
-                            mRealNameVerifyUtils.checkAgeSettingState {
-                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                                if (iRankingModeService != null) {
-                                    if (it != null) {
-                                        iRankingModeService.tryGoGrabMatch(it.tagID)
-                                    }
-                                }
-                            }
-                        }
-                    }, true)
-                }
-            }
         }
 
         mGameAdapter.onPkRoomListener = {
@@ -347,31 +307,6 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         }
         val recommendRoomModel = RecommendRoomModel(list)
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
-    }
-
-    override fun setQuickRoom(list: MutableList<SpecialModel>?, offset: Int) {
-        MyLog.d(TAG, "setQuickRoom list=$list offset=$offset")
-        // TODO: 2019/4/1 过滤一下空的背景
-        if (list != null && list.size > 0) {
-            val iterator = list.iterator()
-            while (iterator.hasNext()) {
-                val specialModel = iterator.next()
-                if (specialModel != null) {
-                    if (TextUtils.isEmpty(specialModel.bgImage2) || TextUtils.isEmpty(specialModel.bgImage1)) {
-                        iterator.remove()
-                    }
-                }
-            }
-        }
-
-        if (list == null || list.size == 0) {
-            // 快速加入专场空了，清空数据
-            mGameAdapter.updateQuickJoinRoomInfo(null)
-            return
-        }
-
-        val quickJoinRoomModel = QuickJoinRoomModel(list, offset)
-        mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel)
     }
 
     override fun showRemainTimes(remainTimes: Int) {

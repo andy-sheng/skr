@@ -10,8 +10,6 @@ interface IQuickGameView3 {
 
     fun setRecommendInfo(list: MutableList<RecommendModel>?)
 
-    fun setQuickRoom(list: MutableList<SpecialModel>?, offset: Int)
-
     //    void setGameConfig(GameKConfigModel gameKConfigModel);
 
     fun showTaskRedDot(show: Boolean)
