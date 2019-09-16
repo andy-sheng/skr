@@ -31,9 +31,7 @@ import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
-import com.module.home.game.model.BannerModel
-import com.module.home.game.model.FuncationModel
-import com.module.home.game.model.RecommendRoomModel
+import com.module.home.game.model.*
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
@@ -56,7 +54,6 @@ import kotlinx.coroutines.launch
  * 快速游戏
  */
 class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.context), IQuickGameView3 {
-
     val TAG: String = "QuickGameView"
 
     var mQuickGamePresenter: QuickGamePresenter
@@ -88,7 +85,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 initData(true)
             }
         })
-        mGameAdapter = GameAdapter(fragment, object : ClickGameListener{
+        mGameAdapter = GameAdapter(fragment, object : ClickGameListener {
             override fun onClickTaskListener() {
                 // 进入任务
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
@@ -219,22 +216,17 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 openBattleActivity(context)
             }
 
-            override fun onGrabRoomListener() {
-                var tagID = when {
-                    MyUserInfoManager.getInstance().ageStage == 1 -> 44
-                    MyUserInfoManager.getInstance().ageStage == 2 -> 45
-                    MyUserInfoManager.getInstance().ageStage == 3 -> 47
-                    MyUserInfoManager.getInstance().ageStage == 4 -> 48
-                    else -> 47
-                }
-                mSkrAudioPermission.ensurePermission({
-                    mRealNameVerifyUtils.checkJoinAudioPermission(tagID) {
-                        mRealNameVerifyUtils.checkAgeSettingState {
-                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                            iRankingModeService?.tryGoGrabMatch(tagID)
+            override fun onGrabRoomListener(model: SpecialModel?) {
+                model?.let {
+                    mSkrAudioPermission.ensurePermission({
+                        mRealNameVerifyUtils.checkJoinAudioPermission(it.tagID) {
+                            mRealNameVerifyUtils.checkAgeSettingState {
+                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                                iRankingModeService?.tryGoGrabMatch(it.tagID)
+                            }
                         }
-                    }
-                }, true)
+                    }, true)
+                }
                 /**
                  * 点击首页热门
                  */
@@ -249,7 +241,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     fun initData(flag: Boolean) {
         mQuickGamePresenter.initOperationArea(flag)
         mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
-        mQuickGamePresenter.getRemainTimes(flag)
+        mQuickGamePresenter.initGameTypeArea(flag)
 //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
     }
@@ -315,8 +307,27 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
     }
 
-    override fun showRemainTimes(remainTimes: Int) {
-        mGameAdapter.updateDoubleRemainTime(remainTimes)
+    override fun setGameType(list: MutableList<GrabSpecialModel>?) {
+        if (list != null && list.size > 0) {
+            val iterator = list.iterator()
+            while (iterator.hasNext()) {
+                val specialModel = iterator.next()
+                if (specialModel != null) {
+                    if (specialModel.type == null || specialModel.model == null
+                            || specialModel.model?.biggest == null) {
+                        iterator.remove()
+                    }
+                }
+            }
+        }
+
+        if (list == null || list.size == 0) {
+            mGameAdapter.updateGameTypeInfo(null)
+            return
+        }
+
+        val gameTypeModel = GameTypeModel(list)
+        mGameAdapter.updateGameTypeInfo(gameTypeModel)
     }
 
     fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {

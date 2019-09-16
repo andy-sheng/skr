@@ -2,8 +2,10 @@ package com.module.home.game.presenter
 
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
+import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
@@ -14,6 +16,7 @@ import com.component.busilib.friends.RecommendModel
 import com.component.busilib.recommend.RA
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
+import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.view.IQuickGameView3
 import com.module.home.model.SlideShowModel
 import org.greenrobot.eventbus.EventBus
@@ -31,6 +34,8 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
 //    private var mIsFirstQuick = true
     private var mRecommendTimer: HandlerTaskTimer? = null
     private var mLastUpdateRecomendInfo = 0L    //上次拉去推荐房间剩余次数的时间
+    private var mLastUpdateGameType = 0L // 上次拉去首页游戏列表时间
+    private var mIsFirstQuick = true   // 是否第一次拉去首页
     var mRecommendInterval: Int = 0    // 拉去推荐房的时间间隔
 
     init {
@@ -94,68 +99,44 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         }, this, RequestControl("getSlideList", ControlType.CancelThis))
     }
 
-//    fun initQuickRoom(isFlag: Boolean) {
-//        MyLog.d(TAG, "initQuickRoom isFlag=$isFlag")
-//        val now = System.currentTimeMillis()
-//        if (!isFlag) {
-//            // 半个小时更新一次吧
-//            if (now - mLastUpdateQuickInfo < 30 * 60 * 1000) {
-//                return
-//            }
-//        }
-//
-//        var spResult = ""
-//        if (mIsFirstQuick) {
-//            // 先用SP里面的
-//            mIsFirstQuick = false
-//            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", "")
-//            if (!TextUtils.isEmpty(spResult)) {
-//                try {
-//                    var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
-//                    var list = JSON.parseArray(jsonObject.getString("tags"), SpecialModel::class.java)
-//                    var offset = jsonObject.getIntValue("offset")
-//                    mIGameView3.setQuickRoom(list, offset)
-//                } catch (e: Exception) {
-//                }
-//
-//            }
-//        }
-//
-//        val finalSpResult = spResult
-//        ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 20), object : ApiObserver<ApiResult>() {
-//            override fun process(obj: ApiResult) {
-//                if (obj.errno == 0) {
-//                    mLastUpdateQuickInfo = System.currentTimeMillis()
-//                    if (obj.data!!.toJSONString() != finalSpResult) {
-//                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "quick_romms", obj.data!!.toJSONString())
-//                        val list = JSON.parseArray(obj.data!!.getString("tags"), SpecialModel::class.java)
-//                        val offset = obj.data!!.getIntValue("offset")
-//                        mIGameView3.setQuickRoom(list, offset)
-//                    }
-//                }
-//            }
-//        }, this, RequestControl("getSepcialList", ControlType.CancelThis))
-//    }
-
-    fun getRemainTimes(isFlag: Boolean) {
+    fun initGameTypeArea(isFlag: Boolean) {
         val now = System.currentTimeMillis()
         if (!isFlag) {
-            // 距离上次拉去已经超过5秒了
-            if (now - mLastUpdateRemainTime < 5 * 1000) {
+            // 半个小时更新一次吧
+            if (now - mLastUpdateGameType < 30 * 60 * 1000) {
                 return
             }
         }
-        ApiMethods.subscribe(mMainPageSlideApi.remainTime, object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult?) {
-                if (result?.errno == 0) {
-                    mLastUpdateRemainTime = System.currentTimeMillis()
-                    var totalRemainTimes = result.data.getIntValue("todayResTimes");
-                    mIGameView3.showRemainTimes(totalRemainTimes)
-                } else {
-                    // 请求出错了
+
+        var spResult = ""
+        if (mIsFirstQuick) {
+            // 先用SP里面的
+            mIsFirstQuick = false
+            spResult = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", "")
+            if (!TextUtils.isEmpty(spResult)) {
+                try {
+                    var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
+                    var list = JSON.parseArray(jsonObject.getString("items"), GrabSpecialModel::class.java)
+                    mIGameView3.setGameType(list)
+                } catch (e: Exception) {
+                }
+
+            }
+        }
+
+        val finalSpResult = spResult
+        ApiMethods.subscribe(mMainPageSlideApi.indexTabBlocks, object : ApiObserver<ApiResult>() {
+            override fun process(obj: ApiResult) {
+                if (obj.errno == 0) {
+                    mLastUpdateGameType = System.currentTimeMillis()
+                    if (obj.data!!.toJSONString() != finalSpResult) {
+                        U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", obj.data!!.toJSONString())
+                        val list = JSON.parseArray(obj.data!!.getString("items"), GrabSpecialModel::class.java)
+                        mIGameView3.setGameType(list)
+                    }
                 }
             }
-        }, this, RequestControl("getRemainTimes", ControlType.CancelThis))
+        }, this, RequestControl("getSepcialList", ControlType.CancelThis))
     }
 
     //TODO 这个接口得换，等服务器更新
@@ -222,9 +203,14 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
         initRecommendRoom(true, mRecommendInterval)
-        getRemainTimes(true)
+        initGameTypeArea(true)
 //        initQuickRoom(true)
         checkTaskRedDot()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
+        initGameTypeArea(true)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

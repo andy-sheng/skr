@@ -27,7 +27,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
     private var mDataList: MutableList<Any> = ArrayList()
 
     init {
-        mObjArr[TYPE_GAMETYPE_HOLDER] = GameTypeModel()
         mObjArr[TYPE_FUNCATION_HOLDER] = FuncationModel(false)
     }
 
@@ -46,11 +45,8 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         setDataList()
     }
 
-    fun updateDoubleRemainTime(times: Int) {
-        var gameTypeModel = mObjArr[TYPE_GAMETYPE_HOLDER]
-        if (gameTypeModel is GameTypeModel) {
-            gameTypeModel.mRemainTime = times
-        }
+    fun updateGameTypeInfo(gameTypeModel: GameTypeModel?) {
+        mObjArr[TYPE_GAMETYPE_HOLDER] = gameTypeModel
         setDataList()
     }
 
@@ -76,7 +72,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
             }
             TYPE_RECOMMEND_HOLDER -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_recommend_room_item_view, parent, false)
-                return RecommendRoomViewHolder(view,mBaseFragment, listener)
+                return RecommendRoomViewHolder(view, mBaseFragment, listener)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
@@ -121,5 +117,5 @@ interface ClickGameListener {
     fun onPkRoomListener()
     fun onDoubleRoomListener()
     fun onBattleRoomListener()
-    fun onGrabRoomListener()
+    fun onGrabRoomListener(model: SpecialModel?)
 }

@@ -116,7 +116,9 @@ public interface MainPageSlideApi {
     @GET("http://dev.game.inframe.mobi/v1/magpie/room-data")
     Observable<ApiResult> getRemainTime();
 
-
     @GET("http://dev.game.inframe.mobi/v1/raceroom/check-rank")
     Call<ApiResult> checkRank(@Query("roomType")int roomType);
+
+    @GET("http://test.api.inframe.mobi/v1/home/index-tab-blocks")
+    Observable<ApiResult> getIndexTabBlocks();
 }

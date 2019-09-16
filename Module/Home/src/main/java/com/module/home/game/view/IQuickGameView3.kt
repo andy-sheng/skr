@@ -2,6 +2,7 @@ package com.module.home.game.view
 
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
+import com.module.home.game.model.GrabSpecialModel
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
 
@@ -14,5 +15,5 @@ interface IQuickGameView3 {
 
     fun showTaskRedDot(show: Boolean)
 
-    fun showRemainTimes(remainTimes : Int)
+    fun setGameType(list: MutableList<GrabSpecialModel>?)
 }

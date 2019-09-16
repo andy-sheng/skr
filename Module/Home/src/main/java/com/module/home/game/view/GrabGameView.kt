@@ -54,10 +54,10 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
             }
         })
 
-        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
+        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mPresenter = GrabGamePresenter(this)
-        mGrabGameAdapter = GrabGameAdapter()
+        mGrabGameAdapter = GrabGameAdapter(1)
         mGrabGameAdapter.onClickTagListener = {
             // 点击专场
             MyLog.d(TAG, "selectSpecial grabSpecialModel=$it")

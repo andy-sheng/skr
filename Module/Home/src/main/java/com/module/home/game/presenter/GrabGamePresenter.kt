@@ -32,12 +32,12 @@ class GrabGamePresenter(internal var grabGameView: IGrabGameView) : RxLifeCycleP
     fun initQuickRoom(isFlag: Boolean) {
         MyLog.d(TAG, "initQuickRoom isFlag=$isFlag")
         val now = System.currentTimeMillis()
-//        if (!isFlag) {
-//            // 半个小时更新一次吧
-//            if (now - mLastUpdateQuickInfo < 30 * 60 * 1000) {
-//                return
-//            }
-//        }
+        if (!isFlag) {
+            // 半个小时更新一次吧
+            if (now - mLastUpdateQuickInfo < 30 * 60 * 1000) {
+                return
+            }
+        }
 
         var spResult = ""
         if (mIsFirstQuick) {
