@@ -382,7 +382,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 //                lp.rightMargin = U.getDisplayUtils().dip2px(10f)
 //                lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp)
 //                lp.topMargin = -U.getDisplayUtils().dip2px(55f)
-                val index = mGrabRootView.indexOfChild(mInputContainerView)
+                val index = mGrabRootView.indexOfChild(mTurnInfoCardView)
                 mGrabRootView.addView(playbookWaitStatusIv, index, lp)
             }
         }
