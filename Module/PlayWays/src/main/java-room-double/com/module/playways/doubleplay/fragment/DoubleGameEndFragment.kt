@@ -25,13 +25,13 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.verify.SkrVerifyUtils
+import com.component.report.fragment.QuickFeedbackFragment
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.doubleplay.model.DoubleEndRoomModel
 import com.trello.rxlifecycle2.android.FragmentEvent
-import com.component.report.fragment.QuickFeedbackFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -53,7 +53,7 @@ class DoubleGameEndFragment : BaseFragment() {
     lateinit var mLastNumTv: ExTextView
     var onClickBottomBtn: (() -> Unit)? = null
 
-    lateinit var mDoubleRoomData: DoubleRoomData
+    var mDoubleRoomData: DoubleRoomData? = null
 
     val skrVerifyUtils = SkrVerifyUtils()
 
@@ -64,6 +64,11 @@ class DoubleGameEndFragment : BaseFragment() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        if (mDoubleRoomData == null) {
+            activity?.finish()
+            return
+        }
+
         mReportTv = rootView.findViewById<View>(R.id.report_tv) as ExTextView
         mCloseIv = rootView.findViewById<View>(R.id.close_iv) as ImageView
         mWhiteBg = rootView.findViewById<View>(R.id.white_bg) as ExImageView
@@ -84,7 +89,7 @@ class DoubleGameEndFragment : BaseFragment() {
                                 .setHasAnimation(true)
                                 .addDataBeforeAdd(0, QuickFeedbackFragment.FROM_DOUBLE_ROOM)
                                 .addDataBeforeAdd(1, QuickFeedbackFragment.REPORT)
-                                .addDataBeforeAdd(2, mDoubleRoomData.getAntherUser()?.userId ?: 0)
+                                .addDataBeforeAdd(2, mDoubleRoomData!!.getAntherUser()?.userId ?: 0)
                                 .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                                 .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                                 .build())
@@ -104,7 +109,7 @@ class DoubleGameEndFragment : BaseFragment() {
         })
 
         Observable.create<String> {
-            ApiMethods.subscribe(mDoubleRoomServerApi.getEndGameInfo(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(mDoubleRoomServerApi.getEndGameInfo(mDoubleRoomData!!.gameId), object : ApiObserver<ApiResult>() {
                 override fun process(obj: ApiResult?) {
                     MyLog.w(mTag, "getEndGameInfo obj is $obj")
                     it.onComplete()
@@ -129,15 +134,15 @@ class DoubleGameEndFragment : BaseFragment() {
     }
 
     fun setEndData(model: DoubleEndRoomModel) {
-        if (mDoubleRoomData.enableNoLimitDuration) {
-            val userInfoModel = mDoubleRoomData.getAntherUser()
+        if (mDoubleRoomData!!.enableNoLimitDuration) {
+            val userInfoModel = mDoubleRoomData!!.getAntherUser()
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(userInfoModel?.avatar)
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                     .setBorderColor(Color.WHITE)
                     .build())
         } else {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mDoubleRoomData.getMaskAvatar(mDoubleRoomData.getAntherUser()?.sex
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mDoubleRoomData!!.getMaskAvatar(mDoubleRoomData!!.getAntherUser()?.sex
                     ?: 0))
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
@@ -148,20 +153,20 @@ class DoubleGameEndFragment : BaseFragment() {
 
         mMatchAgain.visibility = View.VISIBLE
         mEndTv.text = model.combineRoomCloseReasonDesc
-        if (mDoubleRoomData.enableNoLimitDuration) {
-            mChatTimeTv.text = "你与${mDoubleRoomData.getAntherUser()?.getNicknameRemark()}唱聊了${(model.chatDurTime)}分钟"
+        if (mDoubleRoomData!!.enableNoLimitDuration) {
+            mChatTimeTv.text = "你与${mDoubleRoomData!!.getAntherUser()?.getNicknameRemark()}唱聊了${(model.chatDurTime)}分钟"
         } else {
             mChatTimeTv.text = "你与Ta唱聊了${(model.chatDurTime)}分钟"
         }
 
 
-        if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
+        if (mDoubleRoomData!!.doubleRoomOri == DoubleRoomData.DoubleRoomOri.GRAB_INVITE) {
             mLastNumTv.visibility = View.GONE
             mMatchAgain.text = "返回首页"
             onClickBottomBtn = {
                 activity?.finish()
             }
-        } else if (mDoubleRoomData.doubleRoomOri == DoubleRoomData.DoubleRoomOri.CREATE) {
+        } else if (mDoubleRoomData!!.doubleRoomOri == DoubleRoomData.DoubleRoomOri.CREATE) {
             mLastNumTv.visibility = View.GONE
             mMatchAgain.text = "返回首页"
             onClickBottomBtn = {
@@ -216,7 +221,7 @@ class DoubleGameEndFragment : BaseFragment() {
         } else {
             mFollowTv.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    UserInfoManager.getInstance().mateRelation(mDoubleRoomData.getAntherUser()!!.userId, UserInfoManager.RA_BUILD, false, mDoubleRoomData.gameId, null)
+                    UserInfoManager.getInstance().mateRelation(mDoubleRoomData!!.getAntherUser()!!.userId, UserInfoManager.RA_BUILD, false, mDoubleRoomData!!.gameId, null)
                 }
             })
             isStrangerState()
@@ -262,7 +267,7 @@ class DoubleGameEndFragment : BaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
-        val userInfoModel = mDoubleRoomData.getAntherUser()
+        val userInfoModel = mDoubleRoomData!!.getAntherUser()
         if (userInfoModel == null) {
             return
         }
@@ -282,7 +287,7 @@ class DoubleGameEndFragment : BaseFragment() {
 
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
-            mDoubleRoomData = data as DoubleRoomData
+            mDoubleRoomData = data as DoubleRoomData?
         }
     }
 
