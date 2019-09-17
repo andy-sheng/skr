@@ -126,7 +126,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mBottomBgVp: ViewGroup
 
-    lateinit var mBottomContainerView: GrabBottomContainerView
+    var mBottomContainerView: GrabBottomContainerView? = null
 
     //    GiftTimerPresenter mGiftTimerPresenter;
 
@@ -161,7 +161,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
 
-    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
+    var mSelfSingCardView: SelfSingCardView? = null// 自己演唱卡片
 
     lateinit var mSingBeginTipsCardView: SingBeginTipsCardView// 演唱提示卡片
 
@@ -597,7 +597,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mContinueSendView.setRoomData(mRoomData!!)
         mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
-                mBottomContainerView.setOpVisible(!isVisible)
+                mBottomContainerView?.setOpVisible(!isVisible)
             }
         })
 
@@ -647,7 +647,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         lp.height = U.getDisplayUtils().screenHeight * 284 / 667
 
         mBottomContainerView = rootView.findViewById<View>(R.id.bottom_container_view) as GrabBottomContainerView
-        mBottomContainerView.setListener(object : BottomContainerView.Listener() {
+        mBottomContainerView?.setListener(object : BottomContainerView.Listener() {
             override fun showInputBtnClick() {
                 if (mPersonInfoDialog != null && mPersonInfoDialog!!.isShowing) {
                     mPersonInfoDialog!!.dismiss()
@@ -691,7 +691,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mContinueSendView.visibility = GONE
             }
         })
-        mBottomContainerView.setRoomData(mRoomData!!)
+        mBottomContainerView?.setRoomData(mRoomData!!)
     }
 
     private fun initCommentView() {
@@ -700,7 +700,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mCommentView.roomData = mRoomData!!
         //        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
-        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
+        mVoiceRecordUiController = VoiceRecordUiController(mBottomContainerView!!.mVoiceRecordBtn, mVoiceRecordTipsView, mCommentView)
     }
 
     private fun initChangeRoomTransitionView() {
@@ -1122,12 +1122,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     private fun initSingStageView() {
         mSelfSingCardView = SelfSingCardView(rootView, mRoomData!!)
-        mSelfSingCardView.setListener {
+        mSelfSingCardView?.setListener {
             removeNoAccSrollTipsView()
             removeGrabSelfSingTipView()
             mCorePresenter?.sendRoundOverInfo()
         }
-        mSelfSingCardView.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
+        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
         mOthersSingCardView = OthersSingCardView(rootView, mRoomData!!)
     }
 
@@ -1220,7 +1220,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         // 播放3秒导唱
         mOthersSingCardView.setVisibility(GONE)
-        mSelfSingCardView.setVisibility(GONE)
+        mSelfSingCardView?.setVisibility(GONE)
         mMiniOwnerMicIv.visibility = GONE
         mGrabBaseUiController.grabBegin()
         val pendingPlaySongCardData = PendingPlaySongCardData(seq, songModel)
@@ -1256,7 +1256,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         val grabRoundInfoModel = mRoomData!!.realRoundInfo
         if (grabRoundInfoModel != null && grabRoundInfoModel.isFreeMicRound) {
             // 自由麦环节 直接显示卡片了
-            mSelfSingCardView.playLyric()
+            mSelfSingCardView?.playLyric()
             mGrabOpBtn.hide("onSongInfoCardPlayOver2")
             if (mRoomData!!.isOwner) {
                 mGrabGiveupView.delayShowGiveUpView(true)
@@ -1406,7 +1406,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabGiveupView.hideWithAnimation(false)
         mGrabBaseUiController.roundOver()
         if (lastInfoModel?.isFreeMicRound == true) {
-            mSelfSingCardView.setVisibility(GONE)
+            mSelfSingCardView?.setVisibility(GONE)
         }
         mRoundOverCardView.bindData(lastInfoModel) {
             now?.let {
@@ -1543,7 +1543,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
         //        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
         //        mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(GONE)
+        mSelfSingCardView?.setVisibility(GONE)
         mOthersSingCardView.hide()
         mTurnInfoCardView.visibility = GONE
         mSingBeginTipsCardView.setVisibility(GONE)
@@ -1588,7 +1588,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mVipEnterPresenter?.switchRoom()
             mVIPEnterView?.switchRoom()
             // 重新决定显示mic按钮
-            mBottomContainerView.setRoomData(mRoomData!!)
+            mBottomContainerView?.setRoomData(mRoomData!!)
         }
     }
 
@@ -1730,7 +1730,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     fun hideAllCardView() {
         mRoundOverCardView.setVisibility(GONE)
         mOthersSingCardView.setVisibility(GONE)
-        mSelfSingCardView.setVisibility(GONE)
+        mSelfSingCardView?.setVisibility(GONE)
         mSingBeginTipsCardView.setVisibility(GONE)
     }
 
