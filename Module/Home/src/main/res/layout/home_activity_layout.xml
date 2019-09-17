@@ -149,43 +149,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.375" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/game_btn1"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:drawablePadding="15dp"
-        android:gravity="center"
-        android:text="首页"
-        android:textSize="@dimen/textsize_30_dp"
-        app:bl_selected_textColor="#5865A6"
-        app:bl_unSelected_textColor="#7897A5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:stv_text_stroke="true"
-        app:stv_stroke_width="100dp"
-        app:stv_text_stroke_color="@color/red"
-        app:stv_text_stroke_width="1dp"
-
-        app:stv_isShowState="true"
-        app:stv_state_drawable="@drawable/baiyin"
-        app:stv_state_drawable_mode="left"
-        app:stv_state_drawable_rotate="90"
-        app:stv_state_drawable_tint="@color/Yellow"
-
-        app:stv_shaderMode="bottomToTop"
-        app:stv_shaderEnable="false"
-        app:stv_shaderStartColor="#00ff00"
-        app:stv_shaderEndColor="#00f1ff"
-
-
-
-        />
-
-
     <com.common.view.viewpager.NestViewPager
         android:id="@+id/main_vp"
         android:layout_width="match_parent"

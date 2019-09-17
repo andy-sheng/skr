@@ -29,6 +29,8 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.stv.SuperTextView;
+import com.common.view.ex.stv.adjust.MoveEffectAdjuster;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;

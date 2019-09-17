@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--SuperTextView-->
+    <declare-styleable name="SuperTextView">
+
+<!--        &lt;!&ndash;-->
+<!--        设置圆角。会同时作用于填充和边框(如果边框存在的话)-->
+<!--        如果要设置为圆形，只需要把该值设置为宽或长的1/2即可-->
+<!--        &ndash;&gt;-->
+<!--        <attr name="stv_corner" format="dimension" />-->
+<!--        <attr name="stv_left_top_corner" format="boolean" />-->
+<!--        <attr name="stv_right_top_corner" format="boolean" />-->
+<!--        <attr name="stv_left_bottom_corner" format="boolean" />-->
+<!--        <attr name="stv_right_bottom_corner" format="boolean" />-->
+
+<!--        &lt;!&ndash; 设置填充颜色&ndash;&gt;-->
+<!--        <attr name="stv_solid" format="reference|color" />-->
+<!--        &lt;!&ndash; 设置边框宽度&ndash;&gt;-->
+<!--        <attr name="stv_stroke_width" format="dimension" />-->
+<!--        &lt;!&ndash; 设置边框颜色&ndash;&gt;-->
+<!--        <attr name="stv_stroke_color" format="reference|color" />-->
+<!--        &lt;!&ndash; 放置一个drawable在背景层上。默认居中显示。并且默认大小为SuperTextView的一半。&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable" format="reference|color" />-->
+<!--        &lt;!&ndash; drawable的宽度&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_width" format="dimension" />-->
+<!--        &lt;!&ndash; drawable的高度&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_height" format="dimension" />-->
+<!--        &lt;!&ndash; drawble相对于基础位置左边的距离&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_padding_left" format="dimension" />-->
+<!--        &lt;!&ndash; drawble相对于基础位置顶部的距离&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_padding_top" format="dimension" />-->
+<!--        &lt;!&ndash; 修改 drawable 的颜色&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_tint" format="reference|color" />-->
+<!--        &lt;!&ndash; 旋转drawable&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_rotate" format="float" />-->
+<!--        &lt;!&ndash;-->
+<!--        boolean类型。是否显示drawable。-->
+<!--        如果你想要设置的drawable显示出来，必须设置为true。-->
+<!--        当不想让它显示时，再设置为false即可-->
+<!--         &ndash;&gt;-->
+<!--        <attr name="stv_isShowState" format="boolean" />-->
+<!--        <attr name="stv_drawableAsBackground" format="boolean" />-->
+
+<!--        <attr name="stv_scaleType" format="enum">-->
+<!--            <enum name="fitXY" value="0" />-->
+<!--            <enum name="fitCenter" value="1" />-->
+<!--            <enum name="center" value="2" />-->
+<!--        </attr>-->
+<!--        &lt;!&ndash;设置drawable的显示模式&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable_mode" format="enum">-->
+<!--            <enum name="left" value="0" />-->
+<!--            <enum name="top" value="1" />-->
+<!--            <enum name="right" value="2" />-->
+<!--            <enum name="bottom" value="3" />-->
+<!--            <enum name="center" value="4" />-->
+<!--            <enum name="fill" value="5" />-->
+<!--            <enum name="leftTop" value="6" />-->
+<!--            <enum name="rightTop" value="7" />-->
+<!--            <enum name="leftBottom" value="8" />-->
+<!--            <enum name="rightBottom" value="9" />-->
+<!--        </attr>-->
+
+<!--        &lt;!&ndash;支持设置两个 drawable 参数意义和上面一样&ndash;&gt;-->
+<!--        <attr name="stv_state_drawable2" format="reference|color" />-->
+<!--        <attr name="stv_state_drawable2_width" format="dimension" />-->
+<!--        <attr name="stv_state_drawable2_height" format="dimension" />-->
+<!--        <attr name="stv_state_drawable2_padding_left" format="dimension" />-->
+<!--        <attr name="stv_state_drawable2_padding_top" format="dimension" />-->
+<!--        <attr name="stv_state_drawable2_tint" format="reference|color" />-->
+<!--        <attr name="stv_state_drawable2_rotate" format="float" />-->
+<!--        <attr name="stv_isShowState2" format="boolean" />-->
+<!--        <attr name="stv_state_drawable2_mode" format="enum">-->
+<!--            <enum name="left" value="0" />-->
+<!--            <enum name="top" value="1" />-->
+<!--            <enum name="right" value="2" />-->
+<!--            <enum name="bottom" value="3" />-->
+<!--            <enum name="center" value="4" />-->
+<!--            <enum name="fill" value="5" />-->
+<!--            <enum name="leftTop" value="6" />-->
+<!--            <enum name="rightTop" value="7" />-->
+<!--            <enum name="leftBottom" value="8" />-->
+<!--            <enum name="rightBottom" value="9" />-->
+<!--        </attr>-->
+
+<!--        &lt;!&ndash;背景渐变 必须设置为true才能启用渐变功能。这意味着你可以灵活的控制这一功能。&ndash;&gt;-->
+<!--        <attr name="stv_shaderEnable" format="boolean" />-->
+<!--        &lt;!&ndash;起始颜色&ndash;&gt;-->
+<!--        <attr name="stv_shaderStartColor" format="reference|color" />-->
+<!--        &lt;!&ndash;结尾颜色&ndash;&gt;-->
+<!--        <attr name="stv_shaderEndColor" format="reference|color" />-->
+<!--        &lt;!&ndash;渐变模式&ndash;&gt;-->
+<!--        <attr name="stv_shaderMode" format="enum">-->
+<!--            <enum name="topToBottom" value="0" />-->
+<!--            <enum name="bottomToTop" value="1" />-->
+<!--            <enum name="leftToRight" value="2" />-->
+<!--            <enum name="rightToLeft" value="3" />-->
+<!--        </attr>-->
+<!--        -->
+
+<!--        &lt;!&ndash;按压背景颜色&ndash;&gt;-->
+<!--        <attr name="stv_pressBgColor" format="reference|color" />-->
+<!--        &lt;!&ndash;按压文字颜色&ndash;&gt;-->
+<!--        <attr name="stv_pressTextColor" format="reference|color" />-->
+
+
+        <!--文字渐变,参数意义同上-->
+        <attr name="stv_textShaderEnable" format="boolean" />
+        <attr name="stv_textShaderStartColor" format="reference|color" />
+        <attr name="stv_textShaderEndColor" format="reference|color" />
+        <attr name="stv_textShaderMode" format="enum">
+            <enum name="topToBottom" value="0" />
+            <enum name="bottomToTop" value="1" />
+            <enum name="leftToRight" value="2" />
+            <enum name="rightToLeft" value="3" />
+        </attr>
+
+        <!--
+          是否开启文字描边功能。
+          注意，启用这个模式之后通过setTextColor()设置的颜色将会被覆盖。
+          你需要通过text_fill_color来设置文字的颜色。
+        -->
+        <attr name="stv_text_stroke" format="boolean" />
+        <!-- 描边颜色-->
+        <attr name="stv_text_stroke_color" format="reference|color" />
+        <!-- 描边宽度-->
+        <attr name="stv_text_stroke_width" format="dimension" />
+        <!-- 填充颜色-->
+        <attr name="stv_text_fill_color" format="reference|color" />
+        <!--
+        boolean类型。是否启用Adjuster功能。
+        具体干什么，需要在Java中为SuperTextView实现一个Adjuster。
+        当你启用这个功能而没有实现自己的Adjuster时，
+        SuperTextView会启用默认的Adjuster。它会按照一定的规则调整文字大小。
+        -->
+        <attr name="stv_autoAdjust" format="boolean" />
+
+    </declare-styleable>
+</resources>

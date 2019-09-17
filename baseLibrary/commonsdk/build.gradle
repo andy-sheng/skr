@@ -233,7 +233,7 @@ dependencies {
     //api(rootProject.ext.dependencies["android-gif-drawable"])
     implementation project(":baseLibrary:android-gif-drawable")
     // SuperTextView
-    api project(":baseLibrary:SuperTextView")
+    //api project(":baseLibrary:SuperTextView")
     // 超大图加载
     implementation(rootProject.ext.dependencies["scale-image-view"])
 

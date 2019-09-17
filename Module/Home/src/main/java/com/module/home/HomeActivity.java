@@ -42,6 +42,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.stv.adjust.MoveEffectAdjuster;
 import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.event.FeedWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
@@ -297,6 +298,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (U.getChannelUtils().getChannel().startsWith("FEED")) {
             mFeedArea.callOnClick();
         }
+
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.common.view.ex;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
+import com.common.log.MyLog;
 
 /**
  * AppCompatImageView 自适应字体大小
@@ -35,4 +38,8 @@ public class ExImageView extends android.support.v7.widget.AppCompatImageView {
         AttributeInject.injectSrc(this, context, attrs);
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
 }
