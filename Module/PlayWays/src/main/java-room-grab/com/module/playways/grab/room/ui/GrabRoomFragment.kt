@@ -161,7 +161,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
 
-    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
+    var mSelfSingCardView: SelfSingCardView? = null// 自己演唱卡片
 
     lateinit var mSingBeginTipsCardView: SingBeginTipsCardView// 演唱提示卡片
 
@@ -1122,12 +1122,12 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     private fun initSingStageView() {
         mSelfSingCardView = SelfSingCardView(rootView, mRoomData!!)
-        mSelfSingCardView.setListener {
+        mSelfSingCardView?.setListener {
             removeNoAccSrollTipsView()
             removeGrabSelfSingTipView()
             mCorePresenter?.sendRoundOverInfo()
         }
-        mSelfSingCardView.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
+        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
         mOthersSingCardView = OthersSingCardView(rootView, mRoomData!!)
     }
 
@@ -1220,7 +1220,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         // 播放3秒导唱
         mOthersSingCardView.setVisibility(GONE)
-        mSelfSingCardView.setVisibility(GONE)
+        mSelfSingCardView?.setVisibility(GONE)
         mMiniOwnerMicIv.visibility = GONE
         mGrabBaseUiController.grabBegin()
         val pendingPlaySongCardData = PendingPlaySongCardData(seq, songModel)
@@ -1256,7 +1256,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         val grabRoundInfoModel = mRoomData!!.realRoundInfo
         if (grabRoundInfoModel != null && grabRoundInfoModel.isFreeMicRound) {
             // 自由麦环节 直接显示卡片了
-            mSelfSingCardView.playLyric()
+            mSelfSingCardView?.playLyric()
             mGrabOpBtn.hide("onSongInfoCardPlayOver2")
             if (mRoomData!!.isOwner) {
                 mGrabGiveupView.delayShowGiveUpView(true)
@@ -1406,7 +1406,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabGiveupView.hideWithAnimation(false)
         mGrabBaseUiController.roundOver()
         if (lastInfoModel?.isFreeMicRound == true) {
-            mSelfSingCardView.setVisibility(GONE)
+            mSelfSingCardView?.setVisibility(GONE)
         }
         mRoundOverCardView.bindData(lastInfoModel) {
             now?.let {
@@ -1543,7 +1543,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
         //        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
         //        mUiHanlder.sendMessageDelayed(msg, 4000);
-        mSelfSingCardView.setVisibility(GONE)
+        mSelfSingCardView?.setVisibility(GONE)
         mOthersSingCardView.hide()
         mTurnInfoCardView.visibility = GONE
         mSingBeginTipsCardView.setVisibility(GONE)
@@ -1730,7 +1730,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     fun hideAllCardView() {
         mRoundOverCardView.setVisibility(GONE)
         mOthersSingCardView.setVisibility(GONE)
-        mSelfSingCardView.setVisibility(GONE)
+        mSelfSingCardView?.setVisibility(GONE)
         mSingBeginTipsCardView.setVisibility(GONE)
     }
 

@@ -26,6 +26,18 @@ public interface MainPageSlideApi {
     @GET("v1/kconf/slide-show")
     Observable<ApiResult> getSlideList();
 
+    /**
+     *
+     * @param mode  UNKnow 未知模式
+     *              ClassicRankMode = 1  经典排位模式
+     *              FunnyMode = 2 娱乐模式
+     *              StandMode = 3 一站到底模式
+     *              ClassicRankModeV2 = 4 经典排位模式v2
+     *              StandModeV2 = 5 一站到底模式v2
+     *              StandPlayBookMode = 6 歌单战
+     * @param debug
+     * @return
+     */
     @GET("http://dev.game.inframe.mobi/v1/kconf/game-play")
     Call<ApiResult> getGameConfig(@Query("mode") int mode, @Query("debugOpen") boolean debug);
 
@@ -104,7 +116,9 @@ public interface MainPageSlideApi {
     @GET("http://dev.game.inframe.mobi/v1/magpie/room-data")
     Observable<ApiResult> getRemainTime();
 
-
     @GET("http://dev.game.inframe.mobi/v1/raceroom/check-rank")
     Call<ApiResult> checkRank(@Query("roomType")int roomType);
+
+    @GET("http://test.api.inframe.mobi/v1/home/index-tab-blocks")
+    Observable<ApiResult> getIndexTabBlocks();
 }

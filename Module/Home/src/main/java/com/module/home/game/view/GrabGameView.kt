@@ -54,10 +54,10 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
             }
         })
 
-        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
+        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mPresenter = GrabGamePresenter(this)
-        mGrabGameAdapter = GrabGameAdapter()
+        mGrabGameAdapter = GrabGameAdapter(1)
         mGrabGameAdapter.onClickTagListener = {
             // 点击专场
             MyLog.d(TAG, "selectSpecial grabSpecialModel=$it")
@@ -74,8 +74,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
                     it.type == GrabSpecialModel.TBT_PLAYBOOK -> {
                         // 歌单战
                         StatisticsAdapter.recordCountEvent("game_grab", "song_list", null)
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
-                                .navigation()
+                        openBattleActivity(context)
                     }
                     it.type == GrabSpecialModel.TBT_SPECIAL -> {
                         // 进入视频预览

@@ -24,13 +24,13 @@ import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SimpleRoomInfo
 import com.component.busilib.recommend.RA
 import com.module.home.R
+import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
 import com.module.home.game.listener.EndlessRecycleOnScollListener
 import com.module.home.game.model.RecommendRoomModel
 
 class RecommendRoomViewHolder(itemView: View, internal var mBaseFragment: BaseFragment,
-                              var onEnterRoomListener: ((model: RecommendModel) -> Unit)?,
-                              onMoreRoomListener: (() -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+                              val listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {
 
     val TAG = "RecommendRoomViewHolder"
 
@@ -50,7 +50,7 @@ class RecommendRoomViewHolder(itemView: View, internal var mBaseFragment: BaseFr
                     // 好友或者关注
                     checkUserRoom(model.userInfo.userId, model, position)
                 } else {
-                    onEnterRoomListener?.invoke(model)
+                    listener.onEnterRoomListener(model)
                 }
             } else {
                 MyLog.w(TAG, "onItemClicked model = null")
@@ -65,7 +65,7 @@ class RecommendRoomViewHolder(itemView: View, internal var mBaseFragment: BaseFr
 
         mMoreFriends.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                onMoreRoomListener?.invoke()
+                listener.onMoreRoomListener()
             }
         })
 
@@ -92,7 +92,7 @@ class RecommendRoomViewHolder(itemView: View, internal var mBaseFragment: BaseFr
                             friendRoomModel.roomInfo = roomInfo
                             mFriendRoomAdapter.update(friendRoomModel)
                         }
-                        onEnterRoomListener?.invoke(friendRoomModel)
+                        listener.onEnterRoomListener(friendRoomModel)
                     } else {
                         // 不在房间里面了
                         mFriendRoomAdapter.delete(friendRoomModel)

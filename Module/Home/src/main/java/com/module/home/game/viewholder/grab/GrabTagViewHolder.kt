@@ -33,20 +33,33 @@ class GrabTagViewHolder(itemView: View, onClickTagListener: ((model: GrabSpecial
         })
     }
 
-    fun bind(position: Int, model: GrabSpecialModel) {
+    fun bind(position: Int, model: GrabSpecialModel, type: Int) {
         this.model = model
         this.pos = position
 
         model.model?.biggest?.let {
-            var lp = mImageSdv.layoutParams
-            // 左边12 右边6
-            lp.width = U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(18f)
-            lp.height = (it.h) * lp.width / (it.w)
-            mImageSdv.layoutParams = lp
+            if (type == 1) {
+                var lp = mImageSdv.layoutParams
+                // 左边12 右边6
+                lp.width = U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(18f)
+                lp.height = (it.h) * lp.width / (it.w)
+                mImageSdv.layoutParams = lp
 
-            FrescoWorker.loadImage(mImageSdv, ImageFactory.newPathImage(it.url)
-                    .setScaleType(ScalingUtils.ScaleType.FIT_XY)
-                    .build<BaseImage>())
+                FrescoWorker.loadImage(mImageSdv, ImageFactory.newPathImage(it.url)
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .build<BaseImage>())
+            } else {
+                var lp = mImageSdv.layoutParams
+                // 左边12 右边6
+                lp.width = U.getDisplayUtils().screenWidth / 2 - U.getDisplayUtils().dip2px(16f)
+                lp.height = (it.h) * lp.width / (it.w)
+                mImageSdv.layoutParams = lp
+
+                FrescoWorker.loadImage(mImageSdv, ImageFactory.newPathImage(it.url)
+                        .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                        .build<BaseImage>())
+            }
+
         }
     }
 }

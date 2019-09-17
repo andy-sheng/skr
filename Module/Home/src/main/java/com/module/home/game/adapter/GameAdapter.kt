@@ -14,34 +14,19 @@ import com.module.home.game.viewholder.*
 
 import java.util.ArrayList
 
-class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickGameListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val TAG = "GameAdapter"
 
     private val TYPE_BANNER_HOLDER = 0       // 广告
     private val TYPE_FUNCATION_HOLDER = 1    // 功能区域（做任务，排行榜，练歌房）
     private val TYPE_RECOMMEND_HOLDER = 2    // 推荐房
-    private val TYPE_QUICK_ROOM_HOLDER = 3   // 快速房
-    private val TYPE_GAMETYPE_HOLDER = 4     // 玩法区域
+    private val TYPE_GAMETYPE_HOLDER = 3     // 玩法区域
 
     private var mObjArr = arrayOfNulls<Any>(5)
     private var mDataList: MutableList<Any> = ArrayList()
 
-    var onCreateRoomListener: (() -> Unit)? = null
-    var onSelectSpecialListener: ((specialModel: SpecialModel?) -> Unit)? = null
-    var onClickTaskListener: (() -> Unit)? = null
-    var onClickRankListener: (() -> Unit)? = null
-    var onClickPracticeListener: (() -> Unit)? = null
-    var onMoreRoomListener: (() -> Unit)? = null
-
-    var onEnterRoomListener: ((model: RecommendModel) -> Unit)? = null
-    var onPkRoomListener: (() -> Unit)? = null
-    var onDoubleRoomListener: (() -> Unit)? = null
-    var onBattleRoomListener: (() -> Unit)? = null
-    var onGrabRoomListener: (() -> Unit)? = null
-
     init {
-        mObjArr[TYPE_GAMETYPE_HOLDER] = GameTypeModel()
         mObjArr[TYPE_FUNCATION_HOLDER] = FuncationModel(false)
     }
 
@@ -60,24 +45,8 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
         setDataList()
     }
 
-    fun updateQuickJoinRoomInfo(quickJoinRoomModel: QuickJoinRoomModel?) {
-        mObjArr[TYPE_QUICK_ROOM_HOLDER] = quickJoinRoomModel
-        setDataList()
-    }
-
-    fun updateGrabGameInfo(model: SpecialModel) {
-        var gameTypeModel = mObjArr[TYPE_GAMETYPE_HOLDER]
-        if (gameTypeModel is GameTypeModel) {
-            gameTypeModel.mSpecialModel = model
-        }
-        setDataList()
-    }
-
-    fun updateDoubleRemainTime(times: Int) {
-        var gameTypeModel = mObjArr[TYPE_GAMETYPE_HOLDER]
-        if (gameTypeModel is GameTypeModel) {
-            gameTypeModel.mRemainTime = times
-        }
+    fun updateGameTypeInfo(gameTypeModel: GameTypeModel?) {
+        mObjArr[TYPE_GAMETYPE_HOLDER] = gameTypeModel
         setDataList()
     }
 
@@ -92,21 +61,23 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == TYPE_BANNER_HOLDER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.game_banner_item_view, parent, false)
-            return BannerViewHolder(view)
-        } else if (viewType == TYPE_FUNCATION_HOLDER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.game_funcation_item_view, parent, false)
-            return FuncationAreaViewHolder(view, onClickTaskListener, onClickPracticeListener, onClickRankListener)
-        } else if (viewType == TYPE_RECOMMEND_HOLDER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.game_recommend_room_item_view, parent, false)
-            return RecommendRoomViewHolder(view, mBaseFragment, onEnterRoomListener, onMoreRoomListener)
-        } else if (viewType == TYPE_QUICK_ROOM_HOLDER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.game_quick_room_item_view, parent, false)
-            return QuickRoomViewHolder(view, mBaseFragment, onCreateRoomListener, onSelectSpecialListener)
-        } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
-            return GameTypeViewHolder(view, onDoubleRoomListener, onPkRoomListener, onCreateRoomListener, onGrabRoomListener, onBattleRoomListener)
+        when (viewType) {
+            TYPE_BANNER_HOLDER -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_banner_item_view, parent, false)
+                return BannerViewHolder(view)
+            }
+            TYPE_FUNCATION_HOLDER -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_funcation_item_view, parent, false)
+                return FuncationAreaViewHolder(view, listener)
+            }
+            TYPE_RECOMMEND_HOLDER -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_recommend_room_item_view, parent, false)
+                return RecommendRoomViewHolder(view, mBaseFragment, listener)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
+                return GameTypeViewHolder(view, listener)
+            }
         }
     }
 
@@ -115,7 +86,6 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
             is BannerModel -> (holder as BannerViewHolder).bindData(obj)
             is FuncationModel -> (holder as FuncationAreaViewHolder).bindData(obj)
             is RecommendRoomModel -> (holder as RecommendRoomViewHolder).bindData(obj)
-            is QuickJoinRoomModel -> (holder as QuickRoomViewHolder).bindData(obj)
             is GameTypeModel -> (holder as GameTypeViewHolder).bindData(obj)
         }
     }
@@ -129,9 +99,23 @@ class GameAdapter(internal var mBaseFragment: BaseFragment) : RecyclerView.Adapt
             is BannerModel -> TYPE_BANNER_HOLDER
             is FuncationModel -> TYPE_FUNCATION_HOLDER
             is RecommendRoomModel -> TYPE_RECOMMEND_HOLDER
-            is QuickJoinRoomModel -> TYPE_QUICK_ROOM_HOLDER
             is GameTypeModel -> TYPE_GAMETYPE_HOLDER
             else -> 0
         }
     }
+}
+
+interface ClickGameListener {
+    fun onClickTaskListener()
+    fun onClickRankListener()
+    fun onClickPracticeListener()
+
+    fun onMoreRoomListener()
+    fun onEnterRoomListener(model: RecommendModel)
+
+    fun onCreateRoomListener()
+    fun onPkRoomListener()
+    fun onDoubleRoomListener()
+    fun onBattleRoomListener()
+    fun onGrabRoomListener(model: SpecialModel?)
 }
