@@ -306,11 +306,13 @@ public class PKSingCardView extends RelativeLayout {
             public void onAnimationRepeat(Animation animation) {
             }
         });
+
+        this.mIsPlaySVGA = isPlaySVGA;
+        this.mAnimationListerner = animationListerner;
+
         if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
             if (!mLeftAnimationFlag && !mLeftSingSvga.isAnimating()) {
                 // TODO: 2019/4/23 防止多次播放
-                this.mIsPlaySVGA = isPlaySVGA;
-                this.mAnimationListerner = animationListerner;
                 mLeftAnimationFlag = true;
                 mLeftArea.startAnimation(mScaleAnimation);
             } else {
@@ -319,8 +321,6 @@ public class PKSingCardView extends RelativeLayout {
         } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
             if (!mRightAnimationFlag && !mRightSingSvga.isAnimating()) {
                 // TODO: 2019/4/23 防止多次播放
-                this.mIsPlaySVGA = isPlaySVGA;
-                this.mAnimationListerner = animationListerner;
                 mRightAnimationFlag = true;
                 mRightArea.startAnimation(mScaleAnimation);
             } else {
