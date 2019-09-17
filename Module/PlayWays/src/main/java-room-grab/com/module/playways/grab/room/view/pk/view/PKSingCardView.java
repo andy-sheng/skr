@@ -70,8 +70,6 @@ public class PKSingCardView extends RelativeLayout {
     ScaleAnimation mScaleAnimation;        // 头像放大动画
     ValueAnimator mValueAnimator;          // 画圆圈的属性动画
     AnimatorSet mAnimatorSet;              // 左右拉开动画
-    boolean mLeftAnimationFlag = false;    //左边动画是否在播标记（不包括SVGA）
-    boolean mRightAnimationFlag = false;   //右边动画是否在播标记（不包括SVGA）
     boolean mIsPlaySVGA;                   // 是否播放SVGA
 
     int mLeftOverReason;
@@ -228,8 +226,6 @@ public class PKSingCardView extends RelativeLayout {
 
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
-        mLeftAnimationFlag = false;
-        mLeftAnimationFlag = false;
         mLeftOverReason = 0;
         mRightOverReason = 0;
 
@@ -262,17 +258,11 @@ public class PKSingCardView extends RelativeLayout {
 
     public void playScaleWithoutAnimation(int userId) {
         if (mLeftUserInfoModel != null && userId == mLeftUserInfoModel.getUserId()) {
-            if (!mLeftAnimationFlag && !mLeftSingSvga.isAnimating()) {
-                mLeftArea.setScaleX(1.35f);
-                mLeftArea.setScaleY(1.35f);
-            } else {
-            }
+            mLeftArea.setScaleX(1.35f);
+            mLeftArea.setScaleY(1.35f);
         } else if (mRightUserInfoModel != null && userId == mRightUserInfoModel.getUserId()) {
-            if (!mRightAnimationFlag && !mRightSingSvga.isAnimating()) {
-                mRightArea.setScaleX(1.35f);
-                mRightArea.setScaleY(1.35f);
-            } else {
-            }
+            mRightArea.setScaleX(1.35f);
+            mRightArea.setScaleY(1.35f);
         }
     }
 
@@ -311,21 +301,11 @@ public class PKSingCardView extends RelativeLayout {
         this.mAnimationListerner = animationListerner;
 
         if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
-            if (!mLeftAnimationFlag && !mLeftSingSvga.isAnimating()) {
-                // TODO: 2019/4/23 防止多次播放
-                mLeftAnimationFlag = true;
-                mLeftArea.startAnimation(mScaleAnimation);
-            } else {
-                MyLog.w(TAG, "playScaleAnimation 动画已经在播放了" + " uid=" + uid);
-            }
+            mLeftArea.startAnimation(mScaleAnimation);
         } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
-            if (!mRightAnimationFlag && !mRightSingSvga.isAnimating()) {
-                // TODO: 2019/4/23 防止多次播放
-                mRightAnimationFlag = true;
-                mRightArea.startAnimation(mScaleAnimation);
-            } else {
-                MyLog.w(TAG, "playScaleAnimation 动画已经在播放了" + " uid=" + uid);
-            }
+            mRightArea.startAnimation(mScaleAnimation);
+        } else {
+            MyLog.w(TAG, "playScaleAnimation uid 无效" + " uid=" + uid);
         }
     }
 
@@ -378,10 +358,8 @@ public class PKSingCardView extends RelativeLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
-                    mLeftAnimationFlag = false;
                     mLeftCircleAnimationView.setVisibility(GONE);
                 } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
-                    mRightAnimationFlag = false;
                     mRightCircleAnimationView.setVisibility(GONE);
                 }
 
