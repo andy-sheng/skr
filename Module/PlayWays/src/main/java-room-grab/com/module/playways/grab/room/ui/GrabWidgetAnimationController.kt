@@ -118,7 +118,7 @@ class GrabWidgetAnimationController(internal var mF: GrabRoomFragment) {
         } else {
             viewList.addAll(mF.mOthersSingCardView.realViews)
         }
-        viewList.addAll(mF.mSelfSingCardView.realViews)
+        viewList.addAll(mF.mSelfSingCardView!!.realViews)
     }
 
     /**
