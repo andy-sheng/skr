@@ -97,6 +97,7 @@ public interface RouterConstants {
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
     String SERVICE_FEEDS = "/feeds/service1";
+    String SERVICE_POSTS = "/posts/service1";
     String SERVICE_GRAB_SERVICE = "/game/grab_service1";
     String SERVICE_DOUBLE_PLAY = "/game/double_play_service";
 

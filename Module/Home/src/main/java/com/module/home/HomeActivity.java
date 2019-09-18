@@ -19,7 +19,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -35,14 +34,12 @@ import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
-import com.common.notification.event.EStandFullStarEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.ex.stv.adjust.MoveEffectAdjuster;
 import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.event.FeedWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
@@ -60,7 +57,6 @@ import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
-import com.zq.live.proto.broadcast.StandFullStar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -88,7 +84,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     NestViewPager mMainVp;
 
     IMsgService mMsgService;
-    IFeedsModuleService mIFeedsModuleService;
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
@@ -168,7 +163,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setViewPagerCanScroll(false);
         mMainVp.setOffscreenPageLimit(2);
         checkIfFromSchema();
-        mIFeedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -176,7 +170,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new GameFragment3();
                 } else if (position == 1) {
-                    return mIFeedsModuleService.getFeedsFragment();
+                    return ModuleServiceManager.getInstance().getPostsService().getFragment();
                 } else if (position == 2) {
                     return (Fragment) mMsgService.getMessageFragment();
                 } else if (position == 3) {

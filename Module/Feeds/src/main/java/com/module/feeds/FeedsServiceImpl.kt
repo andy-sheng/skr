@@ -20,7 +20,7 @@ class FeedsServiceImpl : IFeedsModuleService {
 
     val TAG = "FeedsServiceImpl"
 
-    override fun getFeedsFragment(): Fragment {
+    override fun getFragment(): Fragment {
         return FeedsWatchFragment()
     }
 
