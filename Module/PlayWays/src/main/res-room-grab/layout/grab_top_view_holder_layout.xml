@@ -48,7 +48,7 @@
         android:background="@drawable/ycdi_fangzhubiaoqian"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.top.SpeakingTipsAnimationView
+    <com.component.busilib.view.SpeakingTipsAnimationView
         android:id="@+id/speaker_animation_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

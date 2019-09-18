@@ -4,21 +4,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 
-import com.common.core.avatar.AvatarUtils
-import com.common.core.userinfo.model.UserLevelType
-import com.common.image.fresco.BaseImageView
-import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.SpeakingTipsAnimationView
 import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
 import com.module.playways.room.room.comment.adapter.CommentAdapter
 import com.module.playways.room.room.comment.model.CommentAudioModel
-import com.module.playways.grab.room.top.SpeakingTipsAnimationView
 
 class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapterListener?) : RecyclerView.ViewHolder(itemView) {
 

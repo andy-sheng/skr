@@ -31,4 +31,11 @@
         <!--头像边框宽度-->
         <attr name="borderWidth" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="speaking">
+        <attr name="animationtype" format="enum">
+            <enum name="speak" value="0" />
+            <enum name="msg_audio" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

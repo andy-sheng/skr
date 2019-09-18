@@ -92,7 +92,7 @@
             app:layout_constraintRight_toRightOf="@id/audio_tv"
             app:layout_constraintTop_toTopOf="@id/audio_tv" />
 
-        <com.module.playways.grab.room.top.SpeakingTipsAnimationView
+        <com.component.busilib.view.SpeakingTipsAnimationView
             android:id="@+id/speaker_animation_iv"
             android:layout_width="@dimen/view_12_dp"
             android:layout_height="@dimen/view_14_dp"

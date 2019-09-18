@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -17,6 +16,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.view.AvatarView;
+import com.component.busilib.view.SpeakingTipsAnimationView;
 import com.module.playways.R;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.component.person.event.ShowPersonCardEvent;
