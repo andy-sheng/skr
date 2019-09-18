@@ -1,4 +1,4 @@
-package com.module.posts.view
+package com.module.posts.watch.view
 
 import android.content.Context
 import android.graphics.drawable.Animatable
@@ -9,7 +9,6 @@ import com.common.image.fresco.IFrescoCallBack
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.utils.ImageUtils
-import com.common.utils.U
 import com.common.view.ninegrid.NineGridLayout
 import com.common.view.ninegrid.RatioImageView
 import com.facebook.drawee.drawable.ScalingUtils
