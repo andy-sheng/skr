@@ -77,6 +77,12 @@
         app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
         app:layout_constraintTop_toBottomOf="@id/posts_audio_view" />
 
-
+    <ViewStub
+        android:id="@+id/comment_layout_stub"
+        app:layout_constraintTop_toBottomOf="@+id/nine_grid_vp"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        android:layout="@layout/posts_watch_view_item_comment_stub_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>
