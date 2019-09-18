@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/vote_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_40_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#190081FF"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/vote_progress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#39006DFF"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_bg_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/vote_bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/vote_bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/vote_bg_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/des_left_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_bg_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/vote_bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/vote_bg_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/des_center_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_bg_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/vote_bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/vote_bg_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/voteNum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/vote_bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/vote_bg_iv" />
+</android.support.constraint.ConstraintLayout>
