@@ -204,7 +204,7 @@ class FeedsWatchFragment : BaseFragment() {
         } else if (reason == INVISIBLE_REASON_TO_OTHER_ACTIVITY) {
             r = UNSELECT_REASON_TO_OTHER_ACTIVITY
         } else if (reason == INVISIBLE_REASON_TO_DESKTOP) {
-            r = INVISIBLE_REASON_TO_DESKTOP
+            r = UNSELECT_REASON_TO_DESKTOP
         }
         // 返回桌面
         when (mPagerPosition) {

@@ -2,7 +2,9 @@ package com.module.posts.watch
 
 import android.os.Bundle
 import com.common.base.BaseFragment
+import com.common.view.ninegrid.NineGridLayout
 import com.module.posts.R
+import com.module.posts.view.PostsNineGridLayout
 
 class PostsWatchFragment : BaseFragment() {
     override fun initView(): Int {

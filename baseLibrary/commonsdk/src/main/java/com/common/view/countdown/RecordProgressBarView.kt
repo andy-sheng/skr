@@ -8,6 +8,9 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 
+/**
+ * 动画progressbar
+ */
 class RecordProgressBarView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : ProgressBar(context, attrs, defStyle) {
 
     internal var mRecordAnimator: ValueAnimator? = null
