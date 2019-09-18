@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEDF2">
+    android:background="@color/white">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title"
@@ -12,13 +12,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:showBottomLine="false"
         app:showMainView="false"
-        app:statusBarColor="#EBEDF2" />
+        app:statusBarColor="@color/white" />
 
     <ImageView
         android:id="@+id/navigation_bg_iv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_63_dp"
-        android:background="#EBEDF2"
+        android:background="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
