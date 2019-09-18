@@ -9,10 +9,13 @@ import com.module.posts.watch.viewholder.PostsWatchViewHolder
 
 class PostsWatchViewAdapter : RecyclerView.Adapter<PostsWatchViewHolder>() {
     var mDataList = ArrayList<PostsWatchModel>()
+    var imageClickListener: ((pos:Int,model: PostsWatchModel?, index: Int, url: String?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsWatchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.post_watch_view_item_layout, parent, false)
-        return PostsWatchViewHolder(view)
+        val holder =  PostsWatchViewHolder(view)
+        holder.imageClickListener = imageClickListener
+        return holder
     }
 
     override fun getItemCount(): Int {

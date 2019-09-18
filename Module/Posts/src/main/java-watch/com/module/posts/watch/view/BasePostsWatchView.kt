@@ -1,11 +1,19 @@
 package com.module.posts.watch.view
 
 import android.support.constraint.ConstraintLayout
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import com.common.base.BaseFragment
+import com.common.callback.Callback
 import com.common.log.MyLog
+import com.component.person.photo.model.PhotoModel
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseActivity
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.posts.R
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
 import com.module.posts.watch.model.PostsWatchModel
@@ -45,6 +53,41 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
         refreshLayout.setEnableRefresh(false)
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+        adapter.imageClickListener = {pos,model,index,url->
+            BigImageBrowseFragment.open(true, context as FragmentActivity, object : DefaultImageBrowserLoader<String>() {
+                override fun init() {
+
+                }
+
+                override fun load(imageBrowseView: ImageBrowseView, position: Int, item: String) {
+                        imageBrowseView.load(item)
+                }
+
+                override fun getInitCurrentItemPostion(): Int {
+                    return index
+                }
+
+                override fun getInitList(): List<String>? {
+                    return model?.imageList
+                }
+
+                override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
+                    if (backward) {
+                        // 向后加载
+                    }
+                }
+
+                override fun hasMore(backward: Boolean, position: Int, data: String): Boolean {
+                    return if (backward) {
+                        return false
+                    } else false
+                }
+
+                override fun hasMenu(): Boolean {
+                    return false
+                }
+            })
+        }
     }
 
     open fun unselected(reason: Int) {
