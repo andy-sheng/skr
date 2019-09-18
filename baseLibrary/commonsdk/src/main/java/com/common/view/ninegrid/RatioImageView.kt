@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import com.common.base.R
 import com.common.image.fresco.BaseImageView
+import com.common.log.MyLog
 
 
 /**
@@ -48,6 +49,11 @@ class RatioImageView : BaseImageView {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(height.toInt(), MeasureSpec.EXACTLY)
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        MyLog.d(TAG, "onLayout changed = $changed, left = $left, top = $top, right = $right, bottom = $bottom")
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

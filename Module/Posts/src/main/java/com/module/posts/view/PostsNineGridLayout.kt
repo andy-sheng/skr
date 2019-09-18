@@ -9,6 +9,7 @@ import com.common.image.fresco.IFrescoCallBack
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.utils.ImageUtils
+import com.common.utils.dp
 import com.common.view.ninegrid.NineGridLayout
 import com.common.view.ninegrid.RatioImageView
 import com.facebook.drawee.drawable.ScalingUtils
@@ -31,6 +32,7 @@ class PostsNineGridLayout : NineGridLayout {
         FrescoWorker.loadImage(imageView, ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .setCornerRadius(8.dp().toFloat())
                 .setCallBack(object : IFrescoCallBack {
                     override fun processWithInfo(imageInfo: ImageInfo, animatable: Animatable?) {
                         val w = imageInfo.width
@@ -66,6 +68,7 @@ class PostsNineGridLayout : NineGridLayout {
     override fun displayImage(imageView: RatioImageView, url: String) {
         FrescoWorker.loadImage(imageView, ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                .setCornerRadius(8.dp().toFloat())
                 .build<BaseImage>())
     }
 
