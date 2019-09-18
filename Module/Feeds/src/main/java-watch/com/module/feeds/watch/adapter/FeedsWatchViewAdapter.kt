@@ -12,6 +12,7 @@ import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.*
 import com.module.feeds.watch.watchview.BaseWatchView
+import java.util.*
 
 class FeedsWatchViewAdapter(var listener: FeedsListener, val mType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

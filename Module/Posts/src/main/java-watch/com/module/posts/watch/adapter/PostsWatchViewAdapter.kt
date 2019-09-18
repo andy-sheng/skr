@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.module.posts.R
 import com.module.posts.watch.model.PostsWatchModel
 import com.module.posts.watch.viewholder.PostsWatchViewHolder
+import java.util.*
 
 class PostsWatchViewAdapter : RecyclerView.Adapter<PostsWatchViewHolder>() {
     var mDataList = ArrayList<PostsWatchModel>()
@@ -20,10 +21,17 @@ class PostsWatchViewAdapter : RecyclerView.Adapter<PostsWatchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PostsWatchViewHolder, position: Int) {
-        holder.bindData(position, mDataList[position])
+
     }
 
     override fun onBindViewHolder(holder: PostsWatchViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
+        if (payloads.isEmpty()) {
+            holder.bindData(position, mDataList[position])
+        } else {
+            // 局部刷新
+            payloads.forEach {
+
+            }
+        }
     }
 }

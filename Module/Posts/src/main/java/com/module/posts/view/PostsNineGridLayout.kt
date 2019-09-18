@@ -1,4 +1,4 @@
-package com.module.posts.watch.view
+package com.module.posts.view
 
 import android.content.Context
 import android.graphics.drawable.Animatable
