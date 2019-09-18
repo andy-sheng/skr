@@ -7,7 +7,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.posts.R
 
-class PostVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
+class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var voteBgIv: ExImageView
     lateinit var voteProgress: ExImageView
     lateinit var desLeftTv: ExTextView
