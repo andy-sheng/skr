@@ -75,7 +75,7 @@ class PostsWatchFragment : BaseFragment() {
         postsVp = rootView.findViewById(R.id.posts_vp)
 
         postsTab?.apply {
-            setCustomTabView(R.layout.post_tab_view_layout, R.id.tab_tv)
+            setCustomTabView(R.layout.posts_tab_view_layout, R.id.tab_tv)
             setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
             setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
             setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)

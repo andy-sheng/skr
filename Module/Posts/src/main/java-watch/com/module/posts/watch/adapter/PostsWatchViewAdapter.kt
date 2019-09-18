@@ -13,7 +13,7 @@ class PostsWatchViewAdapter : RecyclerView.Adapter<PostsWatchViewHolder>() {
     var imageClickListener: ((pos:Int,model: PostsWatchModel?, index: Int, url: String?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsWatchViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.post_watch_view_item_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_watch_view_item_layout, parent, false)
         val holder =  PostsWatchViewHolder(view)
         holder.imageClickListener = imageClickListener
         return holder

@@ -14,7 +14,7 @@ import com.module.posts.watch.model.PostsWatchModel
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsNineGridLayout
 
-// post_watch_view_item_layout
+// posts_watch_view_item_layout
 class PostsWatchViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
     val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
