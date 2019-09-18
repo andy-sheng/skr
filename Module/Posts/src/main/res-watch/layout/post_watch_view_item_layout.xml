@@ -4,39 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.component.busilib.view.AvatarView
-        android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_36_dp"
-        android:layout_height="@dimen/view_36_dp"
-        android:layout_marginLeft="@dimen/view_8_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/nickname_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_20_dp"
-        android:layout_marginLeft="@dimen/view_8_dp"
-        android:gravity="center"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
-        app:layout_constraintTop_toTopOf="@id/avatar_iv"
-        app:layout_constraintBottom_toTopOf="@id/time_tv"/>
-
-    <TextView
-        android:id="@+id/time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_14_dp"
-        android:gravity="center"
-        android:textColor="@color/black_trans_30"
-        android:textSize="@dimen/textsize_10_dp"
-        app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
-        app:layout_constraintTop_toBottomOf="@id/nickname_tv"
-        app:layout_constraintBottom_toBottomOf="@id/avatar_iv"/>
-
     <ImageView
         android:id="@+id/more_iv"
         android:layout_width="wrap_content"
@@ -46,11 +13,59 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_14_dp"
+        android:gravity="center"
+        android:textColor="@color/black_trans_30"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_iv"
+        app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
+        app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
+
+    <TextView
+        android:id="@+id/nickname_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:gravity="center"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toTopOf="@id/time_tv"
+        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@id/avatar_iv"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.module.posts.view.ExpandTextView
+        android:id="@+id/content"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:lineSpacingExtra="@dimen/view_3_dp"
+        android:maxLines="3"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/avatar_iv" />
+
     <com.module.posts.watch.view.PostsNineGridLayout
         android:id="@+id/nine_grid_vp"
-        app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
-        app:layout_constraintTop_toBottomOf="@id/avatar_iv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
+        app:layout_constraintTop_toBottomOf="@id/content" />
 
 </android.support.constraint.ConstraintLayout>
