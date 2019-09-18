@@ -35,7 +35,7 @@ class PostsAudioView : ConstraintLayout {
         durationTv = this.findViewById(R.id.duration_tv)
     }
 
-    private fun binData(){
+    private fun bindData(){
         // todo
     }
 
