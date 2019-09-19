@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.module.posts.R
 import com.common.base.INVISIBLE_REASON_IN_VIEWPAGER
@@ -14,10 +15,12 @@ import com.common.base.INVISIBLE_REASON_TO_OTHER_ACTIVITY
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.module.RouterConstants
 import com.module.posts.watch.view.FollowPostsWatchView
 import com.module.posts.watch.view.LastPostsWatchView
 import com.module.posts.watch.view.RecommendPostsWatchView
@@ -74,6 +77,13 @@ class PostsWatchFragment : BaseFragment() {
         postsChallengeTv = rootView.findViewById(R.id.posts_challenge_tv)
         postsVp = rootView.findViewById(R.id.posts_vp)
 
+        postsChallengeTv?.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
+                        .navigation()
+            }
+        })
         postsTab?.apply {
             setCustomTabView(R.layout.posts_tab_view_layout, R.id.tab_tv)
             setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))

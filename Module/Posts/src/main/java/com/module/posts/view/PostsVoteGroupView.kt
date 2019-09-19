@@ -27,7 +27,6 @@ class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
         voteItem3.setVisibility(View.GONE)
         voteItem4.setVisibility(View.GONE)
 
-
     }
 
     override fun layoutDesc(): Int {
