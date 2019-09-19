@@ -11,7 +11,7 @@ class PostsModel : Serializable {
     @JSONField(name = "createdAt")
     var createdAt: Long = 0L
     @JSONField(name = "pictures")
-    var pictures: List<PostsResoureModel>? = null
+    var pictures: List<String>? = null
     @JSONField(name = "postsID")
     var postsID: Long = 0L
     @JSONField(name = "redpacketInfo")

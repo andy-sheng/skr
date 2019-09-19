@@ -15,6 +15,8 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.module.posts.R
+import com.module.posts.watch.model.PostsBestCommendModel
+import com.module.posts.watch.model.PostsCommentModel
 
 class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
@@ -34,10 +36,10 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         return R.layout.posts_watch_view_item_comment_stub_layout
     }
 
-    fun bindData(content: String) {
+    fun bindData(model: PostsBestCommendModel) {
         tryInflate()
 
-        if (TextUtils.isEmpty(content)) {
+        if (TextUtils.isEmpty(model.comment?.content)) {
             // 空的内容
             contentTv.apply {
                 maxLines = 1
@@ -86,11 +88,15 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
 
         val contentBuilder = SpanUtils()
-                .append("WWWWWWWWWWWWWWWWWW:").setForegroundColor(Color.parseColor("#63C2F0"))
-                .append(content).setForegroundColor(U.getColor(R.color.black_trans_50))
+                .append(model.user?.nicknameRemark
+                        ?: "").setForegroundColor(Color.parseColor("#63C2F0"))
+                .append(model.comment?.content
+                        ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv.text = contentBuilder
+    }
 
-
+    override fun setVisibility(visibility: Int) {
+        mParentView?.visibility = visibility
     }
 }

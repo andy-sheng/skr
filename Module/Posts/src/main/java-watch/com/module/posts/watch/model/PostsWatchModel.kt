@@ -6,8 +6,8 @@ import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
 
 class PostsWatchModel : Serializable {
-    @JSONField(name = "comment")
-    var comment: PostsCommentModel? = null
+    @JSONField(name = "bestComment")
+    var bestComment: PostsBestCommendModel? = null
     @JSONField(name = "hasFollow")
     var hasFollow: Boolean? = null
     @JSONField(name = "isLiked")
@@ -22,17 +22,8 @@ class PostsWatchModel : Serializable {
     //todo 自定义在ui上的属性
     var isExpend = false  // 文字是否展开
 
-    fun getImageList(): List<String>? {
-        return if (posts?.pictures.isNullOrEmpty()) {
-            null
-        } else {
-            var pics = ArrayList<String>()
-            posts?.pictures?.let {
-                it.forEach { pic ->
-                    pics.add(pic.url)
-                }
-            }
-            pics
-        }
+    override fun toString(): String {
+        return "PostsWatchModel(bestComment=$bestComment, hasFollow=$hasFollow, isLiked=$isLiked, numeric=$numeric, posts=$posts, user=$user, isExpend=$isExpend)"
     }
+
 }

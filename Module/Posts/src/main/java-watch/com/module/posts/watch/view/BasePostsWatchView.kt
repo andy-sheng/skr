@@ -95,7 +95,7 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
                 }
 
                 override fun getInitList(): List<String>? {
-                    return model?.getImageList()
+                    return model?.posts?.pictures
                 }
 
                 override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
