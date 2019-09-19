@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.module.posts.R
 
@@ -45,15 +46,19 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
             val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
             contentLayoutParams.rightToLeft = postsAudioView.id
-            contentLayoutParams.leftToLeft = commentTv.id
             contentLayoutParams.constrainedWidth = true
             contentTv.layoutParams = contentLayoutParams
 
             val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
+            audioLayoutParams.leftMargin = 4.dp()
+            audioLayoutParams.rightMargin = 10.dp()
+            audioLayoutParams.leftToLeft = -1
             audioLayoutParams.leftToRight = contentTv.id
             audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+            audioLayoutParams.topToBottom = -1
+            audioLayoutParams.topToTop = contentTv.id
+            audioLayoutParams.bottomToBottom = contentTv.id
             audioLayoutParams.constrainedWidth = true
-            audioLayoutParams.topToBottom = commentTv.id
             postsAudioView.layoutParams = audioLayoutParams
         } else {
             contentTv.apply {
@@ -64,25 +69,24 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
             val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
             contentLayoutParams.rightToLeft = -1
-            contentLayoutParams.leftToLeft = commentTv.id
             contentLayoutParams.constrainedWidth = true
             contentTv.layoutParams = contentLayoutParams
 
             val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
+            audioLayoutParams.leftMargin = 0
+            audioLayoutParams.rightMargin = 10.dp()
             audioLayoutParams.leftToLeft = contentTv.id
+            audioLayoutParams.leftToRight = -1
             audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             audioLayoutParams.topToBottom = contentTv.id
+            audioLayoutParams.topToTop = -1
+            audioLayoutParams.bottomToBottom = -1
             audioLayoutParams.constrainedWidth = true
             postsAudioView.layoutParams = audioLayoutParams
         }
 
         val contentBuilder = SpanUtils()
                 .append("WWWWWWWWWWWWWWWWWW:").setForegroundColor(Color.parseColor("#63C2F0"))
-                .setClickSpan(object: ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        
-                    }
-                })
                 .append(content).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv.text = contentBuilder
