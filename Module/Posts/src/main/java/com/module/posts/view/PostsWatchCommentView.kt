@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextUtils
+import android.text.style.ClickableSpan
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
@@ -76,9 +77,12 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
 
         val contentBuilder = SpanUtils()
-                .append("WWWWWWWWWWWWWWWWWW").setForegroundColor(Color.parseColor("#63C2F0"))
-                .append(":").setForegroundColor(Color.parseColor("#63C2F0"))
-                .setSpans(0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+                .append("WWWWWWWWWWWWWWWWWW:").setForegroundColor(Color.parseColor("#63C2F0"))
+                .setClickSpan(object: ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        
+                    }
+                })
                 .append(content).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv.text = contentBuilder
