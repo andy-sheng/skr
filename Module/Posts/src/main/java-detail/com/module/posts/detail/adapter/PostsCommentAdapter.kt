@@ -7,18 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.common.core.myinfo.MyUserInfo
+import com.common.core.myinfo.MyUserInfoManager
+import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
+import com.component.relation.view.DefaultFollowView
 import com.module.posts.R
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsAudioView
 import com.module.posts.view.PostsNineGridLayout
+import com.module.posts.view.PostsVoteGroupView
+import com.module.posts.watch.model.PostsWatchModel
 
 class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     private val mPostsType = 0
     private val mCommentType = 1
+
+    //评论数量
+    var mCommentCtn = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
@@ -49,7 +59,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     }
 
     inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var followTv: ExTextView
+        var followTv: DefaultFollowView
         var timeTv: TextView
         var nicknameTv: TextView
         var avatarIv: AvatarView
@@ -70,6 +80,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var commentNumDivider: View
         var commentCtnTv: ExTextView
         var emptyTv: ExTextView
+        var voteGroupView: PostsVoteGroupView
+        var pos: Int = -1
+        var model: PostsWatchModel? = null
+        var isGetRelation: Boolean = false
 
         init {
             followTv = itemView.findViewById(R.id.follow_tv)
@@ -93,10 +107,32 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             commentNumDivider = itemView.findViewById(R.id.comment_num_divider)
             commentCtnTv = itemView.findViewById(R.id.comment_ctn_tv)
             emptyTv = itemView.findViewById(R.id.empty_tv)
+            voteGroupView = PostsVoteGroupView(itemView.findViewById(R.id.vote_layout_stub))
         }
 
-        fun bindData() {
+        fun bindData(pos: Int, model: PostsWatchModel) {
+            this.pos = pos
+            this.model = model
+            followTv.userID = model.comment?.userID
 
+            avatarIv.bindData(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().myUserInfo))
+            nicknameTv.text = MyUserInfoManager.getInstance().nickName
+            timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(System.currentTimeMillis(), System.currentTimeMillis())
+
+            nineGridVp.setUrlList(model.imageList)
+            content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
+            content.maxLines = 3
+            if (!model?.isExpend) {
+                content.setCloseText("茫茫的长白大山，浩瀚的原始森林，大山脚下，原始森林环抱中散落着几十户人家的一个小山村，茅草房，对面炕，烟筒立在屋后边。在村东头有一个独立的房子，那就是青年点窗前有一道小溪流过。学子在这里吃饭，由这里出发每天随社员去地里干活。干的活要么上山伐 树，抬树，要么砍柳树毛子开荒种地。在山里，可听那吆呵声：“顺山倒了！”放树谨防回头棒！ 树上的枯枝打到别的树上再蹦回来，这回头棒打人最厉害.")
+            } else {
+                content.setExpandText("茫茫的长白大山，浩瀚的原始森林，大山脚下，原始森林环抱中散落着几十户人家的一个小山村，茅草房，对面炕，烟筒立在屋后边。在村东头有一个独立的房子，那就是青年点窗前有一道小溪流过。学子在这里吃饭，由这里出发每天随社员去地里干活。干的活要么上山伐 树，抬树，要么砍柳树毛子开荒种地。在山里，可听那吆呵声：“顺山倒了！”放树谨防回头棒！ 树上的枯枝打到别的树上再蹦回来，这回头棒打人最厉害.")
+            }
+
+            voteGroupView.bindData(false)
+
+            if (!isGetRelation) {
+                followTv.getRelation()
+            }
         }
     }
 

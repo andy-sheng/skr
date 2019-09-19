@@ -2,8 +2,11 @@ package com.module.posts.view
 
 import android.view.View
 import android.view.ViewStub
+import com.common.log.MyLog
 import com.common.view.ExViewStub
 import com.module.posts.R
+import com.module.posts.watch.adapter.PostsWatchListener
+import com.module.posts.watch.model.PostsVoteModel
 
 class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var voteItem1: PostsVoteItemView
@@ -11,6 +14,8 @@ class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var voteItem3: PostsVoteItemView
     lateinit var voteItem4: PostsVoteItemView
     lateinit var viewList: MutableList<PostsVoteItemView>
+
+    var clickListener: ((index: Int) -> Unit)? = null
 
     override fun init(parentView: View) {
         voteItem1 = PostsVoteItemView(parentView.findViewById(R.id.vote_item_1))
@@ -20,13 +25,24 @@ class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
         viewList = mutableListOf(voteItem1, voteItem2, voteItem3, voteItem4)
     }
 
-    fun bindData(withAnim: Boolean) {
+    fun bindData(model: PostsVoteModel) {
         tryInflate()
+        reset()
+        model.voteList?.let {
+            it.forEachIndexed { index, postsVoteItemModel ->
+                viewList[index].bindData(index, postsVoteItemModel, model)
+                viewList[index].clickListener = { index ->
+                    clickListener?.invoke(index)
+                }
+            }
+        }
+    }
+
+    private fun reset() {
         voteItem1.setVisibility(View.GONE)
         voteItem2.setVisibility(View.GONE)
         voteItem3.setVisibility(View.GONE)
         voteItem4.setVisibility(View.GONE)
-
     }
 
     override fun layoutDesc(): Int {

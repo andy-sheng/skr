@@ -14,13 +14,10 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_progress"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_solid_color="#39006DFF"
         app:layout_constraintBottom_toBottomOf="@+id/vote_bg_iv"
         app:layout_constraintLeft_toLeftOf="@+id/vote_bg_iv"
-        app:layout_constraintRight_toRightOf="@+id/vote_bg_iv"
         app:layout_constraintTop_toTopOf="@+id/vote_bg_iv" />
 
     <com.common.view.ex.ExTextView

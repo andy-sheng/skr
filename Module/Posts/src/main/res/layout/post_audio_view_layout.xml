@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_40_dp"
         android:minWidth="@dimen/view_120_dp"
+        android:maxWidth="@dimen/view_280_dp"
         app:bl_shape="rectangle"
         app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_gradient_startColor="#8FD2FF"
