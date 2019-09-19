@@ -113,13 +113,13 @@ class PostsWatchViewHolder(item: View) : RecyclerView.ViewHolder(item) {
             nineGridVp.setUrlList(mModel?.posts?.pictures!!)
         }
 
-//        // 评论区
-//        if (mModel?.bestComment == null) {
-//            commentView.setVisibility(View.GONE)
-//        } else {
-//            commentView.setVisibility(View.VISIBLE)
-//            commentView.bindData(mModel?.bestComment!!)
-//        }
+        // 评论区
+        if (mModel?.bestComment == null) {
+            commentView.setVisibility(View.GONE)
+        } else {
+            commentView.setVisibility(View.VISIBLE)
+            commentView.bindData(mModel?.bestComment!!)
+        }
 
         // 投票
         voteGroupView.bindData(false)

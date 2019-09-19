@@ -39,61 +39,77 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun bindData(model: PostsBestCommendModel) {
         tryInflate()
 
-        if (TextUtils.isEmpty(model.comment?.content)) {
-            // 空的内容
-            contentTv.apply {
-                maxLines = 1
-                setSingleLine(true)
-                ellipsize = TextUtils.TruncateAt.END
-            }
-            val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
-            contentLayoutParams.rightToLeft = postsAudioView.id
-            contentLayoutParams.constrainedWidth = true
-            contentTv.layoutParams = contentLayoutParams
+        if (!model.comment?.audios.isNullOrEmpty()) {
+            // 有音频
+            if (TextUtils.isEmpty(model.comment?.content)) {
+                // 空的内容
+                contentTv.apply {
+                    maxLines = 1
+                    setSingleLine(true)
+                    ellipsize = TextUtils.TruncateAt.END
+                }
+                val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
+                contentLayoutParams.rightToLeft = postsAudioView.id
+                contentLayoutParams.constrainedWidth = true
+                contentTv.layoutParams = contentLayoutParams
 
-            val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
-            audioLayoutParams.leftMargin = 4.dp()
-            audioLayoutParams.rightMargin = 10.dp()
-            audioLayoutParams.leftToLeft = -1
-            audioLayoutParams.leftToRight = contentTv.id
-            audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-            audioLayoutParams.topToBottom = -1
-            audioLayoutParams.topToTop = contentTv.id
-            audioLayoutParams.bottomToBottom = contentTv.id
-            audioLayoutParams.constrainedWidth = true
-            postsAudioView.layoutParams = audioLayoutParams
+                val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
+                audioLayoutParams.leftMargin = 4.dp()
+                audioLayoutParams.rightMargin = 10.dp()
+                audioLayoutParams.horizontalBias = 0.5F
+                audioLayoutParams.leftToLeft = -1
+                audioLayoutParams.leftToRight = contentTv.id
+                audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                audioLayoutParams.topToBottom = -1
+                audioLayoutParams.topToTop = contentTv.id
+                audioLayoutParams.bottomToBottom = contentTv.id
+                audioLayoutParams.constrainedWidth = true
+                postsAudioView.layoutParams = audioLayoutParams
+            } else {
+                contentTv.apply {
+                    maxLines = 2
+                    setSingleLine(false)
+                    ellipsize = TextUtils.TruncateAt.END
+                }
+
+                val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
+                contentLayoutParams.rightToLeft = -1
+                contentLayoutParams.constrainedWidth = true
+                contentTv.layoutParams = contentLayoutParams
+
+                val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
+                audioLayoutParams.leftMargin = 0
+                audioLayoutParams.rightMargin = 10.dp()
+                audioLayoutParams.horizontalBias = 0F
+                audioLayoutParams.leftToLeft = contentTv.id
+                audioLayoutParams.leftToRight = -1
+                audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                audioLayoutParams.topToBottom = contentTv.id
+                audioLayoutParams.topToTop = -1
+                audioLayoutParams.bottomToBottom = -1
+                audioLayoutParams.constrainedWidth = true
+                postsAudioView.layoutParams = audioLayoutParams
+            }
+
+            postsAudioView.visibility = View.VISIBLE
+            postsAudioView.bindData(model.comment?.audios!!)
         } else {
-            contentTv.apply {
-                maxLines = 2
-                setSingleLine(false)
-                ellipsize = TextUtils.TruncateAt.END
-            }
-
-            val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
-            contentLayoutParams.rightToLeft = -1
-            contentLayoutParams.constrainedWidth = true
-            contentTv.layoutParams = contentLayoutParams
-
-            val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
-            audioLayoutParams.leftMargin = 0
-            audioLayoutParams.rightMargin = 10.dp()
-            audioLayoutParams.leftToLeft = contentTv.id
-            audioLayoutParams.leftToRight = -1
-            audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-            audioLayoutParams.topToBottom = contentTv.id
-            audioLayoutParams.topToTop = -1
-            audioLayoutParams.bottomToBottom = -1
-            audioLayoutParams.constrainedWidth = true
-            postsAudioView.layoutParams = audioLayoutParams
+            postsAudioView.visibility = View.GONE
         }
 
         val contentBuilder = SpanUtils()
-                .append(model.user?.nicknameRemark
-                        ?: "").setForegroundColor(Color.parseColor("#63C2F0"))
+                .append(model.user?.nicknameRemark + ": ").setForegroundColor(Color.parseColor("#63C2F0"))
                 .append(model.comment?.content
                         ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv.text = contentBuilder
+
+        if (model.comment?.pictures.isNullOrEmpty()) {
+            nineGridVp.visibility = View.GONE
+        } else {
+            nineGridVp.visibility = View.VISIBLE
+            nineGridVp.setUrlList(model.comment?.pictures!!)
+        }
     }
 
     override fun setVisibility(visibility: Int) {

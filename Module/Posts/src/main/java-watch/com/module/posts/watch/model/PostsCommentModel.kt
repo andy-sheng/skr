@@ -6,7 +6,7 @@ import com.alibaba.fastjson.annotation.JSONField
 
 class PostsCommentModel : Serializable {
     @JSONField(name = "audios")
-    var audios: List<PostsResoureModel?>? = null
+    var audios: List<PostsResoureModel>? = null
     @JSONField(name = "commentID")
     var commentID: Long = 0L
     @JSONField(name = "content")
