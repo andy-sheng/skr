@@ -15,6 +15,7 @@ import com.module.posts.R
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsAudioView
 import com.module.posts.view.PostsNineGridLayout
+import com.module.posts.view.PostsVoteGroupView
 
 class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     private val mPostsType = 0
@@ -70,6 +71,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var commentNumDivider: View
         var commentCtnTv: ExTextView
         var emptyTv: ExTextView
+        var voteGroupView: PostsVoteGroupView
 
         init {
             followTv = itemView.findViewById(R.id.follow_tv)
@@ -93,6 +95,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             commentNumDivider = itemView.findViewById(R.id.comment_num_divider)
             commentCtnTv = itemView.findViewById(R.id.comment_ctn_tv)
             emptyTv = itemView.findViewById(R.id.empty_tv)
+            voteGroupView = PostsVoteGroupView(itemView.findViewById(R.id.vote_layout_stub))
         }
 
         fun bindData() {

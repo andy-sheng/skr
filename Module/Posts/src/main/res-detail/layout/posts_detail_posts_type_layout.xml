@@ -85,19 +85,37 @@
         app:layout_constraintTop_toBottomOf="@id/content" />
 
     <android.support.constraint.Barrier
-        android:id="@+id/posts_barrier"
+        android:id="@+id/posts_barrier_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="nine_grid_vp,posts_audio_view,content" />
 
+    <ViewStub
+        android:id="@+id/vote_layout_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/vote_layout_stub"
+        android:layout="@layout/post_vote_view_layout"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
+        app:layout_constraintTop_toBottomOf="@id/posts_barrier_1" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/posts_barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="vote_layout_stub, posts_barrier_1" />
+
     <View
+        android:layout_marginTop="@dimen/view_10_dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
         android:background="@color/black_trans_10"
         app:layout_constraintTop_toBottomOf="@+id/posts_barrier" />
 
     <TextView
+        android:layout_marginTop="@dimen/view_10_dp"
         android:id="@+id/posts_like_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_54_dp"
@@ -112,6 +130,7 @@
         app:layout_constraintTop_toBottomOf="@id/posts_barrier" />
 
     <TextView
+        android:layout_marginTop="@dimen/view_10_dp"
         android:id="@+id/posts_comment_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_54_dp"
@@ -195,7 +214,7 @@
         android:id="@+id/red_pkg_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="red_pkg_driver, red_pkg_bg, red_pkg_iv, coin_tv, red_pkg_des" />
 
     <android.support.constraint.Barrier
