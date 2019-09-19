@@ -10,17 +10,20 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.posts.R
 import com.module.posts.view.*
+import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.android.synthetic.main.post_vote_item_layout.view.*
 
 
 // posts_watch_view_item_layout
-class PostsWatchViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : RecyclerView.ViewHolder(item) {
 
     val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
     val nicknameTv: TextView = item.findViewById(R.id.nickname_tv)
@@ -42,12 +45,72 @@ class PostsWatchViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     var pos = -1
     var mModel: PostsWatchModel? = null
 
-    var imageClickListener: ((pos: Int, model: PostsWatchModel?, index: Int, url: String?) -> Unit)? = null
-
     init {
+        avatarIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener.onClickCommentAvatar(pos, mModel)
+            }
+        })
+        moreIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                listener.onClickPostsMore(pos, mModel)
+            }
+        })
+        postsAudioView.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                listener.onClickPostsAudio(pos, mModel)
+            }
+        })
         nineGridVp.clickListener = { i, url, _ ->
-            imageClickListener?.invoke(pos, mModel, i, url)
+            listener.onClickCommentImage(pos, mModel, i, url)
         }
+
+        redPkgIv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                listener.onClickPostsRedPkg(pos, mModel)
+            }
+        })
+
+        topicTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                listener.onClickPostsTopic(pos, mModel)
+            }
+        })
+
+        postsLikeTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                listener.onClickPostsLike(pos, mModel)
+            }
+        })
+
+        postsCommentTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                listener.onClickPostsComment(pos, mModel)
+            }
+        })
+
+        commentView.setListener(object : PostsCommentListener {
+            override fun onClickLike() {
+                listener.onClickCommentLike(pos, mModel)
+            }
+
+            override fun onClickName() {
+                listener.onClickCommentAvatar(pos, mModel)
+            }
+
+            override fun onClickAudio() {
+                listener.onClickCommentAudio(pos, mModel)
+            }
+
+            override fun onClickImage(index: Int, url: String) {
+                listener.onClickCommentImage(pos, mModel, index, url)
+            }
+        })
+
+        voteGroupView.clickListener = {
+            listener.onClickPostsVote(pos, mModel, it)
+        }
+
         content.setListener(object : ExpandTextView.ExpandListener {
             override fun onClickExpand(isExpand: Boolean) {
                 mModel?.isExpend = isExpand

@@ -9,12 +9,15 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
+import com.alibaba.sdk.android.oss.ClientConfiguration
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.AnimateClickListener
 import com.common.view.ExViewStub
 import com.module.posts.R
+import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsBestCommendModel
 import com.module.posts.watch.model.PostsCommentModel
 
@@ -22,18 +25,41 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     lateinit var commentTv: TextView
     lateinit var contentTv: TextView
+    lateinit var likeNumTv: TextView
+
     lateinit var postsAudioView: PostsCommentAudioView
     lateinit var nineGridVp: PostsNineGridLayout
+
+    var mListener: PostsCommentListener? = null
 
     override fun init(parentView: View) {
         commentTv = parentView.findViewById(R.id.comment_tv)
         contentTv = parentView.findViewById(R.id.content_tv)
+        likeNumTv = parentView.findViewById(R.id.like_num_tv)
         postsAudioView = parentView.findViewById(R.id.posts_audio_view)
         nineGridVp = parentView.findViewById(R.id.nine_grid_vp)
+
+        nineGridVp.clickListener = { i, url, _ ->
+            mListener?.onClickImage(i, url)
+        }
+        postsAudioView.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                mListener?.onClickAudio()
+            }
+        })
+        likeNumTv.setOnClickListener(object : AnimateClickListener() {
+            override fun click(view: View?) {
+                mListener?.onClickLike()
+            }
+        })
     }
 
     override fun layoutDesc(): Int {
         return R.layout.posts_watch_view_item_comment_stub_layout
+    }
+
+    fun setListener(listener: PostsCommentListener) {
+        mListener = listener
     }
 
     fun bindData(model: PostsBestCommendModel) {
@@ -101,6 +127,11 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         val contentBuilder = SpanUtils()
                 .append(model.user?.nicknameRemark + ": ").setForegroundColor(Color.parseColor("#63C2F0"))
+                .setClickSpan(object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        mListener?.onClickName()
+                    }
+                })
                 .append(model.comment?.content
                         ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
@@ -117,4 +148,11 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun setVisibility(visibility: Int) {
         mParentView?.visibility = visibility
     }
+}
+
+interface PostsCommentListener {
+    fun onClickImage(index: Int, url: String)
+    fun onClickAudio()
+    fun onClickName()
+    fun onClickLike()
 }

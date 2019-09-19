@@ -5,6 +5,7 @@ import android.view.ViewStub
 import com.common.log.MyLog
 import com.common.view.ExViewStub
 import com.module.posts.R
+import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsVoteModel
 
 class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
@@ -13,6 +14,8 @@ class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var voteItem3: PostsVoteItemView
     lateinit var voteItem4: PostsVoteItemView
     lateinit var viewList: MutableList<PostsVoteItemView>
+
+    var clickListener: ((index: Int) -> Unit)? = null
 
     override fun init(parentView: View) {
         voteItem1 = PostsVoteItemView(parentView.findViewById(R.id.vote_item_1))
@@ -28,6 +31,9 @@ class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
         model.voteList?.let {
             it.forEachIndexed { index, postsVoteItemModel ->
                 viewList[index].bindData(index, postsVoteItemModel, model)
+                viewList[index].clickListener = { index ->
+                    clickListener?.invoke(index)
+                }
             }
         }
     }
