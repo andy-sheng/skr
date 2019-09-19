@@ -64,6 +64,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
 
             val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
+            contentLayoutParams.rightToLeft = -1
             contentLayoutParams.leftToLeft = commentTv.id
             contentLayoutParams.constrainedWidth = true
             commentTv.layoutParams = contentLayoutParams
@@ -75,16 +76,10 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             postsAudioView.layoutParams = audioLayoutParams
         }
 
-        val nameBuilder = SpanUtils()
+        val contentBuilder = SpanUtils()
                 .append("WWWWWWWWWWWWWWWWWW").setForegroundColor(Color.parseColor("#63C2F0"))
-                .create()
-        val dividerBuilder = SpanUtils()
                 .append(":").setForegroundColor(Color.parseColor("#63C2F0"))
                 .setSpans(0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-                .create()
-        val contentBuilder = SpanUtils()
-                .append(nameBuilder)
-                .append(dividerBuilder)
                 .append(content).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv.text = contentBuilder
