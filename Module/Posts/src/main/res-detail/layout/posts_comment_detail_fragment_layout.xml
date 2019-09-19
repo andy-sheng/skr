@@ -59,23 +59,14 @@
         app:layout_constraintRight_toLeftOf="@+id/audio_iv" />
 
     <com.common.view.ex.ExImageView
-        android:id="@+id/image_iv"
+        android:id="@+id/audio_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:padding="@dimen/view_8_dp"
         android:src="@drawable/posts_pinglun"
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/comment_tv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/audio_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/view_8_dp"
-        android:src="@drawable/posts_pinglun"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
-        app:layout_constraintRight_toLeftOf="@+id/image_iv"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
 
     <com.module.posts.detail.view.PostsInputContainerView
