@@ -57,6 +57,9 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var postsAudioView: PostsAudioView
         var nineGridVp: PostsNineGridLayout
         var postsBarrier: Barrier
+        var postsLikeTv: TextView
+        var postsCommentTv: TextView
+        var topicTv: ExTextView
         var redPkgDriver: View
         var redPkgBg: View
         var redPkgIv: ExImageView
@@ -77,6 +80,9 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
             nineGridVp = itemView.findViewById(R.id.nine_grid_vp)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
+            postsLikeTv = itemView.findViewById(R.id.posts_like_tv)
+            postsCommentTv = itemView.findViewById(R.id.posts_comment_tv)
+            topicTv = itemView.findViewById(R.id.topic_tv)
             redPkgDriver = itemView.findViewById(R.id.red_pkg_driver)
             redPkgBg = itemView.findViewById(R.id.red_pkg_bg)
             redPkgIv = itemView.findViewById(R.id.red_pkg_iv)

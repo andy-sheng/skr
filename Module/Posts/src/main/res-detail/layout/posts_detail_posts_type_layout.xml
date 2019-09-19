@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <com.common.view.ex.ExTextView
@@ -88,14 +89,66 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="nine_grid_vp,posts_audio_view" />
+        app:constraint_referenced_ids="nine_grid_vp,posts_audio_view,content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintTop_toBottomOf="@+id/posts_barrier" />
+
+    <TextView
+        android:id="@+id/posts_like_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_54_dp"
+        android:drawableRight="@drawable/posts_black_big_icon"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/view_16_dp"
+        android:text="3745"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/posts_barrier" />
+
+    <TextView
+        android:id="@+id/posts_comment_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_54_dp"
+        android:drawableRight="@drawable/posts_comment_icon"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/view_16_dp"
+        android:text="3745"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintRight_toLeftOf="@id/posts_like_tv"
+        app:layout_constraintTop_toBottomOf="@id/posts_barrier" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/topic_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:text="今日份颜值"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/textsize_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#DEF4FF"
+        app:layout_constraintBottom_toBottomOf="@id/posts_comment_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/posts_comment_tv" />
 
     <View
         android:id="@+id/red_pkg_driver"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="#0D000000"
-        app:layout_constraintTop_toBottomOf="@+id/posts_barrier" />
+        app:layout_constraintTop_toBottomOf="@+id/posts_comment_tv" />
 
     <View
         android:id="@+id/red_pkg_bg"
