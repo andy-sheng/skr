@@ -35,8 +35,6 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun bindData(content: String) {
         tryInflate()
 
-        MyLog.d("PostsWatchCommentView", "bindData content = $content")
-
         if (TextUtils.isEmpty(content)) {
             // 空的内容
             contentTv.apply {
@@ -48,7 +46,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             contentLayoutParams.rightToLeft = postsAudioView.id
             contentLayoutParams.leftToLeft = commentTv.id
             contentLayoutParams.constrainedWidth = true
-            commentTv.layoutParams = contentLayoutParams
+            contentTv.layoutParams = contentLayoutParams
 
             val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
             audioLayoutParams.leftToRight = contentTv.id
@@ -67,12 +65,13 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             contentLayoutParams.rightToLeft = -1
             contentLayoutParams.leftToLeft = commentTv.id
             contentLayoutParams.constrainedWidth = true
-            commentTv.layoutParams = contentLayoutParams
+            contentTv.layoutParams = contentLayoutParams
 
             val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
             audioLayoutParams.leftToLeft = contentTv.id
+            audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             audioLayoutParams.topToBottom = contentTv.id
-            audioLayoutParams.topToBottom = contentTv.id
+            audioLayoutParams.constrainedWidth = true
             postsAudioView.layoutParams = audioLayoutParams
         }
 
@@ -83,6 +82,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 .append(content).setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv.text = contentBuilder
+
 
     }
 }
