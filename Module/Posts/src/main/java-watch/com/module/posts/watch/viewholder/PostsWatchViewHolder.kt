@@ -8,6 +8,7 @@ import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.U
 import com.common.utils.dp
+import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.posts.R
 import com.module.posts.watch.model.PostsWatchModel
@@ -26,17 +27,22 @@ class PostsWatchViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     val moreIv: ImageView = item.findViewById(R.id.more_iv)
     val nineGridVp: PostsNineGridLayout = item.findViewById(R.id.nine_grid_vp)
     val content: ExpandTextView = item.findViewById(R.id.content)
-    val commentView : PostsWatchCommentView = PostsWatchCommentView(item.findViewById(R.id.comment_layout_stub))
-    val voteGroupView : PostsVoteGroupView = PostsVoteGroupView(item.findViewById(R.id.vote_layout_stub))
+    val commentView: PostsWatchCommentView = PostsWatchCommentView(item.findViewById(R.id.comment_layout_stub))
+    val voteGroupView: PostsVoteGroupView = PostsVoteGroupView(item.findViewById(R.id.vote_layout_stub))
+
+    val postsLikeTv: TextView = item.findViewById(R.id.posts_like_tv)
+    val postsCommentTv: TextView = item.findViewById(R.id.posts_comment_tv)
+    val redPkgIv: ImageView = item.findViewById(R.id.red_pkg_iv)
+    val topicTv: ExTextView = item.findViewById(R.id.topic_tv)
 
     var pos = -1
     var model: PostsWatchModel? = null
 
-    var imageClickListener: ((pos:Int,model: PostsWatchModel?, index: Int, url: String?) -> Unit)? = null
+    var imageClickListener: ((pos: Int, model: PostsWatchModel?, index: Int, url: String?) -> Unit)? = null
 
     init {
         nineGridVp.clickListener = { i, url, _ ->
-            imageClickListener?.invoke(pos,model, i, url)
+            imageClickListener?.invoke(pos, model, i, url)
         }
         content.setListener(object : ExpandTextView.ExpandListener {
             override fun onClickExpand(isExpand: Boolean) {
