@@ -42,6 +42,7 @@
         android:text="ktv酒彪子:"
         android:textColor="#63C2F0"
         android:textSize="@dimen/textsize_14_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="@+id/comment_tv"

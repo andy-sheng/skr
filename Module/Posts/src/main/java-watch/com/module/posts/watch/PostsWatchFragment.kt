@@ -46,7 +46,6 @@ class PostsWatchFragment : BaseFragment() {
     var mPagerPosition: Int by Delegates.observable(initPostion, { _, oldPositon, newPosition ->
         // 为了解决滑动卡顿
         launch(Dispatchers.Main) {
-            delay(400)
             when (oldPositon) {
                 0 -> {
                     followPostsWatchView.unselected(UNSELECT_REASON_SLIDE_OUT)

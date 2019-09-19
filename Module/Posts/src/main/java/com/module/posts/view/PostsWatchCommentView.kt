@@ -56,6 +56,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
                 audioLayoutParams.leftMargin = 4.dp()
                 audioLayoutParams.rightMargin = 10.dp()
+                audioLayoutParams.topMargin = 0.dp()
                 audioLayoutParams.horizontalBias = 0.5F
                 audioLayoutParams.leftToLeft = -1
                 audioLayoutParams.leftToRight = contentTv.id
@@ -80,6 +81,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
                 audioLayoutParams.leftMargin = 0
                 audioLayoutParams.rightMargin = 10.dp()
+                audioLayoutParams.topMargin = 5.dp()
                 audioLayoutParams.horizontalBias = 0F
                 audioLayoutParams.leftToLeft = contentTv.id
                 audioLayoutParams.leftToRight = -1

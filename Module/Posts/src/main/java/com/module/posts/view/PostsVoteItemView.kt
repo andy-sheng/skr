@@ -41,6 +41,7 @@ class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun bindData(index: Int, voteItem: PostsVoteItemModel, model: PostsVoteModel) {
         tryInflate()
 
+        setVisibility(View.VISIBLE)
         if (model.hasVoted == true) {
             // 已经投票了
             desLeftTv.text = voteItem.voteItem
