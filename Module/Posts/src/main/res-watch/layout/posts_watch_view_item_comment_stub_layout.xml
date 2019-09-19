@@ -1,58 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    app:bl_shape="rectangle"
-    app:bl_corners_radius="@dimen/view_9_dp"
-    android:background="@color/black_trans_5"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/black_trans_5">
 
     <TextView
         android:id="@+id/comment_tv"
         android:text="评论"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="@dimen/view_9_dp"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/view_13_dp"
         android:layout_marginTop="@dimen/view_9_dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/nickname_tv"
+        android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:text="ktv酒彪子:"
         android:textColor="#63C2F0"
         android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="@+id/comment_tv"
-        app:layout_constraintTop_toBottomOf="@+id/comment_tv"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/comment_tv" />
 
-    <com.module.posts.view.ExpandTextView
-        android:id="@+id/content"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:lineSpacingExtra="@dimen/view_3_dp"
-        android:maxLines="3"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
-
-    <com.module.posts.view.PostsAudioView
+    <com.module.posts.view.PostsCommentAudioView
         android:id="@+id/posts_audio_view"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintLeft_toLeftOf="@id/nickname_tv"/>
+        app:layout_constraintLeft_toLeftOf="@id/content_tv"
+        app:layout_constraintTop_toBottomOf="@id/content_tv"/>
 
     <com.module.posts.view.PostsNineGridLayout
         android:id="@+id/nine_grid_vp"
@@ -63,4 +47,4 @@
         app:layout_constraintTop_toBottomOf="@id/posts_audio_view" />
 
 
-</com.common.view.ex.ExConstraintLayout>
+</android.support.constraint.ConstraintLayout>
