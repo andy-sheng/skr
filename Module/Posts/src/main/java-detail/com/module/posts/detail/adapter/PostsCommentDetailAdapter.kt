@@ -10,28 +10,32 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
+import com.component.relation.view.DefaultFollowView
 import com.module.posts.R
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsAudioView
 import com.module.posts.view.PostsNineGridLayout
 
 class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
-    private val mPostsType = 0
-    private val mCommentType = 1
+    val mPostsType = 0
+    val mCommentType = 1
+
+    //评论数量
+    var mCommentCtn = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
         when (viewType) {
             mPostsType -> {
                 view = LayoutInflater.from(parent.context).inflate(R.layout.posts_comment_detail_posts_type_layout, parent, false)
-                return PostsHolder(view!!)
+                return PostsFirstLevelCommentHolder(view!!)
             }
             mCommentType -> {
                 view = LayoutInflater.from(parent.context).inflate(R.layout.posts_comment_detail_item_view_layout, parent, false)
-                return PostsCommentHolder(view!!)
+                return PostsSecondLevelCommentHolder(view!!)
             }
 
-            else -> return PostsHolder(view!!)
+            else -> return PostsFirstLevelCommentHolder(view!!)
         }
     }
 
@@ -47,8 +51,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
     }
 
-    inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var followTv: ExTextView
+    inner class PostsFirstLevelCommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var followTv: DefaultFollowView
         var timeTv: TextView
         var nicknameTv: TextView
         var avatarIv: AvatarView
@@ -79,7 +83,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         }
     }
 
-    inner class PostsCommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PostsSecondLevelCommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var commenterAvaterIv: AvatarView
         var nameTv: ExTextView
         var commentTimeTv: ExTextView

@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <com.common.view.ex.ExTextView
+    <com.component.relation.view.DefaultFollowView
         android:id="@+id/follow_tv"
         android:layout_width="@dimen/view_64_dp"
         android:layout_height="@dimen/view_24_dp"
