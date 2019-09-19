@@ -12,7 +12,7 @@ class PostsVoteModel : Serializable {
     @JSONField(name = "voteInfo")
     var voteList: List<PostsVoteItemModel>? = null
     @JSONField(name = "voteSeq")
-    var voteSeq: Int = 0  //投票的次序(1-4)
+    var voteSeq: Int? = null  //投票的次序(1-4)
 
     override fun toString(): String {
         return "PostsVoteModel(hasVoted=$hasVoted, voteID=$voteID, voteList=$voteList, voteSeq=$voteSeq)"

@@ -1,11 +1,18 @@
 package com.module.posts.view
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewStub
+import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
+import com.common.view.ex.drawable.DrawableFactory
 import com.module.posts.R
+import com.module.posts.watch.model.PostsVoteItemModel
+import com.module.posts.watch.model.PostsVoteModel
 
 class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var voteBgIv: ExImageView
@@ -13,6 +20,15 @@ class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var desLeftTv: ExTextView
     lateinit var desCenterTv: ExTextView
     lateinit var voteNumTv: ExTextView
+
+    val voteDrawable = DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#19006DFF"))
+            .setCornersRadius(8.dp().toFloat(), 8.dp().toFloat(), 8.dp().toFloat(), 8.dp().toFloat())
+            .build()
+    val voteDrawableSelf = DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#F8D1FF"))
+            .setCornersRadius(8.dp().toFloat(), 8.dp().toFloat(), 8.dp().toFloat(), 8.dp().toFloat())
+            .build()
 
     override fun init(parentView: View) {
         voteBgIv = parentView.findViewById(R.id.vote_bg_iv)
@@ -22,8 +38,37 @@ class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
         voteNumTv = parentView.findViewById(R.id.voteNum_tv)
     }
 
-    fun bindData(withAnim: Boolean) {
+    fun bindData(index: Int, voteItem: PostsVoteItemModel, model: PostsVoteModel) {
         tryInflate()
+
+        if (model.hasVoted == true) {
+            // 已经投票了
+            desLeftTv.text = voteItem.voteItem
+            voteNumTv.text = "${voteItem.voteCnt}票"
+            var totalVotes = 0
+            model.voteList?.forEach {
+                totalVotes += it.voteCnt.toInt()
+            }
+            val layoutParams = voteProgress.layoutParams
+            layoutParams.width = ((U.getDisplayUtils().screenWidth - 40.dp())* voteItem.voteCnt / totalVotes).toInt()
+            voteProgress.layoutParams = layoutParams
+            if ((index + 1) == model.voteSeq) {
+                voteProgress.background = voteDrawableSelf
+            } else {
+                voteProgress.background = voteDrawable
+            }
+            voteProgress.visibility = View.VISIBLE
+            desLeftTv.visibility = View.VISIBLE
+            voteNumTv.visibility = View.VISIBLE
+            desCenterTv.visibility = View.GONE
+        } else {
+            // 未投票
+            desCenterTv.text = voteItem.voteItem
+            desCenterTv.visibility = View.VISIBLE
+            voteProgress.visibility = View.GONE
+            desLeftTv.visibility = View.GONE
+            voteNumTv.visibility = View.GONE
+        }
 
     }
 

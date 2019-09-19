@@ -122,7 +122,13 @@ class PostsWatchViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         }
 
         // 投票
-        voteGroupView.bindData(false)
+        if (mModel?.posts?.voteInfo == null) {
+            voteGroupView.setVisibility(View.GONE)
+        } else {
+            voteGroupView.setVisibility(View.VISIBLE)
+            voteGroupView.bindData(mModel?.posts?.voteInfo!!)
+        }
+
 
         // 评论数和点赞数
         if (mModel?.numeric == null) {
