@@ -21,14 +21,18 @@ class PostsWatchModel : Serializable {
 
     //todo 自定义在ui上的属性
     var isExpend = false  // 文字是否展开
-    val imageList= ArrayList<String>()
-    init {
-        val r = Random(System.currentTimeMillis()).nextInt(3)
 
-        for (i in 0 until r) {
-            imageList.add("http://res-static.inframe.mobi/app/remen_2.png")
+    fun getImageList(): List<String>? {
+        return if (posts?.pictures.isNullOrEmpty()) {
+            null
+        } else {
+            var pics = ArrayList<String>()
+            posts?.pictures?.let {
+                it.forEach { pic ->
+                    pics.add(pic.url)
+                }
+            }
+            pics
         }
     }
-
-
 }
