@@ -146,7 +146,7 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
 interface PostsWatchListener {
     fun onClickPostsAvatar(position: Int, model: PostsWatchModel?)  // 发帖头像
     fun onClickPostsMore(position: Int, model: PostsWatchModel?)    // 发帖更多
-    fun onClickPostsAudio(position: Int, model: PostsWatchModel?)   // 发帖音频
+    fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean)   // 发帖音频
     fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?)   // 发帖图片
 
     fun onClickPostsRedPkg(position: Int, model: PostsWatchModel?)  // 发帖红包
@@ -157,7 +157,7 @@ interface PostsWatchListener {
 
     fun onClickCommentAvatar(position: Int, model: PostsWatchModel?)  // 发帖精彩评论昵称
     fun onClickCommentLike(position: Int, model: PostsWatchModel?)    // 发帖精彩评论点赞
-    fun onClickCommentAudio(position: Int, model: PostsWatchModel?)   // 发帖精彩评论音频
+    fun onClickCommentAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean)   // 发帖精彩评论音频
     fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?)   // 发帖精彩评论图片
 
 }

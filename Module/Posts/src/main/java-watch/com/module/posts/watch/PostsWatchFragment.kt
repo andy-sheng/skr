@@ -200,6 +200,13 @@ class PostsWatchFragment : BaseFragment() {
     override fun useEventBus(): Boolean {
         return false
     }
+
+    override fun destroy() {
+        super.destroy()
+        followPostsWatchView.destory()
+        recommendPostsWatchView.destory()
+        lastPostsWatchView.destory()
+    }
 }
 
 const val UNSELECT_REASON_SLIDE_OUT = 1 // tab滑走

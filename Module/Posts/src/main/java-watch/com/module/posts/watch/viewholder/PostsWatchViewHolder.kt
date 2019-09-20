@@ -44,6 +44,7 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
     var pos = -1
     var mModel: PostsWatchModel? = null
+    var isPlaying = false
 
     init {
         avatarIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -58,7 +59,7 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         })
         postsAudioView.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                listener.onClickPostsAudio(pos, mModel)
+                listener.onClickPostsAudio(pos, mModel, isPlaying)
             }
         })
         nineGridVp.clickListener = { i, url, _ ->
@@ -98,8 +99,8 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
                 listener.onClickCommentAvatar(pos, mModel)
             }
 
-            override fun onClickAudio() {
-                listener.onClickCommentAudio(pos, mModel)
+            override fun onClickAudio(isPlay: Boolean) {
+                listener.onClickCommentAudio(pos, mModel, isPlay)
             }
 
             override fun onClickImage(index: Int, url: String) {
@@ -185,10 +186,12 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     }
 
     fun startAudioPlay() {
+        isPlaying = true
         postsAudioView.setPlay(true)
     }
 
     fun stopAudioPlay() {
+        isPlaying = false
         postsAudioView.setPlay(false)
     }
 
