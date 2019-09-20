@@ -41,6 +41,10 @@ class PostsAudioView : ConstraintLayout {
         durationTv = this.findViewById(R.id.duration_tv)
     }
 
+    fun bindData(durationMs: Long) {
+        bindData(durationMs.toInt())
+    }
+
     fun bindData(durationMs: Int) {
         this.durationMs = durationMs
         var duration = (durationMs.toFloat() / 1000.toFloat()).toDouble().roundToInt()

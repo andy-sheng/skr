@@ -120,7 +120,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
 
             postsAudioView.visibility = View.VISIBLE
-            postsAudioView.bindData(model.comment?.audios!!)
+
+            postsAudioView.bindData(model.comment?.audios!![0].duration)
         } else {
             postsAudioView.visibility = View.GONE
         }

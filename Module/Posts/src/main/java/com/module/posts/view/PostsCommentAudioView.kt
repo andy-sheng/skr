@@ -26,7 +26,7 @@ class PostsCommentAudioView : ConstraintLayout {
     private val durationTv: TextView
 
     var isPlaying = false
-    var audioModel: PostsResoureModel? = null
+    var audioDuration = 0L
 
     private val minSize = 80.dp()    // 最小尺寸(小于10秒)
     private val maxSize = 144.dp()   // 最大尺寸(大于40秒）
@@ -39,9 +39,9 @@ class PostsCommentAudioView : ConstraintLayout {
         durationTv = this.findViewById(R.id.duration_tv)
     }
 
-    fun bindData(audios: List<PostsResoureModel>) {
-        audioModel = audios[0]
-        var duration = (audios[0].duration.toFloat() / 1000.toFloat()).toDouble().roundToInt()
+    fun bindData(audioMs: Long) {
+        this.audioDuration = audioMs
+        var duration = (audioDuration.toFloat() / 1000.toFloat()).toDouble().roundToInt()
         if (duration > 60) {
             duration = 60
         }
@@ -59,7 +59,7 @@ class PostsCommentAudioView : ConstraintLayout {
         isPlaying = isPlay
         if (isPlay) {
             // 播放动画
-            speakerAnimationIv.show((audioModel?.duration ?: 0).toInt())
+            speakerAnimationIv.show(audioDuration.toInt())
         } else {
             // 停止动画
             speakerAnimationIv.hide()
