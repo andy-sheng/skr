@@ -32,6 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/nickname_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
@@ -242,6 +243,7 @@
         app:layout_constraintTop_toBottomOf="@+id/red_pkg_barrier" />
 
     <com.common.view.ex.ExTextView
+        android:textStyle="bold"
         android:id="@+id/comment_ctn_tv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_44_dp"

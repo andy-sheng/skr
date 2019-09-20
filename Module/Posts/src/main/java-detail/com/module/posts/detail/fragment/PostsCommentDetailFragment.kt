@@ -99,6 +99,8 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         smartRefreshLayout.finishLoadMore()
     }
 
+    override fun isBlackStatusBarText(): Boolean = true
+
     override fun setData(type: Int, data: Any?) {
         if (type == 1) {
             mPostsWatchModel = data as PostsWatchModel?

@@ -311,6 +311,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var nineGridVp: PostsNineGridLayout
         var postsBarrier: Barrier
         var replyNum: ExTextView
+        var redPkgTv: ExTextView
         var bottomBarrier: Barrier
         var pos: Int = -1
         var mModel: PostFirstLevelCommentModel? = null
@@ -325,6 +326,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
             nineGridVp = itemView.findViewById(R.id.nine_grid_vp)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
+            redPkgTv = itemView.findViewById(R.id.red_pkg_tv)
             replyNum = itemView.findViewById(R.id.reply_num)
             bottomBarrier = itemView.findViewById(R.id.bottom_barrier)
 
@@ -378,6 +380,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 postsAudioView.visibility = View.VISIBLE
                 postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
+            }
+
+            if (mModel?.isHasRedpacket ?: false) {
+                redPkgTv.visibility = View.VISIBLE
+            } else {
+                redPkgTv.visibility = View.GONE
             }
 
             // 图片

@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
@@ -123,6 +124,17 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             commentNumDivider = itemView.findViewById(R.id.comment_num_divider)
             commentCtnTv = itemView.findViewById(R.id.comment_ctn_tv)
             emptyTv = itemView.findViewById(R.id.empty_tv)
+
+            avatarIv?.setDebounceViewClickListener {
+                mModel?.commentUser?.userId?.let {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
+            }
         }
 
         fun refreshCommentCtn(pos: Int, model: PostFirstLevelCommentModel) {
@@ -202,6 +214,17 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             contentTv = itemView.findViewById(R.id.content_tv)
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
+
+            commenterAvaterIv?.setDebounceViewClickListener {
+                mModel?.commentUser?.userId?.let {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
+            }
         }
 
         fun bindData(pos: Int, model: PostsSecondLevelCommentModel) {

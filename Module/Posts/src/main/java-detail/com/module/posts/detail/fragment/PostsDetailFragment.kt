@@ -138,6 +138,8 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         smartRefreshLayout.finishLoadMore()
     }
 
+    override fun isBlackStatusBarText(): Boolean = true
+
     override fun useEventBus(): Boolean {
         return false
     }
