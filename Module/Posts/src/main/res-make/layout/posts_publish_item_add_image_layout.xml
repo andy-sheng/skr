@@ -1,14 +1,18 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="@dimen/view_116_dp"
+    android:layout_height="@dimen/view_116_dp">
 
-    <ImageView
+    <com.common.view.ex.ExImageView
         android:id="@+id/add_img_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_phone"
+        android:layout_width="@dimen/view_105_dp"
+        android:layout_height="@dimen/view_105_dp"
+        android:scaleType="center"
+        android:src="@drawable/fabu_tianjiatupian"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#e6e6e6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
