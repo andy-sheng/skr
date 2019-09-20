@@ -150,7 +150,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             avatarIv.bindData(model.commentUser)
             nicknameTv.text = model.commentUser.nicknameRemark
             timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
-            content.text = model.comment.content
+
+            if (!TextUtils.isEmpty(model.comment.content)) {
+                content.visibility = View.VISIBLE
+                content.text = model.comment.content
+            } else {
+                content.visibility = View.GONE
+            }
 
             if (mModel?.comment?.audios.isNullOrEmpty()) {
                 postsAudioView.visibility = View.GONE
