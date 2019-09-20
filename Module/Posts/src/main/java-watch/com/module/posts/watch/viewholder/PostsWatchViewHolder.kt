@@ -138,19 +138,6 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             } else {
                 content.setExpandText(it.title)
             }
-
-            // 红包
-            if (it.redpacketInfo == null) {
-                redPkgIv.visibility = View.GONE
-            } else {
-                redPkgIv.visibility = View.VISIBLE
-                if (it.redpacketInfo?.openStatus == PostsRedPkgModel.ROS_HAS_OPEN) {
-                    redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
-                } else {
-                    redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
-                }
-            }
-
             // 话题
             if (it.topicInfo == null || TextUtils.isEmpty(it.topicInfo?.topicDesc)) {
                 topicTv.visibility = View.GONE
@@ -184,6 +171,7 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             commentView.bindData(mModel?.bestComment!!)
         }
 
+
         // 投票
         if (mModel?.posts?.voteInfo == null) {
             voteGroupView.setVisibility(View.GONE)
@@ -192,7 +180,27 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             voteGroupView.bindData(mModel?.posts?.voteInfo!!)
         }
 
+        refreshRedPkg()
+        refreshLikes()
+    }
 
+    fun startAudioPlay() {
+        postsAudioView.setPlay(true)
+    }
+
+    fun stopAudioPlay() {
+        postsAudioView.setPlay(false)
+    }
+
+    fun startCommentAudioPlay() {
+        commentView.setPlay(true)
+    }
+
+    fun stopCommentAudioPlay() {
+        commentView.setPlay(false)
+    }
+
+    fun refreshLikes() {
         // 评论数和点赞数
         if (mModel?.numeric == null) {
             postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
@@ -201,5 +209,26 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             postsCommentTv.text = "0"
             postsLikeTv.text = "0"
         }
+    }
+
+    fun refreshCommentLike() {
+
+    }
+
+    fun refreshRedPkg() {
+        // 红包
+        mModel?.posts?.let {
+            if (it.redpacketInfo == null) {
+                redPkgIv.visibility = View.GONE
+            } else {
+                redPkgIv.visibility = View.VISIBLE
+                if (it.redpacketInfo?.openStatus == PostsRedPkgModel.ROS_HAS_OPEN) {
+                    redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
+                } else {
+                    redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                }
+            }
+        }
+
     }
 }

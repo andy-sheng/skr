@@ -9,6 +9,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.posts.detail.adapter.PostsCommentAdapter
+import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
@@ -81,6 +82,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!.posts!!, list)
         postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
+        postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         smartRefreshLayout.setEnableLoadMore(hasMore)
     }
 

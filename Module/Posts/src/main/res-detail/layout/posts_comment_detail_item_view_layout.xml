@@ -38,30 +38,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
         app:layout_constraintLeft_toRightOf="@+id/commenter_avater_iv" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/xin_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_12_dp"
-        app:bl_selected_drawable="@drawable/posts_like_selected_icon"
-        app:bl_unSelected_drawable="@drawable/posts_like_black_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/like_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:gravity="center_vertical"
-        android:text="677"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
-        app:layout_constraintRight_toLeftOf="@+id/xin_iv"
-        app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
-
     <com.common.view.ex.ExTextView
         android:id="@+id/content_tv"
         android:layout_width="0dp"
@@ -74,14 +50,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commenter_avater_iv" />
 
+    <android.support.constraint.Barrier
+        android:id="@+id/title_barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="content_tv, commenter_avater_iv" />
+
     <com.module.posts.view.PostsAudioView
         android:id="@+id/posts_audio_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
-        app:layout_constraintTop_toBottomOf="@+id/content_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/title_barrier" />
 
     <android.support.constraint.Barrier
         android:id="@+id/posts_barrier"

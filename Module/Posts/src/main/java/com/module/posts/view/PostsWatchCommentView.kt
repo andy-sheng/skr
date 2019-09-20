@@ -148,6 +148,10 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     override fun setVisibility(visibility: Int) {
         mParentView?.visibility = visibility
     }
+
+    fun setPlay(isPlay: Boolean) {
+        postsAudioView.setPlay(isPlay)
+    }
 }
 
 interface PostsCommentListener {
