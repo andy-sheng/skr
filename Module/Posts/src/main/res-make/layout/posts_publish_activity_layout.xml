@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:bottomLineColor="@color/black_trans_10"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/posts_back"
+        app:leftImageResource="@drawable/posts_back"
         app:leftType="imageButton"
         app:rightText="发布"
         app:rightTextColor="@color/black_trans_50"

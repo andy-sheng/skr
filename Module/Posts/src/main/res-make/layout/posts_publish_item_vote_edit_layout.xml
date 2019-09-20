@@ -1,0 +1,35 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/view_5_dp"
+    android:layout_marginBottom="@dimen/view_5_dp"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/vote_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:hint="20个字以内"
+        android:maxLength="20"
+        android:minHeight="@dimen/view_40_dp"
+        android:paddingLeft="@dimen/view_5_dp"
+        android:paddingTop="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:textColorHint="@color/black_trans_30"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F2F2F2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/vote_del_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:src="@drawable/fabu_jianshaotoupiao"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_et"
+        app:layout_constraintRight_toRightOf="@+id/vote_et"
+        app:layout_constraintTop_toTopOf="@+id/vote_et" />
+</android.support.constraint.ConstraintLayout>

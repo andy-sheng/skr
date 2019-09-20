@@ -14,7 +14,7 @@
         app:centerTextSize="@dimen/textsize_16_dp"
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/back_close_black"
+        app:leftImageResource="@drawable/back_close_black"
         app:leftType="imageButton"
         app:showBottomLine="true" />
 
