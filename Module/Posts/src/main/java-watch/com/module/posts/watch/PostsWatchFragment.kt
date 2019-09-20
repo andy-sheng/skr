@@ -40,9 +40,9 @@ class PostsWatchFragment : BaseFragment() {
 
     private var tabPagerAdapter: PagerAdapter? = null
 
-    val followPostsWatchView: FollowPostsWatchView by lazy { FollowPostsWatchView(this) }
-    val recommendPostsWatchView: RecommendPostsWatchView by lazy { RecommendPostsWatchView(this) }
-    val lastPostsWatchView: LastPostsWatchView by lazy { LastPostsWatchView(this) }
+    val followPostsWatchView: FollowPostsWatchView by lazy { FollowPostsWatchView(this.activity!!) }
+    val recommendPostsWatchView: RecommendPostsWatchView by lazy { RecommendPostsWatchView(this.activity!!) }
+    val lastPostsWatchView: LastPostsWatchView by lazy { LastPostsWatchView(this.activity!!) }
 
     val initPostion = 1  // 默认推荐
     // 保持 init Postion 一致

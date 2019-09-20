@@ -1,5 +1,6 @@
 package com.module.posts.watch.view
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.FragmentActivity
@@ -7,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
-import com.common.base.BaseFragment
+import com.common.base.BaseActivity
 import com.common.callback.Callback
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -30,7 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
-abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : ConstraintLayout(fragment.context), CoroutineScope by MainScope() {
+abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
     val TAG = when (type) {
         TYPE_POST_FOLLOW -> "FollowPostsWatchView"
@@ -41,10 +42,11 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
     }
 
     companion object {
-        const val TYPE_POST_FOLLOW = 1   // 关注
+        const val TYPE_POST_FOLLOW = 1     // 关注
         const val TYPE_POST_RECOMMEND = 2  // 推荐
-        const val TYPE_POST_LAST = 3  // 最新
-        const val TYPE_POST_PERSON = 4   // 个人中心
+        const val TYPE_POST_LAST = 3       // 最新
+        const val TYPE_POST_PERSON = 4     // 个人中心
+        const val TYPE_POST_TOPIC = 5      // 话题
     }
 
     val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
@@ -104,7 +106,15 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
             }
 
             override fun onClickPostsTopic(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickPostsTopic")
+                if (type == TYPE_POST_TOPIC) {
+                    U.getToastUtil().showShort("话题页面不可点击")
+                } else {
+                    model?.posts?.topicInfo?.let {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC)
+                                .withSerializable("topicInfo", it)
+                                .navigation()
+                    }
+                }
             }
 
             override fun onClickPostsComment(position: Int, model: PostsWatchModel?) {
@@ -148,10 +158,10 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
             }
         })
         refreshLayout.apply {
-            setEnableRefresh(type != TYPE_POST_PERSON)
-            setEnableLoadMore(type != TYPE_POST_PERSON)
+            setEnableRefresh(type != TYPE_POST_PERSON && type != TYPE_POST_TOPIC)
+            setEnableLoadMore(type != TYPE_POST_PERSON && type != TYPE_POST_TOPIC)
             setEnableLoadMoreWhenContentNotFull(false)
-            setEnableOverScrollDrag(type != TYPE_POST_PERSON)
+            setEnableOverScrollDrag(type != TYPE_POST_PERSON && type != TYPE_POST_TOPIC)
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     getMorePosts()

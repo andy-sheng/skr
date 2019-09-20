@@ -8,6 +8,7 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.fragment.PostsCommentDetailFragment
+import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.watch.model.PostsWatchModel
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_COMMENT_DETAIL)
@@ -17,12 +18,14 @@ class PostsCommentDetailActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        val postFirstLevelCommentModel = intent.getSerializableExtra("postFirstLevelCommentModel") as PostFirstLevelCommentModel?
+        val postsWatchModel = intent.getSerializableExtra("postsWatchModel") as PostsWatchModel?
 
-        val model = intent.getSerializableExtra("model") as PostsWatchModel?
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@PostsCommentDetailActivity, PostsCommentDetailFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
-                .addDataBeforeAdd(0, model)
+                .addDataBeforeAdd(0, postFirstLevelCommentModel)
+                .addDataBeforeAdd(1, postsWatchModel)
                 .build())
     }
 

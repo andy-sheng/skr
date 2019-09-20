@@ -5,8 +5,8 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.core.myinfo.MyUserInfo
-import com.common.core.myinfo.MyUserInfoManager
+import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
@@ -14,12 +14,12 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.view.*
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
-import kotlinx.android.synthetic.main.post_vote_item_layout.view.*
 
 
 // posts_watch_view_item_layout
@@ -117,6 +117,12 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
                 mModel?.isExpend = isExpand
             }
         })
+
+        itemView.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
+                    .withSerializable("model", mModel)
+                    .navigation()
+        }
     }
 
     fun bindData(pos: Int, model: PostsWatchModel) {

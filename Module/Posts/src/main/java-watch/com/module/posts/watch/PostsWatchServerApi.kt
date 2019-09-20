@@ -29,4 +29,26 @@ interface PostsWatchServerApi {
     @GET("/v1/posts/newest-list")
     fun getPostsLastList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 
+    /**
+     * 获取帖子话题详情
+     */
+    @GET("/v1/posts/topic-detail")
+    fun getTopicDetail(@Query("userID") userID: Long, @Query("topicID") topicID: Long): Call<ApiResult>
+
+    /**
+     * 话题场景tab列表
+     */
+    @GET("/v1/posts/topic-tabs")
+    fun getTopicTabs(@Query("topicID") topicID: Long): Call<ApiResult>
+
+    /**
+     * 话题场景 帖子列表
+     */
+    @GET("/v1/posts/topic-posts-list")
+    fun getTopicPostsList(@Query("offset") offset: Int,
+                          @Query("cnt") cnt: Int,
+                          @Query("userID") userID: Long,
+                          @Query("topicID") topicID: Long,
+                          @Query("tab") tab: Int): Call<ApiResult>
+
 }

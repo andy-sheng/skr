@@ -83,7 +83,7 @@ public class PostsSecondLevelCommentModel implements Serializable {
         private int likedCnt;
         private int parentCommentID;
         private int postsID;
-        private String replyType;
+        private int replyType;
         private int replyedUserID;
         private String status;
         private String statusDesc;
@@ -165,11 +165,11 @@ public class PostsSecondLevelCommentModel implements Serializable {
             this.postsID = postsID;
         }
 
-        public String getReplyType() {
+        public int getReplyType() {
             return replyType;
         }
 
-        public void setReplyType(String replyType) {
+        public void setReplyType(int replyType) {
             this.replyType = replyType;
         }
 

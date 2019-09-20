@@ -7,11 +7,13 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.component.person.view.RequestCallBack
+import com.module.posts.watch.model.PostsTopicModel
+import com.module.posts.watch.model.PostsTopicTabModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
-// 关注
-class FollowPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_FOLLOW) {
+class TopicPostsWatchView(activity: FragmentActivity, val topicInfo: PostsTopicModel?, val model: PostsTopicTabModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_TOPIC) {
 
     override fun selected() {
         super.selected()
@@ -28,22 +30,23 @@ class FollowPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(acti
             return false
         }
 
-        getFollowPosts(0, true)
+        getTopicPosts(0, true)
         return true
     }
 
     override fun getMorePosts() {
         if (hasMore) {
-            getFollowPosts(mOffset, false)
+            getTopicPosts(mOffset, false)
         } else {
             U.getToastUtil().showShort("没有更多了")
         }
     }
 
-    private fun getFollowPosts(off: Int, isClear: Boolean) {
+    private fun getTopicPosts(off: Int, isClear: Boolean) {
         launch {
-            val result = subscribe(RequestControl("getFollowPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getPostsFollowList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+            val result = subscribe(RequestControl("getTopicPosts", ControlType.CancelThis)) {
+                postsWatchServerApi.getTopicPostsList(off, mCNT, MyUserInfoManager.getInstance().uid, topicInfo?.topicID
+                        ?: 0, model.tabType)
             }
             if (result.errno == 0) {
                 mHasInitData = true
@@ -57,7 +60,7 @@ class FollowPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(acti
                 }
             }
 
-            finishRefreshOrLoadMore()
+            callback.onRequestSucess(hasMore)
         }
     }
 }

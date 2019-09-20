@@ -8,6 +8,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.inter.IPostsDetailView
@@ -16,6 +17,10 @@ import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
 import com.module.posts.watch.model.PostsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
@@ -32,7 +37,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     var postsAdapter: PostsCommentAdapter? = null
 
     override fun initView(): Int {
-        return com.module.posts.R.layout.posts_detail_fragment_layout
+        return R.layout.posts_detail_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -41,21 +46,32 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             return
         }
 
-        titlebar = rootView.findViewById(com.module.posts.R.id.titlebar)
+        titlebar = rootView.findViewById(R.id.titlebar)
 
-        recyclerView = rootView.findViewById(com.module.posts.R.id.recycler_view)
-        commentTv = rootView.findViewById(com.module.posts.R.id.comment_tv)
-        imageIv = rootView.findViewById(com.module.posts.R.id.image_iv)
-        audioIv = rootView.findViewById(com.module.posts.R.id.audio_iv)
-        feedsInputContainerView = rootView.findViewById(com.module.posts.R.id.feeds_input_container_view)
+        recyclerView = rootView.findViewById(R.id.recycler_view)
+        commentTv = rootView.findViewById(R.id.comment_tv)
+        imageIv = rootView.findViewById(R.id.image_iv)
+        audioIv = rootView.findViewById(R.id.audio_iv)
+        feedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
+        smartRefreshLayout = rootView.findViewById(R.id.smart_refresh)
         smartRefreshLayout.setEnableLoadMore(true)
         smartRefreshLayout.setEnableRefresh(false)
+
+        smartRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                mPostsDetailPresenter?.getPostsFirstLevelCommentList()
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+
+            }
+        })
 
         titlebar.leftTextView.setDebounceViewClickListener {
             activity?.finish()
         }
 
-        titlebar.rightTextView.setDebounceViewClickListener {
+        titlebar.rightImageButton.setDebounceViewClickListener {
 
         }
 
@@ -72,6 +88,24 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         addPresent(mPostsDetailPresenter)
 
         postsAdapter = PostsCommentAdapter()
+        postsAdapter?.mIDetailClickListener = object : PostsCommentAdapter.IDetailClickListener {
+            override fun replayPosts() {
+
+            }
+
+            override fun likePosts(model: PostsWatchModel) {
+                mPostsDetailPresenter?.likePosts(!model.isLiked!!, model)
+            }
+
+            override fun clickFirstLevelComment() {
+
+            }
+
+            override fun likeFirstLevelComment(model: PostFirstLevelCommentModel) {
+                mPostsDetailPresenter?.likeFirstLevelComment(!model.isIsLiked!!, model)
+            }
+        }
+
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
 
@@ -79,11 +113,32 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {
-        val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!.posts!!, list)
+        val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!)
+        modelList.addAll(list)
         postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
-        postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+        launch {
+            delay(10)
+            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+        }
         smartRefreshLayout.setEnableLoadMore(hasMore)
+        smartRefreshLayout.finishLoadMore()
+    }
+
+    override fun showLikePostsResulet() {
+        postsAdapter?.notifyDataSetChanged()
+    }
+
+    override fun showLikeFirstLevelCommentResult(postFirstLevelCommentModel: PostFirstLevelCommentModel) {
+        postsAdapter?.notifyDataSetChanged()
+    }
+
+    override fun loadMoreError() {
+        smartRefreshLayout.finishLoadMore()
+    }
+
+    override fun useEventBus(): Boolean {
+        return false
     }
 
     override fun setData(type: Int, data: Any?) {

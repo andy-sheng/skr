@@ -1,6 +1,7 @@
 package com.component.relation.view
 
 import android.content.Context
+import android.util.AttributeSet
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
@@ -12,8 +13,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-abstract class FollowActionView(context: Context) : ExTextView(context) {
+abstract class FollowActionView : ExTextView {
     val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
     //好友态
     abstract fun isFriendState()
 
@@ -28,6 +34,7 @@ abstract class FollowActionView(context: Context) : ExTextView(context) {
     var userID: Int? = null
 
     var mTask: Disposable? = null
+
 
     init {
         if (useEventBus()) {

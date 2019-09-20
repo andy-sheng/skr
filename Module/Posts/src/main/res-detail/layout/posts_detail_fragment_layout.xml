@@ -17,6 +17,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/posts_back"
         app:leftType="textView"
+        app:rightImageResource="@drawable/posts_title_gengduo"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="imageButton"
         app:showBottomLine="false"
         app:statusBarColor="#EBEDF2"
         app:titleBarColor="#EBEDF2" />
@@ -29,9 +33,10 @@
         app:layout_constraintTop_toBottomOf="@+id/titlebar">
 
         <android.support.v7.widget.RecyclerView
+            android:layout_height="match_parent"
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintTop_toBottomOf="@+id/titlebar" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
