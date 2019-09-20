@@ -227,6 +227,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     content.setExpandText(it.title)
                 }
 
+                if (TextUtils.isEmpty(it.title)) {
+                    content.visibility = View.GONE
+                } else {
+                    content.visibility = View.VISIBLE
+                }
+
                 // 红包
                 if (it.redpacketInfo == null) {
                     redPkgGroup.visibility = View.GONE
