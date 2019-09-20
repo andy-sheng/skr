@@ -31,6 +31,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var nineGridVp: PostsNineGridLayout
 
     var mListener: PostsCommentListener? = null
+    var isPlaying = false
 
     override fun init(parentView: View) {
         commentTv = parentView.findViewById(R.id.comment_tv)
@@ -44,7 +45,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
         postsAudioView.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                mListener?.onClickAudio()
+                mListener?.onClickAudio(isPlaying)
             }
         })
         likeNumTv.setOnClickListener(object : AnimateClickListener() {
@@ -151,13 +152,14 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun setPlay(isPlay: Boolean) {
+        isPlaying = isPlay
         postsAudioView.setPlay(isPlay)
     }
 }
 
 interface PostsCommentListener {
     fun onClickImage(index: Int, url: String)
-    fun onClickAudio()
+    fun onClickAudio(isPlay: Boolean)
     fun onClickName()
     fun onClickLike()
 }

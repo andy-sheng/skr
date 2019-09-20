@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.callback.Callback
 import com.common.player.PlayerCallbackAdapter
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
 import com.imagebrowse.ImageBrowseView
@@ -81,8 +82,15 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
                 U.getToastUtil().showShort("onClickPostsMore")
             }
 
-            override fun onClickPostsAudio(position: Int, model: PostsWatchModel?) {
+            override fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
                 U.getToastUtil().showShort("onClickPostsAudio")
+                if (isPlaying) {
+                    SinglePlayer.stop(playerTag)
+                } else {
+                    model?.posts?.audios?.let {
+                        SinglePlayer.startPlay(playerTag, it[0].url)
+                    }
+                }
                 adapter?.startOrPauseAudio(position, model, false)
             }
 
@@ -122,8 +130,15 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
                 U.getToastUtil().showShort("onClickCommentLike")
             }
 
-            override fun onClickCommentAudio(position: Int, model: PostsWatchModel?) {
+            override fun onClickCommentAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
                 U.getToastUtil().showShort("onClickCommentAudio")
+                if (isPlaying) {
+                    SinglePlayer.stop(playerTag)
+                } else {
+                    model?.bestComment?.comment?.audios?.let {
+                        SinglePlayer.startPlay(playerTag, it[0].url)
+                    }
+                }
                 adapter?.startOrPauseAudio(position, model, true)
             }
 
@@ -150,11 +165,13 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
-        playCallback = object : PlayerCallbackAdapter(){
+        playCallback = object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
+                adapter?.stopPlay()
             }
         }
+        SinglePlayer.addCallback(playerTag, playCallback)
     }
 
     private fun goBigImageBrowse(index: Int, model: PostsWatchModel?) {
@@ -204,6 +221,8 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
 
     open fun unselected(reason: Int) {
         isSeleted = false
+        SinglePlayer.reset(playerTag)
+        adapter?.stopPlay()
     }
 
     open fun selected() {
