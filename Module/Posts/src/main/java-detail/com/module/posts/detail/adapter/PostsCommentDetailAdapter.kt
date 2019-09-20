@@ -17,6 +17,7 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsAudioView
+import com.module.posts.view.PostsCommentAudioView
 import com.module.posts.view.PostsNineGridLayout
 
 class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
@@ -164,7 +165,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var nameTv: ExTextView
         var commentTimeTv: ExTextView
         var contentTv: ExTextView
-        var postsAudioView: PostsAudioView
+        var postsAudioView: PostsCommentAudioView
         var postsBarrier: Barrier
 
         var pos: Int = -1

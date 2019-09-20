@@ -2,13 +2,19 @@ package com.component.relation.view
 
 import android.content.Context
 import android.graphics.Color
+import android.util.AttributeSet
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.R
 
-class DefaultFollowView(context: Context) : FollowActionView(context) {
+class DefaultFollowView : FollowActionView {
+
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
     override fun isFriendState() {
         val followState = DrawableCreator.Builder()
                 .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())

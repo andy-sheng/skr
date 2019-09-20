@@ -57,7 +57,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="content_tv, commenter_avater_iv" />
 
-    <com.module.posts.view.PostsAudioView
+    <com.module.posts.view.PostsCommentAudioView
         android:id="@+id/posts_audio_view"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_40_dp"

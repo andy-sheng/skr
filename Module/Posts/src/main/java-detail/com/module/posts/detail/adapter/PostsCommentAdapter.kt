@@ -1,5 +1,6 @@
 package com.module.posts.detail.adapter
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.constraint.Barrier
 import android.support.constraint.Group
@@ -16,16 +17,14 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
 import com.component.relation.view.DefaultFollowView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.model.PostFirstLevelCommentModel
-import com.module.posts.view.ExpandTextView
-import com.module.posts.view.PostsAudioView
-import com.module.posts.view.PostsNineGridLayout
-import com.module.posts.view.PostsVoteGroupView
+import com.module.posts.view.*
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
@@ -41,6 +40,11 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     var mCommentCtn = 0
 
     var mIDetailClickListener: IDetailClickListener? = null
+
+    val mLikeDrawable = DrawableCreator.Builder()
+            .setSelectedDrawable(U.getDrawable(R.drawable.posts_like_selected_icon))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.posts_black_big_icon))
+            .build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
@@ -152,8 +156,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             }
 
             postsLikeTv.setDebounceViewClickListener {
-                mIDetailClickListener?.likePosts()
+                mModel?.let {
+                    mIDetailClickListener?.likePosts(it)
+                }
             }
+
+            mLikeDrawable.setBounds(Rect(0, 0, mLikeDrawable.getIntrinsicWidth(), mLikeDrawable.getIntrinsicHeight()))
+            postsLikeTv.setCompoundDrawables(null, null, mLikeDrawable, null)
 
             avatarIv?.setDebounceViewClickListener {
                 mModel?.user?.userId?.let {
@@ -174,9 +183,9 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             commentCtnTv.text = "评论（${mCommentCtn}条）"
 
             if (mCommentCtn == 0) {
-                emptyTv.visibility = View.GONE
-            } else {
                 emptyTv.visibility = View.VISIBLE
+            } else {
+                emptyTv.visibility = View.GONE
             }
         }
 
@@ -257,6 +266,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsLikeTv.text = "0"
             }
 
+            postsLikeTv.isSelected = mModel?.isLiked ?: false
+
             followTv.userID = mModel?.user?.userId
 
             if (!isGetRelation) {
@@ -275,7 +286,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var xinIv: ExImageView
         var likeNum: ExTextView
         var contentTv: ExTextView
-        var postsAudioView: PostsAudioView
+        var postsAudioView: PostsCommentAudioView
         var nineGridVp: PostsNineGridLayout
         var postsBarrier: Barrier
         var replyNum: ExTextView
@@ -308,11 +319,20 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             }
 
             xinIv.setDebounceViewClickListener {
-                mIDetailClickListener?.likeFirstLevelComment()
+                mModel?.let {
+                    mIDetailClickListener?.likeFirstLevelComment(it)
+                }
             }
 
             contentTv.setDebounceViewClickListener {
                 mIDetailClickListener?.clickFirstLevelComment()
+            }
+
+            itemView.setDebounceViewClickListener {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_COMMENT_DETAIL)
+                        .withSerializable("postFirstLevelCommentModel", mModel)
+                        .withSerializable("postsWatchModel", dataList[0] as PostsWatchModel)
+                        .navigation()
             }
         }
 
@@ -348,7 +368,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 replyNum.visibility = View.GONE
             }
 
-
+            xinIv.isSelected = mModel?.isIsLiked ?: false
         }
     }
 
@@ -363,10 +383,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     interface IDetailClickListener {
         fun replayPosts()
 
-        fun likePosts()
+        fun likePosts(model: PostsWatchModel)
 
         fun clickFirstLevelComment()
 
-        fun likeFirstLevelComment()
+        fun likeFirstLevelComment(model: PostFirstLevelCommentModel)
     }
 }

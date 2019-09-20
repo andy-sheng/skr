@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.common.base.BaseFragment
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -16,6 +17,9 @@ import com.module.posts.detail.presenter.PostsCommentDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
 import com.module.posts.watch.model.PostsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.launch
 
 
 class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
@@ -50,6 +54,20 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         smartRefreshLayout.setEnableLoadMore(true)
         smartRefreshLayout.setEnableRefresh(false)
 
+        smartRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+
+            }
+        })
+
+        titlebar.leftTextView.setDebounceViewClickListener {
+            activity?.finish()
+        }
+
         postsCommentDetailPresenter = PostsCommentDetailPresenter(mPostsWatchModel!!.posts!!, this)
 
         postsAdapter = PostsCommentDetailAdapter()
@@ -59,18 +77,31 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
     }
 
+    override fun useEventBus(): Boolean {
+        return false
+    }
+
     override fun showSecondLevelCommentList(list: List<PostsSecondLevelCommentModel>, hasMore: Boolean) {
-        val modelList: MutableList<Any> = mutableListOf(mPostFirstLevelCommentModel!!, list)
+        val modelList: MutableList<Any> = mutableListOf(mPostFirstLevelCommentModel!!)
+        modelList.addAll(list)
         postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
-        postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+        launch {
+            kotlinx.coroutines.delay(10)
+            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+        }
         smartRefreshLayout.setEnableLoadMore(hasMore)
+        smartRefreshLayout.finishLoadMore()
+    }
+
+    override fun loadMoreError() {
+        smartRefreshLayout.finishLoadMore()
     }
 
     override fun setData(type: Int, data: Any?) {
-        if (type == 0) {
+        if (type == 1) {
             mPostsWatchModel = data as PostsWatchModel?
-        } else if (type == 1) {
+        } else if (type == 0) {
             mPostFirstLevelCommentModel = data as PostFirstLevelCommentModel?
         }
     }
