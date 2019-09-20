@@ -2,12 +2,12 @@ package com.module.posts.detail.adapter
 
 import android.support.constraint.Barrier
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.common.utils.U
-import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
@@ -163,11 +163,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var commenterAvaterIv: AvatarView
         var nameTv: ExTextView
         var commentTimeTv: ExTextView
-        var xinIv: ExImageView
-        var likeNum: ExTextView
         var contentTv: ExTextView
         var postsAudioView: PostsAudioView
         var postsBarrier: Barrier
+
         var pos: Int = -1
         var mModel: PostsSecondLevelCommentModel? = null
 
@@ -175,8 +174,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
             nameTv = itemView.findViewById(R.id.name_tv)
             commentTimeTv = itemView.findViewById(R.id.comment_time_tv)
-            xinIv = itemView.findViewById(R.id.xin_iv)
-            likeNum = itemView.findViewById(R.id.like_num)
             contentTv = itemView.findViewById(R.id.content_tv)
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
@@ -185,6 +182,25 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         fun bindData(pos: Int, model: PostsSecondLevelCommentModel) {
             this.pos = pos
             this.mModel = model
+
+            commenterAvaterIv.bindData(model.commentUser)
+            nameTv.text = model.commentUser.nicknameRemark
+
+            commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
+
+            if (!TextUtils.isEmpty(mModel?.comment?.content)) {
+                contentTv.text = mModel?.comment?.content
+                contentTv.visibility = View.VISIBLE
+            } else {
+                contentTv.visibility = View.GONE
+            }
+
+            if (mModel?.comment?.audios.isNullOrEmpty()) {
+                postsAudioView.visibility = View.GONE
+            } else {
+                postsAudioView.visibility = View.VISIBLE
+                postsAudioView.bindData(mModel!!.comment!!.audios!!)
+            }
         }
     }
 

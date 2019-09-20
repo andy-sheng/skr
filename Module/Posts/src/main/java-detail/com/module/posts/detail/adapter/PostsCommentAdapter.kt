@@ -30,6 +30,10 @@ import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
 class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
+    companion object {
+        val REFRESH_COMMENT_CTN = 0
+    }
+
     private val mPostsType = 0
     private val mCommentType = 1
 
@@ -59,7 +63,29 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            if (holder is PostsHolder) {
+                holder.bindData(position, mDataList[position] as PostsWatchModel)
 
+            } else if (holder is PostsCommentHolder) {
+                holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel)
+            }
+        } else {
+            // 局部刷新
+            payloads.forEach {
+                if (it is Int) {
+                    refreshHolder(holder, position, it)
+                }
+            }
+        }
+    }
+
+    private fun refreshHolder(holder: RecyclerView.ViewHolder, position: Int, refreshType: Int) {
+        if (refreshType == REFRESH_COMMENT_CTN) {
+            if (holder is PostsHolder) {
+                holder.refreshCommentCnt(position, mDataList[position] as PostsWatchModel)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -138,6 +164,19 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                             .with(bundle)
                             .navigation()
                 }
+            }
+        }
+
+        fun refreshCommentCnt(pos: Int, model: PostsWatchModel) {
+            this.pos = pos
+            this.mModel = model
+
+            commentCtnTv.text = "评论（${mCommentCtn}条）"
+
+            if (mCommentCtn == 0) {
+                emptyTv.visibility = View.GONE
+            } else {
+                emptyTv.visibility = View.VISIBLE
             }
         }
 
@@ -224,6 +263,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 followTv.getRelation()
                 isGetRelation = true
             }
+
+            commentCtnTv.text = "评论（${mCommentCtn}条）"
         }
     }
 
