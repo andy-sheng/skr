@@ -1,11 +1,14 @@
 package com.module.posts.detail.adapter
 
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.constraint.Barrier
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
+import android.text.TextPaint
 import android.text.TextUtils
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -355,7 +359,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             nameTv.text = model.commentUser.nicknameRemark
             commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
             likeNum.text = model.comment.likedCnt.toString()
-            contentTv.text = model.comment.content
+
+            if (!TextUtils.isEmpty(model.comment.content)) {
+                contentTv.text = model.comment.content
+                contentTv.visibility = View.VISIBLE
+            } else {
+                contentTv.visibility = View.GONE
+            }
 
             if (mModel?.comment?.audios.isNullOrEmpty()) {
                 postsAudioView.visibility = View.GONE
@@ -374,7 +384,27 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
             if ((mModel?.secondLevelComments?.size ?: 0) > 0) {
                 replyNum.visibility = View.VISIBLE
-                replyNum.text = "回复${mModel?.secondLevelComments?.size}"
+                val spanUtils = SpanUtils()
+                        .append(model.commentUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                            override fun onClick(widget: View?) {
+                                val bundle = Bundle()
+                                bundle.putInt("bundle_user_id", model.commentUser.userId)
+                                ARouter.getInstance()
+                                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                        .with(bundle)
+                                        .navigation()
+                            }
+
+                            override fun updateDrawState(ds: TextPaint?) {
+                                ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                ds!!.setUnderlineText(false)
+                            }
+                        })
+                        .append(" 等人 共").setForegroundColor(U.getColor(R.color.black))
+                        .append("${mModel?.secondLevelComments?.size}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
+
+                val stringBuilder = spanUtils.create()
+                replyNum.text = stringBuilder
             } else {
                 replyNum.visibility = View.GONE
             }
