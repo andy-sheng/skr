@@ -1,17 +1,24 @@
 package com.module.posts.detail.adapter
 
+import android.graphics.Color
+import android.os.Bundle
 import android.support.constraint.Barrier
 import android.support.v7.widget.RecyclerView
+import android.text.TextPaint
 import android.text.TextUtils
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
 import com.component.relation.view.DefaultFollowView
+import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
@@ -189,18 +196,56 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
             commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
 
-            if (!TextUtils.isEmpty(mModel?.comment?.content)) {
-                contentTv.text = mModel?.comment?.content
-                contentTv.visibility = View.VISIBLE
-            } else {
-                contentTv.visibility = View.GONE
-            }
-
             if (mModel?.comment?.audios.isNullOrEmpty()) {
                 postsAudioView.visibility = View.GONE
             } else {
                 postsAudioView.visibility = View.VISIBLE
                 postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
+            }
+
+            if (!TextUtils.isEmpty(model.comment.content)) {
+                contentTv.visibility = View.VISIBLE
+                if (model.comment.replyType == 1) {
+                    contentTv.text = model.comment.content
+                } else if (model.comment.replyType == 2) {
+                    val spanUtils = SpanUtils()
+                            .append(model.commentUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                                override fun onClick(widget: View?) {
+                                    val bundle = Bundle()
+                                    bundle.putInt("bundle_user_id", model.commentUser.userId)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                            .with(bundle)
+                                            .navigation()
+                                }
+
+                                override fun updateDrawState(ds: TextPaint?) {
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                    ds!!.setUnderlineText(false)
+                                }
+                            })
+                            .append("回复").setForegroundColor(U.getColor(R.color.black))
+                            .append(model.replyUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                                override fun onClick(widget: View?) {
+                                    val bundle = Bundle()
+                                    bundle.putInt("bundle_user_id", model.replyUser.userId)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                            .with(bundle)
+                                            .navigation()
+                                }
+
+                                override fun updateDrawState(ds: TextPaint?) {
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                    ds!!.setUnderlineText(false)
+                                }
+                            })
+                            .append(model.comment.content).setForegroundColor(U.getColor(R.color.black))
+                    val stringBuilder = spanUtils.create()
+                    contentTv.text = stringBuilder
+                }
+            } else {
+                contentTv.visibility = View.GONE
             }
         }
     }
