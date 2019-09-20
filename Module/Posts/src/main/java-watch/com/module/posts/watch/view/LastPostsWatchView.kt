@@ -1,7 +1,7 @@
 package com.module.posts.watch.view
 
+import android.support.v4.app.FragmentActivity
 import com.alibaba.fastjson.JSON
-import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -11,7 +11,7 @@ import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
 // 最新
-class LastPostsWatchView(fragment: BaseFragment) : BasePostsWatchView(fragment, TYPE_POST_FOLLOW) {
+class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_FOLLOW) {
 
     override fun selected() {
         super.selected()
