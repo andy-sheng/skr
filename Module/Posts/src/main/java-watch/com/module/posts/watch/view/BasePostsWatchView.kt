@@ -5,17 +5,14 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.callback.Callback
-import com.common.log.MyLog
+import com.common.player.PlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.utils.U
-import com.component.person.photo.model.PhotoModel
 import com.imagebrowse.ImageBrowseView
-import com.imagebrowse.big.BigImageBrowseActivity
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
@@ -42,14 +39,17 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
         else -> "BasePostsWatchView"
     }
 
-    val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
-
     companion object {
         const val TYPE_POST_FOLLOW = 1   // 关注
         const val TYPE_POST_RECOMMEND = 2  // 推荐
         const val TYPE_POST_LAST = 3  // 最新
         const val TYPE_POST_PERSON = 4   // 个人中心
     }
+
+    val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
+
+    val playerTag = TAG + hashCode()
+    val playCallback: PlayerCallbackAdapter
 
     var isSeleted = false  // 是否选中
     var mHasInitData = false  //关注和推荐是否初始化过数据
@@ -60,7 +60,8 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
     private val refreshLayout: SmartRefreshLayout
     private val classicsHeader: ClassicsHeader
     private val recyclerView: RecyclerView
-    private val adapter: PostsWatchViewAdapter
+
+    var adapter: PostsWatchViewAdapter? = null
 
     init {
         View.inflate(context, R.layout.posts_watch_view_layout, this)
@@ -82,6 +83,7 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
 
             override fun onClickPostsAudio(position: Int, model: PostsWatchModel?) {
                 U.getToastUtil().showShort("onClickPostsAudio")
+                adapter?.startOrPauseAudio(position, model, false)
             }
 
             override fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
@@ -122,6 +124,7 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
 
             override fun onClickCommentAudio(position: Int, model: PostsWatchModel?) {
                 U.getToastUtil().showShort("onClickCommentAudio")
+                adapter?.startOrPauseAudio(position, model, true)
             }
 
             override fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
@@ -146,6 +149,12 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
         }
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+
+        playCallback = object : PlayerCallbackAdapter(){
+            override fun onCompletion() {
+                super.onCompletion()
+            }
+        }
     }
 
     private fun goBigImageBrowse(index: Int, model: PostsWatchModel?) {
@@ -203,19 +212,19 @@ abstract class BasePostsWatchView(val fragment: BaseFragment, val type: Int) : C
 
     fun addWatchPosts(list: List<PostsWatchModel>?, clear: Boolean) {
         if (clear) {
-            adapter.mDataList.clear()
+            adapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {
-                adapter.mDataList.addAll(list)
+                adapter?.mDataList?.addAll(list)
             }
-            adapter.notifyDataSetChanged()
+            adapter?.notifyDataSetChanged()
         } else {
             if (!list.isNullOrEmpty()) {
-                adapter.mDataList.addAll(list)
-                adapter.notifyDataSetChanged()
+                adapter?.mDataList?.addAll(list)
+                adapter?.notifyDataSetChanged()
             }
         }
 
-        if (adapter.mDataList.isNullOrEmpty()) {
+        if (adapter?.mDataList.isNullOrEmpty()) {
             // 数据为空
         } else {
 
