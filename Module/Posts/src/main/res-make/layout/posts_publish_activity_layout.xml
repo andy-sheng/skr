@@ -24,182 +24,210 @@
         app:layout_constraintBottom_toTopOf="@+id/menu_divide_line2"
         app:layout_constraintTop_toBottomOf="@+id/title_bar">
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/topic_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginTop="@dimen/view_19_dp"
-            android:gravity="center"
-            android:paddingLeft="@dimen/view_10_dp"
-            android:paddingTop="@dimen/view_3_dp"
-            android:paddingRight="@dimen/view_10_dp"
-            android:paddingBottom="@dimen/view_3_dp"
-            android:text="我们都是声优控"
-            android:textColor="@color/black_trans_50"
-            android:textSize="@dimen/view_12_dp"
-            app:bl_corners_radius="@dimen/view_12_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="#DEF4FF"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_bar" />
-
-        <com.common.view.ex.NoLeakEditText
-            android:id="@+id/content_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginTop="@dimen/view_16_dp"
-            android:layout_marginRight="@dimen/view_20_dp"
-            android:gravity="left"
-            android:hint="说点什么"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black_trans_30"
-            android:textSize="@dimen/textsize_14_dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topic_tv" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/image_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_120_dp"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginRight="@dimen/view_20_dp"
-            app:layout_constraintTop_toBottomOf="@+id/content_et" />
-
-        <com.module.posts.view.PostsAudioView
-            android:id="@+id/posts_audio_view"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_40_dp"
-            app:layout_constraintLeft_toLeftOf="@id/content_et"
-            app:layout_constraintTop_toBottomOf="@id/content_et" />
-
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/red_pkg_vp"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_83_dp"
-            android:background="@color/black_trans_5"
-            app:layout_constraintTop_toBottomOf="@+id/posts_audio_view">
+            android:layout_height="wrap_content">
 
-            <android.support.constraint.ConstraintLayout
+            <com.common.view.ex.ExTextView
+                android:id="@+id/topic_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_marginTop="@dimen/view_19_dp"
+                android:gravity="center"
+                android:paddingLeft="@dimen/view_10_dp"
+                android:paddingTop="@dimen/view_3_dp"
+                android:paddingRight="@dimen/view_10_dp"
+                android:paddingBottom="@dimen/view_3_dp"
+                android:text="我们都是声优控"
+                android:textColor="@color/black_trans_50"
+                android:textSize="@dimen/view_12_dp"
+                app:bl_corners_radius="@dimen/view_12_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#DEF4FF"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.common.view.ex.NoLeakEditText
+                android:id="@+id/content_et"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_63_dp"
-                android:background="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_marginTop="@dimen/view_16_dp"
+                android:layout_marginRight="@dimen/view_20_dp"
+                android:gravity="left"
+                android:hint="说点什么"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black_trans_30"
+                android:textSize="@dimen/textsize_14_dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/topic_tv" />
 
-                <ImageView
-                    android:id="@+id/red_pkg_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/view_20_dp"
-                    android:src="@drawable/recommend_more_user"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/image_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_120_dp"
+                android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_marginRight="@dimen/view_20_dp"
+                app:layout_constraintTop_toBottomOf="@+id/content_et" />
+
+            <com.module.posts.view.PostsAudioView
+                android:id="@+id/posts_audio_view"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_40_dp"
+                app:layout_constraintLeft_toLeftOf="@id/content_et"
+                app:layout_constraintTop_toBottomOf="@id/content_et" />
+
+            <ImageView
+                android:id="@+id/audio_del_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fabu_shanchu"
+                app:layout_constraintBottom_toTopOf="@+id/posts_audio_view"
+                app:layout_constraintLeft_toRightOf="@+id/posts_audio_view"
+                app:layout_constraintRight_toRightOf="@+id/posts_audio_view"
+                app:layout_constraintTop_toTopOf="@+id/posts_audio_view" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/red_pkg_vp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_83_dp"
+                android:background="@color/black_trans_5"
+                app:layout_constraintTop_toBottomOf="@+id/posts_audio_view">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_63_dp"
+                    android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/red_pkg_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/view_12_dp"
-                    android:layout_marginTop="@dimen/view_15_dp"
-                    android:text="30金币"
-                    android:textColor="@color/black_trans_80"
-                    android:textSize="@dimen/view_14_dp"
-                    app:layout_constraintLeft_toRightOf="@+id/red_pkg_iv"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/red_pkg_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/view_20_dp"
+                        android:src="@drawable/recommend_more_user"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/red_pkg_valid_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_3_dp"
-                    android:text="有效时间：72小时"
-                    android:textColor="@color/black_trans_30"
-                    android:textSize="@dimen/view_10_dp"
-                    app:layout_constraintLeft_toLeftOf="@+id/red_pkg_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/red_pkg_tv" />
+                    <TextView
+                        android:id="@+id/red_pkg_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/view_12_dp"
+                        android:layout_marginTop="@dimen/view_15_dp"
+                        android:text="30金币"
+                        android:textColor="@color/black_trans_80"
+                        android:textSize="@dimen/view_14_dp"
+                        app:layout_constraintLeft_toRightOf="@+id/red_pkg_iv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/red_pkg_valid_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/view_3_dp"
+                        android:text="有效时间：72小时"
+                        android:textColor="@color/black_trans_30"
+                        android:textSize="@dimen/view_10_dp"
+                        app:layout_constraintLeft_toLeftOf="@+id/red_pkg_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/red_pkg_tv" />
+
+                </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>
 
+
+            <com.common.view.ex.ExConstraintLayout
+                android:id="@+id/vote_vp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/view_15_dp"
+                android:padding="@dimen/view_10_dp"
+                app:bl_corners_radius="@dimen/view_9_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#f2f8ff"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/red_pkg_vp">
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/vote_item1_tv"
+                    android:layout_width="@dimen/view_315_dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="@dimen/view_40_dp"
+                    android:text="颜值还是要看一下"
+                    app:bl_corners_radius="@dimen/view_8_dp"
+                    app:bl_shape="rectangle"
+                    app:bl_solid_color="#d9e9ff"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/vote_item2_tv"
+                    android:layout_width="@dimen/view_315_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_10_dp"
+                    android:gravity="center"
+                    android:minHeight="@dimen/view_40_dp"
+                    android:text="颜值还是要看一下"
+                    app:bl_corners_radius="@dimen/view_8_dp"
+                    app:bl_shape="rectangle"
+                    app:bl_solid_color="#d9e9ff"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vote_item1_tv" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/vote_item3_tv"
+                    android:layout_width="@dimen/view_315_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_10_dp"
+                    android:gravity="center"
+                    android:minHeight="@dimen/view_40_dp"
+                    android:text="颜值还是要看一下"
+                    app:bl_corners_radius="@dimen/view_8_dp"
+                    app:bl_shape="rectangle"
+                    app:bl_solid_color="#d9e9ff"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vote_item2_tv" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/vote_item4_tv"
+                    android:layout_width="@dimen/view_315_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_10_dp"
+                    android:gravity="center"
+                    android:minHeight="@dimen/view_40_dp"
+                    android:text="颜值还是要看一下"
+                    app:bl_corners_radius="@dimen/view_8_dp"
+                    app:bl_shape="rectangle"
+                    app:bl_solid_color="#d9e9ff"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vote_item3_tv" />
+            </com.common.view.ex.ExConstraintLayout>
+
+
+            <ImageView
+                android:id="@+id/vote_del_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fabu_shanchu"
+
+                app:layout_constraintBottom_toTopOf="@+id/vote_vp"
+                app:layout_constraintLeft_toRightOf="@+id/vote_vp"
+                app:layout_constraintRight_toRightOf="@+id/vote_vp"
+                app:layout_constraintTop_toTopOf="@+id/vote_vp" />
+
         </android.support.constraint.ConstraintLayout>
-
-
-        <com.common.view.ex.ExConstraintLayout
-            android:id="@+id/vote_vp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_15_dp"
-            android:padding="@dimen/view_10_dp"
-            app:bl_corners_radius="@dimen/view_9_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="f2f8ff"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/red_pkg_vp">
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/vote_item1_tv"
-                android:layout_width="@dimen/view_315_dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="@dimen/view_40_dp"
-                android:text="颜值还是要看一下"
-                app:bl_corners_radius="@dimen/view_8_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#d9e9ff"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/vote_item2_tv"
-                android:layout_width="@dimen/view_315_dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_10_dp"
-                android:gravity="center"
-                android:minHeight="@dimen/view_40_dp"
-                android:text="颜值还是要看一下"
-                app:bl_corners_radius="@dimen/view_8_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#d9e9ff"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vote_item1_tv" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/vote_item3_tv"
-                android:layout_width="@dimen/view_315_dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_10_dp"
-                android:gravity="center"
-                android:minHeight="@dimen/view_40_dp"
-                android:text="颜值还是要看一下"
-                app:bl_corners_radius="@dimen/view_8_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#d9e9ff"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vote_item2_tv" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/vote_item4_tv"
-                android:layout_width="@dimen/view_315_dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_10_dp"
-                android:gravity="center"
-                android:minHeight="@dimen/view_40_dp"
-                android:text="颜值还是要看一下"
-                app:bl_corners_radius="@dimen/view_8_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#d9e9ff"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vote_item3_tv" />
-        </com.common.view.ex.ExConstraintLayout>
     </ScrollView>
 
     <View
