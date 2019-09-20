@@ -22,15 +22,22 @@
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="imageButton"
         app:showBottomLine="false"
-        app:statusBarColor="#EBEDF2"
-        app:titleBarColor="#EBEDF2" />
+        app:statusBarColor="@color/white"
+        app:titleBarColor="@color/white" />
+
+    <View
+        android:id="@+id/title_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintTop_toBottomOf="@+id/titlebar">
+        app:layout_constraintTop_toBottomOf="@+id/title_divider">
 
         <android.support.v7.widget.RecyclerView
             android:layout_height="match_parent"
