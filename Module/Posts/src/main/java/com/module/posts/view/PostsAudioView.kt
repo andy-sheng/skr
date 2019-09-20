@@ -6,12 +6,10 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.component.busilib.view.SpeakingTipsAnimationView
 import com.module.posts.R
-import com.module.posts.watch.model.PostsResoureModel
 import kotlin.math.roundToInt
 
 // 首页音频的view
@@ -32,7 +30,7 @@ class PostsAudioView : ConstraintLayout {
     private val maxSize = 280.dp()   // 最大尺寸(大于40秒）
 
     var isPlaying = false
-    var audioModel: PostsResoureModel? = null
+    var durationMs = 0
 
     init {
         View.inflate(context, R.layout.post_audio_view_layout, this)
@@ -43,12 +41,9 @@ class PostsAudioView : ConstraintLayout {
         durationTv = this.findViewById(R.id.duration_tv)
     }
 
-    fun bindData(audios: List<PostsResoureModel>) {
-        audioModel = audios[0]
-        var duration = (audios[0].duration.toFloat() / 1000.toFloat()).toDouble().roundToInt()
-        if (duration > 60) {
-            duration = 60
-        }
+    fun bindData(durationMs: Int) {
+        this.durationMs = durationMs
+        var duration = (durationMs.toFloat() / 1000.toFloat()).toDouble().roundToInt()
         val width = when (duration) {
             in 0..10 -> minSize
             in 11..40 -> minSize + (maxSize - minSize) / (40 - 10) * (duration - 10)
@@ -65,7 +60,7 @@ class PostsAudioView : ConstraintLayout {
         isPlaying = isPlay
         if (isPlay) {
             // 播放动画
-            speakerAnimationIv.show((audioModel?.duration ?: 0).toInt())
+            speakerAnimationIv.show(durationMs)
         } else {
             // 停止动画
             speakerAnimationIv.hide()

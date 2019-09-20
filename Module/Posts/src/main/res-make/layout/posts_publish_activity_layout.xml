@@ -21,7 +21,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/menu_divide_line2"
         app:layout_constraintTop_toBottomOf="@+id/title_bar">
 
         <android.support.constraint.ConstraintLayout
@@ -38,6 +37,7 @@
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingTop="@dimen/view_3_dp"
                 android:paddingRight="@dimen/view_10_dp"
+
                 android:paddingBottom="@dimen/view_3_dp"
                 android:text="我们都是声优控"
                 android:textColor="@color/black_trans_50"
@@ -54,7 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_20_dp"
                 android:layout_marginTop="@dimen/view_16_dp"
+                android:minHeight="@dimen/view_70_dp"
                 android:layout_marginRight="@dimen/view_20_dp"
+                android:background="@color/transparent"
                 android:gravity="left"
                 android:hint="说点什么"
                 android:textColor="@color/black"
@@ -70,12 +72,15 @@
                 android:layout_height="@dimen/view_120_dp"
                 android:layout_marginLeft="@dimen/view_20_dp"
                 android:layout_marginRight="@dimen/view_20_dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/content_et" />
 
             <com.module.posts.view.PostsAudioView
                 android:id="@+id/posts_audio_view"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_40_dp"
+                android:layout_marginTop="@dimen/view_20_dp"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="@id/content_et"
                 app:layout_constraintTop_toBottomOf="@id/content_et" />
 
@@ -84,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/fabu_shanchu"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/posts_audio_view"
                 app:layout_constraintLeft_toRightOf="@+id/posts_audio_view"
                 app:layout_constraintRight_toRightOf="@+id/posts_audio_view"
@@ -94,6 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_83_dp"
                 android:background="@color/black_trans_5"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/posts_audio_view">
 
                 <android.support.constraint.ConstraintLayout
@@ -149,6 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/view_15_dp"
                 android:padding="@dimen/view_10_dp"
+                android:visibility="gone"
                 app:bl_corners_radius="@dimen/view_9_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#f2f8ff"
@@ -221,7 +229,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/fabu_shanchu"
-
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/vote_vp"
                 app:layout_constraintLeft_toRightOf="@+id/vote_vp"
                 app:layout_constraintRight_toRightOf="@+id/vote_vp"

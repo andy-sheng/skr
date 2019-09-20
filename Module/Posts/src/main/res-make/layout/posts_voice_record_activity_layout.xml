@@ -53,6 +53,7 @@
         android:textColor="#FFC05A"
         android:textSize="@dimen/textsize_30_dp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/play_btn"
         app:layout_constraintLeft_toLeftOf="@+id/play_btn"
         app:layout_constraintRight_toRightOf="@+id/play_btn" />
@@ -63,6 +64,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerInside"
         android:src="@drawable/yuyin_chongchang"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/play_btn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/play_btn"
@@ -76,6 +78,7 @@
         android:text="重唱"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/view_12_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/abandon_iv"
         app:layout_constraintRight_toRightOf="@+id/abandon_iv"
         app:layout_constraintTop_toBottomOf="@+id/abandon_iv" />
@@ -86,6 +89,7 @@
         android:layout_height="@dimen/view_56_dp"
         android:scaleType="centerInside"
         android:src="@drawable/yuyin_wancheng"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/play_btn"
         app:layout_constraintLeft_toRightOf="@id/play_btn"
         app:layout_constraintRight_toRightOf="parent"
@@ -99,29 +103,50 @@
         android:text="完成"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/view_12_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/ok_iv"
         app:layout_constraintRight_toRightOf="@+id/ok_iv"
         app:layout_constraintTop_toBottomOf="@+id/ok_iv" />
 
     <com.common.view.DiffuseView
         android:id="@+id/record_diffuse_view"
-        android:layout_width="@dimen/view_96_dp"
-        android:layout_height="@dimen/view_96_dp"
-        app:diffuse_addNewRadius="@dimen/view_38_dp"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_150_dp"
+        android:visibility="gone"
+        app:diffuse_addNewRadius="@dimen/view_50_dp"
         app:diffuse_color="#ffeccd"
         app:diffuse_coreRadius="@dimen/view_28_dp"
-        app:diffuse_maxRadius="@dimen/view_48_dp"
-        app:diffuse_speed="@dimen/view_1_33_dp"
-        app:diffuse_stroke_width="@dimen/view_10_dp"
+        app:diffuse_maxRadius="@dimen/view_70_dp"
+        app:diffuse_speed="@dimen/view_0_67_dp"
+        app:diffuse_stroke_width="@dimen/view_7_dp"
         app:layout_constraintBottom_toBottomOf="@id/play_btn"
         app:layout_constraintLeft_toLeftOf="@id/play_btn"
         app:layout_constraintRight_toRightOf="@id/play_btn"
         app:layout_constraintTop_toTopOf="@id/play_btn" />
 
+
+
+    <com.common.view.DiffuseView
+        android:id="@+id/pick_diffuse_view"
+        android:layout_width="@dimen/view_140_dp"
+        android:layout_height="@dimen/view_140_dp"
+        app:diffuse_addNewRadius="@dimen/view_50_dp"
+        app:diffuse_color="#FF8AB6"
+        app:diffuse_coreRadius="@dimen/view_28_dp"
+        app:diffuse_maxRadius="@dimen/view_70_dp"
+        app:diffuse_speed="@dimen/view_0_67_dp"
+        app:diffuse_stroke_width="@dimen/view_7_dp"
+        app:layout_constraintBottom_toBottomOf="@id/begin_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/begin_tv"
+        app:layout_constraintRight_toRightOf="@+id/begin_tv"
+        app:layout_constraintTop_toTopOf="@+id/begin_tv" />
+
+
     <com.common.view.countdown.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:inner_color="#ffef80"
         app:inner_stroke_raduis="@dimen/view_42_dp"
         app:inner_stroke_width="@dimen/view_4_dp"
