@@ -93,18 +93,6 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
 //        }, this, RequestControl(mTag + "likeFeeds", ControlType.CancelThis))
     }
 
-    fun getRelation(userID: Int) {
-        launch {
-            val result = subscribe {
-                mPostsDetailServerApi.getRelation(userID)
-            }
-
-            if (result.errno == 0) {
-                view.showRelation(result.data.getBooleanValue("isBlacked"), result.data.getBooleanValue("isFollow"), result.data.getBooleanValue("isFriend"))
-            }
-        }
-    }
-
     fun getPostsFirstLevelCommentList() {
         launch {
             val result = subscribe {

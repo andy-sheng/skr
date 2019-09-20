@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.common.base.BaseFragment
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -40,6 +41,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         titlebar = rootView.findViewById(com.module.posts.R.id.titlebar)
+
         recyclerView = rootView.findViewById(com.module.posts.R.id.recycler_view)
         commentTv = rootView.findViewById(com.module.posts.R.id.comment_tv)
         imageIv = rootView.findViewById(com.module.posts.R.id.image_iv)
@@ -47,6 +49,23 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         feedsInputContainerView = rootView.findViewById(com.module.posts.R.id.feeds_input_container_view)
         smartRefreshLayout.setEnableLoadMore(true)
         smartRefreshLayout.setEnableRefresh(false)
+
+        titlebar.leftTextView.setDebounceViewClickListener {
+            activity?.finish()
+        }
+
+        titlebar.rightTextView.setDebounceViewClickListener {
+
+        }
+
+        feedsInputContainerView?.mSendCallBack = { s ->
+
+        }
+
+        commentTv?.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput()
+            feedsInputContainerView?.setETHint("回复")
+        }
 
         mPostsDetailPresenter = PostsDetailPresenter(mPostsWatchModel!!.posts!!, this)
         addPresent(mPostsDetailPresenter)
@@ -60,6 +79,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {
         val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!.posts!!, list)
+        postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
         smartRefreshLayout.setEnableLoadMore(hasMore)
     }
@@ -68,10 +88,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         if (type == 0) {
             mPostsWatchModel = data as PostsWatchModel?
         }
-    }
-
-    override fun showRelation(isBlacked: Boolean, isFollow: Boolean, isFriend: Boolean) {
-
     }
 
     override fun destroy() {

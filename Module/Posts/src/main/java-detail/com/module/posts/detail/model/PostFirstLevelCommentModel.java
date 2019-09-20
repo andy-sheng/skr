@@ -1,6 +1,7 @@
 package com.module.posts.detail.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.module.posts.watch.model.PostsResoureModel;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +19,15 @@ public class PostFirstLevelCommentModel implements Serializable {
     private UserInfoModel commentUser;
     private boolean isLiked;
     private UserInfoModel replyUser;
+    private List<PostsSecondLevelCommentModel> secondLevelComments;
+
+    public List<PostsSecondLevelCommentModel> getSecondLevelComments() {
+        return secondLevelComments;
+    }
+
+    public void setSecondLevelComments(List<PostsSecondLevelCommentModel> secondLevelComments) {
+        this.secondLevelComments = secondLevelComments;
+    }
 
     public FirstLevelCommentBean getComment() {
         return comment;
@@ -78,7 +88,7 @@ public class PostFirstLevelCommentModel implements Serializable {
         private int commentID;
         private String commentType;
         private String content;
-        private String createdAt;
+        private long createdAt;
         private int likedCnt;
         private int parentCommentID;
         private int postsID;
@@ -88,9 +98,9 @@ public class PostFirstLevelCommentModel implements Serializable {
         private String statusDesc;
         private int subCommentCnt;
         private int userID;
-        private List<PostsAudiosModel> audios;
+        private List<PostsResoureModel> audios;
         private List<String> pictures;
-        private List<PostsVideosModel> videos;
+        private List<PostsResoureModel> videos;
 
         public String getAuditStatus() {
             return auditStatus;
@@ -132,11 +142,11 @@ public class PostFirstLevelCommentModel implements Serializable {
             this.content = content;
         }
 
-        public String getCreatedAt() {
+        public long getCreatedAt() {
             return createdAt;
         }
 
-        public void setCreatedAt(String createdAt) {
+        public void setCreatedAt(long createdAt) {
             this.createdAt = createdAt;
         }
 
@@ -220,19 +230,19 @@ public class PostFirstLevelCommentModel implements Serializable {
             this.pictures = pictures;
         }
 
-        public List<PostsAudiosModel> getAudios() {
+        public List<PostsResoureModel> getAudios() {
             return audios;
         }
 
-        public void setAudios(List<PostsAudiosModel> audios) {
+        public void setAudios(List<PostsResoureModel> audios) {
             this.audios = audios;
         }
 
-        public List<PostsVideosModel> getVideos() {
+        public List<PostsResoureModel> getVideos() {
             return videos;
         }
 
-        public void setVideos(List<PostsVideosModel> videos) {
+        public void setVideos(List<PostsResoureModel> videos) {
             this.videos = videos;
         }
     }

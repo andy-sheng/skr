@@ -8,6 +8,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
+import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.inter.IPostsCommentDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
@@ -60,7 +61,9 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
     override fun showSecondLevelCommentList(list: List<PostsSecondLevelCommentModel>, hasMore: Boolean) {
         val modelList: MutableList<Any> = mutableListOf(mPostFirstLevelCommentModel!!, list)
+        postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
+        postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         smartRefreshLayout.setEnableLoadMore(hasMore)
     }
 

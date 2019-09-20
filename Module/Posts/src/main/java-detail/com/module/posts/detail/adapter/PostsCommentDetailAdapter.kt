@@ -6,17 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
 import com.component.relation.view.DefaultFollowView
 import com.module.posts.R
+import com.module.posts.detail.model.PostFirstLevelCommentModel
+import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsAudioView
 import com.module.posts.view.PostsNineGridLayout
 
 class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
+    companion object {
+        val REFRESH_COMMENT_CTN = 0
+    }
+
     val mPostsType = 0
     val mCommentType = 1
 
@@ -44,7 +51,29 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            if (holder is PostsFirstLevelCommentHolder) {
+                holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel)
 
+            } else if (holder is PostsSecondLevelCommentHolder) {
+                holder.bindData(position, mDataList[position] as PostsSecondLevelCommentModel)
+            }
+        } else {
+            // 局部刷新
+            payloads.forEach {
+                if (it is Int) {
+                    refreshHolder(holder, position, it)
+                }
+            }
+        }
+    }
+
+    private fun refreshHolder(holder: RecyclerView.ViewHolder, position: Int, refreshType: Int) {
+        if (refreshType == REFRESH_COMMENT_CTN) {
+            if (holder is PostsFirstLevelCommentHolder) {
+                holder.refreshCommentCtn(position, mDataList[position] as PostFirstLevelCommentModel)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -64,6 +93,11 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var commentCtnTv: ExTextView
         var emptyTv: ExTextView
 
+        var pos: Int = -1
+        var mModel: PostFirstLevelCommentModel? = null
+
+        var isGetRelation: Boolean = false
+
         init {
             followTv = itemView.findViewById(R.id.follow_tv)
             timeTv = itemView.findViewById(R.id.time_tv)
@@ -78,8 +112,50 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             emptyTv = itemView.findViewById(R.id.empty_tv)
         }
 
-        fun bindData() {
+        fun refreshCommentCtn(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
 
+            commentCtnTv.text = "评论(${mCommentCtn}条)"
+            if (mCommentCtn == 0) {
+                emptyTv.visibility = View.VISIBLE
+            } else {
+                emptyTv.visibility = View.GONE
+            }
+        }
+
+        fun bindData(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            avatarIv.bindData(model.commentUser)
+            nicknameTv.text = model.commentUser.nicknameRemark
+            timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
+            content.text = model.comment.content
+
+            if (mModel?.comment?.audios.isNullOrEmpty()) {
+                postsAudioView.visibility = View.GONE
+            } else {
+                postsAudioView.visibility = View.VISIBLE
+                postsAudioView.bindData(mModel!!.comment!!.audios!!)
+            }
+
+            // 图片
+            if (mModel?.comment?.pictures.isNullOrEmpty()) {
+                nineGridVp.visibility = View.GONE
+            } else {
+                nineGridVp.visibility = View.VISIBLE
+                nineGridVp.setUrlList(mModel?.comment?.pictures!!)
+            }
+
+            followTv.userID = mModel?.commentUser?.userId
+
+            if (!isGetRelation) {
+                followTv.getRelation()
+                isGetRelation = true
+            }
+
+            commentCtnTv.text = "评论(${mCommentCtn}条)"
         }
     }
 
@@ -92,6 +168,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var contentTv: ExTextView
         var postsAudioView: PostsAudioView
         var postsBarrier: Barrier
+        var pos: Int = -1
+        var mModel: PostsSecondLevelCommentModel? = null
 
         init {
             commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
@@ -104,8 +182,9 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
         }
 
-        fun bindData() {
-
+        fun bindData(pos: Int, model: PostsSecondLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
         }
     }
 

@@ -1,14 +1,17 @@
 package com.module.posts.detail.adapter
 
+import android.os.Bundle
 import android.support.constraint.Barrier
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.common.core.myinfo.MyUserInfo
-import com.common.core.myinfo.MyUserInfoManager
+import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -16,11 +19,14 @@ import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
 import com.component.relation.view.DefaultFollowView
+import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.view.ExpandTextView
 import com.module.posts.view.PostsAudioView
 import com.module.posts.view.PostsNineGridLayout
 import com.module.posts.view.PostsVoteGroupView
+import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
 class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
@@ -29,6 +35,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
     //评论数量
     var mCommentCtn = 0
+
+    var mIDetailClickListener: IDetailClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
@@ -55,7 +63,11 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+        if (holder is PostsHolder) {
+            holder.bindData(position, mDataList[position] as PostsWatchModel)
+        } else if (holder is PostsCommentHolder) {
+            holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel)
+        }
     }
 
     inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -82,7 +94,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var emptyTv: ExTextView
         var voteGroupView: PostsVoteGroupView
         var pos: Int = -1
-        var model: PostsWatchModel? = null
+        var mModel: PostsWatchModel? = null
         var isGetRelation: Boolean = false
 
         init {
@@ -108,30 +120,109 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             commentCtnTv = itemView.findViewById(R.id.comment_ctn_tv)
             emptyTv = itemView.findViewById(R.id.empty_tv)
             voteGroupView = PostsVoteGroupView(itemView.findViewById(R.id.vote_layout_stub))
+
+            postsCommentTv.setDebounceViewClickListener {
+                mIDetailClickListener?.replayPosts()
+            }
+
+            postsLikeTv.setDebounceViewClickListener {
+                mIDetailClickListener?.likePosts()
+            }
+
+            avatarIv?.setDebounceViewClickListener {
+                mModel?.user?.userId?.let {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
+            }
         }
 
         fun bindData(pos: Int, model: PostsWatchModel) {
             this.pos = pos
-            this.model = model
-            followTv.userID = model.comment?.userID
-
-            avatarIv.bindData(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().myUserInfo))
-            nicknameTv.text = MyUserInfoManager.getInstance().nickName
-            timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(System.currentTimeMillis(), System.currentTimeMillis())
-
-            nineGridVp.setUrlList(model.imageList)
-            content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
-            content.maxLines = 3
-            if (!model?.isExpend) {
-                content.setCloseText("茫茫的长白大山，浩瀚的原始森林，大山脚下，原始森林环抱中散落着几十户人家的一个小山村，茅草房，对面炕，烟筒立在屋后边。在村东头有一个独立的房子，那就是青年点窗前有一道小溪流过。学子在这里吃饭，由这里出发每天随社员去地里干活。干的活要么上山伐 树，抬树，要么砍柳树毛子开荒种地。在山里，可听那吆呵声：“顺山倒了！”放树谨防回头棒！ 树上的枯枝打到别的树上再蹦回来，这回头棒打人最厉害.")
+            this.mModel = model
+            if (mModel?.user != null) {
+                avatarIv.bindData(mModel?.user!!)
+                nicknameTv.text = mModel?.user?.nicknameRemark
             } else {
-                content.setExpandText("茫茫的长白大山，浩瀚的原始森林，大山脚下，原始森林环抱中散落着几十户人家的一个小山村，茅草房，对面炕，烟筒立在屋后边。在村东头有一个独立的房子，那就是青年点窗前有一道小溪流过。学子在这里吃饭，由这里出发每天随社员去地里干活。干的活要么上山伐 树，抬树，要么砍柳树毛子开荒种地。在山里，可听那吆呵声：“顺山倒了！”放树谨防回头棒！ 树上的枯枝打到别的树上再蹦回来，这回头棒打人最厉害.")
+                MyLog.e("PostsWatchViewHolder", "bindData error pos = $pos, model = $model")
             }
 
-            voteGroupView.bindData(false)
+            commentCtnTv.text = "评论(${mCommentCtn}条)"
+
+            mModel?.posts?.let {
+                timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it.createdAt, System.currentTimeMillis())
+
+                content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
+                content.maxLines = 3
+                if (!model.isExpend) {
+                    content.setCloseText(it.title)
+                } else {
+                    content.setExpandText(it.title)
+                }
+
+                // 红包
+                if (it.redpacketInfo == null) {
+                    redPkgGroup.visibility = View.GONE
+                } else {
+                    redPkgGroup.visibility = View.VISIBLE
+                    if (it.redpacketInfo?.openStatus == PostsRedPkgModel.ROS_HAS_OPEN) {
+                        redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
+                    } else {
+                        redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                    }
+                }
+
+                // 话题
+                if (it.topicInfo == null || TextUtils.isEmpty(it.topicInfo?.topicDesc)) {
+                    topicTv.visibility = View.GONE
+                } else {
+                    topicTv.visibility = View.VISIBLE
+                    topicTv.text = it.topicInfo?.topicDesc
+                }
+            }
+
+            // 音频
+            if (mModel?.posts?.audios.isNullOrEmpty()) {
+                postsAudioView.visibility = View.GONE
+            } else {
+                postsAudioView.visibility = View.VISIBLE
+                postsAudioView.bindData(mModel?.posts?.audios!!)
+            }
+
+            // 图片
+            if (mModel?.posts?.pictures.isNullOrEmpty()) {
+                nineGridVp.visibility = View.GONE
+            } else {
+                nineGridVp.visibility = View.VISIBLE
+                nineGridVp.setUrlList(mModel?.posts?.pictures!!)
+            }
+
+            // 投票
+            if (mModel?.posts?.voteInfo == null) {
+                voteGroupView.setVisibility(View.GONE)
+            } else {
+                voteGroupView.setVisibility(View.VISIBLE)
+                voteGroupView.bindData(mModel?.posts?.voteInfo!!)
+            }
+
+            // 评论数和点赞数
+            if (mModel?.numeric == null) {
+                postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
+                postsLikeTv.text = mModel?.numeric?.starCnt.toString()
+            } else {
+                postsCommentTv.text = "0"
+                postsLikeTv.text = "0"
+            }
+
+            followTv.userID = mModel?.user?.userId
 
             if (!isGetRelation) {
                 followTv.getRelation()
+                isGetRelation = true
             }
         }
     }
@@ -148,6 +239,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var postsBarrier: Barrier
         var replyNum: ExTextView
         var bottomBarrier: Barrier
+        var pos: Int = -1
+        var mModel: PostFirstLevelCommentModel? = null
 
         init {
             commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
@@ -161,9 +254,59 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
             replyNum = itemView.findViewById(R.id.reply_num)
             bottomBarrier = itemView.findViewById(R.id.bottom_barrier)
+
+            commenterAvaterIv?.setDebounceViewClickListener {
+                mModel?.commentUser?.userId?.let {
+                    val bundle = Bundle()
+                    bundle.putInt("bundle_user_id", it)
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                            .with(bundle)
+                            .navigation()
+                }
+            }
+
+            xinIv.setDebounceViewClickListener {
+                mIDetailClickListener?.likeFirstLevelComment()
+            }
+
+            contentTv.setDebounceViewClickListener {
+                mIDetailClickListener?.clickFirstLevelComment()
+            }
         }
 
-        fun bindData() {
+        fun bindData(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            commenterAvaterIv.bindData(model.commentUser)
+            nameTv.text = model.commentUser.nicknameRemark
+            commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
+            likeNum.text = model.comment.likedCnt.toString()
+            contentTv.text = model.comment.content
+
+            if (mModel?.comment?.audios.isNullOrEmpty()) {
+                postsAudioView.visibility = View.GONE
+            } else {
+                postsAudioView.visibility = View.VISIBLE
+                postsAudioView.bindData(mModel!!.comment!!.audios!!)
+            }
+
+            // 图片
+            if (mModel?.comment?.pictures.isNullOrEmpty()) {
+                nineGridVp.visibility = View.GONE
+            } else {
+                nineGridVp.visibility = View.VISIBLE
+                nineGridVp.setUrlList(mModel?.comment?.pictures!!)
+            }
+
+            if ((mModel?.secondLevelComments?.size ?: 0) > 0) {
+                replyNum.visibility = View.VISIBLE
+                replyNum.text = "回复${mModel?.secondLevelComments?.size}"
+            } else {
+                replyNum.visibility = View.GONE
+            }
+
 
         }
     }
@@ -174,5 +317,15 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         }
 
         return mCommentType
+    }
+
+    interface IDetailClickListener {
+        fun replayPosts()
+
+        fun likePosts()
+
+        fun clickFirstLevelComment()
+
+        fun likeFirstLevelComment()
     }
 }
