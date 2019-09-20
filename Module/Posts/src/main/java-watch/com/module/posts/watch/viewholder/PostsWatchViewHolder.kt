@@ -152,7 +152,7 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             postsAudioView.visibility = View.GONE
         } else {
             postsAudioView.visibility = View.VISIBLE
-            postsAudioView.bindData(mModel?.posts?.audios!!)
+            postsAudioView.bindData(mModel?.posts?.audios!![0].duration)
         }
 
         // 图片

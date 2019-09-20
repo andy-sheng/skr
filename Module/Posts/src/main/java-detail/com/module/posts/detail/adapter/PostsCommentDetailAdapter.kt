@@ -137,7 +137,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsAudioView.visibility = View.GONE
             } else {
                 postsAudioView.visibility = View.VISIBLE
-                postsAudioView.bindData(mModel!!.comment!!.audios!!)
+                postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
             }
 
             // 图片
@@ -199,7 +199,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsAudioView.visibility = View.GONE
             } else {
                 postsAudioView.visibility = View.VISIBLE
-                postsAudioView.bindData(mModel!!.comment!!.audios!!)
+                postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
             }
         }
     }
