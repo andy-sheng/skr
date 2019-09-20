@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_10_dp"
-        app:centerText="评论详情"
+        app:centerText="帖子详情"
         app:centerTextColor="@color/black_trans_80"
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"

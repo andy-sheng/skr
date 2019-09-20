@@ -31,6 +31,7 @@ import com.module.posts.watch.model.PostsWatchModel
 class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     companion object {
         val REFRESH_COMMENT_CTN = 0
+        val DESTROY_HOLDER = 1
     }
 
     private val mPostsType = 0
@@ -88,6 +89,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         if (refreshType == REFRESH_COMMENT_CTN) {
             if (holder is PostsHolder) {
                 holder.refreshCommentCnt(position, mDataList[position] as PostsWatchModel)
+            }
+        } else if (refreshType == DESTROY_HOLDER) {
+            if (holder is PostsHolder) {
+                holder.destroyHolder(position, mDataList[position] as PostsWatchModel)
             }
         }
     }
@@ -187,6 +192,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 emptyTv.visibility = View.GONE
             }
+        }
+
+        fun destroyHolder(pos: Int, model: PostsWatchModel) {
+            this.pos = pos
+            this.mModel = model
+            followTv.destroy()
         }
 
         fun bindData(pos: Int, model: PostsWatchModel) {

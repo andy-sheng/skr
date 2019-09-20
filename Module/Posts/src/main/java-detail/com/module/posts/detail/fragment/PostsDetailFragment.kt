@@ -10,6 +10,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
+import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
@@ -149,8 +150,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun destroy() {
         super.destroy()
-        val pool = recyclerView.recycledViewPool
-        var holder: PostsCommentAdapter.PostsHolder? = pool.getRecycledView(0) as PostsCommentAdapter.PostsHolder?
-        holder?.followTv?.destroy()
+        postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
     }
 }

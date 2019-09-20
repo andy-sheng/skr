@@ -30,6 +30,7 @@ import com.module.posts.view.PostsNineGridLayout
 class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     companion object {
         val REFRESH_COMMENT_CTN = 0
+        val DESTROY_HOLDER = 1
     }
 
     val mPostsType = 0
@@ -81,6 +82,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             if (holder is PostsFirstLevelCommentHolder) {
                 holder.refreshCommentCtn(position, mDataList[position] as PostFirstLevelCommentModel)
             }
+        } else if (refreshType == DESTROY_HOLDER) {
+            if (holder is PostsFirstLevelCommentHolder) {
+                holder.destroyHolder(position, mDataList[position] as PostFirstLevelCommentModel)
+            }
         }
     }
 
@@ -130,6 +135,12 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 emptyTv.visibility = View.GONE
             }
+        }
+
+        fun destroyHolder(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+            followTv.destroy()
         }
 
         fun bindData(pos: Int, model: PostFirstLevelCommentModel) {
