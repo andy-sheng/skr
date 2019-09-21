@@ -4,7 +4,9 @@ import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.TextPaint
 import android.text.TextUtils
+import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.view.ViewStub
@@ -40,6 +42,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         postsAudioView = parentView.findViewById(R.id.posts_audio_view)
         nineGridVp = parentView.findViewById(R.id.nine_grid_vp)
 
+        contentTv.movementMethod = LinkMovementMethod.getInstance()
+        
         nineGridVp.clickListener = { i, url, _ ->
             mListener?.onClickImage(i, url)
         }
@@ -132,6 +136,11 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 .setClickSpan(object : ClickableSpan() {
                     override fun onClick(widget: View) {
                         mListener?.onClickName()
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        ds.color = Color.parseColor("#63C2F0")
+                        ds.isUnderlineText = false
                     }
                 })
                 .append(model.comment?.content

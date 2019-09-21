@@ -7,10 +7,12 @@ import java.io.Serializable
 class PostsBestCommendModel : Serializable {
     @JSONField(name = "comment")
     var comment: PostsCommentModel? = null
-    @JSONField(name = "user")
+    @JSONField(name = "commentUser")
     var user: UserInfoModel? = null
+    @JSONField(name = "isLiked")
+    var isLiked: Boolean = false
 
     override fun toString(): String {
-        return "PostsBestCommendModel(comment=$comment, user=$user)"
+        return "PostsBestCommendModel(comment=$comment, user=$user, isLiked=$isLiked)"
     }
 }
