@@ -110,6 +110,7 @@ public interface RouterConstants {
     String ACTIVITY_POSTS_DETAIL = "/posts/PostsDetailActivity";
     String ACTIVITY_POSTS_COMMENT_DETAIL = "/posts/PostsCommentDetailActivity";
     String ACTIVITY_POSTS_PUBLISH = "/posts/PostsPublishActivity";
+    String ACTIVITY_POSTS_REPORT = "/posts/PostsReportActivity";
     String ACTIVITY_POSTS_VOICE_RECORD = "/posts/PostsVoiceRecordActivity";
     String ACTIVITY_POSTS_VOTE_EDIT = "/posts/PostsVoteEditActivity";
     String ACTIVITY_POSTS_RED_PKG_EDIT = "/posts/PostsRedPkgEditActivity";
