@@ -1,5 +1,7 @@
 package com.module.posts.detail.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -19,6 +21,8 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
 import com.module.posts.watch.model.PostsWatchModel
+import com.respicker.ResPicker
+import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -163,6 +167,16 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         return super.onBackPressed()
+    }
+
+    override fun onActivityResultReal(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if(resultCode == Activity.RESULT_OK){
+            if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
+                feedsInputContainerView.onSelectImgOk(ResPicker.getInstance().selectedImageList)
+                return true
+            }
+        }
+        return super.onActivityResultReal(requestCode, resultCode, data)
     }
 
     override fun setData(type: Int, data: Any?) {

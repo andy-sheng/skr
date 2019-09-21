@@ -144,13 +144,12 @@
         android:layout_below="@+id/et_container"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
-        <!--表情区-->
-        <com.common.view.ex.ExTextView
-            android:id="@+id/audio_record_area"
+
+        <ViewStub
+            android:id="@+id/posts_voice_record_view_stub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="语音区域" />
+            android:layout="@layout/posts_detail_voice_record_view_stub_layout" />
 
         <!--表情区-->
         <com.common.emoji.EmotionLayout

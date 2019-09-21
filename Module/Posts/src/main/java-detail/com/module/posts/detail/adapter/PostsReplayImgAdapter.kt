@@ -15,8 +15,13 @@ import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.recyclerview.DiffAdapter
 import com.module.posts.R
+import com.respicker.model.ImageItem
 
-class PostsReplayImgAdapter : DiffAdapter<String, RecyclerView.ViewHolder>() {
+class PostsReplayImgAdapter : DiffAdapter<ImageItem, RecyclerView.ViewHolder>() {
+
+
+    var delClickListener: ((model: ImageItem?, pos: Int) -> Unit)? = null
+    var imgClickListener: ((model: ImageItem?, pos: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_replay_select_img_item_view, parent, false)
@@ -34,24 +39,25 @@ class PostsReplayImgAdapter : DiffAdapter<String, RecyclerView.ViewHolder>() {
     inner class PostsReplayImgHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgIv: BaseImageView
         var deleteIv: ExImageView
-        var pos: Int? = null
+        var pos: Int = 0
+        var model: ImageItem? = null
 
         init {
             imgIv = itemView.findViewById(R.id.img_iv)
             deleteIv = itemView.findViewById(R.id.delete_iv)
-
+            imgIv.setDebounceViewClickListener {
+                imgClickListener?.invoke(model,pos)
+            }
             deleteIv.setDebounceViewClickListener {
-                pos?.let {
-                    dataList.removeAt(it)
-                    notifyDataSetChanged()
-                }
+                delClickListener?.invoke(model,pos)
             }
         }
 
-        fun bindData(pos: Int, url: String) {
+        fun bindData(pos: Int, model: ImageItem) {
+            this.model = model
             this.pos = pos
             FrescoWorker.loadImage(imgIv,
-                    ImageFactory.newPathImage(url)
+                    ImageFactory.newPathImage(model.path)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
                             .setFailureDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.load_img_error))
                             .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))

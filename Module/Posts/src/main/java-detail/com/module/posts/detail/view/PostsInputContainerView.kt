@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.Group
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -20,11 +21,17 @@ import com.common.emoji.LQREmotionKit
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsReplayImgAdapter
 import com.module.posts.detail.event.PostsCommentBoardEvent
+import com.module.posts.view.PostsVoiceRecordView
+import com.respicker.ResPicker
+import com.respicker.activity.ResPickerActivity
+import com.respicker.model.ImageItem
 import org.greenrobot.eventbus.EventBus
 
 class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListener {
@@ -37,11 +44,11 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     lateinit var jianpanIv: ExImageView
     lateinit var tupianIv: ExImageView
     lateinit var yuyinIv: ExImageView
-    lateinit var recyclerView: RecyclerView
-    lateinit var audioRecordArea: ExTextView
+    lateinit var imgRecyclerView: RecyclerView
+    lateinit var postsVoiceRecordView: PostsVoiceRecordView
     lateinit var selectImgGroup: Group
 
-    var postsReplayImgAdapter: PostsReplayImgAdapter? = null
+    lateinit var postsReplayImgAdapter: PostsReplayImgAdapter
     protected var mHasPretend = false
     protected var mForceHide = false
     var mSendCallBack: ((String) -> Unit)? = null
@@ -85,17 +92,52 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         jianpanIv = this.findViewById(R.id.jianpan_iv)
         tupianIv = this.findViewById(R.id.tupian_iv)
         yuyinIv = this.findViewById(R.id.yuyin_iv)
-        recyclerView = rootView.findViewById(R.id.recycler_view)
-        audioRecordArea = rootView.findViewById(R.id.audio_record_area)
+        imgRecyclerView = rootView.findViewById(R.id.recycler_view)
+        postsVoiceRecordView = PostsVoiceRecordView(rootView.findViewById(R.id.posts_voice_record_view_stub))
+
         selectImgGroup = rootView.findViewById(R.id.select_img_group)
 
         postsReplayImgAdapter = PostsReplayImgAdapter()
-        recyclerView.adapter = postsReplayImgAdapter
-        recyclerView.layoutManager = LinearLayoutManager(context).also {
+        imgRecyclerView.adapter = postsReplayImgAdapter
+        imgRecyclerView.layoutManager = LinearLayoutManager(context).also {
             it.setOrientation(LinearLayoutManager.HORIZONTAL)
         }
 
-        postsReplayImgAdapter?.dataList = mutableListOf("ssss", "iuioiiu", "ssss", "iuioiiu", "ssss", "iuioiiu")
+        postsReplayImgAdapter?.delClickListener = { m, pos ->
+            var index = 0
+            for (v in postsReplayImgAdapter.dataList) {
+                if (m!! == v) {
+                    break
+                }
+                index++
+            }
+            //model.imgUploadMap.remove(m?.path)
+            postsReplayImgAdapter.dataList.removeAt(index)
+            postsReplayImgAdapter.notifyItemRemoved(index)
+            if (postsReplayImgAdapter.dataList.isEmpty()) {
+                imgRecyclerView.visibility = View.GONE
+            }
+        }
+        postsReplayImgAdapter.imgClickListener = { _, pos ->
+
+            BigImageBrowseFragment.open(true, context as FragmentActivity, object : DefaultImageBrowserLoader<ImageItem>() {
+                override fun init() {
+
+                }
+
+                override fun load(imageBrowseView: ImageBrowseView, position: Int, item: ImageItem) {
+                    imageBrowseView.load(item.path)
+                }
+
+                override fun getInitCurrentItemPostion(): Int {
+                    return pos
+                }
+
+                override fun getInitList(): List<ImageItem>? {
+                    return postsReplayImgAdapter.dataList
+                }
+            })
+        }
 
         initEmotionKeyboard()
 
@@ -104,7 +146,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         }
 
         tupianIv.setDebounceViewClickListener {
-            showImageSelectView()
+            goAddImagePage()
         }
 
         yuyinIv.setDebounceViewClickListener {
@@ -129,14 +171,60 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mInputContainer?.setOnClickListener {
             hideSoftInput()
         }
+        postsVoiceRecordView.okClickListener = { path ->
+            U.getToastUtil().showShort("本地路径为$path ")
+        }
     }
 
+    private fun goAddImagePage() {
+//        if (model.recordVoicePath?.isNotEmpty() == true) {
+//            //如果已经录入语音
+//            tipsDialogView = TipsDialogView.Builder(this)
+//                    .setMessageTip("上传图片将清空语音,是否继续")
+//                    .setConfirmTip("继续")
+//                    .setCancelTip("取消")
+//                    .setCancelBtnClickListener(object : AnimateClickListener() {
+//                        override fun click(view: View?) {
+//                            tipsDialogView?.dismiss()
+//                        }
+//                    })
+//                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+//                        override fun click(view: View?) {
+//                            audioDelIv.performClick()
+//                            tipsDialogView?.dismiss(false)
+//                            goAddImagePage()
+//                        }
+//                    })
+//                    .build()
+//            tipsDialogView?.showByDialog()
+//        } else {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(context as Activity)
+            ResPicker.getInstance().params = ResPicker.newParamsBuilder()
+                    .setMultiMode(true)
+                    .setShowCamera(true)
+                    .setIncludeGif(true)
+                    .setCrop(false)
+                    .setSelectLimit(9)
+                    .build()
+            ResPickerActivity.open(context as Activity, ArrayList<ImageItem>(postsReplayImgAdapter?.dataList))
+//        }
+    }
+
+    fun onSelectImgOk(selectedImageList: java.util.ArrayList<ImageItem>) {
+        postsReplayImgAdapter.dataList.clear()
+        postsReplayImgAdapter.dataList.addAll(selectedImageList)
+        postsReplayImgAdapter.notifyDataSetChanged()
+        if (postsReplayImgAdapter.dataList.isNotEmpty()) {
+            showImageSelectView()
+        }
+    }
+    
     private fun showKeyBoard() {
         jianpanIv.visibility = View.GONE
         tupianIv.visibility = View.VISIBLE
         yuyinIv.visibility = View.VISIBLE
 
-        audioRecordArea.visibility = View.GONE
+        postsVoiceRecordView.setVisibility(View.GONE)
         selectImgGroup.visibility = View.GONE
         mEmotionKeyboard?.showSoftInput()
     }
@@ -147,7 +235,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         yuyinIv.visibility = View.VISIBLE
 
         selectImgGroup.visibility = View.VISIBLE
-        audioRecordArea.visibility = View.GONE
+        postsVoiceRecordView.setVisibility(View.GONE)
     }
 
     private fun showAudioRecordView() {
@@ -156,9 +244,9 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         yuyinIv.visibility = View.GONE
 
         selectImgGroup.visibility = View.GONE
-        audioRecordArea.visibility = View.VISIBLE
+        postsVoiceRecordView.setVisibility(View.VISIBLE)
         mEmotionKeyboard?.hideSoftInput()
-        audioRecordArea.getLayoutParams().height = U.getDisplayUtils().dip2px(260f)
+        postsVoiceRecordView.realView?.getLayoutParams()?.height = U.getDisplayUtils().dip2px(260f)
     }
 
     private fun initEmotionKeyboard() {
