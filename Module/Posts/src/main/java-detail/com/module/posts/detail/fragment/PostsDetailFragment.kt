@@ -3,6 +3,7 @@ package com.module.posts.detail.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -142,6 +143,15 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun useEventBus(): Boolean {
         return false
+    }
+
+    override fun onBackPressed(): Boolean {
+        if(feedsInputContainerView.mInputContainer?.visibility == View.VISIBLE){
+            feedsInputContainerView.hideSoftInput()
+            return true
+        }
+
+        return super.onBackPressed()
     }
 
     override fun setData(type: Int, data: Any?) {

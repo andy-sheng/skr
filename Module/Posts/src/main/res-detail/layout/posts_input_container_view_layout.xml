@@ -7,6 +7,32 @@
     android:visibility="gone"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/recycler_view_bg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_98_dp"
+        android:layout_marginTop="@dimen/view_1_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_8_dp"
+        app:bl_solid_color="@color/white"
+        app:bl_stroke_color="#FFDADADA"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/recycler_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_view" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_98_dp"
+        app:layout_constraintBottom_toTopOf="@+id/input_container"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/select_img_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="recycler_view_bg, recycler_view" />
+
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/input_container"
@@ -50,7 +76,6 @@
             android:textColorHint="@color/black_trans_30"
             android:textSize="@dimen/textsize_16_dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/send_msg_btn"
             app:layout_constraintTop_toTopOf="parent" />
@@ -69,15 +94,47 @@
             android:textColor="@color/black_trans_50"
             android:textSize="@dimen/textsize_16_dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/etContent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/etContent" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#FFD4D4D4"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:layout_marginBottom="@dimen/view_10_dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etContent">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/jianpan_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:src="@drawable/pinglun_jianpan" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/tupian_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:src="@drawable/pinglun_tupian" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/yuyin_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:src="@drawable/pinglun_yuyin" />
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
     <RelativeLayout
@@ -87,6 +144,14 @@
         android:layout_below="@+id/et_container"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
+        <!--表情区-->
+        <com.common.view.ex.ExTextView
+            android:id="@+id/audio_record_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="语音区域" />
+
         <!--表情区-->
         <com.common.emoji.EmotionLayout
             android:id="@+id/elEmotion"
