@@ -98,7 +98,7 @@
         android:layout_marginRight="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:inflatedId="@+id/vote_layout_stub"
-        android:layout="@layout/post_vote_view_layout"
+        android:layout="@layout/posts_vote_view_layout"
         app:layout_constraintTop_toBottomOf="@id/comment_layout_stub"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

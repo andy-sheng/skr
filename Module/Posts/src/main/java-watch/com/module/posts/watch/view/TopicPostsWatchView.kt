@@ -8,6 +8,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.component.person.view.RequestCallBack
+import com.module.posts.dialog.PostsMoreDialogView
 import com.module.posts.watch.model.PostsTopicModel
 import com.module.posts.watch.model.PostsTopicTabModel
 import com.module.posts.watch.model.PostsWatchModel
@@ -22,6 +23,14 @@ class TopicPostsWatchView(activity: FragmentActivity, val topicInfo: PostsTopicM
 
     override fun unselected(reason: Int) {
         super.unselected(reason)
+    }
+
+    override fun onClickMore(position: Int, model: PostsWatchModel?) {
+        model?.let {
+            postsMoreDialogView?.dismiss(false)
+            postsMoreDialogView = PostsMoreDialogView(activity, PostsMoreDialogView.FROM_POSTS_TOPIC, it)
+            postsMoreDialogView?.showByDialog(true)
+        }
     }
 
     override fun initPostsList(flag: Boolean): Boolean {

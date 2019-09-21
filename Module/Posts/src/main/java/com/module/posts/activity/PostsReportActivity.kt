@@ -5,15 +5,24 @@ import android.text.SpannedString
 import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.userinfo.UserInfoServerApi
+import com.common.rxretrofit.*
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.report.adapter.ReportModel
 import com.component.report.view.ReportView
+import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.dialog.PostsMoreDialogView
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.HashMap
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_REPORT)
 class PostsReportActivity : BaseActivity() {
@@ -24,11 +33,22 @@ class PostsReportActivity : BaseActivity() {
     lateinit var contentEdit: NoLeakEditText
     lateinit var sumbitTv: ExTextView
 
+    var mFrom = PostsMoreDialogView.FROM_POSTS_HOME  // 来源
+
+    var targetID = 0  // 被举报人ID
+    var postsID = 0L   // 被举报的帖子ID
+    var commentID = 0L  // 被举报的帖子评论ID
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.posts_report_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        mFrom = intent.getIntExtra("from", PostsMoreDialogView.FROM_POSTS_HOME)
+        targetID = intent.getIntExtra("targetID", 0)
+        postsID = intent.getLongExtra("postsID", 0L)
+        commentID = intent.getLongExtra("commentID", 0L)
+
         titlebar = findViewById(R.id.titlebar)
         textHintTv = findViewById(R.id.text_hint_tv)
         reportView = findViewById(R.id.report_view)
@@ -50,9 +70,79 @@ class PostsReportActivity : BaseActivity() {
                 val list = reportView.getSelectedList()
                 val content = contentEdit.text.toString()
                 //具体的举报
-                // todo 待补全
+                when (mFrom) {
+                    PostsMoreDialogView.FROM_POSTS_HOME -> reportPosts(content, list, 9)
+                    PostsMoreDialogView.FROM_POSTS_TOPIC -> reportPosts(content, list, 9)
+                    PostsMoreDialogView.FROM_POSTS_DETAIL -> reportPosts(content, list, 9)
+                    PostsMoreDialogView.FROM_POSTS_PERSON -> reportPosts(content, list, 2)
+
+                    else -> {
+                        //todo donothing
+                    }
+                }
             }
         })
+    }
+
+    fun reportPosts(content: String, typeList: List<Int>, source: Int) {
+        val map = HashMap<String, Any>()
+        map["targetID"] = targetID
+        map["postsID"] = postsID
+        map["content"] = content
+        map["type"] = typeList
+        map["source"] = source
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+        val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+        ApiMethods.subscribe(userInfoServerApi.report(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    U.getToastUtil().showSkrCustomShort(CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
+                            .setText("举报成功")
+                            .build())
+                    finish()
+                } else {
+                    U.getToastUtil().showSkrCustomShort(CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
+                            .setText("举报失败")
+                            .build())
+                    finish()
+                }
+            }
+        }, this, RequestControl("feedback", ControlType.CancelThis))
+    }
+
+    fun reportPostsComment(content: String, typeList: List<Int>, source: Int) {
+        val map = HashMap<String, Any>()
+        map["targetID"] = targetID
+        map["postsID"] = postsID
+        map["commentID"] = commentID
+        map["content"] = content
+        map["type"] = typeList
+        map["source"] = source
+
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+        val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+        ApiMethods.subscribe(userInfoServerApi.report(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    U.getToastUtil().showSkrCustomShort(CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhichenggong_icon)
+                            .setText("举报成功")
+                            .build())
+                    finish()
+                } else {
+                    U.getToastUtil().showSkrCustomShort(CommonToastView.Builder(U.app())
+                            .setImage(com.component.busilib.R.drawable.touxiangshezhishibai_icon)
+                            .setText("举报失败")
+                            .build())
+                    finish()
+                }
+            }
+        }, this, RequestControl("feedback", ControlType.CancelThis))
     }
 
     private fun getReportPosts(): ArrayList<ReportModel> {
@@ -69,6 +159,6 @@ class PostsReportActivity : BaseActivity() {
     }
 
     override fun useEventBus(): Boolean {
-        return super.useEventBus()
+        return false
     }
 }

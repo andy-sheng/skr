@@ -10,7 +10,6 @@ import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
-import com.common.view.ex.drawable.DrawableFactory
 import com.module.posts.R
 import com.module.posts.watch.model.PostsVoteItemModel
 import com.module.posts.watch.model.PostsVoteModel
@@ -86,6 +85,6 @@ class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     override fun layoutDesc(): Int {
-        return R.layout.post_vote_item_layout
+        return R.layout.posts_vote_item_layout
     }
 }

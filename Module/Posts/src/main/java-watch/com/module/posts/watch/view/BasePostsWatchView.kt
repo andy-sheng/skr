@@ -1,6 +1,5 @@
 package com.module.posts.watch.view
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.FragmentActivity
@@ -8,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
-import com.common.base.BaseActivity
 import com.common.callback.Callback
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -19,6 +17,7 @@ import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.dialog.PostsMoreDialogView
 import com.module.posts.watch.PostsWatchServerApi
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
@@ -65,6 +64,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     private val recyclerView: RecyclerView
 
     var adapter: PostsWatchViewAdapter? = null
+    var postsMoreDialogView: PostsMoreDialogView? = null
 
     init {
         View.inflate(context, R.layout.posts_watch_view_layout, this)
@@ -81,7 +81,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsMore(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickPostsMore")
+                onClickMore(position, model)
             }
 
             override fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
@@ -265,6 +265,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         refreshLayout.finishLoadMore()
         refreshLayout.setEnableLoadMore(hasMore)
     }
+
+    abstract fun onClickMore(position: Int, model: PostsWatchModel?)
 
     // 加载数据
     abstract fun initPostsList(flag: Boolean): Boolean

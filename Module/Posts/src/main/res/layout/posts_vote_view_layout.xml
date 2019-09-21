@@ -11,7 +11,7 @@
     <ViewStub
         android:id="@+id/vote_item_1"
         android:inflatedId="@+id/vote_item_1"
-        android:layout="@layout/post_vote_item_layout"
+        android:layout="@layout/posts_vote_item_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -22,7 +22,7 @@
     <ViewStub
         android:id="@+id/vote_item_2"
         android:inflatedId="@+id/vote_item_2"
-        android:layout="@layout/post_vote_item_layout"
+        android:layout="@layout/posts_vote_item_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
@@ -38,12 +38,12 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:layout="@layout/post_vote_item_layout"
+        android:layout="@layout/posts_vote_item_layout"
         app:layout_constraintTop_toBottomOf="@+id/vote_item_2" />
 
     <ViewStub
         android:id="@+id/vote_item_4"
-        android:layout="@layout/post_vote_item_layout"
+        android:layout="@layout/posts_vote_item_layout"
         android:inflatedId="@+id/vote_item_4"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_40_dp"

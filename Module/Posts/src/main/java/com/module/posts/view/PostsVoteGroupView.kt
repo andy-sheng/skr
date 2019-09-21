@@ -2,10 +2,8 @@ package com.module.posts.view
 
 import android.view.View
 import android.view.ViewStub
-import com.common.log.MyLog
 import com.common.view.ExViewStub
 import com.module.posts.R
-import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsVoteModel
 
 class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
@@ -46,6 +44,6 @@ class PostsVoteGroupView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     override fun layoutDesc(): Int {
-        return R.layout.post_vote_view_layout
+        return R.layout.posts_vote_view_layout
     }
 }

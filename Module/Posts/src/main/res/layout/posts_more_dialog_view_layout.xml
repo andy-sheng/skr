@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/cancle_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_48_dp"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.common.view.ex.ExConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/cancle_tv">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/report_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_48_dp"
+            android:gravity="center"
+            android:text="举报"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_16_dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </com.common.view.ex.ExConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

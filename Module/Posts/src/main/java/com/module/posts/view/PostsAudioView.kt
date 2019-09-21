@@ -33,7 +33,7 @@ class PostsAudioView : ConstraintLayout {
     var durationMs = 0
 
     init {
-        View.inflate(context, R.layout.post_audio_view_layout, this)
+        View.inflate(context, R.layout.posts_audio_view_layout, this)
 
         audioBg = this.findViewById(R.id.audio_bg)
         audioPlay = this.findViewById(R.id.audio_play)
