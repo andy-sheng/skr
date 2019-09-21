@@ -47,6 +47,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     //评论数量
     var mCommentCtn = 0
 
+    var mPlayintUrl = ""
+
     var mIDetailClickListener: IDetailClickListener? = null
 
     val mLikeDrawable = DrawableCreator.Builder()
@@ -190,11 +192,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     if (postsAudioView.isPlaying) {
+                        mPlayintUrl = ""
                         SinglePlayer.stop(playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.posts?.audios?.let {
-                            SinglePlayer.startPlay(playerTag, it[0]?.url ?: "")
+                            mPlayintUrl = it[0]?.url ?: ""
+                            SinglePlayer.startPlay(playerTag, mPlayintUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -322,6 +326,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 postsAudioView.visibility = View.VISIBLE
                 postsAudioView.bindData(mModel?.posts?.audios!![0].duration)
+
+                if (mPlayintUrl.equals(mModel!!.posts!!.audios!![0].url) && !TextUtils.isEmpty(mPlayintUrl)) {
+                    postsAudioView.setPlay(true)
+                } else {
+                    postsAudioView.setPlay(false)
+                }
             }
 
             // 图片
@@ -423,11 +433,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     if (postsAudioView.isPlaying) {
+                        mPlayintUrl = ""
                         SinglePlayer.stop(playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
-                            SinglePlayer.startPlay(playerTag, it[0]?.url ?: "")
+                            mPlayintUrl = it[0]?.url ?: ""
+                            SinglePlayer.startPlay(playerTag, mPlayintUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -456,6 +468,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 postsAudioView.visibility = View.VISIBLE
                 postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
+
+                if (mPlayintUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayintUrl)) {
+                    postsAudioView.setPlay(true)
+                } else {
+                    postsAudioView.setPlay(false)
+                }
             }
 
             if (mModel?.isHasRedpacket ?: false) {
