@@ -28,6 +28,22 @@
         app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/red_pkg_tv"
+        android:layout_width="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_17_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="红包"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_10_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_5_dp"
+        app:bl_solid_color="#FFEB4B29"
+        app:layout_constraintBottom_toBottomOf="@+id/name_tv"
+        app:layout_constraintLeft_toRightOf="@+id/name_tv"
+        app:layout_constraintTop_toTopOf="@+id/name_tv" />
+
+    <com.common.view.ex.ExTextView
         android:id="@+id/comment_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,15 +121,19 @@
         app:constraint_referenced_ids="nine_grid_vp,posts_audio_view" />
 
     <com.common.view.ex.ExTextView
+        android:layout_height="@dimen/view_42_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
         android:id="@+id/reply_num"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:text="163条回复"
-        android:textColor="#ff6295c4"
+        app:bl_corners_radius="@dimen/view_9_dp"
+        app:bl_solid_color="@color/black_trans_5"
         android:textSize="@dimen/textsize_14_dp"
         android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="@+id/content_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintTop_toBottomOf="@+id/posts_barrier" />
 
     <android.support.constraint.Barrier
@@ -128,7 +148,7 @@
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:background="@color/black_trans_10"
-        app:layout_constraintLeft_toLeftOf="@+id/content_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottom_barrier" />
 

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_10_dp"
-        app:centerText="评论详情"
+        app:centerText="帖子详情"
         app:centerTextColor="@color/black_trans_80"
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"
@@ -22,23 +22,27 @@
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="imageButton"
         app:showBottomLine="false"
-        app:statusBarColor="#EBEDF2"
-        app:titleBarColor="#EBEDF2" />
+        app:statusBarColor="@color/white"
+        app:titleBarColor="@color/white" />
+
+    <View
+        android:id="@+id/title_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="@color/black_trans_10"
+        app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintTop_toBottomOf="@+id/titlebar">
+        app:layout_constraintTop_toBottomOf="@+id/title_divider">
 
         <android.support.v7.widget.RecyclerView
             android:layout_height="match_parent"
             android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
-            app:layout_constraintTop_toBottomOf="@+id/titlebar" />
+            android:layout_width="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <View
@@ -94,7 +98,5 @@
     <com.module.posts.detail.view.PostsInputContainerView
         android:id="@+id/feeds_input_container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

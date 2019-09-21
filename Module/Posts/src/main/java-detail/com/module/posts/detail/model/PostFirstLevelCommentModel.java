@@ -18,8 +18,25 @@ public class PostFirstLevelCommentModel implements Serializable {
     private FirstLevelCommentBean comment;
     private UserInfoModel commentUser;
     private boolean isLiked;
+    private boolean hasRedpacket;
     private UserInfoModel replyUser;
     private List<PostsSecondLevelCommentModel> secondLevelComments;
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isHasRedpacket() {
+        return hasRedpacket;
+    }
+
+    public void setHasRedpacket(boolean hasRedpacket) {
+        this.hasRedpacket = hasRedpacket;
+    }
 
     public List<PostsSecondLevelCommentModel> getSecondLevelComments() {
         return secondLevelComments;

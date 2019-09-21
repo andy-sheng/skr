@@ -60,7 +60,7 @@
     <com.module.posts.view.PostsCommentAudioView
         android:id="@+id/posts_audio_view"
         android:layout_width="0dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
@@ -78,7 +78,7 @@
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:background="@color/black_trans_10"
-        app:layout_constraintLeft_toLeftOf="@+id/content_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posts_barrier" />
 
