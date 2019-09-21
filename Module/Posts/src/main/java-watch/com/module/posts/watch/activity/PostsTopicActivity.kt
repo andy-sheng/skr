@@ -61,6 +61,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
 
     var topicPostsViews: HashMap<Int, TopicPostsWatchView> = HashMap()
+    var currentPostsViews: TopicPostsWatchView? = null
     var pagerAdapter: PagerAdapter? = null
     var lastVerticalOffset = Int.MAX_VALUE
 
@@ -98,12 +99,12 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
             setOnMultiPurposeListener(object : SimpleMultiPurposeListener() {
                 override fun onRefresh(refreshLayout: RefreshLayout) {
                     super.onRefresh(refreshLayout)
-                    // todo 待补全
+                    currentPostsViews?.initPostsList(true)
                 }
 
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     super.onLoadMore(refreshLayout)
-                    // todo 待补全
+                    currentPostsViews?.getMorePosts()
                 }
 
                 var lastScale = 0f
@@ -147,7 +148,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
             }
         }
 
-        ivBack?.setOnClickListener(object : DebounceViewClickListener(){
+        ivBack?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 finish()
             }
@@ -244,6 +245,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
                 }
                 val view = topicPostsViews[tabModel.tabType]
                 if (position == 0) {
+                    currentPostsViews = view
                     view?.initPostsList(false)
                 }
                 if (container.indexOfChild(view) == -1) {
@@ -273,6 +275,8 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
 
             override fun onPageSelected(position: Int) {
                 var tagModel = list[position]
+                currentPostsViews = topicPostsViews[tagModel.tabType]
+                smartRefresh?.setEnableLoadMore(currentPostsViews?.hasMore ?: true)
                 topicPostsViews[tagModel.tabType]?.initPostsList(false)
             }
 
