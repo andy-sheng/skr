@@ -13,8 +13,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
+import com.common.player.SinglePlayer
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
@@ -32,6 +34,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     companion object {
         val REFRESH_COMMENT_CTN = 0
         val DESTROY_HOLDER = 1
+        val playerTag = "PostsCommentDetailAdapter"
     }
 
     val mPostsType = 0
@@ -135,6 +138,20 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                             .navigation()
                 }
             }
+
+            postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    if (postsAudioView.isPlaying) {
+                        SinglePlayer.stop(playerTag)
+                        postsAudioView.setPlay(false)
+                    } else {
+                        mModel?.comment?.audios?.let {
+                            SinglePlayer.startPlay(playerTag, it[0]?.url ?: "")
+                            postsAudioView.setPlay(true)
+                        }
+                    }
+                }
+            })
         }
 
         fun refreshCommentCtn(pos: Int, model: PostFirstLevelCommentModel) {
@@ -225,6 +242,20 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                             .navigation()
                 }
             }
+
+            postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    if (postsAudioView.isPlaying) {
+                        SinglePlayer.stop(playerTag)
+                        postsAudioView.setPlay(false)
+                    } else {
+                        mModel?.comment?.audios?.let {
+                            SinglePlayer.startPlay(playerTag, it[0]?.url ?: "")
+                            postsAudioView.setPlay(true)
+                        }
+                    }
+                }
+            })
         }
 
         fun bindData(pos: Int, model: PostsSecondLevelCommentModel) {

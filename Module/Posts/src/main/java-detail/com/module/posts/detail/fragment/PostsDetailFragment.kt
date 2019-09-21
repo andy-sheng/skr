@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
+import com.common.player.SinglePlayer
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -170,8 +171,15 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        SinglePlayer.stop(PostsCommentAdapter.playerTag)
+    }
+
     override fun destroy() {
         super.destroy()
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
+        SinglePlayer.removeCallback(PostsCommentAdapter.playerTag)
+
     }
 }
