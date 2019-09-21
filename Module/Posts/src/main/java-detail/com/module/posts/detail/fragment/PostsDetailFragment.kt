@@ -82,7 +82,17 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         commentTv?.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput()
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        imageIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        audioIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO)
             feedsInputContainerView?.setETHint("回复")
         }
 

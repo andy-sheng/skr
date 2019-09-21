@@ -180,6 +180,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             EventBus.getDefault().post(PostsCommentBoardEvent(false))
             mInputContainer?.visibility = View.GONE
             mEtContent?.hint = ""
+            reset()
         }
 
         mForceHide = false
@@ -187,16 +188,27 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
     fun reset() {
         //图片，音频的View需要这里reset
-
+        postsReplayImgAdapter?.dataList = mutableListOf()
     }
 
-    fun showSoftInput() {
-        showKeyBoard()
+    fun showSoftInput(type: SHOW_TYPE) {
+        if (type == SHOW_TYPE.KEY_BOARD) {
+            showKeyBoard()
+        } else if (type == SHOW_TYPE.IMG) {
+            showImageSelectView()
+            mEmotionKeyboard?.showSoftInput()
+            reset()
+        } else if (type == SHOW_TYPE.AUDIO) {
+            showAudioRecordView()
+            mInputContainer?.visibility = View.VISIBLE
+            reset()
+        }
     }
 
     fun hideSoftInput() {
         mForceHide = true
         mEmotionKeyboard?.hideSoftInput()
+        reset()
     }
 
     fun onBackPressed(): Boolean {
@@ -211,5 +223,9 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         super.onDetachedFromWindow()
         mEmotionKeyboard?.destroy()
         mUiHandler.removeCallbacksAndMessages(null)
+    }
+
+    enum class SHOW_TYPE {
+        KEY_BOARD, IMG, AUDIO
     }
 }
