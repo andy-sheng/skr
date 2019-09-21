@@ -22,8 +22,9 @@ import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.detail.view.FeedCommentMoreDialog
-import com.module.feeds.report.adapter.FeedReportAdapter
-import com.module.feeds.report.model.FeedReportModel
+import com.component.report.adapter.ReportAdapter
+import com.component.report.adapter.ReportModel
+import com.component.report.view.ReportView
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap
@@ -33,11 +34,9 @@ class FeedReportActivity : BaseActivity() {
 
     lateinit var mTitlebar: CommonTitleBar
     lateinit var mTextHintTv: TextView
-    lateinit var mRecyclerView: RecyclerView
+    lateinit var mReportView: ReportView
     lateinit var mContentEdit: NoLeakEditText
     lateinit var mSumbitTv: ExTextView
-
-    lateinit var mAdapter: FeedReportAdapter
 
     var mFrom = FeedsMoreDialogView.FROM_FEED_HOME
 
@@ -59,22 +58,19 @@ class FeedReportActivity : BaseActivity() {
 
         mTitlebar = findViewById(R.id.titlebar)
         mTextHintTv = findViewById(R.id.text_hint_tv)
-        mRecyclerView = findViewById(R.id.recycler_view)
+        mReportView = findViewById(R.id.report_view)
+
         mContentEdit = findViewById(R.id.content_edit)
         mSumbitTv = findViewById(R.id.sumbit_tv)
 
         mContentEdit.hint = SpannedString("请详细描述你的问题")
-        mAdapter = FeedReportAdapter()
+
         if (mFrom == FeedCommentMoreDialog.FROM_COMMENT) {
             // 只有这个是举报评论的
-            mAdapter.mDataList = getReportComment()
+            mReportView.setDataList(getReportComment())
         } else {
-            mAdapter.mDataList = getReportFeed()
+            mReportView.setDataList(getReportFeed())
         }
-
-        mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mRecyclerView.adapter = mAdapter
-        mAdapter.notifyDataSetChanged()
 
         mTitlebar.leftTextView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -84,7 +80,7 @@ class FeedReportActivity : BaseActivity() {
 
         mSumbitTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                val list = mAdapter.getSelectedList()
+                val list = mReportView.getSelectedList()
                 val content = mContentEdit.text.toString()
                 when (mFrom) {
                     FeedsMoreDialogView.FROM_FEED_HOME -> {
@@ -177,28 +173,28 @@ class FeedReportActivity : BaseActivity() {
         }, this, RequestControl("feedback", ControlType.CancelThis))
     }
 
-    private fun getReportFeed(): ArrayList<FeedReportModel> {
-        var list = ArrayList<FeedReportModel>()
-        list.add(FeedReportModel(11, "垃圾广告", false))
-        list.add(FeedReportModel(3, "色情低俗", false))
-        list.add(FeedReportModel(2, "攻击谩骂", false))
-        list.add(FeedReportModel(1, "诈骗信息", false))
-        list.add(FeedReportModel(8, "政治敏感", false))
-        list.add(FeedReportModel(4, "血腥暴力", false))
-        list.add(FeedReportModel(12, "歌词有误", false))
-        list.add(FeedReportModel(10, "其它问题", false))
+    private fun getReportFeed(): ArrayList<ReportModel> {
+        var list = ArrayList<ReportModel>()
+        list.add(ReportModel(11, "垃圾广告", false))
+        list.add(ReportModel(3, "色情低俗", false))
+        list.add(ReportModel(2, "攻击谩骂", false))
+        list.add(ReportModel(1, "诈骗信息", false))
+        list.add(ReportModel(8, "政治敏感", false))
+        list.add(ReportModel(4, "血腥暴力", false))
+        list.add(ReportModel(12, "歌词有误", false))
+        list.add(ReportModel(10, "其它问题", false))
         return list
     }
 
-    private fun getReportComment(): ArrayList<FeedReportModel> {
-        var list = ArrayList<FeedReportModel>()
-        list.add(FeedReportModel(11, "垃圾广告", false))
-        list.add(FeedReportModel(3, "色情低俗", false))
-        list.add(FeedReportModel(2, "攻击谩骂", false))
-        list.add(FeedReportModel(1, "诈骗信息", false))
-        list.add(FeedReportModel(8, "政治敏感", false))
-        list.add(FeedReportModel(4, "血腥暴力", false))
-        list.add(FeedReportModel(10, "其它问题", false))
+    private fun getReportComment(): ArrayList<ReportModel> {
+        var list = ArrayList<ReportModel>()
+        list.add(ReportModel(11, "垃圾广告", false))
+        list.add(ReportModel(3, "色情低俗", false))
+        list.add(ReportModel(2, "攻击谩骂", false))
+        list.add(ReportModel(1, "诈骗信息", false))
+        list.add(ReportModel(8, "政治敏感", false))
+        list.add(ReportModel(4, "血腥暴力", false))
+        list.add(ReportModel(10, "其它问题", false))
         return list
     }
 }

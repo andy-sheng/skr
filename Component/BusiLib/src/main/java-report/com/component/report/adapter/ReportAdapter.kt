@@ -1,4 +1,4 @@
-package com.module.feeds.report.adapter
+package com.component.report.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,15 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
-import com.module.feeds.R
-import com.module.feeds.report.model.FeedReportModel
+import com.component.busilib.R
 
-class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewHolder>() {
+class ReportAdapter : RecyclerView.Adapter<ReportAdapter.FeedReportViewHolder>() {
 
-    var mDataList = ArrayList<FeedReportModel>()
+    var mDataList = ArrayList<ReportModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedReportViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.feed_report_item_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.report_item_layout, parent, false)
         return FeedReportViewHolder(view)
     }
 
@@ -49,7 +48,7 @@ class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewH
     inner class FeedReportViewHolder(var item: View) : RecyclerView.ViewHolder(item) {
 
         var mPosition = 0
-        var mModel: FeedReportModel? = null
+        var mModel: ReportModel? = null
 
         val mContentTv: TextView = item.findViewById(R.id.content_tv)
         val mSelectIv: ExImageView = item.findViewById(R.id.select_iv)
@@ -68,7 +67,7 @@ class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewH
             })
         }
 
-        fun bindData(position: Int, model: FeedReportModel) {
+        fun bindData(position: Int, model: ReportModel) {
             this.mPosition = position
             this.mModel = model
 
@@ -76,7 +75,7 @@ class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewH
             refreshSelected(position, model)
         }
 
-        fun refreshSelected(position: Int, model: FeedReportModel) {
+        fun refreshSelected(position: Int, model: ReportModel) {
             this.mPosition = position
             this.mModel = model
 
@@ -87,7 +86,7 @@ class FeedReportAdapter : RecyclerView.Adapter<FeedReportAdapter.FeedReportViewH
             mModel?.let {
                 it.isSelected = !it.isSelected
                 mDataList[mPosition] = it
-                this@FeedReportAdapter.notifyItemChanged(mPosition, 0)
+                this@ReportAdapter.notifyItemChanged(mPosition, 0)
             }
         }
     }

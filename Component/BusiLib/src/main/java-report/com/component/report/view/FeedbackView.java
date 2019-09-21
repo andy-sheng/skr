@@ -17,7 +17,6 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.R;
-import com.component.report.fragment.QuickFeedbackFragment;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
@@ -89,10 +88,10 @@ public class FeedbackView extends RelativeLayout {
             inflate(getContext(), R.layout.feedback_view_layout, this);
         } else if (mActionType == 2) {
             // 版权举报
-            inflate(getContext(), R.layout.copy_report_view_layout, this);
+            inflate(getContext(), R.layout.feedback_copy_view_layout, this);
         } else {
             // 举报
-            inflate(getContext(), R.layout.report_view_layout, this);
+            inflate(getContext(), R.layout.feedback_report_view_layout, this);
         }
 
 
