@@ -51,6 +51,8 @@ import com.module.feeds.IPersonFeedsWall;
 import com.module.home.R;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
+import com.module.post.IPersonPostsWall;
+import com.module.post.IPostModuleService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.ResPicker;
@@ -126,6 +128,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     PagerAdapter mPersonTabAdapter;
 
     PhotoWallView mPhotoWallView;
+    IPersonPostsWall mPostWallView;
     IPersonFeedsWall mFeedsWallView;
     ProducationWallView mProducationWallView;
 
@@ -172,6 +175,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
         }
+        if (mPostWallView != null) {
+            mPostWallView.unselected(1);
+        }
         if (mFeedsWallView != null) {
             mFeedsWallView.unselected(1);
         }
@@ -215,10 +221,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getPhotos(true);
                 }
-                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+                if (mPostWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mPostWallView.getPosts(true);
+                }
+                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 2) {
                     mFeedsWallView.getFeeds(true);
                 }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 3) {
                     mProducationWallView.getProducations(true);
                 }
             }
@@ -229,10 +238,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (mPhotoWallView != null && mPersonVp.getCurrentItem() == 0) {
                     mPhotoWallView.getMorePhotos();
                 }
-                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 1) {
+                if (mPostWallView != null && mPersonVp.getCurrentItem() == 1) {
+                    mPostWallView.getMorePosts();
+                }
+                if (mFeedsWallView != null && mPersonVp.getCurrentItem() == 2) {
                     mFeedsWallView.getMoreFeeds();
                 }
-                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 2) {
+                if (mProducationWallView != null && mPersonVp.getCurrentItem() == 3) {
                     mProducationWallView.getMoreProducations();
                 }
             }
@@ -467,6 +479,17 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     }
                     return mPhotoWallView;
                 } else if (position == 1) {
+                    // 帖子
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    if (mPostWallView == null) {
+                        IPostModuleService postModuleService = ModuleServiceManager.getInstance().getPostsService();
+                        mPostWallView = postModuleService.getPostsWall(PersonFragment4.this.getActivity(), userInfoModel, PersonFragment4.this);
+                    }
+                    if (container.indexOfChild((View) mPostWallView) == -1) {
+                        container.addView((View) mPostWallView);
+                    }
+                    return mPostWallView;
+                } else if (position == 2) {
                     // 神曲
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
                     if (mFeedsWallView == null) {
@@ -477,7 +500,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         container.addView((View) mFeedsWallView);
                     }
                     return mFeedsWallView;
-                } else if (position == 2) {
+                } else if (position == 3) {
                     // 作品
                     UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
                     if (mProducationWallView == null) {
@@ -496,7 +519,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
 
             @Override
@@ -510,8 +533,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 if (position == 0) {
                     return "相册";
                 } else if (position == 1) {
-                    return "神曲";
+                    return "帖子";
                 } else if (position == 2) {
+                    return "神曲";
+                } else if (position == 3) {
                     return "录音";
                 }
                 return "";
@@ -550,6 +575,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mSmartRefresh.setEnableLoadMore(mPhotoWallView.getMHasMore());
                 mPhotoWallView.getPhotos(false);
             }
+            if (mPostWallView != null) {
+                mPostWallView.unselected(1);
+            }
             if (mFeedsWallView != null) {
                 mFeedsWallView.unselected(1);
             }
@@ -558,15 +586,32 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         } else if (position == 1) {
             if (mFeedsWallView != null) {
-                mSmartRefresh.setEnableLoadMore(mFeedsWallView.isHasMore());
-                mFeedsWallView.selected();
+                mFeedsWallView.unselected(1);
+            }
+            if (mPostWallView != null) {
+                mSmartRefresh.setEnableLoadMore(mPostWallView.isHasMore());
+                mPostWallView.selected();
             }
             if (mProducationWallView != null) {
                 mProducationWallView.stopPlay();
             }
         } else if (position == 2) {
             if (mFeedsWallView != null) {
+                mSmartRefresh.setEnableLoadMore(mFeedsWallView.isHasMore());
+                mFeedsWallView.selected();
+            }
+            if (mPostWallView != null) {
+                mPostWallView.unselected(1);
+            }
+            if (mProducationWallView != null) {
+                mProducationWallView.stopPlay();
+            }
+        } else if (position == 3) {
+            if (mFeedsWallView != null) {
                 mFeedsWallView.unselected(1);
+            }
+            if (mPostWallView != null) {
+                mPostWallView.unselected(1);
             }
             if (mProducationWallView != null) {
                 mSmartRefresh.setEnableLoadMore(mProducationWallView.getHasMore());
@@ -695,22 +740,17 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         refreshUserInfoView();
+        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
         if (mProducationWallView != null) {
-            UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
             mProducationWallView.setUserInfoModel(userInfoModel);
         }
+        if (mFeedsWallView != null) {
+            mFeedsWallView.setUserInfoModel(userInfoModel);
+        }
+        if (mPostWallView != null) {
+            mPostWallView.setUserInfoModel(userInfoModel);
+        }
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEvent(RelationChangeEvent event) {
-//        mPresenter.getRelationNums();
-//    }
-//
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEvent(FollowNotifyEvent event) {
-//        mPresenter.getRelationNums();
-//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {
