@@ -107,6 +107,7 @@ public interface RouterConstants {
     String ACTIVITY_BATTLE_RANK = "/battle/BattleRankActivity";
 
     String ACTIVITY_POSTS_TOPIC = "/posts/PostsTopicActivity";
+    String ACTIVITY_POSTS_TOPIC_SELECT = "/posts/PostsTopicSelectActivity";
     String ACTIVITY_POSTS_DETAIL = "/posts/PostsDetailActivity";
     String ACTIVITY_POSTS_COMMENT_DETAIL = "/posts/PostsCommentDetailActivity";
     String ACTIVITY_POSTS_PUBLISH = "/posts/PostsPublishActivity";

@@ -46,6 +46,11 @@
             android:name=".publish.redpkg.PostsRedPkgEditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".publish.topic.PostsTopicSelectActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

@@ -79,7 +79,7 @@ class PostsWatchFragment : BaseFragment() {
         postsChallengeTv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
+                        .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
                         .navigation()
             }
         })

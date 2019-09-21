@@ -2,10 +2,12 @@ package com.module.posts.publish
 
 import com.common.utils.U
 import com.module.posts.publish.redpkg.RedPkgModel
+import com.module.posts.publish.topic.Topic
 import java.io.File
 import java.io.Serializable
 
 class PostsPublishModel : Serializable {
+    var topic: Topic? = null
     val imgUploadMap = LinkedHashMap<String,String>() // 本地路径->服务器url
     var recordVoiceUrl: String? = null
     var topicId = 0

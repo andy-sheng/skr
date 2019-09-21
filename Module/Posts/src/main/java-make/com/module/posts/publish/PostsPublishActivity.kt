@@ -37,6 +37,7 @@ import com.module.posts.R
 import com.module.posts.publish.img.PostsPublishImgAdapter
 import com.module.posts.publish.redpkg.PostsRedPkgEditActivity
 import com.module.posts.publish.redpkg.RedPkgModel
+import com.module.posts.publish.topic.Topic
 import com.module.posts.publish.voice.PostsVoiceRecordActivity
 import com.module.posts.publish.vote.PostsVoteEditActivity
 import com.module.posts.view.PostsAudioView
@@ -88,6 +89,8 @@ class PostsPublishActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         model = PostsPublishModel()
+        val topic = intent.getSerializableExtra("topic") as Topic
+        model.topic = topic
         mainActContainer = findViewById(R.id.main_act_container)
         titleBar = findViewById(R.id.title_bar)
         topicTv = findViewById(R.id.topic_tv)
@@ -234,6 +237,7 @@ class PostsPublishActivity : BaseActivity() {
                 finish()
             }
         })
+        topicTv.text = model.topic?.topicDesc
     }
 
     var uploading = false
