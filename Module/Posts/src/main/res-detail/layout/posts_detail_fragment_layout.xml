@@ -98,7 +98,5 @@
     <com.module.posts.detail.view.PostsInputContainerView
         android:id="@+id/feeds_input_container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>
