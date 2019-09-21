@@ -243,6 +243,51 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     } else {
                         redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
                     }
+
+                    coinTv.text = it.redpacketInfo?.redpacketDesc
+
+                    if (it.redpacketInfo?.status == 2) {
+                        //算出几个月
+                        it.redpacketInfo?.resTimeMs?.let {
+                            val hour: Long = it / (60 * 60 * 1000).toLong()
+                            val minute: Long = (it - (hour * (60 * 60 * 1000).toLong())) / (60 * 1000).toLong()
+                            val secend: Long = (it - (hour * (60 * 60 * 1000).toLong()) - (minute * (60 * 1000).toLong())) / (1000).toLong()
+
+                            var lastTime = ""
+                            if (hour >= 0) {
+                                if (hour > 9) {
+                                    lastTime = lastTime + "$hour:"
+                                } else {
+                                    lastTime = lastTime + "0$hour:"
+                                }
+                            }
+
+                            if (minute >= 0) {
+                                if (minute > 9) {
+                                    lastTime = lastTime + "$minute:"
+                                } else {
+                                    lastTime = lastTime + "0$minute:"
+                                }
+                            }
+
+                            if (secend >= 0) {
+                                if (secend > 9) {
+                                    lastTime = lastTime + "$secend"
+                                } else {
+                                    lastTime = lastTime + "0$secend"
+                                }
+                            }
+
+                            redPkgDes.text = "剩余时间：" + lastTime
+                        }
+                    } else if (it.redpacketInfo?.status == 3) {
+                        redPkgIv.setImageResource(R.drawable.gc_hongbaoguoqi)
+                        redPkgDes.text = "红包已过期"
+                    } else if (it.redpacketInfo?.status == 4) {
+                        redPkgDes.text = "红包已瓜分完毕"
+                    } else {
+                        redPkgGroup.visibility = View.GONE
+                    }
                 }
 
                 // 话题
