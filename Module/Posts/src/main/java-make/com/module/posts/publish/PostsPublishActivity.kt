@@ -21,12 +21,14 @@ import com.common.rxretrofit.subscribe
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
+import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -115,9 +117,17 @@ class PostsPublishActivity : BaseActivity() {
         imageRecyclerView.layoutManager = GridLayoutManager(this, 3)
         postsPublishImgAdapter = PostsPublishImgAdapter()
         imageRecyclerView.adapter = postsPublishImgAdapter
-        postsPublishImgAdapter.delClickListener = { _, pos ->
-            postsPublishImgAdapter.dataList.removeAt(pos)
-            postsPublishImgAdapter.notifyDataSetChanged()
+        postsPublishImgAdapter.delClickListener = { m, pos ->
+            var index = 0
+            for (v in postsPublishImgAdapter.dataList) {
+                if (m!! == v) {
+                    break
+                }
+                index++
+            }
+            model.imgUploadMap.remove(m?.path)
+            postsPublishImgAdapter.dataList.removeAt(index)
+            postsPublishImgAdapter.notifyItemRemoved(index)
             if (postsPublishImgAdapter.dataList.isEmpty()) {
                 imageRecyclerView.visibility = View.GONE
             }
@@ -153,10 +163,7 @@ class PostsPublishActivity : BaseActivity() {
 
         menuMicIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_VOICE_RECORD)
-                        .withSerializable("model", model)
-                        .navigation(this@PostsPublishActivity, PostsVoiceRecordActivity.REQ_CODE_VOICE_RECORD)
+                goMicRecordPage()
             }
         })
         menuVoteIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -207,8 +214,11 @@ class PostsPublishActivity : BaseActivity() {
             redPkgVp.visibility = View.GONE
             model.redPkg = null
         }
-        titleBar.rightImageButton.setOnClickListener {
+        titleBar.rightTextView.setOnClickListener {
             beginUploadTask()
+        }
+        titleBar.leftImageButton.setOnClickListener {
+            finish()
         }
     }
 
@@ -270,15 +280,17 @@ class PostsPublishActivity : BaseActivity() {
     }
 
     private fun uploadToOssEnd(model: PostsUploadModel?) {
-        if (hasFailedTask) {
-            U.getToastUtil().showShort("部分资源上传失败，请尝试重新上传")
-        } else {
-            uploadToServer()
+        if(!uploadQueue.hasMoreData()){
+            if (hasFailedTask) {
+                U.getToastUtil().showShort("部分资源上传失败，请尝试重新上传")
+                progressView.visibility = View.GONE
+            } else {
+                uploadToServer()
+            }
         }
     }
 
     fun beginUploadTask() {
-        progressView.visibility = View.VISIBLE
         var needUploadToOss = false
         hasFailedTask = false
         //音频上传
@@ -300,16 +312,20 @@ class PostsPublishActivity : BaseActivity() {
         }
         if (!needUploadToOss) {
             uploadToServer()
+        }else{
+            progressView.visibility = View.VISIBLE
         }
     }
 
     fun uploadToServer() {
+        var hasData = false
         val map = HashMap<String, Any>()
         if (model.recordVoiceUrl?.isNotEmpty() == true) {
             map["audios"] = listOf(mapOf(
                     "URL" to model.recordVoiceUrl,
                     "duration" to model.recordDurationMs
             ))
+            hasData = true
         }
         if (model.imgUploadMap.isNotEmpty()) {
             val l = ArrayList<String>()
@@ -317,6 +333,7 @@ class PostsPublishActivity : BaseActivity() {
                 l.add(it)
             }
             map["pictures"] = l
+            hasData = true
         }
         model.redPkg?.let {
             map["redpacket"] = mapOf(
@@ -324,12 +341,24 @@ class PostsPublishActivity : BaseActivity() {
                     "redpacketType" to it.redpacketType
             )
         }
-        map["vote"] = model.voteList
+        if (model.voteList.isNotEmpty()) {
+            map["vote"] = model.voteList
+            hasData = true
+        }
+
         map["topicID"] = model.topicId
 
 //        map["songID"] = ""
-//        map["title"] = ""
-
+        val content = contentEt.text.toString()
+        if (content.isNotEmpty()) {
+            map["title"] = content
+            hasData = true
+        }
+        if (!hasData) {
+            U.getToastUtil().showShort("内容为空")
+            return
+        }
+        progressView.visibility = View.VISIBLE
         launch {
             val api = ApiManager.getInstance().createService(PostsPublishServerApi::class.java)
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
@@ -345,16 +374,73 @@ class PostsPublishActivity : BaseActivity() {
         }
     }
 
+    var tipsDialogView: TipsDialogView? = null
+
     fun goAddImagePage() {
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
-        ResPicker.getInstance().params = ResPicker.newParamsBuilder()
-                .setMultiMode(true)
-                .setShowCamera(true)
-                .setIncludeGif(true)
-                .setCrop(false)
-                .setSelectLimit(9)
-                .build()
-        ResPickerActivity.open(this@PostsPublishActivity, ArrayList<ImageItem>(postsPublishImgAdapter.dataList))
+        if (model.recordVoicePath?.isNotEmpty() == true) {
+            //如果已经录入语音
+            tipsDialogView = TipsDialogView.Builder(this)
+                    .setMessageTip("上传图片将清空语音,是否继续")
+                    .setConfirmTip("继续")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            tipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            audioDelIv.performClick()
+                            tipsDialogView?.dismiss(false)
+                            goAddImagePage()
+                        }
+                    })
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
+            ResPicker.getInstance().params = ResPicker.newParamsBuilder()
+                    .setMultiMode(true)
+                    .setShowCamera(true)
+                    .setIncludeGif(true)
+                    .setCrop(false)
+                    .setSelectLimit(9)
+                    .build()
+            ResPickerActivity.open(this@PostsPublishActivity, ArrayList<ImageItem>(postsPublishImgAdapter.dataList))
+        }
+    }
+
+
+    fun goMicRecordPage() {
+        if (postsPublishImgAdapter.dataList.isNotEmpty()) {
+            //如果已经录入语音
+            tipsDialogView = TipsDialogView.Builder(PostsPublishActivity@ this)
+                    .setMessageTip("录入语音将清空图片，是否继续")
+                    .setConfirmTip("继续")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            tipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            postsPublishImgAdapter.dataList.clear()
+                            postsPublishImgAdapter.notifyDataSetChanged()
+                            model.imgUploadMap.clear()
+                            imageRecyclerView.visibility = View.GONE
+                            tipsDialogView?.dismiss(false)
+                            goMicRecordPage()
+                        }
+                    })
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_VOICE_RECORD)
+                    .withSerializable("model", model)
+                    .navigation(this@PostsPublishActivity, PostsVoiceRecordActivity.REQ_CODE_VOICE_RECORD)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

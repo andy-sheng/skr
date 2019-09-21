@@ -1,6 +1,6 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:SkrProgressView="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -59,6 +59,7 @@
                 android:background="@color/transparent"
                 android:gravity="left"
                 android:hint="说点什么"
+                android:maxLength="200"
                 android:minHeight="@dimen/view_70_dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black_trans_30"
@@ -97,19 +98,27 @@
                 app:layout_constraintTop_toTopOf="@+id/posts_audio_view" />
 
 
+            <android.support.constraint.Barrier
+                android:id="@+id/barrier_for_red_pkg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="posts_audio_view,image_recycler_view,content_et" />
+
+
             <com.common.view.ex.ExConstraintLayout
                 android:id="@+id/red_pkg_vp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_63_dp"
                 android:layout_marginLeft="@dimen/view_20_dp"
                 android:layout_marginRight="@dimen/view_20_dp"
+                android:visibility="gone"
                 app:bl_corners_radius="@dimen/view_8_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#f2f2f2"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/barrier_for_red_pkg">
 
                 <ImageView
                     android:id="@+id/red_pkg_iv"
@@ -159,11 +168,18 @@
                 app:layout_constraintTop_toTopOf="@+id/red_pkg_vp" />
 
 
+            <android.support.constraint.Barrier
+                android:id="@+id/barrier_for_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="posts_audio_view,image_recycler_view,content_et,red_pkg_vp" />
+
             <com.common.view.ex.ExConstraintLayout
                 android:id="@+id/vote_vp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_15_dp"
+                android:layout_marginTop="@dimen/view_20_dp"
                 android:padding="@dimen/view_10_dp"
                 android:visibility="gone"
                 app:bl_corners_radius="@dimen/view_9_dp"
@@ -171,7 +187,7 @@
                 app:bl_solid_color="#f2f8ff"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/red_pkg_vp">
+                app:layout_constraintTop_toBottomOf="@+id/barrier_for_vote">
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/vote_item1_tv"
@@ -248,67 +264,72 @@
     </ScrollView>
 
     <View
-        android:id="@+id/menu_divide_line"
-        android:layout_width="@dimen/view_1_dp"
-        android:layout_height="@dimen/view_15_dp"
-        android:layout_marginBottom="@dimen/view_14_dp"
-        android:background="@color/black_trans_20"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <View
         android:id="@+id/menu_divide_line2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
-        android:layout_marginBottom="@dimen/view_15_dp"
         android:background="@color/black_trans_20"
-        app:layout_constraintBottom_toTopOf="@+id/menu_divide_line" />
+        app:layout_constraintBottom_toTopOf="@+id/menu_vp" />
 
-    <ImageView
-        android:id="@+id/menu_pic_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/fabu_tupian"
-        app:layout_constraintBottom_toBottomOf="@id/menu_divide_line"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <com.common.view.ex.ExConstraintLayout
+        android:id="@+id/menu_vp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_54_dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        app:layout_constraintRight_toLeftOf="@+id/menu_mic_iv"
-        app:layout_constraintTop_toTopOf="@id/menu_divide_line" />
+        <View
+            android:id="@+id/menu_divide_line"
+            android:layout_width="@dimen/view_1_dp"
+            android:layout_height="@dimen/view_25_dp"
+            android:background="@color/black_trans_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ImageView
-        android:id="@+id/menu_mic_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/fabu_yuyin"
-        app:layout_constraintBottom_toBottomOf="@id/menu_divide_line"
-        app:layout_constraintLeft_toRightOf="@id/menu_pic_iv"
-        app:layout_constraintRight_toLeftOf="@+id/menu_divide_line"
-        app:layout_constraintTop_toTopOf="@id/menu_divide_line" />
-
-
-    <ImageView
-        android:id="@+id/menu_vote_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/fabu_toupiao"
-        app:layout_constraintBottom_toBottomOf="@id/menu_divide_line"
-        app:layout_constraintLeft_toRightOf="@+id/menu_divide_line"
-        app:layout_constraintRight_toLeftOf="@id/menu_red_pkg_iv"
-        app:layout_constraintTop_toTopOf="@id/menu_divide_line" />
+        <ImageView
+            android:id="@+id/menu_pic_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fabu_tupian"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/menu_mic_iv"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
-        android:id="@+id/menu_red_pkg_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/fabu_hongbao"
-        app:layout_constraintBottom_toBottomOf="@id/menu_divide_line"
-        app:layout_constraintLeft_toRightOf="@+id/menu_vote_iv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/menu_divide_line"
-        />
+        <ImageView
+            android:id="@+id/menu_mic_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fabu_yuyin"
+            app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
+            app:layout_constraintLeft_toRightOf="@id/menu_pic_iv"
+            app:layout_constraintRight_toLeftOf="@+id/menu_divide_line"
+            app:layout_constraintTop_toTopOf="@id/menu_pic_iv" />
+
+
+        <ImageView
+            android:id="@+id/menu_vote_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fabu_toupiao"
+            app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
+            app:layout_constraintLeft_toRightOf="@+id/menu_divide_line"
+            app:layout_constraintRight_toLeftOf="@id/menu_red_pkg_iv"
+            app:layout_constraintTop_toTopOf="@id/menu_pic_iv" />
+
+
+        <ImageView
+            android:id="@+id/menu_red_pkg_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fabu_hongbao"
+            app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
+            app:layout_constraintLeft_toRightOf="@+id/menu_vote_iv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/menu_pic_iv" />
+    </com.common.view.ex.ExConstraintLayout>
 
 
     <com.component.busilib.view.SkrProgressView
