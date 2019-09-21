@@ -54,11 +54,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_20_dp"
                 android:layout_marginTop="@dimen/view_16_dp"
-                android:minHeight="@dimen/view_70_dp"
                 android:layout_marginRight="@dimen/view_20_dp"
                 android:background="@color/transparent"
                 android:gravity="left"
                 android:hint="说点什么"
+                android:minHeight="@dimen/view_70_dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black_trans_30"
                 android:textSize="@dimen/textsize_14_dp"
@@ -95,59 +95,67 @@
                 app:layout_constraintRight_toRightOf="@+id/posts_audio_view"
                 app:layout_constraintTop_toTopOf="@+id/posts_audio_view" />
 
-            <android.support.constraint.ConstraintLayout
+
+            <com.common.view.ex.ExConstraintLayout
                 android:id="@+id/red_pkg_vp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_83_dp"
-                android:background="@color/black_trans_5"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/posts_audio_view">
+                android:layout_height="@dimen/view_63_dp"
+                android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_marginRight="@dimen/view_20_dp"
+                app:bl_corners_radius="@dimen/view_8_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#f2f2f2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_63_dp"
-                    android:background="@color/white"
+                <ImageView
+                    android:id="@+id/red_pkg_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/view_20_dp"
+                    android:src="@drawable/fabu_hongbao"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/red_pkg_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/view_20_dp"
-                        android:src="@drawable/recommend_more_user"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/red_pkg_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/view_12_dp"
+                    android:layout_marginTop="@dimen/view_15_dp"
+                    android:text="30金币"
+                    android:textColor="@color/black_trans_80"
+                    android:textSize="@dimen/view_14_dp"
+                    app:layout_constraintLeft_toRightOf="@+id/red_pkg_iv"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/red_pkg_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/view_12_dp"
-                        android:layout_marginTop="@dimen/view_15_dp"
-                        android:text="30金币"
-                        android:textColor="@color/black_trans_80"
-                        android:textSize="@dimen/view_14_dp"
-                        app:layout_constraintLeft_toRightOf="@+id/red_pkg_iv"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/red_pkg_valid_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:text="有效时间：72小时"
+                    android:textColor="@color/black_trans_30"
+                    android:textSize="@dimen/view_10_dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/red_pkg_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/red_pkg_tv" />
 
-                    <TextView
-                        android:id="@+id/red_pkg_valid_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/view_3_dp"
-                        android:text="有效时间：72小时"
-                        android:textColor="@color/black_trans_30"
-                        android:textSize="@dimen/view_10_dp"
-                        app:layout_constraintLeft_toLeftOf="@+id/red_pkg_tv"
-                        app:layout_constraintTop_toBottomOf="@+id/red_pkg_tv" />
+            </com.common.view.ex.ExConstraintLayout>
 
-                </android.support.constraint.ConstraintLayout>
 
-            </android.support.constraint.ConstraintLayout>
+            <ImageView
+                android:id="@+id/red_pkg_del_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fabu_shanchu"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/red_pkg_vp"
+                app:layout_constraintLeft_toRightOf="@+id/red_pkg_vp"
+                app:layout_constraintRight_toRightOf="@+id/red_pkg_vp"
+                app:layout_constraintTop_toTopOf="@+id/red_pkg_vp" />
 
 
             <com.common.view.ex.ExConstraintLayout

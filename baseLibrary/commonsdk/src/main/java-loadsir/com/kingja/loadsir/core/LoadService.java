@@ -27,9 +27,16 @@ public class LoadService<T> {
         View oldContent = targetContext.getOldContent();
         ViewGroup.LayoutParams oldLayoutParams = oldContent.getLayoutParams();
         loadLayout = new LoadLayout(context, onReloadListener);
+        //问题在于这个 SuccessCallback
         loadLayout.setupSuccessLayout(new SuccessCallback(oldContent, context,
                 onReloadListener));
+        // loadLayout 包裹一下Rv 再放到 Constraint 里
         if (targetContext.getParentView() != null) {
+            /**
+             * 注意！！！！！
+             * 新加，把id 赋值给 loadLayout 让依赖继续
+             */
+            loadLayout.setId(oldContent.getId());
             targetContext.getParentView().addView(loadLayout, targetContext.getChildIndex(), oldLayoutParams);
         }
         initCallback(builder);
@@ -73,6 +80,7 @@ public class LoadService<T> {
 
     /**
      * obtain rootView if you want keep the toolbar in Fragment
+     *
      * @since 1.2.2
      * @deprecated
      */

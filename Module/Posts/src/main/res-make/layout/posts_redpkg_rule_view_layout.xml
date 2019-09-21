@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#7187FF">
+
+    <TextView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:textStyle="bold"
+        android:text="红包规则"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textColor="@color/white"/>
+
+    <com.common.view.ex.ExLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_30_dp"
+        android:paddingBottom="@dimen/view_30_dp"
+        android:orientation="vertical"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#576FE3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_title"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_1" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="红包分为金币红包和钻石红包"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_2" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="红包发出后，到达截止时间，将由赞数最高的前10人平分红包"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_3" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="若评论无赞时，将取最先评论的前10位平分红包"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_4" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="未发出的红包将退换回发帖人账户"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
+
+    </com.common.view.ex.ExLinearLayout>
+
+</com.common.view.ex.ExLinearLayout>

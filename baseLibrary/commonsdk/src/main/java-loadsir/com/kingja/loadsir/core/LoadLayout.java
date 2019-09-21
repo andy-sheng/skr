@@ -1,10 +1,13 @@
 package com.kingja.loadsir.core;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.common.log.MyLog;
 import com.kingja.loadsir.LoadSirUtil;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.callback.SuccessCallback;
@@ -39,9 +42,12 @@ public class LoadLayout extends FrameLayout {
 
     public void setupSuccessLayout(Callback callback) {
         addCallback(callback);
-        View successView = callback.getRootView();
-        successView.setVisibility(View.GONE);
-        addView(successView);
+        View successView = callback.getRootView(); // 这里就是RV
+        successView.setVisibility(View.VISIBLE); // View 隐藏
+        /**
+         * 但是会改变ConstraintLayout 的层级
+         */
+        addView(successView); // 加到 FrameLayout
         curCallback = SuccessCallback.class;
     }
 

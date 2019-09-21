@@ -1,0 +1,32 @@
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_78_dp"
+    android:layout_height="@dimen/view_103_dp"
+    android:layout_margin="@dimen/view_5_dp"
+    app:bl_corners_radius="@dimen/view_11_dp"
+    app:bl_selected_drawable="@drawable/hongbao_xuanzhongtai"
+    app:bl_shape="rectangle"
+    app:bl_unSelected_drawable="@drawable/hongbao_item_bg">
+
+    <ImageView
+        android:id="@+id/coin_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:src="@drawable/hongbao_jinbi"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/coin_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_15_dp"
+        android:text="20金币"
+        android:textColor="@color/black"
+        android:textSize="@dimen/view_12_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coin_iv" />
+</com.common.view.ex.ExConstraintLayout>

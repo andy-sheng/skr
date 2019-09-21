@@ -67,6 +67,11 @@ public class LoadSir {
         private List<Callback> callbacks = new ArrayList<>();
         private Class<? extends Callback> defaultCallback;
 
+        /**
+         * {@link com.kingja.loadsir.callback.ProgressCallback}
+         * @param callback
+         * @return
+         */
         public Builder addCallback(@NonNull Callback callback) {
             callbacks.add(callback);
             return this;
