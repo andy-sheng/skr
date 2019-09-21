@@ -6,6 +6,13 @@ import com.alibaba.fastjson.annotation.JSONField
 
 // 帖子信息
 class PostsModel : Serializable {
+    
+    companion object {
+        const val EPS_UNAUDIT = 1       //未审核
+        const val EPS_AUDIT_REJECT = 2  //审核拒绝(失败）
+        const val EPS_AUDIT_ACCEPT = 3  //审核接受（成功）
+    }
+
     @JSONField(name = "audios")
     var audios: List<PostsResoureModel>? = null
     @JSONField(name = "createdAt")
@@ -24,6 +31,8 @@ class PostsModel : Serializable {
     var videos: List<PostsResoureModel?>? = null
     @JSONField(name = "voteInfo")
     var voteInfo: PostsVoteModel? = null
+    @JSONField(name = "status")
+    var status: Int = 0
 
     override fun toString(): String {
         return "PostsModel(audios=$audios, createdAt=$createdAt, pictures=$pictures, postsID=$postsID, redpacketInfo=$redpacketInfo, title='$title', topicInfo=$topicInfo, videos=$videos, voteInfo=$voteInfo)"

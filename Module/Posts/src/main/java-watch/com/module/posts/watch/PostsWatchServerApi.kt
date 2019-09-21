@@ -55,4 +55,14 @@ interface PostsWatchServerApi {
     @GET("/v1/posts/redpacket-detail")
     fun getRedPkgDetail(@Query("userID") userID: Long, @Query("redpacketID") redpacketID: Long): Call<ApiResult>
 
+    /**
+     * 个人主页，帖子列表
+     * postsListType EPHLT_ALL = 1 : 所有的帖子（未审核状态+审核成功状态） EPHLT_AUDIT_SUCCESS = 2 : 审核通过的帖子
+     */
+    @GET("/v1/posts/homepage-posts-list")
+    fun getHomePagePostsList(@Query("offset") offset: Int,
+                             @Query("cnt") cnt: Int,
+                             @Query("userID") userID: Long,
+                             @Query("postsUserID") postsUserID: Long,
+                             @Query("postsListType") postsListType: Int): Call<ApiResult>
 }

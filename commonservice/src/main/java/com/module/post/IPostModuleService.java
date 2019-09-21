@@ -6,5 +6,8 @@ import com.alibaba.android.arouter.facade.template.IProvider;
 import com.module.feeds.IPersonFeedsWall;
 
 public interface IPostModuleService extends IProvider {
+
     Fragment getFragment();
+
+    IPersonPostsWall getPostsWall(Object activity,Object userInfo, Object requestCall );
 }

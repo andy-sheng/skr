@@ -288,7 +288,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     // 加载更多数据
     abstract fun getMorePosts()
 
-    fun destory() {
+    open fun destory() {
         cancel()
     }
 }
