@@ -182,44 +182,58 @@ class PostsPublishActivity : BaseActivity() {
                         .navigation(this@PostsPublishActivity, PostsRedPkgEditActivity.REQ_CODE_RED_PKG_EDIT)
             }
         })
-        audioDelIv.setOnClickListener {
-            model.recordVoicePath = null
-            model.recordDurationMs = 0
-            model.recordVoiceUrl = null
-            postsAudioView.visibility = View.GONE
-            audioDelIv.visibility = View.GONE
-        }
-        postsAudioView.setOnClickListener {
-            if (postsAudioView.isPlaying) {
-                SinglePlayer.stop(playerTag)
-                postsAudioView.setPlay(false)
-            } else {
-                SinglePlayer.startPlay(playerTag, model.recordVoicePath ?: "")
-                postsAudioView.setPlay(true)
+        audioDelIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                model.recordVoicePath = null
+                model.recordDurationMs = 0
+                model.recordVoiceUrl = null
+                postsAudioView.visibility = View.GONE
+                audioDelIv.visibility = View.GONE
             }
-        }
+        })
+
+        postsAudioView.setOnClickListener (object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                if (postsAudioView.isPlaying) {
+                    SinglePlayer.stop(playerTag)
+                    postsAudioView.setPlay(false)
+                } else {
+                    SinglePlayer.startPlay(playerTag, model.recordVoicePath ?: "")
+                    postsAudioView.setPlay(true)
+                }
+            }
+        })
         SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 postsAudioView.setPlay(false)
             }
         })
-        voteDelIv.setOnClickListener {
-            voteVp.visibility = View.GONE
-            voteDelIv.visibility = View.GONE
-            model.voteList.clear()
-        }
-        redPkgDelIv.setOnClickListener {
-            redPkgDelIv.visibility = View.GONE
-            redPkgVp.visibility = View.GONE
-            model.redPkg = null
-        }
-        titleBar.rightTextView.setOnClickListener {
-            beginUploadTask()
-        }
-        titleBar.leftImageButton.setOnClickListener {
-            finish()
-        }
+        voteDelIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                voteVp.visibility = View.GONE
+                voteDelIv.visibility = View.GONE
+                model.voteList.clear()
+            }
+        })
+
+        redPkgDelIv.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                redPkgDelIv.visibility = View.GONE
+                redPkgVp.visibility = View.GONE
+                model.redPkg = null
+            }
+        })
+        titleBar.rightTextView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                beginUploadTask()
+            }
+        })
+        titleBar.leftImageButton.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View?) {
+                finish()
+            }
+        })
     }
 
     var uploading = false
@@ -281,7 +295,7 @@ class PostsPublishActivity : BaseActivity() {
     }
 
     private fun uploadToOssEnd(model: PostsUploadModel?) {
-        if(!uploadQueue.hasMoreData()){
+        if (!uploadQueue.hasMoreData()) {
             if (hasFailedTask) {
                 U.getToastUtil().showShort("部分资源上传失败，请尝试重新上传")
                 progressView.visibility = View.GONE
@@ -313,7 +327,7 @@ class PostsPublishActivity : BaseActivity() {
         }
         if (!needUploadToOss) {
             uploadToServer()
-        }else{
+        } else {
             progressView.visibility = View.VISIBLE
         }
     }
