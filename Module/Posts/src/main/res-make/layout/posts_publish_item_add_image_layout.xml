@@ -1,6 +1,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
+    android:layout_marginTop="@dimen/view_10_dp"
     android:layout_width="@dimen/view_116_dp"
     android:layout_height="@dimen/view_116_dp">
 

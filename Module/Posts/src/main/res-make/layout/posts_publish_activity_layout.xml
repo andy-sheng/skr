@@ -21,7 +21,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/menu_vp"
         app:layout_constraintTop_toBottomOf="@+id/title_bar">
 
         <android.support.constraint.ConstraintLayout
@@ -72,8 +75,8 @@
                 android:id="@+id/image_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_20_dp"
-                android:layout_marginRight="@dimen/view_20_dp"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/content_et" />
 
@@ -111,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_63_dp"
                 android:layout_marginLeft="@dimen/view_20_dp"
+                android:layout_marginTop="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_20_dp"
                 android:visibility="gone"
                 app:bl_corners_radius="@dimen/view_8_dp"
@@ -337,7 +341,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        SkrProgressView:progressText="上传中" />
+        app:progressText="上传中"
+         />
 
 
 </android.support.constraint.ConstraintLayout>

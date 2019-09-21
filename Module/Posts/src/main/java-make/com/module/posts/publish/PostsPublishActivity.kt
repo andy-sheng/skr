@@ -230,6 +230,7 @@ class PostsPublishActivity : BaseActivity() {
             if (uploading) {
                 return null
             }
+            uploading = true
             return this@PostsPublishActivity
         }
 
@@ -301,12 +302,12 @@ class PostsPublishActivity : BaseActivity() {
             }
         }
         //图片上传
-        if (postsPublishImgAdapter.dataList.isNullOrEmpty()) {
+        if (!postsPublishImgAdapter.dataList.isNullOrEmpty()) {
             for (local in postsPublishImgAdapter.dataList) {
                 if (!model.imgUploadMap.containsKey(local.path)) {
                     //没有上传
                     needUploadToOss = true
-                    uploadQueue.add(PostsUploadModel(1, local.path), true)
+                    uploadQueue.add(PostsUploadModel(2, local.path), true)
                 }
             }
         }
@@ -495,6 +496,11 @@ class PostsPublishActivity : BaseActivity() {
                 redPkgTv.text = this.model.redPkg?.redpacketDesc
             }
         }
+    }
+
+    override fun destroy() {
+        super.destroy()
+        uploadQueue.destroy()
     }
 
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
