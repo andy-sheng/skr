@@ -17,7 +17,8 @@ import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
-import com.module.posts.dialog.PostsMoreDialogView
+import com.module.posts.more.PostsMoreDialogView
+import com.module.posts.redpkg.PostsRedPkgDialogView
 import com.module.posts.watch.PostsWatchServerApi
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
@@ -64,7 +65,14 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     private val recyclerView: RecyclerView
 
     var adapter: PostsWatchViewAdapter? = null
+
     var postsMoreDialogView: PostsMoreDialogView? = null
+    var postsRedPkgDialogView: PostsRedPkgDialogView? = null
+
+    fun dismissDialog() {
+        postsMoreDialogView?.dismiss(false)
+        postsRedPkgDialogView?.dismiss(false)
+    }
 
     init {
         View.inflate(context, R.layout.posts_watch_view_layout, this)
@@ -81,6 +89,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsMore(position: Int, model: PostsWatchModel?) {
+                dismissDialog()
                 onClickMore(position, model)
             }
 
@@ -102,7 +111,12 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsRedPkg(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickPostsRedPkg")
+                dismissDialog()
+                model?.posts?.redpacketInfo?.let {
+                    postsRedPkgDialogView?.dismiss(false)
+                    postsRedPkgDialogView = PostsRedPkgDialogView(activity, it)
+                    postsRedPkgDialogView?.showByDialog()
+                }
             }
 
             override fun onClickPostsTopic(position: Int, model: PostsWatchModel?) {

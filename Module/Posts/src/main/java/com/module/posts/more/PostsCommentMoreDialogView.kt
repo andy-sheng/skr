@@ -1,63 +1,47 @@
-package com.module.posts.dialog
+package com.module.posts.more
 
 import android.app.Activity
 import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.view.View
-import com.alibaba.android.arouter.launcher.ARouter
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
-import com.module.RouterConstants
 import com.module.posts.R
-import com.module.posts.watch.model.PostsWatchModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 
-/**
- * // 更多的弹窗
- * 举报和取消 //首页
- * 举报和取消 //详情页面
- * 举报和取消 或者 删除和取消//个人中心
- */
-class PostsMoreDialogView(var activity: Activity, val from: Int, val model: PostsWatchModel) : ConstraintLayout(activity) {
+//todo 评论的举报
+class PostsCommentMoreDialogView(var activity: Activity) : ConstraintLayout(activity) {
 
     var mDialogPlus: DialogPlus? = null
 
-    companion object {
-        const val FROM_POSTS_HOME = 1    //帖子首页
-        const val FROM_POSTS_TOPIC = 2   //话题下的帖子
-        const val FROM_POSTS_DETAIL = 3  //帖子详情
-        const val FROM_POSTS_PERSON = 4  //个人中心(自己或者他人)
-    }
-
     val cancleTv: ExTextView
     val reportTv: ExTextView
+    val deleteTv: ExTextView
+    val dividerDelete: View
+    val replyTv: ExTextView
+    val dividerReply: View
 
     init {
-        View.inflate(context, R.layout.posts_more_dialog_view_layout, this)
+        View.inflate(context, R.layout.posts_comment_more_dialog_view_layout, this)
 
-        cancleTv = rootView.findViewById(R.id.cancle_tv)
-        reportTv = rootView.findViewById(R.id.report_tv)
+        cancleTv = this.findViewById(R.id.cancle_tv)
+        reportTv = this.findViewById(R.id.report_tv)
+        deleteTv = this.findViewById(R.id.delete_tv)
+        dividerDelete = this.findViewById(R.id.divider_delete)
+        replyTv = this.findViewById(R.id.reply_tv)
+        dividerReply = this.findViewById(R.id.divider_reply)
 
         cancleTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                dismiss()
+
             }
         })
 
         reportTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                // 举报
-                dismiss(false)
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
-                        .withInt("from", from)
-                        .withInt("targetID", model.user?.userId ?: 0)
-                        .withLong("postsID", model.posts?.postsID ?: 0)
-                        .navigation()
+
             }
         })
     }

@@ -8,7 +8,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.component.person.view.RequestCallBack
-import com.module.posts.dialog.PostsMoreDialogView
+import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsTopicModel
 import com.module.posts.watch.model.PostsTopicTabModel
 import com.module.posts.watch.model.PostsWatchModel

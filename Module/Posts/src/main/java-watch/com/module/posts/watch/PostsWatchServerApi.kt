@@ -51,4 +51,8 @@ interface PostsWatchServerApi {
                           @Query("topicID") topicID: Long,
                           @Query("tab") tab: Int): Call<ApiResult>
 
+
+    @GET("/v1/posts/redpacket-detail")
+    fun getRedPkgDetail(@Query("userID") userID: Long, @Query("redpacketID") redpacketID: Long): Call<ApiResult>
+
 }

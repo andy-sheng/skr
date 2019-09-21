@@ -7,7 +7,7 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.person.view.RequestCallBack
-import com.module.posts.dialog.PostsMoreDialogView
+import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsWatchModel
 
 class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserInfoModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_PERSON) {

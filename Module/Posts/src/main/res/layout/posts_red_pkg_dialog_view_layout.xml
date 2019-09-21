@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_434_dp"
+    android:layout_gravity="center_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/posts_red_pkg_bg">
+
+    <TextView
+        android:id="@+id/redpkg_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_42_dp"
+        android:gravity="center"
+        android:text="10金币"
+        android:textStyle="bold"
+        android:textSize="@dimen/textsize_30_dp"
+        android:textColor="#FF2B38"
+        android:layout_marginTop="@dimen/view_48_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/redpkg_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/redpkg_num_tv"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/left_recycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.167"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/right_recycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.833"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintLeft_toRightOf="@id/left_recycle"
+        app:layout_constraintRight_toLeftOf="@id/right_recycle"
+        app:layout_constraintTop_toBottomOf="@id/redpkg_desc_tv"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginBottom="@dimen/view_100_dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/redpkg_status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/redpkg_num_tv"
+        android:layout_marginTop="@dimen/view_84_dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        android:text="倒计时结束，评论赞数最高十人平分红包"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="@dimen/view_14_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</android.support.constraint.ConstraintLayout>

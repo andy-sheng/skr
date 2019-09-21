@@ -19,7 +19,7 @@ import com.component.report.view.ReportView
 import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.posts.R
-import com.module.posts.dialog.PostsMoreDialogView
+import com.module.posts.more.PostsMoreDialogView
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.HashMap

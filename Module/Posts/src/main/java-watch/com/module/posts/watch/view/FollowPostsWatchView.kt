@@ -7,7 +7,7 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
-import com.module.posts.dialog.PostsMoreDialogView
+import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
