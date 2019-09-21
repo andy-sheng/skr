@@ -2,7 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginBottom="@dimen/view_10_dp">
 
     <ImageView
         android:id="@+id/more_iv"
@@ -168,13 +170,5 @@
         app:bl_shape="rectangle"
         app:bl_corners_radius="@dimen/textsize_12_dp"
         app:bl_solid_color="#DEF4FF"/>
-
-    <View
-        android:id="@+id/place_bottom_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_54_dp"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        android:background="@color/black_trans_5"/>
 
 </android.support.constraint.ConstraintLayout>

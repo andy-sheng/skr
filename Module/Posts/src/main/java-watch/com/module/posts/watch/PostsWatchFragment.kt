@@ -32,7 +32,6 @@ import kotlin.properties.Delegates
 class PostsWatchFragment : BaseFragment() {
 
     private var title: CommonTitleBar? = null
-    private var navigationBgIv: ImageView? = null
     private var divider: View? = null
     private var postsTab: SlidingTabLayout? = null
     private var postsChallengeTv: ExTextView? = null
@@ -70,7 +69,6 @@ class PostsWatchFragment : BaseFragment() {
 
     override fun initData(savedInstanceState: Bundle?) {
         title = rootView.findViewById(R.id.title)
-        navigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
         divider = rootView.findViewById(R.id.divider)
         postsTab = rootView.findViewById(R.id.posts_tab)
         postsChallengeTv = rootView.findViewById(R.id.posts_challenge_tv)
@@ -85,12 +83,12 @@ class PostsWatchFragment : BaseFragment() {
         })
         postsTab?.apply {
             setCustomTabView(R.layout.posts_tab_view_layout, R.id.tab_tv)
-            setSelectedIndicatorColors(U.getColor(R.color.black_trans_80))
             setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
             setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
             setTitleSize(14f)
             setSelectedTitleSize(24f)
             setIndicatorWidth(16f.dp())
+            setSelectedIndicatorColors(U.getColor(R.color.transparent))
             setSelectedIndicatorThickness(4f.dp().toFloat())
             setIndicatorCornorRadius(2f.dp().toFloat())
         }
