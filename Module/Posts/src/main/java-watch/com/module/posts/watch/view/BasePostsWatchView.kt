@@ -167,7 +167,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 } else {
                     model?.posts?.topicInfo?.let {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC)
-                                .withSerializable("topicInfo", it)
+                                .withLong("topicID", it.topicID)
                                 .navigation()
                     }
                 }

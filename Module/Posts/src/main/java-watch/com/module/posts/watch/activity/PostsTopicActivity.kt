@@ -57,7 +57,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     private var topDesc: TextView? = null
     private var ivBack: ExImageView? = null
 
-    var topicInfo: PostsTopicModel? = null
+    var topicID: Long = 0L  // 必须带过来的
     val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
 
     var topicPostsViews: HashMap<Int, TopicPostsWatchView> = HashMap()
@@ -70,8 +70,8 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        topicInfo = intent.getSerializableExtra("topicInfo") as PostsTopicModel?
-        if (topicInfo == null) {
+        topicID = intent.getLongExtra("topicID", 0)
+        if (topicID == 0L) {
             finish()
             return
         }
@@ -161,8 +161,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     private fun getTopicDetail() {
         launch {
             val result = subscribe(RequestControl("getTopicDetail", ControlType.CancelThis)) {
-                postsWatchServerApi.getTopicDetail(MyUserInfoManager.getInstance().uid, topicInfo?.topicID
-                        ?: 0)
+                postsWatchServerApi.getTopicDetail(MyUserInfoManager.getInstance().uid, topicID)
             }
             if (result.errno == 0) {
                 val detail = JSON.parseObject(result.data.toJSONString(), PostsTopicDetailModel::class.java)
@@ -205,7 +204,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     private fun getTopicTabs() {
         launch {
             val result = subscribe(RequestControl("getTopicTabs", ControlType.CancelThis)) {
-                postsWatchServerApi.getTopicTabs(topicInfo?.topicID ?: 0)
+                postsWatchServerApi.getTopicTabs(topicID)
             }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("tabs"), PostsTopicTabModel::class.java)
@@ -241,7 +240,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
 
                 val tabModel = list[position]
                 if (!topicPostsViews.containsKey(tabModel.tabType)) {
-                    topicPostsViews[tabModel.tabType] = TopicPostsWatchView(this@PostsTopicActivity, topicInfo, tabModel, this@PostsTopicActivity)
+                    topicPostsViews[tabModel.tabType] = TopicPostsWatchView(this@PostsTopicActivity, topicID, tabModel, this@PostsTopicActivity)
                 }
                 val view = topicPostsViews[tabModel.tabType]
                 if (position == 0) {

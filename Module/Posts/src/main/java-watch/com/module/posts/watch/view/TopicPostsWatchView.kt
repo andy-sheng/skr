@@ -14,7 +14,7 @@ import com.module.posts.watch.model.PostsTopicTabModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
-class TopicPostsWatchView(activity: FragmentActivity, val topicInfo: PostsTopicModel?, val model: PostsTopicTabModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_TOPIC) {
+class TopicPostsWatchView(activity: FragmentActivity, val topicID: Long, val model: PostsTopicTabModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_TOPIC) {
 
     override fun selected() {
         super.selected()
@@ -46,8 +46,7 @@ class TopicPostsWatchView(activity: FragmentActivity, val topicInfo: PostsTopicM
     private fun getTopicPosts(off: Int, isClear: Boolean) {
         launch {
             val result = subscribe(RequestControl("getTopicPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getTopicPostsList(off, mCNT, MyUserInfoManager.getInstance().uid, topicInfo?.topicID
-                        ?: 0, model.tabType)
+                postsWatchServerApi.getTopicPostsList(off, mCNT, MyUserInfoManager.getInstance().uid, topicID, model.tabType)
             }
             if (result.errno == 0) {
                 mHasInitData = true
