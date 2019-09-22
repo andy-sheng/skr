@@ -40,7 +40,7 @@ import com.module.feeds.rank.FeedsRankServerApi
 import com.module.feeds.rank.adapter.FeedRankDetailAdapter
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout

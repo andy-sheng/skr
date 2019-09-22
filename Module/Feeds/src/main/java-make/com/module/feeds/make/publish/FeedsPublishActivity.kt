@@ -38,7 +38,7 @@ import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
 import com.module.feeds.make.make.FeedsMakeActivity
 import com.module.feeds.make.model.FeedsPublishTagModel
-import com.module.feeds.watch.model.FeedTagModel
+import com.component.busilib.model.FeedTagModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine

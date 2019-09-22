@@ -2,7 +2,7 @@ package com.module.feeds.detail.manager
 
 import com.common.log.MyLog
 import com.common.videocache.MediaCacheManager
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import java.util.*
 import kotlin.collections.ArrayList

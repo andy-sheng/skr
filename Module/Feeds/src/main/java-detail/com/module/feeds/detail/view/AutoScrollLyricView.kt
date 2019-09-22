@@ -12,7 +12,7 @@ import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.*
 
@@ -36,7 +36,7 @@ class AutoScrollLyricView(viewStub: ViewStub, var showName: Boolean = false) : E
         return R.layout.auto_scroll_lyric_view_layout
     }
 
-    override fun setSongModel(feedSongModel: FeedSongModel,shift:Int) {
+    override fun setSongModel(feedSongModel: FeedSongModel, shift:Int) {
         mFeedSongModel = feedSongModel
         this.shift = shift
     }

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import com.module.feeds.R
 import com.module.feeds.songmanage.model.FeedSongInfoModel
 import com.module.feeds.songmanage.viewholder.FeedSongViewHolder
-import com.module.feeds.watch.model.FeedSongModel
 
 class FeedSongManageAdapter(val listener: FeedSongManageListener) : RecyclerView.Adapter<FeedSongViewHolder>() {
 

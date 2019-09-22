@@ -1,4 +1,4 @@
-package com.module.feeds.watch.model
+package com.component.busilib.model
 
 import android.text.TextUtils
 import com.alibaba.fastjson.annotation.JSONField

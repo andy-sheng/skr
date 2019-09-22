@@ -1,7 +1,7 @@
 package com.module.feeds.songmanage.model
 
 import com.alibaba.fastjson.annotation.JSONField
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 import java.io.Serializable
 
 class FeedSongInfoModel : Serializable {

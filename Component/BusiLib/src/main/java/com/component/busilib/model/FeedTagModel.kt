@@ -1,4 +1,4 @@
-package com.module.feeds.watch.model
+package com.component.busilib.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable

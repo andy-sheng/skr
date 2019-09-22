@@ -10,7 +10,6 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
-import com.common.videocache.MediaCacheManager
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.event.FeedPublishSucessEvent
@@ -18,7 +17,6 @@ import com.component.person.view.RequestCallBack
 import com.dialog.view.TipsDialogView
 import com.module.feeds.IPersonFeedsWall
 import com.module.feeds.detail.manager.add2SongPlayModeManager
-import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import kotlinx.coroutines.launch

@@ -5,12 +5,10 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import com.common.view.AnimateClickListener
-import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.feeds.R
 import com.module.feeds.songmanage.adapter.FeedSongManageListener
 import com.module.feeds.songmanage.model.FeedSongInfoModel
-import com.module.feeds.watch.model.FeedSongModel
 
 class FeedSongViewHolder(itemView: View, val listener: FeedSongManageListener) : RecyclerView.ViewHolder(itemView) {
 

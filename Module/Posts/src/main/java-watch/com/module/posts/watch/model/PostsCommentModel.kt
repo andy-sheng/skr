@@ -2,6 +2,7 @@ package com.module.posts.watch.model
 
 import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
+import com.component.busilib.model.FeedSongModel
 
 
 class PostsCommentModel : Serializable {
@@ -19,6 +20,8 @@ class PostsCommentModel : Serializable {
     var pictures: List<String>? = null
     @JSONField(name = "postsID")
     var postsID: Long = 0L
+    @JSONField(name = "songInfo")
+    var song: FeedSongModel? = null
     @JSONField(name = "userID")
     var userID: Int = 0
     @JSONField(name = "videos")

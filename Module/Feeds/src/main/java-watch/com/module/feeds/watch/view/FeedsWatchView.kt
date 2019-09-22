@@ -41,7 +41,7 @@
 //import com.module.feeds.statistics.FeedsPlayStatistics
 //import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 //import com.module.feeds.watch.listener.FeedsListener
-//import com.module.feeds.watch.model.FeedSongModel
+//import com.component.busilib.model.FeedSongModel
 //import com.module.feeds.watch.model.FeedsWatchModel
 //import com.module.feeds.watch.presenter.FeedWatchViewPresenter
 //import com.module.feeds.watch.viewholder.FeedViewHolder

@@ -6,7 +6,7 @@ import android.view.ViewStub
 import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.detail.view.inter.BaseFeedsLyricView
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 
 /**
  * 可以播伴奏清唱等多种歌词

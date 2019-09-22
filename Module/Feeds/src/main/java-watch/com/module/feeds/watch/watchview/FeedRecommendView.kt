@@ -55,7 +55,7 @@ import com.module.feeds.event.FeedsCollectChangeEvent
 import com.module.feeds.statistics.FeedPage
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.*
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import kotlinx.coroutines.*

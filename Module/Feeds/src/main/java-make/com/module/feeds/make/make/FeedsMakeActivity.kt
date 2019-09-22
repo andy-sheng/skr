@@ -41,8 +41,8 @@ import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.*
 import com.module.feeds.make.editor.FeedsEditorActivity
-import com.module.feeds.watch.model.FeedSongModel
-import com.module.feeds.watch.model.FeedSongTpl
+import com.component.busilib.model.FeedSongModel
+import com.component.busilib.model.FeedSongTpl
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe

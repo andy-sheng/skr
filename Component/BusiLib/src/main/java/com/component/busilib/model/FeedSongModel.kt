@@ -1,7 +1,6 @@
-package com.module.feeds.watch.model
+package com.component.busilib.model
 
 import android.text.TextUtils
-import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 

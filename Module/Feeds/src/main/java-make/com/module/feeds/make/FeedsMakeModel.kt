@@ -3,8 +3,7 @@ package com.module.feeds.make
 import com.common.utils.U
 import com.component.lyrics.LyricsReader
 import java.io.Serializable
-import com.module.feeds.watch.model.FeedSongModel
-import com.module.feeds.watch.model.FeedSongTpl
+import com.component.busilib.model.FeedSongModel
 
 class FeedsMakeModel : Serializable {
 

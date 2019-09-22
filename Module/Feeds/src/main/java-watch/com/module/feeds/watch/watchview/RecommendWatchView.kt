@@ -3,7 +3,6 @@ package com.module.feeds.watch.watchview
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.log.MyLog
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -13,7 +12,6 @@ import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.recommend.RA
 import com.module.feeds.detail.manager.add2SongPlayModeManager
 import com.module.feeds.watch.model.FeedRecommendTagModel
-import com.module.feeds.watch.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.view.FeedsMoreDialogView
 import kotlinx.coroutines.delay

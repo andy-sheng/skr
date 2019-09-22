@@ -48,7 +48,7 @@ import com.module.feeds.watch.*
 import com.module.feeds.watch.adapter.FeedCollectListener
 import com.module.feeds.watch.adapter.FeedsCollectViewAdapter
 import com.module.feeds.watch.model.FeedRecommendTagModel
-import com.module.feeds.watch.model.FeedSongModel
+import com.component.busilib.model.FeedSongModel
 import com.module.feeds.watch.model.FeedsCollectModel
 import com.module.feeds.watch.presenter.FeedCollectViewPresenter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout

@@ -2,6 +2,7 @@ package com.module.feeds.watch.model
 
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
+import com.component.busilib.model.FeedSongModel
 import java.io.Serializable
 
 class FeedsWatchModel : Serializable {
