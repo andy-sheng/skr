@@ -92,6 +92,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 deleteTv.visibility = View.GONE
 
                 replyTv.setDebounceViewClickListener {
+                    dismiss(false)
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
                 }
             }
@@ -124,6 +125,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 deleteTv.visibility = View.GONE
 
                 replyTv.setDebounceViewClickListener {
+                    dismiss(false)
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
                 }
             }
