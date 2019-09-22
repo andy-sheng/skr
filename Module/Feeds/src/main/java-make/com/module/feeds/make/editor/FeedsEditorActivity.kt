@@ -291,7 +291,11 @@ class FeedsEditorActivity : BaseActivity() {
                                     if (ac is FeedSongSearchActivity) {
                                         ac.finish()
                                     }
+                                    if (ac is FeedsMakeActivity) {
+                                        ac.finish()
+                                    }
                                 }
+                                this@FeedsEditorActivity.finish()
                             } else {
                                 U.getToastUtil().showShort("生成歌曲失败")
                             }
@@ -302,13 +306,14 @@ class FeedsEditorActivity : BaseActivity() {
                         sFeedsMakeModelHolder = mFeedsMakeModel
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
                                 .navigation(this@FeedsEditorActivity, 9)
-                    }
-                    finish()
-                    for (ac in U.getActivityUtils().activityList) {
-                        if (ac is FeedsMakeActivity) {
-                            ac.finish()
+                        finish()
+                        for (ac in U.getActivityUtils().activityList) {
+                            if (ac is FeedsMakeActivity) {
+                                ac.finish()
+                            }
                         }
                     }
+
                 }
             }
         })

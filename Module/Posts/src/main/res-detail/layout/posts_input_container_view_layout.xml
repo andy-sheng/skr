@@ -122,18 +122,27 @@
                 android:src="@drawable/pinglun_jianpan" />
 
             <com.common.view.ex.ExImageView
+                android:id="@+id/yuyin_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:src="@drawable/pinglun_yuyin" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/kge_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:src="@drawable/huifu_kge" />
+
+            <com.common.view.ex.ExImageView
                 android:id="@+id/tupian_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/view_10_dp"
                 android:src="@drawable/pinglun_tupian" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/yuyin_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/view_10_dp"
-                android:src="@drawable/pinglun_yuyin" />
+
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
@@ -151,12 +160,11 @@
             android:layout_height="wrap_content"
             android:layout="@layout/posts_detail_voice_record_view_stub_layout" />
 
-        <!--表情区-->
-        <com.common.emoji.EmotionLayout
-            android:id="@+id/elEmotion"
+        <ViewStub
+            android:id="@+id/posts_kge_record_view_stub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout="@layout/posts_detail_kge_record_view_stub_layout" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

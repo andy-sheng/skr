@@ -1,0 +1,145 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/select_song_tv"
+        android:layout_width="@dimen/view_117_dp"
+        android:layout_height="@dimen/view_46_dp"
+        android:gravity="center"
+        android:text="选择歌曲"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_16_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFA59C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/play_btn"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/kge_bofang"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/play_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_25_dp"
+        android:gravity="center"
+        android:text="点击录音"
+        android:visibility="gone"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/view_14_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/play_btn"
+        app:layout_constraintRight_toRightOf="@+id/play_btn"
+        app:layout_constraintTop_toBottomOf="@+id/play_btn" />
+
+    <TextView
+        android:id="@+id/count_down_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_131_dp"
+        android:layout_marginBottom="@dimen/view_40_dp"
+        android:gravity="center"
+        android:text="15s"
+        android:textColor="@color/black_trans_40"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/play_btn"
+        app:layout_constraintLeft_toLeftOf="@+id/play_btn"
+        app:layout_constraintRight_toRightOf="@+id/play_btn" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/abandon_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:src="@drawable/kge_shanchu"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/play_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/play_btn"
+        app:layout_constraintTop_toTopOf="@+id/play_btn" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/abandon_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:text="重唱"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/view_12_dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@+id/abandon_iv"
+        app:layout_constraintRight_toRightOf="@+id/abandon_iv"
+        app:layout_constraintTop_toBottomOf="@+id/abandon_iv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/ok_iv"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/kge_wancheng"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/play_btn"
+        app:layout_constraintLeft_toRightOf="@id/play_btn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play_btn" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/ok_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:text="完成"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/view_12_dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@+id/ok_iv"
+        app:layout_constraintRight_toRightOf="@+id/ok_iv"
+        app:layout_constraintTop_toBottomOf="@+id/ok_iv" />
+
+    <com.common.view.DiffuseView
+        android:id="@+id/record_diffuse_view"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_150_dp"
+        android:visibility="gone"
+        app:diffuse_addNewRadius="@dimen/view_50_dp"
+        app:diffuse_color="#FFA59C"
+        app:diffuse_coreRadius="@dimen/view_28_dp"
+        app:diffuse_maxRadius="@dimen/view_70_dp"
+        app:diffuse_speed="@dimen/view_0_67_dp"
+        app:diffuse_stroke_width="@dimen/view_7_dp"
+        app:layout_constraintBottom_toBottomOf="@id/play_btn"
+        app:layout_constraintLeft_toLeftOf="@id/play_btn"
+        app:layout_constraintRight_toRightOf="@id/play_btn"
+        app:layout_constraintTop_toTopOf="@id/play_btn" />
+
+    <com.common.view.countdown.CircleCountDownView
+        android:id="@+id/circle_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:inner_color="#FFA59C"
+        app:inner_stroke_raduis="@dimen/view_42_dp"
+        app:inner_stroke_width="@dimen/view_4_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_btn"
+        app:layout_constraintLeft_toLeftOf="@+id/play_btn"
+        app:layout_constraintRight_toRightOf="@+id/play_btn"
+        app:layout_constraintTop_toTopOf="@+id/play_btn" />
+
+</android.support.constraint.ConstraintLayout>

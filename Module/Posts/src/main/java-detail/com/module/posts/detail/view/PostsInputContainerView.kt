@@ -13,27 +13,30 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
 import com.common.emoji.EmotionKeyboard
-import com.common.emoji.EmotionLayout
 import com.common.emoji.LQREmotionKit
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.NoLeakEditText
+import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsReplayImgAdapter
 import com.module.posts.detail.event.PostsCommentBoardEvent
-import com.module.posts.view.PostsVoiceRecordView
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.Serializable
 
 class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListener {
@@ -42,12 +45,14 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     protected var mEtContent: NoLeakEditText? = null
     internal var mPlaceHolderView: ViewGroup? = null
     protected var mSendMsgBtn: View? = null
-    internal var mElEmotion: EmotionLayout? = null
     lateinit var jianpanIv: ExImageView
     lateinit var tupianIv: ExImageView
     lateinit var yuyinIv: ExImageView
+    lateinit var kgeIv:ExImageView
     lateinit var imgRecyclerView: RecyclerView
     lateinit var postsVoiceRecordView: PostsVoiceRecordView
+    lateinit var postsKgeRecordView: PostsKgeRecordView
+
     lateinit var selectImgGroup: Group
 
     lateinit var postsReplayImgAdapter: PostsReplayImgAdapter
@@ -94,13 +99,14 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mEtContent = this.findViewById<View>(R.id.etContent) as NoLeakEditText
         mPlaceHolderView = this.findViewById(R.id.place_holder_view)
         mSendMsgBtn = this.findViewById(R.id.send_msg_btn)
-        mElEmotion = this.findViewById<View>(R.id.elEmotion) as EmotionLayout
         jianpanIv = this.findViewById(R.id.jianpan_iv)
         tupianIv = this.findViewById(R.id.tupian_iv)
         yuyinIv = this.findViewById(R.id.yuyin_iv)
+        kgeIv = this.findViewById(R.id.kge_iv)
+
         imgRecyclerView = rootView.findViewById(R.id.recycler_view)
         postsVoiceRecordView = PostsVoiceRecordView(rootView.findViewById(R.id.posts_voice_record_view_stub))
-
+        postsKgeRecordView = PostsKgeRecordView(rootView.findViewById(R.id.posts_kge_record_view_stub))
         selectImgGroup = rootView.findViewById(R.id.select_img_group)
 
         postsReplayImgAdapter = PostsReplayImgAdapter()
@@ -160,12 +166,14 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             goAddVoicePage()
         }
 
+        kgeIv.setDebounceViewClickListener {
+            goAddKgePage()
+        }
         mSendMsgBtn?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 /**
                  * 这里点击按钮发送，要判断是否有录音以及图片
                  */
-
                 if (postsVoiceRecordView.realView?.visibility == View.VISIBLE
                         && postsVoiceRecordView.status >= postsVoiceRecordView.STATUS_RECORD_OK) {
                     // 相当于点击了声音的ok面板
@@ -177,7 +185,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     replyModel.contentStr = mEtContent?.text.toString()
                     mSendCallBack?.invoke(replyModel, mObj)
                 } else {
-                    // 只有文字
+                    // 只有文字或歌曲
                     replyModel.contentStr = mEtContent?.text.toString()
                     mSendCallBack?.invoke(replyModel, mObj)
                 }
@@ -188,9 +196,19 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             hideSoftInput()
         }
 
-        postsVoiceRecordView.okClickListener = { path,duration ->
+        postsVoiceRecordView.okClickListener = { path, duration ->
             replyModel.recordVoicePath = path
             replyModel.recordDurationMs = duration
+            replyModel.contentStr = mEtContent?.text.toString()
+            mSendCallBack?.invoke(replyModel, mObj)
+        }
+        postsKgeRecordView.selectSongClickListener = {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+                    .withInt("from", 9)
+                    .navigation()
+        }
+
+        postsKgeRecordView.okClickListener = {
             replyModel.contentStr = mEtContent?.text.toString()
             mSendCallBack?.invoke(replyModel, mObj)
         }
@@ -199,10 +217,19 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     var tipsDialogView: TipsDialogView? = null
 
     private fun goAddVoicePage() {
-        if (postsReplayImgAdapter.dataList.isNotEmpty()) {
+        val hasPic = postsReplayImgAdapter.dataList.isNotEmpty()
+        val hasSong = replyModel.songId>0
+
+        if (hasPic|| hasSong) {
+            var tips:String?=null
+            if(hasPic){
+                tips = "上传语音将清空图片,是否继续"
+            }else if(hasSong){
+                tips = "上传语音将清空歌曲,是否继续"
+            }
             //如果已经录入语音
             tipsDialogView = TipsDialogView.Builder(context)
-                    .setMessageTip("上传语音将清空图片,是否继续")
+                    .setMessageTip(tips)
                     .setConfirmTip("继续")
                     .setCancelTip("取消")
                     .setCancelBtnClickListener(object : AnimateClickListener() {
@@ -212,9 +239,13 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
+                            //清空图片
                             postsReplayImgAdapter.dataList.clear()
                             postsReplayImgAdapter.notifyDataSetChanged()
                             replyModel.imgUploadMap.clear()
+                            //清空歌曲
+                            replyModel.songId=0
+                            postsKgeRecordView.reset()
                             tipsDialogView?.dismiss(false)
                             showAudioRecordView()
                         }
@@ -226,11 +257,20 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         }
     }
 
-    private fun goAddImagePage() {
-        if (replyModel.recordVoicePath?.isNotEmpty() == true) {
+    private fun goAddKgePage() {
+        val hasPic = postsReplayImgAdapter.dataList.isNotEmpty()
+        val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
+
+        if (hasPic|| hasAudio) {
+            var tips:String?=null
+            if(hasPic){
+                tips = "上传歌曲将清空图片,是否继续"
+            }else if(hasAudio){
+                tips = "上传歌曲将清空语音,是否继续"
+            }
             //如果已经录入语音
             tipsDialogView = TipsDialogView.Builder(context)
-                    .setMessageTip("上传图片将清空语音,是否继续")
+                    .setMessageTip(tips)
                     .setConfirmTip("继续")
                     .setCancelTip("取消")
                     .setCancelBtnClickListener(object : AnimateClickListener() {
@@ -240,8 +280,54 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
+                            //清空图片
+                            postsReplayImgAdapter.dataList.clear()
+                            postsReplayImgAdapter.notifyDataSetChanged()
+                            replyModel.imgUploadMap.clear()
+                            //清空语音
                             postsVoiceRecordView.reset()
                             replyModel.resetVoice()
+
+                            tipsDialogView?.dismiss(false)
+                            showKgeRecordView()
+                        }
+                    })
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
+            showKgeRecordView()
+        }
+    }
+
+    private fun goAddImagePage() {
+        val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
+        val hasSong = replyModel.songId>0
+
+        if (hasSong|| hasAudio) {
+            var tips:String?=null
+            if(hasSong){
+                tips = "上传图片将清空歌曲,是否继续"
+            }else if(hasAudio){
+                tips = "上传图片将清空语音,是否继续"
+            }
+            //如果已经录入语音
+            tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip(tips)
+                    .setConfirmTip("继续")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            tipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            //清空语音
+                            postsVoiceRecordView.reset()
+                            replyModel.resetVoice()
+                            //清空歌曲
+                            replyModel.songId=0
+                            postsKgeRecordView.reset()
                             tipsDialogView?.dismiss(false)
                             goAddImagePage()
                         }
@@ -274,16 +360,31 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         jianpanIv.visibility = View.GONE
         tupianIv.visibility = View.VISIBLE
         yuyinIv.visibility = View.VISIBLE
+        kgeIv.visibility = View.VISIBLE
+        postsKgeRecordView.setVisibility(View.GONE)
 
         postsVoiceRecordView.setVisibility(View.GONE)
         selectImgGroup.visibility = View.GONE
         mEmotionKeyboard?.showSoftInput()
     }
 
+    private fun showKgeRecordView() {
+        jianpanIv.visibility = View.VISIBLE
+        tupianIv.visibility = View.VISIBLE
+        yuyinIv.visibility = View.VISIBLE
+        kgeIv.visibility = View.GONE
+        postsKgeRecordView.setVisibility(View.VISIBLE)
+
+        postsVoiceRecordView.setVisibility(View.GONE)
+        selectImgGroup.visibility = View.GONE
+    }
+
     private fun showImageSelectView() {
         jianpanIv.visibility = View.VISIBLE
         tupianIv.visibility = View.GONE
         yuyinIv.visibility = View.VISIBLE
+        kgeIv.visibility = View.VISIBLE
+        postsKgeRecordView.setVisibility(View.GONE)
 
         selectImgGroup.visibility = View.VISIBLE
         postsVoiceRecordView.setVisibility(View.GONE)
@@ -292,8 +393,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     private fun showAudioRecordView() {
         jianpanIv.visibility = View.VISIBLE
         tupianIv.visibility = View.VISIBLE
+        kgeIv.visibility = View.VISIBLE
         yuyinIv.visibility = View.GONE
 
+        postsKgeRecordView.setVisibility(View.GONE)
         selectImgGroup.visibility = View.GONE
         postsVoiceRecordView.setVisibility(View.VISIBLE)
         mEmotionKeyboard?.hideSoftInput()
@@ -304,7 +407,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mEmotionKeyboard = EmotionKeyboard.with(context as Activity)
         mEmotionKeyboard?.bindToPlaceHodlerView(mPlaceHolderView)
         mEmotionKeyboard?.bindToEditText(mEtContent)
-        mEmotionKeyboard?.setEmotionLayout(mElEmotion)
         mEmotionKeyboard?.setBoardStatusListener(this)
     }
 
@@ -319,36 +421,28 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             EventBus.getDefault().post(PostsCommentBoardEvent(false))
             mInputContainer?.visibility = View.GONE
             mEtContent?.hint = ""
-            reset()
         }
 
         mForceHide = false
     }
 
-    fun reset() {
-        //图片，音频的View需要这里reset
-        postsReplayImgAdapter?.dataList = mutableListOf()
-    }
 
-    fun showSoftInput(type: SHOW_TYPE, obj: Any?) {
-        mObj = obj
+    fun showSoftInput(type: SHOW_TYPE, model: Any?) {
+        mObj = model
         if (type == SHOW_TYPE.KEY_BOARD) {
             showKeyBoard()
         } else if (type == SHOW_TYPE.IMG) {
-            showImageSelectView()
-            mEmotionKeyboard?.showSoftInput()
-            reset()
+            goAddImagePage()
         } else if (type == SHOW_TYPE.AUDIO) {
-            showAudioRecordView()
-            mInputContainer?.visibility = View.VISIBLE
-            reset()
+            goAddVoicePage()
+        } else if (type == SHOW_TYPE.KEG) {
+            goAddKgePage()
         }
     }
 
     fun hideSoftInput() {
         mForceHide = true
         mEmotionKeyboard?.hideSoftInput()
-        reset()
     }
 
     fun onBackPressed(): Boolean {
@@ -359,14 +453,28 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         return false
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mEmotionKeyboard?.destroy()
         mUiHandler.removeCallbacksAndMessages(null)
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedSongMakeSucessEvent) {
+        replyModel.songId = event.songId ?: 0
+        postsKgeRecordView.recordOk(event.localPath, event.duration!!)
     }
 
     enum class SHOW_TYPE {
-        KEY_BOARD, IMG, AUDIO
+        KEY_BOARD, IMG, AUDIO,KEG
     }
 }
 
@@ -378,10 +486,18 @@ class ReplyModel : Serializable {
         recordDurationMs = 0 // 毫秒
     }
 
+    fun reset(){
+        resetVoice()
+        contentStr = ""
+        imgUploadMap.clear()
+        imgLocalPathList.clear()
+        songId = 0
+    }
     var contentStr: String = ""
     val imgUploadMap = LinkedHashMap<String, String>() // 本地路径->服务器url
     val imgLocalPathList = ArrayList<ImageItem>() // 本地路径列表
     var recordVoiceUrl: String? = null
     var recordVoicePath: String? = null
     var recordDurationMs: Int = 0 // 毫秒
+    var songId = 0 // feeds的歌曲
 }

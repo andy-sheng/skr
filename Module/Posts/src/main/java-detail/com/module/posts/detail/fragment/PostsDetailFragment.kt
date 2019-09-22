@@ -19,6 +19,7 @@ import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.component.busilib.view.SkrProgressView
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
@@ -42,6 +43,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
@@ -216,7 +219,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     override fun onBackPressed(): Boolean {
-        if(feedsInputContainerView.mInputContainer?.visibility == View.VISIBLE){
+        if (feedsInputContainerView.mInputContainer?.visibility == View.VISIBLE) {
             feedsInputContainerView.hideSoftInput()
             return true
         }
@@ -225,7 +228,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     override fun onActivityResultReal(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
                 feedsInputContainerView.onSelectImgOk(ResPicker.getInstance().selectedImageList)
                 return true
@@ -258,7 +261,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
      */
     var uploading = false
     var hasFailedTask = false
-    var replyModel:ReplyModel?=null
+    var replyModel: ReplyModel? = null
     var mObj: Any? = null
 
     val uploadQueue = object : ObjectPlayControlTemplate<PostsPublishActivity.PostsUploadModel, PostsDetailFragment>() {
@@ -359,7 +362,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             ))
             hasData = true
         }
-        if (replyModel?.imgUploadMap?.isNotEmpty()==true) {
+        if (replyModel?.imgUploadMap?.isNotEmpty() == true) {
             val l = ArrayList<String>()
             replyModel?.imgUploadMap?.values?.forEach {
                 l.add(it)
@@ -379,7 +382,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         map["postsID"] = mPostsWatchModel?.posts?.postsID
-//        map["songID"] = ""
+        map["songID"] = replyModel?.songId
 
         mObj?.let {
             if (it is PostFirstLevelCommentModel) {

@@ -285,7 +285,7 @@
             android:id="@+id/menu_ktv_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/fabu_tupian"
+            android:src="@drawable/fabu_kge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

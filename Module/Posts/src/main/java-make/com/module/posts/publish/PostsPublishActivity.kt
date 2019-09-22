@@ -202,6 +202,7 @@ class PostsPublishActivity : BaseActivity() {
                 model.recordDurationMs = 0
                 model.recordVoiceUrl = null
                 model.songId = 0
+                SinglePlayer.stop(playerTag)
                 postsAudioView.visibility = View.GONE
                 audioDelIv.visibility = View.GONE
             }

@@ -1,9 +1,10 @@
-package com.module.posts.view
+package com.module.posts.detail.view
 
 
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
@@ -21,23 +22,17 @@ import kotlinx.coroutines.launch
 
 
 /**
- * 帖子声音录制
+ * 帖子k歌录制
  */
-class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
-
-    val TAG = "PostsVoiceRecordView"
-
-
+class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
+    val TAG = "PostsKgeRecordView"
     val playTag = TAG + hashCode()
-
     internal val STATUS_IDLE = 1
-    internal val STATUS_RECORDING = 2
     internal val STATUS_RECORD_OK = 3
     internal val STATUS_RECORD_PLAYING = 4
 
     var status = STATUS_IDLE
-    var myMediaRecorder: MyMediaRecorder? = null
-
+    lateinit var selectSongTv: ExTextView
     lateinit var playBtn: ExImageView
     lateinit var playTipsTv: ExTextView
     lateinit var countDownTv: TextView
@@ -47,11 +42,14 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var okTv: ExTextView
     lateinit var recordDiffuseView: DiffuseView
     lateinit var circleCountDownView: CircleCountDownView
-    var startRecordTs = 0L
     var recordJob: Job? = null
-    var okClickListener: ((String?,Int) -> Unit)? = null
+
+
+    var okClickListener: (() -> Unit)? = null
+    var selectSongClickListener: (() -> Unit)? = null
 
     override fun init(parentView: View) {
+        selectSongTv = parentView.findViewById(R.id.select_song_tv)
         playBtn = parentView.findViewById(R.id.play_btn)
         playTipsTv = parentView.findViewById(R.id.play_tips_tv)
         countDownTv = parentView.findViewById(R.id.count_down_tv)
@@ -64,13 +62,6 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         playBtn.setOnClickListener {
             if (status == STATUS_IDLE) {
-                startRecord()
-            } else if (status == STATUS_RECORDING) {
-                if ((System.currentTimeMillis() - startRecordTs) < 2 * 1000) {
-                    U.getToastUtil().showShort("太短了，多录制几句吧")
-                    return@setOnClickListener
-                }
-                stopRecord()
             } else if (status == STATUS_RECORD_OK) {
                 // 播放
                 play()
@@ -83,48 +74,30 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
         okIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                okClickListener?.invoke(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH,myMediaRecorder?.mDuration?:0)
+                okClickListener?.invoke()
             }
         })
+        selectSongTv.setDebounceViewClickListener {
+            selectSongClickListener?.invoke()
+        }
     }
 
     override fun layoutDesc(): Int {
-        return R.layout.posts_detail_voice_record_view_stub_layout
+        return R.layout.posts_detail_kge_record_view_stub_layout
     }
 
-    private fun startRecord() {
-        status = STATUS_RECORDING
-        playTipsTv.text = "点击停止"
-        abandonIv.visibility = View.GONE
-        abandonTv.visibility = View.GONE
-        okIv.visibility = View.GONE
-        okTv.visibility = View.GONE
-        countDownTv.visibility = View.VISIBLE
-        countDownTv.text = "0s"
-        playBtn.setImageResource(R.drawable.yuyin_weikaishi)
+    var recordVoicePath: String? = null
+    var recordDurationMs: Int? = null
 
-        recordJob = launch {
-            for (i in 0 until 60) {
-                recordDiffuseView.start(2000)
-                delay(1000)
-                countDownTv.text = "${i + 1}s"
-            }
-            stopRecord()
-        }
-        if (myMediaRecorder == null) {
-            myMediaRecorder = MyMediaRecorder.newBuilder().build()
-        }
-        myMediaRecorder?.start(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH, null)
-        startRecordTs = System.currentTimeMillis()
-    }
+    fun recordOk(recordVoicePath: String?, recordDurationMs: Int) {
+        this.recordVoicePath = recordVoicePath
+        this.recordDurationMs = recordDurationMs
 
-    private fun stopRecord() {
         status = STATUS_RECORD_OK
         recordDiffuseView.stop()
         circleCountDownView.visibility = View.GONE
-        myMediaRecorder?.stop()
         recordJob?.cancel()
-        playBtn.setImageResource(R.drawable.yuyin_zanting)
+        playBtn.setImageResource(R.drawable.kge_zanting)
         playTipsTv.text = "播放"
         abandonIv.visibility = View.VISIBLE
         abandonTv.visibility = View.VISIBLE
@@ -134,39 +107,51 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     private fun play() {
         status = STATUS_RECORD_PLAYING
-        playBtn.setImageResource(R.drawable.yuyin_bofang)
+        playBtn.setImageResource(R.drawable.kge_bofang)
         circleCountDownView.visibility = View.VISIBLE
         recordDiffuseView.visibility = View.GONE
-        circleCountDownView.go(0, myMediaRecorder?.mDuration ?: 0) {
+        circleCountDownView.go(0, recordDurationMs ?: 0) {
             stop()
         }
         playTipsTv.text = "暂停"
         recordJob = launch {
-            for (i in 0 until 60) {
+            for (i in 0 until 120) {
                 delay(1000)
                 countDownTv.text = "${i + 1}s"
             }
             stop()
         }
-        SinglePlayer.startPlay(playTag, PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH)
+        SinglePlayer.startPlay(playTag, recordVoicePath!!)
     }
 
     private fun stop() {
         SinglePlayer.stop(playTag)
-        stopRecord()
+        status = STATUS_RECORD_OK
+        recordDiffuseView.stop()
+        circleCountDownView.visibility = View.GONE
+        recordJob?.cancel()
+        playBtn.setImageResource(R.drawable.kge_zanting)
+        playTipsTv.text = "播放"
+        abandonIv.visibility = View.VISIBLE
+        abandonTv.visibility = View.VISIBLE
+        okIv.visibility = View.VISIBLE
+        okTv.visibility = View.VISIBLE
+        selectSongTv.visibility = View.GONE
     }
 
     fun reset() {
         stop()
         status = STATUS_IDLE
-        playBtn.setImageResource(R.drawable.yuyin_weikaishi)
-        playTipsTv.text = "点击录音"
+        playBtn.visibility = View.GONE
+        playTipsTv.visibility = View.GONE
         abandonIv.visibility = View.GONE
         abandonTv.visibility = View.GONE
         okIv.visibility = View.GONE
         okTv.visibility = View.GONE
         countDownTv.visibility = View.GONE
+        selectSongTv.visibility = View.VISIBLE
     }
+
 
 }
 

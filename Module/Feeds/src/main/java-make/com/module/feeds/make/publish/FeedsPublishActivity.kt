@@ -326,8 +326,12 @@ class FeedsPublishActivity : BaseActivity() {
         /**
          * 这里的变动肯定只影响作品名，歌曲名不受影响
          */
-        //mFeedsMakeModel?.songModel?.songTpl?.songNameChange = worksNameEt.text.toString()
-        mFeedsMakeModel?.songModel?.workName = worksNameEt?.text?.toString()
+        if(mFeedsMakeModel?.fromPosts==true){
+            mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.getDisplayName()
+        }else{
+            mFeedsMakeModel?.songModel?.workName = worksNameEt?.text?.toString()
+        }
+
 
         val tagsIds = ArrayList<FeedTagModel>()
         tagClassifyTf?.selectedList?.forEach {
