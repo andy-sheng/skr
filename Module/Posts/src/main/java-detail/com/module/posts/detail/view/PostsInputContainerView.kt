@@ -251,6 +251,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
+            hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             showAudioRecordView()
@@ -293,6 +294,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
+            hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             showKgeRecordView()
@@ -333,6 +335,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
+            hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(context as Activity)

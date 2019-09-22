@@ -191,10 +191,13 @@ class PostsPublishActivity : BaseActivity() {
             }
         })
         menuKtvIv.setDebounceViewClickListener {
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
-                    .withInt("from", 9)
-                    .navigation()
+            goKgeRecordPage()
+
+        }
+        topicTv.setDebounceViewClickListener {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
+                    .withInt("from", 2)
+                    .navigation(this@PostsPublishActivity, PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT)
         }
         audioDelIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -253,11 +256,7 @@ class PostsPublishActivity : BaseActivity() {
         if (model.topic != null) {
             topicTv.text = model.topic?.topicDesc
         }
-        topicTv.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
-                    .withInt("from", 2)
-                    .navigation(this@PostsPublishActivity,PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT)
-        }
+
     }
 
     var uploading = false
@@ -330,7 +329,7 @@ class PostsPublishActivity : BaseActivity() {
     }
 
     fun beginUploadTask() {
-        if(model.topic==null){
+        if (model.topic == null) {
             U.getToastUtil().showShort("请选择一个话题")
             return
         }
@@ -363,7 +362,8 @@ class PostsPublishActivity : BaseActivity() {
     fun uploadToServer() {
         var hasData = false
         val map = HashMap<String, Any>()
-        if (model.recordVoiceUrl?.isNotEmpty() == true) {
+        val hasSong = model.songId > 0
+        if (!hasSong && (model.recordVoiceUrl?.isNotEmpty() == true)) {
             map["audios"] = listOf(mapOf(
                     "URL" to model.recordVoiceUrl,
                     "duration" to model.recordDurationMs
@@ -420,10 +420,20 @@ class PostsPublishActivity : BaseActivity() {
     var tipsDialogView: TipsDialogView? = null
 
     fun goAddImagePage() {
-        if (model.recordVoicePath?.isNotEmpty() == true) {
+        val hasSong = model.songId > 0
+        val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
+        val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
+
+        if (hasAudio || hasSong) {
+            var tips: String? = null
+            if (hasAudio) {
+                tips = "上传图片将清空语音,是否继续"
+            } else if (hasSong) {
+                tips = "上传图片将清空歌曲,是否继续"
+            }
             //如果已经录入语音
             tipsDialogView = TipsDialogView.Builder(this)
-                    .setMessageTip("上传图片将清空语音,是否继续")
+                    .setMessageTip(tips)
                     .setConfirmTip("继续")
                     .setCancelTip("取消")
                     .setCancelBtnClickListener(object : AnimateClickListener() {
@@ -453,12 +463,21 @@ class PostsPublishActivity : BaseActivity() {
         }
     }
 
-
     fun goMicRecordPage() {
-        if (postsPublishImgAdapter.dataList.isNotEmpty()) {
+        val hasSong = model.songId > 0
+        val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
+        val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
+
+        if (hasSong || hasImg) {
+            var tips: String? = null
+            if (hasAudio) {
+                tips = "录入语音将清空语音，是否继续"
+            } else if (hasSong) {
+                tips = "录入语音将清空歌曲，是否继续"
+            }
             //如果已经录入语音
             tipsDialogView = TipsDialogView.Builder(PostsPublishActivity@ this)
-                    .setMessageTip("录入语音将清空图片，是否继续")
+                    .setMessageTip(tips)
                     .setConfirmTip("继续")
                     .setCancelTip("取消")
                     .setCancelBtnClickListener(object : AnimateClickListener() {
@@ -471,6 +490,7 @@ class PostsPublishActivity : BaseActivity() {
                             postsPublishImgAdapter.dataList.clear()
                             postsPublishImgAdapter.notifyDataSetChanged()
                             model.imgUploadMap.clear()
+                            model.songId = 0
                             imageRecyclerView.visibility = View.GONE
                             tipsDialogView?.dismiss(false)
                             goMicRecordPage()
@@ -483,6 +503,51 @@ class PostsPublishActivity : BaseActivity() {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_VOICE_RECORD)
                     .withSerializable("model", model)
                     .navigation(this@PostsPublishActivity, PostsVoiceRecordActivity.REQ_CODE_VOICE_RECORD)
+        }
+    }
+
+    fun goKgeRecordPage() {
+        val hasSong = model.songId > 0
+        val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
+        val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
+
+        if (hasAudio || hasImg) {
+            var tips: String? = null
+            if (hasAudio) {
+                tips = "录入歌曲将清空语音，是否继续"
+            } else if (hasImg) {
+                tips = "录入歌曲将清空图片，是否继续"
+            }
+            //如果已经录入语音
+            tipsDialogView = TipsDialogView.Builder(PostsPublishActivity@ this)
+                    .setMessageTip(tips)
+                    .setConfirmTip("继续")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            tipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            postsPublishImgAdapter.dataList.clear()
+                            postsPublishImgAdapter.notifyDataSetChanged()
+                            model.imgUploadMap.clear()
+                            if (!hasSong) {
+                                audioDelIv.performClick()
+                            }
+                            imageRecyclerView.visibility = View.GONE
+                            tipsDialogView?.dismiss(false)
+                            goKgeRecordPage()
+                        }
+                    })
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+                    .withInt("from", 9)
+                    .navigation()
         }
     }
 
@@ -536,7 +601,7 @@ class PostsPublishActivity : BaseActivity() {
                 redPkgDelIv.visibility = View.VISIBLE
                 redPkgVp.visibility = View.VISIBLE
                 redPkgTv.text = this.model.redPkg?.redpacketDesc
-            }else if(requestCode == PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT){
+            } else if (requestCode == PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT) {
                 model.topic = data?.getSerializableExtra("topic") as Topic
                 topicTv.text = model.topic?.topicDesc
             }

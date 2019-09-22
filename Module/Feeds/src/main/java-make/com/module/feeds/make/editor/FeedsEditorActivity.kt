@@ -269,8 +269,6 @@ class FeedsEditorActivity : BaseActivity() {
             override fun onCompletion() {
                 MyLog.d(TAG, "compose onCompletion")
                 launch {
-                    progressView.setProgressDrwable(U.getDrawable(R.drawable.common_progress_complete_icon))
-                    progressView.setProgressText("合成完成")
                     if (mFeedsMakeModel?.fromPosts == true) {
                         // 来自帖子发送请求获取songid 偷懒，直接调用Activity 的方法了
                         val feedsPublishActivity = FeedsPublishActivity()
@@ -300,8 +298,9 @@ class FeedsEditorActivity : BaseActivity() {
                                 U.getToastUtil().showShort("生成歌曲失败")
                             }
                         }
-
                     } else {
+                        progressView.setProgressDrwable(U.getDrawable(R.drawable.common_progress_complete_icon))
+                        progressView.setProgressText("合成完成")
                         progressView.visibility = View.GONE
                         sFeedsMakeModelHolder = mFeedsMakeModel
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
