@@ -25,14 +25,6 @@ class TopicPostsWatchView(activity: FragmentActivity, val topicInfo: PostsTopicM
         super.unselected(reason)
     }
 
-    override fun onClickMore(position: Int, model: PostsWatchModel?) {
-        model?.let {
-            postsMoreDialogView?.dismiss(false)
-            postsMoreDialogView = PostsMoreDialogView(activity, PostsMoreDialogView.FROM_POSTS_TOPIC, it)
-            postsMoreDialogView?.showByDialog(true)
-        }
-    }
-
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {
             // 不一定要刷新

@@ -117,6 +117,11 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         }
     }
 
+    fun deletePosts(model: PostsWatchModel) {
+        mDataList.remove(model)
+        notifyDataSetChanged()
+    }
+
     fun startOrPauseAudio(pos: Int, model: PostsWatchModel?, playType: Int) {
         if (playStatus != NO_PLAY_AUDIO && mCurrentPlayModel == model && playType == playStatus) {
             // 数据和播放类型一致

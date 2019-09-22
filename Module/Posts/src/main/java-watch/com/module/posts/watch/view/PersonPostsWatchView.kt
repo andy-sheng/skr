@@ -44,25 +44,6 @@ class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserIn
         super.destory()
     }
 
-    override fun onClickMore(position: Int, model: PostsWatchModel?) {
-        model?.let {
-            postsMoreDialogView?.dismiss(false)
-            postsMoreDialogView = PostsMoreDialogView(activity, PostsMoreDialogView.FROM_POSTS_PERSON, it)
-            if (userInfoModel.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                postsMoreDialogView?.apply {
-                    reportTv.text = "删除"
-                    reportTv.setOnClickListener(object : DebounceViewClickListener() {
-                        override fun clickValid(v: View?) {
-                            //todo 补全删除逻辑
-                            postsMoreDialogView?.dismiss(false)
-                        }
-                    })
-                }
-            }
-            postsMoreDialogView?.showByDialog(true)
-        }
-    }
-
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {
             // 不一定要刷新

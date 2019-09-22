@@ -17,6 +17,7 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.view.DebounceViewClickListener
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -99,7 +100,28 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickPostsMore(position: Int, model: PostsWatchModel?) {
                 dismissDialog()
-                onClickMore(position, model)
+                model?.let {
+                    postsMoreDialogView?.dismiss(false)
+                    var from = PostsMoreDialogView.FROM_POSTS_HOME
+                    if (type == TYPE_POST_PERSON) {
+                        from = PostsMoreDialogView.FROM_POSTS_PERSON
+                    } else if (type == TYPE_POST_TOPIC) {
+                        from = PostsMoreDialogView.FROM_POSTS_TOPIC
+                    }
+                    postsMoreDialogView = PostsMoreDialogView(activity, from, it)
+                    if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                        postsMoreDialogView?.apply {
+                            reportTv.text = "删除"
+                            reportTv.setOnClickListener(object : DebounceViewClickListener() {
+                                override fun clickValid(v: View?) {
+                                    postsMoreDialogView?.dismiss(false)
+                                    deletePosts(position, model)
+                                }
+                            })
+                        }
+                    }
+                    postsMoreDialogView?.showByDialog(true)
+                }
             }
 
             override fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
@@ -315,8 +337,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         refreshLayout.setEnableLoadMore(hasMore)
     }
 
-    abstract fun onClickMore(position: Int, model: PostsWatchModel?)
-
     // 加载数据
     abstract fun initPostsList(flag: Boolean): Boolean
 
@@ -374,6 +394,25 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                             ?: 0
                 }
                 adapter?.update(position, model, PostsWatchViewAdapter.REFRESH_POSTS_COMMENT_LIKE)
+            } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
+    }
+
+    fun deletePosts(position: Int, model: PostsWatchModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["postsID"] = model.posts?.postsID ?: 0
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe(RequestControl("deletePosts", ControlType.CancelThis)) {
+                postsWatchServerApi.deletePosts(body)
+            }
+            if (result.errno == 0) {
+                adapter?.deletePosts(model)
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")

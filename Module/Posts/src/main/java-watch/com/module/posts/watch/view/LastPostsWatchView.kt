@@ -24,13 +24,6 @@ class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activi
         super.unselected(reason)
     }
 
-    override fun onClickMore(position: Int, model: PostsWatchModel?) {
-        model?.let {
-            postsMoreDialogView?.dismiss(false)
-            postsMoreDialogView = PostsMoreDialogView(activity, PostsMoreDialogView.FROM_POSTS_HOME, it)
-            postsMoreDialogView?.showByDialog(true)
-        }
-    }
 
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {

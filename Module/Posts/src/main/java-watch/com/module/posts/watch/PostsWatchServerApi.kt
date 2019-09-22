@@ -77,4 +77,7 @@ interface PostsWatchServerApi {
      */
     @PUT("/v1/posts/like")
     fun postsCommentLikeOrUnLike(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("/v1/posts/delete")
+    fun deletePosts(@Body body: RequestBody): Call<ApiResult>
 }
