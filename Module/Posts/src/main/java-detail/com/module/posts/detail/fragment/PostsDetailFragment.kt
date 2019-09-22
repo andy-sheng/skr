@@ -7,12 +7,20 @@ import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.alibaba.fastjson.JSON
+import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
+import com.common.upload.UploadCallback
+import com.common.upload.UploadParams
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.SkrProgressView
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
@@ -23,6 +31,9 @@ import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
 import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.redpkg.PostsRedPkgDialogView
+import com.module.posts.detail.view.ReplyModel
+import com.module.posts.publish.PostsPublishActivity
+import com.module.posts.publish.PostsPublishServerApi
 import com.module.posts.watch.model.PostsWatchModel
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -31,6 +42,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
@@ -45,6 +58,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     var mPostsDetailPresenter: PostsDetailPresenter? = null
     var postsMoreDialogView: PostsMoreDialogView? = null
     var postsRedPkgDialogView: PostsRedPkgDialogView? = null
+    lateinit var progressView: SkrProgressView
 
     var postsAdapter: PostsCommentAdapter? = null
 
@@ -64,6 +78,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         commentTv = rootView.findViewById(R.id.comment_tv)
         imageIv = rootView.findViewById(R.id.image_iv)
         audioIv = rootView.findViewById(R.id.audio_iv)
+        progressView = rootView.findViewById(R.id.progress_view)
         feedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(R.id.smart_refresh)
         smartRefreshLayout.setEnableLoadMore(true)
@@ -97,8 +112,8 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             }
         }
 
-        feedsInputContainerView?.mSendCallBack = { s ->
-
+        feedsInputContainerView?.mSendCallBack = { replyModel ->
+            beginUploadTask(replyModel)
         }
 
         commentTv?.setDebounceViewClickListener {
@@ -228,5 +243,143 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         SinglePlayer.removeCallback(PostsCommentAdapter.playerTag)
         postsMoreDialogView?.dismiss()
         postsRedPkgDialogView?.dismiss()
+    }
+
+    /**
+     * 帖子回复相关操作
+     */
+    var uploading = false
+    var hasFailedTask = false
+    var replyModel:ReplyModel?=null
+
+    val uploadQueue = object : ObjectPlayControlTemplate<PostsPublishActivity.PostsUploadModel, PostsDetailFragment>() {
+        override fun accept(cur: PostsPublishActivity.PostsUploadModel): PostsDetailFragment? {
+            if (uploading) {
+                return null
+            }
+            uploading = true
+            return this@PostsDetailFragment
+        }
+
+        override fun onStart(model: PostsPublishActivity.PostsUploadModel, consumer: PostsDetailFragment) {
+            uploadToOss(model)
+        }
+
+        override fun onEnd(model: PostsPublishActivity.PostsUploadModel?) {
+            uploadToOssEnd(model)
+        }
+
+    }
+
+    fun beginUploadTask(model:ReplyModel) {
+        this.replyModel = model
+        var needUploadToOss = false
+        hasFailedTask = false
+        //音频上传
+        if (model.recordVoicePath?.isNotEmpty() == true && model.recordDurationMs > 0) {
+            if (model?.recordVoiceUrl.isNullOrEmpty()) {
+                needUploadToOss = true
+                uploadQueue.add(PostsPublishActivity.PostsUploadModel(1, model.recordVoicePath), true)
+            }
+        }
+        //图片上传
+        if (!model.imgLocalPathList.isNullOrEmpty()) {
+            for (local in model.imgLocalPathList) {
+                if (!model.imgUploadMap.containsKey(local.path)) {
+                    //没有上传
+                    needUploadToOss = true
+                    uploadQueue.add(PostsPublishActivity.PostsUploadModel(2, local.path), true)
+                }
+            }
+        }
+        if (!needUploadToOss) {
+            uploadToServer()
+        } else {
+            progressView.visibility = View.VISIBLE
+        }
+    }
+
+    fun uploadToOss(m: PostsPublishActivity.PostsUploadModel) {
+        UploadParams.newBuilder(m.localPath)
+                .setFileType(UploadParams.FileType.posts)
+                .startUploadAsync(object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String?) {
+                        if (m.type == 1) {
+                            replyModel?.recordVoiceUrl = url
+                        } else if (m.type == 2) {
+                            replyModel?.imgUploadMap?.put(m.localPath!!, url!!)
+                        }
+                        uploading = false
+                        uploadQueue.endCurrent(m)
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String?) {
+                        uploading = false
+                        uploadQueue.endCurrent(null)
+                        hasFailedTask = true
+                    }
+
+                })
+    }
+
+    private fun uploadToOssEnd(model: PostsPublishActivity.PostsUploadModel?) {
+        if (!uploadQueue.hasMoreData()) {
+            if (hasFailedTask) {
+                U.getToastUtil().showShort("部分资源上传失败，请尝试重新上传")
+                progressView.visibility = View.GONE
+            } else {
+                uploadToServer()
+            }
+        }
+    }
+
+    /**
+     * 执行服务器请求
+     */
+    fun uploadToServer() {
+        var hasData = false
+        val map = HashMap<String, Any?>()
+        if (replyModel?.recordVoiceUrl?.isNotEmpty() == true) {
+            map["audios"] = listOf(mapOf(
+                    "URL" to replyModel?.recordVoiceUrl,
+                    "duration" to replyModel?.recordDurationMs
+            ))
+            hasData = true
+        }
+        if (replyModel?.imgUploadMap?.isNotEmpty()==true) {
+            val l = ArrayList<String>()
+            replyModel?.imgUploadMap?.values?.forEach {
+                l.add(it)
+            }
+            map["pictures"] = l
+            hasData = true
+        }
+
+
+        if (replyModel?.contentStr?.isNotEmpty() == true) {
+            map["title"] = replyModel?.contentStr
+            hasData = true
+        }
+        if (!hasData) {
+            U.getToastUtil().showShort("内容为空")
+            return
+        }
+        progressView.visibility = View.VISIBLE
+        launch {
+            val api = ApiManager.getInstance().createService(PostsPublishServerApi::class.java)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { api.uploadPosts(body) }
+
+            progressView.visibility = View.GONE
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("上传成功")
+                finish()
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
  * 帖子声音录制
  */
 class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
+
     val TAG = "PostsVoiceRecordView"
 
 
@@ -48,7 +49,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var circleCountDownView: CircleCountDownView
     var startRecordTs = 0L
     var recordJob: Job? = null
-    var okClickListener: ((String?) -> Unit)? = null
+    var okClickListener: ((String?,Int) -> Unit)? = null
 
     override fun init(parentView: View) {
         playBtn = parentView.findViewById(R.id.play_btn)
@@ -82,7 +83,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
         okIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                okClickListener?.invoke(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH)
+                okClickListener?.invoke(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH,myMediaRecorder?.mDuration?:0)
             }
         })
     }
@@ -155,7 +156,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         stopRecord()
     }
 
-    private fun reset() {
+    fun reset() {
         stop()
         status = STATUS_IDLE
         playBtn.setImageResource(R.drawable.yuyin_weikaishi)
@@ -166,5 +167,6 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         okTv.visibility = View.GONE
         countDownTv.visibility = View.GONE
     }
+
 }
 

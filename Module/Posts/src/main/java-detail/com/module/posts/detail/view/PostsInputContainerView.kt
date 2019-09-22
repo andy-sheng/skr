@@ -9,7 +9,6 @@ import android.support.constraint.Group
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +18,11 @@ import com.common.emoji.EmotionKeyboard
 import com.common.emoji.EmotionLayout
 import com.common.emoji.LQREmotionKit
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.NoLeakEditText
+import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -33,6 +34,7 @@ import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
 import org.greenrobot.eventbus.EventBus
+import java.io.Serializable
 
 class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListener {
     internal var mEmotionKeyboard: EmotionKeyboard? = null
@@ -51,7 +53,9 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     lateinit var postsReplayImgAdapter: PostsReplayImgAdapter
     protected var mHasPretend = false
     protected var mForceHide = false
-    var mSendCallBack: ((String) -> Unit)? = null
+    var mSendCallBack: ((ReplyModel) -> Unit)? = null
+
+    var replyModel = ReplyModel()
 
     protected var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -104,6 +108,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         }
 
         postsReplayImgAdapter?.delClickListener = { m, pos ->
+            // 不能直接用pos  notifyItemRemoved 会导致holder 里的 pos 不变
             var index = 0
             for (v in postsReplayImgAdapter.dataList) {
                 if (m!! == v) {
@@ -150,20 +155,29 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         }
 
         yuyinIv.setDebounceViewClickListener {
-            showAudioRecordView()
+            goAddVoicePage()
         }
 
         mSendMsgBtn?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (!TextUtils.isEmpty(mEtContent?.text.toString())) {
-                    mHasPretend = false
-                    mSendCallBack?.let {
-                        it(mEtContent?.text.toString())
-                    }
-                    mEtContent?.setText("")
-                    hideSoftInput()
+                /**
+                 * 这里点击按钮发送，要判断是否有录音以及图片
+                 */
+
+                if (postsVoiceRecordView.realView?.visibility == View.VISIBLE
+                        && postsVoiceRecordView.status >= postsVoiceRecordView.STATUS_RECORD_OK) {
+                    // 相当于点击了声音的ok面板
+                    postsVoiceRecordView.okIv.performClick()
+                } else if (imgRecyclerView.visibility == View.VISIBLE) {
+                    // 发送图片和文字
+                    replyModel.imgLocalPathList.clear()
+                    replyModel.imgLocalPathList.addAll(postsReplayImgAdapter.dataList)
+                    replyModel.contentStr = mEtContent?.text.toString()
+                    mSendCallBack?.invoke(replyModel)
                 } else {
-                    U.getToastUtil().showShort("发送内容不能为空")
+                    // 只有文字
+                    replyModel.contentStr = mEtContent?.text.toString()
+                    mSendCallBack?.invoke(replyModel)
                 }
             }
         })
@@ -171,33 +185,68 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mInputContainer?.setOnClickListener {
             hideSoftInput()
         }
-        postsVoiceRecordView.okClickListener = { path ->
-            U.getToastUtil().showShort("本地路径为$path ")
+
+        postsVoiceRecordView.okClickListener = { path,duration ->
+            replyModel.recordVoicePath = path
+            replyModel.recordDurationMs = duration
+            replyModel.contentStr = mEtContent?.text.toString()
+            mSendCallBack?.invoke(replyModel)
+        }
+    }
+
+    var tipsDialogView: TipsDialogView? = null
+
+    private fun goAddVoicePage() {
+        if (postsReplayImgAdapter.dataList.isNotEmpty()) {
+            //如果已经录入语音
+            tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip("上传语音将清空图片,是否继续")
+                    .setConfirmTip("继续")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            tipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            postsReplayImgAdapter.dataList.clear()
+                            postsReplayImgAdapter.notifyDataSetChanged()
+                            replyModel.imgUploadMap.clear()
+                            tipsDialogView?.dismiss(false)
+                            showAudioRecordView()
+                        }
+                    })
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
+            showAudioRecordView()
         }
     }
 
     private fun goAddImagePage() {
-//        if (model.recordVoicePath?.isNotEmpty() == true) {
-//            //如果已经录入语音
-//            tipsDialogView = TipsDialogView.Builder(this)
-//                    .setMessageTip("上传图片将清空语音,是否继续")
-//                    .setConfirmTip("继续")
-//                    .setCancelTip("取消")
-//                    .setCancelBtnClickListener(object : AnimateClickListener() {
-//                        override fun click(view: View?) {
-//                            tipsDialogView?.dismiss()
-//                        }
-//                    })
-//                    .setConfirmBtnClickListener(object : AnimateClickListener() {
-//                        override fun click(view: View?) {
-//                            audioDelIv.performClick()
-//                            tipsDialogView?.dismiss(false)
-//                            goAddImagePage()
-//                        }
-//                    })
-//                    .build()
-//            tipsDialogView?.showByDialog()
-//        } else {
+        if (replyModel.recordVoicePath?.isNotEmpty() == true) {
+            //如果已经录入语音
+            tipsDialogView = TipsDialogView.Builder(context)
+                    .setMessageTip("上传图片将清空语音,是否继续")
+                    .setConfirmTip("继续")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            tipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            postsVoiceRecordView.reset()
+                            replyModel.resetVoice()
+                            tipsDialogView?.dismiss(false)
+                            goAddImagePage()
+                        }
+                    })
+                    .build()
+            tipsDialogView?.showByDialog()
+        } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(context as Activity)
             ResPicker.getInstance().params = ResPicker.newParamsBuilder()
                     .setMultiMode(true)
@@ -207,7 +256,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     .setSelectLimit(9)
                     .build()
             ResPickerActivity.open(context as Activity, ArrayList<ImageItem>(postsReplayImgAdapter?.dataList))
-//        }
+        }
     }
 
     fun onSelectImgOk(selectedImageList: java.util.ArrayList<ImageItem>) {
@@ -218,7 +267,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             showImageSelectView()
         }
     }
-    
+
     private fun showKeyBoard() {
         jianpanIv.visibility = View.GONE
         tupianIv.visibility = View.VISIBLE
@@ -316,4 +365,20 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     enum class SHOW_TYPE {
         KEY_BOARD, IMG, AUDIO
     }
+}
+
+
+class ReplyModel : Serializable {
+    fun resetVoice() {
+        recordVoiceUrl = null
+        recordVoicePath = null
+        recordDurationMs = 0 // 毫秒
+    }
+
+    var contentStr: String = ""
+    val imgUploadMap = LinkedHashMap<String, String>() // 本地路径->服务器url
+    val imgLocalPathList = ArrayList<ImageItem>() // 本地路径列表
+    var recordVoiceUrl: String? = null
+    var recordVoicePath: String? = null
+    var recordDurationMs: Int = 0 // 毫秒
 }
