@@ -17,7 +17,6 @@ import java.util.*
 
 class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
     var mDataList = ArrayList<PostsWatchModel>()
 
     var mCurrentPlayModel: PostsWatchModel? = null   // 播放的model
@@ -87,6 +86,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (holder is PostsViewHolder) {
+            MyLog.d(mTag, "onBindViewHolder holder = $holder, position = $position, payloads = $payloads")
             if (payloads.isEmpty()) {
                 holder.bindData(position, mDataList[position])
             } else {

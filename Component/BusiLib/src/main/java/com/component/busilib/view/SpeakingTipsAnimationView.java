@@ -22,6 +22,9 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
     int mIndex = 0;
     int mType = 0;
 
+    boolean isPlaying = false;
+    int mDuration = 0;
+
     int mAnimationRes[] = new int[]{
             R.drawable.yuyin_shengwen1,
             R.drawable.yuyin_shengwen2,
@@ -91,8 +94,14 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         }
     }
 
+    public void reset() {
+        isPlaying = false;
+        mDuration = 0;
+    }
 
     public void show(int duration) {
+        isPlaying = true;
+        mDuration = duration;
         setVisibility(VISIBLE);
         mUiHandler.removeMessages(MSG_START);
         mUiHandler.sendEmptyMessage(MSG_START);
@@ -103,6 +112,7 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
 
     public void hide() {
         mUiHandler.removeCallbacksAndMessages(null);
+        reset();
         if (mType == 1) {
             setImageResource(R.drawable.msg_yuyin_3);
         } else if (mType == 2) {
@@ -110,7 +120,15 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         } else {
             setVisibility(GONE);
         }
+    }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        // 动画需要继续,外面会停动画
+        if (isPlaying) {
+            show(mDuration);
+        }
     }
 
     @Override

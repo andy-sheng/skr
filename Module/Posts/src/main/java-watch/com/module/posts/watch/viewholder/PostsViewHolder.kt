@@ -163,34 +163,44 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
         refreshRedPkg()
         refreshLikes()
+
+        MyLog.d("PostsWatchViewAdapter", "bindData pos = $pos, model.playStatus = ${model.playStatus}")
+        mModel?.playStatus?.let {
+            if (it != PostsWatchViewAdapter.NO_PLAY_AUDIO) {
+                startPlay(it)
+            } else {
+                stopPlay()
+            }
+        }
     }
 
     fun startPlay(playStatus: Int) {
         isPlaying = true
+        mModel?.playStatus = playStatus
         when (playStatus) {
             PostsWatchViewAdapter.PLAY_POSTS_AUDIO -> {
                 postsAudioView.setPlay(true)
                 postsSongView.setPlay(false)
-                commentView.setAudioPlay(false)
-                commentView.setSongPlay(false)
+                commentView.postsAudioView?.setPlay(false)
+                commentView.postsSongView?.setPlay(false)
             }
             PostsWatchViewAdapter.PLAY_POSTS_SONG -> {
                 postsAudioView.setPlay(false)
                 postsSongView.setPlay(true)
-                commentView.setAudioPlay(false)
-                commentView.setSongPlay(false)
+                commentView.postsAudioView?.setPlay(false)
+                commentView.postsSongView?.setPlay(false)
             }
             PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO -> {
                 postsAudioView.setPlay(false)
                 postsSongView.setPlay(false)
-                commentView.setAudioPlay(true)
-                commentView.setSongPlay(false)
+                commentView.postsAudioView?.setPlay(true)
+                commentView.postsSongView?.setPlay(false)
             }
             PostsWatchViewAdapter.PLAY_POSTS_COMMENT_SONG -> {
                 postsAudioView.setPlay(false)
                 postsSongView.setPlay(false)
-                commentView.setAudioPlay(false)
-                commentView.setSongPlay(true)
+                commentView.postsAudioView?.setPlay(false)
+                commentView.postsSongView?.setPlay(true)
             }
             else -> {
                 MyLog.e("PostsWatchViewHolder", "什么播放状态 startPlay playStatus = $playStatus")
@@ -202,10 +212,11 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
     fun stopPlay() {
         isPlaying = false
+        mModel?.playStatus = PostsWatchViewAdapter.NO_PLAY_AUDIO
         postsAudioView.setPlay(false)
         postsSongView.setPlay(false)
-        commentView.setAudioPlay(false)
-        commentView.setSongPlay(false)
+        commentView.postsAudioView?.setPlay(false)
+        commentView.postsSongView?.setPlay(false)
     }
 
     fun refreshLikes() {

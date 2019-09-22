@@ -27,13 +27,13 @@ import com.module.posts.watch.model.PostsCommentModel
 
 class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
-    lateinit var commentTv: TextView
-    lateinit var contentTv: TextView
-    lateinit var likeNumTv: TextView
+    var commentTv: TextView? = null
+    var contentTv: TextView? = null
+    var likeNumTv: TextView? = null
 
-    lateinit var postsAudioView: PostsCommentAudioView
-    lateinit var postsSongView: PostsSongView
-    lateinit var nineGridVp: PostsNineGridLayout
+    var postsAudioView: PostsCommentAudioView? = null
+    var postsSongView: PostsSongView? = null
+    var nineGridVp: PostsNineGridLayout? = null
 
     var mListener: PostsCommentListener? = null
     var mModel: PostsBestCommendModel? = null
@@ -46,15 +46,15 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         postsSongView = parentView.findViewById(R.id.posts_song_view)
         nineGridVp = parentView.findViewById(R.id.nine_grid_vp)
 
-        contentTv.movementMethod = LinkMovementMethod.getInstance()
+        contentTv?.movementMethod = LinkMovementMethod.getInstance()
 
-        nineGridVp.clickListener = { i, url, _ ->
+        nineGridVp?.clickListener = { i, url, _ ->
             mListener?.onClickImage(i, url)
         }
 
-        postsAudioView.setAnimateDebounceViewClickListener { mListener?.onClickAudio() }
-        postsSongView.setAnimateDebounceViewClickListener { mListener?.onClickSong() }
-        likeNumTv.setAnimateDebounceViewClickListener { mListener?.onClickLike() }
+        postsAudioView?.setAnimateDebounceViewClickListener { mListener?.onClickAudio() }
+        postsSongView?.setAnimateDebounceViewClickListener { mListener?.onClickSong() }
+        likeNumTv?.setAnimateDebounceViewClickListener { mListener?.onClickLike() }
     }
 
     override fun layoutDesc(): Int {
@@ -73,61 +73,60 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             // 有音频
             if (TextUtils.isEmpty(model.comment?.content)) {
                 // 空的内容
-                contentTv.apply {
+                contentTv?.apply {
                     maxLines = 1
                     setSingleLine(true)
                     ellipsize = TextUtils.TruncateAt.END
                 }
-                val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
-                contentLayoutParams.rightToLeft = postsAudioView.id
-                contentLayoutParams.constrainedWidth = true
-                contentTv.layoutParams = contentLayoutParams
+                val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
+                contentLayoutParams?.rightToLeft = postsAudioView?.id
+                contentLayoutParams?.constrainedWidth = true
+                contentTv?.layoutParams = contentLayoutParams
 
-                val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
-                audioLayoutParams.leftMargin = 4.dp()
-                audioLayoutParams.rightMargin = 10.dp()
-                audioLayoutParams.topMargin = 0.dp()
-                audioLayoutParams.horizontalBias = 0.5F
-                audioLayoutParams.leftToLeft = -1
-                audioLayoutParams.leftToRight = contentTv.id
-                audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-                audioLayoutParams.topToBottom = -1
-                audioLayoutParams.topToTop = contentTv.id
-                audioLayoutParams.bottomToBottom = contentTv.id
-                audioLayoutParams.constrainedWidth = true
-                postsAudioView.layoutParams = audioLayoutParams
+                val audioLayoutParams = postsAudioView?.layoutParams as ConstraintLayout.LayoutParams?
+                audioLayoutParams?.leftMargin = 4.dp()
+                audioLayoutParams?.rightMargin = 10.dp()
+                audioLayoutParams?.topMargin = 0.dp()
+                audioLayoutParams?.horizontalBias = 0.5F
+                audioLayoutParams?.leftToLeft = -1
+                audioLayoutParams?.leftToRight = contentTv?.id
+                audioLayoutParams?.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                audioLayoutParams?.topToBottom = -1
+                audioLayoutParams?.topToTop = contentTv?.id
+                audioLayoutParams?.bottomToBottom = contentTv?.id
+                audioLayoutParams?.constrainedWidth = true
+                postsAudioView?.layoutParams = audioLayoutParams
             } else {
-                contentTv.apply {
+                contentTv?.apply {
                     maxLines = 2
                     setSingleLine(false)
                     ellipsize = TextUtils.TruncateAt.END
                 }
 
-                val contentLayoutParams = contentTv.layoutParams as ConstraintLayout.LayoutParams
-                contentLayoutParams.rightToLeft = -1
-                contentLayoutParams.constrainedWidth = true
-                contentTv.layoutParams = contentLayoutParams
+                val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
+                contentLayoutParams?.rightToLeft = -1
+                contentLayoutParams?.constrainedWidth = true
+                contentTv?.layoutParams = contentLayoutParams
 
-                val audioLayoutParams = postsAudioView.layoutParams as ConstraintLayout.LayoutParams
-                audioLayoutParams.leftMargin = 0
-                audioLayoutParams.rightMargin = 10.dp()
-                audioLayoutParams.topMargin = 5.dp()
-                audioLayoutParams.horizontalBias = 0F
-                audioLayoutParams.leftToLeft = contentTv.id
-                audioLayoutParams.leftToRight = -1
-                audioLayoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
-                audioLayoutParams.topToBottom = contentTv.id
-                audioLayoutParams.topToTop = -1
-                audioLayoutParams.bottomToBottom = -1
-                audioLayoutParams.constrainedWidth = true
-                postsAudioView.layoutParams = audioLayoutParams
+                val audioLayoutParams = postsAudioView?.layoutParams as ConstraintLayout.LayoutParams?
+                audioLayoutParams?.leftMargin = 0
+                audioLayoutParams?.rightMargin = 10.dp()
+                audioLayoutParams?.topMargin = 5.dp()
+                audioLayoutParams?.horizontalBias = 0F
+                audioLayoutParams?.leftToLeft = contentTv?.id
+                audioLayoutParams?.leftToRight = -1
+                audioLayoutParams?.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+                audioLayoutParams?.topToBottom = contentTv?.id
+                audioLayoutParams?.topToTop = -1
+                audioLayoutParams?.bottomToBottom = -1
+                audioLayoutParams?.constrainedWidth = true
+                postsAudioView?.layoutParams = audioLayoutParams
             }
 
-            postsAudioView.visibility = View.VISIBLE
-
-            postsAudioView.bindData(model.comment?.audios!![0].duration)
+            postsAudioView?.visibility = View.VISIBLE
+            postsAudioView?.bindData(model.comment?.audios!![0].duration)
         } else {
-            postsAudioView.visibility = View.GONE
+            postsAudioView?.visibility = View.GONE
         }
 
         val contentBuilder = SpanUtils()
@@ -145,22 +144,22 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 .append(model.comment?.content
                         ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
-        contentTv.text = contentBuilder
+        contentTv?.text = contentBuilder
 
         // 歌曲
         if (model.comment?.song == null) {
-            postsSongView.visibility = View.GONE
+            postsSongView?.visibility = View.GONE
         } else {
-            postsSongView.visibility = View.VISIBLE
-            postsSongView.bindData(model.comment?.song)
+            postsSongView?.visibility = View.VISIBLE
+            postsSongView?.bindData(model.comment?.song)
         }
 
         // 照片
         if (model.comment?.pictures.isNullOrEmpty()) {
-            nineGridVp.visibility = View.GONE
+            nineGridVp?.visibility = View.GONE
         } else {
-            nineGridVp.visibility = View.VISIBLE
-            nineGridVp.setUrlList(model.comment?.pictures!!)
+            nineGridVp?.visibility = View.VISIBLE
+            nineGridVp?.setUrlList(model.comment?.pictures!!)
         }
 
         refreshCommentLike()
@@ -172,21 +171,13 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     fun refreshCommentLike() {
         // 点赞数和图片
-        likeNumTv.text = mModel?.comment?.likedCnt.toString()
+        likeNumTv?.text = mModel?.comment?.likedCnt.toString()
         var drawable = U.getDrawable(R.drawable.posts_like_black_icon)
         if (mModel?.isLiked == true) {
             drawable = U.getDrawable(R.drawable.posts_like_selected_icon)
         }
         drawable.setBounds(0, 0, 14.dp(), 15.dp())
-        likeNumTv.setCompoundDrawables(null, null, drawable, null)
-    }
-
-    fun setAudioPlay(isPlay: Boolean) {
-        postsAudioView.setPlay(isPlay)
-    }
-
-    fun setSongPlay(isPlay: Boolean) {
-        postsSongView.setPlay(isPlay)
+        likeNumTv?.setCompoundDrawables(null, null, drawable, null)
     }
 
 }

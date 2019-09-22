@@ -56,6 +56,7 @@ class PostsAudioView : ConstraintLayout {
         audioBg.layoutParams = lp
 
         durationTv.text = "${duration}s"
+        speakerAnimationIv.reset()
     }
 
     fun setPlay(isPlay: Boolean) {
