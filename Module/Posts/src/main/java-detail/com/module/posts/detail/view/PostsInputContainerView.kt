@@ -185,7 +185,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         })
 
         mInputContainer?.setOnClickListener {
-            hideSoftInput()
+//            hideSoftInput()
         }
 
         postsVoiceRecordView.okClickListener = { path,duration ->
