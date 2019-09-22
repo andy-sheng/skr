@@ -15,14 +15,13 @@ import kotlin.math.roundToInt
 // 首页音频的view
 class PostsAudioView : ConstraintLayout {
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private val audioBg: ExImageView
-    private val audioPlay: ImageView
     private val speakerAnimationIv: SpeakingTipsAnimationView
     private val durationTv: TextView
 
@@ -36,7 +35,6 @@ class PostsAudioView : ConstraintLayout {
         View.inflate(context, R.layout.posts_audio_view_layout, this)
 
         audioBg = this.findViewById(R.id.audio_bg)
-        audioPlay = this.findViewById(R.id.audio_play)
         speakerAnimationIv = this.findViewById(R.id.speaker_animation_iv)
         durationTv = this.findViewById(R.id.duration_tv)
     }

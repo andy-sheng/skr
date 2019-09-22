@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
@@ -18,6 +19,7 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.view.*
 import com.module.posts.watch.adapter.PostsWatchListener
+import com.module.posts.watch.adapter.PostsWatchViewAdapter
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
@@ -31,6 +33,7 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     val moreIv: ImageView = item.findViewById(R.id.more_iv)
     val content: ExpandTextView = item.findViewById(R.id.content)
 
+    val postsSongView: PostsSongView = item.findViewById(R.id.posts_song_view)
     val postsAudioView: PostsAudioView = item.findViewById(R.id.posts_audio_view)
     val nineGridVp: PostsNineGridLayout = item.findViewById(R.id.nine_grid_vp)
 
@@ -47,48 +50,19 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     var isPlaying = false
 
     init {
-        avatarIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                listener.onClickCommentAvatar(pos, mModel)
-            }
-        })
-        moreIv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                listener.onClickPostsMore(pos, mModel)
-            }
-        })
-        postsAudioView.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                listener.onClickPostsAudio(pos, mModel, isPlaying)
-            }
-        })
+        avatarIv.setDebounceViewClickListener { listener.onClickCommentAvatar(pos, mModel) }
+        moreIv.setDebounceViewClickListener { listener.onClickPostsMore(pos, mModel) }
+        postsAudioView.setDebounceViewClickListener { listener.onClickPostsAudio(pos, mModel, isPlaying) }
+        postsSongView.setDebounceViewClickListener { listener.onClickPostsSong(pos, mModel, isPlaying) }
+
         nineGridVp.clickListener = { i, url, _ ->
             listener.onClickCommentImage(pos, mModel, i, url)
         }
 
-        redPkgIv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                listener.onClickPostsRedPkg(pos, mModel)
-            }
-        })
-
-        topicTv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                listener.onClickPostsTopic(pos, mModel)
-            }
-        })
-
-        postsLikeTv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                listener.onClickPostsLike(pos, mModel)
-            }
-        })
-
-        postsCommentTv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                listener.onClickPostsComment(pos, mModel)
-            }
-        })
+        redPkgIv.setAnimateDebounceViewClickListener { listener.onClickPostsRedPkg(pos, mModel) }
+        topicTv.setAnimateDebounceViewClickListener { listener.onClickPostsTopic(pos, mModel) }
+        postsLikeTv.setAnimateDebounceViewClickListener { listener.onClickPostsLike(pos, mModel) }
+        postsCommentTv.setAnimateDebounceViewClickListener { listener.onClickPostsComment(pos, mModel) }
 
         commentView.setListener(object : PostsCommentListener {
             override fun onClickLike() {
@@ -99,8 +73,8 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
                 listener.onClickCommentAvatar(pos, mModel)
             }
 
-            override fun onClickAudio(isPlay: Boolean) {
-                listener.onClickCommentAudio(pos, mModel, isPlay)
+            override fun onClickAudio() {
+                listener.onClickCommentAudio(pos, mModel, isPlaying)
             }
 
             override fun onClickImage(index: Int, url: String) {
@@ -162,6 +136,14 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             postsAudioView.bindData(mModel?.posts?.audios!![0].duration)
         }
 
+        // 歌曲
+        if (mModel?.posts?.song == null) {
+            postsSongView.visibility = View.GONE
+        } else {
+            postsSongView.visibility = View.VISIBLE
+            postsSongView.bindData(mModel?.posts?.song)
+        }
+
         // 图片
         if (mModel?.posts?.pictures.isNullOrEmpty()) {
             nineGridVp.visibility = View.GONE
@@ -178,7 +160,6 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             commentView.bindData(mModel?.bestComment!!)
         }
 
-
         // 投票
         if (mModel?.posts?.voteInfo == null) {
             voteGroupView.setVisibility(View.GONE)
@@ -191,22 +172,47 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         refreshLikes()
     }
 
-    fun startAudioPlay() {
+    fun startPlay(playStatus: Int) {
         isPlaying = true
-        postsAudioView.setPlay(true)
+        when (playStatus) {
+            PostsWatchViewAdapter.PLAY_POSTS_AUDIO -> {
+                postsAudioView.setPlay(true)
+                postsSongView.setPlay(false)
+                commentView.setAudioPlay(false)
+                commentView.setSongPlay(false)
+            }
+            PostsWatchViewAdapter.PLAY_POSTS_SONG -> {
+                postsAudioView.setPlay(false)
+                postsSongView.setPlay(true)
+                commentView.setAudioPlay(false)
+                commentView.setSongPlay(false)
+            }
+            PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO -> {
+                postsAudioView.setPlay(false)
+                postsSongView.setPlay(false)
+                commentView.setAudioPlay(true)
+                commentView.setSongPlay(false)
+            }
+            PostsWatchViewAdapter.PLAY_POSTS_COMMENT_SONG -> {
+                postsAudioView.setPlay(false)
+                postsSongView.setPlay(false)
+                commentView.setAudioPlay(false)
+                commentView.setSongPlay(true)
+            }
+            else -> {
+                MyLog.e("PostsWatchViewHolder", "什么播放状态 startPlay playStatus = $playStatus")
+                // todo donothing
+            }
+        }
+
     }
 
-    fun stopAudioPlay() {
+    fun stopPlay() {
         isPlaying = false
         postsAudioView.setPlay(false)
-    }
-
-    fun startCommentAudioPlay() {
-        commentView.setPlay(true)
-    }
-
-    fun stopCommentAudioPlay() {
-        commentView.setPlay(false)
+        postsSongView.setPlay(false)
+        commentView.setAudioPlay(false)
+        commentView.setSongPlay(false)
     }
 
     fun refreshLikes() {

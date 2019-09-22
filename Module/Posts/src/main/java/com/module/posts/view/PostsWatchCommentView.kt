@@ -43,13 +43,13 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         nineGridVp = parentView.findViewById(R.id.nine_grid_vp)
 
         contentTv.movementMethod = LinkMovementMethod.getInstance()
-        
+
         nineGridVp.clickListener = { i, url, _ ->
             mListener?.onClickImage(i, url)
         }
         postsAudioView.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View?) {
-                mListener?.onClickAudio(isPlaying)
+                mListener?.onClickAudio()
             }
         })
         likeNumTv.setOnClickListener(object : AnimateClickListener() {
@@ -160,15 +160,19 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mParentView?.visibility = visibility
     }
 
-    fun setPlay(isPlay: Boolean) {
+    fun setAudioPlay(isPlay: Boolean) {
         isPlaying = isPlay
         postsAudioView.setPlay(isPlay)
+    }
+
+    fun setSongPlay(isPlay: Boolean) {
+
     }
 }
 
 interface PostsCommentListener {
     fun onClickImage(index: Int, url: String)
-    fun onClickAudio(isPlay: Boolean)
+    fun onClickAudio()
     fun onClickName()
     fun onClickLike()
 }
