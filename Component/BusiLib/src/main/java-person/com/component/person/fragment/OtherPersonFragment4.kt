@@ -81,6 +81,8 @@ import com.component.person.model.RelationNumModel
 
 import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
 import com.module.feeds.IPersonFeedsWall
+import com.module.post.IPersonPostsWall
+import kotlin.math.abs
 
 class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
@@ -128,8 +130,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonTabAdapter: PagerAdapter
 
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
+    internal var mPostsWallView: IPersonPostsWall? = null
     internal var mFeedsWallView: IPersonFeedsWall? = null
-//    internal var mProducationWallView: ProducationWallView? = null
 
     lateinit var mFunctionArea: LinearLayout
     lateinit var mFollowIv: ExTextView
@@ -210,25 +212,25 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 mPresenter.getHomePage(mUserId)
-                if (mPersonVp.currentItem == 0) {
-                    mOtherPhotoWallView?.getPhotos(true)
-                } else if (mPersonVp.currentItem == 1) {
-                    mFeedsWallView?.getFeeds(true)
+                when {
+                    mPersonVp.currentItem == 0 -> mOtherPhotoWallView?.getPhotos(true)
+                    mPersonVp.currentItem == 1 -> mPostsWallView?.getPosts(true)
+                    mPersonVp.currentItem == 2 -> mFeedsWallView?.getFeeds(true)
                 }
             }
 
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                if (mPersonVp.currentItem == 0) {
-                    mOtherPhotoWallView?.getMorePhotos()
-                } else if (mPersonVp.currentItem == 1) {
-                    mFeedsWallView?.getMoreFeeds()
+                when {
+                    mPersonVp.currentItem == 0 -> mOtherPhotoWallView?.getMorePhotos()
+                    mPersonVp.currentItem == 1 -> mPostsWallView?.getMorePosts()
+                    mPersonVp.currentItem == 2 -> mFeedsWallView?.getMoreFeeds()
                 }
             }
 
             override fun onHeaderMoving(header: RefreshHeader?, isDragging: Boolean, percent: Float, offset: Int, headerHeight: Int, maxDragHeight: Int) {
                 super.onHeaderMoving(header, isDragging, percent, offset, headerHeight, maxDragHeight)
                 val scale = offset.toFloat() / U.getDisplayUtils().dip2px(300f).toFloat() + 1
-                if (Math.abs(scale - lastScale) >= 0.01) {
+                if (abs(scale - lastScale) >= 0.01) {
                     lastScale = scale
                     mImageBg.scaleX = scale
                     mImageBg.scaleY = scale
@@ -408,16 +410,16 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         mTagAdapter = object : TagAdapter<TagModel>(mTags) {
             override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
-                if (tagModel.type != CHARM_TAG) {
+                return if (tagModel.type != CHARM_TAG) {
                     val tv = LayoutInflater.from(context).inflate(R.layout.other_person_tag_textview,
                             mFlowlayout, false) as ExTextView
                     tv.text = tagModel.content
-                    return tv
+                    tv
                 } else {
                     val tv = LayoutInflater.from(context).inflate(R.layout.other_person_charm_tag,
                             mFlowlayout, false) as ExTextView
                     tv.text = tagModel.content
-                    return tv
+                    tv
                 }
             }
         }
@@ -465,7 +467,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 }
             })
             params.behavior = behavior
-            mAppbar!!.layoutParams = params
+            mAppbar.layoutParams = params
         }
     }
 
@@ -487,32 +489,47 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                if (position == 0) {
-                    // 照片墙
-                    if (mOtherPhotoWallView == null) {
-                        mOtherPhotoWallView = OtherPhotoWallView(this@OtherPersonFragment4, mUserId, this@OtherPersonFragment4, null)
+                when (position) {
+                    0 -> {
+                        // 照片墙
+                        if (mOtherPhotoWallView == null) {
+                            mOtherPhotoWallView = OtherPhotoWallView(this@OtherPersonFragment4, mUserId, this@OtherPersonFragment4, null)
+                        }
+                        if (container.indexOfChild(mOtherPhotoWallView) == -1) {
+                            container.addView(mOtherPhotoWallView)
+                        }
+                        mOtherPhotoWallView!!.getPhotos(false)
+                        return mOtherPhotoWallView!!
                     }
-                    if (container.indexOfChild(mOtherPhotoWallView) == -1) {
-                        container.addView(mOtherPhotoWallView)
+                    1 -> {
+                        // 帖子
+                        if (mPostsWallView == null) {
+                            val postModuleService = ModuleServiceManager.getInstance().postsService
+                            mPostsWallView = postModuleService.getPostsWall(this@OtherPersonFragment4.activity, mUserInfoModel, this@OtherPersonFragment4)
+                        }
+                        if (container.indexOfChild(mPostsWallView as View) == -1) {
+                            container.addView(mPostsWallView as View)
+                        }
+                        mPostsWallView!!.getPosts(false)
+                        return mPostsWallView!!
                     }
-                    mOtherPhotoWallView!!.getPhotos(false)
-                    return mOtherPhotoWallView!!
-                } else if (position == 1) {
-                    // 神曲
-                    if (mFeedsWallView == null) {
-                        val mIFeedsModuleService = ModuleServiceManager.getInstance().feedsService
-                        mFeedsWallView = mIFeedsModuleService.getPersonFeedsWall(this@OtherPersonFragment4, mUserInfoModel, this@OtherPersonFragment4)
+                    2 -> {
+                        // 神曲
+                        if (mFeedsWallView == null) {
+                            val mIFeedsModuleService = ModuleServiceManager.getInstance().feedsService
+                            mFeedsWallView = mIFeedsModuleService.getPersonFeedsWall(this@OtherPersonFragment4, mUserInfoModel, this@OtherPersonFragment4)
+                        }
+                        if (container.indexOfChild(mFeedsWallView as View) == -1) {
+                            container.addView(mFeedsWallView as View)
+                        }
+                        return mFeedsWallView!!
                     }
-                    if (container.indexOfChild(mFeedsWallView as View) == -1) {
-                        container.addView(mFeedsWallView as View)
-                    }
-                    return mFeedsWallView!!
                 }
                 return super.instantiateItem(container, position)
             }
 
             override fun getCount(): Int {
-                return 2
+                return 3
             }
 
             override fun getItemPosition(`object`: Any): Int {
@@ -523,6 +540,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 if (position == 0) {
                     return "相册"
                 } else if (position == 1) {
+                    return "帖子"
+                } else if (position == 2) {
                     return "神曲"
                 }
                 return ""
@@ -562,17 +581,29 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     private fun viewSelected(position: Int) {
-        if (position == 0) {
-            mOtherPhotoWallView?.mHasMore?.let {
-                mSmartRefresh.setEnableLoadMore(it)
+        when (position) {
+            0 -> {
+                mOtherPhotoWallView?.mHasMore?.let {
+                    mSmartRefresh.setEnableLoadMore(it)
+                }
+                mOtherPhotoWallView?.getPhotos(false)
+                mPostsWallView?.unselected(1)
+                mFeedsWallView?.unselected(1)
             }
-            mOtherPhotoWallView?.getPhotos(false)
-            mFeedsWallView?.unselected(1)
-        } else if (position == 1) {
-            mFeedsWallView?.isHasMore?.let {
-                mSmartRefresh.setEnableLoadMore(it)
+            1 -> {
+                mPostsWallView?.isHasMore?.let {
+                    mSmartRefresh.setEnableLoadMore(it)
+                }
+                mPostsWallView?.selected()
+                mFeedsWallView?.unselected(1)
             }
-            mFeedsWallView?.selected()
+            2 -> {
+                mFeedsWallView?.isHasMore?.let {
+                    mSmartRefresh.setEnableLoadMore(it)
+                }
+                mFeedsWallView?.selected()
+                mPostsWallView?.unselected(1)
+            }
         }
     }
 
@@ -648,6 +679,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private fun showUserInfo(model: UserInfoModel) {
         this.mUserInfoModel = model
         mFeedsWallView?.setUserInfoModel(model)
+        mPostsWallView?.setUserInfoModel(model)
         mAvatarIv.bindData(model)
 
         mNameTv.text = model.nicknameRemark
@@ -818,6 +850,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     override fun destroy() {
         super.destroy()
         mOtherPhotoWallView?.destory()
+        mPostsWallView?.destroy()
         mFeedsWallView?.destroy()
         mDialogPlus?.dismiss()
         mPersonMoreOpView?.dismiss()
