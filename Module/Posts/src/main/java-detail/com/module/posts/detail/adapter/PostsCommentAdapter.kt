@@ -47,7 +47,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     //评论数量
     var mCommentCtn = 0
 
-    var mPlayintUrl = ""
+    var mPlayingUrl = ""
 
     var mIDetailClickListener: IDetailClickListener? = null
 
@@ -196,14 +196,30 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     if (postsAudioView.isPlaying) {
-                        mPlayintUrl = ""
+                        mPlayingUrl = ""
                         SinglePlayer.stop(playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.posts?.audios?.let {
-                            mPlayintUrl = it[0]?.url ?: ""
-                            SinglePlayer.startPlay(playerTag, mPlayintUrl)
+                            mPlayingUrl = it[0]?.url ?: ""
+                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
+                        }
+                    }
+                }
+            })
+
+            postsSongView.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    if (postsSongView.isPlaying) {
+                        mPlayingUrl = ""
+                        SinglePlayer.stop(playerTag)
+                        postsSongView.setPlay(false)
+                    } else {
+                        mModel?.posts?.song?.let {
+                            mPlayingUrl = it.playURL ?: ""
+                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            postsSongView.setPlay(true)
                         }
                     }
                 }
@@ -335,7 +351,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsAudioView.visibility = View.VISIBLE
                 postsAudioView.bindData(mModel?.posts?.audios!![0].duration)
 
-                if (mPlayintUrl.equals(mModel!!.posts!!.audios!![0].url) && !TextUtils.isEmpty(mPlayintUrl)) {
+                if (mPlayingUrl.equals(mModel!!.posts!!.audios!![0].url) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsAudioView.setPlay(true)
                 } else {
                     postsAudioView.setPlay(false)
@@ -383,6 +399,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 postsSongView.visibility = View.VISIBLE
                 postsSongView.bindData(mModel?.posts?.song)
+
+                if (mPlayingUrl.equals(mModel?.posts?.song?.playURL)) {
+                    postsSongView.setPlay(true)
+                } else {
+                    postsSongView.setPlay(true)
+                }
             }
         }
     }
@@ -450,14 +472,30 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     if (postsAudioView.isPlaying) {
-                        mPlayintUrl = ""
+                        mPlayingUrl = ""
                         SinglePlayer.stop(playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
-                            mPlayintUrl = it[0]?.url ?: ""
-                            SinglePlayer.startPlay(playerTag, mPlayintUrl)
+                            mPlayingUrl = it[0]?.url ?: ""
+                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
+                        }
+                    }
+                }
+            })
+
+            postsSongView.setOnClickListener(object : DebounceViewClickListener() {
+                override fun clickValid(v: View?) {
+                    if (postsSongView.isPlaying) {
+                        mPlayingUrl = ""
+                        SinglePlayer.stop(playerTag)
+                        postsSongView.setPlay(false)
+                    } else {
+                        mModel?.comment?.songInfo?.let {
+                            mPlayingUrl = it.playURL ?: ""
+                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            postsSongView.setPlay(true)
                         }
                     }
                 }
@@ -491,7 +529,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsAudioView.visibility = View.VISIBLE
                 postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
 
-                if (mPlayintUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayintUrl)) {
+                if (mPlayingUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsAudioView.setPlay(true)
                 } else {
                     postsAudioView.setPlay(false)
@@ -546,6 +584,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             } else {
                 postsSongView.visibility = View.VISIBLE
                 postsSongView.bindData(mModel?.comment?.songInfo)
+
+                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL)) {
+                    postsSongView.setPlay(true)
+                } else {
+                    postsSongView.setPlay(true)
+                }
             }
         }
     }
