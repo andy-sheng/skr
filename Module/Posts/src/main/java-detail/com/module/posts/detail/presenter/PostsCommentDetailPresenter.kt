@@ -11,7 +11,10 @@ import com.module.posts.detail.PostsDetailServerApi
 import com.module.posts.detail.inter.IPostsCommentDetailView
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.watch.model.PostsModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsCommentDetailView) : RxLifeCyclePresenter() {
     val mTag = "PostsDetailPresenter"
@@ -41,6 +44,30 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
                 mOffset = result.data.getIntValue("offset")
                 view.showSecondLevelCommentList(mModelList, mHasMore)
             } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                }
+                if (MyLog.isDebugLogOpen()) {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                } else {
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
+
+    fun addSecondLevelComment() {
+        launch(Dispatchers.Main) {
+            val result = subscribe {
+                val map = mapOf("" to "")
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                mPostsServerApi.addComment(body)
+            }
+
+            if (result.errno == 0) {
+
+            } else {
+                view.loadMoreError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }

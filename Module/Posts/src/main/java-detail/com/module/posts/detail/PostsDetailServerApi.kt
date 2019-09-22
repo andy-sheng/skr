@@ -39,4 +39,32 @@ interface PostsDetailServerApi {
      */
     @PUT("/v1/posts/like")
     fun likeComment(@Body requestBody: RequestBody): Call<ApiResult>
+
+
+    /**
+     * {
+    "audios": [
+    {
+    "URL": "string",
+    "durTimeMs": 0
+    }
+    ],
+    "content": "string",
+    "firstLevelCommentID": 0,
+    "pictures": [
+    "string"
+    ],
+    "postsID": 0,
+    "replyedCommentID": 0,
+    "songID": 0,
+    "videos": [
+    {
+    "URL": "string",
+    "durTimeMs": 0
+    }
+    ]
+    }
+     */
+    @PUT("/v1/posts/like")
+    fun addComment(@Body requestBody: RequestBody): Call<ApiResult>
 }
