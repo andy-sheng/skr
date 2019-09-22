@@ -12,6 +12,7 @@ import com.module.posts.R
 import com.common.base.INVISIBLE_REASON_IN_VIEWPAGER
 import com.common.base.INVISIBLE_REASON_TO_DESKTOP
 import com.common.base.INVISIBLE_REASON_TO_OTHER_ACTIVITY
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
@@ -74,13 +75,12 @@ class PostsWatchFragment : BaseFragment() {
         postsChallengeTv = rootView.findViewById(R.id.posts_challenge_tv)
         postsVp = rootView.findViewById(R.id.posts_vp)
 
-        postsChallengeTv?.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
-                        .navigation()
-            }
-        })
+        postsChallengeTv?.setDebounceViewClickListener {
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
+                    .navigation()
+        }
+
         postsTab?.apply {
             setCustomTabView(R.layout.posts_tab_view_layout, R.id.tab_tv)
             setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)

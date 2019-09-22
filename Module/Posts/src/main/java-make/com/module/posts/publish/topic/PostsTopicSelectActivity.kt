@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.view.titlebar.CommonTitleBar
@@ -22,7 +23,6 @@ import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
 class PostsTopicSelectActivity : BaseActivity() {
-
 
     lateinit var mainActContainer: ConstraintLayout
     lateinit var titleBar: CommonTitleBar
@@ -46,7 +46,9 @@ class PostsTopicSelectActivity : BaseActivity() {
         contentRv = findViewById(R.id.content_rv)
         refreshLayout = findViewById(R.id.refreshLayout)
 
-
+        titleBar.leftImageButton.setDebounceViewClickListener {
+            finish()
+        }
         postsTopicClassifyAdapter = PostsTopicClassifyAdapter()
         classifyRv.layoutManager = LinearLayoutManager(this)
         classifyRv.adapter = postsTopicClassifyAdapter
