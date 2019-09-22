@@ -150,12 +150,12 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
             if (result.errno == 0) {
                 U.getToastUtil().showShort("评论成功")
                 if (mObj is PostsWatchModel) {
-                    val model = JSON.parseObject(result.data.getString("comment"), PostFirstLevelCommentModel::class.java)
+                    val model = JSON.parseObject(result.data.getString("firstLevelComment"), PostFirstLevelCommentModel::class.java)
                     mModelList.add(0, model)
                     view.addFirstLevelCommentSuccess()
                     view.showFirstLevelCommentList(mModelList, mHasMore)
                 } else if (mObj is PostFirstLevelCommentModel) {
-                    val model = JSON.parseObject(result.data.getString("comment"), PostsSecondLevelCommentModel::class.java)
+                    val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
 
                     if (mObj.secondLevelComments == null) {
                         mObj.secondLevelComments = mutableListOf()
