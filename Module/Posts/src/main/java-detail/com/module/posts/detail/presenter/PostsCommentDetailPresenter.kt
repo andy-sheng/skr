@@ -58,7 +58,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
     fun addComment(body: RequestBody, mObj: Any?) {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                mPostsServerApi.addComment(body)
+                mPostsServerApi.addSecondLevelComment(body)
             }
 
             if (result.errno == 0) {
@@ -68,6 +68,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
                 view.addSecondLevelCommentSuccess()
                 view.showSecondLevelCommentList(mModelList, mHasMore)
             } else {
+                view.addCommetFaild()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }

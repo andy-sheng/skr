@@ -170,6 +170,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         progressView?.visibility = View.VISIBLE
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         postsCommentDetailPresenter?.addComment(body, mObj)
+        feedsInputContainerView.hideSoftInput()
     }
 
     override fun initView(): Int {
@@ -267,6 +268,10 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         }
 
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
+    }
+
+    override fun addCommetFaild() {
+        progressView?.visibility = View.GONE
     }
 
     fun beginUploadTask(model: ReplyModel, obj: Any?) {

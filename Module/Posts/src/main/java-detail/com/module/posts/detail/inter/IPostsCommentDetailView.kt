@@ -6,4 +6,5 @@ interface IPostsCommentDetailView {
     fun showSecondLevelCommentList(list: List<PostsSecondLevelCommentModel>, hasMore: Boolean)
     fun loadMoreError()
     fun addSecondLevelCommentSuccess()
+    fun addCommetFaild()
 }
