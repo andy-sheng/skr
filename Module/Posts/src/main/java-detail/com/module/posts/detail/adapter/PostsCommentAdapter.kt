@@ -55,7 +55,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
     val mLikeDrawable = DrawableCreator.Builder()
             .setSelectedDrawable(U.getDrawable(R.drawable.posts_like_selected_icon))
-            .setUnSelectedDrawable(U.getDrawable(R.drawable.posts_black_big_icon))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.posts_like_black_icon))
             .build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

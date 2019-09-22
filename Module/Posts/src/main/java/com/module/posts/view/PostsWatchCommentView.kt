@@ -36,6 +36,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var nineGridVp: PostsNineGridLayout
 
     var mListener: PostsCommentListener? = null
+    var mModel: PostsBestCommendModel? = null
 
     override fun init(parentView: View) {
         commentTv = parentView.findViewById(R.id.comment_tv)
@@ -67,6 +68,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     fun bindData(model: PostsBestCommendModel) {
         tryInflate()
 
+        this.mModel = model
         if (!model.comment?.audios.isNullOrEmpty()) {
             // 有音频
             if (TextUtils.isEmpty(model.comment?.content)) {
@@ -160,10 +162,23 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             nineGridVp.visibility = View.VISIBLE
             nineGridVp.setUrlList(model.comment?.pictures!!)
         }
+
+        refreshCommentLike()
     }
 
     override fun setVisibility(visibility: Int) {
         mParentView?.visibility = visibility
+    }
+
+    fun refreshCommentLike() {
+        // 点赞数和图片
+        likeNumTv.text = mModel?.comment?.likedCnt.toString()
+        var drawable = U.getDrawable(R.drawable.posts_like_black_icon)
+        if (mModel?.isLiked == true) {
+            drawable = U.getDrawable(R.drawable.posts_like_selected_icon)
+        }
+        drawable.setBounds(0, 0, 14.dp(), 15.dp())
+        likeNumTv.setCompoundDrawables(null, null, drawable, null)
     }
 
     fun setAudioPlay(isPlay: Boolean) {

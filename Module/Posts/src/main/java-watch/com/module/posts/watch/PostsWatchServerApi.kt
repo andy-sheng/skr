@@ -65,4 +65,16 @@ interface PostsWatchServerApi {
                              @Query("userID") userID: Long,
                              @Query("postsUserID") postsUserID: Long,
                              @Query("postsListType") postsListType: Int): Call<ApiResult>
+
+    /**
+     * 点赞或取消赞 帖子   "like": true,"postsID": 0
+     */
+    @PUT("/v1/posts/like")
+    fun postsLikeOrUnLike(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 点赞或取消赞 帖子   "like": true,"postsID": 0 ,"commentID": 0,
+     */
+    @PUT("/v1/posts/like")
+    fun postsCommentLikeOrUnLike(@Body body: RequestBody): Call<ApiResult>
 }

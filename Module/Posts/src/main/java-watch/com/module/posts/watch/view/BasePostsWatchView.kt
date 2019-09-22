@@ -7,10 +7,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
 import com.common.callback.Callback
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
+import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
@@ -30,6 +35,10 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.HashMap
 
 abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
 
@@ -147,7 +156,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsLike(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickPostsLike")
+                model?.let {
+                    postsLikeOrUnLike(position, it)
+                }
             }
 
             override fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int) {
@@ -162,7 +173,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickCommentLike(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickCommentLike")
+                model?.let {
+                    postsCommentLikeOrUnLike(position, model)
+                }
             }
 
             override fun onClickCommentAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
@@ -309,6 +322,65 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     // 加载更多数据
     abstract fun getMorePosts()
+
+    fun postsLikeOrUnLike(position: Int, model: PostsWatchModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["postsID"] = model.posts?.postsID ?: 0
+            map["like"] = !model.isLiked
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe(RequestControl("postsLikeOrUnLike", ControlType.CancelThis)) {
+                postsWatchServerApi.postsLikeOrUnLike(body)
+            }
+            if (result.errno == 0) {
+                model.isLiked = !model.isLiked
+                if (model.isLiked) {
+                    // 点赞
+                    model.numeric?.starCnt = model.numeric?.starCnt?.plus(1)
+                } else {
+                    // 取消赞
+                    model.numeric?.starCnt = model.numeric?.starCnt?.minus(1)
+                }
+                adapter?.update(position, model, PostsWatchViewAdapter.REFRESH_POSTS_LIKE)
+            } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
+    }
+
+    fun postsCommentLikeOrUnLike(position: Int, model: PostsWatchModel) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["commentID"] = model.bestComment?.comment?.commentID ?: 0
+            map["postsID"] = model.posts?.postsID ?: 0
+            map["like"] = (model.bestComment?.isLiked == false)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe(RequestControl("postsCommentLikeOrUnLike", ControlType.CancelThis)) {
+                postsWatchServerApi.postsCommentLikeOrUnLike(body)
+            }
+            if (result.errno == 0) {
+                model.bestComment?.isLiked = (model.bestComment?.isLiked == false)
+                if (model.bestComment?.isLiked == true) {
+                    // 评论点赞
+                    model.bestComment?.comment?.likedCnt = model.bestComment?.comment?.likedCnt?.plus(1)
+                            ?: 0
+                } else {
+                    // 评论取消赞
+                    model.bestComment?.comment?.likedCnt = model.bestComment?.comment?.likedCnt?.minus(1)
+                            ?: 0
+                }
+                adapter?.update(position, model, PostsWatchViewAdapter.REFRESH_POSTS_COMMENT_LIKE)
+            } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
+    }
 
     open fun destory() {
         cancel()

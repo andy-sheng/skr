@@ -172,6 +172,13 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             voteGroupView.bindData(mModel?.posts?.voteInfo!!)
         }
 
+        // 评论数
+        if (mModel?.numeric == null) {
+            postsCommentTv.text = "0"
+        } else {
+            postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
+        }
+
         refreshRedPkg()
         refreshLikes()
     }
@@ -220,18 +227,22 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     }
 
     fun refreshLikes() {
-        // 评论数和点赞数
+        // 点赞数和图片
         if (mModel?.numeric == null) {
-            postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
-            postsLikeTv.text = mModel?.numeric?.starCnt.toString()
-        } else {
-            postsCommentTv.text = "0"
             postsLikeTv.text = "0"
+        } else {
+            postsLikeTv.text = mModel?.numeric?.starCnt.toString()
         }
+        var drawable = U.getDrawable(R.drawable.posts_like_black_icon)
+        if (mModel?.isLiked == true) {
+            drawable = U.getDrawable(R.drawable.posts_like_selected_icon)
+        }
+        drawable.setBounds(0, 0, 18.dp(), 19.dp())
+        postsLikeTv.setCompoundDrawables(null, null, drawable, null)
     }
 
     fun refreshCommentLike() {
-
+        commentView.refreshCommentLike()
     }
 
     fun refreshRedPkg() {

@@ -132,7 +132,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
-        android:drawableRight="@drawable/posts_black_big_icon"
+        android:drawableRight="@drawable/posts_like_black_icon"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintRight_toRightOf="parent"/>
 

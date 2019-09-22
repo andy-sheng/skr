@@ -130,7 +130,7 @@
         android:id="@+id/posts_like_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_54_dp"
-        android:drawableRight="@drawable/posts_black_big_icon"
+        android:drawableRight="@drawable/posts_like_black_icon"
         android:drawablePadding="@dimen/view_5_dp"
         android:gravity="center_vertical"
         android:padding="@dimen/view_16_dp"

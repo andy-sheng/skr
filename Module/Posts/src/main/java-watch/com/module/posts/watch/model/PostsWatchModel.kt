@@ -11,7 +11,7 @@ class PostsWatchModel : Serializable {
     @JSONField(name = "hasFollow")
     var hasFollow: Boolean? = null
     @JSONField(name = "isLiked")
-    var isLiked: Boolean? = null
+    var isLiked: Boolean = false
     @JSONField(name = "numeric")
     var numeric: PostsNumericModel? = null
     @JSONField(name = "posts")
