@@ -2,6 +2,7 @@ package com.module.posts.more
 
 import android.app.Activity
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.Group
 import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
@@ -20,9 +21,17 @@ import com.orhanobut.dialogplus.ViewHolder
  * 举报和取消 //详情页面
  * 举报和取消 或者 删除和取消//个人中心
  */
-class PostsMoreDialogView(var activity: Activity, val from: Int, val model: PostsWatchModel) : ConstraintLayout(activity) {
+class PostsMoreDialogView : ConstraintLayout {
 
     var mDialogPlus: DialogPlus? = null
+    var model: PostsWatchModel? = null
+
+    var from: Int = 0
+
+    constructor(context: Activity?, from: Int, model: PostsWatchModel) : super(context) {
+        this.from = from
+        this.model = model
+    }
 
     companion object {
         const val FROM_POSTS_HOME = 1    //帖子首页
@@ -34,11 +43,18 @@ class PostsMoreDialogView(var activity: Activity, val from: Int, val model: Post
     val cancleTv: ExTextView
     val reportTv: ExTextView
 
+    var replayTv: ExTextView
+    var replayTvDivider: View
+    var replayArea: Group
+
     init {
         View.inflate(context, R.layout.posts_more_dialog_view_layout, this)
 
         cancleTv = rootView.findViewById(R.id.cancle_tv)
         reportTv = rootView.findViewById(R.id.report_tv)
+        replayTv = rootView.findViewById(R.id.replay_tv)
+        replayTvDivider = rootView.findViewById(R.id.replay_tv_divider)
+        replayArea = rootView.findViewById(R.id.replay_area)
 
         cancleTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -52,8 +68,8 @@ class PostsMoreDialogView(var activity: Activity, val from: Int, val model: Post
                 dismiss(false)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
                         .withInt("from", from)
-                        .withInt("targetID", model.user?.userId ?: 0)
-                        .withLong("postsID", model.posts?.postsID ?: 0)
+                        .withInt("targetID", model?.user?.userId ?: 0)
+                        .withLong("postsID", model?.posts?.postsID ?: 0)
                         .navigation()
             }
         })
@@ -65,7 +81,7 @@ class PostsMoreDialogView(var activity: Activity, val from: Int, val model: Post
 
     fun showByDialog(canCancel: Boolean) {
         mDialogPlus?.dismiss(false)
-        mDialogPlus = DialogPlus.newDialog(activity)
+        mDialogPlus = DialogPlus.newDialog(context as Activity)
                 .setContentHolder(ViewHolder(this))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)

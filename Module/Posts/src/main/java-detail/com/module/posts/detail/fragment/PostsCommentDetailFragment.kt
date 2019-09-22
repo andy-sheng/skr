@@ -1,14 +1,18 @@
 package com.module.posts.detail.fragment
 
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.module.RouterConstants
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.REFRESH_COMMENT_CTN
@@ -17,6 +21,7 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.detail.presenter.PostsCommentDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
+import com.module.posts.more.PostsCommentMoreDialogView
 import com.module.posts.watch.model.PostsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -34,6 +39,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     var mPostsWatchModel: PostsWatchModel? = null
     var mPostFirstLevelCommentModel: PostFirstLevelCommentModel? = null
     var postsAdapter: PostsCommentDetailAdapter? = null
+    var postsMoreDialogView: PostsCommentMoreDialogView? = null
 
     var postsCommentDetailPresenter: PostsCommentDetailPresenter? = null
 
@@ -70,11 +76,59 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
             activity?.finish()
         }
 
+        titlebar.rightImageButton.setDebounceViewClickListener {
+            postsMoreDialogView?.dismiss(false)
+            postsMoreDialogView = PostsCommentMoreDialogView(activity as FragmentActivity).apply {
+                reportTv.setDebounceViewClickListener {
+                    dismiss(false)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                            .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
+                            .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
+                            .withLong("commentID", mPostFirstLevelCommentModel?.comment?.commentID?.toLong()
+                                    ?: 0)
+                            .navigation()
+                }
+
+                deleteTv.visibility = View.GONE
+
+                replyTv.setDebounceViewClickListener {
+                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                }
+            }
+            postsMoreDialogView?.showByDialog(true)
+        }
+
+        commentTv.setDebounceViewClickListener {
+            feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+        }
+
         postsCommentDetailPresenter = PostsCommentDetailPresenter(mPostsWatchModel!!.posts!!, this)
 
         postsAdapter = PostsCommentDetailAdapter()
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
+
+        postsAdapter?.mClickContentListener = { postsCommentModel ->
+            postsMoreDialogView?.dismiss(false)
+            postsMoreDialogView = PostsCommentMoreDialogView(activity as FragmentActivity).apply {
+                reportTv.setDebounceViewClickListener {
+                    dismiss(false)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                            .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
+                            .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
+                            .withLong("commentID", postsCommentModel?.comment?.commentID?.toLong()
+                                    ?: 0)
+                            .navigation()
+                }
+
+                deleteTv.visibility = View.GONE
+
+                replyTv.setDebounceViewClickListener {
+                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                }
+            }
+            postsMoreDialogView?.showByDialog(true)
+        }
 
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
     }
@@ -119,5 +173,6 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         super.destroy()
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
         SinglePlayer.removeCallback(PostsCommentDetailAdapter.playerTag)
+        postsMoreDialogView?.dismiss()
     }
 }

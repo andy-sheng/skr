@@ -20,6 +20,7 @@ import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
+import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsWatchModel
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -40,6 +41,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     lateinit var smartRefreshLayout: SmartRefreshLayout
     var mPostsWatchModel: PostsWatchModel? = null
     var mPostsDetailPresenter: PostsDetailPresenter? = null
+    var postsMoreDialogView: PostsMoreDialogView? = null
 
     var postsAdapter: PostsCommentAdapter? = null
 
@@ -79,7 +81,17 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         titlebar.rightImageButton.setDebounceViewClickListener {
-
+            activity?.let {
+                postsMoreDialogView?.dismiss(false)
+                postsMoreDialogView = PostsMoreDialogView(it, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
+                    replayArea.visibility = View.VISIBLE
+                    replayTv.setDebounceViewClickListener {
+                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                        dismiss()
+                    }
+                }
+                postsMoreDialogView?.showByDialog(true)
+            }
         }
 
         feedsInputContainerView?.mSendCallBack = { s ->
@@ -106,8 +118,8 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
         postsAdapter = PostsCommentAdapter()
         postsAdapter?.mIDetailClickListener = object : PostsCommentAdapter.IDetailClickListener {
-            override fun replayPosts() {
-
+            override fun replayPosts(model: PostsWatchModel) {
+                feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
             }
 
             override fun likePosts(model: PostsWatchModel) {
@@ -123,6 +135,17 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             }
         }
 
+        postsAdapter?.mClickContent = {
+            postsMoreDialogView?.dismiss(false)
+            postsMoreDialogView = PostsMoreDialogView(activity, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
+                replayArea.visibility = View.VISIBLE
+                replayTv.setDebounceViewClickListener {
+                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                    dismiss()
+                }
+            }
+            postsMoreDialogView?.showByDialog(true)
+        }
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
 
@@ -194,6 +217,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         super.destroy()
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
         SinglePlayer.removeCallback(PostsCommentAdapter.playerTag)
-
+        postsMoreDialogView?.dismiss()
     }
 }

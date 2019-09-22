@@ -45,6 +45,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
     var mPlayintUrl = ""
 
+    var mClickContentListener: ((PostsSecondLevelCommentModel) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
         when (viewType) {
@@ -268,6 +270,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     }
                 }
             })
+
+            contentTv.setDebounceViewClickListener {
+                mClickContentListener?.invoke(mModel!!)
+            }
         }
 
         fun bindData(pos: Int, model: PostsSecondLevelCommentModel) {

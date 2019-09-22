@@ -51,6 +51,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
     var mIDetailClickListener: IDetailClickListener? = null
 
+    var mClickContent: ((PostFirstLevelCommentModel) -> Unit)? = null
+
     val mLikeDrawable = DrawableCreator.Builder()
             .setSelectedDrawable(U.getDrawable(R.drawable.posts_like_selected_icon))
             .setUnSelectedDrawable(U.getDrawable(R.drawable.posts_black_big_icon))
@@ -166,7 +168,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             voteGroupView = PostsVoteGroupView(itemView.findViewById(R.id.vote_layout_stub))
 
             postsCommentTv.setDebounceViewClickListener {
-                mIDetailClickListener?.replayPosts()
+                mIDetailClickListener?.replayPosts(mModel!!)
             }
 
             postsLikeTv.setDebounceViewClickListener {
@@ -445,6 +447,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     }
                 }
             })
+
+            contentTv.setDebounceViewClickListener {
+                mClickContent?.invoke(mModel!!)
+            }
         }
 
         fun bindData(pos: Int, model: PostFirstLevelCommentModel) {
@@ -530,7 +536,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     }
 
     interface IDetailClickListener {
-        fun replayPosts()
+        fun replayPosts(model: PostsWatchModel)
 
         fun likePosts(model: PostsWatchModel)
 
