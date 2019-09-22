@@ -15,16 +15,25 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
 
     var mDataList = ArrayList<PostsWatchModel>()
 
-    val NO_PLAY_AUDIO = 0     // 未播放
-    val PLAY_POSTS_AUDIO = 1    // 播放音频
-    val PLAY_POSTS_COMMENT_AUDIO = 2  // 播放评论音频
-
     var mCurrentPlayModel: PostsWatchModel? = null   // 播放的model
     var mCurrentPlayPosition = -1    //播放的位置
     var playStatus = NO_PLAY_AUDIO   // 0代表未播放  1播放帖子音频  2播放评论音频
 
     val mTag = "PostsWatchViewAdapter"
     private val uiHanlder = Handler(Looper.getMainLooper())
+
+    companion object {
+        const val REFRESH_POSTS_PLAY = 0  // 局部刷新帖子播放
+        const val REFRESH_POSTS_LIKE = 1  // 局部刷新帖子喜欢
+        const val REFRESH_POSTS_RED_PKG = 2  // 局部刷新帖子红包状态
+        const val REFRESH_POSTS_COMMENT_LIKE = 3  // 局部刷新帖子精彩评论喜欢
+
+        const val NO_PLAY_AUDIO = 0       // 未播放
+        const val PLAY_POSTS_AUDIO = 1    // 播放音频
+        const val PLAY_POSTS_SONG = 2     //播放歌曲音频
+        const val PLAY_POSTS_COMMENT_AUDIO = 3  // 播放评论音频
+        const val PLAY_POSTS_COMMENT_SONG = 4   // 播放评论歌曲音频
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsWatchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_watch_view_item_layout, parent, false)
@@ -50,18 +59,9 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
                         REFRESH_POSTS_PLAY -> {
                             MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY refreshType = $refreshType")
                             if (mCurrentPlayModel == mDataList[position]) {
-                                if (playStatus == PLAY_POSTS_AUDIO) {
-                                    MyLog.d(mTag, "onBindViewHolder startAudioPlay refreshType = $refreshType")
-                                    holder.startAudioPlay()
-                                    holder.stopCommentAudioPlay()
-                                } else if (playStatus == PLAY_POSTS_COMMENT_AUDIO) {
-                                    MyLog.d(mTag, "onBindViewHolder startCommentAudioPlay refreshType = $refreshType")
-                                    holder.startCommentAudioPlay()
-                                    holder.stopAudioPlay()
-                                }
+                                holder.startPlay(playStatus)
                             } else {
-                                holder.stopAudioPlay()
-                                holder.stopCommentAudioPlay()
+                                holder.stopPlay()
                             }
                         }
                         REFRESH_POSTS_LIKE -> {
@@ -79,8 +79,8 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
         }
     }
 
-    fun startOrPauseAudio(pos: Int, model: PostsWatchModel?, isComment: Boolean) {
-        if (playStatus != NO_PLAY_AUDIO && mCurrentPlayModel == model && (isComment == (playStatus == PLAY_POSTS_COMMENT_AUDIO))) {
+    fun startOrPauseAudio(pos: Int, model: PostsWatchModel?, playType: Int) {
+        if (playStatus != NO_PLAY_AUDIO && mCurrentPlayModel == model && playType == playStatus) {
             // 数据和播放类型一致
             stopPlay()
         } else {
@@ -91,11 +91,7 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
                 lastPos = mCurrentPlayPosition
                 mCurrentPlayPosition = pos
             }
-            playStatus = if (isComment) {
-                PLAY_POSTS_COMMENT_AUDIO
-            } else {
-                PLAY_POSTS_AUDIO
-            }
+            playStatus = playType
             notifyItemChanged(pos, REFRESH_POSTS_PLAY)
             lastPos?.let {
                 uiHanlder.post { notifyItemChanged(it, REFRESH_POSTS_PLAY) }
@@ -134,19 +130,13 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
             }
         }
     }
-
-    companion object {
-        const val REFRESH_POSTS_PLAY = 0  // 局部刷新帖子播放
-        const val REFRESH_POSTS_LIKE = 1  // 局部刷新帖子喜欢
-        const val REFRESH_POSTS_RED_PKG = 2  // 局部刷新帖子红包状态
-        const val REFRESH_POSTS_COMMENT_LIKE = 3  // 局部刷新帖子精彩评论喜欢
-    }
 }
 
 interface PostsWatchListener {
     fun onClickPostsAvatar(position: Int, model: PostsWatchModel?)  // 发帖头像
     fun onClickPostsMore(position: Int, model: PostsWatchModel?)    // 发帖更多
     fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean)   // 发帖音频
+    fun onClickPostsSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean)   // 发帖歌曲
     fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?)   // 发帖图片
 
     fun onClickPostsRedPkg(position: Int, model: PostsWatchModel?)  // 发帖红包
@@ -158,6 +148,7 @@ interface PostsWatchListener {
     fun onClickCommentAvatar(position: Int, model: PostsWatchModel?)  // 发帖精彩评论昵称
     fun onClickCommentLike(position: Int, model: PostsWatchModel?)    // 发帖精彩评论点赞
     fun onClickCommentAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean)   // 发帖精彩评论音频
+    fun onClickCommentSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean)    // 发帖精彩评论歌曲
     fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?)   // 发帖精彩评论图片
 
 }

@@ -102,7 +102,18 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                         SinglePlayer.startPlay(playerTag, it[0].url)
                     }
                 }
-                adapter?.startOrPauseAudio(position, model, false)
+                adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_AUDIO)
+            }
+
+            override fun onClickPostsSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+                if (isPlaying) {
+                    SinglePlayer.stop(playerTag)
+                } else {
+                    model?.posts?.song?.playURL?.let {
+                        SinglePlayer.startPlay(playerTag, it)
+                    }
+                }
+                adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_SONG)
             }
 
             override fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
@@ -163,7 +174,18 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                         SinglePlayer.startPlay(playerTag, it[0].url)
                     }
                 }
-                adapter?.startOrPauseAudio(position, model, true)
+                adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO)
+            }
+
+            override fun onClickCommentSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+                if (isPlaying) {
+                    SinglePlayer.stop(playerTag)
+                } else {
+                    model?.bestComment?.comment?.song?.playURL?.let {
+                        SinglePlayer.startPlay(playerTag, it)
+                    }
+                }
+                adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_COMMENT_SONG)
             }
 
             override fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {

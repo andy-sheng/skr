@@ -36,6 +36,7 @@
         <attr name="animationtype" format="enum">
             <enum name="speak" value="0" />
             <enum name="msg_audio" value="1" />
+            <enum name="posts_audio" value="2" />
         </attr>
     </declare-styleable>
 </resources>

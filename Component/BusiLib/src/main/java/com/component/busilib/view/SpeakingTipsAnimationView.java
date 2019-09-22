@@ -34,6 +34,12 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
             R.drawable.msg_yuyin_3
     };
 
+    int mPostsAnimationRes[] = new int[]{
+            R.drawable.posts_yuyin_1,
+            R.drawable.posts_yuyin_2,
+            R.drawable.posts_yuyin_3
+    };
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -41,6 +47,8 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
             if (msg.what == MSG_START) {
                 if (mType == 1) {
                     setImageResource(mMsgAnimationRes[mIndex++ % mMsgAnimationRes.length]);
+                } else if (mType == 2) {
+                    setImageResource(mPostsAnimationRes[mIndex++ % mPostsAnimationRes.length]);
                 } else {
                     setImageResource(mAnimationRes[mIndex++ % mAnimationRes.length]);
                 }
@@ -49,6 +57,8 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
                 mUiHandler.removeMessages(MSG_START);
                 if (mType == 1) {
                     setImageResource(R.drawable.msg_yuyin_3);
+                } else if (mType == 2) {
+                    setImageResource(R.drawable.posts_yuyin_3);
                 } else {
                     setVisibility(GONE);
                 }
@@ -75,6 +85,9 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         if (mType == 1) {
             setVisibility(VISIBLE);
             setImageResource(R.drawable.msg_yuyin_3);
+        } else if (mType == 2) {
+            setVisibility(VISIBLE);
+            setImageResource(R.drawable.posts_yuyin_3);
         }
     }
 
@@ -92,6 +105,8 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         mUiHandler.removeCallbacksAndMessages(null);
         if (mType == 1) {
             setImageResource(R.drawable.msg_yuyin_3);
+        } else if (mType == 2) {
+            setImageResource(R.drawable.posts_yuyin_3);
         } else {
             setVisibility(GONE);
         }
