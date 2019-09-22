@@ -13,6 +13,9 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.callback.SuccessCallback
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.publish.PostsPublishServerApi
@@ -86,8 +89,14 @@ class PostsTopicSelectActivity : BaseActivity() {
             }
         })
 
+        val loadService = LoadSir.beginBuilder()
+                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "页面为空～", "#4cffffff"))
+                .setDefaultCallback(EmptyCallback::class.java)
+                .build().register(mainActContainer)
+
         launch {
             val result = subscribe { api.getTopicCategoryList(0, 1000, MyUserInfoManager.getInstance().uid.toInt()) }
+            loadService.showSuccess()
             if (result.errno == 0) {
                 val l = JSON.parseArray(result.data.getString("categorys"), Category::class.java)
                 postsTopicClassifyAdapter.dataList.clear()
