@@ -8,10 +8,15 @@ import android.view.ViewGroup
 import com.common.log.MyLog
 import com.module.posts.R
 import com.module.posts.watch.model.PostsWatchModel
+import com.module.posts.watch.view.BasePostsWatchView
+import com.module.posts.watch.viewholder.PostsEmptyWallViewHolder
+import com.module.posts.watch.viewholder.PostsViewHolder
+import com.module.posts.watch.viewholder.PostsWallViewHolder
 import com.module.posts.watch.viewholder.PostsWatchViewHolder
 import java.util.*
 
-class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Adapter<PostsWatchViewHolder>() {
+class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     var mDataList = ArrayList<PostsWatchModel>()
 
@@ -33,45 +38,78 @@ class PostsWatchViewAdapter(val listener: PostsWatchListener) : RecyclerView.Ada
         const val PLAY_POSTS_SONG = 2     //播放歌曲音频
         const val PLAY_POSTS_COMMENT_AUDIO = 3  // 播放评论音频
         const val PLAY_POSTS_COMMENT_SONG = 4   // 播放评论歌曲音频
+
+        const val TYPE_POSTS_WATCH = 1
+        const val TYPE_POSTS_WALL = 2
+        const val TYPE_POSTS_WALL_EMPTY = 3
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsWatchViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_watch_view_item_layout, parent, false)
-        return PostsWatchViewHolder(view, listener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_POSTS_WALL_EMPTY -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_wall_empty_layout, parent, false)
+                PostsEmptyWallViewHolder(view)
+            }
+            TYPE_POSTS_WALL -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_wall_view_item_layout, parent, false)
+                PostsWallViewHolder(view, listener)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_watch_view_item_layout, parent, false)
+                PostsWatchViewHolder(view, listener)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
+        if (type == BasePostsWatchView.TYPE_POST_PERSON && mDataList.size == 0) {
+            return 1
+        }
         return mDataList.size
     }
 
-    override fun onBindViewHolder(holder: PostsWatchViewHolder, position: Int) {
+    override fun getItemViewType(position: Int): Int {
+        return if (type == BasePostsWatchView.TYPE_POST_PERSON) {
+            if (mDataList.size > 0) {
+                TYPE_POSTS_WALL
+            } else {
+                TYPE_POSTS_WALL_EMPTY
+            }
+        } else {
+            TYPE_POSTS_WATCH
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
     }
 
-    override fun onBindViewHolder(holder: PostsWatchViewHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            holder.bindData(position, mDataList[position])
-        } else {
-            // 局部刷新
-            payloads.forEach { refreshType ->
-                if (refreshType is Int) {
-                    when (refreshType) {
-                        REFRESH_POSTS_PLAY -> {
-                            MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY refreshType = $refreshType")
-                            if (mCurrentPlayModel == mDataList[position]) {
-                                holder.startPlay(playStatus)
-                            } else {
-                                holder.stopPlay()
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (holder is PostsViewHolder) {
+            if (payloads.isEmpty()) {
+                holder.bindData(position, mDataList[position])
+            } else {
+                // 局部刷新
+                payloads.forEach { refreshType ->
+                    if (refreshType is Int) {
+                        when (refreshType) {
+                            REFRESH_POSTS_PLAY -> {
+                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY refreshType = $refreshType")
+                                if (mCurrentPlayModel == mDataList[position]) {
+                                    holder.startPlay(playStatus)
+                                } else {
+                                    holder.stopPlay()
+                                }
                             }
-                        }
-                        REFRESH_POSTS_LIKE -> {
-                            holder.refreshLikes()
-                        }
-                        REFRESH_POSTS_RED_PKG -> {
-                            holder.refreshRedPkg()
-                        }
-                        REFRESH_POSTS_COMMENT_LIKE -> {
-                            holder.refreshCommentLike()
+                            REFRESH_POSTS_LIKE -> {
+                                holder.refreshLikes()
+                            }
+                            REFRESH_POSTS_RED_PKG -> {
+                                holder.refreshRedPkg()
+                            }
+                            REFRESH_POSTS_COMMENT_LIKE -> {
+                                holder.refreshCommentLike()
+                            }
                         }
                     }
                 }

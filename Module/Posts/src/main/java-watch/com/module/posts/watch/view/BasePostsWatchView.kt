@@ -89,7 +89,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         classicsHeader = this.findViewById(R.id.classics_header)
         recyclerView = this.findViewById(R.id.recycler_view)
 
-        adapter = PostsWatchViewAdapter(object : PostsWatchListener {
+        adapter = PostsWatchViewAdapter(type, object : PostsWatchListener {
             override fun onClickPostsAvatar(position: Int, model: PostsWatchModel?) {
                 U.getToastUtil().showShort("onClickPostsAvatar")
                 model?.user?.let {

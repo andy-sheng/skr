@@ -10,9 +10,7 @@ import com.module.posts.R
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsWatchModel
 
-
-// posts_watch_view_item_layout
-class PostsWatchViewHolder(item: View, listener: PostsWatchListener) : PostsViewHolder(item, listener) {
+class PostsWallViewHolder (item: View, listener: PostsWatchListener) : PostsViewHolder(item, listener){
 
     val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
     val nicknameTv: TextView = item.findViewById(R.id.nickname_tv)
