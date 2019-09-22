@@ -184,7 +184,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int) {
-                U.getToastUtil().showShort("onClickPostsVote")
+                model?.let {
+                    votePosts(position, it, index)
+                }
             }
 
             override fun onClickCommentAvatar(position: Int, model: PostsWatchModel?) {
@@ -343,6 +345,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     // 加载更多数据
     abstract fun getMorePosts()
 
+    // 帖子点赞
     fun postsLikeOrUnLike(position: Int, model: PostsWatchModel) {
         launch {
             val map = HashMap<String, Any>()
@@ -371,6 +374,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         }
     }
 
+    // 评论点赞
     fun postsCommentLikeOrUnLike(position: Int, model: PostsWatchModel) {
         launch {
             val map = HashMap<String, Any>()
@@ -418,6 +422,37 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                     SinglePlayer.stop(playerTag)
                 }
                 adapter?.deletePosts(model)
+            } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                }
+            }
+        }
+    }
+
+    // 投票
+    fun votePosts(position: Int, model: PostsWatchModel, voteSeq: Int) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["postsID"] = model.posts?.postsID ?: 0
+            map["voteID"] = model.posts?.voteInfo?.voteID ?: 0
+            map["voteSeq"] = voteSeq
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe(RequestControl("votePosts", ControlType.CancelThis)) {
+                postsWatchServerApi.votePosts(body)
+            }
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("投票成功")
+                model.posts?.voteInfo?.hasVoted = true
+                model.posts?.voteInfo?.voteSeq = voteSeq
+                model.posts?.voteInfo?.voteList?.let {
+                    if (voteSeq in 1..it.size) {
+                        it[voteSeq - 1].voteCnt = it[voteSeq - 1].voteCnt + 1
+                    }
+                }
+                adapter?.update(position, model, PostsWatchViewAdapter.REFRESH_POSTS_VOTE)
+
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")

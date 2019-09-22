@@ -148,13 +148,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             commentView.bindData(mModel?.bestComment!!)
         }
 
-        // 投票
-        if (mModel?.posts?.voteInfo == null) {
-            voteGroupView.setVisibility(View.GONE)
-        } else {
-            voteGroupView.setVisibility(View.VISIBLE)
-            voteGroupView.bindData(mModel?.posts?.voteInfo!!)
-        }
+        refreshVote()
 
         // 评论数
         if (mModel?.numeric == null) {
@@ -243,6 +237,15 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
                 }
             }
         }
+    }
 
+    fun refreshVote(){
+        // 投票
+        if (mModel?.posts?.voteInfo == null) {
+            voteGroupView.setVisibility(View.GONE)
+        } else {
+            voteGroupView.setVisibility(View.VISIBLE)
+            voteGroupView.bindData(mModel?.posts?.voteInfo!!)
+        }
     }
 }
