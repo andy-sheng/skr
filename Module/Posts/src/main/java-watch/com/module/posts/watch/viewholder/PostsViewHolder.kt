@@ -17,6 +17,7 @@ import com.module.posts.R
 import com.module.posts.view.*
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
+import com.module.posts.watch.model.PostsModel
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
@@ -88,9 +89,12 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         })
 
         itemView.setDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
-                    .withSerializable("model", mModel)
-                    .navigation()
+            if (mModel != null && mModel?.isAudit() == true) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
+                        .withSerializable("model", mModel)
+                        .navigation()
+            }
+
         }
     }
 
@@ -239,7 +243,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         }
     }
 
-    fun refreshVote(){
+    fun refreshVote() {
         // 投票
         if (mModel?.posts?.voteInfo == null) {
             voteGroupView.setVisibility(View.GONE)

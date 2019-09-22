@@ -92,7 +92,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
         adapter = PostsWatchViewAdapter(type, object : PostsWatchListener {
             override fun onClickPostsAvatar(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickPostsAvatar")
                 model?.user?.let {
                     openOtherPersonCenter(it.userId)
                 }
@@ -125,7 +124,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
-                U.getToastUtil().showShort("onClickPostsAudio")
                 if (isPlaying) {
                     SinglePlayer.stop(playerTag)
                 } else {
@@ -148,7 +146,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
-                U.getToastUtil().showShort("onClickPostsImage")
                 goBigImageBrowse(index, model)
             }
 
@@ -178,26 +175,28 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsLike(position: Int, model: PostsWatchModel?) {
-                model?.let {
-                    postsLikeOrUnLike(position, it)
+                if (model != null && model.isAudit()) {
+                    postsLikeOrUnLike(position, model)
                 }
             }
 
             override fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int) {
-                model?.let {
-                    votePosts(position, it, index)
+                // 审核过，且未投票
+                if (model != null && model.isAudit()) {
+                    if (model.posts?.voteInfo?.hasVoted == false) {
+                        votePosts(position, model, index)
+                    }
                 }
             }
 
             override fun onClickCommentAvatar(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickCommentAvatar")
                 model?.bestComment?.user?.let {
                     openOtherPersonCenter(it.userId)
                 }
             }
 
             override fun onClickCommentLike(position: Int, model: PostsWatchModel?) {
-                model?.let {
+                if (model != null && model.isAudit()) {
                     postsCommentLikeOrUnLike(position, model)
                 }
             }
