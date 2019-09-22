@@ -82,6 +82,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.ex.ExTextView
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_height="@dimen/textsize_32_dp"
             android:textColor="#FF7F602D"
             android:id="@+id/send_msg_btn"
