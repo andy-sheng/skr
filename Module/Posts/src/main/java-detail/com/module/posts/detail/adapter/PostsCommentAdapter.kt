@@ -375,7 +375,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             }
 
             // 评论数和点赞数
-            if (mModel?.numeric == null) {
+            if (mModel?.numeric != null) {
                 postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
                 postsLikeTv.text = mModel?.numeric?.starCnt.toString()
             } else {

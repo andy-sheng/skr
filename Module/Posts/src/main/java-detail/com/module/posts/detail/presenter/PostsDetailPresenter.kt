@@ -69,6 +69,11 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
 
             if (result.errno == 0) {
                 postsWatchModel.isLiked = like
+                if (like) {
+                    postsWatchModel?.numeric?.starCnt = postsWatchModel?.numeric?.starCnt!! + 1
+                } else {
+                    postsWatchModel?.numeric?.starCnt = postsWatchModel?.numeric?.starCnt!! - 1
+                }
                 view.showLikePostsResulet()
             } else {
                 if (result.errno == -2) {
@@ -93,6 +98,12 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
 
             if (result.errno == 0) {
                 postFirstLevelCommentModel.isLiked = like
+                if (like) {
+                    postFirstLevelCommentModel.comment?.likedCnt = postFirstLevelCommentModel.comment?.likedCnt!! + 1
+                } else {
+                    postFirstLevelCommentModel.comment?.likedCnt = postFirstLevelCommentModel.comment?.likedCnt!! - 1
+                }
+
                 view.showLikeFirstLevelCommentResult(postFirstLevelCommentModel)
             } else {
                 if (result.errno == -2) {
