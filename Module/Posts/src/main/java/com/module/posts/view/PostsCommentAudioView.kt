@@ -52,6 +52,8 @@ class PostsCommentAudioView : ConstraintLayout {
         var lp = audioBg.layoutParams
         lp.width = width
         audioBg.layoutParams = lp
+
+        durationTv.text = "${duration}s"
     }
 
     fun setPlay(isPlay: Boolean) {

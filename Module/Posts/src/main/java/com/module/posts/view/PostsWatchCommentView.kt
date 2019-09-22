@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
 import com.alibaba.sdk.android.oss.ClientConfiguration
+import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -30,16 +32,17 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var likeNumTv: TextView
 
     lateinit var postsAudioView: PostsCommentAudioView
+    lateinit var postsSongView: PostsSongView
     lateinit var nineGridVp: PostsNineGridLayout
 
     var mListener: PostsCommentListener? = null
-    var isPlaying = false
 
     override fun init(parentView: View) {
         commentTv = parentView.findViewById(R.id.comment_tv)
         contentTv = parentView.findViewById(R.id.content_tv)
         likeNumTv = parentView.findViewById(R.id.like_num_tv)
         postsAudioView = parentView.findViewById(R.id.posts_audio_view)
+        postsSongView = parentView.findViewById(R.id.posts_song_view)
         nineGridVp = parentView.findViewById(R.id.nine_grid_vp)
 
         contentTv.movementMethod = LinkMovementMethod.getInstance()
@@ -47,16 +50,10 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         nineGridVp.clickListener = { i, url, _ ->
             mListener?.onClickImage(i, url)
         }
-        postsAudioView.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                mListener?.onClickAudio()
-            }
-        })
-        likeNumTv.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View?) {
-                mListener?.onClickLike()
-            }
-        })
+
+        postsAudioView.setAnimateDebounceViewClickListener { mListener?.onClickAudio() }
+        postsSongView.setAnimateDebounceViewClickListener { mListener?.onClickSong() }
+        likeNumTv.setAnimateDebounceViewClickListener { mListener?.onClickLike() }
     }
 
     override fun layoutDesc(): Int {
@@ -148,6 +145,15 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 .create()
         contentTv.text = contentBuilder
 
+        // 歌曲
+        if (model.comment?.song == null) {
+            postsSongView.visibility = View.GONE
+        } else {
+            postsSongView.visibility = View.VISIBLE
+            postsSongView.bindData(model.comment?.song)
+        }
+
+        // 照片
         if (model.comment?.pictures.isNullOrEmpty()) {
             nineGridVp.visibility = View.GONE
         } else {
@@ -161,13 +167,13 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun setAudioPlay(isPlay: Boolean) {
-        isPlaying = isPlay
         postsAudioView.setPlay(isPlay)
     }
 
     fun setSongPlay(isPlay: Boolean) {
-
+        postsSongView.setPlay(isPlay)
     }
+
 }
 
 interface PostsCommentListener {
@@ -175,4 +181,5 @@ interface PostsCommentListener {
     fun onClickAudio()
     fun onClickName()
     fun onClickLike()
+    fun onClickSong()
 }

@@ -65,6 +65,10 @@ class PostsWatchViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         postsCommentTv.setAnimateDebounceViewClickListener { listener.onClickPostsComment(pos, mModel) }
 
         commentView.setListener(object : PostsCommentListener {
+            override fun onClickSong() {
+                listener.onClickCommentSong(pos, mModel, isPlaying)
+            }
+
             override fun onClickLike() {
                 listener.onClickCommentLike(pos, mModel)
             }
