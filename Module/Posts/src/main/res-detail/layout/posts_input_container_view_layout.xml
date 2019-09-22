@@ -165,6 +165,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout="@layout/posts_detail_kge_record_view_stub_layout" />
+
+        <!--表情区-->
+        <com.common.emoji.EmotionLayout
+            android:id="@+id/elEmotion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

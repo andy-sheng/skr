@@ -408,6 +408,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mEmotionKeyboard?.bindToPlaceHodlerView(mPlaceHolderView)
         mEmotionKeyboard?.bindToEditText(mEtContent)
         mEmotionKeyboard?.setBoardStatusListener(this)
+        mEmotionKeyboard?.setEmotionLayout(findViewById(R.id.elEmotion))
     }
 
     override fun onBoradShow() {
