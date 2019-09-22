@@ -206,6 +206,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     }
                 }
             })
+
+            redPkgBg.setDebounceViewClickListener {
+                mIDetailClickListener?.showRedPkg(mModel!!)
+            }
         }
 
         fun refreshCommentCnt(pos: Int, model: PostsWatchModel) {
@@ -537,6 +541,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
 
     interface IDetailClickListener {
         fun replayPosts(model: PostsWatchModel)
+
+        fun showRedPkg(model: PostsWatchModel)
 
         fun likePosts(model: PostsWatchModel)
 

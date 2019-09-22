@@ -3,6 +3,7 @@ package com.module.posts.detail.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -21,6 +22,7 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
 import com.module.posts.more.PostsMoreDialogView
+import com.module.posts.redpkg.PostsRedPkgDialogView
 import com.module.posts.watch.model.PostsWatchModel
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -42,6 +44,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     var mPostsWatchModel: PostsWatchModel? = null
     var mPostsDetailPresenter: PostsDetailPresenter? = null
     var postsMoreDialogView: PostsMoreDialogView? = null
+    var postsRedPkgDialogView: PostsRedPkgDialogView? = null
 
     var postsAdapter: PostsCommentAdapter? = null
 
@@ -124,6 +127,12 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
             override fun likePosts(model: PostsWatchModel) {
                 mPostsDetailPresenter?.likePosts(!model.isLiked!!, model)
+            }
+
+            override fun showRedPkg(model: PostsWatchModel) {
+                postsRedPkgDialogView?.dismiss(false)
+                postsRedPkgDialogView = PostsRedPkgDialogView(activity as FragmentActivity, model?.posts?.redpacketInfo!!)
+                postsRedPkgDialogView?.showByDialog()
             }
 
             override fun clickFirstLevelComment() {
@@ -218,5 +227,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
         SinglePlayer.removeCallback(PostsCommentAdapter.playerTag)
         postsMoreDialogView?.dismiss()
+        postsRedPkgDialogView?.dismiss()
     }
 }
