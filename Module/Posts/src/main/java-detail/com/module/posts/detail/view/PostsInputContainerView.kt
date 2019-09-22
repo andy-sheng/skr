@@ -377,6 +377,8 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
         postsVoiceRecordView.setVisibility(View.GONE)
         selectImgGroup.visibility = View.GONE
+        mEmotionKeyboard?.hideSoftInput()
+        postsKgeRecordView.realView?.getLayoutParams()?.height = U.getDisplayUtils().dip2px(260f)
     }
 
     private fun showImageSelectView() {

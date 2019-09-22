@@ -97,6 +97,8 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         recordDiffuseView.stop()
         circleCountDownView.visibility = View.GONE
         recordJob?.cancel()
+        selectSongTv.visibility = View.GONE
+        playBtn.visibility = View.VISIBLE
         playBtn.setImageResource(R.drawable.kge_zanting)
         playTipsTv.text = "播放"
         abandonIv.visibility = View.VISIBLE
