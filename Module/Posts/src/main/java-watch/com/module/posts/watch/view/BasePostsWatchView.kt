@@ -412,6 +412,11 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 postsWatchServerApi.deletePosts(body)
             }
             if (result.errno == 0) {
+                if (model == adapter?.mCurrentPlayModel) {
+                    // 删除的正好是当前播放的
+                    adapter?.stopPlay()
+                    SinglePlayer.stop(playerTag)
+                }
                 adapter?.deletePosts(model)
             } else {
                 if (result.errno == -2) {
