@@ -40,14 +40,13 @@
         app:layout_constraintTop_toTopOf="@id/song_play_bg"
         android:background="@drawable/posts_song_play_icon"/>
 
-    <com.component.busilib.view.MarqueeTextView
+    <TextView
         android:id="@+id/song_name_tv"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"
-        android:focusableInTouchMode="true"
-        android:marqueeRepeatLimit="marquee_forever"
+        android:ellipsize="end"
         android:singleLine="true"
+        android:maxLines="1"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         android:layout_marginLeft="@dimen/view_14_dp"

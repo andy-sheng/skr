@@ -42,11 +42,15 @@ class PostsTopicSelectActivity : BaseActivity() {
 
     val api = ApiManager.getInstance().createService(PostsPublishServerApi::class.java)
 
+    var from = 1  // 1来自首页 2来自发布过程中
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.posts_topic_select_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        from = intent.getIntExtra("from", 1)
+
         mainActContainer = findViewById(R.id.main_act_container)
         titleBar = findViewById(R.id.title_bar)
         classifyRv = findViewById(R.id.classify_rv)
@@ -73,10 +77,17 @@ class PostsTopicSelectActivity : BaseActivity() {
         contentRv.adapter = postsTopicListAdapter
 
         postsTopicListAdapter.selectListener = { model ->
-            setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra("topic",model)
-            })
-            finish()
+            if (from == 1) {
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_POSTS_TOPIC)
+                        .withLong("topicID", model?.topicID?.toLong() ?: 0L)
+                        .navigation()
+            } else {
+                setResult(Activity.RESULT_OK, Intent().apply {
+                    putExtra("topic",model)
+                })
+                finish()
+            }
         }
 
 

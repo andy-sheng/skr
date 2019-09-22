@@ -65,6 +65,10 @@ interface PostsDetailServerApi {
     ]
     }
      */
-    @PUT("/v1/posts/comment-add")
-    fun addComment(@Body requestBody: RequestBody): Call<ApiResult>
+
+    @PUT("/v1/posts/first-level-comment-add")
+    fun addFirstLevelComment(@Body requestBody: RequestBody): Call<ApiResult>
+
+    @PUT("/v1/posts/second-level-comment-add")
+    fun addSecondLevelComment(@Body requestBody: RequestBody): Call<ApiResult>
 }

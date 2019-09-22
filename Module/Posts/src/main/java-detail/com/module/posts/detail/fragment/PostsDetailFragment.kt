@@ -218,6 +218,10 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         return false
     }
 
+    override fun addCommetFaild() {
+        progressView.visibility = View.GONE
+    }
+
     override fun onBackPressed(): Boolean {
         if (feedsInputContainerView.mInputContainer?.visibility == View.VISIBLE) {
             feedsInputContainerView.hideSoftInput()
@@ -394,5 +398,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         progressView.visibility = View.VISIBLE
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         mPostsDetailPresenter?.addComment(body, mObj)
+        feedsInputContainerView.hideSoftInput()
     }
 }

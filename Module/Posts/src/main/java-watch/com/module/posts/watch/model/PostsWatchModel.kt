@@ -22,6 +22,10 @@ class PostsWatchModel : Serializable {
     //todo 自定义在ui上的属性
     var isExpend = false  // 文字是否展开
 
+    fun isAudit(): Boolean {
+        return posts?.status == PostsModel.EPS_AUDIT_ACCEPT
+    }
+
     override fun toString(): String {
         return "PostsWatchModel(bestComment=$bestComment, hasFollow=$hasFollow, isLiked=$isLiked, numeric=$numeric, posts=$posts, user=$user, isExpend=$isExpend)"
     }

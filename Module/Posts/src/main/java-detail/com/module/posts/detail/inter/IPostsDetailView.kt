@@ -9,4 +9,5 @@ interface IPostsDetailView {
     fun loadMoreError()
     fun addFirstLevelCommentSuccess()
     fun addSecondLevelCommentSuccess()
+    fun addCommetFaild()
 }

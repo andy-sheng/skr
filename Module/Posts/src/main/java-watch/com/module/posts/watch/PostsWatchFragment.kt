@@ -25,6 +25,7 @@ import com.module.RouterConstants
 import com.module.posts.watch.view.FollowPostsWatchView
 import com.module.posts.watch.view.LastPostsWatchView
 import com.module.posts.watch.view.RecommendPostsWatchView
+import kotlinx.android.synthetic.main.posts_watch_fragment_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,8 +35,9 @@ class PostsWatchFragment : BaseFragment() {
 
     private var title: CommonTitleBar? = null
     private var divider: View? = null
+    private var postsPublishIv: ImageView? = null
+    private var postsTopicIv: ImageView? = null
     private var postsTab: SlidingTabLayout? = null
-    private var postsChallengeTv: ExTextView? = null
     private var postsVp: NestViewPager? = null
 
     private var tabPagerAdapter: PagerAdapter? = null
@@ -72,12 +74,20 @@ class PostsWatchFragment : BaseFragment() {
         title = rootView.findViewById(R.id.title)
         divider = rootView.findViewById(R.id.divider)
         postsTab = rootView.findViewById(R.id.posts_tab)
-        postsChallengeTv = rootView.findViewById(R.id.posts_challenge_tv)
+        postsPublishIv = rootView.findViewById(R.id.posts_publish_iv)
+        postsTopicIv = rootView.findViewById(R.id.posts_topic_iv)
         postsVp = rootView.findViewById(R.id.posts_vp)
 
-        postsChallengeTv?.setDebounceViewClickListener {
+        postsPublishIv?.setDebounceViewClickListener {
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
+                    .navigation()
+        }
+
+        postsTopicIv?.setDebounceViewClickListener {
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
+                    .withInt("from", 1)
                     .navigation()
         }
 

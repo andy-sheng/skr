@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.component.busilib.model.FeedSongModel
@@ -22,7 +23,7 @@ class PostsSongView : ConstraintLayout {
     val audioBg: ExImageView
     val songPlayBg: ExImageView
     val songPlayIv: ImageView
-    val songNameTv: MarqueeTextView
+    val songNameTv: TextView
 
     var isPlaying = false
 

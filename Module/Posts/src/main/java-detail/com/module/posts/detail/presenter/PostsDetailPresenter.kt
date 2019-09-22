@@ -69,6 +69,11 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
 
             if (result.errno == 0) {
                 postsWatchModel.isLiked = like
+                if (like) {
+                    postsWatchModel?.numeric?.starCnt = postsWatchModel?.numeric?.starCnt!! + 1
+                } else {
+                    postsWatchModel?.numeric?.starCnt = postsWatchModel?.numeric?.starCnt!! - 1
+                }
                 view.showLikePostsResulet()
             } else {
                 if (result.errno == -2) {
@@ -93,6 +98,12 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
 
             if (result.errno == 0) {
                 postFirstLevelCommentModel.isLiked = like
+                if (like) {
+                    postFirstLevelCommentModel.comment?.likedCnt = postFirstLevelCommentModel.comment?.likedCnt!! + 1
+                } else {
+                    postFirstLevelCommentModel.comment?.likedCnt = postFirstLevelCommentModel.comment?.likedCnt!! - 1
+                }
+
                 view.showLikeFirstLevelCommentResult(postFirstLevelCommentModel)
             } else {
                 if (result.errno == -2) {
@@ -140,18 +151,22 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
     fun addComment(body: RequestBody, mObj: Any?) {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                mPostsDetailServerApi.addComment(body)
+                if (mObj is PostsWatchModel) {
+                    mPostsDetailServerApi.addFirstLevelComment(body)
+                } else {
+                    mPostsDetailServerApi.addSecondLevelComment(body)
+                }
             }
 
             if (result.errno == 0) {
                 U.getToastUtil().showShort("评论成功")
                 if (mObj is PostsWatchModel) {
-                    val model = JSON.parseObject(result.data.getString("comment"), PostFirstLevelCommentModel::class.java)
+                    val model = JSON.parseObject(result.data.getString("firstLevelComment"), PostFirstLevelCommentModel::class.java)
                     mModelList.add(0, model)
                     view.addFirstLevelCommentSuccess()
                     view.showFirstLevelCommentList(mModelList, mHasMore)
                 } else if (mObj is PostFirstLevelCommentModel) {
-                    val model = JSON.parseObject(result.data.getString("comment"), PostsSecondLevelCommentModel::class.java)
+                    val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
 
                     if (mObj.secondLevelComments == null) {
                         mObj.secondLevelComments = mutableListOf()
@@ -160,6 +175,7 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
                     view.addSecondLevelCommentSuccess()
                 }
             } else {
+                view.addCommetFaild()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }

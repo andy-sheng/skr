@@ -32,6 +32,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         const val REFRESH_POSTS_LIKE = 1  // 局部刷新帖子喜欢
         const val REFRESH_POSTS_RED_PKG = 2  // 局部刷新帖子红包状态
         const val REFRESH_POSTS_COMMENT_LIKE = 3  // 局部刷新帖子精彩评论喜欢
+        const val REFRESH_POSTS_VOTE = 4  // 局部刷新投票页面
 
         const val NO_PLAY_AUDIO = 0       // 未播放
         const val PLAY_POSTS_AUDIO = 1    // 播放音频
@@ -109,6 +110,9 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                             }
                             REFRESH_POSTS_COMMENT_LIKE -> {
                                 holder.refreshCommentLike()
+                            }
+                            REFRESH_POSTS_VOTE -> {
+                                holder.refreshVote()
                             }
                         }
                     }
