@@ -142,8 +142,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var pos: Int = -1
         var mModel: PostsWatchModel? = null
         var isGetRelation: Boolean = false
+        var postsSongView: PostsSongView
 
         init {
+            postsSongView = itemView.findViewById(R.id.posts_song_view)
             followTv = itemView.findViewById(R.id.follow_tv)
             timeTv = itemView.findViewById(R.id.time_tv)
             nicknameTv = itemView.findViewById(R.id.nickname_tv)
@@ -375,6 +377,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             }
 
             commentCtnTv.text = "评论（${mCommentCtn}条）"
+
+            if (mModel?.posts?.song == null) {
+                postsSongView.visibility = View.GONE
+            } else {
+                postsSongView.visibility = View.VISIBLE
+                postsSongView.bindData(mModel?.posts?.song)
+            }
         }
     }
 
@@ -393,8 +402,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var bottomBarrier: Barrier
         var pos: Int = -1
         var mModel: PostFirstLevelCommentModel? = null
+        var postsSongView: PostsSongView
 
         init {
+            postsSongView = itemView.findViewById(R.id.posts_song_view)
             commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
             nameTv = itemView.findViewById(R.id.name_tv)
             commentTimeTv = itemView.findViewById(R.id.comment_time_tv)
@@ -462,12 +473,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             this.mModel = model
 
             commenterAvaterIv.bindData(model.commentUser)
-            nameTv.text = model.commentUser.nicknameRemark
-            commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
-            likeNum.text = model.comment.likedCnt.toString()
+            nameTv.text = model.commentUser?.nicknameRemark
+            commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
+                    ?: 0, System.currentTimeMillis())
+            likeNum.text = model.comment?.likedCnt.toString()
 
-            if (!TextUtils.isEmpty(model.comment.content)) {
-                contentTv.text = model.comment.content
+            if (!TextUtils.isEmpty(model.comment?.content)) {
+                contentTv.text = model.comment?.content
                 contentTv.visibility = View.VISIBLE
             } else {
                 contentTv.visibility = View.GONE
@@ -503,10 +515,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             if ((mModel?.secondLevelComments?.size ?: 0) > 0) {
                 replyNum.visibility = View.VISIBLE
                 val spanUtils = SpanUtils()
-                        .append(model.commentUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                        .append(model.commentUser?.nickname.toString()).setClickSpan(object : ClickableSpan() {
                             override fun onClick(widget: View?) {
                                 val bundle = Bundle()
-                                bundle.putInt("bundle_user_id", model.commentUser.userId)
+                                bundle.putInt("bundle_user_id", model.commentUser?.userId ?: 0)
                                 ARouter.getInstance()
                                         .build(RouterConstants.ACTIVITY_OTHER_PERSON)
                                         .with(bundle)
@@ -527,7 +539,14 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 replyNum.visibility = View.GONE
             }
 
-            xinIv.isSelected = mModel?.isIsLiked ?: false
+            xinIv.isSelected = mModel?.isLiked ?: false
+
+            if (mModel?.comment?.songInfo == null) {
+                postsSongView.visibility = View.GONE
+            } else {
+                postsSongView.visibility = View.VISIBLE
+                postsSongView.bindData(mModel?.comment?.songInfo)
+            }
         }
     }
 

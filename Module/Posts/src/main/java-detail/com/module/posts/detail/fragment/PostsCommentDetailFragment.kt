@@ -6,13 +6,21 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alibaba.fastjson.JSON
+import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
+import com.common.rxretrofit.ApiManager
+import com.common.upload.UploadCallback
+import com.common.upload.UploadParams
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.SkrProgressView
 import com.module.RouterConstants
+import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.REFRESH_COMMENT_CTN
@@ -21,18 +29,23 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.detail.presenter.PostsCommentDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
+import com.module.posts.detail.view.ReplyModel
 import com.module.posts.more.PostsCommentMoreDialogView
+import com.module.posts.publish.PostsPublishActivity
 import com.module.posts.watch.model.PostsWatchModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 
 class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     lateinit var titlebar: CommonTitleBar
     lateinit var recyclerView: RecyclerView
     lateinit var commentTv: ExTextView
+    lateinit var imageIv: ExImageView
     lateinit var audioIv: ExImageView
     lateinit var feedsInputContainerView: PostsInputContainerView
     lateinit var smartRefreshLayout: SmartRefreshLayout
@@ -41,7 +54,123 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     var postsAdapter: PostsCommentDetailAdapter? = null
     var postsMoreDialogView: PostsCommentMoreDialogView? = null
 
+    var progressView: SkrProgressView?? = null
+
     var postsCommentDetailPresenter: PostsCommentDetailPresenter? = null
+
+    /**
+     * 帖子回复相关操作
+     */
+    var uploading = false
+    var hasFailedTask = false
+    var replyModel: ReplyModel? = null
+    var mObj: Any? = null
+
+    val uploadQueue = object : ObjectPlayControlTemplate<PostsPublishActivity.PostsUploadModel, PostsCommentDetailFragment>() {
+        override fun accept(cur: PostsPublishActivity.PostsUploadModel): PostsCommentDetailFragment? {
+            if (uploading) {
+                return null
+            }
+            uploading = true
+            return this@PostsCommentDetailFragment
+        }
+
+        override fun onStart(model: PostsPublishActivity.PostsUploadModel, consumer: PostsCommentDetailFragment) {
+            uploadToOss(model)
+        }
+
+        override fun onEnd(model: PostsPublishActivity.PostsUploadModel?) {
+            uploadToOssEnd(model)
+        }
+
+    }
+
+    fun uploadToOss(m: PostsPublishActivity.PostsUploadModel) {
+        UploadParams.newBuilder(m.localPath)
+                .setFileType(UploadParams.FileType.posts)
+                .startUploadAsync(object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String?) {
+                        if (m.type == 1) {
+                            replyModel?.recordVoiceUrl = url
+                        } else if (m.type == 2) {
+                            replyModel?.imgUploadMap?.put(m.localPath!!, url!!)
+                        }
+                        uploading = false
+                        uploadQueue.endCurrent(m)
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String?) {
+                        uploading = false
+                        uploadQueue.endCurrent(null)
+                        hasFailedTask = true
+                    }
+
+                })
+    }
+
+    private fun uploadToOssEnd(model: PostsPublishActivity.PostsUploadModel?) {
+        if (!uploadQueue.hasMoreData()) {
+            if (hasFailedTask) {
+                U.getToastUtil().showShort("部分资源上传失败，请尝试重新上传")
+                progressView?.visibility = View.GONE
+            } else {
+                uploadToServer()
+            }
+        }
+    }
+
+    /**
+     * 执行服务器请求
+     */
+    fun uploadToServer() {
+        var hasData = false
+        val map = HashMap<String, Any?>()
+        if (replyModel?.recordVoiceUrl?.isNotEmpty() == true) {
+            map["audios"] = listOf(mapOf(
+                    "URL" to replyModel?.recordVoiceUrl,
+                    "duration" to replyModel?.recordDurationMs
+            ))
+            hasData = true
+        }
+        if (replyModel?.imgUploadMap?.isNotEmpty() == true) {
+            val l = ArrayList<String>()
+            replyModel?.imgUploadMap?.values?.forEach {
+                l.add(it)
+            }
+            map["pictures"] = l
+            hasData = true
+        }
+
+
+        if (replyModel?.contentStr?.isNotEmpty() == true) {
+            map["content"] = replyModel?.contentStr
+            hasData = true
+        }
+        if (!hasData) {
+            U.getToastUtil().showShort("内容为空")
+            return
+        }
+
+        map["postsID"] = mPostsWatchModel?.posts?.postsID
+//        map["songID"] = ""
+
+        map["firstLevelCommentID"] = mPostFirstLevelCommentModel?.comment?.commentID
+
+        mObj?.let {
+            if (it is PostFirstLevelCommentModel) {
+                map["replyedCommentID"] = it.comment?.commentID
+            } else if (it is PostsSecondLevelCommentModel) {
+                map["replyedCommentID"] = it.comment?.commentID
+            }
+        }
+
+        progressView?.visibility = View.VISIBLE
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        postsCommentDetailPresenter?.addComment(body, mObj)
+    }
 
     override fun initView(): Int {
         return com.module.posts.R.layout.posts_comment_detail_fragment_layout
@@ -55,8 +184,9 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
         titlebar = rootView.findViewById(com.module.posts.R.id.titlebar)
         recyclerView = rootView.findViewById(com.module.posts.R.id.recycler_view)
-        commentTv = rootView.findViewById(com.module.posts.R.id.comment_tv)
-        audioIv = rootView.findViewById(com.module.posts.R.id.audio_iv)
+        commentTv = rootView.findViewById(R.id.comment_tv)
+        imageIv = rootView.findViewById(R.id.image_iv)
+        audioIv = rootView.findViewById(R.id.audio_iv)
         feedsInputContainerView = rootView.findViewById(com.module.posts.R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(com.module.posts.R.id.smart_refresh)
         smartRefreshLayout.setEnableLoadMore(true)
@@ -93,14 +223,14 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
                 replyTv.setDebounceViewClickListener {
                     dismiss(false)
-                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostFirstLevelCommentModel)
                 }
             }
             postsMoreDialogView?.showByDialog(true)
         }
 
         commentTv.setDebounceViewClickListener {
-            feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+            feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostFirstLevelCommentModel)
         }
 
         postsCommentDetailPresenter = PostsCommentDetailPresenter(mPostsWatchModel!!.posts!!, this)
@@ -126,13 +256,46 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
                 replyTv.setDebounceViewClickListener {
                     dismiss(false)
-                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postsCommentModel)
                 }
             }
             postsMoreDialogView?.showByDialog(true)
         }
 
+        feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
+            beginUploadTask(replyModel, obj)
+        }
+
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
+    }
+
+    fun beginUploadTask(model: ReplyModel, obj: Any?) {
+        this.replyModel = model
+        this.mObj = obj
+        var needUploadToOss = false
+        hasFailedTask = false
+        //音频上传
+        if (model.recordVoicePath?.isNotEmpty() == true && model.recordDurationMs > 0) {
+            if (model?.recordVoiceUrl.isNullOrEmpty()) {
+                needUploadToOss = true
+                uploadQueue.add(PostsPublishActivity.PostsUploadModel(1, model.recordVoicePath), true)
+            }
+        }
+        //图片上传
+        if (!model.imgLocalPathList.isNullOrEmpty()) {
+            for (local in model.imgLocalPathList) {
+                if (!model.imgUploadMap.containsKey(local.path)) {
+                    //没有上传
+                    needUploadToOss = true
+                    uploadQueue.add(PostsPublishActivity.PostsUploadModel(2, local.path), true)
+                }
+            }
+        }
+        if (!needUploadToOss) {
+            uploadToServer()
+        } else {
+            progressView?.visibility = View.VISIBLE
+        }
     }
 
     override fun useEventBus(): Boolean {
@@ -154,6 +317,11 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
     override fun loadMoreError() {
         smartRefreshLayout.finishLoadMore()
+    }
+
+    override fun addSecondLevelCommentSuccess() {
+        postsAdapter!!.mCommentCtn++
+        progressView?.visibility = View.GONE
     }
 
     override fun isBlackStatusBarText(): Boolean = true

@@ -92,12 +92,20 @@
         app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
         app:layout_constraintTop_toBottomOf="@id/title_barrier" />
 
+    <com.module.posts.view.PostsSongView
+        android:id="@+id/posts_song_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
+        app:layout_constraintTop_toBottomOf="@id/title_barrier" />
+
     <android.support.constraint.Barrier
         android:id="@+id/posts_barrier_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="nine_grid_vp,posts_audio_view,content" />
+        app:constraint_referenced_ids="nine_grid_vp,posts_audio_view,content,posts_song_view" />
 
     <ViewStub
         android:layout_marginLeft="@dimen/view_10_dp"

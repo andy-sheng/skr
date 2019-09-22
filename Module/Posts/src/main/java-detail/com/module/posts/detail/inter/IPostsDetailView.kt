@@ -7,4 +7,6 @@ interface IPostsDetailView {
     fun showLikePostsResulet()
     fun showLikeFirstLevelCommentResult(postFirstLevelCommentModel: PostFirstLevelCommentModel)
     fun loadMoreError()
+    fun addFirstLevelCommentSuccess()
+    fun addSecondLevelCommentSuccess()
 }

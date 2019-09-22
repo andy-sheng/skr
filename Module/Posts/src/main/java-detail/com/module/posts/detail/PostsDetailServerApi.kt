@@ -65,6 +65,6 @@ interface PostsDetailServerApi {
     ]
     }
      */
-    @PUT("/v1/posts/like")
+    @PUT("/v1/posts/comment-add")
     fun addComment(@Body requestBody: RequestBody): Call<ApiResult>
 }

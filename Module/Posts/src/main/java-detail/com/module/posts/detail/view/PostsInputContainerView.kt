@@ -53,7 +53,9 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     lateinit var postsReplayImgAdapter: PostsReplayImgAdapter
     protected var mHasPretend = false
     protected var mForceHide = false
-    var mSendCallBack: ((ReplyModel) -> Unit)? = null
+    var mSendCallBack: ((ReplyModel, Any?) -> Unit)? = null
+
+    var mObj: Any? = null
 
     var replyModel = ReplyModel()
 
@@ -173,11 +175,11 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     replyModel.imgLocalPathList.clear()
                     replyModel.imgLocalPathList.addAll(postsReplayImgAdapter.dataList)
                     replyModel.contentStr = mEtContent?.text.toString()
-                    mSendCallBack?.invoke(replyModel)
+                    mSendCallBack?.invoke(replyModel, mObj)
                 } else {
                     // 只有文字
                     replyModel.contentStr = mEtContent?.text.toString()
-                    mSendCallBack?.invoke(replyModel)
+                    mSendCallBack?.invoke(replyModel, mObj)
                 }
             }
         })
@@ -190,7 +192,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             replyModel.recordVoicePath = path
             replyModel.recordDurationMs = duration
             replyModel.contentStr = mEtContent?.text.toString()
-            mSendCallBack?.invoke(replyModel)
+            mSendCallBack?.invoke(replyModel, mObj)
         }
     }
 
@@ -328,7 +330,8 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         postsReplayImgAdapter?.dataList = mutableListOf()
     }
 
-    fun showSoftInput(type: SHOW_TYPE) {
+    fun showSoftInput(type: SHOW_TYPE, obj: Any?) {
+        mObj = obj
         if (type == SHOW_TYPE.KEY_BOARD) {
             showKeyBoard()
         } else if (type == SHOW_TYPE.IMG) {

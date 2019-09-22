@@ -25,10 +25,7 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
-import com.module.posts.view.ExpandTextView
-import com.module.posts.view.PostsAudioView
-import com.module.posts.view.PostsCommentAudioView
-import com.module.posts.view.PostsNineGridLayout
+import com.module.posts.view.*
 
 class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     companion object {
@@ -109,6 +106,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var content: ExpandTextView
         var postsAudioView: PostsAudioView
         var nineGridVp: PostsNineGridLayout
+        var postsSongView: PostsSongView
         var postsBarrier: Barrier
         var commentNumDivider: View
         var commentCtnTv: ExTextView
@@ -125,6 +123,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             nicknameTv = itemView.findViewById(R.id.nickname_tv)
             avatarIv = itemView.findViewById(R.id.avatar_iv)
             content = itemView.findViewById(R.id.content)
+            postsSongView = itemView.findViewById(R.id.posts_song_view)
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
             nineGridVp = itemView.findViewById(R.id.nine_grid_vp)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
@@ -183,12 +182,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             this.mModel = model
 
             avatarIv.bindData(model.commentUser)
-            nicknameTv.text = model.commentUser.nicknameRemark
-            timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
+            nicknameTv.text = model.commentUser?.nicknameRemark
+            timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
+                    ?: 0, System.currentTimeMillis())
 
-            if (!TextUtils.isEmpty(model.comment.content)) {
+            if (!TextUtils.isEmpty(model.comment?.content)) {
                 content.visibility = View.VISIBLE
-                content.text = model.comment.content
+                content.text = model.comment?.content
             } else {
                 content.visibility = View.GONE
             }
@@ -222,6 +222,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             }
 
             commentCtnTv.text = "评论(${mCommentCtn}条)"
+
+            if (mModel?.comment?.songInfo == null) {
+                postsSongView.visibility = View.GONE
+            } else {
+                postsSongView.visibility = View.VISIBLE
+                postsSongView.bindData(mModel?.comment?.songInfo)
+            }
         }
     }
 
@@ -231,6 +238,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
         var commentTimeTv: ExTextView
         var contentTv: ExTextView
         var postsAudioView: PostsCommentAudioView
+        var nineGridVp: PostsNineGridLayout
+        var postsSongView: PostsSongView
         var postsBarrier: Barrier
 
         var pos: Int = -1
@@ -241,7 +250,9 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             nameTv = itemView.findViewById(R.id.name_tv)
             commentTimeTv = itemView.findViewById(R.id.comment_time_tv)
             contentTv = itemView.findViewById(R.id.content_tv)
+            postsSongView = itemView.findViewById(R.id.posts_song_view)
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
+            nineGridVp = itemView.findViewById(R.id.nine_grid_vp)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
 
             commenterAvaterIv?.setDebounceViewClickListener {
@@ -298,6 +309,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 }
             }
 
+            // 图片
+            if (mModel?.comment?.pictures.isNullOrEmpty()) {
+                nineGridVp.visibility = View.GONE
+            } else {
+                nineGridVp.visibility = View.VISIBLE
+                nineGridVp.setUrlList(mModel?.comment?.pictures!!)
+            }
+
             if (!TextUtils.isEmpty(model.comment.content)) {
                 contentTv.visibility = View.VISIBLE
                 if (model.comment.replyType == 1) {
@@ -341,6 +360,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 }
             } else {
                 contentTv.visibility = View.GONE
+            }
+
+            if (mModel?.comment?.songInfo == null) {
+                postsSongView.visibility = View.GONE
+            } else {
+                postsSongView.visibility = View.VISIBLE
+                postsSongView.bindData(mModel?.comment?.songInfo)
             }
         }
     }

@@ -66,12 +66,28 @@
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintTop_toBottomOf="@+id/title_barrier" />
 
+    <com.module.posts.view.PostsSongView
+        android:id="@+id/posts_song_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/title_barrier" />
+
+    <com.module.posts.view.PostsNineGridLayout
+        android:id="@+id/nine_grid_vp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/title_barrier" />
+
     <android.support.constraint.Barrier
         android:id="@+id/posts_barrier"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="posts_audio_view, content_tv" />
+        app:constraint_referenced_ids="posts_audio_view, content_tv, nine_grid_vp, posts_song_view" />
 
     <View
         android:layout_width="0dp"

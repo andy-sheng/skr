@@ -10,6 +10,7 @@ import com.common.utils.U
 import com.module.posts.detail.PostsDetailServerApi
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
+import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.watch.model.PostsModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.Dispatchers
@@ -28,33 +29,6 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
     var mLimit = 5
 
     var mHasMore = true
-
-    fun addComment(content: String, feedID: Int) {
-        val map = HashMap<String, Any>()
-        map["content"] = content
-        map["feedID"] = feedID
-
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
-//            override fun process(obj: ApiResult?) {
-//                if (obj?.errno == 0) {
-//                    val model = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
-//                    model?.let {
-//                        val firstLevelCommentModel = FirstLevelCommentModel()
-//                        firstLevelCommentModel.comment = model
-//                        firstLevelCommentModel.comment.content = content
-//                        firstLevelCommentModel.commentUser = UserInfoModel()
-//                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
-//                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-//                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
-//                        mIFeedsDetailView.addCommentSuccess(firstLevelCommentModel)
-//                    }
-//                } else {
-//                    U.getToastUtil().showShort(obj?.errmsg)
-//                }
-//            }
-//        }, this, RequestControl(mTag + "addComment", ControlType.CancelThis))
-    }
 
     //直接回复评论
     fun refuseComment(content: String, feedID: Int, firstLevelCommentID: Int) {
@@ -112,13 +86,13 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
     fun likeFirstLevelComment(like: Boolean, postFirstLevelCommentModel: PostFirstLevelCommentModel) {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                val map = mapOf("postsID" to postFirstLevelCommentModel.comment.postsID, "like" to like, "commentID" to postFirstLevelCommentModel.comment.commentID)
+                val map = mapOf("postsID" to postFirstLevelCommentModel.comment?.postsID, "like" to like, "commentID" to postFirstLevelCommentModel.comment?.commentID)
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 mPostsDetailServerApi.likeComment(body)
             }
 
             if (result.errno == 0) {
-                postFirstLevelCommentModel.isIsLiked = like
+                postFirstLevelCommentModel.isLiked = like
                 view.showLikeFirstLevelCommentResult(postFirstLevelCommentModel)
             } else {
                 if (result.errno == -2) {
@@ -163,42 +137,29 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
         }
     }
 
-    fun addFirstLevelComment(content: String, postsID: Int) {
+    fun addComment(body: RequestBody, mObj: Any?) {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                val map = mapOf("" to "")
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 mPostsDetailServerApi.addComment(body)
             }
 
             if (result.errno == 0) {
+                U.getToastUtil().showShort("评论成功")
+                if (mObj is PostsWatchModel) {
+                    val model = JSON.parseObject(result.data.getString("comment"), PostFirstLevelCommentModel::class.java)
+                    mModelList.add(0, model)
+                    view.addFirstLevelCommentSuccess()
+                    view.showFirstLevelCommentList(mModelList, mHasMore)
+                } else if (mObj is PostFirstLevelCommentModel) {
+                    val model = JSON.parseObject(result.data.getString("comment"), PostsSecondLevelCommentModel::class.java)
 
-            } else {
-                view.loadMoreError()
-                if (result.errno == -2) {
-                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                    if (mObj.secondLevelComments == null) {
+                        mObj.secondLevelComments = mutableListOf()
+                    }
+                    mObj.secondLevelComments?.add(0, model)
+                    view.addSecondLevelCommentSuccess()
                 }
-                if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("${result?.errmsg}")
-                } else {
-                    MyLog.e(TAG, "${result?.errmsg}")
-                }
-            }
-        }
-    }
-
-    fun addSecondLevelComment() {
-        launch(Dispatchers.Main) {
-            val result = subscribe {
-                val map = mapOf("" to "")
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                mPostsDetailServerApi.addComment(body)
-            }
-
-            if (result.errno == 0) {
-
             } else {
-                view.loadMoreError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }

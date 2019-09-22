@@ -13,7 +13,6 @@ import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
@@ -29,11 +28,10 @@ import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
-import com.module.posts.more.PostsMoreDialogView
-import com.module.posts.redpkg.PostsRedPkgDialogView
 import com.module.posts.detail.view.ReplyModel
+import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.publish.PostsPublishActivity
-import com.module.posts.publish.PostsPublishServerApi
+import com.module.posts.redpkg.PostsRedPkgDialogView
 import com.module.posts.watch.model.PostsWatchModel
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -104,7 +102,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
                 postsMoreDialogView = PostsMoreDialogView(it, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
                     replayArea.visibility = View.VISIBLE
                     replayTv.setDebounceViewClickListener {
-                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
                         dismiss()
                     }
                 }
@@ -112,22 +110,22 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             }
         }
 
-        feedsInputContainerView?.mSendCallBack = { replyModel ->
-            beginUploadTask(replyModel)
+        feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
+            beginUploadTask(replyModel, obj)
         }
 
         commentTv?.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
         imageIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG, mPostsWatchModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
         audioIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
@@ -137,7 +135,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         postsAdapter = PostsCommentAdapter()
         postsAdapter?.mIDetailClickListener = object : PostsCommentAdapter.IDetailClickListener {
             override fun replayPosts(model: PostsWatchModel) {
-                feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
             }
 
             override fun likePosts(model: PostsWatchModel) {
@@ -155,16 +153,16 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             }
 
             override fun likeFirstLevelComment(model: PostFirstLevelCommentModel) {
-                mPostsDetailPresenter?.likeFirstLevelComment(!model.isIsLiked!!, model)
+                mPostsDetailPresenter?.likeFirstLevelComment(!model.isLiked, model)
             }
         }
 
-        postsAdapter?.mClickContent = {
+        postsAdapter?.mClickContent = { postFirstLevelModel ->
             postsMoreDialogView?.dismiss(false)
             postsMoreDialogView = PostsMoreDialogView(activity, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
                 replayArea.visibility = View.VISIBLE
                 replayTv.setDebounceViewClickListener {
-                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD)
+                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postFirstLevelModel)
                     dismiss()
                 }
             }
@@ -199,6 +197,16 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun loadMoreError() {
         smartRefreshLayout.finishLoadMore()
+    }
+
+    override fun addFirstLevelCommentSuccess() {
+        progressView.visibility = View.GONE
+        postsAdapter!!.mCommentCtn++
+    }
+
+    override fun addSecondLevelCommentSuccess() {
+        progressView.visibility = View.GONE
+        postsAdapter!!.notifyDataSetChanged()
     }
 
     override fun isBlackStatusBarText(): Boolean = true
@@ -251,6 +259,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     var uploading = false
     var hasFailedTask = false
     var replyModel:ReplyModel?=null
+    var mObj: Any? = null
 
     val uploadQueue = object : ObjectPlayControlTemplate<PostsPublishActivity.PostsUploadModel, PostsDetailFragment>() {
         override fun accept(cur: PostsPublishActivity.PostsUploadModel): PostsDetailFragment? {
@@ -271,8 +280,9 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     }
 
-    fun beginUploadTask(model:ReplyModel) {
+    fun beginUploadTask(model: ReplyModel, obj: Any?) {
         this.replyModel = model
+        this.mObj = obj
         var needUploadToOss = false
         hasFailedTask = false
         //音频上传
@@ -360,26 +370,26 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
 
         if (replyModel?.contentStr?.isNotEmpty() == true) {
-            map["title"] = replyModel?.contentStr
+            map["content"] = replyModel?.contentStr
             hasData = true
         }
         if (!hasData) {
             U.getToastUtil().showShort("内容为空")
             return
         }
-        progressView.visibility = View.VISIBLE
-        launch {
-            val api = ApiManager.getInstance().createService(PostsPublishServerApi::class.java)
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { api.uploadPosts(body) }
 
-            progressView.visibility = View.GONE
-            if (result.errno == 0) {
-                U.getToastUtil().showShort("上传成功")
-                finish()
-            } else {
-                U.getToastUtil().showShort(result.errmsg)
+        map["postsID"] = mPostsWatchModel?.posts?.postsID
+//        map["songID"] = ""
+
+        mObj?.let {
+            if (it is PostFirstLevelCommentModel) {
+                map["firstLevelCommentID"] = it.comment?.commentID
+                map["replyedCommentID"] = it.comment?.commentID
             }
         }
+
+        progressView.visibility = View.VISIBLE
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        mPostsDetailPresenter?.addComment(body, mObj)
     }
 }

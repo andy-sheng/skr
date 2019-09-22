@@ -1,6 +1,7 @@
 package com.module.posts.detail.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.component.busilib.model.FeedSongModel;
 import com.module.posts.watch.model.PostsResoureModel;
 
 import java.io.Serializable;
@@ -92,6 +93,15 @@ public class PostsSecondLevelCommentModel implements Serializable {
         private List<PostsResoureModel> audios;
         private List<String> pictures;
         private List<PostsResoureModel> videos;
+        private FeedSongModel songInfo = null;
+
+        public FeedSongModel getSongInfo() {
+            return songInfo;
+        }
+
+        public void setSongInfo(FeedSongModel songInfo) {
+            this.songInfo = songInfo;
+        }
 
         public String getAuditStatus() {
             return auditStatus;

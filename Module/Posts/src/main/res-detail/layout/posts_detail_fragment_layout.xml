@@ -35,6 +35,7 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
+        android:descendantFocusability="blocksDescendants"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintTop_toBottomOf="@+id/title_divider">

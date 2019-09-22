@@ -13,7 +13,6 @@ import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.watch.model.PostsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
 import okhttp3.RequestBody
 
 class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsCommentDetailView) : RxLifeCyclePresenter() {
@@ -56,18 +55,19 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
         }
     }
 
-    fun addSecondLevelComment() {
+    fun addComment(body: RequestBody, mObj: Any?) {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                val map = mapOf("" to "")
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 mPostsServerApi.addComment(body)
             }
 
             if (result.errno == 0) {
-
+                U.getToastUtil().showShort("评论成功")
+                val model = JSON.parseObject(result.data.getString("comment"), PostsSecondLevelCommentModel::class.java)
+                mModelList.add(0, model)
+                view.addSecondLevelCommentSuccess()
+                view.showSecondLevelCommentList(mModelList, mHasMore)
             } else {
-                view.loadMoreError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }
