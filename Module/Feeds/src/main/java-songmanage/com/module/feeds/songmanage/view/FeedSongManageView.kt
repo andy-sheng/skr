@@ -13,8 +13,10 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.feeds.R
 import com.module.feeds.make.FROM_CHANGE_SING
+import com.module.feeds.make.FROM_POSTS
 import com.module.feeds.make.FROM_QUICK_SING
 import com.module.feeds.make.make.openFeedsMakeActivityFromChangeSong
+import com.module.feeds.make.make.openFeedsMakeActivityFromPosts
 import com.module.feeds.make.make.openFeedsMakeActivityFromQuickSong
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.adapter.FeedSongManageAdapter
@@ -69,6 +71,8 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from
                         openFeedsMakeActivityFromQuickSong(it.song)
                     } else if (from == FROM_CHANGE_SING) {
                         openFeedsMakeActivityFromChangeSong(it.song)
+                    } else if (from == FROM_POSTS) {
+                        openFeedsMakeActivityFromPosts(it.song)
                     }
                 }
             }
@@ -88,7 +92,7 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from
     private fun loadData(offset: Int, isClear: Boolean) {
         launch {
             var result: ApiResult? = null
-            if (from == FROM_QUICK_SING) {
+            if (from == FROM_QUICK_SING || from == FROM_POSTS) {
                 result = subscribe { feedSongManageServerApi.getFeedQuickSongList(offset, mCNT, model.tagType) }
             } else if (from == FROM_CHANGE_SING) {
                 result = subscribe { feedSongManageServerApi.getFeedChangeSongList(offset, mCNT, model.tagType) }

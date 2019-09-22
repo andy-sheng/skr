@@ -29,8 +29,10 @@ import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.feeds.R
 import com.module.feeds.make.FROM_CHANGE_SING
+import com.module.feeds.make.FROM_POSTS
 import com.module.feeds.make.FROM_QUICK_SING
 import com.module.feeds.make.make.openFeedsMakeActivityFromChangeSong
+import com.module.feeds.make.make.openFeedsMakeActivityFromPosts
 import com.module.feeds.make.make.openFeedsMakeActivityFromQuickSong
 import com.module.feeds.songmanage.FeedSongManageServerApi
 import com.module.feeds.songmanage.adapter.FeedSongManageAdapter
@@ -100,6 +102,8 @@ class FeedSongSearchActivity : BaseActivity() {
                         openFeedsMakeActivityFromQuickSong(it.song)
                     }else if (from== FROM_CHANGE_SING){
                         openFeedsMakeActivityFromChangeSong(it.song)
+                    }else if(from == FROM_POSTS){
+                        openFeedsMakeActivityFromPosts(it.song)
                     }
                 }
             }

@@ -43,7 +43,7 @@
                 android:paddingRight="@dimen/view_10_dp"
 
                 android:paddingBottom="@dimen/view_3_dp"
-                android:text="我们都是声优控"
+                android:text="选择话题"
                 android:textColor="@color/black_trans_50"
                 android:textSize="@dimen/view_12_dp"
                 app:bl_corners_radius="@dimen/view_12_dp"
@@ -281,15 +281,16 @@
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <View
-            android:id="@+id/menu_divide_line"
-            android:layout_width="@dimen/view_1_dp"
-            android:layout_height="@dimen/view_25_dp"
-            android:background="@color/black_trans_20"
+        <ImageView
+            android:id="@+id/menu_ktv_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fabu_tupian"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"  />
+
 
         <ImageView
             android:id="@+id/menu_pic_iv"
@@ -309,7 +310,7 @@
             android:src="@drawable/fabu_yuyin"
             app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
             app:layout_constraintLeft_toRightOf="@id/menu_pic_iv"
-            app:layout_constraintRight_toLeftOf="@+id/menu_divide_line"
+            app:layout_constraintRight_toLeftOf="@+id/menu_ktv_iv"
             app:layout_constraintTop_toTopOf="@id/menu_pic_iv" />
 
 
@@ -319,7 +320,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/fabu_toupiao"
             app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
-            app:layout_constraintLeft_toRightOf="@+id/menu_divide_line"
+            app:layout_constraintLeft_toRightOf="@+id/menu_ktv_iv"
             app:layout_constraintRight_toLeftOf="@id/menu_red_pkg_iv"
             app:layout_constraintTop_toTopOf="@id/menu_pic_iv" />
 

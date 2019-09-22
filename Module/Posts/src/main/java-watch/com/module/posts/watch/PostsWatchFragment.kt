@@ -77,7 +77,7 @@ class PostsWatchFragment : BaseFragment() {
 
         postsChallengeTv?.setDebounceViewClickListener {
             ARouter.getInstance()
-                    .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
+                    .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
                     .navigation()
         }
 

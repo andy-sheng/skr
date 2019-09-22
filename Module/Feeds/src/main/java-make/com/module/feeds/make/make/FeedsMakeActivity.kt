@@ -177,7 +177,7 @@ class FeedsMakeActivity : BaseActivity() {
 
         val from = intent.getIntExtra("from", FROM_CHALLENGE)
         val isDraft = intent.getBooleanExtra("isDraft", false)
-        if(!isDraft){
+        if (!isDraft) {
             if (from == FROM_CHALLENGE) {
                 val challengeID = intent.getLongExtra("challengeID", 0)
                 mFeedsMakeModel = FeedsMakeModel()
@@ -210,19 +210,22 @@ class FeedsMakeActivity : BaseActivity() {
                         }
                     }
                 }
-            } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING) {
+            } else if (from == FROM_QUICK_SING || from == FROM_CHANGE_SING || from == FROM_POSTS) {
                 val feedSongModel = intent.getSerializableExtra("feedSongModel") as FeedSongModel?
                 mFeedsMakeModel = FeedsMakeModel()
-                if(from==FROM_QUICK_SING){
+                if (from == FROM_QUICK_SING || from == FROM_POSTS) {
                     mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_QUICK_SONG
-                }else if(from== FROM_CHANGE_SING){
+                } else if (from == FROM_CHANGE_SING) {
                     mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_CHANGE_SONG
+                }
+                if(from == FROM_POSTS){
+                    mFeedsMakeModel?.fromPosts = true
                 }
                 mFeedsMakeModel?.songModel = feedSongModel
                 //mFeedsMakeModel?.songModel?.workName = mFeedsMakeModel?.songModel?.songTpl?.songName
                 whenDataOk()
             }
-        }else{
+        } else {
             // 从草稿箱进来的
             mFeedsMakeModel = sFeedsMakeModelHolder
             /**
@@ -263,10 +266,10 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun whenDataOk() {
-        if(mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG){
+        if (mFeedsMakeModel?.challengeType == CHALLENGE_TYPE_QUICK_SONG) {
             changeLyricTv?.visibility = View.GONE
             changeLyricIv?.visibility = View.GONE
-        }else{
+        } else {
             changeLyricTv?.visibility = View.VISIBLE
             changeLyricIv?.visibility = View.VISIBLE
         }
@@ -558,7 +561,7 @@ class FeedsMakeActivity : BaseActivity() {
         startActivityForResult(intent, 100)
     }
 
-    private fun resetValue(){
+    private fun resetValue() {
         mFeedsMakeModel?.recordingClick = false
         mFeedsMakeModel?.recordOffsetTs = 0
         mFeedsMakeModel?.firstLyricShiftTs = 0
@@ -567,12 +570,13 @@ class FeedsMakeActivity : BaseActivity() {
         mFeedsMakeModel?.recordFirstFrameTs = Long.MAX_VALUE
         mFeedsMakeModel?.musicFirstFrameTs = Long.MAX_VALUE
     }
+
     private fun resetAll() {
         stopRecord()
         resetValue()
         beginTv?.isSelected = false
         beginTv?.text = "开始"
-        qcProgressBarView?.progress=0
+        qcProgressBarView?.progress = 0
         qcProgressBarView?.visibility = View.GONE
         mLyricAndAccMatchManager.stop()
         mLyricAndAccMatchManager.stop()
@@ -720,6 +724,14 @@ fun openFeedsMakeActivityFromQuickSong(model: FeedSongModel?) {
             .navigation()
 }
 
+fun openFeedsMakeActivityFromPosts(model: FeedSongModel?) {
+    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
+            .withInt("from", FROM_POSTS)
+            .withBoolean("isDraft", false)
+            .withSerializable("feedSongModel", model)
+            .navigation()
+}
+
 fun openFeedsMakeActivityFromChangeSong(model: FeedSongModel?) {
     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
             .withInt("from", FROM_CHANGE_SING)
@@ -728,11 +740,11 @@ fun openFeedsMakeActivityFromChangeSong(model: FeedSongModel?) {
             .navigation()
 }
 
-fun openFeedsMakeActivityFromDraft(draftFrom:Int,model:FeedsMakeModel?) {
+fun openFeedsMakeActivityFromDraft(draftFrom: Int, model: FeedsMakeModel?) {
     sFeedsMakeModelHolder = model
     ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_MAKE)
             .withInt("from", draftFrom)
             .withBoolean("isDraft", true)
-            .withSerializable("feedMakeModel",model)
+            .withSerializable("feedMakeModel", model)
             .navigation()
 }

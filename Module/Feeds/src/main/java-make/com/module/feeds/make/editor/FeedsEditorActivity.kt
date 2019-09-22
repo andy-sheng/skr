@@ -24,6 +24,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.component.busilib.view.SkrProgressView
 import com.component.lyrics.LyricsManager
 import com.component.lyrics.LyricsReader
@@ -38,14 +39,18 @@ import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.make.FeedsMakeModel
 import com.module.feeds.make.createCustomZrce2ReaderByTxt
 import com.module.feeds.make.make.FeedsMakeActivity
+import com.module.feeds.make.publish.FeedsPublishActivity
 import com.module.feeds.make.sFeedsMakeModelHolder
 import com.module.feeds.make.view.FeedsEditorVoiceControlPanelView
 import com.module.feeds.make.view.VocalAlignControlPannelView
+import com.module.feeds.songmanage.activity.FeedSongManagerActivity
+import com.module.feeds.songmanage.activity.FeedSongSearchActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.mediaengine.kit.ZqAudioEditorKit
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
 
 
 @Route(path = RouterConstants.ACTIVITY_FEEDS_EDITOR)
@@ -191,7 +196,6 @@ class FeedsEditorActivity : BaseActivity() {
             }
         })
 
-
         effectIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 voiceControlPanelViewDialog.show()
@@ -267,10 +271,38 @@ class FeedsEditorActivity : BaseActivity() {
                 launch {
                     progressView.setProgressDrwable(U.getDrawable(R.drawable.common_progress_complete_icon))
                     progressView.setProgressText("合成完成")
-                    progressView.visibility = View.GONE
-                    sFeedsMakeModelHolder = mFeedsMakeModel
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
-                            .navigation(this@FeedsEditorActivity, 9)
+                    if (mFeedsMakeModel?.fromPosts == true) {
+                        // 来自帖子发送请求获取songid 偷懒，直接调用Activity 的方法了
+                        val feedsPublishActivity = FeedsPublishActivity()
+                        feedsPublishActivity.mFeedsMakeModel = mFeedsMakeModel
+                        progressView.setProgressText("生成歌曲")
+                        feedsPublishActivity.step1 { result ->
+                            progressView.visibility = View.GONE
+                            if (result) {
+                                EventBus.getDefault().post(FeedSongMakeSucessEvent(
+                                        mFeedsMakeModel?.songModel?.songID,
+                                        mFeedsMakeModel?.composeSavePath,
+                                        mFeedsMakeModel?.recordDuration?.toInt()
+                                ))
+                                for (ac in U.getActivityUtils().activityList) {
+                                    if (ac is FeedSongManagerActivity) {
+                                        ac.finish()
+                                    }
+                                    if (ac is FeedSongSearchActivity) {
+                                        ac.finish()
+                                    }
+                                }
+                            } else {
+                                U.getToastUtil().showShort("生成歌曲失败")
+                            }
+                        }
+
+                    } else {
+                        progressView.visibility = View.GONE
+                        sFeedsMakeModelHolder = mFeedsMakeModel
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_PUBLISH)
+                                .navigation(this@FeedsEditorActivity, 9)
+                    }
                     finish()
                     for (ac in U.getActivityUtils().activityList) {
                         if (ac is FeedsMakeActivity) {

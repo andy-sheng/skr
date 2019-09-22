@@ -45,6 +45,7 @@ class FeedsMakeModel : Serializable {
     var withBgm = false
     var hasChangeLyric = false // 是否改变了歌词
     var recordDuration: Long = 0 // 录音时间
+    var fromPosts = false
 
     override fun toString(): String {
         return "FeedsMakeModel(challengeID=$challengeID, songModel=$songModel, composeSavePath='$composeSavePath', bgmDownloadProgress=$bgmDownloadProgress, recordDuration=$recordDuration, recording=$recording, beginRecordTs=$beginRecordTs, recordSavePath='$recordSavePath', recordingClick=$recordingClick, withBgm=$withBgm)"
@@ -57,6 +58,7 @@ const val CHALLENGE_TYPE_CHANGE_SONG = 2
 const val FROM_CHALLENGE = 1
 const val FROM_QUICK_SING = 2
 const val FROM_CHANGE_SING = 3
+const val FROM_POSTS = 9
 
 var sFeedsMakeModelHolder: FeedsMakeModel? = null
 

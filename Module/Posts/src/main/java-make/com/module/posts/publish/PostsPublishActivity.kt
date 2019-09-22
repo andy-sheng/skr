@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.core.view.setDebounceViewClickListener
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -27,6 +28,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.component.busilib.view.SkrProgressView
 import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
@@ -37,6 +39,7 @@ import com.module.posts.R
 import com.module.posts.publish.img.PostsPublishImgAdapter
 import com.module.posts.publish.redpkg.PostsRedPkgEditActivity
 import com.module.posts.publish.redpkg.RedPkgModel
+import com.module.posts.publish.topic.PostsTopicSelectActivity
 import com.module.posts.publish.topic.Topic
 import com.module.posts.publish.voice.PostsVoiceRecordActivity
 import com.module.posts.publish.vote.PostsVoteEditActivity
@@ -47,6 +50,8 @@ import com.respicker.model.ImageItem
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_PUBLISH)
 class PostsPublishActivity : BaseActivity() {
@@ -71,7 +76,7 @@ class PostsPublishActivity : BaseActivity() {
     lateinit var voteItem3Tv: ExTextView
     lateinit var voteItem4Tv: ExTextView
     lateinit var voteDelIv: ImageView
-    lateinit var menuDivideLine: View
+    lateinit var menuKtvIv: ImageView
     lateinit var menuDivideLine2: View
     lateinit var menuPicIv: ImageView
     lateinit var menuMicIv: ImageView
@@ -89,7 +94,7 @@ class PostsPublishActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         model = PostsPublishModel()
-        val topic = intent.getSerializableExtra("topic") as Topic
+        val topic = intent.getSerializableExtra("topic") as Topic?
         model.topic = topic
         mainActContainer = findViewById(R.id.main_act_container)
         titleBar = findViewById(R.id.title_bar)
@@ -109,7 +114,7 @@ class PostsPublishActivity : BaseActivity() {
         voteItem3Tv = findViewById(R.id.vote_item3_tv)
         voteItem4Tv = findViewById(R.id.vote_item4_tv)
         voteDelIv = findViewById(R.id.vote_del_iv)
-        menuDivideLine = findViewById(R.id.menu_divide_line)
+        menuKtvIv = findViewById(R.id.menu_ktv_iv)
         menuDivideLine2 = findViewById(R.id.menu_divide_line2)
         menuPicIv = findViewById(R.id.menu_pic_iv)
         menuMicIv = findViewById(R.id.menu_mic_iv)
@@ -185,17 +190,24 @@ class PostsPublishActivity : BaseActivity() {
                         .navigation(this@PostsPublishActivity, PostsRedPkgEditActivity.REQ_CODE_RED_PKG_EDIT)
             }
         })
+        menuKtvIv.setDebounceViewClickListener {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
+                    .withInt("from", 9)
+                    .navigation()
+        }
         audioDelIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 model.recordVoicePath = null
                 model.recordDurationMs = 0
                 model.recordVoiceUrl = null
+                model.songId = 0
                 postsAudioView.visibility = View.GONE
                 audioDelIv.visibility = View.GONE
             }
         })
 
-        postsAudioView.setOnClickListener (object : DebounceViewClickListener() {
+        postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 if (postsAudioView.isPlaying) {
                     SinglePlayer.stop(playerTag)
@@ -237,7 +249,14 @@ class PostsPublishActivity : BaseActivity() {
                 finish()
             }
         })
-        topicTv.text = model.topic?.topicDesc
+        if (model.topic != null) {
+            topicTv.text = model.topic?.topicDesc
+        }
+        topicTv.setDebounceViewClickListener {
+            ARouter.getInstance()
+                    .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
+                    .navigation(this@PostsPublishActivity,PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT)
+        }
     }
 
     var uploading = false
@@ -310,10 +329,14 @@ class PostsPublishActivity : BaseActivity() {
     }
 
     fun beginUploadTask() {
+        if(model.topic==null){
+            U.getToastUtil().showShort("请选择一个话题")
+            return
+        }
         var needUploadToOss = false
         hasFailedTask = false
         //音频上传
-        if (model.recordVoicePath?.isNotEmpty() == true && model.recordDurationMs > 0) {
+        if (model.recordVoicePath?.isNotEmpty() == true && model.recordDurationMs > 0 && model.songId <= 0) {
             if (model?.recordVoiceUrl.isNullOrEmpty()) {
                 needUploadToOss = true
                 uploadQueue.add(PostsUploadModel(1, model.recordVoicePath), true)
@@ -367,7 +390,7 @@ class PostsPublishActivity : BaseActivity() {
 
         map["topicID"] = model.topicId
 
-//        map["songID"] = ""
+        map["songID"] = model.songId
         val content = contentEt.text.toString()
         if (content.isNotEmpty()) {
             map["title"] = content
@@ -512,6 +535,9 @@ class PostsPublishActivity : BaseActivity() {
                 redPkgDelIv.visibility = View.VISIBLE
                 redPkgVp.visibility = View.VISIBLE
                 redPkgTv.text = this.model.redPkg?.redpacketDesc
+            }else if(requestCode == PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT){
+                model.topic = data?.getSerializableExtra("topic") as Topic
+                topicTv.text = model.topic?.topicDesc
             }
         }
     }
@@ -521,11 +547,21 @@ class PostsPublishActivity : BaseActivity() {
         uploadQueue.destroy()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FeedSongMakeSucessEvent) {
+        model.recordDurationMs = event.duration ?: 0
+        model.recordVoicePath = event.localPath
+        postsAudioView.visibility = View.VISIBLE
+        postsAudioView.bindData(model.recordDurationMs)
+        audioDelIv.visibility = View.VISIBLE
+        model.songId = event.songId ?: 0
+    }
+
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
         return false
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }

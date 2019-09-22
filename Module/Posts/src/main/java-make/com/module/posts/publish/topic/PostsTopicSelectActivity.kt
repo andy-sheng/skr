@@ -1,5 +1,7 @@
 package com.module.posts.publish.topic
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -26,7 +28,9 @@ import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
 class PostsTopicSelectActivity : BaseActivity() {
-
+    companion object{
+        const val REQ_CODE_TOPIC_SELECT = 90
+    }
     lateinit var mainActContainer: ConstraintLayout
     lateinit var titleBar: CommonTitleBar
     lateinit var classifyRv: RecyclerView
@@ -69,10 +73,10 @@ class PostsTopicSelectActivity : BaseActivity() {
         contentRv.adapter = postsTopicListAdapter
 
         postsTopicListAdapter.selectListener = { model ->
-            ARouter.getInstance()
-                    .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
-                    .withSerializable("topic", model)
-                    .navigation()
+            setResult(Activity.RESULT_OK, Intent().apply {
+                putExtra("topic",model)
+            })
+            finish()
         }
 
 
