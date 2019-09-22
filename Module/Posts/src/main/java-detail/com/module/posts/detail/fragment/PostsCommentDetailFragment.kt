@@ -313,7 +313,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
         launch {
-            kotlinx.coroutines.delay(10)
+            kotlinx.coroutines.delay(100)
             postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         }
         smartRefreshLayout.setEnableLoadMore(hasMore)

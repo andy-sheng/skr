@@ -19,7 +19,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
 
-class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : RxLifeCyclePresenter() {
+class PostsDetailPresenter : RxLifeCyclePresenter {
     val mTag = "PostsDetailPresenter"
 
     val mPostsDetailServerApi = ApiManager.getInstance().createService(PostsDetailServerApi::class.java)
@@ -29,6 +29,13 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
     var mLimit = 5
 
     var mHasMore = true
+
+    var model: PostsModel? = null
+    var view: IPostsDetailView? = null
+
+    constructor(view: IPostsDetailView) {
+        this.view = view
+    }
 
     //直接回复评论
     fun refuseComment(content: String, feedID: Int, firstLevelCommentID: Int) {
@@ -74,7 +81,7 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
                 } else {
                     postsWatchModel?.numeric?.starCnt = postsWatchModel?.numeric?.starCnt!! - 1
                 }
-                view.showLikePostsResulet()
+                view?.showLikePostsResulet()
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
@@ -104,8 +111,32 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
                     postFirstLevelCommentModel.comment?.likedCnt = postFirstLevelCommentModel.comment?.likedCnt!! - 1
                 }
 
-                view.showLikeFirstLevelCommentResult(postFirstLevelCommentModel)
+                view?.showLikeFirstLevelCommentResult(postFirstLevelCommentModel)
             } else {
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                }
+                if (MyLog.isDebugLogOpen()) {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                } else {
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
+
+    fun getPostsDetail(postsID: Int) {
+        launch(Dispatchers.Main) {
+            val result = subscribe {
+                mPostsDetailServerApi.getPostsDetail(MyUserInfoManager.getInstance().uid.toInt(), postsID)
+            }
+
+            if (result.errno == 0) {
+                val postsWatchModel = JSON.parseObject(result.data.getString("detail"), PostsWatchModel::class.java)
+                model = postsWatchModel.posts
+                view?.showPostsWatchModel(postsWatchModel)
+            } else {
+                view?.loadMoreError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }
@@ -121,7 +152,8 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
     fun getPostsFirstLevelCommentList() {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                mPostsDetailServerApi.getFirstLevelCommentList(mOffset, mLimit, model.postsID.toInt(), MyUserInfoManager.getInstance().uid.toInt())
+                mPostsDetailServerApi.getFirstLevelCommentList(mOffset, mLimit, model?.postsID?.toInt()
+                        ?: 0, MyUserInfoManager.getInstance().uid.toInt())
             }
 
             if (result.errno == 0) {
@@ -133,9 +165,9 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
 
                 mHasMore = result.data.getBooleanValue("hasMore")
                 mOffset = result.data.getIntValue("offset")
-                view.showFirstLevelCommentList(mModelList, mHasMore)
+                view?.showFirstLevelCommentList(mModelList, mHasMore)
             } else {
-                view.loadMoreError()
+                view?.loadMoreError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }
@@ -163,8 +195,8 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
                 if (mObj is PostsWatchModel) {
                     val model = JSON.parseObject(result.data.getString("firstLevelComment"), PostFirstLevelCommentModel::class.java)
                     mModelList.add(0, model)
-                    view.addFirstLevelCommentSuccess()
-                    view.showFirstLevelCommentList(mModelList, mHasMore)
+                    view?.addFirstLevelCommentSuccess()
+                    view?.showFirstLevelCommentList(mModelList, mHasMore)
                 } else if (mObj is PostFirstLevelCommentModel) {
                     val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
 
@@ -172,10 +204,10 @@ class PostsDetailPresenter(val model: PostsModel, val view: IPostsDetailView) : 
                         mObj.secondLevelComments = mutableListOf()
                     }
                     mObj.secondLevelComments?.add(0, model)
-                    view.addSecondLevelCommentSuccess()
+                    view?.addSecondLevelCommentSuccess()
                 }
             } else {
-                view.addCommetFaild()
+                view?.addCommetFaild()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }

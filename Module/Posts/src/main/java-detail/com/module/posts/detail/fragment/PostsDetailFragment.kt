@@ -56,6 +56,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     lateinit var feedsInputContainerView: PostsInputContainerView
     lateinit var smartRefreshLayout: SmartRefreshLayout
     var mPostsWatchModel: PostsWatchModel? = null
+    var mPostsID: Int? = null
     var mPostsDetailPresenter: PostsDetailPresenter? = null
     var postsMoreDialogView: PostsMoreDialogView? = null
     var postsRedPkgDialogView: PostsRedPkgDialogView? = null
@@ -68,7 +69,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        if (mPostsWatchModel == null) {
+        if (mPostsID == null) {
             activity?.finish()
             return
         }
@@ -82,7 +83,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         progressView = rootView.findViewById(R.id.progress_view)
         feedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(R.id.smart_refresh)
-        smartRefreshLayout.setEnableLoadMore(true)
+        smartRefreshLayout.setEnableLoadMore(false)
         smartRefreshLayout.setEnableRefresh(false)
 
         smartRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
@@ -132,7 +133,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             feedsInputContainerView?.setETHint("回复")
         }
 
-        mPostsDetailPresenter = PostsDetailPresenter(mPostsWatchModel!!.posts!!, this)
+        mPostsDetailPresenter = PostsDetailPresenter(this)
         addPresent(mPostsDetailPresenter)
 
         postsAdapter = PostsCommentAdapter()
@@ -174,7 +175,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
 
-        mPostsDetailPresenter?.getPostsFirstLevelCommentList()
+        mPostsDetailPresenter?.getPostsDetail(mPostsID!!)
     }
 
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {
@@ -183,7 +184,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
         launch {
-            delay(10)
+            delay(100)
             postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         }
         smartRefreshLayout.setEnableLoadMore(hasMore)
@@ -231,6 +232,11 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         return super.onBackPressed()
     }
 
+    override fun showPostsWatchModel(model: PostsWatchModel) {
+        mPostsWatchModel = model
+        mPostsDetailPresenter?.getPostsFirstLevelCommentList()
+    }
+
     override fun onActivityResultReal(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
@@ -243,7 +249,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun setData(type: Int, data: Any?) {
         if (type == 0) {
-            mPostsWatchModel = data as PostsWatchModel?
+            mPostsID = data as Int?
         }
     }
 

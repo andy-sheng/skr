@@ -16,6 +16,12 @@ interface PostsDetailServerApi {
     fun getFirstLevelCommentList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("postsID") feedID: Int, @Query("userID") userID: Int): Call<ApiResult>
 
     /**
+     * 获取帖子详情
+     */
+    @GET("/v1/posts/info")
+    fun getPostsDetail(@Query("userID") offset: Int, @Query("postsID") postsID: Int): Call<ApiResult>
+
+    /**
      * 获取二级评论
      */
     @GET("/v1/posts/second-level-comment-list")

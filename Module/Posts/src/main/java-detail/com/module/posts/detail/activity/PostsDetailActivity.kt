@@ -8,7 +8,6 @@ import com.common.utils.U
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.fragment.PostsDetailFragment
-import com.module.posts.watch.model.PostsWatchModel
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_DETAIL)
 class PostsDetailActivity : BaseActivity() {
@@ -32,11 +31,16 @@ class PostsDetailActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        val model = intent.getSerializableExtra("model") as PostsWatchModel?
+        val postsID = intent.getIntExtra("postsID", 0) as Int?
+        if (postsID == null) {
+            finish()
+            return
+        }
+
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this@PostsDetailActivity, PostsDetailFragment::class.java)
                 .setAddToBackStack(false)
                 .setHasAnimation(false)
-                .addDataBeforeAdd(0, model)
+                .addDataBeforeAdd(0, postsID)
                 .build())
     }
 

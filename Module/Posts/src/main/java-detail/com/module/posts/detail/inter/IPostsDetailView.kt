@@ -1,6 +1,7 @@
 package com.module.posts.detail.inter
 
 import com.module.posts.detail.model.PostFirstLevelCommentModel
+import com.module.posts.watch.model.PostsWatchModel
 
 interface IPostsDetailView {
     fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean)
@@ -10,4 +11,5 @@ interface IPostsDetailView {
     fun addFirstLevelCommentSuccess()
     fun addSecondLevelCommentSuccess()
     fun addCommetFaild()
+    fun showPostsWatchModel(model: PostsWatchModel)
 }
