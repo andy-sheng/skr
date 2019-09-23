@@ -61,7 +61,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
     var showType: SHOW_TYPE = SHOW_TYPE.NUL
 
-    var mObj: Any? = null
+    var mExtra: Any? = null
 
     var replyModel = ReplyModel()
 
@@ -179,11 +179,11 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     replyModel.imgLocalPathList.clear()
                     replyModel.imgLocalPathList.addAll(postsReplayImgAdapter.dataList)
                     replyModel.contentStr = mEtContent?.text.toString()
-                    mSendCallBack?.invoke(replyModel, mObj)
+                    mSendCallBack?.invoke(replyModel, mExtra)
                 } else {
                     // 只有文字或歌曲
                     replyModel.contentStr = mEtContent?.text.toString()
-                    mSendCallBack?.invoke(replyModel, mObj)
+                    mSendCallBack?.invoke(replyModel, mExtra)
                 }
             }
         })
@@ -199,7 +199,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         postsVoiceRecordView.okClickListener = { path, duration ->
 
             replyModel.contentStr = mEtContent?.text.toString()
-            mSendCallBack?.invoke(replyModel, mObj)
+            mSendCallBack?.invoke(replyModel, mExtra)
         }
 
         postsKgeRecordView.selectSongClickListener = {
@@ -210,7 +210,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
         postsKgeRecordView.okClickListener = {
             replyModel.contentStr = mEtContent?.text.toString()
-            mSendCallBack?.invoke(replyModel, mObj)
+            mSendCallBack?.invoke(replyModel, mExtra)
         }
     }
 
@@ -370,16 +370,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         }
     }
 
-
-    private fun showKeyBoard() {
-        showType = SHOW_TYPE.KEY_BOARD
-        postsKgeRecordView.setVisibility(View.GONE)
-
-        postsVoiceRecordView.setVisibility(View.GONE)
-        selectImgGroup.visibility = View.GONE
-        mEmotionKeyboard?.showSoftInput()
-    }
-
     private fun showKgeRecordView() {
         showType = SHOW_TYPE.KEG
         postsKgeRecordView.setVisibility(View.VISIBLE)
@@ -442,9 +432,22 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     }
 
     fun showSoftInput(type: SHOW_TYPE, model: Any?) {
-        mObj = model
+        mExtra = model
         if (type == SHOW_TYPE.KEY_BOARD) {
-            showKeyBoard()
+            showType = SHOW_TYPE.KEY_BOARD
+            mEmotionKeyboard?.showSoftInput()
+//            val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
+//            val hasSong = replyModel.songId > 0
+//            val hasImg = postsReplayImgAdapter.dataList.isNotEmpty()
+//            if(hasAudio){
+//                postsVoiceRecordView.setVisibility(View.VISIBLE)
+//            }
+//            if(hasSong){
+//                postsKgeRecordView.setVisibility(View.VISIBLE)
+//            }
+//            if(hasImg){
+//                selectImgGroup.visibility = View.VISIBLE
+//            }
         } else if (type == SHOW_TYPE.IMG) {
             goAddImagePage()
             mEmotionKeyboard?.hideSoftInput()
