@@ -375,7 +375,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         if (replyModel?.recordVoiceUrl?.isNotEmpty() == true) {
             map["audios"] = listOf(mapOf(
                     "URL" to replyModel?.recordVoiceUrl,
-                    "duration" to replyModel?.recordDurationMs
+                    "durTimeMs" to replyModel?.recordDurationMs
             ))
             hasData = true
         }
