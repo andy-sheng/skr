@@ -245,10 +245,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsSongView.visibility = View.VISIBLE
                 postsSongView.bindData(mModel?.comment?.songInfo)
 
-                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL)) {
+                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsSongView.setPlay(true)
                 } else {
-                    postsSongView.setPlay(true)
+                    postsSongView.setPlay(false)
                 }
             }
         }
@@ -406,10 +406,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                 postsSongView.visibility = View.VISIBLE
                 postsSongView.bindData(mModel?.comment?.songInfo)
 
-                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL)) {
+                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsSongView.setPlay(true)
                 } else {
-                    postsSongView.setPlay(true)
+                    postsSongView.setPlay(false)
                 }
             }
         }
