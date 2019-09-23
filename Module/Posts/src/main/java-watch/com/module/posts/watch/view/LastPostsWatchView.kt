@@ -12,7 +12,7 @@ import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
 // 最新
-class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_FOLLOW) {
+class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_LAST) {
 
 
     override fun selected() {

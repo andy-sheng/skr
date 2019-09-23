@@ -6,10 +6,12 @@ import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.AbsListView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -28,6 +30,7 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.redpkg.PostsRedPkgDialogView
+import com.module.posts.statistics.PostsStatistics
 import com.module.posts.watch.PostsWatchServerApi
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
@@ -48,9 +51,10 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     val TAG = when (type) {
         TYPE_POST_FOLLOW -> "FollowPostsWatchView"
-        TYPE_POST_RECOMMEND -> "FollowWatchView"
-        TYPE_POST_LAST -> "RecommendPostsWatchView"
+        TYPE_POST_RECOMMEND -> "RecommendPostsWatchView"
+        TYPE_POST_LAST -> "LastPostsWatchView"
         TYPE_POST_PERSON -> "PersonPostsWatchView"
+        TYPE_POST_TOPIC -> "TopicPostsWatchView"
         else -> "BasePostsWatchView"
     }
 
@@ -76,6 +80,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     private val refreshLayout: SmartRefreshLayout
     private val classicsHeader: ClassicsHeader
     private val recyclerView: RecyclerView
+    private var layoutManager: LinearLayoutManager
 
     var adapter: PostsWatchViewAdapter? = null
 
@@ -190,7 +195,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (model != null && model.isAudit()) {
                     if (model.posts?.voteInfo?.hasVoted == true) {
                         // 已投票，不让投了
-                    }else{
+                    } else {
                         votePosts(position, model, index)
                     }
                 }
@@ -251,7 +256,10 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 }
             })
         }
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
         playCallback = object : PlayerCallbackAdapter() {
@@ -341,7 +349,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
         }
 
-        if(type != TYPE_POST_PERSON){
+        if (type != TYPE_POST_PERSON) {
             if (adapter?.mDataList.isNullOrEmpty()) {
                 // 数据为空
                 mLoadService?.showCallback(EmptyCallback::class.java)
@@ -362,6 +370,56 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     // 加载更多数据
     abstract fun getMorePosts()
+
+//    private fun addOnScrollListenerToRv() {
+//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//
+//            //刚进入列表时统计当前屏幕可见views
+//            private var isFirstVisible = true
+//
+//            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                MyLog.d(TAG, "onScrolled recyclerView")
+//                if (isFirstVisible) {
+//                    MyLog.d(TAG, "onScrolled recyclerView = $recyclerView, dx = $dx, dy = $dy")
+//                    recordExposure()
+//                    isFirstVisible = false
+//                }
+//            }
+//
+//            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                MyLog.d(TAG, "onScrollStateChanged recyclerView")
+//                when (newState) {
+//                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+//                        MyLog.d(TAG, "onScrollStateChanged recyclerView = $recyclerView, newState = $newState")
+//                        recordExposure()
+//                    }
+//                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+//                    }
+//                    RecyclerView.SCROLL_STATE_SETTLING -> {
+//                    }
+//                }
+//            }
+//        })
+//    }
+//
+//    fun recordExposure() {
+//        val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+//        val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+//        if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
+//            for (i in firstVisibleItem..lastVisibleItem) {
+//                if (adapter?.mDataList?.isNullOrEmpty() == false) {
+//                    adapter?.mDataList?.let {
+//                        it[i].posts?.postsID?.let { postsID ->
+//                            MyLog.d(TAG, "recordExposure postsID = $postsID")
+//                            PostsStatistics.addCurExpose(postsID.toInt())
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     // 帖子点赞
     fun postsLikeOrUnLike(position: Int, model: PostsWatchModel) {

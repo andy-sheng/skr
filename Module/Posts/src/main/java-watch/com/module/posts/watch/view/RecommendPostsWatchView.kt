@@ -12,7 +12,7 @@ import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
 // 推荐
-class RecommendPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_FOLLOW) {
+class RecommendPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_RECOMMEND) {
     override fun selected() {
         super.selected()
         initPostsList(false)
