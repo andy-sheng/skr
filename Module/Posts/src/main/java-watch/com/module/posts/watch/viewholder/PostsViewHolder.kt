@@ -96,6 +96,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     open fun bindData(pos: Int, model: PostsWatchModel) {
         this.pos = pos
         this.mModel = model
+        this.isPlaying = false
 
         if (MyLog.isDebugLogOpen()) {
             debugTv.visibility = View.VISIBLE
@@ -164,20 +165,10 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
         refreshRedPkg()
         refreshLikes()
-
-        MyLog.d("PostsWatchViewAdapter", "bindData pos = $pos, model.playStatus = ${model.playStatus}")
-        mModel?.playStatus?.let {
-            if (it != PostsWatchViewAdapter.NO_PLAY_AUDIO) {
-                startPlay(it)
-            } else {
-                stopPlay()
-            }
-        }
     }
 
     fun startPlay(playStatus: Int) {
         isPlaying = true
-        mModel?.playStatus = playStatus
         when (playStatus) {
             PostsWatchViewAdapter.PLAY_POSTS_AUDIO -> {
                 postsAudioView.setPlay(true)
@@ -213,7 +204,6 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
     fun stopPlay() {
         isPlaying = false
-        mModel?.playStatus = PostsWatchViewAdapter.NO_PLAY_AUDIO
         postsAudioView.setPlay(false)
         postsSongView.setPlay(false)
         commentView.postsAudioView?.setPlay(false)
