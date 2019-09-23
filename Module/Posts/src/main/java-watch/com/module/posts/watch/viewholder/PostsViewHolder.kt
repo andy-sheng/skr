@@ -17,7 +17,6 @@ import com.module.posts.R
 import com.module.posts.view.*
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
-import com.module.posts.watch.model.PostsModel
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
@@ -246,9 +245,11 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             } else {
                 redPkgIv.visibility = View.VISIBLE
                 when {
-                    it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> redPkgIv.setImageResource(R.drawable.posts_red_s_unaudit_icon)
+                    it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                    it.redpacketInfo?.status == PostsRedPkgModel.RS_ONGING -> redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                    it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_PART -> redPkgIv.setImageResource(R.drawable.posts_red_s_part_icon)
                     it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL -> redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
-                    else -> redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                    else -> redPkgIv.visibility = View.GONE
                 }
             }
         }

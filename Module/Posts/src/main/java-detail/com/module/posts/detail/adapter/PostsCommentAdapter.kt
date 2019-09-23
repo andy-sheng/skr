@@ -283,54 +283,28 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     redPkgGroup.visibility = View.GONE
                 } else {
                     redPkgGroup.visibility = View.VISIBLE
-                    when {
-                        it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> redPkgIv.setImageResource(R.drawable.posts_red_s_unaudit_icon)
-                        it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL -> redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
-                        else -> redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
-                    }
                     coinTv.text = it.redpacketInfo?.redpacketDesc
-                    if (it.redpacketInfo?.status == PostsRedPkgModel.RS_ONGING) {
-                        //算出几个月
-                        it.redpacketInfo?.resTimeMs?.let {
-                            val hour: Long = it / (60 * 60 * 1000).toLong()
-                            val minute: Long = (it - (hour * (60 * 60 * 1000).toLong())) / (60 * 1000).toLong()
-                            val secend: Long = (it - (hour * (60 * 60 * 1000).toLong()) - (minute * (60 * 1000).toLong())) / (1000).toLong()
-
-                            var lastTime = ""
-                            if (hour >= 0) {
-                                if (hour > 9) {
-                                    lastTime = lastTime + "$hour:"
-                                } else {
-                                    lastTime = lastTime + "0$hour:"
-                                }
-                            }
-
-                            if (minute >= 0) {
-                                if (minute > 9) {
-                                    lastTime = lastTime + "$minute:"
-                                } else {
-                                    lastTime = lastTime + "0$minute:"
-                                }
-                            }
-
-                            if (secend >= 0) {
-                                if (secend > 9) {
-                                    lastTime = lastTime + "$secend"
-                                } else {
-                                    lastTime = lastTime + "0$secend"
-                                }
-                            }
-
-
-                            redPkgDes.text = "剩余时间：$lastTime"
+                    // 进详情页面不应该有未审核的红包
+                    when {
+                        it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> {
+                            MyLog.e(TAG, "bindData 为什么详情会有审核未通过的红包")
+                            redPkgGroup.visibility = View.GONE
                         }
-                    } else if (it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_PART) {
-                        redPkgIv.setImageResource(R.drawable.gc_hongbaoguoqi)
-                        redPkgDes.text = "红包已过期"
-                    } else if (it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL) {
-                        redPkgDes.text = "红包已瓜分完毕"
-                    } else {
-                        redPkgGroup.visibility = View.GONE
+                        it.redpacketInfo?.status == PostsRedPkgModel.RS_ONGING -> {
+                            redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                            it.redpacketInfo?.resTimeMs?.let { time ->
+                                redPkgDes.text = "剩余时间：${U.getDateTimeUtils().formatVideoTime(time)}"
+                            }
+                        }
+                        it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_PART -> {
+                            redPkgIv.setImageResource(R.drawable.posts_red_s_part_icon)
+                            redPkgDes.text = "红包已过期"
+                        }
+                        it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL -> {
+                            redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
+                            redPkgDes.text = "红包已瓜分完毕"
+                        }
+                        else -> redPkgGroup.visibility = View.GONE
                     }
                 }
 
