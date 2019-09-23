@@ -1,7 +1,6 @@
 package com.common.view.ninegrid
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
@@ -39,7 +38,7 @@ abstract class NineGridLayout : ViewGroup {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.NineGridLayout)
 
-        mSpacing = typedArray.getDimension(R.styleable.NineGridLayout_sapcing, DEFUALT_SPACING)
+        mSpacing = typedArray.getDimension(R.styleable.NineGridLayout_spacing, DEFUALT_SPACING)
         typedArray.recycle()
         init(context)
     }

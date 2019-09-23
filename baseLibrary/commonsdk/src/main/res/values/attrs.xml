@@ -39,6 +39,6 @@
     </declare-styleable>
 
     <declare-styleable name="NineGridLayout">
-        <attr name="sapcing" format="dimension"/>
+        <attr name="spacing" format="dimension"/>
     </declare-styleable>
 </resources>
