@@ -337,10 +337,10 @@ class PostsPublishActivity : BaseActivity() {
             U.getToastUtil().showShort("请选择一个话题")
             return
         }
-        if(contentEt.text.toString().isEmpty()){
-            U.getToastUtil().showShort("标题不能为空")
-            return
-        }
+//        if(contentEt.text.toString().isEmpty()){
+//            U.getToastUtil().showShort("标题不能为空")
+//            return
+//        }
         var needUploadToOss = false
         hasFailedTask = false
         //音频上传

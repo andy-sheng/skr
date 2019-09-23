@@ -239,16 +239,15 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            clearAllData()
+                            resetData(SHOW_TYPE.KEG,SHOW_TYPE.IMG)
                             tipsDialogView?.dismiss(false)
-                            showAudioRecordView()
+                            goAddVoicePage()
                         }
                     })
                     .build()
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
-            clearAllData()
             showAudioRecordView()
             mInputContainer?.visibility = View.VISIBLE
         }
@@ -277,31 +276,18 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            clearAllData()
+                            resetData(SHOW_TYPE.AUDIO,SHOW_TYPE.IMG)
                             tipsDialogView?.dismiss(false)
-                            showKgeRecordView()
+                            goAddKgePage()
                         }
                     })
                     .build()
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
-            clearAllData()
             showKgeRecordView()
             mInputContainer?.visibility = View.VISIBLE
         }
-    }
-
-    //输入框隐藏的时候所有的数据晴空
-    private fun clearAllData() {
-        replyModel.songId = 0
-        postsReplayImgAdapter.dataList.clear()
-        postsReplayImgAdapter.notifyDataSetChanged()
-        postsVoiceRecordView.reset()
-        replyModel.imgUploadMap.clear()
-        replyModel.resetVoice()
-        postsKgeRecordView.reset()
-        mEtContent?.setText("")
     }
 
     private fun goAddImagePage() {
@@ -327,7 +313,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            clearAllData()
+                            resetData(SHOW_TYPE.AUDIO,SHOW_TYPE.KEG)
                             tipsDialogView?.dismiss(false)
                             goAddImagePage()
                         }
@@ -336,7 +322,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
-            clearAllData()
             mEmotionKeyboard?.hideSoftInput()
             ResPicker.getInstance().params = ResPicker.newParamsBuilder()
                     .setMultiMode(true)
@@ -362,6 +347,29 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             showImageSelectView()
         }
     }
+
+    private fun resetData(vararg types:SHOW_TYPE){
+        for(type in types){
+            if(type == SHOW_TYPE.KEG){
+                // 重置k歌相关
+                replyModel.songId = 0
+                postsKgeRecordView.reset()
+            }else if(type == SHOW_TYPE.AUDIO){
+                // 重置语音相关
+                postsVoiceRecordView.reset()
+                replyModel.resetVoice()
+            }else if(type == SHOW_TYPE.IMG){
+                // 重置图片相关
+                postsReplayImgAdapter.dataList.clear()
+                postsReplayImgAdapter.notifyDataSetChanged()
+                replyModel.imgUploadMap.clear()
+            }else if(type==SHOW_TYPE.KEY_BOARD){
+                replyModel.contentStr=""
+                mEtContent?.setText("")
+            }
+        }
+    }
+
 
     private fun showKeyBoard() {
         showType = SHOW_TYPE.KEY_BOARD
@@ -423,7 +431,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             mInputContainer?.visibility = View.GONE
             mEtContent?.hint = ""
             showType = SHOW_TYPE.NUL
-            clearAllData()
         }
 
         if (showType == SHOW_TYPE.IMG) {
@@ -452,7 +459,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mForceHide = true
         mEmotionKeyboard?.hideSoftInput()
         showType = SHOW_TYPE.NUL
-        clearAllData()
     }
 
     fun onBackPressed(): Boolean {
@@ -489,6 +495,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             replyModel.songId = event.songId ?: 0
             postsKgeRecordView.recordOk(event.localPath, event.duration!!)
         }
+    }
+
+    fun onCommentSuccess() {
+        resetData(SHOW_TYPE.KEG,SHOW_TYPE.AUDIO,SHOW_TYPE.IMG,SHOW_TYPE.KEY_BOARD)
     }
 
     enum class SHOW_TYPE {

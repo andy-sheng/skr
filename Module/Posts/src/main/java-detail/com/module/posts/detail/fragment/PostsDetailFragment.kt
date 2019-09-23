@@ -178,11 +178,13 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     override fun addFirstLevelCommentSuccess() {
         progressView.visibility = View.GONE
         postsAdapter!!.mCommentCtn++
+        feedsInputContainerView.onCommentSuccess()
     }
 
     override fun addSecondLevelCommentSuccess() {
         progressView.visibility = View.GONE
         postsAdapter!!.notifyDataSetChanged()
+        feedsInputContainerView.onCommentSuccess()
     }
 
     override fun isBlackStatusBarText(): Boolean = true

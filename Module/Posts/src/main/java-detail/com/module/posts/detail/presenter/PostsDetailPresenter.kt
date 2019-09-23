@@ -204,7 +204,6 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                     view?.showFirstLevelCommentList(mModelList, mHasMore)
                 } else if (mObj is PostFirstLevelCommentModel) {
                     val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
-
                     if (mObj.secondLevelComments == null) {
                         mObj.secondLevelComments = mutableListOf()
                     }
