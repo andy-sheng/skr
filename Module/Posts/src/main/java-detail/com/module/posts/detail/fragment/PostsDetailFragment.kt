@@ -412,13 +412,20 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             map["content"] = replyModel?.contentStr
             hasData = true
         }
+        replyModel?.songId?.let {
+            if(it>0){
+                map["songID"] = it
+                hasData = true
+            }
+        }
+
         if (!hasData) {
             U.getToastUtil().showShort("内容为空")
             return
         }
 
         map["postsID"] = mPostsWatchModel?.posts?.postsID
-        map["songID"] = replyModel?.songId
+
 
         mObj?.let {
             if (it is PostFirstLevelCommentModel) {

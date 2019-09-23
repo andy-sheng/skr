@@ -403,7 +403,12 @@ class PostsPublishActivity : BaseActivity() {
 
         map["topicID"] = model.topic?.topicID ?: 0
 
-        map["songID"] = model.songId
+        model?.songId?.let {
+            if(it>0){
+                map["songID"] = it
+                hasData = true
+            }
+        }
         val content = contentEt.text.toString()
         if (content.isNotEmpty()) {
             map["title"] = content
