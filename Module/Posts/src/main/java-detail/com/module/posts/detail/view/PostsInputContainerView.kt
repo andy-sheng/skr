@@ -245,6 +245,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
+            mInputContainer?.visibility = View.VISIBLE
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
@@ -282,6 +283,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
+            mInputContainer?.visibility = View.VISIBLE
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
@@ -319,6 +321,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
+            mInputContainer?.visibility = View.VISIBLE
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
@@ -420,7 +423,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             EventBus.getDefault().post(PostsCommentBoardEvent(false))
             mInputContainer?.visibility = View.GONE
             mEtContent?.hint = ""
-            showType = SHOW_TYPE.NUL
         }
 
         if (showType == SHOW_TYPE.IMG) {
@@ -434,7 +436,9 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     fun showSoftInput(type: SHOW_TYPE, model: Any?) {
         mExtra = model
         if (type == SHOW_TYPE.KEY_BOARD) {
-            showType = SHOW_TYPE.KEY_BOARD
+            if (showType == SHOW_TYPE.NUL) {
+                showType = SHOW_TYPE.KEY_BOARD
+            }
             mEmotionKeyboard?.showSoftInput()
 //            val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
 //            val hasSong = replyModel.songId > 0
@@ -461,7 +465,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     fun hideSoftInput() {
         mForceHide = true
         mEmotionKeyboard?.hideSoftInput()
-        showType = SHOW_TYPE.NUL
     }
 
     fun onBackPressed(): Boolean {
