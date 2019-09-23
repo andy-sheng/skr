@@ -390,7 +390,7 @@ class PostsPublishActivity : BaseActivity() {
             hasData = true
         }
 
-        map["topicID"] = model.topic?.topicID
+        map["topicID"] = model.topic?.topicID?:0
 
         map["songID"] = model.songId
         val content = contentEt.text.toString()

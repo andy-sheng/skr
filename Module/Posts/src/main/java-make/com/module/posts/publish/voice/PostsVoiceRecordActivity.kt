@@ -2,7 +2,6 @@ package com.module.posts.publish.voice
 
 import android.app.Activity
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.view.View
@@ -40,7 +39,7 @@ class PostsVoiceRecordActivity : BaseActivity() {
 
     lateinit var postsPublushModel: PostsPublishModel
 
-    val playTag = TAG + hashCode()
+    private val playerTag = TAG + hashCode()
 
     lateinit var mainActContainer: ConstraintLayout
     lateinit var titleBar: CommonTitleBar
@@ -161,11 +160,11 @@ class PostsVoiceRecordActivity : BaseActivity() {
             }
             stop()
         }
-        SinglePlayer.startPlay(playTag, PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH)
+        SinglePlayer.startPlay(playerTag, PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH)
     }
 
     private fun stop() {
-        SinglePlayer.stop(playTag)
+        SinglePlayer.stop(playerTag)
         stopRecord()
     }
 
@@ -183,6 +182,7 @@ class PostsVoiceRecordActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
+        SinglePlayer.stop(playerTag)
         SinglePlayer.removeCallback(playerTag)
     }
 
