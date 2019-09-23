@@ -19,7 +19,6 @@ import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
-import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.component.busilib.view.SkrProgressView
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
@@ -43,8 +42,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
@@ -116,21 +113,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
             beginUploadTask(replyModel, obj)
-        }
-
-        commentTv?.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
-            feedsInputContainerView?.setETHint("回复")
-        }
-
-        imageIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG, mPostsWatchModel)
-            feedsInputContainerView?.setETHint("回复")
-        }
-
-        audioIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
-            feedsInputContainerView?.setETHint("回复")
         }
 
         mPostsDetailPresenter = PostsDetailPresenter(this)
@@ -234,6 +216,22 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun showPostsWatchModel(model: PostsWatchModel) {
         mPostsWatchModel = model
+
+        commentTv?.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        imageIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        audioIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
         mPostsDetailPresenter?.getPostsFirstLevelCommentList()
     }
 
