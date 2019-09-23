@@ -506,9 +506,13 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
          * 只有顶部的activity 才能接受到这个时间
          * 防止二级评论回复时 一级评论也有k歌数据
          */
-        if(U.getActivityUtils().topActivity == context){
-            replyModel.songId = event.songId ?: 0
-            postsKgeRecordView.recordOk(event.localPath, event.duration!!)
+        val size = U.getActivityUtils().activityList.size
+        for(i in (size-1) downTo 0){
+            if(U.getActivityUtils().activityList[i] == context){
+                replyModel.songId = event.songId ?: 0
+                postsKgeRecordView.recordOk(event.localPath, event.duration!!)
+                break
+            }
         }
     }
 
