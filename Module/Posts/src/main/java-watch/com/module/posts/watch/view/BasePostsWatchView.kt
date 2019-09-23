@@ -478,6 +478,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     }
 
     open fun destory() {
+        SinglePlayer.reset(playerTag)
+        SinglePlayer.removeCallback(playerTag)
         cancel()
     }
 }
