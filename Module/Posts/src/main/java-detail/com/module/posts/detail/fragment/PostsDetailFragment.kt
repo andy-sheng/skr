@@ -97,20 +97,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             activity?.finish()
         }
 
-        titlebar.rightImageButton.setDebounceViewClickListener {
-            activity?.let {
-                postsMoreDialogView?.dismiss(false)
-                postsMoreDialogView = PostsMoreDialogView(it, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
-                    replayArea.visibility = View.VISIBLE
-                    replayTv.setDebounceViewClickListener {
-                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
-                        dismiss()
-                    }
-                }
-                postsMoreDialogView?.showByDialog(true)
-            }
-        }
-
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
             beginUploadTask(replyModel, obj)
         }
@@ -230,6 +216,20 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         audioIv.setDebounceViewClickListener {
             feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
             feedsInputContainerView?.setETHint("回复")
+        }
+
+        titlebar.rightImageButton.setDebounceViewClickListener {
+            activity?.let {
+                postsMoreDialogView?.dismiss(false)
+                postsMoreDialogView = PostsMoreDialogView(it, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
+                    replayArea.visibility = View.VISIBLE
+                    replayTv.setDebounceViewClickListener {
+                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
+                        dismiss()
+                    }
+                }
+                postsMoreDialogView?.showByDialog(true)
+            }
         }
 
         mPostsDetailPresenter?.getPostsFirstLevelCommentList()
