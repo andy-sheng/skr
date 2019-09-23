@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -27,7 +28,7 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.view.*
 
-class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
+class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     companion object {
         val REFRESH_COMMENT_CTN = 0
         val DESTROY_HOLDER = 1
@@ -43,6 +44,16 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
     var mPlayingUrl = ""
 
     var mClickContentListener: ((PostsSecondLevelCommentModel) -> Unit)? = null
+
+    constructor() : super() {
+        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mPlayingUrl = ""
+                notifyDataSetChanged()
+            }
+        })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null

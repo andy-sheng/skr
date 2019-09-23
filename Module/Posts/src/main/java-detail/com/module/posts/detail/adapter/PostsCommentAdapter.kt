@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -34,7 +35,7 @@ import com.module.posts.view.*
 import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 
-class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
+class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     companion object {
         val REFRESH_COMMENT_CTN = 0
         val DESTROY_HOLDER = 1
@@ -57,6 +58,16 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
             .setSelectedDrawable(U.getDrawable(R.drawable.posts_like_selected_icon))
             .setUnSelectedDrawable(U.getDrawable(R.drawable.posts_like_black_icon))
             .build()
+
+    constructor() : super() {
+        SinglePlayer.addCallback(PostsCommentDetailAdapter.playerTag, object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mPlayingUrl = ""
+                notifyDataSetChanged()
+            }
+        })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View? = null
