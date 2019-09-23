@@ -106,12 +106,15 @@
         app:layout_constraintTop_toBottomOf="@+id/title_barrier" />
 
     <com.module.posts.view.PostsNineGridLayout
+        android:layout_width="0dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:id="@+id/nine_grid_vp"
-        android:layout_width="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
-        app:layout_constraintTop_toBottomOf="@+id/title_barrier" />
+        app:layout_constraintTop_toBottomOf="@+id/title_barrier"
+        app:spacing="@dimen/view_9_dp" />
 
     <com.module.posts.view.PostsSongView
         android:id="@+id/posts_song_view"
