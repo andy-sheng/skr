@@ -26,10 +26,10 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
 
     var mHasMore = true
 
-    fun getPostsSecondLevelCommentList() {
+    fun getPostsSecondLevelCommentList(firstLevelCommentID: Int) {
         launch {
             val result = subscribe {
-                mPostsServerApi.getSecondLevelCommentList(mOffset, mLimit, model.postsID.toInt(), 0, MyUserInfoManager.getInstance().uid.toInt())
+                mPostsServerApi.getSecondLevelCommentList(mOffset, mLimit, model.postsID.toInt(), firstLevelCommentID, MyUserInfoManager.getInstance().uid.toInt())
             }
 
             if (result.errno == 0) {
