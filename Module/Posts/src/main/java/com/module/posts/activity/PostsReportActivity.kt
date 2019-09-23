@@ -19,6 +19,7 @@ import com.component.report.view.ReportView
 import com.component.toast.CommonToastView
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.more.PostsCommentMoreDialogView
 import com.module.posts.more.PostsMoreDialogView
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -75,7 +76,7 @@ class PostsReportActivity : BaseActivity() {
                     PostsMoreDialogView.FROM_POSTS_TOPIC -> reportPosts(content, list, 9)
                     PostsMoreDialogView.FROM_POSTS_DETAIL -> reportPosts(content, list, 9)
                     PostsMoreDialogView.FROM_POSTS_PERSON -> reportPosts(content, list, 2)
-
+                    PostsCommentMoreDialogView.FROM_POSTS_COMMENT -> reportPostsComment(content, list, 10)
                     else -> {
                         //todo donothing
                     }

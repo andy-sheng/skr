@@ -44,6 +44,7 @@ class PostsAudioView : ConstraintLayout {
     }
 
     fun bindData(durationMs: Int) {
+        this.isPlaying = false
         this.durationMs = durationMs
         var duration = (durationMs.toFloat() / 1000.toFloat()).toDouble().roundToInt()
         val width = when (duration) {

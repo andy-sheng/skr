@@ -90,13 +90,18 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
             MyLog.d(mTag, "onBindViewHolder holder = $holder, position = $position, payloads = $payloads")
             if (payloads.isEmpty()) {
                 holder.bindData(position, mDataList[position])
+                if (mCurrentPlayModel == mDataList[position]) {
+                    holder.startPlay(playStatus)
+                } else {
+                    holder.stopPlay()
+                }
             } else {
                 // 局部刷新
                 payloads.forEach { refreshType ->
                     if (refreshType is Int) {
                         when (refreshType) {
                             REFRESH_POSTS_PLAY -> {
-                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY refreshType = $refreshType")
+                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY position = $position")
                                 if (mCurrentPlayModel == mDataList[position]) {
                                     holder.startPlay(playStatus)
                                 } else {
@@ -134,9 +139,6 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         } else {
             // 数据改变或者播放的类型不一致了
             var lastPos: Int? = null
-            // 更新播放状态
-            mCurrentPlayModel?.playStatus = NO_PLAY_AUDIO
-            model?.playStatus = playType
             if (mCurrentPlayModel != model) {
                 mCurrentPlayModel = model
                 lastPos = mCurrentPlayPosition
@@ -151,7 +153,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
     }
 
     fun stopPlay() {
-        mCurrentPlayModel?.playStatus = NO_PLAY_AUDIO
+//        mCurrentPlayModel?.playStatus = NO_PLAY_AUDIO
         update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_POSTS_PLAY)
         // 重置数据
         mCurrentPlayPosition = -1

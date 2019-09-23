@@ -99,6 +99,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 map.put("roundSeq", seq);
                 map.put("isSingBegin", false);
                 map.put("gameScene", scene);
+                map.put("sendUserID", MyUserInfoManager.getInstance().getUid());
 
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
