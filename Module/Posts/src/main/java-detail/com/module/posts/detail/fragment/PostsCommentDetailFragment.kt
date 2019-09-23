@@ -216,6 +216,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 reportTv.setDebounceViewClickListener {
                     dismiss(false)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                            .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
                             .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
                             .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
                             .withLong("commentID", mPostFirstLevelCommentModel?.comment?.commentID?.toLong()
@@ -265,6 +266,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 reportTv.setDebounceViewClickListener {
                     dismiss(false)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                            .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
                             .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
                             .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
                             .withLong("commentID", postsCommentModel?.comment?.commentID?.toLong()

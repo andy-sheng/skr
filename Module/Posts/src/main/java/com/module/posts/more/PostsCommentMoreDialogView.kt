@@ -23,6 +23,10 @@ class PostsCommentMoreDialogView(var activity: Activity) : ConstraintLayout(acti
     val replyTv: ExTextView
     val dividerReply: View
 
+    companion object{
+        const val FROM_POSTS_COMMENT = 5    //帖子评论
+    }
+
     init {
         View.inflate(context, R.layout.posts_comment_more_dialog_view_layout, this)
 
@@ -35,13 +39,7 @@ class PostsCommentMoreDialogView(var activity: Activity) : ConstraintLayout(acti
 
         cancleTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-
-            }
-        })
-
-        reportTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-
+                dismiss()
             }
         })
     }

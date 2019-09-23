@@ -101,7 +101,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                     if (refreshType is Int) {
                         when (refreshType) {
                             REFRESH_POSTS_PLAY -> {
-                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY refreshType = $refreshType")
+                                MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY position = $position")
                                 if (mCurrentPlayModel == mDataList[position]) {
                                     holder.startPlay(playStatus)
                                 } else {
