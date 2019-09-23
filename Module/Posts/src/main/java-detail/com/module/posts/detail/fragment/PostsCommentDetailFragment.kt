@@ -1,5 +1,7 @@
 package com.module.posts.detail.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -33,6 +35,8 @@ import com.module.posts.detail.view.ReplyModel
 import com.module.posts.more.PostsCommentMoreDialogView
 import com.module.posts.publish.PostsPublishActivity
 import com.module.posts.watch.model.PostsWatchModel
+import com.respicker.ResPicker
+import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -110,6 +114,16 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                     }
 
                 })
+    }
+
+    override fun onActivityResultReal(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
+                feedsInputContainerView.onSelectImgOk(ResPicker.getInstance().selectedImageList)
+                return true
+            }
+        }
+        return super.onActivityResultReal(requestCode, resultCode, data)
     }
 
     private fun uploadToOssEnd(model: PostsPublishActivity.PostsUploadModel?) {
@@ -190,6 +204,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         imageIv = rootView.findViewById(R.id.image_iv)
         audioIv = rootView.findViewById(R.id.audio_iv)
         kgeIv = rootView.findViewById(R.id.kge_iv)
+        progressView = rootView.findViewById(R.id.progress_view)
         feedsInputContainerView = rootView.findViewById(com.module.posts.R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(com.module.posts.R.id.smart_refresh)
         smartRefreshLayout.setEnableLoadMore(true)
@@ -285,6 +300,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         }
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
+            progressView?.visibility = View.VISIBLE
             beginUploadTask(replyModel, obj)
             feedsInputContainerView?.hideSoftInput()
             feedsInputContainerView?.mInputContainer?.visibility = View.GONE
@@ -351,6 +367,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     override fun addSecondLevelCommentSuccess() {
         postsAdapter!!.mCommentCtn++
         progressView?.visibility = View.GONE
+        feedsInputContainerView.onCommentSuccess()
     }
 
     override fun isBlackStatusBarText(): Boolean = true
