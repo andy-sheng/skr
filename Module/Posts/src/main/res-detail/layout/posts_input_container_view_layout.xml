@@ -116,13 +116,6 @@
             app:layout_constraintTop_toBottomOf="@+id/etContent">
 
             <com.common.view.ex.ExImageView
-                android:id="@+id/jianpan_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/view_10_dp"
-                android:src="@drawable/pinglun_jianpan" />
-
-            <com.common.view.ex.ExImageView
                 android:id="@+id/yuyin_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
