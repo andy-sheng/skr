@@ -90,6 +90,11 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
             MyLog.d(mTag, "onBindViewHolder holder = $holder, position = $position, payloads = $payloads")
             if (payloads.isEmpty()) {
                 holder.bindData(position, mDataList[position])
+                if (mCurrentPlayModel == mDataList[position]) {
+                    holder.startPlay(playStatus)
+                } else {
+                    holder.stopPlay()
+                }
             } else {
                 // 局部刷新
                 payloads.forEach { refreshType ->
