@@ -250,22 +250,22 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         }
 
         commentTv?.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostFirstLevelCommentModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
         imageIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG, mPostsWatchModel)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG, mPostFirstLevelCommentModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
         audioIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostFirstLevelCommentModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
         kgeIv.setDebounceViewClickListener {
-            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEG, mPostsWatchModel)
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEG, mPostFirstLevelCommentModel)
             feedsInputContainerView?.setETHint("回复")
         }
 
