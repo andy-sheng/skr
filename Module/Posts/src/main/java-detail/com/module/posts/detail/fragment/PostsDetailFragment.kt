@@ -50,6 +50,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     lateinit var commentTv: ExTextView
     lateinit var imageIv: ExImageView
     lateinit var audioIv: ExImageView
+    lateinit var kgeIv: ExImageView
     lateinit var feedsInputContainerView: PostsInputContainerView
     lateinit var smartRefreshLayout: SmartRefreshLayout
     var mPostsWatchModel: PostsWatchModel? = null
@@ -77,6 +78,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         commentTv = rootView.findViewById(R.id.comment_tv)
         imageIv = rootView.findViewById(R.id.image_iv)
         audioIv = rootView.findViewById(R.id.audio_iv)
+        kgeIv = rootView.findViewById(R.id.kge_iv)
         progressView = rootView.findViewById(R.id.progress_view)
         feedsInputContainerView = rootView.findViewById(R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(R.id.smart_refresh)
@@ -215,6 +217,11 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
         audioIv.setDebounceViewClickListener {
             feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        kgeIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEG, mPostsWatchModel)
             feedsInputContainerView?.setETHint("回复")
         }
 

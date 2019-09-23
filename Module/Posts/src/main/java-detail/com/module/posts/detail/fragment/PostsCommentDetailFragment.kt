@@ -47,6 +47,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     lateinit var commentTv: ExTextView
     lateinit var imageIv: ExImageView
     lateinit var audioIv: ExImageView
+    lateinit var kgeIv: ExImageView
     lateinit var feedsInputContainerView: PostsInputContainerView
     lateinit var smartRefreshLayout: SmartRefreshLayout
     var mPostsWatchModel: PostsWatchModel? = null
@@ -188,6 +189,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         commentTv = rootView.findViewById(R.id.comment_tv)
         imageIv = rootView.findViewById(R.id.image_iv)
         audioIv = rootView.findViewById(R.id.audio_iv)
+        kgeIv = rootView.findViewById(R.id.kge_iv)
         feedsInputContainerView = rootView.findViewById(com.module.posts.R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(com.module.posts.R.id.smart_refresh)
         smartRefreshLayout.setEnableLoadMore(true)
@@ -230,8 +232,24 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
             postsMoreDialogView?.showByDialog(true)
         }
 
-        commentTv.setDebounceViewClickListener {
-            feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostFirstLevelCommentModel)
+        commentTv?.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        imageIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.IMG, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        audioIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.AUDIO, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
+        }
+
+        kgeIv.setDebounceViewClickListener {
+            feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEG, mPostsWatchModel)
+            feedsInputContainerView?.setETHint("回复")
         }
 
         postsCommentDetailPresenter = PostsCommentDetailPresenter(mPostsWatchModel!!.posts!!, this)
