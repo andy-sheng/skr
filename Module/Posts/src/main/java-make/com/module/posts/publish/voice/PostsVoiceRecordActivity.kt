@@ -181,6 +181,11 @@ class PostsVoiceRecordActivity : BaseActivity() {
         countDownTv.visibility = View.GONE
     }
 
+    override fun destroy() {
+        super.destroy()
+        SinglePlayer.removeCallback(playerTag)
+    }
+
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
         return true
     }

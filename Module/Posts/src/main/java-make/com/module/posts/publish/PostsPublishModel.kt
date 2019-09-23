@@ -11,7 +11,6 @@ class PostsPublishModel : Serializable {
     var topic: Topic? = null
     val imgUploadMap = LinkedHashMap<String,String>() // 本地路径->服务器url
     var recordVoiceUrl: String? = null
-    var topicId = 0
     var recordVoicePath: String? = null
     var recordDurationMs: Int = 0 // 毫秒
     var voteList = ArrayList<String>()

@@ -390,7 +390,7 @@ class PostsPublishActivity : BaseActivity() {
             hasData = true
         }
 
-        map["topicID"] = model.topicId
+        map["topicID"] = model.topic?.topicID
 
         map["songID"] = model.songId
         val content = contentEt.text.toString()
@@ -612,6 +612,7 @@ class PostsPublishActivity : BaseActivity() {
     override fun destroy() {
         super.destroy()
         uploadQueue.destroy()
+        SinglePlayer.removeCallback(playerTag)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
