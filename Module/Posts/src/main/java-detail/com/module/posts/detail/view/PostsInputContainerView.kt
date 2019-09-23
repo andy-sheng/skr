@@ -31,6 +31,8 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsReplayImgAdapter
 import com.module.posts.detail.event.PostsCommentBoardEvent
+import com.module.posts.detail.view.PostsVoiceRecordView.Companion.STATUS_RECORDING
+import com.module.posts.detail.view.PostsVoiceRecordView.Companion.STATUS_RECORD_PLAYING
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
@@ -171,7 +173,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                  * 这里点击按钮发送，要判断是否有录音以及图片
                  */
                 if (postsVoiceRecordView.realView?.visibility == View.VISIBLE
-                        && postsVoiceRecordView.status >= postsVoiceRecordView.STATUS_RECORD_OK) {
+                        && postsVoiceRecordView.status >= PostsVoiceRecordView.STATUS_RECORD_OK) {
                     // 相当于点击了声音的ok面板
                     postsVoiceRecordView.okIv.performClick()
                 } else if (imgRecyclerView.visibility == View.VISIBLE) {
@@ -465,6 +467,13 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     fun hideSoftInput() {
         mForceHide = true
         mEmotionKeyboard?.hideSoftInput()
+        if (showType == SHOW_TYPE.AUDIO) {
+            if (postsVoiceRecordView.status == STATUS_RECORDING) {
+                postsVoiceRecordView.reset()
+            } else if (postsVoiceRecordView.status == STATUS_RECORD_PLAYING) {
+                postsVoiceRecordView.stop()
+            }
+        }
     }
 
     fun onBackPressed(): Boolean {
