@@ -271,7 +271,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
         postsCommentDetailPresenter = PostsCommentDetailPresenter(mPostsWatchModel!!.posts!!, this)
 
-        postsAdapter = PostsCommentDetailAdapter()
+        postsAdapter = PostsCommentDetailAdapter(context!! as FragmentActivity)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
 

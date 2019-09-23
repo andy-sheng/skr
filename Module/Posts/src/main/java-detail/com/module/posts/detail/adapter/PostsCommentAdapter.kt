@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.support.constraint.Barrier
 import android.support.constraint.Group
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.text.TextPaint
 import android.text.TextUtils
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.callback.Callback
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
@@ -28,6 +30,9 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
 import com.component.relation.view.DefaultFollowView
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.model.PostFirstLevelCommentModel
@@ -58,13 +63,16 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
     var mClickContent: ((PostFirstLevelCommentModel) -> Unit)? = null
 
+    var mContext: FragmentActivity? = null
+
     val mLikeDrawable = DrawableCreator.Builder()
             .setSelectedDrawable(U.getDrawable(R.drawable.posts_like_selected_icon))
             .setUnSelectedDrawable(U.getDrawable(R.drawable.posts_like_black_icon))
             .build()
 
-    constructor() : super() {
-        SinglePlayer.addCallback(PostsCommentDetailAdapter.playerTag, object : PlayerCallbackAdapter() {
+    constructor(context: FragmentActivity) : super() {
+        mContext = context
+        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 mPlayingUrl = ""
@@ -259,6 +267,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             redPkgBg.setDebounceViewClickListener {
                 mIDetailClickListener?.showRedPkg(mModel!!)
+            }
+
+            nineGridVp?.clickListener = { i, url, urlList ->
+                goBigImageBrowse(i, urlList)
             }
         }
 
@@ -561,6 +573,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             contentTv.setDebounceViewClickListener {
                 mClickContent?.invoke(mModel!!)
             }
+
+            nineGridVp?.clickListener = { i, url, urlList ->
+                goBigImageBrowse(i, urlList)
+            }
         }
 
         fun refreshPlayState(pos: Int, model: PostFirstLevelCommentModel) {
@@ -690,6 +706,42 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 }
             }
         }
+    }
+
+    private fun goBigImageBrowse(index: Int, pictures: List<String>) {
+        BigImageBrowseFragment.open(true, mContext as FragmentActivity, object : DefaultImageBrowserLoader<String>() {
+            override fun init() {
+
+            }
+
+            override fun load(imageBrowseView: ImageBrowseView, position: Int, item: String) {
+                imageBrowseView.load(item)
+            }
+
+            override fun getInitCurrentItemPostion(): Int {
+                return index
+            }
+
+            override fun getInitList(): List<String>? {
+                return pictures
+            }
+
+            override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
+                if (backward) {
+                    // 向后加载
+                }
+            }
+
+            override fun hasMore(backward: Boolean, position: Int, data: String): Boolean {
+                return if (backward) {
+                    return false
+                } else false
+            }
+
+            override fun hasMenu(): Boolean {
+                return false
+            }
+        })
     }
 
     override fun getItemViewType(position: Int): Int {

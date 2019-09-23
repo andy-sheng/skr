@@ -109,7 +109,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         mPostsDetailPresenter = PostsDetailPresenter(this)
         addPresent(mPostsDetailPresenter)
 
-        postsAdapter = PostsCommentAdapter()
+        postsAdapter = PostsCommentAdapter(context!! as FragmentActivity)
         postsAdapter?.mIDetailClickListener = object : PostsCommentAdapter.IDetailClickListener {
             override fun replayPosts(model: PostsWatchModel) {
                 feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)

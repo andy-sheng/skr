@@ -3,6 +3,7 @@ package com.module.posts.detail.adapter
 import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.Barrier
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.text.TextPaint
 import android.text.TextUtils
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
+import com.common.callback.Callback
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -22,6 +24,9 @@ import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
 import com.component.relation.view.DefaultFollowView
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.model.PostFirstLevelCommentModel
@@ -48,7 +53,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
     var mClickContentListener: ((PostsSecondLevelCommentModel) -> Unit)? = null
 
-    constructor() : super() {
+    var mContext: FragmentActivity? = null
+
+    constructor(context: FragmentActivity) : super() {
+        mContext = context
         SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
@@ -198,6 +206,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     }
                 }
             })
+
+            nineGridVp?.clickListener = { i, url, urlList ->
+                goBigImageBrowse(i, urlList)
+            }
         }
 
         fun refreshCommentCtn(pos: Int, model: PostFirstLevelCommentModel) {
@@ -385,6 +397,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             contentTv.setDebounceViewClickListener {
                 mClickContentListener?.invoke(mModel!!)
             }
+
+            nineGridVp?.clickListener = { i, url, urlList ->
+                goBigImageBrowse(i, urlList)
+            }
         }
 
         fun refreshPlayState(pos: Int, model: PostsSecondLevelCommentModel) {
@@ -508,6 +524,42 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 }
             }
         }
+    }
+
+    private fun goBigImageBrowse(index: Int, pictures: List<String>) {
+        BigImageBrowseFragment.open(true, mContext as FragmentActivity, object : DefaultImageBrowserLoader<String>() {
+            override fun init() {
+
+            }
+
+            override fun load(imageBrowseView: ImageBrowseView, position: Int, item: String) {
+                imageBrowseView.load(item)
+            }
+
+            override fun getInitCurrentItemPostion(): Int {
+                return index
+            }
+
+            override fun getInitList(): List<String>? {
+                return pictures
+            }
+
+            override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
+                if (backward) {
+                    // 向后加载
+                }
+            }
+
+            override fun hasMore(backward: Boolean, position: Int, data: String): Boolean {
+                return if (backward) {
+                    return false
+                } else false
+            }
+
+            override fun hasMenu(): Boolean {
+                return false
+            }
+        })
     }
 
     override fun getItemViewType(position: Int): Int {
