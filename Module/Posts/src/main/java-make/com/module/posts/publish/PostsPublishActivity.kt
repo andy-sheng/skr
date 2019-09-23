@@ -16,6 +16,7 @@ import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -205,13 +206,7 @@ class PostsPublishActivity : BaseActivity() {
         }
         audioDelIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                model.recordVoicePath = null
-                model.recordDurationMs = 0
-                model.recordVoiceUrl = null
-                model.songId = 0
-                SinglePlayer.stop(playerTag)
-                postsAudioView.visibility = View.GONE
-                audioDelIv.visibility = View.GONE
+                clearAudio.invoke()
             }
         })
 
@@ -260,7 +255,16 @@ class PostsPublishActivity : BaseActivity() {
         if (model.topic != null) {
             topicTv.text = model.topic?.topicDesc
         }
+    }
 
+    val clearAudio = {
+        model.recordVoicePath = null
+        model.recordDurationMs = 0
+        model.recordVoiceUrl = null
+        model.songId = 0
+        SinglePlayer.stop(playerTag)
+        postsAudioView.visibility = View.GONE
+        audioDelIv.visibility = View.GONE
     }
 
     var uploading = false
@@ -397,7 +401,7 @@ class PostsPublishActivity : BaseActivity() {
             hasData = true
         }
 
-        map["topicID"] = model.topic?.topicID?:0
+        map["topicID"] = model.topic?.topicID ?: 0
 
         map["songID"] = model.songId
         val content = contentEt.text.toString()
@@ -452,7 +456,7 @@ class PostsPublishActivity : BaseActivity() {
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            audioDelIv.performClick()
+                            clearAudio.invoke()
                             tipsDialogView?.dismiss(false)
                             goAddImagePage()
                         }
@@ -543,7 +547,7 @@ class PostsPublishActivity : BaseActivity() {
                             postsPublishImgAdapter.notifyDataSetChanged()
                             model.imgUploadMap.clear()
                             if (!hasSong) {
-                                audioDelIv.performClick()
+                                clearAudio.invoke()
                             }
                             imageRecyclerView.visibility = View.GONE
                             tipsDialogView?.dismiss(false)
