@@ -239,13 +239,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            //清空图片
-                            postsReplayImgAdapter.dataList.clear()
-                            postsReplayImgAdapter.notifyDataSetChanged()
-                            replyModel.imgUploadMap.clear()
-                            //清空歌曲
-                            replyModel.songId = 0
-                            postsKgeRecordView.reset()
+                            clearAllData()
                             tipsDialogView?.dismiss(false)
                             showAudioRecordView()
                         }
@@ -254,6 +248,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
+            clearAllData()
             showAudioRecordView()
             mInputContainer?.visibility = View.VISIBLE
         }
@@ -282,14 +277,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            //清空图片
-                            postsReplayImgAdapter.dataList.clear()
-                            postsReplayImgAdapter.notifyDataSetChanged()
-                            replyModel.imgUploadMap.clear()
-                            //清空语音
-                            postsVoiceRecordView.reset()
-                            replyModel.resetVoice()
-
+                            clearAllData()
                             tipsDialogView?.dismiss(false)
                             showKgeRecordView()
                         }
@@ -298,6 +286,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
+            clearAllData()
             showKgeRecordView()
             mInputContainer?.visibility = View.VISIBLE
         }
@@ -305,9 +294,11 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
     //输入框隐藏的时候所有的数据晴空
     private fun clearAllData() {
+        replyModel.songId = 0
         postsReplayImgAdapter.dataList.clear()
         postsReplayImgAdapter.notifyDataSetChanged()
         postsVoiceRecordView.reset()
+        replyModel.imgUploadMap.clear()
         replyModel.resetVoice()
         postsKgeRecordView.reset()
         mEtContent?.setText("")
@@ -336,12 +327,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     })
                     .setConfirmBtnClickListener(object : AnimateClickListener() {
                         override fun click(view: View?) {
-                            //清空语音
-                            postsVoiceRecordView.reset()
-                            replyModel.resetVoice()
-                            //清空歌曲
-                            replyModel.songId = 0
-                            postsKgeRecordView.reset()
+                            clearAllData()
                             tipsDialogView?.dismiss(false)
                             goAddImagePage()
                         }
@@ -350,6 +336,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
+            clearAllData()
             mEmotionKeyboard?.hideSoftInput()
             ResPicker.getInstance().params = ResPicker.newParamsBuilder()
                     .setMultiMode(true)
@@ -360,8 +347,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     .build()
             ResPickerActivity.open(context as Activity, ArrayList<ImageItem>(postsReplayImgAdapter?.dataList))
             mInputContainer?.visibility = View.VISIBLE
+            postsVoiceRecordView.setVisibility(View.GONE)
+            postsKgeRecordView.setVisibility(View.GONE)
             mPlaceHolderView?.getLayoutParams()?.height = 0
-            mPlaceHolderView?.setLayoutParams(mPlaceHolderView?.getLayoutParams())
+//            mPlaceHolderView?.requestLayout()
         }
     }
 
@@ -399,6 +388,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
         selectImgGroup.visibility = View.VISIBLE
         postsVoiceRecordView.setVisibility(View.GONE)
+
+        mPlaceHolderView?.getLayoutParams()?.height = 0
+        mPlaceHolderView?.setLayoutParams(mPlaceHolderView?.getLayoutParams())
+//        mPlaceHolderView?.requestLayout()
     }
 
     private fun showAudioRecordView() {
