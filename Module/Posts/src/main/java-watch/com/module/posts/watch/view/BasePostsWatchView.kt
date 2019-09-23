@@ -188,7 +188,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             override fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int) {
                 // 审核过，且未投票
                 if (model != null && model.isAudit()) {
-                    if (model.posts?.voteInfo?.hasVoted == false) {
+                    if (model.posts?.voteInfo?.hasVoted == true) {
+                        // 已投票，不让投了
+                    }else{
                         votePosts(position, model, index)
                     }
                 }
