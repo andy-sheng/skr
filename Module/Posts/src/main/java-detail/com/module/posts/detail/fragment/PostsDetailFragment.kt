@@ -164,11 +164,24 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     override fun showLikePostsResulet() {
-        postsAdapter?.notifyDataSetChanged()
+//        postsAdapter?.notifyDataSetChanged()
+        postsAdapter?.notifyItemChanged(0, PostsCommentAdapter.REFRESH_LIKE)
     }
 
     override fun showLikeFirstLevelCommentResult(postFirstLevelCommentModel: PostFirstLevelCommentModel) {
-        postsAdapter?.notifyDataSetChanged()
+        postsAdapter?.notifyItemChanged(getListPosition(postFirstLevelCommentModel), PostsCommentAdapter.REFRESH_LIKE)
+    }
+
+    private fun getListPosition(model: PostFirstLevelCommentModel): Int {
+        postsAdapter?.dataList?.forEachIndexed { index, it ->
+            if (it is PostFirstLevelCommentModel) {
+                if (it.comment?.commentID == model.comment?.commentID) {
+                    return index
+                }
+            }
+        }
+
+        return -1
     }
 
     override fun loadMoreError() {
