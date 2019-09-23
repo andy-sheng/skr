@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
@@ -91,6 +92,9 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 okClickListener?.invoke(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH,myMediaRecorder?.mDuration?:0)
             }
         })
+        parentView.setDebounceViewClickListener {
+
+        }
     }
 
     override fun layoutDesc(): Int {

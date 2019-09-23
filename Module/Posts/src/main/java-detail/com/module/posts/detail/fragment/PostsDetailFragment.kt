@@ -101,6 +101,8 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
             beginUploadTask(replyModel, obj)
+            feedsInputContainerView?.hideSoftInput()
+            feedsInputContainerView?.mInputContainer?.visibility = View.GONE
         }
 
         mPostsDetailPresenter = PostsDetailPresenter(this)

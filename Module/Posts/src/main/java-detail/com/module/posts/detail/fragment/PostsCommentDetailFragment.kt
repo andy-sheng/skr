@@ -284,6 +284,8 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
             beginUploadTask(replyModel, obj)
+            feedsInputContainerView?.hideSoftInput()
+            feedsInputContainerView?.mInputContainer?.visibility = View.GONE
         }
 
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList(mPostFirstLevelCommentModel?.comment?.commentID

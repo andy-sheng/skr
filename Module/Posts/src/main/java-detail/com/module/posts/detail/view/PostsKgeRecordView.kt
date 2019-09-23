@@ -78,6 +78,10 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         selectSongTv.setDebounceViewClickListener {
             selectSongClickListener?.invoke()
         }
+
+        parentView.setDebounceViewClickListener {
+
+        }
     }
 
     override fun layoutDesc(): Int {
