@@ -1,13 +1,10 @@
 package com.module.home.persenter
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Handler
 import android.os.Message
-import android.text.SpannableStringBuilder
 import android.view.Gravity
 import android.view.View
-
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
@@ -38,12 +35,14 @@ import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
+import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.manager.WeakRedDotManager
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.NotifyDialogView
 import com.component.notification.DoubleInviteNotifyView
 import com.component.notification.FollowNotifyView
+import com.component.notification.GrabFullStarNotifyView
 import com.component.notification.GrabInviteNotifyView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
@@ -54,21 +53,15 @@ import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
-
+import com.zq.live.proto.Notification.PostsCommentLikeMsg
+import io.reactivex.Observable
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.HashMap
+import java.util.*
 import java.util.concurrent.TimeUnit
-
-import io.reactivex.Observable
-import io.reactivex.functions.Consumer
-import okhttp3.MediaType
-import okhttp3.RequestBody
-
-import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
-import com.component.notification.GrabFullStarNotifyView
 
 class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCyclePresenter() {
 
@@ -309,6 +302,21 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedCommentAddNotifyEvent) {
         WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 2, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PostsLikeEvent) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 2, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PostsCommentLikeMsg) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 2, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PostsCommentAddEvent) {
+        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 2, true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

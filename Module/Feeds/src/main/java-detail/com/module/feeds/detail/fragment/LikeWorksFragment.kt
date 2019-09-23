@@ -22,7 +22,6 @@ import com.module.feeds.detail.FeedsDetailServerApi
 import com.module.feeds.detail.adapter.FeedLikeListener
 import com.module.feeds.detail.adapter.LikeWorkAdapter
 import com.module.feeds.detail.model.FeedLikeModel
-import com.module.feeds.statistics.FeedPage
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -74,9 +73,8 @@ class LikeWorksFragment : BaseFragment() {
         mAdapter = LikeWorkAdapter(object : FeedLikeListener {
             override fun onClickItme(model: FeedLikeModel?) {
                 model?.let {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_DETAIL)
-                            .withInt("feed_ID", it.feedID)
-                            .withSerializable("from", FeedPage.DETAIL_FROM_HOMEPAGE)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
+                            .withInt("postsID", model.postsID)
                             .navigation()
                 }
             }

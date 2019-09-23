@@ -24,6 +24,15 @@ public class FeedLikeModel implements Serializable {
     private long timeMs;
     private int userID;
     private VipInfo vipInfo;
+    private int postsID;
+
+    public int getPostsID() {
+        return postsID;
+    }
+
+    public void setPostsID(int postsID) {
+        this.postsID = postsID;
+    }
 
     public int getFeedID() {
         return feedID;

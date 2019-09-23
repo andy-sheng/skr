@@ -45,7 +45,6 @@ import com.component.busilib.event.FeedWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
-import com.module.feeds.IFeedsModuleService;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.event.SkipGuideHomepageEvent;
 import com.module.home.fragment.PersonFragment4;
@@ -549,7 +548,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
                 , WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
                 , WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE};
+                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE
+                , WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE};
     }
 
     @Override
@@ -557,7 +559,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
                 || type == WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
                 || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE) {
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE
+                || type == WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE) {
             mMessageFollowRedDotValue = value;
         }
 

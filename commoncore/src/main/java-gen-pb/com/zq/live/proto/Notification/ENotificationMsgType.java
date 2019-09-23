@@ -64,7 +64,22 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 添加评论信令
    */
-  NM_FD_COMMENT_ADD(10);
+  NM_FD_COMMENT_ADD(10),
+
+  /**
+   * 点赞帖子
+   */
+  NM_PS_LIKE(11),
+
+  /**
+   * 点赞帖子评论信令
+   */
+  NM_PS_COMMENT_LIKE(12),
+
+  /**
+   * 添加帖子评论信令
+   */
+  NM_PS_COMMENT_ADD(13);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -90,6 +105,9 @@ public enum ENotificationMsgType implements WireEnum {
       case 8: return NM_FD_LIKE;
       case 9: return NM_FD_COMMENT_LIKE;
       case 10: return NM_FD_COMMENT_ADD;
+      case 11: return NM_PS_LIKE;
+      case 12: return NM_PS_COMMENT_LIKE;
+      case 13: return NM_PS_COMMENT_ADD;
       default: return null;
     }
   }

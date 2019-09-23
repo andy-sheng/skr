@@ -33,7 +33,41 @@ message NotificationMsg
     FeedLikeMsg feedLikeMsg = 17; //点赞feed信令
     FeedCommentLikeMsg feedCommentLikeMsg = 18; //评论喜欢信令
     FeedCommentAddMsg feedCommentAddMsg = 19; //评论增加信令
+
+    PostsLikeMsg postsLikeMsg = 20; //点赞帖子 信令
+    PostsCommentLikeMsg postsCommentLikeMsg = 21; //点赞帖子评论 信令
+    PostsCommentAddMsg postsCommentAddMsg = 22; //增加帖子评论 信令
 }
+
+//帖子点赞
+message PostsLikeMsg
+{
+    uint32 userID    = 1; //点赞人的userID
+    uint32 postsID    = 2; //点赞的posts
+    bool isLike      = 3; //点赞 or 取消点赞
+    uint32 likeCnt   = 4; //点赞数
+}
+
+//帖子评论点赞
+message PostsCommentLikeMsg
+{
+    uint32 userID    = 1; //点赞人的userID
+    uint32 postsID    = 2; //posts
+    uint32 commentID = 3; //评论id
+    bool isLike      = 4; //点赞 or 取消点赞
+    uint32 likeCnt   = 5; //点赞数
+}
+
+//帖子评论
+message PostsCommentAddMsg
+{
+    uint32 userID                = 1; //评论人userID
+    uint32 postsID                = 2; //posts
+    uint32 commentID             = 3; //新生成评论ID
+    uint32 firstLevelCommentID   = 4; //若为二级评论，则需要传入所属的一级评论id
+    uint32 replyedCommentID      = 5; //被回复的commentID
+}
+
 
 //神曲点赞
 message FeedLikeMsg
@@ -132,6 +166,11 @@ enum ENotificationMsgType {
     NM_FD_LIKE = 8; //点赞feed
     NM_FD_COMMENT_LIKE = 9; //点赞评论信令
     NM_FD_COMMENT_ADD = 10; //添加评论信令
+
+    NM_PS_LIKE = 11; //点赞帖子
+        NM_PS_COMMENT_LIKE = 12; //点赞帖子评论信令
+        NM_PS_COMMENT_ADD = 13; //添加帖子评论信令
+
 }
 
 message FollowMsg

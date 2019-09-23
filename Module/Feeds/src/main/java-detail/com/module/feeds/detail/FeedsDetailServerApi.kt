@@ -100,12 +100,12 @@ interface FeedsDetailServerApi {
     /**
      * 获取被赞的列表
      */
-    @GET("/v1/msgbox/like-list")
+    @GET("/v2/msgbox/like-list")
     fun getLikeWorkList(@Query("userID") userID: Int, @Query("offset") feedID: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     /**
      * 获取被回复的列表
      */
-    @GET("/v1/msgbox/comment-list")
+    @GET("/v2/msgbox/comment-list")
     fun getRefuseCommentList(@Query("userID") userID: Int, @Query("offset") feedID: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 }

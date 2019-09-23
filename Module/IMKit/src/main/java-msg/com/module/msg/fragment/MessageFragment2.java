@@ -273,7 +273,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
                 WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
                 , WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
                 , WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE};
+                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE
+                , WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE};
     }
 
     @Override
@@ -281,7 +284,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
         if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
                 || type == WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
                 || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE) {
+                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE
+                || type == WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
+                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE) {
             mMessageFollowRedDotValue = value;
         }
 

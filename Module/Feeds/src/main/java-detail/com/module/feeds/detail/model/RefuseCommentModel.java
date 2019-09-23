@@ -24,6 +24,15 @@ public class RefuseCommentModel implements Serializable {
     private int feedID;
     private long timeMs;
     private int userID;
+    private int postsID;
+
+    public int getPostsID() {
+        return postsID;
+    }
+
+    public void setPostsID(int postsID) {
+        this.postsID = postsID;
+    }
 
     public String getActionDesc() {
         return actionDesc;

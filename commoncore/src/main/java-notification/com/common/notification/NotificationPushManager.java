@@ -13,6 +13,9 @@ import com.common.notification.event.FeedCommentLikeNotifyEvent;
 import com.common.notification.event.FeedLikeNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.notification.event.PostsCommentAddEvent;
+import com.common.notification.event.PostsCommentLikeEvent;
+import com.common.notification.event.PostsLikeEvent;
 import com.common.notification.event.SysWarnNotifyEvent;
 import com.zq.live.proto.Notification.CombineRoomEnterMsg;
 import com.zq.live.proto.Notification.CombineRoomInviteMsg;
@@ -27,6 +30,9 @@ import com.zq.live.proto.Notification.FeedLikeMsg;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
+import com.zq.live.proto.Notification.PostsCommentAddMsg;
+import com.zq.live.proto.Notification.PostsCommentLikeMsg;
+import com.zq.live.proto.Notification.PostsLikeMsg;
 import com.zq.live.proto.Notification.SysWarningMsg;
 import com.zq.live.proto.broadcast.ERoomBroadcastMsgType;
 import com.zq.live.proto.broadcast.RoomBroadcastMsg;
@@ -35,7 +41,6 @@ import com.zq.live.proto.broadcast.StandFullStar;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * 通知管理器
@@ -109,6 +114,39 @@ public class NotificationPushManager {
             processFeedCommentLikeMsg(baseNotiInfo, msg.getFeedCommentLikeMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_FD_COMMENT_ADD) {
             processFeedCommentAddMsg(baseNotiInfo, msg.getFeedCommentAddMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_PS_LIKE) {
+            processPostsLikeMsg(baseNotiInfo, msg.getPostsLikeMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_PS_COMMENT_LIKE) {
+            processPostsCommentLikeMsg(baseNotiInfo, msg.getPostsCommentLikeMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_PS_COMMENT_ADD) {
+            processPostsCommentAddMsg(baseNotiInfo, msg.getPostsCommentAddMsg());
+        }
+    }
+
+    private void processPostsLikeMsg(BaseNotiInfo baseNotiInfo, PostsLikeMsg postsLikeMsg) {
+        if (postsLikeMsg != null) {
+            PostsLikeEvent postsLikeEvent = new PostsLikeEvent(baseNotiInfo, postsLikeMsg);
+            EventBus.getDefault().post(postsLikeEvent);
+        } else {
+            MyLog.e(TAG, "processPostsLikeMsg postsLikeMsg=null");
+        }
+    }
+
+    private void processPostsCommentLikeMsg(BaseNotiInfo baseNotiInfo, PostsCommentLikeMsg postsCommentLikeMsg) {
+        if (postsCommentLikeMsg != null) {
+            PostsCommentLikeEvent feedCommentAddNotifyEvent = new PostsCommentLikeEvent(baseNotiInfo, postsCommentLikeMsg);
+            EventBus.getDefault().post(feedCommentAddNotifyEvent);
+        } else {
+            MyLog.e(TAG, "processPostsCommentLikeMsg postsCommentLikeMsg=null");
+        }
+    }
+
+    private void processPostsCommentAddMsg(BaseNotiInfo baseNotiInfo, PostsCommentAddMsg postsCommentAddMsg) {
+        if (postsCommentAddMsg != null) {
+            PostsCommentAddEvent feedCommentAddNotifyEvent = new PostsCommentAddEvent(baseNotiInfo, postsCommentAddMsg);
+            EventBus.getDefault().post(feedCommentAddNotifyEvent);
+        } else {
+            MyLog.e(TAG, "processPostsCommentAddMsg postsCommentAddMsg=null");
         }
     }
 
