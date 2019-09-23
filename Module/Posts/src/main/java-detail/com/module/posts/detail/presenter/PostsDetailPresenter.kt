@@ -133,8 +133,13 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
 
             if (result.errno == 0) {
                 val postsWatchModel = JSON.parseObject(result.data.getString("detail"), PostsWatchModel::class.java)
-                model = postsWatchModel.posts
-                view?.showPostsWatchModel(postsWatchModel)
+                if (postsWatchModel != null) {
+                    model = postsWatchModel.posts
+                    view?.showPostsWatchModel(postsWatchModel)
+                } else {
+                    view?.loadMoreError()
+                    U.getToastUtil().showShort("系统错误")
+                }
             } else {
                 view?.loadMoreError()
                 if (result.errno == -2) {
