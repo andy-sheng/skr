@@ -39,6 +39,7 @@ class PostsCommentAudioView : ConstraintLayout {
     }
 
     fun bindData(audioMs: Long) {
+        this.isPlaying = false
         this.audioDuration = audioMs
         var duration = (audioDuration.toFloat() / 1000.toFloat()).toDouble().roundToInt()
         if (duration > 60) {

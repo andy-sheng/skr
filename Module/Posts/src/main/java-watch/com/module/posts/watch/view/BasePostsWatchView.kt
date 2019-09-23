@@ -346,7 +346,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     open fun unselected(reason: Int) {
         isSeleted = false
-        SinglePlayer.reset(playerTag)
+        SinglePlayer.stop(playerTag)
         adapter?.stopPlay()
     }
 
@@ -359,6 +359,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     fun addWatchPosts(list: List<PostsWatchModel>?, clear: Boolean) {
         if (clear) {
+            // 数据更新，之前播放要停
+            SinglePlayer.stop(playerTag)
+            adapter?.stopPlay()
             adapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {
                 adapter?.mDataList?.addAll(list)

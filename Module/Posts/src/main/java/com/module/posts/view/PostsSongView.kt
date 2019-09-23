@@ -39,6 +39,7 @@ class PostsSongView : ConstraintLayout {
     fun bindData(song: FeedSongModel?) {
         songNameTv.text = song?.songTpl?.songName
         // 相当于reset
+        isPlaying = false
         songPlayIv.background = U.getDrawable(R.drawable.posts_song_play_icon)
     }
 
