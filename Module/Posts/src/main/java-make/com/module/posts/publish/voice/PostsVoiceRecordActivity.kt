@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.core.permission.SkrAudioPermission
 import com.common.player.SinglePlayer
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
@@ -54,6 +55,8 @@ class PostsVoiceRecordActivity : BaseActivity() {
     lateinit var circleCountDownView: CircleCountDownView
     var startRecordTs = 0L
 
+    private val skrAudioPermission = SkrAudioPermission()
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.posts_voice_record_activity_layout
     }
@@ -77,7 +80,9 @@ class PostsVoiceRecordActivity : BaseActivity() {
         }
         playBtn.setOnClickListener {
             if (status == STATUS_IDLE) {
-                startRecord()
+                skrAudioPermission.ensurePermission({
+                    startRecord()
+                }, true)
             } else if (status == STATUS_RECORDING) {
                 if ((System.currentTimeMillis() - startRecordTs) < 2 * 1000) {
                     U.getToastUtil().showShort("太短了，多录制几句吧")
@@ -105,29 +110,33 @@ class PostsVoiceRecordActivity : BaseActivity() {
     var recordJob: Job? = null
 
     private fun startRecord() {
-        status = STATUS_RECORDING
-        playTipsTv.text = "点击停止"
-        abandonIv.visibility = View.GONE
-        abandonTv.visibility = View.GONE
-        okIv.visibility = View.GONE
-        okTv.visibility = View.GONE
-        countDownTv.visibility = View.VISIBLE
-        countDownTv.text = "0s"
-        playBtn.setImageResource(R.drawable.yuyin_weikaishi)
-
-        recordJob = launch {
-            for (i in 0 until 60) {
-                recordDiffuseView.start(2000)
-                delay(1000)
-                countDownTv.text = "${i + 1}s"
-            }
-            stopRecord()
-        }
         if (myMediaRecorder == null) {
             myMediaRecorder = MyMediaRecorder.newBuilder().build()
         }
-        myMediaRecorder?.start(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH, null)
-        startRecordTs = System.currentTimeMillis()
+        if (myMediaRecorder?.start(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH, null) == true) {
+            status = STATUS_RECORDING
+            playTipsTv.text = "点击停止"
+            abandonIv.visibility = View.GONE
+            abandonTv.visibility = View.GONE
+            okIv.visibility = View.GONE
+            okTv.visibility = View.GONE
+            countDownTv.visibility = View.VISIBLE
+            countDownTv.text = "0s"
+            playBtn.setImageResource(R.drawable.yuyin_weikaishi)
+
+            recordJob = launch {
+                for (i in 0 until 60) {
+                    recordDiffuseView.start(2000)
+                    delay(1000)
+                    countDownTv.text = "${i + 1}s"
+                }
+                stopRecord()
+            }
+
+            startRecordTs = System.currentTimeMillis()
+        } else {
+            U.getToastUtil().showShort("启动录制失败")
+        }
     }
 
     private fun stopRecord() {

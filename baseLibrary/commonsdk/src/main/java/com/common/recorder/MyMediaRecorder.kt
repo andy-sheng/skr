@@ -44,7 +44,7 @@ class MyMediaRecorder {
         mMediaRecorder?.setAudioEncodingBitRate(audioEncodingBitRate)
     }
 
-    fun start(filePath: String, callback: ((Int) -> Unit)?) {
+    fun start(filePath: String, callback: ((Int) -> Unit)?):Boolean {
         try {
             config(filePath)
             if (mRecording) {
@@ -61,7 +61,9 @@ class MyMediaRecorder {
             }
         } catch (e: Exception) {
             MyLog.e(TAG, e)
+            return false
         }
+        return true
     }
 
     fun stop() {

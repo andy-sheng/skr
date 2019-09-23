@@ -4,6 +4,7 @@ package com.module.posts.detail.view
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
+import com.common.core.permission.SkrAudioPermission
 import com.common.player.SinglePlayer
 import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
@@ -51,6 +52,8 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     var recordJob: Job? = null
     var okClickListener: ((String?,Int) -> Unit)? = null
 
+    private val skrAudioPermission = SkrAudioPermission()
+
     override fun init(parentView: View) {
         playBtn = parentView.findViewById(R.id.play_btn)
         playTipsTv = parentView.findViewById(R.id.play_tips_tv)
@@ -64,7 +67,9 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         playBtn.setOnClickListener {
             if (status == STATUS_IDLE) {
-                startRecord()
+                skrAudioPermission.ensurePermission({
+                    startRecord()
+                }, true)
             } else if (status == STATUS_RECORDING) {
                 if ((System.currentTimeMillis() - startRecordTs) < 2 * 1000) {
                     U.getToastUtil().showShort("太短了，多录制几句吧")
