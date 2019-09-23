@@ -18,9 +18,12 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
+import com.component.busilib.callback.EmptyCallback
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.more.PostsMoreDialogView
@@ -78,6 +81,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     var postsMoreDialogView: PostsMoreDialogView? = null
     var postsRedPkgDialogView: PostsRedPkgDialogView? = null
+
+    var mLoadService: LoadService<*>? = null
 
     fun dismissDialog() {
         postsMoreDialogView?.dismiss(false)
@@ -254,6 +259,15 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
         }
         SinglePlayer.addCallback(playerTag, playCallback)
+
+        if (type != TYPE_POST_PERSON) {
+            val mLoadSir = LoadSir.Builder()
+                    .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "暂无帖子发布", "#802F2F30"))
+                    .build()
+            mLoadService = mLoadSir.register(refreshLayout, com.kingja.loadsir.callback.Callback.OnReloadListener {
+                initPostsList(true)
+            })
+        }
     }
 
     private fun goBigImageBrowse(index: Int, model: PostsWatchModel?) {
@@ -325,10 +339,13 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
         }
 
-        if (adapter?.mDataList.isNullOrEmpty()) {
-            // 数据为空
-        } else {
-
+        if(type != TYPE_POST_PERSON){
+            if (adapter?.mDataList.isNullOrEmpty()) {
+                // 数据为空
+                mLoadService?.showCallback(EmptyCallback::class.java)
+            } else {
+                mLoadService?.showSuccess()
+            }
         }
     }
 
