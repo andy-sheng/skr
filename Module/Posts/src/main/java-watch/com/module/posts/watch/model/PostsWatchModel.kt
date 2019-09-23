@@ -31,4 +31,8 @@ class PostsWatchModel : Serializable {
         return "PostsWatchModel(bestComment=$bestComment, hasFollow=$hasFollow, isLiked=$isLiked, numeric=$numeric, posts=$posts, user=$user, isExpend=$isExpend)"
     }
 
+    fun toDebugString(): String {
+        return "帖子 posts=$posts"
+    }
+
 }

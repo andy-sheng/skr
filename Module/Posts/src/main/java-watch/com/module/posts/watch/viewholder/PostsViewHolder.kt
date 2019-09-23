@@ -37,6 +37,8 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     val redPkgIv: ImageView = item.findViewById(R.id.red_pkg_iv)
     val topicTv: ExTextView = item.findViewById(R.id.topic_tv)
 
+    val debugTv: TextView = item.findViewById(R.id.debug_tv)
+
     var pos = -1
     var mModel: PostsWatchModel? = null
     var isPlaying = false
@@ -96,6 +98,12 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         this.pos = pos
         this.mModel = model
 
+        if (MyLog.isDebugLogOpen()) {
+            debugTv.visibility = View.VISIBLE
+            debugTv.text = model.toDebugString()
+        }else{
+            debugTv.visibility = View.GONE
+        }
 
         mModel?.posts?.let {
             content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
