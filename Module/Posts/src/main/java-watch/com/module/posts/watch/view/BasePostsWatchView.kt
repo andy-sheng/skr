@@ -196,10 +196,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 }
             }
 
-            override fun onClickPostsComment(position: Int, model: PostsWatchModel?) {
-                U.getToastUtil().showShort("onClickPostsComment")
-            }
-
             override fun onClickPostsLike(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
                     recordClick(model)

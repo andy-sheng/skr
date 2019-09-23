@@ -190,7 +190,6 @@ interface PostsWatchListener {
 
     fun onClickPostsRedPkg(position: Int, model: PostsWatchModel?)  // 发帖红包
     fun onClickPostsTopic(position: Int, model: PostsWatchModel?)   // 发帖话题
-    fun onClickPostsComment(position: Int, model: PostsWatchModel?) // 发帖评论
     fun onClickPostsLike(position: Int, model: PostsWatchModel?)    // 发帖点赞
     fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int)  // 发帖投票
 

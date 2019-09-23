@@ -40,6 +40,7 @@ class PostsModel : Serializable {
     var voteInfo: PostsVoteModel? = null
 
     override fun toString(): String {
-        return "PostsModel(audios=$audios, createdAt=$createdAt, pictures=$pictures, postsID=$postsID, redpacketInfo=$redpacketInfo, title='$title', topicInfo=$topicInfo, videos=$videos, voteInfo=$voteInfo)"
+        return "PostsModel(audios=$audios, createdAt=$createdAt, pictures=$pictures, postsID=$postsID, redpacketInfo=$redpacketInfo, song=$song, status=$status, title='$title', topicInfo=$topicInfo, userID=$userID, videos=$videos, voteInfo=$voteInfo)"
     }
+    
 }

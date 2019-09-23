@@ -55,7 +55,6 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         redPkgIv.setAnimateDebounceViewClickListener { listener.onClickPostsRedPkg(pos, mModel) }
         topicTv.setAnimateDebounceViewClickListener { listener.onClickPostsTopic(pos, mModel) }
         postsLikeTv.setAnimateDebounceViewClickListener { listener.onClickPostsLike(pos, mModel) }
-        postsCommentTv.setAnimateDebounceViewClickListener { listener.onClickPostsComment(pos, mModel) }
 
         commentView.setListener(object : PostsCommentListener {
             override fun onClickSong() {
