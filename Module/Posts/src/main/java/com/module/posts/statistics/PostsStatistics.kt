@@ -119,7 +119,7 @@ object PostsStatistics {
 }
 
 private interface PostsStatisticsServerApi {
-    @PUT("/v3/posts/statistics")
+    @PUT("/v1/posts/statistics")
     fun uploadPostsStatistics(@Body requestBody: RequestBody): Call<ApiResult>
 }
 
