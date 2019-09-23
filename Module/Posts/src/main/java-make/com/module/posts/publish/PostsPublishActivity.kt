@@ -195,6 +195,7 @@ class PostsPublishActivity : BaseActivity() {
 
         }
         topicTv.setDebounceViewClickListener {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
             ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
                     .withInt("from", 2)
                     .navigation(this@PostsPublishActivity, PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT)
