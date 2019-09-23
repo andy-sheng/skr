@@ -112,7 +112,11 @@ class FeedsMakeActivity : BaseActivity() {
                     if (it.recordingClick) {
                         if (it.recording) {
                             //真正在录制，除去前奏的长度
-                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < 30 * 1000) {
+                            var limit = 30 * 1000
+                            if (MyLog.isDebugLogOpen()) {
+                                limit = 5 * 1000
+                            }
+                            if (System.currentTimeMillis() - it.beginRecordTs - it.firstLyricShiftTs < limit) {
                                 U.getToastUtil().showSkrCustomShort(NoImageCommonToastView.Builder(U.app())
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
@@ -218,7 +222,7 @@ class FeedsMakeActivity : BaseActivity() {
                 } else if (from == FROM_CHANGE_SING) {
                     mFeedsMakeModel?.challengeType = CHALLENGE_TYPE_CHANGE_SONG
                 }
-                if(from == FROM_POSTS){
+                if (from == FROM_POSTS) {
                     mFeedsMakeModel?.fromPosts = true
                 }
                 mFeedsMakeModel?.songModel = feedSongModel
