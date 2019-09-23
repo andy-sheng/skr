@@ -100,7 +100,7 @@
     <com.module.posts.view.PostsCommentAudioView
         android:id="@+id/posts_audio_view"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="@+id/name_tv"
         app:layout_constraintTop_toBottomOf="@+id/title_barrier" />
