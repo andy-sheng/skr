@@ -4,45 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/view_10_dp"
+    app:bl_corners_radius="@dimen/view_10_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="@color/black_trans_5"
-    app:bl_corners_radius="@dimen/view_10_dp">
+    app:bl_solid_color="@color/black_trans_5">
 
     <TextView
         android:id="@+id/comment_tv"
-        android:text="评论"
-        android:layout_marginLeft="@dimen/view_9_dp"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/view_13_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_9_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:text="评论"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/view_13_dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/like_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_8_dp"
         android:layout_marginTop="@dimen/view_8_dp"
-        android:textSize="@dimen/textsize_12_dp"
-        android:textColor="@color/black_trans_50"
-        android:text="3746"
-        android:drawablePadding="@dimen/view_5_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
         android:drawableRight="@drawable/posts_like_black_icon"
+        android:drawablePadding="@dimen/view_5_dp"
+        android:text="3746"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="left"
         android:text="ktv酒彪子:"
         android:textColor="#63C2F0"
         android:textSize="@dimen/textsize_14_dp"
-        android:layout_marginTop="@dimen/view_5_dp"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="@+id/comment_tv"
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
         app:layout_constraintLeft_toLeftOf="@id/content_tv"
-        app:layout_constraintTop_toBottomOf="@id/content_tv"/>
+        app:layout_constraintTop_toBottomOf="@id/content_tv" />
 
     <com.module.posts.view.PostsSongView
         android:id="@+id/posts_song_view"
@@ -61,16 +61,18 @@
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_8_dp"
         app:layout_constraintLeft_toLeftOf="@id/comment_tv"
-        app:layout_constraintTop_toBottomOf="@id/posts_audio_view"/>
+        app:layout_constraintTop_toBottomOf="@id/posts_audio_view" />
 
     <com.module.posts.view.PostsNineGridLayout
         android:id="@+id/nine_grid_vp"
-        android:layout_width="@dimen/view_335_dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:spacing="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="@id/comment_tv"
-        app:layout_constraintTop_toBottomOf="@id/posts_song_view" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/posts_song_view"
+        app:spacing="@dimen/view_10_dp" />
 
 
 </com.common.view.ex.ExConstraintLayout>

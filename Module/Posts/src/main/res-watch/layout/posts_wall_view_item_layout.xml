@@ -66,12 +66,14 @@
 
     <com.module.posts.view.PostsNineGridLayout
         android:id="@+id/nine_grid_vp"
-        android:layout_width="354dp"
+        android:layout_width="0dp"
         app:spacing="@dimen/view_12_dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/posts_song_view" />
 
     <ViewStub
@@ -107,7 +109,6 @@
         android:layout_marginTop="@dimen/view_10_dp"
         android:background="@color/black_trans_10"
         app:layout_constraintTop_toBottomOf="@id/comment_layout_stub"/>
-
 
     <TextView
         android:id="@+id/posts_like_tv"
