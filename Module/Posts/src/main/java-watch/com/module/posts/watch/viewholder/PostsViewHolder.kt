@@ -245,10 +245,10 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
                 redPkgIv.visibility = View.GONE
             } else {
                 redPkgIv.visibility = View.VISIBLE
-                if (it.redpacketInfo?.openStatus == PostsRedPkgModel.ROS_HAS_OPEN) {
-                    redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
-                } else {
-                    redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                when {
+                    it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> redPkgIv.setImageResource(R.drawable.posts_red_s_unaudit_icon)
+                    it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL -> redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
+                    else -> redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
                 }
             }
         }
