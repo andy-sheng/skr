@@ -97,6 +97,9 @@ public class InframeProcessor implements ISchemeProcessor {
                     case "game":
                         processGameUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_POSTS:
+                        processPostsUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
                 }
             }
         } else if ("rong".equals(scheme)) {
@@ -167,6 +170,18 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if (SchemeConstants.PATH_GRAB_MATCH.equals(path)) {
 
+        } else {
+
+        }
+    }
+
+    private void processPostsUrl(Uri uri) {
+        String path = uri.getPath();
+        if (SchemeConstants.PATH_POSTS_DETAIL.equals(path)) {
+            int postsID = SchemeUtils.getInt(uri, SchemeConstants.PARAM_POSTS_ID, 0);
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
+                    .withInt("postsID", postsID)
+                    .navigation();
         } else {
 
         }

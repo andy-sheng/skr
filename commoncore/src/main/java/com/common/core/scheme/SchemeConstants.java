@@ -29,6 +29,7 @@ public class SchemeConstants {
     public static final String HOST_WALLET = "wallet";
     public static final String HOST_RELATION = "relation";
     public static final String HOST_FEED = "feed";
+    public static final String HOST_POSTS = "posts";
 
     //path
     public static final String PATH_JOIN = "/join";
@@ -36,6 +37,7 @@ public class SchemeConstants {
     public static final String PATH_RANK_CHOOSE_SONG = "/rank/chooseSong";
     public static final String PATH_GRAB_MATCH = "/grabmatch";
     public static final String PATH_WITH_DRAW = "/withdraw";
+    public static final String PATH_POSTS_DETAIL = "/detail";
 
     //param
     public static final String PARAM_LIST_ID = "id";
@@ -45,6 +47,7 @@ public class SchemeConstants {
     public static final String PARAM_SHOW_SHARE = "showShare";
     public static final String PARAM_TAG_ID = "tagId";
     public static final String PARAM_FROM = "from";
+    public static final String PARAM_POSTS_ID = "postsId";
 
 
     /**
