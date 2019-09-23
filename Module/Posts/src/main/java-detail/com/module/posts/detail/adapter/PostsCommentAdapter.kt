@@ -40,6 +40,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         val REFRESH_COMMENT_CTN = 0
         val DESTROY_HOLDER = 1
         val REFRESH_PLAY_STATE = 2
+        val REFRESH_LIKE = 3
         val playerTag = "PostsCommentAdapter"
     }
 
@@ -125,6 +126,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 holder.refreshPlayState(position, mDataList[position] as PostsWatchModel)
             } else if (holder is PostsCommentHolder) {
                 holder.refreshPlayState(position, mDataList[position] as PostFirstLevelCommentModel)
+            }
+        } else if (refreshType == REFRESH_LIKE) {
+            if (holder is PostsHolder) {
+                holder.refreshLike(position, mDataList[position] as PostsWatchModel)
+            } else if (holder is PostsCommentHolder) {
+                holder.refreshLike(position, mDataList[position] as PostFirstLevelCommentModel)
             }
         }
     }
@@ -266,6 +273,20 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             } else {
                 emptyTv.visibility = View.GONE
             }
+        }
+
+        fun refreshLike(pos: Int, model: PostsWatchModel) {
+            this.pos = pos
+            this.mModel = model
+
+            // 评论数和点赞数
+            if (mModel?.numeric != null) {
+                postsLikeTv.text = mModel?.numeric?.starCnt.toString()
+            } else {
+                postsLikeTv.text = "0"
+            }
+
+            postsLikeTv.isSelected = mModel?.isLiked ?: false
         }
 
         fun refreshPlayState(pos: Int, model: PostsWatchModel) {
@@ -571,6 +592,14 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     postsSongView.setPlay(false)
                 }
             }
+        }
+
+        fun refreshLike(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            likeNum.text = model.comment?.likedCnt.toString()
+            xinIv.isSelected = mModel?.isLiked ?: false
         }
 
         fun bindData(pos: Int, model: PostFirstLevelCommentModel) {

@@ -68,7 +68,7 @@ ext {
             "logging-interceptor"              : "com.squareup.okhttp3:logging-interceptor:${version["okhttp3"]}",
 
             // fastjson-android
-            "fastjson-android"                 : "com.alibaba:fastjson:1.1.70.android",
+            "fastjson-android"                 : "com.alibaba:fastjson:1.1.71.android",
             // fastjson在retrofit中的使用
             "retrofit-fastjson-android-convert": 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0',
 
