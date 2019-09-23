@@ -283,15 +283,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                     redPkgGroup.visibility = View.GONE
                 } else {
                     redPkgGroup.visibility = View.VISIBLE
-                    if (it.redpacketInfo?.openStatus == PostsRedPkgModel.ROS_HAS_OPEN) {
-                        redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
-                    } else {
-                        redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
+                    when {
+                        it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> redPkgIv.setImageResource(R.drawable.posts_red_s_unaudit_icon)
+                        it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL -> redPkgIv.setImageResource(R.drawable.posts_red_s_open_icon)
+                        else -> redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
                     }
-
                     coinTv.text = it.redpacketInfo?.redpacketDesc
-
-                    if (it.redpacketInfo?.status == 2) {
+                    if (it.redpacketInfo?.status == PostsRedPkgModel.RS_ONGING) {
                         //算出几个月
                         it.redpacketInfo?.resTimeMs?.let {
                             val hour: Long = it / (60 * 60 * 1000).toLong()
@@ -323,12 +321,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder>() {
                                 }
                             }
 
-                            redPkgDes.text = "剩余时间：" + lastTime
+
+                            redPkgDes.text = "剩余时间：$lastTime"
                         }
-                    } else if (it.redpacketInfo?.status == 3) {
+                    } else if (it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_PART) {
                         redPkgIv.setImageResource(R.drawable.gc_hongbaoguoqi)
                         redPkgDes.text = "红包已过期"
-                    } else if (it.redpacketInfo?.status == 4) {
+                    } else if (it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_ALL) {
                         redPkgDes.text = "红包已瓜分完毕"
                     } else {
                         redPkgGroup.visibility = View.GONE
