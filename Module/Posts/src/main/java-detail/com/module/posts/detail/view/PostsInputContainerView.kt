@@ -251,7 +251,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
-            hideSoftInput()
+            mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             showAudioRecordView()
@@ -295,7 +295,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
-            hideSoftInput()
+            mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             showKgeRecordView()
@@ -305,6 +305,8 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
     //输入框隐藏的时候所有的数据晴空
     private fun clearAllData() {
+        postsReplayImgAdapter.dataList.clear()
+        postsReplayImgAdapter.notifyDataSetChanged()
         postsVoiceRecordView.reset()
         replyModel.resetVoice()
         postsKgeRecordView.reset()
@@ -345,10 +347,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                         }
                     })
                     .build()
-            hideSoftInput()
+            mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(context as Activity)
+            mEmotionKeyboard?.hideSoftInput()
             ResPicker.getInstance().params = ResPicker.newParamsBuilder()
                     .setMultiMode(true)
                     .setShowCamera(true)
@@ -358,6 +360,8 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                     .build()
             ResPickerActivity.open(context as Activity, ArrayList<ImageItem>(postsReplayImgAdapter?.dataList))
             mInputContainer?.visibility = View.VISIBLE
+            mPlaceHolderView?.getLayoutParams()?.height = 0
+            mPlaceHolderView?.setLayoutParams(mPlaceHolderView?.getLayoutParams())
         }
     }
 
@@ -427,6 +431,11 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             mEtContent?.hint = ""
             showType = SHOW_TYPE.NUL
             clearAllData()
+        }
+
+        if (showType == SHOW_TYPE.IMG) {
+            mPlaceHolderView?.getLayoutParams()?.height = 0
+            mPlaceHolderView?.setLayoutParams(mPlaceHolderView?.getLayoutParams())
         }
 
         mForceHide = false
