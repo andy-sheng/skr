@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.common.log.MyLog
+import com.facebook.imagepipeline.memory.NoOpPoolStatsTracker
 import com.module.posts.R
 import com.module.posts.watch.model.PostsWatchModel
 import com.module.posts.watch.view.BasePostsWatchView
@@ -133,6 +134,9 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         } else {
             // 数据改变或者播放的类型不一致了
             var lastPos: Int? = null
+            // 更新播放状态
+            mCurrentPlayModel?.playStatus = NO_PLAY_AUDIO
+            model?.playStatus = playType
             if (mCurrentPlayModel != model) {
                 mCurrentPlayModel = model
                 lastPos = mCurrentPlayPosition
@@ -147,6 +151,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
     }
 
     fun stopPlay() {
+        mCurrentPlayModel?.playStatus = NO_PLAY_AUDIO
         update(mCurrentPlayPosition, mCurrentPlayModel, REFRESH_POSTS_PLAY)
         // 重置数据
         mCurrentPlayPosition = -1
