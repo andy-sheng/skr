@@ -197,7 +197,8 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
         smartRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
+                postsCommentDetailPresenter?.getPostsSecondLevelCommentList(mPostFirstLevelCommentModel?.comment?.commentID
+                        ?: 0)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -285,7 +286,8 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
             beginUploadTask(replyModel, obj)
         }
 
-        postsCommentDetailPresenter?.getPostsSecondLevelCommentList()
+        postsCommentDetailPresenter?.getPostsSecondLevelCommentList(mPostFirstLevelCommentModel?.comment?.commentID
+                ?: 0)
     }
 
     override fun addCommetFaild() {
