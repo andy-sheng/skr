@@ -212,7 +212,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     override fun onFragmentVisible() {
         super.onFragmentVisible()
         mPresenter.initGameKConfig()
-        showSongListBattleDialog()
+//        showSongListBattleDialog()
         when {
             mGameVp.currentItem == 0 -> {
                 mGrabGameView.initData(false)
