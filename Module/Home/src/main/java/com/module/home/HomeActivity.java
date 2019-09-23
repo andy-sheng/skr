@@ -78,8 +78,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mPersonArea;
     ExTextView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
-    RelativeLayout mFeedArea;
-    ExTextView mFeedBtn;
+    RelativeLayout mPostsArea;
+    ExTextView mPostBtn;
     NestViewPager mMainVp;
 
     IMsgService mMsgService;
@@ -141,8 +141,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mBottomContainer = findViewById(R.id.bottom_container);
         mGameArea = findViewById(R.id.game_area);
         mGameBtn = findViewById(R.id.game_btn);
-        mFeedArea = findViewById(R.id.feed_area);
-        mFeedBtn = findViewById(R.id.feed_btn);
+        mPostsArea = findViewById(R.id.posts_area);
+        mPostBtn = findViewById(R.id.post_btn);
         mMessageArea = findViewById(R.id.message_area);
         mMessageBtn = findViewById(R.id.message_btn);
         mUnreadNumTv = findViewById(R.id.unread_num_tv);
@@ -217,7 +217,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        mFeedArea.setOnClickListener(new DebounceViewClickListener(100) {
+        mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
                 if (mMainVp.getCurrentItem() == 1) {
@@ -289,7 +289,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         tryGoConversationList(getIntent());
 
         if (U.getChannelUtils().getChannel().startsWith("FEED")) {
-            mFeedArea.callOnClick();
+            mPostBtn.callOnClick();
         }
 
     }
@@ -321,12 +321,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     private void selectTab(int tabSeq) {
         Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
-        Drawable drawable1 = U.getDrawable(R.drawable.ic_feed_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_posts_normal);
         Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
         Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
 
         mGameBtn.setSelected(false);
-        mFeedBtn.setSelected(false);
+        mPostBtn.setSelected(false);
         mMessageBtn.setSelected(false);
         mPersonInfoBtn.setSelected(false);
 
@@ -336,8 +336,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mGameBtn.setSelected(true);
                 break;
             case 1:
-                drawable1 = U.getDrawable(R.drawable.ic_feed_selected);
-                mFeedBtn.setSelected(true);
+                drawable1 = U.getDrawable(R.drawable.ic_posts_selected);
+                mPostBtn.setSelected(true);
                 break;
             case 2:
                 drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
@@ -350,7 +350,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
 
         setTabDrawable(mGameBtn, drawable0);
-        setTabDrawable(mFeedBtn, drawable1);
+        setTabDrawable(mPostBtn, drawable1);
         setTabDrawable(mMessageBtn, drawable2);
         setTabDrawable(mPersonInfoBtn, drawable3);
     }
