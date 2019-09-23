@@ -75,7 +75,7 @@ interface PostsWatchServerApi {
     /**
      * 点赞或取消赞 帖子   "like": true,"postsID": 0 ,"commentID": 0,
      */
-    @PUT("/v1/posts/like")
+    @PUT("/v1/posts/comment-like")
     fun postsCommentLikeOrUnLike(@Body body: RequestBody): Call<ApiResult>
 
     @PUT("/v1/posts/delete")
