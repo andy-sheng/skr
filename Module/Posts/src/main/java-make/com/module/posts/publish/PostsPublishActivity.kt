@@ -367,7 +367,7 @@ class PostsPublishActivity : BaseActivity() {
         if (!hasSong && (model.recordVoiceUrl?.isNotEmpty() == true)) {
             map["audios"] = listOf(mapOf(
                     "URL" to model.recordVoiceUrl,
-                    "duration" to model.recordDurationMs
+                    "durTimeMs" to model.recordDurationMs
             ))
             hasData = true
         }
