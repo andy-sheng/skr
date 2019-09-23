@@ -22,6 +22,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
+import com.module.posts.statistics.PostsStatistics
 import com.module.posts.watch.view.FollowPostsWatchView
 import com.module.posts.watch.view.LastPostsWatchView
 import com.module.posts.watch.view.RecommendPostsWatchView
@@ -198,6 +199,13 @@ class PostsWatchFragment : BaseFragment() {
             0 -> followPostsWatchView.unselected(r)
             1 -> recommendPostsWatchView.unselected(r)
             2 -> lastPostsWatchView.unselected(r)
+        }
+
+        if (reason != INVISIBLE_REASON_TO_OTHER_ACTIVITY) {
+            // 滑走导致的不可见
+            PostsStatistics.tryUpload(true)
+        } else {
+
         }
     }
 

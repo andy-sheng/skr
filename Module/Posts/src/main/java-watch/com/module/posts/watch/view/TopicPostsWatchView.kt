@@ -16,15 +16,6 @@ import kotlinx.coroutines.launch
 
 class TopicPostsWatchView(activity: FragmentActivity, val topicID: Long, val model: PostsTopicTabModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_TOPIC) {
 
-    override fun selected() {
-        super.selected()
-        initPostsList(false)
-    }
-
-    override fun unselected(reason: Int) {
-        super.unselected(reason)
-    }
-
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {
             // 不一定要刷新

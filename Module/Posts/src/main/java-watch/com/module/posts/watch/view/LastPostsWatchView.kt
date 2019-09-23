@@ -14,17 +14,6 @@ import kotlinx.coroutines.launch
 // 最新
 class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_LAST) {
 
-
-    override fun selected() {
-        super.selected()
-        initPostsList(false)
-    }
-
-    override fun unselected(reason: Int) {
-        super.unselected(reason)
-    }
-
-
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {
             // 不一定要刷新

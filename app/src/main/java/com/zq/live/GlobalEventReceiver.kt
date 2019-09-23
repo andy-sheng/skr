@@ -35,6 +35,7 @@ import com.component.person.photo.manager.PhotoLocalApi
 import com.module.feeds.make.FeedsMakeLocalApi
 import com.module.feeds.statistics.FeedsPlayStatistics
 import com.module.feeds.watch.manager.FeedCollectLocalApi
+import com.module.posts.statistics.PostsStatistics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -72,6 +73,7 @@ object GlobalEventReceiver{
             }
         }else{
             FeedsPlayStatistics.tryUpload(true)
+            PostsStatistics.tryUpload(true)
         }
     }
 

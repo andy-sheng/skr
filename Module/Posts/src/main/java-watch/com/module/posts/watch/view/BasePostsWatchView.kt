@@ -101,8 +101,18 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         recyclerView = this.findViewById(R.id.recycler_view)
 
         adapter = PostsWatchViewAdapter(type, object : PostsWatchListener {
+            override fun onClickPostsDetail(position: Int, model: PostsWatchModel?) {
+                if (model != null && model.isAudit()) {
+                    recordClick(model)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
+                            .withInt("postsID", model.posts?.postsID?.toInt() ?: 0)
+                            .navigation()
+                }
+            }
+
             override fun onClickPostsAvatar(position: Int, model: PostsWatchModel?) {
                 model?.user?.let {
+                    recordClick(model)
                     openOtherPersonCenter(it.userId)
                 }
             }
@@ -110,6 +120,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             override fun onClickPostsMore(position: Int, model: PostsWatchModel?) {
                 dismissDialog()
                 model?.let {
+                    recordClick(model)
                     postsMoreDialogView?.dismiss(false)
                     var from = PostsMoreDialogView.FROM_POSTS_HOME
                     if (type == TYPE_POST_PERSON) {
@@ -134,6 +145,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+                recordClick(model)
                 if (isPlaying) {
                     SinglePlayer.stop(playerTag)
                 } else {
@@ -145,6 +157,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+                recordClick(model)
                 if (isPlaying) {
                     SinglePlayer.stop(playerTag)
                 } else {
@@ -156,11 +169,13 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
+                recordClick(model)
                 goBigImageBrowse(index, model)
             }
 
             override fun onClickPostsRedPkg(position: Int, model: PostsWatchModel?) {
                 dismissDialog()
+                recordClick(model)
                 model?.posts?.redpacketInfo?.let {
                     postsRedPkgDialogView?.dismiss(false)
                     postsRedPkgDialogView = PostsRedPkgDialogView(activity, it)
@@ -172,6 +187,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (type == TYPE_POST_TOPIC) {
                     U.getToastUtil().showShort("话题页面不可点击")
                 } else {
+                    recordClick(model)
                     model?.posts?.topicInfo?.let {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC)
                                 .withLong("topicID", it.topicID)
@@ -186,6 +202,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickPostsLike(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
+                    recordClick(model)
                     postsLikeOrUnLike(position, model)
                 }
             }
@@ -196,6 +213,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                     if (model.posts?.voteInfo?.hasVoted == true) {
                         // 已投票，不让投了
                     } else {
+                        recordClick(model)
                         votePosts(position, model, index)
                     }
                 }
@@ -203,18 +221,20 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickCommentAvatar(position: Int, model: PostsWatchModel?) {
                 model?.bestComment?.user?.let {
+                    recordClick(model)
                     openOtherPersonCenter(it.userId)
                 }
             }
 
             override fun onClickCommentLike(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
+                    recordClick(model)
                     postsCommentLikeOrUnLike(position, model)
                 }
             }
 
             override fun onClickCommentAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
-                U.getToastUtil().showShort("onClickCommentAudio")
+                recordClick(model)
                 if (isPlaying) {
                     SinglePlayer.stop(playerTag)
                 } else {
@@ -226,6 +246,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickCommentSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+                recordClick(model)
                 if (isPlaying) {
                     SinglePlayer.stop(playerTag)
                 } else {
@@ -237,7 +258,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
-                U.getToastUtil().showShort("onClickCommentImage")
+                recordClick(model)
                 goBigImageBrowse(index, model)
             }
         })
@@ -277,6 +298,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             mLoadService = mLoadSir.register(refreshLayout, com.kingja.loadsir.callback.Callback.OnReloadListener {
                 initPostsList(true)
             })
+
+            addOnScrollListenerToRv()
         }
     }
 
@@ -333,6 +356,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     open fun selected() {
         isSeleted = true
+        if (!initPostsList(false)) {
+            recordExposure("selected")
+        }
     }
 
     fun addWatchPosts(list: List<PostsWatchModel>?, clear: Boolean) {
@@ -342,6 +368,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 adapter?.mDataList?.addAll(list)
             }
             adapter?.notifyDataSetChanged()
+            recordExposure("addWatchPosts")
         } else {
             if (!list.isNullOrEmpty()) {
                 adapter?.mDataList?.addAll(list)
@@ -371,55 +398,62 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     // 加载更多数据
     abstract fun getMorePosts()
 
-//    private fun addOnScrollListenerToRv() {
-//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//
-//            //刚进入列表时统计当前屏幕可见views
-//            private var isFirstVisible = true
-//
-//            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                MyLog.d(TAG, "onScrolled recyclerView")
-//                if (isFirstVisible) {
-//                    MyLog.d(TAG, "onScrolled recyclerView = $recyclerView, dx = $dx, dy = $dy")
-//                    recordExposure()
-//                    isFirstVisible = false
-//                }
-//            }
-//
-//            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                MyLog.d(TAG, "onScrollStateChanged recyclerView")
-//                when (newState) {
-//                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-//                        MyLog.d(TAG, "onScrollStateChanged recyclerView = $recyclerView, newState = $newState")
-//                        recordExposure()
-//                    }
-//                    RecyclerView.SCROLL_STATE_DRAGGING -> {
-//                    }
-//                    RecyclerView.SCROLL_STATE_SETTLING -> {
-//                    }
-//                }
-//            }
-//        })
-//    }
-//
-//    fun recordExposure() {
-//        val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
-//        val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-//        if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
-//            for (i in firstVisibleItem..lastVisibleItem) {
-//                if (adapter?.mDataList?.isNullOrEmpty() == false) {
-//                    adapter?.mDataList?.let {
-//                        it[i].posts?.postsID?.let { postsID ->
-//                            MyLog.d(TAG, "recordExposure postsID = $postsID")
-//                            PostsStatistics.addCurExpose(postsID.toInt())
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun addOnScrollListenerToRv() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            //刚进入列表时统计当前屏幕可见views
+            private var isFirstVisible = true
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (isFirstVisible) {
+                    recordExposure("onScrolled isFirstVisible")
+                    isFirstVisible = false
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                        recordExposure("SCROLL_STATE_IDLE")
+                    }
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+                    }
+                    RecyclerView.SCROLL_STATE_SETTLING -> {
+                    }
+                }
+            }
+        })
+    }
+
+    fun recordExposure(from: String) {
+        // 不需要个人中心的点
+        if (type != TYPE_POST_PERSON) {
+            val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+            if (firstVisibleItem != RecyclerView.NO_POSITION && lastVisibleItem != RecyclerView.NO_POSITION) {
+                for (i in firstVisibleItem..lastVisibleItem) {
+                    if (adapter?.mDataList?.isNullOrEmpty() == false) {
+                        adapter?.mDataList?.let {
+                            it[i].posts?.postsID?.let { postsID ->
+                                MyLog.d(TAG, "recordExposure from = $from postsID = $postsID")
+                                PostsStatistics.addCurExpose(postsID.toInt())
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun recordClick(model: PostsWatchModel?) {
+        if (type != TYPE_POST_PERSON) {
+            model?.posts?.postsID?.let {
+                PostsStatistics.addCurClick(it.toInt())
+            }
+        }
+    }
 
     // 帖子点赞
     fun postsLikeOrUnLike(position: Int, model: PostsWatchModel) {

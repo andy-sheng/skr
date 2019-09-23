@@ -65,7 +65,7 @@ object PostsStatistics {
         }
         val now = System.currentTimeMillis()
         if (!force) {
-            if (mapNum < 5 && (now - lastUploadTs < 2 * 60 * 1000)) {
+            if (mapNum < 50 && (now - lastUploadTs < 2 * 60 * 1000)) {
                 return
             }
         }

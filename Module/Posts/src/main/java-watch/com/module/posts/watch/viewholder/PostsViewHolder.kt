@@ -88,12 +88,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         })
 
         itemView.setDebounceViewClickListener {
-            if (mModel != null && mModel?.isAudit() == true) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
-                        .withInt("postsID", mModel?.posts?.postsID?.toInt() ?: 0)
-                        .navigation()
-            }
-
+            listener.onClickPostsDetail(pos, mModel)
         }
     }
 

@@ -18,15 +18,6 @@ import kotlinx.coroutines.launch
 
 class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserInfoModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_PERSON), IPersonPostsWall {
 
-    override fun selected() {
-        super.selected()
-        initPostsList(false)
-    }
-
-    override fun unselected(reason: Int) {
-        super.unselected(reason)
-    }
-
     override fun setUserInfoModel(any: Any?) {
         val model = any as UserInfoModel?
         model?.let { userInfoModel = model }

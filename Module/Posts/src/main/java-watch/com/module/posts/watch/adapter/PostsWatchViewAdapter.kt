@@ -180,6 +180,8 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
 }
 
 interface PostsWatchListener {
+    fun onClickPostsDetail(position: Int,model: PostsWatchModel?)  //帖子详情
+
     fun onClickPostsAvatar(position: Int, model: PostsWatchModel?)  // 发帖头像
     fun onClickPostsMore(position: Int, model: PostsWatchModel?)    // 发帖更多
     fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean)   // 发帖音频

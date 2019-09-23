@@ -14,15 +14,6 @@ import kotlinx.coroutines.launch
 // 关注
 class FollowPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_FOLLOW) {
 
-    override fun selected() {
-        super.selected()
-        initPostsList(false)
-    }
-
-    override fun unselected(reason: Int) {
-        super.unselected(reason)
-    }
-
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {
             // 不一定要刷新
