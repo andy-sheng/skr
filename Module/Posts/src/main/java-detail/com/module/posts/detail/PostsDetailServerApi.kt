@@ -43,7 +43,7 @@ interface PostsDetailServerApi {
     "postsID": 0
     }
      */
-    @PUT("/v1/posts/like")
+    @PUT("/v1/posts/comment-like")
     fun likeComment(@Body requestBody: RequestBody): Call<ApiResult>
 
 
