@@ -473,14 +473,22 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mEmotionKeyboard?.destroy()
+        postsKgeRecordView.reset()
+        postsVoiceRecordView.reset()
         mUiHandler.removeCallbacksAndMessages(null)
         EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FeedSongMakeSucessEvent) {
-        replyModel.songId = event.songId ?: 0
-        postsKgeRecordView.recordOk(event.localPath, event.duration!!)
+        /**
+         * 只有顶部的activity 才能接受到这个时间
+         * 防止二级评论回复时 一级评论也有k歌数据
+         */
+        if(U.getActivityUtils().topActivity == context){
+            replyModel.songId = event.songId ?: 0
+            postsKgeRecordView.recordOk(event.localPath, event.duration!!)
+        }
     }
 
     enum class SHOW_TYPE {

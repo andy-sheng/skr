@@ -175,7 +175,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     }
 
     override fun initView(): Int {
-        return com.module.posts.R.layout.posts_comment_detail_fragment_layout
+        return R.layout.posts_comment_detail_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
