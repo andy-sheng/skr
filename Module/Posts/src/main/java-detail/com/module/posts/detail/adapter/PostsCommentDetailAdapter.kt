@@ -32,6 +32,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     companion object {
         val REFRESH_COMMENT_CTN = 0
         val DESTROY_HOLDER = 1
+        val REFRESH_PLAY_STATE = 2
         val playerTag = "PostsCommentDetailAdapter"
     }
 
@@ -43,6 +44,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
     var mPlayingUrl = ""
 
+    var mPlayingPosition = -1
+
     var mClickContentListener: ((PostsSecondLevelCommentModel) -> Unit)? = null
 
     constructor() : super() {
@@ -50,7 +53,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             override fun onCompletion() {
                 super.onCompletion()
                 mPlayingUrl = ""
-                notifyDataSetChanged()
+                notifyItemChanged(mPlayingPosition, REFRESH_PLAY_STATE)
+                mPlayingPosition = -1
             }
         })
     }
@@ -101,6 +105,12 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         } else if (refreshType == DESTROY_HOLDER) {
             if (holder is PostsFirstLevelCommentHolder) {
                 holder.destroyHolder(position, mDataList[position] as PostFirstLevelCommentModel)
+            }
+        } else if (refreshType == PostsCommentAdapter.REFRESH_PLAY_STATE) {
+            if (holder is PostsFirstLevelCommentHolder) {
+                holder.refreshPlayState(position, mDataList[position] as PostFirstLevelCommentModel)
+            } else if (holder is PostsSecondLevelCommentHolder) {
+                holder.refreshPlayState(position, mDataList[position] as PostsSecondLevelCommentModel)
             }
         }
     }
@@ -157,11 +167,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 override fun clickValid(v: View?) {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
+                        mPlayingPosition = -1
                         SinglePlayer.stop(playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mPlayingUrl = it[0]?.url ?: ""
+                            mPlayingPosition = pos
                             SinglePlayer.startPlay(playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
@@ -173,11 +185,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 override fun clickValid(v: View?) {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
+                        mPlayingPosition = -1
                         SinglePlayer.stop(playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mPlayingUrl = it.playURL ?: ""
+                            mPlayingPosition = pos
                             SinglePlayer.startPlay(playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
@@ -195,6 +209,37 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 emptyTv.visibility = View.VISIBLE
             } else {
                 emptyTv.visibility = View.GONE
+            }
+        }
+
+        fun refreshPlayState(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            if (mModel?.comment?.audios.isNullOrEmpty()) {
+                postsAudioView.visibility = View.GONE
+            } else {
+                postsAudioView.visibility = View.VISIBLE
+                postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
+
+                if (mPlayingUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayingUrl)) {
+                    postsAudioView.setPlay(true)
+                } else {
+                    postsAudioView.setPlay(false)
+                }
+            }
+
+            if (mModel?.comment?.songInfo == null) {
+                postsSongView.visibility = View.GONE
+            } else {
+                postsSongView.visibility = View.VISIBLE
+                postsSongView.bindData(mModel?.comment?.songInfo)
+
+                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL) && !TextUtils.isEmpty(mPlayingUrl)) {
+                    postsSongView.setPlay(true)
+                } else {
+                    postsSongView.setPlay(false)
+                }
             }
         }
 
@@ -228,6 +273,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
                 if (mPlayingUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsAudioView.setPlay(true)
+                    mPlayingPosition = pos
                 } else {
                     postsAudioView.setPlay(false)
                 }
@@ -258,6 +304,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
                 if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsSongView.setPlay(true)
+                    mPlayingPosition = pos
                 } else {
                     postsSongView.setPlay(false)
                 }
@@ -303,11 +350,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 override fun clickValid(v: View?) {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
+                        mPlayingPosition = -1
                         SinglePlayer.stop(playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mPlayingUrl = it[0]?.url ?: ""
+                            mPlayingPosition = pos
                             SinglePlayer.startPlay(playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
@@ -319,11 +368,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 override fun clickValid(v: View?) {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
+                        mPlayingPosition = -1
                         SinglePlayer.stop(playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mPlayingUrl = it.playURL ?: ""
+                            mPlayingPosition = pos
                             SinglePlayer.startPlay(playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
@@ -333,6 +384,37 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             contentTv.setDebounceViewClickListener {
                 mClickContentListener?.invoke(mModel!!)
+            }
+        }
+
+        fun refreshPlayState(pos: Int, model: PostsSecondLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            if (mModel?.comment?.audios.isNullOrEmpty()) {
+                postsAudioView.visibility = View.GONE
+            } else {
+                postsAudioView.visibility = View.VISIBLE
+                postsAudioView.bindData(mModel!!.comment!!.audios!![0].duration)
+
+                if (mPlayingUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayingUrl)) {
+                    postsAudioView.setPlay(true)
+                } else {
+                    postsAudioView.setPlay(false)
+                }
+            }
+
+            if (mModel?.comment?.songInfo == null) {
+                postsSongView.visibility = View.GONE
+            } else {
+                postsSongView.visibility = View.VISIBLE
+                postsSongView.bindData(mModel?.comment?.songInfo)
+
+                if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL) && !TextUtils.isEmpty(mPlayingUrl)) {
+                    postsSongView.setPlay(true)
+                } else {
+                    postsSongView.setPlay(false)
+                }
             }
         }
 
@@ -353,6 +435,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
                 if (mPlayingUrl.equals(mModel!!.comment!!.audios!![0].url) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsAudioView.setPlay(true)
+                    mPlayingPosition = pos
                 } else {
                     postsAudioView.setPlay(false)
                 }
@@ -419,6 +502,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
                 if (mPlayingUrl.equals(mModel?.comment?.songInfo?.playURL) && !TextUtils.isEmpty(mPlayingUrl)) {
                     postsSongView.setPlay(true)
+                    mPlayingPosition = pos
                 } else {
                     postsSongView.setPlay(false)
                 }
