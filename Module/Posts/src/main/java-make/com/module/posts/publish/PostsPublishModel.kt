@@ -17,7 +17,7 @@ class PostsPublishModel : Serializable {
     var redPkg:RedPkgModel? = null
 
     companion object {
-        val POSTS_PUBLISH_AUDIO_FILE_PATH = File(U.getAppInfoUtils().mainDir, "posts_publish.aac").path
+        val POSTS_PUBLISH_AUDIO_FILE_PATH = File(U.getAppInfoUtils().mainDir, "posts_publish.m4a").path
         val MAX_RECORD_TS = 60 * 1000L
     }
 
