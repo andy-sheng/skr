@@ -28,9 +28,10 @@ import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
 class PostsTopicSelectActivity : BaseActivity() {
-    companion object{
+    companion object {
         const val REQ_CODE_TOPIC_SELECT = 90
     }
+
     lateinit var mainActContainer: ConstraintLayout
     lateinit var titleBar: CommonTitleBar
     lateinit var classifyRv: RecyclerView
@@ -84,7 +85,7 @@ class PostsTopicSelectActivity : BaseActivity() {
                         .navigation()
             } else {
                 setResult(Activity.RESULT_OK, Intent().apply {
-                    putExtra("topic",model)
+                    putExtra("topic", model)
                 })
                 finish()
             }
@@ -138,7 +139,9 @@ class PostsTopicSelectActivity : BaseActivity() {
                     postsTopicListAdapter.dataList.clear()
                 }
                 offset = newOffset
-                postsTopicListAdapter.dataList.addAll(l)
+                if (l != null) {
+                    postsTopicListAdapter.dataList.addAll(l)
+                }
                 postsTopicListAdapter.notifyDataSetChanged()
                 if (hasMore) {
                     refreshLayout.finishLoadMore()
