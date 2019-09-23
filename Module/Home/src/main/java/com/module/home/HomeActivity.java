@@ -42,6 +42,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.event.FeedWatchTabRefreshEvent;
+import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -479,16 +480,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     /**
-     * 跳到个人中心
+     * 跳到主页某个channel
      *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(JumpHomeFromSchemeEvent event) {
         U.getActivityUtils().goHomeActivity();
-        mMainVp.setCurrentItem(event.channel, false);
-        selectTab(event.channel);
-        if (event.channel == 2) {
+        mMainVp.setCurrentItem(event.getChannel(), false);
+        selectTab(event.getChannel());
+        if (event.getChannel() == 2) {
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 1);
@@ -500,7 +501,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     /**
-     * 跳到个人中心
+     * 帖子发布成功跳转
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PostsPublishSucessEvent event) {
+        U.getActivityUtils().goHomeActivity();
+        mMainVp.setCurrentItem(3, false);
+        selectTab(3);
+    }
+
+    /**
      *
      * @param event
      */

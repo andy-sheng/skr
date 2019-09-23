@@ -42,6 +42,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.view.AvatarView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
@@ -755,6 +756,16 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {
         updateSettingRedDot();
+    }
+
+    /**
+     * 帖子发布成功跳转
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PostsPublishSucessEvent event) {
+        mPersonVp.setCurrentItem(1,false);
     }
 
     @Override

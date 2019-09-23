@@ -40,7 +40,6 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var abandonTv: ExTextView
     lateinit var okIv: ExImageView
     lateinit var okTv: ExTextView
-    lateinit var recordDiffuseView: DiffuseView
     lateinit var circleCountDownView: CircleCountDownView
     var recordJob: Job? = null
 
@@ -57,7 +56,6 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         abandonTv = parentView.findViewById(R.id.abandon_tv)
         okIv = parentView.findViewById(R.id.ok_iv)
         okTv = parentView.findViewById(R.id.ok_tv)
-        recordDiffuseView = parentView.findViewById(R.id.record_diffuse_view)
         circleCountDownView = parentView.findViewById(R.id.circle_count_down_view)
 
         playBtn.setOnClickListener {
@@ -94,7 +92,6 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         this.recordDurationMs = recordDurationMs
 
         status = STATUS_RECORD_OK
-        recordDiffuseView.stop()
         circleCountDownView.visibility = View.GONE
         recordJob?.cancel()
         selectSongTv.visibility = View.GONE
@@ -111,7 +108,6 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         status = STATUS_RECORD_PLAYING
         playBtn.setImageResource(R.drawable.kge_bofang)
         circleCountDownView.visibility = View.VISIBLE
-        recordDiffuseView.visibility = View.GONE
         circleCountDownView.go(0, recordDurationMs ?: 0) {
             stop()
         }
@@ -129,7 +125,6 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     private fun stop() {
         SinglePlayer.stop(playTag)
         status = STATUS_RECORD_OK
-        recordDiffuseView.stop()
         circleCountDownView.visibility = View.GONE
         recordJob?.cancel()
         playBtn.setImageResource(R.drawable.kge_zanting)

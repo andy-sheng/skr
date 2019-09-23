@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.core.scheme.event.JumpHomeFromSchemeEvent
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
@@ -29,6 +30,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.event.FeedSongMakeSucessEvent
+import com.component.busilib.event.PostsPublishSucessEvent
 import com.component.busilib.view.SkrProgressView
 import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
@@ -50,6 +52,7 @@ import com.respicker.model.ImageItem
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -412,6 +415,7 @@ class PostsPublishActivity : BaseActivity() {
             if (result.errno == 0) {
                 U.getToastUtil().showShort("上传成功")
                 finish()
+                EventBus.getDefault().post(PostsPublishSucessEvent())
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }

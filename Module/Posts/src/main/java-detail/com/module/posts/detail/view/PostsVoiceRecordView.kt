@@ -28,7 +28,6 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     val TAG = "PostsVoiceRecordView"
 
-
     val playTag = TAG + hashCode()
 
     internal val STATUS_IDLE = 1
@@ -50,6 +49,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var circleCountDownView: CircleCountDownView
     var startRecordTs = 0L
     var recordJob: Job? = null
+    var recordOkListener: ((String?,Int) -> Unit)? = null
     var okClickListener: ((String?,Int) -> Unit)? = null
 
     private val skrAudioPermission = SkrAudioPermission()
@@ -124,6 +124,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     private fun stopRecord() {
+        tryInflate()
         status = STATUS_RECORD_OK
         recordDiffuseView.stop()
         circleCountDownView.visibility = View.GONE
@@ -135,6 +136,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         abandonTv.visibility = View.VISIBLE
         okIv.visibility = View.VISIBLE
         okTv.visibility = View.VISIBLE
+        recordOkListener?.invoke(PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH,myMediaRecorder?.mDuration?:0)
     }
 
     private fun play() {
@@ -162,6 +164,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun reset() {
+        tryInflate()
         stop()
         status = STATUS_IDLE
         playBtn.setImageResource(R.drawable.yuyin_weikaishi)

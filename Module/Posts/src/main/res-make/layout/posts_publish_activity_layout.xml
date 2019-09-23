@@ -22,8 +22,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constrainedHeight="true"
         android:orientation="vertical"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/menu_vp"
         app:layout_constraintTop_toBottomOf="@+id/title_bar">
 
@@ -285,17 +285,19 @@
             android:id="@+id/menu_ktv_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/view_10_dp"
             android:src="@drawable/fabu_kge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"  />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView
             android:id="@+id/menu_pic_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/view_10_dp"
             android:src="@drawable/fabu_tupian"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -307,6 +309,7 @@
             android:id="@+id/menu_mic_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/view_10_dp"
             android:src="@drawable/fabu_yuyin"
             app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
             app:layout_constraintLeft_toRightOf="@id/menu_pic_iv"
@@ -318,6 +321,7 @@
             android:id="@+id/menu_vote_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/view_10_dp"
             android:src="@drawable/fabu_toupiao"
             app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
             app:layout_constraintLeft_toRightOf="@+id/menu_ktv_iv"
@@ -329,6 +333,7 @@
             android:id="@+id/menu_red_pkg_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/view_10_dp"
             android:src="@drawable/fabu_hongbao"
             app:layout_constraintBottom_toBottomOf="@id/menu_pic_iv"
             app:layout_constraintLeft_toRightOf="@+id/menu_vote_iv"
@@ -342,8 +347,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:progressText="上传中"
-         />
+        app:progressText="上传中" />
 
 
 </android.support.constraint.ConstraintLayout>

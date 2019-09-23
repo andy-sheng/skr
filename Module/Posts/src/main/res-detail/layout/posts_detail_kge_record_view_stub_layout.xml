@@ -113,22 +113,6 @@
         app:layout_constraintRight_toRightOf="@+id/ok_iv"
         app:layout_constraintTop_toBottomOf="@+id/ok_iv" />
 
-    <com.common.view.DiffuseView
-        android:id="@+id/record_diffuse_view"
-        android:layout_width="@dimen/view_150_dp"
-        android:layout_height="@dimen/view_150_dp"
-        android:visibility="gone"
-        app:diffuse_addNewRadius="@dimen/view_50_dp"
-        app:diffuse_color="#FFA59C"
-        app:diffuse_coreRadius="@dimen/view_28_dp"
-        app:diffuse_maxRadius="@dimen/view_70_dp"
-        app:diffuse_speed="@dimen/view_0_67_dp"
-        app:diffuse_stroke_width="@dimen/view_7_dp"
-        app:layout_constraintBottom_toBottomOf="@id/play_btn"
-        app:layout_constraintLeft_toLeftOf="@id/play_btn"
-        app:layout_constraintRight_toRightOf="@id/play_btn"
-        app:layout_constraintTop_toTopOf="@id/play_btn" />
-
     <com.common.view.countdown.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="wrap_content"

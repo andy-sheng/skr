@@ -48,7 +48,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     lateinit var jianpanIv: ExImageView
     lateinit var tupianIv: ExImageView
     lateinit var yuyinIv: ExImageView
-    lateinit var kgeIv:ExImageView
+    lateinit var kgeIv: ExImageView
     lateinit var imgRecyclerView: RecyclerView
     lateinit var postsVoiceRecordView: PostsVoiceRecordView
     lateinit var postsKgeRecordView: PostsKgeRecordView
@@ -196,12 +196,16 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             hideSoftInput()
         }
 
-        postsVoiceRecordView.okClickListener = { path, duration ->
+        postsVoiceRecordView.recordOkListener = { path, duration ->
             replyModel.recordVoicePath = path
             replyModel.recordDurationMs = duration
+        }
+        postsVoiceRecordView.okClickListener = { path, duration ->
+
             replyModel.contentStr = mEtContent?.text.toString()
             mSendCallBack?.invoke(replyModel, mObj)
         }
+
         postsKgeRecordView.selectSongClickListener = {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
                     .withInt("from", 9)
@@ -218,13 +222,13 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
     private fun goAddVoicePage() {
         val hasPic = postsReplayImgAdapter.dataList.isNotEmpty()
-        val hasSong = replyModel.songId>0
+        val hasSong = replyModel.songId > 0
 
-        if (hasPic|| hasSong) {
-            var tips:String?=null
-            if(hasPic){
+        if (hasPic || hasSong) {
+            var tips: String? = null
+            if (hasPic) {
                 tips = "上传语音将清空图片,是否继续"
-            }else if(hasSong){
+            } else if (hasSong) {
                 tips = "上传语音将清空歌曲,是否继续"
             }
             //如果已经录入语音
@@ -244,7 +248,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                             postsReplayImgAdapter.notifyDataSetChanged()
                             replyModel.imgUploadMap.clear()
                             //清空歌曲
-                            replyModel.songId=0
+                            replyModel.songId = 0
                             postsKgeRecordView.reset()
                             tipsDialogView?.dismiss(false)
                             showAudioRecordView()
@@ -262,11 +266,11 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         val hasPic = postsReplayImgAdapter.dataList.isNotEmpty()
         val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
 
-        if (hasPic|| hasAudio) {
-            var tips:String?=null
-            if(hasPic){
+        if (hasPic || hasAudio) {
+            var tips: String? = null
+            if (hasPic) {
                 tips = "上传歌曲将清空图片,是否继续"
-            }else if(hasAudio){
+            } else if (hasAudio) {
                 tips = "上传歌曲将清空语音,是否继续"
             }
             //如果已经录入语音
@@ -303,13 +307,13 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
     private fun goAddImagePage() {
         val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
-        val hasSong = replyModel.songId>0
+        val hasSong = replyModel.songId > 0
 
-        if (hasSong|| hasAudio) {
-            var tips:String?=null
-            if(hasSong){
+        if (hasSong || hasAudio) {
+            var tips: String? = null
+            if (hasSong) {
                 tips = "上传图片将清空歌曲,是否继续"
-            }else if(hasAudio){
+            } else if (hasAudio) {
                 tips = "上传图片将清空语音,是否继续"
             }
             //如果已经录入语音
@@ -328,7 +332,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                             postsVoiceRecordView.reset()
                             replyModel.resetVoice()
                             //清空歌曲
-                            replyModel.songId=0
+                            replyModel.songId = 0
                             postsKgeRecordView.reset()
                             tipsDialogView?.dismiss(false)
                             goAddImagePage()
@@ -480,7 +484,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     }
 
     enum class SHOW_TYPE {
-        KEY_BOARD, IMG, AUDIO,KEG
+        KEY_BOARD, IMG, AUDIO, KEG
     }
 }
 
@@ -492,13 +496,14 @@ class ReplyModel : Serializable {
         recordDurationMs = 0 // 毫秒
     }
 
-    fun reset(){
+    fun reset() {
         resetVoice()
         contentStr = ""
         imgUploadMap.clear()
         imgLocalPathList.clear()
         songId = 0
     }
+
     var contentStr: String = ""
     val imgUploadMap = LinkedHashMap<String, String>() // 本地路径->服务器url
     val imgLocalPathList = ArrayList<ImageItem>() // 本地路径列表
