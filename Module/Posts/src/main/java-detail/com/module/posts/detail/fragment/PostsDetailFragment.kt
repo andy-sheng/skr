@@ -191,6 +191,9 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     override fun addFirstLevelCommentSuccess() {
         progressView.visibility = View.GONE
         postsAdapter!!.mCommentCtn++
+        (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
+            it.commentCnt++
+        }
     }
 
     override fun addSecondLevelCommentSuccess() {
