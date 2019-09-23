@@ -766,6 +766,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PostsPublishSucessEvent event) {
         mPersonVp.setCurrentItem(1,false);
+        if (mPostWallView != null) {
+            mPostWallView.getPosts(true);
+        }
     }
 
     @Override

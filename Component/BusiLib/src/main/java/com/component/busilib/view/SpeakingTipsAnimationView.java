@@ -105,9 +105,10 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         setVisibility(VISIBLE);
         mUiHandler.removeMessages(MSG_START);
         mUiHandler.sendEmptyMessage(MSG_START);
-
-        mUiHandler.removeMessages(MSG_HIDE);
-        mUiHandler.sendEmptyMessageDelayed(MSG_HIDE, duration);
+        if(duration>0) {
+            mUiHandler.removeMessages(MSG_HIDE);
+            mUiHandler.sendEmptyMessageDelayed(MSG_HIDE, duration);
+        }
     }
 
     public void hide() {
