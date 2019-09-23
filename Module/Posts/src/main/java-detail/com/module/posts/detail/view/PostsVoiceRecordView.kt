@@ -31,10 +31,12 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     val playTag = TAG + hashCode()
 
-    internal val STATUS_IDLE = 1
-    internal val STATUS_RECORDING = 2
-    internal val STATUS_RECORD_OK = 3
-    internal val STATUS_RECORD_PLAYING = 4
+    companion object {
+        val STATUS_IDLE = 1
+        val STATUS_RECORDING = 2
+        val STATUS_RECORD_OK = 3
+        val STATUS_RECORD_PLAYING = 4
+    }
 
     var status = STATUS_IDLE
     var myMediaRecorder: MyMediaRecorder? = null
@@ -161,7 +163,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         SinglePlayer.startPlay(playTag, PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH)
     }
 
-    private fun stop() {
+    fun stop() {
         SinglePlayer.stop(playTag)
         stopRecord()
     }
