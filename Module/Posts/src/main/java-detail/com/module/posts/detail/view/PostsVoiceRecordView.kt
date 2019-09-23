@@ -124,7 +124,6 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     private fun stopRecord() {
-        tryInflate()
         status = STATUS_RECORD_OK
         recordDiffuseView.stop()
         circleCountDownView.visibility = View.GONE
@@ -164,7 +163,9 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun reset() {
-        tryInflate()
+        if(mParentView==null){
+            return
+        }
         stop()
         status = STATUS_IDLE
         playBtn.setImageResource(R.drawable.yuyin_weikaishi)

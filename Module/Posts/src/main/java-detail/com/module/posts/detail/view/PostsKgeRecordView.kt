@@ -137,6 +137,9 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     fun reset() {
+        if(mParentView==null){
+            return
+        }
         stop()
         status = STATUS_IDLE
         playBtn.visibility = View.GONE
