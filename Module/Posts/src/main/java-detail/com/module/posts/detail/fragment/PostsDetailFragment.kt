@@ -373,6 +373,11 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             }
         }
 
+        postsAdapter?.dataList?.let {
+            it.add(model)
+        }
+
+        postsAdapter?.notifyDataSetChanged()
         mPostsDetailPresenter?.getPostsFirstLevelCommentList()
     }
 
