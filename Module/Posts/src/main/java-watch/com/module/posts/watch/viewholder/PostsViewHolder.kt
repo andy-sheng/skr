@@ -101,17 +101,22 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         if (MyLog.isDebugLogOpen()) {
             debugTv.visibility = View.VISIBLE
             debugTv.text = model.toDebugString()
-        }else{
+        } else {
             debugTv.visibility = View.GONE
         }
 
         mModel?.posts?.let {
-            content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
-            content.maxLines = 3
-            if (!model.isExpend) {
-                content.setCloseText(it.title)
+            if (TextUtils.isEmpty(it.title)) {
+                content.visibility = View.GONE
             } else {
-                content.setExpandText(it.title)
+                content.visibility = View.VISIBLE
+                content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
+                content.maxLines = 3
+                if (!model.isExpend) {
+                    content.setCloseText(it.title)
+                } else {
+                    content.setExpandText(it.title)
+                }
             }
             // 话题
             if (it.topicInfo == null || TextUtils.isEmpty(it.topicInfo?.topicDesc)) {
