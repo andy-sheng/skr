@@ -279,6 +279,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 replyTv.setDebounceViewClickListener {
                     dismiss(false)
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostFirstLevelCommentModel)
+                    feedsInputContainerView?.setETHint("回复")
                 }
             }
             postsMoreDialogView?.showByDialog(true)
@@ -364,6 +365,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                     replyTv.setDebounceViewClickListener {
                         dismiss(false)
                         feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postsCommentModel)
+                        feedsInputContainerView?.setETHint("回复 ${postsCommentModel.commentUser.nicknameRemark}")
                     }
                 }
                 postsMoreDialogView?.showByDialog(true)

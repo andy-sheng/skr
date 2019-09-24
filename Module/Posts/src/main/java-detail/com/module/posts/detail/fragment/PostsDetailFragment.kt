@@ -191,6 +191,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
                 replayArea.visibility = View.VISIBLE
                 replayTv.setDebounceViewClickListener {
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postFirstLevelModel)
+                    feedsInputContainerView?.setETHint("回复 ${postFirstLevelModel.commentUser?.nicknameRemark}")
                     dismiss()
                 }
             }
@@ -338,6 +339,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
                     replayArea.visibility = View.VISIBLE
                     replayTv.setDebounceViewClickListener {
                         feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
+                        feedsInputContainerView?.setETHint("回复")
                         dismiss()
                     }
                 }
