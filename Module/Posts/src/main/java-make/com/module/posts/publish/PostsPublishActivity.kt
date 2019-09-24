@@ -512,10 +512,14 @@ class PostsPublishActivity : BaseActivity() {
         val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
         val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
 
+        if(hasAudio){
+            U.getToastUtil().showShort("最多只能上传一条语音")
+            return
+        }
         if (hasSong || hasImg) {
             var tips: String? = null
-            if (hasAudio) {
-                tips = "录入语音将清空语音，是否继续"
+            if (hasImg) {
+                tips = "录入语音将清空图片，是否继续"
             } else if (hasSong) {
                 tips = "录入语音将清空歌曲，是否继续"
             }
@@ -555,7 +559,10 @@ class PostsPublishActivity : BaseActivity() {
         val hasSong = model.songId > 0
         val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
         val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
-
+        if(hasSong){
+            U.getToastUtil().showShort("最多只能上传一首歌曲")
+            return
+        }
         if (hasAudio || hasImg) {
             var tips: String? = null
             if (hasAudio) {
