@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.callback.Callback
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
@@ -272,6 +273,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             nineGridVp?.clickListener = { i, url, urlList ->
                 goBigImageBrowse(i, urlList)
             }
+
+            if (mModel?.posts?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                followTv.visibility = View.GONE
+            } else {
+                followTv.visibility = View.VISIBLE
+            }
         }
 
         fun refreshCommentCnt(pos: Int, model: PostsWatchModel) {
@@ -451,7 +458,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             followTv.userID = mModel?.user?.userId
 
-            if (!isGetRelation) {
+            if (!isGetRelation && mModel?.posts?.userID != MyUserInfoManager.getInstance().uid.toInt()) {
                 followTv.getRelation()
                 isGetRelation = true
             }
