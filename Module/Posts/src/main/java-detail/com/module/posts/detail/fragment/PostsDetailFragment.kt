@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
@@ -17,7 +18,6 @@ import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
-import com.common.utils.ToastUtils
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -27,6 +27,7 @@ import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
+import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
@@ -178,6 +179,10 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             override fun setCurPlayintPosition(pos: Int) {
                 mPlayingPosition = pos
             }
+
+            override fun playAnotherSong() {
+                stopPlayingState()
+            }
         }
 
         postsAdapter?.mClickContent = { postFirstLevelModel ->
@@ -216,9 +221,11 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     private fun stopPlayingState() {
-        mPlayingUrl = ""
-        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentAdapter.REFRESH_PLAY_STATE)
-        mPlayingPosition = -1
+        if (!TextUtils.isEmpty(mPlayingUrl)) {
+            mPlayingUrl = ""
+            postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
+            mPlayingPosition = -1
+        }
     }
 
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {

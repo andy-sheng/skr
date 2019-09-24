@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -367,6 +368,10 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 }
                 postsMoreDialogView?.showByDialog(true)
             }
+
+            override fun playAnotherSong() {
+                stopPlayingState()
+            }
         }
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
@@ -381,9 +386,11 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     }
 
     private fun stopPlayingState() {
-        mPlayingUrl = ""
-        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
-        mPlayingPosition = -1
+        if (!TextUtils.isEmpty(mPlayingUrl)) {
+            mPlayingUrl = ""
+            postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
+            mPlayingPosition = -1
+        }
     }
 
     override fun addCommetFaild() {

@@ -22,7 +22,6 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
-import com.component.relation.view.DefaultFollowView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -182,6 +181,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
@@ -200,6 +200,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
@@ -361,6 +362,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
@@ -379,6 +381,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
@@ -574,5 +577,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun setCurPlayintPosition(pos: Int)
 
         fun clickSecondLevelCommentContent(model: PostsSecondLevelCommentModel)
+
+        fun playAnotherSong()
     }
 }

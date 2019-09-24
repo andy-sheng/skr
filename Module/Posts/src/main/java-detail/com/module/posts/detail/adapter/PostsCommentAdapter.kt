@@ -239,6 +239,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.posts?.audios?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
@@ -257,6 +258,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.posts?.song?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
@@ -551,6 +553,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
@@ -569,6 +572,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
+                            mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
                             SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
@@ -778,5 +782,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun setCurPlayingUrl(url: String)
 
         fun setCurPlayintPosition(pos: Int)
+
+        fun playAnotherSong()
     }
 }
