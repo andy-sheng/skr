@@ -28,11 +28,12 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
     private val uiHanlder = Handler(Looper.getMainLooper())
 
     companion object {
-        const val REFRESH_POSTS_PLAY = 0  // 局部刷新帖子播放
-        const val REFRESH_POSTS_LIKE = 1  // 局部刷新帖子喜欢
-        const val REFRESH_POSTS_RED_PKG = 2  // 局部刷新帖子红包状态
-        const val REFRESH_POSTS_COMMENT_LIKE = 3  // 局部刷新帖子精彩评论喜欢
-        const val REFRESH_POSTS_VOTE = 4  // 局部刷新投票页面
+        const val REFRESH_POSTS_ALL = 0  // 局部刷新下面所有
+        const val REFRESH_POSTS_PLAY = 1  // 局部刷新帖子播放
+        const val REFRESH_POSTS_LIKE = 2  // 局部刷新帖子喜欢
+        const val REFRESH_POSTS_RED_PKG = 3  // 局部刷新帖子红包状态
+        const val REFRESH_POSTS_COMMENT_LIKE = 4  // 局部刷新帖子精彩评论喜欢
+        const val REFRESH_POSTS_VOTE = 5  // 局部刷新投票页面
 
         const val NO_PLAY_AUDIO = 0       // 未播放
         const val PLAY_POSTS_AUDIO = 1    // 播放音频
@@ -100,6 +101,17 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                 payloads.forEach { refreshType ->
                     if (refreshType is Int) {
                         when (refreshType) {
+                            REFRESH_POSTS_ALL -> {
+                                if (mCurrentPlayModel == mDataList[position]) {
+                                    holder.startPlay(playStatus)
+                                } else {
+                                    holder.stopPlay()
+                                }
+                                holder.refreshLikes()
+                                holder.refreshRedPkg()
+                                holder.refreshCommentLike()
+                                holder.refreshVote()
+                            }
                             REFRESH_POSTS_PLAY -> {
                                 MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY position = $position")
                                 if (mCurrentPlayModel == mDataList[position]) {
@@ -193,7 +205,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
         for (i in 0 until mDataList.size) {
             if (mDataList[i].posts?.postsID == model.posts?.postsID) {
                 updateProperty(mDataList[i], model)
-                notifyItemChanged(i)
+                notifyItemChanged(i, REFRESH_POSTS_ALL)
             }
         }
     }
