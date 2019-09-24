@@ -564,6 +564,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     fun onCommentSuccess() {
         replyModel.reset()
         resetData(SHOW_TYPE.KEG,SHOW_TYPE.AUDIO,SHOW_TYPE.IMG,SHOW_TYPE.KEY_BOARD)
+        mHideCallBack?.invoke(SHOW_TYPE.NUL)
     }
 
     enum class SHOW_TYPE {
