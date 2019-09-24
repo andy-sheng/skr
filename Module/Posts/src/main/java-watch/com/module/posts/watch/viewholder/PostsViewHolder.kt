@@ -49,7 +49,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         postsSongView.setDebounceViewClickListener { listener.onClickPostsSong(pos, mModel, isPlaying) }
 
         nineGridVp.clickListener = { i, url, _ ->
-            listener.onClickCommentImage(pos, mModel, i, url)
+            listener.onClickPostsImage(pos, mModel, i, url)
         }
 
         redPkgIv.setAnimateDebounceViewClickListener { listener.onClickPostsRedPkg(pos, mModel) }
