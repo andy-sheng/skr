@@ -85,10 +85,8 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
-                }
-                if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("${result?.errmsg}")
                 } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
                     MyLog.e(TAG, "${result?.errmsg}")
                 }
             }
@@ -115,10 +113,8 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
-                }
-                if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("${result?.errmsg}")
                 } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
                     MyLog.e(TAG, "${result?.errmsg}")
                 }
             }
@@ -137,17 +133,14 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                     model = postsWatchModel.posts
                     view?.showPostsWatchModel(postsWatchModel)
                 } else {
-                    view?.loadMoreError()
-                    U.getToastUtil().showShort("系统错误")
+                    view?.loadDetailDelete()
                 }
             } else {
-                view?.loadMoreError()
+                view?.loadDetailError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
-                }
-                if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("${result?.errmsg}")
                 } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
                     MyLog.e(TAG, "${result?.errmsg}")
                 }
             }
@@ -175,10 +168,8 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 view?.loadMoreError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
-                }
-                if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("${result?.errmsg}")
                 } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
                     MyLog.e(TAG, "${result?.errmsg}")
                 }
             }
@@ -214,9 +205,10 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 view?.addCommetFaild()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                    MyLog.e(TAG, "${result?.errmsg}")
                 }
-                U.getToastUtil().showShort("${result?.errmsg}")
-                MyLog.e(TAG, "${result?.errmsg}")
             }
         }
     }

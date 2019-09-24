@@ -17,6 +17,7 @@ import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
+import com.common.utils.ToastUtils
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -251,6 +252,15 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         return -1
+    }
+
+    override fun loadDetailDelete() {
+        U.getToastUtil().showShort("帖子已删除")
+        activity?.finish()
+    }
+
+    override fun loadDetailError() {
+        activity?.finish()
     }
 
     override fun loadMoreError() {
