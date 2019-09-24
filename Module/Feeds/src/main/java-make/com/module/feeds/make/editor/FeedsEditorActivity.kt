@@ -279,6 +279,7 @@ class FeedsEditorActivity : BaseActivity() {
                             if (result) {
                                 EventBus.getDefault().post(FeedSongMakeSucessEvent(
                                         mFeedsMakeModel?.songModel?.songID,
+                                        mFeedsMakeModel?.songModel?.songTpl?.getDisplaySongName(),
                                         mFeedsMakeModel?.composeSavePath,
                                         mFeedsMakeModel?.recordDuration?.toInt()
                                 ))

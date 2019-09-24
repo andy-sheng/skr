@@ -36,8 +36,8 @@ class PostsSongView : ConstraintLayout {
         songNameTv = this.findViewById(R.id.song_name_tv)
     }
 
-    fun bindData(song: FeedSongModel?) {
-        songNameTv.text = song?.songTpl?.songName
+    fun bindData(songName:String?) {
+        songNameTv.text = songName
         // 相当于reset
         isPlaying = false
         songPlayIv.background = U.getDrawable(R.drawable.posts_song_play_icon)

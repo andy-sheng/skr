@@ -135,7 +135,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             postsSongView.visibility = View.GONE
         } else {
             postsSongView.visibility = View.VISIBLE
-            postsSongView.bindData(mModel?.posts?.song)
+            postsSongView.bindData(mModel?.posts?.song?.getDisplayName())
         }
 
         // 图片

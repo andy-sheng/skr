@@ -8,6 +8,7 @@ import java.io.Serializable
 
 class PostsPublishModel : Serializable {
     var songId: Int = 0
+    var songName:String?=null
     var topic: Topic? = null
     val imgUploadMap = LinkedHashMap<String,String>() // 本地路径->服务器url
     var recordVoiceUrl: String? = null

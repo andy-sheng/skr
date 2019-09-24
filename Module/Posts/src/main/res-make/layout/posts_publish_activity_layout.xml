@@ -101,13 +101,32 @@
                 app:layout_constraintRight_toRightOf="@+id/posts_audio_view"
                 app:layout_constraintTop_toTopOf="@+id/posts_audio_view" />
 
+            <com.module.posts.view.PostsSongView
+                android:id="@+id/posts_song_view"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_40_dp"
+                android:layout_marginTop="@dimen/view_20_dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="@id/content_et"
+                app:layout_constraintTop_toBottomOf="@id/content_et" />
+
+            <ImageView
+                android:id="@+id/song_del_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fabu_shanchu"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/posts_audio_view"
+                app:layout_constraintLeft_toRightOf="@+id/posts_audio_view"
+                app:layout_constraintRight_toRightOf="@+id/posts_audio_view"
+                app:layout_constraintTop_toTopOf="@+id/posts_audio_view" />
 
             <android.support.constraint.Barrier
                 android:id="@+id/barrier_for_red_pkg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="posts_audio_view,image_recycler_view,content_et" />
+                app:constraint_referenced_ids="posts_audio_view,image_recycler_view,content_et,posts_song_view" />
 
 
             <com.common.view.ex.ExConstraintLayout
@@ -178,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="posts_audio_view,image_recycler_view,content_et,red_pkg_vp" />
+                app:constraint_referenced_ids="posts_audio_view,image_recycler_view,content_et,red_pkg_vp,posts_song_view" />
 
             <com.common.view.ex.ExConstraintLayout
                 android:id="@+id/vote_vp"

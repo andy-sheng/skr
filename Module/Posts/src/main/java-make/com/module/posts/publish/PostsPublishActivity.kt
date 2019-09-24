@@ -47,6 +47,7 @@ import com.module.posts.publish.topic.Topic
 import com.module.posts.publish.voice.PostsVoiceRecordActivity
 import com.module.posts.publish.vote.PostsVoteEditActivity
 import com.module.posts.view.PostsAudioView
+import com.module.posts.view.PostsSongView
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
 import com.respicker.model.ImageItem
@@ -69,6 +70,9 @@ class PostsPublishActivity : BaseActivity() {
     lateinit var imageRecyclerView: RecyclerView
     lateinit var postsAudioView: PostsAudioView
     lateinit var audioDelIv: ImageView
+    lateinit var postsSongView: PostsSongView
+    lateinit var songDelIv: ImageView
+
     lateinit var redPkgVp: ConstraintLayout
     lateinit var redPkgIv: ImageView
     lateinit var redPkgTv: TextView
@@ -107,6 +111,10 @@ class PostsPublishActivity : BaseActivity() {
         imageRecyclerView = findViewById(R.id.image_recycler_view)
         postsAudioView = findViewById(R.id.posts_audio_view)
         audioDelIv = findViewById(R.id.audio_del_iv)
+
+        postsSongView = findViewById(R.id.posts_song_view)
+        songDelIv = findViewById(R.id.song_del_iv)
+
         redPkgVp = findViewById(R.id.red_pkg_vp)
         redPkgIv = findViewById(R.id.red_pkg_iv)
         redPkgTv = findViewById(R.id.red_pkg_tv)
@@ -209,20 +217,36 @@ class PostsPublishActivity : BaseActivity() {
             }
         })
 
-        postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
+        postsAudioView.setDebounceViewClickListener {
+            if (postsAudioView.isPlaying) {
+                SinglePlayer.stop(playerTag)
+                postsAudioView.setPlay(false)
+            } else {
+                SinglePlayer.startPlay(playerTag, model.recordVoicePath ?: "")
+                postsAudioView.setPlay(true)
+            }
+        }
+
+        songDelIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
-                if (postsAudioView.isPlaying) {
-                    SinglePlayer.stop(playerTag)
-                    postsAudioView.setPlay(false)
-                } else {
-                    SinglePlayer.startPlay(playerTag, model.recordVoicePath ?: "")
-                    postsAudioView.setPlay(true)
-                }
+                clearAudio.invoke()
             }
         })
+
+        postsSongView.setDebounceViewClickListener {
+            if (postsSongView.isPlaying) {
+                SinglePlayer.stop(playerTag)
+                postsSongView.setPlay(false)
+            } else {
+                SinglePlayer.startPlay(playerTag, model.recordVoicePath ?: "")
+                postsSongView.setPlay(true)
+            }
+        }
+
         SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
+                postsSongView.setPlay(false)
                 postsAudioView.setPlay(false)
             }
         })
@@ -264,6 +288,8 @@ class PostsPublishActivity : BaseActivity() {
         SinglePlayer.stop(playerTag)
         postsAudioView.visibility = View.GONE
         audioDelIv.visibility = View.GONE
+        postsSongView.visibility = View.GONE
+        songDelIv.visibility = View.GONE
     }
 
     var uploading = false
@@ -414,7 +440,7 @@ class PostsPublishActivity : BaseActivity() {
             hasData = true
         }
         if (!hasData) {
-            U.getToastUtil().showShort("内容为空")
+            U.getToastUtil().showShort("发布内容不能为空哦～")
             return
         }
         progressView.visibility = View.VISIBLE
@@ -639,10 +665,11 @@ class PostsPublishActivity : BaseActivity() {
     fun onEvent(event: FeedSongMakeSucessEvent) {
         model.recordDurationMs = event.duration ?: 0
         model.recordVoicePath = event.localPath
-        postsAudioView.visibility = View.VISIBLE
-        postsAudioView.bindData(model.recordDurationMs)
-        audioDelIv.visibility = View.VISIBLE
         model.songId = event.songId ?: 0
+        model.songName = event.songName
+        postsSongView.visibility = View.VISIBLE
+        postsSongView.bindData(model.songName)
+        songDelIv.visibility = View.VISIBLE
     }
 
     override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
