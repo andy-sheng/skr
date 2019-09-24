@@ -6,16 +6,12 @@ import android.view.ViewStub
 import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
-import com.common.recorder.MyMediaRecorder
-import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.common.view.DiffuseView
 import com.common.view.ExViewStub
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.posts.R
-import com.module.posts.publish.PostsPublishModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -126,7 +122,7 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         SinglePlayer.startPlay(playTag, recordVoicePath!!)
     }
 
-    private fun stop() {
+    fun stop() {
         SinglePlayer.stop(playTag)
         status = STATUS_RECORD_OK
         circleCountDownView.visibility = View.GONE

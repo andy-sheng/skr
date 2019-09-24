@@ -474,6 +474,12 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                 postsVoiceRecordView.stop()
             }
         }
+
+        if (showType == SHOW_TYPE.KEG) {
+            if (postsKgeRecordView.status == postsKgeRecordView.STATUS_RECORD_PLAYING) {
+                postsKgeRecordView.stop()
+            }
+        }
     }
 
     fun onBackPressed(): Boolean {
