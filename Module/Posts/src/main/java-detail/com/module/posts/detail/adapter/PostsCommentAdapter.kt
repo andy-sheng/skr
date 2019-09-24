@@ -410,7 +410,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     topicTv.visibility = View.GONE
                 } else {
                     topicTv.visibility = View.VISIBLE
-                    topicTv.text = it.topicInfo?.topicDesc
+                    topicTv.text = it.topicInfo?.topicTitle
                 }
             }
 
