@@ -28,6 +28,7 @@ import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
+import com.module.posts.detail.event.AddSecondCommentEvent
 import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
@@ -48,6 +49,8 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
@@ -264,6 +267,24 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         return -1
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AddSecondCommentEvent) {
+        postsAdapter?.dataList?.forEachIndexed { index, any ->
+            if (any is PostFirstLevelCommentModel) {
+                if (any.comment?.commentID == event.firstLevelCommentID) {
+                    if (any.secondLevelComments == null) {
+                        any.secondLevelComments = mutableListOf()
+                    }
+                    (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
+                        it.commentCnt++
+                    }
+                    any.secondLevelComments?.add(0, event.model!!)
+                    postsAdapter!!.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
     override fun loadDetailDelete() {
         U.getToastUtil().showShort("帖子已经删除")
         activity?.finish()
@@ -288,6 +309,9 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun addSecondLevelCommentSuccess() {
         progressView.visibility = View.GONE
+        (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
+            it.commentCnt++
+        }
         postsAdapter!!.notifyDataSetChanged()
         feedsInputContainerView.onCommentSuccess()
     }
@@ -295,7 +319,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     override fun isBlackStatusBarText(): Boolean = true
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun addCommetFaild() {

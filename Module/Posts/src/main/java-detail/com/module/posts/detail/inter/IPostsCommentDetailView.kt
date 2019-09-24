@@ -7,4 +7,5 @@ interface IPostsCommentDetailView {
     fun loadMoreError()
     fun addSecondLevelCommentSuccess()
     fun addCommetFaild()
+    fun getFirstLevelCommentID(): Int
 }

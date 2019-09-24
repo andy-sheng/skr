@@ -399,6 +399,10 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         progressView?.visibility = View.GONE
     }
 
+    override fun getFirstLevelCommentID(): Int {
+        return mPostFirstLevelCommentModel?.comment?.commentID ?: 0
+    }
+
     fun beginUploadTask(model: ReplyModel, obj: Any?) {
         this.replyModel = model
         this.mObj = obj

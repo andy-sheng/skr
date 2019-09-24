@@ -8,12 +8,14 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.posts.detail.PostsDetailServerApi
+import com.module.posts.detail.event.AddSecondCommentEvent
 import com.module.posts.detail.inter.IPostsCommentDetailView
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.watch.model.PostsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsCommentDetailView) : RxLifeCyclePresenter() {
     val mTag = "PostsDetailPresenter"
@@ -65,6 +67,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
                 mModelList.add(0, model)
                 view.addSecondLevelCommentSuccess()
                 view.showSecondLevelCommentList(mModelList, mHasMore)
+                EventBus.getDefault().post(AddSecondCommentEvent(model, view.getFirstLevelCommentID()))
             } else {
                 view.addCommetFaild()
                 if (result.errno == -2) {

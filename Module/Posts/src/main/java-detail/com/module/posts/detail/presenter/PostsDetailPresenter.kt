@@ -8,6 +8,8 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.posts.detail.PostsDetailServerApi
+import com.module.posts.detail.event.AddSecondCommentEvent
+import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
@@ -17,7 +19,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.util.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class PostsDetailPresenter : RxLifeCyclePresenter {
     val mTag = "PostsDetailPresenter"
@@ -35,35 +39,6 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
 
     constructor(view: IPostsDetailView) {
         this.view = view
-    }
-
-    //直接回复评论
-    fun refuseComment(content: String, feedID: Int, firstLevelCommentID: Int) {
-        val map = HashMap<String, Any>()
-        map["content"] = content
-        map["feedID"] = feedID
-        map["firstLevelCommentID"] = firstLevelCommentID
-//        map["replyedCommentID"] = refuseModel.comment.commentID
-//
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        ApiMethods.subscribe(mFeedsDetailServerApi.addComment(body), object : ApiObserver<ApiResult>() {
-//            override fun process(obj: ApiResult?) {
-//                if (obj?.errno == 0) {
-//                    val model = JSON.parseObject(obj.data.getString("comment"), FirstLevelCommentModel.CommentBean::class.java)
-//                    model?.let {
-//                        val firstLevelCommentModel = FirstLevelCommentModel()
-//                        firstLevelCommentModel.comment = model
-//                        firstLevelCommentModel.comment.content = content
-//                        firstLevelCommentModel.commentUser = UserInfoModel()
-//                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
-//                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-//                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
-//                        firstLevelCommentModel.replyUser = refuseModel.commentUser
-//                        callBack.invoke(firstLevelCommentModel)
-//                    }
-//                }
-//            }
-//        }, this, RequestControl(mTag + "addComment", ControlType.CancelThis))
     }
 
     fun likePosts(like: Boolean, postsWatchModel: PostsWatchModel) {
