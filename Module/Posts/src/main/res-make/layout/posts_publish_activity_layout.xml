@@ -116,10 +116,10 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/fabu_shanchu"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/posts_audio_view"
-                app:layout_constraintLeft_toRightOf="@+id/posts_audio_view"
-                app:layout_constraintRight_toRightOf="@+id/posts_audio_view"
-                app:layout_constraintTop_toTopOf="@+id/posts_audio_view" />
+                app:layout_constraintBottom_toTopOf="@+id/posts_song_view"
+                app:layout_constraintLeft_toRightOf="@+id/posts_song_view"
+                app:layout_constraintRight_toRightOf="@+id/posts_song_view"
+                app:layout_constraintTop_toTopOf="@+id/posts_song_view" />
 
             <android.support.constraint.Barrier
                 android:id="@+id/barrier_for_red_pkg"
