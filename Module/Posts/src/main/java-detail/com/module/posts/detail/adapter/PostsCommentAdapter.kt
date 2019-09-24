@@ -385,7 +385,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     when {
                         it.redpacketInfo?.status == PostsRedPkgModel.RS_UN_AUDIT -> {
                             MyLog.e(TAG, "bindData 为什么详情会有审核未通过的红包")
-                            redPkgGroup.visibility = View.GONE
+                            redPkgDes.text = "审核通过后，开始发放倒计时"
+                            redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
                         }
                         it.redpacketInfo?.status == PostsRedPkgModel.RS_ONGING -> {
                             redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
