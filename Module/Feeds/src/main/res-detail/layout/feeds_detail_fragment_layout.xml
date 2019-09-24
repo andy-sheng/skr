@@ -190,7 +190,7 @@
                         android:id="@+id/song_control_arae"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="play_next_iv, play_last_iv, control_tv, collection_iv_2"
+                        app:constraint_referenced_ids="play_next_iv, play_last_iv, control_tv"
                         tools:visibility="visible" />
 
                     <com.common.view.ex.ExTextView

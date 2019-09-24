@@ -151,6 +151,8 @@ class FeedsRankDetailActivity : BaseActivity() {
             }
         })
 
+        //todo 先去掉
+        mHitIv.visibility = View.GONE
         mHitIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 // 打榜去

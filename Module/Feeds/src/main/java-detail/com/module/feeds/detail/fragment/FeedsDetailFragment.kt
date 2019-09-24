@@ -348,6 +348,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         mFeedsDetailPresenter = FeedsDetailPresenter(this)
         addPresent(mFeedsDetailPresenter)
 
+        //todo 先去掉打榜和收藏
+        mHitIv?.visibility = View.GONE
+        mCollectionIv?.visibility = View.GONE
+        mCollectionIv2?.visibility = View.GONE
+
         if (mSongManager != null) {
             launch {
                 // 读收藏
@@ -889,6 +894,11 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
 
         setModelData()
         startPlay()
+
+        //todo 先去掉打榜和收藏
+        mHitIv?.visibility = View.GONE
+        mCollectionIv?.visibility = View.GONE
+        mCollectionIv2?.visibility = View.GONE
     }
 
     override fun finishWithModelError() {

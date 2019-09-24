@@ -228,6 +228,8 @@ open class FeedViewHolder(var rootView: View, var listener: FeedsListener?) : Re
         }
         drawble.setBounds(0, 0, 20.dp(), 18.dp())
         mCollectIconTv.setCompoundDrawables(drawble, null, null, null)
+        //todo 先去掉收藏
+        mCollectIconTv.visibility = View.GONE
     }
 
 
