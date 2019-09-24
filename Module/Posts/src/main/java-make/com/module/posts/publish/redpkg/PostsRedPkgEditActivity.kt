@@ -174,7 +174,9 @@ class PostsRedPkgEditActivity : BaseActivity() {
                 // 加载有些慢 考虑用sp 或者 Loadsir
                 val list = JSON.parseArray(lstr, RedPkgModel::class.java)
                 postsRedPkgAdapter.dataList.clear()
-                postsRedPkgAdapter.dataList.addAll(list)
+                if (!list.isNullOrEmpty()) {
+                    postsRedPkgAdapter.dataList.addAll(list)
+                }
                 if (postsRedPkgAdapter.selectModel == null) {
                     postsRedPkgAdapter.selectModel = postsRedPkgAdapter.dataList[0]
                 }
