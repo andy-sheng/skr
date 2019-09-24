@@ -23,6 +23,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.activity.BalanceActivity;
 import com.module.home.adapter.RechargeAdapter;
 import com.component.busilib.event.RechargeSuccessEvent;
 import com.module.home.inter.IBallanceView;
@@ -93,7 +94,11 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                finish();
+                if (getActivity() instanceof BalanceActivity) {
+                    getActivity().finish();
+                } else {
+                    finish();
+                }
             }
         });
 
