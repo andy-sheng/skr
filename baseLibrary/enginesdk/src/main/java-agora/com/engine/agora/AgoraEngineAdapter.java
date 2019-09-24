@@ -213,6 +213,14 @@ public class AgoraEngineAdapter {
         }
 
         @Override
+        public void onWarning(int warn) {
+            super.onWarning(warn);
+            if (mOutCallback != null) {
+                mOutCallback.onWarning(warn);
+            }
+        }
+
+        @Override
         public void onError(int error) {
             super.onError(error);
             if (mOutCallback != null) {

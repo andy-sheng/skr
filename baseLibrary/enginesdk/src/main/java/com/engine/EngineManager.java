@@ -229,6 +229,11 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     @Override
+    public void onWarning(int warn) {
+
+    }
+
+    @Override
     public void onError(int error) {
         if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
             // 加入 channel 失败，在不要token时，传入token也会触发这个

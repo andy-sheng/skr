@@ -335,6 +335,17 @@ public class ZqEngineKit implements AgoraOutCallback {
     }
 
     @Override
+    public void onWarning(int warn) {
+        if (warn == Constants.WARN_AUDIO_MIXING_OPEN_ERROR)  {
+            // 上传伴奏播放失败
+            HashMap<String, String> map = new HashMap<>();
+            map.put("url", mConfig.getMixMusicFilePath());
+            StatisticsAdapter.recordCountEvent("engine", "acc_play_failed", map);
+            MyLog.d(TAG, "upload bgm play failed event");
+        }
+    }
+
+    @Override
     public void onError(int error) {
         if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
             // 加入 channel 失败，在不要token时，传入token也会触发这个
@@ -1213,6 +1224,10 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mAudioPlayerCapture.start(filePath, cycle);
                         } else {
                             mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
+
+                            // 伴奏播放打点上传
+                            StatisticsAdapter.recordCountEvent("engine", "acc_play", null);
+                            MyLog.d(TAG, "upload bgm play event");
                         }
                     } else {
                         mPendingStartMixAudioParams = new PendingStartMixAudioParams();

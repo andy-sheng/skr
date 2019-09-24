@@ -38,5 +38,7 @@ public interface AgoraOutCallback {
 
     void onRecordingBuffer(byte[] samples);
 
+    void onWarning(int warn);
+
     void onError(int error);
 }
