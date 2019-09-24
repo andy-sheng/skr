@@ -24,7 +24,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.adapter.RechargeAdapter;
-import com.module.home.event.RechargeSuccessEvent;
+import com.component.busilib.event.RechargeSuccessEvent;
 import com.module.home.inter.IBallanceView;
 import com.module.home.model.RechargeItemModel;
 import com.module.home.presenter.BallencePresenter;

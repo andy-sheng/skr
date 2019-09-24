@@ -623,6 +623,7 @@ class PostsPublishActivity : BaseActivity() {
                 redPkgTv.text = this.model.redPkg?.redpacketDesc
             } else if (requestCode == PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT) {
                 model.topic = data?.getSerializableExtra("topic") as Topic
+                topicTv.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,null,null)
                 topicTv.text = model.topic?.topicDesc
             }
         }

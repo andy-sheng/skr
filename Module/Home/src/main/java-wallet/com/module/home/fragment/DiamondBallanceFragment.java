@@ -17,10 +17,9 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
-import com.dialog.view.StrokeTextView;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
-import com.module.home.event.RechargeSuccessEvent;
+import com.component.busilib.event.RechargeSuccessEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

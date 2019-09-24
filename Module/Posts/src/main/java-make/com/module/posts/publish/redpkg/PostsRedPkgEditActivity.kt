@@ -7,17 +7,23 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.callback.EmptyCallback
+import com.component.busilib.event.RechargeSuccessEvent
+import com.dialog.view.TipsDialogView
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.callback.ProgressCallback
 import com.kingja.loadsir.core.LoadService
@@ -29,6 +35,8 @@ import com.module.posts.publish.PostsPublishServerApi
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_RED_PKG_EDIT)
 class PostsRedPkgEditActivity : BaseActivity() {
@@ -53,11 +61,16 @@ class PostsRedPkgEditActivity : BaseActivity() {
 
     var mGameRuleDialog: DialogPlus? = null
 
-    var mLoadService:LoadService<*>? = null
+    var mLoadService: LoadService<*>? = null
+
+    var coinBalanceInt = 0
+    var zsBalanceFloat = 0f
+    var tipsDialogView: TipsDialogView? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.posts_red_pkg_edit_activity_layout
     }
+
 
     override fun initData(savedInstanceState: Bundle?) {
         model = intent.getSerializableExtra("model") as PostsPublishModel
@@ -99,6 +112,36 @@ class PostsRedPkgEditActivity : BaseActivity() {
                 U.getToastUtil().showShort("请选择一个红包类型")
                 return@setOnClickListener
             }
+            if (postsRedPkgAdapter?.selectModel?.redpacketType == 1) {
+                if (coinBalanceInt < (postsRedPkgAdapter?.selectModel?.redpacketNum ?: 0)) {
+                    U.getToastUtil().showShort("金币不足，可在一唱到底获得")
+                    return@setOnClickListener
+                }
+            } else if (postsRedPkgAdapter?.selectModel?.redpacketType == 2) {
+                if (zsBalanceFloat < (postsRedPkgAdapter?.selectModel?.redpacketNum ?: 0)) {
+                    //如果已经录入语音
+                    tipsDialogView = TipsDialogView.Builder(this)
+                            .setMessageTip("钻石不足，是否充值")
+                            .setConfirmTip("充值")
+                            .setCancelTip("取消")
+                            .setCancelBtnClickListener(object : AnimateClickListener() {
+                                override fun click(view: View?) {
+                                    tipsDialogView?.dismiss()
+                                }
+                            })
+                            .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                override fun click(view: View?) {
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_BALANCE)
+                                            .navigation()
+                                    tipsDialogView?.dismiss(false)
+
+                                }
+                            })
+                            .build()
+                    tipsDialogView?.showByDialog()
+                    return@setOnClickListener
+                }
+            }
             setResult(Activity.RESULT_OK, Intent().apply {
                 this.putExtra("redPkg", postsRedPkgAdapter.selectModel)
             })
@@ -112,15 +155,18 @@ class PostsRedPkgEditActivity : BaseActivity() {
         mLoadService = mLoadSir.register(valueRv)
         mLoadService?.showCallback(ProgressCallback::class.java)
 
+        getData()
+    }
+
+    private fun getData() {
         launch {
             val api = ApiManager.getInstance().createService(PostsPublishServerApi::class.java)
             val result = subscribe { api.getRedpacketInfo() }
             mLoadService?.showSuccess()
             if (result.errno == 0) {
                 // TODO 余额
-                val coinBalanceInt = result.data.getIntValue("coinBalanceInt")
-                val zsBalanceFloat = result.data.getFloatValue("zsBalanceFloat")
-
+                coinBalanceInt = result.data.getIntValue("coinBalanceInt")
+                zsBalanceFloat = result.data.getFloatValue("zsBalanceFloat")
                 coinBalanceTv.text = coinBalanceInt.toString()
                 diamondBalanceTv.text = zsBalanceFloat.toString()
 
@@ -143,7 +189,13 @@ class PostsRedPkgEditActivity : BaseActivity() {
         return true
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    fun onEvent(event: RechargeSuccessEvent) {
+        // 收到一条礼物消息,进入生产者队列
+        getData()
+    }
+
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }

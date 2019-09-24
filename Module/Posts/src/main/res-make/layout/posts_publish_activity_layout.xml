@@ -37,11 +37,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_20_dp"
                 android:layout_marginTop="@dimen/view_19_dp"
+                android:drawableRight="@drawable/fabu_xuanzehuati"
+                android:drawablePadding="@dimen/view_10_dp"
                 android:gravity="center"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingTop="@dimen/view_3_dp"
                 android:paddingRight="@dimen/view_10_dp"
-
                 android:paddingBottom="@dimen/view_3_dp"
                 android:text="选择话题"
                 android:textColor="@color/black_trans_50"
