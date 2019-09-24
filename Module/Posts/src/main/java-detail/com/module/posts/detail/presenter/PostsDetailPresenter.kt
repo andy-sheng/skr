@@ -215,11 +215,8 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 }
-                if (MyLog.isDebugLogOpen()) {
-                    U.getToastUtil().showShort("${result?.errmsg}")
-                } else {
-                    MyLog.e(TAG, "${result?.errmsg}")
-                }
+                U.getToastUtil().showShort("${result?.errmsg}")
+                MyLog.e(TAG, "${result?.errmsg}")
             }
         }
     }
