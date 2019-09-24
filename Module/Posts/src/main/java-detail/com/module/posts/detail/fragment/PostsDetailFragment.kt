@@ -490,6 +490,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
         if (!hasData) {
             U.getToastUtil().showShort("内容为空")
+            progressView.visibility = View.GONE
             return
         }
 
