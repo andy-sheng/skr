@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
@@ -176,9 +177,15 @@ class PostsRedPkgEditActivity : BaseActivity() {
                 postsRedPkgAdapter.dataList.clear()
                 if (!list.isNullOrEmpty()) {
                     postsRedPkgAdapter.dataList.addAll(list)
+                } else {
+                    MyLog.e(TAG, "getData 为什么没有数据 文佳胜")
                 }
                 if (postsRedPkgAdapter.selectModel == null) {
-                    postsRedPkgAdapter.selectModel = postsRedPkgAdapter.dataList[0]
+                    if (!postsRedPkgAdapter.dataList.isNullOrEmpty()) {
+                        postsRedPkgAdapter.selectModel = postsRedPkgAdapter.dataList[0]
+                    } else {
+                        MyLog.e(TAG, "getData 啥玩意 为什么没有数据 文佳胜")
+                    }
                 }
                 postsRedPkgAdapter.notifyDataSetChanged()
             } else {
