@@ -70,18 +70,8 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
      * 以下数据，以米8手机，虚拟按键开启为例子，让情况尽可能复杂
      */
     private void possiblyResizeChildOfContent() {
-        if(mLogSwitch) {
+        if (mLogSwitch) {
             MyLog.d(TAG, "possiblyResizeChildOfContent mFrom:" + mFrom);
-        }
-        Activity curActivity = U.getActivityUtils().getCurrentActivity();
-        if (curActivity != mBaseActivityRef.get()) {
-            if(mLogSwitch) {
-                MyLog.d(TAG, "not curActivity ,return");
-            }
-            /**
-             * 如果不是当前acitivity发出的就忽略吧。
-             */
-            return;
         }
 
         /**
@@ -103,7 +93,7 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);
         int usableHeightNow = r.bottom;
-        if(mLogSwitch) {
+        if (mLogSwitch) {
             MyLog.d(TAG, "possiblyResizeChildOfContent r.top:" + r.top + " r.bottom:" + r.bottom
                     + " usableHeightNow:" + usableHeightNow
                     + " screenHeight:" + U.getDisplayUtils().getScreenHeight()
@@ -148,6 +138,16 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
 
             if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 MyLog.d(TAG, "键盘变为可见");
+                Activity curActivity = U.getActivityUtils().getCurrentActivity();
+                if (curActivity != mBaseActivityRef.get()) {
+                    if (mLogSwitch) {
+                        MyLog.d(TAG, "not curActivity ,return");
+                    }
+                    /**
+                     * 如果不是当前acitivity发出的就忽略吧。
+                     */
+                    return;
+                }
                 /**
                  * 键盘变为可见,这里有几种操作
                  * 1.改动根布局高度
@@ -164,8 +164,11 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
                 MyLog.d(TAG, "键盘变为不可见");
                 // 键盘变为不可见
                 if (resizeSelf) {
-                    KeyboardEvent keyboardEvent = new KeyboardEvent(mFrom, KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN, 0);
-                    EventBus.getDefault().post(keyboardEvent);
+                    Activity curActivity = U.getActivityUtils().getCurrentActivity();
+                    if (curActivity == mBaseActivityRef.get()) {
+                        KeyboardEvent keyboardEvent = new KeyboardEvent(mFrom, KeyboardEvent.EVENT_TYPE_KEYBOARD_HIDDEN, 0);
+                        EventBus.getDefault().post(keyboardEvent);
+                    }
                 }
                 mFrameLayoutParams.height = usableHeightSansKeyboard;
             }

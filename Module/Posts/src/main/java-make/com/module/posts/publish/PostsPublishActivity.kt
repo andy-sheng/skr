@@ -196,7 +196,6 @@ class PostsPublishActivity : BaseActivity() {
         })
         menuKtvIv.setDebounceViewClickListener {
             goKgeRecordPage()
-
         }
         topicTv.setDebounceViewClickListener {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
@@ -404,7 +403,7 @@ class PostsPublishActivity : BaseActivity() {
         map["topicID"] = model.topic?.topicID ?: 0
 
         model?.songId?.let {
-            if(it>0){
+            if (it > 0) {
                 map["songID"] = it
                 hasData = true
             }
@@ -467,6 +466,7 @@ class PostsPublishActivity : BaseActivity() {
                         }
                     })
                     .build()
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
             tipsDialogView?.showByDialog()
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
@@ -515,6 +515,7 @@ class PostsPublishActivity : BaseActivity() {
                         }
                     })
                     .build()
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
             tipsDialogView?.showByDialog()
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
@@ -560,6 +561,7 @@ class PostsPublishActivity : BaseActivity() {
                         }
                     })
                     .build()
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
             tipsDialogView?.showByDialog()
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
