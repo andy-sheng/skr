@@ -7,8 +7,8 @@
         android:id="@+id/content_tv"
         android:layout_width="@dimen/view_83_dp"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/view_55_dp"
         android:gravity="center"
+        android:minHeight="@dimen/view_55_dp"
         android:text="配音"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_selected_textColor="@color/black"
@@ -18,11 +18,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <com.common.view.ex.ExView
         android:id="@+id/tag_view"
         android:layout_width="@dimen/view_3_dp"
         android:layout_height="@dimen/view_40_dp"
-        android:background="#ffc15b"
+        app:bl_corners_radius="@dimen/view_3_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#ffc15b"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

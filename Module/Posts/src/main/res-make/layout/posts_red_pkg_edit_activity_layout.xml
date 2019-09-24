@@ -45,33 +45,48 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/coin_balance_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_20_dp"
+            android:src="@drawable/hongbao_jinbi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/balance_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.common.view.ex.ExTextView
             android:id="@+id/coin_balance_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_20_dp"
-            android:drawableLeft="@drawable/hongbao_jinbi"
-            android:drawablePadding="@dimen/view_10_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
             android:text="241"
             android:textColor="@color/black_trans_50"
             android:textSize="@dimen/textsize_14_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/balance_tv"
+            app:layout_constraintLeft_toRightOf="@+id/coin_balance_iv"
+            app:layout_constraintTop_toTopOf="@+id/balance_tv" />
+
+        <ImageView
+            android:id="@+id/diamond_balance_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_20_dp"
+            android:src="@drawable/hongbao_zuanshi"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/balance_tv"
+            app:layout_constraintLeft_toRightOf="@+id/coin_balance_tv"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/diamond_balance_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_20_dp"
-
-            android:drawableLeft="@drawable/hongbao_zuanshi"
-            android:drawablePadding="@dimen/view_10_dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
             android:text="241"
             android:textColor="@color/black_trans_50"
             android:textSize="@dimen/textsize_14_dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/coin_balance_tv"
+            app:layout_constraintLeft_toRightOf="@+id/diamond_balance_iv"
             app:layout_constraintTop_toTopOf="parent" />
 
     </com.common.view.ex.ExConstraintLayout>
