@@ -679,6 +679,7 @@ class PostsPublishActivity : BaseActivity() {
     override fun destroy() {
         super.destroy()
         uploadQueue.destroy()
+        SinglePlayer.stop(playerTag)
         SinglePlayer.removeCallback(playerTag)
     }
 
