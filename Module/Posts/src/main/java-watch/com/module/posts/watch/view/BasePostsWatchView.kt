@@ -28,6 +28,7 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.redpkg.PostsRedPkgDialogView
 import com.module.posts.statistics.PostsStatistics
@@ -45,6 +46,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
 
 abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int) : ConstraintLayout(activity), CoroutineScope by MainScope() {
@@ -96,6 +100,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     init {
         View.inflate(context, R.layout.posts_watch_view_layout, this)
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
         refreshLayout = this.findViewById(R.id.refreshLayout)
         classicsHeader = this.findViewById(R.id.classics_header)
         recyclerView = this.findViewById(R.id.recycler_view)
@@ -578,9 +585,19 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PostsDetailEvent) {
+        event.model?.let {
+            adapter?.updateModelFromDetail(it)
+        }
+    }
+
     open fun destory() {
         SinglePlayer.reset(playerTag)
         SinglePlayer.removeCallback(playerTag)
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
         cancel()
     }
 }

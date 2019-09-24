@@ -28,6 +28,7 @@ import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
+import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
@@ -46,6 +47,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
@@ -374,6 +376,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun destroy() {
         super.destroy()
+        EventBus.getDefault().post(PostsDetailEvent(mPostsWatchModel))
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
         SinglePlayer.removeCallback(playerTag)
         postsMoreDialogView?.dismiss()

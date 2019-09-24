@@ -184,10 +184,32 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
             }
         }
     }
+
+    // 将从detail中数据放到data中 将model替换
+    fun updateModelFromDetail(model: PostsWatchModel) {
+        if (mCurrentPlayModel?.posts?.postsID == model.posts?.postsID) {
+            updateProperty(mCurrentPlayModel, model)
+        }
+        for (i in 0 until mDataList.size) {
+            if (mDataList[i].posts?.postsID == model.posts?.postsID) {
+                updateProperty(mDataList[i], model)
+                notifyItemChanged(i)
+            }
+        }
+    }
+
+    private fun updateProperty(data: PostsWatchModel?, update: PostsWatchModel) {
+        data?.bestComment = update.bestComment
+        data?.posts = update.posts
+        data?.hasFollow = update.hasFollow
+        data?.isLiked = update.isLiked
+        data?.numeric = update.numeric
+        data?.user = update.user
+    }
 }
 
 interface PostsWatchListener {
-    fun onClickPostsDetail(position: Int,model: PostsWatchModel?)  //帖子详情
+    fun onClickPostsDetail(position: Int, model: PostsWatchModel?)  //帖子详情
 
     fun onClickPostsAvatar(position: Int, model: PostsWatchModel?)  // 发帖头像
     fun onClickPostsMore(position: Int, model: PostsWatchModel?)    // 发帖更多
