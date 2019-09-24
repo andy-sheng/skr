@@ -22,7 +22,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
     val mModelList: MutableList<PostsSecondLevelCommentModel> = mutableListOf()
 
     var mOffset = 0
-    var mLimit = 5
+    var mLimit = 30
 
     var mHasMore = true
 

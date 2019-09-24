@@ -26,7 +26,7 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
     val mModelList: MutableList<PostFirstLevelCommentModel> = mutableListOf()
 
     var mOffset = 0
-    var mLimit = 5
+    var mLimit = 30
 
     var mHasMore = true
 
