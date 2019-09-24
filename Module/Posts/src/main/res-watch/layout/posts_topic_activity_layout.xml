@@ -89,6 +89,7 @@
                     android:id="@+id/topic_vp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/black_trans_5"
                     android:fadingEdge="none"
                     android:fadingEdgeLength="0dp"
                     android:overScrollMode="never"

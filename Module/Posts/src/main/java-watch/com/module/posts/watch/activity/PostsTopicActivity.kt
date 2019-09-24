@@ -39,6 +39,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_TOPIC)
 class PostsTopicActivity : BaseActivity(), RequestCallBack {
@@ -93,7 +94,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
         smartRefresh?.apply {
             setEnableRefresh(true)
             setEnableLoadMore(true)
-            setEnableLoadMoreWhenContentNotFull(true)
+            setEnableLoadMoreWhenContentNotFull(false)
             setEnableOverScrollDrag(true)
             setHeaderMaxDragRate(1.5f)
             setOnMultiPurposeListener(object : SimpleMultiPurposeListener() {
@@ -132,7 +133,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
                         toolbar?.visibility = View.GONE
                         toolbarLayout?.visibility = View.GONE
                     }
-                } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+                } else if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
                     // 完全收缩状态
                     if (toolbar?.visibility != View.VISIBLE) {
                         toolbar?.visibility = View.VISIBLE
@@ -199,6 +200,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     override fun onRequestSucess(hasMore: Boolean) {
         smartRefresh?.finishLoadMore()
         smartRefresh?.finishRefresh()
+        smartRefresh?.setEnableLoadMore(hasMore)
     }
 
     private fun getTopicTabs() {
