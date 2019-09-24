@@ -107,6 +107,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
                             .withInt("postsID", model.posts?.postsID?.toInt() ?: 0)
                             .navigation()
+                } else {
+                    U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
                 }
             }
 
@@ -200,6 +202,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (model != null && model.isAudit()) {
                     recordClick(model)
                     postsLikeOrUnLike(position, model)
+                } else {
+                    U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
                 }
             }
 
@@ -212,6 +216,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                         recordClick(model)
                         votePosts(position, model, index)
                     }
+                } else {
+                    U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
                 }
             }
 
@@ -226,6 +232,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (model != null && model.isAudit()) {
                     recordClick(model)
                     postsCommentLikeOrUnLike(position, model)
+                } else {
+                    U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
                 }
             }
 

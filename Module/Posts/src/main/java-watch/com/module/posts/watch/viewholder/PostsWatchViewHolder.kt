@@ -19,7 +19,8 @@ class PostsWatchViewHolder(item: View, listener: PostsWatchListener) : PostsView
     val timeTv: TextView = item.findViewById(R.id.time_tv)
 
     init {
-        avatarIv.setDebounceViewClickListener { listener.onClickCommentAvatar(pos, mModel) }
+        avatarIv.setDebounceViewClickListener { listener.onClickPostsAvatar(pos, mModel) }
+        nicknameTv.setDebounceViewClickListener { listener.onClickPostsAvatar(pos, mModel) }
     }
 
     override fun bindData(pos: Int, model: PostsWatchModel) {
