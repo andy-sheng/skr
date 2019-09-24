@@ -15,7 +15,6 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.callback.Callback
 import com.common.core.view.setDebounceViewClickListener
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -29,6 +28,7 @@ import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.detail.fragment.PostsCommentDetailFragment
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.view.*
@@ -38,7 +38,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         val REFRESH_COMMENT_CTN = 0
         val DESTROY_HOLDER = 1
         val REFRESH_PLAY_STATE = 2
-        val playerTag = "PostsCommentDetailAdapter"
     }
 
     val mPostsType = 0
@@ -47,24 +46,30 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     //评论数量
     var mCommentCtn = 0
 
-    var mPlayingUrl = ""
+    var mPlayingUrl: String
+        set(value) {
+            value?.let {
+                mIDetailClickListener?.setCurPlayingUrl(value)
+            }
+        }
+        get() = mIDetailClickListener?.getCurPlayingUrl() ?: ""
 
-    var mPlayingPosition = -1
+    var mPlayingPosition
+        set(value) {
+            value?.let {
+                mIDetailClickListener?.setCurPlayintPosition(value)
+            }
+        }
+        get() = mIDetailClickListener?.getCurPlayingPosition() ?: 0
 
     var mClickContentListener: ((PostsSecondLevelCommentModel) -> Unit)? = null
 
     var mContext: FragmentActivity? = null
 
+    var mIDetailClickListener: ICommentDetailClickListener? = null
+
     constructor(context: FragmentActivity) : super() {
         mContext = context
-        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                mPlayingUrl = ""
-                notifyItemChanged(mPlayingPosition, REFRESH_PLAY_STATE)
-                mPlayingPosition = -1
-            }
-        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -176,13 +181,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -194,13 +199,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
                     }
@@ -363,13 +368,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -381,13 +386,13 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
                     }
@@ -395,7 +400,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             })
 
             contentTv.setDebounceViewClickListener {
-                mClickContentListener?.invoke(mModel!!)
+                mIDetailClickListener?.clickSecondLevelCommentContent(mModel!!)
             }
 
             nineGridVp?.clickListener = { i, url, urlList ->
@@ -568,5 +573,17 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         }
 
         return mCommentType
+    }
+
+    interface ICommentDetailClickListener {
+        fun getCurPlayingUrl(): String
+
+        fun getCurPlayingPosition(): Int
+
+        fun setCurPlayingUrl(url: String)
+
+        fun setCurPlayintPosition(pos: Int)
+
+        fun clickSecondLevelCommentContent(model: PostsSecondLevelCommentModel)
     }
 }

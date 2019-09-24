@@ -18,7 +18,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.callback.Callback
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -35,6 +34,7 @@ import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.detail.fragment.PostsDetailFragment
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.view.*
 import com.module.posts.watch.model.PostsRedPkgModel
@@ -46,7 +46,6 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         val DESTROY_HOLDER = 1
         val REFRESH_PLAY_STATE = 2
         val REFRESH_LIKE = 3
-        val playerTag = "PostsCommentAdapter"
     }
 
     private val mPostsType = 0
@@ -55,9 +54,21 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     //评论数量
     var mCommentCtn = 0
 
-    var mPlayingUrl = ""
+    var mPlayingUrl: String
+        set(value) {
+            value?.let {
+                mIDetailClickListener?.setCurPlayingUrl(value)
+            }
+        }
+        get() = mIDetailClickListener?.getCurPlayingUrl() ?: ""
 
-    var mPlayingPosition = -1
+    var mPlayingPosition
+        set(value) {
+            value?.let {
+                mIDetailClickListener?.setCurPlayintPosition(value)
+            }
+        }
+        get() = mIDetailClickListener?.getCurPlayingPosition() ?: 0
 
     var mIDetailClickListener: IDetailClickListener? = null
 
@@ -72,14 +83,6 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
     constructor(context: FragmentActivity) : super() {
         mContext = context
-        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
-            override fun onCompletion() {
-                super.onCompletion()
-                mPlayingUrl = ""
-                notifyItemChanged(mPlayingPosition, REFRESH_PLAY_STATE)
-                mPlayingPosition = -1
-            }
-        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -234,13 +237,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsDetailFragment.playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.posts?.audios?.let {
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -252,13 +255,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsDetailFragment.playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.posts?.song?.let {
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
                     }
@@ -539,13 +542,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsDetailFragment.playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -557,13 +560,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(playerTag)
+                        SinglePlayer.stop(PostsDetailFragment.playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsDetailFragment.playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
                     }
@@ -762,5 +765,13 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun clickFirstLevelComment()
 
         fun likeFirstLevelComment(model: PostFirstLevelCommentModel)
+
+        fun getCurPlayingUrl(): String
+
+        fun getCurPlayingPosition(): Int
+
+        fun setCurPlayingUrl(url: String)
+
+        fun setCurPlayintPosition(pos: Int)
     }
 }

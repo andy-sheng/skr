@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
@@ -45,6 +46,10 @@ import okhttp3.RequestBody
 
 
 class PostsDetailFragment : BaseFragment(), IPostsDetailView {
+    companion object {
+        val playerTag = "PostsDetailFragment"
+    }
+
     lateinit var titlebar: CommonTitleBar
     lateinit var recyclerView: RecyclerView
     lateinit var commentTv: ExTextView
@@ -62,6 +67,10 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     var postsAdapter: PostsCommentAdapter? = null
 
+    var mPlayingUrl = ""
+
+    var mPlayingPosition = -1
+
     override fun initView(): Int {
         return R.layout.posts_detail_fragment_layout
     }
@@ -71,6 +80,15 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             activity?.finish()
             return
         }
+
+        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mPlayingUrl = ""
+                postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentAdapter.REFRESH_PLAY_STATE)
+                mPlayingPosition = -1
+            }
+        })
 
         titlebar = rootView.findViewById(R.id.titlebar)
 
@@ -131,6 +149,22 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
             override fun likeFirstLevelComment(model: PostFirstLevelCommentModel) {
                 mPostsDetailPresenter?.likeFirstLevelComment(!model.isLiked, model)
+            }
+
+            override fun getCurPlayingUrl(): String {
+                return mPlayingUrl
+            }
+
+            override fun getCurPlayingPosition(): Int {
+                return mPlayingPosition
+            }
+
+            override fun setCurPlayingUrl(url: String) {
+                mPlayingUrl = url
+            }
+
+            override fun setCurPlayintPosition(pos: Int) {
+                mPlayingPosition = pos
             }
         }
 
@@ -281,13 +315,16 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun onPause() {
         super.onPause()
-        SinglePlayer.stop(PostsCommentAdapter.playerTag)
+        SinglePlayer.stop(playerTag)
+        mPlayingUrl = ""
+        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentAdapter.REFRESH_PLAY_STATE)
+        mPlayingPosition = -1
     }
 
     override fun destroy() {
         super.destroy()
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
-        SinglePlayer.removeCallback(PostsCommentAdapter.playerTag)
+        SinglePlayer.removeCallback(playerTag)
         postsMoreDialogView?.dismiss()
         postsRedPkgDialogView?.dismiss()
     }

@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
+import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
@@ -46,6 +47,10 @@ import okhttp3.RequestBody
 
 
 class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
+    companion object {
+        val playerTag = "PostsCommentDetailFragment"
+    }
+
     lateinit var titlebar: CommonTitleBar
     lateinit var recyclerView: RecyclerView
     lateinit var commentTv: ExTextView
@@ -70,6 +75,10 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     var hasFailedTask = false
     var replyModel: ReplyModel? = null
     var mObj: Any? = null
+
+    var mPlayingUrl = ""
+
+    var mPlayingPosition = -1
 
     val uploadQueue = object : ObjectPlayControlTemplate<PostsPublishActivity.PostsUploadModel, PostsCommentDetailFragment>() {
         override fun accept(cur: PostsPublishActivity.PostsUploadModel): PostsCommentDetailFragment? {
@@ -198,6 +207,15 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
             return
         }
 
+        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mPlayingUrl = ""
+                postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
+                mPlayingPosition = -1
+            }
+        })
+
         titlebar = rootView.findViewById(com.module.posts.R.id.titlebar)
         recyclerView = rootView.findViewById(com.module.posts.R.id.recycler_view)
         commentTv = rootView.findViewById(R.id.comment_tv)
@@ -275,28 +293,46 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
 
-        postsAdapter?.mClickContentListener = { postsCommentModel ->
-            postsMoreDialogView?.dismiss(false)
-            postsMoreDialogView = PostsCommentMoreDialogView(activity as FragmentActivity).apply {
-                reportTv.setDebounceViewClickListener {
-                    dismiss(false)
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
-                            .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
-                            .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
-                            .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
-                            .withLong("commentID", postsCommentModel?.comment?.commentID?.toLong()
-                                    ?: 0)
-                            .navigation()
-                }
-
-                deleteTv.visibility = View.GONE
-
-                replyTv.setDebounceViewClickListener {
-                    dismiss(false)
-                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postsCommentModel)
-                }
+        postsAdapter?.mIDetailClickListener = object : PostsCommentDetailAdapter.ICommentDetailClickListener {
+            override fun getCurPlayingUrl(): String {
+                return mPlayingUrl
             }
-            postsMoreDialogView?.showByDialog(true)
+
+            override fun getCurPlayingPosition(): Int {
+                return mPlayingPosition
+            }
+
+            override fun setCurPlayingUrl(url: String) {
+                mPlayingUrl = url
+            }
+
+            override fun setCurPlayintPosition(pos: Int) {
+                mPlayingPosition = pos
+            }
+
+            override fun clickSecondLevelCommentContent(postsCommentModel: PostsSecondLevelCommentModel) {
+                postsMoreDialogView?.dismiss(false)
+                postsMoreDialogView = PostsCommentMoreDialogView(activity as FragmentActivity).apply {
+                    reportTv.setDebounceViewClickListener {
+                        dismiss(false)
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                                .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
+                                .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
+                                .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
+                                .withLong("commentID", postsCommentModel?.comment?.commentID?.toLong()
+                                        ?: 0)
+                                .navigation()
+                    }
+
+                    deleteTv.visibility = View.GONE
+
+                    replyTv.setDebounceViewClickListener {
+                        dismiss(false)
+                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postsCommentModel)
+                    }
+                }
+                postsMoreDialogView?.showByDialog(true)
+            }
         }
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
@@ -382,13 +418,16 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
 
     override fun onPause() {
         super.onPause()
-        SinglePlayer.stop(PostsCommentDetailAdapter.playerTag)
+        SinglePlayer.stop(playerTag)
+        mPlayingUrl = ""
+        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
+        mPlayingPosition = -1
     }
 
     override fun destroy() {
         super.destroy()
         postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
-        SinglePlayer.removeCallback(PostsCommentDetailAdapter.playerTag)
+        SinglePlayer.removeCallback(playerTag)
         postsMoreDialogView?.dismiss()
     }
 }
