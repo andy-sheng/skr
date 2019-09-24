@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -23,10 +24,7 @@ import com.module.posts.watch.model.PostsRedPkgModel
 import com.module.posts.watch.model.PostsWatchModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * 红包的弹窗
@@ -56,7 +54,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
-        getRedPacketDetail()
+        getRedPacketDetail(true)
 
         container.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -65,7 +63,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
         })
     }
 
-    private fun getRedPacketDetail() {
+    private fun getRedPacketDetail(isFirst: Boolean) {
         launch {
             val result = subscribe(RequestControl("getRedPacketDetail", ControlType.CancelThis)) {
                 postsWatchServerApi.getRedPkgDetail(MyUserInfoManager.getInstance().uid, model.redpacketID)
@@ -73,7 +71,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("records"), PostsRedPkgUserModel::class.java)
                 val model = JSON.parseObject(result.data.getString("redpacketInfo"), PostsRedPkgModel::class.java)
-                showRedPkgDetail(list, model)
+                showRedPkgDetail(list, model, isFirst)
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
@@ -82,7 +80,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
         }
     }
 
-    private fun showRedPkgDetail(list: List<PostsRedPkgUserModel>?, postsRedPkgModel: PostsRedPkgModel?) {
+    private fun showRedPkgDetail(list: List<PostsRedPkgUserModel>?, postsRedPkgModel: PostsRedPkgModel?, isFirst: Boolean) {
         postsRedPkgModel?.let {
             model = postsRedPkgModel
             redpkgNumTv.text = it.redpacketDesc
@@ -97,7 +95,17 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
                     redpkgDescTv.visibility = View.GONE
                     recyclerView.visibility = View.GONE
                     redpkgStatusTv.visibility = View.VISIBLE
-                    redpkgStatusTv.text = "倒计时: ${U.getDateTimeUtils().formatVideoTime(it.resTimeMs)}"
+                    if (isFirst) {
+                        starCounDown(it.resTimeMs)
+                    } else {
+                        if (MyLog.isDebugLogOpen()) {
+                            redpkgStatusTv.text = "服务器数据有问题，文佳胜"
+                        } else {
+                            redpkgStatusTv.text = "倒计时: 00:01"
+                        }
+
+                    }
+
                 }
                 PostsRedPkgModel.RS_GET_PART -> {
                     redpkgDescTv.visibility = View.VISIBLE
@@ -128,6 +136,18 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
         }
     }
 
+    fun starCounDown(time: Long) {
+        MyLog.d("starCounDown", "starCounDown time = $time")
+        launch {
+            repeat((time / 1000).toInt()) {
+                redpkgStatusTv.text = "倒计时: ${U.getDateTimeUtils().formatPostsRedTime(time - it * 1000, false)}"
+                delay(1000)
+            }
+            // 重新去拉一次数据
+            getRedPacketDetail(false)
+        }
+    }
+
     fun showByDialog() {
         showByDialog(true)
     }
@@ -139,7 +159,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
                 .setGravity(Gravity.CENTER)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setMargin(0,-1,0,-1)
+                .setMargin(0, -1, 0, -1)
                 .setExpanded(false)
                 .setCancelable(canCancel)
                 .create()

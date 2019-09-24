@@ -393,7 +393,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                         it.redpacketInfo?.status == PostsRedPkgModel.RS_ONGING -> {
                             redPkgIv.setImageResource(R.drawable.posts_red_s_close_icon)
                             it.redpacketInfo?.resTimeMs?.let { time ->
-                                redPkgDes.text = "剩余时间：${U.getDateTimeUtils().formatVideoTime(time)}"
+                                redPkgDes.text = "剩余时间：${U.getDateTimeUtils().formatPostsRedTime(time, true)}"
                             }
                         }
                         it.redpacketInfo?.status == PostsRedPkgModel.RS_GET_PART -> {
