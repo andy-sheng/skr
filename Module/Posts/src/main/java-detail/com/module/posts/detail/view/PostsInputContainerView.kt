@@ -218,6 +218,14 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             replyModel.contentStr = mEtContent?.text.toString()
             mSendCallBack?.invoke(replyModel, mExtra)
         }
+
+        postsVoiceRecordView?.mResetCall = {
+            replyModel.reset()
+        }
+
+        postsKgeRecordView?.mResetCall = {
+            replyModel.reset()
+        }
     }
 
     var tipsDialogView: TipsDialogView? = null
