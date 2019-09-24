@@ -55,6 +55,7 @@ class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
         mPos = index
         if (model.hasVoted == true) {
             // 已经投票了
+            voteBgIv.isClickable = false
             desLeftTv.text = voteItem.voteItem
             voteNumTv.text = "${voteItem.voteCnt}票"
             var totalVotes = 0
@@ -75,6 +76,7 @@ class PostsVoteItemView(viewStub: ViewStub) : ExViewStub(viewStub) {
             desCenterTv.visibility = View.GONE
         } else {
             // 未投票
+            voteBgIv.isClickable = true
             desCenterTv.text = voteItem.voteItem
             desCenterTv.visibility = View.VISIBLE
             voteProgress.visibility = View.GONE
