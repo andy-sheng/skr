@@ -300,6 +300,10 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
         topicPostsViews.clear()
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     override fun useEventBus(): Boolean {
         return false
     }
