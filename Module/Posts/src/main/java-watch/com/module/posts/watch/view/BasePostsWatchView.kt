@@ -21,6 +21,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
+import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -90,10 +91,12 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     var postsMoreDialogView: PostsMoreDialogView? = null
     var postsRedPkgDialogView: PostsRedPkgDialogView? = null
+    var tipsDialogView: TipsDialogView? = null
 
     var mLoadService: LoadService<*>? = null
 
     fun dismissDialog() {
+        tipsDialogView?.dismiss(false)
         postsMoreDialogView?.dismiss(false)
         postsRedPkgDialogView?.dismiss(false)
     }
@@ -144,7 +147,20 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                             reportTv.setOnClickListener(object : DebounceViewClickListener() {
                                 override fun clickValid(v: View?) {
                                     postsMoreDialogView?.dismiss(false)
-                                    deletePosts(position, model)
+                                    tipsDialogView?.dismiss(false)
+                                    tipsDialogView = TipsDialogView.Builder(activity)
+                                            .setMessageTip("确定删除帖子吗?")
+                                            .setCancelTip("取消")
+                                            .setCancelBtnClickListener {
+                                                tipsDialogView?.dismiss()
+                                            }
+                                            .setConfirmTip("确认")
+                                            .setConfirmBtnClickListener {
+                                                tipsDialogView?.dismiss()
+                                                deletePosts(position, model)
+                                            }
+                                            .build()
+                                    tipsDialogView?.showByDialog()
                                 }
                             })
                         }
@@ -549,6 +565,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
+                } else if (result.errno == 8302558) {
+                    U.getToastUtil().showShort(result.errmsg)
                 }
             }
         }
