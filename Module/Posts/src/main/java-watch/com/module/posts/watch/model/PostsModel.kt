@@ -43,5 +43,9 @@ class PostsModel : Serializable {
     override fun toString(): String {
         return "PostsModel(audios=$audios, createdAt=$createdAt, pictures=$pictures, postsID=$postsID, redpacketInfo=$redpacketInfo, song=$song, status=$status, title='$title', topicInfo=$topicInfo, userID=$userID, videos=$videos, voteInfo=$voteInfo)"
     }
-    
+
+    fun toDebugString(): String {
+        return "PostsModel(postsID=$postsID,audios=$audios,  song=$song, status=$status)"
+    }
+
 }

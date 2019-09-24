@@ -31,7 +31,7 @@ class PostsWatchModel : Serializable {
     }
 
     fun toDebugString(): String {
-        return "帖子 posts=$posts"
+        return "帖子 posts=${posts?.toDebugString()}"
     }
 
 }
