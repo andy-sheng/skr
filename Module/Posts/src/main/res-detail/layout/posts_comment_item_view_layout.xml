@@ -15,12 +15,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:ellipsize="end"
+        android:maxWidth="@dimen/view_270_dp"
+        android:maxLines="1"
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_11_dp"
-        android:maxWidth="270dp"
-        android:text="我就是传说中的你舅"
+        android:text="我就是传说中的你"
         android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
