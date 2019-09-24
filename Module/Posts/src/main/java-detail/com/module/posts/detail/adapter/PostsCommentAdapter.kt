@@ -686,7 +686,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             if ((mModel?.secondLevelComments?.size ?: 0) > 0) {
                 replyNum.visibility = View.VISIBLE
                 val spanUtils = SpanUtils()
-                        .append(model.commentUser?.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                        .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
                             override fun onClick(widget: View?) {
                                 val bundle = Bundle()
                                 bundle.putInt("bundle_user_id", model.commentUser?.userId ?: 0)
