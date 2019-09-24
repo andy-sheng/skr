@@ -4,7 +4,7 @@
     android:id="@+id/et_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
+    android:visibility="visible"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
@@ -108,32 +108,33 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_10_dp"
-            android:layout_marginBottom="@dimen/view_10_dp"
+
             android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etContent">
 
             <com.common.view.ex.ExImageView
+                android:layout_marginRight="@dimen/view_5_dp"
                 android:id="@+id/yuyin_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/view_10_dp"
+                android:padding="@dimen/view_10_dp"
                 android:src="@drawable/pinglun_yuyin" />
 
             <com.common.view.ex.ExImageView
+                android:layout_marginRight="@dimen/view_5_dp"
                 android:id="@+id/kge_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/view_10_dp"
+                android:padding="@dimen/view_10_dp"
                 android:src="@drawable/huifu_kge" />
 
             <com.common.view.ex.ExImageView
+                android:padding="@dimen/view_10_dp"
                 android:id="@+id/tupian_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/view_10_dp"
                 android:src="@drawable/pinglun_tupian" />
 
 
