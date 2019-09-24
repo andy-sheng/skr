@@ -157,6 +157,7 @@
         app:constraint_referenced_ids="reply_num,posts_barrier,content_tv" />
 
     <View
+        android:id="@+id/bottom_divider"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_10_dp"

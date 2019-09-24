@@ -97,7 +97,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel)
 
             } else if (holder is PostsSecondLevelCommentHolder) {
-                holder.bindData(position, mDataList[position] as PostsSecondLevelCommentModel)
+                holder.bindData(position, mDataList[position] as PostsSecondLevelCommentModel, position == mDataList.size - 1)
             }
         } else {
             // 局部刷新
@@ -328,6 +328,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         var nineGridVp: PostsNineGridLayout
         var postsSongView: PostsSongView
         var postsBarrier: Barrier
+        var bottomDivider: View
 
         var pos: Int = -1
         var mModel: PostsSecondLevelCommentModel? = null
@@ -341,6 +342,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             postsAudioView = itemView.findViewById(R.id.posts_audio_view)
             nineGridVp = itemView.findViewById(R.id.nine_grid_vp)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
+            bottomDivider = itemView.findViewById(R.id.bottom_divider)
 
             commenterAvaterIv?.setDebounceViewClickListener {
                 mModel?.commentUser?.userId?.let {
@@ -431,9 +433,15 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         }
 
-        fun bindData(pos: Int, model: PostsSecondLevelCommentModel) {
+        fun bindData(pos: Int, model: PostsSecondLevelCommentModel, isLast: Boolean) {
             this.pos = pos
             this.mModel = model
+
+            if (isLast) {
+                bottomDivider.setBackgroundColor(U.getColor(R.color.transparent))
+            } else {
+                bottomDivider.setBackgroundColor(U.getColor(R.color.black_trans_10))
+            }
 
             commenterAvaterIv.bindData(model.commentUser)
             nameTv.text = model.commentUser.nicknameRemark

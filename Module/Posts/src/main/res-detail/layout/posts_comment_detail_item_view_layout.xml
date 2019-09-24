@@ -93,6 +93,7 @@
         app:constraint_referenced_ids="posts_audio_view, content_tv, nine_grid_vp, posts_song_view" />
 
     <View
+        android:id="@+id/bottom_divider"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_10_dp"

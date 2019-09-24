@@ -109,7 +109,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 holder.bindData(position, mDataList[position] as PostsWatchModel)
 
             } else if (holder is PostsCommentHolder) {
-                holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel)
+                holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel, position == mDataList.size - 1)
             }
         } else {
             // 局部刷新
@@ -149,7 +149,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         if (holder is PostsHolder) {
             holder.bindData(position, mDataList[position] as PostsWatchModel)
         } else if (holder is PostsCommentHolder) {
-            holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel)
+            holder.bindData(position, mDataList[position] as PostFirstLevelCommentModel, position == mDataList.size - 1)
         }
     }
 
@@ -500,6 +500,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         var pos: Int = -1
         var mModel: PostFirstLevelCommentModel? = null
         var postsSongView: PostsSongView
+        var bottomDivider: View
 
         init {
             postsSongView = itemView.findViewById(R.id.posts_song_view)
@@ -515,6 +516,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             redPkgTv = itemView.findViewById(R.id.red_pkg_tv)
             replyNum = itemView.findViewById(R.id.reply_num)
             bottomBarrier = itemView.findViewById(R.id.bottom_barrier)
+            bottomDivider = itemView.findViewById(R.id.bottom_divider)
 
             commenterAvaterIv?.setDebounceViewClickListener {
                 mModel?.commentUser?.userId?.let {
@@ -630,9 +632,15 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             xinIv.isSelected = mModel?.isLiked ?: false
         }
 
-        fun bindData(pos: Int, model: PostFirstLevelCommentModel) {
+        fun bindData(pos: Int, model: PostFirstLevelCommentModel, isLast: Boolean) {
             this.pos = pos
             this.mModel = model
+
+            if (isLast) {
+                bottomDivider.setBackgroundColor(U.getColor(R.color.transparent))
+            } else {
+                bottomDivider.setBackgroundColor(U.getColor(R.color.black_trans_10))
+            }
 
             commenterAvaterIv.bindData(model.commentUser)
             nameTv.text = model.commentUser?.nicknameRemark
