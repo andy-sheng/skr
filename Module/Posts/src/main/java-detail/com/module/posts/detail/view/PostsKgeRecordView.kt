@@ -99,6 +99,7 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         selectSongTv.visibility = View.GONE
         playBtn.visibility = View.VISIBLE
         playBtn.setImageResource(R.drawable.kge_zanting)
+        playTipsTv.visibility = View.VISIBLE
         playTipsTv.text = "播放"
         abandonIv.visibility = View.VISIBLE
         abandonTv.visibility = View.VISIBLE
