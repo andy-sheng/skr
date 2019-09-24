@@ -190,7 +190,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                     recordClick(model)
                     model?.posts?.topicInfo?.let {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC)
-                                .withLong("topicID", it.topicID)
+                                .withLong("topicID", it.topicID.toLong())
                                 .navigation()
                     }
                 }

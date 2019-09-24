@@ -3,6 +3,7 @@ package com.module.posts.watch.model
 import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
 import com.component.busilib.model.FeedSongModel
+import com.module.posts.publish.topic.Topic
 
 
 // 帖子信息
@@ -31,7 +32,7 @@ class PostsModel : Serializable {
     @JSONField(name = "title")
     var title: String = ""
     @JSONField(name = "topicInfo")
-    var topicInfo: PostsTopicModel? = null
+    var topicInfo: Topic? = null
     @JSONField(name = "userID")
     var userID: Int = 0
     @JSONField(name = "videos")

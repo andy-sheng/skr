@@ -17,7 +17,7 @@ class Topic : Serializable {
     @JSONField(name = "topicDesc")
     var topicDesc: String? = null
     @JSONField(name = "topicID")
-    var topicID: Int? = null
+    var topicID: Int = 0
     @JSONField(name = "topicTitle")
     var topicTitle: String? = null
     @JSONField(name = "topicURL")

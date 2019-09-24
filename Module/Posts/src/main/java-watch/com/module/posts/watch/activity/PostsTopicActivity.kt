@@ -29,9 +29,8 @@ import com.component.person.view.RequestCallBack
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.publish.topic.Topic
 import com.module.posts.watch.PostsWatchServerApi
-import com.module.posts.watch.model.PostsTopicDetailModel
-import com.module.posts.watch.model.PostsTopicModel
 import com.module.posts.watch.model.PostsTopicTabModel
 import com.module.posts.watch.view.TopicPostsWatchView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -165,7 +164,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
                 postsWatchServerApi.getTopicDetail(MyUserInfoManager.getInstance().uid, topicID)
             }
             if (result.errno == 0) {
-                val detail = JSON.parseObject(result.data.toJSONString(), PostsTopicDetailModel::class.java)
+                val detail = JSON.parseObject(result.data.toJSONString(), Topic::class.java)
                 showDetail(detail)
             } else {
 
@@ -173,7 +172,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
         }
     }
 
-    private fun showDetail(detail: PostsTopicDetailModel?) {
+    private fun showDetail(detail: Topic?) {
         detail?.let {
             topicTitle?.text = it.topicTitle
             topicDesc?.text = it.topicDesc
