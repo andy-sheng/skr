@@ -303,6 +303,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         } else {
             showKgeRecordView()
             mInputContainer?.visibility = View.VISIBLE
+
+            if (postsVoiceRecordView.status == STATUS_RECORDING) {
+                resetData(SHOW_TYPE.AUDIO)
+            }
         }
     }
 
@@ -352,7 +356,10 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
             postsVoiceRecordView.setVisibility(View.GONE)
             postsKgeRecordView.setVisibility(View.GONE)
             mPlaceHolderView?.getLayoutParams()?.height = 0
-//            mPlaceHolderView?.requestLayout()
+
+            if (postsVoiceRecordView.status == STATUS_RECORDING) {
+                resetData(SHOW_TYPE.AUDIO)
+            }
         }
     }
 
@@ -406,7 +413,6 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
 
         mPlaceHolderView?.getLayoutParams()?.height = 0
         mPlaceHolderView?.setLayoutParams(mPlaceHolderView?.getLayoutParams())
-//        mPlaceHolderView?.requestLayout()
     }
 
     private fun showAudioRecordView() {
