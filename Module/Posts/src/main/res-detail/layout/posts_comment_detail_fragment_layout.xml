@@ -88,6 +88,16 @@
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/image_tid"
+        android:layout_width="@dimen/view_6_dp"
+        android:layout_height="@dimen/view_6_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_6_dp"
+        app:bl_solid_color="#FFFFC15B"
+        app:layout_constraintRight_toRightOf="@+id/image_iv"
+        app:layout_constraintTop_toTopOf="@+id/image_iv" />
+
+    <com.common.view.ex.ExImageView
         android:id="@+id/kge_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,6 +109,16 @@
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/kge_tid"
+        android:layout_width="@dimen/view_6_dp"
+        android:layout_height="@dimen/view_6_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_6_dp"
+        app:bl_solid_color="#FFFFC15B"
+        app:layout_constraintRight_toRightOf="@+id/kge_iv"
+        app:layout_constraintTop_toTopOf="@+id/kge_iv" />
+
+    <com.common.view.ex.ExImageView
         android:id="@+id/audio_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -108,6 +128,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/comment_tv"
         app:layout_constraintRight_toLeftOf="@+id/kge_iv"
         app:layout_constraintTop_toTopOf="@+id/comment_tv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/audio_tid"
+        android:layout_width="@dimen/view_6_dp"
+        android:layout_height="@dimen/view_6_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_6_dp"
+        app:bl_solid_color="#FFFFC15B"
+        app:layout_constraintRight_toRightOf="@+id/audio_iv"
+        app:layout_constraintTop_toTopOf="@+id/audio_iv" />
 
     <com.module.posts.detail.view.PostsInputContainerView
         android:id="@+id/feeds_input_container_view"

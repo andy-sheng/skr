@@ -65,6 +65,9 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     var postsMoreDialogView: PostsMoreDialogView? = null
     var postsRedPkgDialogView: PostsRedPkgDialogView? = null
     lateinit var progressView: SkrProgressView
+    lateinit var mImageTid: ExImageView
+    lateinit var mKgeTid: ExImageView
+    lateinit var mAudioTid: ExImageView
 
     var postsAdapter: PostsCommentAdapter? = null
 
@@ -97,7 +100,9 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         })
 
         titlebar = rootView.findViewById(R.id.titlebar)
-
+        mImageTid = rootView.findViewById(R.id.image_tid)
+        mKgeTid = rootView.findViewById(R.id.kge_tid)
+        mAudioTid = rootView.findViewById(R.id.audio_tid)
         recyclerView = rootView.findViewById(R.id.recycler_view)
         commentTv = rootView.findViewById(R.id.comment_tv)
         imageIv = rootView.findViewById(R.id.image_iv)
@@ -187,6 +192,24 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
+
+        feedsInputContainerView?.mHideCallBack = {
+            mImageTid.visibility = View.GONE
+            mKgeTid.visibility = View.GONE
+            mAudioTid.visibility = View.GONE
+
+            if (it == PostsInputContainerView.SHOW_TYPE.IMG) {
+                mImageTid.visibility = View.VISIBLE
+            }
+
+            if (it == PostsInputContainerView.SHOW_TYPE.KEG) {
+                mKgeTid.visibility = View.VISIBLE
+            }
+
+            if (it == PostsInputContainerView.SHOW_TYPE.AUDIO) {
+                mAudioTid.visibility = View.VISIBLE
+            }
+        }
 
         mPostsDetailPresenter?.getPostsDetail(mPostsID!!)
     }

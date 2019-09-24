@@ -32,6 +32,7 @@ import com.module.posts.R
 import com.module.posts.detail.adapter.PostsReplayImgAdapter
 import com.module.posts.detail.event.PostsCommentBoardEvent
 import com.module.posts.detail.view.PostsVoiceRecordView.Companion.STATUS_RECORDING
+import com.module.posts.detail.view.PostsVoiceRecordView.Companion.STATUS_RECORD_OK
 import com.module.posts.detail.view.PostsVoiceRecordView.Companion.STATUS_RECORD_PLAYING
 import com.respicker.ResPicker
 import com.respicker.activity.ResPickerActivity
@@ -60,6 +61,9 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     protected var mHasPretend = false
     protected var mForceHide = false
     var mSendCallBack: ((ReplyModel, Any?) -> Unit)? = null
+
+    //这个输入框消失的时候调用
+    var mHideCallBack: ((SHOW_TYPE) -> Unit)? = null
 
     var showType: SHOW_TYPE = SHOW_TYPE.NUL
 
@@ -422,6 +426,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     override fun onBoradHide() {
         if (showType == SHOW_TYPE.KEY_BOARD || mForceHide) {
             //当前是键盘状态，需要收起键盘，reset
+            invokeHideCall()
             EventBus.getDefault().post(PostsCommentBoardEvent(false))
             mInputContainer?.visibility = View.GONE
             mEtContent?.hint = ""
@@ -465,6 +470,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     }
 
     fun hideSoftInput() {
+        invokeHideCall()
         mForceHide = true
         mEmotionKeyboard?.hideSoftInput()
         if (showType == SHOW_TYPE.AUDIO) {
@@ -480,6 +486,31 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
                 postsKgeRecordView.stop()
             }
         }
+
+    }
+
+    private fun invokeHideCall() {
+        if (showType == SHOW_TYPE.AUDIO) {
+            if (postsVoiceRecordView.status == STATUS_RECORD_OK) {
+                mHideCallBack?.invoke(showType)
+                return
+            }
+        }
+
+        if (showType == SHOW_TYPE.KEG) {
+            if (postsKgeRecordView.status == postsKgeRecordView.STATUS_RECORD_OK) {
+                mHideCallBack?.invoke(showType)
+                return
+            }
+        }
+
+        if (showType == SHOW_TYPE.IMG) {
+            if (postsReplayImgAdapter.dataList.size > 0) {
+                mHideCallBack?.invoke(showType)
+                return
+            }
+        }
+        mHideCallBack?.invoke(SHOW_TYPE.NUL)
     }
 
     fun onBackPressed(): Boolean {

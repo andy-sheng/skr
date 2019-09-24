@@ -57,6 +57,9 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     lateinit var imageIv: ExImageView
     lateinit var audioIv: ExImageView
     lateinit var kgeIv: ExImageView
+    lateinit var mImageTid: ExImageView
+    lateinit var mKgeTid: ExImageView
+    lateinit var mAudioTid: ExImageView
     lateinit var feedsInputContainerView: PostsInputContainerView
     lateinit var smartRefreshLayout: SmartRefreshLayout
     var mPostsWatchModel: PostsWatchModel? = null
@@ -225,6 +228,9 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         imageIv = rootView.findViewById(R.id.image_iv)
         audioIv = rootView.findViewById(R.id.audio_iv)
         kgeIv = rootView.findViewById(R.id.kge_iv)
+        mImageTid = rootView.findViewById(R.id.image_tid)
+        mKgeTid = rootView.findViewById(R.id.kge_tid)
+        mAudioTid = rootView.findViewById(R.id.audio_tid)
         progressView = rootView.findViewById(R.id.progress_view)
         feedsInputContainerView = rootView.findViewById(com.module.posts.R.id.feeds_input_container_view)
         smartRefreshLayout = rootView.findViewById(com.module.posts.R.id.smart_refresh)
@@ -295,6 +301,24 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         postsAdapter = PostsCommentDetailAdapter(context!! as FragmentActivity)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = postsAdapter
+
+        feedsInputContainerView?.mHideCallBack = {
+            mImageTid.visibility = View.GONE
+            mKgeTid.visibility = View.GONE
+            mAudioTid.visibility = View.GONE
+
+            if (it == PostsInputContainerView.SHOW_TYPE.IMG) {
+                mImageTid.visibility = View.VISIBLE
+            }
+
+            if (it == PostsInputContainerView.SHOW_TYPE.KEG) {
+                mKgeTid.visibility = View.VISIBLE
+            }
+
+            if (it == PostsInputContainerView.SHOW_TYPE.AUDIO) {
+                mAudioTid.visibility = View.VISIBLE
+            }
+        }
 
         postsAdapter?.mIDetailClickListener = object : PostsCommentDetailAdapter.ICommentDetailClickListener {
             override fun getCurPlayingUrl(): String {
