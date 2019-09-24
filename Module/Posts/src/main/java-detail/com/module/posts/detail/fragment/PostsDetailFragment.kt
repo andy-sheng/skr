@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -83,10 +84,15 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
         SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
+                MyLog.d(TAG, "onCompletion url is $mPlayingUrl")
                 super.onCompletion()
-                mPlayingUrl = ""
-                postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentAdapter.REFRESH_PLAY_STATE)
-                mPlayingPosition = -1
+                stopPlayingState()
+            }
+
+            override fun onError(what: Int, extra: Int) {
+                MyLog.d(TAG, "onError url is $mPlayingUrl")
+                super.onError(what, extra)
+                stopPlayingState()
             }
         })
 
@@ -183,6 +189,12 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         recyclerView?.adapter = postsAdapter
 
         mPostsDetailPresenter?.getPostsDetail(mPostsID!!)
+    }
+
+    private fun stopPlayingState() {
+        mPlayingUrl = ""
+        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentAdapter.REFRESH_PLAY_STATE)
+        mPlayingPosition = -1
     }
 
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {
@@ -314,9 +326,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     override fun onPause() {
         super.onPause()
         SinglePlayer.stop(playerTag)
-        mPlayingUrl = ""
-        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentAdapter.REFRESH_PLAY_STATE)
-        mPlayingPosition = -1
+        stopPlayingState()
     }
 
     override fun destroy() {

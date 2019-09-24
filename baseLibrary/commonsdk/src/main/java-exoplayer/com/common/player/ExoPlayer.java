@@ -204,6 +204,10 @@ public class ExoPlayer extends BasePlayer {
             @Override
             public void onPlayerError(EventTime eventTime, ExoPlaybackException error) {
                 MyLog.d(TAG, "onPlayerError" + " eventTime=" + eventTime + " error=" + error);
+                if (mCallback != null) {
+                    //数据目前无意义，不要用
+                    mCallback.onError(-1, -1);
+                }
             }
 
             @Override
@@ -230,7 +234,10 @@ public class ExoPlayer extends BasePlayer {
             @Override
             public void onLoadError(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
                 MyLog.d(TAG, "onLoadError" + " eventTime=" + eventTime + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData + " error=" + error + " wasCanceled=" + wasCanceled);
-
+                if (mCallback != null) {
+                    //数据目前无意义，不要用
+                    mCallback.onError(-1, -1);
+                }
             }
 
             @Override

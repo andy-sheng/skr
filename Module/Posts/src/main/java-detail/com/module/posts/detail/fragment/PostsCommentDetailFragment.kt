@@ -210,9 +210,12 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
-                mPlayingUrl = ""
-                postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
-                mPlayingPosition = -1
+                stopPlayingState()
+            }
+
+            override fun onError(what: Int, extra: Int) {
+                super.onError(what, extra)
+                stopPlayingState()
             }
         })
 
@@ -346,6 +349,12 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
                 ?: 0)
     }
 
+    private fun stopPlayingState() {
+        mPlayingUrl = ""
+        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
+        mPlayingPosition = -1
+    }
+
     override fun addCommetFaild() {
         progressView?.visibility = View.GONE
     }
@@ -419,9 +428,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     override fun onPause() {
         super.onPause()
         SinglePlayer.stop(playerTag)
-        mPlayingUrl = ""
-        postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
-        mPlayingPosition = -1
+        stopPlayingState()
     }
 
     override fun destroy() {
