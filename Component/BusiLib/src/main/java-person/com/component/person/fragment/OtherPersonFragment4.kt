@@ -578,6 +578,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     override fun onFragmentInvisible(reason: Int) {
         super.onFragmentInvisible(reason)
         mFeedsWallView?.unselected(1)
+        mPostsWallView?.unselected(1)
     }
 
     private fun viewSelected(position: Int) {
