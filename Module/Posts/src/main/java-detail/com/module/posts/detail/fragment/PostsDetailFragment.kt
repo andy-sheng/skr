@@ -238,10 +238,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!)
         modelList.addAll(list)
         postsAdapter?.dataList = modelList
-        launch {
-            delay(100)
-            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
-        }
         smartRefreshLayout.setEnableLoadMore(hasMore)
         smartRefreshLayout.finishLoadMore()
     }

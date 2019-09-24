@@ -481,6 +481,14 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     postsSongView.setPlay(false)
                 }
             }
+
+            commentCtnTv.text = "评论（${model.numeric?.commentCnt ?: 0}条）"
+
+            if ((model.numeric?.commentCnt ?: 0).toInt() == 0) {
+                emptyTv.visibility = View.VISIBLE
+            } else {
+                emptyTv.visibility = View.GONE
+            }
         }
     }
 
