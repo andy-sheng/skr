@@ -41,6 +41,8 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     var status = STATUS_IDLE
     var myMediaRecorder: MyMediaRecorder? = null
 
+    var mResetCall: (() -> Unit)? = null
+
     lateinit var playBtn: ExImageView
     lateinit var playTipsTv: ExTextView
     lateinit var countDownTv: TextView
@@ -173,6 +175,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
             return
         }
         stop()
+        mResetCall?.invoke()
         status = STATUS_IDLE
         playBtn.setImageResource(R.drawable.yuyin_weikaishi)
         playTipsTv.text = "点击录音"

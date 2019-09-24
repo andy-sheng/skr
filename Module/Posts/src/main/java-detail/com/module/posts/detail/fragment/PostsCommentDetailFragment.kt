@@ -178,6 +178,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         }
         if (!hasData) {
             U.getToastUtil().showShort("内容为空")
+            progressView?.visibility = View.GONE
             return
         }
 

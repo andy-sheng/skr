@@ -39,6 +39,8 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     lateinit var circleCountDownView: CircleCountDownView
     var recordJob: Job? = null
 
+    var mResetCall: (() -> Unit)? = null
+
 
     var okClickListener: (() -> Unit)? = null
     var selectSongClickListener: (() -> Unit)? = null
@@ -140,6 +142,7 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
         if(mParentView==null){
             return
         }
+        mResetCall?.invoke()
         stop()
         status = STATUS_IDLE
         playBtn.visibility = View.GONE
