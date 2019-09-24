@@ -51,9 +51,6 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     private val mPostsType = 0
     private val mCommentType = 1
 
-    //评论数量
-    var mCommentCtn = 0
-
     var mPlayingUrl: String
         set(value) {
             value?.let {
@@ -281,9 +278,9 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             this.pos = pos
             this.mModel = model
 
-            commentCtnTv.text = "评论（${mCommentCtn}条）"
+            commentCtnTv.text = "评论（${model.numeric?.commentCnt ?: 0}条）"
 
-            if (mCommentCtn == 0) {
+            if ((model.numeric?.commentCnt ?: 0).toInt() == 0) {
                 emptyTv.visibility = View.VISIBLE
             } else {
                 emptyTv.visibility = View.GONE
@@ -352,7 +349,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 MyLog.e("PostsWatchViewHolder", "bindData error pos = $pos, model = $model")
             }
 
-            commentCtnTv.text = "评论(${mCommentCtn}条)"
+            commentCtnTv.text = "评论(${model.numeric?.commentCnt ?: 0}条)"
 
             mModel?.posts?.let {
                 timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it.createdAt, System.currentTimeMillis())
@@ -459,7 +456,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 isGetRelation = true
             }
 
-            commentCtnTv.text = "评论（${mCommentCtn}条）"
+            commentCtnTv.text = "评论（${model.numeric?.commentCnt ?: 0}条）"
 
             if (mModel?.posts?.song == null) {
                 postsSongView.visibility = View.GONE

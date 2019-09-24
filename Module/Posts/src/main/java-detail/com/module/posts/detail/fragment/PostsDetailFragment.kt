@@ -188,7 +188,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {
         val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!)
         modelList.addAll(list)
-        postsAdapter?.mCommentCtn = list.size
         postsAdapter?.dataList = modelList
         launch {
             delay(100)
@@ -225,7 +224,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
 
     override fun addFirstLevelCommentSuccess() {
         progressView.visibility = View.GONE
-        postsAdapter!!.mCommentCtn++
         (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
             it.commentCnt++
         }
