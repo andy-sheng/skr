@@ -1,6 +1,7 @@
 package com.module.posts.publish.topic
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -41,9 +42,9 @@ class PostsTopicClassifyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         init {
             contentTv = itemView.findViewById(R.id.content_tv)
             tagView = itemView.findViewById(R.id.tag_view)
-            itemView.setOnClickListener(object :DebounceViewClickListener(){
+            itemView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    if(selectModel!=model){
+                    if (selectModel != model) {
                         selectListener?.invoke(model)
                     }
                 }
@@ -56,9 +57,11 @@ class PostsTopicClassifyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             contentTv.text = this.model?.categoryDesc
             if (this.model == selectModel) {
                 tagView.visibility = View.VISIBLE
+                contentTv.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 itemView.setBackgroundColor(Color.WHITE)
             } else {
                 tagView.visibility = View.GONE
+                contentTv.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
                 itemView.setBackgroundColor(Color.parseColor("#f2f2f2"))
             }
         }

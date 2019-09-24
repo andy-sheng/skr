@@ -1,6 +1,6 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/view_75_dp">
 
@@ -14,26 +14,37 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="left"
-        android:text="一起来拍戏"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_14_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/cover_iv"
         app:layout_constraintTop_toTopOf="@+id/cover_iv" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="left"
-        android:text="一段声音一场大戏"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/title_tv"
         app:layout_constraintTop_toBottomOf="@+id/title_tv" />
 

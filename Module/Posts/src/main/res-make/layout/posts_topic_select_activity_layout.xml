@@ -12,6 +12,7 @@
         app:centerTextColor="@color/black_trans_80"
         app:centerTextSize="@dimen/textsize_16_dp"
         app:centerType="textView"
+        app:centerTextStyle="BOLD"
         app:layout_constraintTop_toTopOf="parent"
         app:leftImageResource="@drawable/posts_back"
         app:leftType="imageButton"
