@@ -233,7 +233,7 @@ class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
     private fun goAddVoicePage() {
         val hasPic = postsReplayImgAdapter.dataList.isNotEmpty()
         val hasSong = replyModel.songId > 0
-
+        val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
         if (hasPic || hasSong) {
             var tips: String? = null
             if (hasPic) {

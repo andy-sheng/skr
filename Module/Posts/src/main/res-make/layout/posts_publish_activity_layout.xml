@@ -20,6 +20,7 @@
         app:showBottomLine="true" />
 
     <ScrollView
+        android:id="@+id/main_content_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -29,7 +30,7 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/topic_tv"
@@ -43,13 +44,19 @@
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingTop="@dimen/view_3_dp"
                 android:paddingRight="@dimen/view_10_dp"
+                app:layout_constraintRight_toRightOf="parent"
                 android:paddingBottom="@dimen/view_3_dp"
+                app:layout_constrainedWidth="true"
+                android:layout_marginRight="@dimen/view_20_dp"
                 android:text="选择话题"
+
+                app:layout_constraintHorizontal_bias="0"
                 android:textColor="@color/black_trans_50"
                 android:textSize="@dimen/view_12_dp"
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#DEF4FF"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -285,6 +292,7 @@
                 app:layout_constraintTop_toTopOf="@+id/vote_vp" />
 
         </android.support.constraint.ConstraintLayout>
+
     </ScrollView>
 
     <View

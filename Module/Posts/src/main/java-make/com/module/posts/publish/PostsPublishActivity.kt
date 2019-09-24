@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -64,6 +66,7 @@ class PostsPublishActivity : BaseActivity() {
     var playerTag = TAG + hashCode()
 
     lateinit var mainActContainer: ConstraintLayout
+    lateinit var mainContentVp: ViewGroup
     lateinit var titleBar: CommonTitleBar
     lateinit var topicTv: ExTextView
     lateinit var contentEt: NoLeakEditText
@@ -105,6 +108,7 @@ class PostsPublishActivity : BaseActivity() {
         val topic = intent.getSerializableExtra("topic") as Topic?
         model.topic = topic
         mainActContainer = findViewById(R.id.main_act_container)
+        mainContentVp = findViewById(R.id.main_content_vp)
         titleBar = findViewById(R.id.title_bar)
         topicTv = findViewById(R.id.topic_tv)
         contentEt = findViewById(R.id.content_et)
@@ -278,6 +282,16 @@ class PostsPublishActivity : BaseActivity() {
         if (model.topic != null) {
             topicTv.text = model.topic?.topicDesc
         }
+        mainActContainer.setDebounceViewClickListener {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
+        }
+        mainContentVp.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
+            }
+            false
+        }
+
     }
 
     val clearAudio = {
@@ -512,7 +526,7 @@ class PostsPublishActivity : BaseActivity() {
         val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
         val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
 
-        if(hasAudio){
+        if (hasAudio) {
             U.getToastUtil().showShort("最多只能上传一条语音")
             return
         }
@@ -559,7 +573,7 @@ class PostsPublishActivity : BaseActivity() {
         val hasSong = model.songId > 0
         val hasAudio = !hasSong && (model.recordVoicePath?.isNotEmpty() == true)
         val hasImg = postsPublishImgAdapter.dataList.isNotEmpty()
-        if(hasSong){
+        if (hasSong) {
             U.getToastUtil().showShort("最多只能上传一首歌曲")
             return
         }
@@ -656,8 +670,8 @@ class PostsPublishActivity : BaseActivity() {
                 redPkgTv.text = this.model.redPkg?.redpacketDesc
             } else if (requestCode == PostsTopicSelectActivity.REQ_CODE_TOPIC_SELECT) {
                 model.topic = data?.getSerializableExtra("topic") as Topic
-                topicTv.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,null,null)
-                topicTv.text = model.topic?.topicDesc
+                topicTv.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
+                topicTv.text = model.topic?.topicTitle
             }
         }
     }
