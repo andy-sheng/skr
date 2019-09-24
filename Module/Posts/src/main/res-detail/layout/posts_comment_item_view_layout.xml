@@ -55,12 +55,15 @@
         app:layout_constraintLeft_toRightOf="@+id/commenter_avater_iv" />
 
     <com.common.view.ex.ExImageView
+        android:paddingLeft="@dimen/view_6_dp"
+        android:paddingTop="@dimen/view_15_dp"
+        android:paddingRight="@dimen/view_12_dp"
         android:id="@+id/xin_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_12_dp"
-        app:bl_selected_drawable="@drawable/posts_like_selected_icon"
-        app:bl_unSelected_drawable="@drawable/posts_like_black_icon"
+        android:paddingBottom="@dimen/view_15_dp"
+        app:src_selected_drawable="@drawable/posts_like_selected_icon"
+        app:src_unSelected_drawable="@drawable/posts_like_black_icon"
         app:layout_constraintBottom_toBottomOf="@+id/commenter_avater_iv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
@@ -69,7 +72,6 @@
         android:id="@+id/like_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center_vertical"
         android:text="677"
         android:textColor="@color/black_trans_50"
