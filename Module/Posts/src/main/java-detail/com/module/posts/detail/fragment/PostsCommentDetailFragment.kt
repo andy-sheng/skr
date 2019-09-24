@@ -158,7 +158,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         if (replyModel?.recordVoiceUrl?.isNotEmpty() == true) {
             map["audios"] = listOf(mapOf(
                     "URL" to replyModel?.recordVoiceUrl,
-                    "duration" to replyModel?.recordDurationMs
+                    "durTimeMs" to replyModel?.recordDurationMs
             ))
             hasData = true
         }
@@ -171,11 +171,18 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
             hasData = true
         }
 
-
         if (replyModel?.contentStr?.isNotEmpty() == true) {
             map["content"] = replyModel?.contentStr
             hasData = true
         }
+
+        replyModel?.songId?.let {
+            if (it > 0) {
+                map["songID"] = it
+                hasData = true
+            }
+        }
+
         if (!hasData) {
             U.getToastUtil().showShort("内容为空")
             progressView?.visibility = View.GONE
@@ -183,7 +190,6 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         }
 
         map["postsID"] = mPostsWatchModel?.posts?.postsID
-//        map["songID"] = ""
 
         map["firstLevelCommentID"] = mPostFirstLevelCommentModel?.comment?.commentID
 
