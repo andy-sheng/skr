@@ -86,8 +86,8 @@ class PostsVoteEditActivity : BaseActivity() {
             // 先判断数据是否合法
             val l = ArrayList<String>()
             for (v in voteAdapter.dataList) {
-                if (v.content.isNotEmpty()) {
-                    l.add(v.content)
+                if (v.content.trim().isNotEmpty()) {
+                    l.add(v.content.trim())
                 }
             }
             if (l.size < 2) {
