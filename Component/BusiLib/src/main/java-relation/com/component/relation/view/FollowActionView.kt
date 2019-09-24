@@ -68,13 +68,15 @@ abstract class FollowActionView : ExTextView {
     }
 
     fun getRelation() {
-        mTask = ApiMethods.subscribe(userInfoServerApi.getRelation(MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult?) {
-                if (result?.errno == 0) {
-                    showRelation(result.data.getBooleanValue("isBlacked"), result.data.getBooleanValue("isFollow"), result.data.getBooleanValue("isFriend"))
+        userID?.let {
+            mTask = ApiMethods.subscribe(userInfoServerApi.getRelation(it), object : ApiObserver<ApiResult>() {
+                override fun process(result: ApiResult?) {
+                    if (result?.errno == 0) {
+                        showRelation(result.data.getBooleanValue("isBlacked"), result.data.getBooleanValue("isFollow"), result.data.getBooleanValue("isFriend"))
+                    }
                 }
-            }
-        }, RequestControl("FollowActionView " + "getRelation", ControlType.CancelThis))
+            }, RequestControl("FollowActionView " + "getRelation", ControlType.CancelThis))
+        }
     }
 
     fun follow(userID: Int) {
