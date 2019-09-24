@@ -133,7 +133,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     }
 
     inner class PostsFirstLevelCommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var followTv: DefaultFollowView
         var timeTv: TextView
         var nicknameTv: TextView
         var avatarIv: AvatarView
@@ -149,10 +148,8 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         var pos: Int = -1
         var mModel: PostFirstLevelCommentModel? = null
 
-        var isGetRelation: Boolean = false
 
         init {
-            followTv = itemView.findViewById(R.id.follow_tv)
             timeTv = itemView.findViewById(R.id.time_tv)
             nicknameTv = itemView.findViewById(R.id.nickname_tv)
             avatarIv = itemView.findViewById(R.id.avatar_iv)
@@ -263,7 +260,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun destroyHolder(pos: Int, model: PostFirstLevelCommentModel) {
             this.pos = pos
             this.mModel = model
-            followTv.destroy()
         }
 
         fun bindData(pos: Int, model: PostFirstLevelCommentModel) {
@@ -302,13 +298,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             } else {
                 nineGridVp.visibility = View.VISIBLE
                 nineGridVp.setUrlList(mModel?.comment?.pictures!!)
-            }
-
-            followTv.userID = mModel?.commentUser?.userId
-
-            if (!isGetRelation) {
-                followTv.getRelation()
-                isGetRelation = true
             }
 
             commentCtnTv.text = "评论(${mCommentCtn}条)"
