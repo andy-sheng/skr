@@ -413,6 +413,7 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
         postsAdapter!!.mCommentCtn++
         progressView?.visibility = View.GONE
         feedsInputContainerView.onCommentSuccess()
+        recyclerView?.scrollToPosition(0)
     }
 
     override fun isBlackStatusBarText(): Boolean = true

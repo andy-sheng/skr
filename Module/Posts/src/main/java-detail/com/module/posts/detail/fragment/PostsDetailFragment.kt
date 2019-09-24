@@ -240,6 +240,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             it.commentCnt++
         }
         feedsInputContainerView.onCommentSuccess()
+        recyclerView?.scrollToPosition(0)
     }
 
     override fun addSecondLevelCommentSuccess() {
