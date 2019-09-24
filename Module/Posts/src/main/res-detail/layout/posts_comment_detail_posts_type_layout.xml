@@ -116,10 +116,11 @@
         app:layout_constraintTop_toBottomOf="@+id/comment_num_divider" />
 
     <com.common.view.ex.ExTextView
+        android:layout_height="@dimen/view_180_dp"
+        android:drawableTop="@drawable/pinglunkong"
         android:id="@+id/empty_tv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_164_dp"
-        android:background="@color/black_trans_5"
+        android:paddingTop="@dimen/view_60_dp"
         android:gravity="center"
         android:text="暂无评论"
         android:visibility="gone"
