@@ -63,6 +63,18 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
+            <com.common.view.ex.ExTextView
+                android:id="@+id/message_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/ic_chat_normal"
+                android:gravity="center"
+                android:text="消息"
+                android:textSize="@dimen/textsize_10_dp"
+                app:bl_selected_textColor="#54855F"
+                app:bl_unSelected_textColor="#7897A5" />
+
             <com.common.view.ex.ExImageView
                 android:id="@+id/message_red_dot"
                 android:layout_width="wrap_content"
@@ -87,18 +99,6 @@
                 app:bl_corners_radius="@dimen/view_9_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#FF8AB6" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/message_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableTop="@drawable/ic_chat_normal"
-                android:gravity="center"
-                android:text="消息"
-                android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#54855F"
-                app:bl_unSelected_textColor="#7897A5" />
 
         </RelativeLayout>
 
