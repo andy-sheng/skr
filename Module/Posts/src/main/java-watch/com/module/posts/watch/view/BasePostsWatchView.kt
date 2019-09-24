@@ -195,7 +195,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
                 recordClick(model)
-                goBigImageBrowse(index, model)
+                goBigImageBrowse(index, model?.posts?.pictures)
             }
 
             override fun onClickPostsRedPkg(position: Int, model: PostsWatchModel?) {
@@ -286,7 +286,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
                 recordClick(model)
-                goBigImageBrowse(index, model)
+                goBigImageBrowse(index, model?.bestComment?.comment?.pictures)
             }
         })
         refreshLayout.apply {
@@ -330,7 +330,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         }
     }
 
-    private fun goBigImageBrowse(index: Int, model: PostsWatchModel?) {
+    private fun goBigImageBrowse(index: Int, list: List<String>?) {
         BigImageBrowseFragment.open(true, context as FragmentActivity, object : DefaultImageBrowserLoader<String>() {
             override fun init() {
 
@@ -345,7 +345,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun getInitList(): List<String>? {
-                return model?.posts?.pictures
+                return list
             }
 
             override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
