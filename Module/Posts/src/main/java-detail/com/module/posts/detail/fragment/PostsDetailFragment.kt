@@ -262,7 +262,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     }
 
     override fun loadDetailDelete() {
-        U.getToastUtil().showShort("帖子已删除")
+        U.getToastUtil().showShort("帖子已经删除")
         activity?.finish()
     }
 
