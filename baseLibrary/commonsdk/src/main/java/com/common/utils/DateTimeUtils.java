@@ -152,11 +152,10 @@ public class DateTimeUtils {
      * 格式化帖子时间
      *
      * @param videoTime 默认是毫秒单位
-     * @param minu      是否精确到分
      * @return 小于1小时的 00:00
      * 大于1小时的 00:00:00
      */
-    public String formatPostsRedTime(long videoTime, boolean minu) {
+    public String formatPostsRedTime(long videoTime) {
         //MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
 
         int seconds = 0;
@@ -167,11 +166,8 @@ public class DateTimeUtils {
         }
         videoTime /= 1000;
 
-        String result = "";
-        if (!minu) {
-            seconds = (int) (videoTime % 60);
-            result = String.format("%02d", seconds);
-        }
+        seconds = (int) (videoTime % 60);
+        String result = String.format("%02d", seconds);
 
         videoTime /= 60;
         minutes = (int) (videoTime % 60);
@@ -179,6 +175,42 @@ public class DateTimeUtils {
 
         videoTime /= 60;
         if (videoTime > 0) {
+            if (videoTime <= Integer.MAX_VALUE) {
+                hours = (int) videoTime;
+                result = String.format("%02d", hours) + ":" + result;
+            } else {
+                MyLog.d(TAG, "formatVideoTime : time over limit, videoTime = " + videoTime);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 格式化帖子时间(精确到分钟)
+     *
+     * @param videoTime 默认是毫秒单位
+     * @return  00:00
+     *
+     */
+    public String formatPostsRedMinuTime(long videoTime) {
+        //MyLog.d(TAG, "formatVideoTime, videoTime = " + videoTime);
+
+        int seconds = 0;
+        int minutes = 0;
+        int hours = 0;
+        if (videoTime < 0) {
+            videoTime = 0;
+        }
+
+        videoTime /= 1000;
+        seconds = (int) (videoTime % 60);
+
+        videoTime /= 60;
+        minutes = (int) (videoTime % 60);
+        String result = String.format("%02d", minutes);
+
+        videoTime /= 60;
+        if (videoTime >= 0) {
             if (videoTime <= Integer.MAX_VALUE) {
                 hours = (int) videoTime;
                 result = String.format("%02d", hours) + ":" + result;
