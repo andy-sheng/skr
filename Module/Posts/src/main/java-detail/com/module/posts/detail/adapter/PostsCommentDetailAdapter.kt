@@ -476,7 +476,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     contentTv.text = model.comment.content
                 } else if (model.comment.replyType == 2) {
                     val spanUtils = SpanUtils()
-                            .append(model.commentUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                            .append(model.commentUser.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
                                     bundle.putInt("bundle_user_id", model.commentUser.userId)
@@ -492,7 +492,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                                 }
                             })
                             .append("回复").setForegroundColor(U.getColor(R.color.black))
-                            .append(model.replyUser.nickname.toString()).setClickSpan(object : ClickableSpan() {
+                            .append(model.replyUser.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
                                 override fun onClick(widget: View?) {
                                     val bundle = Bundle()
                                     bundle.putInt("bundle_user_id", model.replyUser.userId)

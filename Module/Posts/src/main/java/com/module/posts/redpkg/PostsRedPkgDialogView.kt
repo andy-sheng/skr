@@ -140,7 +140,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
         MyLog.d("starCounDown", "starCounDown time = $time")
         launch {
             repeat((time / 1000).toInt()) {
-                redpkgStatusTv.text = "倒计时: ${U.getDateTimeUtils().formatPostsRedTime(time - it * 1000, false)}"
+                redpkgStatusTv.text = "倒计时: ${U.getDateTimeUtils().formatPostsRedTime(time - it * 1000)}"
                 delay(1000)
             }
             // 重新去拉一次数据
