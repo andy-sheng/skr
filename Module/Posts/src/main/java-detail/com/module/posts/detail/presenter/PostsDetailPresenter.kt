@@ -173,6 +173,9 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                         mObj.secondLevelComments = mutableListOf()
                     }
                     mObj.secondLevelComments?.add(0, model)
+                    mObj.comment?.let {
+                        it.subCommentCnt++
+                    }
                     view?.addSecondLevelCommentSuccess()
                 }
             } else {

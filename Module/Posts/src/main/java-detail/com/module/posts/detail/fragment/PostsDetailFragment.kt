@@ -291,6 +291,9 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
                         it.commentCnt++
                     }
                     any.secondLevelComments?.add(0, event.model!!)
+                    any.comment?.let {
+                        it.subCommentCnt++
+                    }
                     postsAdapter!!.notifyDataSetChanged()
                 }
             }

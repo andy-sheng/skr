@@ -768,7 +768,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                             }
                         })
                         .append(" 等人 共").setForegroundColor(U.getColor(R.color.black))
-                        .append("${mModel?.secondLevelComments?.size}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
+                        .append("${mModel?.comment?.subCommentCnt}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
 
                 val stringBuilder = spanUtils.create()
                 replyNum.text = stringBuilder
