@@ -12,7 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
 import com.common.emoji.EmotionKeyboard
@@ -42,7 +42,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.Serializable
 
-class PostsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListener {
+class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener {
     internal var mEmotionKeyboard: EmotionKeyboard? = null
     var mInputContainer: ConstraintLayout? = null
     protected var mEtContent: NoLeakEditText? = null
