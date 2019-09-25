@@ -65,6 +65,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
                 U.getToastUtil().showShort("评论成功")
                 val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
                 mModelList.add(0, model)
+                mOffset++
                 view.addSecondLevelCommentSuccess()
                 view.showSecondLevelCommentList(mModelList, mHasMore)
                 EventBus.getDefault().post(AddSecondCommentEvent(model, view.getFirstLevelCommentID()))

@@ -164,6 +164,7 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 if (mObj is PostsWatchModel) {
                     val model = JSON.parseObject(result.data.getString("firstLevelComment"), PostFirstLevelCommentModel::class.java)
                     mModelList.add(0, model)
+                    mOffset++
                     view?.addFirstLevelCommentSuccess()
                     view?.showFirstLevelCommentList(mModelList, mHasMore)
                 } else if (mObj is PostFirstLevelCommentModel) {
