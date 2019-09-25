@@ -3,6 +3,7 @@ package com.common.view.ninegrid
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -98,7 +99,11 @@ abstract class NineGridLayout : ViewGroup {
     }
 
     fun notifyDataSetChanged() {
-        post { refresh() }
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            refresh()
+        } else {
+            post { refresh() }
+        }
     }
 
     private fun refresh() {
