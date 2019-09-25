@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
 import com.common.emoji.EmotionKeyboard
@@ -42,9 +41,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.Serializable
 
-class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener {
+class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusListener {
     internal var mEmotionKeyboard: EmotionKeyboard? = null
-    var mInputContainer: ConstraintLayout? = null
+
     protected var mEtContent: NoLeakEditText? = null
     internal var mPlaceHolderView: ViewGroup? = null
     protected var mSendMsgBtn: View? = null
@@ -54,6 +53,7 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
     lateinit var imgRecyclerView: RecyclerView
     lateinit var postsVoiceRecordView: PostsVoiceRecordView
     lateinit var postsKgeRecordView: PostsKgeRecordView
+    lateinit var topArea: View
 
     lateinit var selectImgGroup: Group
 
@@ -102,13 +102,14 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
      */
     protected fun initInputView() {
         LQREmotionKit.tryInit(U.app())
-        mInputContainer = this.findViewById(R.id.et_container)
+
         mEtContent = this.findViewById<View>(R.id.etContent) as NoLeakEditText
         mPlaceHolderView = this.findViewById(R.id.place_holder_view)
         mSendMsgBtn = this.findViewById(R.id.send_msg_btn)
         tupianIv = this.findViewById(R.id.tupian_iv)
         yuyinIv = this.findViewById(R.id.yuyin_iv)
         kgeIv = this.findViewById(R.id.kge_iv)
+        topArea = this.findViewById(R.id.topArea)
 
         imgRecyclerView = rootView.findViewById(R.id.recycler_view)
         postsVoiceRecordView = PostsVoiceRecordView(rootView.findViewById(R.id.posts_voice_record_view_stub))
@@ -194,9 +195,11 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
             }
         })
 
-        mInputContainer?.setOnClickListener {
+        topArea?.setOnClickListener {
             hideSoftInput()
         }
+
+        setOnClickListener {}
 
         postsVoiceRecordView.recordOkListener = { path, duration ->
             replyModel.recordVoicePath = path
@@ -259,12 +262,12 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
                         }
                     })
                     .build()
-            mInputContainer?.visibility = View.VISIBLE
+            visibility = View.VISIBLE
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             showAudioRecordView()
-            mInputContainer?.visibility = View.VISIBLE
+            visibility = View.VISIBLE
         }
     }
 
@@ -297,12 +300,12 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
                         }
                     })
                     .build()
-            mInputContainer?.visibility = View.VISIBLE
+            visibility = View.VISIBLE
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
             showKgeRecordView()
-            mInputContainer?.visibility = View.VISIBLE
+            visibility = View.VISIBLE
 
             if (postsVoiceRecordView.status == STATUS_RECORDING) {
                 resetData(SHOW_TYPE.AUDIO)
@@ -339,7 +342,7 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
                         }
                     })
                     .build()
-            mInputContainer?.visibility = View.VISIBLE
+            visibility = View.VISIBLE
             mEmotionKeyboard?.hideSoftInput()
             tipsDialogView?.showByDialog()
         } else {
@@ -352,7 +355,7 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
                     .setSelectLimit(9)
                     .build()
             ResPickerActivity.open(context as Activity, ArrayList<ImageItem>(postsReplayImgAdapter?.dataList))
-            mInputContainer?.visibility = View.VISIBLE
+            visibility = View.VISIBLE
             postsVoiceRecordView.setVisibility(View.GONE)
             postsKgeRecordView.setVisibility(View.GONE)
             mPlaceHolderView?.getLayoutParams()?.height = 0
@@ -434,7 +437,7 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
 
     override fun onBoradShow() {
         EventBus.getDefault().post(PostsCommentBoardEvent(true))
-        mInputContainer?.visibility = View.VISIBLE
+        visibility = View.VISIBLE
     }
 
     override fun onBoradHide() {
@@ -442,7 +445,7 @@ class PostsInputContainerView : FrameLayout, EmotionKeyboard.BoardStatusListener
             //当前是键盘状态，需要收起键盘，reset
             invokeHideCall()
             EventBus.getDefault().post(PostsCommentBoardEvent(false))
-            mInputContainer?.visibility = View.GONE
+            visibility = View.GONE
             mEtContent?.hint = ""
         }
 

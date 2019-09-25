@@ -140,6 +140,7 @@
         app:layout_constraintTop_toTopOf="@+id/audio_iv" />
 
     <com.module.posts.detail.view.PostsInputContainerView
+        android:visibility="gone"
         android:id="@+id/feeds_input_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

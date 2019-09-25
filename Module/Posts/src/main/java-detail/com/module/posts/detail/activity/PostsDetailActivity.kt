@@ -138,7 +138,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             progressView.visibility = View.VISIBLE
             beginUploadTask(replyModel, obj)
             feedsInputContainerView?.hideSoftInput()
-            feedsInputContainerView?.mInputContainer?.visibility = View.GONE
+            feedsInputContainerView?.visibility = View.GONE
         }
 
         mPostsDetailPresenter = PostsDetailPresenter(this)
@@ -341,7 +341,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
     }
 
     override fun onBackPressed() {
-        if (feedsInputContainerView.mInputContainer?.visibility == View.VISIBLE) {
+        if (feedsInputContainerView.visibility == View.VISIBLE) {
             feedsInputContainerView.hideSoftInput()
             return
         }

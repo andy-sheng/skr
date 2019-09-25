@@ -1,11 +1,24 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/et_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    tools:parentTag="android.widget.RelativeLayout">
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <View
+        android:id="@+id/topArea"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/top_barrier"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/top_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="recycler_view_bg, recycler_view, input_container" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/recycler_view_bg"
@@ -168,4 +181,4 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</merge>

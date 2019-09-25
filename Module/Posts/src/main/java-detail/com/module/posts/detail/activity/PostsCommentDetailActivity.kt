@@ -305,7 +305,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
             progressView?.visibility = View.VISIBLE
             beginUploadTask(replyModel, obj)
             feedsInputContainerView?.hideSoftInput()
-            feedsInputContainerView?.mInputContainer?.visibility = View.GONE
+            feedsInputContainerView?.visibility = View.GONE
         }
 
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList(mPostFirstLevelCommentModel?.comment?.commentID
