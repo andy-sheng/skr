@@ -32,16 +32,16 @@ public class ImageBrowseView extends EnhancedImageView {
 
     @Override
     protected void createFrescoView() {
-        mPhotoDraweeView = new PhotoDraweeView(getContext());
+        setMPhotoDraweeView(new PhotoDraweeView(getContext()));
         /**
          * 点击照片回调
          */
-        ((PhotoDraweeView) mPhotoDraweeView).setOnPhotoTapListener(new OnPhotoTapListener() {
+        ((PhotoDraweeView) getMPhotoDraweeView()).setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                MyLog.d(TAG, "onPhotoTap" + " view=" + view + " x=" + x + " y=" + y);
-                if (mClickListener != null) {
-                    mClickListener.onClick(view);
+                MyLog.d(getTAG(), "onPhotoTap" + " view=" + view + " x=" + x + " y=" + y);
+                if (getMClickListener() != null) {
+                    getMClickListener().onClick(view);
                 }
 
             }
@@ -49,12 +49,12 @@ public class ImageBrowseView extends EnhancedImageView {
         /**
          * 点击黑色部分回调
          */
-        ((PhotoDraweeView) mPhotoDraweeView).setOnViewTapListener(new OnViewTapListener() {
+        ((PhotoDraweeView) getMPhotoDraweeView()).setOnViewTapListener(new OnViewTapListener() {
             @Override
             public void onViewTap(View view, float x, float y) {
-                MyLog.d(TAG, "onViewTap" + " view=" + view + " x=" + x + " y=" + y);
-                if (mClickListener != null) {
-                    mClickListener.onClick(view);
+                MyLog.d(getTAG(), "onViewTap" + " view=" + view + " x=" + x + " y=" + y);
+                if (getMClickListener() != null) {
+                    getMClickListener().onClick(view);
                 }
             }
         });
@@ -67,6 +67,6 @@ public class ImageBrowseView extends EnhancedImageView {
 
     @Override
     protected void realLoadByFresco(BaseImage baseImage) {
-        ((PhotoDraweeView) mPhotoDraweeView).load(baseImage);
+        ((PhotoDraweeView) getMPhotoDraweeView()).load(baseImage);
     }
 }

@@ -29,7 +29,7 @@ class PostsNineGridLayout : NineGridLayout {
     var clickListener: ((i: Int, url: String, urlList: List<String>) -> Unit)? = null
 
     override fun displayOneImage(imageView: RatioImageView, url: String, parentWidth: Int): Boolean {
-        FrescoWorker.loadImage(imageView, ImageFactory.newPathImage(url)
+        imageView.load(ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .setCornerRadius(8.dp().toFloat())
@@ -62,11 +62,12 @@ class PostsNineGridLayout : NineGridLayout {
 
                 })
                 .build<BaseImage>())
+
         return false
     }
 
     override fun displayImage(imageView: RatioImageView, url: String) {
-        FrescoWorker.loadImage(imageView, ImageFactory.newPathImage(url)
+        imageView.load(ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
                 .setCornerRadius(8.dp().toFloat())
                 .build<BaseImage>())

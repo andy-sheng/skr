@@ -8,13 +8,14 @@ import android.view.MotionEvent
 import com.common.base.R
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.imagebrowse.EnhancedImageView
 
 
 /**
  * 根据宽高比例自动计算高度ImageView
  * Created by HMY on 2016/4/21.
  */
-class RatioImageView : BaseImageView {
+class RatioImageView : EnhancedImageView {
 
     /**
      * 宽高比例
@@ -58,19 +59,19 @@ class RatioImageView : BaseImageView {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
 
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                val drawable = drawable
-                drawable?.mutate()?.setColorFilter(Color.GRAY,
-                        PorterDuff.Mode.MULTIPLY)
-            }
-            MotionEvent.ACTION_MOVE -> {
-            }
-            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-                val drawableUp = drawable
-                drawableUp?.mutate()?.clearColorFilter()
-            }
-        }
+//        when (event.action) {
+//            MotionEvent.ACTION_DOWN -> {
+//                val drawable = drawable
+//                drawable?.mutate()?.setColorFilter(Color.GRAY,
+//                        PorterDuff.Mode.MULTIPLY)
+//            }
+//            MotionEvent.ACTION_MOVE -> {
+//            }
+//            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
+//                val drawableUp = drawable
+//                drawableUp?.mutate()?.clearColorFilter()
+//            }
+//        }
 
         return super.onTouchEvent(event)
     }
