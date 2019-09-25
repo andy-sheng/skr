@@ -16,6 +16,7 @@
         android:paddingLeft="@dimen/view_20_dp"
         android:paddingRight="@dimen/view_20_dp"
         android:paddingTop="@dimen/view_20_dp"
+        android:paddingBottom="@dimen/view_10_dp"
         android:src="@drawable/more_icon_black"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
