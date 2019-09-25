@@ -1,9 +1,8 @@
 package com.module.posts.watch.model
 
-import java.io.Serializable
-import kotlin.random.Random
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.userinfo.model.UserInfoModel
+import java.io.Serializable
 
 class PostsWatchModel : Serializable {
     @JSONField(name = "bestComment")
@@ -22,6 +21,9 @@ class PostsWatchModel : Serializable {
     //todo 自定义在ui上的属性
     var isExpend = false  // 文字是否展开
 
+    //！！！！只有帖子详情页用
+    var relationShip: RelationShip? = null
+
     fun isAudit(): Boolean {
         return posts?.status == PostsModel.EPS_AUDIT_ACCEPT
     }
@@ -34,4 +36,9 @@ class PostsWatchModel : Serializable {
         return "帖子 posts=${posts?.toDebugString()}"
     }
 
+    class RelationShip : Serializable {
+        var isBlack: Boolean = false
+        var isFollow: Boolean = false
+        var isFriend: Boolean = false
+    }
 }

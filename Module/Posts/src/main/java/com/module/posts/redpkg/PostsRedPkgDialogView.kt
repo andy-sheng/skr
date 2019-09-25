@@ -144,6 +144,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
                 delay(1000)
             }
             // 重新去拉一次数据
+            delay(1000)
             getRedPacketDetail(false)
         }
     }

@@ -15,4 +15,5 @@ interface IPostsDetailView {
     fun addCommetFaild()
     fun showPostsWatchModel(model: PostsWatchModel)
     fun voteSuccess(position: Int)
+    fun showRelation(isBlack: Boolean, isFollow: Boolean, isFriend: Boolean)
 }
