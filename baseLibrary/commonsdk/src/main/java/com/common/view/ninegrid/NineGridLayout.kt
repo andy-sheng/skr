@@ -103,53 +103,49 @@ abstract class NineGridLayout : ViewGroup {
         removeAllViews()
         val size = mUrlList.size
         if (size > 0) {
-            visibility = View.VISIBLE
-        } else {
-            visibility = View.GONE
-        }
+            if (size == 1) {
+                val url = mUrlList[0]
+                val imageView = createImageView(0, url)
 
-        if (size == 1) {
-            val url = mUrlList[0]
-            val imageView = createImageView(0, url)
+                //避免在ListView中一张图未加载成功时，布局高度受其他item影响
+                val params = layoutParams
+                params.height = mSingleWidth
+                layoutParams = params
+                imageView.layout(0, 0, mSingleWidth, mSingleWidth)
 
-            //避免在ListView中一张图未加载成功时，布局高度受其他item影响
-            val params = layoutParams
-            params.height = mSingleWidth
-            layoutParams = params
-            imageView.layout(0, 0, mSingleWidth, mSingleWidth)
-
-            val isShowDefualt = displayOneImage(imageView, url, mTotalWidth)
-            if (isShowDefualt) {
-                layoutImageView(imageView, 0, url, false)
-            } else {
-                addView(imageView)
+                val isShowDefualt = displayOneImage(imageView, url, mTotalWidth)
+                if (isShowDefualt) {
+                    layoutImageView(imageView, 0, url, false)
+                } else {
+                    addView(imageView)
+                }
+                return
             }
-            return
-        }
 
-        generateChildrenLayout(size)
-        layoutParams()
+            generateChildrenLayout(size)
+            layoutParams()
 
-        for (i in 0 until size) {
-            val url = mUrlList[i]
-            val imageView: RatioImageView
-            if (!mIsShowAll) {
-                if (i < MAX_COUNT - 1) {
-                    imageView = createImageView(i, url)
-                    layoutImageView(imageView, i, url, false)
-                } else { //第9张时
-                    if (size <= MAX_COUNT) {//刚好第9张
+            for (i in 0 until size) {
+                val url = mUrlList[i]
+                val imageView: RatioImageView
+                if (!mIsShowAll) {
+                    if (i < MAX_COUNT - 1) {
                         imageView = createImageView(i, url)
                         layoutImageView(imageView, i, url, false)
-                    } else {//超过9张
-                        imageView = createImageView(i, url)
-                        layoutImageView(imageView, i, url, true)
-                        break
+                    } else { //第9张时
+                        if (size <= MAX_COUNT) {//刚好第9张
+                            imageView = createImageView(i, url)
+                            layoutImageView(imageView, i, url, false)
+                        } else {//超过9张
+                            imageView = createImageView(i, url)
+                            layoutImageView(imageView, i, url, true)
+                            break
+                        }
                     }
+                } else {
+                    imageView = createImageView(i, url)
+                    layoutImageView(imageView, i, url, false)
                 }
-            } else {
-                imageView = createImageView(i, url)
-                layoutImageView(imageView, i, url, false)
             }
         }
     }
