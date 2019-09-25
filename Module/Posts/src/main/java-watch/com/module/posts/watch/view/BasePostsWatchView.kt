@@ -114,6 +114,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             override fun onClickPostsDetail(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
                     recordClick(model)
+                    // 停掉音乐吧
+                    SinglePlayer.stop(playerTag)
+                    adapter?.stopPlay()
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
                             .withInt("postsID", model.posts?.postsID?.toInt() ?: 0)
                             .navigation()
