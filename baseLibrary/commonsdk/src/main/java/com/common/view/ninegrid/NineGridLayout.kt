@@ -22,6 +22,7 @@ import java.util.ArrayList
  * 时间：2016/5/10
  */
 abstract class NineGridLayout : ViewGroup {
+    var TAG = "NineGridLayout"+hashCode()
 
     private var mSpacing = DEFUALT_SPACING
     private var mColumns: Int = 0
@@ -56,10 +57,11 @@ abstract class NineGridLayout : ViewGroup {
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        MyLog.d(TAG, "onLayout changed = $changed, left = $left, top = $top, right = $right, bottom = $bottom")
         mTotalWidth = right - left
         mSingleWidth = ((mTotalWidth - mSpacing * (3 - 1)) / 3).toInt()
         if (mIsFirst) {
-            notifyDataSetChanged()
+            notifyDataSetChanged("onLayout")
             mIsFirst = false
         }
     }
@@ -83,7 +85,7 @@ abstract class NineGridLayout : ViewGroup {
     }
 
     fun setUrlList(urlList: List<String>) {
-        MyLog.d("NineGridLayout", "setUrlList urlList = $urlList")
+        MyLog.d(TAG, "setUrlList urlList = $urlList")
         if (urlList.isNullOrEmpty()) {
             visibility = View.GONE
             return
@@ -94,20 +96,24 @@ abstract class NineGridLayout : ViewGroup {
         mUrlList.addAll(urlList)
 
         if (!mIsFirst) {
-            notifyDataSetChanged()
+            notifyDataSetChanged("setUrlList")
         }
     }
 
-    fun notifyDataSetChanged() {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            refresh()
-        } else {
+    fun notifyDataSetChanged(from:String) {
+        MyLog.d(TAG, "notifyDataSetChanged from=$from")
+        /**
+         * 这边一定要post 一下 不然会导致 下一次 onLayout 不回调
+         */
+//        if (Looper.myLooper() == Looper.getMainLooper()) {
+//            refresh()
+//        } else {
             post { refresh() }
-        }
+//        }
     }
 
     private fun refresh() {
-        MyLog.d("NineGridLayout", "refresh")
+        MyLog.d(TAG, "refresh")
         removeAllViews()
         val size = mUrlList.size
 //        if (size > 0) {
@@ -115,61 +121,68 @@ abstract class NineGridLayout : ViewGroup {
 //        } else {
 //            visibility = View.GONE
 //        }
-        if (size > 0) {
-            if (size == 1) {
-                val url = mUrlList[0]
-                val imageView = createImageView(0, url)
+        if (size == 1) {
+            val url = mUrlList[0]
+            val imageView = createImageView(0, url)
 
-                //避免在ListView中一张图未加载成功时，布局高度受其他item影响
-                val params = layoutParams
-                params.height = mSingleWidth
-                layoutParams = params
-                imageView.layout(0, 0, mSingleWidth, mSingleWidth)
+            //避免在ListView中一张图未加载成功时，布局高度受其他item影响
+            val params = layoutParams
+            params.height = mSingleWidth
+            layoutParams = params
+            imageView.layout(0, 0, mSingleWidth, mSingleWidth)
 
-                val isShowDefualt = displayOneImage(imageView, url, mTotalWidth)
-                if (isShowDefualt) {
-                    layoutImageView(imageView, 0, url, false)
-                } else {
-                    addView(imageView)
-                }
-                return
+            val isShowDefualt = displayOneImage(imageView, url, mTotalWidth)
+            if (isShowDefualt) {
+                layoutImageView(imageView, 0, url, false)
+            } else {
+                addView(imageView)
             }
+            return
+        }
 
-            generateChildrenLayout(size)
-            layoutParams()
+        generateChildrenLayout(size)
+        layoutParams()
 
-            for (i in 0 until size) {
-                val url = mUrlList[i]
-                val imageView: RatioImageView
-                if (!mIsShowAll) {
-                    if (i < MAX_COUNT - 1) {
-                        imageView = createImageView(i, url)
-                        layoutImageView(imageView, i, url, false)
-                    } else { //第9张时
-                        if (size <= MAX_COUNT) {//刚好第9张
-                            imageView = createImageView(i, url)
-                            layoutImageView(imageView, i, url, false)
-                        } else {//超过9张
-                            imageView = createImageView(i, url)
-                            layoutImageView(imageView, i, url, true)
-                            break
-                        }
-                    }
-                } else {
+        for (i in 0 until size) {
+            val url = mUrlList[i]
+            val imageView: RatioImageView
+            if (!mIsShowAll) {
+                if (i < MAX_COUNT - 1) {
                     imageView = createImageView(i, url)
                     layoutImageView(imageView, i, url, false)
+                } else { //第9张时
+                    if (size <= MAX_COUNT) {//刚好第9张
+                        imageView = createImageView(i, url)
+                        layoutImageView(imageView, i, url, false)
+                    } else {//超过9张
+                        imageView = createImageView(i, url)
+                        layoutImageView(imageView, i, url, true)
+                        break
+                    }
                 }
+            } else {
+                imageView = createImageView(i, url)
+                layoutImageView(imageView, i, url, false)
             }
         }
     }
 
     private fun layoutParams() {
         val singleHeight = mSingleWidth
-
         //根据子view数量确定高度
         val params = layoutParams
         params.height = (singleHeight * mRows + mSpacing * (mRows - 1)).toInt()
         layoutParams = params
+    }
+
+    override fun setLayoutParams(params: LayoutParams?) {
+        MyLog.d(TAG, "setLayoutParams params = $params")
+        super.setLayoutParams(params)
+    }
+
+    override fun requestLayout() {
+        MyLog.d(TAG, "requestLayout")
+        super.requestLayout()
     }
 
     private fun createImageView(i: Int, url: String): RatioImageView {
