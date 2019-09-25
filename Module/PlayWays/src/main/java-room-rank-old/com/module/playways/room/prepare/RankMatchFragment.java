@@ -1,4 +1,4 @@
-package com.module.playways.grab.prepare;
+package com.module.playways.room.prepare;
 
 import android.animation.AnimatorSet;
 import android.content.res.Resources;
@@ -44,7 +44,6 @@ import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.prepare.presenter.BaseMatchPresenter;
 import com.module.playways.room.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.room.prepare.view.IGrabMatchingView;
-import com.module.playways.room.prepare.view.IRankMatchingView;
 import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -63,7 +62,7 @@ import java.util.Collections;
 import java.util.List;
 
 //这个是匹配界面，之前的FastMatchingSence
-public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView, IRankMatchingView {
+public class RankMatchFragment extends BaseFragment implements IGrabMatchingView, IRankMatchingView {
 
     public final String TAG = "GrabMatchFragment";
 
@@ -374,7 +373,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)
                 .setAddToBackStack(false)
-                .setNotifyHideFragment(GrabMatchFragment.class)
+                .setNotifyHideFragment(RankMatchFragment.class)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(0, mPrepareData)
                 .setFragmentDataListener(new FragmentDataListener() {
@@ -387,7 +386,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
         //匹配成功直接先把自己pop掉
         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(GrabMatchFragment.this)
+                .setPopFragment(RankMatchFragment.this)
                 .setPopAbove(false)
                 .setHasAnimation(false)
                 .build());
@@ -427,7 +426,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && GrabMatchFragment.this.getFragmentVisible()) {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && RankMatchFragment.this.getFragmentVisible()) {
             if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
                 BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment1");
             } else {

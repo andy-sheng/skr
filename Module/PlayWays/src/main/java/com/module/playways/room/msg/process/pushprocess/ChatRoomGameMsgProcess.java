@@ -7,7 +7,6 @@ import com.module.playways.room.msg.event.AccBeginEvent;
 import com.module.playways.room.msg.event.AppSwapEvent;
 import com.module.playways.room.msg.event.ExitGameEvent;
 import com.module.playways.room.msg.event.GiftPresentEvent;
-import com.module.playways.room.msg.event.JoinActionEvent;
 import com.module.playways.room.msg.event.JoinNoticeEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
 import com.module.playways.room.msg.event.PkBurstLightMsgEvent;
@@ -31,10 +30,6 @@ import com.module.playways.room.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.room.msg.event.QRoundOverMsgEvent;
 import com.module.playways.room.msg.event.QSyncStatusMsgEvent;
 import com.module.playways.room.msg.event.QWantSingChanceMsgEvent;
-import com.module.playways.room.msg.event.ReadyNoticeEvent;
-import com.module.playways.room.msg.event.RoundAndGameOverEvent;
-import com.module.playways.room.msg.event.RoundOverEvent;
-import com.module.playways.room.msg.event.SyncStatusEvent;
 import com.module.playways.room.msg.event.VoteResultEvent;
 import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
 import com.zq.live.proto.Room.AppSwapMsg;
@@ -225,12 +220,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
 
     //加入游戏指令消息
     private void processJoinActionMsg(BasePushInfo info, JoinActionMsg joinActionMsg) {
-        if (joinActionMsg != null) {
-            JoinActionEvent joinActionEvent = new JoinActionEvent(info, joinActionMsg);
-            EventBus.getDefault().post(joinActionEvent);
-        } else {
-            MyLog.w(TAG, "processJoinActionMsg" + " info=" + info + " joinActionMsg = null");
-        }
+//        if (joinActionMsg != null) {
+//            JoinActionEvent joinActionEvent = new JoinActionEvent(info, joinActionMsg);
+//            EventBus.getDefault().post(joinActionEvent);
+//        } else {
+//            MyLog.w(TAG, "processJoinActionMsg" + " info=" + info + " joinActionMsg = null");
+//        }
     }
 
     //加入游戏通知消息
@@ -245,12 +240,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
 
     //准备游戏通知消息
     private void processReadyNoticeMsg(BasePushInfo info, ReadyNoticeMsg readyNoticeMsg) {
-        if (readyNoticeMsg != null) {
-            ReadyNoticeEvent readyNoticeEvent = new ReadyNoticeEvent(info, readyNoticeMsg);
-            EventBus.getDefault().post(readyNoticeEvent);
-        } else {
-            MyLog.w(TAG, "processReadyNoticeMsg" + " info=" + info + " readyNoticeMsg = null");
-        }
+//        if (readyNoticeMsg != null) {
+//            ReadyNoticeEvent readyNoticeEvent = new ReadyNoticeEvent(info, readyNoticeMsg);
+//            EventBus.getDefault().post(readyNoticeEvent);
+//        } else {
+//            MyLog.w(TAG, "processReadyNoticeMsg" + " info=" + info + " readyNoticeMsg = null");
+//        }
     }
 
 //    //准备并开始游戏通知消息
@@ -272,22 +267,22 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
 
     //游戏轮次结束通知消息
     private void processRoundOverMsg(BasePushInfo info, RoundOverMsg roundOverMsgr) {
-        if (roundOverMsgr != null) {
-            RoundOverEvent roundOverEvent = new RoundOverEvent(info, roundOverMsgr);
-            EventBus.getDefault().post(roundOverEvent);
-        } else {
-            MyLog.w(TAG, "processRoundOverMsg" + " info=" + info + " roundOverMsgr = null");
-        }
+//        if (roundOverMsgr != null) {
+//            RoundOverEvent roundOverEvent = new RoundOverEvent(info, roundOverMsgr);
+//            EventBus.getDefault().post(roundOverEvent);
+//        } else {
+//            MyLog.w(TAG, "processRoundOverMsg" + " info=" + info + " roundOverMsgr = null");
+//        }
     }
 
     //轮次和游戏结束通知消息
     private void processRoundAndGameOverMsg(BasePushInfo info, RoundAndGameOverMsg roundAndGameOverMsg) {
-        if (roundAndGameOverMsg != null) {
-            RoundAndGameOverEvent roundAndGameOverEvent = new RoundAndGameOverEvent(info, roundAndGameOverMsg);
-            EventBus.getDefault().post(roundAndGameOverEvent);
-        } else {
-            MyLog.w(TAG, "processRoundAndGameOverMsg" + " info=" + info + " roundAndGameOverMsg = null");
-        }
+//        if (roundAndGameOverMsg != null) {
+//            RoundAndGameOverEvent roundAndGameOverEvent = new RoundAndGameOverEvent(info, roundAndGameOverMsg);
+//            EventBus.getDefault().post(roundAndGameOverEvent);
+//        } else {
+//            MyLog.w(TAG, "processRoundAndGameOverMsg" + " info=" + info + " roundAndGameOverMsg = null");
+//        }
     }
 
     //app进程后台通知
@@ -302,12 +297,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgT
 
     //状态同步信令
     private void processSyncStatusMsg(BasePushInfo info, SyncStatusMsg syncStatusMsg) {
-        if (syncStatusMsg != null) {
-            SyncStatusEvent syncStatusEvent = new SyncStatusEvent(info, syncStatusMsg);
-            EventBus.getDefault().post(syncStatusEvent);
-        } else {
-            MyLog.w(TAG, "processSyncStatusMsg" + " info=" + info + " syncStatusMsg = null");
-        }
+//        if (syncStatusMsg != null) {
+//            SyncStatusEvent syncStatusEvent = new SyncStatusEvent(info, syncStatusMsg);
+//            EventBus.getDefault().post(syncStatusEvent);
+//        } else {
+//            MyLog.w(TAG, "processSyncStatusMsg" + " info=" + info + " syncStatusMsg = null");
+//        }
     }
 
     //退出游戏通知, 游戏开始前

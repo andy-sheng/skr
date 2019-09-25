@@ -36,7 +36,7 @@ import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.module.playways.view.EdgeTransparentView
-import com.module.playways.voice.activity.VoiceRoomActivity
+//import com.module.playways.voice.activity.VoiceRoomActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -225,14 +225,14 @@ class CommentView : EdgeTransparentView {
         mCommentRv?.adapter = mCommentAdapter
         mCommentRv?.addOnScrollListener(mOnScrollListener)
 
-        if (context is VoiceRoomActivity) {
-            val rankToVoiceTransformDataEvent = EventBus.getDefault().getStickyEvent(RankToVoiceTransformDataEvent::class.java)
-            EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent::class.java)
-            if (rankToVoiceTransformDataEvent != null) {
-                mCommentAdapter?.dataList = rankToVoiceTransformDataEvent.mCommentModelList
-            }
-            mCommentRv?.scrollToPosition(0)
-        }
+//        if (context is VoiceRoomActivity) {
+//            val rankToVoiceTransformDataEvent = EventBus.getDefault().getStickyEvent(RankToVoiceTransformDataEvent::class.java)
+//            EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent::class.java)
+//            if (rankToVoiceTransformDataEvent != null) {
+//                mCommentAdapter?.dataList = rankToVoiceTransformDataEvent.mCommentModelList
+//            }
+//            mCommentRv?.scrollToPosition(0)
+//        }
     }
 
     override fun onDetachedFromWindow() {

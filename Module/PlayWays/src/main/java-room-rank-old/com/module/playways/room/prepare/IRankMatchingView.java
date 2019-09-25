@@ -1,4 +1,4 @@
-package com.module.playways.room.prepare.view;
+package com.module.playways.room.prepare;
 
 
 import com.module.playways.room.msg.event.JoinActionEvent;

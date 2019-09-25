@@ -87,9 +87,6 @@ android {
             java.srcDirs += 'src/main/java-room-grab'
             res.srcDirs += 'src/main/res-room-grab'
 
-            java.srcDirs += 'src/main/java-room-voice'
-            res.srcDirs += 'src/main/res-room-voice'
-
             java.srcDirs += 'src/main/java-gift'
             res.srcDirs += 'src/main/res-gift'
 
@@ -107,6 +104,13 @@ android {
 
             java.srcDirs += 'src/main/java-room-battle'
             res.srcDirs += 'src/main/res-room-battle'
+
+            // 排位结束的语音房
+            //java.srcDirs += 'src/main/java-room-voice'
+            //res.srcDirs += 'src/main/res-room-voice'
+
+            // 老的排位
+            //java.srcDirs += 'src/main/java-room-rank-old'
         }
     }
 }

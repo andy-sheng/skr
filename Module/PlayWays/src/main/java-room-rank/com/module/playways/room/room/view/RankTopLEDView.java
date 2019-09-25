@@ -67,7 +67,7 @@ public class RankTopLEDView extends RelativeLayout {
             setVisibility(VISIBLE);
             mDengSvga.setVisibility(VISIBLE);
             mDengSvga.setLoops(1);
-            SvgaParserAdapter.parse( "rank_love_mid.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("rank_love_mid.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     if (curMode == MIE_MODE) {

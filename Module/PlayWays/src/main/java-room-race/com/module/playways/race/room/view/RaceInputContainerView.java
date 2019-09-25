@@ -12,10 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.image.fresco.BaseImageView;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -31,7 +29,7 @@ import com.component.busilib.view.AvatarView;
 import com.module.playways.R;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.room.msg.event.EventHelper;
-import com.module.playways.room.room.RankRoomServerApi;
+import com.module.playways.room.room.RoomServerApi;
 import com.module.playways.room.room.view.InputContainerView;
 import com.zq.live.proto.Common.UserInfo;
 
@@ -78,7 +76,7 @@ public class RaceInputContainerView extends InputContainerView {
             public void clickValid(View v) {
                 mHasPretend = false;
                 String content = mEtContent.getText().toString();
-                RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
+                RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());

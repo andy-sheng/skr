@@ -1,7 +1,7 @@
 package com.module.playways.room.prepare.model;
 
-import com.module.playways.room.room.model.RankGameConfigModel;
-import com.module.playways.room.room.model.RankPlayerInfoModel;
+//import com.module.playways.room.room.model.RankGameConfigModel;
+//import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.song.model.SongModel;
 
 import java.io.Serializable;
@@ -9,12 +9,12 @@ import java.util.List;
 
 public class PrepareData implements Serializable {
     private int mGameType;
-    private String mSysAvatar; // 系统头像
+    //private String mSysAvatar; // 系统头像
     private SongModel mSongModel;
     private int mGameId;
     private long mGameCreatMs;
-    private List<RankPlayerInfoModel> mPlayerInfoList;
-    private GameReadyModel mGameReadyInfo;
+    //private List<RankPlayerInfoModel> mPlayerInfoList;
+    //private GameReadyModel mGameReadyInfo;
     private int mShiftTs;
     //一场到底歌曲分类
     private int mTagId;
@@ -22,7 +22,7 @@ public class PrepareData implements Serializable {
 
     private String mBgMusic; // 背景音乐
 
-    private RankGameConfigModel mGameConfigModel;// 游戏配置
+    //private RankGameConfigModel mGameConfigModel;// 游戏配置
 
     private JoinGrabRoomRspModel mGrabCurGameStateModel;
     private String mAgoraToken;
@@ -54,13 +54,13 @@ public class PrepareData implements Serializable {
         mGameType = gameType;
     }
 
-    public String getSysAvatar() {
-        return mSysAvatar;
-    }
-
-    public void setSysAvatar(String sysAvatar) {
-        this.mSysAvatar = sysAvatar;
-    }
+//    public String getSysAvatar() {
+//        return mSysAvatar;
+//    }
+//
+//    public void setSysAvatar(String sysAvatar) {
+//        this.mSysAvatar = sysAvatar;
+//    }
 
     public void setSongModel(SongModel songModel) {
         mSongModel = songModel;
@@ -94,21 +94,21 @@ public class PrepareData implements Serializable {
         return mGameCreatMs;
     }
 
-    public void setPlayerInfoList(List<RankPlayerInfoModel> playerInfoList) {
-        mPlayerInfoList = playerInfoList;
-    }
-
-    public List<RankPlayerInfoModel> getPlayerInfoList() {
-        return mPlayerInfoList;
-    }
-
-    public void setGameReadyInfo(GameReadyModel gameReadyInfo) {
-        mGameReadyInfo = gameReadyInfo;
-    }
-
-    public GameReadyModel getGameReadyInfo() {
-        return mGameReadyInfo;
-    }
+//    public void setPlayerInfoList(List<RankPlayerInfoModel> playerInfoList) {
+//        mPlayerInfoList = playerInfoList;
+//    }
+//
+//    public List<RankPlayerInfoModel> getPlayerInfoList() {
+//        return mPlayerInfoList;
+//    }
+//
+//    public void setGameReadyInfo(GameReadyModel gameReadyInfo) {
+//        mGameReadyInfo = gameReadyInfo;
+//    }
+//
+//    public GameReadyModel getGameReadyInfo() {
+//        return mGameReadyInfo;
+//    }
 
     public void setShiftTs(int shiftTs) {
         this.mShiftTs = shiftTs;
@@ -127,13 +127,13 @@ public class PrepareData implements Serializable {
         this.mBgMusic = bgMusic;
     }
 
-    public RankGameConfigModel getGameConfigModel() {
-        return mGameConfigModel;
-    }
-
-    public void setGameConfigModel(RankGameConfigModel gameConfigModel) {
-        mGameConfigModel = gameConfigModel;
-    }
+//    public RankGameConfigModel getGameConfigModel() {
+//        return mGameConfigModel;
+//    }
+//
+//    public void setGameConfigModel(RankGameConfigModel gameConfigModel) {
+//        mGameConfigModel = gameConfigModel;
+//    }
 
     public void setAgoraToken(String agoraToken) {
         mAgoraToken = agoraToken;

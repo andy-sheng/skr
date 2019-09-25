@@ -18,7 +18,6 @@ import com.component.busilib.manager.BgMusicManager
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
-import com.module.playways.grab.prepare.GrabMatchSuccessFragment
 import com.module.playways.race.match.IRaceMatchingView
 import com.module.playways.race.match.RaceMatchPresenter
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
@@ -64,7 +63,6 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
         mSvgaMatchBg = rootView.findViewById(R.id.svga_match_bg)
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back, R.raw.normal_click)
-        U.getSoundUtils().preLoad(GrabMatchSuccessFragment.TAG, R.raw.rank_matchpeople, R.raw.rank_matchready, R.raw.normal_countdown)
 
         val res = resources
         mQuotationsArray = Arrays.asList(*res.getStringArray(R.array.match_quotations))
@@ -236,7 +234,6 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
                         if (mExitDialog != null) {
                             mExitDialog!!.dismiss()
                         }
-                        U.getSoundUtils().release(GrabMatchSuccessFragment.TAG)
                         mMatchPresenter?.cancelMatch()
 //                        if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
 //                            BgMusicManager.getInstance().destory()

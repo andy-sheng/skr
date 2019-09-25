@@ -29,10 +29,9 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
 import com.component.busilib.constans.GameModeType;
-import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.playways.R;
 import com.module.playways.room.msg.event.EventHelper;
-import com.module.playways.room.room.RankRoomServerApi;
+import com.module.playways.room.room.RoomServerApi;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.BaseRoomData;
 
@@ -135,7 +134,7 @@ public class InputContainerView extends RelativeLayout implements EmotionKeyboar
             public void clickValid(View v) {
                 mHasPretend = false;
                 String content = mEtContent.getText().toString();
-                RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
+                RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());

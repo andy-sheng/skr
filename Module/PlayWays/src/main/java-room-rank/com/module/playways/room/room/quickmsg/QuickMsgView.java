@@ -8,21 +8,17 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.account.UserAccountManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
-import com.module.playways.voice.activity.VoiceRoomActivity;
+import com.module.playways.BaseRoomData;
 import com.module.playways.R;
 import com.module.playways.room.msg.event.EventHelper;
-import com.module.playways.room.room.RankRoomServerApi;
-import com.module.playways.BaseRoomData;
+import com.module.playways.room.room.RoomServerApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +57,7 @@ public class QuickMsgView extends RelativeLayout {
             @Override
             public void onItemClicked(View view, int position, QuickMsgModel model) {
                 String content = model.getText();
-                RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
+                RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());

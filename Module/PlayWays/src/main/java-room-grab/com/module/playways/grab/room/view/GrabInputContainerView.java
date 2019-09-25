@@ -32,7 +32,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.msg.event.EventHelper;
-import com.module.playways.room.room.RankRoomServerApi;
+import com.module.playways.room.room.RoomServerApi;
 import com.module.playways.room.room.view.InputContainerView;
 import com.zq.live.proto.Common.UserInfo;
 
@@ -80,7 +80,7 @@ public class GrabInputContainerView extends InputContainerView {
             public void clickValid(View v) {
                 mHasPretend = false;
                 String content = mEtContent.getText().toString();
-                RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
+                RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());

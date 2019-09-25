@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
@@ -16,7 +15,6 @@ import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.battle.songlist.BattleListActivity;
-import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.playways.grab.prepare.NewGrabMatchFragment;
 import com.module.playways.room.prepare.model.PrepareData;
 
@@ -60,15 +58,15 @@ public class GrabMatchActivity extends BaseActivity {
             activity.finish();
         }
 
-        if (prepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            U.getFragmentUtils().addFragment(
-                    FragmentUtils.newAddParamsBuilder(this, GrabMatchFragment.class)
-                            .setAddToBackStack(false)
-                            .setHasAnimation(false)
-                            .addDataBeforeAdd(0, prepareData)
-                            .build()
-            );
-        } else {
+//        if (prepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+//            U.getFragmentUtils().addFragment(
+//                    FragmentUtils.newAddParamsBuilder(this, RankMatchFragment.class)
+//                            .setAddToBackStack(false)
+//                            .setHasAnimation(false)
+//                            .addDataBeforeAdd(0, prepareData)
+//                            .build()
+//            );
+//        } else {
             U.getFragmentUtils().addFragment(
                     FragmentUtils.newAddParamsBuilder(this, NewGrabMatchFragment.class)
                             .setAddToBackStack(false)
@@ -76,7 +74,7 @@ public class GrabMatchActivity extends BaseActivity {
                             .addDataBeforeAdd(0, prepareData)
                             .build()
             );
-        }
+//        }
         U.getStatusBarUtil().setTransparentBar(this, false);
     }
 

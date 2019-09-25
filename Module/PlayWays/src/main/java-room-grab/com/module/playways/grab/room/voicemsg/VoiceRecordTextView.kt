@@ -22,14 +22,16 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
-import com.module.playways.room.prepare.model.BaseRoundInfoModel
-import com.module.playways.room.room.RankRoomServerApi
+import com.module.playways.room.room.RoomServerApi
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.zq.live.proto.Room.EQRoundStatus
 import com.zq.mediaengine.kit.ZqEngineKit
+import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import retrofit2.http.Body
+import retrofit2.http.PUT
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -287,7 +289,7 @@ class VoiceRecordTextView : ExTextView {
 
 
     private fun sendToServer(file: AudioFile, url: String) {
-        val roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi::class.java)
+        val roomServerApi = ApiManager.getInstance().createService(RoomServerApi::class.java)
         val map = HashMap<String, Any>()
         map["gameID"] = mRoomData!!.gameId
         map["msgUrl"] = url
@@ -309,3 +311,4 @@ class VoiceRecordTextView : ExTextView {
     class AudioFile(var localPath: String?, var duration: Long)
 
 }
+

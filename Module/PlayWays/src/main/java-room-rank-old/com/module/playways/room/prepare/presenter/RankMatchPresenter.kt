@@ -8,7 +8,6 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.HandlerTaskTimer
-import com.component.busilib.constans.GameModeType
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.room.msg.event.JoinActionEvent
@@ -17,7 +16,7 @@ import com.module.playways.room.prepare.MatchServerApi
 import com.module.playways.room.prepare.model.GameInfoModel
 import com.module.playways.room.prepare.model.PrepareData
 import com.module.playways.room.prepare.presenter.BaseMatchPresenter
-import com.module.playways.room.prepare.view.IRankMatchingView
+import com.module.playways.room.prepare.IRankMatchingView
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

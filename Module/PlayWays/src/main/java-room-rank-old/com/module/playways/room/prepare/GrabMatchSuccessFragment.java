@@ -1,4 +1,4 @@
-package com.module.playways.grab.prepare;
+package com.module.playways.room.prepare;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -421,7 +421,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         // 如果rematch的时候是因为别人退出房间的原因导致rematch直接跳转到match界面
         if (isPrepared || otherEr) {
             U.getToastUtil().showShort("有玩家未准备，为您重新匹配对手");
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchFragment.class)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankMatchFragment.class)
                     .setNotifyHideFragment(GrabMatchSuccessFragment.class)
                     .setAddToBackStack(false)
                     .setHasAnimation(false)

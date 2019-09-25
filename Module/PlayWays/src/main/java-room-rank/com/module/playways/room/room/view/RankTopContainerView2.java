@@ -15,21 +15,11 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.module.playways.RoomDataUtils;
+import com.module.playways.R;
 import com.module.playways.listener.SVGAListener;
-import com.module.playways.room.room.comment.model.CommentLightModel;
-import com.module.playways.room.room.model.RankGameConfigModel;
-import com.module.playways.room.room.model.PkScoreTipMsgModel;
-import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.module.playways.room.room.RankRoomData;
-import com.module.playways.room.room.event.PkSomeOneBurstLightEvent;
-import com.module.playways.room.room.event.PkSomeOneLightOffEvent;
-import com.module.playways.room.room.event.PretendCommentMsgEvent;
-import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.room.score.bar.EnergySlotView;
 import com.module.playways.room.room.score.bar.ScoreTipsView;
-import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -37,13 +27,14 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Room.ERoundOverReason;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
+//import com.module.playways.room.room.model.RankGameConfigModel;
+//import com.module.playways.room.room.RankRoomData;
+//import com.module.playways.room.room.model.RankRoundInfoModel;
 
 public class RankTopContainerView2 extends RelativeLayout {
     public final String TAG = "RankTopContainerView";
@@ -66,11 +57,11 @@ public class RankTopContainerView2 extends RelativeLayout {
     SVGAImageView mEnergyFillSvga2;   //能量满大动画
     SVGAImageView mEnergyFillSvga3;   //能量满大动画
 
-    RankTopContainerView1.Listener mListener;
+    RankTopContainerView2.Listener mListener;
 
     ScoreTipsView.Item mLastItem;
 
-    RankRoomData mRoomData;
+    //RankRoomData mRoomData;
 
     UserLightInfo mStatusArr[] = new UserLightInfo[MAX_USER_NUM];
 
@@ -100,13 +91,13 @@ public class RankTopContainerView2 extends RelativeLayout {
         init(context, attrs);
     }
 
-    public void setListener(RankTopContainerView1.Listener l) {
+    public void setListener(RankTopContainerView2.Listener l) {
         mListener = l;
     }
 
-    public void setRoomData(RankRoomData roomData) {
-        mRoomData = roomData;
-    }
+//    public void setRoomData(RankRoomData roomData) {
+//        mRoomData = roomData;
+//    }
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.topContainer);
@@ -193,7 +184,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                             }
                         }
                     });
-                    mMoreOpView.setRoomData(mRoomData);
+                    //mMoreOpView.setRoomData(mRoomData);
                 }
                 mMoreOpView.showAt(mMoreBtn);
             }
@@ -243,17 +234,17 @@ public class RankTopContainerView2 extends RelativeLayout {
 //        parseLightOffEvent((int) MyUserInfoManager.getInstance().getUid());
 //    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PkSomeOneBurstLightEvent event) {
-        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
-        parseBurstEvent(event.uid, event.roundInfo.getUserID());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PkSomeOneLightOffEvent event) {
-        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
-        parseLightOffEvent(event.uid, event.roundInfo.getUserID());
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(PkSomeOneBurstLightEvent event) {
+//        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
+//        parseBurstEvent(event.uid, event.roundInfo.getUserID());
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(PkSomeOneLightOffEvent event) {
+//        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
+//        parseLightOffEvent(event.uid, event.roundInfo.getUserID());
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RobotScoreHelper.RobotSongLineNum event) {
@@ -261,89 +252,89 @@ public class RankTopContainerView2 extends RelativeLayout {
         setScoreProgress(999, 0, event.lineNum);
     }
 
-    /**
-     * @param uid     投票人的id
-     * @param currUid 被投票人id
-     */
-    private void parseLightOffEvent(int uid, int currUid) {
-        MyLog.d(TAG, "parseLightOffEvent onEvent 5");
-        UserLightInfo ul = new UserLightInfo();
-        ul.mUserId = uid;
-        ul.mLightState = LightState.MIE;
-        pretendLightComment(currUid, uid, false);
-        if (mStatusArr[0] == null) {
-            setLight(0, ul);
-        } else {
-            if (mStatusArr[1] == null) {
-                setLight(1, ul);
-            } else if (mStatusArr[2] == null) {
-                setLight(2, ul);
-            }
-        }
-        mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
-        tryPlayProgressAnimation();
-    }
+//    /**
+//     * @param uid     投票人的id
+//     * @param currUid 被投票人id
+//     */
+//    private void parseLightOffEvent(int uid, int currUid) {
+//        MyLog.d(TAG, "parseLightOffEvent onEvent 5");
+//        UserLightInfo ul = new UserLightInfo();
+//        ul.mUserId = uid;
+//        ul.mLightState = LightState.MIE;
+//        pretendLightComment(currUid, uid, false);
+//        if (mStatusArr[0] == null) {
+//            setLight(0, ul);
+//        } else {
+//            if (mStatusArr[1] == null) {
+//                setLight(1, ul);
+//            } else if (mStatusArr[2] == null) {
+//                setLight(2, ul);
+//            }
+//        }
+//        mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
+//        tryPlayProgressAnimation();
+//    }
 
-    /**
-     * @param currUid 被投票者
-     * @param uid     投票者
-     */
-    private void pretendLightComment(int currUid, int uid, boolean isBao) {
-        PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
-        PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
-        if (voter != null && model != null) {
-            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao, false, false);
-            EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
-        }
-    }
+//    /**
+//     * @param currUid 被投票者
+//     * @param uid     投票者
+//     */
+//    private void pretendLightComment(int currUid, int uid, boolean isBao) {
+//        PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+//        PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
+//        if (voter != null && model != null) {
+//            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao, false, false);
+//            EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
+//        }
+//    }
 
-    private void parseBurstEvent(int uid, int curUid) {
-        MyLog.d(TAG, "parseBurstEvent" + " uid=" + uid);
-        UserLightInfo ul = new UserLightInfo();
-        ul.mUserId = uid;
-        ul.mLightState = LightState.BAO;
-        pretendLightComment(curUid, uid, true);
-        if (mStatusArr[1] == null) {
-            setLight(1, ul);
-        } else {
-            if (mStatusArr[0] == null) {
-                setLight(0, ul);
-            } else if (mStatusArr[2] == null) {
-                setLight(2, ul);
-            }
-        }
-        if (mTotalScore < 0) {
-            // 总分还没过来
-            mHasBurstPending = true;
-        } else {
-            mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
-            tryPlayProgressAnimation();
-        }
-
-    }
-
-    //轮次结束
-    public void roundOver(RankRoundInfoModel lastRoundInfoModel) {
-        MyLog.d(TAG, "roundOver");
-        if (lastRoundInfoModel != null && lastRoundInfoModel.getOverReason() == ERoundOverReason.EROR_ENOUGH_M_LIGHT.getValue()) {
-            // 多人灭灯导致演唱结束
-            mUiHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    initRankLEDViews();
-                }
-            }, 2000);
-        } else {
-            initRankLEDViews();
-        }
-        mEnergySlotView.setTarget(0, null);
-        for (int i = 0; i < mStatusArr.length; i++) {
-            mStatusArr[i] = null;
-        }
-        mCurScore = 0;
-        mTotalScore = -1;
-        mHasBurstPending = false;
-    }
+//    private void parseBurstEvent(int uid, int curUid) {
+//        MyLog.d(TAG, "parseBurstEvent" + " uid=" + uid);
+//        UserLightInfo ul = new UserLightInfo();
+//        ul.mUserId = uid;
+//        ul.mLightState = LightState.BAO;
+//        pretendLightComment(curUid, uid, true);
+//        if (mStatusArr[1] == null) {
+//            setLight(1, ul);
+//        } else {
+//            if (mStatusArr[0] == null) {
+//                setLight(0, ul);
+//            } else if (mStatusArr[2] == null) {
+//                setLight(2, ul);
+//            }
+//        }
+//        if (mTotalScore < 0) {
+//            // 总分还没过来
+//            mHasBurstPending = true;
+//        } else {
+//            mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+//            tryPlayProgressAnimation();
+//        }
+//
+//    }
+//
+//    //轮次结束
+//    public void roundOver(RankRoundInfoModel lastRoundInfoModel) {
+//        MyLog.d(TAG, "roundOver");
+//        if (lastRoundInfoModel != null && lastRoundInfoModel.getOverReason() == ERoundOverReason.EROR_ENOUGH_M_LIGHT.getValue()) {
+//            // 多人灭灯导致演唱结束
+//            mUiHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    initRankLEDViews();
+//                }
+//            }, 2000);
+//        } else {
+//            initRankLEDViews();
+//        }
+//        mEnergySlotView.setTarget(0, null);
+//        for (int i = 0; i < mStatusArr.length; i++) {
+//            mStatusArr[i] = null;
+//        }
+//        mCurScore = 0;
+//        mTotalScore = -1;
+//        mHasBurstPending = false;
+//    }
 
     private void initRankLEDViews() {
         mLeftLedView.setVisibility(GONE);
@@ -426,63 +417,64 @@ public class RankTopContainerView2 extends RelativeLayout {
             score = (int) (Math.sqrt(score) * 10);
         }
 
-        RankGameConfigModel gameConfigModel = null;
-        if (mRoomData != null) {
-            gameConfigModel = mRoomData.getGameConfigModel();
-        }
+//        RankGameConfigModel gameConfigModel = null;
+//        if (mRoomData != null) {
+//            gameConfigModel = mRoomData.getGameConfigModel();
+//        }
 
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
-        if (gameConfigModel != null) {
-            // 总分是这个肯定没错
-            if (mTotalScore <= 0) {
-                float p = gameConfigModel.getpKFullEnergyPercentage();
-                if (p <= 0) {
-                    p = 0.6f;
-                    MyLog.w(TAG, "服务器给的getpKFullEnergyPercentage不对，为0了");
-                }
-                if (lineNum == 0) {
-                    lineNum = 6;
-                    MyLog.w(TAG, "lineNum值不对，为0了");
-                }
-                mTotalScore = (int) (lineNum * 100 * p);
-                if (mHasBurstPending) {
-                    mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
-                    tryPlayProgressAnimation();
-                }
-            }
-            if (score1 == 999) {
-                //与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
-                return;
-            }
-            List<PkScoreTipMsgModel> scoreTipMsgModelList = gameConfigModel.getPkScoreTipMsgModelList();
-            if (scoreTipMsgModelList != null) {
-                for (PkScoreTipMsgModel m : scoreTipMsgModelList) {
-                    if (score >= m.getFromScore() && score < m.getToScore()) {
-                        // 命中
-                        switch (m.getScoreTipTypeModel()) {
-                            case ST_UNKNOWN:
-                                break;
-                            case ST_TOO_BAD:
-                                item.setLevel(ScoreTipsView.Level.Bad);
-                                break;
-                            case ST_NOT_BAD:
-                                item.setLevel(ScoreTipsView.Level.Ok);
-                                break;
-                            case ST_VERY_GOOD:
-                                item.setLevel(ScoreTipsView.Level.Good);
-                                break;
-                            case ST_NICE_PERFECT:
-                                item.setLevel(ScoreTipsView.Level.Perfect);
-                                break;
-                        }
-                        break;
-                    }
-                }
-            }
-            mCurScore += score;
-            tryPlayProgressAnimation();
-        } else {
+//        if (gameConfigModel != null) {
+//            // 总分是这个肯定没错
+//            if (mTotalScore <= 0) {
+//                float p = gameConfigModel.getpKFullEnergyPercentage();
+//                if (p <= 0) {
+//                    p = 0.6f;
+//                    MyLog.w(TAG, "服务器给的getpKFullEnergyPercentage不对，为0了");
+//                }
+//                if (lineNum == 0) {
+//                    lineNum = 6;
+//                    MyLog.w(TAG, "lineNum值不对，为0了");
+//                }
+//                mTotalScore = (int) (lineNum * 100 * p);
+//                if (mHasBurstPending) {
+//                    mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+//                    tryPlayProgressAnimation();
+//                }
+//            }
+//            if (score1 == 999) {
+//                //与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
+//                return;
+//            }
+//            List<PkScoreTipMsgModel> scoreTipMsgModelList = gameConfigModel.getPkScoreTipMsgModelList();
+//            if (scoreTipMsgModelList != null) {
+//                for (PkScoreTipMsgModel m : scoreTipMsgModelList) {
+//                    if (score >= m.getFromScore() && score < m.getToScore()) {
+//                        // 命中
+//                        switch (m.getScoreTipTypeModel()) {
+//                            case ST_UNKNOWN:
+//                                break;
+//                            case ST_TOO_BAD:
+//                                item.setLevel(ScoreTipsView.Level.Bad);
+//                                break;
+//                            case ST_NOT_BAD:
+//                                item.setLevel(ScoreTipsView.Level.Ok);
+//                                break;
+//                            case ST_VERY_GOOD:
+//                                item.setLevel(ScoreTipsView.Level.Good);
+//                                break;
+//                            case ST_NICE_PERFECT:
+//                                item.setLevel(ScoreTipsView.Level.Perfect);
+//                                break;
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
+//            mCurScore += score;
+//            tryPlayProgressAnimation();
+//        } else
+            {
             if (mTotalScore <= 0 && mMode == 1) {
                 mTotalScore = (int) (lineNum * 100 * 0.6);
             }
@@ -603,5 +595,12 @@ public class RankTopContainerView2 extends RelativeLayout {
         tryPlayProgressAnimation();
     }
 
+    public interface Listener {
+        void closeBtnClick();
+
+        void onVoiceChange(boolean voiceOpen);
+
+        void onClickFeedback();
+    }
 
 }
