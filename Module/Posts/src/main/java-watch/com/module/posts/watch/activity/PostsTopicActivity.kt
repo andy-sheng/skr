@@ -158,6 +158,11 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
         getTopicTabs()
     }
 
+    override fun onPause() {
+        super.onPause()
+        currentPostsViews?.unselected(1)
+    }
+
     private fun getTopicDetail() {
         launch {
             val result = subscribe(RequestControl("getTopicDetail", ControlType.CancelThis)) {
