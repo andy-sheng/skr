@@ -27,7 +27,7 @@ import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
-import com.module.posts.detail.fragment.PostsCommentDetailFragment
+import com.module.posts.detail.activity.PostsCommentDetailActivity
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.view.*
@@ -171,14 +171,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
+                        SinglePlayer.stop(PostsCommentDetailActivity.playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailActivity.playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -190,14 +190,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
+                        SinglePlayer.stop(PostsCommentDetailActivity.playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailActivity.playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
                     }
@@ -347,14 +347,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
+                        SinglePlayer.stop(PostsCommentDetailActivity.playerTag)
                         postsAudioView.setPlay(false)
                     } else {
                         mModel?.comment?.audios?.let {
                             mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it[0]?.url ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailActivity.playerTag, mPlayingUrl)
                             postsAudioView.setPlay(true)
                         }
                     }
@@ -366,14 +366,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
-                        SinglePlayer.stop(PostsCommentDetailFragment.playerTag)
+                        SinglePlayer.stop(PostsCommentDetailActivity.playerTag)
                         postsSongView.setPlay(false)
                     } else {
                         mModel?.comment?.songInfo?.let {
                             mIDetailClickListener?.playAnotherSong()
                             mPlayingUrl = it.playURL ?: ""
                             mPlayingPosition = pos
-                            SinglePlayer.startPlay(PostsCommentDetailFragment.playerTag, mPlayingUrl)
+                            SinglePlayer.startPlay(PostsCommentDetailActivity.playerTag, mPlayingUrl)
                             postsSongView.setPlay(true)
                         }
                     }
