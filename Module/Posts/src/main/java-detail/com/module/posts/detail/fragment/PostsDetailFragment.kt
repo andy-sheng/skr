@@ -11,6 +11,7 @@ import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseFragment
+import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
@@ -25,7 +26,6 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
-import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_VOTE
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.event.AddSecondCommentEvent
@@ -200,6 +200,10 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
                     U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
                 }
             }
+
+            override fun getRelation(userID: Int) {
+                mPostsDetailPresenter?.getRelation(userID)
+            }
         }
 
         postsAdapter?.mClickContent = { postFirstLevelModel ->
@@ -347,6 +351,27 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         postsAdapter?.notifyItemChanged(position, REFRESH_VOTE)
     }
 
+    override fun showRelation(isBlack: Boolean, isFollow: Boolean, isFriend: Boolean) {
+        if (mPostsWatchModel?.relationShip == null) {
+            mPostsWatchModel?.relationShip = PostsWatchModel.RelationShip()
+            mPostsWatchModel?.relationShip?.isBlack = isBlack
+            mPostsWatchModel?.relationShip?.isFollow = isFollow
+            mPostsWatchModel?.relationShip?.isFriend = isFriend
+            postsAdapter?.notifyItemChanged(0, PostsCommentAdapter.REFRESH_FOLLOW_STATE)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RelationChangeEvent) {
+        mPostsWatchModel?.posts?.userID?.let {
+            if (it == event.useId) {
+                mPostsWatchModel?.relationShip?.isFollow = event.isFollow
+                mPostsWatchModel?.relationShip?.isFriend = event.isFriend
+                postsAdapter?.notifyItemChanged(0, PostsCommentAdapter.REFRESH_FOLLOW_STATE)
+            }
+        }
+    }
+
     override fun showPostsWatchModel(model: PostsWatchModel) {
         mPostsWatchModel = model
 
@@ -418,7 +443,6 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
     override fun destroy() {
         super.destroy()
         EventBus.getDefault().post(PostsDetailEvent(mPostsWatchModel))
-        postsAdapter?.notifyItemChanged(0, DESTROY_HOLDER)
         SinglePlayer.removeCallback(playerTag)
         postsMoreDialogView?.dismiss()
         postsRedPkgDialogView?.dismiss()

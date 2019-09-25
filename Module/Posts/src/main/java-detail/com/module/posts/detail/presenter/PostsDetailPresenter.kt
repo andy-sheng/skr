@@ -13,7 +13,6 @@ import com.module.posts.detail.PostsDetailServerApi
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
-import com.module.posts.watch.adapter.PostsWatchViewAdapter
 import com.module.posts.watch.model.PostsModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.Dispatchers
@@ -217,6 +216,27 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 } else {
                     U.getToastUtil().showShort("${result?.errmsg}")
                     MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
+
+    fun getRelation(userID: Int?) {
+        launch {
+            userID?.let {
+                val result = subscribe {
+                    mPostsDetailServerApi.getRelation(it)
+                }
+
+                if (result.errno == 0) {
+                    view?.showRelation(result.data.getBooleanValue("isBlacked"), result.data.getBooleanValue("isFollow"), result.data.getBooleanValue("isFriend"))
+                } else {
+                    if (result.errno == -2) {
+                        U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                    } else {
+                        U.getToastUtil().showShort("${result?.errmsg}")
+                        MyLog.e(TAG, "${result?.errmsg}")
+                    }
                 }
             }
         }

@@ -17,6 +17,7 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
@@ -29,7 +30,6 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.view.AvatarView
-import com.component.relation.view.DefaultFollowView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
@@ -48,10 +48,30 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         val REFRESH_PLAY_STATE = 2
         val REFRESH_LIKE = 3
         val REFRESH_VOTE = 4
+        val REFRESH_FOLLOW_STATE = 5
     }
 
     private val mPostsType = 0
     private val mCommentType = 1
+
+    val followState = DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+            .setSolidColor(U.getColor(com.component.busilib.R.color.white))
+            .setStrokeColor(Color.parseColor("#AD6C00"))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+            .build()
+
+    val friendState = DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+            .setSolidColor(U.getColor(com.component.busilib.R.color.white))
+            .setStrokeColor(Color.parseColor("#AD6C00"))
+            .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+            .build()
+
+    val strangerState = DrawableCreator.Builder()
+            .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
+            .setSolidColor(Color.parseColor("#FFC15B"))
+            .build()
 
     var mPlayingUrl: String
         set(value) {
@@ -127,10 +147,6 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             if (holder is PostsHolder) {
                 holder.refreshCommentCnt(position, mDataList[position] as PostsWatchModel)
             }
-        } else if (refreshType == DESTROY_HOLDER) {
-            if (holder is PostsHolder) {
-                holder.destroyHolder(position, mDataList[position] as PostsWatchModel)
-            }
         } else if (refreshType == REFRESH_PLAY_STATE) {
             if (holder is PostsHolder) {
                 holder.refreshPlayState(position, mDataList[position] as PostsWatchModel)
@@ -145,6 +161,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         } else if (refreshType == REFRESH_VOTE) {
             (holder as PostsHolder).refreshVoteState(position, mDataList[position] as PostsWatchModel)
+        } else if (refreshType == REFRESH_FOLLOW_STATE) {
+            (holder as PostsHolder).refreshFollowState(position, mDataList[position] as PostsWatchModel)
         }
     }
 
@@ -157,7 +175,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     }
 
     inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var followTv: DefaultFollowView
+        var followTv: ExTextView
         var timeTv: TextView
         var nicknameTv: TextView
         var avatarIv: AvatarView
@@ -290,6 +308,33 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         }
 
+        fun refreshFollowState(pos: Int, model: PostsWatchModel) {
+            this.pos = pos
+            this.mModel = model
+            model?.relationShip?.let {
+                if (it.isFriend) {
+                    followTv.text = "已互关"
+                    followTv.background = friendState
+                    followTv.setTextColor(Color.parseColor("#AD6C00"))
+                    followTv.setDebounceViewClickListener {}
+                } else if (it.isFollow) {
+                    followTv.text = "已关注"
+                    followTv.background = followState
+                    followTv.setTextColor(Color.parseColor("#AD6C00"))
+                    followTv.setDebounceViewClickListener {}
+                } else {
+                    followTv.text = "+关注"
+                    followTv.background = strangerState
+                    followTv.setTextColor(Color.parseColor("#AD6C00"))
+                    followTv.setDebounceViewClickListener {
+                        mModel?.posts?.userID?.let {
+                            UserInfoManager.getInstance().mateRelation(it, UserInfoManager.RA_BUILD, false, 0, null)
+                        }
+                    }
+                }
+            }
+        }
+
         fun refreshVoteState(pos: Int, model: PostsWatchModel) {
             this.pos = pos
             this.mModel = model
@@ -360,12 +405,6 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     postsAudioView.setPlay(false)
                 }
             }
-        }
-
-        fun destroyHolder(pos: Int, model: PostsWatchModel) {
-            this.pos = pos
-            this.mModel = model
-            followTv.destroy()
         }
 
         fun bindData(pos: Int, model: PostsWatchModel) {
@@ -479,12 +518,11 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             postsLikeTv.isSelected = mModel?.isLiked ?: false
 
-            followTv.userID = mModel?.user?.userId
-
-            if (!isGetRelation && mModel?.posts?.userID != MyUserInfoManager.getInstance().uid.toInt()) {
-                followTv.getRelation()
-                isGetRelation = true
+            if (mModel?.relationShip == null && mModel?.posts?.userID != MyUserInfoManager.getInstance().uid.toInt()) {
+                mIDetailClickListener?.getRelation(mModel?.posts?.userID ?: 0)
             }
+
+            refreshFollowState(pos, mModel!!)
 
             commentCtnTv.text = "评论（${model.numeric?.commentCnt ?: 0}条）"
 
@@ -822,5 +860,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun playAnotherSong()
 
         fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int)
+
+        fun getRelation(userID: Int)
     }
 }
