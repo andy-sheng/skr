@@ -145,7 +145,6 @@
         android:id="@+id/place_holder_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_container"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
 
