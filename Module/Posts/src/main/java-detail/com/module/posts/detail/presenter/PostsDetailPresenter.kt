@@ -109,12 +109,16 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                     view?.loadDetailDelete()
                 }
             } else {
-                view?.loadDetailError()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 } else {
-                    U.getToastUtil().showShort("${result?.errmsg}")
-                    MyLog.e(TAG, "${result?.errmsg}")
+                    if (result.errno == 8302560) {
+                        view?.loadDetailDelete()
+                    } else {
+                        view?.loadDetailError()
+                        U.getToastUtil().showShort("${result?.errmsg}")
+                        MyLog.e(TAG, "${result?.errmsg}")
+                    }
                 }
             }
         }
