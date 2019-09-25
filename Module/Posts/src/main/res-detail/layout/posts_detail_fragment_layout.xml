@@ -41,10 +41,9 @@
         app:layout_constraintTop_toBottomOf="@+id/title_divider">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:overScrollMode="never"/>
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <View
