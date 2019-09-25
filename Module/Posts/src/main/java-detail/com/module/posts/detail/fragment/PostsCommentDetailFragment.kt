@@ -27,7 +27,6 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.DESTROY_HOLDER
-import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.inter.IPostsCommentDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
@@ -42,7 +41,6 @@ import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -439,12 +437,10 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     override fun showSecondLevelCommentList(list: List<PostsSecondLevelCommentModel>, hasMore: Boolean) {
         val modelList: MutableList<Any> = mutableListOf(mPostFirstLevelCommentModel!!)
         modelList.addAll(list)
-        postsAdapter?.mCommentCtn = list.size
-        postsAdapter?.dataList = modelList
-        launch {
-            kotlinx.coroutines.delay(100)
-            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+        if (mPostFirstLevelCommentModel?.comment?.subCommentCnt ?: 0 < list.size) {
+            mPostFirstLevelCommentModel?.comment?.subCommentCnt = list.size
         }
+        postsAdapter?.dataList = modelList
         smartRefreshLayout.setEnableLoadMore(hasMore)
         smartRefreshLayout.finishLoadMore()
     }
@@ -454,7 +450,9 @@ class PostsCommentDetailFragment : BaseFragment(), IPostsCommentDetailView {
     }
 
     override fun addSecondLevelCommentSuccess() {
-        postsAdapter!!.mCommentCtn++
+        mPostFirstLevelCommentModel?.comment?.let {
+            it.subCommentCnt++
+        }
         progressView?.visibility = View.GONE
         feedsInputContainerView.onCommentSuccess()
         recyclerView?.scrollToPosition(1)

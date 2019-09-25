@@ -43,8 +43,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     val mCommentType = 1
 
     //评论数量
-    var mCommentCtn = 0
-
     var mPlayingUrl: String
         set(value) {
             value?.let {
@@ -110,11 +108,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     }
 
     private fun refreshHolder(holder: RecyclerView.ViewHolder, position: Int, refreshType: Int) {
-        if (refreshType == REFRESH_COMMENT_CTN) {
-            if (holder is PostsFirstLevelCommentHolder) {
-                holder.refreshCommentCtn(position, mDataList[position] as PostFirstLevelCommentModel)
-            }
-        } else if (refreshType == DESTROY_HOLDER) {
+        if (refreshType == DESTROY_HOLDER) {
             if (holder is PostsFirstLevelCommentHolder) {
                 holder.destroyHolder(position, mDataList[position] as PostFirstLevelCommentModel)
             }
@@ -215,18 +209,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         }
 
-        fun refreshCommentCtn(pos: Int, model: PostFirstLevelCommentModel) {
-            this.pos = pos
-            this.mModel = model
-
-            commentCtnTv.text = "评论(${mCommentCtn}条)"
-            if (mCommentCtn == 0) {
-                emptyTv.visibility = View.VISIBLE
-            } else {
-                emptyTv.visibility = View.GONE
-            }
-        }
-
         fun refreshPlayState(pos: Int, model: PostFirstLevelCommentModel) {
             this.pos = pos
             this.mModel = model
@@ -301,7 +283,12 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 nineGridVp.setUrlList(mModel?.comment?.pictures!!)
             }
 
-            commentCtnTv.text = "评论(${mCommentCtn}条)"
+            commentCtnTv.text = "评论(${mModel?.comment?.subCommentCnt}条)"
+            if (mModel?.comment?.subCommentCnt == 0) {
+                emptyTv.visibility = View.VISIBLE
+            } else {
+                emptyTv.visibility = View.GONE
+            }
 
             if (mModel?.comment?.songInfo == null) {
                 postsSongView.visibility = View.GONE
