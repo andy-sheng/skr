@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import com.common.base.R;
+import com.common.image.model.BaseImage;
 import com.common.utils.U;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
@@ -57,6 +58,9 @@ public class BaseImageView extends SimpleDraweeView {
         super.setImageDrawable(drawable);
     }
 
+    public void load(BaseImage baseImage){
+        FrescoWorker.loadImage(this,baseImage);
+    }
     public <IV extends BaseImageView> IV get() {
         return (IV) this;
     }

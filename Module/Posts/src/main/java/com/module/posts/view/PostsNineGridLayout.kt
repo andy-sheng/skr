@@ -1,7 +1,9 @@
 package com.module.posts.view
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Animatable
+import android.os.Handler
 import android.util.AttributeSet
 
 import com.common.image.fresco.FrescoWorker
@@ -67,10 +69,13 @@ class PostsNineGridLayout : NineGridLayout {
     }
 
     override fun displayImage(imageView: RatioImageView, url: String) {
-        imageView.load(ImageFactory.newPathImage(url)
-                .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
-                .setCornerRadius(8.dp().toFloat())
-                .build<BaseImage>())
+        Handler().postDelayed({
+            imageView.load(ImageFactory.newPathImage(url)
+                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                    .setCornerRadius(8.dp().toFloat())
+                    .build<BaseImage>())
+        },5000)
+
     }
 
     override fun onClickImage(i: Int, url: String, urlList: List<String>) {

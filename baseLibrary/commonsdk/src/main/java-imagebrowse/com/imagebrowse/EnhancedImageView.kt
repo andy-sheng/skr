@@ -45,7 +45,7 @@ import pl.droidsonroids.gif.GifImageView
  */
 open class EnhancedImageView : RelativeLayout {
 
-    val TAG = "ImageBrowseView"
+    val TAG = "EnhancedImageView"
 
     protected var mPhotoDraweeView: BaseImageView? = null
     protected var mGifImageView: GifImageView? = null
@@ -121,7 +121,6 @@ open class EnhancedImageView : RelativeLayout {
     }
 
     private fun init() {
-
     }
 
     protected open fun useSubSampleView(): Boolean {
@@ -238,7 +237,7 @@ open class EnhancedImageView : RelativeLayout {
         showFrescoViewIfNeed()
         val preCallback = httpImage.callBack
         httpImage.callBack = object : IFrescoCallBack {
-            override fun processWithInfo(info: ImageInfo, animatable: Animatable) {
+            override fun processWithInfo(info: ImageInfo?, animatable: Animatable?) {
                 preCallback?.processWithInfo(info, animatable)
                 if (!useSubSampleView()) {
                     return
@@ -263,7 +262,8 @@ open class EnhancedImageView : RelativeLayout {
             }
         }
         FrescoWorker.preLoadImg(httpImage as HttpImage?, object : FrescoWorker.ImageLoadCallBack {
-            override fun loadSuccess(bitmap: Bitmap) {
+
+            override fun loadSuccess(bitmap: Bitmap?) {
                 MyLog.d(TAG, "loadSuccess bitmap=$bitmap")
             }
 
@@ -287,7 +287,7 @@ open class EnhancedImageView : RelativeLayout {
         val preCallback = localImage.callBack
 
         localImage.callBack = object : IFrescoCallBack {
-            override fun processWithInfo(info: ImageInfo, animatable: Animatable) {
+            override fun processWithInfo(info: ImageInfo?, animatable: Animatable?) {
                 preCallback?.processWithInfo(info, animatable)
                 if (!useSubSampleView()) {
                     return

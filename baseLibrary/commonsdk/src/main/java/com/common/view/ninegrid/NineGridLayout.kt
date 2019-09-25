@@ -102,6 +102,11 @@ abstract class NineGridLayout : ViewGroup {
     private fun refresh() {
         removeAllViews()
         val size = mUrlList.size
+//        if (size > 0) {
+//            visibility = View.VISIBLE
+//        } else {
+//            visibility = View.GONE
+//        }
         if (size > 0) {
             if (size == 1) {
                 val url = mUrlList[0]
@@ -161,7 +166,7 @@ abstract class NineGridLayout : ViewGroup {
 
     private fun createImageView(i: Int, url: String): RatioImageView {
         val imageView = RatioImageView(context)
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+//        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         imageView.setOnClickListener { onClickImage(i, url, mUrlList) }
         return imageView
     }
