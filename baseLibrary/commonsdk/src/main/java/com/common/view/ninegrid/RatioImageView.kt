@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import com.common.base.R
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
@@ -55,6 +57,28 @@ class RatioImageView : EnhancedImageView {
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         MyLog.d(TAG, "onLayout changed = $changed, left = $left, top = $top, right = $right, bottom = $bottom")
+        /**
+         * 首先layout被调用时，立马改变内部view layout，另外覆写addview 方法
+         */
+        mPhotoDraweeView?.layout(0, 0, width, height)
+        mGifImageView?.layout(0, 0, width, height)
+        mSubsamplingScaleImageView?.layout(0, 0, width, height)
+    }
+
+
+    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
+        child?.layout(0, 0, width, height)
+        super.addView(child, index, params)
+    }
+
+    override fun recycleResWhenDetachedFromWindow() {
+        // 覆盖 不让父类方法执行
+        mGifFromFile?.stop()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        mGifFromFile?.start()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 
 import com.common.base.R
+import com.common.log.MyLog
 
 import java.util.ArrayList
 
@@ -81,6 +82,7 @@ abstract class NineGridLayout : ViewGroup {
     }
 
     fun setUrlList(urlList: List<String>) {
+        MyLog.d("NineGridLayout", "setUrlList urlList = $urlList")
         if (urlList.isNullOrEmpty()) {
             visibility = View.GONE
             return
@@ -100,6 +102,7 @@ abstract class NineGridLayout : ViewGroup {
     }
 
     private fun refresh() {
+        MyLog.d("NineGridLayout", "refresh")
         removeAllViews()
         val size = mUrlList.size
 //        if (size > 0) {

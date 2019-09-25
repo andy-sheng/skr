@@ -69,13 +69,10 @@ class PostsNineGridLayout : NineGridLayout {
     }
 
     override fun displayImage(imageView: RatioImageView, url: String) {
-        Handler().postDelayed({
-            imageView.load(ImageFactory.newPathImage(url)
-                    .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
-                    .setCornerRadius(8.dp().toFloat())
-                    .build<BaseImage>())
-        },5000)
-
+        imageView.load(ImageFactory.newPathImage(url)
+                .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                .setCornerRadius(8.dp().toFloat())
+                .build<BaseImage>())
     }
 
     override fun onClickImage(i: Int, url: String, urlList: List<String>) {

@@ -86,11 +86,14 @@ open class EnhancedImageView : RelativeLayout {
     }
 
     override fun onDetachedFromWindow() {
+        MyLog.d(TAG, "onDetachedFromWindow $ppp")
         super.onDetachedFromWindow()
+        recycleResWhenDetachedFromWindow()
+    }
+
+    open fun recycleResWhenDetachedFromWindow() {
         mUiHandler.removeCallbacksAndMessages(null)
-        if (mSubsamplingScaleImageView != null) {
-            mSubsamplingScaleImageView!!.recycle()
-        }
+        mSubsamplingScaleImageView?.recycle()
         if (mBaseImage != null) {
             val uri = mBaseImage!!.uri
             if (uri != null) {
@@ -102,9 +105,7 @@ open class EnhancedImageView : RelativeLayout {
                 }
             }
         }
-        if (mGifFromFile != null) {
-            mGifFromFile!!.recycle()
-        }
+        mGifFromFile?.recycle()
     }
 
     fun getCurDisplayView(): View? {
@@ -127,7 +128,9 @@ open class EnhancedImageView : RelativeLayout {
         return false
     }
 
+    var ppp: String? = null
     fun load(path: String?) {
+
         if (path == null) {
             return
         }
@@ -160,6 +163,7 @@ open class EnhancedImageView : RelativeLayout {
             return
         }
         var path: String? = baseImage.uri.toString()
+        this.ppp = path
         if (path!!.startsWith("http://") || path.startsWith("https://")) {
             val uri = Uri.parse(path)
             if (uri.path!!.endsWith(".gif")) {
@@ -186,24 +190,22 @@ open class EnhancedImageView : RelativeLayout {
     }
 
     private fun showFrescoViewIfNeed() {
-        addLog("showFrescoViewIfNeed")
-        if (mGifImageView != null) {
-            mGifImageView!!.visibility = View.GONE
-        }
+        addLog("showFrescoViewIfNeed width=$width height=$height")
+        mGifImageView?.visibility = View.GONE
         if (mPhotoDraweeView == null) {
             createFrescoView()
             val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//            mPhotoDraweeView!!.layout(0,0,width,height)
             addView(mPhotoDraweeView, 0, lp)
             mPhotoDraweeView!!.setOnLongClickListener(this.mLongClickListener)
             mPhotoDraweeView!!.setOnClickListener(this.mClickListener)
         }
-        mPhotoDraweeView!!.visibility = View.VISIBLE
+        mPhotoDraweeView?.visibility = View.VISIBLE
     }
 
     private fun showGifViewIfNeed() {
-        if (mPhotoDraweeView != null) {
-            mPhotoDraweeView!!.visibility = View.GONE
-        }
+        addLog("showGifViewIfNeed width=$width height=$height")
+        mPhotoDraweeView?.visibility = View.GONE
         if (mGifImageView == null) {
             mGifImageView = GifImageView(context)
             val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -212,14 +214,12 @@ open class EnhancedImageView : RelativeLayout {
             mGifImageView!!.setOnClickListener(this.mClickListener)
         }
 
-        mGifImageView!!.visibility = View.VISIBLE
+        mGifImageView?.visibility = View.VISIBLE
     }
 
     private fun showSubSampleViewIfNeed() {
         addLog("showSubSampleViewIfNeed")
-        if (mGifImageView != null) {
-            mGifImageView!!.visibility = View.GONE
-        }
+        mGifImageView?.visibility = View.GONE
         if (mSubsamplingScaleImageView == null) {
             mSubsamplingScaleImageView = SubsamplingScaleImageView(context)
             val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -227,7 +227,7 @@ open class EnhancedImageView : RelativeLayout {
             mSubsamplingScaleImageView!!.setOnLongClickListener(this.mLongClickListener)
             mSubsamplingScaleImageView!!.setOnClickListener(this.mClickListener)
         }
-        mSubsamplingScaleImageView!!.visibility = View.VISIBLE
+        mSubsamplingScaleImageView?.visibility = View.VISIBLE
     }
 
     private fun loadHttpByFresco(httpImage: BaseImage?) {
