@@ -404,8 +404,10 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             recordExposure("addWatchPosts")
         } else {
             if (!list.isNullOrEmpty()) {
+                val size = adapter?.mDataList?.size!!
                 adapter?.mDataList?.addAll(list)
-                adapter?.notifyDataSetChanged()
+                val newSize = adapter?.mDataList?.size!!
+                adapter?.notifyItemRangeInserted(size, newSize - size)
             }
         }
 
