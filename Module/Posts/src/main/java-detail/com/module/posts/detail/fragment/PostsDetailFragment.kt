@@ -316,7 +316,7 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             it.commentCnt++
         }
         feedsInputContainerView.onCommentSuccess()
-        recyclerView?.scrollToPosition(0)
+        recyclerView?.scrollToPosition(1)
     }
 
     override fun addSecondLevelCommentSuccess() {
