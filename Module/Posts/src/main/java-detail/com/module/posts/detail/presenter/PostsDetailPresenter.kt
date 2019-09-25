@@ -5,23 +5,22 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ControlType
+import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.posts.detail.PostsDetailServerApi
-import com.module.posts.detail.event.AddSecondCommentEvent
-import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
+import com.module.posts.watch.adapter.PostsWatchViewAdapter
 import com.module.posts.watch.model.PostsModel
 import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 class PostsDetailPresenter : RxLifeCyclePresenter {
     val mTag = "PostsDetailPresenter"
@@ -178,6 +177,41 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 }
             } else {
                 view?.addCommetFaild()
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
+
+    // 投票
+    fun votePosts(position: Int, model: PostsWatchModel, voteSeq: Int) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["postsID"] = model.posts?.postsID ?: 0
+            map["voteID"] = model.posts?.voteInfo?.voteID ?: 0
+            map["voteSeq"] = voteSeq
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe(RequestControl("votePosts", ControlType.CancelThis)) {
+                mPostsDetailServerApi.votePosts(body)
+            }
+
+            if (result.errno == 0) {
+                U.getToastUtil().showShort("投票成功")
+                model.posts?.voteInfo?.hasVoted = true
+                model.posts?.voteInfo?.voteSeq = voteSeq
+                model.posts?.voteInfo?.voteList?.let {
+                    if (voteSeq in 1..it.size) {
+                        it[voteSeq - 1].voteCnt = it[voteSeq - 1].voteCnt + 1
+                    }
+                }
+
+                view?.voteSuccess(position)
+            } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 } else {

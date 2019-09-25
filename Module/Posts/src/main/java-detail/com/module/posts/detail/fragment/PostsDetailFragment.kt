@@ -26,7 +26,7 @@ import com.component.busilib.view.SkrProgressView
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.DESTROY_HOLDER
-import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
+import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_VOTE
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.event.AddSecondCommentEvent
 import com.module.posts.detail.event.PostsDetailEvent
@@ -44,8 +44,6 @@ import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -188,6 +186,20 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
             override fun playAnotherSong() {
                 stopPlayingState()
             }
+
+            override fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int) {
+                // 审核过，且未投票
+                if (model != null && model.isAudit()) {
+                    if (model.posts?.voteInfo?.hasVoted == true) {
+                        // 已投票，不让投了
+                    } else {
+//                        recordClick(model)
+                        mPostsDetailPresenter?.votePosts(position, model, index)
+                    }
+                } else {
+                    U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
+                }
+            }
         }
 
         postsAdapter?.mClickContent = { postFirstLevelModel ->
@@ -329,6 +341,10 @@ class PostsDetailFragment : BaseFragment(), IPostsDetailView {
         }
 
         return super.onBackPressed()
+    }
+
+    override fun voteSuccess(position: Int) {
+        postsAdapter?.notifyItemChanged(position, REFRESH_VOTE)
     }
 
     override fun showPostsWatchModel(model: PostsWatchModel) {

@@ -47,6 +47,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         val DESTROY_HOLDER = 1
         val REFRESH_PLAY_STATE = 2
         val REFRESH_LIKE = 3
+        val REFRESH_VOTE = 4
     }
 
     private val mPostsType = 0
@@ -142,6 +143,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             } else if (holder is PostsCommentHolder) {
                 holder.refreshLike(position, mDataList[position] as PostFirstLevelCommentModel)
             }
+        } else if (refreshType == REFRESH_VOTE) {
+            (holder as PostsHolder).refreshVoteState(position, mDataList[position] as PostsWatchModel)
         }
     }
 
@@ -280,6 +283,23 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 followTv.visibility = View.GONE
             } else {
                 followTv.visibility = View.VISIBLE
+            }
+
+            voteGroupView.clickListener = {
+                mIDetailClickListener?.onClickPostsVote(pos, mModel, it)
+            }
+        }
+
+        fun refreshVoteState(pos: Int, model: PostsWatchModel) {
+            this.pos = pos
+            this.mModel = model
+
+            // 投票
+            if (mModel?.posts?.voteInfo == null) {
+                voteGroupView.setVisibility(View.GONE)
+            } else {
+                voteGroupView.setVisibility(View.VISIBLE)
+                voteGroupView.bindData(mModel?.posts?.voteInfo!!)
             }
         }
 
@@ -800,5 +820,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun setCurPlayintPosition(pos: Int)
 
         fun playAnotherSong()
+
+        fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int)
     }
 }

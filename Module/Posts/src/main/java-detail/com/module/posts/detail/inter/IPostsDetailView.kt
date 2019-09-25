@@ -14,4 +14,5 @@ interface IPostsDetailView {
     fun addSecondLevelCommentSuccess()
     fun addCommetFaild()
     fun showPostsWatchModel(model: PostsWatchModel)
+    fun voteSuccess(position: Int)
 }
