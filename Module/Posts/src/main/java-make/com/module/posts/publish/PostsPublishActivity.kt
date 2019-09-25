@@ -437,7 +437,6 @@ class PostsPublishActivity : BaseActivity() {
         }
         if (model.voteList.isNotEmpty()) {
             map["vote"] = model.voteList
-            hasData = true
         }
 
         map["topicID"] = model.topic?.topicID ?: 0
