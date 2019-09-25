@@ -297,12 +297,6 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 goBigImageBrowse(i, urlList)
             }
 
-            if (mModel?.posts?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                followTv.visibility = View.GONE
-            } else {
-                followTv.visibility = View.VISIBLE
-            }
-
             voteGroupView.clickListener = {
                 mIDetailClickListener?.onClickPostsVote(pos, mModel, it)
             }
@@ -546,6 +540,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 emptyTv.visibility = View.VISIBLE
             } else {
                 emptyTv.visibility = View.GONE
+            }
+
+            if (mModel?.posts?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                followTv.visibility = View.GONE
+            } else {
+                followTv.visibility = View.VISIBLE
             }
         }
     }
