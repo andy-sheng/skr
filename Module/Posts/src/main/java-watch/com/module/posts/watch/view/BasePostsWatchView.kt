@@ -99,7 +99,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     var tipsDialogView: TipsDialogView? = null
 
     var mLoadService: LoadService<*>? = null
-    var pendingPlayingUrl: String? = null
 
     fun dismissDialog() {
         tipsDialogView?.dismiss(false)
@@ -125,7 +124,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (model != null && model.isAudit()) {
                     recordClick(model)
                     // 停掉音乐吧
-                    pendingPlayingUrl = null
+                    var pendingPlayingUrl:String? = null
                     if (adapter?.mCurrentPlayModel == model
                             && (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO || adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_SONG)) {
                         if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO) {
@@ -411,9 +410,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     open fun unselected(reason: Int) {
         isSeleted = false
-        if (reason == UNSELECT_REASON_TO_OTHER_ACTIVITY
-                && (pendingPlayingUrl?.isNotEmpty() == true)
-        ) {
+        if (reason == UNSELECT_REASON_TO_OTHER_ACTIVITY)
+        {
+            // 跳到详情页或者看大图  不停止播放
             val topActivity = U.getActivityUtils().topActivity
             if (topActivity is PostsDetailActivity) {
                 return
@@ -421,7 +420,6 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             if (topActivity is BigImageBrowseActivity) {
                 return
             }
-            MyLog.d(TAG, "带着播放的url跳到详情页，不停止播放")
         }
         SinglePlayer.stop(playerTag)
         adapter?.stopPlay()
