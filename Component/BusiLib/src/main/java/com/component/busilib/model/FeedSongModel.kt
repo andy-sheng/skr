@@ -59,6 +59,14 @@ class FeedSongModel : Serializable {
         return "FeedSongModel(feedID=$feedID, songID=$songID)"
     }
 
+    // 广场中的歌曲名称显示
+    fun getDisplayNameForPosts(): String? {
+        if (!TextUtils.isEmpty(workName)) {
+            return workName
+        }
+        return ""
+    }
+
     fun getDisplayName(): String? {
         if (challengeID == 0L) {
             // 快唱
