@@ -15,6 +15,8 @@ import android.util.AttributeSet
 import android.view.View
 
 import com.common.utils.SpanUtils
+import com.common.utils.U
+import com.module.posts.R
 
 class ExpandTextView : AppCompatTextView {
 
@@ -109,6 +111,7 @@ class ExpandTextView : AppCompatTextView {
     }
 
     fun setCloseText(text: CharSequence?) {
+        setText("")
         super@ExpandTextView.setMaxLines(mMaxLines)
         if (SPAN_CLOSE == null) {
             initCloseEnd()
@@ -145,7 +148,7 @@ class ExpandTextView : AppCompatTextView {
             }
         }
 
-        setText(workingText)
+        setTextContent(workingText)
         if (appendShowAll) {
             // 必须使用append，不能在上面使用+连接，否则spannable会无效
             append(SPAN_CLOSE)
@@ -153,17 +156,33 @@ class ExpandTextView : AppCompatTextView {
         }
     }
 
+    fun setTextContent(text: String?) {
+        var content = SpanUtils().append("$text")
+                .setClickSpan(object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        listener?.onClickText()
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        ds.color = U.getColor(R.color.black_trans_80)
+                        ds.isUnderlineText = false
+                    }
+                }).create()
+        append(content)
+    }
+
     fun setExpandText(text: String?) {
         super@ExpandTextView.setMaxLines(Integer.MAX_VALUE)
+        setText("")
         initExpandEnd()
         originText = text!!.toString()
         val layout1 = createWorkingLayout(text)
         val layout2 = createWorkingLayout(text!! + TEXT_CLOSE)
         // 展示全部原始内容时 如果 TEXT_CLOSE 需要换行才能显示完整，则直接将TEXT_CLOSE展示在下一行
         if (layout2.lineCount > layout1.lineCount) {
-            setText(originText + "\n")
+            setTextContent(originText + "\n")
         } else {
-            setText(originText)
+            setTextContent(originText)
         }
         append(SPAN_EXPAND)
         movementMethod = LinkMovementMethod.getInstance()
@@ -182,5 +201,7 @@ class ExpandTextView : AppCompatTextView {
 
     interface ExpandListener {
         fun onClickExpand(isExpand: Boolean)
+
+        fun onClickText()
     }
 }

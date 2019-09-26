@@ -83,6 +83,10 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         }
 
         content.setListener(object : ExpandTextView.ExpandListener {
+            override fun onClickText() {
+                listener.onClickPostsDetail(pos, mModel)
+            }
+
             override fun onClickExpand(isExpand: Boolean) {
                 mModel?.isExpend = isExpand
             }
