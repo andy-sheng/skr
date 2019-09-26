@@ -118,40 +118,69 @@
             android:background="#FFD4D4D4"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <com.common.view.ex.ExImageView
+            android:id="@+id/yuyin_iv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
+            android:padding="@dimen/view_10_dp"
+            android:src="@drawable/pinglun_yuyin"
+            app:layout_constraintRight_toLeftOf="@+id/kge_iv"
+            app:layout_constraintTop_toBottomOf="@+id/etContent" />
 
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <com.common.view.ex.ExImageView
+            android:id="@+id/audio_tid"
+            android:layout_width="@dimen/view_6_dp"
+            android:layout_height="@dimen/view_6_dp"
+            android:layout_marginTop="@dimen/view_6_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:visibility="visible"
+            app:bl_corners_radius="@dimen/view_6_dp"
+            app:bl_solid_color="#FFFFC15B"
+            app:layout_constraintRight_toRightOf="@+id/yuyin_iv"
+            app:layout_constraintTop_toTopOf="@+id/yuyin_iv" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/kge_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:padding="@dimen/view_10_dp"
+            android:src="@drawable/huifu_kge"
+            app:layout_constraintRight_toLeftOf="@+id/tupian_iv"
+            app:layout_constraintTop_toBottomOf="@+id/etContent" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/kge_tid"
+            android:layout_width="@dimen/view_6_dp"
+            android:layout_height="@dimen/view_6_dp"
+            android:layout_marginTop="@dimen/view_6_dp"
+            android:layout_marginRight="@dimen/view_6_dp"
+            android:visibility="visible"
+            app:bl_corners_radius="@dimen/view_6_dp"
+            app:bl_solid_color="#FFFFC15B"
+            app:layout_constraintRight_toRightOf="@+id/kge_iv"
+            app:layout_constraintTop_toTopOf="@+id/kge_iv" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/tupian_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:padding="@dimen/view_10_dp"
+            android:src="@drawable/pinglun_tupian"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etContent">
+            app:layout_constraintTop_toBottomOf="@+id/etContent" />
 
-            <com.common.view.ex.ExImageView
-                android:layout_marginRight="@dimen/view_5_dp"
-                android:id="@+id/yuyin_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/view_10_dp"
-                android:src="@drawable/pinglun_yuyin" />
-
-            <com.common.view.ex.ExImageView
-                android:layout_marginRight="@dimen/view_5_dp"
-                android:id="@+id/kge_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/view_10_dp"
-                android:src="@drawable/huifu_kge" />
-
-            <com.common.view.ex.ExImageView
-                android:padding="@dimen/view_10_dp"
-                android:id="@+id/tupian_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pinglun_tupian" />
-
-
-        </LinearLayout>
+        <com.common.view.ex.ExImageView
+            android:id="@+id/image_tid"
+            android:layout_width="@dimen/view_6_dp"
+            android:layout_height="@dimen/view_6_dp"
+            android:layout_marginTop="@dimen/view_6_dp"
+            android:layout_marginRight="@dimen/view_6_dp"
+            android:visibility="visible"
+            app:bl_corners_radius="@dimen/view_6_dp"
+            app:bl_solid_color="#FFFFC15B"
+            app:layout_constraintRight_toRightOf="@+id/tupian_iv"
+            app:layout_constraintTop_toTopOf="@+id/tupian_iv" />
     </android.support.constraint.ConstraintLayout>
 
     <RelativeLayout
