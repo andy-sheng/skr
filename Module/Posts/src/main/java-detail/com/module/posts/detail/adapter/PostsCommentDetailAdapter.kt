@@ -386,7 +386,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 }
             })
 
-            contentTv.setDebounceViewClickListener {
+            itemView.setDebounceViewClickListener {
                 mIDetailClickListener?.clickSecondLevelCommentContent(mModel!!)
             }
 
@@ -466,47 +466,50 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             if (!TextUtils.isEmpty(model.comment.content)) {
                 contentTv.visibility = View.VISIBLE
-                if (model.comment.replyType == 1) {
-                    contentTv.text = model.comment.content
-                } else if (model.comment.replyType == 2) {
-                    val spanUtils = SpanUtils()
-                            .append(model.commentUser.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
-                                override fun onClick(widget: View?) {
-                                    val bundle = Bundle()
-                                    bundle.putInt("bundle_user_id", model.commentUser.userId)
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                                            .with(bundle)
-                                            .navigation()
-                                }
-
-                                override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
-                                    ds!!.setUnderlineText(false)
-                                }
-                            })
-                            .append("回复").setForegroundColor(U.getColor(R.color.black))
-                            .append(model.replyUser.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
-                                override fun onClick(widget: View?) {
-                                    val bundle = Bundle()
-                                    bundle.putInt("bundle_user_id", model.replyUser.userId)
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                                            .with(bundle)
-                                            .navigation()
-                                }
-
-                                override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
-                                    ds!!.setUnderlineText(false)
-                                }
-                            })
-                            .append(model.comment.content).setForegroundColor(U.getColor(R.color.black))
-                    val stringBuilder = spanUtils.create()
-                    contentTv.text = stringBuilder
-                }
             } else {
                 contentTv.visibility = View.GONE
+            }
+
+            if (model.comment.replyType == 1) {
+                contentTv.text = model.comment.content
+            } else if (model.comment.replyType == 2) {
+                contentTv.visibility = View.VISIBLE
+                val spanUtils = SpanUtils()
+                        .append(model.commentUser.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
+                            override fun onClick(widget: View?) {
+                                val bundle = Bundle()
+                                bundle.putInt("bundle_user_id", model.commentUser.userId)
+                                ARouter.getInstance()
+                                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                        .with(bundle)
+                                        .navigation()
+                            }
+
+                            override fun updateDrawState(ds: TextPaint?) {
+                                ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                ds!!.setUnderlineText(false)
+                            }
+                        })
+                        .append("回复").setForegroundColor(U.getColor(R.color.black))
+                        .append(model.replyUser.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
+                            override fun onClick(widget: View?) {
+                                val bundle = Bundle()
+                                bundle.putInt("bundle_user_id", model.replyUser.userId)
+                                ARouter.getInstance()
+                                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                        .with(bundle)
+                                        .navigation()
+                            }
+
+                            override fun updateDrawState(ds: TextPaint?) {
+                                ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                ds!!.setUnderlineText(false)
+                            }
+                        })
+                        .append(model.comment.content
+                                ?: "").setForegroundColor(U.getColor(R.color.black))
+                val stringBuilder = spanUtils.create()
+                contentTv.text = stringBuilder
             }
 
             if (mModel?.comment?.songInfo == null) {
