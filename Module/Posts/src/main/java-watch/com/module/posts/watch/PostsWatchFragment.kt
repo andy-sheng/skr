@@ -14,6 +14,7 @@ import com.common.base.INVISIBLE_REASON_TO_DESKTOP
 import com.common.base.INVISIBLE_REASON_TO_OTHER_ACTIVITY
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -179,13 +180,16 @@ class PostsWatchFragment : BaseFragment() {
         }
     }
 
+    var beginTs = System.currentTimeMillis()
     override fun onFragmentVisible() {
+        beginTs = System.currentTimeMillis()
         super.onFragmentVisible()
         postsVp?.currentItem?.let { onViewSelected(it) }
 
     }
 
     override fun onFragmentInvisible(reason: Int) {
+        StatisticsAdapter.recordCalculateEvent("posts", "stay_duration", System.currentTimeMillis() - beginTs, null)
         super.onFragmentInvisible(reason)
         MyLog.d(TAG, "onFragmentInvisible reason=$reason")
         var r = UNSELECT_REASON_SLIDE_OUT
