@@ -41,8 +41,8 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
-import com.component.busilib.event.FeedWatchTabRefreshEvent;
 import com.component.busilib.event.PostsPublishSucessEvent;
+import com.component.busilib.event.PostsWatchTabRefreshEvent;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -222,7 +222,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public void clickValid(View v) {
                 if (mMainVp.getCurrentItem() == 1) {
-                    EventBus.getDefault().post(new FeedWatchTabRefreshEvent());
+                    EventBus.getDefault().post(new PostsWatchTabRefreshEvent());
                 }
                 mMainVp.setCurrentItem(1, false);
                 selectTab(1);

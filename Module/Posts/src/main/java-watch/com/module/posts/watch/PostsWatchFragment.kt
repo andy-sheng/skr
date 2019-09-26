@@ -22,6 +22,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.busilib.event.PostsWatchTabRefreshEvent
 import com.module.RouterConstants
 import com.module.posts.statistics.PostsStatistics
 import com.module.posts.watch.view.FollowPostsWatchView
@@ -31,6 +32,8 @@ import kotlinx.android.synthetic.main.posts_watch_fragment_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.properties.Delegates
 
 class PostsWatchFragment : BaseFragment() {
@@ -81,12 +84,14 @@ class PostsWatchFragment : BaseFragment() {
         postsVp = rootView.findViewById(R.id.posts_vp)
 
         postsPublishIv?.setDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("posts", "publish_click", null)
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
                     .navigation()
         }
 
         postsTopicIv?.setDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("posts", "topic_all_click", null)
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
                     .withInt("from", 1)
@@ -184,8 +189,8 @@ class PostsWatchFragment : BaseFragment() {
     override fun onFragmentVisible() {
         beginTs = System.currentTimeMillis()
         super.onFragmentVisible()
+        StatisticsAdapter.recordCountEvent("posts", "tab_expose", null)
         postsVp?.currentItem?.let { onViewSelected(it) }
-
     }
 
     override fun onFragmentInvisible(reason: Int) {
@@ -213,12 +218,25 @@ class PostsWatchFragment : BaseFragment() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: PostsWatchTabRefreshEvent) {
+        // 首页重复点击了神曲，自动刷新一下吧
+        when {
+            postsVp?.currentItem == 0 -> // 关注自动刷新
+                followPostsWatchView.autoRefresh()
+            postsVp?.currentItem == 1 -> // 推荐自动刷新
+                recommendPostsWatchView.autoRefresh()
+            postsVp?.currentItem == 2 -> // 最新的自动刷新
+                lastPostsWatchView.autoRefresh()
+        }
+    }
+
     override fun isBlackStatusBarText(): Boolean {
         return true
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     override fun destroy() {

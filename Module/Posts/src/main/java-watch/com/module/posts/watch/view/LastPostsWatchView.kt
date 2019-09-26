@@ -6,6 +6,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.watch.model.PostsWatchModel
@@ -13,6 +14,11 @@ import kotlinx.coroutines.launch
 
 // 最新
 class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activity, TYPE_POST_LAST) {
+
+    override fun selected() {
+        super.selected()
+        StatisticsAdapter.recordCountEvent("posts", "new_tab_expose", null)
+    }
 
     override fun initPostsList(flag: Boolean): Boolean {
         if (!flag && mHasInitData) {

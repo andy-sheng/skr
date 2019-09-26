@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
 import com.common.emoji.EmotionKeyboard
 import com.common.emoji.LQREmotionKit
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
@@ -492,6 +493,7 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
     }
 
     fun showSoftInput(type: SHOW_TYPE, model: Any?) {
+        StatisticsAdapter.recordCountEvent("posts", "comment_click", null)
         mExtra = model
         if (type == SHOW_TYPE.KEY_BOARD) {
             if (showType == SHOW_TYPE.NUL) {

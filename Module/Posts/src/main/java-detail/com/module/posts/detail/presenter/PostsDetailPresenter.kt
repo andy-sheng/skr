@@ -8,6 +8,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.module.posts.detail.PostsDetailServerApi
 import com.module.posts.detail.inter.IPostsDetailView
@@ -164,7 +165,7 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
             }
 
             if (result.errno == 0) {
-                U.getToastUtil().showShort("评论成功")
+                StatisticsAdapter.recordCountEvent("posts", "comment_success", null)
                 if (mObj is PostsWatchModel) {
                     val model = JSON.parseObject(result.data.getString("firstLevelComment"), PostFirstLevelCommentModel::class.java)
                     mModelList.add(0, model)
