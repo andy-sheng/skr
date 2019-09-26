@@ -133,13 +133,14 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
     }
 
     private fun getPersonFeedList(offset: Int, isClear: Boolean, dataOkCallback: (() -> Unit)? = null) {
-        var feedSongType = 1
-        if (MyUserInfoManager.getInstance().uid.toInt() != userInfoModel.userId) {
-            feedSongType = 2
-        }
+//        var feedSongType = 1
+//        if (MyUserInfoManager.getInstance().uid.toInt() != userInfoModel.userId) {
+//            feedSongType = 2
+//        }
+        //todo 只要审核通过的
         launch {
             var result = subscribe(RequestControl("getPersonFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, feedSongType)
+                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, 2)
             }
             if (result.errno == 0) {
                 mHasInitData = true
