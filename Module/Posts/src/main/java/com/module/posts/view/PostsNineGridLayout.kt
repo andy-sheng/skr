@@ -56,7 +56,7 @@ class PostsNineGridLayout : NineGridLayout {
                             }
                         }
                         // 针对一个图片的 动态调整下宽高
-                        setOneImageLayoutParams(imageView, newW, newH)
+                        setOneImageLayoutParams(imageView, newW, newH,url)
                     }
 
                     override fun processWithFailure() {

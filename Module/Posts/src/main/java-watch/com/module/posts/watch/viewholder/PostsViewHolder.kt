@@ -100,7 +100,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
         if (MyLog.isDebugLogOpen()) {
             debugTv.visibility = View.VISIBLE
-            debugTv.text = model.toDebugString()
+            debugTv.text = "NO:$pos ${model.toDebugString()}"
         } else {
             debugTv.visibility = View.GONE
         }

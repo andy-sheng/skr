@@ -22,7 +22,7 @@ import java.util.ArrayList
  * 时间：2016/5/10
  */
 abstract class NineGridLayout : ViewGroup {
-    var TAG = "NineGridLayout"+hashCode()
+    var TAG = "NineGridLayout" + hashCode()
 
     private var mSpacing = DEFUALT_SPACING
     private var mColumns: Int = 0
@@ -33,6 +33,8 @@ abstract class NineGridLayout : ViewGroup {
     private var mIsShowAll = false
     private var mIsFirst = true
     private val mUrlList = ArrayList<String>()
+
+    private var viewList = ArrayList<RatioImageView>()
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -100,7 +102,7 @@ abstract class NineGridLayout : ViewGroup {
         }
     }
 
-    fun notifyDataSetChanged(from:String) {
+    fun notifyDataSetChanged(from: String) {
         MyLog.d(TAG, "notifyDataSetChanged from=$from")
         /**
          * 这边一定要post 一下 不然会导致 下一次 onLayout 不回调
@@ -108,14 +110,17 @@ abstract class NineGridLayout : ViewGroup {
 //        if (Looper.myLooper() == Looper.getMainLooper()) {
 //            refresh()
 //        } else {
-            post { refresh() }
+        post { refresh() }
 //        }
     }
 
     private fun refresh() {
         MyLog.d(TAG, "refresh")
-        removeAllViews()
+        //removeAllViews()
         val size = mUrlList.size
+        for (view in viewList) {
+            view.visibility = View.GONE
+        }
 //        if (size > 0) {
 //            visibility = View.VISIBLE
 //        } else {
@@ -135,7 +140,9 @@ abstract class NineGridLayout : ViewGroup {
             if (isShowDefualt) {
                 layoutImageView(imageView, 0, url, false)
             } else {
-                addView(imageView)
+                if(imageView.parent==null){
+                    addView(imageView)
+                }
             }
             return
         }
@@ -186,9 +193,15 @@ abstract class NineGridLayout : ViewGroup {
     }
 
     private fun createImageView(i: Int, url: String): RatioImageView {
-        val imageView = RatioImageView(context)
+        var imageView = viewList.getOrNull(i)
+        if (imageView == null) {
+            imageView = RatioImageView(context)
+            viewList.add(imageView)
+        }
+
+        imageView?.visibility = View.VISIBLE
 //        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        imageView.setOnClickListener { onClickImage(i, url, mUrlList) }
+        imageView?.setOnClickListener { onClickImage(i, url, mUrlList) }
         return imageView
     }
 
@@ -207,8 +220,10 @@ abstract class NineGridLayout : ViewGroup {
         val bottom = top + singleWidth
 
         imageView.layout(left, top, right, bottom)
+        if(imageView.parent==null){
+            addView(imageView)
+        }
 
-        addView(imageView)
         if (showNumFlag) {//添加超过最大显示数量的文本
             val overCount = mUrlList.size - MAX_COUNT
             if (overCount > 0) {
@@ -272,14 +287,16 @@ abstract class NineGridLayout : ViewGroup {
         }
     }
 
-    protected fun setOneImageLayoutParams(imageView: RatioImageView, width: Int, height: Int) {
-        imageView.layoutParams = ViewGroup.LayoutParams(width, height)
-        imageView.layout(0, 0, width, height)
+    protected fun setOneImageLayoutParams(imageView: RatioImageView, width: Int, height: Int,url:String) {
+        if(url == mUrlList.getOrNull(0)){
+            imageView.layoutParams = ViewGroup.LayoutParams(width, height)
+            imageView.layout(0, 0, width, height)
 
-        val params = layoutParams
-        //        params.width = width;
-        params.height = height
-        layoutParams = params
+            val params = layoutParams
+            //        params.width = width;
+            params.height = height
+            layoutParams = params
+        }
     }
 
     private fun getFontHeight(fontSize: Float): Int {
