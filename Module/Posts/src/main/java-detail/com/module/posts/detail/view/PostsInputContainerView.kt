@@ -129,6 +129,16 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
             it.setOrientation(LinearLayoutManager.HORIZONTAL)
         }
 
+        mEtContent?.setDebounceViewClickListener {
+            showTid()
+        }
+
+        mEtContent?.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                showTid()
+            }
+        }
+
         postsReplayImgAdapter?.delClickListener = { m, pos ->
             // 不能直接用pos  notifyItemRemoved 会导致holder 里的 pos 不变
             var index = 0
@@ -445,30 +455,7 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
     override fun onBoradShow() {
         EventBus.getDefault().post(PostsCommentBoardEvent(true))
         visibility = View.VISIBLE
-        mImageTid.visibility = View.GONE
-        mKgeTid.visibility = View.GONE
-        mAudioTid.visibility = View.GONE
-
-        if (showType == SHOW_TYPE.AUDIO) {
-            if (postsVoiceRecordView.status == STATUS_RECORD_OK) {
-                mAudioTid.visibility = View.VISIBLE
-                return
-            }
-        }
-
-        if (showType == SHOW_TYPE.KEG) {
-            if (postsKgeRecordView.status == postsKgeRecordView.STATUS_RECORD_OK) {
-                mKgeTid.visibility = View.VISIBLE
-                return
-            }
-        }
-
-        if (showType == SHOW_TYPE.IMG) {
-            if (postsReplayImgAdapter.dataList.size > 0) {
-                mImageTid.visibility = View.VISIBLE
-                return
-            }
-        }
+        showTid()
     }
 
     override fun onBoradHide() {
@@ -500,18 +487,7 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
                 showType = SHOW_TYPE.KEY_BOARD
             }
             mEmotionKeyboard?.showSoftInput()
-//            val hasAudio = replyModel.recordVoicePath?.isNotEmpty() == true
-//            val hasSong = replyModel.songId > 0
-//            val hasImg = postsReplayImgAdapter.dataList.isNotEmpty()
-//            if(hasAudio){
-//                postsVoiceRecordView.setVisibility(View.VISIBLE)
-//            }
-//            if(hasSong){
-//                postsKgeRecordView.setVisibility(View.VISIBLE)
-//            }
-//            if(hasImg){
-//                selectImgGroup.visibility = View.VISIBLE
-//            }
+            showTid()
         } else if (type == SHOW_TYPE.IMG) {
             goAddImagePage()
             mEmotionKeyboard?.hideSoftInput()
@@ -519,6 +495,33 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
             goAddVoicePage()
         } else if (type == SHOW_TYPE.KEG) {
             goAddKgePage()
+        }
+    }
+
+    fun showTid() {
+        mImageTid.visibility = View.GONE
+        mKgeTid.visibility = View.GONE
+        mAudioTid.visibility = View.GONE
+
+        if (showType == SHOW_TYPE.AUDIO) {
+            if (postsVoiceRecordView.status == STATUS_RECORD_OK) {
+                mAudioTid.visibility = View.VISIBLE
+                return
+            }
+        }
+
+        if (showType == SHOW_TYPE.KEG) {
+            if (postsKgeRecordView.status == postsKgeRecordView.STATUS_RECORD_OK) {
+                mKgeTid.visibility = View.VISIBLE
+                return
+            }
+        }
+
+        if (showType == SHOW_TYPE.IMG) {
+            if (postsReplayImgAdapter.dataList.size > 0) {
+                mImageTid.visibility = View.VISIBLE
+                return
+            }
         }
     }
 
