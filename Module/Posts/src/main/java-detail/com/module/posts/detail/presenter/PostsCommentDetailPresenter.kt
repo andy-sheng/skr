@@ -6,6 +6,7 @@ import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.module.posts.detail.PostsDetailServerApi
 import com.module.posts.detail.event.AddSecondCommentEvent
@@ -62,7 +63,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
             }
 
             if (result.errno == 0) {
-                U.getToastUtil().showShort("评论成功")
+                StatisticsAdapter.recordCountEvent("posts", "comment_success", null)
                 val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
                 mModelList.add(0, model)
                 mOffset++

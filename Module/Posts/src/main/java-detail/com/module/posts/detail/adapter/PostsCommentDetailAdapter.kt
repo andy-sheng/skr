@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.common.callback.Callback
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -168,6 +169,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
+                    StatisticsAdapter.recordCountEvent("posts", "content_voice_click", null)
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
@@ -187,6 +189,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             postsSongView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
+                    StatisticsAdapter.recordCountEvent("posts", "content_music_click", null)
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
@@ -205,6 +208,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             })
 
             nineGridVp?.clickListener = { i, url, urlList ->
+                StatisticsAdapter.recordCountEvent("posts", "content_picture_click", null)
                 goBigImageBrowse(i, urlList)
             }
         }
@@ -344,6 +348,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
+                    StatisticsAdapter.recordCountEvent("posts", "content_voice_click", null)
                     if (postsAudioView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
@@ -363,6 +368,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             postsSongView.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
+                    StatisticsAdapter.recordCountEvent("posts", "content_music_click", null)
                     if (postsSongView.isPlaying) {
                         mPlayingUrl = ""
                         mPlayingPosition = -1
@@ -385,6 +391,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
 
             nineGridVp?.clickListener = { i, url, urlList ->
+                StatisticsAdapter.recordCountEvent("posts", "content_picture_click", null)
                 goBigImageBrowse(i, urlList)
             }
         }
