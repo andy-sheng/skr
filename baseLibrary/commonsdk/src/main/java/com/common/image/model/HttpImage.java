@@ -39,29 +39,37 @@ public class HttpImage extends BaseImage {
                     String lowUrl = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
                             .setW(mLowImageSize.getW())
                             .build());
-                    if(!lowUrl.equals(mUrl)){
+                    if (!lowUrl.equals(mUrl)) {
                         // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
                         mLowImageUri = Uri.parse(lowUrl);
                     }
                 } else {
                     //低分辨率的没有
                     if (canHasLowUri) {
-                        String lowUrl_320 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
-                                .setW(ImageUtils.SIZE.SIZE_320.getW())
+                        String lowUrl_640 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                .setW(ImageUtils.SIZE.SIZE_640.getW())
                                 .build());
-                        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_320);
+                        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_640);
                         if (file != null && file.exists()) {
-                            mLowImageUri = Uri.parse(lowUrl_320);
+                            mLowImageUri = Uri.parse(lowUrl_640);
                         } else {
-                            String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
-                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
+                            String lowUrl_320 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                    .setW(ImageUtils.SIZE.SIZE_320.getW())
                                     .build());
-                            if(!lowUrl_160.equals(mUrl)){
-                                // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
-                                mLowImageUri = Uri.parse(lowUrl_160);
+                            file = FrescoWorker.getCacheFileFromFrescoDiskCache(lowUrl_320);
+                            if (file != null && file.exists()) {
+                                mLowImageUri = Uri.parse(lowUrl_320);
+                            } else {
+                                String lowUrl_160 = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
+                                        .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                        .build());
+                                if (!lowUrl_160.equals(mUrl)) {
+                                    // lowUrl 和 加载 url 一样 没必要设置 lowImageUri 了
+                                    mLowImageUri = Uri.parse(lowUrl_160);
+                                }
                             }
                         }
-                    }else{
+                    } else {
                         // 不需要设置
                     }
                 }

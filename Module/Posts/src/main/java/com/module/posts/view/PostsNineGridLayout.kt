@@ -11,9 +11,11 @@ import com.common.image.fresco.IFrescoCallBack
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.utils.ImageUtils
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ninegrid.NineGridLayout
 import com.common.view.ninegrid.RatioImageView
+import com.component.busilib.R
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.imagepipeline.image.ImageInfo
 
@@ -34,6 +36,8 @@ class PostsNineGridLayout : NineGridLayout {
         imageView.load(ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
                 .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .setFailureDrawable(U.app().resources.getDrawable(R.drawable.load_img_error))
+                .setLoadingDrawable(U.app().resources.getDrawable(R.drawable.loading_place_holder_img))
                 .setCornerRadius(8.dp().toFloat())
                 .setCallBack(object : IFrescoCallBack {
                     override fun processWithInfo(imageInfo: ImageInfo, animatable: Animatable?) {
@@ -71,6 +75,8 @@ class PostsNineGridLayout : NineGridLayout {
     override fun displayImage(imageView: RatioImageView, url: String) {
         imageView.load(ImageFactory.newPathImage(url)
                 .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_320)
+                .setFailureDrawable(U.app().resources.getDrawable(R.drawable.load_img_error))
+                .setLoadingDrawable(U.app().resources.getDrawable(R.drawable.loading_place_holder_img))
                 .setCornerRadius(8.dp().toFloat())
                 .build<BaseImage>())
     }
