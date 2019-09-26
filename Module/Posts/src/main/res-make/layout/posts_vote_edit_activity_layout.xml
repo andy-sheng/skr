@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title_bar"
@@ -14,19 +15,19 @@
         app:centerTextSize="@dimen/textsize_16_dp"
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
-
         app:leftImageResource="@drawable/back_close_black"
         app:leftType="imageButton"
         app:rightText="完成"
         app:rightTextColor="#63C2F0"
         app:rightTextSize="@dimen/textsize_16_dp"
         app:rightType="textView"
-        app:showBottomLine="true" />
+        app:showBottomLine="false" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/vote_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_50_dp"
         android:layout_marginLeft="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_30_dp"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
