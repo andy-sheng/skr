@@ -29,6 +29,7 @@ import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -112,7 +113,7 @@ class FeedsTagDetailActivity : BaseActivity() {
 
     var isDetailPlaying = false  // 详情页面是否在播放
 
-    private val playCallback = object : PlayerCallbackAdapter() {
+    private val playCallback = object : SinglePlayerCallbackAdapter() {
         override fun onCompletion() {
             super.onCompletion()
             mSongPlayModeManager?.getNextSong(false) {

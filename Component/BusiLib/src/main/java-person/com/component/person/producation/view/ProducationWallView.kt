@@ -13,6 +13,7 @@ import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.*
 import com.common.utils.SpanUtils
 import com.common.view.DebounceViewClickListener
@@ -47,7 +48,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
 
     internal var mConfirmDialog: DialogPlus? = null
     private var mShareWorksDialog: ShareWorksDialog? = null
-    val playCallback: PlayerCallbackAdapter
+    val playCallback: SinglePlayerCallbackAdapter
 
     init {
 
@@ -78,7 +79,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
             model?.let { showShareDialog(it) }
         }
 
-        playCallback = object : PlayerCallbackAdapter() {
+        playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 mAdapter.setPlayPosition(-1)

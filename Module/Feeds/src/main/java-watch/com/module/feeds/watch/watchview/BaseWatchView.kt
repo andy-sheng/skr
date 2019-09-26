@@ -18,6 +18,7 @@ import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -83,7 +84,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
     private val mRecyclerView: RecyclerView
 
     val mAdapter: FeedsWatchViewAdapter
-    val playCallback: PlayerCallbackAdapter
+    val playCallback: SinglePlayerCallbackAdapter
 
     var hasMore = true // 是否可以加载更多
     var isSeleted = false  // 是否选中
@@ -266,7 +267,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             })
         }
 
-        playCallback = object : PlayerCallbackAdapter() {
+        playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 MyLog.w(TAG, "PlayerCallbackAdapter onCompletion")

@@ -20,6 +20,7 @@ import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
 import com.common.utils.ActivityUtils
@@ -84,7 +85,7 @@ class FeedsRankDetailActivity : BaseActivity() {
 
     private val playerTag = TAG + hashCode()
 
-    private val playCallback = object : PlayerCallbackAdapter() {
+    private val playCallback = object : SinglePlayerCallbackAdapter() {
         override fun onCompletion() {
             super.onCompletion()
             // 重复播放一次

@@ -9,7 +9,7 @@ object SinglePlayer : IPlayerEx {
 
     val player = MyMediaPlayer()
     var startFrom = "" // 当前player 被谁使用
-    val callbackMap = HashMap<String, IPlayerCallback>()
+    val callbackMap = HashMap<String, SinglePlayerCallbackAdapter>()
 
     init {
         // 根据系统版本决定使用哪个播放器
@@ -57,7 +57,7 @@ object SinglePlayer : IPlayerEx {
         })
     }
 
-    override fun addCallback(from: String, callback: IPlayerCallback) {
+    override fun addCallback(from: String, callback: SinglePlayerCallbackAdapter) {
         callbackMap[from] = callback
     }
 
@@ -67,7 +67,11 @@ object SinglePlayer : IPlayerEx {
 
 
     override fun startPlay(from: String, path: String): Boolean {
-        startFrom = from
+        if(startFrom!=from){
+            var old = startFrom
+            startFrom = from
+            callbackMap[old]?.onPlaytagChange(old, startFrom)
+        }
         MyLog.d("SinglePlayer", "startPlayfrom = $from")
         if (startFrom.startsWith("ProducationWallView")
                 || startFrom.startsWith("PersonWatchView")
@@ -130,4 +134,10 @@ object SinglePlayer : IPlayerEx {
         return player.isBufferingOk
     }
 
+}
+
+open class SinglePlayerCallbackAdapter: PlayerCallbackAdapter() {
+    open fun onPlaytagChange(oldPlayerTag :String?,newPlayerTag: String?){
+
+    }
 }

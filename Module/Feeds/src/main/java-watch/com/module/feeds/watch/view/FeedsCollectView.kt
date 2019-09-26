@@ -25,6 +25,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
@@ -102,7 +103,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
 
     private val mLoadService: LoadService<*>
     private val playerTag = TAG + hashCode()
-    private val playCallback: PlayerCallbackAdapter
+    private val playCallback: SinglePlayerCallbackAdapter
 
     private val mFeedServerApi = ApiManager.getInstance().createService(FeedsWatchServerApi::class.java)
 
@@ -267,7 +268,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
             initData(true)
         })
 
-        playCallback = object : PlayerCallbackAdapter() {
+        playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 // 自动播放下一首

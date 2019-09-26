@@ -33,6 +33,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -123,7 +124,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
 
     val playerTag = TAG + hashCode()
 
-    var playCallback = object : PlayerCallbackAdapter() {
+    var playCallback = object : SinglePlayerCallbackAdapter() {
         override fun onPrepared() {
             MyLog.d(TAG, "onPrepared")
             if (recordPlayIv!!.isSelected) {

@@ -16,6 +16,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
@@ -143,7 +144,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
             return
         }
 
-        SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
+        SinglePlayer.addCallback(playerTag, object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 MyLog.d(TAG, "onCompletion url is $mPlayingUrl")

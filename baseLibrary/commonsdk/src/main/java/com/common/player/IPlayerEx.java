@@ -7,7 +7,7 @@ import android.view.Surface;
  */
 public interface IPlayerEx {
 
-    void addCallback(String from,IPlayerCallback callback);
+    void addCallback(String from,SinglePlayerCallbackAdapter callback);
 
     void removeCallback(String from);
 

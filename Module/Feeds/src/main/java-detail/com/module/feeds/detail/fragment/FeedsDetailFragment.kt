@@ -36,6 +36,7 @@ import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.playcontrol.RemoteControlEvent
 import com.common.playcontrol.RemoteControlHelper
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
@@ -213,7 +214,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
     }
 
-    var playCallback = object : PlayerCallbackAdapter() {
+    var playCallback = object : SinglePlayerCallbackAdapter() {
         override fun onPrepared() {
             MyLog.d(mTag, "onPrepared")
             if (mControlTv!!.isSelected) {

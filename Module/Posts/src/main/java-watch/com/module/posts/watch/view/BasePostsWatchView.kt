@@ -14,6 +14,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -77,7 +78,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     val postsWatchServerApi = ApiManager.getInstance().createService(PostsWatchServerApi::class.java)
 
     val playerTag = TAG + hashCode()
-    val playCallback: PlayerCallbackAdapter
+    private val playCallback: SinglePlayerCallbackAdapter
 
     var isSeleted = false  // 是否选中
     var mHasInitData = false  //关注和推荐是否初始化过数据
@@ -133,8 +134,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                         }
                     } else {
                         SinglePlayer.stop(playerTag)
+                        adapter?.stopPlay()
                     }
-                    adapter?.stopPlay()
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
                             .withInt("postsID", model.posts?.postsID?.toInt() ?: 0)
                             .withString("playingUrl", pendingPlayingUrl)
@@ -336,10 +337,16 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
-        playCallback = object : PlayerCallbackAdapter() {
+        playCallback = object : SinglePlayerCallbackAdapter(){
             override fun onCompletion() {
                 super.onCompletion()
                 adapter?.stopPlay()
+            }
+
+            override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+                if(newPlayerTag != playerTag){
+                    adapter?.stopPlay()
+                }
             }
         }
         SinglePlayer.addCallback(playerTag, playCallback)
