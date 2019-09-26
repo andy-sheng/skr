@@ -349,9 +349,6 @@ public class  EmotionKeyboard {
             case KeyboardEvent.EVENT_TYPE_KEYBOARD_VISIBLE:
                 mPlaceHolderView.getLayoutParams().height = event.keybordHeight;
                 mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
-                if (mBoardStatusListener != null) {
-                    mBoardStatusListener.onBoradShow();
-                }
                 break;
         }
     }
