@@ -37,7 +37,7 @@ class PostsSongView : ConstraintLayout {
     }
 
     fun bindData(song: FeedSongModel?) {
-        bindData(song?.getDisplayName())
+        bindData(song?.getDisplayNameForPosts())
     }
 
     fun bindData(songName: String?) {
