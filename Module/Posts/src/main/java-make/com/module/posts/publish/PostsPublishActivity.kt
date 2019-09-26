@@ -23,6 +23,7 @@ import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
@@ -487,6 +488,7 @@ class PostsPublishActivity : BaseActivity() {
             progressView.visibility = View.GONE
             if (result.errno == 0) {
                 U.getToastUtil().showShort("上传成功")
+                StatisticsAdapter.recordCountEvent("posts", "publish_success", null)
                 finish()
                 EventBus.getDefault().post(PostsPublishSucessEvent())
             } else {

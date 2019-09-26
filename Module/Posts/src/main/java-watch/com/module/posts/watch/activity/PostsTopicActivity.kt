@@ -19,6 +19,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.ImageUtils
 import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
@@ -32,6 +33,7 @@ import com.module.posts.R
 import com.module.posts.publish.topic.Topic
 import com.module.posts.watch.PostsWatchServerApi
 import com.module.posts.watch.model.PostsTopicTabModel
+import com.module.posts.watch.view.BasePostsWatchView
 import com.module.posts.watch.view.TopicPostsWatchView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -76,6 +78,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
             return
         }
 
+        StatisticsAdapter.recordCountEvent("posts", "topic_tab_expose", null)
         imageBg = findViewById(R.id.image_bg)
         smartRefresh = findViewById(R.id.smart_refresh)
         topicTab = findViewById(R.id.topic_tab)
@@ -99,6 +102,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
             setOnMultiPurposeListener(object : SimpleMultiPurposeListener() {
                 override fun onRefresh(refreshLayout: RefreshLayout) {
                     super.onRefresh(refreshLayout)
+                    StatisticsAdapter.recordCountEvent("posts", "topic_tab_refresh", null)
                     currentPostsViews?.initPostsList(true)
                 }
 

@@ -18,6 +18,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
@@ -215,6 +216,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (type == TYPE_POST_TOPIC) {
                     U.getToastUtil().showShort("话题页面不可点击")
                 } else {
+                    StatisticsAdapter.recordCountEvent("posts", "topic_content_click", null)
                     recordClick(model)
                     model?.posts?.topicInfo?.let {
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC)
@@ -303,6 +305,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
+                    if (type == TYPE_POST_RECOMMEND) {
+                        StatisticsAdapter.recordCountEvent("posts", "hot_tab_refresh", null)
+                    }
                     initPostsList(true)
                 }
             })
@@ -471,9 +476,11 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 for (i in firstVisibleItem..lastVisibleItem) {
                     if (adapter?.mDataList?.isNullOrEmpty() == false) {
                         adapter?.mDataList?.let {
-                            it[i].posts?.postsID?.let { postsID ->
-                                MyLog.d(TAG, "recordExposure from = $from postsID = $postsID")
-                                PostsStatistics.addCurExpose(postsID.toInt())
+                            if (i in 0 until it.size) {
+                                it[i].posts?.postsID?.let { postsID ->
+                                    MyLog.d(TAG, "recordExposure from = $from postsID = $postsID")
+                                    PostsStatistics.addCurExpose(postsID.toInt())
+                                }
                             }
                         }
                     }

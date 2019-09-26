@@ -81,12 +81,14 @@ class PostsWatchFragment : BaseFragment() {
         postsVp = rootView.findViewById(R.id.posts_vp)
 
         postsPublishIv?.setDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("posts", "publish_click", null)
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_PUBLISH)
                     .navigation()
         }
 
         postsTopicIv?.setDebounceViewClickListener {
+            StatisticsAdapter.recordCountEvent("posts", "topic_all_click", null)
             ARouter.getInstance()
                     .build(RouterConstants.ACTIVITY_POSTS_TOPIC_SELECT)
                     .withInt("from", 1)
@@ -184,8 +186,8 @@ class PostsWatchFragment : BaseFragment() {
     override fun onFragmentVisible() {
         beginTs = System.currentTimeMillis()
         super.onFragmentVisible()
+        StatisticsAdapter.recordCountEvent("posts", "tab_expose", null)
         postsVp?.currentItem?.let { onViewSelected(it) }
-
     }
 
     override fun onFragmentInvisible(reason: Int) {
