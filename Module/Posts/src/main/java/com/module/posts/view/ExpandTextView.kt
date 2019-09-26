@@ -156,6 +156,7 @@ class ExpandTextView : AppCompatTextView {
     fun setExpandText(text: String?) {
         super@ExpandTextView.setMaxLines(Integer.MAX_VALUE)
         initExpandEnd()
+        originText = text!!.toString()
         val layout1 = createWorkingLayout(text)
         val layout2 = createWorkingLayout(text!! + TEXT_CLOSE)
         // 展示全部原始内容时 如果 TEXT_CLOSE 需要换行才能显示完整，则直接将TEXT_CLOSE展示在下一行

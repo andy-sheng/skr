@@ -45,7 +45,7 @@ class PostsModel : Serializable {
     }
 
     fun toDebugString(): String {
-        return "PostsModel(postsID=$postsID,audios=$audios,  song=$song, status=$status)"
+        return "PostsModel(postsID=$postsID,audios=$audios,  song=$song, status=$status title=$title)"
     }
 
 }
