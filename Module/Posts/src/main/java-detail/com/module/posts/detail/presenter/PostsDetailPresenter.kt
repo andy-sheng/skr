@@ -26,7 +26,6 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
     val mTag = "PostsDetailPresenter"
 
     val mPostsDetailServerApi = ApiManager.getInstance().createService(PostsDetailServerApi::class.java)
-    val mModelList: MutableList<PostFirstLevelCommentModel> = mutableListOf()
 
     var mOffset = 0
     var mLimit = 30
@@ -136,12 +135,14 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 val list = JSON.parseArray(result.data.getString("comments"), PostFirstLevelCommentModel::class.java)
 
                 list?.let {
-                    mModelList.addAll(it)
+                    if (it.size > 0) {
+                        view?.showFirstLevelCommentList(it)
+                    }
                 }
 
                 mHasMore = result.data.getBooleanValue("hasMore")
                 mOffset = result.data.getIntValue("offset")
-                view?.showFirstLevelCommentList(mModelList, mHasMore)
+                view?.hasMore(mHasMore)
             } else {
                 view?.loadMoreError()
                 if (result.errno == -2) {
@@ -168,10 +169,9 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
                 StatisticsAdapter.recordCountEvent("posts", "comment_success", null)
                 if (mObj is PostsWatchModel) {
                     val model = JSON.parseObject(result.data.getString("firstLevelComment"), PostFirstLevelCommentModel::class.java)
-                    mModelList.add(0, model)
                     mOffset++
-                    view?.addFirstLevelCommentSuccess()
-                    view?.showFirstLevelCommentList(mModelList, mHasMore)
+                    view?.addFirstLevelCommentSuccess(model)
+//                    view?.showFirstLevelCommentList(mModelList)
                 } else if (mObj is PostFirstLevelCommentModel) {
                     val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
                     if (mObj.secondLevelComments == null) {

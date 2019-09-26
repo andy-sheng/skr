@@ -15,7 +15,6 @@ import com.common.base.BaseActivity
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -273,11 +272,13 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         }
     }
 
-    override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>, hasMore: Boolean) {
-        val modelList: MutableList<Any> = mutableListOf(mPostsWatchModel!!)
-        modelList.addAll(list)
-        postsAdapter?.dataList = modelList
-        smartRefreshLayout.setEnableLoadMore(hasMore)
+    override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>) {
+        if (postsAdapter?.dataList?.size == 0) {
+            postsAdapter?.dataList?.add(mPostsWatchModel!!)
+        }
+        val startIndex = postsAdapter?.dataList?.size ?: 0
+        postsAdapter?.dataList?.addAll(list)
+        postsAdapter?.notifyItemRangeChanged(startIndex, postsAdapter?.dataList?.size ?: 0)
         smartRefreshLayout.finishLoadMore()
     }
 
@@ -336,13 +337,15 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         smartRefreshLayout.finishLoadMore()
     }
 
-    override fun addFirstLevelCommentSuccess() {
+    override fun addFirstLevelCommentSuccess(model: PostFirstLevelCommentModel) {
         progressView.visibility = View.GONE
         (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
             it.commentCnt++
         }
+        postsAdapter!!.dataList?.add(1, model)
         feedsInputContainerView.onCommentSuccess()
         recyclerView?.scrollToPosition(1)
+        postsAdapter?.notifyItemRangeChanged(1, 2)
     }
 
     override fun addSecondLevelCommentSuccess() {
@@ -383,6 +386,10 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             mPostsWatchModel?.relationShip?.isFriend = isFriend
             postsAdapter?.notifyItemChanged(0, PostsCommentAdapter.REFRESH_FOLLOW_STATE)
         }
+    }
+
+    override fun hasMore(hasMore: Boolean) {
+        smartRefreshLayout.setEnableLoadMore(hasMore)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
