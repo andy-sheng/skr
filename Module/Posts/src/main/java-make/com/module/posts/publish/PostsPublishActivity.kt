@@ -59,6 +59,7 @@ import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.StringBuilder
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_PUBLISH)
 class PostsPublishActivity : BaseActivity() {
@@ -410,6 +411,27 @@ class PostsPublishActivity : BaseActivity() {
         }
     }
 
+    fun getContentStr(): String? {
+        var str = contentEt.text.toString()
+        str = str.trim()
+        val sb = StringBuilder()
+        var lastLineBlank = false
+        for (line in str.split("\n")) {
+            if (line.trim().isBlank()) {
+                if (lastLineBlank) {
+
+                } else {
+                    sb.append(line).append("\n")
+                }
+                lastLineBlank = true
+            } else {
+                lastLineBlank = false
+                sb.append(line).append("\n")
+            }
+        }
+        return sb.toString()
+    }
+
     fun uploadToServer() {
         var hasData = false
         val map = HashMap<String, Any>()
@@ -447,8 +469,8 @@ class PostsPublishActivity : BaseActivity() {
                 hasData = true
             }
         }
-        val content = contentEt.text.toString()
-        if (content.isNotEmpty()) {
+        val content = getContentStr()
+        if (content?.isNotEmpty() == true) {
             map["title"] = content
             hasData = true
         }
