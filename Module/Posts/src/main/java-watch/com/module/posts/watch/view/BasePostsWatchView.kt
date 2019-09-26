@@ -25,6 +25,7 @@ import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
 import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseActivity
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.kingja.loadsir.core.LoadService
@@ -106,7 +107,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         postsRedPkgDialogView?.dismiss(false)
     }
 
-    fun autoRefresh(){
+    fun autoRefresh() {
         refreshLayout.autoRefresh()
     }
 
@@ -337,14 +338,14 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
-        playCallback = object : SinglePlayerCallbackAdapter(){
+        playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 adapter?.stopPlay()
             }
 
             override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
-                if(newPlayerTag != playerTag){
+                if (newPlayerTag != playerTag) {
                     adapter?.stopPlay()
                 }
             }
@@ -411,14 +412,19 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     open fun unselected(reason: Int) {
         isSeleted = false
         if (reason == UNSELECT_REASON_TO_OTHER_ACTIVITY
-                && (U.getActivityUtils().topActivity is PostsDetailActivity)
                 && (pendingPlayingUrl?.isNotEmpty() == true)
         ) {
-            MyLog.d(TAG,"带着播放的url跳到详情页，不停止播放")
-        } else {
-            SinglePlayer.stop(playerTag)
-            adapter?.stopPlay()
+            val topActivity = U.getActivityUtils().topActivity
+            if (topActivity is PostsDetailActivity) {
+                return
+            }
+            if (topActivity is BigImageBrowseActivity) {
+                return
+            }
+            MyLog.d(TAG, "带着播放的url跳到详情页，不停止播放")
         }
+        SinglePlayer.stop(playerTag)
+        adapter?.stopPlay()
     }
 
     open fun selected() {
