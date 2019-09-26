@@ -102,6 +102,10 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         postsRedPkgDialogView?.dismiss(false)
     }
 
+    fun autoRefresh(){
+        refreshLayout.autoRefresh()
+    }
+
     init {
         View.inflate(context, R.layout.posts_watch_view_layout, this)
         if (!EventBus.getDefault().isRegistered(this)) {
