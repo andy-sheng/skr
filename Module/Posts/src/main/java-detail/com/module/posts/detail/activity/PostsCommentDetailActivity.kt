@@ -457,7 +457,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         }
         var startIndex = postsAdapter?.dataList?.size ?: 1
         postsAdapter?.dataList?.addAll(list)
-        postsAdapter?.notifyItemRangeChanged(startIndex, list.size)
+        postsAdapter?.notifyItemRangeInserted(startIndex, list.size)
         if (mPostFirstLevelCommentModel?.comment?.subCommentCnt ?: 0 < list.size) {
             mPostFirstLevelCommentModel?.comment?.subCommentCnt = list.size
         }
