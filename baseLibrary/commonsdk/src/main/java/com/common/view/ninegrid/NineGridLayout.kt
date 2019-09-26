@@ -110,7 +110,12 @@ abstract class NineGridLayout : ViewGroup {
 //        if (Looper.myLooper() == Looper.getMainLooper()) {
 //            refresh()
 //        } else {
-        post { refresh() }
+        if (from == "setUrlList") {
+            refresh()
+        } else {
+            post { refresh() }
+        }
+
 //        }
     }
 
@@ -140,7 +145,7 @@ abstract class NineGridLayout : ViewGroup {
             if (isShowDefualt) {
                 layoutImageView(imageView, 0, url, false)
             } else {
-                if(imageView.parent==null){
+                if (imageView.parent == null) {
                     addView(imageView)
                 }
             }
@@ -220,7 +225,7 @@ abstract class NineGridLayout : ViewGroup {
         val bottom = top + singleWidth
 
         imageView.layout(left, top, right, bottom)
-        if(imageView.parent==null){
+        if (imageView.parent == null) {
             addView(imageView)
         }
 
@@ -287,8 +292,8 @@ abstract class NineGridLayout : ViewGroup {
         }
     }
 
-    protected fun setOneImageLayoutParams(imageView: RatioImageView, width: Int, height: Int,url:String) {
-        if(url == mUrlList.getOrNull(0)){
+    protected fun setOneImageLayoutParams(imageView: RatioImageView, width: Int, height: Int, url: String) {
+        if (url == mUrlList.getOrNull(0)) {
             imageView.layoutParams = ViewGroup.LayoutParams(width, height)
             imageView.layout(0, 0, width, height)
 
