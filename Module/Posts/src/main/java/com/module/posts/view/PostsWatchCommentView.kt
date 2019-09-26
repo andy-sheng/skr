@@ -79,6 +79,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     ellipsize = TextUtils.TruncateAt.END
                 }
                 val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
+                contentLayoutParams?.rightMargin = 0
+                contentLayoutParams?.rightToRight = -1
                 contentLayoutParams?.rightToLeft = postsAudioView?.id
                 contentLayoutParams?.constrainedWidth = true
                 contentTv?.layoutParams = contentLayoutParams
@@ -104,6 +106,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 }
 
                 val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
+                contentLayoutParams?.rightMargin = 10
+                contentLayoutParams?.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
                 contentLayoutParams?.rightToLeft = -1
                 contentLayoutParams?.constrainedWidth = true
                 contentTv?.layoutParams = contentLayoutParams
@@ -127,6 +131,19 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             postsAudioView?.bindData(model.comment?.audios!![0].duration)
         } else {
             postsAudioView?.visibility = View.GONE
+            contentTv?.apply {
+                maxLines = 2
+                setSingleLine(false)
+                ellipsize = TextUtils.TruncateAt.END
+            }
+
+            val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
+            contentLayoutParams?.rightMargin = 10
+            contentLayoutParams?.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
+            contentLayoutParams?.rightToLeft = -1
+            contentLayoutParams?.constrainedWidth = true
+            contentTv?.layoutParams = contentLayoutParams
+
         }
 
         val contentBuilder = SpanUtils()
@@ -141,8 +158,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                         ds.isUnderlineText = false
                     }
                 })
-                .append(model.comment?.content
-                        ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
+                .append(model.comment?.content ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
                 .create()
         contentTv?.text = contentBuilder
 
