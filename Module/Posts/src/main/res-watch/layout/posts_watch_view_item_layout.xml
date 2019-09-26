@@ -44,8 +44,8 @@
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_36_dp"
-        android:layout_marginLeft="@dimen/view_8_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_15_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,9 +53,9 @@
         android:id="@+id/content"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
         android:lineSpacingExtra="@dimen/view_3_dp"
         android:maxLines="3"
         android:textColor="@color/black_trans_80"
@@ -85,19 +85,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/posts_song_view"
-        app:spacing="@dimen/view_12_dp" />
+        app:spacing="@dimen/view_8_dp" />
 
     <ViewStub
         android:id="@+id/vote_layout_stub"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_15_dp"
         android:inflatedId="@+id/vote_layout_stub"
         android:layout="@layout/posts_vote_view_layout"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -108,8 +109,8 @@
         android:id="@+id/comment_layout_stub"
         android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_15_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:inflatedId="@+id/comment_layout_stub"
         android:layout="@layout/posts_watch_view_item_comment_stub_layout"
@@ -158,7 +159,7 @@
         android:id="@+id/red_pkg_iv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_54_dp"
-        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_15_dp"
         android:paddingRight="@dimen/view_10_dp"
         android:src="@drawable/posts_red_s_close_icon"
         app:layout_constraintBottom_toBottomOf="@id/posts_like_tv"
@@ -186,7 +187,7 @@
         app:layout_constraintLeft_toRightOf="@id/red_pkg_iv"
         app:layout_constraintRight_toLeftOf="@id/posts_comment_tv"
         app:layout_constraintTop_toTopOf="@id/red_pkg_iv"
-        app:layout_goneMarginLeft="@dimen/view_10_dp" />
+        app:layout_goneMarginLeft="@dimen/view_15_dp" />
 
     <TextView
         android:id="@+id/debug_tv"

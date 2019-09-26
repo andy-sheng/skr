@@ -93,7 +93,7 @@
         android:layout_marginTop="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
         app:layout_constraintTop_toBottomOf="@id/title_barrier"
-        app:spacing="@dimen/view_12_dp" />
+        app:spacing="@dimen/view_8_dp" />
 
     <com.module.posts.view.PostsSongView
         android:id="@+id/posts_song_view"
