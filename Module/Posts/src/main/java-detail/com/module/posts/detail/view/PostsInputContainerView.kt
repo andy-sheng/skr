@@ -372,7 +372,6 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
                     .setSelectLimit(9)
                     .build()
             ResPickerActivity.open(context as Activity, ArrayList<ImageItem>(postsReplayImgAdapter?.dataList))
-            visibility = View.VISIBLE
             postsVoiceRecordView.setVisibility(View.GONE)
             postsKgeRecordView.setVisibility(View.GONE)
             mPlaceHolderView?.getLayoutParams()?.height = 0
@@ -380,6 +379,7 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
             if (postsVoiceRecordView.status == STATUS_RECORDING) {
                 resetData(SHOW_TYPE.AUDIO)
             }
+            visibility = View.VISIBLE
         }
     }
 
