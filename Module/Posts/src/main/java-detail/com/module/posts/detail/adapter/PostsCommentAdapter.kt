@@ -611,10 +611,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
 
             itemView.setDebounceViewClickListener {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_COMMENT_DETAIL)
-                        .withSerializable("postFirstLevelCommentModel", mModel)
-                        .withSerializable("postsWatchModel", dataList[0] as PostsWatchModel)
-                        .navigation()
+                mIDetailClickListener?.goSecondLevelCommetDetail(mModel!!, pos)
             }
 
             postsAudioView.setOnClickListener(object : DebounceViewClickListener() {
@@ -870,5 +867,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int)
 
         fun getRelation(userID: Int)
+
+        fun goSecondLevelCommetDetail(model: PostFirstLevelCommentModel, position: Int)
     }
 }

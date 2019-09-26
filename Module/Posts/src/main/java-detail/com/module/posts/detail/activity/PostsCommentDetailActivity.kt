@@ -3,7 +3,6 @@ package com.module.posts.detail.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -14,6 +13,7 @@ import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.rxretrofit.ApiManager
@@ -146,14 +146,22 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         SinglePlayer.addCallback(playerTag, object : PlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
+                MyLog.d(TAG, "onCompletion url is $mPlayingUrl")
                 stopPlayingState()
             }
 
             override fun onError(what: Int, extra: Int) {
                 super.onError(what, extra)
+                MyLog.d(TAG, "onError url is $mPlayingUrl")
                 stopPlayingState()
             }
         })
+
+        (intent.getSerializableExtra("playingUrl") as String?)?.let {
+            mPlayingUrl = it
+            mPlayingPosition = 0
+            SinglePlayer.startPlay(playerTag, it)
+        }
 
         titlebar = findViewById(com.module.posts.R.id.titlebar)
         recyclerView = findViewById(com.module.posts.R.id.recycler_view)

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
@@ -104,6 +105,12 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 stopPlayingState()
             }
         })
+
+        (intent.getSerializableExtra("playingUrl") as String?)?.let {
+            mPlayingUrl = it
+            mPlayingPosition = 0
+            SinglePlayer.startPlay(playerTag, it)
+        }
 
         titlebar = findViewById(R.id.titlebar)
         mImageTid = findViewById(R.id.image_tid)
@@ -204,6 +211,20 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
 
             override fun getRelation(userID: Int) {
                 mPostsDetailPresenter?.getRelation(userID)
+            }
+
+            override fun goSecondLevelCommetDetail(model: PostFirstLevelCommentModel, position: Int) {
+                ToSecondLevelDetail.position = position
+                var url: String? = null
+                if (position == mPlayingPosition) {
+                    url = mPlayingUrl
+                }
+
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_COMMENT_DETAIL)
+                        .withSerializable("postFirstLevelCommentModel", model)
+                        .withSerializable("postsWatchModel", postsAdapter?.dataList?.get(0) as PostsWatchModel)
+                        .withSerializable("playingUrl", url)
+                        .navigation()
             }
         }
 
@@ -430,8 +451,15 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
 
     override fun onPause() {
         super.onPause()
-        SinglePlayer.stop(playerTag)
+        if (ToSecondLevelDetail.position == null || ToSecondLevelDetail.position!! != mPlayingPosition) {
+            SinglePlayer.stop(playerTag)
+        }
         stopPlayingState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ToSecondLevelDetail.position = null
     }
 
     override fun destroy() {
@@ -595,4 +623,8 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         return true
     }
 
+    //去二级页的时候记录标记
+    object ToSecondLevelDetail {
+        var position: Int? = null
+    }
 }
