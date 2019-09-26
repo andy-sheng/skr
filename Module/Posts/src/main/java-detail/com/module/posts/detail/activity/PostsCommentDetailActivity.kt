@@ -14,7 +14,6 @@ import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -28,6 +27,7 @@ import com.component.busilib.view.SkrProgressView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
+import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.inter.IPostsCommentDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
@@ -317,6 +317,9 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
             feedsInputContainerView?.visibility = View.GONE
         }
 
+        postsAdapter?.dataList?.add(mPostFirstLevelCommentModel!!)
+        postsAdapter?.notifyItemInserted(0)
+
         postsCommentDetailPresenter?.getPostsSecondLevelCommentList(mPostFirstLevelCommentModel?.comment?.commentID
                 ?: 0)
     }
@@ -415,6 +418,10 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         return mPostFirstLevelCommentModel?.comment?.commentID ?: 0
     }
 
+    override fun hasMore(hasMore: Boolean) {
+        smartRefreshLayout.setEnableLoadMore(hasMore)
+    }
+
     fun beginUploadTask(model: ReplyModel, obj: Any?) {
         this.replyModel = model
         this.mObj = obj
@@ -444,15 +451,17 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         }
     }
 
-
-    override fun showSecondLevelCommentList(list: List<PostsSecondLevelCommentModel>, hasMore: Boolean) {
-        val modelList: MutableList<Any> = mutableListOf(mPostFirstLevelCommentModel!!)
-        modelList.addAll(list)
+    override fun showSecondLevelCommentList(list: List<PostsSecondLevelCommentModel>) {
+        if (postsAdapter?.dataList?.size == 0) {
+            postsAdapter?.dataList?.add(mPostFirstLevelCommentModel!!)
+        }
+        var startIndex = postsAdapter?.dataList?.size ?: 1
+        postsAdapter?.dataList?.addAll(list)
+        postsAdapter?.notifyItemRangeChanged(startIndex, list.size)
         if (mPostFirstLevelCommentModel?.comment?.subCommentCnt ?: 0 < list.size) {
             mPostFirstLevelCommentModel?.comment?.subCommentCnt = list.size
         }
-        postsAdapter?.dataList = modelList
-        smartRefreshLayout.setEnableLoadMore(hasMore)
+
         smartRefreshLayout.finishLoadMore()
     }
 
@@ -460,13 +469,20 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         smartRefreshLayout.finishLoadMore()
     }
 
-    override fun addSecondLevelCommentSuccess() {
+    override fun addSecondLevelCommentSuccess(model: PostsSecondLevelCommentModel) {
         mPostFirstLevelCommentModel?.comment?.let {
             it.subCommentCnt++
         }
+        postsAdapter?.dataList?.add(1, model)
+        postsAdapter?.notifyItemInserted(1)
+        if (postsAdapter?.dataList?.size == 2) {
+            postsAdapter?.notifyDataSetChanged()
+        } else {
+            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+            recyclerView?.scrollToPosition(1)
+        }
         progressView?.visibility = View.GONE
         feedsInputContainerView.onCommentSuccess()
-        recyclerView?.scrollToPosition(1)
     }
 
     override fun onPause() {
@@ -477,7 +493,6 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
 
     override fun destroy() {
         super.destroy()
-        postsAdapter?.notifyItemChanged(0, PostsCommentDetailAdapter.DESTROY_HOLDER)
         SinglePlayer.removeCallback(playerTag)
         postsMoreDialogView?.dismiss()
     }

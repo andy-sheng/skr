@@ -22,7 +22,7 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
     val mTag = "PostsDetailPresenter"
 
     val mPostsServerApi = ApiManager.getInstance().createService(PostsDetailServerApi::class.java)
-    val mModelList: MutableList<PostsSecondLevelCommentModel> = mutableListOf()
+//    val mModelList: MutableList<PostsSecondLevelCommentModel> = mutableListOf()
 
     var mOffset = 0
     var mLimit = 30
@@ -39,12 +39,14 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
                 val list = JSON.parseArray(result.data.getString("secondLevelComments"), PostsSecondLevelCommentModel::class.java)
 
                 list?.let {
-                    mModelList.addAll(it)
+                    if (it.size > 0) {
+                        view.showSecondLevelCommentList(it)
+                    }
                 }
 
                 mHasMore = result.data.getBooleanValue("hasMore")
                 mOffset = result.data.getIntValue("offset")
-                view.showSecondLevelCommentList(mModelList, mHasMore)
+                view.hasMore(mHasMore)
             } else {
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
@@ -65,10 +67,10 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
             if (result.errno == 0) {
                 StatisticsAdapter.recordCountEvent("posts", "comment_success", null)
                 val model = JSON.parseObject(result.data.getString("secondLevelComment"), PostsSecondLevelCommentModel::class.java)
-                mModelList.add(0, model)
+//                mModelList.add(0, model)
                 mOffset++
-                view.addSecondLevelCommentSuccess()
-                view.showSecondLevelCommentList(mModelList, mHasMore)
+                view.addSecondLevelCommentSuccess(model)
+//                view.showSecondLevelCommentList(mModelList, mHasMore)
                 EventBus.getDefault().post(AddSecondCommentEvent(model, view.getFirstLevelCommentID()))
             } else {
                 view.addCommetFaild()

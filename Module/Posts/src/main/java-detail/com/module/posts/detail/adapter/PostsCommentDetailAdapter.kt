@@ -109,16 +109,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     }
 
     private fun refreshHolder(holder: RecyclerView.ViewHolder, position: Int, refreshType: Int) {
-        if (refreshType == DESTROY_HOLDER) {
-            if (holder is PostsFirstLevelCommentHolder) {
-                holder.destroyHolder(position, mDataList[position] as PostFirstLevelCommentModel)
-            }
-        } else if (refreshType == PostsCommentAdapter.REFRESH_PLAY_STATE) {
+        if (refreshType == REFRESH_PLAY_STATE) {
             if (holder is PostsFirstLevelCommentHolder) {
                 holder.refreshPlayState(position, mDataList[position] as PostFirstLevelCommentModel)
             } else if (holder is PostsSecondLevelCommentHolder) {
                 holder.refreshPlayState(position, mDataList[position] as PostsSecondLevelCommentModel)
             }
+        } else if (REFRESH_COMMENT_CTN == REFRESH_COMMENT_CTN) {
+            (holder as PostsFirstLevelCommentHolder).refreshCtn(position, mDataList[position] as PostFirstLevelCommentModel)
         }
     }
 
@@ -213,6 +211,18 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         }
 
+        fun refreshCtn(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            commentCtnTv.text = "评论(${mModel?.comment?.subCommentCnt}条)"
+            if (mModel?.comment?.subCommentCnt == 0) {
+                emptyTv.visibility = View.VISIBLE
+            } else {
+                emptyTv.visibility = View.GONE
+            }
+        }
+
         fun refreshPlayState(pos: Int, model: PostFirstLevelCommentModel) {
             this.pos = pos
             this.mModel = model
@@ -242,11 +252,6 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                     postsSongView.setPlay(false)
                 }
             }
-        }
-
-        fun destroyHolder(pos: Int, model: PostFirstLevelCommentModel) {
-            this.pos = pos
-            this.mModel = model
         }
 
         fun bindData(pos: Int, model: PostFirstLevelCommentModel) {

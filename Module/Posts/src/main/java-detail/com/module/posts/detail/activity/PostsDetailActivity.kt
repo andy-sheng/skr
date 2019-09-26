@@ -28,6 +28,7 @@ import com.component.busilib.view.SkrProgressView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
+import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.event.AddSecondCommentEvent
 import com.module.posts.detail.event.PostsDetailEvent
@@ -276,9 +277,9 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         if (postsAdapter?.dataList?.size == 0) {
             postsAdapter?.dataList?.add(mPostsWatchModel!!)
         }
-        val startIndex = postsAdapter?.dataList?.size ?: 0
+        var startIndex = postsAdapter?.dataList?.size ?: 0
         postsAdapter?.dataList?.addAll(list)
-        postsAdapter?.notifyItemRangeChanged(startIndex, postsAdapter?.dataList?.size ?: 0)
+        postsAdapter?.notifyItemRangeInserted(startIndex, list.size)
         smartRefreshLayout.finishLoadMore()
     }
 
@@ -343,9 +344,14 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             it.commentCnt++
         }
         postsAdapter!!.dataList?.add(1, model)
+        if (postsAdapter?.dataList?.size == 2) {
+            postsAdapter?.notifyDataSetChanged()
+        } else {
+            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+            postsAdapter?.notifyItemInserted(1)
+        }
         feedsInputContainerView.onCommentSuccess()
         recyclerView?.scrollToPosition(1)
-        postsAdapter?.notifyItemRangeChanged(1, 2)
     }
 
     override fun addSecondLevelCommentSuccess() {
