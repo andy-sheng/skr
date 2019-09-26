@@ -1,24 +1,30 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/view_3_dp">
 
-    <com.common.image.fresco.BaseImageView
-        android:id="@+id/img_iv"
-        android:layout_width="@dimen/view_105_dp"
-        android:layout_height="@dimen/view_105_dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="10dp"
+    <com.module.posts.view.PostsSquareConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-       />
+        android:layout_marginRight="10dp">
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/img_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.module.posts.view.PostsSquareConstraintLayout>
+
 
     <ImageView
         android:id="@+id/del_iv"
         android:layout_width="@dimen/view_21_dp"
         android:layout_height="@dimen/view_21_dp"
         android:src="@drawable/fabu_shanchu"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+</RelativeLayout>
