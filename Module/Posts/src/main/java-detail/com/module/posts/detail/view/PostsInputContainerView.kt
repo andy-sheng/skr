@@ -54,6 +54,9 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
     lateinit var postsVoiceRecordView: PostsVoiceRecordView
     lateinit var postsKgeRecordView: PostsKgeRecordView
     lateinit var topArea: View
+    lateinit var mImageTid: ExImageView
+    lateinit var mKgeTid: ExImageView
+    lateinit var mAudioTid: ExImageView
 
     lateinit var selectImgGroup: Group
 
@@ -110,6 +113,9 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
         yuyinIv = this.findViewById(R.id.yuyin_iv)
         kgeIv = this.findViewById(R.id.kge_iv)
         topArea = this.findViewById(R.id.topArea)
+        mImageTid = findViewById(R.id.image_tid)
+        mKgeTid = findViewById(R.id.kge_tid)
+        mAudioTid = findViewById(R.id.audio_tid)
 
         imgRecyclerView = rootView.findViewById(R.id.recycler_view)
         postsVoiceRecordView = PostsVoiceRecordView(rootView.findViewById(R.id.posts_voice_record_view_stub))
@@ -438,6 +444,30 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
     override fun onBoradShow() {
         EventBus.getDefault().post(PostsCommentBoardEvent(true))
         visibility = View.VISIBLE
+        mImageTid.visibility = View.GONE
+        mKgeTid.visibility = View.GONE
+        mAudioTid.visibility = View.GONE
+
+        if (showType == SHOW_TYPE.AUDIO) {
+            if (postsVoiceRecordView.status == STATUS_RECORD_OK) {
+                mAudioTid.visibility = View.VISIBLE
+                return
+            }
+        }
+
+        if (showType == SHOW_TYPE.KEG) {
+            if (postsKgeRecordView.status == postsKgeRecordView.STATUS_RECORD_OK) {
+                mKgeTid.visibility = View.VISIBLE
+                return
+            }
+        }
+
+        if (showType == SHOW_TYPE.IMG) {
+            if (postsReplayImgAdapter.dataList.size > 0) {
+                mImageTid.visibility = View.VISIBLE
+                return
+            }
+        }
     }
 
     override fun onBoradHide() {
@@ -455,6 +485,10 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
         }
 
         mForceHide = false
+
+        mImageTid.visibility = View.GONE
+        mKgeTid.visibility = View.GONE
+        mAudioTid.visibility = View.GONE
     }
 
     fun showSoftInput(type: SHOW_TYPE, model: Any?) {
