@@ -21,8 +21,8 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
     var mDataList = ArrayList<PostsWatchModel>()
 
     var mCurrentPlayModel: PostsWatchModel? = null   // 播放的model
-    var mCurrentPlayPosition = -1    //播放的位置
     var playStatus = NO_PLAY_AUDIO   // 0代表未播放  1播放帖子音频  2播放评论音频
+    var mCurrentPlayPosition = -1    //播放的位置
 
     val mTag = "PostsWatchViewAdapter"
     private val uiHanlder = Handler(Looper.getMainLooper())

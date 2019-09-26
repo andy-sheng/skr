@@ -29,11 +29,13 @@ import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.posts.R
+import com.module.posts.detail.activity.PostsDetailActivity
 import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.redpkg.PostsRedPkgDialogView
 import com.module.posts.statistics.PostsStatistics
 import com.module.posts.watch.PostsWatchServerApi
+import com.module.posts.watch.UNSELECT_REASON_TO_OTHER_ACTIVITY
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.adapter.PostsWatchViewAdapter
 import com.module.posts.watch.model.PostsWatchModel
@@ -94,6 +96,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
     var tipsDialogView: TipsDialogView? = null
 
     var mLoadService: LoadService<*>? = null
+    var pendingPlayingUrl: String? = null
 
     fun dismissDialog() {
         tipsDialogView?.dismiss(false)
@@ -115,10 +118,21 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (model != null && model.isAudit()) {
                     recordClick(model)
                     // 停掉音乐吧
-                    SinglePlayer.stop(playerTag)
+                    pendingPlayingUrl = null
+                    if (adapter?.mCurrentPlayModel == model
+                            && (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO || adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_SONG)) {
+                        if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO) {
+                            pendingPlayingUrl = adapter?.mCurrentPlayModel?.posts?.audios?.getOrNull(0)?.url
+                        } else if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_SONG) {
+                            pendingPlayingUrl = adapter?.mCurrentPlayModel?.posts?.song?.playURL
+                        }
+                    } else {
+                        SinglePlayer.stop(playerTag)
+                    }
                     adapter?.stopPlay()
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_DETAIL)
                             .withInt("postsID", model.posts?.postsID?.toInt() ?: 0)
+                            .withString("playingUrl", pendingPlayingUrl)
                             .navigation()
                 } else {
                     U.getToastUtil().showShort("帖子审核完毕就可以互动啦～")
@@ -380,8 +394,15 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     open fun unselected(reason: Int) {
         isSeleted = false
-        SinglePlayer.stop(playerTag)
-        adapter?.stopPlay()
+        if (reason == UNSELECT_REASON_TO_OTHER_ACTIVITY
+                && (U.getActivityUtils().topActivity is PostsDetailActivity)
+                && (pendingPlayingUrl?.isNotEmpty() == true)
+        ) {
+            MyLog.d(TAG,"带着播放的url跳到详情页，不停止播放")
+        } else {
+            SinglePlayer.stop(playerTag)
+            adapter?.stopPlay()
+        }
     }
 
     open fun selected() {
