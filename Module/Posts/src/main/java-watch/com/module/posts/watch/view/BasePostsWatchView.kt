@@ -110,6 +110,17 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
         refreshLayout.autoRefresh()
     }
 
+    fun srollPositionToTop(position: Int) {
+        // 置顶显示
+        if (position >= 0) {
+            val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+            if (position <= firstVisibleItem || position >= lastVisibleItem) {
+                layoutManager.scrollToPositionWithOffset(position, 0)
+            }
+        }
+    }
+
     init {
         View.inflate(context, R.layout.posts_watch_view_layout, this)
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -442,6 +453,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 adapter?.mDataList?.addAll(list)
             }
             adapter?.notifyDataSetChanged()
+            srollPositionToTop(0)
             recordExposure("addWatchPosts")
         } else {
             if (!list.isNullOrEmpty()) {
