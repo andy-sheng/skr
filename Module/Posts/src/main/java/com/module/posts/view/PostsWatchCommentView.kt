@@ -28,7 +28,7 @@ import com.module.posts.watch.model.PostsCommentModel
 class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     var commentTv: TextView? = null
-    var contentTv: TextView? = null
+    var contentTv: SpannableTextView? = null
     var likeNumTv: TextView? = null
 
     var postsAudioView: PostsCommentAudioView? = null
