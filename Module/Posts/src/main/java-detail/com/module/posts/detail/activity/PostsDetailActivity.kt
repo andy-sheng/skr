@@ -32,6 +32,8 @@ import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.event.AddSecondCommentEvent
+import com.module.posts.detail.event.DeteleFirstCommentEvent
+import com.module.posts.detail.event.DeteleSecondCommentEvent
 import com.module.posts.detail.event.PostsDetailEvent
 import com.module.posts.detail.inter.IPostsDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
@@ -336,6 +338,62 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         }
     }
 
+    //二级页删除二级评论
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DeteleSecondCommentEvent) {
+        getFirstLevelCommentById(event.firstLevelCommentID)?.let {
+            (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
+                it.commentCnt--
+            }
+
+            getSecondLevelCommentById(postsAdapter!!.dataList[it] as PostFirstLevelCommentModel, event.model?.comment?.commentID
+                    ?: 0)?.let {
+                (postsAdapter!!.dataList[it] as PostFirstLevelCommentModel).secondLevelComments?.removeAt(it)
+            }
+
+            (postsAdapter!!.dataList[it] as PostFirstLevelCommentModel)?.comment?.let {
+                it.subCommentCnt--
+            }
+
+            postsAdapter!!.notifyDataSetChanged()
+        }
+    }
+
+    //二级页删除一级评论
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DeteleFirstCommentEvent) {
+        getFirstLevelCommentById(event.model?.comment?.commentID ?: 0)?.let {
+            (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
+                it.commentCnt--
+            }
+
+            postsAdapter!!.dataList?.removeAt(it)
+            postsAdapter!!.notifyDataSetChanged()
+        }
+    }
+
+    private fun getFirstLevelCommentById(commendID: Int): Int? {
+        postsAdapter?.dataList?.forEachIndexed { index, any ->
+            if (any is PostFirstLevelCommentModel) {
+                if (any.comment?.commentID == commendID) {
+                    return index
+                }
+            }
+        }
+
+        return null
+    }
+
+    private fun getSecondLevelCommentById(model: PostFirstLevelCommentModel, commendID: Int): Int? {
+        model.secondLevelComments?.forEachIndexed { index, any ->
+            if (any.comment?.commentID == commendID) {
+                return index
+            }
+        }
+
+        return null
+    }
+
     override fun loadDetailDelete() {
         U.getToastUtil().showShort("帖子已经删除")
         finish()
@@ -442,6 +500,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
 
     override fun showPostsWatchModel(model: PostsWatchModel) {
         mPostsWatchModel = model
+        postsAdapter?.setPostsOwnerID(model.user?.userId ?: 0)
 
         commentTv?.setDebounceViewClickListener {
             feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)

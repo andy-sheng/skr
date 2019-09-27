@@ -54,6 +54,11 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
     private val mPostsType = 0
     private val mCommentType = 1
+    private var mPostsOwnerID = 0  // 帖子属于谁，楼主
+
+    fun setPostsOwnerID(userID: Int) {
+        this.mPostsOwnerID = userID
+    }
 
     val followState = DrawableCreator.Builder()
             .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
@@ -567,6 +572,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         var postsBarrier: Barrier
         var replyNum: ExTextView
         var redPkgTv: ExTextView
+        val ownerTv: ExTextView
         var bottomBarrier: Barrier
         var pos: Int = -1
         var mModel: PostFirstLevelCommentModel? = null
@@ -585,6 +591,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             nineGridVp = itemView.findViewById(R.id.nine_grid_vp)
             postsBarrier = itemView.findViewById(R.id.posts_barrier)
             redPkgTv = itemView.findViewById(R.id.red_pkg_tv)
+            ownerTv = itemView.findViewById(R.id.owner_tv)
             replyNum = itemView.findViewById(R.id.reply_num)
             bottomBarrier = itemView.findViewById(R.id.bottom_barrier)
             bottomDivider = itemView.findViewById(R.id.bottom_divider)
@@ -714,6 +721,11 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
 
             commenterAvaterIv.bindData(model.commentUser)
+            if (model.commentUser?.userId == mPostsOwnerID) {
+                ownerTv.visibility = View.VISIBLE
+            } else {
+                ownerTv.visibility = View.GONE
+            }
             nameTv.text = model.commentUser?.nicknameRemark
             commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
                     ?: 0, System.currentTimeMillis())
@@ -754,7 +766,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 nineGridVp.setUrlList(mModel?.comment?.pictures!!)
             }
 
-            if ((mModel?.secondLevelComments?.size ?: 0) > 0) {
+            if ((mModel?.secondLevelComments?.size
+                            ?: 0) > 0 && mModel?.comment?.subCommentCnt ?: 0 > 0) {
                 replyNum.visibility = View.VISIBLE
                 val spanUtils = SpanUtils()
                         .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {

@@ -15,8 +15,10 @@ import com.module.posts.detail.model.PostsSecondLevelCommentModel
 import com.module.posts.watch.model.PostsModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsCommentDetailView) : RxLifeCyclePresenter() {
     val mTag = "PostsDetailPresenter"
@@ -74,6 +76,32 @@ class PostsCommentDetailPresenter(val model: PostsModel, val view: IPostsComment
                 EventBus.getDefault().post(AddSecondCommentEvent(model, view.getFirstLevelCommentID()))
             } else {
                 view.addCommetFaild()
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
+
+    fun deleteComment(commentID: Int, postsID: Int, pos: Int, model: PostsSecondLevelCommentModel?) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["commentID"] = commentID
+            map["postsID"] = postsID
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe {
+                mPostsServerApi.deleteComment(body)
+            }
+
+            if (result.errno == 0) {
+                view?.deleteCommentSuccess(true, pos, model)
+                mOffset--
+            } else {
+                view?.deleteCommentSuccess(false, pos, model)
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 } else {
