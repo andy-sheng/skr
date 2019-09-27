@@ -352,6 +352,8 @@ open class EnhancedImageView : RelativeLayout {
         mSubsamplingScaleImageView!!.setImage(ImageSource.uri(localFilePath))
     }
 
+    val gifDir = File(U.getAppInfoUtils().getSubDirFile("fresco"), "gif")
+
     private fun getGifSaveFile(url: String): File {
         /**
          * 保证
@@ -360,7 +362,10 @@ open class EnhancedImageView : RelativeLayout {
          * 的key相同
          */
         var fileName = U.getMD5Utils().MD5_16(U.getFileUtils().getPrefixFromUrlWithoutExt(url)) + ".gif"
-        return File(U.getAppInfoUtils().getFilePathInSubDir("fresco", fileName))
+        if (!gifDir.exists()) {
+            gifDir.mkdirs()
+        }
+        return File(gifDir, fileName)
     }
 
     //下载gif
