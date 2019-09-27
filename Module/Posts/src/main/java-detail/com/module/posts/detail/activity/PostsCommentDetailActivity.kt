@@ -207,7 +207,8 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                     dismiss(false)
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
                             .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
-                            .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
+                            .withInt("targetID", mPostFirstLevelCommentModel?.commentUser?.userId
+                                    ?: 0)
                             .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
                             .withLong("commentID", mPostFirstLevelCommentModel?.comment?.commentID?.toLong()
                                     ?: 0)
@@ -305,7 +306,8 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                         dismiss(false)
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
                                 .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
-                                .withInt("targetID", mPostsWatchModel?.user?.userId ?: 0)
+                                .withInt("targetID", postsCommentModel?.commentUser?.userId
+                                        ?: 0)
                                 .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
                                 .withLong("commentID", postsCommentModel?.comment?.commentID?.toLong()
                                         ?: 0)

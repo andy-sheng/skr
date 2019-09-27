@@ -42,6 +42,7 @@ import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.presenter.PostsDetailPresenter
 import com.module.posts.detail.view.PostsInputContainerView
 import com.module.posts.detail.view.ReplyModel
+import com.module.posts.more.PostsCommentMoreDialogView
 import com.module.posts.more.PostsMoreDialogView
 import com.module.posts.publish.PostsPublishActivity
 import com.module.posts.redpkg.PostsRedPkgDialogView
@@ -75,6 +76,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
     var mPostsID: Int? = null
     var mPostsDetailPresenter: PostsDetailPresenter? = null
     var postsMoreDialogView: PostsMoreDialogView? = null
+    var postsCommentMoreDialogView: PostsCommentMoreDialogView? = null
     var postsRedPkgDialogView: PostsRedPkgDialogView? = null
     lateinit var progressView: SkrProgressView
     lateinit var mImageTid: ExImageView
@@ -235,17 +237,28 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         }
 
         postsAdapter?.mClickContent = { postFirstLevelModel, pos ->
-            postsMoreDialogView?.dismiss(false)
-            postsMoreDialogView = PostsMoreDialogView(this@PostsDetailActivity, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
-                replayArea.visibility = View.VISIBLE
-                replayTv.setDebounceViewClickListener {
+            postsCommentMoreDialogView?.dismiss(false)
+            postsCommentMoreDialogView = PostsCommentMoreDialogView(this@PostsDetailActivity).apply {
+                replyTv.setDebounceViewClickListener {
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postFirstLevelModel)
                     feedsInputContainerView?.setETHint("回复 ${postFirstLevelModel.commentUser?.nicknameRemark}")
                     dismiss()
                 }
 
+                reportTv.setDebounceViewClickListener {
+                    dismiss(false)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                            .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
+                            .withInt("targetID", postFirstLevelModel?.commentUser?.userId
+                                    ?: 0)
+                            .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
+                            .withLong("commentID", postFirstLevelModel?.comment?.commentID?.toLong()
+                                    ?: 0)
+                            .navigation()
+                }
+
                 if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                    deleteArea.visibility = View.VISIBLE
+                    deleteTv.visibility = View.VISIBLE
                     deleteTv.setDebounceViewClickListener {
                         dismiss(false)
                         deleteConfirm {
@@ -255,9 +268,11 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                             progressView?.visibility = View.VISIBLE
                         }
                     }
+                } else {
+                    deleteTv.visibility = View.GONE
                 }
             }
-            postsMoreDialogView?.showByDialog(true)
+            postsCommentMoreDialogView?.showByDialog(true)
         }
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = postsAdapter
