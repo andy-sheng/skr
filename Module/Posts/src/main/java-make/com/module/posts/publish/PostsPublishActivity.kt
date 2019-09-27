@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -414,22 +415,31 @@ class PostsPublishActivity : BaseActivity() {
     }
 
     fun getContentStr(): String? {
+
         var str = contentEt.text.toString()
         str = str.trim()
         val sb = StringBuilder()
         var lastLineBlank = false
+        var first = true
         for (line in str.split("\n")) {
             if (line.trim().isBlank()) {
                 if (lastLineBlank) {
 
                 } else {
-                    sb.append(line).append("\n")
+                    if (!first) {
+                        sb.append("\n")
+                    }
+                    sb.append(line)
                 }
                 lastLineBlank = true
             } else {
                 lastLineBlank = false
-                sb.append(line).append("\n")
+                if (!first) {
+                    sb.append("\n")
+                }
+                sb.append(line)
             }
+            first = false
         }
         return sb.toString()
     }

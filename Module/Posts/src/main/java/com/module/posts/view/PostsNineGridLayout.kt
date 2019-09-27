@@ -41,24 +41,41 @@ class PostsNineGridLayout : NineGridLayout {
                 .setCornerRadius(8.dp().toFloat())
                 .setCallBack(object : IFrescoCallBack {
                     override fun processWithInfo(imageInfo: ImageInfo, animatable: Animatable?) {
-                        val w = imageInfo.width
-                        val h = imageInfo.height
+                        val w = imageInfo.width.toFloat()
+                        val h = imageInfo.height.toFloat()
                         val newW: Int
                         val newH: Int
-                        when {
-                            h > w * MAX_W_H_RATIO -> {//h:w = 5:3
-                                newW = parentWidth / 2
-                                newH = newW * 5 / 3
-                            }
-                            h < w -> {//h:w = 2:3
-                                newW = parentWidth * 2 / 3
-                                newH = newW * 2 / 3
-                            }
-                            else -> {//newH:h = newW :w
-                                newW = parentWidth / 2
-                                newH = h * newW / w
-                            }
-                        }
+//                        when {
+//                            h > w * MAX_W_H_RATIO -> {//h:w = 5:3
+//                                newW = parentWidth / 2
+//                                newH = newW * 5 / 3
+//                            }
+//                            h < w -> {//h:w = 2:3
+//                                newW = parentWidth * 2 / 3
+//                                newH = newW * 2 / 3
+//                            }
+//                            else -> {//newH:h = newW :w
+//                                newW = parentWidth / 2
+//                                newH = h * newW / w
+//                            }
+//                        }
+                         if(w/h < MIN_W_H/MAX_W_H.toFloat()){
+                             //非常长的图
+                             newH = 190.dp()
+                             newW = 42.dp()
+                         }else if(w/h > MAX_W_H/MIN_W_H.toFloat()){
+                             // 非常宽的图
+                             newW = 190.dp()
+                             newH = 42.dp()
+                         }else {
+                             if(w>h){
+                                 newW = MAX_W_H
+                                 newH = (newW*h/w).toInt()
+                             }else{
+                                 newH = MAX_W_H
+                                 newW = (newH*w/h).toInt()
+                             }
+                         }
                         // 针对一个图片的 动态调整下宽高
                         setOneImageLayoutParams(imageView, newW, newH,url)
                     }
@@ -87,6 +104,7 @@ class PostsNineGridLayout : NineGridLayout {
 
     companion object {
 
-        protected val MAX_W_H_RATIO = 3
+        protected val MAX_W_H = 190.dp()
+        protected val MIN_W_H = 40.dp()
     }
 }
