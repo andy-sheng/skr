@@ -62,8 +62,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
     val mDividerReport: View
     val mShareTv: ExTextView
     val mDividerShare: View
-    val mCollectTv: ExTextView
-    val mDividerCollect: View
+//    val mCollectTv: ExTextView
+//    val mDividerCollect: View
     val mFollowTv: ExTextView
     val mDividerFollow: View
 
@@ -79,8 +79,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
         mDividerReport = findViewById(R.id.divider_report)
         mShareTv = findViewById(R.id.share_tv)
         mDividerShare = findViewById(R.id.divider_share)
-        mCollectTv = findViewById(R.id.collect_tv)
-        mDividerCollect = findViewById(R.id.divider_collect)
+//        mCollectTv = findViewById(R.id.collect_tv)
+//        mDividerCollect = findViewById(R.id.divider_collect)
         mFollowTv = findViewById(R.id.follow_tv)
         mDividerFollow = findViewById(R.id.divider_follow)
 
@@ -122,17 +122,17 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
             }
         })
 
-        mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
-            override fun clickValid(v: View?) {
-                // 收藏或取消收藏
-                dismiss()
-                if ("收藏歌曲".equals(mCollectTv.text)) {
-                    collect(false)
-                } else {
-                    collect(true)
-                }
-            }
-        })
+//        mCollectTv.setOnClickListener(object : DebounceViewClickListener() {
+//            override fun clickValid(v: View?) {
+//                // 收藏或取消收藏
+//                dismiss()
+//                if ("收藏歌曲".equals(mCollectTv.text)) {
+//                    collect(false)
+//                } else {
+//                    collect(true)
+//                }
+//            }
+//        })
 
         mFollowTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -161,8 +161,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 // 详情，只留两个举报和取消
                 mFollowTv.visibility = View.GONE
                 mDividerFollow.visibility = View.GONE
-                mCollectTv.visibility = View.GONE
-                mDividerCollect.visibility = View.GONE
+//                mCollectTv.visibility = View.GONE
+//                mDividerCollect.visibility = View.GONE
                 mShareTv.visibility = View.GONE
                 mDividerShare.visibility = View.GONE
             }
@@ -175,8 +175,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 mCopyReportTv.text = "删除"
                 if (model.status != 2) {
                     // 未审核通过
-                    mCollectTv.visibility = View.GONE
-                    mDividerCollect.visibility = View.GONE
+//                    mCollectTv.visibility = View.GONE
+//                    mDividerCollect.visibility = View.GONE
                 } else {
                     checkCollect()
                 }
@@ -185,8 +185,8 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
                 mFollowTv.visibility = View.GONE
                 mDividerFollow.visibility = View.GONE
 
-                mCollectTv.visibility = View.GONE
-                mDividerCollect.visibility = View.GONE
+//                mCollectTv.visibility = View.GONE
+//                mDividerCollect.visibility = View.GONE
                 checkCollect()
             }
             else -> {
@@ -314,13 +314,13 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
     }
 
     private fun showCollected(isCollocted: Boolean) {
-        mCollectTv.visibility = View.VISIBLE
-        mDividerCollect.visibility = View.VISIBLE
-        if (isCollocted) {
-            mCollectTv.text = "取消收藏"
-        } else {
-            mCollectTv.text = "收藏歌曲"
-        }
+//        mCollectTv.visibility = View.VISIBLE
+//        mDividerCollect.visibility = View.VISIBLE
+//        if (isCollocted) {
+//            mCollectTv.text = "取消收藏"
+//        } else {
+//            mCollectTv.text = "收藏歌曲"
+//        }
     }
 
     private fun checkFollow(isFollow: Boolean?) {

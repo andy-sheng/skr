@@ -78,12 +78,14 @@
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/textsize_16_dp"
             android:text="收藏歌曲"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/share_tv" />
 
         <View
             android:id="@+id/divider_collect"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1_dp"
+            android:visibility="gone"
             android:background="@color/black_trans_10"
             app:layout_constraintBottom_toBottomOf="@id/collect_tv" />
 

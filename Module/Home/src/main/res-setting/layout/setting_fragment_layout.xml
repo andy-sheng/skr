@@ -221,6 +221,7 @@
                 android:id="@+id/upload_music_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_64_dp"
+                android:visibility="gone"
                 android:layout_below="@+id/user_blacklist">
 
                 <com.common.view.ex.ExTextView
