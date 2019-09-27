@@ -363,6 +363,14 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             } else {
                 emptyTv.visibility = View.GONE
             }
+
+            if (mModel?.numeric != null) {
+                postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
+                postsLikeTv.text = mModel?.numeric?.starCnt.toString()
+            } else {
+                postsCommentTv.text = "0"
+                postsLikeTv.text = "0"
+            }
         }
 
         fun refreshLike(pos: Int, model: PostsWatchModel) {

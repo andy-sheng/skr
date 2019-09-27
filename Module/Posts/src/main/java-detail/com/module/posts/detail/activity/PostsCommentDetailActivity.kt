@@ -21,10 +21,12 @@ import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
@@ -45,6 +47,8 @@ import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -223,10 +227,12 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                 if (mPostFirstLevelCommentModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                     deleteTv.visibility = View.VISIBLE
                     deleteTv.setDebounceViewClickListener {
-                        postsCommentDetailPresenter?.deleteComment(mPostFirstLevelCommentModel?.comment?.commentID
-                                ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, 0, null)
                         dismiss()
-                        progressView?.visibility = View.VISIBLE
+                        deleteConfirm {
+                            postsCommentDetailPresenter?.deleteComment(mPostFirstLevelCommentModel?.comment?.commentID
+                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, 0, null)
+                            progressView?.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -319,10 +325,13 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                     if (postsCommentModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                         deleteTv.visibility = View.VISIBLE
                         deleteTv.setDebounceViewClickListener {
-                            postsCommentDetailPresenter?.deleteComment(postsCommentModel?.comment?.commentID
-                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, pos, null)
                             dismiss()
-                            progressView?.visibility = View.VISIBLE
+                            deleteConfirm {
+                                postsCommentDetailPresenter?.deleteComment(postsCommentModel?.comment?.commentID
+                                        ?: 0, mPostsWatchModel?.posts?.postsID?.toInt()
+                                        ?: 0, pos, null)
+                                progressView?.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
@@ -512,6 +521,31 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
 
     override fun loadMoreError() {
         smartRefreshLayout.finishLoadMore()
+    }
+
+    var mTipsDialogView: TipsDialogView? = null
+
+    private fun deleteConfirm(call: (() -> Unit)?) {
+        launch {
+            delay(400)
+            mTipsDialogView = TipsDialogView.Builder(this@PostsCommentDetailActivity)
+                    .setMessageTip("是否确定删除该评论")
+                    .setConfirmTip("确认删除")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            mTipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            mTipsDialogView?.dismiss(false)
+                            call?.invoke()
+                        }
+                    })
+                    .build()
+            mTipsDialogView?.showByDialog()
+        }
     }
 
     override fun addSecondLevelCommentSuccess(model: PostsSecondLevelCommentModel) {

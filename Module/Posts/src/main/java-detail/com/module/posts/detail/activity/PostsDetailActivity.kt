@@ -22,10 +22,12 @@ import com.common.rxretrofit.ApiManager
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
@@ -49,6 +51,7 @@ import com.respicker.activity.ResPickerActivity
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -245,10 +248,12 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
                     deleteArea.visibility = View.VISIBLE
                     deleteTv.setDebounceViewClickListener {
-                        mPostsDetailPresenter?.deleteComment(postFirstLevelModel?.comment?.commentID
-                                ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, pos)
                         dismiss()
-                        progressView?.visibility = View.VISIBLE
+                        deleteConfirm {
+                            mPostsDetailPresenter?.deleteComment(postFirstLevelModel?.comment?.commentID
+                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, pos)
+                            progressView?.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -335,6 +340,31 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                     postsAdapter!!.notifyDataSetChanged()
                 }
             }
+        }
+    }
+
+    var mTipsDialogView: TipsDialogView? = null
+
+    private fun deleteConfirm(call: (() -> Unit)?) {
+        launch {
+            kotlinx.coroutines.delay(400)
+            mTipsDialogView = TipsDialogView.Builder(this@PostsDetailActivity)
+                    .setMessageTip("是否确定删除该评论")
+                    .setConfirmTip("确认删除")
+                    .setCancelTip("取消")
+                    .setCancelBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            mTipsDialogView?.dismiss()
+                        }
+                    })
+                    .setConfirmBtnClickListener(object : AnimateClickListener() {
+                        override fun click(view: View?) {
+                            mTipsDialogView?.dismiss(false)
+                            call?.invoke()
+                        }
+                    })
+                    .build()
+            mTipsDialogView?.showByDialog()
         }
     }
 
@@ -532,15 +562,16 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                     dismiss()
                 }
 
-                if (mPostsWatchModel?.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                    deleteArea.visibility = View.VISIBLE
-                    deleteTv.setDebounceViewClickListener {
-                        mPostsDetailPresenter?.deletePosts(mPostsWatchModel?.posts?.postsID?.toInt()
-                                ?: 0)
-                        dismiss()
-                        progressView?.visibility = View.VISIBLE
-                    }
-                }
+                deleteArea.visibility = View.GONE
+//                if (mPostsWatchModel?.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+//                    deleteArea.visibility = View.VISIBLE
+//                    deleteTv.setDebounceViewClickListener {
+//                        mPostsDetailPresenter?.deletePosts(mPostsWatchModel?.posts?.postsID?.toInt()
+//                                ?: 0)
+//                        dismiss()
+//                        progressView?.visibility = View.VISIBLE
+//                    }
+//                }
             }
 
             postsMoreDialogView?.showByDialog(true)
