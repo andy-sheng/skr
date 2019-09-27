@@ -289,20 +289,20 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: FeedLikeNotifyEvent) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 2, true)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: FeedCommentLikeNotifyEvent) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 2, true)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: FeedCommentAddNotifyEvent) {
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 2, true)
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: FeedLikeNotifyEvent) {
+//        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 2, true)
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: FeedCommentLikeNotifyEvent) {
+//        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 2, true)
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: FeedCommentAddNotifyEvent) {
+//        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 2, true)
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PostsLikeEvent) {
