@@ -24,7 +24,6 @@ import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
-import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -315,6 +314,15 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             voteGroupView.clickListener = {
                 StatisticsAdapter.recordCountEvent("posts", "content_vote_click", null)
                 mIDetailClickListener?.onClickPostsVote(pos, mModel, it)
+            }
+
+            topicTv.setDebounceViewClickListener {
+                StatisticsAdapter.recordCountEvent("posts", "topic_content_click", null)
+                mModel?.posts?.topicInfo?.let {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_TOPIC)
+                            .withLong("topicID", it.topicID.toLong())
+                            .navigation()
+                }
             }
         }
 
