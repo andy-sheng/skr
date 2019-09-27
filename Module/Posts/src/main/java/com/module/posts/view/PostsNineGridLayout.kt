@@ -59,25 +59,25 @@ class PostsNineGridLayout : NineGridLayout {
 //                                newH = h * newW / w
 //                            }
 //                        }
-                         if(w/h < MIN_W_H/MAX_W_H.toFloat()){
-                             //非常长的图
-                             newH = MAX_W_H
-                             newW = MIN_W_H
-                         }else if(w/h > MAX_W_H/MIN_W_H.toFloat()){
-                             // 非常宽的图
-                             newW = MAX_W_H
-                             newH = MIN_W_H
-                         }else {
-                             if(w>h){
-                                 newW = MAX_W_H
-                                 newH = (newW*h/w).toInt()
-                             }else{
-                                 newH = MAX_W_H
-                                 newW = (newH*w/h).toInt()
-                             }
-                         }
+                        if (w / h < MIN_W_H / MAX_W_H.toFloat()) {
+                            //非常长的图
+                            newH = MAX_W_H
+                            newW = MIN_W_H
+                        } else if (w / h > MAX_W_H / MIN_W_H.toFloat()) {
+                            // 非常宽的图
+                            newW = MAX_W_H
+                            newH = MIN_W_H
+                        } else {
+                            if (w > h) {
+                                newW = MAX_W_H
+                                newH = (newW * h / w).toInt()
+                            } else {
+                                newH = MAX_W_H
+                                newW = (newH * w / h).toInt()
+                            }
+                        }
                         // 针对一个图片的 动态调整下宽高
-                        setOneImageLayoutParams(imageView, newW, newH,url)
+                        setOneImageLayoutParams(imageView, newW, newH, url)
                     }
 
                     override fun processWithFailure() {
@@ -104,7 +104,7 @@ class PostsNineGridLayout : NineGridLayout {
 
     companion object {
 
-        protected val MAX_W_H = 190.dp()
-        protected val MIN_W_H = 40.dp()
+        protected val MAX_W_H = 237.dp()
+        protected val MIN_W_H = 50.dp()
     }
 }
