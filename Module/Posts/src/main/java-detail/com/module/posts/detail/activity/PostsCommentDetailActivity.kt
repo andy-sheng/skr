@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.player.SinglePlayer
@@ -28,6 +29,8 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter.Companion.REFRESH_COMMENT_CTN
+import com.module.posts.detail.event.DeteleFirstCommentEvent
+import com.module.posts.detail.event.DeteleSecondCommentEvent
 import com.module.posts.detail.inter.IPostsCommentDetailView
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.detail.model.PostsSecondLevelCommentModel
@@ -44,6 +47,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_COMMENT_DETAIL)
 class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
@@ -215,6 +219,16 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostFirstLevelCommentModel)
                     feedsInputContainerView?.setETHint("回复")
                 }
+
+                if (mPostFirstLevelCommentModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    deleteTv.visibility = View.VISIBLE
+                    deleteTv.setDebounceViewClickListener {
+                        postsCommentDetailPresenter?.deleteComment(mPostFirstLevelCommentModel?.comment?.commentID
+                                ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, 0, null)
+                        dismiss()
+                        progressView?.visibility = View.VISIBLE
+                    }
+                }
             }
             postsMoreDialogView?.showByDialog(true)
         }
@@ -280,7 +294,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                 mPlayingPosition = pos
             }
 
-            override fun clickSecondLevelCommentContent(postsCommentModel: PostsSecondLevelCommentModel) {
+            override fun clickSecondLevelCommentContent(postsCommentModel: PostsSecondLevelCommentModel, pos: Int) {
                 postsMoreDialogView?.dismiss(false)
                 postsMoreDialogView = PostsCommentMoreDialogView(this@PostsCommentDetailActivity).apply {
                     reportTv.setDebounceViewClickListener {
@@ -300,6 +314,16 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                         dismiss(false)
                         feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postsCommentModel)
                         feedsInputContainerView?.setETHint("回复 ${postsCommentModel.commentUser.nicknameRemark}")
+                    }
+
+                    if (postsCommentModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                        deleteTv.visibility = View.VISIBLE
+                        deleteTv.setDebounceViewClickListener {
+                            postsCommentDetailPresenter?.deleteComment(postsCommentModel?.comment?.commentID
+                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, pos, null)
+                            dismiss()
+                            progressView?.visibility = View.VISIBLE
+                        }
                     }
                 }
                 postsMoreDialogView?.showByDialog(true)
@@ -420,6 +444,27 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
 
     override fun hasMore(hasMore: Boolean) {
         smartRefreshLayout.setEnableLoadMore(hasMore)
+    }
+
+    override fun deleteCommentSuccess(success: Boolean, pos: Int, model: PostsSecondLevelCommentModel?) {
+        progressView?.visibility = View.GONE
+        if (success) {
+            if (pos == 0) {
+                EventBus.getDefault().post(DeteleFirstCommentEvent(mPostFirstLevelCommentModel!!))
+                finish()
+            } else {
+                EventBus.getDefault().post(DeteleSecondCommentEvent(model, mPostFirstLevelCommentModel?.comment?.commentID
+                        ?: 0))
+                (postsAdapter!!.dataList[0] as PostFirstLevelCommentModel).comment?.let {
+                    if (it.subCommentCnt > 0) {
+                        it.subCommentCnt--
+                    }
+                }
+
+                postsAdapter?.dataList?.removeAt(pos)
+                postsAdapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     fun beginUploadTask(model: ReplyModel, obj: Any?) {

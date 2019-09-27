@@ -754,7 +754,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 nineGridVp.setUrlList(mModel?.comment?.pictures!!)
             }
 
-            if ((mModel?.secondLevelComments?.size ?: 0) > 0) {
+            if ((mModel?.secondLevelComments?.size
+                            ?: 0) > 0 && mModel?.comment?.subCommentCnt ?: 0 > 0) {
                 replyNum.visibility = View.VISIBLE
                 val spanUtils = SpanUtils()
                         .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {

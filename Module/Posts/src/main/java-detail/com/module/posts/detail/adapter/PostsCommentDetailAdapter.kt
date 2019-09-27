@@ -392,7 +392,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             })
 
             itemView.setDebounceViewClickListener {
-                mIDetailClickListener?.clickSecondLevelCommentContent(mModel!!)
+                mIDetailClickListener?.clickSecondLevelCommentContent(mModel!!, pos)
             }
 
             nineGridVp?.clickListener = { i, url, urlList ->
@@ -586,7 +586,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
         fun setCurPlayintPosition(pos: Int)
 
-        fun clickSecondLevelCommentContent(model: PostsSecondLevelCommentModel)
+        fun clickSecondLevelCommentContent(model: PostsSecondLevelCommentModel, pos: Int)
 
         fun playAnotherSong()
     }

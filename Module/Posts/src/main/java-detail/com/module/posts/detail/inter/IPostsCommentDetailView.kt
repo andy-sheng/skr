@@ -9,4 +9,5 @@ interface IPostsCommentDetailView {
     fun addCommetFaild()
     fun getFirstLevelCommentID(): Int
     fun hasMore(hasMore: Boolean)
+    fun deleteCommentSuccess(success: Boolean, pos: Int, model: PostsSecondLevelCommentModel?)
 }
