@@ -327,7 +327,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                             deleteConfirm {
                                 postsCommentDetailPresenter?.deleteComment(postsCommentModel?.comment?.commentID
                                         ?: 0, mPostsWatchModel?.posts?.postsID?.toInt()
-                                        ?: 0, pos, null)
+                                        ?: 0, pos, postsCommentModel)
                                 progressView?.visibility = View.VISIBLE
                             }
                         }

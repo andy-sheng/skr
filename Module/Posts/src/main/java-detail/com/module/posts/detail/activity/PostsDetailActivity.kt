@@ -377,9 +377,18 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 it.commentCnt--
             }
 
-            getSecondLevelCommentById(postsAdapter!!.dataList[it] as PostFirstLevelCommentModel, event.model?.comment?.commentID
-                    ?: 0)?.let {
-                (postsAdapter!!.dataList[it] as PostFirstLevelCommentModel).secondLevelComments?.removeAt(it)
+            var index = -1
+            (postsAdapter!!.dataList[it] as PostFirstLevelCommentModel)?.secondLevelComments?.let {
+                for (pos in 0 until it.size) {
+                    if (it[pos].comment?.commentID == event.model?.comment?.commentID) {
+                        index = pos
+                        break
+                    }
+                }
+            }
+
+            if (index >= 0) {
+                (postsAdapter!!.dataList[it] as PostFirstLevelCommentModel).secondLevelComments?.removeAt(index)
             }
 
             (postsAdapter!!.dataList[it] as PostFirstLevelCommentModel)?.comment?.let {
@@ -409,16 +418,6 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 if (any.comment?.commentID == commendID) {
                     return index
                 }
-            }
-        }
-
-        return null
-    }
-
-    private fun getSecondLevelCommentById(model: PostFirstLevelCommentModel, commendID: Int): Int? {
-        model.secondLevelComments?.forEachIndexed { index, any ->
-            if (any.comment?.commentID == commendID) {
-                return index
             }
         }
 
