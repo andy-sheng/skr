@@ -279,6 +279,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
 
             override fun onPageSelected(position: Int) {
                 var tagModel = list[position]
+                currentPostsViews?.unselected(1)
                 currentPostsViews = topicPostsViews[tagModel.tabType]
                 smartRefresh?.setEnableLoadMore(currentPostsViews?.hasMore ?: true)
                 topicPostsViews[tagModel.tabType]?.initPostsList(false)

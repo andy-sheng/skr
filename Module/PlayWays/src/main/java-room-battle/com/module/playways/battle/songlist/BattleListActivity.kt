@@ -93,7 +93,7 @@ class BattleListActivity : BaseActivity() {
             })
         }
 
-        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = adapter
         adapter.onClickListener = { model, _ ->
             model?.let {

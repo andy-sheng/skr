@@ -74,8 +74,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             if (TextUtils.isEmpty(model.comment?.content)) {
                 // 空的内容
                 contentTv?.apply {
-                    maxLines = 1
                     setSingleLine(true)
+                    maxLines = 1
                     ellipsize = TextUtils.TruncateAt.END
                 }
                 val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
@@ -100,8 +100,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 postsAudioView?.layoutParams = audioLayoutParams
             } else {
                 contentTv?.apply {
-                    maxLines = 2
                     setSingleLine(false)
+                    maxLines = 2
                     ellipsize = TextUtils.TruncateAt.END
                 }
 
@@ -132,8 +132,8 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         } else {
             postsAudioView?.visibility = View.GONE
             contentTv?.apply {
-                maxLines = 2
                 setSingleLine(false)
+                maxLines = 2
                 ellipsize = TextUtils.TruncateAt.END
             }
 
