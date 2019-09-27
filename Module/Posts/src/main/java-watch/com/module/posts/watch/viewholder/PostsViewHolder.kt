@@ -83,9 +83,6 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
         }
 
         content.setListener(object : ExpandTextView.ExpandListener {
-            override fun onClickText() {
-                listener.onClickPostsDetail(pos, mModel)
-            }
 
             override fun onClickExpand(isExpand: Boolean) {
                 mModel?.isExpend = isExpand
@@ -114,13 +111,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
                 content.visibility = View.GONE
             } else {
                 content.visibility = View.VISIBLE
-                content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
-                content.maxLines = 3
-                if (!model.isExpend) {
-                    content.setCloseText(it.title)
-                } else {
-                    content.setExpandText(it.title)
-                }
+                content.bindData(it.title, 3, model.isExpend)
             }
             // 话题
             if (it.topicInfo == null || TextUtils.isEmpty(it.topicInfo?.topicDesc)) {

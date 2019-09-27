@@ -22,6 +22,9 @@ class PostFirstLevelCommentModel : Serializable {
     var replyUser: UserInfoModel? = null
     var secondLevelComments: MutableList<PostsSecondLevelCommentModel>? = null
 
+    //todo 自定义在ui上的属性
+    var isExpend = false  // 文字是否展开
+
     fun isIsLiked(): Boolean {
         return isLiked
     }

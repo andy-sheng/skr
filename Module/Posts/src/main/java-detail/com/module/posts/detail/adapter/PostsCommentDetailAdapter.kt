@@ -211,6 +211,12 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 StatisticsAdapter.recordCountEvent("posts", "content_picture_click", null)
                 goBigImageBrowse(i, urlList)
             }
+
+            content.setListener(object : ExpandTextView.ExpandListener {
+                override fun onClickExpand(isExpand: Boolean) {
+                    mModel?.isExpend = isExpand
+                }
+            })
         }
 
         fun refreshCtn(pos: Int, model: PostFirstLevelCommentModel) {
@@ -267,7 +273,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             if (!TextUtils.isEmpty(model.comment?.content)) {
                 content.visibility = View.VISIBLE
-                content.text = model.comment?.content
+                content.bindData(model.comment?.content, 3, model.isExpend)
             } else {
                 content.visibility = View.GONE
             }

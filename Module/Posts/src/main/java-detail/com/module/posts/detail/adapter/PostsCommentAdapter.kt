@@ -306,6 +306,12 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 goBigImageBrowse(i, urlList)
             }
 
+            content.setListener(object : ExpandTextView.ExpandListener{
+                override fun onClickExpand(isExpand: Boolean) {
+                    mModel?.isExpend = isExpand
+                }
+            })
+
             voteGroupView.clickListener = {
                 StatisticsAdapter.recordCountEvent("posts", "content_vote_click", null)
                 mIDetailClickListener?.onClickPostsVote(pos, mModel, it)
@@ -433,15 +439,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
             mModel?.posts?.let {
                 timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(it.createdAt, System.currentTimeMillis())
-
-                content.initWidth(U.getDisplayUtils().screenWidth - 20.dp())
-                content.maxLines = 3
-                if (!model.isExpend) {
-                    content.setCloseText(it.title)
-                } else {
-                    content.setExpandText(it.title)
-                }
-
+                content.bindData(it.title, 3, model.isExpend)
                 if (TextUtils.isEmpty(it.title)) {
                     content.visibility = View.GONE
                 } else {
