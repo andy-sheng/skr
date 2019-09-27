@@ -255,7 +255,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
 
         postsCommentDetailPresenter = PostsCommentDetailPresenter(mPostsWatchModel!!.posts!!, this)
 
-        postsAdapter = PostsCommentDetailAdapter(this)
+        postsAdapter = PostsCommentDetailAdapter(this, mPostsWatchModel?.user?.userId)
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = postsAdapter
 

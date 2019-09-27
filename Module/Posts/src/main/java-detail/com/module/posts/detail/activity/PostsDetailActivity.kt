@@ -500,6 +500,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
 
     override fun showPostsWatchModel(model: PostsWatchModel) {
         mPostsWatchModel = model
+        postsAdapter?.setPostsOwnerID(model.user?.userId ?: 0)
 
         commentTv?.setDebounceViewClickListener {
             feedsInputContainerView?.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, mPostsWatchModel)
