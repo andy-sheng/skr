@@ -65,6 +65,7 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
     protected var mHasPretend = false
     protected var mForceHide = false
     var mSendCallBack: ((ReplyModel, Any?) -> Unit)? = null
+    var toStopPlayCall: (() -> Unit)? = null
 
     //这个输入框消失的时候调用
     var mHideCallBack: ((SHOW_TYPE) -> Unit)? = null
@@ -228,10 +229,18 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
             mSendCallBack?.invoke(replyModel, mExtra)
         }
 
+        postsVoiceRecordView.okToStopPlayListener = {
+            toStopPlayCall?.invoke()
+        }
+
         postsKgeRecordView.selectSongClickListener = {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_FEEDS_SONG_MANAGE)
                     .withInt("from", 9)
                     .navigation()
+        }
+
+        postsKgeRecordView.okToStopPlayListener = {
+            toStopPlayCall?.invoke()
         }
 
         postsKgeRecordView.okClickListener = {

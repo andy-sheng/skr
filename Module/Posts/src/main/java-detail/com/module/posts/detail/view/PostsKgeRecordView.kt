@@ -41,6 +41,7 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     var mResetCall: (() -> Unit)? = null
 
+    var okToStopPlayListener: (() -> Unit)? = null
 
     var okClickListener: (() -> Unit)? = null
     var selectSongClickListener: (() -> Unit)? = null
@@ -108,6 +109,7 @@ class PostsKgeRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     private fun play() {
+        okToStopPlayListener?.invoke()
         status = STATUS_RECORD_PLAYING
         playBtn.setImageResource(R.drawable.kge_bofang)
         circleCountDownView.visibility = View.VISIBLE

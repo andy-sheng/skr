@@ -56,6 +56,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     var recordJob: Job? = null
     var recordOkListener: ((String?,Int) -> Unit)? = null
     var okClickListener: ((String?,Int) -> Unit)? = null
+    var okToStopPlayListener: (() -> Unit)? = null
 
     private val skrAudioPermission = SkrAudioPermission()
 
@@ -106,6 +107,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     private fun startRecord() {
+        okToStopPlayListener?.invoke()
         status = STATUS_RECORDING
         playTipsTv.text = "点击停止"
         abandonIv.visibility = View.GONE
@@ -147,6 +149,7 @@ class PostsVoiceRecordView(viewStub: ViewStub) : ExViewStub(viewStub) {
     }
 
     private fun play() {
+        okToStopPlayListener?.invoke()
         status = STATUS_RECORD_PLAYING
         playBtn.setImageResource(R.drawable.yuyin_bofang)
         circleCountDownView.visibility = View.VISIBLE
