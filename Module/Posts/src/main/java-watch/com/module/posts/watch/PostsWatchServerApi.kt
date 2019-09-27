@@ -27,7 +27,7 @@ interface PostsWatchServerApi {
      * 获取最新列表
      */
     @GET("/v1/posts/newest-list")
-    fun getPostsLastList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
+    fun getPostsLastList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int, @Query("lastTimeMs") lastTimeMs: Long): Call<ApiResult>
 
     /**
      * 获取帖子话题详情

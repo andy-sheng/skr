@@ -39,9 +39,18 @@ class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activi
     }
 
     private fun getLastPosts(off: Int, isClear: Boolean) {
+        var lastTimeMs = if (isClear) {
+            0L
+        } else {
+            if (adapter?.mDataList.isNullOrEmpty()) {
+                0L
+            } else {
+                adapter?.mDataList!![adapter?.mDataList!!.size - 1].posts?.createdAt ?: 0L
+            }
+        }
         launch {
             val result = subscribe(RequestControl("getLastPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getPostsLastList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+                postsWatchServerApi.getPostsLastList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), lastTimeMs)
             }
             if (result.errno == 0) {
                 mHasInitData = true
