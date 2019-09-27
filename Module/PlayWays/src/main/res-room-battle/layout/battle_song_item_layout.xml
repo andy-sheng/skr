@@ -13,6 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/lock_bg"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_0_dp"
+        app:layout_constraintLeft_toLeftOf="@id/record_cover"
+        app:layout_constraintRight_toRightOf="@id/record_cover"
+        app:layout_constraintTop_toTopOf="@id/record_cover"
+        app:layout_constraintBottom_toBottomOf="@id/record_cover"
+        app:bl_shape="rectangle"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_solid_color="#19121212"/>
+
     <ImageView
         android:id="@+id/lock_iv"
         android:layout_width="@dimen/view_22_dp"
@@ -22,6 +34,23 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/online_num"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_10_dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/view_9_dp"
+        android:paddingRight="@dimen/view_9_dp"
+        app:bl_shape="rectangle"
+        app:bl_corners_radius="@dimen/view_9_dp"
+        app:bl_solid_color="@color/black_trans_10"/>
 
     <com.common.view.ex.ExImageView
         android:layout_width="match_parent"

@@ -20,4 +20,6 @@ class BattleTagModel : Serializable {
     var tagID: Int = 0
     @JSONField(name = "tagName")
     var tagName: String = ""
+    @JSONField(name = "onlineUserCnt")
+    var onlineUserCnt: Int = 0
 }
