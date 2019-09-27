@@ -61,12 +61,12 @@ class PostsNineGridLayout : NineGridLayout {
 //                        }
                          if(w/h < MIN_W_H/MAX_W_H.toFloat()){
                              //非常长的图
-                             newH = 190.dp()
-                             newW = 42.dp()
+                             newH = MAX_W_H
+                             newW = MIN_W_H
                          }else if(w/h > MAX_W_H/MIN_W_H.toFloat()){
                              // 非常宽的图
-                             newW = 190.dp()
-                             newH = 42.dp()
+                             newW = MAX_W_H
+                             newH = MIN_W_H
                          }else {
                              if(w>h){
                                  newW = MAX_W_H
