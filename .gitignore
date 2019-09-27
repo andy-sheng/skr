@@ -21,6 +21,8 @@ app/gradle/
 captures
 projectFilesBackup/
 publish1/
+publish/apk-checker-result.html
+publish/apk-checker-result.json
 ./publish
 # Windows thumbnail db
 Thumbs.db
