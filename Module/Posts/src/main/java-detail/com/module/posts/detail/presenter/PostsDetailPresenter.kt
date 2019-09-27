@@ -275,7 +275,7 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
         }
     }
 
-    fun deleteComment(commentID: Int, postsID: Int, pos: Int) {
+    fun deleteComment(commentID: Int, postsID: Int, pos: Int, model: PostFirstLevelCommentModel) {
         launch {
             val map = HashMap<String, Any>()
             map["commentID"] = commentID
@@ -287,10 +287,10 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
             }
 
             if (result.errno == 0) {
-                view?.deleteCommentSuccess(true, pos)
+                view?.deleteCommentSuccess(true, pos, model)
                 mOffset--
             } else {
-                view?.deleteCommentSuccess(false, pos)
+                view?.deleteCommentSuccess(false, pos, model)
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络异常，请检查网络之后重试")
                 } else {

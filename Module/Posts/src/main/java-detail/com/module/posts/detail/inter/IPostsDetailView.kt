@@ -18,5 +18,5 @@ interface IPostsDetailView {
     fun showRelation(isBlack: Boolean, isFollow: Boolean, isFriend: Boolean)
     fun hasMore(hasMore: Boolean)
     fun deletePostSuccess(success: Boolean)
-    fun deleteCommentSuccess(success: Boolean, pos: Int)
+    fun deleteCommentSuccess(success: Boolean, pos: Int, model: PostFirstLevelCommentModel)
 }

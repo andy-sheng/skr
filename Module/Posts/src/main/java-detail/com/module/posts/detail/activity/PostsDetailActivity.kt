@@ -250,7 +250,8 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                         dismiss(false)
                         deleteConfirm {
                             mPostsDetailPresenter?.deleteComment(postFirstLevelModel?.comment?.commentID
-                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, pos)
+                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt()
+                                    ?: 0, pos, postFirstLevelModel)
                             progressView?.visibility = View.VISIBLE
                         }
                     }
@@ -405,6 +406,10 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         getFirstLevelCommentById(event.model?.comment?.commentID ?: 0)?.let {
             (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
                 it.commentCnt--
+
+                if (it.commentCnt > 0) {
+                    it.commentCnt = it.commentCnt - (event.model?.comment?.subCommentCnt ?: 0)
+                }
             }
 
             postsAdapter!!.dataList?.removeAt(it)
@@ -504,11 +509,15 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         }
     }
 
-    override fun deleteCommentSuccess(success: Boolean, pos: Int) {
+    override fun deleteCommentSuccess(success: Boolean, pos: Int, model: PostFirstLevelCommentModel) {
         if (success) {
             (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
                 if (it.commentCnt > 0) {
                     it.commentCnt--
+                }
+
+                if (it.commentCnt > 0) {
+                    it.commentCnt = it.commentCnt - (model?.comment?.subCommentCnt ?: 0)
                 }
             }
             progressView?.visibility = View.GONE
