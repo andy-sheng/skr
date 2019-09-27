@@ -22,12 +22,15 @@ import com.common.image.model.HttpImage
 import com.common.image.model.ImageFactory
 import com.common.image.model.LocalImage
 import com.common.log.MyLog
+import com.common.utils.FileUtils
 import com.common.utils.HttpUtils
+import com.common.utils.StringUtils
 import com.common.utils.U
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.imagepipeline.image.ImageInfo
+import com.facebook.imagepipeline.image.QualityInfo
 
 import java.io.File
 import java.io.IOException
@@ -86,7 +89,7 @@ open class EnhancedImageView : RelativeLayout {
     }
 
     override fun onDetachedFromWindow() {
-        MyLog.d(TAG, "onDetachedFromWindow $ppp")
+        MyLog.d(TAG, "onDetachedFromWindow ")
         super.onDetachedFromWindow()
         recycleResWhenDetachedFromWindow()
     }
@@ -128,7 +131,6 @@ open class EnhancedImageView : RelativeLayout {
         return false
     }
 
-    var ppp: String? = null
     fun load(path: String?) {
 
         if (path == null) {
@@ -163,12 +165,11 @@ open class EnhancedImageView : RelativeLayout {
             return
         }
         var path: String? = baseImage.uri.toString()
-        this.ppp = path
         if (path!!.startsWith("http://") || path.startsWith("https://")) {
             val uri = Uri.parse(path)
             if (uri.path!!.endsWith(".gif")) {
                 // gif直接走自有逻辑
-                downloadGiftByHttpUtils(path)
+                downloadGiftByHttpUtils(baseImage)
             } else {
                 //其余情况，先用fresco渐变加载，保证体验
                 loadHttpByFresco(baseImage)
@@ -178,7 +179,7 @@ open class EnhancedImageView : RelativeLayout {
             path = baseImage.uri.path
             val fileType = U.getFileUtils().getImageFileType(path)
             if (!TextUtils.isEmpty(fileType) && fileType == "gif") {
-                loadByGif(path)
+                loadByGif(path, baseImage)
             } else {
                 loadLocalByFresco(baseImage)
             }
@@ -352,17 +353,24 @@ open class EnhancedImageView : RelativeLayout {
     }
 
     private fun getGifSaveFile(url: String): File {
-        var fileName = U.getMD5Utils().MD5_16(url) + ".gif"
+        /**
+         * 保证
+         * http://song-static.inframe.mobi/posts/1604228/0490bcb1370da5a0.gif 与
+         * http://song-static.inframe.mobi/posts/1604228/0490bcb1370da5a0.gif?xxxx
+         * 的key相同
+         */
+        var fileName = U.getMD5Utils().MD5_16(U.getFileUtils().getPrefixFromUrlWithoutExt(url)) + ".gif"
         return File(U.getAppInfoUtils().getFilePathInSubDir("fresco", fileName))
     }
 
     //下载gif
-    private fun downloadGiftByHttpUtils(url: String) {
+    private fun downloadGiftByHttpUtils(baseImage: BaseImage) {
         MyLog.d(TAG, "downloadGiftByHttpUtils")
+        val url = baseImage.uri.toString()
         val file = getGifSaveFile(url)
         if (file.exists()) {
             //已经有了，不需要下载
-            loadByGif(file.absolutePath)
+            loadByGif(file.absolutePath, baseImage)
             return
         }
         Observable.create(ObservableOnSubscribe<Any> { emitter ->
@@ -373,17 +381,17 @@ open class EnhancedImageView : RelativeLayout {
 
                 override fun onCompleted(localPath: String) {
                     MyLog.d(TAG, "onCompleted localPath=$localPath")
-                    mUiHandler.post { loadByGif(localPath) }
+                    mUiHandler.post { loadByGif(localPath, baseImage) }
                 }
 
                 override fun onCanceled() {
                     MyLog.d(TAG, "onCanceled")
-                    mUiHandler.post { loadHttpByFresco(mBaseImage) }
+                    mUiHandler.post { loadHttpByFresco(baseImage) }
                 }
 
                 override fun onFailed() {
                     MyLog.d(TAG, "onFailed")
-                    mUiHandler.post { loadHttpByFresco(mBaseImage) }
+                    mUiHandler.post { loadHttpByFresco(baseImage) }
                 }
             })
             emitter.onComplete()
@@ -392,13 +400,29 @@ open class EnhancedImageView : RelativeLayout {
 
     }
 
-    private fun loadByGif(localFilePath: String?) {
+    private fun loadByGif(localFilePath: String, baseImage: BaseImage?) {
         MyLog.d(TAG, "loadByGif localFile=$localFilePath")
         // 如果是 gif ,直接用android-gif-drawable 加载,不废话了
         showGifViewIfNeed()
         mGifFromFile?.recycle()
         try {
             mGifFromFile = GifDrawable(localFilePath!!)
+            val width = mGifFromFile?.intrinsicWidth
+            val height = mGifFromFile?.intrinsicHeight
+            val imageInfo = object : ImageInfo {
+                override fun getHeight(): Int {
+                    return height ?: 0
+                }
+
+                override fun getQualityInfo(): QualityInfo? {
+                    return null
+                }
+
+                override fun getWidth(): Int {
+                    return width ?: 0
+                }
+            }
+            baseImage?.callBack?.processWithInfo(imageInfo, null)
             if (!mGifFromFile!!.isRecycled) {
                 mGifImageView!!.setImageDrawable(mGifFromFile)
             }

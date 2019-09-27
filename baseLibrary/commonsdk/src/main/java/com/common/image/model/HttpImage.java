@@ -8,6 +8,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.oss.IOssParam;
 import com.common.image.model.oss.OssImgFactory;
 import com.common.image.model.oss.OssImgResize;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 
 import java.io.File;
@@ -99,9 +100,16 @@ public class HttpImage extends BaseImage {
         if (ossProcessors != null) {
             for (IOssParam ossParam : ossProcessors) {
                 if (ossParam instanceof OssImgResize) {
-                    OssImgResize ossImgResize = (OssImgResize) ossParam;
-                    if (ossImgResize.getW() <= ImageUtils.SIZE.SIZE_320.getW()) {
-                        canHasLowUri = false;
+                    if(mUrl.endsWith(".gif")){
+                        /**
+                         * gif 图不需要
+                         */
+                        continue;
+                    }else{
+                        OssImgResize ossImgResize = (OssImgResize) ossParam;
+                        if (ossImgResize.getW() <= ImageUtils.SIZE.SIZE_320.getW()) {
+                            canHasLowUri = false;
+                        }
                     }
                 }
             }

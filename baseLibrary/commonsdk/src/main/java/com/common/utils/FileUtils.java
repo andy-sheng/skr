@@ -145,6 +145,22 @@ public class FileUtils {
     }
 
     /**
+     * 传入一个文件路径，文件后缀入 http://www.baidu.com/a.jpg 返回 http://www.baidu.com/a
+     *
+     * @param url
+     * @return
+     */
+    public String getPrefixFromUrlWithoutExt(String url) {
+        if (!TextUtils.isEmpty(url)) {
+            int indexOfDot = url.lastIndexOf('.');
+            if(indexOfDot>0){
+                return url.substring(0, indexOfDot);
+            }
+        }
+        return url;
+    }
+
+    /**
      * 获取上传文件的类型(仅针对图片类型)
      *
      * @param filePath

@@ -83,7 +83,9 @@ public class FrescoWorker {
     }
 
     private static ImageRequestBuilder getImageRequest(BaseImage baseImage) {
-        ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(baseImage.getUri());
+        Uri uri = baseImage.getUri();
+        MyLog.d(TAG,"uri="+uri);
+        ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
         /**
          * resize时的 宽与高
          */
