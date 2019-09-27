@@ -47,7 +47,9 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
         nineGridVp = parentView.findViewById(R.id.nine_grid_vp)
 
         contentTv?.movementMethod = LinkMovementMethod.getInstance()
-
+        contentTv?.listener = {
+            mListener?.onClickName()
+        }
         nineGridVp?.clickListener = { i, url, _ ->
             mListener?.onClickImage(i, url)
         }
@@ -106,7 +108,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 }
 
                 val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
-                contentLayoutParams?.rightMargin = 10
+                contentLayoutParams?.rightMargin = 10.dp()
                 contentLayoutParams?.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
                 contentLayoutParams?.rightToLeft = -1
                 contentLayoutParams?.constrainedWidth = true
@@ -138,29 +140,35 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
 
             val contentLayoutParams = contentTv?.layoutParams as ConstraintLayout.LayoutParams?
-            contentLayoutParams?.rightMargin = 10
+            contentLayoutParams?.rightMargin = 10.dp()
             contentLayoutParams?.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID
             contentLayoutParams?.rightToLeft = -1
             contentLayoutParams?.constrainedWidth = true
             contentTv?.layoutParams = contentLayoutParams
-
         }
 
-        val contentBuilder = SpanUtils()
-                .append(model.user?.nicknameRemark + ": ").setForegroundColor(Color.parseColor("#63C2F0"))
-                .setClickSpan(object : ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        mListener?.onClickName()
-                    }
 
-                    override fun updateDrawState(ds: TextPaint) {
-                        ds.color = Color.parseColor("#63C2F0")
-                        ds.isUnderlineText = false
-                    }
-                })
-                .append(model.comment?.content ?: "").setForegroundColor(U.getColor(R.color.black_trans_50))
-                .create()
-        contentTv?.text = contentBuilder
+        var nickNameStr = model.user?.nicknameRemark + ": "
+        var contentStr = model.comment?.content ?: ""
+        contentTv?.bindData(model.user?.nicknameRemark, model.comment?.content)
+
+//        val contentBuilder = SpanUtils()
+//                .append(nickNameStr)
+//                .setForegroundColor(Color.parseColor("#63C2F0"))
+//                .setClickSpan(object : ClickableSpan() {
+//                    override fun onClick(widget: View) {
+//                        mListener?.onClickName()
+//                    }
+//
+//                    override fun updateDrawState(ds: TextPaint) {
+//                        ds.color = Color.parseColor("#63C2F0")
+//                        ds.isUnderlineText = false
+//                    }
+//                })
+//                .append(contentStr)
+//                .setForegroundColor(U.getColor(R.color.black_trans_50))
+//                .create()
+//        contentTv?.text = contentBuilder
 
         // 歌曲
         if (model.comment?.song == null) {
