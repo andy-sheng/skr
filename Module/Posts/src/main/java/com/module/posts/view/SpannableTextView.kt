@@ -29,7 +29,7 @@ class SpannableTextView : AppCompatTextView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    var listener:(()->Unit)? = null
+    var listener: (() -> Unit)? = null
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
@@ -40,8 +40,19 @@ class SpannableTextView : AppCompatTextView {
             var contentStr = this.content
             var leftContentLength = maxLines * lineMaxNum - nickNameStr.length
             if (leftContentLength > 0 && contentStr!!.length > leftContentLength) {
+                // 截取字符串给...留位置
                 if (leftContentLength - 3 >= 0) {
-                    contentStr = contentStr.substring(0, leftContentLength-1) + "..."
+                    var totalLength = 0
+                    var index = 0
+                    for (i in 0..2) {
+                        val char = contentStr.substring(leftContentLength - 1 - i, leftContentLength - i)
+                        index = i
+                        totalLength += U.getStringUtils().getStringUTF8Length(char)
+                        if (totalLength >= 3) {
+                            break
+                        }
+                    }
+                    contentStr = contentStr.substring(0, leftContentLength - (index + 1)) + "..."
                 }
             }
             val contentBuilder = SpanUtils()
