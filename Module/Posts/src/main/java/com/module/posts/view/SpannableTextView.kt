@@ -15,9 +15,11 @@ import com.common.log.MyLog
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.module.posts.R
-import java.lang.reflect.Field
+import kotlinx.android.synthetic.main.posts_report_activity_layout.view.*
 
 class SpannableTextView : AppCompatTextView {
+
+    var isFirstLayout = true
 
     constructor(context: Context) : super(context)
 
@@ -33,12 +35,13 @@ class SpannableTextView : AppCompatTextView {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        if (nicknameRemark?.isNotEmpty() == true) {
-            var lineMaxNum = getLineMaxNumber("$nicknameRemark:$content", paint, width.toFloat())
-            MyLog.d("SpannableTextView", "onLayout nicknameRemark = $nicknameRemark, content = $content lineMaxNum=$lineMaxNum width=$width")
+        if (nicknameRemark?.isNotEmpty() == true && layout.lineCount >= maxLines && isFirstLayout) {
+            isFirstLayout = false
+            // 总共可以显示多少个字符串
+            val endLastLine = layout.getLineEnd(maxLines - 1)
             var nickNameStr = "$nicknameRemark:"
             var contentStr = this.content
-            var leftContentLength = maxLines * lineMaxNum - nickNameStr.length
+            var leftContentLength = endLastLine - nickNameStr.length
             if (leftContentLength > 0 && contentStr!!.length > leftContentLength) {
                 // 截取字符串给...留位置
                 if (leftContentLength - 3 >= 0) {
@@ -55,6 +58,7 @@ class SpannableTextView : AppCompatTextView {
                     contentStr = contentStr.substring(0, leftContentLength - (index + 1)) + "..."
                 }
             }
+
             val contentBuilder = SpanUtils()
                     .append(nickNameStr)
                     .setForegroundColor(Color.parseColor("#63C2F0"))
@@ -85,21 +89,13 @@ class SpannableTextView : AppCompatTextView {
     var content: String? = null
 
     fun bindData(nicknameRemark: String?, content: String?) {
+        this.isFirstLayout = true
         this.nicknameRemark = nicknameRemark
         this.content = content
-        if (width >= 0) {
-            var lineMaxNum = getLineMaxNumber("$nicknameRemark:$content", paint, width.toFloat())
-            MyLog.d("SpannableTextView", "bindData nicknameRemark = $nicknameRemark, content = $content lineMaxNum=$lineMaxNum width=$width")
+        if (width > 0) {
             text = "$nicknameRemark:$content"
-        } else {
-            MyLog.d("SpannableTextView", "bindData width<=0")
         }
-    }
-
-    private fun getLineMaxNumber(text: String, paint: TextPaint, maxWidth: Float): Int {
-        var textWidth = paint.measureText(text)
-        var width = textWidth / text.length
-        return (maxWidth / width).toInt()
+        text = "$nicknameRemark:$content"
     }
 
 }
