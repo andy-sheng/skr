@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
+import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -14,7 +15,6 @@ import com.module.playways.battle.songlist.view.BattleStarView
 
 class BattleListViewHolder(item: View, listener: ((model: BattleTagModel?, position: Int) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
-    val recordFilm: ImageView = item.findViewById(R.id.record_film)
     val recordCover: SimpleDraweeView = item.findViewById(R.id.record_cover)
     val nameTv: TextView = item.findViewById(R.id.name_tv)
     val starView: BattleStarView = item.findViewById(R.id.star_view)
@@ -36,7 +36,7 @@ class BattleListViewHolder(item: View, listener: ((model: BattleTagModel?, posit
         this.mPosition = pos
 
         AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model.coverURL)
-                .setCircle(true)
+                .setCornerRadius(8.dp().toFloat())
                 .build())
         nameTv.text = model.tagName
         when {
