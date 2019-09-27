@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
@@ -229,7 +230,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             }
         }
 
-        postsAdapter?.mClickContent = { postFirstLevelModel ->
+        postsAdapter?.mClickContent = { postFirstLevelModel, pos ->
             postsMoreDialogView?.dismiss(false)
             postsMoreDialogView = PostsMoreDialogView(this@PostsDetailActivity, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
                 replayArea.visibility = View.VISIBLE
@@ -237,6 +238,16 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                     feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postFirstLevelModel)
                     feedsInputContainerView?.setETHint("回复 ${postFirstLevelModel.commentUser?.nicknameRemark}")
                     dismiss()
+                }
+
+                if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    deleteArea.visibility = View.VISIBLE
+                    deleteTv.setDebounceViewClickListener {
+                        mPostsDetailPresenter?.deleteComment(postFirstLevelModel?.comment?.commentID
+                                ?: 0, mPostsWatchModel?.posts?.postsID?.toInt() ?: 0, pos)
+                        dismiss()
+                        progressView?.visibility = View.VISIBLE
+                    }
                 }
             }
             postsMoreDialogView?.showByDialog(true)
@@ -398,6 +409,26 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         smartRefreshLayout.setEnableLoadMore(hasMore)
     }
 
+    override fun deletePostSuccess(success: Boolean) {
+        if (success) {
+            U.getToastUtil().showShort("帖子删除成功")
+            finish()
+        }
+    }
+
+    override fun deleteCommentSuccess(success: Boolean, pos: Int) {
+        if (success) {
+            (postsAdapter!!.dataList[0] as PostsWatchModel).numeric?.let {
+                if (it.commentCnt > 0) {
+                    it.commentCnt--
+                }
+            }
+            progressView?.visibility = View.GONE
+            postsAdapter?.dataList?.removeAt(pos)
+            postsAdapter?.notifyDataSetChanged()
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
         mPostsWatchModel?.posts?.userID?.let {
@@ -441,7 +472,18 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                     feedsInputContainerView?.setETHint("回复")
                     dismiss()
                 }
+
+                if (mPostsWatchModel?.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    deleteArea.visibility = View.VISIBLE
+                    deleteTv.setDebounceViewClickListener {
+                        mPostsDetailPresenter?.deletePosts(mPostsWatchModel?.posts?.postsID?.toInt()
+                                ?: 0)
+                        dismiss()
+                        progressView?.visibility = View.VISIBLE
+                    }
+                }
             }
+
             postsMoreDialogView?.showByDialog(true)
         }
 

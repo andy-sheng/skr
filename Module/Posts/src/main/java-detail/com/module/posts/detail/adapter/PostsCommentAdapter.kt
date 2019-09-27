@@ -92,7 +92,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
     var mIDetailClickListener: IDetailClickListener? = null
 
-    var mClickContent: ((PostFirstLevelCommentModel) -> Unit)? = null
+    var mClickContent: ((PostFirstLevelCommentModel, Int) -> Unit)? = null
 
     var mContext: FragmentActivity? = null
 
@@ -655,7 +655,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             })
 
             contentTv.setDebounceViewClickListener {
-                mClickContent?.invoke(mModel!!)
+                mClickContent?.invoke(mModel!!, pos)
             }
 
             nineGridVp?.clickListener = { i, url, urlList ->

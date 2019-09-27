@@ -47,6 +47,10 @@ class PostsMoreDialogView : ConstraintLayout {
     var replayTvDivider: View
     var replayArea: Group
 
+    var deleteTv: ExTextView
+    var deleteTvDivider: View
+    var deleteArea: Group
+
     init {
         View.inflate(context, R.layout.posts_more_dialog_view_layout, this)
 
@@ -55,6 +59,9 @@ class PostsMoreDialogView : ConstraintLayout {
         replayTv = rootView.findViewById(R.id.replay_tv)
         replayTvDivider = rootView.findViewById(R.id.replay_tv_divider)
         replayArea = rootView.findViewById(R.id.replay_area)
+        deleteTv = rootView.findViewById(R.id.delete_tv)
+        deleteTvDivider = rootView.findViewById(R.id.delete_tv_divider)
+        deleteArea = rootView.findViewById(R.id.delete_area)
 
         cancleTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {

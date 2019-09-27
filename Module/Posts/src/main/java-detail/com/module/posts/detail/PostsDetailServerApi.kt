@@ -89,4 +89,21 @@ interface PostsDetailServerApi {
      */
     @GET("/v1/mate/has-relation")
     fun getRelation(@Query("toUserID") toUserID: Int): Call<ApiResult>
+
+    /**
+     * {
+    "postsID": 0
+    }
+     */
+    @PUT("/v1/posts/delete")
+    fun deletePosts(@Body requestBody: RequestBody): Call<ApiResult>
+
+    /**
+     * {
+    "commentID": 0,
+    "postsID": 0
+    }
+     */
+    @PUT("/v1/posts/comment-delete")
+    fun deleteComment(@Body requestBody: RequestBody): Call<ApiResult>
 }

@@ -250,4 +250,54 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
             }
         }
     }
+
+    fun deletePosts(postsID: Int) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["postsID"] = postsID
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe {
+                mPostsDetailServerApi.deletePosts(body)
+            }
+
+            if (result.errno == 0) {
+                view?.deletePostSuccess(true)
+            } else {
+                view?.deletePostSuccess(false)
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
+
+    fun deleteComment(commentID: Int, postsID: Int, pos: Int) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["commentID"] = commentID
+            map["postsID"] = postsID
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+
+            val result = subscribe {
+                mPostsDetailServerApi.deleteComment(body)
+            }
+
+            if (result.errno == 0) {
+                view?.deleteCommentSuccess(true, pos)
+                mOffset--
+            } else {
+                view?.deleteCommentSuccess(false, pos)
+                if (result.errno == -2) {
+                    U.getToastUtil().showShort("网络异常，请检查网络之后重试")
+                } else {
+                    U.getToastUtil().showShort("${result?.errmsg}")
+                    MyLog.e(TAG, "${result?.errmsg}")
+                }
+            }
+        }
+    }
 }
