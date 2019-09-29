@@ -189,11 +189,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     internal var mGrabVoiceControlPanelView: GrabVoiceControlPanelView? = null
 
-    lateinit var mGiftPanelView: GiftPanelView
+    var mGiftPanelView: GiftPanelView?=null
 
     lateinit var mGiftContinueViewGroup: GiftContinueViewGroup
 
-    lateinit var mContinueSendView: ContinueSendView
+    var mContinueSendView: ContinueSendView? = null
 
     internal var mVoiceControlDialog: DialogPlus? = null
 
@@ -591,17 +591,17 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     private fun initGiftPanelView() {
         mGiftPanelView = rootView.findViewById<View>(R.id.gift_panel_view) as GiftPanelView
-        mGiftPanelView.setRoomData(mRoomData!!)
+        mGiftPanelView?.setRoomData(mRoomData!!)
         mContinueSendView = rootView.findViewById<View>(R.id.continue_send_view) as ContinueSendView
-        mContinueSendView.mScene = ContinueSendView.EGameScene.GS_Stand
-        mContinueSendView.setRoomData(mRoomData!!)
-        mContinueSendView.setObserver(object : ContinueSendView.OnVisibleStateListener {
+        mContinueSendView?.mScene = ContinueSendView.EGameScene.GS_Stand
+        mContinueSendView?.setRoomData(mRoomData!!)
+        mContinueSendView?.setObserver(object : ContinueSendView.OnVisibleStateListener {
             override fun onVisible(isVisible: Boolean) {
                 mBottomContainerView?.setOpVisible(!isVisible)
             }
         })
 
-        mGiftPanelView.setIGetGiftCountDownListener(GiftDisplayView.IGetGiftCountDownListener {
+        mGiftPanelView?.setIGetGiftCountDownListener(GiftDisplayView.IGetGiftCountDownListener {
             //                return mGiftTimerPresenter.getCountDownSecond();
             0
         })
@@ -674,21 +674,21 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                         if (now.isPKRound && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
                             if (now.getsPkRoundInfoModels().size == 2) {
                                 val userId = now.getsPkRoundInfoModels()[1].userID
-                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId))
+                                mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId))
                             } else {
-                                mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                                mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
                             }
                         } else {
-                            mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                            mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
                         }
                     } else {
-                        mGiftPanelView.show(null)
+                        mGiftPanelView?.show(null)
                     }
                 } else {
-                    mGiftPanelView.show(null)
+                    mGiftPanelView?.show(null)
                 }
 
-                mContinueSendView.visibility = GONE
+                mContinueSendView?.visibility = GONE
             }
         })
         mBottomContainerView?.setRoomData(mRoomData!!)
@@ -724,7 +724,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
-        mContinueSendView.startBuy(event.baseGift, event.receiver)
+        mContinueSendView?.startBuy(event.baseGift, event.receiver)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1489,7 +1489,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             return true
         }
 
-        if (mGiftPanelView.onBackPressed()) {
+        if (mGiftPanelView?.onBackPressed()==true) {
             return true
         }
         if (mBeautyControlPanelView.onBackPressed()) {
