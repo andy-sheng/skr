@@ -428,7 +428,9 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             }
 
             postsAdapter!!.dataList?.removeAt(it)
-            postsAdapter!!.notifyDataSetChanged()
+            postsAdapter!!.notifyItemRemoved(it)
+            postsAdapter!!.notifyItemRangeChanged(it, postsAdapter?.dataList?.size!! - it)
+            postsAdapter!!.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         }
     }
 
@@ -537,7 +539,9 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             }
             progressView?.visibility = View.GONE
             postsAdapter?.dataList?.removeAt(pos)
-            postsAdapter?.notifyDataSetChanged()
+            postsAdapter?.notifyItemRemoved(pos)
+            postsAdapter?.notifyItemRangeChanged(pos, postsAdapter?.dataList?.size!! - pos)
+            postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         }
     }
 
