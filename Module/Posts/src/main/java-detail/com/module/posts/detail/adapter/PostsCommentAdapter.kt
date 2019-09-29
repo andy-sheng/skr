@@ -151,6 +151,8 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         if (refreshType == REFRESH_COMMENT_CTN) {
             if (holder is PostsHolder) {
                 holder.refreshCommentCnt(position, mDataList[position] as PostsWatchModel)
+            } else if (holder is PostsCommentHolder) {
+                holder.refreshReplyNum(position, mDataList[position] as PostFirstLevelCommentModel)
             }
         } else if (refreshType == REFRESH_PLAY_STATE) {
             if (holder is PostsHolder) {
@@ -716,6 +718,64 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         }
 
+        fun refreshReplyNum(pos: Int, model: PostFirstLevelCommentModel) {
+            this.pos = pos
+            this.mModel = model
+
+            if ((mModel?.secondLevelComments?.size
+                            ?: 0) > 0 && mModel?.comment?.subCommentCnt ?: 0 > 0) {
+                replyNum.visibility = View.VISIBLE
+                if (model.secondLevelComments?.get(0)?.commentUser?.userId == mPostsOwnerID) {
+                    val spanUtils = SpanUtils()
+                            .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
+                                override fun onClick(widget: View?) {
+                                    val bundle = Bundle()
+                                    bundle.putInt("bundle_user_id", model.commentUser?.userId ?: 0)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                            .with(bundle)
+                                            .navigation()
+                                }
+
+                                override fun updateDrawState(ds: TextPaint?) {
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                    ds!!.setUnderlineText(false)
+                                }
+                            })
+                            .appendImage(R.drawable.posts_louzhu, SpanUtils.ALIGN_CENTER)
+                            .append(" 等人 共").setForegroundColor(U.getColor(R.color.black))
+                            .append("${mModel?.comment?.subCommentCnt}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
+
+                    val stringBuilder = spanUtils.create()
+                    replyNum.text = stringBuilder
+                } else {
+                    val spanUtils = SpanUtils()
+                            .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
+                                override fun onClick(widget: View?) {
+                                    val bundle = Bundle()
+                                    bundle.putInt("bundle_user_id", model.commentUser?.userId ?: 0)
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                                            .with(bundle)
+                                            .navigation()
+                                }
+
+                                override fun updateDrawState(ds: TextPaint?) {
+                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
+                                    ds!!.setUnderlineText(false)
+                                }
+                            })
+                            .append(" 等人 共").setForegroundColor(U.getColor(R.color.black))
+                            .append("${mModel?.comment?.subCommentCnt}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
+
+                    val stringBuilder = spanUtils.create()
+                    replyNum.text = stringBuilder
+                }
+            } else {
+                replyNum.visibility = View.GONE
+            }
+        }
+
         fun refreshLike(pos: Int, model: PostFirstLevelCommentModel) {
             this.pos = pos
             this.mModel = model
@@ -780,58 +840,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
                 nineGridVp.setUrlList(mModel?.comment?.pictures!!)
             }
 
-            if ((mModel?.secondLevelComments?.size
-                            ?: 0) > 0 && mModel?.comment?.subCommentCnt ?: 0 > 0) {
-                replyNum.visibility = View.VISIBLE
-                if (model.secondLevelComments?.get(0)?.commentUser?.userId == mPostsOwnerID) {
-                    val spanUtils = SpanUtils()
-                            .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
-                                override fun onClick(widget: View?) {
-                                    val bundle = Bundle()
-                                    bundle.putInt("bundle_user_id", model.commentUser?.userId ?: 0)
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                                            .with(bundle)
-                                            .navigation()
-                                }
-
-                                override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
-                                    ds!!.setUnderlineText(false)
-                                }
-                            })
-                            .appendImage(R.drawable.posts_louzhu, SpanUtils.ALIGN_CENTER)
-                            .append(" 等人 共").setForegroundColor(U.getColor(R.color.black))
-                            .append("${mModel?.comment?.subCommentCnt}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
-
-                    val stringBuilder = spanUtils.create()
-                    replyNum.text = stringBuilder
-                } else {
-                    val spanUtils = SpanUtils()
-                            .append(model.secondLevelComments?.get(0)?.commentUser?.nicknameRemark.toString()).setClickSpan(object : ClickableSpan() {
-                                override fun onClick(widget: View?) {
-                                    val bundle = Bundle()
-                                    bundle.putInt("bundle_user_id", model.commentUser?.userId ?: 0)
-                                    ARouter.getInstance()
-                                            .build(RouterConstants.ACTIVITY_OTHER_PERSON)
-                                            .with(bundle)
-                                            .navigation()
-                                }
-
-                                override fun updateDrawState(ds: TextPaint?) {
-                                    ds!!.setColor(Color.parseColor("#FF6295C4"))
-                                    ds!!.setUnderlineText(false)
-                                }
-                            })
-                            .append(" 等人 共").setForegroundColor(U.getColor(R.color.black))
-                            .append("${mModel?.comment?.subCommentCnt}条回复>").setForegroundColor(Color.parseColor("#FF6295C4"))
-
-                    val stringBuilder = spanUtils.create()
-                    replyNum.text = stringBuilder
-                }
-            } else {
-                replyNum.visibility = View.GONE
-            }
+            refreshReplyNum(pos, mModel!!)
 
             xinIv.isSelected = mModel?.isLiked ?: false
 

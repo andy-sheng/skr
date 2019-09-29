@@ -357,7 +357,9 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                     any.comment?.let {
                         it.subCommentCnt++
                     }
-                    postsAdapter!!.notifyDataSetChanged()
+
+                    postsAdapter!!.notifyItemChanged(index, REFRESH_COMMENT_CTN)
+                    postsAdapter!!.notifyItemChanged(0, REFRESH_COMMENT_CTN)
                 }
             }
         }
@@ -411,7 +413,8 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 it.subCommentCnt--
             }
 
-            postsAdapter!!.notifyDataSetChanged()
+            postsAdapter!!.notifyItemChanged(it, REFRESH_COMMENT_CTN)
+            postsAdapter!!.notifyItemChanged(0, REFRESH_COMMENT_CTN)
         }
     }
 
