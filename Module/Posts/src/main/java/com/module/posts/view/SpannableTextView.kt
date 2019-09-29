@@ -92,10 +92,26 @@ class SpannableTextView : AppCompatTextView {
         this.isFirstLayout = true
         this.nicknameRemark = nicknameRemark
         this.content = content
-        if (width > 0) {
-            text = "$nicknameRemark:$content"
-        }
-        text = "$nicknameRemark:$content"
+        var nickNameStr = "$nicknameRemark:"
+        var contentStr = this.content
+        val contentBuilder = SpanUtils()
+                .append(nickNameStr)
+                .setForegroundColor(Color.parseColor("#63C2F0"))
+                .setClickSpan(object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        listener?.invoke()
+
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        ds.color = Color.parseColor("#63C2F0")
+                        ds.isUnderlineText = false
+                    }
+                })
+                .append(contentStr!!)
+                .setForegroundColor(U.getColor(R.color.black_trans_50))
+                .create()
+        text = contentBuilder
     }
 
 }
