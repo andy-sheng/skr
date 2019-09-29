@@ -212,7 +212,10 @@ open class EnhancedImageView : RelativeLayout {
             val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             addView(mGifImageView, 0, lp)
             mGifImageView!!.setOnLongClickListener(this.mLongClickListener)
-            mGifImageView!!.setOnClickListener(this.mClickListener)
+            mGifImageView!!.setOnClickListener{
+                // 直接设置mClickListener 也没生效 不知道为啥
+                this.mClickListener?.onClick(it)
+            }
         }
 
         mGifImageView?.visibility = View.VISIBLE
