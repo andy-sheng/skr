@@ -5,14 +5,12 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExTextView
-import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.view.*
 import com.module.posts.watch.adapter.PostsWatchListener
@@ -227,6 +225,15 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
     fun refreshCommentLike() {
         commentView.refreshCommentLike()
+    }
+
+    fun refreshCommentCnt() {
+        // 评论数
+        if (mModel?.numeric == null) {
+            postsCommentTv.text = "0"
+        } else {
+            postsCommentTv.text = mModel?.numeric?.commentCnt.toString()
+        }
     }
 
     fun refreshRedPkg() {

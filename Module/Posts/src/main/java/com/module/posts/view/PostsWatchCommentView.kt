@@ -1,29 +1,17 @@
 package com.module.posts.view
 
-import android.graphics.Color
 import android.support.constraint.ConstraintLayout
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.View
 import android.view.ViewStub
 import android.widget.TextView
-import com.alibaba.sdk.android.oss.ClientConfiguration
 import com.common.core.view.setAnimateDebounceViewClickListener
-import com.common.core.view.setDebounceViewClickListener
-import com.common.log.MyLog
-import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
-import com.common.view.AnimateClickListener
 import com.common.view.ExViewStub
 import com.module.posts.R
-import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsBestCommendModel
-import com.module.posts.watch.model.PostsCommentModel
 
 class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
 

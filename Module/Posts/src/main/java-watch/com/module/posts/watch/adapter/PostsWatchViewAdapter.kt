@@ -111,6 +111,7 @@ class PostsWatchViewAdapter(val type: Int, val listener: PostsWatchListener) : R
                                 holder.refreshRedPkg()
                                 holder.refreshCommentLike()
                                 holder.refreshVote()
+                                holder.refreshCommentCnt()
                             }
                             REFRESH_POSTS_PLAY -> {
                                 MyLog.d(mTag, "onBindViewHolder REFRESH_POSTS_PLAY position = $position")
