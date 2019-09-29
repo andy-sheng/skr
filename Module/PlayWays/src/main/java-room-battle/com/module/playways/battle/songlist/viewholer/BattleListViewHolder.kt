@@ -5,6 +5,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.ImageFactory
+import com.common.utils.ImageUtils
 import com.common.utils.dp
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExImageView
@@ -39,9 +42,11 @@ class BattleListViewHolder(item: View, listener: ((model: BattleTagModel?, posit
         this.mModel = model
         this.mPosition = pos
 
-        AvatarUtils.loadAvatarByUrl(recordCover, AvatarUtils.newParamsBuilder(model.coverURL)
+        FrescoWorker.loadImage(recordCover,ImageFactory.newPathImage(model.coverURL)
                 .setCornerRadius(8.dp().toFloat())
-                .build())
+                .setResizeByOssProcessor(ImageUtils.SIZE.SIZE_640)
+                .build()
+        )
         nameTv.text = model.tagName
         onlineNum.text = "${StringFromatUtils.formatTenThousand(model.onlineUserCnt)}人正在参加"
         when {

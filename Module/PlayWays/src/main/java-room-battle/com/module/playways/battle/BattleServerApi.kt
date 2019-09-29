@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface BattleServerApi {
 
-    @GET("v1/playbook/stand-tag-list")
+    @GET("v2/playbook/stand-tag-list")
     fun getStandTagList(@Query("userID") userID: Long, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
 
     @GET("v1/playbook/stand-song-list")
