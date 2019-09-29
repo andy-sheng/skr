@@ -476,7 +476,9 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                 }
 
                 postsAdapter?.dataList?.removeAt(pos)
-                postsAdapter?.notifyDataSetChanged()
+                postsAdapter!!.notifyItemRemoved(pos)
+                postsAdapter!!.notifyItemRangeChanged(pos, postsAdapter?.dataList?.size!! - pos)
+                postsAdapter!!.notifyItemChanged(0, REFRESH_COMMENT_CTN)
             }
         }
     }
