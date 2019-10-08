@@ -165,6 +165,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("WonderfulMoment"))
+        startSyncGameStateTask(sSyncStateTaskInterval * 2)
     }
 
     fun setGrabRedPkgPresenter(grabRedPkgPresenter: GrabRedPkgPresenter) {
@@ -1439,8 +1440,12 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, currentInfo, gameID)
                     //                    fetchAcc(nextInfo);
                 } else {
-                    MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.traceId)
-                    estimateOverTsThisRound()
+                    if (8346002 == result.errno) {
+                        MyLog.w(TAG, "syncGameStatus失败, 房间未开始")
+                    } else {
+                        MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.traceId)
+                        estimateOverTsThisRound()
+                    }
                 }
             }
 
