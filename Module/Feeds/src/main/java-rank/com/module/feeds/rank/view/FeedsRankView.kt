@@ -92,7 +92,9 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
 
     private fun getData(off: Int, isClean: Boolean) {
         launch {
-            val result = subscribe { mFeedsRankServerApi.getFeedRankInfoList(off, cnt, tag.tagType ?: 0) }
+            val result = subscribe {
+                mFeedsRankServerApi.getFeedRankInfoList(off, cnt, tag.tagType ?: 0)
+            }
             if (result?.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("challengeInfos"), FeedRankInfoModel::class.java)
                 offset = result.data.getIntValue("offset")
@@ -111,15 +113,19 @@ class FeedsRankView(context: Context, val tag: FeedRankTagModel) : ConstraintLay
         mRefreshLayout.setEnableLoadMore(hasMore)
         if (isClean) {
             mAdapter.mDataList.clear()
+            if (list != null) {
+                mAdapter.mDataList.addAll(list)
+            }
+            mAdapter.notifyDataSetChanged()
+        } else {
+            if (list != null) {
+                mAdapter.mDataList.addAll(list)
+                mAdapter.notifyDataSetChanged()
+            }
         }
-
-        if (list != null) {
-            mAdapter.mDataList.addAll(list)
-        }
-        mAdapter.notifyDataSetChanged()
     }
 
-    fun destory(){
+    fun destory() {
         cancel()
     }
 

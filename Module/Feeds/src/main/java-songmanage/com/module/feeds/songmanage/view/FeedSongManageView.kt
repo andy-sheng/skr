@@ -117,12 +117,20 @@ class FeedSongManageView(context: Context, val model: FeedSongTagModel, val from
 
         if (clear) {
             adapter.mDataList.clear()
+            if (!list.isNullOrEmpty()) {
+                adapter.mDataList.addAll(list)
+                adapter.notifyDataSetChanged()
+            } else {
+                adapter.notifyDataSetChanged()
+            }
+        } else {
+            if (!list.isNullOrEmpty()) {
+                adapter.mDataList.addAll(list)
+                adapter.notifyDataSetChanged()
+            }
         }
 
-        if (!list.isNullOrEmpty()) {
-            adapter.mDataList.addAll(list)
-            adapter.notifyDataSetChanged()
-        }
+
 
         if (adapter.mDataList.isNullOrEmpty()) {
             // 没有数据，空的页面
