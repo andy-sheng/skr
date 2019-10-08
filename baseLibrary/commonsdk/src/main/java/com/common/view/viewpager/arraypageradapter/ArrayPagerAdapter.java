@@ -217,8 +217,10 @@ public abstract class ArrayPagerAdapter<T> extends PagerAdapter {
 
         ArrayList<IdentifiedItem<T>> createList(List<T> items) {
             ArrayList<IdentifiedItem<T>> list = new ArrayList();
-            for (T item : items) {
-                list.add(create(item));
+            if (items != null) {
+                for (T item : items) {
+                    list.add(create(item));
+                }
             }
             return list;
         }
