@@ -240,7 +240,10 @@ public class ResPicker {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             }
         }
-        activity.startActivityForResult(takePictureIntent, requestCode);
+
+        if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            activity.startActivityForResult(takePictureIntent, requestCode);
+        }
     }
 
     public void addSelectedResItem(int position, ResItem imageItem) {
