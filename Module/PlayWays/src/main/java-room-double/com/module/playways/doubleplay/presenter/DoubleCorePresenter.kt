@@ -76,9 +76,10 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
         }
 
         if (mRoomData.isRoomPrepared()) {
-            mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
             joinRoomAndInit(true)
         }
+
+        mUiHandler.sendEmptyMessageDelayed(SYNC_MSG, SYNC_DURATION)
 
         joinRcRoom(-1)
     }
@@ -256,6 +257,12 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                                 .navigation()
                     } else {
                         mRoomData.syncRoomInfo(model)
+                    }
+                } else {
+                    if (8376017 == obj?.errno) {
+                        MyLog.w(TAG, "syncStatus 失败，房间未开始")
+                    } else {
+                        MyLog.w(TAG, "syncStatus 失败，errno is ${obj?.errno}")
                     }
                 }
             }
