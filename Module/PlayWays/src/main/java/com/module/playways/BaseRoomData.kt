@@ -140,7 +140,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap[userID]
+        val playerInfoModel = userInfoMap?.get(userID)
         if (playerInfoModel == null) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
