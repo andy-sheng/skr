@@ -68,6 +68,15 @@ getDeviceId(){
 
 #将apk安装到所有设备上
 installApkForAllDevices(){
+    #安装的时候再获取deviceID
+    getDeviceId
+    echo ${devices[@]}
+
+    if [ ${#devices[*]} = 0 ]; then
+    	echo "devices is empty"
+    	exit 1;
+    fi
+
     echo "注意包大小优化"
     ls -al $1
 	for data in ${devices[@]}  
@@ -218,10 +227,6 @@ fi
 getMatrixEnable
 
 echo MatrixEnable=$MatrixEnable
-
-getDeviceId
-
-echo ${devices[@]}
 
 echo rm -rf app/build/outputs/channels
 rm -rf app/build/outputs/channels
