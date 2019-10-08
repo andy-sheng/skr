@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 
+import com.common.log.DebugLogView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
@@ -16,7 +17,6 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
-import com.common.log.DebugLogView;
 import com.engine.EngineEvent;
 import com.engine.Params;
 import com.engine.UserStatus;
@@ -2358,7 +2358,9 @@ public class ZqEngineKit implements AgoraOutCallback {
         mCustomHandlerThread.post(new LogRunnable("setLocalVideoRect" + " x=" + x + " y=" + y + " w=" + w + " h=" + h + " alpha=" + alpha) {
             @Override
             public void realRun() {
-                mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
+                if (mImgTexPreviewMixer != null) {
+                    mImgTexPreviewMixer.setRenderRect(0, x, y, w, h, a);
+                }
                 if (mScreenRenderWidth != 0 && mScreenRenderHeight != 0) {
                     // 重新计算预览尺寸
                     setPreviewParams();
