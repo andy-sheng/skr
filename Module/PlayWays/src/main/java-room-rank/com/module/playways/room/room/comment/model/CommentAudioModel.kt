@@ -20,23 +20,21 @@ class CommentAudioModel : CommentModel() {
     companion object {
         fun parseFromEvent(event: AudioMsgEvent, roomData: BaseRoomData<*>?): CommentAudioModel {
             val commentModel = CommentAudioModel()
+            commentModel.avatarColor = AVATAR_COLOR
             if (roomData != null) {
                 val sender = roomData.getPlayerOrWaiterInfo(event.mInfo.sender.userID!!)
-
-                commentModel.avatarColor = AVATAR_COLOR
                 if (sender != null) {
                     commentModel.userInfo = sender
                 } else {
                     commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
                 }
+            } else {
+                commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
             }
-
-            if (roomData != null) {
-                val ssb = SpanUtils()
-                        .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
-                        .create()
-                commentModel.stringBuilder = ssb
-            }
+            val ssb = SpanUtils()
+                    .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
+                    .create()
+            commentModel.stringBuilder = ssb
             commentModel.localPath = event.localPath
             commentModel.duration = event.duration
             commentModel.msgUrl = event.msgUrl
