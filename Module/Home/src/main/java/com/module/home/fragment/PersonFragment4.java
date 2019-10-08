@@ -487,8 +487,12 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         IPostModuleService postModuleService = ModuleServiceManager.getInstance().getPostsService();
                         mPostWallView = postModuleService.getPostsWall(PersonFragment4.this.getActivity(), userInfoModel, PersonFragment4.this);
                     }
-                    if (container.indexOfChild((View) mPostWallView) == -1) {
-                        container.addView((View) mPostWallView);
+                    View childView = (View) mPostWallView;
+                    if (container.indexOfChild(childView) == -1) {
+                        if (childView.getParent() != null) {
+                            ((ViewGroup) childView.getParent()).removeView(childView);
+                        }
+                        container.addView(childView);
                     }
                     return mPostWallView;
                 } else if (position == 2) {
@@ -498,8 +502,12 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                         IFeedsModuleService feedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
                         mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
-                    if (container.indexOfChild((View) mFeedsWallView) == -1) {
-                        container.addView((View) mFeedsWallView);
+                    View childView = (View) mFeedsWallView;
+                    if (container.indexOfChild(childView) == -1) {
+                        if (childView.getParent() != null) {
+                            ((ViewGroup) childView.getParent()).removeView(childView);
+                        }
+                        container.addView(childView);
                     }
                     return mFeedsWallView;
                 } else if (position == 3) {
