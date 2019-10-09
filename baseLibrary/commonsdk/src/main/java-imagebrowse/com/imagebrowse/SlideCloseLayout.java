@@ -7,12 +7,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RelativeLayout;
 
-// todo 需要补一个图片在放大状态的时候，不要拦截上下滑动处理
-public class SlideColseLayout extends RelativeLayout {
+import com.common.log.MyLog;
 
-    public final static String TAG = "SlideColseLayout";
+public class SlideCloseLayout extends RelativeLayout {
+
+    public final static String TAG = "SlideCloseLayout";
 
     int previousX;
     int previousY;
@@ -21,16 +23,8 @@ public class SlideColseLayout extends RelativeLayout {
     Drawable mBackground;
     boolean isScrollingUp;
 
-    public SlideColseLayout(Context context) {
-        super(context);
-    }
-
-    public SlideColseLayout(Context context, AttributeSet attrs) {
+    public SlideCloseLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SlideColseLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     public void setGradualBackground(Drawable background) {
@@ -43,10 +37,9 @@ public class SlideColseLayout extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        //判断几指操作，大于1时认为在对图片进行放大缩小操作，不拦截事件
-        //交由下面控件处理
-        if (ev.getPointerCount() > 1) {
-            return false;
+        // 多指操作 宿主不同意拦截 。两种都不准拦截
+        if (ev.getPointerCount() > 1 || !mScrollListener.onHostAllowIntercept()) {
+            return super.onInterceptTouchEvent(ev);
         } else {
             final int y = (int) ev.getRawY();
             final int x = (int) ev.getRawX();
@@ -54,18 +47,21 @@ public class SlideColseLayout extends RelativeLayout {
                 case MotionEvent.ACTION_DOWN:
                     previousX = x;
                     previousY = y;
+                    MyLog.d(TAG, "onInterceptTouchEvent down previousX=" + previousX + " previousY=" + previousY);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    int diffY = y - previousY;
-                    int diffX = x - previousX;
+                    int diffY = Math.abs(y - previousY);
+                    int diffX = Math.abs(x - previousX);
+                    MyLog.d(TAG, "onInterceptTouchEvent move diffX=" + diffX + " diffY=" + diffY);
+
                     //当Y轴移动距离大于X轴50个单位时拦截事件
                     //进入onTouchEvent开始处理上下滑动退出效果
-                    if (Math.abs(diffX) + 50 < Math.abs(diffY)) {
+                    if (diffX + 50 < diffY) {
                         return true;
                     }
                     break;
             }
-            return false;
+            return super.onInterceptTouchEvent(ev);
         }
     }
 
@@ -108,7 +104,7 @@ public class SlideColseLayout extends RelativeLayout {
     public void layoutExitAnim() {
         ObjectAnimator exitAnim;
         //从手指抬起的位置继续向上或向下的位移动画
-        exitAnim = ObjectAnimator.ofFloat(this, "translationY", getTranslationY(), isScrollingUp ? -getHeight() : getHeight());
+        exitAnim = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, getTranslationY(), isScrollingUp ? -getHeight() : getHeight());
         exitAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -137,7 +133,7 @@ public class SlideColseLayout extends RelativeLayout {
 
     private void layoutRecoverAnim() {
         //从手指抬起的地方恢复到原点
-        ObjectAnimator recoverAnim = ObjectAnimator.ofFloat(this, "translationY", this.getTranslationY(), 0);
+        ObjectAnimator recoverAnim = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, this.getTranslationY(), 0);
         recoverAnim.setDuration(100);
         recoverAnim.start();
         if (mBackground != null) {
@@ -157,5 +153,7 @@ public class SlideColseLayout extends RelativeLayout {
 
         //滑动结束并且没有触发关闭
         void onLayoutScrollRevocer();
+
+        boolean onHostAllowIntercept();
     }
 }

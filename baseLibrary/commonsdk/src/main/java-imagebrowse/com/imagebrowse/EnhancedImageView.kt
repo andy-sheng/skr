@@ -307,6 +307,8 @@ open class EnhancedImageView : RelativeLayout {
                     val b2 = wh[1] != 0 && wh[1] > U.getDisplayUtils().screenHeight * 1.5
                     if (b1 || b2) {
                         loadBySubSampleView(file.absolutePath)
+                    }else{
+                        MyLog.d(TAG, "no need SubSampleView")
                     }
                 }
             }

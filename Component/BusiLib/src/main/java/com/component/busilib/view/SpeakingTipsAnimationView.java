@@ -103,13 +103,13 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         show(duration, true);
     }
 
-    public void show(int duration, boolean containHide) {
+    public void show(int duration, boolean autoHide) {
         isPlaying = true;
         mDuration = duration;
         setVisibility(VISIBLE);
         mUiHandler.removeMessages(MSG_START);
         mUiHandler.sendEmptyMessage(MSG_START);
-        if (duration > 0 && containHide) {
+        if (duration > 0 && autoHide) {
             mUiHandler.removeMessages(MSG_HIDE);
             mUiHandler.sendEmptyMessageDelayed(MSG_HIDE, duration);
         }

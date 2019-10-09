@@ -67,6 +67,9 @@ public class Attacher implements IAttacher, View.OnTouchListener, OnScaleDragGes
     public Attacher(DraweeView<GenericDraweeHierarchy> draweeView) {
         mDraweeView = new WeakReference<>(draweeView);
         draweeView.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
+        /**
+         * 设定点击事件
+         */
         draweeView.setOnTouchListener(this);
         mScaleDragDetector = new ScaleDragDetector(draweeView.getContext(), this);
         mGestureDetector = new GestureDetectorCompat(draweeView.getContext(),

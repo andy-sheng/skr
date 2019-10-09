@@ -10,6 +10,7 @@ import com.common.log.MyLog;
 import com.common.view.photodraweeview.OnPhotoTapListener;
 import com.common.view.photodraweeview.OnViewTapListener;
 import com.common.view.photodraweeview.PhotoDraweeView;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 /**
  * 这个view过于复杂，在使用viewpager时就别重复使用了吧
@@ -68,5 +69,19 @@ public class ImageBrowseView extends EnhancedImageView {
     @Override
     protected void realLoadByFresco(BaseImage baseImage) {
         ((PhotoDraweeView) getMPhotoDraweeView()).load(baseImage);
+    }
+
+    public float getScale() {
+        PhotoDraweeView mPhotoDraweeView = ((PhotoDraweeView) getMPhotoDraweeView());
+        if (mPhotoDraweeView != null && mPhotoDraweeView.getVisibility() == View.VISIBLE) {
+            return mPhotoDraweeView.getScale();
+        }
+
+        SubsamplingScaleImageView mSubsamplingScaleImageView = getMSubsamplingScaleImageView();
+        if (mSubsamplingScaleImageView != null && mSubsamplingScaleImageView.getVisibility() == View.VISIBLE) {
+            return mSubsamplingScaleImageView.getScale();
+        }
+
+        return 1;
     }
 }

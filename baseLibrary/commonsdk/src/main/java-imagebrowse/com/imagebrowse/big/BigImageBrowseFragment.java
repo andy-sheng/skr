@@ -1,10 +1,11 @@
 package com.imagebrowse.big;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.common.view.viewpager.arraypageradapter.ArrayViewPagerAdapter;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
 import com.imagebrowse.ImageBrowseView;
-import com.imagebrowse.SlideColseLayout;
+import com.imagebrowse.SlideCloseLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     public final static String BIG_IMAGE_PATH = "big_image_path";
 
     CommonTitleBar mTitlebar;
-    SlideColseLayout mSlideCloseLayout;
+    SlideCloseLayout mSlideCloseLayout;
     ViewPager mImagesVp;
     //ArrayList<IMAGE_DATA> mDataList = new ArrayList<>();
     Loader mLoader;
@@ -67,6 +68,7 @@ public class BigImageBrowseFragment extends BaseFragment {
             });
             return imageBrowseView;
         }
+
     };
 
 
@@ -85,7 +87,7 @@ public class BigImageBrowseFragment extends BaseFragment {
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mSlideCloseLayout = (SlideColseLayout) getRootView().findViewById(R.id.slide_close_layout);
+        mSlideCloseLayout = (SlideCloseLayout) getRootView().findViewById(R.id.slide_close_layout);
         mImagesVp = (ViewPager) getRootView().findViewById(R.id.images_vp);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
@@ -188,7 +190,7 @@ public class BigImageBrowseFragment extends BaseFragment {
 
         getActivity().getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         mSlideCloseLayout.setGradualBackground(getActivity().getWindow().getDecorView().getBackground());
-        mSlideCloseLayout.setLayoutScrollListener(new SlideColseLayout.LayoutScrollListener() {
+        mSlideCloseLayout.setLayoutScrollListener(new SlideCloseLayout.LayoutScrollListener() {
             @Override
             public void onLayoutClosed() {
                 finish();
@@ -202,6 +204,15 @@ public class BigImageBrowseFragment extends BaseFragment {
             @Override
             public void onLayoutScrollRevocer() {
                 mTitlebar.setAlpha(1);
+            }
+
+            @Override
+            public boolean onHostAllowIntercept() {
+                ImageBrowseView currView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
+                if (currView != null && currView.getScale() > 1) {
+                    return false;
+                }
+                return true;
             }
         });
 

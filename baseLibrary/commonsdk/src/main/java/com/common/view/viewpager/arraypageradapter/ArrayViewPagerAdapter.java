@@ -1,5 +1,7 @@
 package com.common.view.viewpager.arraypageradapter;
 
+import android.support.annotation.NonNull;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,29 +46,28 @@ public abstract class ArrayViewPagerAdapter<T> extends ArrayPagerAdapter<T> {
     public Object instantiateItem(ViewGroup container, int position) {
         T item = getItem(position);
         View view = getView(LayoutInflater.from(container.getContext()), container, item, position);
-        view.setTag(R.id.avpa_view_tag_key, getItemWithId(position));
         container.addView(view);
-        return super.instantiateItem(container, position);
+        return view;
     }
 
     @Override
     public boolean isViewFromObject(View view, Object item) {
-        return item.equals(view.getTag(R.id.avpa_view_tag_key));
+        return item.equals(view);
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object item) {
-        container.removeView(findViewWithTagInViewPager(container, item));
+        container.removeView((View) item);
     }
 
-    private View findViewWithTagInViewPager(ViewGroup container, Object item) {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View view = container.getChildAt(i);
-            Object tag = view.getTag(R.id.avpa_view_tag_key);
-            if (item.equals(tag)) {
-                return view;
-            }
-        }
-        throw new NullPointerException("view's tag is not found for some reason.");
+    View currentPrimaryView = null;
+
+    @Override
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        currentPrimaryView = (View) object;
+    }
+
+    public View getPrimaryItem() {
+        return currentPrimaryView;
     }
 }
