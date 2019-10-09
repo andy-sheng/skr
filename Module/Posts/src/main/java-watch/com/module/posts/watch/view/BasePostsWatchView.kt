@@ -135,7 +135,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 if (model != null && model.isAudit()) {
                     recordClick(model)
                     // 停掉音乐吧
-                    var pendingPlayingUrl:String? = null
+                    var pendingPlayingUrl: String? = null
                     if (adapter?.mCurrentPlayModel == model
                             && (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO || adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_SONG)) {
                         if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO) {
@@ -203,9 +203,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 }
             }
 
-            override fun onClickPostsAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+            override fun onClickPostsAudio(position: Int, model: PostsWatchModel?) {
                 recordClick(model)
-                if (isPlaying) {
+                if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
                 } else {
                     model?.posts?.audios?.let {
@@ -215,9 +215,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_AUDIO)
             }
 
-            override fun onClickPostsSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+            override fun onClickPostsSong(position: Int, model: PostsWatchModel?) {
                 recordClick(model)
-                if (isPlaying) {
+                if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_SONG && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
                 } else {
                     model?.posts?.song?.playURL?.let {
@@ -295,9 +295,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 }
             }
 
-            override fun onClickCommentAudio(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+            override fun onClickCommentAudio(position: Int, model: PostsWatchModel?) {
                 recordClick(model)
-                if (isPlaying) {
+                if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
                 } else {
                     model?.bestComment?.comment?.audios?.let {
@@ -307,9 +307,9 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO)
             }
 
-            override fun onClickCommentSong(position: Int, model: PostsWatchModel?, isPlaying: Boolean) {
+            override fun onClickCommentSong(position: Int, model: PostsWatchModel?) {
                 recordClick(model)
-                if (isPlaying) {
+                if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_COMMENT_SONG && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
                 } else {
                     model?.bestComment?.comment?.song?.playURL?.let {
@@ -421,8 +421,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
     open fun unselected(reason: Int) {
         isSeleted = false
-        if (reason == UNSELECT_REASON_TO_OTHER_ACTIVITY)
-        {
+        if (reason == UNSELECT_REASON_TO_OTHER_ACTIVITY) {
             // 跳到详情页或者看大图  不停止播放
             val topActivity = U.getActivityUtils().topActivity
             if (topActivity is PostsDetailActivity) {

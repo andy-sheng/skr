@@ -39,12 +39,11 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
     var pos = -1
     var mModel: PostsWatchModel? = null
-    var isPlaying = false
 
     init {
         moreIv.setDebounceViewClickListener { listener.onClickPostsMore(pos, mModel) }
-        postsAudioView.setDebounceViewClickListener { listener.onClickPostsAudio(pos, mModel, isPlaying) }
-        postsSongView.setDebounceViewClickListener { listener.onClickPostsSong(pos, mModel, isPlaying) }
+        postsAudioView.setDebounceViewClickListener { listener.onClickPostsAudio(pos, mModel) }
+        postsSongView.setDebounceViewClickListener { listener.onClickPostsSong(pos, mModel) }
 
         nineGridVp.clickListener = { i, url, _ ->
             listener.onClickPostsImage(pos, mModel, i, url)
@@ -56,7 +55,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
 
         commentView.setListener(object : PostsCommentListener {
             override fun onClickSong() {
-                listener.onClickCommentSong(pos, mModel, isPlaying)
+                listener.onClickCommentSong(pos, mModel)
             }
 
             override fun onClickLike() {
@@ -68,7 +67,7 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
             }
 
             override fun onClickAudio() {
-                listener.onClickCommentAudio(pos, mModel, isPlaying)
+                listener.onClickCommentAudio(pos, mModel)
             }
 
             override fun onClickImage(index: Int, url: String) {
@@ -95,7 +94,6 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     open fun bindData(pos: Int, model: PostsWatchModel) {
         this.pos = pos
         this.mModel = model
-        this.isPlaying = false
 
         if (MyLog.isDebugLogOpen()) {
             debugTv.visibility = View.VISIBLE
@@ -166,7 +164,6 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     }
 
     fun startPlay(playStatus: Int) {
-        isPlaying = true
         when (playStatus) {
             PostsWatchViewAdapter.PLAY_POSTS_AUDIO -> {
                 postsAudioView.setPlay(true)
@@ -201,7 +198,6 @@ open class PostsViewHolder(item: View, val listener: PostsWatchListener) : Recyc
     }
 
     fun stopPlay() {
-        isPlaying = false
         postsAudioView.setPlay(false)
         postsSongView.setPlay(false)
         commentView.postsAudioView?.setPlay(false)
