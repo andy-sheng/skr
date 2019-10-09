@@ -1,5 +1,7 @@
 package com.imagebrowse.big;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +22,7 @@ import com.common.view.viewpager.arraypageradapter.ArrayViewPagerAdapter;
 import com.dialog.list.DialogListItem;
 import com.dialog.list.ListDialog;
 import com.imagebrowse.ImageBrowseView;
+import com.imagebrowse.SlideColseLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     public final static String BIG_IMAGE_PATH = "big_image_path";
 
     CommonTitleBar mTitlebar;
+    SlideColseLayout mSlideCloseLayout;
     ViewPager mImagesVp;
     //ArrayList<IMAGE_DATA> mDataList = new ArrayList<>();
     Loader mLoader;
@@ -81,7 +85,7 @@ public class BigImageBrowseFragment extends BaseFragment {
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-
+        mSlideCloseLayout = (SlideColseLayout) getRootView().findViewById(R.id.slide_close_layout);
         mImagesVp = (ViewPager) getRootView().findViewById(R.id.images_vp);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
@@ -180,6 +184,27 @@ public class BigImageBrowseFragment extends BaseFragment {
                 }
             }
         });
+
+
+        getActivity().getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+        mSlideCloseLayout.setGradualBackground(getActivity().getWindow().getDecorView().getBackground());
+        mSlideCloseLayout.setLayoutScrollListener(new SlideColseLayout.LayoutScrollListener() {
+            @Override
+            public void onLayoutClosed() {
+                finish();
+            }
+
+            @Override
+            public void onLayoutScrolling(float alpha) {
+                mTitlebar.setAlpha(1 - (alpha * 5f));
+            }
+
+            @Override
+            public void onLayoutScrollRevocer() {
+                mTitlebar.setAlpha(1);
+            }
+        });
+
     }
 
     void loadMore(boolean backward, int postion) {
@@ -239,6 +264,7 @@ public class BigImageBrowseFragment extends BaseFragment {
 
     /**
      * 浏览组图 数据从Loader里的各个回调里拿
+     *
      * @param useActivity
      * @param activity
      * @param mLoader
@@ -263,6 +289,7 @@ public class BigImageBrowseFragment extends BaseFragment {
 
     /**
      * 浏览单个大图
+     *
      * @param useActivity
      * @param activity
      * @param path
