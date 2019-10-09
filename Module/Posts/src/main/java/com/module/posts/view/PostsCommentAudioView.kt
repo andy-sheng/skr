@@ -62,7 +62,7 @@ class PostsCommentAudioView : ConstraintLayout {
         isPlaying = isPlay
         if (isPlay) {
             // 播放动画
-            speakerAnimationIv.show(audioDuration.toInt())
+            speakerAnimationIv.show(audioDuration.toInt(), false)
         } else {
             // 停止动画
             speakerAnimationIv.hide()

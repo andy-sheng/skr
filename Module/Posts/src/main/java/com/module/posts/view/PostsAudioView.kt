@@ -64,7 +64,7 @@ class PostsAudioView : ConstraintLayout {
         isPlaying = isPlay
         if (isPlay) {
             // 播放动画
-            speakerAnimationIv.show(durationMs)
+            speakerAnimationIv.show(durationMs, false)
         } else {
             // 停止动画
             speakerAnimationIv.hide()
