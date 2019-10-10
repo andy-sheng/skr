@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.view.setDebounceViewClickListener
@@ -28,6 +29,9 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.dialog.view.TipsDialogView
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
@@ -234,46 +238,51 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                         .withSerializable("playingUrl", url)
                         .navigation()
             }
-        }
 
-        postsAdapter?.mClickContent = { postFirstLevelModel, pos ->
-            postsCommentMoreDialogView?.dismiss(false)
-            postsCommentMoreDialogView = PostsCommentMoreDialogView(this@PostsDetailActivity).apply {
-                replyTv.setDebounceViewClickListener {
-                    feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postFirstLevelModel)
-                    feedsInputContainerView?.setETHint("回复 ${postFirstLevelModel.commentUser?.nicknameRemark}")
-                    dismiss()
-                }
-
-                reportTv.setDebounceViewClickListener {
-                    dismiss(false)
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
-                            .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
-                            .withInt("targetID", postFirstLevelModel?.commentUser?.userId
-                                    ?: 0)
-                            .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
-                            .withLong("commentID", postFirstLevelModel?.comment?.commentID?.toLong()
-                                    ?: 0)
-                            .navigation()
-                }
-
-                if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                    deleteTv.visibility = View.VISIBLE
-                    deleteTv.setDebounceViewClickListener {
-                        dismiss(false)
-                        deleteConfirm {
-                            mPostsDetailPresenter?.deleteComment(postFirstLevelModel?.comment?.commentID
-                                    ?: 0, mPostsWatchModel?.posts?.postsID?.toInt()
-                                    ?: 0, pos, postFirstLevelModel)
-                            progressView?.visibility = View.VISIBLE
-                        }
-                    }
-                } else {
-                    deleteTv.visibility = View.GONE
-                }
+            override fun goBigImageBrowse(index: Int, pictures: List<String>) {
+                goBrowse(index, pictures)
             }
-            postsCommentMoreDialogView?.showByDialog(true)
+
+            override fun clickContent(postFirstLevelModel: PostFirstLevelCommentModel, pos: Int) {
+                postsCommentMoreDialogView?.dismiss(false)
+                postsCommentMoreDialogView = PostsCommentMoreDialogView(this@PostsDetailActivity).apply {
+                    replyTv.setDebounceViewClickListener {
+                        feedsInputContainerView.showSoftInput(PostsInputContainerView.SHOW_TYPE.KEY_BOARD, postFirstLevelModel)
+                        feedsInputContainerView?.setETHint("回复 ${postFirstLevelModel.commentUser?.nicknameRemark}")
+                        dismiss()
+                    }
+
+                    reportTv.setDebounceViewClickListener {
+                        dismiss(false)
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_REPORT)
+                                .withInt("from", PostsCommentMoreDialogView.FROM_POSTS_COMMENT)
+                                .withInt("targetID", postFirstLevelModel?.commentUser?.userId
+                                        ?: 0)
+                                .withLong("postsID", mPostsWatchModel?.posts?.postsID ?: 0)
+                                .withLong("commentID", postFirstLevelModel?.comment?.commentID?.toLong()
+                                        ?: 0)
+                                .navigation()
+                    }
+
+                    if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                        deleteTv.visibility = View.VISIBLE
+                        deleteTv.setDebounceViewClickListener {
+                            dismiss(false)
+                            deleteConfirm {
+                                mPostsDetailPresenter?.deleteComment(postFirstLevelModel?.comment?.commentID
+                                        ?: 0, mPostsWatchModel?.posts?.postsID?.toInt()
+                                        ?: 0, pos, postFirstLevelModel)
+                                progressView?.visibility = View.VISIBLE
+                            }
+                        }
+                    } else {
+                        deleteTv.visibility = View.GONE
+                    }
+                }
+                postsCommentMoreDialogView?.showByDialog(true)
+            }
         }
+
         recyclerView?.layoutManager = LinearLayoutManager(this)
         recyclerView?.adapter = postsAdapter
 
@@ -309,6 +318,42 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
             mPlayingPosition = -1
         }
+    }
+
+    private fun goBrowse(index: Int, pictures: List<String>) {
+        BigImageBrowseFragment.open(true, this, object : DefaultImageBrowserLoader<String>() {
+            override fun init() {
+
+            }
+
+            override fun load(imageBrowseView: ImageBrowseView, position: Int, item: String) {
+                imageBrowseView.load(item)
+            }
+
+            override fun getInitCurrentItemPostion(): Int {
+                return index
+            }
+
+            override fun getInitList(): List<String>? {
+                return pictures
+            }
+
+            override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
+                if (backward) {
+                    // 向后加载
+                }
+            }
+
+            override fun hasMore(backward: Boolean, position: Int, data: String): Boolean {
+                return if (backward) {
+                    return false
+                } else false
+            }
+
+            override fun hasMenu(): Boolean {
+                return false
+            }
+        })
     }
 
     override fun showFirstLevelCommentList(list: List<PostFirstLevelCommentModel>) {
