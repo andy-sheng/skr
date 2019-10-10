@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
+import com.common.callback.Callback
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
@@ -27,6 +28,9 @@ import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.view.SkrProgressView
 import com.dialog.view.TipsDialogView
+import com.imagebrowse.ImageBrowseView
+import com.imagebrowse.big.BigImageBrowseFragment
+import com.imagebrowse.big.DefaultImageBrowserLoader
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
@@ -341,6 +345,10 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
             override fun playAnotherSong() {
                 stopPlayingState()
             }
+
+            override fun goBigImageBrowse(index: Int, pictures: List<String>) {
+                goBrowse(index, pictures)
+            }
         }
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->
@@ -458,6 +466,42 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
 
     override fun hasMore(hasMore: Boolean) {
         smartRefreshLayout.setEnableLoadMore(hasMore)
+    }
+
+    private fun goBrowse(index: Int, pictures: List<String>) {
+        BigImageBrowseFragment.open(true, this, object : DefaultImageBrowserLoader<String>() {
+            override fun init() {
+
+            }
+
+            override fun load(imageBrowseView: ImageBrowseView, position: Int, item: String) {
+                imageBrowseView.load(item)
+            }
+
+            override fun getInitCurrentItemPostion(): Int {
+                return index
+            }
+
+            override fun getInitList(): List<String>? {
+                return pictures
+            }
+
+            override fun loadMore(backward: Boolean, position: Int, data: String, callback: Callback<List<String>>?) {
+                if (backward) {
+                    // 向后加载
+                }
+            }
+
+            override fun hasMore(backward: Boolean, position: Int, data: String): Boolean {
+                return if (backward) {
+                    return false
+                } else false
+            }
+
+            override fun hasMenu(): Boolean {
+                return false
+            }
+        })
     }
 
     override fun deleteCommentSuccess(success: Boolean, pos: Int, model: PostsSecondLevelCommentModel?) {
