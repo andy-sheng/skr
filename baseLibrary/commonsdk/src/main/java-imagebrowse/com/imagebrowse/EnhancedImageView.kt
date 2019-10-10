@@ -269,21 +269,21 @@ open class EnhancedImageView : RelativeLayout {
                 preCallback?.processWithFailure()
             }
         }
-        FrescoWorker.preLoadImg(httpImage as HttpImage?, object : FrescoWorker.ImageLoadCallBack {
-
-            override fun loadSuccess(bitmap: Bitmap?) {
-                MyLog.d(TAG, "loadSuccess bitmap=$bitmap")
-            }
-
-            override fun onProgressUpdate(progress: Float) {
-                //显示下载进度条
-                //MyLog.d(TAG, "onProgressUpdate" + " progress=" + progress);
-            }
-
-            override fun loadFail() {
-                MyLog.d(TAG, "loadFail")
-            }
-        }, true)
+//        FrescoWorker.preLoadImg(httpImage as HttpImage?, object : FrescoWorker.ImageLoadCallBack {
+//
+//            override fun loadSuccess(bitmap: Bitmap?) {
+//                MyLog.d(TAG, "loadSuccess bitmap=$bitmap")
+//            }
+//
+//            override fun onProgressUpdate(progress: Float) {
+//                //显示下载进度条
+//                //MyLog.d(TAG, "onProgressUpdate" + " progress=" + progress);
+//            }
+//
+//            override fun loadFail() {
+//                MyLog.d(TAG, "loadFail")
+//            }
+//        }, true)
         realLoadByFresco(httpImage)
     }
 
