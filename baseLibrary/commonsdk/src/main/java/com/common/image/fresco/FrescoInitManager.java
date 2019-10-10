@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 
 import com.common.base.BuildConfig;
-import com.common.image.fresco.cache.MLCacheKeyFactory;
+import com.common.image.fresco.cache.MyCacheKeyFactory;
 import com.common.image.fresco.log.FrescoLogDelegate;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -141,7 +141,7 @@ public class FrescoInitManager {
 //                        return encodeBitmapCacheParams;
 //                    }
 //                })
-                .setCacheKeyFactory(MLCacheKeyFactory.getInstance());
+                .setCacheKeyFactory(MyCacheKeyFactory.INSTANCE);
     }
 
     static MemoryCacheParams getMemoryCacheParams() {

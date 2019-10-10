@@ -17,6 +17,7 @@ import com.common.base.R
 import com.common.image.fresco.BaseImageView
 import com.common.image.fresco.FrescoWorker
 import com.common.image.fresco.IFrescoCallBack
+import com.common.image.fresco.cache.MyCacheKeyFactory
 import com.common.image.model.BaseImage
 import com.common.image.model.HttpImage
 import com.common.image.model.ImageFactory
@@ -28,9 +29,12 @@ import com.common.utils.StringUtils
 import com.common.utils.U
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+import com.facebook.binaryresource.FileBinaryResource
 import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.imagepipeline.core.ImagePipelineFactory
 import com.facebook.imagepipeline.image.ImageInfo
 import com.facebook.imagepipeline.image.QualityInfo
+import com.facebook.imagepipeline.request.ImageRequest
 
 import java.io.File
 import java.io.IOException
@@ -169,7 +173,7 @@ open class EnhancedImageView : RelativeLayout {
             val uri = Uri.parse(path)
             if (uri.path!!.endsWith(".gif")) {
                 // gif直接走自有逻辑
-                downloadGiftByHttpUtils(baseImage)
+                downloadGiftByHttpUtils(baseImage as HttpImage)
             } else {
                 //其余情况，先用fresco渐变加载，保证体验
                 loadHttpByFresco(baseImage)
@@ -212,7 +216,7 @@ open class EnhancedImageView : RelativeLayout {
             val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             addView(mGifImageView, 0, lp)
             mGifImageView!!.setOnLongClickListener(this.mLongClickListener)
-            mGifImageView!!.setOnClickListener{
+            mGifImageView!!.setOnClickListener {
                 // 直接设置mClickListener 也没生效 不知道为啥
                 this.mClickListener?.onClick(it)
             }
@@ -307,7 +311,7 @@ open class EnhancedImageView : RelativeLayout {
                     val b2 = wh[1] != 0 && wh[1] > U.getDisplayUtils().screenHeight * 1.5
                     if (b1 || b2) {
                         loadBySubSampleView(file.absolutePath)
-                    }else{
+                    } else {
                         MyLog.d(TAG, "no need SubSampleView")
                     }
                 }
@@ -357,61 +361,81 @@ open class EnhancedImageView : RelativeLayout {
         mSubsamplingScaleImageView!!.setImage(ImageSource.uri(localFilePath))
     }
 
-    val gifDir = File(U.getAppInfoUtils().getSubDirFile("fresco"), "gif")
-
-    private fun getGifSaveFile(url: String): File {
-        /**
-         * 保证
-         * http://song-static.inframe.mobi/posts/1604228/0490bcb1370da5a0.gif 与
-         * http://song-static.inframe.mobi/posts/1604228/0490bcb1370da5a0.gif?xxxx
-         * 的key相同
-         */
-        var fileName = U.getMD5Utils().MD5_16(U.getFileUtils().getPrefixFromUrlWithoutExt(url)) + ".gif"
-        if (!gifDir.exists()) {
-            gifDir.mkdirs()
-        }
-        return File(gifDir, fileName)
-    }
+//    private fun getGifSaveFile(baseImage: BaseImage): File {
+//        /**
+//         * 保证
+//         * http://song-static.inframe.mobi/posts/1604228/0490bcb1370da5a0.gif 与
+//         * http://song-static.inframe.mobi/posts/1604228/0490bcb1370da5a0.gif?xxxx
+//         * 的key相同
+//         * 存在fresco 加载 gif 时相同的目录
+//         */
+//        //先试试原图是否加载了
+//        val request = ImageRequest.fromUri(baseImage.uri)
+//        val cacheKey = MyCacheKeyFactory.getEncodedCacheKey(request, null)
+//        val resource = ImagePipelineFactory.getInstance().mainFileCache.getResource(cacheKey)
+//        val cacheFile = (resource as FileBinaryResource).file
+//        MyLog.d(TAG, "getGifSaveFile baseImage = $baseImage cacheFile=${cacheFile.path}")
+//        return cacheFile
+//    }
 
     //下载gif
-    private fun downloadGiftByHttpUtils(baseImage: BaseImage) {
+    private fun downloadGiftByHttpUtils(baseImage: HttpImage) {
         MyLog.d(TAG, "downloadGiftByHttpUtils")
-        val url = baseImage.uri.toString()
-        val file = getGifSaveFile(url)
-        if (file.exists()) {
-            //已经有了，不需要下载
-            loadByGif(file.absolutePath, baseImage)
-            return
-        }
-        Observable.create(ObservableOnSubscribe<Any> { emitter ->
-            U.getHttpUtils().downloadFileSync(url, getGifSaveFile(url), true, object : HttpUtils.OnDownloadProgress {
-                override fun onDownloaded(downloaded: Long, totalLength: Long) {
-                    MyLog.d(TAG, "onDownloaded downloaded=$downloaded totalLength=$totalLength")
+        FrescoWorker.preLoadImg(baseImage, object : FrescoWorker.ImageLoadCallBack {
+            override fun loadSuccess(bitmap: Bitmap?) {
+                val file = FrescoWorker.getCacheFileFromFrescoDiskCache(baseImage.uri)
+                if (file != null) {
+                    loadByGif(file.path, baseImage)
+                } else {
+                    loadHttpByFresco(baseImage)
                 }
+            }
 
-                override fun onCompleted(localPath: String) {
-                    MyLog.d(TAG, "onCompleted localPath=$localPath")
-                    mUiHandler.post { loadByGif(localPath, baseImage) }
-                }
+            override fun onProgressUpdate(progress: Float) {
 
-                override fun onCanceled() {
-                    MyLog.d(TAG, "onCanceled")
-                    mUiHandler.post { loadHttpByFresco(baseImage) }
-                }
+            }
 
-                override fun onFailed() {
-                    MyLog.d(TAG, "onFailed")
-                    mUiHandler.post { loadHttpByFresco(baseImage) }
-                }
-            })
-            emitter.onComplete()
-        }).subscribeOn(Schedulers.io())
-                .subscribe()
+            override fun loadFail() {
+                addLog("download Gif failed,turn fresco load gif")
+                loadHttpByFresco(baseImage)
+            }
+
+        }, false)
+//        val file = getGifSaveFile(baseImage)
+//        if (file.exists()) {
+//            //已经有了，不需要下载
+//            loadByGif(file.absolutePath, baseImage)
+//            return
+//        }
+//        Observable.create(ObservableOnSubscribe<Any> { emitter ->
+//            U.getHttpUtils().downloadFileSync(baseImage.uri.toString(), getGifSaveFile(baseImage), true, object : HttpUtils.OnDownloadProgress {
+//                override fun onDownloaded(downloaded: Long, totalLength: Long) {
+//                    MyLog.d(TAG, "onDownloaded downloaded=$downloaded totalLength=$totalLength")
+//                }
+//
+//                override fun onCompleted(localPath: String) {
+//                    MyLog.d(TAG, "onCompleted localPath=$localPath")
+//                    mUiHandler.post { loadByGif(localPath, baseImage) }
+//                }
+//
+//                override fun onCanceled() {
+//                    MyLog.d(TAG, "onCanceled")
+//                    mUiHandler.post { loadHttpByFresco(baseImage) }
+//                }
+//
+//                override fun onFailed() {
+//                    MyLog.d(TAG, "onFailed")
+//                    mUiHandler.post { loadHttpByFresco(baseImage) }
+//                }
+//            })
+//            emitter.onComplete()
+//        }).subscribeOn(Schedulers.io())
+//                .subscribe()
 
     }
 
     private fun loadByGif(localFilePath: String, baseImage: BaseImage?) {
-        MyLog.d(TAG, "loadByGif localFile=$localFilePath")
+        addLog("loadByGif localFile=$localFilePath")
         // 如果是 gif ,直接用android-gif-drawable 加载,不废话了
         showGifViewIfNeed()
         mGifFromFile?.recycle()

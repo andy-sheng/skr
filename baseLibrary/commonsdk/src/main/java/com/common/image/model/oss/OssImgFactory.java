@@ -70,15 +70,22 @@ public class OssImgFactory {
      * @return
      */
     public static String addOssParams(String url, IOssParam... ossProcessors) {
-        if(TextUtils.isEmpty(url)){
+        if (TextUtils.isEmpty(url)) {
             return url;
         }
-        
+
         Uri uri = Uri.parse(url);
         if (uri != null) {
             StringBuilder paramsSb = new StringBuilder();
+            boolean vilid = false;
             for (IOssParam oss : ossProcessors) {
-                paramsSb.append(oss.getOpDesc());
+                if (oss != null) {
+                    vilid = true;
+                    paramsSb.append(oss.getOpDesc());
+                }
+            }
+            if(!vilid){
+                return url;
             }
 //            String origin = uri.getQueryParameter("x-oss-process");
 //            if (!TextUtils.isEmpty(origin)) {
@@ -93,12 +100,12 @@ public class OssImgFactory {
             } else {
                 String f = "x-oss-process=image";
                 int index = url.indexOf(f);
-                if(index>=0){
+                if (index >= 0) {
                     // 以及有图片处理相关了
-                    String p1 = url.substring(0,index+f.length());
-                    String p2 = url.substring(index+f.length(),url.length());
-                    url = p1+paramsSb.toString()+p2;
-                }else{
+                    String p1 = url.substring(0, index + f.length());
+                    String p2 = url.substring(index + f.length(), url.length());
+                    url = p1 + paramsSb.toString() + p2;
+                } else {
 //                    url = url + "&" + paramsSb.toString();
                 }
             }

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.common.image.fresco.cache.MLCacheKeyFactory;
+import com.common.image.fresco.cache.MyCacheKeyFactory;
 import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
 import com.common.log.MyLog;
@@ -19,6 +19,7 @@ import com.facebook.cache.common.CacheKey;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.executors.UiThreadImmediateExecutorService;
 import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.BaseDataSubscriber;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
@@ -28,6 +29,7 @@ import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ImageDecodeOptions;
+import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
@@ -84,7 +86,7 @@ public class FrescoWorker {
 
     private static ImageRequestBuilder getImageRequest(BaseImage baseImage) {
         Uri uri = baseImage.getUri();
-        MyLog.d(TAG,"uri="+uri);
+        MyLog.d(TAG, "uri=" + uri);
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
         /**
          * resize时的 宽与高
@@ -322,7 +324,7 @@ public class FrescoWorker {
                 .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH)
                 .build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        if (null != callback) {
+        if (isToMemory) {
             DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, U.app());
             dataSource.subscribe(new BaseBitmapDataSubscriber() {
                 @Override
@@ -365,13 +367,41 @@ public class FrescoWorker {
                     MyLog.w(TAG, "onFailureImpl throwable=" + t.toString());
                 }
             }, UiThreadImmediateExecutorService.getInstance());
-        }
-        if (isToMemory) {
-            imagePipeline.prefetchToBitmapCache(imageRequest, null);
         } else {
-            imagePipeline.prefetchToDiskCache(imageRequest, null);
-        }
+            DataSource<Void> dataSource = imagePipeline.prefetchToDiskCache(imageRequest, null, Priority.HIGH);
+            dataSource.subscribe(new BaseDataSubscriber<Void>() {
+                @Override
+                protected void onNewResultImpl(DataSource<Void> dataSource) {
+                    if (callback != null) {
+                        callback.loadSuccess(null);
+                    }
+                }
 
+                @Override
+                public void onProgressUpdate(DataSource<Void> dataSource) {
+                    super.onProgressUpdate(dataSource);
+                    if (dataSource != null && callback != null) {
+                        float progress = dataSource.getProgress();
+                        callback.onProgressUpdate(progress);
+                    }
+                }
+
+                @Override
+                protected void onFailureImpl(DataSource<Void> dataSource) {
+                    // No cleanup required here.
+                    if (callback != null) {
+                        callback.loadFail();
+                    }
+                    Throwable t = dataSource.getFailureCause();
+                    MyLog.w(TAG, "onFailureImpl throwable=" + t.toString());
+                }
+            }, UiThreadImmediateExecutorService.getInstance());
+        }
+//        if (isToMemory) {
+//            imagePipeline.prefetchToBitmapCache(imageRequest, null);
+//        } else {
+//            imagePipeline.prefetchToDiskCache(imageRequest, null);
+//        }
     }
 
 
@@ -387,7 +417,7 @@ public class FrescoWorker {
         ImageRequest request = ImageRequest.fromUri(uri);
         if (null != request) {
             try {
-                CacheKey cacheKey = MLCacheKeyFactory.getInstance().getEncodedCacheKey(request, null);
+                CacheKey cacheKey = MyCacheKeyFactory.INSTANCE.getEncodedCacheKey(request, null);
                 if (ImagePipelineFactory.getInstance().getMainFileCache().hasKey(cacheKey)) {
                     BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                     cacheFile = ((FileBinaryResource) resource).getFile();

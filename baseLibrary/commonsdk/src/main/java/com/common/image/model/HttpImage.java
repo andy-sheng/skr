@@ -35,7 +35,7 @@ public class HttpImage extends BaseImage {
     protected void generateUri() {
         if (!TextUtils.isEmpty(mUrl)) {
             mUri = Uri.parse(mUrl);
-            if (mLowImageUri == null) {
+            if (mLowImageUri == null && !mUri.getPath().endsWith(".gif")) {
                 if (mLowImageSize != null) {
                     String lowUrl = OssImgFactory.addOssParams(originUrl, OssImgFactory.newResizeBuilder()
                             .setW(mLowImageSize.getW())
@@ -98,12 +98,14 @@ public class HttpImage extends BaseImage {
 
     public void addOssProcessors(IOssParam... ossProcessors) {
         if (ossProcessors != null) {
-            for (IOssParam ossParam : ossProcessors) {
+            for (int i=ossProcessors.length-1;i>=0;i--){
+                IOssParam ossParam = ossProcessors[i];
                 if (ossParam instanceof OssImgResize) {
                     if(mUrl.endsWith(".gif")){
                         /**
                          * gif 图不需要
                          */
+                        ossProcessors[i] = null;
                         continue;
                     }else{
                         OssImgResize ossImgResize = (OssImgResize) ossParam;
