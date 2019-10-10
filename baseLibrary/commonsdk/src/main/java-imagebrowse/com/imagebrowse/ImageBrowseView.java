@@ -71,17 +71,17 @@ public class ImageBrowseView extends EnhancedImageView {
         ((PhotoDraweeView) getMPhotoDraweeView()).load(baseImage);
     }
 
-    public float getScale() {
+    public boolean hasLargerScale() {
         PhotoDraweeView mPhotoDraweeView = ((PhotoDraweeView) getMPhotoDraweeView());
         if (mPhotoDraweeView != null && mPhotoDraweeView.getVisibility() == View.VISIBLE) {
-            return mPhotoDraweeView.getScale();
+            return mPhotoDraweeView.getScale()>1;
         }
 
         SubsamplingScaleImageView mSubsamplingScaleImageView = getMSubsamplingScaleImageView();
         if (mSubsamplingScaleImageView != null && mSubsamplingScaleImageView.getVisibility() == View.VISIBLE) {
-            return mSubsamplingScaleImageView.getScale();
+            return mSubsamplingScaleImageView.getScale()>mSubsamplingScaleImageView.getMinScale();
         }
 
-        return 1;
+        return false;
     }
 }

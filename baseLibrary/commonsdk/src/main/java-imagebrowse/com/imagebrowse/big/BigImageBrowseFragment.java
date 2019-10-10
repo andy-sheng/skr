@@ -209,7 +209,7 @@ public class BigImageBrowseFragment extends BaseFragment {
             @Override
             public boolean onHostAllowIntercept() {
                 ImageBrowseView currView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
-                if (currView != null && currView.getScale() > 1) {
+                if (currView != null && currView.hasLargerScale()) {
                     return false;
                 }
                 return true;
