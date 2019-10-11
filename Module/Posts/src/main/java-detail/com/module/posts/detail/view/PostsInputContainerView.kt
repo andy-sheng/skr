@@ -22,6 +22,7 @@ import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.NoLeakEditText
+import com.common.view.recyclerview.DiffAdapter
 import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
@@ -142,16 +143,9 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
 
         postsReplayImgAdapter?.delClickListener = { m, pos ->
             // 不能直接用pos  notifyItemRemoved 会导致holder 里的 pos 不变
-            var index = 0
-            for (v in postsReplayImgAdapter.dataList) {
-                if (m!! == v) {
-                    break
-                }
-                index++
-            }
-            //model.imgUploadMap.remove(m?.path)
-            postsReplayImgAdapter.dataList.removeAt(index)
-            postsReplayImgAdapter.notifyItemRemoved(index)
+            postsReplayImgAdapter.dataList.removeAt(pos)
+            postsReplayImgAdapter.notifyItemRemoved(pos)
+            postsReplayImgAdapter.notifyItemRangeChanged(0,postsReplayImgAdapter.dataList.size, DiffAdapter.REFRESH_POS)
             if (postsReplayImgAdapter.dataList.isEmpty()) {
                 imgRecyclerView.visibility = View.GONE
             }

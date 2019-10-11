@@ -34,6 +34,7 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.common.view.ex.NoLeakEditText
+import com.common.view.recyclerview.DiffAdapter
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.event.FeedSongMakeSucessEvent
 import com.component.busilib.event.PostsPublishSucessEvent
@@ -146,16 +147,11 @@ class PostsPublishActivity : BaseActivity() {
         postsPublishImgAdapter = PostsPublishImgAdapter()
         imageRecyclerView.adapter = postsPublishImgAdapter
         postsPublishImgAdapter.delClickListener = { m, pos ->
-            var index = 0
-            for (v in postsPublishImgAdapter.dataList) {
-                if (m!! == v) {
-                    break
-                }
-                index++
-            }
             model.imgUploadMap.remove(m?.path)
-            postsPublishImgAdapter.dataList.removeAt(index)
-            postsPublishImgAdapter.notifyItemRemoved(index)
+            postsPublishImgAdapter.dataList.removeAt(pos)
+            postsPublishImgAdapter.notifyItemRemoved(pos)
+
+            postsPublishImgAdapter.notifyItemRangeChanged(0, postsPublishImgAdapter.dataList.size, DiffAdapter.REFRESH_POS)
             if (postsPublishImgAdapter.dataList.isEmpty()) {
                 imageRecyclerView.visibility = View.GONE
             }

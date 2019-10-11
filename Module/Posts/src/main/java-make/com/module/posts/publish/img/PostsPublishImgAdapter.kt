@@ -9,10 +9,12 @@ import com.common.image.fresco.BaseImageView
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.utils.dp
+import com.common.view.recyclerview.DiffAdapter
 import com.module.posts.R
 import com.respicker.model.ImageItem
 
 class PostsPublishImgAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     val dataList = ArrayList<ImageItem>()
 
     var addClickListener: (() -> Unit)? = null
@@ -33,13 +35,35 @@ class PostsPublishImgAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ImageViewHolder) {
-            holder.bindData(dataList[position], position)
-        } else if (holder is AddViewHolder) {
 
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            if (holder is ImageViewHolder) {
+                holder.bindData(dataList[position], position)
+            } else if (holder is AddViewHolder) {
+
+            }
+        } else {
+            // 局部刷新
+            payloads.forEach {
+                if (it is Int) {
+                    refreshHolder(holder, position, it)
+                }
+            }
         }
     }
 
+    private fun refreshHolder(holder: RecyclerView.ViewHolder, position: Int, type: Int) {
+        if (type == DiffAdapter.REFRESH_POS) {
+            if (holder is ImageViewHolder) {
+                holder.refreshPos(dataList[position], position)
+            } else if (holder is AddViewHolder) {
+
+            }
+        }
+    }
 
     override fun getItemCount(): Int {
         if (dataList.size < 9) {
@@ -70,17 +94,21 @@ class PostsPublishImgAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             delIv.setOnClickListener {
                 delClickListener?.invoke(model, pos)
             }
-            imgIv.setOnClickListener{
-                imgClickListener?.invoke(model,pos)
+            imgIv.setOnClickListener {
+                imgClickListener?.invoke(model, pos)
             }
         }
 
         fun bindData(model: ImageItem, pos: Int) {
-            this.model = model
-            this.pos = pos
+            refreshPos(model, pos)
             FrescoWorker.loadImage(imgIv, ImageFactory.newPathImage(this.model?.path)
                     .setCornerRadius(8.dp().toFloat())
                     .build())
+        }
+
+        fun refreshPos(imageItem: ImageItem, position: Int) {
+            this.model = imageItem
+            this.pos = position
         }
 
     }

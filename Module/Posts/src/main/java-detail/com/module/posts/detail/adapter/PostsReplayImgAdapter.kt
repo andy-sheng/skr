@@ -15,10 +15,10 @@ import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.recyclerview.DiffAdapter
 import com.module.posts.R
+import com.module.posts.publish.img.PostsPublishImgAdapter
 import com.respicker.model.ImageItem
 
 class PostsReplayImgAdapter : DiffAdapter<ImageItem, RecyclerView.ViewHolder>() {
-
 
     var delClickListener: ((model: ImageItem?, pos: Int) -> Unit)? = null
     var imgClickListener: ((model: ImageItem?, pos: Int) -> Unit)? = null
@@ -33,7 +33,27 @@ class PostsReplayImgAdapter : DiffAdapter<ImageItem, RecyclerView.ViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PostsReplayImgHolder).bindData(position, dataList[position])
+
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            (holder as PostsReplayImgHolder).bindData(position, dataList[position])
+        } else {
+            payloads.forEach {
+                refreshHolder(holder, position, it as Int)
+            }
+        }
+    }
+
+    private fun refreshHolder(holder: RecyclerView.ViewHolder, position: Int, type: Int) {
+        if (type == REFRESH_POS) {
+            if (holder is PostsReplayImgHolder) {
+                holder.refreshPos(dataList[position], position)
+            } else if (holder is PostsPublishImgAdapter.AddViewHolder) {
+
+            }
+        }
     }
 
     inner class PostsReplayImgHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,16 +66,15 @@ class PostsReplayImgAdapter : DiffAdapter<ImageItem, RecyclerView.ViewHolder>() 
             imgIv = itemView.findViewById(R.id.img_iv)
             deleteIv = itemView.findViewById(R.id.delete_iv)
             imgIv.setDebounceViewClickListener {
-                imgClickListener?.invoke(model,pos)
+                imgClickListener?.invoke(model, pos)
             }
             deleteIv.setDebounceViewClickListener {
-                delClickListener?.invoke(model,pos)
+                delClickListener?.invoke(model, pos)
             }
         }
 
         fun bindData(pos: Int, model: ImageItem) {
-            this.model = model
-            this.pos = pos
+            refreshPos(model, pos)
             FrescoWorker.loadImage(imgIv,
                     ImageFactory.newPathImage(model.path)
                             .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
@@ -63,6 +82,11 @@ class PostsReplayImgAdapter : DiffAdapter<ImageItem, RecyclerView.ViewHolder>() 
                             .setLoadingDrawable(U.app().resources.getDrawable(com.component.busilib.R.drawable.loading_place_holder_img))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
                             .setBorderColor(Color.parseColor("#3B4E79")).build())
+        }
+
+        fun refreshPos(imageItem: ImageItem?, position: Int) {
+            this.model = imageItem
+            this.pos = position
         }
     }
 }
