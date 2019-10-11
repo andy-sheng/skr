@@ -94,9 +94,13 @@ class FriendMoreRoomFragment : BaseFragment() {
         })
 
         mRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : RecyclerOnItemClickListener<RecommendModel> {
 
-            override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
+        mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : FriendRoomVerticalAdapter.FriendRoomClickListener{
+            override fun onClickFriendVoice(position: Int, model: RecommendModel?) {
+               // 播放声音
+            }
+
+            override fun onClickFriendRoom(position: Int, model: RecommendModel?) {
                 if (model != null) {
                     StatisticsAdapter.recordCountEvent("moreroom", "room_insideclick", null)
                     val friendRoomModel = model as RecommendModel?
@@ -120,6 +124,7 @@ class FriendMoreRoomFragment : BaseFragment() {
                     }
                 }
             }
+
         })
         mRecyclerView.adapter = mFriendRoomVeritAdapter
 

@@ -13,6 +13,8 @@ import com.alibaba.fastjson.JSON
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
@@ -47,8 +49,11 @@ class FriendRoomGameView : RelativeLayout {
         const val TAG = "FriendRoomGameView"
     }
 
+    val playerTag = TAG
+    private val playCallback: SinglePlayerCallbackAdapter
+
     private var mListener: RecyclerView.OnScrollListener? = null
-    private var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter
+    private var mFriendRoomVeritAdapter: FriendRoomVerticalAdapter? = null
     private var mDisposable: Disposable? = null
     private var mCheckDisposable: Disposable? = null
     private var mSkrAudioPermission: SkrAudioPermission
@@ -94,29 +99,43 @@ class FriendRoomGameView : RelativeLayout {
         })
 
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(RecyclerOnItemClickListener<RecommendModel> { view, position, model ->
-            if (model != null) {
-                StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
-                val friendRoomModel = model as RecommendModel?
+        mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : FriendRoomVerticalAdapter.FriendRoomClickListener {
+            override fun onClickFriendVoice(position: Int, model: RecommendModel?) {
+                if (mFriendRoomVeritAdapter?.mCurrPlayModel != null && mFriendRoomVeritAdapter?.mCurrPlayModel == model) {
+                    SinglePlayer.stop(playerTag)
+                } else {
+                    model?.voiceInfo?.voiceURL?.let {
+                        SinglePlayer.startPlay(playerTag, it)
+                    }
+                }
+                mFriendRoomVeritAdapter?.startOrPauseAudio(position, model)
+            }
 
-                if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
-                    if (friendRoomModel?.category == RecommendModel.TYPE_FOLLOW || friendRoomModel?.category == RecommendModel.TYPE_FRIEND) {
-                        // 好友或者关注
-                        checkUserRoom(friendRoomModel?.userInfo.userId, friendRoomModel, position)
+            override fun onClickFriendRoom(position: Int, model: RecommendModel?) {
+                if (model != null) {
+                    StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
+                    val friendRoomModel = model as RecommendModel?
+
+                    if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
+                        if (friendRoomModel?.category == RecommendModel.TYPE_FOLLOW || friendRoomModel?.category == RecommendModel.TYPE_FRIEND) {
+                            // 好友或者关注
+                            checkUserRoom(friendRoomModel?.userInfo.userId, friendRoomModel, position)
+                        } else {
+                            tryJoinRoom(friendRoomModel.roomInfo)
+                        }
                     } else {
-                        tryJoinRoom(friendRoomModel.roomInfo)
+                        MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
                     }
                 } else {
-                    MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
-                }
-            } else {
-                if (position == 0) {
-                    StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
-                    showShareDialog()
-                } else {
-                    MyLog.w(TAG, "onItemClicked view=$view position=$position model=$model")
+                    if (position == 0) {
+                        StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
+                        showShareDialog()
+                    } else {
+                        MyLog.w(TAG, "onClickFriendRoom position=$position model=$model")
+                    }
                 }
             }
+
         })
         recycler_view.adapter = mFriendRoomVeritAdapter
 
@@ -135,6 +154,14 @@ class FriendRoomGameView : RelativeLayout {
             }
         }
         recycler_view.addOnScrollListener(mListener)
+
+        playCallback = object : SinglePlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                mFriendRoomVeritAdapter?.stopPlay()
+            }
+        }
+        SinglePlayer.addCallback(playerTag, playCallback)
 
         val mLoadSir = LoadSir.Builder()
                 .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#000000"))
@@ -180,13 +207,21 @@ class FriendRoomGameView : RelativeLayout {
                 .interval((mRecommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        loadRecommendData(0)
+                        // 正在播放，不自动刷新
+                        if (mFriendRoomVeritAdapter?.mCurrPlayModel == null) {
+                            loadRecommendData(0)
+                        }
                     }
                 })
     }
 
     fun stopTimer() {
         mRecommendTimer?.dispose()
+    }
+
+    fun stopPlay() {
+        SinglePlayer.stop(playerTag)
+        mFriendRoomVeritAdapter?.stopPlay()
     }
 
     fun tryJoinRoom(roomInfo: SimpleRoomInfo) {
@@ -230,12 +265,12 @@ class FriendRoomGameView : RelativeLayout {
                             StatisticsAdapter.recordCountEvent("grab", "1.1roomclick_diff", null)
                             // 更新下本地的数据
                             friendRoomModel.roomInfo = roomInfo
-                            mFriendRoomVeritAdapter.update(friendRoomModel, position)
+                            mFriendRoomVeritAdapter?.update(friendRoomModel, position)
                         }
                         tryJoinRoom(roomInfo)
                     } else {
                         // 不在房间里面了
-                        mFriendRoomVeritAdapter.remove(position)
+                        mFriendRoomVeritAdapter?.remove(position)
                         U.getToastUtil().showShort("好友已离开房间")
                     }
                 } else {
@@ -292,19 +327,22 @@ class FriendRoomGameView : RelativeLayout {
         refreshLayout.finishLoadMore()
 
         if (clear) {
-            mFriendRoomVeritAdapter.dataList.clear()
+            mFriendRoomVeritAdapter?.dataList?.clear()
+            if (!list.isNullOrEmpty()) {
+                mFriendRoomVeritAdapter?.dataList?.addAll(list)
+            }
+            mFriendRoomVeritAdapter?.notifyDataSetChanged()
+        } else {
+            if (!list.isNullOrEmpty()) {
+                mFriendRoomVeritAdapter?.dataList?.addAll(list)
+                mFriendRoomVeritAdapter?.notifyDataSetChanged()
+            }
         }
 
-        if (list != null && list!!.isNotEmpty()) {
+        if (!mFriendRoomVeritAdapter?.dataList.isNullOrEmpty()) {
             mLoadService.showSuccess()
-            mFriendRoomVeritAdapter.dataList.addAll(list)
-            mFriendRoomVeritAdapter.notifyDataSetChanged()
         } else {
-            if (mFriendRoomVeritAdapter.dataList != null && mFriendRoomVeritAdapter.dataList.size > 0) {
-
-            } else {
-                mLoadService.showCallback(EmptyCallback::class.java)
-            }
+            mLoadService.showCallback(EmptyCallback::class.java)
         }
     }
 
@@ -314,6 +352,8 @@ class FriendRoomGameView : RelativeLayout {
     }
 
     fun destory() {
+        SinglePlayer.removeCallback(playerTag)
+        SinglePlayer.reset(playerTag)
         mRecommendTimer?.dispose()
         mDisposable?.dispose()
         mCheckDisposable?.dispose()

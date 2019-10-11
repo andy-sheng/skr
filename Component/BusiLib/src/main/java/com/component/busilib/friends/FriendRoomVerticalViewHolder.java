@@ -19,8 +19,8 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.busilib.view.VoiceChartView;
 import com.component.level.utils.LevelConfigUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -29,7 +29,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
     public final String TAG = "FriendRoomVerticalViewHolder";
 
-    RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
+    FriendRoomVerticalAdapter.FriendRoomClickListener mOnItemClickListener;
 
     RecommendModel mFriendRoomModel;
     int position;
@@ -48,6 +48,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     ImageView mPlayBg;
     ImageView mPlayIv;
     TextView mVoiceName;
+    VoiceChartView mVoiceChartView;
 
     public FriendRoomVerticalViewHolder(View itemView) {
         super(itemView);
@@ -66,18 +67,28 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         mPlayBg = itemView.findViewById(R.id.play_bg);
         mPlayIv = itemView.findViewById(R.id.play_iv);
         mVoiceName = itemView.findViewById(R.id.voice_name);
+        mVoiceChartView = itemView.findViewById(R.id.voice_chart_view);
 
         itemView.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClicked(view, position, mFriendRoomModel);
+                    mOnItemClickListener.onClickFriendRoom(position, mFriendRoomModel);
+                }
+            }
+        });
+
+        mVoiceArea.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onClickFriendVoice(position, mFriendRoomModel);
                 }
             }
         });
     }
 
-    public void setOnItemClickListener(RecyclerOnItemClickListener<RecommendModel> onItemClickListener) {
+    public void setOnItemClickListener(FriendRoomVerticalAdapter.FriendRoomClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -113,6 +124,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
         if (friendRoomModel.getVoiceInfo() != null) {
             mVoiceArea.setVisibility(View.VISIBLE);
+            mVoiceChartView.reset();
             if (colorIndex == 1) {
                 mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable2);
             } else if (colorIndex == 2) {
@@ -175,6 +187,19 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }
+    }
 
+    public void startPlay() {
+        mPlayIv.setSelected(true);
+        mVoiceName.setVisibility(View.INVISIBLE);
+        mVoiceChartView.setVisibility(View.VISIBLE);
+        mVoiceChartView.start();
+    }
+
+    public void stopPlay() {
+        mPlayIv.setSelected(false);
+        mVoiceName.setVisibility(View.VISIBLE);
+        mVoiceChartView.setVisibility(View.GONE);
+        mVoiceChartView.stop();
     }
 }

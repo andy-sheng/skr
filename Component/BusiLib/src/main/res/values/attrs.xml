@@ -5,9 +5,9 @@
         <!--字体的高度-->
         <attr name="scale" format="float" />
         <!--字体的颜色-->
-        <attr name="text_color" format="color"/>
+        <attr name="text_color" format="color" />
         <!--字体是否有阴影-->
-        <attr name="has_shadow" format="boolean"/>
+        <attr name="has_shadow" format="boolean" />
     </declare-styleable>
 
     <!--SkrProgressView的属性-->
@@ -15,21 +15,21 @@
         <!--进度条图标-->
         <attr name="progressDrawable" format="reference" />
         <!--进度条文字-->
-        <attr name="progressText" format="string"/>
+        <attr name="progressText" format="string" />
         <!--进度条是否拦截点击-->
-        <attr name="clickCanThrough" format="boolean"/>
+        <attr name="clickCanThrough" format="boolean" />
         <!--进度条有动画-->
-        <attr name="hasAnimation" format="boolean"/>
+        <attr name="hasAnimation" format="boolean" />
     </declare-styleable>
 
     <!-- AvatarView 的属性(头像都是圆的：丁一)-->
     <declare-styleable name="avatarView">
         <!--头像是否圆形-->
-        <attr name="isCircle" format="boolean"/>
+        <attr name="isCircle" format="boolean" />
         <!--头像边框颜色-->
-        <attr name="borderColor" format="color"/>
+        <attr name="borderColor" format="color" />
         <!--头像边框宽度-->
-        <attr name="borderWidth" format="dimension"/>
+        <attr name="borderWidth" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="speaking">
@@ -38,5 +38,15 @@
             <enum name="msg_audio" value="1" />
             <enum name="posts_audio" value="2" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="VoiceChartView">
+        <attr name="chartCount" format="integer" />
+        <attr name="chartShape" format="reference" />
+        <attr name="chartHeight" format="dimension" />
+        <attr name="chartWidth" format="dimension" />
+        <attr name="chartDuration" format="integer" />
+        <attr name="chartMarginLeft" format="dimension" />
+        <attr name="chartBackColor" format="color" />
     </declare-styleable>
 </resources>

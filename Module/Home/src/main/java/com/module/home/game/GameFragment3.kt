@@ -245,6 +245,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 mFriendRoomGameView.initData(false)
             }
             1 -> {
+                mFriendRoomGameView.stopPlay()
                 mFriendRoomGameView.stopTimer()
                 mQuickGameView.initData(false)
             }
@@ -263,7 +264,8 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
     override fun onFragmentInvisible(from: Int) {
         super.onFragmentInvisible(from)
-//        mFriendRoomGameView.stopTimer()
+        mFriendRoomGameView.stopPlay()
+        mFriendRoomGameView.stopTimer()
         mQuickGameView.stopTimer()
     }
 
