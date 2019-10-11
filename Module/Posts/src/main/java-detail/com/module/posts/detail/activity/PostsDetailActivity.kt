@@ -192,20 +192,9 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 return mPlayingUrl
             }
 
-            override fun getCurPlayingPosition(): Int {
-                return mPlayingPosition
-            }
-
-            override fun setCurPlayingUrl(url: String) {
-                mPlayingUrl = url
-            }
 
             override fun setCurPlayingPosition(pos: Int) {
                 mPlayingPosition = pos
-            }
-
-            override fun playAnotherSong() {
-                stopPlayingState()
             }
 
             override fun onClickPostsVote(position: Int, model: PostsWatchModel?, index: Int) {

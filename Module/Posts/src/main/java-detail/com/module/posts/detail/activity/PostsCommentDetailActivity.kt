@@ -291,14 +291,6 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                 return mPlayingUrl
             }
 
-            override fun getCurPlayingPosition(): Int {
-                return mPlayingPosition
-            }
-
-            override fun setCurPlayingUrl(url: String) {
-                mPlayingUrl = url
-            }
-
             override fun setCurPlayingPosition(pos: Int) {
                 mPlayingPosition = pos
             }
@@ -340,10 +332,6 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                     }
                 }
                 postsMoreDialogView?.showByDialog(true)
-            }
-
-            override fun playAnotherSong() {
-                stopPlayingState()
             }
 
             override fun goBigImageBrowse(index: Int, pictures: List<String>) {
