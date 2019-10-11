@@ -132,11 +132,14 @@ public class BigImageBrowseFragment extends BaseFragment {
                                     }
                                     // 最后通知图库更新
                                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                    Uri uri2 = Uri.fromFile(file);
+                                    Uri uri2 = Uri.fromFile(dst);
                                     intent.setData(uri2);
                                     getContext().sendBroadcast(intent);
+                                    /**
+                                     * 会在save 与 手机的pictures 相册目录各存一份
+                                     */
                                     mMenuDialog.dissmiss();
-                                    U.getToastUtil().showLong("文件保存成功，路径为 " + dst.getPath());
+                                    U.getToastUtil().showLong("已保存至相册，路径为 " + dst.getPath());
                                 } else {
                                     U.getToastUtil().showShort("等待文件加载成功才可保存");
                                 }
