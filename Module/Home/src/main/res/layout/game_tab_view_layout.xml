@@ -15,7 +15,7 @@
         android:singleLine="true"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
-        app:bl_selected_textColor="@color/white"
-        app:bl_unSelected_textColor="@color/white" />
+        app:bl_selected_textColor="@color/black"
+        app:bl_unSelected_textColor="@color/black_trans_60" />
 
 </RelativeLayout>

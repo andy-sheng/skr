@@ -2,6 +2,7 @@ package com.module.home.game.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.TextView
 
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
@@ -16,10 +17,10 @@ class FuncationAreaViewHolder(itemView: View,
 
     init {
 
-        val mTaskIv: ExImageView = itemView.findViewById(R.id.task_iv)
+        val mTaskIv: TextView = itemView.findViewById(R.id.task_iv)
         mTaskRedIv = itemView.findViewById(R.id.task_red_iv)
-        val mRankIv: ExImageView = itemView.findViewById(R.id.rank_iv)
-        val mPracticeIv: ExImageView = itemView.findViewById(R.id.practice_iv)
+        val mRankIv: TextView = itemView.findViewById(R.id.rank_iv)
+        val mPracticeIv: TextView = itemView.findViewById(R.id.practice_iv)
 
         mTaskIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {

@@ -1,6 +1,7 @@
 package com.module.home.game.view
 
 import android.content.Context
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -92,31 +93,28 @@ class FriendRoomGameView : RelativeLayout {
             }
         })
 
-        recycler_view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(object : RecyclerOnItemClickListener<RecommendModel> {
+        recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        mFriendRoomVeritAdapter = FriendRoomVerticalAdapter(RecyclerOnItemClickListener<RecommendModel> { view, position, model ->
+            if (model != null) {
+                StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
+                val friendRoomModel = model as RecommendModel?
 
-            override fun onItemClicked(view: View, position: Int, model: RecommendModel?) {
-                if (model != null) {
-                    StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
-                    val friendRoomModel = model as RecommendModel?
-
-                    if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
-                        if (friendRoomModel?.category == RecommendModel.TYPE_FOLLOW || friendRoomModel?.category == RecommendModel.TYPE_FRIEND) {
-                            // 好友或者关注
-                            checkUserRoom(friendRoomModel?.userInfo.userId, friendRoomModel, position)
-                        } else {
-                            tryJoinRoom(friendRoomModel.roomInfo)
-                        }
+                if (friendRoomModel != null && friendRoomModel.roomInfo != null) {
+                    if (friendRoomModel?.category == RecommendModel.TYPE_FOLLOW || friendRoomModel?.category == RecommendModel.TYPE_FRIEND) {
+                        // 好友或者关注
+                        checkUserRoom(friendRoomModel?.userInfo.userId, friendRoomModel, position)
                     } else {
-                        MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
+                        tryJoinRoom(friendRoomModel.roomInfo)
                     }
                 } else {
-                    if (position == 0) {
-                        StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
-                        showShareDialog()
-                    } else {
-                        MyLog.w(TAG, "onItemClicked view=$view position=$position model=$model")
-                    }
+                    MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
+                }
+            } else {
+                if (position == 0) {
+                    StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
+                    showShareDialog()
+                } else {
+                    MyLog.w(TAG, "onItemClicked view=$view position=$position model=$model")
                 }
             }
         })
@@ -139,7 +137,7 @@ class FriendRoomGameView : RelativeLayout {
         recycler_view.addOnScrollListener(mListener)
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#4cffffff"))
+                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#000000"))
                 .build()
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             initData(true)

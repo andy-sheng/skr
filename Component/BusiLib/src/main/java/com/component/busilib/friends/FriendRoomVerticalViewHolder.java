@@ -1,9 +1,13 @@
 package com.component.busilib.friends;
 
+
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
@@ -17,7 +21,7 @@ import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
-import com.component.busilib.view.AvatarView;
+import com.component.level.utils.LevelConfigUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -30,13 +34,20 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     RecommendModel mFriendRoomModel;
     int position;
 
-    ExConstraintLayout mBackground;
+    ConstraintLayout mBackground;
     SimpleDraweeView mRecommendTagSdv;
     SimpleDraweeView mMediaTagSdv;
-    AvatarView mAvatarIv;
+    SimpleDraweeView mAvatarIv;
+    ImageView mLevelBg;
+    TextView mLevelDesc;
     ExTextView mNameTv;
     ExTextView mRoomPlayerNumTv;
     ExTextView mRoomInfoTv;
+
+    ExConstraintLayout mVoiceArea;
+    ImageView mPlayBg;
+    ImageView mPlayIv;
+    TextView mVoiceName;
 
     public FriendRoomVerticalViewHolder(View itemView) {
         super(itemView);
@@ -45,9 +56,16 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         mRecommendTagSdv = itemView.findViewById(R.id.recommend_tag_sdv);
         mMediaTagSdv = itemView.findViewById(R.id.media_tag_sdv);
         mAvatarIv = itemView.findViewById(R.id.avatar_iv);
+        mLevelBg = itemView.findViewById(R.id.level_bg);
+        mLevelDesc = itemView.findViewById(R.id.level_desc);
         mNameTv = itemView.findViewById(R.id.name_tv);
         mRoomPlayerNumTv = itemView.findViewById(R.id.room_player_num_tv);
         mRoomInfoTv = itemView.findViewById(R.id.room_info_tv);
+
+        mVoiceArea = itemView.findViewById(R.id.voice_area);
+        mPlayBg = itemView.findViewById(R.id.play_bg);
+        mPlayIv = itemView.findViewById(R.id.play_iv);
+        mVoiceName = itemView.findViewById(R.id.voice_name);
 
         itemView.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -69,16 +87,45 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
         int colorIndex = position % 4;
         if (colorIndex == 1) {
-            mBackground.setBackground(FriendRoomVerticalAdapter.mDrawable1);
+            mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable2);
         } else if (colorIndex == 2) {
-            mBackground.setBackground(FriendRoomVerticalAdapter.mDrawable2);
+            mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable3);
         } else if (colorIndex == 3) {
-            mBackground.setBackground(FriendRoomVerticalAdapter.mDrawable3);
+            mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable4);
         } else {
-            mBackground.setBackground(FriendRoomVerticalAdapter.mDrawable4);
+            mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable1);
         }
-        
-        mAvatarIv.bindData(friendRoomModel.getUserInfo());
+
+        if (friendRoomModel.getUserInfo() != null) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
+                    .setCircle(true)
+                    .build());
+            if (friendRoomModel.getUserInfo().getRanking() != null && LevelConfigUtils.getAvatarLevelBg(friendRoomModel.getUserInfo().getRanking().getMainRanking()) != 0) {
+                mLevelBg.setVisibility(View.VISIBLE);
+                mLevelDesc.setVisibility(View.VISIBLE);
+                mLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getAvatarLevelBg(friendRoomModel.getUserInfo().getRanking().getMainRanking())));
+                mLevelDesc.setText(friendRoomModel.getUserInfo().getRanking().getRankingDesc());
+            } else {
+                mLevelBg.setVisibility(View.GONE);
+                mLevelDesc.setVisibility(View.GONE);
+            }
+        }
+
+        if (friendRoomModel.getVoiceInfo() != null) {
+            mVoiceArea.setVisibility(View.VISIBLE);
+            if (colorIndex == 1) {
+                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable2);
+            } else if (colorIndex == 2) {
+                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable3);
+            } else if (colorIndex == 3) {
+                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable4);
+            } else {
+                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable1);
+            }
+            mVoiceName.setText(friendRoomModel.getVoiceInfo().getSongName());
+        } else {
+            mVoiceArea.setVisibility(View.GONE);
+        }
 
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
             if (!TextUtils.isEmpty(mFriendRoomModel.getRoomInfo().getRoomTagURL())) {

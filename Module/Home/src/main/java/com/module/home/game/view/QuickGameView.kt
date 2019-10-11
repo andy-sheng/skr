@@ -282,7 +282,8 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     }
 
     override fun setBannerImage(slideShowModelList: List<SlideShowModel>?) {
-        if (slideShowModelList == null || slideShowModelList.size == 0) {
+        refreshLayout.finishRefresh()
+        if (slideShowModelList == null || slideShowModelList.isEmpty()) {
             MyLog.w(TAG, "initOperationArea 为null")
             mGameAdapter.updateBanner(null)
             return
@@ -308,6 +309,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 //    }
 
     override fun setGameType(list: MutableList<GrabSpecialModel>?) {
+        refreshLayout.finishRefresh()
         if (list != null && list.size > 0) {
             val iterator = list.iterator()
             while (iterator.hasNext()) {

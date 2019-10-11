@@ -4,7 +4,6 @@ package com.component.busilib.friends;
 import com.common.core.userinfo.model.UserInfoModel;
 
 import java.io.Serializable;
-import java.util.List;
 
 
 public class RecommendModel implements Serializable {
@@ -26,6 +25,7 @@ public class RecommendModel implements Serializable {
     private SpecialModel tagInfo;
     private UserInfoModel userInfo;
     private int category;
+    private VoiceInfoModel voiceInfo;
 
     public SimpleRoomInfo getRoomInfo() {
         return roomInfo;
@@ -60,6 +60,14 @@ public class RecommendModel implements Serializable {
         this.category = category;
     }
 
+    public VoiceInfoModel getVoiceInfo() {
+        return voiceInfo;
+    }
+
+    public void setVoiceInfo(VoiceInfoModel voiceInfo) {
+        this.voiceInfo = voiceInfo;
+    }
+
     @Override
     public String toString() {
         return "RecommendModel{" +
@@ -67,7 +75,7 @@ public class RecommendModel implements Serializable {
                 ", tagInfo=" + tagInfo +
                 ", userInfo=" + userInfo +
                 ", category=" + category +
+                ", voiceInfo=" + voiceInfo +
                 '}';
     }
-
 }

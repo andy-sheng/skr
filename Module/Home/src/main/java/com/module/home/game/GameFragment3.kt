@@ -13,13 +13,16 @@ import android.widget.ImageView
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
+import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
+import com.component.dialog.InviteFriendDialog
 import com.module.home.R
 import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.*
@@ -38,6 +41,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
+    lateinit var mInviteFriendTv: ExTextView
     lateinit var mTabPagerAdapter: PagerAdapter
     lateinit var mPresenter: GamePresenter3
 
@@ -48,6 +52,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 //    val mPkGameView: PKGameView by lazy { PKGameView(this) }
 
     private var alphaAnimation: AlphaAnimation? = null
+    private var mInviteFriendDialog: InviteFriendDialog? = null
 
     var mWaitingDialogPlus: DialogPlus? = null
 
@@ -56,20 +61,25 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mTitle = rootView.findViewById(R.id.title) as CommonTitleBar
-        mNavigationBgIv = rootView.findViewById<View>(R.id.navigation_bg_iv) as ImageView
-        mGameTab = rootView.findViewById<View>(R.id.game_tab) as SlidingTabLayout
-        mGameVp = rootView.findViewById<View>(R.id.game_vp) as NestViewPager
+        mTitle = rootView.findViewById(R.id.title)
+        mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
+        mGameTab = rootView.findViewById(R.id.game_tab)
+        mGameVp = rootView.findViewById(R.id.game_vp)
+        mInviteFriendTv = rootView.findViewById(R.id.invite_friend_tv)
 
-        mGameTab?.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
-        mGameTab?.setSelectedIndicatorColors(Color.WHITE)
-        mGameTab?.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
-        mGameTab?.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
-        mGameTab?.setTitleSize(14f)
-        mGameTab?.setSelectedTitleSize(24f)
-        mGameTab?.setIndicatorWidth(U.getDisplayUtils().dip2px(16f))
-        mGameTab?.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4f).toFloat())
-        mGameTab?.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2f).toFloat())
+        mInviteFriendTv.setAnimateDebounceViewClickListener {
+            showShareDialog()
+        }
+
+        mGameTab.setCustomTabView(R.layout.game_tab_view_layout, R.id.tab_tv)
+        mGameTab.setSelectedIndicatorColors(Color.BLACK)
+        mGameTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_NONE)
+        mGameTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NORMAL)
+        mGameTab.setTitleSize(14f)
+        mGameTab.setSelectedTitleSize(24f)
+        mGameTab.setIndicatorWidth(U.getDisplayUtils().dip2px(16f))
+        mGameTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4f).toFloat())
+        mGameTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2f).toFloat())
 
         mTabPagerAdapter = object : PagerAdapter() {
 
@@ -116,7 +126,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             }
         }
 
-        mGameTab?.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        mGameTab.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
@@ -128,11 +138,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
                 viewSelected(position)
                 when (position) {
                     0 -> {
-                        animation(color, Color.parseColor("#7088FF"))
                         StatisticsAdapter.recordCountEvent("grab", "1.1expose", null)
                     }
                     1 -> {
-                        animation(color, Color.parseColor("#7088FF"))
                         StatisticsAdapter.recordCountEvent("grab", "1.2expose", null)
                     }
 //                    2 -> {
@@ -158,6 +166,13 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 
         mPresenter = GamePresenter3(this)
         addPresent(mPresenter)
+    }
+
+    private fun showShareDialog() {
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = InviteFriendDialog(context, InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null)
+        }
+        mInviteFriendDialog?.show()
     }
 
     private fun showSongListBattleDialog() {
@@ -272,6 +287,10 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mQuickGameView.hideRedOperationView()
     }
 
+    override fun isBlackStatusBarText(): Boolean {
+        return true
+    }
+
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         mPresenter.initGameKConfig()
@@ -298,6 +317,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 //        mDoubleRoomGameView.destory()
 //        mPkGameView.destory()
         alphaAnimation?.cancel()
+        mInviteFriendDialog?.dismiss(false)
     }
 }
 
