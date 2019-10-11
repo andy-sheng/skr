@@ -521,6 +521,13 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         }
         feedsInputContainerView.onCommentSuccess()
         recyclerView?.scrollToPosition(1)
+
+        //这个需要手动更新位置
+        if (!TextUtils.isEmpty(mPlayingUrl)) {
+            if (mPlayingPosition >= 1) {
+                mPlayingPosition++
+            }
+        }
     }
 
     override fun addSecondLevelCommentSuccess() {
@@ -585,6 +592,12 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                     it.commentCnt = it.commentCnt - (model?.comment?.subCommentCnt ?: 0)
                 }
             }
+
+            if (pos == mPlayingPosition) {
+                stopPlayingState()
+                SinglePlayer.stop(playerTag)
+            }
+
             progressView?.visibility = View.GONE
             postsAdapter?.dataList?.removeAt(pos)
             postsAdapter?.notifyItemRemoved(pos)

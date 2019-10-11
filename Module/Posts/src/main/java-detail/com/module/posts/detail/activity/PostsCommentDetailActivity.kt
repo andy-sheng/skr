@@ -516,10 +516,16 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                     }
                 }
 
+                if (pos == mPlayingPosition) {
+                    stopPlayingState()
+                    SinglePlayer.stop(playerTag)
+                }
+
                 postsAdapter?.dataList?.removeAt(pos)
                 postsAdapter!!.notifyItemRemoved(pos)
                 postsAdapter!!.notifyItemRangeChanged(pos, postsAdapter?.dataList?.size!! - pos)
                 postsAdapter!!.notifyItemChanged(0, REFRESH_COMMENT_CTN)
+
             }
         }
     }
@@ -609,6 +615,13 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         }
         progressView?.visibility = View.GONE
         feedsInputContainerView.onCommentSuccess()
+
+        //这个需要手动更新位置
+        if (!TextUtils.isEmpty(mPlayingUrl)) {
+            if (mPlayingPosition >= 1) {
+                mPlayingPosition++
+            }
+        }
     }
 
     override fun onPause() {
