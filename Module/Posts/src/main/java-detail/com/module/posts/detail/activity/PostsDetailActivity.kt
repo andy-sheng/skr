@@ -68,7 +68,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         val playerTag = "PostsDetailActivity"
     }
 
-    lateinit var titlebar: CommonTitleBar
+    lateinit var titleBar: CommonTitleBar
     lateinit var recyclerView: RecyclerView
     lateinit var commentTv: ExTextView
     lateinit var imageIv: ExImageView
@@ -124,7 +124,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             SinglePlayer.startPlay(playerTag, it)
         }
 
-        titlebar = findViewById(R.id.titlebar)
+        titleBar = findViewById(R.id.title_bar)
         mImageTid = findViewById(R.id.image_tid)
         mKgeTid = findViewById(R.id.kge_tid)
         mAudioTid = findViewById(R.id.audio_tid)
@@ -149,7 +149,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             }
         })
 
-        titlebar.leftTextView.setDebounceViewClickListener {
+        titleBar.leftTextView.setDebounceViewClickListener {
             finish()
         }
 
@@ -625,7 +625,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             feedsInputContainerView?.setETHint("回复")
         }
 
-        titlebar.rightImageButton.setDebounceViewClickListener {
+        titleBar.rightImageButton.setDebounceViewClickListener {
             postsMoreDialogView?.dismiss(false)
             postsMoreDialogView = PostsMoreDialogView(this@PostsDetailActivity, PostsMoreDialogView.FROM_POSTS_DETAIL, mPostsWatchModel!!).apply {
                 replayArea.visibility = View.VISIBLE

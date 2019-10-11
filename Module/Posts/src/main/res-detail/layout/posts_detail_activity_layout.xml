@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.common.view.titlebar.CommonTitleBar
-        android:id="@+id/titlebar"
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_10_dp"
