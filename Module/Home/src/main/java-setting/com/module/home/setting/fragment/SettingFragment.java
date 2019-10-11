@@ -92,7 +92,7 @@ public class SettingFragment extends BaseFragment {
     DialogPlus mDialogPlus;
 
     static final String[] CACHE_CAN_DELETE = {
-            "fresco", "gif", "upload", "acc", "acr", "logs", "grabLyric", "lyrics", "midi", "score","ori"
+            "fresco", "gif", "upload", "acc", "acr", "logs", "grabLyric", "lyrics", "midi", "score", "ori", "save"
     };
 
     @Override
@@ -346,7 +346,7 @@ public class SettingFragment extends BaseFragment {
                             mDialogPlus.dismiss(false);
                         }
                         U.getFragmentUtils().popFragment(SettingFragment.this);
-                        UserAccountManager.getInstance().logoff(2,null);
+                        UserAccountManager.getInstance().logoff(2, null);
                     }
                 })
                 .setCancelBtnClickListener(new AnimateClickListener() {

@@ -120,7 +120,7 @@ public class BigImageBrowseFragment extends BaseFragment {
                                 File file = FrescoWorker.getCacheFileFromFrescoDiskCache(uri);
                                 if (file != null && file.exists()) {
                                     String ext = U.getFileUtils().getSuffixFromUrl(uri.getPath(), "jpg");
-                                    File dst = U.getFileUtils().createFileByTs(U.getAppInfoUtils().getSubDirFile("Save"), "IMG_", "." + ext);
+                                    File dst = U.getFileUtils().createFileByTs(U.getAppInfoUtils().getSubDirFile("save"), "IMG_", "." + ext);
                                     U.getIOUtils().copy(file, dst);
 
                                     // 其次把文件插入到系统图库
@@ -135,7 +135,7 @@ public class BigImageBrowseFragment extends BaseFragment {
                                     Uri uri2 = Uri.fromFile(file);
                                     intent.setData(uri2);
                                     getContext().sendBroadcast(intent);
-
+                                    mMenuDialog.dissmiss();
                                     U.getToastUtil().showLong("文件保存成功，路径为 " + dst.getPath());
                                 } else {
                                     U.getToastUtil().showShort("等待文件加载成功才可保存");
