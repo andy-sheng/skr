@@ -36,16 +36,17 @@ public interface Loader<T> {
     boolean hasMore(boolean backward, int position, T data);
 
     /**
-     * 是否有更多菜单栏
-     * @return
-     */
-    boolean hasMenu();
-
-    /**
      * 更多菜单栏中是否有删除按钮
+     *
      * @return
      */
     boolean hasDeleteMenu();
+
+    /**
+     * 更多菜单里是否有保存按钮
+     * @return
+     */
+    boolean hasSaveMenu();
 
     Callback<T> getDeleteListener();
 }

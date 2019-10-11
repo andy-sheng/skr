@@ -217,7 +217,7 @@ public class FileUtils {
      * 根据系统时间、前缀、后缀产生一个文件
      * 如 IMG_20180912_010233.jpg
      */
-    public static File createFileByTs(File folder, String prefix, String suffix) {
+    public File createFileByTs(File folder, String prefix, String suffix) {
         if (!folder.exists() || !folder.isDirectory()) {
             folder.mkdirs();
         }

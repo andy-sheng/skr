@@ -498,9 +498,6 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                 } else false
             }
 
-            override fun hasMenu(): Boolean {
-                return false
-            }
         })
     }
 

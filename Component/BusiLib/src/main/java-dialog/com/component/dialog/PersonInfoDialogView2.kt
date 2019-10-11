@@ -567,10 +567,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                         mHasMore
                     } else false
                 }
-
-                override fun hasMenu(): Boolean {
-                    return false
-                }
             })
         }
         mPhotoView.adapter = mPhotoAdapter

@@ -38,12 +38,12 @@ public class DefaultImageBrowserLoader<T> implements Loader<T> {
     }
 
     @Override
-    public boolean hasMenu() {
+    public boolean hasDeleteMenu() {
         return false;
     }
 
     @Override
-    public boolean hasDeleteMenu() {
+    public boolean hasSaveMenu() {
         return false;
     }
 

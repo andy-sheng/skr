@@ -95,10 +95,6 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
                     } else false
                 }
 
-                override fun hasMenu(): Boolean {
-                    return true
-                }
-
                 override fun hasDeleteMenu(): Boolean {
                     return true
                 }

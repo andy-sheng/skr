@@ -6,7 +6,10 @@ import okio.BufferedSink
 import okio.BufferedSource
 import okio.Okio
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.nio.charset.Charset
+
 
 class IOUtils {
     fun writeFile(content: String, file: File) {
@@ -37,5 +40,21 @@ class IOUtils {
         }
 
         return ""
+    }
+
+    fun copy(src: File, dst: File) {
+        val fin = FileInputStream(src)
+        fin.use { fin ->
+            val out = FileOutputStream(dst)
+            out.use { out ->
+                // Transfer bytes from in to out
+                val buf = ByteArray(1024)
+                var len = fin.read(buf)
+                while (len > 0) {
+                    out.write(buf, 0, len)
+                    len = fin.read(buf)
+                }
+            }
+        }
     }
 }

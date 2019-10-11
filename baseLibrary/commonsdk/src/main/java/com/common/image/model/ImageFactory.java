@@ -38,7 +38,7 @@ public class ImageFactory {
         }
 
 //        protected ImageFactory.Builder setUrl(String url) {
-//            mBaseImage = new HttpImage(url);
+//            baseImage = new HttpImage(url);
 //            return this;
 //        }
 

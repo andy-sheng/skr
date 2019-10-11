@@ -1,7 +1,10 @@
 package com.imagebrowse.big;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import com.common.base.BaseFragment;
 import com.common.base.R;
 import com.common.callback.Callback;
+import com.common.image.fresco.FrescoWorker;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -25,6 +29,8 @@ import com.dialog.list.ListDialog;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.SlideCloseLayout;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,12 +103,47 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
         });
 
-        if (mLoader.hasDeleteMenu()) {
+        if (mLoader.hasDeleteMenu() || mLoader.hasSaveMenu()) {
             mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
                     mMenuDialog = new ListDialog(getContext());
                     List<DialogListItem> listItems = new ArrayList<>();
+
+
+                    if (mLoader.hasSaveMenu()) {
+                        listItems.add(new DialogListItem("保存", new Runnable() {
+                            @Override
+                            public void run() {
+                                ImageBrowseView curView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
+                                Uri uri = curView.getBaseImage().getUri();
+                                File file = FrescoWorker.getCacheFileFromFrescoDiskCache(uri);
+                                if (file != null && file.exists()) {
+                                    String ext = U.getFileUtils().getSuffixFromUrl(uri.getPath(), "jpg");
+                                    File dst = U.getFileUtils().createFileByTs(U.getAppInfoUtils().getSubDirFile("Save"), "IMG_", "." + ext);
+                                    U.getIOUtils().copy(file, dst);
+
+                                    // 其次把文件插入到系统图库
+                                    try {
+                                        MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                                                dst.getAbsolutePath(), dst.getName(), null);
+                                    } catch (FileNotFoundException e) {
+                                        return;
+                                    }
+                                    // 最后通知图库更新
+                                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                    Uri uri2 = Uri.fromFile(file);
+                                    intent.setData(uri2);
+                                    getContext().sendBroadcast(intent);
+
+                                    U.getToastUtil().showLong("文件保存成功，路径为 " + dst.getPath());
+                                } else {
+                                    U.getToastUtil().showShort("等待文件加载成功才可保存");
+                                }
+                            }
+                        }));
+                    }
+
                     if (mLoader.hasDeleteMenu()) {
                         listItems.add(new DialogListItem("删除", new Runnable() {
                             @Override
@@ -208,8 +249,8 @@ public class BigImageBrowseFragment extends BaseFragment {
 
             @Override
             public boolean onHostAllowIntercept() {
-                ImageBrowseView currView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
-                if (currView != null && currView.hasLargerScale()) {
+                ImageBrowseView curView = (ImageBrowseView) mPagerAdapter.getPrimaryItem();
+                if (curView != null && curView.hasLargerScale()) {
                     return false;
                 }
                 return true;

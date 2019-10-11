@@ -406,8 +406,8 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 } else false
             }
 
-            override fun hasMenu(): Boolean {
-                return false
+            override fun hasSaveMenu(): Boolean {
+                return true
             }
         })
     }

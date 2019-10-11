@@ -17,32 +17,20 @@ import com.common.base.R
 import com.common.image.fresco.BaseImageView
 import com.common.image.fresco.FrescoWorker
 import com.common.image.fresco.IFrescoCallBack
-import com.common.image.fresco.cache.MyCacheKeyFactory
 import com.common.image.model.BaseImage
 import com.common.image.model.HttpImage
 import com.common.image.model.ImageFactory
-import com.common.image.model.LocalImage
 import com.common.log.MyLog
-import com.common.utils.FileUtils
-import com.common.utils.HttpUtils
-import com.common.utils.StringUtils
 import com.common.utils.U
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import com.facebook.binaryresource.FileBinaryResource
 import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.imagepipeline.core.ImagePipelineFactory
 import com.facebook.imagepipeline.image.ImageInfo
 import com.facebook.imagepipeline.image.QualityInfo
-import com.facebook.imagepipeline.request.ImageRequest
 
 import java.io.File
 import java.io.IOException
 
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.schedulers.Schedulers
 import pl.droidsonroids.gif.GifDrawable
 import pl.droidsonroids.gif.GifImageView
 
@@ -66,7 +54,7 @@ open class EnhancedImageView : RelativeLayout {
 
     protected var mUiHandler = Handler()
 
-    protected var mBaseImage: BaseImage? = null
+    var baseImage: BaseImage? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -101,8 +89,8 @@ open class EnhancedImageView : RelativeLayout {
     open fun recycleResWhenDetachedFromWindow() {
         mUiHandler.removeCallbacksAndMessages(null)
         mSubsamplingScaleImageView?.recycle()
-        if (mBaseImage != null) {
-            val uri = mBaseImage!!.uri
+        if (baseImage != null) {
+            val uri = baseImage!!.uri
             if (uri != null) {
                 val path = uri.toString()
                 if (path.startsWith("https://") || path.startsWith("http://")) {
@@ -168,6 +156,7 @@ open class EnhancedImageView : RelativeLayout {
         if (baseImage == null || baseImage.uri == null) {
             return
         }
+        this.baseImage = baseImage
         var path: String? = baseImage.uri.toString()
         if (path!!.startsWith("http://") || path.startsWith("https://")) {
             val uri = Uri.parse(path)
@@ -462,7 +451,7 @@ open class EnhancedImageView : RelativeLayout {
             }
         } catch (e: IOException) {
             // 失败了
-            loadLocalByFresco(mBaseImage)
+            loadLocalByFresco(baseImage)
         }
 
     }

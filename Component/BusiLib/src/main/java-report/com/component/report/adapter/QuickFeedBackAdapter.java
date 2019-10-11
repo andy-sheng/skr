@@ -104,10 +104,6 @@ public class QuickFeedBackAdapter extends DiffAdapter<ImageItem, RecyclerView.Vi
                                     return false;
                                 }
 
-                                @Override
-                                public boolean hasMenu() {
-                                    return false;
-                                }
                             });
                         }
                     }

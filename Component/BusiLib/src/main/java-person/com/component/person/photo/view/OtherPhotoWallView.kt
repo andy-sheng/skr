@@ -83,9 +83,6 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
                     } else false
                 }
 
-                override fun hasMenu(): Boolean {
-                    return false
-                }
             })
         }
         mPhotoView.adapter = mPhotoAdapter

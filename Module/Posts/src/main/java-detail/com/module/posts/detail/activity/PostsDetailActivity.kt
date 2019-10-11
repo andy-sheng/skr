@@ -350,9 +350,6 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 } else false
             }
 
-            override fun hasMenu(): Boolean {
-                return false
-            }
         })
     }
 
