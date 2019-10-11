@@ -604,6 +604,8 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         } else {
             postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
             recyclerView?.scrollToPosition(1)
+            val count = postsAdapter?.dataList!!.size - 1
+            postsAdapter?.notifyItemRangeChanged(1, count, PostsCommentDetailAdapter.REFRESH_POSITION)
         }
         progressView?.visibility = View.GONE
         feedsInputContainerView.onCommentSuccess()

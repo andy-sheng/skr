@@ -16,6 +16,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     companion object {
         val REFRESH_COMMENT_CTN = 0
         val REFRESH_PLAY_STATE = 2
+        val REFRESH_POSITION = 3
     }
 
     val mPostsType = 0
@@ -78,6 +79,10 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             }
         } else if (refreshType == REFRESH_COMMENT_CTN) {
             (holder as PostsFirstLevelCommentHolder).refreshCtn(position, mDataList[position] as PostFirstLevelCommentModel)
+        } else if (refreshType == REFRESH_POSITION) {
+            if (holder is PostsSecondLevelCommentHolder) {
+                holder.refreshPosition(position, mDataList[position] as PostsSecondLevelCommentModel)
+            }
         }
     }
 

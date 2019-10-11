@@ -235,6 +235,11 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
         xinIv.isSelected = mModel?.isLiked ?: false
     }
 
+    fun refreshPosition(pos: Int, model: PostFirstLevelCommentModel) {
+        this.pos = pos
+        this.mModel = model
+    }
+
     fun bindData(pos: Int, model: PostFirstLevelCommentModel, isLast: Boolean) {
         this.pos = pos
         this.mModel = model
