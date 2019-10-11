@@ -240,7 +240,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
     fun initData(flag: Boolean) {
         mQuickGamePresenter.initOperationArea(flag)
-        mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
+//        mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
         mQuickGamePresenter.initGameTypeArea(flag)
 //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
@@ -296,16 +296,16 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mGameAdapter.updateFuncation(moFuncationModel)
     }
 
-    override fun setRecommendInfo(list: MutableList<RecommendModel>?) {
-        refreshLayout.finishRefresh()
-        if (list == null || list.size == 0) {
-            // 清空好友派对列表
-            mGameAdapter.updateRecommendRoomInfo(null)
-            return
-        }
-        val recommendRoomModel = RecommendRoomModel(list)
-        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
-    }
+//    override fun setRecommendInfo(list: MutableList<RecommendModel>?) {
+//        refreshLayout.finishRefresh()
+//        if (list == null || list.size == 0) {
+//            // 清空好友派对列表
+//            mGameAdapter.updateRecommendRoomInfo(null)
+//            return
+//        }
+//        val recommendRoomModel = RecommendRoomModel(list)
+//        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
+//    }
 
     override fun setGameType(list: MutableList<GrabSpecialModel>?) {
         if (list != null && list.size > 0) {

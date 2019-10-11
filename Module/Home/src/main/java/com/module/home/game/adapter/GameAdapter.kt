@@ -20,8 +20,8 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
 
     private val TYPE_BANNER_HOLDER = 0       // 广告
     private val TYPE_FUNCATION_HOLDER = 1    // 功能区域（做任务，排行榜，练歌房）
-    private val TYPE_RECOMMEND_HOLDER = 2    // 推荐房
-    private val TYPE_GAMETYPE_HOLDER = 3     // 玩法区域
+//    private val TYPE_RECOMMEND_HOLDER = 2    // 推荐房
+    private val TYPE_GAMETYPE_HOLDER = 2     // 玩法区域
 
     private var mObjArr = arrayOfNulls<Any>(5)
     private var mDataList: MutableList<Any> = ArrayList()
@@ -40,10 +40,10 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         setDataList()
     }
 
-    fun updateRecommendRoomInfo(recommendRoomModel: RecommendRoomModel?) {
-        mObjArr[TYPE_RECOMMEND_HOLDER] = recommendRoomModel
-        setDataList()
-    }
+//    fun updateRecommendRoomInfo(recommendRoomModel: RecommendRoomModel?) {
+//        mObjArr[TYPE_RECOMMEND_HOLDER] = recommendRoomModel
+//        setDataList()
+//    }
 
     fun updateGameTypeInfo(gameTypeModel: GameTypeModel?) {
         mObjArr[TYPE_GAMETYPE_HOLDER] = gameTypeModel
@@ -70,10 +70,10 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_funcation_item_view, parent, false)
                 return FuncationAreaViewHolder(view, listener)
             }
-            TYPE_RECOMMEND_HOLDER -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_recommend_room_item_view, parent, false)
-                return RecommendRoomViewHolder(view, mBaseFragment, listener)
-            }
+//            TYPE_RECOMMEND_HOLDER -> {
+//                val view = LayoutInflater.from(parent.context).inflate(R.layout.game_recommend_room_item_view, parent, false)
+//                return RecommendRoomViewHolder(view, mBaseFragment, listener)
+//            }
             else -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_type_item_view, parent, false)
                 return GameTypeViewHolder(view, listener)
@@ -98,7 +98,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         return when (mDataList[position]) {
             is BannerModel -> TYPE_BANNER_HOLDER
             is FuncationModel -> TYPE_FUNCATION_HOLDER
-            is RecommendRoomModel -> TYPE_RECOMMEND_HOLDER
+//            is RecommendRoomModel -> TYPE_RECOMMEND_HOLDER
             is GameTypeModel -> TYPE_GAMETYPE_HOLDER
             else -> 0
         }

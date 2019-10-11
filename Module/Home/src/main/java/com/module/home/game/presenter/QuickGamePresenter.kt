@@ -192,7 +192,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
                 if (obj.errno == 0) {
                     mLastUpdateRecomendInfo = System.currentTimeMillis()
                     val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
-                    mIGameView3.setRecommendInfo(list)
+//                    mIGameView3.setRecommendInfo(list)
                 }
             }
         }, this, RequestControl("getRecommendRoomList", ControlType.CancelThis))
@@ -202,7 +202,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
-        initRecommendRoom(true, mRecommendInterval)
+//        initRecommendRoom(true, mRecommendInterval)
         initGameTypeArea(true)
 //        initQuickRoom(true)
         checkTaskRedDot()
