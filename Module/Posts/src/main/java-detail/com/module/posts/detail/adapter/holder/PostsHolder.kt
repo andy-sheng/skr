@@ -14,7 +14,6 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
-import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -24,7 +23,6 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarView
 import com.module.RouterConstants
 import com.module.posts.R
-import com.module.posts.detail.activity.PostsDetailActivity
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.view.*
 import com.module.posts.watch.model.PostsRedPkgModel
@@ -135,16 +133,11 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
             override fun clickValid(v: View?) {
                 StatisticsAdapter.recordCountEvent("posts", "content_voice_click", null)
                 if (postsAudioView.isPlaying) {
-                    iDetailClickListener?.setCurPlayingUrl("")
-                    iDetailClickListener?.setCurPlayingPosition(-1)
-                    SinglePlayer.stop(PostsDetailActivity.playerTag)
+                    iDetailClickListener?.stopPlay()
                     postsAudioView.setPlay(false)
                 } else {
                     mModel?.posts?.audios?.let {
-                        iDetailClickListener?.playAnotherSong()
-                        iDetailClickListener?.setCurPlayingUrl(it[0]?.url ?: "")
-                        iDetailClickListener?.setCurPlayingPosition(pos)
-                        SinglePlayer.startPlay(PostsDetailActivity.playerTag, iDetailClickListener?.getCurPlayingUrl())
+                        iDetailClickListener?.startPlay(it[0]?.url ?: "", pos)
                         postsAudioView.setPlay(true)
                     }
                 }
@@ -155,16 +148,11 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
             override fun clickValid(v: View?) {
                 StatisticsAdapter.recordCountEvent("posts", "content_music_click", null)
                 if (postsSongView.isPlaying) {
-                    iDetailClickListener?.setCurPlayingUrl("")
-                    iDetailClickListener?.setCurPlayingPosition(-1)
-                    SinglePlayer.stop(PostsDetailActivity.playerTag)
+                    iDetailClickListener?.stopPlay()
                     postsSongView.setPlay(false)
                 } else {
                     mModel?.posts?.song?.let {
-                        iDetailClickListener?.playAnotherSong()
-                        iDetailClickListener?.setCurPlayingUrl(it.playURL ?: "")
-                        iDetailClickListener?.setCurPlayingPosition(pos)
-                        SinglePlayer.startPlay(PostsDetailActivity.playerTag, iDetailClickListener?.getCurPlayingUrl())
+                        iDetailClickListener?.startPlay(it.playURL ?: "", pos)
                         postsSongView.setPlay(true)
                     }
                 }

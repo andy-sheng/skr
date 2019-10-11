@@ -282,6 +282,19 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 }
                 postsCommentMoreDialogView?.showByDialog(true)
             }
+
+            override fun stopPlay() {
+                mPlayingPosition = -1
+                mPlayingUrl = ""
+                SinglePlayer.stop(playerTag)
+            }
+
+            override fun startPlay(url: String, pos: Int) {
+                stopPlayingState()
+                mPlayingPosition = pos
+                mPlayingUrl = url
+                SinglePlayer.startPlay(playerTag, mPlayingUrl)
+            }
         }
 
         recyclerView?.layoutManager = LinearLayoutManager(this)

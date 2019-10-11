@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.core.view.setDebounceViewClickListener
-import com.common.player.SinglePlayer
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
@@ -16,7 +15,6 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
 import com.module.RouterConstants
 import com.module.posts.R
-import com.module.posts.detail.activity.PostsCommentDetailActivity
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
 import com.module.posts.detail.model.PostFirstLevelCommentModel
 import com.module.posts.view.ExpandTextView
@@ -69,16 +67,11 @@ class PostsFirstLevelCommentHolder(itemView: View, val mIDetailClickListener: Po
             override fun clickValid(v: View?) {
                 StatisticsAdapter.recordCountEvent("posts", "content_voice_click", null)
                 if (postsAudioView.isPlaying) {
-                    mIDetailClickListener.setCurPlayingUrl("")
-                    mIDetailClickListener.setCurPlayingPosition(-1)
-                    SinglePlayer.stop(PostsCommentDetailActivity.playerTag)
+                    mIDetailClickListener.stopPlay()
                     postsAudioView.setPlay(false)
                 } else {
                     mModel?.comment?.audios?.let {
-                        mIDetailClickListener?.playAnotherSong()
-                        mIDetailClickListener.setCurPlayingUrl(it[0]?.url ?: "")
-                        mIDetailClickListener.setCurPlayingPosition(pos)
-                        SinglePlayer.startPlay(PostsCommentDetailActivity.playerTag, mIDetailClickListener.getCurPlayingUrl())
+                        mIDetailClickListener.startPlay(it[0]?.url, pos)
                         postsAudioView.setPlay(true)
                     }
                 }
@@ -89,16 +82,11 @@ class PostsFirstLevelCommentHolder(itemView: View, val mIDetailClickListener: Po
             override fun clickValid(v: View?) {
                 StatisticsAdapter.recordCountEvent("posts", "content_music_click", null)
                 if (postsSongView.isPlaying) {
-                    mIDetailClickListener.setCurPlayingUrl("")
-                    mIDetailClickListener.setCurPlayingPosition(-1)
-                    SinglePlayer.stop(PostsCommentDetailActivity.playerTag)
+                    mIDetailClickListener.stopPlay()
                     postsSongView.setPlay(false)
                 } else {
                     mModel?.comment?.songInfo?.let {
-                        mIDetailClickListener?.playAnotherSong()
-                        mIDetailClickListener.setCurPlayingUrl(it.playURL ?: "")
-                        mIDetailClickListener.setCurPlayingPosition(pos)
-                        SinglePlayer.startPlay(PostsCommentDetailActivity.playerTag, mIDetailClickListener.getCurPlayingUrl())
+                        mIDetailClickListener.startPlay(it.playURL ?: "", pos)
                         postsSongView.setPlay(true)
                     }
                 }

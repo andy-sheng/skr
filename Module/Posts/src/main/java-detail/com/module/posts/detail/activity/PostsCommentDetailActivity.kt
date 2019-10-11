@@ -349,6 +349,19 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
             override fun goBigImageBrowse(index: Int, pictures: List<String>) {
                 goBrowse(index, pictures)
             }
+
+            override fun stopPlay() {
+                mPlayingPosition = -1
+                mPlayingUrl = ""
+                SinglePlayer.stop(playerTag)
+            }
+
+            override fun startPlay(url: String, pos: Int) {
+                stopPlayingState()
+                mPlayingPosition = pos
+                mPlayingUrl = url
+                SinglePlayer.startPlay(playerTag, mPlayingUrl)
+            }
         }
 
         feedsInputContainerView?.mSendCallBack = { replyModel, obj ->

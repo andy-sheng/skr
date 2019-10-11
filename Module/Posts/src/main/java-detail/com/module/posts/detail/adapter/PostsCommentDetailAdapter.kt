@@ -101,16 +101,14 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
     interface ICommentDetailClickListener {
         fun getCurPlayingUrl(): String
 
-        fun getCurPlayingPosition(): Int
-
-        fun setCurPlayingUrl(url: String)
-
         fun setCurPlayingPosition(pos: Int)
 
         fun clickSecondLevelCommentContent(model: PostsSecondLevelCommentModel, pos: Int)
 
-        fun playAnotherSong()
-
         fun goBigImageBrowse(index: Int, pictures: List<String>)
+
+        fun stopPlay()
+
+        fun startPlay(url: String, pos: Int)
     }
 }
