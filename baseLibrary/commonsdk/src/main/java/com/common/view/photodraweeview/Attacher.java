@@ -14,9 +14,11 @@ import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.OverScroller;
+
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.DraweeView;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -345,13 +347,14 @@ public class Attacher implements IAttacher, View.OnTouchListener, OnScaleDragGes
 
     @Override public void onScale(float scaleFactor, float focusX, float focusY) {
         if (getScale() < mMaxScale || scaleFactor < 1.0F) {
-
-            if (mScaleChangeListener != null) {
-                mScaleChangeListener.onScaleChange(scaleFactor, focusX, focusY);
-            }
-
             mMatrix.postScale(scaleFactor, scaleFactor, focusX, focusY);
-            checkMatrixAndInvalidate();
+
+            if (getScale() > 0.5) {
+                if (mScaleChangeListener != null) {
+                    mScaleChangeListener.onScaleChange(scaleFactor, focusX, focusY);
+                }
+                checkMatrixAndInvalidate();
+            }
         }
     }
 

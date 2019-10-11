@@ -6,6 +6,8 @@ import android.view.ScaleGestureDetector;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 
+import com.common.log.MyLog;
+
 /**
  * ****************************************************************************
  * Copyright 2011, 2012 Chris Banes.
@@ -29,7 +31,7 @@ public class ScaleDragDetector implements ScaleGestureDetector.OnScaleGestureLis
 
     private final float mTouchSlop;
     private final float mMinimumVelocity;
-    private final ScaleGestureDetector mScaleDetector;
+    private final MyScaleGestureDetector mScaleDetector;
     private final OnScaleDragGestureListener mScaleDragGestureListener;
 
     private VelocityTracker mVelocityTracker;
@@ -40,7 +42,7 @@ public class ScaleDragDetector implements ScaleGestureDetector.OnScaleGestureLis
     private int mActivePointerIndex = 0;
 
     public ScaleDragDetector(Context context, OnScaleDragGestureListener scaleDragGestureListener) {
-        mScaleDetector = new ScaleGestureDetector(context, this);
+        mScaleDetector = new MyScaleGestureDetector(context, this);
         mScaleDragGestureListener = scaleDragGestureListener;
 
         final ViewConfiguration configuration = ViewConfiguration.get(context);
