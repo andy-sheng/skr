@@ -199,7 +199,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 mPlayingUrl = url
             }
 
-            override fun setCurPlayintPosition(pos: Int) {
+            override fun setCurPlayingPosition(pos: Int) {
                 mPlayingPosition = pos
             }
 
@@ -225,7 +225,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                 mPostsDetailPresenter?.getRelation(userID)
             }
 
-            override fun goSecondLevelCommetDetail(model: PostFirstLevelCommentModel, position: Int) {
+            override fun goSecondLevelCommentDetail(model: PostFirstLevelCommentModel, position: Int) {
                 ToSecondLevelDetail.position = position
                 var url: String? = null
                 if (position == mPlayingPosition) {

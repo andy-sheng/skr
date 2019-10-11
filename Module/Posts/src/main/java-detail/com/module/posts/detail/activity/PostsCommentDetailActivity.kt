@@ -299,7 +299,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                 mPlayingUrl = url
             }
 
-            override fun setCurPlayintPosition(pos: Int) {
+            override fun setCurPlayingPosition(pos: Int) {
                 mPlayingPosition = pos
             }
 

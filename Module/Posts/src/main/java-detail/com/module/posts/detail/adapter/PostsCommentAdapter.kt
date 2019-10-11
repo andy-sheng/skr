@@ -134,7 +134,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
         fun setCurPlayingUrl(url: String)
 
-        fun setCurPlayintPosition(pos: Int)
+        fun setCurPlayingPosition(pos: Int)
 
         fun playAnotherSong()
 
@@ -142,7 +142,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
         fun getRelation(userID: Int)
 
-        fun goSecondLevelCommetDetail(model: PostFirstLevelCommentModel, position: Int)
+        fun goSecondLevelCommentDetail(model: PostFirstLevelCommentModel, position: Int)
 
         fun goBigImageBrowse(index: Int, pictures: List<String>)
 

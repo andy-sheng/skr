@@ -76,7 +76,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             } else if (holder is PostsSecondLevelCommentHolder) {
                 holder.refreshPlayState(position, mDataList[position] as PostsSecondLevelCommentModel)
             }
-        } else if (REFRESH_COMMENT_CTN == REFRESH_COMMENT_CTN) {
+        } else if (refreshType == REFRESH_COMMENT_CTN) {
             (holder as PostsFirstLevelCommentHolder).refreshCtn(position, mDataList[position] as PostFirstLevelCommentModel)
         }
     }
@@ -100,7 +100,7 @@ class PostsCommentDetailAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
 
         fun setCurPlayingUrl(url: String)
 
-        fun setCurPlayintPosition(pos: Int)
+        fun setCurPlayingPosition(pos: Int)
 
         fun clickSecondLevelCommentContent(model: PostsSecondLevelCommentModel, pos: Int)
 

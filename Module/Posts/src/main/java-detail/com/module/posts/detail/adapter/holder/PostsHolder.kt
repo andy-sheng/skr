@@ -136,14 +136,14 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
                 StatisticsAdapter.recordCountEvent("posts", "content_voice_click", null)
                 if (postsAudioView.isPlaying) {
                     iDetailClickListener?.setCurPlayingUrl("")
-                    iDetailClickListener?.setCurPlayintPosition(-1)
+                    iDetailClickListener?.setCurPlayingPosition(-1)
                     SinglePlayer.stop(PostsDetailActivity.playerTag)
                     postsAudioView.setPlay(false)
                 } else {
                     mModel?.posts?.audios?.let {
                         iDetailClickListener?.playAnotherSong()
                         iDetailClickListener?.setCurPlayingUrl(it[0]?.url ?: "")
-                        iDetailClickListener?.setCurPlayintPosition(pos)
+                        iDetailClickListener?.setCurPlayingPosition(pos)
                         SinglePlayer.startPlay(PostsDetailActivity.playerTag, iDetailClickListener?.getCurPlayingUrl())
                         postsAudioView.setPlay(true)
                     }
@@ -156,14 +156,14 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
                 StatisticsAdapter.recordCountEvent("posts", "content_music_click", null)
                 if (postsSongView.isPlaying) {
                     iDetailClickListener?.setCurPlayingUrl("")
-                    iDetailClickListener?.setCurPlayintPosition(-1)
+                    iDetailClickListener?.setCurPlayingPosition(-1)
                     SinglePlayer.stop(PostsDetailActivity.playerTag)
                     postsSongView.setPlay(false)
                 } else {
                     mModel?.posts?.song?.let {
                         iDetailClickListener?.playAnotherSong()
                         iDetailClickListener?.setCurPlayingUrl(it.playURL ?: "")
-                        iDetailClickListener?.setCurPlayintPosition(pos)
+                        iDetailClickListener?.setCurPlayingPosition(pos)
                         SinglePlayer.startPlay(PostsDetailActivity.playerTag, iDetailClickListener?.getCurPlayingUrl())
                         postsSongView.setPlay(true)
                     }
@@ -378,7 +378,7 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
 
             if (iDetailClickListener.getCurPlayingUrl().equals(mModel!!.posts!!.audios!![0].url) && !TextUtils.isEmpty(iDetailClickListener.getCurPlayingUrl())) {
                 postsAudioView.setPlay(true)
-                iDetailClickListener?.setCurPlayintPosition(pos)
+                iDetailClickListener?.setCurPlayingPosition(pos)
             } else {
                 postsAudioView.setPlay(false)
             }
@@ -427,7 +427,7 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
 
             if (iDetailClickListener.getCurPlayingUrl().equals(mModel?.posts?.song?.playURL) && !TextUtils.isEmpty(iDetailClickListener.getCurPlayingUrl())) {
                 postsSongView.setPlay(true)
-                iDetailClickListener?.setCurPlayintPosition(pos)
+                iDetailClickListener?.setCurPlayingPosition(pos)
             } else {
                 postsSongView.setPlay(false)
             }
