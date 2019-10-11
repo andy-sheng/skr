@@ -36,7 +36,8 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_COMMENT_CTN
-import com.module.posts.detail.adapter.PostsCommentDetailAdapter
+import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_PLAY_STATE
+import com.module.posts.detail.adapter.PostsCommentAdapter.Companion.REFRESH_POSITION
 import com.module.posts.detail.event.AddSecondCommentEvent
 import com.module.posts.detail.event.DeteleFirstCommentEvent
 import com.module.posts.detail.event.DeteleSecondCommentEvent
@@ -315,7 +316,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
     private fun stopPlayingState() {
         if (!TextUtils.isEmpty(mPlayingUrl)) {
             mPlayingUrl = ""
-            postsAdapter?.notifyItemChanged(mPlayingPosition, PostsCommentDetailAdapter.REFRESH_PLAY_STATE)
+            postsAdapter?.notifyItemChanged(mPlayingPosition, REFRESH_PLAY_STATE)
             mPlayingPosition = -1
         }
     }
@@ -515,6 +516,8 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         } else {
             postsAdapter?.notifyItemChanged(0, REFRESH_COMMENT_CTN)
             postsAdapter?.notifyItemInserted(1)
+            val count = postsAdapter?.dataList!!.size - 1
+            postsAdapter?.notifyItemRangeChanged(1, count, REFRESH_POSITION)
         }
         feedsInputContainerView.onCommentSuccess()
         recyclerView?.scrollToPosition(1)

@@ -114,6 +114,11 @@ class PostsSecondLevelCommentHolder(itemView: View, val mIDetailClickListener: P
         }
     }
 
+    fun refreshPosition(pos: Int, model: PostsSecondLevelCommentModel) {
+        this.pos = pos
+        this.mModel = model
+    }
+
     fun refreshPlayState(pos: Int, model: PostsSecondLevelCommentModel) {
         this.pos = pos
         this.mModel = model

@@ -19,6 +19,7 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
         val REFRESH_LIKE = 3
         val REFRESH_VOTE = 4
         val REFRESH_FOLLOW_STATE = 5
+        val REFRESH_POSITION = 6
     }
 
     private val mPostsType = 0
@@ -98,6 +99,10 @@ class PostsCommentAdapter : DiffAdapter<Any, RecyclerView.ViewHolder> {
             (holder as PostsHolder).refreshVoteState(position, mDataList[position] as PostsWatchModel)
         } else if (refreshType == REFRESH_FOLLOW_STATE) {
             (holder as PostsHolder).refreshFollowState(position, mDataList[position] as PostsWatchModel)
+        } else if (refreshType == REFRESH_POSITION) {
+            if (holder is PostsCommentHolder) {
+                holder.refreshPosition(position, mDataList[position] as PostFirstLevelCommentModel)
+            }
         }
     }
 
