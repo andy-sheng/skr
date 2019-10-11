@@ -258,6 +258,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickPostsLike(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
+                    StatisticsAdapter.recordCountEvent("posts", "content_like", null)
                     recordClick(model)
                     postsLikeOrUnLike(position, model)
                 } else {
@@ -288,6 +289,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
 
             override fun onClickCommentLike(position: Int, model: PostsWatchModel?) {
                 if (model != null && model.isAudit()) {
+                    StatisticsAdapter.recordCountEvent("posts", "content_like", null)
                     recordClick(model)
                     postsCommentLikeOrUnLike(position, model)
                 } else {

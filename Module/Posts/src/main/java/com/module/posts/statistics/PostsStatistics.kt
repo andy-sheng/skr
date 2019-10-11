@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.rxretrofit.*
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.component.busilib.recommend.RA
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +33,7 @@ object PostsStatistics {
      * 帖子曝光
      */
     fun addCurExpose(postsId: Int) {
+        StatisticsAdapter.recordCountEvent("posts", "content_expose", null)
         add2Map(postsId, EST_Exposure)
     }
 
@@ -39,6 +41,7 @@ object PostsStatistics {
      * 有效点击
      */
     fun addCurClick(postsId: Int) {
+        StatisticsAdapter.recordCountEvent("posts", "content_click", null)
         add2Map(postsId, EST_Click)
     }
 
