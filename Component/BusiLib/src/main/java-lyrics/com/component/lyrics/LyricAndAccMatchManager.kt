@@ -210,12 +210,12 @@ class LyricAndAccMatchManager {
             DebugLogView.println(TAG, "伴奏 ts=" + `in`!!.current)
             if (`in` != null && `in`.current > 0) {
                 if (params?.accLoadOk == false) {
+                    DebugLogView.println(TAG, "伴奏加载ready")
                     if (mLrcLoadOk) {
                         launchLyricEvent(`in`.current)
                     }
                 }
                 params?.accLoadOk = true
-                DebugLogView.println(TAG, "伴奏加载ready")
                 if (params?.manyLyricsView?.visibility == View.VISIBLE) {
                     val a1 = params?.manyLyricsView?.curPlayingTime?:0
                     val a2 = params?.manyLyricsView?.playerSpendTime?:0
