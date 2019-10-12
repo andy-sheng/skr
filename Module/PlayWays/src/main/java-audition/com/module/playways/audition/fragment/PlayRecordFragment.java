@@ -310,7 +310,7 @@ public class PlayRecordFragment extends BaseFragment {
         map.put("category", ProducationModel.TYPE_PRACTICE);
         if (mDuration <= 0) {
             // 这是个耗时操作
-            mDuration = U.getMediaUtils().getDuration(mPath);
+            mDuration = U.getMediaUtils().getDuration(mPath,0);
         }
         // 单位毫秒
         map.put("duration", mDuration);

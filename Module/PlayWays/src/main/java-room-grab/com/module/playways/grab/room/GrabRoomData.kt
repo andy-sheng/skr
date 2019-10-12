@@ -87,6 +87,10 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
 
     var maxGetBLightCnt = 0 // 之前获得过的最大爆灯数
 
+    var starCnt = -1 //人气挑战阶段性的星际评价
+
+    var enterRoundSeq = 1 // 刚进入房间时，所处的轮次
+
     init {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
     }
@@ -258,6 +262,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
                 playbookRoomDataWhenNotStart?.waitUsers?.addAll(it)
             }
         }
+        this.enterRoundSeq = this.expectRoundInfo?.roundSeq ?:1
     }
 
     override fun toString(): String {

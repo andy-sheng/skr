@@ -513,7 +513,7 @@ message STCommitSegmentResultReq
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @GET("http://dev.api.inframe.mobi//v1/bonus/ask-for-flower")
+    @GET("http://dev.api.inframe.mobi/v1/bonus/ask-for-flower")
     Observable<ApiResult> punch(@Query("timestamp") long offset, @Query("signV2") String signV2);
 
     /**
@@ -521,6 +521,10 @@ message STCommitSegmentResultReq
      * @param body
      * @return
      */
-    @GET("http://dev.api.inframe.mobi//v1/stand/challenge-resource")
+    @GET("http://dev.api.inframe.mobi/v1/stand/challenge-resource")
     Call<ApiResult> uploadChallengeResource(@Body RequestBody body);
+
+
+    @GET("http://dev.api.inframe.mobi/v1/stand/challenge-star-cnt")
+    Call<ApiResult> getChallengeStarCount(@Query("roomID") int roomID, @Query("enterRoundSeq") int enterRoundSeq,@Query("curRoundSeq") int curRoundSeq);
 }

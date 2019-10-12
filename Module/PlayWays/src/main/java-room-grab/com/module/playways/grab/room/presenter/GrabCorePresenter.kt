@@ -885,7 +885,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     }
 
                     override fun onSuccessNotInUiThread(url: String?) {
-                        uploadLabelToServer(roundInfoModel, savePath, url?:"")
+                        uploadLabelToServer(roundInfoModel, savePath, url ?: "")
                     }
 
                     override fun onFailureNotInUiThread(msg: String?) {
@@ -1540,9 +1540,12 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         tryStopRobotPlay()
         ZqEngineKit.getInstance().stopRecognize()
         val now = event.newRoundInfo
+
         if (now != null) {
+            // 处理顶部观众栏
             EventBus.getDefault().post(GrabPlaySeatUpdateEvent(now.playUsers))
             EventBus.getDefault().post(GrabWaitSeatUpdateEvent(now.waitUsers))
+            // 处理练习中
             var size = 0
             for (playerInfoModel in now.playUsers) {
                 if (playerInfoModel.userID == 2) {
@@ -1550,13 +1553,31 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 }
                 size++
             }
+
             val finalSize = size
             if (mRoomData.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
 
             } else {
                 mUiHandler.post { mIGrabView.showPracticeFlag(finalSize <= 1) }
             }
+            // 处理挑战人气结果
+            if (mRoomData.inChallenge) {
+                val t = now.roundSeq - mRoomData.enterRoundSeq
+                if (t > 0 && t % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
+                    //拉取最新的星级数据
+                    launch {
+                        val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq) }
+                        if (result.errno == 0) {
+                            val cnt = result.data.getIntValue("starCnt")
+                            mIGrabView.showChallengeStarView(cnt)
+                        }
+                    }
+                }
+            } else {
+                mIGrabView.showChallengeStarView(-1)
+            }
         }
+
 
         if (now!!.status == EQRoundStatus.QRS_INTRO.value) {
             //抢唱阶段，播抢唱卡片

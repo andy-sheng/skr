@@ -1627,6 +1627,10 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
+    override fun showChallengeStarView(cnt: Int) {
+
+    }
+
     // 确认踢人弹窗
     private fun showKickConfirmDialog(userInfoModel: UserInfoModel) {
         MyLog.d(TAG, "showKickConfirmDialog userInfoModel=$userInfoModel")
