@@ -52,12 +52,10 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
 
     private fun initLyric() {
         mSvlyric.visibility = View.VISIBLE
-        mManyLyricsView!!.visibility = View.GONE
-        mManyLyricsView!!.initLrcData()
+        mManyLyricsView?.visibility = View.GONE
+        mManyLyricsView?.initLrcData()
 
-        if (mVoiceScaleView != null) {
-            mVoiceScaleView!!.visibility = View.GONE
-        }
+        mVoiceScaleView?.visibility = View.GONE
     }
 
     fun startFly(call: (() -> Unit)?) {
@@ -81,7 +79,7 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
         }
     }
 
-    fun playWithAcc(infoModel: RaceRoundInfoModel?, totalTs: Int) {
+    private fun playWithAcc(infoModel: RaceRoundInfoModel?, totalTs: Int) {
         if (infoModel == null) {
             MyLog.w(TAG, "playWithAcc infoModel = null totalTs=$totalTs")
             return

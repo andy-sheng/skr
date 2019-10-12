@@ -12,16 +12,17 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.subscribe
+import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
+import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
 import com.engine.Params
+import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.race.RaceRoomServerApi
@@ -42,8 +43,10 @@ import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.module.playways.room.room.score.MachineScoreItem
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.zq.live.proto.RaceRoom.*
+import com.zq.live.proto.Room.EQRoundStatus
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
 import okhttp3.MediaType
@@ -52,6 +55,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Runnable
+import java.util.HashMap
 
 class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
@@ -453,7 +457,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
-        if(thisRound==null){
+        if (thisRound == null) {
             // 游戏结束了
             mIRaceRoomView.gameOver(lastRound)
             return
@@ -689,11 +693,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 val result = subscribe { raceRoomServerApi.syncStatus(mRoomData.gameId.toLong()) }
                 if (result.errno == 0) {
                     val gameOverTimeMs = result.data.getLong("gameOverTimeMs")
-                    if(gameOverTimeMs>0){
+                    if (gameOverTimeMs > 0) {
                         // 游戏结束了，停服了
                         mRoomData.expectRoundInfo = null
                         mRoomData.checkRoundInEachMode()
-                    }else{
+                    } else {
                         val syncStatusTimeMs = result.data.getLong("syncStatusTimeMs")
                         if (syncStatusTimeMs > mRoomData.lastSyncTs) {
                             mRoomData.lastSyncTs = syncStatusTimeMs
@@ -872,7 +876,15 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             // midi不需要在这下，只要下好，native就会解析，打分就能恢复
             val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
             MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} accRound=${mRoomData?.realRoundInfo?.isAccRoundNow()} mRoomData.isAccEnable=${mRoomData.isAccEnable}")
-            if (mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRoundNow() == true)) {
+            val needAcc = mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRoundNow() == true)
+            if (needAcc) {
+                // 下载midi
+                if (midiFile != null && !midiFile.exists()) {
+                    MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
+                    U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
+                }
+
+                //  播放伴奏
                 val songBeginTs = songModel.beginMs
                 if (accFile != null && accFile.exists()) {
                     // 伴奏文件存在
@@ -881,7 +893,107 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                 }
             }
+            // 启动acr打分识别
+            if (needAcc) {
+                //有伴奏模式，手动开启acc
+                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setSongName(songModel.itemName)
+                        .setArtist(songModel.owner)
+                        .setMode(RecognizeConfig.MODE_MANUAL)
+                        .build())
+            } else {
+                // 清唱还需要打分，那就只用 acr 打分
+                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setSongName(songModel.itemName)
+                        .setArtist(songModel.owner)
+                        .setMode(RecognizeConfig.MODE_AUTO)
+                        .setAutoTimes(4)
+                        .setMResultListener { result, list, targetSongInfo, lineNo ->
+                            var mAcrScore = 0
+                            if (targetSongInfo != null) {
+                                mAcrScore = (targetSongInfo.score * 100).toInt()
+                            }
+                            EventBus.getDefault().post(LyricAndAccMatchManager.ScoreResultEvent("onChangeBroadcastSuccess", -1, mAcrScore, 0))
+                        }
+                        .build())
+            }
         })
+    }
+
+    /*打分相关*/
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: LyricAndAccMatchManager.ScoreResultEvent) {
+        MyLog.d(TAG, "onEvent 得分 event = $event")
+        val line = event.line
+        val acrScore = event.acrScore
+        val melpScore = event.melpScore
+        val from = event.from
+        if (acrScore > melpScore) {
+            processScore(acrScore, line)
+        } else {
+            processScore(melpScore, line)
+        }
+    }
+
+    internal fun processScore(score: Int, line: Int) {
+        if (score < 0) {
+            return
+        }
+        //打分传给服务器
+        if (mRoomData.realRoundInfo?.isSingerNowBySelf() == true) {
+            sendScoreToServer(score, line)
+        }
+    }
+
+    /**
+     * 单句打分上报,在排位赛模式上报
+     *
+     * @param score
+     * @param line
+     */
+    private fun sendScoreToServer(score: Int, line: Int) {
+        //score = (int) (Math.mRandom()*100);
+        val map = HashMap<String, Any>()
+        val infoModel = mRoomData.realRoundInfo ?: return
+        map["userID"] = MyUserInfoManager.getInstance().uid
+
+        var itemID = mRoomData.realRoundInfo?.getSingerIdNow() ?: 0
+
+        map["itemID"] = itemID
+        map["score"] = score
+        map["no"] = line
+        map["gameID"] = mRoomData.gameId
+        map["mainLevel"] = 0
+        map["singSecond"] = 0
+        val roundSeq = infoModel.roundSeq
+        map["roundSeq"] = roundSeq
+        val nowTs = System.currentTimeMillis()
+        map["timeMs"] = nowTs
+
+
+        val sb = StringBuilder()
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.getInstance().uid)
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.gameId)
+                .append("|").append(0)
+                .append("|").append(0)
+                .append("|").append(roundSeq)
+                .append("|").append(nowTs)
+        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
+        launch {
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { raceRoomServerApi.sendPkPerSegmentResult(body) }
+            if (result.errno == 0) {
+                // TODO: 2018/12/13  当前postman返回的为空 待补充
+                MyLog.w(TAG, "单句打分上报成功")
+            } else {
+                MyLog.w(TAG, "单句打分上报失败" + result.errno)
+            }
+        }
     }
 
     @CallSuper

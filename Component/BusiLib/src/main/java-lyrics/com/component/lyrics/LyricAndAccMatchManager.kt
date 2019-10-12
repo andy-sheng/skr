@@ -5,6 +5,7 @@ import android.os.Message
 import android.view.View
 
 import com.common.engine.ScoreConfig
+import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.rx.RxRetryAssist
 import com.common.utils.U
@@ -29,6 +30,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 import com.component.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY
+import kotlin.math.abs
 
 /**
  * 这个类的职责是负责
@@ -53,12 +55,12 @@ class LyricAndAccMatchManager {
             super.handleMessage(msg)
             when (msg.what) {
                 MSG_ENSURE_LAUNCHER -> {
-                    MyLog.d(TAG, "handleMessage acc 加载超时，不等了，直接发事件")
+                    DebugLogView.println(TAG, "handleMessage acc 加载超时，不等了，直接发事件")
                     launchLyricEvent(LAUNCHER_DELAY)
                 }
                 else -> {
                     val lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100
-                    MyLog.d(TAG, "handleMessage lineNo=$lineNo mLastLineNum=$mLastLineNum")
+                    DebugLogView.println(TAG, "handleMessage lineNo=$lineNo mLastLineNum=$mLastLineNum")
                     if (lineNo > mLastLineNum) {
                         mAcrScore = -2
                         if (ScoreConfig.isMelp2Enable()) {
@@ -87,7 +89,7 @@ class LyricAndAccMatchManager {
 
     fun setArgs(params: ConfigParams
     ) {
-        MyLog.w(TAG, "setArgs params=$params")
+        DebugLogView.println(TAG, "setArgs params=$params")
         this.params = params
         mLrcLoadOk = false
         mHasLauncher = false
@@ -97,7 +99,7 @@ class LyricAndAccMatchManager {
     }
 
     fun start(l: Listener) {
-        MyLog.d(TAG, "start l=$l")
+        DebugLogView.println(TAG, "start l=$l")
         mUiHandler.removeCallbacksAndMessages(null)
         mLastLineNum = -1
         mListener = l
@@ -106,7 +108,7 @@ class LyricAndAccMatchManager {
     }
 
     fun stop() {
-        MyLog.d(TAG, "stop")
+        DebugLogView.println(TAG, "stop")
         EventBus.getDefault().unregister(this)
         params?.voiceScaleView?.startWithData(ArrayList(), 0)
         mUiHandler.removeCallbacksAndMessages(null)
@@ -132,7 +134,7 @@ class LyricAndAccMatchManager {
                         parseReader(lyricsReader)
                     }, { throwable ->
                         MyLog.e(TAG, throwable)
-                        MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词")
+                        DebugLogView.println(TAG, "歌词下载失败，采用不滚动方式播放歌词")
                         if (mListener != null) {
                             mListener!!.onLyricParseFailed()
                         }
@@ -141,7 +143,7 @@ class LyricAndAccMatchManager {
     }
 
     private fun parseReader(lyricsReader:LyricsReader){
-        MyLog.w(TAG, "onEventMainThread " + "play")
+        DebugLogView.println(TAG, "onEventMainThread " + "play")
         mListener?.onLyricParseSuccess(lyricsReader)
         params?.manyLyricsView?.visibility = View.VISIBLE
         params?.manyLyricsView?.initLrcData()
@@ -163,6 +165,7 @@ class LyricAndAccMatchManager {
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY.toLong())
             }
             mLrcLoadOk = true
+            DebugLogView.println(TAG, "歌词加载ready")
             // 这里是假设 伴奏 和 歌词一起初始化完毕的， 实际两者会有偏差优化下
             //                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
             //                            mRoomData.setSongLineNum(lineNum);
@@ -171,12 +174,12 @@ class LyricAndAccMatchManager {
 
     //发射歌词事件
     internal fun launchLyricEvent(accPlayTs: Int) {
-        MyLog.d(TAG, "launchLyricEvent accPlayTs=" + accPlayTs + "mAccLoadOk=" + params?.accLoadOk + " mLryLoadOk=" + mLrcLoadOk)
+        DebugLogView.println(TAG, "launchLyricEvent accPlayTs=" + accPlayTs + "mAccLoadOk=" + params?.accLoadOk + " mLryLoadOk=" + mLrcLoadOk)
         if (mLyricsReader == null) {
             return
         }
         if (mHasLauncher) {
-            MyLog.d(TAG, "launchLyricEvent 事件已经发射过了，取消这次")
+            DebugLogView.println(TAG, "launchLyricEvent 事件已经发射过了，取消这次")
             return
         }
         mHasLauncher = true
@@ -204,7 +207,7 @@ class LyricAndAccMatchManager {
     fun onEvent(event: EngineEvent) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             val `in` = event.getObj<EngineEvent.MixMusicTimeInfo>()
-            MyLog.d(TAG, "伴奏 ts=" + `in`!!.current)
+            DebugLogView.println(TAG, "伴奏 ts=" + `in`!!.current)
             if (`in` != null && `in`.current > 0) {
                 if (params?.accLoadOk == false) {
                     if (mLrcLoadOk) {
@@ -212,13 +215,14 @@ class LyricAndAccMatchManager {
                     }
                 }
                 params?.accLoadOk = true
+                DebugLogView.println(TAG, "伴奏加载ready")
                 if (params?.manyLyricsView?.visibility == View.VISIBLE) {
                     val a1 = params?.manyLyricsView?.curPlayingTime?:0
                     val a2 = params?.manyLyricsView?.playerSpendTime?:0
                     val ts1 = a1+a2
                     val ts2 = (`in`.current + (params?.accBeginTs ?: 0)).toLong()
-                    if (Math.abs(ts1 - ts2) > 500) {
-                        MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
+                    if (abs(ts1 - ts2) > 500) {
+                        DebugLogView.println(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=$ts1 伴奏ts=$ts2")
                         params?.manyLyricsView?.seekTo(ts2.toInt())
                     }
                 }
@@ -228,7 +232,7 @@ class LyricAndAccMatchManager {
 
 
     fun onAcrResult(result: String, list: List<SongInfo>, targetSongInfo: SongInfo?, lineNo: Int) {
-        MyLog.d(TAG, "onAcrResult result=$result list=$list targetSongInfo=$targetSongInfo lineNo=$lineNo mLastLineNum=$mLastLineNum")
+        DebugLogView.println(TAG, "onAcrResult result=$result list=$list targetSongInfo=$targetSongInfo lineNo=$lineNo mLastLineNum=$mLastLineNum")
         mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100)
         if (lineNo > mLastLineNum) {
             mAcrScore = 0
@@ -257,13 +261,13 @@ class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LrcEvent.LineLineEndEvent) {
-        MyLog.w(TAG, "LineLineEndEvent event=$event")
+        DebugLogView.println(TAG, "LineLineEndEvent event=$event")
         if (this.params?.needScore == false) {
             return
         }
         if (ScoreConfig.isMelp2Enable()) {
             ZqEngineKit.getInstance().getLineScore2(event.lineNum) { lineNum, score ->
-                MyLog.d(TAG, "melp2 onGetScore lineNum=$lineNum score=$score")
+                DebugLogView.println(TAG, "melp2 onGetScore lineNum=$lineNum score=$score")
                 mMelp2Score = score
                 if (ScoreConfig.isAcrEnable()) {
                     if (mAcrScore >= 0 || mAcrScore == -2) {
@@ -292,7 +296,7 @@ class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LrcEvent.LyricStartEvent) {
-        MyLog.d(TAG, "onEvent LineStartEvent")
+        DebugLogView.println(TAG, "onEvent LineStartEvent")
         mLastLineNum = -1
         val params = ZqEngineKit.getInstance().params
         if (params != null) {
@@ -301,7 +305,7 @@ class LyricAndAccMatchManager {
     }
 
     private fun processScore(from: String, melpScore: Int, acrScore: Int, line: Int) {
-        MyLog.w(TAG, "processScore from=$from melpScore=$melpScore acrScore=$acrScore line=$line mLastLineNum=$mLastLineNum")
+        DebugLogView.println(TAG, "processScore from=$from melpScore=$melpScore acrScore=$acrScore line=$line mLastLineNum=$mLastLineNum")
         if (line <= mLastLineNum) {
             return
         }
@@ -326,7 +330,11 @@ class LyricAndAccMatchManager {
         //void onScoreResult(String from,int melpScore, int acrScore, int line);
     }
 
-    class ScoreResultEvent(var from: String, var melpScore: Int, var acrScore: Int, var line: Int)
+    class ScoreResultEvent(var from: String, var melpScore: Int, var acrScore: Int, var line: Int){
+        override fun toString(): String {
+            return "ScoreResultEvent(from='$from', melpScore=$melpScore, acrScore=$acrScore, line=$line)"
+        }
+    }
 
     class ConfigParams {
         var lyricReader: LyricsReader? = null

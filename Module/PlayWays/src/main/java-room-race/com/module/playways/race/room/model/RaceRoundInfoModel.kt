@@ -287,7 +287,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     /**
      * 此时此刻的轮次是否是伴奏模式
      */
-    fun isAccRoundNow(): Boolean {
+    fun  isAccRoundNow(): Boolean {
         return isAccRoundBySubRoundSeq(subRoundSeq)
     }
 

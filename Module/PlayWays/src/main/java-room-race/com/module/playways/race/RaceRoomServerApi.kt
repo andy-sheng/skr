@@ -340,4 +340,8 @@ interface RaceRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/racegame/game-choices")
     fun getGameChoices(@Query("roomID") roomID: Int, @Query("roundSeq") roundSeq: Int): Call<ApiResult>
+
+
+    @GET("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
+    fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
 }

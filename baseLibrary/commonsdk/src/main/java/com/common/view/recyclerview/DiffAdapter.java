@@ -1,5 +1,6 @@
 package com.common.view.recyclerview;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
