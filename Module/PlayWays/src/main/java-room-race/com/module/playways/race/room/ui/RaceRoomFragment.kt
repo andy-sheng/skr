@@ -83,6 +83,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
     private lateinit var mNextSongStartTipTv: View
+    private lateinit var mRacePagerSelectSongView: RacePagerSelectSongView
+    private lateinit var mSignUpView: SignUpView
 
     internal var mVIPEnterView: VIPEnterView? = null
 
@@ -144,6 +146,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initSingSenceView()
         initRightView()
         initVipEnterView()
+        initSelectPagerView()
+        initSignUpView()
 
         mNextSongStartTipTv = rootView.findViewById(R.id.next_song_start_tip_tv);
         showNextSongStartTips()
@@ -177,6 +181,14 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         } else {
             removeNextSongStartTipsView()
         }
+    }
+
+    private fun initSignUpView() {
+        mSignUpView = rootView.findViewById(R.id.sign_up_view)
+    }
+
+    private fun initSelectPagerView() {
+        mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
     }
 
     private fun initResuleView() {

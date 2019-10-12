@@ -42,8 +42,8 @@ public class BannerViewPager extends FrameLayout {
     private ViewPager.PageTransformer mPageTransformer;
     private BannerAdapter mBannerAdapter;
     private int mItemCount;
-    private LinearLayout mIndicators;
-    private TextView mTitle;
+//    private LinearLayout mIndicators;
+//    private TextView mTitle;
     private boolean mAutoPlay;
     private OnBannerItemClickListener mOnBannerClickListener;
     private BaseIndicator mIndicatorView;
@@ -93,13 +93,13 @@ public class BannerViewPager extends FrameLayout {
             @Override
             public void onPageSelected(int position) {
                 setTitleSlogan(position);
-                for (int i = 0; i < mIndicators.getChildCount(); i++) {
-                    if (i == position % mItemCount) {
-                        ((BaseIndicator) mIndicators.getChildAt(i)).setState(true);
-                    } else {
-                        ((BaseIndicator) mIndicators.getChildAt(i)).setState(false);
-                    }
-                }
+//                for (int i = 0; i < mIndicators.getChildCount(); i++) {
+//                    if (i == position % mItemCount) {
+//                        ((BaseIndicator) mIndicators.getChildAt(i)).setState(true);
+//                    } else {
+//                        ((BaseIndicator) mIndicators.getChildAt(i)).setState(false);
+//                    }
+//                }
             }
 
             @Override
@@ -111,8 +111,8 @@ public class BannerViewPager extends FrameLayout {
     private void initView() {
         View.inflate(getContext(), R.layout.layout_bannerviewpager, this);
         mViewPager = ((ViewPager) findViewById(R.id.viewPager));
-        mIndicators = ((LinearLayout) findViewById(R.id.bannerIndicators));
-        mTitle = ((TextView) findViewById(R.id.bannerTitle));
+//        mIndicators = ((LinearLayout) findViewById(R.id.bannerIndicators));
+//        mTitle = ((TextView) findViewById(R.id.bannerTitle));
     }
 
     public BannerViewPager setData(List<BannerItemBean> data, ImageLoaderInterface imageLoader) {
@@ -128,44 +128,44 @@ public class BannerViewPager extends FrameLayout {
     }
 
     private void setTitleSlogan(int i) {
-        if (mHaveTitle) {
-            if (mTitle.getVisibility() == GONE) {
-                mTitle.setVisibility(VISIBLE);
-            }
-            String s = mBannerAdapter.getData().get(i % mItemCount).getTitle();
-            mTitle.setText(s);
-        } else if (mTitle.getVisibility() == VISIBLE) {
-            mTitle.setVisibility(GONE);
-        }
+//        if (mHaveTitle) {
+//            if (mTitle.getVisibility() == GONE) {
+//                mTitle.setVisibility(VISIBLE);
+//            }
+//            String s = mBannerAdapter.getData().get(i % mItemCount).getTitle();
+//            mTitle.setText(s);
+//        } else if (mTitle.getVisibility() == VISIBLE) {
+//            mTitle.setVisibility(GONE);
+//        }
     }
 
     private void setIndicators(int dataCount) {
-        mIndicators.removeAllViews();
-        for (int i = 0; i < dataCount; i++) {
-            if (mIndicatorView == null) {
-                Indicator indicator = new Indicator(getContext());
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                        (getRatioDimension(getContext(), 20, false),
-                                getRatioDimension(getContext(), 20, false));
-                layoutParams.setMargins(getRatioDimension(getContext(), 10, true), 0,
-                        getRatioDimension(getContext(), 10, true), 0);
-                indicator.setLayoutParams(layoutParams);
-                mIndicators.addView(indicator);
-            } else {
-                Log.e("iii", "count" + i);
-
-                BaseIndicator baseIndicator = mIndicatorView;
-                ViewParent vp = baseIndicator.getParent();
-                if (vp != null) {
-                    ViewGroup parent = (ViewGroup) vp;
-                    parent.removeView(baseIndicator);
-                }
-                mIndicators.addView(baseIndicator);
-                Log.e("iii", "" + mIndicators.getChildCount());
-            }
-        }
-        Log.e("iii", "" + mIndicators.getChildCount());
-        ((BaseIndicator) mIndicators.getChildAt(0)).setState(true);
+//        mIndicators.removeAllViews();
+//        for (int i = 0; i < dataCount; i++) {
+//            if (mIndicatorView == null) {
+//                Indicator indicator = new Indicator(getContext());
+//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+//                        (getRatioDimension(getContext(), 20, false),
+//                                getRatioDimension(getContext(), 20, false));
+//                layoutParams.setMargins(getRatioDimension(getContext(), 10, true), 0,
+//                        getRatioDimension(getContext(), 10, true), 0);
+//                indicator.setLayoutParams(layoutParams);
+//                mIndicators.addView(indicator);
+//            } else {
+//                Log.e("iii", "count" + i);
+//
+//                BaseIndicator baseIndicator = mIndicatorView;
+//                ViewParent vp = baseIndicator.getParent();
+//                if (vp != null) {
+//                    ViewGroup parent = (ViewGroup) vp;
+//                    parent.removeView(baseIndicator);
+//                }
+//                mIndicators.addView(baseIndicator);
+//                Log.e("iii", "" + mIndicators.getChildCount());
+//            }
+//        }
+//        Log.e("iii", "" + mIndicators.getChildCount());
+//        ((BaseIndicator) mIndicators.getChildAt(0)).setState(true);
     }
 
     public void displayImg(Context context, ImageView imageView, Object s) {
