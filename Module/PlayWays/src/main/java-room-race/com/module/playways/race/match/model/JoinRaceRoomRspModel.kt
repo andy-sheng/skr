@@ -27,5 +27,5 @@ class JoinRaceRoomRspModel : Serializable {
     @JSONField(name = "config")
     var config: LocalRGameConfigMsg? = null
     @JSONField(name = "couldChoiceGames")
-    var couldChoiceGames: ArrayList<SongModel>? = null
+    var couldChoiceGames: ArrayList<RaceGamePlayInfo>? = null
 }

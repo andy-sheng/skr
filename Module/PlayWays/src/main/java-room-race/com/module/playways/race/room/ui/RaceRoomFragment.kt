@@ -189,6 +189,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     private fun initSelectPagerView() {
         mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
+        mRacePagerSelectSongView.raceRoomData = mRoomData
     }
 
     private fun initResuleView() {
