@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.zq.live.proto.Room.QGameConfig;
 import com.zq.live.proto.Room.QScoreTipMsg;
 
@@ -14,6 +15,8 @@ public class GrabConfigModel implements Serializable {
     int wantSingDelayTimeMs = 500;
     List<GrabScoreTipMsgModel> qScoreTipMsg = new ArrayList<>();
     int kickUserConsumCoinCnt = 2;
+    @JSONField(name = "ChallengeRoundCnt")
+    int challengeRoundCnt = 18;
 
     public static GrabConfigModel parse(QGameConfig config) {
         GrabConfigModel grabConfigModel = new GrabConfigModel();
@@ -21,11 +24,12 @@ public class GrabConfigModel implements Serializable {
         grabConfigModel.setEnableShowMLightWaitTimeMs(config.getEnableShowMLightWaitTimeMs());
         grabConfigModel.setTotalGameRoundSeq(config.getTotalGameRoundSeq());
         grabConfigModel.setWantSingDelayTimeMs(config.getWantSingDelayTimeMs());
-        for(QScoreTipMsg qScoreTipMsg:config.getQScoreTipMsgList()){
+        for (QScoreTipMsg qScoreTipMsg : config.getQScoreTipMsgList()) {
             GrabScoreTipMsgModel grabScoreTipMsgModel = GrabScoreTipMsgModel.parse(qScoreTipMsg);
             grabConfigModel.getQScoreTipMsg().add(grabScoreTipMsgModel);
         }
         grabConfigModel.setKickUserConsumCoinCnt(config.getKickUserConsumCoinCnt());
+        grabConfigModel.setChallengeRoundCnt(config.c);
         return grabConfigModel;
     }
 
@@ -75,6 +79,14 @@ public class GrabConfigModel implements Serializable {
 
     public void setKickUserConsumCoinCnt(int kickUserConsumCoinCnt) {
         this.kickUserConsumCoinCnt = kickUserConsumCoinCnt;
+    }
+
+    public int getChallengeRoundCnt() {
+        return challengeRoundCnt;
+    }
+
+    public void setChallengeRoundCnt(int challengeRoundCnt) {
+        this.challengeRoundCnt = challengeRoundCnt;
     }
 
     @Override
