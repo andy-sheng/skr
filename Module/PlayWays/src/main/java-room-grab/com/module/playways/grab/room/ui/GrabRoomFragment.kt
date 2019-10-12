@@ -143,6 +143,8 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     lateinit var mPracticeFlagIv: ExImageView // 练习中
 
+    lateinit var mChallengeStarView: GrabChallengeStarView
+
     internal var mCorePresenter: GrabCorePresenter? = null
 
     internal var mVipEnterPresenter: VipEnterPresenter? = null
@@ -189,7 +191,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     internal var mGrabVoiceControlPanelView: GrabVoiceControlPanelView? = null
 
-    var mGiftPanelView: GiftPanelView?=null
+    var mGiftPanelView: GiftPanelView? = null
 
     lateinit var mGiftContinueViewGroup: GiftContinueViewGroup
 
@@ -977,6 +979,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
         }
         mPracticeFlagIv = rootView.findViewById(R.id.practice_flag_iv)
+        mChallengeStarView = GrabChallengeStarView(rootView.findViewById(R.id.grab_challenge_star_view_stub))
         // 加上状态栏的高度
         val statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(context!!)
 
@@ -1489,7 +1492,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             return true
         }
 
-        if (mGiftPanelView?.onBackPressed()==true) {
+        if (mGiftPanelView?.onBackPressed() == true) {
             return true
         }
         if (mBeautyControlPanelView.onBackPressed()) {
@@ -1627,8 +1630,13 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    override fun showChallengeStarView(cnt: Int) {
-
+    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean) {
+        if (visiable) {
+            mChallengeStarView.bindData(cnt, justShowInChallenge)
+            mChallengeStarView.setVisibility(View.VISIBLE)
+        } else {
+            mChallengeStarView.setVisibility(View.GONE)
+        }
     }
 
     // 确认踢人弹窗

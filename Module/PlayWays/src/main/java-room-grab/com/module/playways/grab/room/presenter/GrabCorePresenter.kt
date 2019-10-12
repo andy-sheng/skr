@@ -1563,18 +1563,21 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             // 处理挑战人气结果
             if (mRoomData.inChallenge) {
                 val t = now.roundSeq - mRoomData.enterRoundSeq
+                if (t == 0) {
+                    mIGrabView.showChallengeStarView(0, true, true)
+                }
                 if (t > 0 && t % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
                     //拉取最新的星级数据
                     launch {
                         val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq) }
                         if (result.errno == 0) {
                             val cnt = result.data.getIntValue("starCnt")
-                            mIGrabView.showChallengeStarView(cnt)
+                            mIGrabView.showChallengeStarView(cnt, true, false)
                         }
                     }
                 }
             } else {
-                mIGrabView.showChallengeStarView(-1)
+                mIGrabView.showChallengeStarView(0, visiable = false, justShowInChallenge = false)
             }
         }
 

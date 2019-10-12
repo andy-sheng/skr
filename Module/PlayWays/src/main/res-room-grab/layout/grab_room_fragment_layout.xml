@@ -59,8 +59,8 @@
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingBottom="@dimen/view_7_dp"
             app:edge_position="top|bottom"
-            gameType:type="grab"
-            app:edge_width="30dp"/>
+            app:edge_width="30dp"
+            gameType:type="grab" />
 
         <!--<com.common.view.ex.ExImageView-->
         <!--android:id="@+id/cover_iv"-->
@@ -119,8 +119,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_18_dp"
         android:layout_marginTop="@dimen/view_150_dp"
-        android:visibility="gone"
-        android:src="@drawable/grab_inpractice" />
+        android:src="@drawable/grab_inpractice"
+        android:visibility="gone" />
+
+    <ViewStub
+        android:id="@+id/grab_challenge_star_view_stub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_82_dp"
+        android:inflatedId="@id/grab_challenge_star_view_stub"
+        android:layout="@layout/grab_challenge_star_view_layout" />
 
     <!-- 转场的一些卡片-->
     <com.module.playways.grab.room.view.TurnInfoCardView
@@ -285,11 +294,11 @@
         android:visibility="gone" />
 
     <ViewStub
-        android:layout_above="@+id/bottom_bg_vp"
-        android:layout_marginBottom="-8dp"
         android:id="@+id/vip_enter_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bg_vp"
+        android:layout_marginBottom="-8dp"
         android:layout="@layout/vip_enter_view_layout" />
 
     <com.module.playways.grab.room.view.GrabInputContainerView
