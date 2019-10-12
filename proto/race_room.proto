@@ -65,6 +65,7 @@ message RaceRoundOverMsg
     RaceRoundInfo currentRound  = 3; //当前结束轮次的信息
     RaceRoundInfo nextRound     = 4; //下个轮次的信息
     repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
+    repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
 }
 
 message RExitGameMsg

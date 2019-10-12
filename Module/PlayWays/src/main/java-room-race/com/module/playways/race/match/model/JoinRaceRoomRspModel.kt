@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 import com.module.playways.race.match.pbLocalModel.LocalRGameConfigMsg
 import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.module.playways.room.song.model.SongModel
 import java.io.Serializable
 
 class JoinRaceRoomRspModel : Serializable {
@@ -25,4 +26,6 @@ class JoinRaceRoomRspModel : Serializable {
     var agoraToken: String? = null
     @JSONField(name = "config")
     var config: LocalRGameConfigMsg? = null
+    @JSONField(name = "couldChoiceGames")
+    var couldChoiceGames: ArrayList<SongModel>? = null
 }

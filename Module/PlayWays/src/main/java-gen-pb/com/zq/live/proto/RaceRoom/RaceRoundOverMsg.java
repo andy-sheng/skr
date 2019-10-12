@@ -73,19 +73,31 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   )
   private final List<RaceGameInfo> games;
 
+  /**
+   * 可以报名选择的游戏列表
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.zq.live.proto.RaceRoom.RaceGameInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<RaceGameInfo> couldChoiceGames;
+
   public RaceRoundOverMsg(Long roundOverTimeMs, ERoundOverType overType, RaceRoundInfo currentRound,
-      RaceRoundInfo nextRound, List<RaceGameInfo> games) {
-    this(roundOverTimeMs, overType, currentRound, nextRound, games, ByteString.EMPTY);
+      RaceRoundInfo nextRound, List<RaceGameInfo> games, List<RaceGameInfo> couldChoiceGames) {
+    this(roundOverTimeMs, overType, currentRound, nextRound, games, couldChoiceGames, ByteString.EMPTY);
   }
 
   public RaceRoundOverMsg(Long roundOverTimeMs, ERoundOverType overType, RaceRoundInfo currentRound,
-      RaceRoundInfo nextRound, List<RaceGameInfo> games, ByteString unknownFields) {
+      RaceRoundInfo nextRound, List<RaceGameInfo> games, List<RaceGameInfo> couldChoiceGames,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.overType = overType;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
     this.games = Internal.immutableCopyOf("games", games);
+    this.couldChoiceGames = Internal.immutableCopyOf("couldChoiceGames", couldChoiceGames);
   }
 
   @Override
@@ -96,6 +108,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
     builder.games = Internal.copyOf("games", games);
+    builder.couldChoiceGames = Internal.copyOf("couldChoiceGames", couldChoiceGames);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -110,7 +123,8 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
         && Internal.equals(overType, o.overType)
         && Internal.equals(currentRound, o.currentRound)
         && Internal.equals(nextRound, o.nextRound)
-        && games.equals(o.games);
+        && games.equals(o.games)
+        && couldChoiceGames.equals(o.couldChoiceGames);
   }
 
   @Override
@@ -123,6 +137,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       result = result * 37 + games.hashCode();
+      result = result * 37 + couldChoiceGames.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -136,6 +151,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     if (!games.isEmpty()) builder.append(", games=").append(games);
+    if (!couldChoiceGames.isEmpty()) builder.append(", couldChoiceGames=").append(couldChoiceGames);
     return builder.replace(0, 2, "RaceRoundOverMsg{").append('}').toString();
   }
 
@@ -200,6 +216,16 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   }
 
   /**
+   * 可以报名选择的游戏列表
+   */
+  public List<RaceGameInfo> getCouldChoiceGamesList() {
+    if(couldChoiceGames==null){
+        return new java.util.ArrayList<RaceGameInfo>();
+    }
+    return couldChoiceGames;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -234,6 +260,13 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     return games!=null;
   }
 
+  /**
+   * 可以报名选择的游戏列表
+   */
+  public boolean hasCouldChoiceGamesList() {
+    return couldChoiceGames!=null;
+  }
+
   public static final class Builder extends Message.Builder<RaceRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -245,8 +278,11 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
 
     private List<RaceGameInfo> games;
 
+    private List<RaceGameInfo> couldChoiceGames;
+
     public Builder() {
       games = Internal.newMutableList();
+      couldChoiceGames = Internal.newMutableList();
     }
 
     /**
@@ -290,9 +326,18 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       return this;
     }
 
+    /**
+     * 可以报名选择的游戏列表
+     */
+    public Builder addAllCouldChoiceGames(List<RaceGameInfo> couldChoiceGames) {
+      Internal.checkElementsNotNull(couldChoiceGames);
+      this.couldChoiceGames = couldChoiceGames;
+      return this;
+    }
+
     @Override
     public RaceRoundOverMsg build() {
-      return new RaceRoundOverMsg(roundOverTimeMs, overType, currentRound, nextRound, games, super.buildUnknownFields());
+      return new RaceRoundOverMsg(roundOverTimeMs, overType, currentRound, nextRound, games, couldChoiceGames, super.buildUnknownFields());
     }
   }
 
@@ -308,6 +353,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
           + RaceRoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
           + RaceRoundInfo.ADAPTER.encodedSizeWithTag(4, value.nextRound)
           + RaceGameInfo.ADAPTER.asRepeated().encodedSizeWithTag(5, value.games)
+          + RaceGameInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.couldChoiceGames)
           + value.unknownFields().size();
     }
 
@@ -318,6 +364,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       RaceRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
       RaceRoundInfo.ADAPTER.encodeWithTag(writer, 4, value.nextRound);
       RaceGameInfo.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.games);
+      RaceGameInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.couldChoiceGames);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -339,6 +386,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
           case 3: builder.setCurrentRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
           case 4: builder.setNextRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
           case 5: builder.games.add(RaceGameInfo.ADAPTER.decode(reader)); break;
+          case 6: builder.couldChoiceGames.add(RaceGameInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -356,6 +404,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       if (builder.currentRound != null) builder.currentRound = RaceRoundInfo.ADAPTER.redact(builder.currentRound);
       if (builder.nextRound != null) builder.nextRound = RaceRoundInfo.ADAPTER.redact(builder.nextRound);
       Internal.redactElements(builder.games, RaceGameInfo.ADAPTER);
+      Internal.redactElements(builder.couldChoiceGames, RaceGameInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

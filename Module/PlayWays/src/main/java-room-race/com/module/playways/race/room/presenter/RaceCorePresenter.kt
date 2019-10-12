@@ -12,7 +12,8 @@ import com.common.jiguang.JiGuangPush
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
@@ -43,10 +44,8 @@ import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
-import com.module.playways.room.room.score.MachineScoreItem
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.zq.live.proto.RaceRoom.*
-import com.zq.live.proto.Room.EQRoundStatus
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.*
 import okhttp3.MediaType
@@ -55,7 +54,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Runnable
-import java.util.HashMap
+import java.util.*
 
 class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
 
@@ -646,6 +645,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
             event.pb.gamesList.forEach {
                 nextRoundInfo.games.add(parseFromGameInfoPB(it))
+            }
+            mRoomData.couldChoiceGames.clear()
+            event.pb.couldChoiceGamesList?.forEach {
+                mRoomData.couldChoiceGames.add(parseFromGameInfoPB(it))
             }
             if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
                 mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, false)
