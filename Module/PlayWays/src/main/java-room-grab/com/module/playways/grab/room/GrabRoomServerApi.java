@@ -5,6 +5,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -514,4 +515,12 @@ message STCommitSegmentResultReq
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @GET("http://dev.api.inframe.mobi//v1/bonus/ask-for-flower")
     Observable<ApiResult> punch(@Query("timestamp") long offset, @Query("signV2") String signV2);
+
+    /**
+     * 上传个人标签声音资源
+     * @param body
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi//v1/stand/challenge-resource")
+    Call<ApiResult> uploadChallengeResource(@Body RequestBody body);
 }

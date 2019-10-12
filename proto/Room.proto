@@ -477,6 +477,7 @@ message QGameConfig {
     repeated QScoreTipMsg qScoreTipMsg = 5; //反馈分提示语
     uint32 KickUserConsumCoinCnt = 6; //踢人消耗金币数
     repeated PKScoreTipMsg qPKScoreTipMsg = 7; //反馈分提示语
+    uint32 challengeRoundCnt = 8; //一个挑战的轮次数量
 }
 // 加入指令
 message JoinActionMsg {

@@ -23,6 +23,8 @@ import com.common.player.IPlayer
 import com.common.player.PlayerCallbackAdapter
 import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
+import com.common.upload.UploadCallback
+import com.common.upload.UploadParams
 import com.common.utils.ActivityUtils
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.SpanUtils
@@ -75,6 +77,7 @@ import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.Common.UserInfo
 import com.zq.live.proto.Room.*
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.greenrobot.eventbus.EventBus
@@ -164,7 +167,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     init {
         ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
-        U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("WonderfulMoment"))
+        U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
         startSyncGameStateTask(sSyncStateTaskInterval * 2)
     }
 
@@ -467,26 +470,15 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      */
     fun beginSing() {
         // 打开引擎，变为主播
-        val now = mRoomData.realRoundInfo
-        if (mRoomData.openAudioRecording()) {
-            // 需要上传音频伪装成机器人
-            if (now != null && !now.isMiniGameRound) {
-                val fileName = String.format("wm_%s_%s.aac", mRoomData.gameId, now.roundSeq)
-                val savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName)
-                ZqEngineKit.getInstance().startAudioRecording(savePath, false)
-            }
+        // 需要上传音频伪装成机器人
+        if (mRoomData.realRoundInfo?.isNormalRound == true) {
+            /**
+             * 个人标签声音
+             */
+            val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, mRoomData.realRoundInfo?.roundSeq)
+            val savePath = U.getAppInfoUtils().getFilePathInSubDir("grab_save", fileName)
+            ZqEngineKit.getInstance().startAudioRecording(savePath, false)
         }
-
-        /**
-         * if (now != null) {
-         * if (mRobotScoreHelper == null) {
-         * mRobotScoreHelper = new RobotScoreHelper();
-         * }
-         * mRobotScoreHelper.reset();
-         * }
-         */
-
-
     }
 
     /**
@@ -862,67 +854,62 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             mGrabRedPkgPresenter!!.getRedPkg()
         }
 
-        if (mRoomData.openAudioRecording() && !roundInfoModel.isMiniGameRound) {
-            var songModel: SongModel? = null
-            var baodeng = false
-            if (roundInfoModel.overReason == EQRoundOverReason.ROR_CHO_SUCCESS.value || roundInfoModel.overReason == EQRoundOverReason.ROR_LAST_ROUND_OVER.value) {
+        if (roundInfoModel.isNormalRound) {
+            if (roundInfoModel.overReason == EQRoundOverReason.ROR_LAST_ROUND_OVER.value) {
                 if (roundInfoModel.resultType == EQRoundResultType.ROT_TYPE_1.value) {
                     // 一唱到底 或者是 是pk轮次，正常结束
-                    songModel = roundInfoModel.music
-                    baodeng = !roundInfoModel.getbLightInfos().isEmpty()
-                }
-            }
-            if (roundInfoModel.getsPkRoundInfoModels().size == 2) {
-                if (roundInfoModel.getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.getInstance().uid && roundInfoModel.getsPkRoundInfoModels()[0].overReason == EQRoundOverReason.ROR_LAST_ROUND_OVER.value) {
-                    // 第一轮我唱
-                    songModel = roundInfoModel.music
-                    baodeng = !roundInfoModel.getsPkRoundInfoModels()[0].getbLightInfos().isEmpty()
-                } else if (roundInfoModel.getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.getInstance().uid && roundInfoModel.getsPkRoundInfoModels()[1].overReason == EQRoundOverReason.ROR_LAST_ROUND_OVER.value) {
-                    // 第一轮我唱
-                    if (roundInfoModel.music != null) {
-                        songModel = roundInfoModel.music.pkMusic
+                    var songModel = roundInfoModel.music
+                    var baodengCnt = roundInfoModel.getbLightInfos().size
+                    if (baodengCnt > mRoomData.maxGetBLightCnt) {
+                        // 现在的爆灯数 大于 之前一场到底的爆灯数，上传刚刚录制的音频资源
+                        uploadResForLabel(roundInfoModel)
                     }
-                    baodeng = !roundInfoModel.getsPkRoundInfoModels()[1].getbLightInfos().isEmpty()
                 }
-            }
-            if (songModel != null) {
-                MyLog.d(TAG, "添加到待选作品")
-                val fileName = String.format("wm_%s_%s.aac", mRoomData.gameId, roundInfoModel.roundSeq)
-                val savePath = U.getAppInfoUtils().getFilePathInSubDir("WonderfulMoment", fileName)
-                mRoomData.addWorksUploadModel(WorksUploadModel(savePath, songModel, baodeng))
             }
         }
     }
 
-    //    /**
-    //     * 上传音频文件用作机器人
-    //     *
-    //     * @param roundInfoModel
-    //     */
-    //    private void uploadRes1ForAi(BaseRoundInfoModel roundInfoModel) {
-    //        if (mRobotScoreHelper != null) {
-    //            MyLog.d(TAG, "uploadRes1ForAi 开始上传资源 得分:" + roundInfoModel.getSysScore());
-    //            UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
-    //                    .setFileType(UploadParams.FileType.audioAi)
-    //                    .startUploadAsync(new UploadCallback() {
-    //                        @Override
-    //                        public void onProgressNotInUiThread(long currentSize, long totalSize) {
-    //
-    //                        }
-    //
-    //                        @Override
-    //                        public void onSuccessNotInUiThread(String url) {
-    //                            MyLog.w(TAG, "uploadRes1ForAi 上传成功 url=" + url);
-    //                            sendUploadRequest(roundInfoModel, url);
-    //                        }
-    //
-    //                        @Override
-    //                        public void onFailureNotInUiThread(String msg) {
-    //
-    //                        }
-    //                    });
-    //        }
-    //    }
+    /**
+     * 上传音频文件用作个人标签
+     *
+     * @param roundInfoModel
+     */
+    private fun uploadResForLabel(roundInfoModel: GrabRoundInfoModel) {
+        val fileName = String.format(PERSON_LABEL_SAVE_PATH_FROMAT, mRoomData.gameId, roundInfoModel.roundSeq)
+        val savePath = U.getAppInfoUtils().getFilePathInSubDir("grab_save", fileName)
+
+        UploadParams.newBuilder(savePath)
+                .setFileType(UploadParams.FileType.audioAi)
+                .startUploadAsync(object : UploadCallback {
+                    override fun onProgressNotInUiThread(currentSize: Long, totalSize: Long) {
+                    }
+
+                    override fun onSuccessNotInUiThread(url: String?) {
+                        uploadLabelToServer(roundInfoModel, savePath, url?:"")
+                    }
+
+                    override fun onFailureNotInUiThread(msg: String?) {
+                    }
+                })
+    }
+
+    private fun uploadLabelToServer(roundInfoModel: GrabRoundInfoModel, localPath: String, audioUrl: String) {
+        launch {
+            val map = HashMap<String, Any>()
+            map["roomID"] = mRoomData.gameId
+            map["audioDur"] = U.getMediaUtils().getDuration(localPath, roundInfoModel.singTotalMs)
+            map["audioURL"] = audioUrl
+            map["bLightCnt"] = roundInfoModel.getbLightInfos().size
+            map["itemID"] = roundInfoModel.music.itemID
+            map["itemName"] = roundInfoModel.music.itemName
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe { mRoomServerApi.uploadChallengeResource(body) }
+            if (result.errno == 0) {
+                mRoomData.maxGetBLightCnt = roundInfoModel.getbLightInfos().size
+                MyLog.d(TAG, "个人标签资源上传成功")
+            }
+        }
+    }
 
     //    /**
     //     * 上传机器人资源相关文件到服务器
@@ -1564,9 +1551,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 size++
             }
             val finalSize = size
-            if(mRoomData.roomType==GrabRoomType.ROOM_TYPE_PLAYBOOK){
+            if (mRoomData.roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK) {
 
-            }else{
+            } else {
                 mUiHandler.post { mIGrabView.showPracticeFlag(finalSize <= 1) }
             }
         }
@@ -2644,5 +2631,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         internal val MSG_RECOVER_VOLUME = 22 // 房主说话后 恢复音量
 
         internal val MSG_ENSURE_EXIT = 8 // 房主说话后 恢复音量
+
+        internal val PERSON_LABEL_SAVE_PATH_FROMAT = "person_label_%s_%s.m4a"
     }
 }

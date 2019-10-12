@@ -46,7 +46,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     var isNewUser = false   // 是否是新手引导房间
     private var mOpenRecording = -1 // 是否开启高光时刻
 
-    private val mWorksUploadList = ArrayList<WorksUploadModel>()// 作品时刻本地录音文件路径
+//    private val mWorksUploadList = ArrayList<WorksUploadModel>()// 作品时刻本地录音文件路径
 
     var isVideoRoom = false // 是否是个音频房间
 
@@ -56,7 +56,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     val isInPlayerList: Boolean
         get() {
             val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())
-            if(p!=null && (p.role == EQUserRole.EQUR_PLAY_USER.value || p.role==EQUserRole.EQUR_ROOM_OWNER.value)){
+            if (p != null && (p.role == EQUserRole.EQUR_PLAY_USER.value || p.role == EQUserRole.EQUR_ROOM_OWNER.value)) {
                 return true
             }
             return false
@@ -80,8 +80,12 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     val isOwner: Boolean
         get() = this.ownerId.toLong() == MyUserInfoManager.getInstance().uid
 
-    val worksUploadModel: List<WorksUploadModel>
-        get() = mWorksUploadList
+//    val worksUploadModel: List<WorksUploadModel>
+//        get() = mWorksUploadList
+
+    var inChallenge = false // 是否在挑战中
+
+    var maxGetBLightCnt = 0 // 之前获得过的最大爆灯数
 
     init {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
@@ -140,7 +144,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         val l = ArrayList<GrabPlayerInfoModel>()
         if (expectRoundInfo != null) {
             l.addAll(expectRoundInfo!!.playUsers)
-        }else{
+        } else {
             if (roomType == GrabRoomType.ROOM_TYPE_PLAYBOOK && !hasGameBegin) {
                 playbookRoomDataWhenNotStart?.let {
                     l.addAll(it.waitUsers)
@@ -278,23 +282,23 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
     //        return mGrabGuideInfoModel;
     //    }
 
-    fun openAudioRecording(): Boolean {
-        if (true) {
-            return false
-        }
-        if (mOpenRecording == -1) {
-            if (U.getDeviceUtils().level == DeviceUtils.LEVEL.BAD) {
-                MyLog.w(TAG, "设备太差，不开启录制")
-                mOpenRecording = 0
-            } else {
-                mOpenRecording = 1
-            }
-        }
-        return mOpenRecording == 1
-    }
-
-
-    fun addWorksUploadModel(savePath: WorksUploadModel) {
-        mWorksUploadList.add(savePath)
-    }
+//    fun openAudioRecording(): Boolean {
+//        if (true) {
+//            return false
+//        }
+//        if (mOpenRecording == -1) {
+//            if (U.getDeviceUtils().level == DeviceUtils.LEVEL.BAD) {
+//                MyLog.w(TAG, "设备太差，不开启录制")
+//                mOpenRecording = 0
+//            } else {
+//                mOpenRecording = 1
+//            }
+//        }
+//        return mOpenRecording == 1
+//    }
+//
+//
+//    fun addWorksUploadModel(savePath: WorksUploadModel) {
+//        mWorksUploadList.add(savePath)
+//    }
 }

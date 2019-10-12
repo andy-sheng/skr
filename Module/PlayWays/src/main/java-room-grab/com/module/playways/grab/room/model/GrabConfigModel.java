@@ -29,7 +29,7 @@ public class GrabConfigModel implements Serializable {
             grabConfigModel.getQScoreTipMsg().add(grabScoreTipMsgModel);
         }
         grabConfigModel.setKickUserConsumCoinCnt(config.getKickUserConsumCoinCnt());
-        grabConfigModel.setChallengeRoundCnt(config.c);
+        grabConfigModel.setChallengeRoundCnt(config.getChallengeRoundCnt());
         return grabConfigModel;
     }
 

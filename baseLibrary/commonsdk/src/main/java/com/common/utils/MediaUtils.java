@@ -126,19 +126,18 @@ public class MediaUtils {
         }
     }
 
-    public int getDuration(String filePath) {
+    public int getDuration(String filePath, int defaultDur) {
         MediaPlayer player = new MediaPlayer();
         try {
             player.setDataSource(filePath);  //recordingFilePath（）为音频文件的路径
             player.prepare();
+            return player.getDuration();
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+        } finally {
+            player.release();//记得释放资源
         }
-        int duration = player.getDuration();//获取音频的时间
-        player.release();//记得释放资源
-        return duration;
+        return defaultDur;
     }
 
 }
