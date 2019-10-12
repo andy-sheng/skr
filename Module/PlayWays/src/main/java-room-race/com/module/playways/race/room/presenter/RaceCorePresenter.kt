@@ -742,7 +742,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
                     if (result.errno == 0) {
                         val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
+                        val couldChoiceGames = JSON.parseArray(result.data.getString("couldChoiceGames"), RaceGamePlayInfo::class.java)
                         raceRoundInfoModel.games.addAll(games)
+                        mRoomData.couldChoiceGames.addAll(couldChoiceGames)
                     } else {
 
                     }

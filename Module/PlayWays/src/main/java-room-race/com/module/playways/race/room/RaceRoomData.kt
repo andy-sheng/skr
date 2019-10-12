@@ -117,6 +117,9 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         rsp.games?.let {
             this.expectRoundInfo?.games = it
         }
+        rsp.couldChoiceGames?.let {
+            this.couldChoiceGames = it
+        }
         this.realRoundInfo = null
         this.isIsGameFinish = false
         this.hasExitGame = false

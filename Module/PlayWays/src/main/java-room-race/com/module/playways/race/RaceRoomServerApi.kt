@@ -365,11 +365,4 @@ interface RaceRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/racegame/sing-make-choice")
     fun singMakeChoice(@Body body: RequestBody): Call<ApiResult>
-
-    /**
-     * roomID
-     * roundSeq
-     */
-    @GET("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
-    fun getGameChoices(@Body body: RequestBody): Call<ApiResult>
 }

@@ -12,12 +12,14 @@ import android.view.animation.TranslateAnimation
 import com.common.core.view.setDebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.module.playways.R
+import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.gift.view.GiftPanelView
 
 class RacePagerSelectSongView : ConstraintLayout {
     var closeIv: ExImageView
     var hideClickArea: View
     var bannerPager: ViewPager
+    var raceRoomData: RaceRoomData? = null
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -47,6 +49,7 @@ class RacePagerSelectSongView : ConstraintLayout {
         }
     }
 
+    //只有在唱歌的阶段就用到RaceRoomData couldChoiceGames的数据，别的时候都用到之前的歌曲的数据
     fun updateData() {
 
     }
