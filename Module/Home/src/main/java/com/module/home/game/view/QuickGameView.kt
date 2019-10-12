@@ -217,20 +217,15 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             }
 
             override fun onGrabRoomListener(model: SpecialModel?) {
+//                /**
+//                 * 点击首页热门
+//                 */
+//                StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
+
                 model?.let {
-                    mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinAudioPermission(it.tagID) {
-                            mRealNameVerifyUtils.checkAgeSettingState {
-                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                                iRankingModeService?.tryGoGrabMatch(it.tagID)
-                            }
-                        }
-                    }, true)
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_SPECIAL)
+                            .navigation()
                 }
-                /**
-                 * 点击首页热门
-                 */
-                StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
             }
         })
 

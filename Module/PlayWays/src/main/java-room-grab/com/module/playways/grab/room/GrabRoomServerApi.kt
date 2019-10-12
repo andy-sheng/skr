@@ -1,22 +1,42 @@
-package com.module.playways.grab.room;
+package com.module.playways.grab.room
 
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiResult;
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiResult
 
-import io.reactivex.Observable;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
+import io.reactivex.Observable
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
-public interface GrabRoomServerApi {
+interface GrabRoomServerApi {
+
+    // 抢唱页面
+    @GET("v3/playbook/stand-tag-list")
+    fun getStandTagList(@Query("userID") userID: Long, @Query("offset") offset: Int, @Query("cnt") cnt: Int): Call<ApiResult>
+
+    /**
+     * 获取一唱到底的表情列表
+     *
+     * @return
+     */
+    @get:GET("http://dev.stand.inframe.mobi/v1/stand/list-emoji")
+    val dynamicEmoji: Observable<ApiResult>
+
+    /**
+     * 获取推荐tag列表
+     *
+     * @return
+     */
+    @get:GET("http://dev.api.inframe.mobi/v1/playbook/stand-billboards")
+    val standBillBoards: Observable<ApiResult>
 
     /**
      * room 相关
-     **/
+     */
 
     /**
      * 房主开始游戏
@@ -25,7 +45,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/game-begin")
-    Observable<ApiResult> ownerBeginGame(@Body RequestBody body);
+    fun ownerBeginGame(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 请求发JoinNotice的push
@@ -35,7 +55,7 @@ public interface GrabRoomServerApi {
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/join-room")
-    Observable<ApiResult> joinGrabRoom(@Body RequestBody body);
+    fun joinGrabRoom(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * {
@@ -49,13 +69,13 @@ public interface GrabRoomServerApi {
     //创建房间
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/create-room")
-    Observable<ApiResult> createRoom(@Body RequestBody body);
+    fun createRoom(@Body body: RequestBody): Observable<ApiResult>
 
 
     //检查公开房间有没有权限
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @GET("http://dev.room.inframe.mobi/v3/room/public-permission")
-    Observable<ApiResult> checkCreatePublicRoomPermission();
+    fun checkCreatePublicRoomPermission(): Observable<ApiResult>
 
     /**
      * {
@@ -67,7 +87,7 @@ public interface GrabRoomServerApi {
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v3/room/exit-room")
-    Observable<ApiResult> exitRoom(@Body RequestBody body);
+    fun exitRoom(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * {
@@ -80,10 +100,10 @@ public interface GrabRoomServerApi {
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.room.inframe.mobi/v2/room/change-room")
-    Observable<ApiResult> changeRoom(@Body RequestBody body);
+    fun changeRoom(@Body body: RequestBody): Observable<ApiResult>
 
 
-    /** stand 相关 **/
+    /** stand 相关  */
     /**
      * {
      * "roomID" : 111,
@@ -94,7 +114,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/m-light")
-    Observable<ApiResult> lightOff(@Body RequestBody body);
+    fun lightOff(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * {
@@ -106,7 +126,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/b-light")
-    Observable<ApiResult> lightBurst(@Body RequestBody body);
+    fun lightBurst(@Body body: RequestBody): Observable<ApiResult>
 
 
     /**
@@ -120,7 +140,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/intro-over")
-    Observable<ApiResult> sendGrapOver(@Body RequestBody body);
+    fun sendGrapOver(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * {
@@ -136,7 +156,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/resource")
-    Observable<ApiResult> saveRes(@Body RequestBody body);
+    fun saveRes(@Body body: RequestBody): Observable<ApiResult>
 
 
     /**
@@ -148,7 +168,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @GET("http://dev.stand.inframe.mobi/v2/stand/result")
-    Observable<ApiResult> getStandResult(@Query("roomID") int roomID);
+    fun getStandResult(@Query("roomID") roomID: Int): Observable<ApiResult>
 
     /**
      * {
@@ -158,15 +178,15 @@ public interface GrabRoomServerApi {
      * 上报结束一轮游戏
      *
      * @param body 游戏标识 roomID (必选)
-     *             机器评分 sysScore (必选)
-     *             时间戳 timeMs (必选)
-     *             签名  sign (必选)  md5(skrer|roomID|score|timeMs)
+     * 机器评分 sysScore (必选)
+     * 时间戳 timeMs (必选)
+     * 签名  sign (必选)  md5(skrer|roomID|score|timeMs)
      * @return 当前轮次结束时间戳roundOverTimeMs
      * 当前轮次信息currentRound
      * 下个轮次信息nextRound
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/round-over")
-    Observable<ApiResult> sendRoundOver(@Body RequestBody body);
+    fun sendRoundOver(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * {
@@ -178,10 +198,10 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/swap")
-    Observable<ApiResult> swap(@Body RequestBody body);
+    fun swap(@Body body: RequestBody): Observable<ApiResult>
 
     @GET("http://dev.stand.inframe.mobi/v1/stand/sync-status")
-    Observable<ApiResult> syncGameStatus(@Query("roomID") int roomID);
+    fun syncGameStatus(@Query("roomID") roomID: Int): Observable<ApiResult>
 
     /**
      * {
@@ -194,58 +214,58 @@ public interface GrabRoomServerApi {
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v2/stand/want-sing-chance")
-    Observable<ApiResult> wangSingChance(@Body RequestBody body);
+    fun wangSingChance(@Body body: RequestBody): Observable<ApiResult>
 
     //放弃演唱
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/give-up")
-    Observable<ApiResult> giveUpSing(@Body RequestBody body);
+    fun giveUpSing(@Body body: RequestBody): Observable<ApiResult>
 
     //房主控制结束小游戏
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-mini-game")
-    Observable<ApiResult> stopMiniGameByOwner(@Body RequestBody body);
+    fun stopMiniGameByOwner(@Body body: RequestBody): Observable<ApiResult>
 
     //房主控制结束自由麦
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/owner-stop-free-micro")
-    Observable<ApiResult> stopFreeMicroByOwner(@Body RequestBody body);
+    fun stopFreeMicroByOwner(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * @param body "kickUserID": 0,
-     *             "roomID": 0,
-     *             "roundSeq": 0
+     * "roomID": 0,
+     * "roundSeq": 0
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/req-kick-user")
-    Observable<ApiResult> reqKickUser(@Body RequestBody body);
+    fun reqKickUser(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 回应踢人请求
      *
      * @param body "agree": true,
-     *             "kickUserID": 0,
-     *             "roomID": 0,
-     *             "sourceUserID": 0
+     * "kickUserID": 0,
+     * "roomID": 0,
+     * "sourceUserID": 0
      * @return
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/agree-kick-user")
-    Observable<ApiResult> rspKickUser(@Body RequestBody body);
+    fun rspKickUser(@Body body: RequestBody): Observable<ApiResult>
 
 
     /**
      * 其余模块接口
-     **/
+     */
 
     //检查要不要显示红包领取
     @GET("http://dev.api.inframe.mobi/v1/task/list-newbee-task")
-    Observable<ApiResult> checkRedPkg();
+    fun checkRedPkg(): Observable<ApiResult>
 
     //接受红包
     @PUT("http://dev.api.inframe.mobi/v1/task/trigger-task-reward")
-    Observable<ApiResult> receiveCash(@Body RequestBody body);
+    fun receiveCash(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 获取房间内的歌曲
@@ -256,7 +276,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @GET("http://dev.room.inframe.mobi/v2/room/playbook")
-    Observable<ApiResult> getPlaybook(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
+    fun getPlaybook(@Query("roomID") roomID: Int, @Query("offset") offset: Long, @Query("limit") limit: Int): Observable<ApiResult>
 
     /**
      * 房主改变当前房间的tag
@@ -269,7 +289,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/change-music-tag")
-    Observable<ApiResult> changeMusicTag(@Body RequestBody body);
+    fun changeMusicTag(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 房主添加歌曲
@@ -281,7 +301,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/add-music")
-    Observable<ApiResult> addMusic(@Body RequestBody body);
+    fun addMusic(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 房主闪促歌曲
@@ -294,17 +314,17 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/del-music")
-    Observable<ApiResult> delMusic(@Body RequestBody body);
+    fun delMusic(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 修改房间名
      *
      * @param body "roomID": 0,
-     *             "roomName": "string"
+     * "roomName": "string"
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/update-name")
-    Observable<ApiResult> updateRoomName(@Body RequestBody body);
+    fun updateRoomName(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 得到专场列表
@@ -313,7 +333,7 @@ public interface GrabRoomServerApi {
      * @param count
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-tags")
-    Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count, @Query("mediaType") int type);
+    fun getSepcialList(@Query("offset") offset: Int, @Query("cnt") count: Int, @Query("mediaType") type: Int): Observable<ApiResult>
 
     /**
      * 获取好友列表
@@ -323,17 +343,17 @@ public interface GrabRoomServerApi {
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/room-friends")
-    Observable<ApiResult> getRoomFriendList(@Query("offset") int offset, @Query("cnt") int count);
+    fun getRoomFriendList(@Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
 
-//    /**
-//     * 获取粉丝列表
-//     *
-//     * @param offset
-//     * @param count
-//     * @return
-//     */
-//    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans")
-//    Observable<ApiResult> getRoomFansList(@Query("offset") int offset, @Query("cnt") int count);
+    //    /**
+    //     * 获取粉丝列表
+    //     *
+    //     * @param offset
+    //     * @param count
+    //     * @return
+    //     */
+    //    @GET("http://dev.api.inframe.mobi/v1/mate/room-fans")
+    //    Observable<ApiResult> getRoomFansList(@Query("offset") int offset, @Query("cnt") int count);
 
     /**
      * 获取粉丝列表
@@ -343,7 +363,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/room-fans-by-page")
-    Observable<ApiResult> getRoomFansList(@Query("offset") int offset, @Query("cnt") int count);
+    fun getRoomFansList(@Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
 
     /**
      * 搜索房间内粉丝
@@ -352,7 +372,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/mate/room-search-fans")
-    Observable<ApiResult> searchFans(@Query("searchContent") String searchContent);
+    fun searchFans(@Query("searchContent") searchContent: String): Observable<ApiResult>
 
     /**
      * 邀请好友
@@ -365,26 +385,17 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.api.inframe.mobi/v1/mate/room-invite")
-    Observable<ApiResult> inviteFriend(@Body RequestBody body);
-
-
-    /**
-     * 获取一唱到底的表情列表
-     *
-     * @return
-     */
-    @GET("http://dev.stand.inframe.mobi/v1/stand/list-emoji")
-    Observable<ApiResult> getDynamicEmoji();
+    fun inviteFriend(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 发送一唱到底表情
      *
      * @param body "gameID": 0  游戏id
-     *             "id": 0      表情id
+     * "id": 0      表情id
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/send-emoji")
-    Observable<ApiResult> sendDynamicEmoji(@Body RequestBody body);
+    fun sendDynamicEmoji(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 用户是否有未激活的红包
@@ -392,7 +403,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/redbag/check-newbie-task")
-    Observable<ApiResult> checkNewBieTask();
+    fun checkNewBieTask(): Observable<ApiResult>
 
     /**
      * 激活红包
@@ -402,7 +413,7 @@ public interface GrabRoomServerApi {
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.api.inframe.mobi/v1/redbag/trigger-newbie-task")
-    Observable<ApiResult> triggerNewBieTask(@Body RequestBody body);
+    fun triggerNewBieTask(@Body body: RequestBody): Observable<ApiResult>
 
 
     /*
@@ -423,15 +434,7 @@ message STCommitSegmentResultReq
       */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/pk-commit-segment-result")
-    Observable<ApiResult> sendPkPerSegmentResult(@Body RequestBody body);
-
-    /**
-     * 获取推荐tag列表
-     *
-     * @return
-     */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/stand-billboards")
-    Observable<ApiResult> getStandBillBoards();
+    fun sendPkPerSegmentResult(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 获取推荐歌曲
@@ -439,7 +442,7 @@ message STCommitSegmentResultReq
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
-    Observable<ApiResult> getListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
+    fun getListStandBoards(@Query("type") type: Int, @Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
 
     /**
      * 获取推荐歌曲
@@ -447,20 +450,20 @@ message STCommitSegmentResultReq
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-magpie-billboard")
-    Observable<ApiResult> getDoubleListStandBoards(@Query("type") int type, @Query("offset") int offset, @Query("cnt") int count);
+    fun getDoubleListStandBoards(@Query("type") type: Int, @Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
 
 
     /**
      * 非房主申请点歌
      *
      * @param body {
-     *             "itemID": 0,
-     *             "roomID": 0
-     *             }
+     * "itemID": 0,
+     * "roomID": 0
+     * }
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v1/room/suggest-music")
-    Observable<ApiResult> suggestMusic(@Body RequestBody body);
+    fun suggestMusic(@Body body: RequestBody): Observable<ApiResult>
 
 
     /**
@@ -472,31 +475,31 @@ message STCommitSegmentResultReq
      * @return
      */
     @GET("http://dev.room.inframe.mobi/v1/room/list-music-suggested")
-    Observable<ApiResult> getListMusicSuggested(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
+    fun getListMusicSuggested(@Query("roomID") roomID: Int, @Query("offset") offset: Long, @Query("limit") limit: Int): Observable<ApiResult>
 
     /**
      * 房主添加用户点的歌曲
      *
      * @param body {
-     *             "itemID": 0,
-     *             "roomID": 0
-     *             }
+     * "itemID": 0,
+     * "roomID": 0
+     * }
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v1/room/add-music-suggested")
-    Observable<ApiResult> addSuggestMusic(@Body RequestBody body);
+    fun addSuggestMusic(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 房主删除用户点的歌曲
      *
      * @param body {
-     *             "itemID": 0,
-     *             "roomID": 0
-     *             }
+     * "itemID": 0,
+     * "roomID": 0
+     * }
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v1/room/del-music-suggested")
-    Observable<ApiResult> deleteSuggestMusic(@Body RequestBody body);
+    fun deleteSuggestMusic(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 房主添加自定义小游戏
@@ -505,7 +508,7 @@ message STCommitSegmentResultReq
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v1/room/add-custom-game")
-    Observable<ApiResult> addCustomGame(@Body RequestBody body);
+    fun addCustomGame(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 礼物60秒打卡
@@ -514,7 +517,7 @@ message STCommitSegmentResultReq
      */
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @GET("http://dev.api.inframe.mobi/v1/bonus/ask-for-flower")
-    Observable<ApiResult> punch(@Query("timestamp") long offset, @Query("signV2") String signV2);
+    fun punch(@Query("timestamp") offset: Long, @Query("signV2") signV2: String): Observable<ApiResult>
 
     /**
      * 上传个人标签声音资源
@@ -522,9 +525,9 @@ message STCommitSegmentResultReq
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/stand/challenge-resource")
-    Call<ApiResult> uploadChallengeResource(@Body RequestBody body);
+    fun uploadChallengeResource(@Body body: RequestBody): Call<ApiResult>
 
 
     @GET("http://dev.api.inframe.mobi/v1/stand/challenge-star-cnt")
-    Call<ApiResult> getChallengeStarCount(@Query("roomID") int roomID, @Query("enterRoundSeq") int enterRoundSeq,@Query("curRoundSeq") int curRoundSeq);
+    fun getChallengeStarCount(@Query("roomID") roomID: Int, @Query("enterRoundSeq") enterRoundSeq: Int, @Query("curRoundSeq") curRoundSeq: Int): Call<ApiResult>
 }

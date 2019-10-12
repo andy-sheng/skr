@@ -25,6 +25,7 @@ public interface RouterConstants {
     String ACTIVITY_GRAB_RESULT = "/rankingmode/GrabResultActivity";
     String ACTIVITY_SHARE_WEB = "/rankingmode/ShareWebActivity";
     String ACTIVITY_GRAB_MATCH_ROOM = "/rankingmode/GrabMatchActivity";
+    String ACTIVITY_GRAB_SPECIAL = "/rankingmode/GrabSpecialActivity";
 
     String ACTIVITY_WALLET = "/home/WalletActivity";
     String ACTIVITY_BALANCE = "/home/BalanceActivity";
