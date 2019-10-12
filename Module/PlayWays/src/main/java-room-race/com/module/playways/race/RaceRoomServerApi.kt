@@ -344,4 +344,32 @@ interface RaceRoomServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
+
+    /** 8s之后调用
+     * {
+    "roomID": 0,
+    "roundSeq": 0
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/racegame/choice-over")
+    fun choiceOver(@Body body: RequestBody): Call<ApiResult>
+
+    /** 报名，选择歌曲
+     * {
+    "choiceID": 0,
+    "curRoundSeq": 0,
+    "curRoundStatus": "ERRS_UNKNOWN",
+    "roomID": 0,
+    "wantSingType": "ERWST_DEFAULT"
+    }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/racegame/sing-make-choice")
+    fun singMakeChoice(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * roomID
+     * roundSeq
+     */
+    @GET("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
+    fun getGameChoices(@Body body: RequestBody): Call<ApiResult>
 }

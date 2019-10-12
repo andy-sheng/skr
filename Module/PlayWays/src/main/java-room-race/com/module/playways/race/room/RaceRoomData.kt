@@ -6,13 +6,13 @@ import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
+import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
-import java.util.*
 
 class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
@@ -29,6 +29,9 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
 
     var runningRoundCount = 0 // 本人在这个房间里已经待了多少轮了
+
+    //这个是下一个轮次要选择的歌曲
+    var couldChoiceGames: ArrayList<RaceGamePlayInfo> = ArrayList()
 
     init {
         isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
