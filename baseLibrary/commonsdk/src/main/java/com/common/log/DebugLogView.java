@@ -91,6 +91,9 @@ public class DebugLogView extends ExViewStub {
         mLogView.setText(old + "\n" + event.getLog());
     }
 
+    /**
+     * 这样的日志会打在屏幕上
+     */
     public static void println(String TAG, String line) {
         MyLog.d(TAG, line);
         if (MyLog.isDebugLogOpen()) {
