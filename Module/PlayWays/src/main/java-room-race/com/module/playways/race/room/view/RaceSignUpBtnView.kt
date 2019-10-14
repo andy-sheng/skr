@@ -13,7 +13,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 
-class SignUpView : ConstraintLayout {
+class RaceSignUpBtnView : ConstraintLayout {
     var signUpBtn: ExImageView
     var circleCountDownView: CircleCountDownView
     var signUpType: SignUpType? = null

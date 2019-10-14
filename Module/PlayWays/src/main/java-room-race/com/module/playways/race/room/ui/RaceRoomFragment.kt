@@ -87,7 +87,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
     private lateinit var mNextSongStartTipTv: View
     private lateinit var mRacePagerSelectSongView: RacePagerSelectSongView
-    private lateinit var mSignUpView: SignUpView
+    private lateinit var mSignUpView: RaceSignUpBtnView
 
     internal var mVIPEnterView: VIPEnterView? = null
 
@@ -466,7 +466,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
         if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            mSignUpView.setType(SignUpView.SignUpType.SIGN_UP_FINISH)
+            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
             mRacePagerSelectSongView.hideView()
         }
     }
@@ -614,7 +614,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun startMatching() {
         hideAllSceneView()
         mRacePagerSelectSongView.hideView()
-        mSignUpView.setType(SignUpView.SignUpType.ALLCATION)
+        mSignUpView.setType(RaceSignUpBtnView.SignUpType.ALLCATION)
     }
 
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
@@ -697,7 +697,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mCorePresenter.sendIntroOver()
         }
         mRacePagerSelectSongView.showView()
-        mSignUpView.setType(SignUpView.SignUpType.SIGN_UP_START)
+        mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
 
         mRaceWantingSignUpCardView.showAnimation(object : AnimationListener {
             override fun onFinish() {

@@ -11,7 +11,7 @@ import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
 
-// 无人想唱
+// 正在报名卡片
 class RaceWantingSignUpCardView : ConstraintLayout {
 
     val TAG = "TurnInfoCardView"

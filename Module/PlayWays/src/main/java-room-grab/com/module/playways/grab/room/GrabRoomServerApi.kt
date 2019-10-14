@@ -524,7 +524,7 @@ message STCommitSegmentResultReq
      * @param body
      * @return
      */
-    @GET("http://dev.api.inframe.mobi/v1/stand/challenge-resource")
+    @PUT("http://dev.api.inframe.mobi/v1/stand/challenge-resource")
     fun uploadChallengeResource(@Body body: RequestBody): Call<ApiResult>
 
 
