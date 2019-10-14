@@ -9,7 +9,7 @@ import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.view.RaceSongInfoView
 import java.util.*
 
-class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupUpMethed: (Int, RaceGamePlayInfo?) -> Unit) : PagerAdapter() {
+class RaceSelectSongAdapter(internal var mContext: Context, internal val listener: IRaceSelectListener) : PagerAdapter() {
     val TAG = "RaceSelectSongAdapter"
     private val cachedList = ArrayList<RaceSongInfoView>()
     internal var mRaceGamePlayInfos: List<RaceGamePlayInfo> = ArrayList()
@@ -29,12 +29,12 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupU
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
         val view = getCachedView()
         view.signUpCall = { choceId, model ->
-            mSigupUpMethed.invoke(choceId, model)
+            listener.onSignUp(choceId, model)
         }
         if (container.indexOfChild(view) == -1) {
             container.addView(view)
         }
-        view.setData(position, mRaceGamePlayInfos[position])
+        view.setData(position, mRaceGamePlayInfos[position], listener.getSignUpChoiceID() != -1, listener.getSignUpChoiceID())
         return view!!
     }
 
@@ -63,5 +63,10 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupU
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object`
+    }
+
+    interface IRaceSelectListener {
+        fun onSignUp(choiceID: Int, model: RaceGamePlayInfo?)
+        fun getSignUpChoiceID(): Int
     }
 }

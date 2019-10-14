@@ -74,11 +74,8 @@ class RaceSongInfoView : ConstraintLayout {
         EventBus.getDefault().unregister(this)
     }
 
-    fun setData(index: Int, model: RaceGamePlayInfo) {
-        signUpTv.isEnabled = true
-        signUpTv.text = "报名"
-        signUpTv.visibility = View.VISIBLE
-
+    fun setData(index: Int, model: RaceGamePlayInfo, hasSignUp: Boolean, hasSignUpChoiceID: Int) {
+        MyLog.d(TAG, "setData index = $index, model = $model, hasSignUp = $hasSignUp, hasSignUpChoiceID = $hasSignUpChoiceID")
         this.model = model
         choiceId = index + 1
 
@@ -94,6 +91,20 @@ class RaceSongInfoView : ConstraintLayout {
         }
 
         lyricView.text = "歌词加载中"
+
+        if (hasSignUp) {
+            if (hasSignUpChoiceID == choiceId) {
+                signUpTv.isEnabled = false
+                signUpTv.text = "报名成功"
+                signUpTv.visibility = View.VISIBLE
+            } else {
+                signUpTv.visibility = View.GONE
+            }
+        } else {
+            signUpTv.isEnabled = true
+            signUpTv.text = "报名"
+            signUpTv.visibility = View.VISIBLE
+        }
 
         LyricsManager
                 .loadGrabPlainLyric(model.commonMusic?.standLrc)

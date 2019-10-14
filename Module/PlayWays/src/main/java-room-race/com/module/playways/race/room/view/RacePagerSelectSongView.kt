@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
@@ -18,12 +19,16 @@ import com.component.busilib.view.pagetransformerhelp.cardtransformer.AlphaAndSc
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.adapter.RaceSelectSongAdapter
+import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class RacePagerSelectSongView : ExConstraintLayout {
     val TAG = "RacePagerSelectSongView"
@@ -36,7 +41,10 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mPagerAdapter: RaceSelectSongAdapter? = null
     var countDonwJob: Job? = null
     var mSeq = -1
+    var mHasSignUpChoiceID = -1
     var mSignUpMethed: ((Int, Int, RaceGamePlayInfo?) -> Unit)? = null
+    //正在显示的歌曲信息
+    var mShowingSongSeq = -1
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -66,17 +74,23 @@ class RacePagerSelectSongView : ExConstraintLayout {
         countDonwTv = rootView.findViewById(R.id.count_down_tv)
         hideClickArea = rootView.findViewById(R.id.hide_click_area)
         bannerPager = rootView.findViewById(R.id.banner_pager)
-        bannerPager.offscreenPageLimit = 8
+        bannerPager.offscreenPageLimit = 1
         bannerPager.setPageMargin(U.getDisplayUtils().dip2px(15f))
         bannerPager.setPageTransformer(true, AlphaAndScalePageTransformer())
 
-        mPagerAdapter = RaceSelectSongAdapter(context) { choiceID, model ->
-            if (canSelectSong()) {
-                mSignUpMethed?.invoke(choiceID, mSeq, model)
-            } else {
-                U.getToastUtil().showShort("报名结束")
+        mPagerAdapter = RaceSelectSongAdapter(context, object : RaceSelectSongAdapter.IRaceSelectListener {
+            override fun onSignUp(choiceID: Int, model: RaceGamePlayInfo?) {
+                if (canSelectSong()) {
+                    mSignUpMethed?.invoke(choiceID, mSeq, model)
+                } else {
+                    U.getToastUtil().showShort("报名结束")
+                }
             }
-        }
+
+            override fun getSignUpChoiceID(): Int {
+                return mHasSignUpChoiceID
+            }
+        })
 
         bannerPager.adapter = mPagerAdapter
 
@@ -105,9 +119,15 @@ class RacePagerSelectSongView : ExConstraintLayout {
                 if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                     mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
                     countDonwTv.visibility = View.GONE
+                    mShowingSongSeq = mSeq + 1
                 } else {
+                    //因为这个时候显示的可能在上一次已经显示了（唱歌的时候显示的是下一轮次的歌曲）
+                    if (mShowingSongSeq != mSeq) {
+                        mPagerAdapter?.setData(it.games)
+                        mShowingSongSeq = mSeq
+                        mHasSignUpChoiceID = -1
+                    }
                     countDown(noSelectCall)
-                    mPagerAdapter?.setData(it.games)
                 }
             }
 
@@ -117,12 +137,24 @@ class RacePagerSelectSongView : ExConstraintLayout {
         }
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
     fun canSelectSong(): Boolean {
         if (mRoomData?.realRoundSeq == mSeq) {
             return true
         }
 
         return false
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceWantSingChanceEvent) {
+        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            mHasSignUpChoiceID = event.choiceID
+        }
     }
 
     fun countDown(noSelectCall: (() -> Unit)?) {
@@ -188,6 +220,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         countDonwJob?.cancel()
+        EventBus.getDefault().unregister(this)
     }
 
     companion object {
