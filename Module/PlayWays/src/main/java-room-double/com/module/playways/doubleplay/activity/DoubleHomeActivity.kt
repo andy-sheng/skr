@@ -64,7 +64,7 @@ class DoubleHomeActivity : BaseActivity() {
     override fun canSlide(): Boolean {
         return false
     }
-    
+
     override fun initData(savedInstanceState: Bundle?) {
         inviteFriendIv = findViewById(R.id.invite_friend_iv)
         exTextView = findViewById(R.id.exTextView)

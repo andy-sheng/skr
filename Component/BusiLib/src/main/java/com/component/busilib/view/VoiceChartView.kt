@@ -10,6 +10,7 @@ import com.common.log.MyLog
 import com.common.utils.dp
 import com.common.view.ExPaint
 import com.component.busilib.R
+import kotlin.random.Random
 
 // 随音乐跳动的条形图
 class VoiceChartView : View {
@@ -25,7 +26,9 @@ class VoiceChartView : View {
     private var chartHeight = 0
     private var chartMarginLeft = 5
     private var chartBackColor = Color.RED
-    private var chartDuration = 200
+    private var chartDuration = 60
+
+    private var itemheights: Array<Float?>? = null  // 存所有的高度
 
     private var paint: ExPaint = ExPaint()
 
@@ -51,7 +54,7 @@ class VoiceChartView : View {
         chartHeight = typeArray.getDimensionPixelSize(R.styleable.VoiceChartView_chartHeight, 0)
         chartMarginLeft = typeArray.getDimensionPixelSize(R.styleable.VoiceChartView_chartMarginLeft, 0)
         chartBackColor = typeArray.getColor(R.styleable.VoiceChartView_chartBackColor, Color.WHITE)
-        chartDuration = typeArray.getInteger(R.styleable.VoiceChartView_chartDuration, 200)
+        chartDuration = typeArray.getInteger(R.styleable.VoiceChartView_chartDuration, 60)
         typeArray.recycle()
 
         paint.color = chartBackColor
@@ -73,11 +76,36 @@ class VoiceChartView : View {
             chartCount = mWidth / (chartWidth + chartMarginLeft)
         }
 
+        if (itemheights == null) {
+            itemheights = arrayOfNulls(chartCount)
+        }
+
         for (i in 0 until chartCount) {
             val rectF = RectF()
             rectF.left = (i * (chartWidth + chartMarginLeft)).toFloat()
             rectF.right = rectF.left + chartWidth
-            rectF.top = mHeight.toFloat() - (chartHeight - Math.random().toFloat() * chartHeight)
+            var height = itemheights?.get(i)
+            if (height != null) {
+                if (height == 0f || height == chartHeight.toFloat()) {
+                    //到顶了 随机给个高度
+                    height = (Math.random() * chartHeight).toFloat()
+                } else {
+                    height = (height + Random.nextInt(-1, 2) * 2.dp())
+                }
+
+                if (height > chartHeight) {
+                    height = chartHeight.toFloat()
+                }
+                if (height < 0f) {
+                    height = 0f
+                }
+                itemheights?.set(i, height)
+            } else {
+                // 随机给个高度
+                height = (Math.random() * chartHeight).toFloat()
+                itemheights?.set(i, height)
+            }
+            rectF.top = mHeight.toFloat() - height
             rectF.bottom = mHeight.toFloat()
             canvas?.drawRoundRect(rectF, 0f, 0f, paint)
         }
@@ -94,7 +122,7 @@ class VoiceChartView : View {
 
     fun stop() {
         play = false
-
+        itemheights = null
     }
 
     override fun onDetachedFromWindow() {
