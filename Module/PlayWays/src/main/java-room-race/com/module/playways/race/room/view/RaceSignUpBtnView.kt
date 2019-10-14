@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExImageView
@@ -14,6 +15,7 @@ import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 
 class RaceSignUpBtnView : ConstraintLayout {
+    val TAG = "RaceSignUpBtnView"
     var signUpBtn: ExImageView
     var circleCountDownView: CircleCountDownView
     var signUpType: SignUpType? = null
@@ -39,13 +41,25 @@ class RaceSignUpBtnView : ConstraintLayout {
         }
     }
 
-    fun setCountDownTime(progress: Int, leaveTime: Int) {
+    fun setCountDownTime() {
+        var lastedTime = 8000
+        if (roomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
+            roomData?.realRoundInfo?.elapsedTimeMs?.let {
+                //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
+                lastedTime = 12400 - it
+                MyLog.d(TAG, "setSongName elapsedTimeMs is $it")
+                if (lastedTime > 8000) {
+                    lastedTime = 8000
+                }
+            }
+        }
+
         circleCountDownView.cancelAnim()
         circleCountDownView.setMax(360)
         circleCountDownView.setProgress(0)
         circleCountDownView.visibility = View.VISIBLE
 
-        circleCountDownView.go(progress, leaveTime)
+        circleCountDownView.go(8000 - lastedTime, lastedTime)
     }
 
     fun setType(type: SignUpType) {
@@ -60,7 +74,7 @@ class RaceSignUpBtnView : ConstraintLayout {
                         circleCountDownView.visibility = View.GONE
                         circleCountDownView.cancelAnim()
                     } else {
-                        setCountDownTime(0, 8 * 1000)
+                        setCountDownTime()
                     }
                 }
             }
