@@ -9,6 +9,9 @@ class GrabTagDetailModel : Serializable {
     companion object {
         const val SST_LOCK = 1    //待开启
         const val SST_UNLOCK = 2  //已开启
+
+        const val TYPE_AUDIO = 1  //音频专场
+        const val TYPE_VIDEO = 2  //视频专场
     }
 
     @JSONField(name = "tagID")
@@ -27,4 +30,6 @@ class GrabTagDetailModel : Serializable {
     var rankInfoDesc: String? = null
     @JSONField(name = "showPermissionLock")
     var showPermissionLock: Boolean = false
+    @JSONField(name = "tagType")
+    var tagType: Int = 0
 }

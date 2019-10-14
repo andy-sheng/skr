@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.permission.SkrCameraPermission
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
@@ -18,6 +19,8 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.beauty.FROM_MATCH
+import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
@@ -44,6 +47,7 @@ class GrabSpecialActivity : BaseActivity() {
     val mCNT = 20
 
     val mSkrAudioPermission: SkrAudioPermission = SkrAudioPermission()
+    val mCameraPermission: SkrCameraPermission = SkrCameraPermission()
     val mRealNameVerifyUtils = SkrVerifyUtils()
 
     override fun initView(savedInstanceState: Bundle?): Int {
@@ -83,17 +87,38 @@ class GrabSpecialActivity : BaseActivity() {
         recyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView?.adapter = adapter
         adapter.onClickListener = { model, _ ->
-            model?.let {
-                // 歌单解锁和有专场权限 让服务器处理
-                mSkrAudioPermission.ensurePermission({
-                    mRealNameVerifyUtils.checkJoinAudioPermission(it.tagID) {
-                        mRealNameVerifyUtils.checkAgeSettingState {
-                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                            iRankingModeService.tryGoGrabMatch(it.tagID)
+            model?.let { specialModel ->
+                if (specialModel.tagType == SpecialModel.TYPE_VIDEO) {
+                    mSkrAudioPermission.ensurePermission({
+                        mCameraPermission.ensurePermission({
+                            mRealNameVerifyUtils.checkJoinVideoPermission {
+                                mRealNameVerifyUtils.checkAgeSettingState {
+                                    // 进入视频预览
+                                    val special = SpecialModel()
+                                    special.tagID = specialModel.tagID
+                                    special.tagName = specialModel.tagName
+                                    special.tagType = specialModel.tagType
+                                    ARouter.getInstance()
+                                            .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
+                                            .withInt("mFrom", FROM_MATCH)
+                                            .withSerializable("mSpecialModel", special)
+                                            .navigation()
+                                }
+                            }
+                        }, true)
+                    }, true)
+                } else {
+                    mSkrAudioPermission.ensurePermission({
+                        mRealNameVerifyUtils.checkJoinAudioPermission(specialModel.tagID) {
+                            mRealNameVerifyUtils.checkAgeSettingState {
+                                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                                if (iRankingModeService != null) {
+                                    iRankingModeService.tryGoGrabMatch(specialModel.tagID)
+                                }
+                            }
                         }
-                    }
-                }, true)
-
+                    }, true)
+                }
             }
         }
 

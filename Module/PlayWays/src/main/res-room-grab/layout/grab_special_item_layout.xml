@@ -61,10 +61,10 @@
 
     <ImageView
         android:id="@+id/lock_iv"
-        android:layout_width="@dimen/view_22_dp"
-        android:layout_height="@dimen/view_30_dp"
+        android:layout_width="@dimen/view_15_dp"
+        android:layout_height="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_20_dp"
-        android:background="@drawable/gedan_weijiesuo"
+        android:background="@drawable/grab_special_lock_icon"
         app:layout_constraintBottom_toBottomOf="@id/mask_iv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/mask_iv"
