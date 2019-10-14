@@ -19,7 +19,7 @@ interface BattleServerApi {
     @GET("v1/playbook/stand-mine")
     fun getStandRankMine(@Query("userID") userID: Long, @Query("tagID") tagID: Int): Call<ApiResult>
 
-    @GET("v1/playbook/stand-rank-tabs")
+    @GET("v2/playbook/stand-rank-tabs")
     fun getStandRankTag(): Call<ApiResult>
 
     @GET("v1/playbook/stand-rank-list")

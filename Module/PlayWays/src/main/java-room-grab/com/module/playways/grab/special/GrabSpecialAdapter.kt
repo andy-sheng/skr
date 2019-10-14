@@ -22,6 +22,7 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
     var mDataList: ArrayList<GrabTagDetailModel> = ArrayList()
 
     var onClickListener: ((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
+    var onClickRankListener:((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
 
     val bgDrawable1 = DrawableCreator.Builder()
             .setGradientColor(Color.parseColor("#FFBEDC"), Color.parseColor("#FF8AB6"), Color.parseColor("#FF8AB6"))
@@ -79,6 +80,8 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
 
         init {
             item.setAnimateDebounceViewClickListener { onClickListener?.invoke(model, mPos) }
+            champainIv.setAnimateDebounceViewClickListener { onClickRankListener?.invoke(model, mPos) }
+            rankDesc.setAnimateDebounceViewClickListener { onClickRankListener?.invoke(model, mPos) }
         }
 
         fun bindData(position: Int, model: GrabTagDetailModel) {

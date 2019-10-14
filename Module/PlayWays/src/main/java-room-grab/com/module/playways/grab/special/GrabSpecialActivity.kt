@@ -122,6 +122,12 @@ class GrabSpecialActivity : BaseActivity() {
             }
         }
 
+        adapter.onClickRankListener = { model, _ ->
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_RANK)
+                    .withInt("tagID", model?.tagID ?: 0)
+                    .navigation()
+        }
+
     }
 
     override fun onResume() {
