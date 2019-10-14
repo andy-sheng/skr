@@ -29,6 +29,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExImageView
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_5_dp"
         android:id="@+id/give_up_iv"
         android:layout_width="@dimen/view_95_dp"
