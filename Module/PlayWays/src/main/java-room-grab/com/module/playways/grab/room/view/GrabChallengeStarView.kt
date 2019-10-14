@@ -57,7 +57,7 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
             challengStarCntTv?.setText("评价:${cnt}")
         }
         handler.removeMessages(MSG_HIDE)
-        handler.sendEmptyMessageDelayed(MSG_HIDE,5000)
+        handler.sendEmptyMessageDelayed(MSG_HIDE,10000)
     }
 
     override fun onViewDetachedFromWindow(v: View) {
