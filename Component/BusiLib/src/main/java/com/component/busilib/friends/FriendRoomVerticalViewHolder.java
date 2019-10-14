@@ -126,9 +126,9 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
             }
         }
 
+        mVoiceChartView.stop();
         if (friendRoomModel.getVoiceInfo() != null) {
             mVoiceArea.setVisibility(View.VISIBLE);
-            mVoiceChartView.reset();
             mVoiceName.setText(friendRoomModel.getVoiceInfo().getSongName());
         } else {
             mVoiceArea.setVisibility(View.GONE);

@@ -43,7 +43,6 @@
     <declare-styleable name="VoiceChartView">
         <attr name="chartFitWidth" format="boolean"/>
         <attr name="chartCount" format="integer" />
-        <attr name="chartShape" format="reference" />
         <attr name="chartHeight" format="dimension" />
         <attr name="chartWidth" format="dimension" />
         <attr name="chartDuration" format="integer" />
