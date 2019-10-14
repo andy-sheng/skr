@@ -73,6 +73,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
         mPagerAdapter = RaceSelectSongAdapter(context) { choiceID, model ->
             if (canSelectSong()) {
                 mSignUpMethed?.invoke(choiceID, mSeq, model)
+            } else {
+                U.getToastUtil().showShort("报名结束")
             }
         }
 
