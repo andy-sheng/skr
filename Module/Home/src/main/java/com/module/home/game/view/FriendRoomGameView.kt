@@ -118,6 +118,9 @@ class FriendRoomGameView : RelativeLayout {
             }
 
             override fun onClickFriendRoom(position: Int, model: RecommendModel?) {
+                SinglePlayer.stop(playerTag)
+                mFriendRoomVeritAdapter?.stopPlay()
+                refreshLayout.setEnableRefresh(true)
                 if (model != null) {
                     StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
                     val friendRoomModel = model as RecommendModel?
