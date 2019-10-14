@@ -980,6 +980,18 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         mPracticeFlagIv = rootView.findViewById(R.id.practice_flag_iv)
         mChallengeStarView = GrabChallengeStarView(rootView.findViewById(R.id.grab_challenge_star_view_stub))
+        mChallengeStarView.clickListener = {
+            mGameRuleDialog = DialogPlus.newDialog(context!!)
+                    .setContentHolder(ViewHolder(R.layout.grab_challenge_star_rule_view_layout))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_50)
+                    .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
+                    .setExpanded(false)
+                    .setGravity(Gravity.CENTER)
+                    .create()
+            mGameRuleDialog?.show()
+        }
+
         // 加上状态栏的高度
         val statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(context!!)
 
@@ -1637,6 +1649,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         } else {
             mChallengeStarView.setVisibility(View.GONE)
         }
+
     }
 
     // 确认踢人弹窗

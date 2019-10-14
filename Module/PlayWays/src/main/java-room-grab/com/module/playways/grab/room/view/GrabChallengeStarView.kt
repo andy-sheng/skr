@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 
 import com.common.view.ExViewStub
 import com.module.playways.R
@@ -19,11 +20,15 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
     var challengingTv: TextView? = null
     var challengStarCntTv: TextView? = null
 
+    var clickListener:(()->Unit)? = null
 
     override fun init(parentView: View) {
         challengeBgIv = parentView.findViewById(R.id.challenge_bg_iv)
         challengingTv = parentView.findViewById(R.id.challenging_tv)
         challengStarCntTv = parentView.findViewById(R.id.challeng_star_cnt_tv)
+        parentView.setDebounceViewClickListener {
+            clickListener?.invoke()
+        }
     }
 
     override fun layoutDesc(): Int {
