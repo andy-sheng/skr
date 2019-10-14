@@ -54,11 +54,13 @@ class RaceSongInfoView : ConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
         MyLog.d(TAG, "onEvent event = $event")
-        signUpTv.isEnabled = false
-        if (event.choiceID == choiceId && event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            signUpTv.text = "报名成功"
-        } else {
-            signUpTv.visibility = View.GONE
+        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                signUpTv.isEnabled = false
+                signUpTv.text = "报名成功"
+            } else {
+                signUpTv.visibility = View.GONE
+            }
         }
     }
 
