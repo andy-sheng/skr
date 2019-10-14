@@ -242,10 +242,10 @@
         android:inflatedId="@+id/debug_log_view"
         android:layout="@layout/debug_log_view_stub_layout" />
 
-    <com.module.playways.room.room.matchview.RankMatchView
+    <com.module.playways.race.room.view.matchview.RaceMatchView
         android:id="@+id/rank_view"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_300_dp"
+        android:layout_height="@dimen/view_100_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
