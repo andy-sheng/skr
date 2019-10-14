@@ -99,6 +99,7 @@
             android:layout_marginLeft="@dimen/view_13_dp"
             android:layout_marginTop="@dimen/view_12_dp"
             android:layout_marginRight="@dimen/view_13_dp"
+            android:layout_marginBottom="@dimen/view_30_dp"
             android:orientation="horizontal">
 
             <com.common.view.ex.ExImageView
@@ -114,6 +115,7 @@
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
+
 
     </com.common.view.ex.ExLinearLayout>
 

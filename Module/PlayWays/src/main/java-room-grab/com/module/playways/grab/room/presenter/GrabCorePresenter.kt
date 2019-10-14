@@ -1563,7 +1563,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             // 处理挑战人气结果
             if (mRoomData.inChallenge) {
                 val t = now.roundSeq - mRoomData.enterRoundSeq
-                if (t == 0) {
+                if (t == 0 || now.roundSeq == 1) {
                     mIGrabView.showChallengeStarView(0, true, true)
                 }
                 if (t > 0 && t % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
