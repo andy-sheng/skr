@@ -14,7 +14,7 @@ import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.U
 import com.module.playways.R
-
+import com.module.playways.listener.AnimationListener
 
 // 单个滚动的匹配
 // 循环滚动 两种方式实现，position无限大 和 在首尾加上一个view 采用无限大的方式
@@ -46,7 +46,7 @@ class RaceMatchItemView : ConstraintLayout {
         recyclerView.adapter = adapter
     }
 
-    fun setData(listData: ArrayList<UserInfoModel>?, uid: Int) {
+    fun setData(listData: ArrayList<UserInfoModel>?, uid: Int, listener: AnimationListener?) {
         if (listData != null) {
             listData.forEachIndexed { index, model ->
                 if (model.userId == uid) {
@@ -93,6 +93,14 @@ class RaceMatchItemView : ConstraintLayout {
                 }
                 recyclerView.smoothScrollToPosition(firstVisible + adapter.mDataList.size + target - firstVisible % adapter.mDataList.size)
             }, (totalTime - 2 * oneCycleTime - (totalTime - diffTime) % oneCycleTime).toLong())
+
+            listener?.let {
+                recyclerView.postDelayed(Runnable {
+                    listener.onFinish()
+                }, totalTime)
+            }
+        } else {
+
         }
     }
 

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import com.common.utils.U
 import com.module.playways.R
+import com.module.playways.listener.AnimationListener
 
 
 // 匹配中类似赌博机的效果
@@ -49,21 +50,37 @@ class RaceMatchView : ConstraintLayout {
         dengView = this.findViewById(R.id.deng_view)
     }
 
-    fun bindData() {
-
+    fun bindData(listener: AnimationListener?) {
+        starAnimation(listener)
     }
 
     //todo 停止可以直接滚到某个位置无动画来结束
-    fun starAnimation() {
-        leftView.setData(null, 0)
-        rightView.setData(null, 0)
+    private fun starAnimation(listener: AnimationListener?) {
+        var leftFlag = false
+        var rightFlag = false
+        leftView.setData(null, 0, object : AnimationListener {
+            override fun onFinish() {
+                leftFlag = true
+                if (rightFlag) {
+                    listener?.onFinish()
+                }
+            }
+        })
+        rightView.setData(null, 0, object : AnimationListener {
+            override fun onFinish() {
+                rightFlag = true
+                if (leftFlag) {
+                    listener?.onFinish()
+                }
+            }
+        })
         mUiHandler.removeMessages(MSG_START)
         mUiHandler.sendEmptyMessage(MSG_START)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mUiHandler.removeCallbacks(null)
+        mUiHandler.removeCallbacksAndMessages(null)
     }
 }
 
