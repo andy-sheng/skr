@@ -152,7 +152,9 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onPkRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-                openPlayWaysActivityByRank(context)
+//                openPlayWaysActivityByRank(context)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_HOME)
+                        .navigation()
             }
 
             override fun onDoubleRoomListener() {

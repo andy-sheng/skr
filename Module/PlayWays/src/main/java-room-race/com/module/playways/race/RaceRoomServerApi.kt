@@ -10,6 +10,9 @@ import retrofit2.http.Query
 
 interface RaceRoomServerApi {
 
+    @GET("http://dev.game.inframe.mobi/v2/raceroom/check-rank")
+    abstract fun checkRank(@Query("roomType") roomType: Int): Call<ApiResult>
+
     /*
     请求匹配
     {

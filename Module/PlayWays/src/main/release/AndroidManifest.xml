@@ -63,7 +63,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
-        <activity android:name=".doubleplay.activity.DoubleHomeActivity"
+        <activity
+            android:name=".doubleplay.activity.DoubleHomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
@@ -147,7 +148,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
+        </activity>
 
+        <activity
+            android:name=".race.match.activity.RaceHomeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity
