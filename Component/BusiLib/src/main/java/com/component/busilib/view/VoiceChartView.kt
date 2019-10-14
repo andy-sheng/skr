@@ -65,7 +65,7 @@ class VoiceChartView : LinearLayout, Runnable {
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
-        if (!hasInit && chartCount == 0) {
+        if (!hasInit) {
             hasInit = true
             chartCount = width / (chartWidth + chartMarginLeft)
             addChartView()
