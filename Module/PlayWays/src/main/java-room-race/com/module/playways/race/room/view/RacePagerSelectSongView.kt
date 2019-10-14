@@ -167,6 +167,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     fun countDown(noSelectCall: (() -> Unit)?) {
         var lastedTime = 8000
         countDonwTv.visibility = View.VISIBLE
+        countDonwTv.text = ""
 //        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
 //            mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
 //                //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
@@ -183,7 +184,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         countDonwJob?.cancel()
         countDonwJob = launch {
             repeat(lastedTime / 1000) {
-                countDonwTv.text = "${(lastedTime / 1000 - it)}s"
+                countDonwTv.text = "${(lastedTime / 1000 - it) - 1}s"
                 delay(1000)
             }
 
