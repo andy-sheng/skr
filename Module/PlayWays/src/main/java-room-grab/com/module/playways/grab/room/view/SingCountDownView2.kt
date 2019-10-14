@@ -1,10 +1,15 @@
 package com.module.playways.grab.room.view
 
 import android.content.Context
+import android.graphics.Color
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.dp
+import com.common.view.ex.ExRelativeLayout
+import com.common.view.ex.drawable.DrawableCreator
 import com.module.playways.R
 import com.module.playways.grab.room.view.control.SelfSingCardView
 import kotlinx.android.synthetic.main.grab_sing_count_down2_view_layout.view.*
@@ -17,6 +22,8 @@ class SingCountDownView2 : RelativeLayout {
     internal var mListener: SelfSingCardView.Listener? = null
     internal var mCounDownTask: HandlerTaskTimer? = null
 
+    val container: ExRelativeLayout
+
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -25,6 +32,7 @@ class SingCountDownView2 : RelativeLayout {
 
     init {
         inflate(context, R.layout.grab_sing_count_down2_view_layout, this)
+        container = this.findViewById(R.id.container)
     }
 
     fun reset() {
@@ -33,6 +41,14 @@ class SingCountDownView2 : RelativeLayout {
         circle_count_down_view.cancelAnim()
         this.mListener = null
         mCounDownTask?.dispose()
+    }
+
+    fun setBackColor(color: Int) {
+        val drawable = DrawableCreator.Builder()
+                .setSolidColor(color)
+                .setCornersRadius(12.dp().toFloat())
+                .build()
+        container.background = drawable
     }
 
     fun setListener(listener: SelfSingCardView.Listener) {

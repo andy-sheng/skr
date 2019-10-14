@@ -1,5 +1,6 @@
 package com.module.playways.race.room.view
 
+import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewStub
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.ImageView
 import com.common.anim.svga.SvgaParserAdapter
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
@@ -16,8 +18,10 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ExViewStub
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExTextView
+import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
+import com.module.playways.grab.room.view.SingCountDownView2
 import com.module.playways.race.room.RaceRoomData
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
@@ -31,7 +35,8 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
     val TAG = "RaceOtherSingCardView"
 
     lateinit var raceStageView: SVGAImageView
-    lateinit var circleCountDownView: CircleCountDownView
+    lateinit var singCountDownView: SingCountDownView2
+    lateinit var levelBg: ImageView
     lateinit var singAvatarView: BaseImageView
     lateinit var descTv: ExTextView
 
@@ -59,7 +64,8 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
 
     protected override fun init(parentView: View) {
         raceStageView = parentView.findViewById(R.id.race_stage_view)
-        circleCountDownView = parentView.findViewById(R.id.circle_count_down_view)
+        singCountDownView = parentView.findViewById(R.id.sing_count_down_view)
+        levelBg = parentView.findViewById(R.id.level_bg)
         singAvatarView = parentView.findViewById(R.id.sing_avatar_view)
         descTv = parentView.findViewById(R.id.desc_tv)
 
@@ -108,6 +114,9 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
                             .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
                             .setCircle(true)
                             .build())
+            if (LevelConfigUtils.getImageResoucesLevel(userInfoModel.ranking.mainRanking) != 0) {
+                levelBg.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(userInfoModel.ranking.mainRanking))
+            }
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败")
         }
@@ -137,13 +146,13 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
 
         roomData.realRoundInfo?.let {
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT
-            circleCountDownView.cancelAnim()
-            circleCountDownView.max = 360
-            circleCountDownView.progress = 0
-            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq==it.subRoundSeq) {
+            singCountDownView.reset()
+            singCountDownView.setBackColor(U.getColor(R.color.black_trans_30))
+            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING
                 countDown("中途进来")
             } else {
+                singCountDownView.startPlay(0, it.getSingTotalMs(), false)
                 mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
                 mUiHandler!!.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000)
             }
@@ -168,7 +177,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
             val totalMs = it.getSingTotalMs()
             val progress: Int  //当前进度条
             val leaveTime: Int //剩余时间
-            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq==it.subRoundSeq) {
+            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
                 MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多")
                 progress = it.elapsedTimeMs * 100 / totalMs
                 leaveTime = totalMs - it.elapsedTimeMs
@@ -176,7 +185,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
                 progress = 1
                 leaveTime = totalMs
             }
-            circleCountDownView.go(progress, leaveTime)
+            singCountDownView.startPlay(progress, leaveTime, true)
         }
     }
 
@@ -209,13 +218,7 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
                 mParentView?.clearAnimation()
                 setVisibility(View.GONE)
             }
-            if (circleCountDownView != null) {
-                circleCountDownView.cancelAnim()
-                circleCountDownView.max = 360
-                circleCountDownView.progress = 0
-
-                mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
-            }
+            mUiHandler!!.removeMessages(MSG_ENSURE_PLAY)
         }
     }
 }
