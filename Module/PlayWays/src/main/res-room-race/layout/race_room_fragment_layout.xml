@@ -147,7 +147,18 @@
         android:layout_marginTop="@dimen/view_100_dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
-    
+
+    <com.module.playways.race.room.view.matchview.RaceMatchView
+        android:id="@+id/rank_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_90_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
     <com.module.playways.race.room.view.SignUpView
         android:id="@+id/sign_up_view"
         app:layout_constraintRight_toRightOf="parent"
@@ -257,16 +268,5 @@
         android:layout_height="match_parent"
         android:inflatedId="@+id/debug_log_view"
         android:layout="@layout/debug_log_view_stub_layout" />
-
-    <com.module.playways.race.room.view.matchview.RaceMatchView
-        android:id="@+id/rank_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_90_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>
