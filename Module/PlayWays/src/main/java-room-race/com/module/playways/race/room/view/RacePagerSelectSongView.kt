@@ -62,9 +62,13 @@ class RacePagerSelectSongView : ExConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     fun fakeDrag() {
-        bannerPager.beginFakeDrag()
-        bannerPager.fakeDragBy(1.0f)
-        bannerPager.endFakeDrag()
+        try {
+            bannerPager.beginFakeDrag()
+            bannerPager.fakeDragBy(1.0f)
+            bannerPager.endFakeDrag()
+        } catch (e: Exception) {
+            MyLog.w(TAG, e.toString())
+        }
     }
 
     init {
