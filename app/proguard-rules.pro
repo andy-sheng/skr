@@ -314,6 +314,9 @@ public static java.lang.String TABLENAME;
 -keep class com.kingja.loadsir.** {*;}
 
 
+-keep class com.component.busilib.view.VoiceChartView{*;}
+-keep class com.component.busilib.view.VoiceChartView$ViewWrapper{*;}
+
 #alifeedback
 -keep class com.taobao.** {*;}
 -keep class com.alibaba.** {*;}
