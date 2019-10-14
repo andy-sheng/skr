@@ -216,16 +216,10 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 openBattleActivity(context)
             }
 
-            override fun onGrabRoomListener(model: SpecialModel?) {
-//                /**
-//                 * 点击首页热门
-//                 */
-//                StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
-
-                model?.let {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_SPECIAL)
-                            .navigation()
-                }
+            override fun onGrabRoomListener() {
+                // 首页抢唱
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_SPECIAL)
+                        .navigation()
             }
         })
 

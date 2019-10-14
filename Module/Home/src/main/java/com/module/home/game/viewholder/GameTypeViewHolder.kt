@@ -28,11 +28,15 @@ class GameTypeViewHolder(itemView: View,
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mGrabGameAdapter.onClickTagListener = {
             when (it?.type) {
-                GrabSpecialModel.TBT_PLAYBOOK -> listener.onBattleRoomListener()
+//                GrabSpecialModel.TBT_SPECIAL -> listener.onGrabRoomListener(it.model)
+//                GrabSpecialModel.TBT_PLAYBOOK -> listener.onBattleRoomListener()
+//                GrabSpecialModel.TBT_RACE -> listener.onPkRoomListener()
+//                GrabSpecialModel.TBT_DOUBLECHAT -> listener.onDoubleRoomListener()
+                // 新版本
                 GrabSpecialModel.TBT_STANDCREATE -> listener.onCreateRoomListener()
-                GrabSpecialModel.TBT_DOUBLECHAT -> listener.onDoubleRoomListener()
-                GrabSpecialModel.TBT_RACE -> listener.onPkRoomListener()
-                GrabSpecialModel.TBT_SPECIAL -> listener.onGrabRoomListener(it?.model)
+                GrabSpecialModel.TBT_GORANKING_TAB -> listener.onPkRoomListener()
+                GrabSpecialModel.TBT_GODOUBLE_TAB -> listener.onDoubleRoomListener()
+                GrabSpecialModel.TBT_GOALBUM_TAB -> listener.onGrabRoomListener()
             }
         }
         recyclerView.adapter = mGrabGameAdapter

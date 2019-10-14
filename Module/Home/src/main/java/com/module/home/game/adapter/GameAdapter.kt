@@ -117,5 +117,5 @@ interface ClickGameListener {
     fun onPkRoomListener()
     fun onDoubleRoomListener()
     fun onBattleRoomListener()
-    fun onGrabRoomListener(model: SpecialModel?)
+    fun onGrabRoomListener()
 }

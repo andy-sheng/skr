@@ -72,7 +72,7 @@ class GrabGameView(context: Context) : RelativeLayout(context), IGrabGameView {
 
                     }
                     it.type == GrabSpecialModel.TBT_PLAYBOOK -> {
-                        // 歌单战
+                        // 歌单战（废弃）
                         StatisticsAdapter.recordCountEvent("game_grab", "song_list", null)
                         openBattleActivity(context)
                     }

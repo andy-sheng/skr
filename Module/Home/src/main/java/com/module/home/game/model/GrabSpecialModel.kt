@@ -7,10 +7,13 @@ import java.io.Serializable
 class GrabSpecialModel : Serializable {
     companion object {
         const val TBT_SPECIAL = 1   // 专场
-        const val TBT_STANDCREATE = 2 // 创建
+        const val TBT_STANDCREATE = 2 // 创建(新版)
         const val TBT_PLAYBOOK = 3   // 歌单站
         const val TBT_RACE = 4  // 擂台赛
         const val TBT_DOUBLECHAT = 5  // 双人唱聊
+        const val TBT_GORANKING_TAB = 6  // 跳排位赛tab(新版)
+        const val TBT_GODOUBLE_TAB = 7  // 跳双人唱聊tab(新版)
+        const val TBT_GOALBUM_TAB = 8  // 跳新版抢唱tab(新版)
     }
     @JSONField(name = "bType")
     var type: Int? = null
