@@ -509,14 +509,34 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             if (thisRound?.subRoundSeq == 1) {
-                tryDownloadAccIfSelfSing()
-                // 变为演唱阶段，第一轮
-                val subRound1 = thisRound.subRoundInfo.get(0)
-                if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                    mIRaceRoomView.singBySelfFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID))
-                    preOpWhenSelfRound()
+                val runnable = {
+                    tryDownloadAccIfSelfSing()
+                    // 变为演唱阶段，第一轮
+                    val subRound1 = thisRound.subRoundInfo.get(0)
+                    if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                        mIRaceRoomView.singBySelfFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID))
+                        preOpWhenSelfRound()
+                    } else {
+                        mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID), mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
+                    }
+                }
+
+                if (lastRound != null) {
+                    // 说明是直接上一轮跳到本轮的演唱阶段了
+                    mIRaceRoomView.showRoundOver(lastRound) {
+                        //如果我是上一轮的演唱者，要退出房间
+                        if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+                            goResultPage(lastRound)
+                        } else {
+                            // 走匹配动画
+                            mIRaceRoomView.showMatchAnimaionView {
+                                // 动画走完执行唱歌相关
+                                runnable.invoke()
+                            }
+                        }
+                    }
                 } else {
-                    mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID), mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
+                    runnable.invoke()
                 }
             } else if (thisRound?.subRoundSeq == 2) {
                 // 变为演唱阶段，第二轮

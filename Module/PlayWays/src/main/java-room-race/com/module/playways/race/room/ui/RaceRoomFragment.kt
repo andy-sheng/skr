@@ -37,6 +37,7 @@ import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
 import com.module.playways.race.room.view.actor.RaceActorPanelView
+import com.module.playways.race.room.view.matchview.RaceMatchView
 import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -78,6 +79,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     //    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
     private lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
     private lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
+    private lateinit var mRaceMatchView: RaceMatchView
     private lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
     private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
@@ -114,6 +116,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 //        mRaceSelectSongView?.visibility = View.GONE
         mRaceWaitingCardView?.visibility = View.GONE
         mRaceTurnInfoCardView?.visibility = View.GONE
+        mRaceMatchView?.visibility = View.GONE
     }
 
     var mRoomData: RaceRoomData = RaceRoomData()
@@ -147,6 +150,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initRightView()
         initVipEnterView()
         initSelectPagerView()
+        initRaceMatchView()
         initSignUpView()
 
         mNextSongStartTipTv = rootView.findViewById(R.id.next_song_start_tip_tv);
@@ -198,6 +202,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRacePagerSelectSongView.mSignUpMethed = { choiceID, seq, model ->
             mCorePresenter.wantSingChance(choiceID, seq)
         }
+    }
+
+    private fun initRaceMatchView() {
+        mRaceMatchView = rootView.findViewById(R.id.race_match_view)
+        mRaceMatchView.roomData = mRoomData
     }
 
     private fun initResuleView() {
@@ -656,8 +665,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun showChoicing(showNextRound: Boolean) {
         MyLog.d(TAG, "showChoicing showNextRound = $showNextRound")
         mRaceRightOpView.visibility = View.GONE
-
-
         if (showNextRound) {
             hideAllSceneView()
             mRaceTurnInfoCardView.visibility = View.VISIBLE
@@ -668,6 +675,15 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             })
         } else {
             showSelectSongView()
+        }
+    }
+
+    override fun showMatchAnimaionView(overListener: () -> Unit) {
+        MyLog.d(TAG, "showMatchAnimaionView")
+        hideAllSceneView()
+        mRaceMatchView.visibility = View.VISIBLE
+        mRaceMatchView.bindData {
+            overListener.invoke()
         }
     }
 
@@ -705,7 +721,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     override fun onBackPressed(): Boolean {
-        if (mInputContainerView.onBackPressed()){
+        if (mInputContainerView.onBackPressed()) {
             return true
         }
         if (mGiftPanelView.onBackPressed()) {
@@ -728,7 +744,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         return true
     }
 
-    override fun gameOver(lastRound: RaceRoundInfoModel?){
+    override fun gameOver(lastRound: RaceRoundInfoModel?) {
         quitGame()
     }
 

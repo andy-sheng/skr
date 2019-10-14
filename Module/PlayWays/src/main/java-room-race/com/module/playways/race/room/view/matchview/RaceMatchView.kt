@@ -10,6 +10,7 @@ import android.widget.ImageView
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
+import com.module.playways.race.room.RaceRoomData
 
 
 // 匹配中类似赌博机的效果
@@ -22,10 +23,11 @@ class RaceMatchView : ConstraintLayout {
     private val leftView: RaceMatchItemView
     private val rightView: RaceMatchItemView
     private var dengView: ImageView? = null
+    var roomData: RaceRoomData? = null
 
     internal val MSG_START = 2
     internal val MSG_HIDE = 1
-
+    internal val MSG_ENSURE_CALLBACK = 9
     internal var mIndex = 0
 
     internal var mMsgAnimationRes = arrayOf(R.drawable.race_match_view_deng1, R.drawable.race_match_view_deng2, R.drawable.race_match_view_deng3)
@@ -38,6 +40,8 @@ class RaceMatchView : ConstraintLayout {
                 this.sendEmptyMessageDelayed(MSG_START, 400)
             } else if (msg.what == MSG_HIDE) {
                 this.removeMessages(MSG_START)
+            } else if (msg.what == MSG_ENSURE_CALLBACK) {
+
             }
         }
     }
@@ -50,32 +54,39 @@ class RaceMatchView : ConstraintLayout {
         dengView = this.findViewById(R.id.deng_view)
     }
 
-    fun bindData(listener: AnimationListener?) {
+    fun bindData(listener: () -> Unit) {
         starAnimation(listener)
     }
 
-    //todo 停止可以直接滚到某个位置无动画来结束
-    private fun starAnimation(listener: AnimationListener?) {
+    private fun starAnimation(listener: () -> Unit) {
         var leftFlag = false
         var rightFlag = false
-        leftView.setData(null, 0, object : AnimationListener {
-            override fun onFinish() {
-                leftFlag = true
-                if (rightFlag) {
-                    listener?.onFinish()
-                }
+        var list = roomData?.getInSeatPlayerInfoList() as ArrayList
+        leftView.setData(list, roomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID
+                ?: 0) {
+            leftFlag = true
+            if (rightFlag) {
+                listener?.invoke()
             }
-        })
-        rightView.setData(null, 0, object : AnimationListener {
-            override fun onFinish() {
-                rightFlag = true
-                if (leftFlag) {
-                    listener?.onFinish()
-                }
+        }
+        rightView.setData(list, roomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID
+                ?: 0) {
+            rightFlag = true
+            if (leftFlag) {
+                listener?.invoke()
             }
-        })
+        }
         mUiHandler.removeMessages(MSG_START)
         mUiHandler.sendEmptyMessage(MSG_START)
+    }
+
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility == View.GONE) {
+            mUiHandler.removeCallbacksAndMessages(null)
+            leftView.reset()
+            rightView.reset()
+        }
     }
 
     override fun onDetachedFromWindow() {

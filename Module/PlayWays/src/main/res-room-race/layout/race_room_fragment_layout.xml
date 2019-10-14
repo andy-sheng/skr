@@ -149,7 +149,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <com.module.playways.race.room.view.matchview.RaceMatchView
-        android:id="@+id/rank_view"
+        android:id="@+id/race_match_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_90_dp"
