@@ -21,10 +21,10 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
-import com.component.busilib.beauty.FROM_MATCH
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
+import com.component.busilib.view.SelectSexDialogView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
@@ -157,57 +157,59 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onDoubleRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_cp", null)
-                if (!U.getNetworkUtils().hasNetwork()) {
-                    U.getToastUtil().showLong("网络连接失败 请检查网络")
-                } else {
-                    mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                            /**
-                             * 判断有没有年龄段
-                             */
-                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-                                        .withInt("from", 0)
-                                        .navigation()
-                            } else {
-                                val sex = object {
-                                    var mIsFindMale: Boolean? = null
-                                    var mMeIsMale: Boolean? = null
-                                }
-
-                                Observable.create<Boolean> {
-                                    if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
-                                        sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
-                                        sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
-                                        it.onNext(true)
-                                    } else {
-                                        it.onNext(false)
-                                    }
-
-                                    it.onComplete()
-                                }.subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe({
-                                            if (it) {
-                                                val bundle = Bundle()
-                                                bundle.putBoolean("is_find_male", sex.mIsFindMale
-                                                        ?: true)
-                                                bundle.putBoolean("is_me_male", sex.mMeIsMale
-                                                        ?: true)
-                                                ARouter.getInstance()
-                                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-                                                        .withBundle("bundle", bundle)
-                                                        .navigation()
-                                            } else {
-                                                showSexFilterView(true)
-                                            }
-                                        }, {
-                                            MyLog.e("SelectSexDialogView", it)
-                                        })
-                            }
-                        }
-                    }, true)
-                }
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
+                        .navigation()
+//                if (!U.getNetworkUtils().hasNetwork()) {
+//                    U.getToastUtil().showLong("网络连接失败 请检查网络")
+//                } else {
+//                    mSkrAudioPermission.ensurePermission({
+//                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+//                            /**
+//                             * 判断有没有年龄段
+//                             */
+//                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
+//                                        .withInt("from", 0)
+//                                        .navigation()
+//                            } else {
+//                                val sex = object {
+//                                    var mIsFindMale: Boolean? = null
+//                                    var mMeIsMale: Boolean? = null
+//                                }
+//
+//                                Observable.create<Boolean> {
+//                                    if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
+//                                        sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
+//                                        sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
+//                                        it.onNext(true)
+//                                    } else {
+//                                        it.onNext(false)
+//                                    }
+//
+//                                    it.onComplete()
+//                                }.subscribeOn(Schedulers.io())
+//                                        .observeOn(AndroidSchedulers.mainThread())
+//                                        .subscribe({
+//                                            if (it) {
+//                                                val bundle = Bundle()
+//                                                bundle.putBoolean("is_find_male", sex.mIsFindMale
+//                                                        ?: true)
+//                                                bundle.putBoolean("is_me_male", sex.mMeIsMale
+//                                                        ?: true)
+//                                                ARouter.getInstance()
+//                                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
+//                                                        .withBundle("bundle", bundle)
+//                                                        .navigation()
+//                                            } else {
+//                                                showSexFilterView(true)
+//                                            }
+//                                        }, {
+//                                            MyLog.e("SelectSexDialogView", it)
+//                                        })
+//                            }
+//                        }
+//                    }, true)
+//                }
             }
 
             override fun onBattleRoomListener() {

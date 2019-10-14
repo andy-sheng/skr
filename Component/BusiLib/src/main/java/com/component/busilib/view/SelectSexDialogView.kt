@@ -1,4 +1,4 @@
-package com.module.home.game.view
+package com.component.busilib.view
 
 import android.content.Context
 import android.graphics.Rect
@@ -12,7 +12,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
-import com.module.home.R
+import com.component.busilib.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
