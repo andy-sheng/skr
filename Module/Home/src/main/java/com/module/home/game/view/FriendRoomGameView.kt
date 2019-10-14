@@ -282,11 +282,13 @@ class FriendRoomGameView : RelativeLayout {
                         } else {
                             // 在私密房里面
                             mFriendRoomVeritAdapter?.remove(position)
+                            mFriendRoomVeritAdapter?.notifyDataSetChanged()
                             U.getToastUtil().showShort("好友已离开房间")
                         }
                     } else {
                         // 不在房间里面了
                         mFriendRoomVeritAdapter?.remove(position)
+                        mFriendRoomVeritAdapter?.notifyDataSetChanged()
                         U.getToastUtil().showShort("好友已离开房间")
                     }
                 } else {

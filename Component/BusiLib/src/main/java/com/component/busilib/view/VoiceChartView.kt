@@ -1,24 +1,23 @@
 package com.component.busilib.view
 
-import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.RectF
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
 import com.common.log.MyLog
 import com.common.utils.dp
+import com.common.view.ExPaint
 import com.component.busilib.R
-import kotlin.random.Random
 
 // 随音乐跳动的条形图
-class VoiceChartView : LinearLayout, Runnable {
+class VoiceChartView : View {
 
     val mTag = "VoiceChartView"
 
-    var viewWrappers: Array<ViewWrapper?>? = null
+    private var mWidth = -1// view的宽度
+    private var mHeight = -1// view的高度
 
     private var chartFitWidth = false
     private var chartCount = 0
@@ -26,12 +25,11 @@ class VoiceChartView : LinearLayout, Runnable {
     private var chartHeight = 0
     private var chartMarginLeft = 5
     private var chartBackColor = Color.RED
-    private var chartShape = 0
-    private var chartDuration = 500
+    private var chartDuration = 200
 
-    private var wantStart = false //意图开始
-    private var startAnimtor = false  //真正开始
-    private var hasInit = false  // 是否已经初始化了
+    private var paint: ExPaint = ExPaint()
+
+    private var play = false
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -46,9 +44,6 @@ class VoiceChartView : LinearLayout, Runnable {
     }
 
     fun init(context: Context, attrs: AttributeSet?) {
-        orientation = HORIZONTAL
-        gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.VoiceChartView)
         chartFitWidth = typeArray.getBoolean(R.styleable.VoiceChartView_chartFitWidth, false)
         chartCount = typeArray.getInt(R.styleable.VoiceChartView_chartCount, 0)
@@ -56,123 +51,54 @@ class VoiceChartView : LinearLayout, Runnable {
         chartHeight = typeArray.getDimensionPixelSize(R.styleable.VoiceChartView_chartHeight, 0)
         chartMarginLeft = typeArray.getDimensionPixelSize(R.styleable.VoiceChartView_chartMarginLeft, 0)
         chartBackColor = typeArray.getColor(R.styleable.VoiceChartView_chartBackColor, Color.WHITE)
-        chartShape = typeArray.getResourceId(R.styleable.VoiceChartView_chartShape, 0)
-        chartDuration = typeArray.getInteger(R.styleable.VoiceChartView_chartDuration, 500)
+        chartDuration = typeArray.getInteger(R.styleable.VoiceChartView_chartDuration, 200)
         typeArray.recycle()
 
-        if (!chartFitWidth) {
-            if (chartCount != 0) {
-                addChartView()
-            }
-        }
-
+        paint.color = chartBackColor
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
-        if (!hasInit && chartFitWidth) {
-            hasInit = true
-            chartCount = width / (chartWidth + chartMarginLeft)
-            addChartView()
-            if (!startAnimtor && wantStart) {
-                start()
-            }
-        }
     }
 
-    private fun addChartView() {
-        if (chartCount <= 0) {
-            return
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        if (chartFitWidth) {
+            if (mWidth < 0) {
+                mWidth = width
+            }
+            if (mHeight < 0) {
+                mHeight = height
+            }
+            chartCount = mWidth / (chartWidth + chartMarginLeft)
         }
-        viewWrappers = arrayOfNulls(chartCount)
+
         for (i in 0 until chartCount) {
-            val childView = ImageView(context)
-            if (chartShape != 0) {
-                childView.setBackgroundResource(chartShape)
-            } else {
-                childView.setBackgroundColor(chartBackColor)
-            }
-            val layoutParams = LayoutParams(chartWidth, 100)
-            layoutParams.leftMargin = chartMarginLeft
-            childView.layoutParams = layoutParams
-            addView(childView)
-            viewWrappers?.set(i, ViewWrapper(childView))
+            val rectF = RectF()
+            rectF.left = (i * (chartWidth + chartMarginLeft)).toFloat()
+            rectF.right = rectF.left + chartWidth
+            rectF.top = mHeight.toFloat() - (chartHeight - Math.random().toFloat() * chartHeight)
+            rectF.bottom = mHeight.toFloat()
+            canvas?.drawRoundRect(rectF, 0f, 0f, paint)
         }
-    }
 
-    private fun startAnimator(viewWrapper: ViewWrapper?, height: Int) {
-        viewWrapper?.let {
-            viewWrapper.target.clearAnimation()
-            ObjectAnimator.ofInt(viewWrapper, "height", height).setDuration(chartDuration.toLong()).start()
-        }
-    }
-
-    override fun run() {
-        if (startAnimtor) {
-            start()
+        if (play) {
+            postInvalidateDelayed((Math.random() * chartDuration / 2 + chartDuration / 2).toLong())
         }
     }
 
     fun start() {
-        wantStart = true
-        viewWrappers?.let {
-            if (it.isNullOrEmpty()) {
-                return
-            }
-            startAnimtor = true
-            wantStart = false
-            val a = Random
-            for (i in 0 until it.size) {
-                startAnimator(it[i], a.nextInt(chartHeight))
-            }
-
-            removeCallbacks(this)
-            postDelayed(this, chartDuration.toLong())
-        }
+        play = true
+        postInvalidateDelayed(chartDuration.toLong())
     }
 
     fun stop() {
-        wantStart = false
-        startAnimtor = false
-        removeCallbacks(this)
-        viewWrappers?.forEach {
-            it?.target?.clearAnimation()
-        }
-    }
+        play = false
 
-    fun reset() {
-        hasInit = false
-        wantStart = false
-        startAnimtor = false
-        removeCallbacks(this)
-        viewWrappers?.forEach {
-            it?.target?.clearAnimation()
-        }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        reset()
-    }
-
-    inner class ViewWrapper(val target: View) {
-
-        fun getWidth(): Int {
-            return target.layoutParams.width
-        }
-
-        fun setWidth(width: Int) {
-            target.layoutParams.width = width
-            target.requestLayout()
-        }
-
-        fun getHeight(): Int {
-            return target.layoutParams.height
-        }
-
-        fun setHeight(height: Int) {
-            target.layoutParams.height = height
-            target.requestLayout()
-        }
+        play = false
     }
 }
