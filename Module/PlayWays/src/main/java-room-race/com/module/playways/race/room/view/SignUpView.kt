@@ -57,6 +57,7 @@ class SignUpView : ConstraintLayout {
                 val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
                 info?.let {
                     if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                        circleCountDownView.visibility = View.GONE
                         circleCountDownView.cancelAnim()
                     } else {
                         setCountDownTime(0, 8 * 1000)
