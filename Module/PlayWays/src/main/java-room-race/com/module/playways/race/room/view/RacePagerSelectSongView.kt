@@ -30,6 +30,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var closeIv: ExImageView
     var countDonwTv: ExTextView
     var hideClickArea: View
+    var mPagerRootView: View
     var bannerPager: ViewPager
     var mRoomData: RaceRoomData? = null
     var mPagerAdapter: RaceSelectSongAdapter? = null
@@ -61,6 +62,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     init {
         View.inflate(context, R.layout.race_pager_select_song_view_layout, this)
         closeIv = rootView.findViewById(R.id.close_iv)
+        mPagerRootView = rootView.findViewById(R.id.pager_root_view)
         countDonwTv = rootView.findViewById(R.id.count_down_tv)
         hideClickArea = rootView.findViewById(R.id.hide_click_area)
         bannerPager = rootView.findViewById(R.id.banner_pager)
@@ -78,6 +80,10 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
         closeIv.setDebounceViewClickListener {
             hideView()
+        }
+
+        mPagerRootView.setDebounceViewClickListener {
+            //拦截
         }
 
         hideClickArea.setDebounceViewClickListener {
