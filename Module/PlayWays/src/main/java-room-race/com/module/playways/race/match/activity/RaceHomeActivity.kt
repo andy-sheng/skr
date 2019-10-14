@@ -77,6 +77,10 @@ class RaceHomeActivity : BaseActivity() {
         return R.layout.race_home_activity_layout
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+
     override fun useEventBus(): Boolean {
         return true
     }
@@ -113,7 +117,9 @@ class RaceHomeActivity : BaseActivity() {
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-
+                refreshBaseInfo()
+                getLevelPage()
+                getRankLevel()
             }
         })
 
@@ -182,6 +188,7 @@ class RaceHomeActivity : BaseActivity() {
                     showUserLevel(scoreDetailModel.scoreStateModel)
                     showGameStatic(scoreDetailModel.raceTicketCnt, scoreDetailModel.standLightCnt)
                 }
+                mSmartRefreshLayout?.finishRefresh()
             }
         }, this)
     }
@@ -192,14 +199,17 @@ class RaceHomeActivity : BaseActivity() {
                 if (result.errno == 0) {
                     val userRankModel = JSON.parseObject(result.data!!.getString("diff"), UserRankModel::class.java)
                     showRankView(userRankModel)
+                    mSmartRefreshLayout?.finishRefresh()
                 }
             }
 
             override fun onError(e: Throwable) {
+                mSmartRefreshLayout?.finishRefresh()
                 U.getToastUtil().showShort("网络异常")
             }
 
             override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                mSmartRefreshLayout?.finishRefresh()
                 U.getToastUtil().showShort("网络超时")
             }
         }, this)
@@ -242,7 +252,6 @@ class RaceHomeActivity : BaseActivity() {
     }
 
     fun showGameStatic(raceTicketCnt: Long, standLightCnt: Long) {
-        mSmartRefreshLayout?.finishRefresh()
 
         val raceStringBuilder = SpanUtils()
                 .append(raceTicketCnt.toString()).setFontSize(14, true)
@@ -256,7 +265,6 @@ class RaceHomeActivity : BaseActivity() {
     }
 
     fun showUserLevel(model: ScoreStateModel?) {
-        mSmartRefreshLayout?.finishRefresh()
         // 展示段位信息
         model?.let {
             mLevelView?.bindData(it.mainRanking, it.subRanking)

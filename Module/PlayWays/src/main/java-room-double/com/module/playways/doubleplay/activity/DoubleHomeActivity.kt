@@ -56,10 +56,15 @@ class DoubleHomeActivity : BaseActivity() {
     var mSelectSexDialogPlus: DialogPlus? = null
 
     var mSelectView: SelectSexDialogView? = null
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.double_home_activity_layout
     }
 
+    override fun canSlide(): Boolean {
+        return false
+    }
+    
     override fun initData(savedInstanceState: Bundle?) {
         inviteFriendIv = findViewById(R.id.invite_friend_iv)
         exTextView = findViewById(R.id.exTextView)
