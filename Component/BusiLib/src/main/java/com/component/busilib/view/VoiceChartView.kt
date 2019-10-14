@@ -20,6 +20,7 @@ class VoiceChartView : LinearLayout, Runnable {
 
     var viewWrappers: Array<ViewWrapper?>? = null
 
+    private var chartFitWidth = false
     private var chartCount = 0
     private var chartWidth = 1.dp()
     private var chartHeight = 0
@@ -49,6 +50,7 @@ class VoiceChartView : LinearLayout, Runnable {
         gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
 
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.VoiceChartView)
+        chartFitWidth = typeArray.getBoolean(R.styleable.VoiceChartView_chartFitWidth, false)
         chartCount = typeArray.getInt(R.styleable.VoiceChartView_chartCount, 0)
         chartWidth = typeArray.getDimensionPixelSize(R.styleable.VoiceChartView_chartWidth, 1.dp())
         chartHeight = typeArray.getDimensionPixelSize(R.styleable.VoiceChartView_chartHeight, 0)
@@ -58,14 +60,17 @@ class VoiceChartView : LinearLayout, Runnable {
         chartDuration = typeArray.getInteger(R.styleable.VoiceChartView_chartDuration, 500)
         typeArray.recycle()
 
-        if (chartCount != 0) {
-            addChartView()
+        if (!chartFitWidth) {
+            if (chartCount != 0) {
+                addChartView()
+            }
         }
+
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
-        if (!hasInit) {
+        if (!hasInit && chartFitWidth) {
             hasInit = true
             chartCount = width / (chartWidth + chartMarginLeft)
             addChartView()

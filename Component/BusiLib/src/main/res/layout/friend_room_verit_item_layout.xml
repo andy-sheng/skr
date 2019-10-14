@@ -148,6 +148,7 @@
             VoiceChartView:chartHeight="@dimen/view_16_dp"
             VoiceChartView:chartMarginLeft="@dimen/view_2_dp"
             VoiceChartView:chartWidth="@dimen/view_1_dp"
+            VoiceChartView:chartFitWidth="true"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/voice_name"
