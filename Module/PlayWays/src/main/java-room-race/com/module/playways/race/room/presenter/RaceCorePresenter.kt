@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Message
 import android.support.annotation.CallSuper
 import android.text.SpannableStringBuilder
+import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -536,7 +537,17 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                         }
                     }
                 } else {
-                    runnable.invoke()
+                    if (mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                        //中途进来的
+                        runnable.invoke()
+                    } else {
+                        // 正常从报名阶段 到 演唱阶段
+                        // 走匹配动画
+                        mIRaceRoomView.showMatchAnimaionView {
+                            // 动画走完执行唱歌相关
+                            runnable.invoke()
+                        }
+                    }
                 }
             } else if (thisRound?.subRoundSeq == 2) {
                 // 变为演唱阶段，第二轮
