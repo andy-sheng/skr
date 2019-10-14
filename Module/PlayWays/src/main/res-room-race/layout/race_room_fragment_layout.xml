@@ -139,6 +139,15 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
+    <!--正在报名卡片-->
+    <com.module.playways.race.room.view.RaceWantingSignUpCardView
+        android:id="@+id/race_wanting_signup_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_156_dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
     <!--结果-->
     <com.module.playways.race.room.view.RaceMiddleResultView
         android:id="@+id/race_middle_result_view"

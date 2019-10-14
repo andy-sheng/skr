@@ -78,6 +78,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     //    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
     private lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
+    private lateinit var mRaceWantingSignUpCardView: RaceWantingSignUpCardView   // 正在报名卡片
     private lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
     private lateinit var mRaceMatchView: RaceMatchView
     private lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
@@ -117,6 +118,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRaceWaitingCardView?.visibility = View.GONE
         mRaceTurnInfoCardView?.visibility = View.GONE
         mRaceMatchView?.visibility = View.GONE
+        mRaceWantingSignUpCardView?.visibility = View.GONE
     }
 
     var mRoomData: RaceRoomData = RaceRoomData()
@@ -202,6 +204,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRacePagerSelectSongView.mSignUpMethed = { choiceID, seq, model ->
             mCorePresenter.wantSingChance(choiceID, seq)
         }
+
+        mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
     }
 
     private fun initRaceMatchView() {
@@ -608,6 +612,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     //开始匹配动画
     override fun startMatching() {
+        hideAllSceneView()
         mRacePagerSelectSongView.hideView()
         mSignUpView.setType(SignUpView.SignUpType.ALLCATION)
     }
@@ -688,12 +693,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun showSelectSongView() {
-        hideAllSceneView()
         mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
             mCorePresenter.sendIntroOver()
         }
         mRacePagerSelectSongView.showView()
         mSignUpView.setType(SignUpView.SignUpType.SIGN_UP_START)
+
+        mRaceWantingSignUpCardView.showAnimation(object : AnimationListener {
+            override fun onFinish() {
+
+            }
+        })
     }
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
