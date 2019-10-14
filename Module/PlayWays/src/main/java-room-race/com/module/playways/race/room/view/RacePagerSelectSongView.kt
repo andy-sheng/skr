@@ -3,23 +3,38 @@ package com.module.playways.race.room.view
 import android.content.Context
 import android.os.Handler
 import android.os.Message
-import android.support.constraint.ConstraintLayout
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.adapter.RaceSelectSongAdapter
+import com.module.playways.race.room.model.RaceGamePlayInfo
+import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.gift.view.GiftPanelView
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class RacePagerSelectSongView : ConstraintLayout {
+class RacePagerSelectSongView : ExConstraintLayout {
+    val TAG = "RacePagerSelectSongView"
     var closeIv: ExImageView
+    var countDonwTv: ExTextView
     var hideClickArea: View
     var bannerPager: ViewPager
-    var raceRoomData: RaceRoomData? = null
+    var mRoomData: RaceRoomData? = null
+    var mPagerAdapter: RaceSelectSongAdapter? = null
+    var countDonwJob: Job? = null
+    var mSeq = -1
+    var mSignUpMethed: ((Int, Int, RaceGamePlayInfo?) -> Unit)? = null
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -30,15 +45,24 @@ class RacePagerSelectSongView : ConstraintLayout {
         }
     }
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     init {
         View.inflate(context, R.layout.race_pager_select_song_view_layout, this)
         closeIv = rootView.findViewById(R.id.close_iv)
+        countDonwTv = rootView.findViewById(R.id.count_down_tv)
         hideClickArea = rootView.findViewById(R.id.hide_click_area)
         bannerPager = rootView.findViewById(R.id.banner_pager)
+        bannerPager.offscreenPageLimit = 8
+        mPagerAdapter = RaceSelectSongAdapter(context) { choiceID, model ->
+            if (canSelectSong()) {
+                mSignUpMethed?.invoke(choiceID, mSeq, model)
+            }
+        }
+
+        bannerPager.adapter = mPagerAdapter
 
         closeIv.setDebounceViewClickListener {
             hideView()
@@ -50,11 +74,64 @@ class RacePagerSelectSongView : ConstraintLayout {
     }
 
     //只有在唱歌的阶段就用到RaceRoomData couldChoiceGames的数据，别的时候都用到之前的歌曲的数据
-    fun updateData() {
+    //倒计时3秒，选择6秒
+    fun setSongData(seq: Int, noSelectCall: (() -> Unit)?) {
+        MyLog.d(TAG, "setSongName seq = $seq, noSelectCall = $noSelectCall")
+        mSeq = seq
+        mRoomData?.let { raceRoomData ->
+            val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
+            info?.let {
+                if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                    mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
+                    countDown(noSelectCall)
+                } else {
+                    countDonwTv.visibility = View.GONE
+                    mPagerAdapter?.setData(it.games)
+                }
+            }
+        }
+    }
 
+    fun canSelectSong(): Boolean {
+        if (mRoomData?.realRoundSeq == mSeq) {
+            return true
+        }
+
+        return false
+    }
+
+    fun countDown(noSelectCall: (() -> Unit)?) {
+        var lastedTime = 8000
+        countDonwTv.visibility = View.VISIBLE
+//        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
+//            mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
+//                //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
+//                lastedTime = 13400 - it
+//                MyLog.d(TAG, "setSongName elapsedTimeMs is $it")
+//                if (lastedTime < 0) {
+//                    lastedTime = 1000
+//                } else if (lastedTime > 9000) {
+////                    lastedTime = 9000
+//                }
+//            }
+//        }
+
+        countDonwJob?.cancel()
+        countDonwJob = launch {
+            repeat(lastedTime / 1000) {
+                countDonwTv.text = it.toString()
+                delay(1000)
+            }
+
+            noSelectCall?.invoke()
+        }
     }
 
     fun showView() {
+        if (visibility == View.VISIBLE) {
+            return
+        }
+
         clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0f)
@@ -66,6 +143,10 @@ class RacePagerSelectSongView : ConstraintLayout {
     }
 
     fun hideView() {
+        if (mUiHandler.hasMessages(HIDE_PANEL)) {
+            return
+        }
+
         mUiHandler.removeMessages(HIDE_PANEL)
         clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
@@ -78,6 +159,10 @@ class RacePagerSelectSongView : ConstraintLayout {
         mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(HIDE_PANEL), ANIMATION_DURATION.toLong())
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        countDonwJob?.cancel()
+    }
     companion object {
         val HIDE_PANEL = 1
         val ANIMATION_DURATION = 300

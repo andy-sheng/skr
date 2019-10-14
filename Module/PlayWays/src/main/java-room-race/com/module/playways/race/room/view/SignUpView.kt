@@ -27,11 +27,11 @@ class SignUpView : ConstraintLayout {
         circleCountDownView = rootView.findViewById(R.id.circle_count_down_view)
 
         signUpBtn.setDebounceViewClickListener {
-            signUpType?.let {
-                if (it != SignUpType.ALLCATION) {
+//            signUpType?.let {
+//                if (it != SignUpType.ALLCATION) {
                     clickSignUpBtn?.invoke()
-                }
-            }
+//                }
+//            }
         }
     }
 

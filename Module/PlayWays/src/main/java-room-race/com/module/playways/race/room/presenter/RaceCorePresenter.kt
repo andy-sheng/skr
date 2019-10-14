@@ -44,6 +44,7 @@ import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
+import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.zq.live.proto.RaceRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
@@ -197,6 +198,15 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     /**
      * 选择歌曲
+     * /** 报名，选择歌曲
+     * {
+    "choiceID": 0,
+    "curRoundSeq": 0,
+    "curRoundStatus": "ERRS_UNKNOWN",
+    "roomID": 0,
+    "wantSingType": "ERWST_DEFAULT"
+    }
+    */
      */
     fun wantSingChance(choiceID: Int, seq: Int) {
         if (seq != mRoomData.realRoundSeq) {
@@ -204,20 +214,27 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
 
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
+        var songModel: SongModel? = null
+        if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            songModel = mRoomData.getSongModelByChoiceId(choiceID)
+        } else {
+            songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
+        }
 
-        val songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
         if (mRoomData.isAccEnable && (songModel?.acc?.isNotBlank() == true)) {
             wantSingType = ERWantSingType.ERWST_ACCOMPANY.value
         }
+
         launch {
             val map = mutableMapOf(
                     "choiceID" to choiceID,
+                    "curRoundSeq" to seq,
+                    "curRoundStatus" to mRoomData.realRoundInfo?.status,
                     "roomID" to mRoomData.gameId,
-                    "roundSeq" to seq,
                     "wantSingType" to wantSingType
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.wantSingChance(body) }
+            val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
                 if (seq == mRoomData.realRoundSeq) {
                     mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())

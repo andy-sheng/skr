@@ -18,6 +18,18 @@
         android:background="#FF3C2E8C"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/count_down_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_14_dp"
+        android:text="4s"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/close_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/close_iv" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/close_iv"
         android:layout_width="28dp"
@@ -25,7 +37,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginRight="@dimen/view_8_dp"
         android:padding="7dp"
-        android:src="@drawable/back_close_white"
+        android:src="@drawable/baoming_guanbi"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bg" />
 
@@ -35,6 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_273_dp"
         android:layout_marginBottom="@dimen/view_22_dp"
+        android:layout_marginLeft="@dimen/view_37_dp"
+        android:layout_marginRight="@dimen/view_37_dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

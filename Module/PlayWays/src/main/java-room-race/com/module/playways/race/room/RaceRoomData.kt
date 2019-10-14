@@ -84,6 +84,13 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return l
     }
 
+    /**
+     * 演唱的时候需要从下一轮次的歌曲里 根据 choiceID 查找
+     */
+    fun getSongModelByChoiceId(choiceID: Int): SongModel? {
+        return couldChoiceGames.getOrNull(choiceID - 1)?.commonMusic
+    }
+
     fun getPlayerOrWaiterInfoModel(userID: Int?): RacePlayerInfoModel? {
         if (userID == null || userID == 0) {
             return null

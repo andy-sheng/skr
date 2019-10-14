@@ -8,7 +8,7 @@
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_229_dp"
-        android:background="#FFC974F9"
+        android:background="@drawable/baoming_xuange_bj"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
@@ -44,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/anchor_tv" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/lyric_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_22_dp"

@@ -75,7 +75,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     internal lateinit var mRaceRightOpView: RaceRightOpView
 
-    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
+    //    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
     private lateinit var mRaceWaitingCardView: RaceWaitingCardView   // 等待中
     private lateinit var mRaceTurnInfoCardView: RaceTurnInfoCardView  // 下一局
     private lateinit var mRaceSelfSingLyricView: RaceSelfSingLyricView  // 自己唱
@@ -111,7 +111,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRaceOtherSingCardView.setVisibility(View.GONE)
         mRaceNoSingCardView?.visibility = View.GONE
         mRaceMiddleResultView?.visibility = View.GONE
-        mRaceSelectSongView?.visibility = View.GONE
+//        mRaceSelectSongView?.visibility = View.GONE
         mRaceWaitingCardView?.visibility = View.GONE
         mRaceTurnInfoCardView?.visibility = View.GONE
     }
@@ -140,7 +140,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
-        initSelectSongView()
+//        initSelectSongView()
         initResuleView()
 
         initSingSenceView()
@@ -185,11 +185,18 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     private fun initSignUpView() {
         mSignUpView = rootView.findViewById(R.id.sign_up_view)
+        mSignUpView.clickSignUpBtn = {
+            mRacePagerSelectSongView.showView()
+        }
     }
 
     private fun initSelectPagerView() {
         mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
-        mRacePagerSelectSongView.raceRoomData = mRoomData
+        mRacePagerSelectSongView.mRoomData = mRoomData
+
+        mRacePagerSelectSongView.mSignUpMethed = { choiceID, seq, model ->
+            mCorePresenter.wantSingChance(choiceID, seq)
+        }
     }
 
     private fun initResuleView() {
@@ -199,13 +206,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
 
-    private fun initSelectSongView() {
-        mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
-        mRaceSelectSongView.setRoomData(mRoomData) { choiceID, seq ->
-            mCorePresenter.wantSingChance(choiceID, seq)
-        }
-        mRaceSelectSongView.visibility = View.GONE
-    }
+//    private fun initSelectSongView() {
+//        mRaceSelectSongView = rootView.findViewById(R.id.race_select_song_view)
+//        mRaceSelectSongView.setRoomData(mRoomData) { choiceID, seq ->
+//            mCorePresenter.wantSingChance(choiceID, seq)
+//        }
+//        mRaceSelectSongView.visibility = View.GONE
+//    }
 
     private fun initRightView() {
         mRaceRightOpView = rootView.findViewById(R.id.race_right_op_view)
@@ -442,6 +449,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mPersonInfoDialog?.show()
     }
 
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: RaceWantSingChanceEvent) {
+//        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+//            mSignUpView.isEnabled = false
+//        }
+//    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid)
@@ -450,11 +464,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceScoreChangeEvent) {
         mRaceTopVsView.updateData()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceWantSingChanceEvent) {
-        mRaceSelectSongView.updateSelectState()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -655,12 +664,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun showSelectSongView() {
-        mRaceSelectSongView.visibility = View.VISIBLE
         hideAllSceneView()
-        mRaceSelectSongView.visibility = View.VISIBLE
-        mRaceSelectSongView.setSongName(mRoomData.realRoundSeq) {
+        mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
             mCorePresenter.sendIntroOver()
         }
+        mRacePagerSelectSongView.showView()
+        mSignUpView.isEnabled = true
     }
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {

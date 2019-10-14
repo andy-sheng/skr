@@ -92,15 +92,15 @@
         android:visibility="gone" />
 
     <!--选歌-->
-    <com.module.playways.race.room.view.RaceSelectSongView
-        android:id="@+id/race_select_song_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_70_dp"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+    <!--    <com.module.playways.race.room.view.RaceSelectSongView-->
+    <!--        android:id="@+id/race_select_song_view"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/view_70_dp"-->
+    <!--        android:visibility="visible"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
 
     <include
         android:layout_marginTop="@dimen/view_430_dp"
@@ -149,6 +149,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <com.module.playways.race.room.view.SignUpView
+        android:background="@color/white"
         android:id="@+id/sign_up_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
