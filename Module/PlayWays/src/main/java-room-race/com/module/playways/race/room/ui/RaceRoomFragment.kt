@@ -185,6 +185,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     private fun initSignUpView() {
         mSignUpView = rootView.findViewById(R.id.sign_up_view)
+        mSignUpView.roomData = mRoomData
         mSignUpView.clickSignUpBtn = {
             mRacePagerSelectSongView.showView()
         }

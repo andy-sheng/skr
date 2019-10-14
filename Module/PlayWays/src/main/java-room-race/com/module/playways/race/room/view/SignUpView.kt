@@ -9,12 +9,16 @@ import com.common.utils.U
 import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExImageView
 import com.module.playways.R
+import com.module.playways.race.room.RaceRoomData
+import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 
 class SignUpView : ConstraintLayout {
     var signUpBtn: ExImageView
     var circleCountDownView: CircleCountDownView
     var signUpType: SignUpType? = null
     var clickSignUpBtn: (() -> Unit)? = null
+    var roomData: RaceRoomData? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -49,11 +53,24 @@ class SignUpView : ConstraintLayout {
 
         if (type == SignUpType.SIGN_UP_START) {
             signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
+            roomData?.let { raceRoomData ->
+                val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
+                info?.let {
+                    if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                        circleCountDownView.visibility = View.GONE
+                        circleCountDownView.cancelAnim()
+                    } else {
+                        setCountDownTime(0, 8 * 1000)
+                    }
+                }
+            }
         } else if (type == SignUpType.SIGN_UP_FINISH) {
             circleCountDownView.visibility = View.GONE
+            circleCountDownView.cancelAnim()
             signUpBtn.background = U.getDrawable(R.drawable.paiwei_yibaoming)
         } else if (type == SignUpType.ALLCATION) {
             circleCountDownView.visibility = View.GONE
+            circleCountDownView.cancelAnim()
             signUpBtn.background = U.getDrawable(R.drawable.paiwei_fenpeizhong)
         }
     }

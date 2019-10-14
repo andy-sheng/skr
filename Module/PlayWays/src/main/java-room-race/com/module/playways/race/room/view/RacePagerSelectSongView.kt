@@ -83,9 +83,9 @@ class RacePagerSelectSongView : ExConstraintLayout {
             info?.let {
                 if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                     mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
-                    countDown(noSelectCall)
-                } else {
                     countDonwTv.visibility = View.GONE
+                } else {
+                    countDown(noSelectCall)
                     mPagerAdapter?.setData(it.games)
                 }
             }
@@ -119,10 +119,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
         countDonwJob?.cancel()
         countDonwJob = launch {
             repeat(lastedTime / 1000) {
-                countDonwTv.text = it.toString()
+                countDonwTv.text = "${(lastedTime / 1000 - it)}s"
                 delay(1000)
             }
 
+            countDonwTv.visibility = View.GONE
             noSelectCall?.invoke()
         }
     }
