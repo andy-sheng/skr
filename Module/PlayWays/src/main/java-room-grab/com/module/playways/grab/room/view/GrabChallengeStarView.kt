@@ -1,6 +1,8 @@
 package com.module.playways.grab.room.view
 
 
+import android.os.Handler
+import android.os.Message
 import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
@@ -22,6 +24,16 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
 
     var clickListener:(()->Unit)? = null
 
+    val handler = object :Handler(){
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            if(msg?.what==MSG_HIDE){
+                setVisibility(View.GONE)
+            }
+        }
+    }
+
+    val MSG_HIDE = 9
     override fun init(parentView: View) {
         challengeBgIv = parentView.findViewById(R.id.challenge_bg_iv)
         challengingTv = parentView.findViewById(R.id.challenging_tv)
@@ -44,5 +56,12 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
             challengStarCntTv?.visibility = View.VISIBLE
             challengStarCntTv?.setText("评价:${cnt}")
         }
+        handler.removeMessages(MSG_HIDE)
+        handler.sendEmptyMessageDelayed(MSG_HIDE,5000)
+    }
+
+    override fun onViewDetachedFromWindow(v: View) {
+        super.onViewDetachedFromWindow(v)
+        handler.removeCallbacksAndMessages(null)
     }
 }
