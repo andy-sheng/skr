@@ -142,7 +142,6 @@ class RaceHomeActivity : BaseActivity() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation()
-                finish()
             }
         })
 
@@ -155,7 +154,6 @@ class RaceHomeActivity : BaseActivity() {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3gf3ujzxsw97z.html")
                         .navigation()
-                finish()
             }
         })
 
