@@ -10,9 +10,11 @@ import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.pagetransformerhelp.cardtransformer.AlphaAndScalePageTransformer
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.adapter.RaceSelectSongAdapter
@@ -56,6 +58,9 @@ class RacePagerSelectSongView : ExConstraintLayout {
         hideClickArea = rootView.findViewById(R.id.hide_click_area)
         bannerPager = rootView.findViewById(R.id.banner_pager)
         bannerPager.offscreenPageLimit = 8
+        bannerPager.setPageMargin(U.getDisplayUtils().dip2px(15f))
+        bannerPager.setPageTransformer(true, AlphaAndScalePageTransformer())
+
         mPagerAdapter = RaceSelectSongAdapter(context) { choiceID, model ->
             if (canSelectSong()) {
                 mSignUpMethed?.invoke(choiceID, mSeq, model)

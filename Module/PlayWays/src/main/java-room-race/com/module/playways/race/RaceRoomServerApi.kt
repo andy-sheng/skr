@@ -199,7 +199,7 @@ interface RaceRoomServerApi {
       "traceId": "string"
     }
     */
-    @PUT("http://dev.game.inframe.mobi/v1/racegame/intro-over")
+    @PUT("http://dev.game.inframe.mobi/v1/racegame/choice-over")
     fun introOver(@Body body: RequestBody): Call<ApiResult>
 
     /*
