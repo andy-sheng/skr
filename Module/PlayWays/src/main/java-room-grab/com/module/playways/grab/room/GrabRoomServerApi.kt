@@ -524,10 +524,10 @@ message STCommitSegmentResultReq
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v1/stand/challenge-resource")
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/challenge-resource")
     fun uploadChallengeResource(@Body body: RequestBody): Call<ApiResult>
 
 
-    @GET("http://dev.api.inframe.mobi/v1/stand/challenge-star-cnt")
+    @GET("http://dev.stand.inframe.mobi/v1/stand/challenge-star-cnt")
     fun getChallengeStarCount(@Query("roomID") roomID: Int, @Query("enterRoundSeq") enterRoundSeq: Int, @Query("curRoundSeq") curRoundSeq: Int): Call<ApiResult>
 }
