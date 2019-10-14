@@ -669,8 +669,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
     }
 
-    override fun showChoicing(showNextRound: Boolean) {
-        MyLog.d(TAG, "showChoicing showNextRound = $showNextRound")
+    override fun showChoiceView(showNextRound: Boolean) {
+        MyLog.d(TAG, "showChoiceView showNextRound = $showNextRound")
         mRaceRightOpView.visibility = View.GONE
         if (showNextRound) {
             hideAllSceneView()
@@ -685,8 +685,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
     }
 
-    override fun showMatchAnimaionView(overListener: () -> Unit) {
-        MyLog.d(TAG, "showMatchAnimaionView")
+    override fun showMatchAnimationView(overListener: () -> Unit) {
+        MyLog.d(TAG, "showMatchAnimationView")
         hideAllSceneView()
         mRaceMatchView.visibility = View.VISIBLE
         mSignUpView.setType(RaceSignUpBtnView.SignUpType.ALLOCATION)

@@ -4,7 +4,6 @@ import android.os.Handler
 import android.os.Message
 import android.support.annotation.CallSuper
 import android.text.SpannableStringBuilder
-import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
@@ -502,11 +501,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
                         goResultPage(lastRound)
                     } else {
-                        mIRaceRoomView.showChoicing(true)
+                        mIRaceRoomView.showChoiceView(true)
                     }
                 }
             } else {
-                mIRaceRoomView.showChoicing(false)
+                mIRaceRoomView.showChoiceView(false)
             }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             if (thisRound?.subRoundSeq == 1) {
@@ -530,7 +529,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                             goResultPage(lastRound)
                         } else {
                             // 走匹配动画
-                            mIRaceRoomView.showMatchAnimaionView {
+                            mIRaceRoomView.showMatchAnimationView {
                                 // 动画走完执行唱歌相关
                                 runnable.invoke()
                             }
@@ -543,7 +542,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     } else {
                         // 正常从报名阶段 到 演唱阶段
                         // 走匹配动画
-                        mIRaceRoomView.showMatchAnimaionView {
+                        mIRaceRoomView.showMatchAnimationView {
                             // 动画走完执行唱歌相关
                             runnable.invoke()
                         }
