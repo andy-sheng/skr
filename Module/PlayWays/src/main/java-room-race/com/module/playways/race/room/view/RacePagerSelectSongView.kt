@@ -169,7 +169,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     }
 
     fun hideView() {
-        if (mUiHandler.hasMessages(HIDE_PANEL)) {
+        if (mUiHandler.hasMessages(HIDE_PANEL) || View.GONE == visibility) {
             return
         }
 
