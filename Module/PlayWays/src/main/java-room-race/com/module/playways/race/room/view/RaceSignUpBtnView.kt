@@ -62,6 +62,11 @@ class RaceSignUpBtnView : ConstraintLayout {
         circleCountDownView.go(8000 - lastedTime, lastedTime)
     }
 
+    fun cancelCountDown() {
+        circleCountDownView.cancelAnim()
+        circleCountDownView.visibility = View.GONE
+    }
+
     fun setType(type: SignUpType) {
         signUpType = type
 

@@ -192,6 +192,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
         }
     }
 
+    fun cancelCountDown() {
+        countDonwJob?.cancel()
+        countDonwTv.visibility = View.GONE
+    }
+
     fun showView() {
         if (visibility == View.VISIBLE) {
             return
