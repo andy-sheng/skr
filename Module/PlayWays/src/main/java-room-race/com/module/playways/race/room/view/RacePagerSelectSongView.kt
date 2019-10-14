@@ -20,7 +20,6 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.adapter.RaceSelectSongAdapter
 import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RaceRoundInfoModel
-import com.module.playways.room.gift.view.GiftPanelView
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -40,9 +39,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
-            if (msg.what == GiftPanelView.HIDE_PANEL) {
+            if (msg.what == HIDE_PANEL) {
                 clearAnimation()
                 visibility = View.GONE
+            } else if (msg.what == PAGER_BUG) {
+                fakeDrag()
             }
         }
     }
@@ -50,6 +51,12 @@ class RacePagerSelectSongView : ExConstraintLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    fun fakeDrag() {
+        bannerPager.beginFakeDrag()
+        bannerPager.fakeDragBy(1.0f)
+        bannerPager.endFakeDrag()
+    }
 
     init {
         View.inflate(context, R.layout.race_pager_select_song_view_layout, this)
@@ -85,6 +92,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         mSeq = seq
         mRoomData?.let { raceRoomData ->
             val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
+            val preDataCount: Int = mPagerAdapter?.count ?: 0
             info?.let {
                 if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                     mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
@@ -93,6 +101,10 @@ class RacePagerSelectSongView : ExConstraintLayout {
                     countDown(noSelectCall)
                     mPagerAdapter?.setData(it.games)
                 }
+            }
+
+            if (preDataCount > 0) {
+                mUiHandler.sendEmptyMessageDelayed(PAGER_BUG, 0)
             }
         }
     }
@@ -171,6 +183,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     }
     companion object {
         val HIDE_PANEL = 1
+        val PAGER_BUG = 2
         val ANIMATION_DURATION = 300
     }
 }
