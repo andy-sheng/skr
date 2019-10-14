@@ -85,7 +85,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
                 .setCornersRadius(U.getDisplayUtils().dip2px(8))
                 .build();
 
-        playDrawable3 = new DrawableCreator.Builder()
+        playDrawable4 = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#6ACAD7"))
                 .setCornersRadius(U.getDisplayUtils().dip2px(8))
                 .build();

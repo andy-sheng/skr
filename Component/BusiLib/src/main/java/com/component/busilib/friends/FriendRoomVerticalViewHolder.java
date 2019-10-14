@@ -99,12 +99,16 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         int colorIndex = position % 4;
         if (colorIndex == 1) {
             mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable2);
+            mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable2);
         } else if (colorIndex == 2) {
             mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable3);
+            mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable3);
         } else if (colorIndex == 3) {
             mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable4);
+            mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable4);
         } else {
             mBackground.setBackground(FriendRoomVerticalAdapter.bgDrawable1);
+            mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable1);
         }
 
         if (friendRoomModel.getUserInfo() != null) {
@@ -125,15 +129,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         if (friendRoomModel.getVoiceInfo() != null) {
             mVoiceArea.setVisibility(View.VISIBLE);
             mVoiceChartView.reset();
-            if (colorIndex == 1) {
-                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable2);
-            } else if (colorIndex == 2) {
-                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable3);
-            } else if (colorIndex == 3) {
-                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable4);
-            } else {
-                mPlayBg.setBackground(FriendRoomVerticalAdapter.playDrawable1);
-            }
             mVoiceName.setText(friendRoomModel.getVoiceInfo().getSongName());
         } else {
             mVoiceArea.setVisibility(View.GONE);
