@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <com.module.playways.race.room.view.matchview.RaceMatchItemView
+    <com.module.playways.room.room.matchview.RankMatchItemView
         android:id="@+id/left_view"
         android:layout_width="@dimen/view_100_dp"
         android:layout_height="@dimen/view_100_dp"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <com.module.playways.race.room.view.matchview.RaceMatchItemView
+    <com.module.playways.room.room.matchview.RankMatchItemView
         android:id="@+id/right_view"
         android:layout_width="@dimen/view_100_dp"
         android:layout_height="@dimen/view_100_dp"
