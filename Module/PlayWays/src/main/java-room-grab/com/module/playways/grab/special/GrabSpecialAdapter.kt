@@ -3,12 +3,14 @@ package com.module.playways.grab.special
 import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.drawable.DrawableCreator
@@ -90,8 +92,14 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
                 else -> background.setBackground(bgDrawable1)
             }
             specialNameTv.text = model.tagName
-            rankDesc.text = model.rankInfoDesc
-            if (model.status == GrabTagDetailModel.SST_UNLOCK) {
+            if (!TextUtils.isEmpty(model.rankInfoDesc)) {
+                rankDesc.setTextColor(U.getColor(R.color.black_trans_50))
+                rankDesc.text = model.rankInfoDesc
+            } else {
+                rankDesc.setTextColor(U.getColor(R.color.black_trans_20))
+                rankDesc.text = "暂无排名"
+            }
+            if (!model.showPermissionLock && model.status == GrabTagDetailModel.SST_UNLOCK) {
                 starView.visibility = View.VISIBLE
                 lockIv.visibility = View.GONE
                 starView.bindData(model.starCnt, model.starCnt)

@@ -26,5 +26,5 @@ class GrabTagDetailModel : Serializable {
     @JSONField(name = "rankInfoDesc")
     var rankInfoDesc: String? = null
     @JSONField(name = "showPermissionLock")
-    var showPermissionLock: Boolean? = null
+    var showPermissionLock: Boolean = false
 }

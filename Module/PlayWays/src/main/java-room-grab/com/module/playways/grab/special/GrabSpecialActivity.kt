@@ -16,6 +16,7 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
@@ -31,9 +32,8 @@ import kotlinx.coroutines.launch
 @Route(path = RouterConstants.ACTIVITY_GRAB_SPECIAL)
 class GrabSpecialActivity : BaseActivity() {
 
-
-
     private var titlebar: CommonTitleBar? = null
+    private var createRoom: ExTextView? = null
     private var refreshLayout: SmartRefreshLayout? = null
     private var recyclerView: RecyclerView? = null
     private val adapter: GrabSpecialAdapter = GrabSpecialAdapter()
@@ -52,11 +52,12 @@ class GrabSpecialActivity : BaseActivity() {
 
     override fun initData(savedInstanceState: Bundle?) {
         titlebar = findViewById(R.id.titlebar)
+        createRoom = findViewById(R.id.create_room)
         refreshLayout = findViewById(R.id.refreshLayout)
         recyclerView = findViewById(R.id.recycler_view)
 
         titlebar?.leftTextView?.setDebounceViewClickListener { finish() }
-        titlebar?.rightTextView?.setAnimateDebounceViewClickListener {
+        createRoom?.setAnimateDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
                     .navigation()
         }
@@ -83,6 +84,7 @@ class GrabSpecialActivity : BaseActivity() {
         recyclerView?.adapter = adapter
         adapter.onClickListener = { model, _ ->
             model?.let {
+                // 歌单解锁和有专场权限 让服务器处理
                 mSkrAudioPermission.ensurePermission({
                     mRealNameVerifyUtils.checkJoinAudioPermission(it.tagID) {
                         mRealNameVerifyUtils.checkAgeSettingState {
@@ -91,6 +93,7 @@ class GrabSpecialActivity : BaseActivity() {
                         }
                     }
                 }, true)
+
             }
         }
 
