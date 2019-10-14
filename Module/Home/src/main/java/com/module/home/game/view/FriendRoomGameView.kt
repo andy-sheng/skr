@@ -104,8 +104,12 @@ class FriendRoomGameView : RelativeLayout {
                 if (mFriendRoomVeritAdapter?.mCurrPlayModel != null && mFriendRoomVeritAdapter?.mCurrPlayModel == model) {
                     SinglePlayer.stop(playerTag)
                     refreshLayout.setEnableRefresh(true)
+                    mLastLoadDateTime = System.currentTimeMillis()
+                    initData(false)
                 } else {
+                    // 播放中 不能刷新，停止自动刷新
                     refreshLayout.setEnableRefresh(false)
+                    stopTimer()
                     model?.voiceInfo?.voiceURL?.let {
                         SinglePlayer.startPlay(playerTag, it)
                     }
@@ -161,6 +165,9 @@ class FriendRoomGameView : RelativeLayout {
             override fun onCompletion() {
                 super.onCompletion()
                 mFriendRoomVeritAdapter?.stopPlay()
+                refreshLayout.setEnableRefresh(true)
+                mLastLoadDateTime = System.currentTimeMillis()
+                initData(false)
             }
         }
         SinglePlayer.addCallback(playerTag, playCallback)
