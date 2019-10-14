@@ -342,7 +342,7 @@ interface RaceRoomServerApi {
     fun getGameChoices(@Query("roomID") roomID: Int, @Query("roundSeq") roundSeq: Int): Call<ApiResult>
 
 
-    @GET("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
+    @PUT("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
 
     /** 8s之后调用
