@@ -616,8 +616,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
 
-        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
-                        ?: false) {
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
             MyLog.d(TAG, "singByOtherSecondRound gone")
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
@@ -629,13 +628,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mCorePresenter.sendIntroOver()
             }
         }
-    }
-
-    //开始匹配动画
-    override fun startMatching() {
-        hideAllSceneView()
-        mRacePagerSelectSongView.hideView()
-        mSignUpView.setType(RaceSignUpBtnView.SignUpType.ALLCATION)
     }
 
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
@@ -697,6 +689,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showMatchAnimaionView")
         hideAllSceneView()
         mRaceMatchView.visibility = View.VISIBLE
+        mSignUpView.setType(RaceSignUpBtnView.SignUpType.ALLOCATION)
         mRaceMatchView.bindData {
             overListener.invoke()
         }

@@ -32,7 +32,7 @@ class RaceSignUpBtnView : ConstraintLayout {
 
         signUpBtn.setDebounceViewClickListener {
             signUpType?.let {
-                if (it != SignUpType.ALLCATION) {
+                if (it != SignUpType.ALLOCATION) {
                     clickSignUpBtn?.invoke()
                 }
             }
@@ -68,7 +68,7 @@ class RaceSignUpBtnView : ConstraintLayout {
             circleCountDownView.visibility = View.GONE
             circleCountDownView.cancelAnim()
             signUpBtn.background = U.getDrawable(R.drawable.paiwei_yibaoming)
-        } else if (type == SignUpType.ALLCATION) {
+        } else if (type == SignUpType.ALLOCATION) {
             circleCountDownView.visibility = View.GONE
             circleCountDownView.cancelAnim()
             signUpBtn.background = U.getDrawable(R.drawable.paiwei_fenpeizhong)
@@ -76,7 +76,7 @@ class RaceSignUpBtnView : ConstraintLayout {
     }
 
     enum class SignUpType(val type: Int) {
-        SIGN_UP_START(1), SIGN_UP_FINISH(2), ALLCATION(3);
+        SIGN_UP_START(1), SIGN_UP_FINISH(2), ALLOCATION(3);
 
         val value: Int
             get() = type
