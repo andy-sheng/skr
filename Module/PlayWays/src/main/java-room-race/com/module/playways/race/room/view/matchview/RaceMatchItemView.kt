@@ -26,7 +26,7 @@ class RaceMatchItemView : ConstraintLayout {
     private val totalTime: Long = 4 * 1000L  // 动画的总时间
     // todo 调太慢会导致减速转动的时间不够
     private val fastSpeed: Float = 1f         // 调整转动速度 通过一个pixel需要的时间(fastSpeed / U.getDisplayUtils().density)
-    private val slowSpeed: Float = 1000f      // 最慢速度(slowSpeed / U.getDisplayUtils().density)
+    private val slowSpeed: Float = 500f      // 最慢速度(slowSpeed / U.getDisplayUtils().density)
     private val itemHeight = U.getDisplayUtils().dip2px(100f)
     private val itemTime = itemHeight * (fastSpeed / U.getDisplayUtils().density) // 滚动一个itemView的时间
 
@@ -49,7 +49,7 @@ class RaceMatchItemView : ConstraintLayout {
         recyclerView.adapter = adapter
     }
 
-    fun setData(listData: ArrayList<RacePlayerInfoModel>?, uid: Int, listener: ()->Unit) {
+    fun setData(listData: ArrayList<RacePlayerInfoModel>?, uid: Int, listener: () -> Unit) {
         if (listData != null) {
             listData.forEachIndexed { index, model ->
                 if (model.userInfo.userId == uid) {
@@ -74,6 +74,10 @@ class RaceMatchItemView : ConstraintLayout {
             recyclerView.smoothScrollToPosition(Int.MAX_VALUE)
 
             // 匀减速运动，留2个周期时间，滚一个周期，可调整（目前是2)
+            var pauseTs = (totalTime - 5 * oneCycleTime - (totalTime - diffTime) % oneCycleTime).toLong()
+            if (pauseTs < 0) {
+                pauseTs = 0
+            }
             uiHandler.postDelayed(Runnable {
                 // 当前滑动的位置
                 val firstVisible = scrollLinearLayoutManager.findFirstVisibleItemPosition()
@@ -85,7 +89,7 @@ class RaceMatchItemView : ConstraintLayout {
                     scrollLinearLayoutManager.setSpeedSlow(fastSpeed + (slowSpeed - fastSpeed) * value)
                 }
                 recyclerView.smoothScrollToPosition(firstVisible + adapter.mDataList.size + target - firstVisible % adapter.mDataList.size)
-            }, (totalTime - 2 * oneCycleTime - (totalTime - diffTime) % oneCycleTime).toLong())
+            }, pauseTs)
 
             uiHandler.postDelayed({
                 listener.invoke()
