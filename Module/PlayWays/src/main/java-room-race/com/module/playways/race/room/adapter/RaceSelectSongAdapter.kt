@@ -10,13 +10,15 @@ import com.module.playways.race.room.view.RaceSongInfoView
 import java.util.*
 
 class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupUpMethed: (Int, RaceGamePlayInfo?) -> Unit) : PagerAdapter() {
-    val TAG = "GiftViewPagerAdapter"
-    internal var mGiftOnePageViewHashMap = HashMap<Int, RaceSongInfoView>()
+    val TAG = "RaceSelectSongAdapter"
+    private val cachedList = ArrayList<RaceSongInfoView>()
     internal var mRaceGamePlayInfos: List<RaceGamePlayInfo> = ArrayList()
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         MyLog.d(TAG, "destroyItem container=$container position=$position object=$`object`")
-        container.removeView(`object` as View)
+        val view = `object` as RaceSongInfoView
+        container.removeView(view)
+        cachedList.add(view)
     }
 
     override fun getItemPosition(any: Any): Int {
@@ -25,10 +27,14 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupU
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
-        val view = mGiftOnePageViewHashMap[position]
+        val view = getCachedView()
+        view.signUpCall = { choceId, model ->
+            mSigupUpMethed.invoke(choceId, model)
+        }
         if (container.indexOfChild(view) == -1) {
             container.addView(view)
         }
+        view.setData(position, mRaceGamePlayInfos[position])
         return view!!
     }
 
@@ -38,22 +44,6 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupU
         }
 
         mRaceGamePlayInfos = raceGamePlayInfoList
-        val size = mRaceGamePlayInfos.size
-        for (i in 0 until size) {
-            val model = mRaceGamePlayInfos.get(i)
-            var view: RaceSongInfoView? = mGiftOnePageViewHashMap.get(i)
-            if (view == null) {
-                view = RaceSongInfoView(mContext)
-                mGiftOnePageViewHashMap.put(i, view)
-            }
-
-            view.signUpCall = { choceId, model ->
-                mSigupUpMethed.invoke(choceId, model)
-            }
-
-            view.setData(i, model)
-        }
-
         notifyDataSetChanged()
     }
 
@@ -62,10 +52,13 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val mSigupU
     }
 
     fun destroy() {
-        val integerGiftOnePageViewIterator = mGiftOnePageViewHashMap.entries.iterator()
-        //        while (integerGiftOnePageViewIterator.hasNext()) {
-        //            integerGiftOnePageViewIterator.next().getValue().destroy();
-        //        }
+    }
+
+    private fun getCachedView(): RaceSongInfoView {
+        if (cachedList.isNotEmpty()) {
+            return cachedList.removeAt(0)
+        }
+        return RaceSongInfoView(mContext)
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {

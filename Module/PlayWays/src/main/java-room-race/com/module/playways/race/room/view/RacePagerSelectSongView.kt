@@ -181,6 +181,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         super.onDetachedFromWindow()
         countDonwJob?.cancel()
     }
+
     companion object {
         val HIDE_PANEL = 1
         val PAGER_BUG = 2
