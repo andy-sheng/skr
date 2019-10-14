@@ -133,6 +133,26 @@ public class LevelConfigUtils {
         }
     }
 
+    public static int getRaceCenterAvatarBg(int mainLevel){
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return R.drawable.race_tx_qianli;
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return R.drawable.race_tx_baiyin;
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return R.drawable.race_tx_jinpai;
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return R.drawable.race_tx_bojin;
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return R.drawable.race_tx_zuanshi;
+            case UserLevelType.SKRER_LEVEL_KING:
+                return R.drawable.race_tx_rongyao;
+            default:
+                MyLog.w(TAG, "getAvatarLevelBg null" + " mainLevel = " + mainLevel);
+                return 0;
+        }
+    }
+
 
     // 父段位资源
     public static int getImageResoucesLevel(int level) {

@@ -1,6 +1,5 @@
 package com.module.playways.race.room.view
 
-import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.view.View
@@ -16,7 +15,6 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ExViewStub
-import com.common.view.countdown.CircleCountDownView
 import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.component.person.event.ShowPersonCardEvent
@@ -114,8 +112,8 @@ class RaceOtherSingCardView(viewStub: ViewStub, val roomData: RaceRoomData) : Ex
                             .setBorderWidth(U.getDisplayUtils().dip2px(3f).toFloat())
                             .setCircle(true)
                             .build())
-            if (LevelConfigUtils.getImageResoucesLevel(userInfoModel.ranking.mainRanking) != 0) {
-                levelBg.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(userInfoModel.ranking.mainRanking))
+            if (LevelConfigUtils.getRaceCenterAvatarBg(userInfoModel.ranking.mainRanking) != 0) {
+                levelBg.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(userInfoModel.ranking.mainRanking))
             }
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败")
