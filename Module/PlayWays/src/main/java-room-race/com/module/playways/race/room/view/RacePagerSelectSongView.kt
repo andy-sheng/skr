@@ -120,12 +120,19 @@ class RacePagerSelectSongView : ExConstraintLayout {
                     mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
                     countDonwTv.visibility = View.GONE
                     mShowingSongSeq = mSeq + 1
+                    mHasSignUpChoiceID = -1
+                    if (preDataCount > 0) {
+                        U.getToastUtil().showShort("报名结束，曲目更新")
+                    }
                 } else {
                     //因为这个时候显示的可能在上一次已经显示了（唱歌的时候显示的是下一轮次的歌曲）
                     if (mShowingSongSeq != mSeq) {
                         mPagerAdapter?.setData(it.games)
                         mShowingSongSeq = mSeq
                         mHasSignUpChoiceID = -1
+                        if (preDataCount > 0) {
+                            U.getToastUtil().showShort("报名结束，曲目更新")
+                        }
                     }
                     countDown(noSelectCall)
                 }
