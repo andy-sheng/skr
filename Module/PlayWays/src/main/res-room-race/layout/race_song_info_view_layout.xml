@@ -19,7 +19,7 @@
         android:gravity="center"
         android:id="@+id/song_name_tv"
         android:maxLines="1"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_33_dp"
         android:text="《不让我的眼泪陪我过夜》"
         android:textColor="@color/white"
