@@ -103,7 +103,9 @@ class FriendRoomGameView : RelativeLayout {
             override fun onClickFriendVoice(position: Int, model: RecommendModel?) {
                 if (mFriendRoomVeritAdapter?.mCurrPlayModel != null && mFriendRoomVeritAdapter?.mCurrPlayModel == model) {
                     SinglePlayer.stop(playerTag)
+                    refreshLayout.setEnableRefresh(true)
                 } else {
+                    refreshLayout.setEnableRefresh(false)
                     model?.voiceInfo?.voiceURL?.let {
                         SinglePlayer.startPlay(playerTag, it)
                     }
@@ -207,10 +209,7 @@ class FriendRoomGameView : RelativeLayout {
                 .interval((mRecommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
-                        // 正在播放，不自动刷新
-                        if (mFriendRoomVeritAdapter?.mCurrPlayModel == null) {
-                            loadRecommendData(0)
-                        }
+                        loadRecommendData(0)
                     }
                 })
     }

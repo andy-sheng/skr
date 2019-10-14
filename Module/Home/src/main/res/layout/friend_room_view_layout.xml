@@ -13,7 +13,7 @@
             android:id="@+id/classics_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srlAccentColor="@color/white"
+            app:srlAccentColor="@color/black"
             android:background="@color/transparent"/>
 
         <android.support.v7.widget.RecyclerView
