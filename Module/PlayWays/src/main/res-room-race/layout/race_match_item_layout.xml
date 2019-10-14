@@ -8,6 +8,7 @@
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_68_dp"
         android:layout_height="@dimen/view_68_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

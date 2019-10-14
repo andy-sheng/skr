@@ -1,4 +1,4 @@
-package com.module.playways.room.room.matchview
+package com.module.playways.race.room.view.matchview
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
@@ -12,12 +12,12 @@ import com.common.view.ex.ExTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 
-class RankMatchAdapter : RecyclerView.Adapter<RankMatchAdapter.RankMatchViewHolder>() {
+class RaceMatchAdapter : RecyclerView.Adapter<RaceMatchAdapter.RankMatchViewHolder>() {
 
     var mDataList: ArrayList<UserInfoModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankMatchViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rank_match_item_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.race_match_item_layout, parent, false)
         return RankMatchViewHolder(view)
     }
 
@@ -26,7 +26,9 @@ class RankMatchAdapter : RecyclerView.Adapter<RankMatchAdapter.RankMatchViewHold
     }
 
     override fun onBindViewHolder(holder: RankMatchViewHolder, position: Int) {
-        holder.bindData(mDataList[position % mDataList.size], position)
+        if (!mDataList.isNullOrEmpty()) {
+            holder.bindData(mDataList[position % mDataList.size], position)
+        }
     }
 
 
@@ -41,7 +43,7 @@ class RankMatchAdapter : RecyclerView.Adapter<RankMatchAdapter.RankMatchViewHold
                     .setBorderWidth(2.dp().toFloat())
                     .setCircle(true)
                     .build())
-            nameTv.text = model.nicknameRemark + pos
+            nameTv.text = model.nicknameRemark
         }
     }
 }

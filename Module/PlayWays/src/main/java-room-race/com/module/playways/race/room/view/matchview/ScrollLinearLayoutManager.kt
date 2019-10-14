@@ -1,4 +1,4 @@
-package com.module.playways.room.room.matchview
+package com.module.playways.race.room.view.matchview
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.graphics.PointF
-import com.common.log.MyLog
-import com.common.utils.U
 
 class ScrollLinearLayoutManager : LinearLayoutManager {
 
@@ -31,7 +29,6 @@ class ScrollLinearLayoutManager : LinearLayoutManager {
             override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
                 return MILLISECONDS_PER_INCH / displayMetrics.density
             }
-
         }
         linearSmoothScroller.targetPosition = position
         startSmoothScroll(linearSmoothScroller)
