@@ -276,7 +276,14 @@ class FriendRoomGameView : RelativeLayout {
                             friendRoomModel.roomInfo = roomInfo
                             mFriendRoomVeritAdapter?.update(friendRoomModel, position)
                         }
-                        tryJoinRoom(roomInfo)
+                        if (roomInfo.roomType != 1) {
+                            // 不再私密房里面
+                            tryJoinRoom(roomInfo)
+                        } else {
+                            // 在私密房里面
+                            mFriendRoomVeritAdapter?.remove(position)
+                            U.getToastUtil().showShort("好友已离开房间")
+                        }
                     } else {
                         // 不在房间里面了
                         mFriendRoomVeritAdapter?.remove(position)
