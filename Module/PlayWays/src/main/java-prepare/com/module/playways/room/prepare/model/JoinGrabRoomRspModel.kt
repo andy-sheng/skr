@@ -178,6 +178,8 @@ import java.io.Serializable
 }
  */
 class JoinGrabRoomRspModel : Serializable {
+    val inChallenge = false
+    var maxGetBLightCnt = -1
     var coin: Int = 0 // 金币数目
     var config: GrabConfigModel? = null//游戏的配置信息
     var currentRound: GrabRoundInfoModel? = null // 目前轮次
@@ -193,7 +195,7 @@ class JoinGrabRoomRspModel : Serializable {
     var ownerID: Int = 0// 房主id
     var gameCreateTimeMs: Long = 0// 房间创建时间，绝对时间
     var gameStartTimeMs: Long = 0// 游戏开始时间，相对时间，状态机运行时间，相对于 gameCreateTimeMs
-    var isHasGameBegin:Boolean? = null// 游戏是否已经开始
+    var isHasGameBegin: Boolean? = null// 游戏是否已经开始
     var isChallengeAvailable = false// 是否有挑战资格
     var roomName: String? = null    //房间名称
     var hongZuan: Float = 0.toFloat() // 红钻

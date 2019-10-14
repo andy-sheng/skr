@@ -263,6 +263,11 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
             }
         }
         this.enterRoundSeq = this.expectRoundInfo?.roundSeq ?:1
+
+        this.inChallenge = rsp.inChallenge
+
+        this.maxGetBLightCnt = rsp.maxGetBLightCnt
+
     }
 
     override fun toString(): String {
