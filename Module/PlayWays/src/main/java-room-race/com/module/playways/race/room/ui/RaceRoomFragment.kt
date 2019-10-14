@@ -500,6 +500,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
             mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
         }
+
+        mRacePagerSelectSongView.hideView()
+        mSignUpView.visibility = View.GONE
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -552,6 +555,20 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 }
             }
         }
+
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                        ?: false) {
+            MyLog.d(TAG, "singByOtherFirstRound gone")
+            mRacePagerSelectSongView.hideView()
+            mSignUpView.visibility = View.GONE
+        } else {
+            MyLog.d(TAG, "singByOtherFirstRound visibility")
+            mSignUpView.visibility = View.VISIBLE
+            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+            mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
+                mCorePresenter.sendIntroOver()
+            }
+        }
     }
 
     private fun showRightVote() {
@@ -584,6 +601,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
             mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
         }
+
+        mRacePagerSelectSongView.hideView()
+        mSignUpView.visibility = View.GONE
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
@@ -606,6 +626,20 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                     hideAllSceneView()
                     mRaceOtherSingCardView.setVisibility(View.VISIBLE)
                 }
+            }
+        }
+
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                        ?: false) {
+            MyLog.d(TAG, "singByOtherSecondRound gone")
+            mRacePagerSelectSongView.hideView()
+            mSignUpView.visibility = View.GONE
+        } else {
+            MyLog.d(TAG, "singByOtherSecondRound visible")
+            mSignUpView.visibility = View.VISIBLE
+            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+            mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
+                mCorePresenter.sendIntroOver()
             }
         }
     }
