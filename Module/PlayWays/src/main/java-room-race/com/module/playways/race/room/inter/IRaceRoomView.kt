@@ -15,4 +15,5 @@ interface IRaceRoomView {
     fun goResultPage(lastRound: RaceRoundInfoModel)
     fun joinNotice(playerInfoModel: UserInfoModel?)
     fun gameOver(lastRound: RaceRoundInfoModel?)
+    fun startMatching()
 }

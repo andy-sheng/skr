@@ -449,12 +449,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mPersonInfoDialog?.show()
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RaceWantSingChanceEvent) {
-//        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-//            mSignUpView.isEnabled = false
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: RaceWantSingChanceEvent) {
+        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            mSignUpView.setType(SignUpView.SignUpType.SIGN_UP_FINISH)
+            mRacePagerSelectSongView.hideView()
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
@@ -595,6 +596,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
     }
 
+    //开始匹配动画
+    override fun startMatching() {
+        mRacePagerSelectSongView.hideView()
+        mSignUpView.setType(SignUpView.SignUpType.ALLCATION)
+    }
+
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
@@ -669,7 +676,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mCorePresenter.sendIntroOver()
         }
         mRacePagerSelectSongView.showView()
-        mSignUpView.isEnabled = true
+        mSignUpView.setType(SignUpView.SignUpType.SIGN_UP_START)
     }
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {

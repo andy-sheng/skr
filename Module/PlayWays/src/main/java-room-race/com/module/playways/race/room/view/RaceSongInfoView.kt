@@ -4,14 +4,19 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
+import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.lyrics.LyricsManager
 import com.module.playways.R
+import com.module.playways.grab.room.model.NewChorusLyricModel
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.model.RaceGamePlayInfo
+import io.reactivex.functions.Consumer
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -74,8 +79,37 @@ class RaceSongInfoView : ConstraintLayout {
 
         this.model = model
         choiceId = index + 1
+
         songNameTv.text = "《${model.commonMusic?.itemName}》"
-        anchorTv.text = model.commonMusic?.writer
-        lyricView.text = "歌词"
+
+
+        anchorTv.text = ""
+        model.commonMusic?.writer?.let {
+            anchorTv.append("词/${model.commonMusic?.writer} ")
+        }
+        model.commonMusic?.composer?.let {
+            anchorTv.append("曲/${model.commonMusic?.composer}")
+        }
+
+        lyricView.text = "歌词加载中"
+
+        LyricsManager
+                .loadGrabPlainLyric(model.commonMusic?.standLrc)
+                .subscribe(Consumer<String> { o ->
+                    lyricView.text = ""
+                    if (U.getStringUtils().isJSON(o)) {
+                        val newChorusLyricModel = JSON.parseObject(o, NewChorusLyricModel::class.java)
+                        var i = 0
+                        while (i < newChorusLyricModel.items.size && i < 2) {
+                            lyricView.append(newChorusLyricModel.items[i].words)
+                            if (i == 0) {
+                                lyricView.append("\n")
+                            }
+                            i++
+                        }
+                    } else {
+                        lyricView.text = o
+                    }
+                }, Consumer<Throwable> { throwable -> MyLog.e(TAG, throwable) })
     }
 }
