@@ -178,7 +178,7 @@ import java.io.Serializable
 }
  */
 class JoinGrabRoomRspModel : Serializable {
-    val inChallenge = false
+    var inChallenge = false
     var maxGetBLightCnt = -1
     var coin: Int = 0 // 金币数目
     var config: GrabConfigModel? = null//游戏的配置信息
