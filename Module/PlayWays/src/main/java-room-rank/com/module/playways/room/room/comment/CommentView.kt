@@ -148,7 +148,7 @@ class CommentView : EdgeTransparentView {
                 layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight)
                 layoutParams.height = maxHeight
                 setLayoutParams(layoutParams)
-            }else if(layoutParams is ConstraintLayout.LayoutParams){
+            } else if (layoutParams is ConstraintLayout.LayoutParams) {
                 layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight)
                 layoutParams.height = maxHeight
                 setLayoutParams(layoutParams)
@@ -175,7 +175,7 @@ class CommentView : EdgeTransparentView {
 
         mCommentAdapter = CommentAdapter(object : CommentAdapter.CommentAdapterListener {
             override fun clickAvatar(userId: Int) {
-                if (userId != UserAccountManager.SYSTEM_ID) {
+                if (userId != UserAccountManager.SYSTEM_ID && userId != UserAccountManager.SYSTEM_GRAB_ID) {
                     mCommentItemListener?.clickAvatar(userId)
                 }
             }

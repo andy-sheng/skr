@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.common.core.account.UserAccountManager
 import com.common.core.avatar.AvatarUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -14,6 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import org.greenrobot.eventbus.EventBus
+import java.net.UnknownServiceException
 
 class RaceTopContentAdapter : RecyclerView.Adapter<RaceTopContentAdapter.RaceTopViewHolder>() {
 
@@ -47,7 +49,9 @@ class RaceTopContentAdapter : RecyclerView.Adapter<RaceTopContentAdapter.RaceTop
             item.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     mModel?.let {
-                        EventBus.getDefault().post(ShowPersonCardEvent(it.userInfo.userId))
+                        if (it.userID != UserAccountManager.SYSTEM_ID && it.userID != UserAccountManager.SYSTEM_GRAB_ID) {
+                            EventBus.getDefault().post(ShowPersonCardEvent(it.userInfo.userId))
+                        }
                     }
                 }
             })

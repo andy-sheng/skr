@@ -119,6 +119,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     internal var mUserId: Int = 0
     internal var mUserInfoModel = UserInfoModel()
     internal var isShowKick: Boolean = false
+    internal var isShowInvite: Boolean = false
     internal var isFollow: Boolean = false
     internal var isFriend: Boolean = false
 
@@ -198,14 +199,16 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     private fun initData(userID: Int, showKick: Boolean, showInvite: Boolean) {
         mUserId = userID
         isShowKick = showKick
+        isShowInvite = showInvite
 
         // 多音和ai裁判
         if (mUserId == UserAccountManager.SYSTEM_GRAB_ID || mUserId == UserAccountManager.SYSTEM_RANK_AI) {
             isShowKick = false
+            isShowInvite = false
             mMoreBtn.visibility = View.GONE
         }
 
-        if (showInvite) {
+        if (isShowInvite) {
             mInviteIv.visibility = View.VISIBLE
         } else {
             mInviteIv.visibility = View.GONE
