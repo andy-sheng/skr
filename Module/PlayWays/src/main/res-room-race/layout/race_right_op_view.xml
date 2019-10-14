@@ -2,24 +2,40 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/view_133_dp"
+    android:layout_height="@dimen/view_133_dp"
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/vote_iv"
         android:layout_width="@dimen/view_64_dp"
         android:layout_height="@dimen/view_64_dp"
-        app:bl_unSelected_drawable="@drawable/race_vote_normal_icon"
+        android:visibility="gone"
         app:bl_selected_drawable="@drawable/race_vote_selected_icon"
-        android:visibility="gone"/>
+        app:layout_constraintBottom_toBottomOf="@+id/vote_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/vote_bg"
+        app:layout_constraintRight_toRightOf="@+id/vote_bg"
+        app:bl_unSelected_drawable="@drawable/race_vote_normal_icon"
+        app:layout_constraintTop_toTopOf="@+id/vote_bg" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/vote_bg"
+        android:layout_width="@dimen/view_102_dp"
+        android:layout_height="@dimen/view_102_dp"
+        android:background="@drawable/paiwei_xin_bj"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_marginRight="@dimen/view_5_dp"
         android:id="@+id/give_up_iv"
         android:layout_width="@dimen/view_95_dp"
         android:layout_height="@dimen/view_48_dp"
+        android:visibility="gone"
         app:bl_unSelected_drawable="@drawable/race_give_up_normal_icon"
         app:bl_selected_drawable="@drawable/race_give_up_selected_icon"
-        android:visibility="gone" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </merge>

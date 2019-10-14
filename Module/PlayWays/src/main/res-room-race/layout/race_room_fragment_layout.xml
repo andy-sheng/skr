@@ -162,7 +162,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_80_dp"
-        android:layout_marginRight="@dimen/view_5_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_80_dp" />
 
 
@@ -238,10 +238,11 @@
 
     <!--右边的操作区域-->
     <com.module.playways.race.room.view.RaceRightOpView
+        android:clipChildren="false"
         android:id="@+id/race_right_op_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/view_196_dp"
+        android:layout_width="@dimen/view_133_dp"
+        android:layout_height="@dimen/view_133_dp"
+        android:layout_marginBottom="@dimen/view_156_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
