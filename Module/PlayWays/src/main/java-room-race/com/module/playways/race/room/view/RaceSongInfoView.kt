@@ -55,7 +55,7 @@ class RaceSongInfoView : ConstraintLayout {
     fun onEvent(event: RaceWantSingChanceEvent) {
         MyLog.d(TAG, "onEvent event = $event")
         if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+            if (choiceId == event.choiceID) {
                 signUpTv.isEnabled = false
                 signUpTv.text = "报名成功"
             } else {
