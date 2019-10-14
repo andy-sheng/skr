@@ -16,6 +16,7 @@ import com.module.playways.R
 import com.module.playways.grab.room.model.NewChorusLyricModel
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.model.RaceGamePlayInfo
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -32,6 +33,7 @@ class RaceSongInfoView : ConstraintLayout {
     var signUpCall: ((Int, RaceGamePlayInfo?) -> Unit)? = null
     var model: RaceGamePlayInfo? = null
     var choiceId: Int = -1
+    var loadLyricTask: Disposable? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -72,6 +74,7 @@ class RaceSongInfoView : ConstraintLayout {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         EventBus.getDefault().unregister(this)
+        loadLyricTask?.dispose()
     }
 
     fun setData(index: Int, model: RaceGamePlayInfo, hasSignUp: Boolean, hasSignUpChoiceID: Int) {
@@ -106,7 +109,8 @@ class RaceSongInfoView : ConstraintLayout {
             signUpTv.visibility = View.VISIBLE
         }
 
-        LyricsManager
+        loadLyricTask?.dispose()
+        loadLyricTask = LyricsManager
                 .loadGrabPlainLyric(model.commonMusic?.standLrc)
                 .subscribe(Consumer<String> { o ->
                     lyricView.text = ""
