@@ -206,6 +206,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
             return
         }
 
+        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
+            MyLog.w(TAG, "中途进来的，而且是选歌阶段，不展示选歌界面")
+            return
+        }
+
         clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0f)

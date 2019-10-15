@@ -3,10 +3,7 @@ package com.module.playways.race.room.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewStub
+import android.view.*
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.base.FragmentDataListener
@@ -88,7 +85,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     private lateinit var mRaceOtherSingCardView: RaceOtherSingCardView   // 别人唱
     private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
     private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
-//    private lateinit var mNextSongStartTipTv: View
+    private lateinit var mNextSongStartTipTv: View
     private lateinit var mRacePagerSelectSongView: RacePagerSelectSongView
     private lateinit var mSignUpView: RaceSignUpBtnView
 
@@ -158,6 +155,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         initRaceMatchView()
         initSignUpView()
 
+        mNextSongStartTipTv = rootView.findViewById(R.id.next_song_start_tip_tv);
+        showNextSongStartTips()
+
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
@@ -184,6 +184,17 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mSignUpView.roomData = mRoomData
         mSignUpView.clickSignUpBtn = {
             mRacePagerSelectSongView.showView()
+        }
+    }
+
+    private fun showNextSongStartTips() {
+        MyLog.d(TAG, "showNextSongStartTips status is ${mRoomData?.expectRoundInfo?.enterStatus
+                ?: 0}")
+        if ((mRoomData?.expectRoundInfo?.enterStatus ?: 0) == ERaceRoundStatus.ERRS_CHOCING.value) {
+            mNextSongStartTipTv.visibility = View.VISIBLE
+            mSignUpView.visibility = View.GONE
+        } else {
+            removeNextSongStartTipsView()
         }
     }
 
@@ -633,8 +644,10 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
         mRaceTopVsView.visibility = View.GONE
+        removeNextSongStartTipsView()
         mRacePagerSelectSongView.cancelCountDown()
         mSignUpView.cancelCountDown()
+        mSignUpView.visibility = View.VISIBLE
 
         if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
@@ -654,6 +667,16 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRaceMiddleResultView.visibility = View.VISIBLE
             mRaceMiddleResultView.showResult(lastRoundInfo) {
                 continueOp?.invoke()
+            }
+        }
+    }
+
+    private fun removeNextSongStartTipsView() {
+        activity?.let {
+            if (!it.isDestroyed() && !it.isFinishing()) {
+                if (mNextSongStartTipTv.parent != null) {
+                    (rootView as ViewGroup).removeView(mNextSongStartTipTv)
+                }
             }
         }
     }

@@ -94,6 +94,18 @@ class RaceSignUpBtnView : ConstraintLayout {
         }
     }
 
+    override fun setVisibility(visibility: Int) {
+        if (visibility == View.VISIBLE) {
+            if (roomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
+                MyLog.w(TAG, "中途进来的，而且是选歌阶段，不展示报名按钮")
+            } else {
+                super.setVisibility(visibility)
+            }
+        } else {
+            super.setVisibility(visibility)
+        }
+    }
+
     enum class SignUpType(val type: Int) {
         SIGN_UP_START(1), SIGN_UP_FINISH(2), ALLOCATION(3);
 
