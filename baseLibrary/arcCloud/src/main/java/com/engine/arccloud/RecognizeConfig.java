@@ -29,6 +29,10 @@ public class RecognizeConfig {
     }
 
     public void setSongName(String songName) {
+        // 把不对的歌名处理下
+        if (songName.contains("-清唱版")) {
+            songName = songName.replace("-清唱版", "");
+        }
         this.songName = songName;
     }
 
