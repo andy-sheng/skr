@@ -548,11 +548,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
                         ?: false) {
-            MyLog.d(TAG, "singByOtherFirstRound gone")
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
-            MyLog.d(TAG, "singByOtherFirstRound visibility")
             mSignUpView.visibility = View.VISIBLE
             mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
             mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
@@ -620,11 +618,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
 
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-            MyLog.d(TAG, "singByOtherSecondRound gone")
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
-            MyLog.d(TAG, "singByOtherSecondRound visible")
             mSignUpView.visibility = View.VISIBLE
             mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
             mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
