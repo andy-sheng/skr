@@ -20,6 +20,7 @@ import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
+import com.common.statistics.StatisticsAdapter
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
@@ -93,6 +94,8 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
     var mPlayingUrl = ""
 
     var mPlayingPosition = -1
+
+    private var beginContentTs = 0L
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.posts_detail_activity_layout
@@ -414,22 +417,22 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
 
     private fun deleteConfirm(call: (() -> Unit)?) {
         mTipsDialogView = TipsDialogView.Builder(this@PostsDetailActivity)
-                    .setMessageTip("是否确定删除该评论")
-                    .setConfirmTip("确认删除")
-                    .setCancelTip("取消")
-                    .setCancelBtnClickListener(object : AnimateClickListener() {
-                        override fun click(view: View?) {
-                            mTipsDialogView?.dismiss()
-                        }
-                    })
-                    .setConfirmBtnClickListener(object : AnimateClickListener() {
-                        override fun click(view: View?) {
-                            mTipsDialogView?.dismiss(false)
-                            call?.invoke()
-                        }
-                    })
-                    .build()
-            mTipsDialogView?.showByDialog()
+                .setMessageTip("是否确定删除该评论")
+                .setConfirmTip("确认删除")
+                .setCancelTip("取消")
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View?) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View?) {
+                        mTipsDialogView?.dismiss(false)
+                        call?.invoke()
+                    }
+                })
+                .build()
+        mTipsDialogView?.showByDialog()
     }
 
     //二级页删除二级评论
@@ -692,11 +695,13 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
             SinglePlayer.stop(playerTag)
         }
         stopPlayingState()
+        StatisticsAdapter.recordCalculateEvent("posts", "contentpage_duration", System.currentTimeMillis() - beginContentTs, null)
     }
 
     override fun onResume() {
         super.onResume()
         ToSecondLevelDetail.position = null
+        beginContentTs = System.currentTimeMillis()
     }
 
     override fun destroy() {

@@ -19,6 +19,7 @@ import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
+import com.common.statistics.StatisticsAdapter
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
@@ -625,10 +626,18 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
         }
     }
 
+    private var beginContentTs = 0L
+
     override fun onPause() {
         super.onPause()
         SinglePlayer.stop(playerTag)
         stopPlayingState()
+        StatisticsAdapter.recordCalculateEvent("posts", "commentpage_duration", System.currentTimeMillis() - beginContentTs, null)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        beginContentTs = System.currentTimeMillis()
     }
 
     override fun destroy() {
