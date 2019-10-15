@@ -322,23 +322,6 @@ interface RaceRoomServerApi {
 
 
     /*
-    抢唱
-    {
-      "choiceID": 0,
-      "roomID": 0,
-      "roundSeq": 0
-    }
-    {
-      "data": {},
-      "errmsg": "string",
-      "errno": 0,
-      "traceId": "string"
-    }
-    */
-    @PUT("http://dev.game.inframe.mobi/v1/racegame/want-sing-chance")
-    fun wantSingChance(@Body body: RequestBody): Call<ApiResult>
-
-    /*
 
      */
     @GET("http://dev.game.inframe.mobi/v1/racegame/game-choices")
@@ -347,15 +330,6 @@ interface RaceRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/racegame/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
-
-    /** 8s之后调用
-     * {
-    "roomID": 0,
-    "roundSeq": 0
-    }
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/racegame/choice-over")
-    fun choiceOver(@Body body: RequestBody): Call<ApiResult>
 
     /** 报名，选择歌曲
      * {
