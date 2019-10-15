@@ -231,6 +231,7 @@ class FriendRoomGameView : RelativeLayout {
     fun stopPlay() {
         SinglePlayer.stop(playerTag)
         mFriendRoomVeritAdapter?.stopPlay()
+        refreshLayout.setEnableRefresh(true)
     }
 
     fun tryJoinRoom(roomInfo: SimpleRoomInfo) {
