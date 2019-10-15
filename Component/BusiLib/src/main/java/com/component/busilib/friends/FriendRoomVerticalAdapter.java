@@ -40,6 +40,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
 
     public RecommendModel mCurrPlayModel = null;  //记录当前播放的
     public int mCurrPlayPosition = -1;
+    public boolean isPlay = false;
 
     private Handler uiHanlder = new Handler(Looper.getMainLooper());
 
@@ -110,14 +111,14 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
         if (payloads.isEmpty()) {
             RecommendModel friendRoomModel = mDataList.get(position);
             ((FriendRoomVerticalViewHolder) holder).bindData(friendRoomModel, position);
-            if (mCurrPlayModel == mDataList.get(position)) {
+            if (isPlay && mCurrPlayModel == mDataList.get(position)) {
                 ((FriendRoomVerticalViewHolder) holder).startPlay();
             } else {
                 ((FriendRoomVerticalViewHolder) holder).stopPlay();
             }
         } else {
             // 只有播放
-            if (mCurrPlayModel == mDataList.get(position)) {
+            if (isPlay && mCurrPlayModel == mDataList.get(position)) {
                 ((FriendRoomVerticalViewHolder) holder).startPlay();
             } else {
                 ((FriendRoomVerticalViewHolder) holder).stopPlay();
@@ -145,6 +146,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
             stopPlay();
         } else {
             // 数据改变或者播放的类型不一致了
+            isPlay = true;
             int lastPos = -1;
             if (mCurrPlayModel != model) {
                 mCurrPlayModel = model;
@@ -165,6 +167,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
     }
 
     public void stopPlay() {
+        isPlay = false;
         update(mCurrPlayPosition, mCurrPlayModel, REFRESH_PLAY);
         // 重置数据
         mCurrPlayPosition = -1;
