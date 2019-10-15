@@ -66,6 +66,8 @@ class DoubleHomeActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
+
         inviteFriendIv = findViewById(R.id.invite_friend_iv)
         exTextView = findViewById(R.id.exTextView)
         startMatchIv = findViewById(R.id.start_match_iv)
