@@ -67,12 +67,8 @@ class VoiceChartView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (chartFitWidth) {
-            if (mWidth < 0) {
-                mWidth = width
-            }
-            if (mHeight < 0) {
-                mHeight = height
-            }
+            mWidth = width
+            mHeight = height
             chartCount = mWidth / (chartWidth + chartMarginLeft)
         }
 
