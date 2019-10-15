@@ -476,6 +476,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         closeEngine()
         ZqEngineKit.getInstance().stopRecognize()
         if (thisRound == null) {
+            MyLog.d(TAG, "this round is null")
             // 游戏结束了
             mIRaceRoomView.gameOver(lastRound)
             return
@@ -746,6 +747,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 if (result.errno == 0) {
                     val gameOverTimeMs = result.data.getLong("gameOverTimeMs")
                     if (gameOverTimeMs > 0) {
+                        DebugLogView.println(TAG, "gameOverTimeMs=${gameOverTimeMs} 游戏结束时间>0 ，游戏结束，退出房间")
                         // 游戏结束了，停服了
                         mRoomData.expectRoundInfo = null
                         mRoomData.checkRoundInEachMode()
