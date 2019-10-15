@@ -126,8 +126,8 @@
         android:id="@+id/grab_challenge_star_view_stub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_12_dp"
-        android:layout_marginTop="@dimen/view_82_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_90_dp"
         android:inflatedId="@id/grab_challenge_star_view_stub"
         android:layout="@layout/grab_challenge_star_view_layout" />
 
