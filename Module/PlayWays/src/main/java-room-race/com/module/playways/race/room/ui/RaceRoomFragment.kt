@@ -712,6 +712,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         hideAllSceneView()
         mRaceMatchView.visibility = View.VISIBLE
         mSignUpView.setType(RaceSignUpBtnView.SignUpType.ALLOCATION)
+        mRacePagerSelectSongView.hideView()
         mRaceMatchView.bindData {
             overListener.invoke()
         }
