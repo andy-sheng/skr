@@ -77,13 +77,13 @@ class RaceSignUpBtnView : ConstraintLayout {
                 signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
                 roomData?.let { raceRoomData ->
 
-                    var info: RaceRoundInfoModel? = raceRoomData.realRoundInfo as RaceRoundInfoModel
+                    var info: RaceRoundInfoModel? = raceRoomData.realRoundInfo
                     if (info == null) {
-                        info = raceRoomData.expectRoundInfo as RaceRoundInfoModel
+                        info = raceRoomData.expectRoundInfo
                     }
 
-                    if (info != null) {
-                        if (info?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                    info?.let {
+                        if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                             circleCountDownView.visibility = View.GONE
                             circleCountDownView.cancelAnim()
                         } else {
