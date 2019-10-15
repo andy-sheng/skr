@@ -78,7 +78,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         countDonwTv = rootView.findViewById(R.id.count_down_tv)
         hideClickArea = rootView.findViewById(R.id.hide_click_area)
         bannerPager = rootView.findViewById(R.id.banner_pager)
-        bannerPager.offscreenPageLimit = 1
+        bannerPager.offscreenPageLimit = 2
         bannerPager.setPageMargin(U.getDisplayUtils().dip2px(15f))
         bannerPager.setPageTransformer(true, AlphaAndScalePageTransformer())
 
