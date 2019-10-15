@@ -22,6 +22,7 @@
         android:textSize="@dimen/view_12_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/challenge_bg_iv"
+        app:layout_constraintVertical_bias="0.4"
         app:layout_constraintRight_toRightOf="@+id/challenge_bg_iv"
         app:layout_constraintTop_toTopOf="@+id/challenge_bg_iv" />
 
@@ -31,8 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/view_10_dp"
-        android:text="评价:3"
+        android:text="评价: 3"
         android:textColor="@color/white"
+        app:layout_constraintVertical_bias="0.4"
         android:textSize="@dimen/view_12_dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/challenge_bg_iv"
@@ -45,7 +47,7 @@
         android:id="@+id/challenge_star_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
         android:src="@drawable/grab_challenge_star"
         app:layout_constraintBottom_toBottomOf="@+id/challenge_star_cnt_tv"
         app:layout_constraintLeft_toRightOf="@+id/challenge_star_cnt_tv"

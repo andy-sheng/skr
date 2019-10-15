@@ -58,7 +58,7 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
             challengingTv?.visibility = View.GONE
             challengStarCntTv?.visibility = View.VISIBLE
             challengeStarIv?.visibility = View.VISIBLE
-            challengStarCntTv?.text = "评价:${cnt}"
+            challengStarCntTv?.text = "评价: ${cnt}"
 
             val propertyValuesHolder1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 2f, 1f)
             val propertyValuesHolder2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 2f, 1f)
