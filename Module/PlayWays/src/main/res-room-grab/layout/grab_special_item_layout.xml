@@ -70,4 +70,15 @@
         app:layout_constraintTop_toTopOf="@id/mask_iv"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/play_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mask_iv"/>
+
 </android.support.constraint.ConstraintLayout>

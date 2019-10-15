@@ -25,7 +25,7 @@ class GrabTagDetailModel : Serializable {
     @JSONField(name = "status")
     var status: Int? = null
     @JSONField(name = "onlineUserCnt")
-    var onlineUserCnt: Int? = null
+    var onlineUserCnt: Int = 0
     @JSONField(name = "rankInfoDesc")
     var rankInfoDesc: String? = null
     @JSONField(name = "showPermissionLock")

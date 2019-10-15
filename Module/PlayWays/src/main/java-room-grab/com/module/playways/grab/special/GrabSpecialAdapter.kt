@@ -14,6 +14,7 @@ import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
 import com.common.view.ex.drawable.DrawableCreator
+import com.component.person.utils.StringFromatUtils
 import com.module.playways.R
 import com.module.playways.battle.songlist.view.BattleStarView
 
@@ -22,7 +23,7 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
     var mDataList: ArrayList<GrabTagDetailModel> = ArrayList()
 
     var onClickListener: ((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
-    var onClickRankListener:((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
+    var onClickRankListener: ((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
 
     val bgDrawable1 = DrawableCreator.Builder()
             .setGradientColor(Color.parseColor("#FFBEDC"), Color.parseColor("#FF8AB6"), Color.parseColor("#FF8AB6"))
@@ -74,6 +75,7 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
         val rankDesc: TextView = item.findViewById(R.id.rank_desc)
         val starView: BattleStarView = item.findViewById(R.id.star_view)
         val lockIv: ImageView = item.findViewById(R.id.lock_iv)
+        val playNumTv: TextView = item.findViewById(R.id.play_num_tv)
 
         var mPos = -1
         var model: GrabTagDetailModel? = null
@@ -110,6 +112,7 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
                 starView.visibility = View.GONE
                 lockIv.visibility = View.VISIBLE
             }
+            playNumTv.text = "${StringFromatUtils.formatTenThousand(model.onlineUserCnt)}人在玩"
         }
     }
 }
