@@ -124,9 +124,4 @@ class VoiceChartView : View {
         play = false
         itemheights = null
     }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        play = false
-    }
 }
