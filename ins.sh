@@ -173,6 +173,7 @@ function findChannel()
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module "
 echo "运行示例 ./ins.sh app release matrix 开启matrix性能监控"
 echo "运行示例 ./ins.sh app release apkcanary 开启apk包体静态检查"
+echo "运行示例 ./ins.sh app test pre 把上一次打的test包安装"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
 	exit 1; 
@@ -197,6 +198,8 @@ do
         apkcanary=true
     elif [[ $p = clean ]]; then
         clean=true
+    elif [[ $p = pre ]]; then
+        pre=true
     fi
 done
 
@@ -208,6 +211,34 @@ echo sandbox=$sandbox
 echo matrix=$matrix
 echo apkcanary=$apkcanary
 echo clean=$clean
+echo pre=$pre
+
+if [ $pre = true ]; then
+   if [[ $release = true ]]; then
+        if [ $dev = true ]; then
+    		findChannel DEV release
+    	elif [ $test = true ];then
+    		findChannel TEST release
+    	elif [ $sandbox = true ];then
+    		findChannel SANDBOX release
+    	else
+    		findChannel DEFAULT release
+    	fi
+    	installApkForAllDevices $installApkPath
+   else
+        if [ $dev = true ]; then
+        	findChannel DEV debug
+        elif [ $test = true ];then
+        	findChannel TEST debug
+        elif [ $sandbox = true ];then
+        	findChannel SANDBOX debug
+        else
+        	findChannel DEFAULT debug
+        fi
+        installApkForAllDevices $installApkPath
+    fi
+    exit 1;
+fi
 
 getBuildModule
 
