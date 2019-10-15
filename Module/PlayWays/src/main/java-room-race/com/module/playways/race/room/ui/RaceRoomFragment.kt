@@ -561,7 +561,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
-            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+            showSignUpView()
             mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
                 mCorePresenter.sendIntroOver()
             }
@@ -630,7 +630,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
-            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+            showSignUpView()
             mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
                 mCorePresenter.sendIntroOver()
             }
@@ -726,13 +726,22 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mCorePresenter.sendIntroOver()
         }
         mRacePagerSelectSongView.showView()
-        mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+
+        showSignUpView()
 
         mRaceWantingSignUpCardView.showAnimation(object : AnimationListener {
             override fun onFinish() {
 
             }
         })
+    }
+
+    private fun showSignUpView() {
+        if (mRacePagerSelectSongView.mHasSignUpChoiceID > 0) {
+            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
+        } else {
+            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
+        }
     }
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
