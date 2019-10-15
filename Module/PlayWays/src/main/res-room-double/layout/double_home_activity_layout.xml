@@ -5,7 +5,14 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/double_room_view_bg">
+    android:background="#111f40">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/double_room_view_bg"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/title"
@@ -23,8 +30,8 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_80_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_gradient_startColor="#88D0AB"
         app:bl_gradient_endColor="#446C9F"
+        app:bl_gradient_startColor="#88D0AB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/start_match_iv"
         app:layout_constraintHorizontal_bias="0.5"
@@ -62,8 +69,8 @@
         android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginBottom="@dimen/view_80_dp"
         app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_gradient_startColor="#BA85B9"
         app:bl_gradient_endColor="#5A64A7"
+        app:bl_gradient_startColor="#BA85B9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -128,6 +135,6 @@
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/img_back"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"/>
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
 </android.support.constraint.ConstraintLayout>
