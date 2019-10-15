@@ -200,14 +200,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
-    <!--礼物面板-->
-    <com.module.playways.room.gift.view.GiftPanelView
-        android:id="@+id/gift_panel_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <!--中礼物展示-->
     <com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
         android:id="@+id/gift_overlay_animation_vg"
@@ -257,6 +249,14 @@
         android:layout_marginBottom="@dimen/view_156_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <!--礼物面板-->
+    <com.module.playways.room.gift.view.GiftPanelView
+        android:id="@+id/gift_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--输入框区域-->
     <com.module.playways.race.room.view.RaceInputContainerView
