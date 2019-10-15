@@ -168,7 +168,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         }
     }
 
-    fun countDown(noSelectCall: (() -> Unit)?) {
+    private fun countDown(noSelectCall: (() -> Unit)?) {
         var lastedTime = 8000
         countDonwTv.visibility = View.VISIBLE
         countDonwTv.text = ""

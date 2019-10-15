@@ -557,8 +557,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
 
-        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
-                        ?: false) {
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
@@ -684,6 +683,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun showWaiting(showAnimation: Boolean) {
         MyLog.d(TAG, "showWaiting showAnimation = $showAnimation")
         mRaceRightOpView.visibility = View.GONE
+        mSignUpView.visibility = View.GONE
         hideAllSceneView()
         mRaceWaitingCardView.visibility = View.VISIBLE
         if (showAnimation) {
@@ -699,6 +699,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (showNextRound) {
             hideAllSceneView()
             mRaceTurnInfoCardView.visibility = View.VISIBLE
+            // 下一首动画
             mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
                 override fun onFinish() {
                     showSelectSongView()
