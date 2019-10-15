@@ -43,7 +43,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mHasSignUpChoiceID = -1
     var mSignUpMethed: ((Int, Int, RaceGamePlayInfo?) -> Unit)? = null
     var mShowingSongSeq = -1 ////正在显示的歌曲信息是哪个轮次的
-    var mCurrentPosition = 0
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -92,22 +91,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
             override fun getSignUpChoiceID(): Int {
                 return mHasSignUpChoiceID
-            }
-        })
-
-        bannerPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                // 把当前显示的position传递出去
-                mCurrentPosition = position
-
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-
             }
         })
 
@@ -241,8 +224,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
         visibility = View.VISIBLE
-        bannerPager.adapter = mPagerAdapter
-        bannerPager.setCurrentItem(mCurrentPosition)
         mUiHandler.post({
             fakeDrag()
         })
