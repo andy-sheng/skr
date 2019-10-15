@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/double_room_view_bg">
 
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBottomLine="false"
+        app:showMainView="false"
+        app:statusBarColor="@color/transparent" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/invite_friend_iv"
         android:layout_width="0dp"
@@ -109,4 +118,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/start_match_iv"
         app:layout_constraintRight_toRightOf="@+id/start_match_iv"
         app:layout_constraintTop_toTopOf="@+id/start_match_iv" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_4_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"/>
+
 </android.support.constraint.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -11,6 +12,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiManager.APPLICATION_JSON
@@ -45,6 +47,7 @@ class DoubleHomeActivity : BaseActivity() {
     private var randomMatchTv: ExTextView? = null
     private var remainTimesTv: TextView? = null
     private var filterTv: ExTextView? = null
+    private var ivBack: ImageView? = null
 
     internal var mRealNameVerifyUtils = SkrVerifyUtils()
 
@@ -74,6 +77,7 @@ class DoubleHomeActivity : BaseActivity() {
         randomMatchTv = findViewById(R.id.random_match_tv)
         remainTimesTv = findViewById(R.id.remain_times_tv)
         filterTv = findViewById(R.id.filter_tv)
+        ivBack = findViewById(R.id.iv_back)
 
         startMatchIv?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -164,6 +168,8 @@ class DoubleHomeActivity : BaseActivity() {
                 showSexFilterView(false)
             }
         })
+
+        ivBack?.setAnimateDebounceViewClickListener { finish() }
 
         getRemainTimes()
     }

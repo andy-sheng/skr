@@ -1,6 +1,5 @@
 package com.module.playways.race.match.activity
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -20,6 +19,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.model.ScoreStateModel
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.FragmentUtils
@@ -70,6 +70,7 @@ class RaceHomeActivity : BaseActivity() {
     private var mRankText: ExTextView? = null
     private var mRankDiffIv: ExImageView? = null
     private var mMedalIv: ExImageView? = null
+    private var ivBack: ImageView? = null
 
     private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
@@ -105,6 +106,7 @@ class RaceHomeActivity : BaseActivity() {
         mIvAthleticsPk = findViewById(R.id.iv_athletics_pk)
         mIvVoiceRoom = findViewById(R.id.iv_voice_room)
         mMedalIv = findViewById(R.id.medal_iv)
+        ivBack = findViewById(R.id.iv_back)
 
         mSmartRefreshLayout?.setEnableRefresh(true)
         mSmartRefreshLayout?.setEnableLoadMore(false)
@@ -162,6 +164,9 @@ class RaceHomeActivity : BaseActivity() {
                         .navigation()
             }
         })
+
+        ivBack?.setAnimateDebounceViewClickListener { finish() }
+
 
         refreshBaseInfo()
         getLevelPage()
