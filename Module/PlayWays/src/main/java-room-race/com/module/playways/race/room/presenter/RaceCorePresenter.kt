@@ -213,10 +213,12 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             return
         }
 
+        var isSignUpNextRound: Boolean = false
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
         var songModel: SongModel? = null
         if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
             songModel = mRoomData.getSongModelByChoiceId(choiceID)
+            isSignUpNextRound = true
         } else {
             songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
         }
@@ -236,11 +238,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
-                if (seq == mRoomData.realRoundSeq) {
+                if ((isSignUpNextRound && seq == mRoomData.realRoundSeq + 1) || seq == mRoomData.realRoundSeq) {
                     mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
                 }
             } else {
-
+                MyLog.w(TAG, "wantSingChance errno is " + result.errno)
             }
         }
     }
