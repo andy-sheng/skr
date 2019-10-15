@@ -55,8 +55,8 @@ class RaceSignUpBtnView : ConstraintLayout {
         }
 
         circleCountDownView.cancelAnim()
-        circleCountDownView.setMax(360)
-        circleCountDownView.setProgress(0)
+        circleCountDownView.max = 360
+        circleCountDownView.progress = 0
         circleCountDownView.visibility = View.VISIBLE
 
         circleCountDownView.go(8000 - lastedTime, lastedTime)
@@ -74,7 +74,7 @@ class RaceSignUpBtnView : ConstraintLayout {
             SignUpType.SIGN_UP_START -> {
                 signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
                 roomData?.let { raceRoomData ->
-                    val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
+                    val info = raceRoomData.realRoundInfo
                     info?.let {
                         if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                             circleCountDownView.visibility = View.GONE
