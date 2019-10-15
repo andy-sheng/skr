@@ -1572,11 +1572,12 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                         val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq) }
                         if (result.errno == 0) {
                             val cnt = result.data.getIntValue("starCnt")
-                            val leftRoundCnt = mRoomData.grabConfigModel.totalGameRoundSeq - now.roundSeq
-                            var continueShow = false
-                            if (leftRoundCnt >= mRoomData.grabConfigModel.challengeRoundCnt) {
-                                continueShow = true
-                            }
+//                            var continueShow = false
+//                            val leftRoundCnt = mRoomData.grabConfigModel.totalGameRoundSeq - now.roundSeq
+//                            if (leftRoundCnt >= mRoomData.grabConfigModel.challengeRoundCnt) {
+//                                continueShow = true
+//                            }
+                            var continueShow = result.data.getBooleanValue("inChallenge")
                             mIGrabView.showChallengeStarView(cnt, visiable = true, justShowInChallenge = false, continueShow = continueShow)
                         }
                     }
