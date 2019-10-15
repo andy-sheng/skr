@@ -9,6 +9,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.ui.RaceRoomFragment
 
@@ -46,6 +47,9 @@ class RaceRoomActivity : BaseActivity() {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+            if (activity is RaceHomeActivity) {
                 continue
             }
             activity.finish()
