@@ -26,6 +26,8 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
                 onViewAttachedToWindow(it)
                 init(it)
             }
+            mParentView?.translationX = mViewStub?.translationX ?: 0f
+            mParentView?.translationY = mViewStub?.translationY ?: 0f
             mViewStub = null
         }
     }
@@ -66,5 +68,13 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
             return
         }
         mParentView!!.translationY = ty
+    }
+
+    fun setTranslateX(tx: Float) {
+        if (mParentView == null) {
+            mViewStub!!.translationX = tx
+            return
+        }
+        mParentView!!.translationX = tx
     }
 }
