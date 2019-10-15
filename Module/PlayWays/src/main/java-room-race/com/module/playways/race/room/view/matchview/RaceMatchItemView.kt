@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.log.MyLog
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
@@ -50,6 +51,9 @@ class RaceMatchItemView : ConstraintLayout {
     }
 
     fun setData(listData: ArrayList<RacePlayerInfoModel>?, uid: Int, listener: () -> Unit) {
+        if (uid == 0) {
+            MyLog.e("RaceMatchItemView", "uid == 0")
+        }
         if (listData != null) {
             listData.forEachIndexed { index, model ->
                 if (model.userInfo.userId == uid) {
