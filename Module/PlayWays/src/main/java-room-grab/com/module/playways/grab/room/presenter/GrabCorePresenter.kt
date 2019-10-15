@@ -1528,6 +1528,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
     /**
      * 轮次信息有更新
+     * 主要ui一定要在ui线程执行
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     fun onEvent(event: GrabRoundChangeEvent) {
@@ -1564,7 +1565,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             if (mRoomData.inChallenge) {
                 val t = now.roundSeq - mRoomData.enterRoundSeq
                 if (t == 0 || now.roundSeq == 1) {
-                    mIGrabView.run { showChallengeStarView(0, visiable = true, justShowInChallenge = true, continueShow = true) }
+                    mUiHandler.post {
+                        mIGrabView.showChallengeStarView(0, visiable = true, justShowInChallenge = true, continueShow = true)
+                    }
                 }
                 if (t > 0 && t % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
                     //拉取最新的星级数据
@@ -1583,7 +1586,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     }
                 }
             } else {
-                mIGrabView.showChallengeStarView(0, visiable = false, justShowInChallenge = false, continueShow = false)
+                mUiHandler.post {
+                    mIGrabView.showChallengeStarView(0, visiable = false, justShowInChallenge = false, continueShow = false)
+                }
             }
         }
 
