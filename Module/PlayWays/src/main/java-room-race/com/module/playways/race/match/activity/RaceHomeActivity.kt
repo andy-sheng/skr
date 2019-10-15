@@ -301,7 +301,6 @@ class RaceHomeActivity : BaseActivity() {
                 skrAudioPermission.ensurePermission({
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
                             .navigation()
-                    finish()
                 }, true)
             } else {
                 if (check.errno == ERROR_NETWORK_BROKEN) {
