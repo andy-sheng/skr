@@ -120,13 +120,14 @@ class RacePagerSelectSongView : ExConstraintLayout {
             val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
             val preDataCount: Int = mPagerAdapter?.count ?: 0
             info?.let {
+                val tips = "新一轮报名开始"
                 if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                     mShowingSongSeq = mSeq + 1
                     mHasSignUpChoiceID = -1
                     mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
                     countDonwTv.visibility = View.GONE
                     if (preDataCount > 0) {
-                        U.getToastUtil().showShort("报名结束，曲目更新")
+                        U.getToastUtil().showShort(tips)
                     }
                 } else {
                     //因为这个时候显示的可能在上一次已经显示了（唱歌的时候显示的是下一轮次的歌曲）
@@ -135,7 +136,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
                         mShowingSongSeq = mSeq
                         mPagerAdapter?.setData(it.games)
                         if (preDataCount > 0) {
-                            U.getToastUtil().showShort("报名结束，曲目更新")
+                            U.getToastUtil().showShort(tips)
                         }
                     }
                     countDown(noSelectCall)
