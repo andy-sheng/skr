@@ -40,11 +40,10 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mRoomData: RaceRoomData? = null
     var mPagerAdapter: RaceSelectSongAdapter? = null
     var countDonwJob: Job? = null
-    var mSeq = -1
+    var mSeq = -1 // 当前轮次
     var mHasSignUpChoiceID = -1
     var mSignUpMethed: ((Int, Int, RaceGamePlayInfo?) -> Unit)? = null
-    //正在显示的歌曲信息
-    var mShowingSongSeq = -1
+    var mShowingSongSeq = -1 ////正在显示的歌曲信息是哪个轮次的
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -122,12 +121,15 @@ class RacePagerSelectSongView : ExConstraintLayout {
             info?.let {
                 val tips = "新一轮报名开始"
                 if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                    mShowingSongSeq = mSeq + 1
-                    mHasSignUpChoiceID = -1
-                    mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
-                    countDonwTv.visibility = View.GONE
-                    if (preDataCount > 0) {
-                        U.getToastUtil().showShort(tips)
+                    val showingSongSeq = mSeq + 1
+                    if (showingSongSeq != mShowingSongSeq) {
+                        mShowingSongSeq = showingSongSeq
+                        mHasSignUpChoiceID = -1
+                        mPagerAdapter?.setData(raceRoomData.couldChoiceGames)
+                        countDonwTv.visibility = View.GONE
+                        if (preDataCount > 0) {
+                            U.getToastUtil().showShort(tips)
+                        }
                     }
                 } else {
                     //因为这个时候显示的可能在上一次已经显示了（唱歌的时候显示的是下一轮次的歌曲）

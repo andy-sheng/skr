@@ -718,6 +718,9 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         }
     }
 
+    /**
+     * 直接弹出选歌面板
+     */
     private fun showSelectSongView() {
         mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
             mCorePresenter.sendIntroOver()
