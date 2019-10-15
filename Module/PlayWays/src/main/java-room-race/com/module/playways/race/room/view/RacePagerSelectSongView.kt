@@ -16,7 +16,6 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.pagetransformerhelp.cardtransformer.AlphaAndScalePageTransformer
-import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.adapter.RaceSelectSongAdapter
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
@@ -44,6 +43,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mHasSignUpChoiceID = -1
     var mSignUpMethed: ((Int, Int, RaceGamePlayInfo?) -> Unit)? = null
     var mShowingSongSeq = -1 ////正在显示的歌曲信息是哪个轮次的
+    var mCurrentPosition = 0
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -71,12 +71,12 @@ class RacePagerSelectSongView : ExConstraintLayout {
     }
 
     init {
-        View.inflate(context, R.layout.race_pager_select_song_view_layout, this)
-        closeIv = rootView.findViewById(R.id.close_iv)
-        mPagerRootView = rootView.findViewById(R.id.pager_root_view)
-        countDonwTv = rootView.findViewById(R.id.count_down_tv)
-        hideClickArea = rootView.findViewById(R.id.hide_click_area)
-        bannerPager = rootView.findViewById(R.id.banner_pager)
+        View.inflate(context, com.module.playways.R.layout.race_pager_select_song_view_layout, this)
+        closeIv = rootView.findViewById(com.module.playways.R.id.close_iv)
+        mPagerRootView = rootView.findViewById(com.module.playways.R.id.pager_root_view)
+        countDonwTv = rootView.findViewById(com.module.playways.R.id.count_down_tv)
+        hideClickArea = rootView.findViewById(com.module.playways.R.id.hide_click_area)
+        bannerPager = rootView.findViewById(com.module.playways.R.id.banner_pager)
         bannerPager.offscreenPageLimit = 2
         bannerPager.setPageMargin(U.getDisplayUtils().dip2px(15f))
         bannerPager.setPageTransformer(true, AlphaAndScalePageTransformer())
@@ -92,6 +92,22 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
             override fun getSignUpChoiceID(): Int {
                 return mHasSignUpChoiceID
+            }
+        })
+
+        bannerPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                // 把当前显示的position传递出去
+                mCurrentPosition = position
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
             }
         })
 
@@ -224,6 +240,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
         visibility = View.VISIBLE
+        bannerPager.adapter = mPagerAdapter
+        bannerPager.setCurrentItem(mCurrentPosition)
+        mUiHandler.post({
+            fakeDrag()
+        })
     }
 
     fun hideView() {

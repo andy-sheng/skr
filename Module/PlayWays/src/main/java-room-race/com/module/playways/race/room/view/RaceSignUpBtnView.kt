@@ -41,15 +41,17 @@ class RaceSignUpBtnView : ConstraintLayout {
         }
     }
 
+    val mLastedTime = 10000
+
     fun setCountDownTime() {
-        var lastedTime = 8000
+        var lastedTime = mLastedTime
         if (roomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
             roomData?.realRoundInfo?.elapsedTimeMs?.let {
                 //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
-                lastedTime = 12400 - it
+                lastedTime = 14400 - it
                 MyLog.d(TAG, "setSongName elapsedTimeMs is $it")
-                if (lastedTime > 8000) {
-                    lastedTime = 8000
+                if (lastedTime > mLastedTime) {
+                    lastedTime = mLastedTime
                 }
             }
         }
@@ -59,7 +61,7 @@ class RaceSignUpBtnView : ConstraintLayout {
         circleCountDownView.progress = 0
         circleCountDownView.visibility = View.VISIBLE
 
-        circleCountDownView.go(8000 - lastedTime, lastedTime)
+        circleCountDownView.go(mLastedTime - lastedTime, lastedTime)
     }
 
     fun cancelCountDown() {
@@ -74,9 +76,14 @@ class RaceSignUpBtnView : ConstraintLayout {
             SignUpType.SIGN_UP_START -> {
                 signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
                 roomData?.let { raceRoomData ->
-                    val info = raceRoomData.realRoundInfo
-                    info?.let {
-                        if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+
+                    var info: RaceRoundInfoModel? = raceRoomData.realRoundInfo as RaceRoundInfoModel
+                    if (info == null) {
+                        info = raceRoomData.expectRoundInfo as RaceRoundInfoModel
+                    }
+
+                    if (info != null) {
+                        if (info?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                             circleCountDownView.visibility = View.GONE
                             circleCountDownView.cancelAnim()
                         } else {
