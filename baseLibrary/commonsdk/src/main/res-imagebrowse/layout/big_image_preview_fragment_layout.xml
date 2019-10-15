@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/image_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"/>
+
     <com.imagebrowse.SlideCloseLayout
         android:id="@+id/slide_close_layout"
         android:layout_width="match_parent"

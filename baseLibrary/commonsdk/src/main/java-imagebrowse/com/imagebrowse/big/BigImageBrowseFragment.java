@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.common.base.BaseFragment;
 import com.common.base.R;
@@ -41,6 +42,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     public final String TAG = "ImageBigPreviewFragment";
     public final static String BIG_IMAGE_PATH = "big_image_path";
 
+    ImageView mImageBg;
     CommonTitleBar mTitlebar;
     SlideCloseLayout mSlideCloseLayout;
     ViewPager mImagesVp;
@@ -92,9 +94,10 @@ public class BigImageBrowseFragment extends BaseFragment {
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mSlideCloseLayout = (SlideCloseLayout) getRootView().findViewById(R.id.slide_close_layout);
-        mImagesVp = (ViewPager) getRootView().findViewById(R.id.images_vp);
+        mImageBg = getRootView().findViewById(R.id.image_bg);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mSlideCloseLayout = getRootView().findViewById(R.id.slide_close_layout);
+        mImagesVp = getRootView().findViewById(R.id.images_vp);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -230,10 +233,11 @@ public class BigImageBrowseFragment extends BaseFragment {
                 }
             }
         });
-
-
+        
         getActivity().getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         mSlideCloseLayout.setGradualBackground(getActivity().getWindow().getDecorView().getBackground());
+        mImageBg.getBackground().setAlpha(255);
+        mTitlebar.setAlpha(1);
         mSlideCloseLayout.setLayoutScrollListener(new SlideCloseLayout.LayoutScrollListener() {
             @Override
             public void onLayoutClosed() {
@@ -242,11 +246,15 @@ public class BigImageBrowseFragment extends BaseFragment {
 
             @Override
             public void onLayoutScrolling(float alpha) {
+                //和背景保持一致
+                mImageBg.getBackground().setAlpha((int) (255 - alpha * 255));
+                //做个效果
                 mTitlebar.setAlpha(1 - (alpha * 5f));
             }
 
             @Override
             public void onLayoutScrollRevocer() {
+                mImageBg.getBackground().setAlpha(255);
                 mTitlebar.setAlpha(1);
             }
 
