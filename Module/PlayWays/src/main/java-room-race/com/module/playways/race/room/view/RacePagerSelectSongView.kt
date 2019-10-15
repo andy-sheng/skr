@@ -131,14 +131,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
                         }
                     }
                 } else {
-                    //因为这个时候显示的可能在上一次已经显示了（唱歌的时候显示的是下一轮次的歌曲）
-                    if (mShowingSongSeq != mSeq) {
-                        mHasSignUpChoiceID = -1
-                        mShowingSongSeq = mSeq
-                        mPagerAdapter?.setData(it.games)
-                        if (preDataCount > 0) {
-                            U.getToastUtil().showShort(tips)
-                        }
+                    mHasSignUpChoiceID = -1
+                    mShowingSongSeq = mSeq
+                    mPagerAdapter?.setData(it.games)
+                    if (preDataCount > 0) {
+                        U.getToastUtil().showShort(tips)
                     }
                     countDown(noSelectCall)
                 }
