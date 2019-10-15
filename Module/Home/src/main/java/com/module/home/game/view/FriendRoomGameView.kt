@@ -49,7 +49,7 @@ class FriendRoomGameView : RelativeLayout {
         const val TAG = "FriendRoomGameView"
     }
 
-    val playerTag = TAG
+    val playerTag = TAG + hashCode()
     private val playCallback: SinglePlayerCallbackAdapter
 
     private var mListener: RecyclerView.OnScrollListener? = null
@@ -171,6 +171,15 @@ class FriendRoomGameView : RelativeLayout {
                 refreshLayout.setEnableRefresh(true)
                 mLastLoadDateTime = System.currentTimeMillis()
                 initData(false)
+            }
+
+            override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+                if (newPlayerTag != playerTag) {
+                    mFriendRoomVeritAdapter?.stopPlay()
+                    refreshLayout.setEnableRefresh(true)
+                    mLastLoadDateTime = System.currentTimeMillis()
+                    initData(false)
+                }
             }
         }
         SinglePlayer.addCallback(playerTag, playCallback)
