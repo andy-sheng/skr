@@ -561,7 +561,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
-            mSignUpView.visibility = View.VISIBLE
             mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
             mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
                 mCorePresenter.sendIntroOver()
@@ -631,7 +630,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         } else {
-            mSignUpView.visibility = View.VISIBLE
             mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
             mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
                 mCorePresenter.sendIntroOver()
@@ -646,7 +644,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         removeNextSongStartTipsView()
         mRacePagerSelectSongView.cancelCountDown()
         mSignUpView.cancelCountDown()
-        mSignUpView.visibility = View.VISIBLE
 
         if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {

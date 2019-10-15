@@ -1569,7 +1569,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                         mIGrabView.showChallengeStarView(0, visiable = true, justShowInChallenge = true, continueShow = true)
                     }
                 }
-                if (t > 0 && t % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
+                if (t > 1 && (t - 1) % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
                     //拉取最新的星级数据
                     launch {
                         val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq) }

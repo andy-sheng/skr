@@ -68,29 +68,33 @@ class RaceSignUpBtnView : ConstraintLayout {
     }
 
     fun setType(type: SignUpType) {
+        visibility = View.VISIBLE
         signUpType = type
-
-        if (type == SignUpType.SIGN_UP_START) {
-            signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
-            roomData?.let { raceRoomData ->
-                val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
-                info?.let {
-                    if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                        circleCountDownView.visibility = View.GONE
-                        circleCountDownView.cancelAnim()
-                    } else {
-                        setCountDownTime()
+        when (type) {
+            SignUpType.SIGN_UP_START -> {
+                signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
+                roomData?.let { raceRoomData ->
+                    val info = raceRoomData.realRoundInfo as RaceRoundInfoModel
+                    info?.let {
+                        if (it.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+                            circleCountDownView.visibility = View.GONE
+                            circleCountDownView.cancelAnim()
+                        } else {
+                            setCountDownTime()
+                        }
                     }
                 }
             }
-        } else if (type == SignUpType.SIGN_UP_FINISH) {
-            circleCountDownView.visibility = View.GONE
-            circleCountDownView.cancelAnim()
-            signUpBtn.background = U.getDrawable(R.drawable.paiwei_yibaoming)
-        } else if (type == SignUpType.ALLOCATION) {
-            circleCountDownView.visibility = View.GONE
-            circleCountDownView.cancelAnim()
-            signUpBtn.background = U.getDrawable(R.drawable.paiwei_fenpeizhong)
+            SignUpType.SIGN_UP_FINISH -> {
+                circleCountDownView.visibility = View.GONE
+                circleCountDownView.cancelAnim()
+                signUpBtn.background = U.getDrawable(R.drawable.paiwei_yibaoming)
+            }
+            SignUpType.ALLOCATION -> {
+                circleCountDownView.visibility = View.GONE
+                circleCountDownView.cancelAnim()
+                signUpBtn.background = U.getDrawable(R.drawable.paiwei_fenpeizhong)
+            }
         }
     }
 
