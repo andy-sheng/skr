@@ -504,6 +504,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
         mRacePagerSelectSongView.hideView()
         mSignUpView.visibility = View.GONE
+        removeNextSongStartTipsView()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -566,6 +567,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mCorePresenter.sendIntroOver()
             }
         }
+        removeNextSongStartTipsView()
     }
 
     private fun showRightVote() {
@@ -601,6 +603,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
         mRacePagerSelectSongView.hideView()
         mSignUpView.visibility = View.GONE
+        removeNextSongStartTipsView()
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
@@ -635,6 +638,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 mCorePresenter.sendIntroOver()
             }
         }
+        removeNextSongStartTipsView()
     }
 
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
