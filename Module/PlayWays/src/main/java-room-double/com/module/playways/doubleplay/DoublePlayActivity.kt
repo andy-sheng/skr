@@ -9,6 +9,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.doubleplay.activity.DoubleHomeActivity
 import com.module.playways.doubleplay.fragment.DoublePlayWaysFragment
 
 
@@ -26,6 +27,10 @@ class DoublePlayActivity : BaseActivity() {
             }
 
             if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+
+            if (activity is DoubleHomeActivity) {
                 continue
             }
 

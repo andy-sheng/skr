@@ -126,7 +126,6 @@ class DoubleHomeActivity : BaseActivity() {
                                                         .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
                                                         .withBundle("bundle", bundle)
                                                         .navigation()
-                                                finish()
                                             } else {
                                                 showSexFilterView(true)
                                             }
@@ -185,7 +184,6 @@ class DoubleHomeActivity : BaseActivity() {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()
-                    finish()
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
                 }
