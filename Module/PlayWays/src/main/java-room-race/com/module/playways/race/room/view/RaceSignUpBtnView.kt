@@ -107,7 +107,8 @@ class RaceSignUpBtnView : ConstraintLayout {
 
     override fun setVisibility(visibility: Int) {
         if (visibility == View.VISIBLE) {
-            if (roomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
+            if (roomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value
+                    && roomData?.realRoundInfo?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
                 MyLog.w(TAG, "中途进来的，而且是选歌阶段，不展示报名按钮")
             } else {
                 super.setVisibility(visibility)

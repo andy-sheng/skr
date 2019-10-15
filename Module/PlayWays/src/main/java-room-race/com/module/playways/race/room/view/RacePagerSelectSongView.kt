@@ -227,7 +227,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
             return
         }
 
-        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
+        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value
+                && mRoomData?.realRoundInfo?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
             MyLog.w(TAG, "中途进来的，而且是选歌阶段，不展示选歌界面")
             return
         }
