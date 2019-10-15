@@ -87,19 +87,23 @@
     <com.common.view.ex.ExConstraintLayout
         android:id="@+id/voice_area"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginTop="@dimen/view_12_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:minWidth="@dimen/view_84_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/white_trans_30"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:minWidth="@dimen/view_108_dp"
+        android:padding="@dimen/view_12_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toRightOf="@id/avatar_iv"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_tv">
+
+        <com.common.view.ex.ExImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bl_corners_radius="@dimen/view_12_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="@color/white_trans_30"/>
 
         <ImageView
             android:id="@+id/play_bg"
