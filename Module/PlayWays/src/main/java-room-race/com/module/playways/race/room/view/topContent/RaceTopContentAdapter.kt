@@ -49,7 +49,7 @@ class RaceTopContentAdapter : RecyclerView.Adapter<RaceTopContentAdapter.RaceTop
             item.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
                     mModel?.let {
-                        if (it.userID != UserAccountManager.SYSTEM_ID && it.userID != UserAccountManager.SYSTEM_GRAB_ID) {
+                        if (it.userID != UserAccountManager.SYSTEM_ID && it.userID != UserAccountManager.SYSTEM_GRAB_ID && it.userID != UserAccountManager.SYSTEM_RANK_AI) {
                             EventBus.getDefault().post(ShowPersonCardEvent(it.userInfo.userId))
                         }
                     }

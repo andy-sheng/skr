@@ -175,7 +175,7 @@ class CommentView : EdgeTransparentView {
 
         mCommentAdapter = CommentAdapter(object : CommentAdapter.CommentAdapterListener {
             override fun clickAvatar(userId: Int) {
-                if (userId != UserAccountManager.SYSTEM_ID && userId != UserAccountManager.SYSTEM_GRAB_ID) {
+                if (userId != UserAccountManager.SYSTEM_ID && userId != UserAccountManager.SYSTEM_GRAB_ID && userId != UserAccountManager.SYSTEM_RANK_AI) {
                     mCommentItemListener?.clickAvatar(userId)
                 }
             }
