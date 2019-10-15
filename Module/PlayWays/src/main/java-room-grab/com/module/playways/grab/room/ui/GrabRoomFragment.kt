@@ -1642,9 +1642,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean) {
+    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean,continueShow:Boolean) {
         if (visiable) {
-            mChallengeStarView.bindData(cnt, justShowInChallenge)
+            mChallengeStarView.bindData(cnt, justShowInChallenge,continueShow)
             mChallengeStarView.setVisibility(View.VISIBLE)
         } else {
             mChallengeStarView.setVisibility(View.GONE)

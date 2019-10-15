@@ -17,28 +17,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_22_dp"
-        android:text="星际挑战中"
+        android:text="星级挑战中"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/view_12_dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/challenge_bg_iv"
-        app:layout_constraintRight_toRightOf="@+id/challenge_bg_iv"
-        app:layout_constraintTop_toTopOf="@+id/challenge_bg_iv" />
-
-
-    <TextView
-        android:id="@+id/challeng_star_cnt_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:drawableRight="@drawable/grab_challenge_star"
-        android:drawablePadding="@dimen/view_10_dp"
-        android:text="评价:3"
-        android:textColor="@color/white"
         android:textSize="@dimen/view_12_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/challenge_bg_iv"
         app:layout_constraintRight_toRightOf="@+id/challenge_bg_iv"
         app:layout_constraintTop_toTopOf="@+id/challenge_bg_iv" />
 
+
+    <TextView
+        android:id="@+id/challenge_star_cnt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:text="评价:3"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_12_dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/challenge_bg_iv"
+        app:layout_constraintHorizontal_bias="0.58"
+        app:layout_constraintLeft_toLeftOf="@+id/challenge_bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/challenge_bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/challenge_bg_iv" />
+
+    <ImageView
+        android:id="@+id/challenge_star_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:src="@drawable/grab_challenge_star"
+        app:layout_constraintBottom_toBottomOf="@+id/challenge_star_cnt_tv"
+        app:layout_constraintLeft_toRightOf="@+id/challenge_star_cnt_tv"
+        app:layout_constraintTop_toTopOf="@+id/challenge_star_cnt_tv" />
 </android.support.constraint.ConstraintLayout>
