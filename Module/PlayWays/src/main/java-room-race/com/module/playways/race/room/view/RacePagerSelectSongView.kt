@@ -171,18 +171,20 @@ class RacePagerSelectSongView : ExConstraintLayout {
         }
     }
 
+    val mLastedTime = 10000
+
     private fun countDown(noSelectCall: (() -> Unit)?) {
-        var lastedTime = 8000
+        var lastedTime = mLastedTime
         countDonwTv.visibility = View.VISIBLE
         countDonwTv.text = ""
 
         if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value) {
             mRoomData?.realRoundInfo?.elapsedTimeMs?.let {
                 //多3秒是因为中间动画（显示结果3秒|（无人抢唱+下一首）3秒）
-                lastedTime = 12400 - it
+                lastedTime = 14400 - it
                 MyLog.d(TAG, "setSongName elapsedTimeMs is $it")
-                if (lastedTime > 8000) {
-                    lastedTime = 8000
+                if (lastedTime > mLastedTime) {
+                    lastedTime = mLastedTime
                 }
             }
         }
