@@ -28,8 +28,8 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val listene
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         MyLog.d(TAG, "instantiateItem container=$container position=$position")
         val view = getCachedView()
-        view.signUpCall = { choceId, model ->
-            listener.onSignUp(choceId, model)
+        view.signUpCall = { itemID, model ->
+            listener.onSignUp(itemID, model)
         }
         if (container.indexOfChild(view) == -1) {
             container.addView(view)

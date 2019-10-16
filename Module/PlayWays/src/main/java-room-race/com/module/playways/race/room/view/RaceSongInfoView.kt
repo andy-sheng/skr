@@ -5,7 +5,6 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import com.alibaba.fastjson.JSON
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
@@ -32,7 +31,6 @@ class RaceSongInfoView : ConstraintLayout {
     var signUpTv: ExTextView
     var signUpCall: ((Int, RaceGamePlayInfo?) -> Unit)? = null
     var model: RaceGamePlayInfo? = null
-    var choiceId: Int = -1
     var loadLyricTask: Disposable? = null
 
     constructor(context: Context?) : super(context)
@@ -49,21 +47,21 @@ class RaceSongInfoView : ConstraintLayout {
         signUpTv = rootView.findViewById(R.id.sign_up_tv)
 
         signUpTv.setDebounceViewClickListener {
-            signUpCall?.invoke(choiceId, model)
+            signUpCall?.invoke(model?.commonMusic?.itemID ?: 0, model)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
         MyLog.d(TAG, "onEvent event = $event")
-        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            if (choiceId == event.choiceID) {
+
+        if (model?.commonMusic?.itemID == event.itemID) {
                 signUpTv.isEnabled = false
                 signUpTv.text = "报名成功"
             } else {
                 signUpTv.visibility = View.GONE
             }
-        }
+
     }
 
     override fun onAttachedToWindow() {
@@ -80,7 +78,6 @@ class RaceSongInfoView : ConstraintLayout {
     fun setData(index: Int, model: RaceGamePlayInfo, hasSignUp: Boolean, hasSignUpChoiceID: Int) {
         MyLog.d(TAG, "setData index = $index, model = $model, hasSignUp = $hasSignUp, hasSignUpChoiceID = $hasSignUpChoiceID")
         this.model = model
-        choiceId = index + 1
 
         songNameTv.text = "《${model.commonMusic?.itemName}》"
 
@@ -96,7 +93,7 @@ class RaceSongInfoView : ConstraintLayout {
         lyricView.text = "歌词加载中"
 
         if (hasSignUp) {
-            if (hasSignUpChoiceID == choiceId) {
+            if (hasSignUpChoiceID == model?.commonMusic?.itemID) {
                 signUpTv.isEnabled = false
                 signUpTv.text = "报名成功"
                 signUpTv.visibility = View.VISIBLE

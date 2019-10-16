@@ -342,7 +342,7 @@ interface RaceRoomServerApi {
     "wantSingType": "ERWST_DEFAULT"
     }
      */
-    @PUT("http://dev.game.inframe.mobi/v1/racegame/sing-make-choice")
+    @PUT("http://dev.game.inframe.mobi/v2/racegame/sing-make-choice")
     fun singMakeChoice(@Body body: RequestBody): Call<ApiResult>
 
     /**

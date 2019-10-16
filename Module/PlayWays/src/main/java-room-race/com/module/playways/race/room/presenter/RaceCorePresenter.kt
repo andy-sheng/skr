@@ -32,8 +32,12 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
 import com.module.playways.race.room.event.RaceSubRoundChangeEvent
+import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.inter.IRaceRoomView
-import com.module.playways.race.room.model.*
+import com.module.playways.race.room.model.RaceGamePlayInfo
+import com.module.playways.race.room.model.RacePlayerInfoModel
+import com.module.playways.race.room.model.RaceRoundInfoModel
+import com.module.playways.race.room.model.parseFromRoundInfoPB
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -201,7 +205,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 选择歌曲
      * /** 报名，选择歌曲
      * {
-    "choiceID": 0,
+    "itemID": 0,
     "curRoundSeq": 0,
     "curRoundStatus": "ERRS_UNKNOWN",
     "roomID": 0,
@@ -209,16 +213,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
     */
      */
-    fun wantSingChance(choiceID: Int) {
-        var isSignUpNextRound: Boolean = false
+    fun wantSingChance(itemID: Int) {
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
         var songModel: SongModel? = null
-        if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-//            songModel = mRoomData.getSongModelByChoiceId(choiceID)
-            isSignUpNextRound = true
-        } else {
-//            songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
-        }
 
         if (mRoomData.isAccEnable && (songModel?.acc?.isNotBlank() == true)) {
             wantSingType = ERWantSingType.ERWST_ACCOMPANY.value
@@ -226,16 +223,18 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
         launch {
             val map = mutableMapOf(
-                    "choiceID" to choiceID,
-//                    "curRoundSeq" to seq,
+                    "curRoundSeq" to mRoomData.realRoundSeq,
                     "curRoundStatus" to mRoomData.realRoundInfo?.status,
+                    "itemID" to itemID,
+                    "itemType" to 1,
                     "roomID" to mRoomData.gameId,
                     "wantSingType" to wantSingType
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
-                //mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
+                EventBus.getDefault().post(RaceWantSingChanceEvent(itemID))
+                //mRoomData?.realRoundInfo?.addWantSingChange(itemID, MyUserInfoManager.getInstance().uid.toInt())
             } else {
                 MyLog.w(TAG, "wantSingChance errno is " + result.errno)
             }

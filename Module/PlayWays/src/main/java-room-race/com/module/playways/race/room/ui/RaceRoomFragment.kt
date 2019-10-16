@@ -190,11 +190,12 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
         mRacePagerSelectSongView.mRoomData = mRoomData
 
-        mRacePagerSelectSongView.mSignUpMethed = { choiceID, model ->
-            mCorePresenter.wantSingChance(choiceID)
+        mRacePagerSelectSongView.mSignUpMethed = { itemID, model ->
+            mCorePresenter.wantSingChance(itemID)
         }
 
         mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
+        mRacePagerSelectSongView.showView()
     }
 
     private fun initRaceMatchView() {
@@ -454,10 +455,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
-        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
-            mRacePagerSelectSongView.hideView()
-        }
+        mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
+        mRacePagerSelectSongView.hideView()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -684,8 +683,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
      * 直接弹出选歌面板
      */
     private fun showSelectSongView() {
-        mRacePagerSelectSongView.showView()
-
         mRaceWantingSignUpCardView.showAnimation(object : AnimationListener {
             override fun onFinish() {
 

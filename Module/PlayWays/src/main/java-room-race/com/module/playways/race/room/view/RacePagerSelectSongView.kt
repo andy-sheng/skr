@@ -85,8 +85,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
         bannerPager.setPageTransformer(true, AlphaAndScalePageTransformer())
 
         mPagerAdapter = RaceSelectSongAdapter(context, object : RaceSelectSongAdapter.IRaceSelectListener {
-            override fun onSignUp(choiceID: Int, model: RaceGamePlayInfo?) {
-                mSignUpMethed?.invoke(choiceID, model)
+            override fun onSignUp(itemID: Int, model: RaceGamePlayInfo?) {
+                mSignUpMethed?.invoke(itemID, model)
             }
 
             override fun getSignUpChoiceID(): Int {
@@ -136,8 +136,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
-        if (event.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            mHasSignUpItemId = event.choiceID
+        mHasSignUpItemId = event.itemID
             if (mPagerAdapter?.mRaceGamePlayInfos?.get(mCurrentPosition)?.commonMusic?.itemID == mHasSignUpItemId) {
                 mPagerAdapter?.mRaceGamePlayInfos?.get(mCurrentPosition)?.let {
                     addSelectedSong(it)
@@ -150,7 +149,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
                     }
                 }
             }
-        }
     }
 
     private fun addSelectedSong(info: RaceGamePlayInfo) {
@@ -162,12 +160,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     fun showView() {
         if (visibility == View.VISIBLE) {
-            return
-        }
-
-        if (mRoomData?.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_CHOCING.value
-                && mRoomData?.realRoundInfo?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
-            MyLog.w(TAG, "中途进来的，而且是选歌阶段，不展示选歌界面")
             return
         }
 
