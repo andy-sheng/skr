@@ -213,10 +213,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
         var songModel: SongModel? = null
         if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-            songModel = mRoomData.getSongModelByChoiceId(choiceID)
+//            songModel = mRoomData.getSongModelByChoiceId(choiceID)
             isSignUpNextRound = true
         } else {
-            songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
+//            songModel = mRoomData.realRoundInfo?.getSongModelByChoiceId(choiceID)
         }
 
         if (mRoomData.isAccEnable && (songModel?.acc?.isNotBlank() == true)) {
@@ -234,7 +234,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
-                mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
+                //mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
             } else {
                 MyLog.w(TAG, "wantSingChance errno is " + result.errno)
             }
@@ -511,10 +511,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     // 变为演唱阶段，第一轮
                     val subRound1 = thisRound.subRoundInfo.get(0)
                     if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                        mIRaceRoomView.singBySelfFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID))
+                        mIRaceRoomView.singBySelfFirstRound(subRound1.choiceDetail?.commonMusic)
                         preOpWhenSelfRound()
                     } else {
-                        mIRaceRoomView.singByOtherFirstRound(mRoomData.getChoiceInfoById(subRound1.choiceID), mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
+                        mIRaceRoomView.singByOtherFirstRound(subRound1.choiceDetail?.commonMusic, mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
                     }
                 }
 
@@ -549,10 +549,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 // 变为演唱阶段，第二轮
                 val subRound2 = thisRound.subRoundInfo.get(1)
                 if (subRound2.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                    mIRaceRoomView.singBySelfSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID))
+                    mIRaceRoomView.singBySelfSecondRound(subRound2.choiceDetail?.commonMusic)
                     preOpWhenSelfRound()
                 } else {
-                    mIRaceRoomView.singByOtherSecondRound(mRoomData.getChoiceInfoById(subRound2.choiceID), mRoomData.getPlayerOrWaiterInfo(subRound2.userID))
+                    mIRaceRoomView.singByOtherSecondRound(subRound2.choiceDetail?.commonMusic, mRoomData.getPlayerOrWaiterInfo(subRound2.userID))
                 }
             }
         } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
@@ -583,8 +583,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             // 第一轮是自己唱
             if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(2) == true) {
                 // 第一轮是伴奏演唱
-                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.choiceID?.let {
-                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
+                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.let { songModel ->
                     songModel?.acc?.let {
                         accUrl = it
                     }
@@ -614,7 +613,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         MyLog.d(TAG, "onEvent event = ${event.pb}")
         ensureInRcRoom()
         if (event.pb.roundSeq == mRoomData.realRoundSeq) {
-            mRoomData?.realRoundInfo?.addWantSingChange(event.pb.choiceID, event.pb.userID)
+            //mRoomData?.realRoundInfo?.addWantSingChange(event.pb.choiceID, event.pb.userID)
         }
     }
 
@@ -687,13 +686,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             // 主轮次结束
             val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
             val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
-            event.pb.gamesList.forEach {
-                nextRoundInfo.games.add(parseFromGameInfoPB(it))
-            }
-            mRoomData.couldChoiceGames.clear()
-            event.pb.couldChoiceGamesList?.forEach {
-                mRoomData.couldChoiceGames.add(parseFromGameInfoPB(it))
-            }
+//            event.pb.gamesList.forEach {
+//                nextRoundInfo.games.add(parseFromGameInfoPB(it))
+//            }
+//            mRoomData.couldChoiceGames.clear()
+//            event.pb.couldChoiceGamesList?.forEach {
+//                mRoomData.couldChoiceGames.add(parseFromGameInfoPB(it))
+//            }
             if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
                 mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, false)
                 mRoomData.expectRoundInfo = nextRoundInfo
@@ -783,17 +782,17 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             MyLog.w(TAG, "sync 回来的轮次大，要替换 roundinfo 了")
             // 主轮次结束
             launch {
-                if (raceRoundInfoModel.games.isEmpty()) {
-                    val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
-                    if (result.errno == 0) {
-                        val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
-                        val couldChoiceGames = JSON.parseArray(result.data.getString("couldChoiceGames"), RaceGamePlayInfo::class.java)
-                        raceRoundInfoModel.games.addAll(games)
-                        mRoomData.couldChoiceGames.addAll(couldChoiceGames)
-                    } else {
-
-                    }
-                }
+//                if (raceRoundInfoModel.games.isEmpty()) {
+//                    val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
+//                    if (result.errno == 0) {
+//                        val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
+//                        val couldChoiceGames = JSON.parseArray(result.data.getString("couldChoiceGames"), RaceGamePlayInfo::class.java)
+//                        raceRoundInfoModel.games.addAll(games)
+//                        mRoomData.couldChoiceGames.addAll(couldChoiceGames)
+//                    } else {
+//
+//                    }
+//                }
                 mRoomData.expectRoundInfo = raceRoundInfoModel
                 mRoomData.checkRoundInEachMode()
             }

@@ -26,8 +26,6 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
 
   public static final Integer DEFAULT_SUBROUNDSEQ = 0;
 
-  public static final Integer DEFAULT_CHOICEID = 0;
-
   public static final Integer DEFAULT_BEGINMS = 0;
 
   public static final Integer DEFAULT_ENDMS = 0;
@@ -55,15 +53,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   private final Integer subRoundSeq;
 
   /**
-   * 选择项
-   */
-  @WireField(
-      tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer choiceID;
-
-  /**
+   * uint32 choiceID                = 3; //选择项
    * 开始相对时间（相对于createTimeMs时间）
    */
   @WireField(
@@ -99,22 +89,31 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   )
   private final ERWantSingType wantSingType;
 
-  public SubRoundInfo(Integer userID, Integer subRoundSeq, Integer choiceID, Integer beginMs,
-      Integer endMs, ESubRoundOverReason overReason, ERWantSingType wantSingType) {
-    this(userID, subRoundSeq, choiceID, beginMs, endMs, overReason, wantSingType, ByteString.EMPTY);
+  /**
+   * 选择详情
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.zq.live.proto.RaceRoom.RaceGameInfo#ADAPTER"
+  )
+  private final RaceGameInfo choiceDetail;
+
+  public SubRoundInfo(Integer userID, Integer subRoundSeq, Integer beginMs, Integer endMs,
+      ESubRoundOverReason overReason, ERWantSingType wantSingType, RaceGameInfo choiceDetail) {
+    this(userID, subRoundSeq, beginMs, endMs, overReason, wantSingType, choiceDetail, ByteString.EMPTY);
   }
 
-  public SubRoundInfo(Integer userID, Integer subRoundSeq, Integer choiceID, Integer beginMs,
-      Integer endMs, ESubRoundOverReason overReason, ERWantSingType wantSingType,
+  public SubRoundInfo(Integer userID, Integer subRoundSeq, Integer beginMs, Integer endMs,
+      ESubRoundOverReason overReason, ERWantSingType wantSingType, RaceGameInfo choiceDetail,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.subRoundSeq = subRoundSeq;
-    this.choiceID = choiceID;
     this.beginMs = beginMs;
     this.endMs = endMs;
     this.overReason = overReason;
     this.wantSingType = wantSingType;
+    this.choiceDetail = choiceDetail;
   }
 
   @Override
@@ -122,11 +121,11 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     Builder builder = new Builder();
     builder.userID = userID;
     builder.subRoundSeq = subRoundSeq;
-    builder.choiceID = choiceID;
     builder.beginMs = beginMs;
     builder.endMs = endMs;
     builder.overReason = overReason;
     builder.wantSingType = wantSingType;
+    builder.choiceDetail = choiceDetail;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -139,11 +138,11 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(subRoundSeq, o.subRoundSeq)
-        && Internal.equals(choiceID, o.choiceID)
         && Internal.equals(beginMs, o.beginMs)
         && Internal.equals(endMs, o.endMs)
         && Internal.equals(overReason, o.overReason)
-        && Internal.equals(wantSingType, o.wantSingType);
+        && Internal.equals(wantSingType, o.wantSingType)
+        && Internal.equals(choiceDetail, o.choiceDetail);
   }
 
   @Override
@@ -153,11 +152,11 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (subRoundSeq != null ? subRoundSeq.hashCode() : 0);
-      result = result * 37 + (choiceID != null ? choiceID.hashCode() : 0);
       result = result * 37 + (beginMs != null ? beginMs.hashCode() : 0);
       result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
+      result = result * 37 + (choiceDetail != null ? choiceDetail.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -168,11 +167,11 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (subRoundSeq != null) builder.append(", subRoundSeq=").append(subRoundSeq);
-    if (choiceID != null) builder.append(", choiceID=").append(choiceID);
     if (beginMs != null) builder.append(", beginMs=").append(beginMs);
     if (endMs != null) builder.append(", endMs=").append(endMs);
     if (overReason != null) builder.append(", overReason=").append(overReason);
     if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
+    if (choiceDetail != null) builder.append(", choiceDetail=").append(choiceDetail);
     return builder.replace(0, 2, "SubRoundInfo{").append('}').toString();
   }
 
@@ -207,16 +206,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
-   * 选择项
-   */
-  public Integer getChoiceID() {
-    if(choiceID==null){
-        return DEFAULT_CHOICEID;
-    }
-    return choiceID;
-  }
-
-  /**
+   * uint32 choiceID                = 3; //选择项
    * 开始相对时间（相对于createTimeMs时间）
    */
   public Integer getBeginMs() {
@@ -257,6 +247,16 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
+   * 选择详情
+   */
+  public RaceGameInfo getChoiceDetail() {
+    if(choiceDetail==null){
+        return new RaceGameInfo.Builder().build();
+    }
+    return choiceDetail;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
@@ -271,13 +271,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
   }
 
   /**
-   * 选择项
-   */
-  public boolean hasChoiceID() {
-    return choiceID!=null;
-  }
-
-  /**
+   * uint32 choiceID                = 3; //选择项
    * 开始相对时间（相对于createTimeMs时间）
    */
   public boolean hasBeginMs() {
@@ -305,12 +299,17 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     return wantSingType!=null;
   }
 
+  /**
+   * 选择详情
+   */
+  public boolean hasChoiceDetail() {
+    return choiceDetail!=null;
+  }
+
   public static final class Builder extends Message.Builder<SubRoundInfo, Builder> {
     private Integer userID;
 
     private Integer subRoundSeq;
-
-    private Integer choiceID;
 
     private Integer beginMs;
 
@@ -319,6 +318,8 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     private ESubRoundOverReason overReason;
 
     private ERWantSingType wantSingType;
+
+    private RaceGameInfo choiceDetail;
 
     public Builder() {
     }
@@ -340,14 +341,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     }
 
     /**
-     * 选择项
-     */
-    public Builder setChoiceID(Integer choiceID) {
-      this.choiceID = choiceID;
-      return this;
-    }
-
-    /**
+     * uint32 choiceID                = 3; //选择项
      * 开始相对时间（相对于createTimeMs时间）
      */
     public Builder setBeginMs(Integer beginMs) {
@@ -379,9 +373,17 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
       return this;
     }
 
+    /**
+     * 选择详情
+     */
+    public Builder setChoiceDetail(RaceGameInfo choiceDetail) {
+      this.choiceDetail = choiceDetail;
+      return this;
+    }
+
     @Override
     public SubRoundInfo build() {
-      return new SubRoundInfo(userID, subRoundSeq, choiceID, beginMs, endMs, overReason, wantSingType, super.buildUnknownFields());
+      return new SubRoundInfo(userID, subRoundSeq, beginMs, endMs, overReason, wantSingType, choiceDetail, super.buildUnknownFields());
     }
   }
 
@@ -394,11 +396,11 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     public int encodedSize(SubRoundInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.subRoundSeq)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.choiceID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.beginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.endMs)
           + ESubRoundOverReason.ADAPTER.encodedSizeWithTag(7, value.overReason)
           + ERWantSingType.ADAPTER.encodedSizeWithTag(8, value.wantSingType)
+          + RaceGameInfo.ADAPTER.encodedSizeWithTag(9, value.choiceDetail)
           + value.unknownFields().size();
     }
 
@@ -406,11 +408,11 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     public void encode(ProtoWriter writer, SubRoundInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.subRoundSeq);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.choiceID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.beginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.endMs);
       ESubRoundOverReason.ADAPTER.encodeWithTag(writer, 7, value.overReason);
       ERWantSingType.ADAPTER.encodeWithTag(writer, 8, value.wantSingType);
+      RaceGameInfo.ADAPTER.encodeWithTag(writer, 9, value.choiceDetail);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -422,7 +424,6 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setSubRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setChoiceID(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setEndMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 7: {
@@ -441,6 +442,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
             }
             break;
           }
+          case 9: builder.setChoiceDetail(RaceGameInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -455,6 +457,7 @@ public final class SubRoundInfo extends Message<SubRoundInfo, SubRoundInfo.Build
     @Override
     public SubRoundInfo redact(SubRoundInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.choiceDetail != null) builder.choiceDetail = RaceGameInfo.ADAPTER.redact(builder.choiceDetail);
       builder.clearUnknownFields();
       return builder.build();
     }

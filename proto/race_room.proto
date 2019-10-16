@@ -64,8 +64,9 @@ message RaceRoundOverMsg
     ERoundOverType overType     = 2; //轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound、games)
     RaceRoundInfo currentRound  = 3; //当前结束轮次的信息
     RaceRoundInfo nextRound     = 4; //下个轮次的信息
-    repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
-    repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
+    //repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
+    //repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
+    uint32 nextRoundChoiceUserCnt       = 7; //在下个轮次为ongoing状态，可以获取轮次报名人数
 }
 
 message RExitGameMsg
@@ -82,6 +83,7 @@ message RSyncStatusMsg
 message RGetSingChanceMsg
 {
     RaceRoundInfo currentRound = 3; //当前轮次信息
+    uint32 currentRoundChoiceUserCnt = 4; //当前轮次报名人数
 }
 
 message RWantSingChanceMsg
@@ -90,6 +92,13 @@ message RWantSingChanceMsg
     uint32 roundSeq             = 2; //轮次顺序
     uint32 choiceID             = 3; //选择标识
     ERWantSingType wantSingType = 4; //想唱方式
+    ItemInfo choiceItem = 5; //选择的条目
+}
+
+message ItemInfo
+{
+    ERaceGameType itemType = 1; //游戏类型
+    uint32 itemID = 2; //曲目标识
 }
 
 message RBLightMsg
@@ -152,7 +161,7 @@ message RaceRoundInfo
     repeated ROnlineInfo playUsers       = 8; //当局玩的用户列表
     uint32 introBeginMs                  = 9; //竞选开始相对时间（相对于createTimeMs时间）
     uint32 introEndMs                    = 10; //竞选结束相对时间（相对于createTimeMs时间）
-    repeated RWantSingInfo wantSingInfos = 11; //竞选选择列表(当状态为ERRS_CHOCING时有效)
+    //repeated RWantSingInfo wantSingInfos = 11; //竞选选择列表(当状态为ERRS_CHOCING时有效)
 }
 
 message RWantSingInfo
@@ -160,6 +169,7 @@ message RWantSingInfo
     uint32 userID   = 1; //玩家id
     uint32 choiceID = 2; //选项id
     sint64 timeMs   = 3; //选择时间戳
+    ItemInfo choiceItem = 4; //选择的条目
 }
 
 message RoundScoreInfo
@@ -180,11 +190,12 @@ message SubRoundInfo
 {
     uint32 userID                  = 1; //用户id
     uint32 subRoundSeq             = 2; //子轮次
-    uint32 choiceID                = 3; //选择项
+    //uint32 choiceID                = 3; //选择项
     uint32 beginMs                 = 4; //开始相对时间（相对于createTimeMs时间）
     uint32 endMs                   = 5; //结束相对时间（相对于createTimeMs时间）
     ESubRoundOverReason overReason = 7; //子轮次切换原因
     ERWantSingType wantSingType    = 8; //想唱方式
+    RaceGameInfo choiceDetail      = 9; //选择详情
 }
 
 message RSubRoundInfo

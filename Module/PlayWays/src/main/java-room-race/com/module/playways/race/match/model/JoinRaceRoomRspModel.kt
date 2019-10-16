@@ -18,14 +18,14 @@ class JoinRaceRoomRspModel : Serializable {
     var elapsedTimeMs = 0
     @JSONField(name = "gameStartTimeMs")
     var gameStartTimeMs = 0L
-    @JSONField(name = "games")
-    var games: ArrayList<RaceGamePlayInfo>? = null
+//    @JSONField(name = "games")
+//    var games: ArrayList<RaceGamePlayInfo>? = null
     @JSONField(name = "newRoundBegin")
     var newRoundBegin = false
     @JSONField(name = "agoraToken")
     var agoraToken: String? = null
     @JSONField(name = "config")
     var config: LocalRGameConfigMsg? = null
-    @JSONField(name = "couldChoiceGames")
-    var couldChoiceGames: ArrayList<RaceGamePlayInfo>? = null
+//    @JSONField(name = "couldChoiceGames")
+//    var couldChoiceGames: ArrayList<RaceGamePlayInfo>? = null
 }

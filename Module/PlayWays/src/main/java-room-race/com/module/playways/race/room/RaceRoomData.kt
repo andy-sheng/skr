@@ -30,9 +30,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
     var runningRoundCount = 0 // 本人在这个房间里已经待了多少轮了
 
-    //这个是下一个轮次要选择的歌曲
-    var couldChoiceGames: ArrayList<RaceGamePlayInfo> = ArrayList()
-
     init {
         isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
     }
@@ -84,12 +81,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return l
     }
 
-    /**
-     * 演唱的时候需要从下一轮次的歌曲里 根据 choiceID 查找
-     */
-    fun getSongModelByChoiceId(choiceID: Int): SongModel? {
-        return couldChoiceGames.getOrNull(choiceID - 1)?.commonMusic
-    }
 
     fun getPlayerOrWaiterInfoModel(userID: Int?): RacePlayerInfoModel? {
         if (userID == null || userID == 0) {
@@ -114,19 +105,19 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return getPlayerAndWaiterInfoList()
     }
 
-    fun getChoiceInfoById(choiceID: Int): SongModel? {
-        return this.realRoundInfo?.games?.getOrNull(choiceID - 1)?.commonMusic
-    }
+//    fun getChoiceInfoById(choiceID: Int): SongModel? {
+//        return this.realRoundInfo?.games?.getOrNull(choiceID - 1)?.commonMusic
+//    }
 
     fun loadFromRsp(rsp: JoinRaceRoomRspModel) {
         this.gameId = rsp.roomID
         this.expectRoundInfo = rsp.currentRound
-        rsp.games?.let {
-            this.expectRoundInfo?.games = it
-        }
-        rsp.couldChoiceGames?.let {
-            this.couldChoiceGames = it
-        }
+//        rsp.games?.let {
+//            this.expectRoundInfo?.games = it
+//        }
+//        rsp.couldChoiceGames?.let {
+//            this.couldChoiceGames = it
+//        }
         this.realRoundInfo = null
         this.isIsGameFinish = false
         this.hasExitGame = false

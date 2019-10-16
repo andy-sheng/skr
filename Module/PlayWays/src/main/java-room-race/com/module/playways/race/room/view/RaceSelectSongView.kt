@@ -157,11 +157,11 @@ class RaceSelectSongView : ExConstraintLayout {
         mRoomData?.let {
             val info = it.realRoundInfo as RaceRoundInfoModel
             info?.let {
-                for (i in 0 until it.games.size) {
-                    if (i < 4) {
-                        itemList[i].setSong(it.games[i])
-                    }
-                }
+//                for (i in 0 until it.games.size) {
+//                    if (i < 4) {
+//                        itemList[i].setSong(it.games[i])
+//                    }
+//                }
             }
         }
 
@@ -221,12 +221,12 @@ class RaceSelectSongView : ExConstraintLayout {
                 map.put(2, ArrayList<RaceWantSingInfo>())
                 map.put(3, ArrayList<RaceWantSingInfo>())
                 map.put(4, ArrayList<RaceWantSingInfo>())
-                raceRoundInfoModel.wantSingInfos.forEach {
-                    map[it.choiceID]?.add(it)
-                    if (MyUserInfoManager.getInstance().uid == it.userID.toLong()) {
-                        enableSelectSong(false)
-                    }
-                }
+//                raceRoundInfoModel.wantSingInfos.forEach {
+//                    map[it.choiceID]?.add(it)
+//                    if (MyUserInfoManager.getInstance().uid == it.userID.toLong()) {
+//                        enableSelectSong(false)
+//                    }
+//                }
 
                 for (i in 0 until map.size) {
                     if (i < 4) {

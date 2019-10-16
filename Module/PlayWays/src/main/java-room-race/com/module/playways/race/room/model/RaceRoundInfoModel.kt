@@ -19,12 +19,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var scores = ArrayList<RaceScore>()
     var subRoundSeq = 0 // 子轮次为1 代表第一轮A演唱 2 为第二轮B演唱
     var subRoundInfo = ArrayList<RaceSubRoundInfo>() //子轮次信息
-    var games = ArrayList<RaceGamePlayInfo>() // choice 可选择的歌曲
     var playUsers = ArrayList<RacePlayerInfoModel>() // 选手
     var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
     var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）
     var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
-    var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
+    //var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
 
     // 以下不是服务器返回的
     //var isParticipant = true// 我是不是这局的参与者，能不能抢唱，投票
@@ -103,23 +102,23 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
         EventBus.getDefault().post(RacePlaySeatUpdateEvent(waitUsers))
     }
 
-    /**
-     * wantSing 增加人
-     */
-    fun addWantSingChange(choiceID: Int, userID: Int) {
-        val raceWantSingInfo = RaceWantSingInfo().apply {
-            this.choiceID = choiceID
-            this.userID = userID
-            this.timeMs = System.currentTimeMillis()
-        }
-
-        if (!wantSingInfos.contains(raceWantSingInfo)) {
-            userID?.let {
-                wantSingInfos.add(raceWantSingInfo)
-                EventBus.getDefault().post(RaceWantSingChanceEvent(choiceID, it))
-            }
-        }
-    }
+//    /**
+//     * wantSing 增加人
+//     */
+//    fun addWantSingChange(choiceID: Int, userID: Int) {
+//        val raceWantSingInfo = RaceWantSingInfo().apply {
+//            this.choiceID = choiceID
+//            this.userID = userID
+//            this.timeMs = System.currentTimeMillis()
+//        }
+//
+//        if (!wantSingInfos.contains(raceWantSingInfo)) {
+//            userID?.let {
+//                wantSingInfos.add(raceWantSingInfo)
+//                EventBus.getDefault().post(RaceWantSingChanceEvent(choiceID, it))
+//            }
+//        }
+//    }
 
     fun addBLightUser(notify: Boolean, userID: Int, subRoundSeq: Int, bLightCnt: Int) {
         scores.getOrNull(subRoundSeq - 1)?.addBLightUser(notify, userID, bLightCnt)
@@ -190,15 +189,6 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
 
         if (roundInfo.overReason > 0) {
             this.overReason = roundInfo.overReason
-        }
-        if (roundInfo.games.size > 0) {
-            //有数据
-            if (this.games.isEmpty()) {
-                this.games.addAll(roundInfo.games)
-            } else {
-                // 都有数据
-
-            }
         }
         if (roundInfo.subRoundInfo.size > 0) {
             //有数据
@@ -274,15 +264,15 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
      * 此时此刻演唱的歌曲信息
      */
     fun getSongModelNow(): SongModel? {
-        return getSongModelByChoiceId(subRoundInfo.getOrNull(subRoundSeq - 1)?.choiceID ?: 0)
+        return subRoundInfo.getOrNull(subRoundSeq - 1)?.choiceDetail?.commonMusic
     }
 
     /**
      * 此时此刻演唱的歌曲信息 根据 choiceID 查找
      */
-    fun getSongModelByChoiceId(choiceID: Int): SongModel? {
-        return games.getOrNull(choiceID - 1)?.commonMusic
-    }
+//    fun getSongModelByChoiceId(choiceID: Int): SongModel? {
+//        return games.getOrNull(choiceID - 1)?.commonMusic
+//    }
 
     /**
      * 此时此刻的轮次是否是伴奏模式
@@ -316,7 +306,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     }
 
     override fun toString(): String {
-        return "RaceRoundInfoModel(roundSeq=${roundSeq} status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, wantSingInfos=$wantSingInfos, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq)"
+        return "RaceRoundInfoModel(roundSeq=${roundSeq} status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq)"
     }
 
 
@@ -353,9 +343,9 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
     }
     model.introBeginMs = pb.introBeginMs
     model.introEndMs = pb.introEndMs
-    pb.wantSingInfosList.forEach {
-        model.wantSingInfos.add(parseFromWantSingInfoPB(it))
-    }
+//    pb.wantSingInfosList.forEach {
+//        model.wantSingInfos.add(parseFromWantSingInfoPB(it))
+//    }
     return model
 }
 

@@ -66,18 +66,28 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
   )
   private final ERWantSingType wantSingType;
 
+  /**
+   * 选择的条目
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.RaceRoom.ItemInfo#ADAPTER"
+  )
+  private final ItemInfo choiceItem;
+
   public RWantSingChanceMsg(Integer userID, Integer roundSeq, Integer choiceID,
-      ERWantSingType wantSingType) {
-    this(userID, roundSeq, choiceID, wantSingType, ByteString.EMPTY);
+      ERWantSingType wantSingType, ItemInfo choiceItem) {
+    this(userID, roundSeq, choiceID, wantSingType, choiceItem, ByteString.EMPTY);
   }
 
   public RWantSingChanceMsg(Integer userID, Integer roundSeq, Integer choiceID,
-      ERWantSingType wantSingType, ByteString unknownFields) {
+      ERWantSingType wantSingType, ItemInfo choiceItem, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
     this.choiceID = choiceID;
     this.wantSingType = wantSingType;
+    this.choiceItem = choiceItem;
   }
 
   @Override
@@ -87,6 +97,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     builder.roundSeq = roundSeq;
     builder.choiceID = choiceID;
     builder.wantSingType = wantSingType;
+    builder.choiceItem = choiceItem;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -100,7 +111,8 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
         && Internal.equals(userID, o.userID)
         && Internal.equals(roundSeq, o.roundSeq)
         && Internal.equals(choiceID, o.choiceID)
-        && Internal.equals(wantSingType, o.wantSingType);
+        && Internal.equals(wantSingType, o.wantSingType)
+        && Internal.equals(choiceItem, o.choiceItem);
   }
 
   @Override
@@ -112,6 +124,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (choiceID != null ? choiceID.hashCode() : 0);
       result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
+      result = result * 37 + (choiceItem != null ? choiceItem.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -124,6 +137,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (choiceID != null) builder.append(", choiceID=").append(choiceID);
     if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
+    if (choiceItem != null) builder.append(", choiceItem=").append(choiceItem);
     return builder.replace(0, 2, "RWantSingChanceMsg{").append('}').toString();
   }
 
@@ -178,6 +192,16 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
   }
 
   /**
+   * 选择的条目
+   */
+  public ItemInfo getChoiceItem() {
+    if(choiceItem==null){
+        return new ItemInfo.Builder().build();
+    }
+    return choiceItem;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
@@ -205,6 +229,13 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     return wantSingType!=null;
   }
 
+  /**
+   * 选择的条目
+   */
+  public boolean hasChoiceItem() {
+    return choiceItem!=null;
+  }
+
   public static final class Builder extends Message.Builder<RWantSingChanceMsg, Builder> {
     private Integer userID;
 
@@ -213,6 +244,8 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     private Integer choiceID;
 
     private ERWantSingType wantSingType;
+
+    private ItemInfo choiceItem;
 
     public Builder() {
     }
@@ -249,9 +282,17 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       return this;
     }
 
+    /**
+     * 选择的条目
+     */
+    public Builder setChoiceItem(ItemInfo choiceItem) {
+      this.choiceItem = choiceItem;
+      return this;
+    }
+
     @Override
     public RWantSingChanceMsg build() {
-      return new RWantSingChanceMsg(userID, roundSeq, choiceID, wantSingType, super.buildUnknownFields());
+      return new RWantSingChanceMsg(userID, roundSeq, choiceID, wantSingType, choiceItem, super.buildUnknownFields());
     }
   }
 
@@ -266,6 +307,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.choiceID)
           + ERWantSingType.ADAPTER.encodedSizeWithTag(4, value.wantSingType)
+          + ItemInfo.ADAPTER.encodedSizeWithTag(5, value.choiceItem)
           + value.unknownFields().size();
     }
 
@@ -275,6 +317,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.choiceID);
       ERWantSingType.ADAPTER.encodeWithTag(writer, 4, value.wantSingType);
+      ItemInfo.ADAPTER.encodeWithTag(writer, 5, value.choiceItem);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -295,6 +338,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
             }
             break;
           }
+          case 5: builder.setChoiceItem(ItemInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -309,6 +353,7 @@ public final class RWantSingChanceMsg extends Message<RWantSingChanceMsg, RWantS
     @Override
     public RWantSingChanceMsg redact(RWantSingChanceMsg value) {
       Builder builder = value.newBuilder();
+      if (builder.choiceItem != null) builder.choiceItem = ItemInfo.ADAPTER.redact(builder.choiceItem);
       builder.clearUnknownFields();
       return builder.build();
     }
