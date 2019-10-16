@@ -490,8 +490,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
         }
 
-        mRacePagerSelectSongView.hideView()
-        mSignUpView.visibility = View.GONE
+        hideSignUpUI(true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -545,7 +544,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
 
-        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+        hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true)
+    }
+
+    private fun hideSignUpUI(hide: Boolean) {
+        if (hide) {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
         }
@@ -582,8 +585,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
         }
 
-        mRacePagerSelectSongView.hideView()
-        mSignUpView.visibility = View.GONE
+        hideSignUpUI(true)
     }
 
     override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
@@ -609,10 +611,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
 
-        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-            mRacePagerSelectSongView.hideView()
-            mSignUpView.visibility = View.GONE
-        }
+        hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true)
     }
 
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
