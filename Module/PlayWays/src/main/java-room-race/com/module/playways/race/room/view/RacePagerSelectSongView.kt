@@ -43,6 +43,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var mSignUpMethed: ((Int, RaceGamePlayInfo?) -> Unit)? = null
     private var mCardScaleHelper: CardScaleHelper? = null
 
+    //在滑动到最后的时候自动加载更多
+    var mLoadMore: Boolean = false
     var mOffset: Int = 0
     var mCnt: Int = 5
     var mHasMore = true
@@ -101,6 +103,11 @@ class RacePagerSelectSongView : ExConstraintLayout {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     mCurrentPosition = mCardScaleHelper?.getCurrentItemPos() ?: 0
+                    if (!mLoadMore && mCurrentPosition > (mPagerAdapter?.mRaceGamePlayInfoList?.size
+                                    ?: 0) - 3) {
+                        mLoadMore = true
+                        getPlaybookItemList()
+                    }
                 }
             }
         })
@@ -186,6 +193,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
             val result = subscribe(RequestControl(TAG + "getPlaybookItemList", ControlType.CancelThis)) {
                 raceRoomServerApi.getPlaybookItemList(mOffset, mCnt, MyUserInfoManager.getInstance().uid.toInt())
             }
+
+            mLoadMore = false
 
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
