@@ -31,15 +31,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bg" />
 
-
-    <android.support.v4.view.ViewPager
-        android:clipChildren="false"
-        android:id="@+id/banner_pager"
+    <com.component.busilib.view.recyclercardview.SpeedRecyclerView
+        android:id="@+id/speed_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_273_dp"
         android:layout_marginBottom="@dimen/view_22_dp"
-        android:layout_marginLeft="@dimen/view_37_dp"
-        android:layout_marginRight="@dimen/view_37_dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

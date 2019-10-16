@@ -3,7 +3,8 @@ package com.module.playways.race.room.view
 import android.content.Context
 import android.os.Handler
 import android.os.Message
-import android.support.v4.view.ViewPager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
@@ -16,16 +17,15 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
-import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
-import com.component.busilib.view.pagetransformerhelp.cardtransformer.AlphaAndScalePageTransformer
+import com.component.busilib.view.recyclercardview.CardScaleHelper
+import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.adapter.RaceSelectSongAdapter
+import com.module.playways.race.room.adapter.RaceSelectSongRecyclerAdapter
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
 import com.module.playways.race.room.model.RaceGamePlayInfo
-import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -36,11 +36,12 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var closeIv: ExImageView
     var hideClickArea: View
     var mPagerRootView: View
-    var bannerPager: ViewPager
+    var mRecyclerView: SpeedRecyclerView
     var mRoomData: RaceRoomData? = null
-    var mPagerAdapter: RaceSelectSongAdapter? = null
+    var mPagerAdapter: RaceSelectSongRecyclerAdapter? = null
     var mHasSignUpItemId = -1
     var mSignUpMethed: ((Int, RaceGamePlayInfo?) -> Unit)? = null
+    private var mCardScaleHelper: CardScaleHelper? = null
 
     var mOffset: Int = 0
     var mCnt: Int = 5
@@ -65,13 +66,13 @@ class RacePagerSelectSongView : ExConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     fun fakeDrag() {
-        try {
-            bannerPager.beginFakeDrag()
-            bannerPager.fakeDragBy(1.0f)
-            bannerPager.endFakeDrag()
-        } catch (e: Exception) {
-            MyLog.w(TAG, e.toString())
-        }
+//        try {
+//            mRecyclerView.beginFakeDrag()
+//            mRecyclerView.fakeDragBy(1.0f)
+//            mRecyclerView.endFakeDrag()
+//        } catch (e: Exception) {
+//            MyLog.w(TAG, e.toString())
+//        }
     }
 
     init {
@@ -79,22 +80,33 @@ class RacePagerSelectSongView : ExConstraintLayout {
         closeIv = rootView.findViewById(com.module.playways.R.id.close_iv)
         mPagerRootView = rootView.findViewById(com.module.playways.R.id.pager_root_view)
         hideClickArea = rootView.findViewById(com.module.playways.R.id.hide_click_area)
-        bannerPager = rootView.findViewById(com.module.playways.R.id.banner_pager)
-        bannerPager.offscreenPageLimit = 2
-        bannerPager.setPageMargin(U.getDisplayUtils().dip2px(15f))
-        bannerPager.setPageTransformer(true, AlphaAndScalePageTransformer())
+        mRecyclerView = rootView.findViewById(com.module.playways.R.id.speed_recyclerView)
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        mRecyclerView.layoutManager = linearLayoutManager
 
-        mPagerAdapter = RaceSelectSongAdapter(context, object : RaceSelectSongAdapter.IRaceSelectListener {
+        mPagerAdapter = RaceSelectSongRecyclerAdapter()
+        mRecyclerView.adapter = mPagerAdapter
+        mPagerAdapter?.mIRaceSelectListener = object : RaceSelectSongRecyclerAdapter.IRaceSelectListener {
             override fun onSignUp(itemID: Int, model: RaceGamePlayInfo?) {
                 mSignUpMethed?.invoke(itemID, model)
             }
 
-            override fun getSignUpChoiceID(): Int {
+            override fun getSignUpItemID(): Int {
                 return mHasSignUpItemId
+            }
+        }
+
+        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    mCurrentPosition = mCardScaleHelper?.getCurrentItemPos() ?: 0
+                }
             }
         })
 
-        bannerPager.adapter = mPagerAdapter
+        mCardScaleHelper = CardScaleHelper()
+        mCardScaleHelper?.attachToRecyclerView(mRecyclerView)
 
         closeIv.setDebounceViewClickListener {
             hideView()
@@ -108,24 +120,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
             hideView()
         }
 
-        bannerPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                // 把当前显示的position传递出去
-                mCurrentPosition = position
-                if (mCurrentPosition > mPagerAdapter?.mRaceGamePlayInfos?.size ?: 0 - 3) {
-                    getPlaybookItemList()
-                }
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-        })
-
         getPlaybookItemList()
     }
 
@@ -137,12 +131,12 @@ class RacePagerSelectSongView : ExConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWantSingChanceEvent) {
         mHasSignUpItemId = event.itemID
-            if (mPagerAdapter?.mRaceGamePlayInfos?.get(mCurrentPosition)?.commonMusic?.itemID == mHasSignUpItemId) {
-                mPagerAdapter?.mRaceGamePlayInfos?.get(mCurrentPosition)?.let {
+        if (mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.commonMusic?.itemID == mHasSignUpItemId) {
+            mPagerAdapter?.mRaceGamePlayInfoList?.get(mCurrentPosition)?.let {
                     addSelectedSong(it)
                 }
             } else {
-                mPagerAdapter?.mRaceGamePlayInfos?.forEach {
+            mPagerAdapter?.mRaceGamePlayInfoList?.forEach {
                     if (it.commonMusic?.itemID == mHasSignUpItemId) {
                         addSelectedSong(it)
                         return@forEach
@@ -152,10 +146,9 @@ class RacePagerSelectSongView : ExConstraintLayout {
     }
 
     private fun addSelectedSong(info: RaceGamePlayInfo) {
-        mPagerAdapter?.mRaceGamePlayInfos?.clear()
-        val list = ArrayList<RaceGamePlayInfo>()
-        list.add(info)
-        mPagerAdapter?.addData(list)
+        mPagerAdapter?.mRaceGamePlayInfoList?.clear()
+        mPagerAdapter?.mRaceGamePlayInfoList?.add(info)
+        mPagerAdapter?.notifyDataSetChanged()
     }
 
     fun showView() {
@@ -173,7 +166,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         visibility = View.VISIBLE
         mUiHandler.sendEmptyMessage(PAGER_BUG)
 
-        if (mPagerAdapter?.mRaceGamePlayInfos?.size == 0) {
+        if (mPagerAdapter?.mRaceGamePlayInfoList?.size == 0) {
             getPlaybookItemList()
         }
     }
