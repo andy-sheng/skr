@@ -12,7 +12,7 @@ import java.util.*
 class RaceSelectSongAdapter(internal var mContext: Context, internal val listener: IRaceSelectListener) : PagerAdapter() {
     val TAG = "RaceSelectSongAdapter"
     private val cachedList = ArrayList<RaceSongInfoView>()
-    internal var mRaceGamePlayInfos: List<RaceGamePlayInfo> = ArrayList()
+    var mRaceGamePlayInfos: ArrayList<RaceGamePlayInfo> = ArrayList()
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         MyLog.d(TAG, "destroyItem container=$container position=$position object=$`object`")
@@ -38,12 +38,12 @@ class RaceSelectSongAdapter(internal var mContext: Context, internal val listene
         return view!!
     }
 
-    fun setData(raceGamePlayInfoList: List<RaceGamePlayInfo>?) {
+    fun addData(raceGamePlayInfoList: List<RaceGamePlayInfo>?) {
         if (raceGamePlayInfoList == null) {
             return
         }
 
-        mRaceGamePlayInfos = raceGamePlayInfoList
+        mRaceGamePlayInfos.addAll(raceGamePlayInfoList)
         notifyDataSetChanged()
     }
 

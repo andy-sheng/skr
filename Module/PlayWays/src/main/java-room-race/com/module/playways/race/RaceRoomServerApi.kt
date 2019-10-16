@@ -342,4 +342,13 @@ interface RaceRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/racegame/sing-make-choice")
     fun singMakeChoice(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 列出可以报名的曲目
+     * offset
+     * cnt
+     * userID
+     */
+    @GET("http://dev.game.inframe.mobi/v1/racegame/list-playbook-items")
+    fun getPlaybookItemList(@Query("offset") offset: Int, @Query("cnt") cnt: Int, @Query("userID") userID: Int): Call<ApiResult>
 }
