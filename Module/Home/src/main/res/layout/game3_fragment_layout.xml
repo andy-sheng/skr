@@ -54,7 +54,6 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:text="邀请好友"
-        android:textStyle="bold"
         android:textColor="#7088FF"
         android:textSize="@dimen/textsize_14_dp"
         android:gravity="center"
