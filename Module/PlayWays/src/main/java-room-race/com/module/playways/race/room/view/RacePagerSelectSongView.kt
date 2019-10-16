@@ -139,9 +139,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
         visibility = View.VISIBLE
-        mUiHandler.post({
-            fakeDrag()
-        })
+        mUiHandler.sendEmptyMessage(PAGER_BUG)
     }
 
     fun hideView() {
