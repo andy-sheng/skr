@@ -96,6 +96,10 @@ class RacePagerSelectSongView : ExConstraintLayout {
             override fun getSignUpItemID(): Int {
                 return mHasSignUpItemId
             }
+
+            override fun getRecyclerViewPosition(): Int {
+                return mCurrentPosition
+            }
         }
 
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

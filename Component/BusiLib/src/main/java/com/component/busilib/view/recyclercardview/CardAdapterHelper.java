@@ -20,12 +20,15 @@ public class CardAdapterHelper {
         itemView.setLayoutParams(lp);
     }
 
-    public void onBindViewHolder(View itemView, final int position, int itemCount) {
+    public void onBindViewHolder(View itemView, final int position, int itemCount, boolean needResetScale) {
         int padding = U.getDisplayUtils().dip2px(itemView.getContext(), mPagePadding);
         itemView.setPadding(padding, 0, padding, 0);
         int leftMarin = position == 0 ? padding + U.getDisplayUtils().dip2px(itemView.getContext(), mShowLeftCardWidth) : 0;
         int rightMarin = position == itemCount - 1 ? padding + U.getDisplayUtils().dip2px(itemView.getContext(), mShowLeftCardWidth) : 0;
         setViewMargin(itemView, leftMarin, 0, rightMarin, 0);
+        if (needResetScale) {
+            itemView.setScaleY(1);
+        }
     }
 
     private void setViewMargin(View view, int left, int top, int right, int bottom) {
