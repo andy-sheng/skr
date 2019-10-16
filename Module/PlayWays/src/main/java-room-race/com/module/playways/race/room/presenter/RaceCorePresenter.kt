@@ -5,6 +5,7 @@ import android.os.Message
 import android.support.annotation.CallSuper
 import android.text.SpannableStringBuilder
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -779,29 +780,45 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         if (raceRoundInfoModel.roundSeq == mRoomData.realRoundSeq) {
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(raceRoundInfoModel, true)
         } else if (raceRoundInfoModel.roundSeq > mRoomData.realRoundSeq) {
-            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundinfo 了")
+            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
             // 主轮次结束
             launch {
-                if (raceRoundInfoModel.status==ERaceRoundStatus.ERRS_ONGOINE.value) {
+                if (raceRoundInfoModel.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
                     var valid = true
                     raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemName?.let {
                         valid = !it.isEmpty()
                     }
-                    if(!valid){
+                    if (!valid) {
                         // 没有有效数据，请求服务器拉取
-                        val itemID1 = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemID ?:0
-                        val itemID2 = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.itemID ?:0
-                        if(itemID1>0 && itemID2>0){
+                        val itemID1 = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemID
+                                ?: 0
+                        val itemID2 = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.itemID
+                                ?: 0
+                        if (itemID1 > 0 && itemID2 > 0) {
+                            val l1 = ArrayList<JSONObject>()
+                            // 点击
+                            val ob1 = JSONObject()
+                            ob1["itemID"] = itemID1
+                            ob1["itemType"] = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.roundGameType
+                            l1.add(ob1)
+
+                            val ob2 = JSONObject()
+                            ob2["itemID"] = itemID2
+                            ob2["itemType"] = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.roundGameType
+                            l1.add(ob2)
+                            val mutableSet1 = mapOf(
+                                    "choiceItems" to l1
+                            )
+                            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
                             // 拉取一下歌曲详情
-//                            val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
-//                            if (result.errno == 0) {
-//                                val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
-//                                val couldChoiceGames = JSON.parseArray(result.data.getString("couldChoiceGames"), RaceGamePlayInfo::class.java)
-//                                raceRoundInfoModel.games.addAll(games)
-//                                mRoomData.couldChoiceGames.addAll(couldChoiceGames)
-//                            } else {
-//
-//                            }
+                            val result = subscribe { raceRoomServerApi.getGameChoiceItemDetail(body) }
+                            if (result.errno == 0) {
+                                val choiceItems = JSON.parseArray(result.data.getString("choiceDetails"), RaceGamePlayInfo::class.java)
+                                raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail = choiceItems.getOrNull(0)
+                                raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail = choiceItems.getOrNull(1)
+                            } else {
+
+                            }
                         }
                     }
                 }
