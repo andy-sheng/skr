@@ -4,13 +4,17 @@ package com.module.playways.grab.room.view
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.Context
 import android.os.Handler
 import android.os.Message
+import android.support.constraint.ConstraintLayout
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.utils.U
 
 import com.common.view.ExViewStub
@@ -19,7 +23,7 @@ import com.module.playways.R
 /**
  * 其他人主场景
  */
-class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
+class GrabChallengeStarView(context: Context, attr: AttributeSet) : ConstraintLayout(context, attr) {
     val TAG = "GrabChallengeStarView"
 
     var challengeBgIv: ImageView? = null
@@ -28,28 +32,19 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
     var challengeStarIv: ImageView? = null
     var clickListener: (() -> Unit)? = null
 
-    val handler = object : Handler() {
-        override fun handleMessage(msg: Message?) {
-            super.handleMessage(msg)
-        }
-    }
 
-    override fun init(parentView: View) {
-        challengeBgIv = parentView.findViewById(R.id.challenge_bg_iv)
-        challengingTv = parentView.findViewById(R.id.challenging_tv)
-        challengStarCntTv = parentView.findViewById(R.id.challenge_star_cnt_tv)
-        challengeStarIv = parentView.findViewById(R.id.challenge_star_iv)
-        parentView.setDebounceViewClickListener {
+    init {
+        View.inflate(context, R.layout.grab_challenge_star_view_layout, this)
+        challengeBgIv = findViewById(R.id.challenge_bg_iv)
+        challengingTv = findViewById(R.id.challenging_tv)
+        challengStarCntTv = findViewById(R.id.challenge_star_cnt_tv)
+        challengeStarIv = findViewById(R.id.challenge_star_iv)
+        setDebounceViewClickListener {
             clickListener?.invoke()
         }
     }
 
-    override fun layoutDesc(): Int {
-        return R.layout.grab_challenge_star_view_layout
-    }
-
     fun bindData(cnt: Int, justShowInChallenge: Boolean, continueShow: Boolean) {
-        tryInflate()
         if (justShowInChallenge) {
             challengingTv?.visibility = View.VISIBLE
             challengStarCntTv?.visibility = View.GONE
@@ -90,8 +85,9 @@ class GrabChallengeStarView(mViewStub: ViewStub?) : ExViewStub(mViewStub) {
         }
     }
 
-    override fun onViewDetachedFromWindow(v: View) {
-        super.onViewDetachedFromWindow(v)
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
         handler.removeCallbacksAndMessages(null)
     }
+
 }

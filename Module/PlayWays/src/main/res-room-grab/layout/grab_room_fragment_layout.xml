@@ -122,14 +122,13 @@
         android:src="@drawable/grab_inpractice"
         android:visibility="gone" />
 
-    <ViewStub
-        android:id="@+id/grab_challenge_star_view_stub"
+    <com.module.playways.grab.room.view.GrabChallengeStarView
+        android:id="@+id/grab_challenge_star_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_90_dp"
-        android:inflatedId="@id/grab_challenge_star_view_stub"
-        android:layout="@layout/grab_challenge_star_view_layout" />
+        />
 
     <!-- 转场的一些卡片-->
     <com.module.playways.grab.room.view.TurnInfoCardView

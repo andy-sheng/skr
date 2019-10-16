@@ -979,7 +979,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             }
         }
         mPracticeFlagIv = rootView.findViewById(R.id.practice_flag_iv)
-        mChallengeStarView = GrabChallengeStarView(rootView.findViewById(R.id.grab_challenge_star_view_stub))
+        mChallengeStarView = rootView.findViewById(R.id.grab_challenge_star_view)
         mChallengeStarView.clickListener = {
             mGameRuleDialog = DialogPlus.newDialog(context!!)
                     .setContentHolder(ViewHolder(R.layout.grab_challenge_star_rule_view_layout))
