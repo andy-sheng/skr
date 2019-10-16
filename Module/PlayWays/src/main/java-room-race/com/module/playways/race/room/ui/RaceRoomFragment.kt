@@ -548,11 +548,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
-        } else {
-            showSignUpView()
-            mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
-                mCorePresenter.sendIntroOver()
-            }
         }
     }
 
@@ -617,11 +612,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
             mRacePagerSelectSongView.hideView()
             mSignUpView.visibility = View.GONE
-        } else {
-            showSignUpView()
-            mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
-                mCorePresenter.sendIntroOver()
-            }
         }
     }
 
@@ -629,8 +619,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
         mRaceRightOpView.visibility = View.GONE
         mRaceTopVsView.visibility = View.GONE
-        mRacePagerSelectSongView.cancelCountDown()
-        mSignUpView.cancelCountDown()
 
         if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
                 lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
@@ -657,7 +645,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     override fun showWaiting(showAnimation: Boolean) {
         MyLog.d(TAG, "showWaiting showAnimation = $showAnimation")
         mRaceRightOpView.visibility = View.GONE
-        mSignUpView.visibility = View.GONE
         hideAllSceneView()
         mRaceWaitingCardView.visibility = View.VISIBLE
         if (showAnimation) {
@@ -688,7 +675,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showMatchAnimationView")
         hideAllSceneView()
         mRaceMatchView.visibility = View.VISIBLE
-        mSignUpView.setType(RaceSignUpBtnView.SignUpType.ALLOCATION)
         mRacePagerSelectSongView.hideView()
         mRaceMatchView.bindData {
             overListener.invoke()
@@ -699,26 +685,13 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
      * 直接弹出选歌面板
      */
     private fun showSelectSongView() {
-        mRacePagerSelectSongView.setSongData(mRoomData.realRoundSeq) {
-            mCorePresenter.sendIntroOver()
-        }
         mRacePagerSelectSongView.showView()
-
-        showSignUpView()
 
         mRaceWantingSignUpCardView.showAnimation(object : AnimationListener {
             override fun onFinish() {
 
             }
         })
-    }
-
-    private fun showSignUpView() {
-        if (mRacePagerSelectSongView.mHasSignUpChoiceID > 0) {
-            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
-        } else {
-            mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_START)
-        }
     }
 
     override fun joinNotice(playerInfoModel: UserInfoModel?) {
