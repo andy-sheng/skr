@@ -6,6 +6,7 @@ import android.widget.TextView
 
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
@@ -13,15 +14,12 @@ import com.module.home.game.model.FuncationModel
 
 class FuncationAreaViewHolder(itemView: View,
                               listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {
-    private val mTaskRedIv: ExImageView
+    val mTaskIv: ExTextView = itemView.findViewById(R.id.task_iv)
+    val mTaskRedIv: ExImageView = itemView.findViewById(R.id.task_red_iv)
+    val mRankIv: ExTextView = itemView.findViewById(R.id.rank_iv)
+    val mPracticeIv: ExTextView = itemView.findViewById(R.id.practice_iv)
 
     init {
-
-        val mTaskIv: TextView = itemView.findViewById(R.id.task_iv)
-        mTaskRedIv = itemView.findViewById(R.id.task_red_iv)
-        val mRankIv: TextView = itemView.findViewById(R.id.rank_iv)
-        val mPracticeIv: TextView = itemView.findViewById(R.id.practice_iv)
-
         mTaskIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 listener.onClickTaskListener()

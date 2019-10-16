@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_64_dp"
     android:layout_marginLeft="@dimen/view_12_dp"
-    android:layout_marginTop="@dimen/view_8_dp"
-    android:layout_marginRight="@dimen/view_12_dp"
-    app:bl_corners_radius="@dimen/view_8_dp"
-    app:bl_shape="rectangle"
-    app:bl_solid_color="#0c000674">
+    android:layout_marginTop="@dimen/view_6_dp"
+    android:layout_marginRight="@dimen/view_12_dp">
 
     <android.support.constraint.Guideline
         android:id="@+id/guide_1"
@@ -24,21 +21,23 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.66" />
 
-    <TextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/task_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_88_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:drawableLeft="@drawable/game_task_icon"
-        android:drawablePadding="@dimen/view_8_dp"
         android:gravity="center"
-        android:padding="@dimen/view_15_dp"
+        android:paddingLeft="@dimen/view_15_dp"
         android:text="任务"
-        android:textColor="@color/black_trans_50"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@id/guide_1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#526AE3"/>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/task_red_iv"
@@ -47,41 +46,43 @@
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="#FF8AB6"
-        android:layout_marginRight="@dimen/view_10_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
         app:layout_constraintRight_toRightOf="@id/task_iv"
         app:layout_constraintTop_toTopOf="@id/task_iv" />
 
-    <TextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/rank_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_88_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:drawableLeft="@drawable/game_rank_icon"
-        android:drawablePadding="@dimen/view_8_dp"
+        android:paddingLeft="@dimen/view_15_dp"
         android:gravity="center"
-        android:padding="@dimen/view_15_dp"
         android:text="排行"
-        android:textColor="@color/black_trans_50"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/guide_2"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#526AE3"/>
 
-    <TextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/practice_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_88_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:drawableLeft="@drawable/game_practice_icon"
-        android:drawablePadding="@dimen/view_8_dp"
         android:gravity="center"
-        android:padding="@dimen/view_15_dp"
         android:text="练歌"
-        android:textColor="@color/black_trans_50"
+        android:paddingLeft="@dimen/view_15_dp"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/guide_1"
         app:layout_constraintRight_toRightOf="@id/guide_2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:bl_corners_radius="@dimen/view_20_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#526AE3"/>
 
-</com.common.view.ex.ExConstraintLayout>
+</android.support.constraint.ConstraintLayout>

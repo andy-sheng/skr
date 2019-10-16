@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginTop="@dimen/view_6_dp"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
@@ -54,7 +54,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toRightOf="@id/avatar_iv"
         app:layout_constraintRight_toLeftOf="@id/recommend_tag_sdv"
-        app:layout_constraintTop_toTopOf="@id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@id/level_bg"
         app:layout_goneMarginRight="@dimen/view_10_dp" />
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -87,11 +87,11 @@
     <com.common.view.ex.ExConstraintLayout
         android:id="@+id/voice_area"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_48_dp"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_marginLeft="@dimen/view_22_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:minWidth="@dimen/view_108_dp"
-        android:padding="@dimen/view_12_dp"
+        android:padding="@dimen/view_10_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toRightOf="@id/avatar_iv"
@@ -101,14 +101,14 @@
         <com.common.view.ex.ExImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:bl_corners_radius="@dimen/view_12_dp"
+            app:bl_corners_radius="@dimen/view_16_dp"
             app:bl_shape="rectangle"
             app:bl_solid_color="@color/white_trans_30"/>
 
         <ImageView
             android:id="@+id/play_bg"
-            android:layout_width="@dimen/view_16_dp"
-            android:layout_height="@dimen/view_16_dp"
+            android:layout_width="@dimen/view_24_dp"
+            android:layout_height="@dimen/view_24_dp"
             android:layout_marginLeft="@dimen/view_4_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -178,7 +178,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:textColor="@color/white"
+        android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

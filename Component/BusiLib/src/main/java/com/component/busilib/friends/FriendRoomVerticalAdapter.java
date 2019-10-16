@@ -48,14 +48,14 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
         this.mOnItemClickListener = listener;
 
         bgDrawable1 = new DrawableCreator.Builder()
-                .setGradientColor(Color.parseColor("#ACB7FF"), Color.parseColor("#7481FF"), Color.parseColor("#7481FF"))
+                .setGradientColor(Color.parseColor("#ACDCFF"), Color.parseColor("#74C1FF"), Color.parseColor("#74C1FF"))
                 .setGradientAngle(315)
                 .setCornersRadius(U.getDisplayUtils().dip2px(8))
                 .build();
 
         playDrawable1 = new DrawableCreator.Builder()
-                .setSolidColor(Color.parseColor("#7481FF"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                .setSolidColor(Color.parseColor("#74C1FF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(12))
                 .build();
 
         bgDrawable2 = new DrawableCreator.Builder()
@@ -66,7 +66,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
 
         playDrawable2 = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#F8AB70"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                .setCornersRadius(U.getDisplayUtils().dip2px(12))
                 .build();
 
         bgDrawable3 = new DrawableCreator.Builder()
@@ -77,7 +77,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
 
         playDrawable3 = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#FF9492"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                .setCornersRadius(U.getDisplayUtils().dip2px(12))
                 .build();
 
         bgDrawable4 = new DrawableCreator.Builder()
@@ -88,7 +88,7 @@ public class FriendRoomVerticalAdapter extends RecyclerView.Adapter {
 
         playDrawable4 = new DrawableCreator.Builder()
                 .setSolidColor(Color.parseColor("#6ACAD7"))
-                .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                .setCornersRadius(U.getDisplayUtils().dip2px(12))
                 .build();
     }
 

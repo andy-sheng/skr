@@ -185,7 +185,7 @@ class FriendRoomGameView : RelativeLayout {
         SinglePlayer.addCallback(playerTag, playCallback)
 
         val mLoadSir = LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#000000"))
+                .addCallback(EmptyCallback(R.drawable.more_friend_empty_icon, "暂时没有房间了～", "#FFFFFF"))
                 .build()
         mLoadService = mLoadSir.register(refreshLayout, Callback.OnReloadListener {
             initData(true)
