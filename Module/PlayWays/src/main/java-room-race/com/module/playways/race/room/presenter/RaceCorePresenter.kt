@@ -208,11 +208,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
     */
      */
-    fun wantSingChance(choiceID: Int, seq: Int) {
-        if (seq != mRoomData.realRoundSeq) {
-            return
-        }
-
+    fun wantSingChance(choiceID: Int) {
         var isSignUpNextRound: Boolean = false
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
         var songModel: SongModel? = null
@@ -230,7 +226,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         launch {
             val map = mutableMapOf(
                     "choiceID" to choiceID,
-                    "curRoundSeq" to seq,
+//                    "curRoundSeq" to seq,
                     "curRoundStatus" to mRoomData.realRoundInfo?.status,
                     "roomID" to mRoomData.gameId,
                     "wantSingType" to wantSingType
@@ -238,9 +234,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
-                if ((isSignUpNextRound && seq == mRoomData.realRoundSeq + 1) || seq == mRoomData.realRoundSeq) {
-                    mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
-                }
+                mRoomData?.realRoundInfo?.addWantSingChange(choiceID, MyUserInfoManager.getInstance().uid.toInt())
             } else {
                 MyLog.w(TAG, "wantSingChance errno is " + result.errno)
             }

@@ -32,9 +32,8 @@ class RacePagerSelectSongView : ExConstraintLayout {
     var bannerPager: ViewPager
     var mRoomData: RaceRoomData? = null
     var mPagerAdapter: RaceSelectSongAdapter? = null
-    var mSeq = -1 // 当前轮次
     var mHasSignUpChoiceID = -1
-    var mSignUpMethed: ((Int, Int, RaceGamePlayInfo?) -> Unit)? = null
+    var mSignUpMethed: ((Int, RaceGamePlayInfo?) -> Unit)? = null
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -73,11 +72,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
         mPagerAdapter = RaceSelectSongAdapter(context, object : RaceSelectSongAdapter.IRaceSelectListener {
             override fun onSignUp(choiceID: Int, model: RaceGamePlayInfo?) {
-                if (canSelectSong()) {
-                    mSignUpMethed?.invoke(choiceID, mSeq, model)
-                } else {
-                    U.getToastUtil().showShort("报名结束")
-                }
+                mSignUpMethed?.invoke(choiceID, model)
             }
 
             override fun getSignUpChoiceID(): Int {
@@ -103,14 +98,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         EventBus.getDefault().register(this)
-    }
-
-    fun canSelectSong(): Boolean {
-        if (mRoomData?.realRoundSeq == mSeq) {
-            return true
-        }
-
-        return false
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

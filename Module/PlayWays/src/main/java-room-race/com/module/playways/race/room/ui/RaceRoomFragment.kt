@@ -190,8 +190,8 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         mRacePagerSelectSongView = rootView.findViewById(R.id.select_pager_view)
         mRacePagerSelectSongView.mRoomData = mRoomData
 
-        mRacePagerSelectSongView.mSignUpMethed = { choiceID, seq, model ->
-            mCorePresenter.wantSingChance(choiceID, seq)
+        mRacePagerSelectSongView.mSignUpMethed = { choiceID, model ->
+            mCorePresenter.wantSingChance(choiceID)
         }
 
         mRaceWantingSignUpCardView = rootView.findViewById(R.id.race_wanting_signup_view)
