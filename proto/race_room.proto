@@ -66,7 +66,6 @@ message RaceRoundOverMsg
     RaceRoundInfo nextRound     = 4; //下个轮次的信息
     //repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
     //repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
-    uint32 nextRoundChoiceUserCnt       = 7; //在下个轮次为ongoing状态，可以获取轮次报名人数
 }
 
 message RExitGameMsg
@@ -83,7 +82,6 @@ message RSyncStatusMsg
 message RGetSingChanceMsg
 {
     RaceRoundInfo currentRound = 3; //当前轮次信息
-    uint32 currentRoundChoiceUserCnt = 4; //当前轮次报名人数
 }
 
 message RWantSingChanceMsg
@@ -162,6 +160,7 @@ message RaceRoundInfo
     uint32 introBeginMs                  = 9; //竞选开始相对时间（相对于createTimeMs时间）
     uint32 introEndMs                    = 10; //竞选结束相对时间（相对于createTimeMs时间）
     //repeated RWantSingInfo wantSingInfos = 11; //竞选选择列表(当状态为ERRS_CHOCING时有效)
+    uint32 currentRoundChoiceUserCnt       = 12; //轮次报名人数
 }
 
 message RWantSingInfo

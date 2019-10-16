@@ -10,7 +10,6 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
-import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -22,8 +21,6 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
 
   private static final long serialVersionUID = 0L;
 
-  public static final Integer DEFAULT_CURRENTROUNDCHOICEUSERCNT = 0;
-
   /**
    * 当前轮次信息
    */
@@ -33,31 +30,19 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
   )
   private final RaceRoundInfo currentRound;
 
-  /**
-   * 当前轮次报名人数
-   */
-  @WireField(
-      tag = 4,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer currentRoundChoiceUserCnt;
-
-  public RGetSingChanceMsg(RaceRoundInfo currentRound, Integer currentRoundChoiceUserCnt) {
-    this(currentRound, currentRoundChoiceUserCnt, ByteString.EMPTY);
+  public RGetSingChanceMsg(RaceRoundInfo currentRound) {
+    this(currentRound, ByteString.EMPTY);
   }
 
-  public RGetSingChanceMsg(RaceRoundInfo currentRound, Integer currentRoundChoiceUserCnt,
-      ByteString unknownFields) {
+  public RGetSingChanceMsg(RaceRoundInfo currentRound, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.currentRound = currentRound;
-    this.currentRoundChoiceUserCnt = currentRoundChoiceUserCnt;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.currentRound = currentRound;
-    builder.currentRoundChoiceUserCnt = currentRoundChoiceUserCnt;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -68,8 +53,7 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
     if (!(other instanceof RGetSingChanceMsg)) return false;
     RGetSingChanceMsg o = (RGetSingChanceMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(currentRoundChoiceUserCnt, o.currentRoundChoiceUserCnt);
+        && Internal.equals(currentRound, o.currentRound);
   }
 
   @Override
@@ -78,7 +62,6 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
-      result = result * 37 + (currentRoundChoiceUserCnt != null ? currentRoundChoiceUserCnt.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -88,7 +71,6 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
-    if (currentRoundChoiceUserCnt != null) builder.append(", currentRoundChoiceUserCnt=").append(currentRoundChoiceUserCnt);
     return builder.replace(0, 2, "RGetSingChanceMsg{").append('}').toString();
   }
 
@@ -113,33 +95,14 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
   }
 
   /**
-   * 当前轮次报名人数
-   */
-  public Integer getCurrentRoundChoiceUserCnt() {
-    if(currentRoundChoiceUserCnt==null){
-        return DEFAULT_CURRENTROUNDCHOICEUSERCNT;
-    }
-    return currentRoundChoiceUserCnt;
-  }
-
-  /**
    * 当前轮次信息
    */
   public boolean hasCurrentRound() {
     return currentRound!=null;
   }
 
-  /**
-   * 当前轮次报名人数
-   */
-  public boolean hasCurrentRoundChoiceUserCnt() {
-    return currentRoundChoiceUserCnt!=null;
-  }
-
   public static final class Builder extends Message.Builder<RGetSingChanceMsg, Builder> {
     private RaceRoundInfo currentRound;
-
-    private Integer currentRoundChoiceUserCnt;
 
     public Builder() {
     }
@@ -152,17 +115,9 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
       return this;
     }
 
-    /**
-     * 当前轮次报名人数
-     */
-    public Builder setCurrentRoundChoiceUserCnt(Integer currentRoundChoiceUserCnt) {
-      this.currentRoundChoiceUserCnt = currentRoundChoiceUserCnt;
-      return this;
-    }
-
     @Override
     public RGetSingChanceMsg build() {
-      return new RGetSingChanceMsg(currentRound, currentRoundChoiceUserCnt, super.buildUnknownFields());
+      return new RGetSingChanceMsg(currentRound, super.buildUnknownFields());
     }
   }
 
@@ -174,14 +129,12 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
     @Override
     public int encodedSize(RGetSingChanceMsg value) {
       return RaceRoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.currentRoundChoiceUserCnt)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, RGetSingChanceMsg value) throws IOException {
       RaceRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.currentRoundChoiceUserCnt);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -192,7 +145,6 @@ public final class RGetSingChanceMsg extends Message<RGetSingChanceMsg, RGetSing
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 3: builder.setCurrentRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
-          case 4: builder.setCurrentRoundChoiceUserCnt(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

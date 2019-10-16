@@ -782,21 +782,32 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             MyLog.w(TAG, "sync 回来的轮次大，要替换 roundinfo 了")
             // 主轮次结束
             launch {
-//                if (raceRoundInfoModel.games.isEmpty()) {
-//                    val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
-//                    if (result.errno == 0) {
-//                        val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
-//                        val couldChoiceGames = JSON.parseArray(result.data.getString("couldChoiceGames"), RaceGamePlayInfo::class.java)
-//                        raceRoundInfoModel.games.addAll(games)
-//                        mRoomData.couldChoiceGames.addAll(couldChoiceGames)
-//                    } else {
+                if (raceRoundInfoModel.status==ERaceRoundStatus.ERRS_ONGOINE.value) {
+                    var valid = true
+                    raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemName?.let {
+                        valid = !it.isEmpty()
+                    }
+                    if(!valid){
+                        // 没有有效数据，请求服务器拉取
+                        val itemID1 = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemID ?:0
+                        val itemID2 = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.itemID ?:0
+                        if(itemID1>0 && itemID2>0){
+                            // 拉取一下歌曲详情
+//                            val result = subscribe { raceRoomServerApi.getGameChoices(mRoomData.gameId, raceRoundInfoModel.roundSeq) }
+//                            if (result.errno == 0) {
+//                                val games = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
+//                                val couldChoiceGames = JSON.parseArray(result.data.getString("couldChoiceGames"), RaceGamePlayInfo::class.java)
+//                                raceRoundInfoModel.games.addAll(games)
+//                                mRoomData.couldChoiceGames.addAll(couldChoiceGames)
+//                            } else {
 //
-//                    }
-//                }
+//                            }
+                        }
+                    }
+                }
                 mRoomData.expectRoundInfo = raceRoundInfoModel
                 mRoomData.checkRoundInEachMode()
             }
-
         }
     }
 

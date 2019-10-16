@@ -14,7 +14,6 @@ class RaceSubRoundInfo : Serializable {
     var userID = 0
     var wantSingType = ERWantSingType.ERWST_DEFAULT.value
     var choiceDetail: RaceGamePlayInfo? = null
-
     override fun toString(): String {
         return "RaceSubRoundInfo(beginMs=$beginMs, endMs=$endMs, overReason=$overReason, subRoundSeq=$subRoundSeq, userID=$userID, wantSingType=$wantSingType choiceDetail=$choiceDetail)"
     }
@@ -26,6 +25,9 @@ class RaceSubRoundInfo : Serializable {
             }
             beginMs = it.beginMs
             endMs = it.endMs
+            if(choiceDetail==null){
+                choiceDetail = model.choiceDetail
+            }
         }
     }
 

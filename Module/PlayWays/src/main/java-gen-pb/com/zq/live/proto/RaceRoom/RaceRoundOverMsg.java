@@ -10,7 +10,6 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
-import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
@@ -26,8 +25,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
 
   public static final ERoundOverType DEFAULT_OVERTYPE = ERoundOverType.EROT_UNKNOWN;
-
-  public static final Integer DEFAULT_NEXTROUNDCHOICEUSERCNT = 0;
 
   /**
    * 本轮次结束的毫秒时间戳
@@ -65,30 +62,18 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   )
   private final RaceRoundInfo nextRound;
 
-  /**
-   * repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
-   * repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
-   * 在下个轮次为ongoing状态，可以获取轮次报名人数
-   */
-  @WireField(
-      tag = 7,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer nextRoundChoiceUserCnt;
-
   public RaceRoundOverMsg(Long roundOverTimeMs, ERoundOverType overType, RaceRoundInfo currentRound,
-      RaceRoundInfo nextRound, Integer nextRoundChoiceUserCnt) {
-    this(roundOverTimeMs, overType, currentRound, nextRound, nextRoundChoiceUserCnt, ByteString.EMPTY);
+      RaceRoundInfo nextRound) {
+    this(roundOverTimeMs, overType, currentRound, nextRound, ByteString.EMPTY);
   }
 
   public RaceRoundOverMsg(Long roundOverTimeMs, ERoundOverType overType, RaceRoundInfo currentRound,
-      RaceRoundInfo nextRound, Integer nextRoundChoiceUserCnt, ByteString unknownFields) {
+      RaceRoundInfo nextRound, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.overType = overType;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
-    this.nextRoundChoiceUserCnt = nextRoundChoiceUserCnt;
   }
 
   @Override
@@ -98,7 +83,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     builder.overType = overType;
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
-    builder.nextRoundChoiceUserCnt = nextRoundChoiceUserCnt;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -112,8 +96,7 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(overType, o.overType)
         && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(nextRound, o.nextRound)
-        && Internal.equals(nextRoundChoiceUserCnt, o.nextRoundChoiceUserCnt);
+        && Internal.equals(nextRound, o.nextRound);
   }
 
   @Override
@@ -125,7 +108,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       result = result * 37 + (overType != null ? overType.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
-      result = result * 37 + (nextRoundChoiceUserCnt != null ? nextRoundChoiceUserCnt.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -138,7 +120,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     if (overType != null) builder.append(", overType=").append(overType);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
-    if (nextRoundChoiceUserCnt != null) builder.append(", nextRoundChoiceUserCnt=").append(nextRoundChoiceUserCnt);
     return builder.replace(0, 2, "RaceRoundOverMsg{").append('}').toString();
   }
 
@@ -193,18 +174,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
   }
 
   /**
-   * repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
-   * repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
-   * 在下个轮次为ongoing状态，可以获取轮次报名人数
-   */
-  public Integer getNextRoundChoiceUserCnt() {
-    if(nextRoundChoiceUserCnt==null){
-        return DEFAULT_NEXTROUNDCHOICEUSERCNT;
-    }
-    return nextRoundChoiceUserCnt;
-  }
-
-  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -232,15 +201,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     return nextRound!=null;
   }
 
-  /**
-   * repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
-   * repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
-   * 在下个轮次为ongoing状态，可以获取轮次报名人数
-   */
-  public boolean hasNextRoundChoiceUserCnt() {
-    return nextRoundChoiceUserCnt!=null;
-  }
-
   public static final class Builder extends Message.Builder<RaceRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -249,8 +209,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
     private RaceRoundInfo currentRound;
 
     private RaceRoundInfo nextRound;
-
-    private Integer nextRoundChoiceUserCnt;
 
     public Builder() {
     }
@@ -287,19 +245,9 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       return this;
     }
 
-    /**
-     * repeated RaceGameInfo games = 5; //下个轮次竞选游戏的列表
-     * repeated RaceGameInfo couldChoiceGames = 6; //可以报名选择的游戏列表
-     * 在下个轮次为ongoing状态，可以获取轮次报名人数
-     */
-    public Builder setNextRoundChoiceUserCnt(Integer nextRoundChoiceUserCnt) {
-      this.nextRoundChoiceUserCnt = nextRoundChoiceUserCnt;
-      return this;
-    }
-
     @Override
     public RaceRoundOverMsg build() {
-      return new RaceRoundOverMsg(roundOverTimeMs, overType, currentRound, nextRound, nextRoundChoiceUserCnt, super.buildUnknownFields());
+      return new RaceRoundOverMsg(roundOverTimeMs, overType, currentRound, nextRound, super.buildUnknownFields());
     }
   }
 
@@ -314,7 +262,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
           + ERoundOverType.ADAPTER.encodedSizeWithTag(2, value.overType)
           + RaceRoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
           + RaceRoundInfo.ADAPTER.encodedSizeWithTag(4, value.nextRound)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.nextRoundChoiceUserCnt)
           + value.unknownFields().size();
     }
 
@@ -324,7 +271,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
       ERoundOverType.ADAPTER.encodeWithTag(writer, 2, value.overType);
       RaceRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
       RaceRoundInfo.ADAPTER.encodeWithTag(writer, 4, value.nextRound);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.nextRoundChoiceUserCnt);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -345,7 +291,6 @@ public final class RaceRoundOverMsg extends Message<RaceRoundOverMsg, RaceRoundO
           }
           case 3: builder.setCurrentRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
           case 4: builder.setNextRound(RaceRoundInfo.ADAPTER.decode(reader)); break;
-          case 7: builder.setNextRoundChoiceUserCnt(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

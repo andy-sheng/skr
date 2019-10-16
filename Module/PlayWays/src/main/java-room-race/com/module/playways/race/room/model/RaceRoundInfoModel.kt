@@ -30,7 +30,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var elapsedTimeMs: Int = 0//这个轮次当前状态已经经过的时间，一般用于中途加入者使用,相对于子轮次开始的相对时间
     var enterStatus: Int = ERaceRoundStatus.ERRS_UNKNOWN.value//你进入房间时当前轮次处于的状态，是一个快照
     var enterSubRoundSeq: Int = 0 //中途加入时的子轮次 只在  enterStatus == ERaceRoundStatus.ERRS_ONGOINE 有意义
-
+    var currentRoundChoiceUserCnt = 0 // 当前轮次报名人数
 
     override fun getType(): Int {
         return TYPE_RACE
@@ -214,6 +214,9 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                 }
             }
         }
+        if (roundInfo.currentRoundChoiceUserCnt > 0) {
+            this.currentRoundChoiceUserCnt = roundInfo.currentRoundChoiceUserCnt
+        }
         if (this.status == roundInfo.status) {
             if (this.subRoundSeq != roundInfo.subRoundSeq) {
                 val old = this.subRoundSeq
@@ -226,6 +229,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
             this.subRoundSeq = roundInfo.subRoundSeq
             updateStatus(notify, roundInfo.status)
         }
+
         return
     }
 
@@ -277,7 +281,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     /**
      * 此时此刻的轮次是否是伴奏模式
      */
-    fun  isAccRoundNow(): Boolean {
+    fun isAccRoundNow(): Boolean {
         return isAccRoundBySubRoundSeq(subRoundSeq)
     }
 
@@ -346,6 +350,9 @@ internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
 //    pb.wantSingInfosList.forEach {
 //        model.wantSingInfos.add(parseFromWantSingInfoPB(it))
 //    }
+    if (pb.currentRoundChoiceUserCnt > 0) {
+        model.currentRoundChoiceUserCnt = pb.currentRoundChoiceUserCnt
+    }
     return model
 }
 
