@@ -5,11 +5,16 @@ import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.RaceGameInfo
 import java.io.Serializable
 
-class RaceGamePlayInfo : Serializable{
+class RaceGamePlayInfo : Serializable {
     @JSONField(name = "commonMusic")
     var commonMusic: SongModel? = null
     @JSONField(name = "roundGameType")
     var roundGameType = 0
+
+    override fun toString(): String {
+        return "RaceGamePlayInfo(commonMusic=${commonMusic?.toSimpleString()}, roundGameType=$roundGameType)"
+    }
+
 }
 
 fun parseFromGameInfoPB(pb: RaceGameInfo): RaceGamePlayInfo {

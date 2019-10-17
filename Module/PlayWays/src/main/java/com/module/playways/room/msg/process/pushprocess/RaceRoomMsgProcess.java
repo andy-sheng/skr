@@ -1,5 +1,6 @@
 package com.module.playways.room.msg.process.pushprocess;
 
+import com.common.log.MyLog;
 import com.module.playways.room.msg.event.raceroom.RBLightEvent;
 import com.module.playways.room.msg.event.raceroom.RExitGameEvent;
 import com.module.playways.room.msg.event.raceroom.RGetSingChanceEvent;
@@ -19,6 +20,9 @@ public class RaceRoomMsgProcess implements IPushChatRoomMsgProcess<ERaceRoomMsgT
 
     @Override
     public void processRoomMsg(ERaceRoomMsgType messageType, RaceRoomMsg msg) {
+        if (msg != null) {
+            MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType + " msg.ts=" + msg.getTimeMs());
+        }
         if (msg.getMsgType() == ERaceRoomMsgType.RRM_JOIN_ACTION) {
             EventBus.getDefault().post(new RJoinActionEvent(msg.getRJoinActionMsg()));
         } else if (msg.getMsgType() == ERaceRoomMsgType.RRM_JOIN_NOTICE) {
