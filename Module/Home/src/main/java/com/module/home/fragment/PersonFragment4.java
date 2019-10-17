@@ -557,6 +557,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 return view == (object);
             }
         };
+        // todo 改有一行显示不全的问题
+        ViewGroup.LayoutParams layoutParams = mPersonVp.getLayoutParams();
+        layoutParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(96 + 53);
+        mPersonVp.setLayoutParams(layoutParams);
         mPersonVp.setAdapter(mPersonTabAdapter);
         mPersonTab.setViewPager(mPersonVp);
         mPersonTabAdapter.notifyDataSetChanged();
