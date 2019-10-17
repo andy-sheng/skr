@@ -34,7 +34,7 @@ public class DyEffectResManager {
     private int mDeep = 0;
 
     public DyEffectResManager() {
-
+        MyLog.d(TAG, "DyEffectResManager path=" + mModelDir.getPath());
     }
 
     Callback mCallback;
@@ -88,7 +88,7 @@ public class DyEffectResManager {
                 .subscribe(new Consumer<ApiResult>() {
                     @Override
                     public void accept(ApiResult apiResult) throws Exception {
-                        if (apiResult!=null && apiResult.getErrno() == 0) {
+                        if (apiResult != null && apiResult.getErrno() == 0) {
                             String url = apiResult.getData().getString("caURL");
                             String expireMs = apiResult.getData().getString("expireMs");
                             if (U.getHttpUtils().downloadFileSync(url, mLicenseFile, true, null)) {
@@ -111,7 +111,7 @@ public class DyEffectResManager {
 
 
     private void downloadRes(int deep) {
-        if(deep>5){
+        if (deep > 5) {
             return;
         }
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("dy_effects"));
@@ -123,14 +123,14 @@ public class DyEffectResManager {
                 U.getZipUtils().unzipFile(resZipFile.getPath(), tempFile);
                 MyLog.d(TAG, "资源解压成功");
                 File modelFile = U.getFileUtils().findSubDirByName(new File(tempFile), "model");
-                MyLog.d(TAG, "modelFile="+modelFile.getPath());
                 if (modelFile != null) {
+                    MyLog.d(TAG, "modelFile=" + modelFile.getPath());
                     U.getFileUtils().moveFile(modelFile.getPath(), mModelDir.getPath());
                     MyLog.e(TAG, "model remove 成功");
                 }
                 File resFile = U.getFileUtils().findSubDirByName(new File(tempFile), "res");
-                MyLog.d(TAG, "resFile="+resFile.getPath());
                 if (resFile != null) {
+                    MyLog.d(TAG, "resFile=" + resFile.getPath());
                     U.getFileUtils().moveFile(resFile.getPath(), new File(sRootDir, "res/").getPath());
                     MyLog.d(TAG, "resFile remove 成功");
                 }
@@ -144,7 +144,7 @@ public class DyEffectResManager {
             }
         } else {
             MyLog.e(TAG, "资源下载失败");
-            downloadRes(deep+1);
+            downloadRes(deep + 1);
         }
     }
 
