@@ -21,7 +21,7 @@ public class RaceRoomMsgProcess implements IPushChatRoomMsgProcess<ERaceRoomMsgT
     @Override
     public void processRoomMsg(ERaceRoomMsgType messageType, RaceRoomMsg msg) {
         if (msg != null) {
-            MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType + " msg.ts=" + msg.getTimeMs());
+            MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType + " 信令 msg.ts=" + msg.getTimeMs());
         }
         if (msg.getMsgType() == ERaceRoomMsgType.RRM_JOIN_ACTION) {
             EventBus.getDefault().post(new RJoinActionEvent(msg.getRJoinActionMsg()));
