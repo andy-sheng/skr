@@ -45,11 +45,8 @@ import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
  */
 class FriendRoomGameView : RelativeLayout {
 
-    companion object {
-        const val TAG = "FriendRoomGameView"
-    }
-
-    val playerTag = TAG + hashCode()
+    val mTag = "FriendRoomGameView"
+    val playerTag = mTag + hashCode()
     private val playCallback: SinglePlayerCallbackAdapter
 
     private var mListener: RecyclerView.OnScrollListener? = null
@@ -133,14 +130,14 @@ class FriendRoomGameView : RelativeLayout {
                             tryJoinRoom(friendRoomModel.roomInfo)
                         }
                     } else {
-                        MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
+                        MyLog.w(mTag, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
                     }
                 } else {
                     if (position == 0) {
                         StatisticsAdapter.recordCountEvent("grab", "1.1tab_invite", null)
                         showShareDialog()
                     } else {
-                        MyLog.w(TAG, "onClickFriendRoom position=$position model=$model")
+                        MyLog.w(mTag, "onClickFriendRoom position=$position model=$model")
                     }
                 }
             }
@@ -167,6 +164,7 @@ class FriendRoomGameView : RelativeLayout {
         playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
+                MyLog.d(mTag, "onCompletion")
                 mFriendRoomVeritAdapter?.stopPlay()
                 refreshLayout.setEnableRefresh(true)
                 mLastLoadDateTime = System.currentTimeMillis()
@@ -175,6 +173,7 @@ class FriendRoomGameView : RelativeLayout {
 
             override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
                 if (newPlayerTag != playerTag) {
+                    MyLog.d(mTag, "onPlaytagChange")
                     mFriendRoomVeritAdapter?.stopPlay()
                     refreshLayout.setEnableRefresh(true)
                     mLastLoadDateTime = System.currentTimeMillis()
@@ -302,7 +301,7 @@ class FriendRoomGameView : RelativeLayout {
                         U.getToastUtil().showShort("好友已离开房间")
                     }
                 } else {
-                    MyLog.w(TAG, " checkUserRoom error = $obj ")
+                    MyLog.w(mTag, " checkUserRoom error = $obj ")
                     U.getToastUtil().showShort(obj.errmsg)
                 }
             }
@@ -355,6 +354,8 @@ class FriendRoomGameView : RelativeLayout {
         refreshLayout.finishLoadMore()
 
         if (clear) {
+            SinglePlayer.stop(playerTag)
+            mFriendRoomVeritAdapter?.stopPlay()
             mFriendRoomVeritAdapter?.dataList?.clear()
             if (!list.isNullOrEmpty()) {
                 mFriendRoomVeritAdapter?.dataList?.addAll(list)
@@ -376,7 +377,6 @@ class FriendRoomGameView : RelativeLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        destory()
     }
 
     fun destory() {
