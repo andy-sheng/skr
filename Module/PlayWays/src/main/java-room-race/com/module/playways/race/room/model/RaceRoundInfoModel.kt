@@ -50,6 +50,11 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
                 waitUsers?.add(racePlayerInfoModel)
                 // 如果选手席还有这人，则移除
                 if (playUsers?.contains(racePlayerInfoModel)) {
+                    /**
+                     * 现在服务器有个bug,轮次里A角色已经是选手
+                     * 但是房间服务会发一个 JoinNoticePush A选手的角色还是等待中
+                     */
+                    MyLog.d(TAG, "选手席已经有该用户了，移除掉")
                     playUsers.remove(racePlayerInfoModel)
                 }
                 EventBus.getDefault().post(RaceWaitSeatUpdateEvent(playUsers))

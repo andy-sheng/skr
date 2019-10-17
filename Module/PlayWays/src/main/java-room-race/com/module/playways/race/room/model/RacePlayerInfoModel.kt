@@ -16,16 +16,16 @@ class RacePlayerInfoModel : PlayerInfoModel() {
         if (javaClass != other?.javaClass) return false
         if (!super.equals(other)) return false
 
-        other as RacePlayerInfoModel
-
-        if (role != other.role) return false
+//        other as RacePlayerInfoModel
+//
+//        if (role != other.role) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = super.hashCode()
-        result = 31 * result + role
+//        result = 31 * result + role
         return result
     }
 

@@ -84,9 +84,10 @@ class RaceTopContentView : ConstraintLayout {
     }
 
     //只有轮次切换的时候调用
-    private fun initData() {
+    private fun initData(from:String) {
         val list = mRoomData?.getPlayerAndWaiterInfoList()
         if (!list.isNullOrEmpty()) {
+            MyLog.d(TAG, "initData list.size=${list.size} from=$from")
             adapter.mDataList.clear()
             adapter.mDataList.addAll(list)
             adapter.notifyDataSetChanged()
@@ -106,7 +107,7 @@ class RaceTopContentView : ConstraintLayout {
 
     fun setRoomData(roomData: RaceRoomData) {
         mRoomData = roomData
-        initData()
+        initData("setRoomData")
     }
 
     override fun onAttachedToWindow() {
@@ -125,19 +126,19 @@ class RaceTopContentView : ConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
-        initData()
+        initData("RaceRoundChangeEvent")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RacePlaySeatUpdateEvent) {
-        initData()
+        initData("RacePlaySeatUpdateEvent")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceWaitSeatUpdateEvent) {
-        initData()
+        initData("RaceWaitSeatUpdateEvent")
     }
-    
+
     fun setListener(listener: Listener) {
         mListener = listener
     }
