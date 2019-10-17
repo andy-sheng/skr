@@ -77,8 +77,16 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
         fun bindData(position: Int, model: RaceGamePlayInfo) {
             this.model = model
             this.pos = position
+            if (MyLog.isDebugLogOpen()) {
+                if (model.commonMusic?.acc?.isNotEmpty() == true) {
+                    songNameTv.text = "《${model.commonMusic?.itemName}》有伴奏"
+                } else {
+                    songNameTv.text = "《${model.commonMusic?.itemName}》无伴奏"
+                }
+            } else {
+                songNameTv.text = "《${model.commonMusic?.itemName}》"
+            }
 
-            songNameTv.text = "《${model.commonMusic?.itemName}》"
             anchorTv.text = ""
             model.commonMusic?.writer?.let {
                 anchorTv.append("词/${model.commonMusic?.writer} ")
