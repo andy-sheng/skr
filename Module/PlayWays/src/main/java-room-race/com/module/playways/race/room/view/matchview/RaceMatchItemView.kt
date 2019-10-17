@@ -67,37 +67,40 @@ class RaceMatchItemView : ConstraintLayout {
         }
 
         if (!adapter.mDataList.isNullOrEmpty()) {
-            // 第一次滚到指定位置的时间
-            val diffTime = itemTime * target
-            // 滚动一个周期的时间
-            val oneCycleTime = itemTime * adapter.mDataList.size
+            uiHandler.post {
+                // 第一次滚到指定位置的时间
+                val diffTime = itemTime * target
+                // 滚动一个周期的时间
+                val oneCycleTime = itemTime * adapter.mDataList.size
 
-            // 先快速滚动
-            recyclerView.scrollToPosition(0)
-            scrollLinearLayoutManager.setSpeedSlow(fastSpeed)
-            recyclerView.smoothScrollToPosition(Int.MAX_VALUE)
+                // 先快速滚动
 
-            // 匀减速运动，留2个周期时间，滚一个周期，可调整（目前是2)
-            var pauseTs = (totalTime - 5 * oneCycleTime - (totalTime - diffTime) % oneCycleTime).toLong()
-            if (pauseTs < 0) {
-                pauseTs = 0
-            }
-            uiHandler.postDelayed(Runnable {
-                // 当前滑动的位置
-                val firstVisible = scrollLinearLayoutManager.findFirstVisibleItemPosition()
-                val mAnimator = ValueAnimator.ofFloat(0f, 1f)
-                mAnimator.duration = (2 * oneCycleTime).toLong()
-                mAnimator.interpolator = LinearInterpolator()
-                mAnimator.addUpdateListener { animation ->
-                    val value = animation.animatedValue as Float
-                    scrollLinearLayoutManager.setSpeedSlow(fastSpeed + (slowSpeed - fastSpeed) * value)
+                recyclerView.scrollToPosition(0)
+                scrollLinearLayoutManager.setSpeedSlow(fastSpeed)
+                recyclerView.smoothScrollToPosition(Int.MAX_VALUE)
+
+                // 匀减速运动，留2个周期时间，滚一个周期，可调整（目前是2)
+                var pauseTs = (totalTime - 5 * oneCycleTime - (totalTime - diffTime) % oneCycleTime).toLong()
+                if (pauseTs < 0) {
+                    pauseTs = 0
                 }
-                recyclerView.smoothScrollToPosition(firstVisible + adapter.mDataList.size + target - firstVisible % adapter.mDataList.size)
-            }, pauseTs)
+                uiHandler.postDelayed(Runnable {
+                    // 当前滑动的位置
+                    val firstVisible = scrollLinearLayoutManager.findFirstVisibleItemPosition()
+                    val mAnimator = ValueAnimator.ofFloat(0f, 1f)
+                    mAnimator.duration = (2 * oneCycleTime).toLong()
+                    mAnimator.interpolator = LinearInterpolator()
+                    mAnimator.addUpdateListener { animation ->
+                        val value = animation.animatedValue as Float
+                        scrollLinearLayoutManager.setSpeedSlow(fastSpeed + (slowSpeed - fastSpeed) * value)
+                    }
+                    recyclerView.smoothScrollToPosition(firstVisible + adapter.mDataList.size + target - firstVisible % adapter.mDataList.size)
+                }, pauseTs)
 
-            uiHandler.postDelayed({
-                listener.invoke()
-            }, totalTime)
+                uiHandler.postDelayed({
+                    listener.invoke()
+                }, totalTime)
+            }
         } else {
 
         }
