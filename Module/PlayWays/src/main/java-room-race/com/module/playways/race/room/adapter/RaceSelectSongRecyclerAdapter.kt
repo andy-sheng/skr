@@ -34,7 +34,8 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
     }
 
     override fun onBindViewHolder(holder: RaceGamePlayHolder, position: Int) {
-        mCardAdapterHelper.onBindViewHolder(holder.itemView, position, itemCount, mIRaceSelectListener?.getRecyclerViewPosition() == position)
+        mCardAdapterHelper.onBindViewHolder(holder.itemView, position, itemCount, mIRaceSelectListener?.getRecyclerViewPosition() == position
+                || mRaceGamePlayInfoList.size == 1)
         holder.bindData(position, mRaceGamePlayInfoList.get(position))
     }
 

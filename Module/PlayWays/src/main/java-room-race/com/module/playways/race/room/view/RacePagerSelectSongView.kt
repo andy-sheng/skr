@@ -204,6 +204,9 @@ class RacePagerSelectSongView : ExConstraintLayout {
                 val list = JSON.parseArray(result.data.getString("games"), RaceGamePlayInfo::class.java)
                 if (list != null) {
                     mPagerAdapter?.addData(list)
+                    mUiHandler.post {
+                        mRecyclerView.smoothScrollBy(1, 0)
+                    }
                 }
 
                 mOffset = result.data.getIntValue("offset")
