@@ -16,7 +16,7 @@ import com.zq.live.proto.RaceRoom.RaceRoomMsg;
 import org.greenrobot.eventbus.EventBus;
 
 public class RaceRoomMsgProcess implements IPushChatRoomMsgProcess<ERaceRoomMsgType, RaceRoomMsg> {
-    public final String TAG = "DoubleRoomGameMsgProcess";
+    public final String TAG = "RaceRoomMsgProcess";
 
     @Override
     public void processRoomMsg(ERaceRoomMsgType messageType, RaceRoomMsg msg) {
