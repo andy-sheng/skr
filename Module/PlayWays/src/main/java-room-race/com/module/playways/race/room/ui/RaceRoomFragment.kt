@@ -673,7 +673,6 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
         MyLog.d(TAG, "showMatchAnimationView")
         hideAllSceneView()
         mRaceMatchView.visibility = View.VISIBLE
-        mRacePagerSelectSongView.hideView()
         mRaceMatchView.bindData {
             overListener.invoke()
         }
