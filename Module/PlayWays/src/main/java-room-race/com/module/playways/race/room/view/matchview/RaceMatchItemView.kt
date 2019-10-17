@@ -24,12 +24,12 @@ import com.module.playways.race.room.model.RacePlayerInfoModel
 // 用recyler方式实现
 class RaceMatchItemView : ConstraintLayout {
 
-    private val totalTime: Long = 4 * 1000L  // 动画的总时间
+    val totalTime: Long = 4 * 1000L  // 动画的总时间
     // todo 调太慢会导致减速转动的时间不够
     private val fastSpeed: Float = 1f         // 调整转动速度 通过一个pixel需要的时间(fastSpeed / U.getDisplayUtils().density)
     private val slowSpeed: Float = 500f      // 最慢速度(slowSpeed / U.getDisplayUtils().density)
     private val itemHeight = U.getDisplayUtils().dip2px(100f)
-    private val itemTime = itemHeight * (fastSpeed / U.getDisplayUtils().density) // 滚动一个itemView的时间
+    val itemTime = itemHeight * (fastSpeed / U.getDisplayUtils().density) // 滚动一个itemView的时间
 
     private var target = 0  // 最终停的item
 
@@ -101,6 +101,22 @@ class RaceMatchItemView : ConstraintLayout {
         } else {
 
         }
+    }
+
+    // 快速滚动的时间
+    fun getFastTime(): Long {
+        // 第一次滚到指定位置的时间
+        val diffTime = itemTime * target
+        // 滚动一个周期的时间
+        val oneCycleTime = itemTime * adapter.mDataList.size
+        return (totalTime - 5 * oneCycleTime - (totalTime - diffTime) % oneCycleTime).toLong()
+    }
+
+    // 滚动完成的时间
+    fun getAnimationTime(): Long {
+        // 滚动一个周期的时间
+        val oneCycleTime = itemTime * adapter.mDataList.size
+        return totalTime - 3 * oneCycleTime.toLong()
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
