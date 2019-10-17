@@ -83,6 +83,7 @@ class RaceMatchView : ConstraintLayout {
         contentTv = this.findViewById(R.id.content_tv)
         resultIv = this.findViewById(R.id.result_iv)
 
+        U.getSoundUtils().preLoad(mTag, R.raw.rank_flipsonglist, R.raw.race_select, R.raw.race_unselect)
     }
 
     fun bindData(listener: () -> Unit) {
@@ -97,14 +98,18 @@ class RaceMatchView : ConstraintLayout {
                 ?: 0) {
             leftFlag = true
             if (rightFlag) {
-                listener?.invoke()
+                timer?.dispose()
+                mUiHandler.removeCallbacksAndMessages(null)
+                listener.invoke()
             }
         }
         rightView.setData(list, roomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID
                 ?: 0) {
             rightFlag = true
             if (leftFlag) {
-                listener?.invoke()
+                timer?.dispose()
+                mUiHandler.removeCallbacksAndMessages(null)
+                listener.invoke()
             }
         }
 
@@ -115,8 +120,6 @@ class RaceMatchView : ConstraintLayout {
 
         mUiHandler.removeMessages(MSG_START)
         mUiHandler.sendEmptyMessage(MSG_START)
-
-        U.getSoundUtils().preLoad(mTag, R.raw.rank_flipsonglist, R.raw.race_select, R.raw.race_unselect)
 
         mUiHandler.removeMessages(MSG_FAST_MUSIC)
         mUiHandler.sendEmptyMessage(MSG_FAST_MUSIC)
@@ -187,6 +190,7 @@ class RaceMatchView : ConstraintLayout {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
             mUiHandler.removeCallbacksAndMessages(null)
+            timer?.dispose()
             leftView.reset()
             rightView.reset()
         }
