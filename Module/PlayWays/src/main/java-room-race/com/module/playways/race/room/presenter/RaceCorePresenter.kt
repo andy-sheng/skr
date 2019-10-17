@@ -233,6 +233,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
             if (result.errno == 0) {
+                mRoomData.hasSignUpSelf = true
                 EventBus.getDefault().post(RaceWantSingChanceEvent(itemID))
                 //mRoomData?.realRoundInfo?.addWantSingChange(itemID, MyUserInfoManager.getInstance().uid.toInt())
             } else {

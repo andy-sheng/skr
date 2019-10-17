@@ -16,7 +16,6 @@ import org.greenrobot.eventbus.EventBus
 
 class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 
-
     override val gameType: Int
         get() = GameModeType.GAME_MODE_RACE
 
@@ -29,6 +28,8 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         }
 
     var runningRoundCount = 0 // 本人在这个房间里已经待了多少轮了
+
+    var hasSignUpSelf: Boolean = false //自己是否报名
 
     init {
         isAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
