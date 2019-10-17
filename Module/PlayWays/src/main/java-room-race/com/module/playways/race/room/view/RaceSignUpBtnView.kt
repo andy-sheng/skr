@@ -37,7 +37,7 @@ class RaceSignUpBtnView : ConstraintLayout {
         signUpType = type
         when (type) {
             SignUpType.SIGN_UP_START -> {
-                signUpBtn.background = U.getDrawable(R.drawable.paiwei_baomingzhong)
+                signUpBtn.background = U.getDrawable(R.drawable.paiwei_baoming)
             }
             SignUpType.SIGN_UP_FINISH -> {
                 signUpBtn.background = U.getDrawable(R.drawable.paiwei_yibaoming)
