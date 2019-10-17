@@ -169,14 +169,18 @@ class RaceMatchView : ConstraintLayout {
         resultIv.visibility = View.VISIBLE
         matchStatusIv.background = U.getDrawable(R.drawable.race_match_sucess_icon)
 
-        //todo 补一个我没报名的
-        if (roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
-            resultIv.setImageResource(R.drawable.race_select_icon)
-            U.getSoundUtils().play(mTag, R.raw.race_select)
-        } else {
-            resultIv.setImageResource(R.drawable.race_unselect_icon)
+        if (roomData?.hasSignUpSelf == true) {
+            if (roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+                resultIv.setImageResource(R.drawable.race_select_icon)
+                U.getSoundUtils().play(mTag, R.raw.race_select)
+            } else {
+                resultIv.setImageResource(R.drawable.race_unselect_icon)
 //            U.getSoundUtils().play(mTag, R.raw.race_unselect)
+            }
+        } else {
+            resultIv.setImageResource(R.drawable.race_un_singup_icon)
         }
+
     }
 
     override fun setVisibility(visibility: Int) {
