@@ -213,9 +213,8 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
     */
      */
-    fun wantSingChance(itemID: Int) {
+    fun wantSingChance(itemID: Int, songModel: SongModel?) {
         var wantSingType = ERWantSingType.ERWST_DEFAULT.value
-        var songModel: SongModel? = null
 
         if (mRoomData.isAccEnable && (songModel?.acc?.isNotBlank() == true)) {
             wantSingType = ERWantSingType.ERWST_ACCOMPANY.value
