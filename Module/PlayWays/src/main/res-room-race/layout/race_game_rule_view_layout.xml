@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="每轮竞演开始前，需要在下发歌单中报名下一轮竞演歌曲; 满2人报名，将由系统分配下一轮2位表演者；"
+                android:text="每轮竞演开始前，需要在下发歌单中报名下一轮竞演歌曲; 满2人报名，将由系统分配下一轮2位表演者"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
