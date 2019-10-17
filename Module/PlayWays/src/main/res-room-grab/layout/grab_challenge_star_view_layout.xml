@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/view_10_dp"
-        android:text="评价: 3"
+        android:text="评价: 0"
         android:textColor="@color/white"
         app:layout_constraintVertical_bias="0.4"
         android:textSize="@dimen/view_12_dp"
