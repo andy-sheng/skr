@@ -1,6 +1,7 @@
 package com.module.playways.race.room.view.matchview
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.support.constraint.ConstraintLayout
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.utils.HandlerTaskTimer
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
@@ -116,7 +118,11 @@ class RaceMatchView : ConstraintLayout {
         contentTv.visibility = View.VISIBLE
         resultIv.visibility = View.GONE
         matchStatusIv.background = U.getDrawable(R.drawable.race_matching_icon)
-        contentTv.text = "${roomData?.realRoundInfo?.currentRoundChoiceUserCnt}人报名"
+        val stringBuilder = SpanUtils()
+                .append("${roomData?.realRoundInfo?.currentRoundChoiceUserCnt}").setFontSize(30, true)
+                .append("人报名").setFontSize(20, true)
+                .create()
+        contentTv.text = stringBuilder
 
         mUiHandler.removeMessages(MSG_START)
         mUiHandler.sendEmptyMessage(MSG_START)
