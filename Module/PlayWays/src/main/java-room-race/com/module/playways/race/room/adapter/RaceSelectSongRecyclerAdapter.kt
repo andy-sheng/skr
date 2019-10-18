@@ -57,6 +57,8 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
         var lyricView: ExTextView
         var divider: ExImageView
         var signUpTv: ExTextView
+        var closeIv: ExImageView
+
         var model: RaceGamePlayInfo? = null
         var loadLyricTask: Disposable? = null
         var pos: Int = -1
@@ -68,9 +70,14 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
             anchorTv = itemView.findViewById(R.id.anchor_tv)
             divider = itemView.findViewById(R.id.divider)
             signUpTv = itemView.findViewById(R.id.sign_up_tv)
+            closeIv = itemView.findViewById(R.id.close_iv)
 
             signUpTv.setDebounceViewClickListener {
                 mIRaceSelectListener?.onSignUp(model?.commonMusic?.itemID ?: 0, model)
+            }
+
+            closeIv.setDebounceViewClickListener {
+                mIRaceSelectListener?.onCloseClick()
             }
         }
 
@@ -137,5 +144,6 @@ class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecycle
         fun onSignUp(itemID: Int, model: RaceGamePlayInfo?)
         fun getSignUpItemID(): Int
         fun getRecyclerViewPosition(): Int
+        fun onCloseClick()
     }
 }

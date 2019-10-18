@@ -3,45 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:parentTag="android.support.constraint.ConstraintLayout"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_229_dp"
+        android:layout_height="@dimen/view_465_dp"
         android:background="@drawable/baoming_xuange_bj"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/song_name_tv"
         android:layout_width="0dp"
-        android:layout_marginLeft="@dimen/view_37_dp"
-        android:layout_marginRight="@dimen/view_37_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_130_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:id="@+id/song_name_tv"
         android:maxLines="1"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_33_dp"
         android:text="《不让我的眼泪陪我过夜》"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/black_trans_80"
+        android:textSize="@dimen/textsize_24_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="@id/bg"
+        app:layout_constraintRight_toRightOf="@id/bg"
         app:layout_constraintTop_toTopOf="@+id/bg" />
 
     <com.common.view.ex.ExTextView
-        android:layout_width="0dp"
         android:id="@+id/anchor_tv"
-        android:layout_marginLeft="@dimen/view_37_dp"
-        android:layout_marginRight="@dimen/view_37_dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_4_dp"
         android:text="词/白进法 曲/张真"
-        android:textColor="@color/white_trans_80"
+        android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_10_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/song_name_tv" />
@@ -55,35 +59,50 @@
         app:layout_constraintTop_toBottomOf="@+id/anchor_tv" />
 
     <com.common.view.ex.ExTextView
-        android:layout_marginLeft="@dimen/view_37_dp"
-        android:layout_marginRight="@dimen/view_37_dp"
         android:id="@+id/lyric_tv"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_0_dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_22_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="@dimen/view_14_dp"
         android:maxLines="3"
         android:text="我的真情不再随便给\n没有余力伤悲\n爱情像难收的覆水"
-        android:textColor="@color/white_trans_80"
+        android:textColor="@color/black_trans_80"
         android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="@id/bg"
+        app:layout_constraintRight_toRightOf="@id/bg"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/sign_up_tv"
-        android:layout_width="@dimen/view_97_dp"
-        android:layout_height="@dimen/view_30_dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="@dimen/view_140_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
         android:gravity="center"
         android:text="报名"
-        android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_14_dp"
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold"
+        app:bl_corners_radius="@dimen/view_20_dp"
         app:bl_enabled_drawable="#FFFFC15B"
         app:bl_enabled_textColor="#FFAD6C00"
         app:bl_unEnabled_drawable="#b3FFC15B"
         app:bl_unEnabled_textColor="#FFAD6C00"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bg" />
+        app:layout_constraintBottom_toBottomOf="@id/bg"
+        app:layout_constraintLeft_toLeftOf="@id/bg"
+        app:layout_constraintRight_toRightOf="@id/bg" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/close_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:padding="@dimen/view_10_dp"
+        android:src="@drawable/baoming_guanbi"
+        app:layout_constraintRight_toRightOf="@id/bg"
+        app:layout_constraintTop_toTopOf="@+id/bg" />
 
 </android.support.constraint.ConstraintLayout>

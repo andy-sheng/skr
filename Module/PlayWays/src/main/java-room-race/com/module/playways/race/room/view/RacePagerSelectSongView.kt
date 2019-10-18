@@ -33,7 +33,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class RacePagerSelectSongView : ExConstraintLayout {
     val TAG = "RacePagerSelectSongView"
-    var closeIv: ExImageView
+
     var hideClickArea: View
     var mPagerRootView: View
     var mRecyclerView: SpeedRecyclerView
@@ -79,7 +79,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     init {
         View.inflate(context, com.module.playways.R.layout.race_pager_select_song_view_layout, this)
-        closeIv = rootView.findViewById(com.module.playways.R.id.close_iv)
+
         mPagerRootView = rootView.findViewById(com.module.playways.R.id.pager_root_view)
         hideClickArea = rootView.findViewById(com.module.playways.R.id.hide_click_area)
         mRecyclerView = rootView.findViewById(com.module.playways.R.id.speed_recyclerView)
@@ -89,6 +89,10 @@ class RacePagerSelectSongView : ExConstraintLayout {
         mPagerAdapter = RaceSelectSongRecyclerAdapter()
         mRecyclerView.adapter = mPagerAdapter
         mPagerAdapter?.mIRaceSelectListener = object : RaceSelectSongRecyclerAdapter.IRaceSelectListener {
+            override fun onCloseClick() {
+                hideView()
+            }
+
             override fun onSignUp(itemID: Int, model: RaceGamePlayInfo?) {
                 mSignUpMethed?.invoke(itemID, model)
             }
@@ -118,10 +122,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
         mCardScaleHelper = CardScaleHelper()
         mCardScaleHelper?.attachToRecyclerView(mRecyclerView)
-
-        closeIv.setDebounceViewClickListener {
-            hideView()
-        }
 
         mPagerRootView.setDebounceViewClickListener {
             //拦截
