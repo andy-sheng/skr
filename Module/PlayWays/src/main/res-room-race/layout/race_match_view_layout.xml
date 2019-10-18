@@ -55,12 +55,12 @@
     <TextView
         android:id="@+id/content_tv"
         android:layout_width="@dimen/view_240_dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_height="@dimen/view_36_dp"
+        android:layout_marginTop="@dimen/view_22_dp"
         android:layout_marginRight="@dimen/view_15_dp"
         android:gravity="center"
         android:textColor="#ffffdd6d"
-        android:textSize="@dimen/textsize_12_dp"
+        android:textSize="@dimen/textsize_20_dp"
         app:layout_constraintLeft_toLeftOf="@id/container"
         app:layout_constraintRight_toRightOf="@id/container"
         app:layout_constraintTop_toTopOf="@id/container" />
