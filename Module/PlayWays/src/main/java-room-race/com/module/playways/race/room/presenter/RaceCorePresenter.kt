@@ -29,10 +29,7 @@ import com.module.ModuleServiceManager
 import com.module.common.ICallback
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
-import com.module.playways.race.room.event.RaceRoundChangeEvent
-import com.module.playways.race.room.event.RaceRoundStatusChangeEvent
-import com.module.playways.race.room.event.RaceSubRoundChangeEvent
-import com.module.playways.race.room.event.RaceWantSingChanceEvent
+import com.module.playways.race.room.event.*
 import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RacePlayerInfoModel
@@ -672,6 +669,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         MyLog.d(TAG, "onEvent event = $event")
         if (event.pb.roundSeq == mRoomData.realRoundSeq) {
             mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
+            if(event.pb.userID==UserAccountManager.SYSTEM_GRAB_ID ||
+                    event.pb.userID==UserAccountManager.SYSTEM_RANK_AI){
+                //TODO  投票打分提示
+            }
         }
     }
 
