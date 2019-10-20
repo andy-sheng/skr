@@ -56,8 +56,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
             if (msg.what == HIDE_PANEL) {
                 clearAnimation()
                 visibility = View.GONE
-            } else if (msg.what == PAGER_BUG) {
-                fakeDrag()
             }
         }
     }
@@ -65,16 +63,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    fun fakeDrag() {
-//        try {
-//            mRecyclerView.beginFakeDrag()
-//            mRecyclerView.fakeDragBy(1.0f)
-//            mRecyclerView.endFakeDrag()
-//        } catch (e: Exception) {
-//            MyLog.w(TAG, e.toString())
-//        }
-    }
 
     init {
         View.inflate(context, com.module.playways.R.layout.race_pager_select_song_view_layout, this)
@@ -174,7 +162,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
         visibility = View.VISIBLE
-        mUiHandler.sendEmptyMessage(PAGER_BUG)
 
         if (mPagerAdapter?.mRaceGamePlayInfoList?.size == 0) {
             getPlaybookItemList()
@@ -240,7 +227,6 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
     companion object {
         val HIDE_PANEL = 1
-        val PAGER_BUG = 2
         val ANIMATION_DURATION = 300
     }
 }
