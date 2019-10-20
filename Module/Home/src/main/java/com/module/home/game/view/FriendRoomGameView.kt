@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
@@ -22,7 +21,6 @@ import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
-import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
 import com.component.busilib.callback.EmptyCallback
 import com.component.busilib.friends.*
@@ -100,12 +98,10 @@ class FriendRoomGameView : RelativeLayout {
             override fun onClickFriendVoice(position: Int, model: RecommendModel?) {
                 if (mFriendRoomVeritAdapter?.mCurrPlayModel != null && mFriendRoomVeritAdapter?.mCurrPlayModel == model) {
                     SinglePlayer.stop(playerTag)
-                    refreshLayout.setEnableRefresh(true)
-                    mLastLoadDateTime = System.currentTimeMillis()
-                    initData(false)
+                    // 自动刷新去
+                    starTimer((mRecommendInterval * 1000).toLong())
                 } else {
                     // 播放中 不能刷新，停止自动刷新
-                    refreshLayout.setEnableRefresh(false)
                     stopTimer()
                     model?.voiceInfo?.voiceURL?.let {
                         SinglePlayer.startPlay(playerTag, it)
@@ -117,7 +113,6 @@ class FriendRoomGameView : RelativeLayout {
             override fun onClickFriendRoom(position: Int, model: RecommendModel?) {
                 SinglePlayer.stop(playerTag)
                 mFriendRoomVeritAdapter?.stopPlay()
-                refreshLayout.setEnableRefresh(true)
                 if (model != null) {
                     StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
                     val friendRoomModel = model as RecommendModel?
@@ -149,7 +144,10 @@ class FriendRoomGameView : RelativeLayout {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == SCROLL_STATE_IDLE) {
-                    starTimer((mRecommendInterval * 1000).toLong())
+                    if (mFriendRoomVeritAdapter?.isPlay == false) {
+                        // 没有播放时 才让刷新
+                        starTimer((mRecommendInterval * 1000).toLong())
+                    }
                 } else {
                     stopTimer()
                 }
@@ -164,20 +162,16 @@ class FriendRoomGameView : RelativeLayout {
         playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
-                MyLog.d(mTag, "onCompletion")
                 mFriendRoomVeritAdapter?.stopPlay()
-                refreshLayout.setEnableRefresh(true)
-                mLastLoadDateTime = System.currentTimeMillis()
-                initData(false)
+                // 自动刷新去
+                starTimer((mRecommendInterval * 1000).toLong())
             }
 
             override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
                 if (newPlayerTag != playerTag) {
-                    MyLog.d(mTag, "onPlaytagChange")
                     mFriendRoomVeritAdapter?.stopPlay()
-                    refreshLayout.setEnableRefresh(true)
-                    mLastLoadDateTime = System.currentTimeMillis()
-                    initData(false)
+                    // 自动刷新去
+                    starTimer((mRecommendInterval * 1000).toLong())
                 }
             }
         }
@@ -239,7 +233,6 @@ class FriendRoomGameView : RelativeLayout {
     fun stopPlay() {
         SinglePlayer.stop(playerTag)
         mFriendRoomVeritAdapter?.stopPlay()
-        refreshLayout.setEnableRefresh(true)
     }
 
     fun tryJoinRoom(roomInfo: SimpleRoomInfo) {
