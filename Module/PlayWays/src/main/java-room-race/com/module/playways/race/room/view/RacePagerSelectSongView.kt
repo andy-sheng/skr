@@ -18,7 +18,6 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.view.ex.ExConstraintLayout
-import com.common.view.ex.ExImageView
 import com.component.busilib.view.recyclercardview.CardScaleHelper
 import com.component.busilib.view.recyclercardview.SpeedRecyclerView
 import com.module.playways.race.RaceRoomServerApi
@@ -120,7 +119,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
             }
         })
 
-        mCardScaleHelper = CardScaleHelper()
+        mCardScaleHelper = CardScaleHelper(8, 12)
         mCardScaleHelper?.attachToRecyclerView(mRecyclerView)
 
         mPagerRootView.setDebounceViewClickListener {

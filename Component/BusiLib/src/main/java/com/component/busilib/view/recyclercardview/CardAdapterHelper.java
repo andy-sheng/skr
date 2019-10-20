@@ -11,8 +11,13 @@ import com.common.utils.U;
  * Created by jameson on 9/1/16.
  */
 public class CardAdapterHelper {
-    private int mPagePadding = 15;
-    private int mShowLeftCardWidth = 15;
+    private int mPagePadding = 8;
+    private int mShowLeftCardWidth = 12;
+
+    public CardAdapterHelper(int pagePadding, int showLeftCardWidth) {
+        mPagePadding = pagePadding;
+        mShowLeftCardWidth = showLeftCardWidth;
+    }
 
     public void onCreateViewHolder(ViewGroup parent, View itemView) {
         RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) itemView.getLayoutParams();

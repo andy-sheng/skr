@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer
 class RaceSelectSongRecyclerAdapter : RecyclerView.Adapter<RaceSelectSongRecyclerAdapter.RaceGamePlayHolder>() {
     val mRaceGamePlayInfoList = ArrayList<RaceGamePlayInfo>()
     var mIRaceSelectListener: IRaceSelectListener? = null
-    private val mCardAdapterHelper = CardAdapterHelper()
+    private val mCardAdapterHelper = CardAdapterHelper(8, 12)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RaceGamePlayHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.race_song_info_view_layout, parent, false)
