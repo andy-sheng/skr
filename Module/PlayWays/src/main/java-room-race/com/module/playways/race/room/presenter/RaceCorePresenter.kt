@@ -669,10 +669,27 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         MyLog.d(TAG, "onEvent event = $event")
         if (event.pb.roundSeq == mRoomData.realRoundSeq) {
             mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
-            if(event.pb.userID==UserAccountManager.SYSTEM_GRAB_ID ||
-                    event.pb.userID==UserAccountManager.SYSTEM_RANK_AI){
+            if (event.pb.userID == UserAccountManager.SYSTEM_GRAB_ID ||
+                    event.pb.userID == UserAccountManager.SYSTEM_RANK_AI) {
                 //TODO  投票打分提示
+                pretendVote(mRoomData.getPlayerOrWaiterInfo(event.pb.userID), mRoomData.getPlayerOrWaiterInfo(mRoomData.realRoundInfo?.getSingerIdNow()))
             }
+        }
+    }
+
+    private fun pretendVote(userInfoModel: UserInfoModel?, singer: UserInfoModel?) {
+        if (userInfoModel != null && singer != null) {
+            val commentModel = CommentTextModel()
+            commentModel.userInfo = userInfoModel
+            commentModel.avatarColor = CommentModel.AVATAR_COLOR
+            val stringBuilder: SpannableStringBuilder
+            val spanUtils = SpanUtils()
+                    .append("对").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                    .append("${singer?.nicknameRemark}").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+            stringBuilder = spanUtils.create()
+            commentModel.stringBuilder = stringBuilder
+            EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
     }
 
