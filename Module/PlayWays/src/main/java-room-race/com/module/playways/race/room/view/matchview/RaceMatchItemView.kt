@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
+import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -55,14 +56,18 @@ class RaceMatchItemView : ConstraintLayout {
             MyLog.e("RaceMatchItemView", "uid == 0")
         }
         if (listData != null) {
-            listData.forEachIndexed { index, model ->
+            adapter.mDataList.clear()
+            listData.forEach { model ->
+                if (model.userInfo.userId != UserAccountManager.SYSTEM_GRAB_ID && model.userInfo.userId != UserAccountManager.SYSTEM_RANK_AI) {
+                    adapter.mDataList.add(model)
+                }
+            }
+            adapter.mDataList.forEachIndexed { index, model ->
                 if (model.userInfo.userId == uid) {
                     target = index
                     return@forEachIndexed
                 }
             }
-            adapter.mDataList.clear()
-            adapter.mDataList = listData
             adapter.notifyDataSetChanged()
         }
 
