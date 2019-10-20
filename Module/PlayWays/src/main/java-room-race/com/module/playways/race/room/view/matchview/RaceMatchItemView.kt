@@ -56,16 +56,18 @@ class RaceMatchItemView : ConstraintLayout {
             MyLog.e("RaceMatchItemView", "uid == 0")
         }
         if (listData != null) {
+            var count = 0
             adapter.mDataList.clear()
-            listData.forEach { model ->
-                if (model.userInfo.userId != UserAccountManager.SYSTEM_GRAB_ID && model.userInfo.userId != UserAccountManager.SYSTEM_RANK_AI) {
+            listData.forEachIndexed { index, model ->
+                if (model.userInfo.userId == UserAccountManager.SYSTEM_GRAB_ID || model.userInfo.userId == UserAccountManager.SYSTEM_RANK_AI) {
+                    count += 1
+                } else {
                     adapter.mDataList.add(model)
                 }
-            }
-            adapter.mDataList.forEachIndexed { index, model ->
+
                 if (model.userInfo.userId == uid) {
-                    target = index
-                    return@forEachIndexed
+                    // 找在adapter的位置
+                    target = index - count
                 }
             }
             adapter.notifyDataSetChanged()
