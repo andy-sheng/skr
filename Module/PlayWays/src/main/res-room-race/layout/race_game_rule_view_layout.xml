@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="每轮竞演开始前，需要在下发歌单中报名下一轮竞演歌曲; 满2人报名，将由系统分配下一轮2位表演者"
+                android:text="进入排位赛后，选定自己的参赛曲目"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="竞演过程中，除竞演选手外，其余用户可以为自己喜欢的声音点赞"
+                android:text="满2人报名后，每轮次由系统分配2位表演者"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="竞演完毕后，两位选手比拼赞数，多一方胜出，胜出加经验；少一方落败，落败减经验；平局不加不减"
+                android:text="竞演过程中，除竞演选手外，其余用户可以为自己喜欢的声音点赞"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="比赛中逃跑行为会被惩罚，扣除经验"
+                android:text="竞演完毕，根据赞数比较胜负，胜者加经验，负者减经验，平局不加不减比赛中逃跑，将被扣除经验作为惩罚"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
