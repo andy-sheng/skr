@@ -684,8 +684,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
             val stringBuilder: SpannableStringBuilder
             val spanUtils = SpanUtils()
+                    .append(userInfoModel.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .append("给").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-                    .append("${singer?.nicknameRemark}").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append(singer.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
             stringBuilder = spanUtils.create()
             commentModel.stringBuilder = stringBuilder
