@@ -156,7 +156,7 @@ public class BigImageBrowseFragment extends BaseFragment {
                             public void run() {
                                 int cp = mImagesVp.getCurrentItem();
                                 if (mLoader.getDeleteListener() != null) {
-                                    mLoader.getDeleteListener().onCallback(0, mPagerAdapter.getItem(cp));
+                                    mLoader.getDeleteListener().onCallback(cp, mPagerAdapter.getItem(cp));
                                 }
                                 if (mPagerAdapter.getCount() > 0) {
                                     mPagerAdapter.remove(cp);

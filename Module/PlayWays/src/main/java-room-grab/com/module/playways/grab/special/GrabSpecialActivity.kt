@@ -31,7 +31,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.launch
 
-// 抢唱页面
+// 抢唱专场详情页
 @Route(path = RouterConstants.ACTIVITY_GRAB_SPECIAL)
 class GrabSpecialActivity : BaseActivity() {
 

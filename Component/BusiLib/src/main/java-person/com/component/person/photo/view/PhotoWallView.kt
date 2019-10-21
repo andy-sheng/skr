@@ -100,7 +100,7 @@ class PhotoWallView(private var mFragment: BaseFragment, private var mCallBack: 
                 }
 
                 override fun getDeleteListener(): Callback<PhotoModel>? {
-                    return Callback { _, obj -> mPhotoCorePresenter!!.deletePhoto(obj) }
+                    return Callback { r, obj -> mPhotoCorePresenter!!.deletePhoto(obj) }
                 }
             })
         }
