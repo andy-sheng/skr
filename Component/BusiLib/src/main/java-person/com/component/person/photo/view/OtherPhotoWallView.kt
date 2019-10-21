@@ -30,7 +30,7 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
     internal var offset: Int = 0  // 拉照片偏移量
     internal val DEFAUAT_CNT = 20       // 默认拉取一页的数量
     private var mLastUpdateInfo: Long = 0
-    internal var mHasMore = false
+    internal var mHasMore = true
 
     private val mPhotoView: RecyclerView
     internal val mPhotoAdapter: PhotoAdapter
@@ -134,8 +134,6 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
         offset = newOffset
         mLastUpdateInfo = System.currentTimeMillis()
 
-        mCallBack?.onRequestSucess(!list.isNullOrEmpty())
-
         if (clear) {
             mPhotoAdapter.dataList?.clear()
         }
@@ -162,6 +160,8 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
                 }
             }
         }
+
+        mCallBack?.onRequestSucess(mHasMore)
     }
 
 
@@ -176,7 +176,7 @@ class OtherPhotoWallView(internal var mFragment: BaseFragment, internal var mUse
         }
     }
 
-    fun destory(){
+    fun destory() {
 
     }
 

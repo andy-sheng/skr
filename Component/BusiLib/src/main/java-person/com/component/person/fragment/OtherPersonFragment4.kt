@@ -35,6 +35,7 @@ import com.common.flowlayout.TagFlowLayout
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
+import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -510,7 +511,6 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         if (container.indexOfChild(mPostsWallView as View) == -1) {
                             container.addView(mPostsWallView as View)
                         }
-                        mPostsWallView!!.getPosts(false)
                         return mPostsWallView!!
                     }
                     2 -> {
@@ -555,19 +555,21 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mPersonTab.setViewPager(mPersonVp)
         mPersonTabAdapter.notifyDataSetChanged()
 
-        mPersonVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        mPersonVp.run {
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
-            }
+                }
 
-            override fun onPageSelected(position: Int) {
-                viewSelected(position)
-            }
+                override fun onPageSelected(position: Int) {
+                    viewSelected(position)
+                }
 
-            override fun onPageScrollStateChanged(state: Int) {
+                override fun onPageScrollStateChanged(state: Int) {
 
-            }
-        })
+                }
+            })
+        }
     }
 
     override fun onFragmentVisible() {
