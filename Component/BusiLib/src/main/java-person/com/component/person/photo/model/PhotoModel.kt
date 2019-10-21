@@ -45,13 +45,18 @@ class PhotoModel : Serializable {
         val that = o as PhotoModel?
         if (status == STATUS_SUCCESS && that!!.status == STATUS_SUCCESS) {
             // 都上传成功了 ID path 有一个一样就认为同一张是同一张照片
-            if (picPath != null && picPath == that.picPath) {
-                return true
-            }
             if (picID == that.picID) {
                 return true
             }
+            // 且不能都是违禁图片
+            if (picPath != null && picPath == that.picPath && picPath?.endsWith("g-forbid.png") != true) {
+                return true
+            }
+
         } else {
+            if(picID>0 && (that?.picID?:0)>0){
+                return picID==that?.picID
+            }
             // 只要有一个上传成功，就比本地的
             if (localPath != null && localPath == that!!.localPath) {
                 return true

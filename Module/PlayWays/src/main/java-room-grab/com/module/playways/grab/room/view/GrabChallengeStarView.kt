@@ -71,7 +71,7 @@ class GrabChallengeStarView(context: Context, attr: AttributeSet) : ConstraintLa
                 }
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    handler.postDelayed({
+                    handler?.postDelayed({
                         if (continueShow) {
                             bindData(0, justShowInChallenge = true, continueShow = false)
                         } else {
@@ -87,7 +87,7 @@ class GrabChallengeStarView(context: Context, attr: AttributeSet) : ConstraintLa
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        handler.removeCallbacksAndMessages(null)
+        handler?.removeCallbacksAndMessages(null)
     }
 
 }
