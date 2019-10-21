@@ -65,7 +65,6 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/titlebar"
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -78,7 +77,6 @@
                     android:id="@+id/person_tab"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/view_52_dp"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/view_12_dp" />
 
                 <com.common.view.viewpager.NestViewPager
@@ -322,7 +320,6 @@
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">
-
 
                         <android.support.constraint.ConstraintLayout
                             android:id="@+id/toolbar_layout"

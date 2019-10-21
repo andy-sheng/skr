@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -124,6 +126,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     PersonCorePresenter mPresenter;
 
+    LinearLayout mContainer;
     SlidingTabLayout mPersonTab;
     NestViewPager mPersonVp;
     PagerAdapter mPersonTabAdapter;
@@ -134,7 +137,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ProducationWallView mProducationWallView;
 
     DialogPlus mDialogPlus;
-    boolean isInitToolbar = false;
 
     int mFriendNum = 0;
     int mFansNum = 0;
@@ -158,9 +160,28 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         initSettingArea();
         initFunctionArea();
         initPersonArea();
+        adjustView();
 
         refreshUserInfoView();
+
     }
+
+    private void adjustView() {
+        if (U.getDeviceUtils().hasNotch(U.app())) {
+            ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
+            params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
+            mToolbarLayout.setLayoutParams(params);
+
+            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mUserInfoArea.getLayoutParams();
+            layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(U.app());
+            mUserInfoArea.setLayoutParams(layoutParams);
+        }
+
+        ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
+        containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(96 + 54);
+        mContainer.setLayoutParams(containerParams);
+    }
+
 
     @Override
     protected void onFragmentVisible() {
@@ -270,10 +291,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mImageBg.setTranslationY(verticalOffset);
                 if (lastVerticalOffset != verticalOffset) {
                     lastVerticalOffset = verticalOffset;
-                    int srollLimit = appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(55);
-                    if (U.getDeviceUtils().hasNotch(U.app())) {
-                        srollLimit = srollLimit - U.getStatusBarUtil().getStatusBarHeight(U.app());
-                    }
+                    int srollLimit = appBarLayout.getTotalScrollRange();
                     if (verticalOffset == 0) {
                         // 展开状态
                         if (mToolbar.getVisibility() != View.GONE) {
@@ -283,12 +301,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     } else if (Math.abs(verticalOffset) >= srollLimit) {
                         // 完全收缩状态
                         if (mToolbar.getVisibility() != View.VISIBLE) {
-                            if (U.getDeviceUtils().hasNotch(U.app()) && !isInitToolbar) {
-                                ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
-                                params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
-                                mToolbarLayout.setLayoutParams(params);
-                                isInitToolbar = true;
-                            }
                             mToolbar.setVisibility(View.VISIBLE);
                             mToolbarLayout.setVisibility(View.VISIBLE);
                         }
@@ -447,6 +459,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initPersonArea() {
+        mContainer = (LinearLayout) getRootView().findViewById(R.id.container);
         mPersonTab = (SlidingTabLayout) getRootView().findViewById(R.id.person_tab);
         mPersonVp = (NestViewPager) getRootView().findViewById(R.id.person_vp);
 
@@ -557,10 +570,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 return view == (object);
             }
         };
-        // todo 改有一行显示不全的问题 ,会和刘海屏的适配冲突，先不改吧
-//        ViewGroup.LayoutParams layoutParams = mPersonVp.getLayoutParams();
-//        layoutParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(96 + 53);
-//        mPersonVp.setLayoutParams(layoutParams);
         mPersonVp.setAdapter(mPersonTabAdapter);
         mPersonTab.setViewPager(mPersonVp);
         mPersonTabAdapter.notifyDataSetChanged();
