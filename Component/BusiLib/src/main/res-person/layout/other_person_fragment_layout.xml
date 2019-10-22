@@ -314,12 +314,12 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/more_btn"
-        android:layout_width="@dimen/view_26_dp"
-        android:layout_height="@dimen/view_26_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_24_dp"
-        android:background="@drawable/common_more_icon" />
+        android:padding="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:src="@drawable/common_more_icon" />
 
     <LinearLayout
         android:id="@+id/function_area"
