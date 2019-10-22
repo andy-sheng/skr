@@ -62,7 +62,8 @@ android {
 }
 
 dependencies {
-    api project(":commoncore")
+    //api project(":commoncore")
+    api 'com.zq.live:commoncore:1.0'
 
     if (isBuildModule.toBoolean()) {
 //        tools

@@ -1,0 +1,1 @@
+./gradlew :commoncore:uploadArchives

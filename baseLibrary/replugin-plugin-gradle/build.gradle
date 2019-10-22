@@ -27,7 +27,7 @@ apply plugin: 'maven'
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: local_maven)
+        repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.qihoo360.replugin'
         pom.artifactId = 'replugin-plugin-gradle'
         pom.version = '9.8'

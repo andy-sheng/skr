@@ -102,3 +102,17 @@ greendao {
     //generateTests：设置自动生成单元测试用例
 
 }
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+
+    repositories.mavenDeployer {
+        println "仓库地址为 "+rootProject.ext.local_maven
+        repository(url: rootProject.ext.local_maven)
+        pom.groupId = 'com.zq.live'
+        pom.artifactId = 'common-core'
+        pom.version = '1.0'
+    }
+}

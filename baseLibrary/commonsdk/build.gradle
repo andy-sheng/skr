@@ -392,7 +392,7 @@ apply plugin: 'maven'
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: local_maven)
+        repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.common.sdk'
         pom.artifactId = 'common-sdk'
         pom.version = '2.0'
