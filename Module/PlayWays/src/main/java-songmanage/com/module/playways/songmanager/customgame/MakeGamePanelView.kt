@@ -16,7 +16,6 @@ import com.common.log.MyLog
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
-import com.common.player.VideoPlayerAdapter
 import com.common.recorder.MyMediaRecorder
 import com.common.rxretrofit.*
 import com.common.upload.UploadCallback

@@ -1,4 +1,4 @@
-package com.common.player;
+package com.common.player.video;
 
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
@@ -9,6 +9,10 @@ import android.view.TextureView;
 import android.view.View;
 
 import com.common.log.MyLog;
+import com.common.player.ExoPlayer;
+import com.common.player.IPlayer;
+import com.common.player.IPlayerCallback;
+import com.common.player.PlayerCallbackAdapter;
 
 /**
  * 职责：

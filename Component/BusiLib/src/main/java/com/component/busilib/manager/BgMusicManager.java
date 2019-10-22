@@ -2,15 +2,12 @@ package com.component.busilib.manager;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.view.animation.LinearInterpolator;
 
 import com.common.log.MyLog;
-import com.common.player.IPlayerCallback;
 import com.common.player.ExoPlayer;
 import com.common.player.PlayerCallbackAdapter;
-import com.common.player.VideoPlayerAdapter;
 import com.common.utils.U;
 
 public class BgMusicManager {
