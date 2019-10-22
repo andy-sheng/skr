@@ -21,7 +21,7 @@ import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.model.PostFirstLevelCommentModel
-import com.module.posts.view.PostsCommentAudioView
+import com.component.person.view.CommonAudioView
 import com.module.posts.view.PostsNineGridLayout
 import com.module.posts.view.PostsSongView
 
@@ -32,7 +32,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
     var xinIv: ExImageView
     var likeNum: ExTextView
     var contentTv: ExTextView
-    var postsAudioView: PostsCommentAudioView
+    var postsAudioView: CommonAudioView
     var nineGridVp: PostsNineGridLayout
     var postsBarrier: Barrier
     var replyNum: ExTextView

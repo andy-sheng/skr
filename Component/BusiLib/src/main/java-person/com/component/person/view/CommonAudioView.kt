@@ -1,4 +1,4 @@
-package com.module.posts.view
+package com.component.person.view
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
@@ -7,12 +7,12 @@ import android.view.View
 import android.widget.TextView
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
+import com.component.busilib.R
 import com.component.busilib.view.SpeakingTipsAnimationView
-import com.module.posts.R
 import kotlin.math.roundToInt
 
-// 评论中音频的view
-class PostsCommentAudioView : ConstraintLayout {
+// 评论中音频的view(也是个人主页中的)
+class CommonAudioView : ConstraintLayout {
 
     constructor(context: Context) : super(context) {}
 
@@ -31,7 +31,7 @@ class PostsCommentAudioView : ConstraintLayout {
     private val maxSize = 144.dp()   // 最大尺寸(大于40秒）
 
     init {
-        View.inflate(context, R.layout.posts_comment_audio_view_layout, this)
+        View.inflate(context, R.layout.common_audio_view_layout, this)
 
         audioBg = this.findViewById(R.id.audio_bg)
         speakerAnimationIv = this.findViewById(R.id.speaker_animation_iv)

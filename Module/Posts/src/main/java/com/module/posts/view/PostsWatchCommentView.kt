@@ -10,6 +10,7 @@ import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ExViewStub
+import com.component.person.view.CommonAudioView
 import com.module.posts.R
 import com.module.posts.watch.model.PostsBestCommendModel
 
@@ -19,7 +20,7 @@ class PostsWatchCommentView(viewStub: ViewStub) : ExViewStub(viewStub) {
     var contentTv: SpannableTextView? = null
     var likeNumTv: TextView? = null
 
-    var postsAudioView: PostsCommentAudioView? = null
+    var postsAudioView: CommonAudioView? = null
     var postsSongView: PostsSongView? = null
     var nineGridVp: PostsNineGridLayout? = null
 
