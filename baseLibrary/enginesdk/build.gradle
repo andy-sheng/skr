@@ -52,11 +52,29 @@ android {
 }
 
 dependencies {
-    compileOnly project(":baseLibrary:commonsdk")
+    if(dependLibraryFromServer.toBoolean()){
+        compileOnly "com.common.sdk:commonsdk:1.0"
+    }else{
+        compileOnly project(":baseLibrary:commonsdk")
+    }
     api files('libs/agora-rtc-sdk.jar')
 //    api 'io.agora.rtc:full-sdk:2.4.0'
     if (arcCloud.toBoolean()) {
-        api project(":baseLibrary:arcCloud")
+        if(dependLibraryFromServer.toBoolean()){
+            api "com.common.sdk:arcCloud:1.0"
+        }else{
+            api project(":baseLibrary:arcCloud")
+        }
     }
 }
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
 
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: rootProject.ext.local_maven)
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'enginesdk'
+        pom.version = '1.0'
+    }
+}

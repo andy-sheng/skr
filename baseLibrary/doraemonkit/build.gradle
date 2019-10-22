@@ -32,7 +32,13 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly project(":baseLibrary:commonsdk")
+
+    if(dependLibraryFromServer.toBoolean()){
+        compileOnly "com.common.sdk:commonsdk:1.0"
+    }else{
+        compileOnly project(":baseLibrary:commonsdk")
+    }
+
     implementation rootProject.ext.dependencies["appcompat-v7"]
     implementation rootProject.ext.dependencies["recyclerview-v7"]
     implementation rootProject.ext.dependencies["constraint-layout"]
@@ -50,6 +56,18 @@ dependencies {
     //compileOnly 'com.squareup.okio:okio:1.11.0'
     // hooker需要
     debugCompileOnly 'com.didichuxing.doraemonkit:compiler:1.0.0'
+}
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: rootProject.ext.local_maven)
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'doraemonkit'
+        pom.version = '1.0'
+    }
 }
 
 

@@ -38,11 +38,29 @@ android {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly project(":baseLibrary:commonsdk")
-    api project(":baseLibrary:effectsdk")
-    api project(":baseLibrary:enginesdk")
+    if(dependLibraryFromServer.toBoolean()){
+        compileOnly "com.common.sdk:commonsdk:1.0"
+        api "com.common.sdk:effectsdk:1.0"
+        api "com.common.sdk:enginesdk:1.0"
+    }else{
+        compileOnly project(":baseLibrary:commonsdk")
+        api project(":baseLibrary:effectsdk")
+        api project(":baseLibrary:enginesdk")
+    }
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: rootProject.ext.local_maven)
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'mediaengine'
+        pom.version = '1.0'
+    }
 }
