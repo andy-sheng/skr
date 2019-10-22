@@ -124,6 +124,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     DialogPlus mDialogPlus;
 
+    int srollDivider = U.getDisplayUtils().dip2px(84);  // 滑到分界线的时候
+
     int mFriendNum = 0;
     int mFansNum = 0;
     int mFocusNum = 0;
@@ -152,19 +154,25 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void adjustView() {
-        if (U.getDeviceUtils().hasNotch(U.app())) {
-            ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
-            params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
-            mToolbarLayout.setLayoutParams(params);
+        ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
+        params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
+        mToolbarLayout.setLayoutParams(params);
 
+        if (U.getDeviceUtils().hasNotch(U.app())) {
             CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mUserInfoArea.getLayoutParams();
             layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(U.app());
             mUserInfoArea.setLayoutParams(layoutParams);
-        }
 
-        ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
-        containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(56 + 54);
-        mContainer.setLayoutParams(containerParams);
+            ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
+            containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(56 + 54);
+            mContainer.setLayoutParams(containerParams);
+        } else {
+            ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
+            containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(56 + 54) - U.getStatusBarUtil().getStatusBarHeight(U.app());
+            mContainer.setLayoutParams(containerParams);
+
+            srollDivider = srollDivider - U.getStatusBarUtil().getStatusBarHeight(U.app());
+        }
     }
 
 
@@ -268,18 +276,25 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mImageBg.setTranslationY(verticalOffset);
                 if (lastVerticalOffset != verticalOffset) {
                     lastVerticalOffset = verticalOffset;
-                    int srollLimit = appBarLayout.getTotalScrollRange();
+
+                    int srollLimit = appBarLayout.getTotalScrollRange();  // 总的滑动长度
                     if (verticalOffset == 0) {
                         // 展开状态
                         if (mToolbar.getVisibility() != View.GONE) {
                             mToolbar.setVisibility(View.GONE);
                             mToolbarLayout.setVisibility(View.GONE);
                         }
-                    } else if (Math.abs(verticalOffset) >= srollLimit) {
+                    } else if (Math.abs(verticalOffset) >= srollDivider) {
                         // 完全收缩状态
                         if (mToolbar.getVisibility() != View.VISIBLE) {
                             mToolbar.setVisibility(View.VISIBLE);
                             mToolbarLayout.setVisibility(View.VISIBLE);
+                        }
+
+                        if (Math.abs(verticalOffset) >= srollLimit) {
+                            mSrlNameTv.setAlpha(1);
+                        } else {
+                            mSrlNameTv.setAlpha((float) (Math.abs(verticalOffset) - srollDivider) / (float) (srollLimit - srollDivider));
                         }
                     } else {
                         // TODO: 2019/4/8 过程中，可以加动画，先直接显示
@@ -719,7 +734,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            mPersonTagView.setUserID((int)MyUserInfoManager.getInstance().getUid());
+            mPersonTagView.setUserID((int) MyUserInfoManager.getInstance().getUid());
             mPersonTagView.setSex(MyUserInfoManager.getInstance().getSex());
             mPersonTagView.setLocation(MyUserInfoManager.getInstance().getLocation());
             mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
