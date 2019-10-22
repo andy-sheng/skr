@@ -337,20 +337,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         });
     }
 
-    private void showBusinessCard() {
-//        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
-//        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), userInfoModel, mFansNum, mCharmNum);
-//        mDialogPlus = DialogPlus.newDialog(getActivity())
-//                .setContentHolder(new ViewHolder(businessCardDialogView))
-//                .setGravity(Gravity.CENTER)
-//                .setMargin(U.getDisplayUtils().dip2px(40), -1, U.getDisplayUtils().dip2px(40), -1)
-//                .setContentBackgroundResource(R.color.transparent)
-//                .setOverlayBackgroundResource(R.color.black_trans_80)
-//                .setExpanded(false)
-//                .create();
-//        mDialogPlus.show();
-    }
-
     private void initSettingArea() {
         mSettingIv = getRootView().findViewById(R.id.setting_iv);
         mSettingRedDot = getRootView().findViewById(R.id.setting_red_dot);

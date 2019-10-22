@@ -3,13 +3,14 @@ package com.component.person.view
 import com.common.core.userinfo.model.UserInfoModel
 
 import com.component.person.model.RelationNumModel
+import com.component.person.model.ScoreDetailModel
 
 interface IOtherPersonView {
     // 展示homepage回来的结果
     fun showHomePageInfo(userInfoModel: UserInfoModel,
                          relationNumModels: List<RelationNumModel>?,
                          isFriend: Boolean, isFollow: Boolean,
-                         meiLiCntTotal: Int)
+                         meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel)
 
     fun getHomePageFail()
     //    // 展示照片墙
