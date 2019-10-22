@@ -369,7 +369,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mWalletIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // TODO 新的钱包
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_WALLET)
+                        .navigation();
             }
         });
         updateSettingRedDot();

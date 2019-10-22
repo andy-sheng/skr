@@ -17,9 +17,9 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.event.RechargeSuccessEvent;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
-import com.component.busilib.event.RechargeSuccessEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -32,6 +32,7 @@ public class DiamondBallanceFragment extends BaseFragment {
     ExTextView mTvDiamondText;
     ExTextView mTvDiamondBalance;
     ExTextView mRechargeBtn;
+    ExTextView mJinbiNum;
 
     WalletServerApi mWalletServerApi;
 
@@ -49,18 +50,12 @@ public class DiamondBallanceFragment extends BaseFragment {
         mTvDiamondText = getRootView().findViewById(R.id.tv_diamond_text);
         mTvDiamondBalance = getRootView().findViewById(R.id.tv_diamond_balance);
         mRechargeBtn = getRootView().findViewById(R.id.recharge_btn);
+        mJinbiNum = getRootView().findViewById(R.id.jinbi_num);
+
         getZSBalance();
+        getCoinBalance();
 
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-        });
-
-        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+        mTvDiamondText.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 U.getFragmentUtils().addFragment(
@@ -100,6 +95,18 @@ public class DiamondBallanceFragment extends BaseFragment {
                 }
             }
         }, this);
+    }
+
+    private void getCoinBalance() {
+        ApiMethods.subscribe(mWalletServerApi.getCoinNum(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    int coinNum = obj.getData().getIntValue("coin");
+                    mJinbiNum.setText(String.valueOf(coinNum));
+                }
+            }
+        });
     }
 
 
