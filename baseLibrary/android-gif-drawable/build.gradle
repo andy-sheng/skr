@@ -90,3 +90,15 @@ dependencies {
     //annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     compileOnly "androidx.annotation:annotation:1.0.0"
 }
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: rootProject.ext.local_maven)
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'android-gif-drawable'
+        pom.version = '1.0'
+    }
+}

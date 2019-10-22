@@ -112,7 +112,7 @@ uploadArchives {
         println "仓库地址为 "+rootProject.ext.local_maven
         repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.zq.live'
-        pom.artifactId = 'common-core'
+        pom.artifactId = 'commoncore'
         pom.version = '1.0'
     }
 }

@@ -231,7 +231,12 @@ dependencies {
     //api(rootProject.ext.dependencies["fresco-okhttp"])
     // 流畅的gif
     //api(rootProject.ext.dependencies["android-gif-drawable"])
-    implementation project(":baseLibrary:android-gif-drawable")
+    if(dependLibraryFromServer.toBoolean()){
+        implementation "com.common.sdk:android-gif-drawable:1.0"
+    }else{
+        implementation project(":baseLibrary:android-gif-drawable")
+    }
+
     // SuperTextView
     //api project(":baseLibrary:SuperTextView")
     // 超大图加载

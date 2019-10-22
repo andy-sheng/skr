@@ -62,9 +62,11 @@ android {
 }
 
 dependencies {
-    //api project(":commoncore")
-    api 'com.zq.live:commoncore:1.0'
-
+//    if (dependLibraryFromServer.toBoolean()) {
+//        api 'com.zq.live:commoncore:1.0'
+//    } else {
+        api project(":commoncore")
+//    }
     if (isBuildModule.toBoolean()) {
 //        tools
         kapt rootProject.ext.dependencies["arouter-compiler"]
