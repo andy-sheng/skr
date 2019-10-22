@@ -74,6 +74,7 @@ import java.util.HashMap
 
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
+import com.component.person.view.PersonTagView
 import kotlinx.android.synthetic.main.photo_item_view_layout.view.*
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
@@ -96,7 +97,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mSexIv: ImageView
     lateinit var mSignTv: MarqueeTextView
     lateinit var mVipTv: TextView
-    lateinit var mFlowlayout: TagFlowLayout
+    lateinit var mFlowlayout: PersonTagView
 
     lateinit var mFunctionArea: ConstraintLayout
     lateinit var mInviteIv: ExTextView
@@ -108,11 +109,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     lateinit var mPhotoView: RecyclerView
     lateinit var mEmptyMyPhoto: ExTextView
-
-    private var mTags = ArrayList<TagModel>()  //标签
-    private var mHashMap = HashMap<Int, String?>()
-
-    lateinit var mTagAdapter: TagAdapter<TagModel>
 
     lateinit var mPhotoAdapter: PhotoAdapter
 
@@ -370,23 +366,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mSignTv = this.findViewById(R.id.sign_tv)
         mVipTv = this.findViewById(R.id.vip_tv)
         mFlowlayout = this.findViewById(R.id.flowlayout)
-
-        mTagAdapter = object : TagAdapter<TagModel>(mTags) {
-            override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
-                if (tagModel.type != CHARMS_TAG) {
-                    val tv = LayoutInflater.from(context).inflate(R.layout.person_center_business_tag,
-                            mFlowlayout, false) as ExTextView
-                    tv.text = tagModel.content
-                    return tv
-                } else {
-                    val tv = LayoutInflater.from(context).inflate(R.layout.person_card_charm_tag,
-                            mFlowlayout, false) as ExTextView
-                    tv.text = tagModel.content
-                    return tv
-                }
-            }
-        }
-        mFlowlayout.adapter = mTagAdapter
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -672,13 +651,8 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                 else -> mSexIv.visibility = View.GONE
             }
 
-            if (model.location != null && !TextUtils.isEmpty(model.location.province)) {
-                mHashMap.put(LOCATION_TAG, model.location.province)
-            } else {
-                mHashMap.put(LOCATION_TAG, "火星")
-            }
 
-            refreshTag()
+            mFlowlayout.setLocation(model.location)
         }
     }
 
@@ -693,15 +667,11 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             }
         }
 
-        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatTenThousand(fansNum))
-
-        refreshTag()
+        mFlowlayout.setFansNum(fansNum)
     }
 
     private fun showCharmsTag(meiLiCntTotal: Int) {
-        mHashMap.put(CHARMS_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
-
-        refreshTag()
+        mFlowlayout.setCharmTotal(meiLiCntTotal)
     }
 
     fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
@@ -748,34 +718,5 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             mFollowIv.isClickable = true
             mFollowIv.background = mUnFollowDrawable
         }
-    }
-
-
-    private fun refreshTag() {
-        mTags.clear()
-        if (mHashMap != null) {
-
-            if (!TextUtils.isEmpty(mHashMap[CHARMS_TAG])) {
-                mTags.add(TagModel(CHARMS_TAG, mHashMap[CHARMS_TAG]))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
-                mTags.add(TagModel(FANS_NUM_TAG, mHashMap[FANS_NUM_TAG]))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[LOCATION_TAG])) {
-                mTags.add(TagModel(LOCATION_TAG, mHashMap[LOCATION_TAG]))
-            }
-
-        }
-        mTagAdapter.setTagDatas(mTags)
-        mTagAdapter.notifyDataChanged()
-    }
-
-    companion object {
-
-        private val CHARMS_TAG = 1
-        private val LOCATION_TAG = 2           //城市标签
-        private val FANS_NUM_TAG = 3      //粉丝数标签
     }
 }

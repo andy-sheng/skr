@@ -186,7 +186,7 @@
                             android:layout_height="@dimen/view_30_dp"
                             android:layout_marginTop="@dimen/view_28_dp"
                             android:layout_marginRight="@dimen/view_20_dp"
-                            android:background="@drawable/person_center_business_icon"
+                            android:visibility="gone"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

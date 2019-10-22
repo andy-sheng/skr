@@ -21,7 +21,6 @@ import android.widget.TextView
 
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
-import com.common.core.avatar.AvatarUtils
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
@@ -35,7 +34,6 @@ import com.common.flowlayout.TagFlowLayout
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
-import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -60,7 +58,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
-import com.component.dialog.BusinessCardDialogView
 import com.component.level.view.NormalLevelView2
 import com.zq.live.proto.Common.ESex
 import com.component.person.utils.StringFromatUtils
@@ -441,16 +438,16 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     private fun showBusinessCard() {
-        val businessCardDialogView = BusinessCardDialogView(context!!, mUserInfoModel!!, fansNum, charmNum)
-        mDialogPlus = DialogPlus.newDialog(activity!!)
-                .setContentHolder(ViewHolder(businessCardDialogView))
-                .setGravity(Gravity.CENTER)
-                .setMargin(U.getDisplayUtils().dip2px(40f), -1, U.getDisplayUtils().dip2px(40f), -1)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create()
-        mDialogPlus!!.show()
+//        val businessCardDialogView = BusinessCardDialogView(context!!, mUserInfoModel!!, fansNum, charmNum)
+//        mDialogPlus = DialogPlus.newDialog(activity!!)
+//                .setContentHolder(ViewHolder(businessCardDialogView))
+//                .setGravity(Gravity.CENTER)
+//                .setMargin(U.getDisplayUtils().dip2px(40f), -1, U.getDisplayUtils().dip2px(40f), -1)
+//                .setContentBackgroundResource(R.color.transparent)
+//                .setOverlayBackgroundResource(R.color.black_trans_80)
+//                .setExpanded(false)
+//                .create()
+//        mDialogPlus!!.show()
     }
 
 

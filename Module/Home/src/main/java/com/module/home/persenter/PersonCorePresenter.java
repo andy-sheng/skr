@@ -14,6 +14,7 @@ import com.common.rxretrofit.ApiResult;
 
 import com.component.person.model.RelationNumModel;
 
+import com.component.person.model.ScoreDetailModel;
 import com.module.home.view.IPersonView;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     mLastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
+                    ScoreDetailModel scoreDetailModel = JSON.parseObject(result.getData().getString("scoreDetail"), ScoreDetailModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
@@ -60,7 +62,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
-                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, scoreDetailModel);
                 } else {
                     mView.loadHomePageFailed();
                 }
