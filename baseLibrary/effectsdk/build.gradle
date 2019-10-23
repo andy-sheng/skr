@@ -31,9 +31,7 @@ apply plugin: 'maven'
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.common.sdk'
         pom.artifactId = 'effectsdk'
-        pom.version = "1.0-${android.defaultPublishConfig}"
     }
 }

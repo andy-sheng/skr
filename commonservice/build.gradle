@@ -12,9 +12,7 @@ apply plugin: 'maven'
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.zq.live'
         pom.artifactId = 'commonservice'
-        pom.version = "1.0-${android.defaultPublishConfig}"
     }
 }
