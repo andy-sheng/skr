@@ -4,34 +4,10 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 apply plugin: 'kotlin-android'
 //kotlin-android-extensions用于扩展绑定关系.
 apply plugin: 'kotlin-android-extensions'
+apply from: "$rootDir/base_lib.gradle"
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
 //    resourcePrefix "core_" //给 Module 内的资源名增加前缀, 避免资源名冲突
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-            }
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
     sourceSets {
         main {
             java.srcDirs += 'src/main/java-gen-db'
@@ -66,21 +42,27 @@ dependencies {
 //    api "com.mi.live:common-sdk:2.0"
     // arouter 解析注解代码，需要在 defaultConfig 中注明 moduleName
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    println dependLibraryFromServer.toBoolean()
     if(dependLibraryFromServer.toBoolean()){
-        api "com.common.sdk:commonsdk:1.0"
-        api "com.common.sdk:mediaengine:1.0"
+        debugApi "com.common.sdk:commonsdk:1.0-debug"
+        releaseApi "com.common.sdk:commonsdk:1.0-release"
+
+        debugApi "com.common.sdk:mediaengine:1.0-debug"
+        releaseApi "com.common.sdk:mediaengine:1.0-release"
+
         // doraemonkit 滴滴开源一款app内调试工具
-        api "com.common.sdk:doraemonkit:1.0"
+        debugApi "com.common.sdk:doraemonkit:1.0-debug"
+        releaseApi "com.common.sdk:doraemonkit:1.0-release"
+
+        debugApi "com.zq.live:commonservice:1.0-debug"
+        releaseApi "com.zq.live:commonservice:1.0-release"
     }else{
         api project(":baseLibrary:commonsdk")
         api project(":baseLibrary:mediaengine")
         // doraemonkit 滴滴开源一款app内调试工具
         api project(":baseLibrary:doraemonkit")
+        api project(":commonservice")
     }
-
-    api project(":commonservice")
-
-
     //api files('libs/protobuf-java-2.6.0.jar')
     // 小米oauth登录用
     //api files('libs/oauth.jar')
@@ -119,6 +101,6 @@ uploadArchives {
         repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.zq.live'
         pom.artifactId = 'commoncore'
-        pom.version = '1.0'
+        pom.version = "1.0-${android.defaultPublishConfig}"
     }
 }

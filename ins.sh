@@ -1,5 +1,28 @@
 #! /bin/bash
-#修改 BuildModule
+#修改 dependLibraryFromServer
+changeDependLibraryFromServer(){
+    echo "changeBuildModule$1"
+	if [[ $1 = true ]]; then
+		sed -ig 's/dependLibraryFromServer=false/dependLibraryFromServer=true/' gradle.properties
+		echo "sed -ig 's/dependLibraryFromServer=true/dependLibraryFromServer=false/' gradle.properties"
+	else
+		sed -ig 's/dependLibraryFromServer=true/dependLibraryFromServer=false/' gradle.properties
+		echo "sed -ig 's/dependLibraryFromServer=false/dependLibraryFromServer=true/' gradle.properties"
+	fi
+	rm gradle.propertiesg
+}
+
+#得到 dependLibraryFromServer
+getDependLibraryFromServer(){
+	result=`grep dependLibraryFromServer=true gradle.properties`
+	echo $result
+	if [[ $result = "dependLibraryFromServer=true" ]]; then
+		dependLibraryFromServer=true
+	else
+		dependLibraryFromServer=false
+	fi
+}
+
 changeBuildModule(){
     echo "changeBuildModule$1"
 	if [[ $1 = true ]]; then
@@ -174,6 +197,7 @@ echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译�
 echo "运行示例 ./ins.sh app release matrix 开启matrix性能监控"
 echo "运行示例 ./ins.sh app release apkcanary 开启apk包体静态检查"
 echo "运行示例 ./ins.sh app test pre 把上一次打的test包安装"
+echo "运行示例 ./ins.sh app test local 不从服务器拉取依赖，只根据本地依赖编译"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
 	exit 1; 
@@ -200,6 +224,8 @@ do
         clean=true
     elif [[ $p = pre ]]; then
         pre=true
+    elif [[ $p = local ]]; then
+        local=true
     fi
 done
 
@@ -212,6 +238,7 @@ echo matrix=$matrix
 echo apkcanary=$apkcanary
 echo clean=$clean
 echo pre=$pre
+echo local=$local
 
 if [ $pre = true ]; then
    if [[ $release = true ]]; then
@@ -240,6 +267,15 @@ if [ $pre = true ]; then
     exit 1;
 fi
 
+if [ $local = true ]; then
+    changeDependLibraryFromServer false
+else
+    changeDependLibraryFromServer true
+fi
+
+getDependLibraryFromServer
+
+echo 当前dependLibraryFromServer=$dependLibraryFromServer
 getBuildModule
 
 echo 当前isBuildModule=$isBuildModule

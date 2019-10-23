@@ -1,5 +1,19 @@
-include ':app', ':commonservice', ':commoncore', ':moduletest'
-include ':baseLibrary:commonsdk', 'baseLibrary:enginesdk', 'baseLibrary:mediaengine',':baseLibrary:effectsdk', ':baseLibrary:android-gif-drawable'
+include ':app'
+
+if (true) {
+    // 从服务器拉取 module 则不参与编译
+    if(compileModuleTest.toBoolean()){
+        include ':moduletest'
+    }
+    include ':commoncore'
+    include ':commonservice'
+    include ':baseLibrary:commonsdk', 'baseLibrary:enginesdk', 'baseLibrary:mediaengine',':baseLibrary:effectsdk', ':baseLibrary:android-gif-drawable'
+    if (arcCloud.toBoolean()) {
+        include ':baseLibrary:arcCloud'
+    }
+    include ':baseLibrary:doraemonkit'
+}
+
 //include ':modulewatch', ':modulechannel'
 include ':Module:Home', ':Module:PlayWays', ':Module:IMKit', ':Module:Feeds', ':Module:Posts'
 
@@ -17,11 +31,7 @@ if (repluginHostEnable.toBoolean()) {
 if (repluginPluginEnable.toBoolean()) {
     include ':baseLibrary:replugin-plugin-gradle', ':baseLibrary:replugin-plugin-library'
 }
-if (arcCloud.toBoolean()) {
-    include ':baseLibrary:arcCloud'
-}
 
-include ':baseLibrary:doraemonkit'
 
 
 

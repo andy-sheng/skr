@@ -1,16 +1,7 @@
 apply plugin: 'com.android.library'
-
+apply from: "$rootDir/base_lib.gradle"
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
     defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         externalNativeBuild {
             ndkBuild {
@@ -18,13 +9,6 @@ android {
                 arguments "NDK_APPLICATION_MK:=src/main/jni/Application.mk"
                 abiFilters "armeabi-v7a"
             }
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -39,9 +23,12 @@ android {
 dependencies {
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
     if(dependLibraryFromServer.toBoolean()){
-        compileOnly "com.common.sdk:commonsdk:1.0"
-        api "com.common.sdk:effectsdk:1.0"
-        api "com.common.sdk:enginesdk:1.0"
+        debugCompileOnly "com.common.sdk:commonsdk:1.0-debug"
+        releaseCompileOnly "com.common.sdk:commonsdk:1.0-release"
+        debugApi "com.common.sdk:effectsdk:1.0-debug"
+        releaseApi "com.common.sdk:effectsdk:1.0-release"
+        debugApi "com.common.sdk:enginesdk:1.0-debug"
+        releaseApi "com.common.sdk:enginesdk:1.0-release"
     }else{
         compileOnly project(":baseLibrary:commonsdk")
         api project(":baseLibrary:effectsdk")
@@ -61,6 +48,6 @@ uploadArchives {
         repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.common.sdk'
         pom.artifactId = 'mediaengine'
-        pom.version = '1.0'
+        pom.version = "1.0-${android.defaultPublishConfig}"
     }
 }

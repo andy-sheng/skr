@@ -1,17 +1,8 @@
 apply plugin: 'com.android.library'
-
+apply from: "$rootDir/base_lib.gradle"
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang',
@@ -53,7 +44,8 @@ android {
 
 dependencies {
     if(dependLibraryFromServer.toBoolean()){
-        compileOnly "com.common.sdk:commonsdk:1.0"
+        debugCompileOnly "com.common.sdk:commonsdk:1.0-debug"
+        releaseCompileOnly "com.common.sdk:commonsdk:1.0-release"
     }else{
         compileOnly project(":baseLibrary:commonsdk")
     }
@@ -61,7 +53,8 @@ dependencies {
 //    api 'io.agora.rtc:full-sdk:2.4.0'
     if (arcCloud.toBoolean()) {
         if(dependLibraryFromServer.toBoolean()){
-            api "com.common.sdk:arcCloud:1.0"
+            debugApi "com.common.sdk:arcCloud:1.0-debug"
+            releaseApi "com.common.sdk:arcCloud:1.0-release"
         }else{
             api project(":baseLibrary:arcCloud")
         }
@@ -75,6 +68,6 @@ uploadArchives {
         repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.common.sdk'
         pom.artifactId = 'enginesdk'
-        pom.version = '1.0'
+        pom.version = "1.0-${android.defaultPublishConfig}"
     }
 }
