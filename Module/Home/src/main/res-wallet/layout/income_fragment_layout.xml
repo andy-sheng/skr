@@ -61,8 +61,8 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/stv_withdraw"
-            android:layout_width="@dimen/view_152_dp"
-            android:layout_height="@dimen/view_40_dp"
+            android:layout_width="@dimen/view_120_dp"
+            android:layout_height="@dimen/view_32_dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_129_dp"
             android:gravity="center"
@@ -133,8 +133,8 @@
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/btn_exchange_diamond"
-                android:layout_width="@dimen/view_128_dp"
-                android:layout_height="@dimen/view_40_dp"
+                android:layout_width="@dimen/view_120_dp"
+                android:layout_height="@dimen/view_32_dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_129_dp"
                 android:background="@drawable/chongzuzuanshi_anniu"
@@ -150,8 +150,8 @@
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/btn_exchange_cash"
-                android:layout_width="@dimen/view_128_dp"
-                android:layout_height="@dimen/view_40_dp"
+                android:layout_width="@dimen/view_120_dp"
+                android:layout_height="@dimen/view_32_dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/view_16_dp"
                 android:layout_marginTop="@dimen/view_129_dp"

@@ -101,8 +101,8 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/recharge_btn"
-            android:layout_width="@dimen/view_152_dp"
-            android:layout_height="@dimen/view_40_dp"
+            android:layout_width="@dimen/view_120_dp"
+            android:layout_height="@dimen/view_32_dp"
             android:layout_below="@+id/feedback_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
