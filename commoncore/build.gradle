@@ -58,10 +58,6 @@ android {
 //            aidl.srcDirs += 'src/main/java-webview'
         }
     }
-
-    dataBinding {
-        enabled = true
-    }
 //    useLibrary 'org.apache.http.legacy'
 }
 
