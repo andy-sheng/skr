@@ -22,6 +22,7 @@ public class JsRegister {
     public static final String FINISH = "finish";
     public static final String CHECK_CAMERA_PERM = "checkCameraPerm";
     public static final String CHECK_AUDIO_PERM = "checkAudioPerm";
+    public static final String GO_BACK = "back";
 
     BridgeWebView mBridgeWebView;
 
@@ -37,7 +38,7 @@ public class JsRegister {
 
     public void register() {
         //所有H5来的需要跳转的都从这里
-        mBridgeWebView.registerHandler("callNative",  new BridgeHandler() {
+        mBridgeWebView.registerHandler("callNative", new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
                 processOpt(data, function);
@@ -47,6 +48,7 @@ public class JsRegister {
 
     /**
      * 这些都运行在 webview 进程 :tools
+     *
      * @param data
      * @param callBackFunction
      */
@@ -88,6 +90,12 @@ public class JsRegister {
                             new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("audio_perm", true)))).toJSONString());
                 }
             }, true);
+        } else if (GO_BACK.equals(opt)) {
+            if (mBridgeWebView != null && mBridgeWebView.canGoBack()) {
+                mBridgeWebView.goBack();
+            } else {
+                mBaseActivity.finish();
+            }
         } else {
             mJsBridgeImpl.noMethed(callBackFunction);
         }
