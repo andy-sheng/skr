@@ -1,3 +1,4 @@
+#! /bin/bash
 #输入进程名，会dump出 prof 到downloads目录
 echo try send trim memory signal to com.zq.live  先保证进程在后台
 

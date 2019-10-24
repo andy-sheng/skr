@@ -1,3 +1,4 @@
+#! /bin/bash
 if [[ $1 == "" ]]; then
 	rm -rf logs/
 	adb pull /sdcard/ZQ_LIVE/logs ./

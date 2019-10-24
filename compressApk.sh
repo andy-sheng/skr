@@ -1,3 +1,4 @@
+#! /bin/bash
 #!/usr/bin/env bash
 
 rm -rf guard-res-apk

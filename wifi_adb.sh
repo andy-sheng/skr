@@ -1,3 +1,4 @@
+#! /bin/bash
 #获得设备id并保存到数组
 getIp(){
     ip=`adb -s $1 shell ifconfig | grep -e "inet addr" | grep "Bcast:"`

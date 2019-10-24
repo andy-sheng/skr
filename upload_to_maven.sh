@@ -1,4 +1,4 @@
-
+#! /bin/bash
 echo "运行示例 ./upload_to_maven.sh debug"
 echo "运行示例 ./upload_to_maven.sh release"
 echo "运行示例 ./upload_to_maven.sh all"

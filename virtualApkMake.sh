@@ -1,3 +1,4 @@
+#! /bin/bash
 if [[ $1 = "withhost" ]]; then
 	./ins.sh app release
 fi

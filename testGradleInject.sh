@@ -1,3 +1,4 @@
+#! /bin/bash
 ./gradlew baseLibrary:my-utils-gradle:uploadArchives
 ./gradlew clean :app:assemblechannel_defaultDebug
 cp app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk ~/Downloads/test.apk

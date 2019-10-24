@@ -1,3 +1,4 @@
+#! /bin/bash
 adb logcat -v time | grep -e "AgoraEngineAdapter"
 exit
 rm -rf ./logs
