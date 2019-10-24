@@ -18,7 +18,13 @@ changeBuildType(){
 }
 
 changeDependLibraryFromServer(){
-	sed -ig 's/dependLibraryFromServer=false/dependLibraryFromServer=true/' gradle.properties
+    echo "dependLibraryFromServer$1"
+	if [[ $1 = debug ]]; then
+		sed -ig 's/dependLibraryFromServer=release/dependLibraryFromServer=debug/' gradle.properties
+	else
+		sed -ig 's/dependLibraryFromServer=debug/dependLibraryFromServer=release/' gradle.properties
+	fi
+	rm gradle.propertiesg
 }
 
 #得到 BuildModule
@@ -44,19 +50,64 @@ upload(){
 	./gradlew :commonservice:uploadArchives
 }
 
-changeDependLibraryFromServer 
+changeDependLibraryFromServer true
 cat gradle.properties
 
-echo $1
-if [[ $1 = debug ]]; then
+for p in $*               #在$*中遍历参数，此时每个参数都是独立的，会遍历$#次
+do
+    if [[ $p = release ]]; then
+        release=true;
+    elif [[ $p = debug ]]; then
+        debug=true
+    elif [[ $p = all ]]; then
+        all=true
+    elif [[ $p = commonsdk ]]; then
+        commonsdk=true
+    elif [[ $p = commoncore ]]; then
+        commoncore=true
+    elif [[ $p = commonservice ]]; then
+        commonservice=true
+    fi
+done
+
+echo release=$release
+echo debug=$debug
+echo all=$all
+echo commonsdk=$commonsdk
+echo commoncore=$commoncore
+echo commonservice=$commonservice
+
+
+if [[ $debug = true ]]; then
 	changeBuildType debug
-	upload
-elif [[ $1 = release ]]; then
-	changeBuildType release
-	upload
-elif [[ $1 = all ]]; then
-	changeBuildType debug
-	upload	
-	changeBuildType release
-	upload
+	if [[ $all = true ]]; then
+	    upload
+	fi
+	if [[ $commonsdk = true ]]; then
+	    ./gradlew :baseLibrary:commonsdk:uploadArchives
+	fi
+	if [[ $commoncore = true ]]; then
+	    ./gradlew :commoncore:uploadArchives
+	fi
+	if [[ $commonservice = true ]]; then
+	    ./gradlew :commonservice:uploadArchives
+	fi
 fi
+if [[ $release = true ]]; then
+	changeBuildType release
+	if [[ $all = true ]]; then
+	    upload
+	fi
+	if [[ $commonsdk = true ]]; then
+	    ./gradlew :baseLibrary:commonsdk:uploadArchives
+	fi
+	if [[ $commoncore = true ]]; then
+	    ./gradlew :commoncore:uploadArchives
+	fi
+	if [[ $commonservice = true ]]; then
+	    ./gradlew :commonservice:uploadArchives
+	fi
+fi
+
+changeBuildType release
+changeDependLibraryFromServer false
