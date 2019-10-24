@@ -6,9 +6,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.userinfo.UserInfoDB;
+import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.ScoreStateModel;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.VipInfo;
+import com.common.core.userinfo.model.VerifyInfo;
 import com.common.log.MyLog;
 
 import java.io.Serializable;
@@ -28,8 +29,9 @@ public class MyUserInfo implements Serializable {
     private int sex = -1;         // 性别
     private String birthday;      // 生日
     private String signature;     // 签名
-    private VipInfo vipInfo;          // vip信息
+    private VerifyInfo vipInfo;       // 加v信息
     private ScoreStateModel ranking;  // 段位信息
+    private HonorInfo honorInfo;      // 会员信息
 
     private Location location;
     private Location location2;
@@ -146,12 +148,20 @@ public class MyUserInfo implements Serializable {
     }
 
 
-    public VipInfo getVipInfo() {
+    public VerifyInfo getVipInfo() {
         return vipInfo;
     }
 
-    public void setVipInfo(VipInfo vipInfo) {
+    public void setVipInfo(VerifyInfo vipInfo) {
         this.vipInfo = vipInfo;
+    }
+
+    public HonorInfo getHonorInfo() {
+        return honorInfo;
+    }
+
+    public void setHonorInfo(HonorInfo honorInfo) {
+        this.honorInfo = honorInfo;
     }
 
     public ScoreStateModel getRanking() {
@@ -176,6 +186,7 @@ public class MyUserInfo implements Serializable {
         myUserInfo.setAgeStage(userInfoModel.getAgeStage());
         myUserInfo.setVipInfo(userInfoModel.getVipInfo());
         myUserInfo.setRanking(userInfoModel.getRanking());
+        myUserInfo.setHonorInfo(userInfoModel.getHonorInfo());
         return myUserInfo;
     }
 
@@ -187,6 +198,7 @@ public class MyUserInfo implements Serializable {
             userInfoModel.setNickname(myUserInfo.getUserNickname());
             userInfoModel.setAvatar(myUserInfo.getAvatar());
             userInfoModel.setVipInfo(myUserInfo.getVipInfo());
+            userInfoModel.setHonorInfo(myUserInfo.getHonorInfo());
             userInfoModel.setBirthday(myUserInfo.getBirthday());
             userInfoModel.setLocation(myUserInfo.getLocation());
             userInfoModel.setLoaction2(myUserInfo.getLocation2());
@@ -224,6 +236,7 @@ public class MyUserInfo implements Serializable {
                 jsonObject.put("ageStage", myUserInfo.getAgeStage());
                 jsonObject.put("vipInfo", myUserInfo.getVipInfo());
                 jsonObject.put("ranking", myUserInfo.getRanking());
+                jsonObject.put("honorInfo", myUserInfo.getHonorInfo());
 
             } catch (JSONException e) {
                 MyLog.d(e);
@@ -253,8 +266,9 @@ public class MyUserInfo implements Serializable {
                 myInfoModel.setLocation(jsonObject.getObject("location", Location.class));
                 myInfoModel.setLocation2(jsonObject.getObject("location2", Location.class));
                 myInfoModel.setAgeStage(jsonObject.getIntValue("ageStage"));
-                myInfoModel.setVipInfo(jsonObject.getObject("vipInfo", VipInfo.class));
+                myInfoModel.setVipInfo(jsonObject.getObject("vipInfo", VerifyInfo.class));
                 myInfoModel.setRanking(jsonObject.getObject("ranking", ScoreStateModel.class));
+                myInfoModel.setHonorInfo(jsonObject.getObject("honorInfo", HonorInfo.class));
             }
         }
         return myInfoModel;
@@ -273,6 +287,7 @@ public class MyUserInfo implements Serializable {
                 ", signature='" + signature + '\'' +
                 ", vipInfo=" + vipInfo +
                 ", ranking=" + ranking +
+                ", honorInfo=" + honorInfo +
                 ", location=" + location +
                 ", location2=" + location2 +
                 ", ageStage=" + ageStage +

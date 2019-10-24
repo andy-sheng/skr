@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.core.userinfo.model.VipInfo;
+import com.common.core.userinfo.model.VerifyInfo;
 import com.zq.live.proto.Common.EVIPType;
 
 import io.rong.imkit.R;
@@ -58,7 +58,7 @@ public class MyConversationListAdapter extends ConversationListAdapter {
         UserInfo target = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
         if (target!=null && !TextUtils.isEmpty(target.getExtra())) {
             JSONObject jsonObject = JSON.parseObject(target.getExtra(), JSONObject.class);
-            VipInfo vipInfo = jsonObject.getObject("vipInfo", VipInfo.class);
+            VerifyInfo vipInfo = jsonObject.getObject("vipInfo", VerifyInfo.class);
             if (vipInfo != null) {
                 if (vipInfo.getVipType() == EVIPType.EVT_RED_V.getValue()) {
                     holder.vipIv.setVisibility(View.VISIBLE);

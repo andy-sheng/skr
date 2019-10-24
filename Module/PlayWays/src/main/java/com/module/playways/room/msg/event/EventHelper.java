@@ -45,7 +45,7 @@ public class EventHelper {
                     , ""
                     , false
                     , 0
-                    , null, null);
+                    , null, null,null);
 
             basePushInfo.setSender(userInfo);
             CommentMsgEvent commentMsgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
@@ -79,7 +79,7 @@ public class EventHelper {
                     , ""
                     , false
                     , 0
-                    , null, null);
+                    , null, null,null);
 
             basePushInfo.setSender(userInfo);
             EventBus.getDefault().post(new DynamicEmojiMsgEvent(basePushInfo, DynamicEmojiMsgEvent.MSG_TYPE_SEND, dynamicModel));
@@ -105,7 +105,7 @@ public class EventHelper {
                 , ""
                 , false
                 , 0
-                , null, null);
+                , null, null,null);
         basePushInfo.setSender(userInfo);
         EventBus.getDefault().post(new AudioMsgEvent(basePushInfo, AudioMsgEvent.MSG_TYPE_SEND, localPath, duration, url));
     }

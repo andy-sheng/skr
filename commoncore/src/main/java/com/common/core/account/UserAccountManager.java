@@ -19,8 +19,9 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.VipInfo;
+import com.common.core.userinfo.model.VerifyInfo;
 import com.common.core.userinfo.remark.RemarkLocalApi;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
@@ -34,7 +35,6 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.zq.live.proto.Common.EVIPType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -353,7 +353,8 @@ public class UserAccountManager {
         int sex = profileJO.getIntValue("sex");
         String birthday = profileJO.getString("birthday");
         String avatar = profileJO.getString("avatar");
-        VipInfo vipInfo = profileJO.getObject("vipInfo", VipInfo.class);
+        VerifyInfo vipInfo = profileJO.getObject("vipInfo", VerifyInfo.class);
+        HonorInfo honorInfo = profileJO.getObject("honorInfo", HonorInfo.class);
         String sign = profileJO.getString("signature");
         Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
         Location location2 = JSON.parseObject(profileJO.getString("location2"), Location.class);
@@ -376,6 +377,7 @@ public class UserAccountManager {
         myUserInfo.setBirthday(birthday);
         myUserInfo.setAvatar(avatar);
         myUserInfo.setVipInfo(vipInfo);
+        myUserInfo.setHonorInfo(honorInfo);
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
         myUserInfo.setLocation2(location2);
