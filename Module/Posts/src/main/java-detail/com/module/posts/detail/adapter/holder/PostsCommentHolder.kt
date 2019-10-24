@@ -17,17 +17,18 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.HonorTextView
+import com.component.person.view.CommonAudioView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.model.PostFirstLevelCommentModel
-import com.component.person.view.CommonAudioView
 import com.module.posts.view.PostsNineGridLayout
 import com.module.posts.view.PostsSongView
 
 class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.IDetailClickListener, val postsOwnerID: Int) : RecyclerView.ViewHolder(itemView) {
     var commenterAvaterIv: AvatarView
-    var nameTv: ExTextView
+    var nameTv: HonorTextView
     var commentTimeTv: ExTextView
     var xinIv: ExImageView
     var likeNum: ExTextView
@@ -244,7 +245,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
         } else {
             ownerTv.visibility = View.GONE
         }
-        nameTv.text = model.commentUser?.nicknameRemark
+        nameTv.setHonorText(model.commentUser?.nicknameRemark!!, model.commentUser?.honorInfo)
         commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
                 ?: 0, System.currentTimeMillis())
         likeNum.text = model.comment?.likedCnt.toString()

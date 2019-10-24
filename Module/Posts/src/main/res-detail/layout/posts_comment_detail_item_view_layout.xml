@@ -14,7 +14,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExTextView
+    <com.component.busilib.view.HonorTextView
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
