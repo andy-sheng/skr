@@ -13,8 +13,6 @@ class HonorInfo : Serializable {
     var startAt: Long = 0L
     @JSONField(name = "endAt")
     var endAt: Long = 0L
-    @JSONField(name = "status")
-    var status: Int = 0
     @JSONField(name = "honorType")
     var honorType: Int = 0
     @JSONField(name = "leftDays")
@@ -22,8 +20,7 @@ class HonorInfo : Serializable {
 
     // 是否会员
     fun isHonor(): Boolean {
-        if (status == EHS_HAS_ACTIVE && honorType != EHT_NO_COMMON) {
-            //开通会员服务，且是会员
+        if (honorType != EHT_NO_COMMON) {
             return true
         }
         return false
@@ -33,10 +30,6 @@ class HonorInfo : Serializable {
         // honorType的类型
         const val EHT_NO_COMMON = 0  //不是会员
         const val EHT_COMMON = 1  //普通会员
-
-        // status的值
-        const val EHS_UN_ACTIVE = 1   //未开通会员服务
-        const val EHS_HAS_ACTIVE = 2   //已开通会员
 
         fun parseFromPB(userID: Int, honorInfo: com.zq.live.proto.Common.HonorInfo?): HonorInfo {
             val result = HonorInfo()
