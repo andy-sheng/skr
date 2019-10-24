@@ -21,8 +21,7 @@ import com.component.relation.adapter.RelationAdapter;
 public class RelationHolderView extends RecyclerView.ViewHolder {
     ConstraintLayout mContent;
     AvatarView mAvatarIv;
-    NickNameView mNameTv;
-    ImageView mSexIv;
+    NickNameView mNickNameTv;
     ExTextView mFollowTv;
     ExTextView mStatusTv;
 
@@ -36,8 +35,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.mMode = mode;
         mContent = itemView.findViewById(R.id.content);
         mAvatarIv = itemView.findViewById(R.id.avatar_iv);
-        mSexIv = itemView.findViewById(R.id.sex_iv);
-        mNameTv = itemView.findViewById(R.id.name_tv);
+        mNickNameTv = itemView.findViewById(R.id.nickname_tv);
         mFollowTv = itemView.findViewById(R.id.follow_tv);
         mStatusTv = itemView.findViewById(R.id.status_tv);
 
@@ -65,8 +63,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.userInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mNameTv.setAllStateText(userInfoModel.getNicknameRemark(), userInfoModel.getSex(), userInfoModel.getHonorInfo());
-        mSexIv.setVisibility(View.GONE);
+        mNickNameTv.setAllStateText(userInfoModel.getNicknameRemark(), userInfoModel.getSex(), userInfoModel.getHonorInfo());
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);

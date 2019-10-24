@@ -27,7 +27,7 @@ import com.module.posts.view.PostsSongView
 
 class PostsSecondLevelCommentHolder(itemView: View, val mIDetailClickListener: PostsCommentDetailAdapter.ICommentDetailClickListener, val mPostsOwnerID: Int) : RecyclerView.ViewHolder(itemView) {
     var commenterAvaterIv: AvatarView
-    var nameTv: NickNameView
+    var nickNameView: NickNameView
     val ownerTv: ExTextView
     var commentTimeTv: ExTextView
     var contentTv: ExTextView
@@ -42,7 +42,7 @@ class PostsSecondLevelCommentHolder(itemView: View, val mIDetailClickListener: P
 
     init {
         commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
-        nameTv = itemView.findViewById(R.id.name_tv)
+        nickNameView = itemView.findViewById(R.id.nickname_view)
         ownerTv = itemView.findViewById(R.id.owner_tv)
         commentTimeTv = itemView.findViewById(R.id.comment_time_tv)
         contentTv = itemView.findViewById(R.id.content_tv)
@@ -155,7 +155,7 @@ class PostsSecondLevelCommentHolder(itemView: View, val mIDetailClickListener: P
         } else {
             ownerTv.visibility = View.GONE
         }
-        nameTv.setHonorText(model.commentUser.nicknameRemark!!, model.commentUser.honorInfo)
+        nickNameView.setHonorText(model.commentUser.nicknameRemark!!, model.commentUser.honorInfo)
 
         commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment.createdAt, System.currentTimeMillis())
 

@@ -1,6 +1,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_70_dp">
@@ -30,36 +31,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.component.busilib.view.NickNameView
-        android:id="@+id/name_tv"
+        android:id="@+id/nickname_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold"
+        NickNameView:textColor="#0C2275"
+        NickNameView:textSize="@dimen/textsize_16_dp"
+        NickNameView:textStyle="BOLD"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/status_tv"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toRightOf="@id/avatar_iv"
-        app:layout_constraintRight_toLeftOf="@id/sex_iv"
+        app:layout_constraintRight_toLeftOf="@id/follow_tv"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
-
-
-    <ImageView
-        android:id="@+id/sex_iv"
-        android:layout_width="@dimen/view_16_dp"
-        android:layout_height="@dimen/view_16_dp"
-        android:layout_marginLeft="@dimen/view_3_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintBottom_toBottomOf="@id/name_tv"
-        app:layout_constraintLeft_toRightOf="@id/name_tv"
-        app:layout_constraintRight_toLeftOf="@id/follow_tv"
-        app:layout_constraintTop_toTopOf="@id/name_tv" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/status_tv"
@@ -70,8 +56,8 @@
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/name_tv"
-        app:layout_constraintTop_toBottomOf="@id/name_tv" />
+        app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
+        app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
 
 
     <View

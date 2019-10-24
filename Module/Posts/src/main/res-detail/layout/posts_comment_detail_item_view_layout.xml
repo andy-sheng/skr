@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,22 +16,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.component.busilib.view.NickNameView
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:id="@+id/name_tv"
+        android:id="@+id/nickname_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_5_dp"
         android:layout_marginLeft="@dimen/view_11_dp"
-        android:textColor="@color/black_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold"
+        android:layout_marginRight="@dimen/view_5_dp"
+        NickNameView:textColor="@color/black_trans_80"
+        NickNameView:textSize="@dimen/textsize_14_dp"
+        NickNameView:textStyle="BOLD"
         app:layout_constrainedWidth="true"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintRight_toLeftOf="@id/owner_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toRightOf="@+id/commenter_avater_iv"
+        app:layout_constraintRight_toLeftOf="@id/owner_tv"
         app:layout_constraintTop_toTopOf="@+id/commenter_avater_iv" />
 
     <com.common.view.ex.ExTextView
@@ -38,17 +36,17 @@
         android:layout_width="@dimen/view_30_dp"
         android:layout_height="@dimen/view_18_dp"
         android:layout_marginRight="@dimen/view_5_dp"
-        android:text="楼主"
         android:gravity="center"
+        android:text="楼主"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_10_dp"
+        android:visibility="gone"
         app:bl_corners_radius="@dimen/view_5_dp"
         app:bl_solid_color="#4A90E2"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/name_tv"
-        app:layout_constraintBottom_toBottomOf="@id/name_tv"
-        app:layout_constraintLeft_toRightOf="@id/name_tv"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@id/nickname_view"
+        app:layout_constraintLeft_toRightOf="@id/nickname_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nickname_view" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/comment_time_tv"
@@ -69,7 +67,7 @@
         android:layout_marginRight="@dimen/view_20_dp"
         android:text=""
         android:textColor="@color/black_trans_50"
-        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/nickname_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commenter_avater_iv" />
 
@@ -86,7 +84,7 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/nickname_view"
         app:layout_constraintTop_toBottomOf="@+id/title_barrier" />
 
     <com.module.posts.view.PostsSongView
@@ -94,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintLeft_toLeftOf="@id/nickname_view"
         app:layout_constraintTop_toBottomOf="@id/title_barrier" />
 
     <com.module.posts.view.PostsNineGridLayout
@@ -102,8 +100,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_10_dp"
-        app:layout_constraintLeft_toLeftOf="@id/name_tv"
         android:layout_marginRight="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@id/nickname_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_barrier"
         app:spacing="@dimen/view_8_dp" />
@@ -121,7 +119,7 @@
         android:layout_height="@dimen/view_1_dp"
         android:layout_marginTop="@dimen/view_10_dp"
         android:background="@color/black_trans_10"
-        app:layout_constraintLeft_toLeftOf="@+id/name_tv"
+        app:layout_constraintLeft_toLeftOf="@+id/nickname_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posts_barrier" />
 

@@ -28,7 +28,7 @@ import com.module.posts.view.PostsSongView
 
 class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.IDetailClickListener, val postsOwnerID: Int) : RecyclerView.ViewHolder(itemView) {
     var commenterAvaterIv: AvatarView
-    var nameTv: NickNameView
+    var nicknameTv: NickNameView
     var commentTimeTv: ExTextView
     var xinIv: ExImageView
     var likeNum: ExTextView
@@ -48,7 +48,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
     init {
         postsSongView = itemView.findViewById(R.id.posts_song_view)
         commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
-        nameTv = itemView.findViewById(R.id.name_tv)
+        nicknameTv = itemView.findViewById(R.id.nickname_tv)
         commentTimeTv = itemView.findViewById(R.id.comment_time_tv)
         xinIv = itemView.findViewById(R.id.xin_iv)
         likeNum = itemView.findViewById(R.id.like_num)
@@ -245,7 +245,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
         } else {
             ownerTv.visibility = View.GONE
         }
-        nameTv.setHonorText(model.commentUser?.nicknameRemark!!, model.commentUser?.honorInfo)
+        nicknameTv.setHonorText(model.commentUser?.nicknameRemark!!, model.commentUser?.honorInfo)
         commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
                 ?: 0, System.currentTimeMillis())
         likeNum.text = model.comment?.likedCnt.toString()

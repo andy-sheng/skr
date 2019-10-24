@@ -49,4 +49,18 @@
         <attr name="chartMarginLeft" format="dimension" />
         <attr name="chartBackColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="NickNameView">
+        <!-- TextView 颜色 -->
+        <attr name="textColor" format="color" />
+        <!-- TextView 字体大小 -->
+        <attr name="textSize" format="dimension" />
+        <!-- TextView 字体风格, 对应leftType_TextView-->
+        <attr name="textStyle" format="enum">
+            <enum name="NORMAL" value="0" />
+            <enum name="BOLD" value="1" />
+            <enum name="ITALIC" value="2" />
+            <enum name="BOLD_ITALIC" value="3" />
+        </attr>
+    </declare-styleable>
 </resources>
