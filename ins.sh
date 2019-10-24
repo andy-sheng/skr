@@ -197,12 +197,12 @@ echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译�
 echo "运行示例 ./ins.sh app release matrix 开启matrix性能监控"
 echo "运行示例 ./ins.sh app release apkcanary 开启apk包体静态检查"
 echo "运行示例 ./ins.sh app test pre 把上一次打的test包安装"
-echo "运行示例 ./ins.sh app test local 不从服务器拉取依赖，只根据本地依赖编译"
+echo "运行示例 ./ins.sh app test server  不从服务器拉取依赖，只根据本地依赖编译"
+echo "运行示例 ./ins.sh app test server refresh 强制更新依赖"
 if [ $# -le 0 ] ; then 
-	echo "输入需要编译的模块名" 
+	echo "请根据示例输入参数"
 	exit 1; 
 fi
-
 
 for p in $*               #在$*中遍历参数，此时每个参数都是独立的，会遍历$#次
 do
@@ -224,8 +224,10 @@ do
         clean=true
     elif [[ $p = pre ]]; then
         pre=true
-    elif [[ $p = local ]]; then
-        local=true
+    elif [[ $p = server ]]; then
+        server=true
+    elif [[ $p = refresh ]]; then
+        refresh=true
     fi
 done
 
@@ -238,7 +240,8 @@ echo matrix=$matrix
 echo apkcanary=$apkcanary
 echo clean=$clean
 echo pre=$pre
-echo local=$local
+echo server=$server
+echo refresh=$refresh
 
 if [ $pre = true ]; then
    if [[ $release = true ]]; then
@@ -267,10 +270,10 @@ if [ $pre = true ]; then
     exit 1;
 fi
 
-if [ $local = true ]; then
-    changeDependLibraryFromServer false
-else
+if [ $server = true ]; then
     changeDependLibraryFromServer true
+else
+    changeDependLibraryFromServer false
 fi
 
 getDependLibraryFromServer
@@ -298,6 +301,12 @@ echo MatrixEnable=$MatrixEnable
 echo rm -rf app/build/outputs/channels
 rm -rf app/build/outputs/channels
 
+rd=''
+if [ $refresh = true ]; then
+    echo "强制检查所有gradle library的依赖 会比较慢 在确定快照库有更新时可以加这个参数"
+    rd='--refresh-dependencies'
+    echo "依赖更新结束"
+fi
 
 if [[ $1 = "app" ]]; then
 	if [[ $isBuildModule = false ]]; then
@@ -312,8 +321,8 @@ if [[ $1 = "app" ]]; then
 		echo "编译app release  加 --profile 会输出耗时报表"
 		./gradlew clean
 		if [[ $all = true ]];then
-		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels"
-		    ./gradlew :app:assembleReleaseChannels
+		    echo "编译release所有渠道 ./gradlew :app:assembleReleaseChannels $rd"
+		    ./gradlew :app:assembleReleaseChannels $rd
 		    ./apk_canary.sh
             #拷贝所有包到主目录
             rm -rf ./publish
@@ -327,8 +336,8 @@ if [[ $1 = "app" ]]; then
 			    echo "注意在 release all 版本中开启了 Matrix，确认是否为期望的操作"
 			fi
 		else
-		    echo "只编译release default渠道 ./gradlew :app:assembleReleaseChannels --stacktrace"
-		    ./gradlew :app:assembleReleaseChannels --stacktrace
+		    echo "只编译release default渠道 ./gradlew :app:assembleReleaseChannels --stacktrace $rd"
+		    ./gradlew :app:assembleReleaseChannels --stacktrace $rd
 		    if [ $apkcanary = true ]; then
 		        ./apk_canary.sh
 		    fi
@@ -345,13 +354,13 @@ if [[ $1 = "app" ]]; then
             #myandroidlog.sh  com.zq.live
 		fi
 	else
-		echo "编译app debug  加 --profile 会输出耗时报表 ./gradlew :app:assembleDebugChannels --stacktrace"
+		echo "编译app debug  加 --profile 会输出耗时报表 ./gradlew :app:assembleDebugChannels --stacktrace $rd"
 		if [[ $clean = true ]]; then
 		    echo "clean一下"
 		    ./gradlew :app:clean
 		fi
 		rm -rf app/build/outputs/apk
-		./gradlew :app:assembleDebugChannels --stacktrace
+		./gradlew :app:assembleDebugChannels --stacktrace $rd
         if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
             if [ $apkcanary = true ]; then
 		           ./apk_canary.sh
@@ -393,3 +402,5 @@ else
 		adb install -r $1/build/outputs/apk/debug/$1-debug.apk
 	fi
 fi
+
+changeDependLibraryFromServer false
