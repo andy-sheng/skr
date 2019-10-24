@@ -25,7 +25,7 @@ class HonorTextView : ExTextView {
                 .append(name)
 
         honorInfo?.let {
-            if (it.status == HonorInfo.EHS_HAS_ACTIVE && it.honorType == HonorInfo.EHT_COMMON) {
+            if (it.honorType == HonorInfo.EHT_COMMON) {
                 vipDrawable = U.getDrawable(R.drawable.person_honor_icon)
             }
         }
@@ -56,7 +56,7 @@ class HonorTextView : ExTextView {
         }
 
         honorInfo?.let {
-            if (it.status == HonorInfo.EHS_HAS_ACTIVE && it.honorType == HonorInfo.EHT_COMMON) {
+            if (it.honorType == HonorInfo.EHT_COMMON) {
                 vipDrawable = U.getDrawable(R.drawable.person_honor_icon)
             }
         }
