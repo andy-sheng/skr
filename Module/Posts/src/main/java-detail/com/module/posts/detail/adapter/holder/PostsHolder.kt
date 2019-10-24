@@ -21,7 +21,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.view.AvatarView
-import com.component.busilib.view.HonorTextView
+import com.component.busilib.view.NickNameView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
@@ -33,7 +33,7 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
     val TAG = "PostsHolder"
     var followTv: ExTextView
     var timeTv: TextView
-    var nicknameTv: HonorTextView
+    var nicknameTv: NickNameView
     var avatarIv: AvatarView
     var content: ExpandTextView
     var postsAudioView: PostsAudioView

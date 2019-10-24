@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_18_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/sex_iv"
+        app:layout_constraintTop_toTopOf="@id/avatar_iv" />
+
+    <ImageView
+        android:id="@+id/sex_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/name_tv"
+        app:layout_constraintLeft_toRightOf="@id/name_tv"
+        app:layout_constraintRight_toLeftOf="@id/honor_iv"
+        app:layout_constraintTop_toTopOf="@id/name_tv"
+        app:layout_goneMarginRight="@dimen/view_10_dp" />
+
+    <ImageView
+        android:id="@+id/honor_iv"
+        android:layout_width="@dimen/view_23_dp"
+        android:layout_height="@dimen/view_14_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/person_honor_icon"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/name_tv"
+        app:layout_constraintLeft_toRightOf="@id/sex_iv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/name_tv" />
+
+</merge>

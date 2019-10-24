@@ -28,7 +28,7 @@
         app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
         app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
 
-    <com.component.busilib.view.HonorTextView
+    <com.component.busilib.view.NickNameView
         android:ellipsize="end"
         android:maxWidth="@dimen/view_270_dp"
         android:maxLines="1"

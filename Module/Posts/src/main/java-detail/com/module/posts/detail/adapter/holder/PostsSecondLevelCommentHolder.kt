@@ -16,7 +16,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
-import com.component.busilib.view.HonorTextView
+import com.component.busilib.view.NickNameView
 import com.component.person.view.CommonAudioView
 import com.module.RouterConstants
 import com.module.posts.R
@@ -27,7 +27,7 @@ import com.module.posts.view.PostsSongView
 
 class PostsSecondLevelCommentHolder(itemView: View, val mIDetailClickListener: PostsCommentDetailAdapter.ICommentDetailClickListener, val mPostsOwnerID: Int) : RecyclerView.ViewHolder(itemView) {
     var commenterAvaterIv: AvatarView
-    var nameTv: HonorTextView
+    var nameTv: NickNameView
     val ownerTv: ExTextView
     var commentTimeTv: ExTextView
     var contentTv: ExTextView

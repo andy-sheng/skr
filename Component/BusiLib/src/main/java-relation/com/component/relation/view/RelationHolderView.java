@@ -15,13 +15,13 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
-import com.component.busilib.view.HonorTextView;
+import com.component.busilib.view.NickNameView;
 import com.component.relation.adapter.RelationAdapter;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     ConstraintLayout mContent;
     AvatarView mAvatarIv;
-    HonorTextView mNameTv;
+    NickNameView mNameTv;
     ImageView mSexIv;
     ExTextView mFollowTv;
     ExTextView mStatusTv;

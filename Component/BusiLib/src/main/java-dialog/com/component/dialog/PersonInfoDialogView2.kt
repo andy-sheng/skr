@@ -11,9 +11,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 
@@ -28,9 +26,6 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.flowlayout.FlowLayout
-import com.common.flowlayout.TagAdapter
-import com.common.flowlayout.TagFlowLayout
 import com.common.log.MyLog
 import com.common.notification.event.FollowNotifyEvent
 import com.common.rxretrofit.ApiManager
@@ -47,6 +42,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.R
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.NickNameView
 import com.component.busilib.view.MarqueeTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.ImageBrowseView
@@ -58,24 +54,17 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.component.level.view.NormalLevelView2
-import com.zq.live.proto.Common.ESex
-import com.component.person.utils.StringFromatUtils
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
-import com.component.person.model.TagModel
 import com.component.person.view.PersonMoreOpView
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-import java.util.ArrayList
-import java.util.HashMap
-
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.view.PersonTagView
-import kotlinx.android.synthetic.main.photo_item_view_layout.view.*
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
 
@@ -93,11 +82,10 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mMoreBtn: ExImageView
 
     lateinit var mLevelView: NormalLevelView2
-    lateinit var mNameTv: ExTextView
-    lateinit var mSexIv: ImageView
+    lateinit var mHonorTv: NickNameView
     lateinit var mSignTv: MarqueeTextView
-    lateinit var mVipTv: TextView
-    lateinit var mFlowlayout: PersonTagView
+    lateinit var mVerifyTv: TextView
+    lateinit var mPersonTagView: PersonTagView
 
     lateinit var mFunctionArea: ConstraintLayout
     lateinit var mInviteIv: ExTextView
@@ -360,12 +348,10 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mAvatarIv = this.findViewById(R.id.avatar_iv)
         mMoreBtn = this.findViewById(R.id.more_btn)
         mLevelView = this.findViewById(R.id.level_view)
-        mNameTv = this.findViewById(R.id.name_tv)
-        mNameTv = this.findViewById(R.id.name_tv)
-        mSexIv = this.findViewById(R.id.sex_iv)
+        mHonorTv = this.findViewById(R.id.honor_tv)
         mSignTv = this.findViewById(R.id.sign_tv)
-        mVipTv = this.findViewById(R.id.vip_tv)
-        mFlowlayout = this.findViewById(R.id.flowlayout)
+        mVerifyTv = this.findViewById(R.id.verify_tv)
+        mPersonTagView = this.findViewById(R.id.person_tag_view)
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -626,33 +612,19 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)
                             .build())
-
-            mNameTv.text = model.nicknameRemark
+            mHonorTv.setAllStateText(model.nicknameRemark, model.sex, model.honorInfo)
             mSignTv.text = model.signature
 
             if (model.vipInfo != null && model.vipInfo.vipType > 0) {
                 mSignTv.visibility = View.GONE
-                mVipTv.visibility = View.VISIBLE
-                mVipTv.text = model.vipInfo.vipDesc
+                mVerifyTv.visibility = View.VISIBLE
+                mVerifyTv.text = model.vipInfo.vipDesc
             } else {
                 mSignTv.visibility = View.VISIBLE
-                mVipTv.visibility = View.GONE
+                mVerifyTv.visibility = View.GONE
             }
 
-            when {
-                model.sex == ESex.SX_MALE.value -> {
-                    mSexIv.visibility = View.VISIBLE
-                    mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
-                }
-                model.sex == ESex.SX_FEMALE.value -> {
-                    mSexIv.visibility = View.VISIBLE
-                    mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
-                }
-                else -> mSexIv.visibility = View.GONE
-            }
-
-
-            mFlowlayout.setLocation(model.location)
+            mPersonTagView.setLocation(model.location)
         }
     }
 
@@ -667,11 +639,11 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             }
         }
 
-        mFlowlayout.setFansNum(fansNum)
+        mPersonTagView.setFansNum(fansNum)
     }
 
     private fun showCharmsTag(meiLiCntTotal: Int) {
-        mFlowlayout.setCharmTotal(meiLiCntTotal)
+        mPersonTagView.setCharmTotal(meiLiCntTotal)
     }
 
     fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {

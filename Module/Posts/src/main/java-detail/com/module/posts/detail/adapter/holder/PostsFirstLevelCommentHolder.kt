@@ -13,7 +13,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
-import com.component.busilib.view.HonorTextView
+import com.component.busilib.view.NickNameView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
@@ -25,7 +25,7 @@ import com.module.posts.view.PostsSongView
 
 class PostsFirstLevelCommentHolder(itemView: View, val mIDetailClickListener: PostsCommentDetailAdapter.ICommentDetailClickListener) : RecyclerView.ViewHolder(itemView) {
     var timeTv: TextView
-    var nicknameTv: HonorTextView
+    var nicknameTv: NickNameView
     var avatarIv: AvatarView
     var content: ExpandTextView
     var postsAudioView: PostsAudioView
