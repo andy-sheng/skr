@@ -29,7 +29,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExTextView
+    <com.component.busilib.view.HonorTextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"

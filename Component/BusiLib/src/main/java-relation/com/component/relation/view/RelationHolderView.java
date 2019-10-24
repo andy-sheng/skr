@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -16,14 +15,13 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.zq.live.proto.Common.ESex;
+import com.component.busilib.view.HonorTextView;
 import com.component.relation.adapter.RelationAdapter;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     ConstraintLayout mContent;
     AvatarView mAvatarIv;
-    ExTextView mNameTv;
+    HonorTextView mNameTv;
     ImageView mSexIv;
     ExTextView mFollowTv;
     ExTextView mStatusTv;
@@ -67,16 +65,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.userInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mNameTv.setText(userInfoModel.getNicknameRemark());
-        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
-            mSexIv.setVisibility(View.VISIBLE);
-            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
-        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
-            mSexIv.setVisibility(View.VISIBLE);
-            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
-        } else {
-            mSexIv.setVisibility(View.GONE);
-        }
+        mNameTv.setAllStateText(userInfoModel.getNicknameRemark(), userInfoModel.getSex(), userInfoModel.getHonorInfo());
+        mSexIv.setVisibility(View.GONE);
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
