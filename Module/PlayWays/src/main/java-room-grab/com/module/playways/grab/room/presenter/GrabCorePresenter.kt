@@ -1572,7 +1572,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 if (t > 1 && (t - 1) % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
                     //拉取最新的星级数据
                     launch {
-                        val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq-1) }
+                        val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq - 1) }
                         if (result.errno == 0) {
                             val cnt = result.data.getIntValue("starCnt")
 //                            var continueShow = false
@@ -2165,11 +2165,14 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             val commentModel = CommentTextModel()
             commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val stringBuilder: SpannableStringBuilder
-            val spanUtils = SpanUtils()
+            val nameBuilder = SpanUtils()
                     .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+
+            val stringBuilder = SpanUtils()
                     .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            stringBuilder = spanUtils.create()
+                    .create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
@@ -2179,21 +2182,24 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         val commentModel = CommentTextModel()
         commentModel.userInfo = playerInfoModel.userInfo
         commentModel.avatarColor = CommentModel.AVATAR_COLOR
-        val stringBuilder: SpannableStringBuilder
-        if (playerInfoModel.userInfo.userId == UserAccountManager.SYSTEM_GRAB_ID) {
-            stringBuilder = SpanUtils()
-                    .append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+        val nameBuilder = SpanUtils()
+                .append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                .create()
+        commentModel.nameBuilder = nameBuilder
+
+        val stringBuilder = when {
+            playerInfoModel.userInfo.userId != UserAccountManager.SYSTEM_GRAB_ID -> {
+                val spanUtils = SpanUtils()
+                        .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                if (BuildConfig.DEBUG) {
+                    spanUtils.append(" 角色为" + playerInfoModel.role)
+                            .append(" 在线状态为" + playerInfoModel.isOnline)
+                }
+                spanUtils.create()
+            }
+            else -> SpanUtils()
                     .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                     .create()
-        } else {
-            val spanUtils = SpanUtils()
-                    .append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                    .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            if (BuildConfig.DEBUG) {
-                spanUtils.append(" 角色为" + playerInfoModel.role)
-                        .append(" 在线状态为" + playerInfoModel.isOnline)
-            }
-            stringBuilder = spanUtils.create()
         }
         commentModel.stringBuilder = stringBuilder
         EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))

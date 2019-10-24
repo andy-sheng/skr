@@ -31,14 +31,22 @@ class CommentTextModel : CommentModel() {
             }
             if (roomData != null && (roomData.gameType == GameModeType.GAME_MODE_GRAB || roomData.gameType == GameModeType.GAME_MODE_RACE)) {
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
-                    val ssb = SpanUtils()
+                    val nameSsb = SpanUtils()
                             .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
+                            .create()
+                    commentModel.nameBuilder = nameSsb
+
+                    val ssb = SpanUtils()
                             .append(event.text).setForegroundColor(GRAB_TEXT_COLOR)
                             .create()
                     commentModel.stringBuilder = ssb
                 } else {
-                    val ssb = SpanUtils()
+                    val nameSsb = SpanUtils()
                             .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                            .create()
+                    commentModel.nameBuilder = nameSsb
+
+                    val ssb = SpanUtils()
                             .append("@ ").setForegroundColor(GRAB_TEXT_COLOR)
                             .append(event.mUserInfoModelList[0].nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                             .append(event.text).setForegroundColor(GRAB_TEXT_COLOR)
@@ -46,6 +54,11 @@ class CommentTextModel : CommentModel() {
                     commentModel.stringBuilder = ssb
                 }
             } else {
+                val nameSsb = SpanUtils()
+                        .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                        .create()
+                commentModel.nameBuilder = nameSsb
+
                 val ssb = SpanUtils()
                         .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
                         .append(event.text).setForegroundColor(RANK_TEXT_COLOR)

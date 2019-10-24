@@ -682,13 +682,16 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val commentModel = CommentTextModel()
             commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val stringBuilder: SpannableStringBuilder
-            val spanUtils = SpanUtils()
-                    .append(userInfoModel.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+            val nameBuilder = SpanUtils()
+                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+
+            val stringBuilder = SpanUtils()
                     .append("给").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                     .append(singer.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            stringBuilder = spanUtils.create()
+                    .create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
@@ -737,11 +740,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val commentModel = CommentTextModel()
             commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val stringBuilder: SpannableStringBuilder
-            val spanUtils = SpanUtils()
+            val nameBuilder = SpanUtils()
                     .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                    .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            stringBuilder = spanUtils.create()
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+            val stringBuilder = SpanUtils()
+                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR).create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }

@@ -31,10 +31,10 @@ class CommentAudioModel : CommentModel() {
             } else {
                 commentModel.userInfo = UserInfoModel.parseFromPB(event.mInfo.sender)
             }
-            val ssb = SpanUtils()
+            val nameBuilder = SpanUtils()
                     .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
                     .create()
-            commentModel.stringBuilder = ssb
+            commentModel.nameBuilder = nameBuilder
             commentModel.localPath = event.localPath
             commentModel.duration = event.duration
             commentModel.msgUrl = event.msgUrl
