@@ -66,7 +66,7 @@ class NickNameView : ConstraintLayout {
     /**
      * 昵称和VIP信息
      */
-    fun setHonorText(name: String, honorInfo: HonorInfo? = null) {
+    fun setHonorText(name: String?, honorInfo: HonorInfo? = null) {
         initNameTv()
         sexIv.visibility = View.GONE
         nameTv.visibility = View.VISIBLE
@@ -82,7 +82,7 @@ class NickNameView : ConstraintLayout {
     /**
      * 昵称，性别和VIP信息
      */
-    fun setAllStateText(name: String, sex: Int?, honorInfo: HonorInfo?) {
+    fun setAllStateText(name: String?, sex: Int?, honorInfo: HonorInfo?) {
         initNameTv()
         nameTv.visibility = View.VISIBLE
         nameTv.text = name
