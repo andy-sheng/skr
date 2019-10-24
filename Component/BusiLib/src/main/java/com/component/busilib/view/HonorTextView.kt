@@ -18,7 +18,27 @@ class HonorTextView : ExTextView {
     var sexDrawable: Drawable? = null
     var vipDrawable: Drawable? = null
 
-    fun setText(name: String, sex: Int? = null, honorInfo: HonorInfo? = null) {
+    fun setHonorText(name: String, honorInfo: HonorInfo? = null) {
+        vipDrawable = null
+
+        val spanUtils = SpanUtils()
+                .append(name)
+
+        honorInfo?.let {
+            if (it.status == HonorInfo.EHS_HAS_ACTIVE && it.honorType == HonorInfo.EHT_COMMON) {
+                vipDrawable = U.getDrawable(R.drawable.person_honor_icon)
+            }
+        }
+
+        vipDrawable?.let {
+            spanUtils.appendImage(it, SpanUtils.ALIGN_CENTER)
+        }
+
+        val stringBuilder = spanUtils.create()
+        text = stringBuilder
+    }
+
+    fun setAllStateText(name: String, sex: Int?, honorInfo: HonorInfo?) {
         sexDrawable = null
         vipDrawable = null
 
@@ -37,7 +57,7 @@ class HonorTextView : ExTextView {
 
         honorInfo?.let {
             if (it.status == HonorInfo.EHS_HAS_ACTIVE && it.honorType == HonorInfo.EHT_COMMON) {
-                vipDrawable = U.getDrawable(R.drawable.person_vip_icon)
+                vipDrawable = U.getDrawable(R.drawable.person_honor_icon)
             }
         }
 
