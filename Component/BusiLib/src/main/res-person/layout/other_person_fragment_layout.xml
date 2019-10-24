@@ -143,7 +143,7 @@
                             app:layout_constraintRight_toRightOf="@id/level_bg" />
 
                         <TextView
-                            android:id="@+id/vip_tv"
+                            android:id="@+id/verify_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_18_dp"
                             android:layout_marginTop="@dimen/view_8_dp"
@@ -178,11 +178,11 @@
                             app:layout_constraintTop_toBottomOf="@id/level_bg" />
 
                         <android.support.constraint.Barrier
-                            android:id="@+id/sign_vip_barrier"
+                            android:id="@+id/sign_verify_barrier"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:barrierDirection="bottom"
-                            app:constraint_referenced_ids="vip_tv,sign_tv" />
+                            app:constraint_referenced_ids="verify_tv,sign_tv" />
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/user_info_bg"
@@ -195,7 +195,7 @@
                             app:bl_solid_color="#7088FF"
                             app:layout_constrainedHeight="true"
                             app:layout_constraintBottom_toBottomOf="@id/bottom_divider"
-                            app:layout_constraintTop_toBottomOf="@id/sign_vip_barrier" />
+                            app:layout_constraintTop_toBottomOf="@id/sign_verify_barrier" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/name_tv"
@@ -215,16 +215,16 @@
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/vip_iv"
+                            app:layout_constraintRight_toLeftOf="@id/honor_iv"
                             app:layout_constraintTop_toTopOf="@id/user_info_bg" />
 
                         <ImageView
-                            android:id="@+id/vip_iv"
+                            android:id="@+id/honor_iv"
                             android:layout_width="@dimen/view_24_dp"
                             android:layout_height="@dimen/view_14_dp"
                             android:layout_marginLeft="@dimen/view_10_dp"
                             android:layout_marginRight="@dimen/view_10_dp"
-                            android:background="@drawable/person_vip_icon"
+                            android:background="@drawable/person_honor_icon"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@id/name_tv"
                             app:layout_constraintLeft_toRightOf="@id/name_tv"

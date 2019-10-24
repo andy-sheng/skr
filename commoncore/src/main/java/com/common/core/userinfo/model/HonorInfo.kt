@@ -20,6 +20,15 @@ class HonorInfo : Serializable {
     @JSONField(name = "leftDays")
     var leftDays: Int = 0
 
+    // 是否会员
+    fun isHonor(): Boolean {
+        if (status == EHS_HAS_ACTIVE && honorType != EHT_NO_COMMON) {
+            //开通会员服务，且是会员
+            return true
+        }
+        return false
+    }
+
     companion object {
         // honorType的类型
         const val EHT_NO_COMMON = 0  //不是会员

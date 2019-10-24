@@ -28,6 +28,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
@@ -92,11 +93,11 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     SimpleDraweeView mAvatarIv;
     ImageView mLevelBg;
     TextView mLevelDesc;
-    TextView mVipTv;
+    TextView mVerifyTv;
     ExTextView mSignTv;
     ExTextView mNameTv;
-    ImageView mVipIv;
-    Group mOpenVipArea;
+    ImageView mHonorIv;
+    Group mOpenHonorArea;
 
     PersonTagView mPersonTagView;
 
@@ -313,11 +314,11 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mLevelBg = getRootView().findViewById(R.id.level_bg);
         mLevelDesc = getRootView().findViewById(R.id.level_desc);
         mSignTv = getRootView().findViewById(R.id.sign_tv);
-        mVipTv = getRootView().findViewById(R.id.vip_tv);
+        mVerifyTv = getRootView().findViewById(R.id.verify_tv);
 
         mNameTv = getRootView().findViewById(R.id.name_tv);
-        mVipIv = getRootView().findViewById(R.id.vip_iv);
-        mOpenVipArea = getRootView().findViewById(R.id.open_vip_area);
+        mHonorIv = getRootView().findViewById(R.id.honor_iv);
+        mOpenHonorArea = getRootView().findViewById(R.id.open_honor_area);
 
         mPersonTagView = getRootView().findViewById(R.id.person_tag_view);
 
@@ -329,7 +330,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mOpenVipArea.setOnClickListener(new DebounceViewClickListener() {
+        mOpenHonorArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 // todo 开启VIP的页面
@@ -730,18 +731,21 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             if (MyUserInfoManager.getInstance().getVipInfo() != null && MyUserInfoManager.getInstance().getVipType() > 0) {
                 // 展示vip
                 mSignTv.setVisibility(View.GONE);
-                mVipTv.setVisibility(View.VISIBLE);
-                mVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
-
-                mVipIv.setVisibility(View.VISIBLE);
-                mOpenVipArea.setVisibility(View.GONE);
+                mVerifyTv.setVisibility(View.VISIBLE);
+                mVerifyTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
             } else {
                 // 展示签名
                 mSignTv.setVisibility(View.VISIBLE);
-                mVipTv.setVisibility(View.GONE);
+                mVerifyTv.setVisibility(View.GONE);
+            }
 
-                mVipIv.setVisibility(View.GONE);
-                mOpenVipArea.setVisibility(View.VISIBLE);
+            if (MyUserInfoManager.getInstance().getHonorInfo() != null &&
+                    MyUserInfoManager.getInstance().getHonorInfo().isHonor()) {
+                mHonorIv.setVisibility(View.VISIBLE);
+                mOpenHonorArea.setVisibility(View.GONE);
+            } else {
+                mHonorIv.setVisibility(View.GONE);
+                mOpenHonorArea.setVisibility(View.VISIBLE);
             }
         }
     }

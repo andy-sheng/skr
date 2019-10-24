@@ -100,10 +100,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mAvatarIv: SimpleDraweeView
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
-    lateinit var mVipTv: TextView
+    lateinit var mVerifyTv: TextView
     lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
-    lateinit var mVipIv: ImageView
+    lateinit var mHonorIv: ImageView
     lateinit var mPersonTagView: PersonTagView
 
     lateinit var mToolbar: Toolbar
@@ -387,10 +387,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAvatarIv = rootView.findViewById(R.id.avatar_iv)
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
-        mVipTv = rootView.findViewById(R.id.vip_tv)
+        mVerifyTv = rootView.findViewById(R.id.verify_tv)
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
-        mVipIv = rootView.findViewById(R.id.vip_iv)
+        mHonorIv = rootView.findViewById(R.id.honor_iv)
         mPersonTagView = rootView.findViewById(R.id.person_tag_view)
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -648,13 +648,17 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         if (model.vipInfo != null && model.vipInfo.vipType > 0) {
             mSignTv.visibility = View.GONE
-            mVipTv.visibility = View.VISIBLE
-            mVipTv.text = model.vipInfo.vipDesc
-            mVipIv.visibility = View.VISIBLE
+            mVerifyTv.visibility = View.VISIBLE
+            mVerifyTv.text = model.vipInfo.vipDesc
         } else {
-            mVipTv.visibility = View.GONE
+            mVerifyTv.visibility = View.GONE
             mSignTv.visibility = View.VISIBLE
-            mVipIv.visibility = View.GONE
+        }
+
+        if (model.honorInfo != null && model.honorInfo.isHonor()) {
+            mHonorIv.visibility = View.VISIBLE
+        } else {
+            mHonorIv.visibility = View.GONE
         }
 
         mPersonTagView.setSex(model.sex)
