@@ -18,6 +18,9 @@ class HonorTextView : ExTextView {
     var sexDrawable: Drawable? = null
     var vipDrawable: Drawable? = null
 
+    /**
+     * 昵称和VIP信息
+     */
     fun setHonorText(name: String, honorInfo: HonorInfo? = null) {
         vipDrawable = null
 
@@ -38,6 +41,9 @@ class HonorTextView : ExTextView {
         text = stringBuilder
     }
 
+    /**
+     * 昵称，性别和VIP信息
+     */
     fun setAllStateText(name: String, sex: Int?, honorInfo: HonorInfo?) {
         sexDrawable = null
         vipDrawable = null
