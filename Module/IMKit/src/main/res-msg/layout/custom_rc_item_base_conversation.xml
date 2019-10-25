@@ -23,6 +23,19 @@
         app:layout_constraintRight_toLeftOf="@+id/official_tag_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/honor_iv"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_14_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:background="@drawable/person_honor_icon"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/rc_conversation_title"
+        app:layout_constraintLeft_toRightOf="@id/rc_conversation_title"
+        app:layout_constraintRight_toLeftOf="@id/official_tag_tv"
+        app:layout_constraintTop_toTopOf="@id/rc_conversation_title" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/official_tag_tv"
         android:layout_width="38dp"
@@ -37,7 +50,7 @@
         app:bl_stroke_color="#6D5AC9"
         app:bl_stroke_width="1dp"
         app:layout_constraintBottom_toBottomOf="@+id/rc_conversation_title"
-        app:layout_constraintLeft_toRightOf="@+id/rc_conversation_title"
+        app:layout_constraintLeft_toRightOf="@+id/honor_iv"
         app:layout_constraintRight_toLeftOf="@+id/rc_conversation_time"
         app:layout_constraintTop_toTopOf="@+id/rc_conversation_title" />
 

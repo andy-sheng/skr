@@ -85,6 +85,7 @@ public class BuddyCache {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("vipInfo", buddyCacheEntry.vipInfo);
+        jsonObject.put("honorInfo", buddyCacheEntry.honorInfo);
         ModuleServiceManager.getInstance().getMsgService().refreshUserInfoCache(buddyCacheEntry.getUuid(), buddyCacheEntry.getName(), buddyCacheEntry.getAvatar(), jsonObject.toJSONString());
         mLruCache.put(buddyCacheEntry.getUuid(), buddyCacheEntry);
     }
