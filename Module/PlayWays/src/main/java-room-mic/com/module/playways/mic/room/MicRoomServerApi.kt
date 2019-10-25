@@ -13,4 +13,6 @@ interface MicRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v2/raceroom/check-rank")
     abstract fun checkRank(@Query("roomType") roomType: Int): Call<ApiResult>
 
+    @PUT("http://dev.game.inframe.mobi/v1/raceroom/exit-room")
+    fun createRoom(@Body body: RequestBody): Call<ApiResult>
 }
