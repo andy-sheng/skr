@@ -50,7 +50,9 @@ import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Cookie;
 
@@ -332,6 +334,11 @@ class AgentWebActivity extends CameraAdapWebActivity {
                             finish();
                         }
                     }
+                    return true;
+                } else if (!TextUtils.isEmpty(url) && url.contains("https://wx.tenpay.com")) {
+                    Map headers = new HashMap();
+                    headers.put("Referer", "https://inframe.mobi");
+                    view.loadUrl(url, headers);
                     return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);

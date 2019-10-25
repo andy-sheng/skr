@@ -139,7 +139,7 @@ class MicRoomCreateFragment : BaseFragment() {
                 if (loop < 5) {
                     delay(300)
                     var l = loop
-                    getPermmissionList(l++)
+                    getPermmissionList(++l)
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
                 }
