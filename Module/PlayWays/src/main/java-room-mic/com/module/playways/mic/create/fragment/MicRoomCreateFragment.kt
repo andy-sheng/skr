@@ -114,10 +114,10 @@ class MicRoomCreateFragment : BaseFragment() {
 
         resetSelect()
         allManTv.isSelected = true
-        getPermmissionList()
+        getPermmissionList(0)
     }
 
-    private fun getPermmissionList() {
+    private fun getPermmissionList(loop: Int) {
         launch {
             val result = subscribe(RequestControl("MicRoomCreateFragment getPermmissionList", ControlType.CancelThis)) {
                 raceRoomServerApi.getRoomPermmissionList()
@@ -136,9 +136,13 @@ class MicRoomCreateFragment : BaseFragment() {
                     }
                 }
             } else {
-                U.getToastUtil().showShort(result.errmsg)
-                delay(5000)
-                getPermmissionList()
+                if (loop < 5) {
+                    delay(300)
+                    var l = loop
+                    getPermmissionList(l++)
+                } else {
+                    U.getToastUtil().showShort(result.errmsg)
+                }
             }
         }
     }
