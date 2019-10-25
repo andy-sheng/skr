@@ -25,6 +25,50 @@ public class AD //means AgoraData
     }
 
 
+    public static class SAgoraAudioSamplingInfo {
+        public long timeStamp; //统计间隔结束点的时间戳
+
+        public long smpRate; //采样率
+        public long chCnt; //声道数
+        public long smpCnt; //统计间隔内，获取到的总的采样数
+        public long pcmDuration; //时间间隔内，总的数据时长
+        public long statisticSpan; //实际的统计间隔，与STATISTIC_SPAN_SETTTING会有偏差
+
+        public String extraInfo;
+
+        public final static long STATISTIC_SPAN_SETTTING = 1000; //ms 统计时间间隔的设定值
+
+        public String toString() {
+
+            String additionInfo = null;
+
+            if (null == extraInfo) {
+                additionInfo = "";
+            }
+            else {
+                additionInfo = ", extraInfo="+extraInfo;
+            }
+
+            return SUtils.transTime(timeStamp) + " AD.SAgoraAudioSamplingInfo: smpRate=" + smpRate +
+                    ", chCnt=" + chCnt +
+                    ", smpCnt=" + smpCnt +
+                    ", pcmDuration=" + pcmDuration +
+                    ", statisticSpan=" + statisticSpan + additionInfo +"\n";
+        }
+
+        public void reset() {
+            this.timeStamp = 0;
+            this.smpRate = 0;
+            this.chCnt = 0;
+            this.smpCnt = 0;
+            this.pcmDuration = 0;
+            this.statisticSpan = 0;
+        }
+
+    }
+
+
+
     public static class SAgoraRTCStats extends IRtcEngineEventHandler.RtcStats {
         public long timeStamp;
 

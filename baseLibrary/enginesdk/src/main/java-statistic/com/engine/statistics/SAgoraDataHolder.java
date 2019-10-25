@@ -24,6 +24,8 @@ public class SAgoraDataHolder
     private List<AD.SAgoraNetworkQuality> mNetQualityList;
     private List<AD.SAgoraRemoteAudioTransportStats>   mRemoteATransList;
     private List<AD.SAgoraRemoteVideoTransportStat>    mRemoteVTransList;
+    private List<AD.SAgoraAudioSamplingInfo> mAudioSamplingInfoList;
+
 
 
     public SAgoraDataHolder() {
@@ -34,6 +36,8 @@ public class SAgoraDataHolder
         mNetQualityList= new ArrayList<AD.SAgoraNetworkQuality>();
         mRemoteATransList= new ArrayList<AD.SAgoraRemoteAudioTransportStats>();
         mRemoteVTransList= new ArrayList<AD.SAgoraRemoteVideoTransportStat>();
+
+        mAudioSamplingInfoList = new ArrayList<AD.SAgoraAudioSamplingInfo>();
     }
 
     public SAgoraDataHolder setLinePrefix(String prefix) {
@@ -157,53 +161,92 @@ public class SAgoraDataHolder
         return;
     }
 
+    public synchronized void addAudioSamplingInfo(AD.SAgoraAudioSamplingInfo o) {
+        if (null == o) return;
+
+        AD.SAgoraAudioSamplingInfo n = new AD.SAgoraAudioSamplingInfo();
+
+        n.timeStamp = System.currentTimeMillis();
+
+        n.smpCnt = o.smpCnt;
+        n.chCnt = o.chCnt;
+        n.smpRate = o.smpRate;
+        n.pcmDuration = o.pcmDuration;
+        n.statisticSpan = o.statisticSpan;
+
+        mAudioSamplingInfoList.add(n);
+
+        return;
+    }
+
+
+    private String getListString(List list) {
+        String retStr = "";
+
+        if (list.size() > 0) {
+            for (Object e : list) {
+                retStr += (mLinePrefix + e.toString());
+            }
+        }
+
+        return retStr;
+    }
 
     //SAgoraDataHolder's to String
     public synchronized String toString() {
 
         String retStr = "";
 
-        if (mRtcStatsList.size() > 0) {
-            for (AD.SAgoraRTCStats e : mRtcStatsList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
+//        if (mRtcStatsList.size() > 0) {
+//            for (AD.SAgoraRTCStats e : mRtcStatsList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
+//
+//        if (mLocalVList.size() > 0) {
+//            for (AD.SAgoraLocalVideoStats e : mLocalVList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
+//
+//        if (mRemoteAList.size() > 0) {
+//            for (AD.SAgoraRemoteAudioStats e : mRemoteAList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
+//
+//        if (mRemoteVList.size() > 0) {
+//            for (AD.SAgoraRemoteVideoStats e : mRemoteVList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
+//
+//        if (mNetQualityList.size() > 0) {
+//            for (AD.SAgoraNetworkQuality e : mNetQualityList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
+//
+//        if (mRemoteATransList.size() > 0) {
+//            for (AD.SAgoraRemoteAudioTransportStats e : mRemoteATransList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
+//
+//        if (mRemoteVTransList.size() > 0) {
+//            for (AD.SAgoraRemoteVideoTransportStat e: mRemoteVTransList) {
+//                retStr += (mLinePrefix + e.toString());
+//            }
+//        }
 
-        if (mLocalVList.size() > 0) {
-            for (AD.SAgoraLocalVideoStats e : mLocalVList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
-
-        if (mRemoteAList.size() > 0) {
-            for (AD.SAgoraRemoteAudioStats e : mRemoteAList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
-
-        if (mRemoteVList.size() > 0) {
-            for (AD.SAgoraRemoteVideoStats e : mRemoteVList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
-
-        if (mNetQualityList.size() > 0) {
-            for (AD.SAgoraNetworkQuality e : mNetQualityList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
-
-        if (mRemoteATransList.size() > 0) {
-            for (AD.SAgoraRemoteAudioTransportStats e : mRemoteATransList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
-
-        if (mRemoteVTransList.size() > 0) {
-            for (AD.SAgoraRemoteVideoTransportStat e: mRemoteVTransList) {
-                retStr += (mLinePrefix + e.toString());
-            }
-        }
+        retStr += getListString(mRtcStatsList);
+        retStr += getListString(mLocalVList);
+        retStr += getListString(mRemoteAList);
+        retStr += getListString(mRemoteVList);
+        retStr += getListString(mNetQualityList);
+        retStr += getListString(mRemoteATransList);
+        retStr += getListString(mRemoteVTransList);
+        retStr += getListString(mAudioSamplingInfoList);
 
         return retStr;
     }
@@ -219,6 +262,8 @@ public class SAgoraDataHolder
         mRemoteATransList.clear();
         mRemoteVTransList.clear();
 
+        mAudioSamplingInfoList.clear();
+
         return this;
     }
 
@@ -227,9 +272,10 @@ public class SAgoraDataHolder
         int recPerListLimit = 3;
 
         int nowTotalRecords = mRtcStatsList.size() + mLocalVList.size()+ mRemoteAList.size() +
-                mRemoteVList.size() +  mNetQualityList.size() + mRemoteATransList.size() +  mRemoteVTransList.size();
+                mRemoteVList.size() +  mNetQualityList.size() + mRemoteATransList.size() +  mRemoteVTransList.size()+
+                mAudioSamplingInfoList.size();
 
-        if (nowTotalRecords >= recPerListLimit * 7)
+        if (nowTotalRecords >= recPerListLimit * 8)
             return true;
         else
             return false;

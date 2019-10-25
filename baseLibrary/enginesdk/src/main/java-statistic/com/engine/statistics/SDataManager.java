@@ -66,7 +66,7 @@ public class SDataManager
         mBasicInfo.channelJoinElapsed = elapsed;
         return this;
     }
-    public SAgoraDataHolder getRTCData() {
+    public SAgoraDataHolder getAgoraDataHolder() {
         return mADHolder;
     }
 

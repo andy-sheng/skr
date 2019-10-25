@@ -255,7 +255,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onRtcStats(RtcStats stats) {
         if(vLogShow) {
-            SDataManager.instance().getRTCData().addRtcStats(stats);
+            SDataManager.instance().getAgoraDataHolder().addRtcStats(stats);
         }
         super.onRtcStats(stats);
     }
@@ -263,7 +263,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
         if(vLogShow) {
-            SDataManager.instance().getRTCData().addNetQualityStats(uid, txQuality, rxQuality);
+            SDataManager.instance().getAgoraDataHolder().addNetQualityStats(uid, txQuality, rxQuality);
         }
         super.onNetworkQuality(uid, txQuality, rxQuality);
     }
@@ -271,20 +271,20 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onRemoteAudioStats(RemoteAudioStats stats) {
         if(vLogShow) {
-            SDataManager.instance().getRTCData().addRemoteAudioStats(stats);
+            SDataManager.instance().getAgoraDataHolder().addRemoteAudioStats(stats);
         }
         super.onRemoteAudioStats(stats);
     }
 
     @Override
     public void onLocalVideoStats(LocalVideoStats stats) {
-        SDataManager.instance().getRTCData().addLocalVideoStats(stats);
+        SDataManager.instance().getAgoraDataHolder().addLocalVideoStats(stats);
         super.onLocalVideoStats(stats);
     }
 
     @Override
     public void onRemoteVideoStats(RemoteVideoStats stats) {
-        SDataManager.instance().getRTCData().addRemoteVideoStats(stats);
+        SDataManager.instance().getAgoraDataHolder().addRemoteVideoStats(stats);
         super.onRemoteVideoStats(stats);
     }
 
@@ -302,13 +302,13 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBitRate) {
-        SDataManager.instance().getRTCData().addRemoteAudioTransStats(uid, delay, lost, rxKBitRate);
+        SDataManager.instance().getAgoraDataHolder().addRemoteAudioTransStats(uid, delay, lost, rxKBitRate);
         super.onRemoteAudioTransportStats(uid, delay, lost, rxKBitRate);
     }
 
     @Override
     public void onRemoteVideoTransportStats(int uid, int delay, int lost, int rxKBitRate) {
-        SDataManager.instance().getRTCData().addRemoteVideoTransStata(uid, delay, lost, rxKBitRate);
+        SDataManager.instance().getAgoraDataHolder().addRemoteVideoTransStata(uid, delay, lost, rxKBitRate);
         super.onRemoteVideoTransportStats(uid, delay, lost, rxKBitRate);
     }
 
