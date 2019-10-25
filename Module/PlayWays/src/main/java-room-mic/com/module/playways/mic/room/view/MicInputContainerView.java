@@ -56,7 +56,7 @@ public class MicInputContainerView extends InputContainerView {
 
     @Override
     protected void init() {
-        inflate(getContext(), R.layout.race_input_container_view_layout, this);
+        inflate(getContext(), R.layout.mic_input_container_view_layout, this);
         initInputView();
     }
 

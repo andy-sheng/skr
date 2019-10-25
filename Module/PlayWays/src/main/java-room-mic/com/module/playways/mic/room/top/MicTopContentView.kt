@@ -44,7 +44,7 @@ class MicTopContentView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     init {
-        View.inflate(context, R.layout.race_top_content_view_layout, this)
+        View.inflate(context, R.layout.mic_top_content_view_layout, this)
 
         arrowIv = rootView.findViewById(R.id.arrow_iv)
         backgroundIv = rootView.findViewById(R.id.background_iv)

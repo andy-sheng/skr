@@ -79,7 +79,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
     internal lateinit var mRightOpView: MicRightOpView
 
     //    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
-    private lateinit var mWaitingCardView: MicWaitingCardView   // 等待中
+//    private lateinit var mWaitingCardView: MicWaitingCardView   // 等待中
 //    private lateinit var mRaceWantingSignUpCardView: RaceWantingSignUpCardView   // 正在报名卡片
     private lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
 //    private lateinit var mRaceMatchView: RaceMatchView
@@ -219,7 +219,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //        mRaceNoSingCardView?.visibility = View.GONE
 //        mRaceMiddleResultView?.visibility = View.GONE
 //        mRaceSelectSongView?.visibility = View.GONE
-        mWaitingCardView?.visibility = View.GONE
+//        mWaitingCardView?.visibility = View.GONE
         mTurnInfoCardView?.visibility = View.GONE
 //        mRaceMatchView?.visibility = View.GONE
 //        mRaceWantingSignUpCardView?.visibility = View.GONE
@@ -307,9 +307,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
     }
 
     private fun initTurnSenceView() {
-        mWaitingCardView = findViewById(R.id.wait_card_view)
-        mWaitingCardView.visibility = View.GONE
-        mTurnInfoCardView = findViewById(R.id.race_turn_card_view)
+//        mWaitingCardView = findViewById(R.id.wait_card_view)
+//        mWaitingCardView.visibility = View.GONE
+        mTurnInfoCardView = findViewById(R.id.turn_card_view)
         mTurnInfoCardView.visibility = View.GONE
     }
 

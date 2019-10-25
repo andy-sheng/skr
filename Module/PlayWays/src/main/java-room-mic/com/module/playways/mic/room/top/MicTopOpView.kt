@@ -31,7 +31,7 @@ class MicTopOpView : RelativeLayout {
     }
 
     init {
-        View.inflate(context, R.layout.race_top_op_view, this)
+        View.inflate(context, R.layout.mic_top_op_view, this)
         mGameRuleIv = findViewById(R.id.game_rule_iv)
         mFeedBackIv = findViewById(R.id.feed_back_iv)
         mExitTv = findViewById(R.id.exit_tv)

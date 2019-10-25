@@ -72,14 +72,14 @@
 <!--        app:layout_constraintRight_toRightOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="@+id/race_top_content_view" />-->
 
-    <!--等待中-->
-    <com.module.playways.mic.room.view.MicWaitingCardView
-        android:id="@+id/wait_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_156_dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+<!--    &lt;!&ndash;等待中&ndash;&gt;-->
+<!--    <com.module.playways.mic.room.view.MicWaitingCardView-->
+<!--        android:id="@+id/wait_card_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="@dimen/view_156_dp"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
 
     <!--下一局-->
     <com.module.playways.mic.room.view.MicTurnInfoCardView
@@ -119,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_140_dp"
-        android:layout="@layout/race_self_sing_lyric_layout"
+        android:layout="@layout/mic_self_sing_lyric_layout"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <!--别人唱的view-->
@@ -127,7 +127,7 @@
         android:id="@+id/other_sing_lyric_view_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout="@layout/race_other_sing_card_stub_layout"
+        android:layout="@layout/mic_other_sing_card_stub_layout"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
 <!--    &lt;!&ndash;无人想唱&ndash;&gt;-->
@@ -258,7 +258,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!--输入框区域-->
-    <com.module.playways.race.room.view.RaceInputContainerView
+    <com.module.playways.mic.room.view.MicInputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

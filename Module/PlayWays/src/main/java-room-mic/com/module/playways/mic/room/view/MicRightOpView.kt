@@ -31,7 +31,7 @@ class MicRightOpView : ConstraintLayout {
     var mScaleAnimation: ScaleAnimation? = null
 
     init {
-        View.inflate(context, R.layout.race_right_op_view, this)
+        View.inflate(context, R.layout.mic_right_op_view, this)
 
         voteIv = this.findViewById(R.id.vote_iv)
         giveUpIv = this.findViewById(R.id.give_up_iv)
