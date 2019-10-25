@@ -2,8 +2,8 @@ package com.module.playways.room.msg.event;
 
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.OnlineInfo;
-import com.zq.live.proto.Room.QJoinNoticeMsg;
+import com.zq.live.proto.GrabRoom.OnlineInfo;
+import com.zq.live.proto.GrabRoom.QJoinNoticeMsg;
 
 import java.util.ArrayList;
 import java.util.List;

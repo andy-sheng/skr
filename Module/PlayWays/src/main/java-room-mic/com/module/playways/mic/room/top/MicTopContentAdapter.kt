@@ -13,13 +13,14 @@ import com.component.busilib.view.AvatarView
 import com.component.person.event.ShowPersonCardEvent
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
+import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import org.greenrobot.eventbus.EventBus
 import java.net.UnknownServiceException
 
 class MicTopContentAdapter : RecyclerView.Adapter<MicTopContentAdapter.RaceTopViewHolder>() {
 
-    var mDataList = ArrayList<RacePlayerInfoModel>()
+    var mDataList = ArrayList<MicPlayerInfoModel>()
 
     override fun onBindViewHolder(holder: RaceTopViewHolder, position: Int) {
         holder.bindData(position, mDataList[position])
@@ -43,7 +44,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<MicTopContentAdapter.RaceTopVi
         private val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
 
         var mPostion = 0
-        var mModel: RacePlayerInfoModel? = null
+        var mModel: MicPlayerInfoModel? = null
 
         init {
             item.setOnClickListener(object : DebounceViewClickListener() {
@@ -57,7 +58,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<MicTopContentAdapter.RaceTopVi
             })
         }
 
-        fun bindData(position: Int, model: RacePlayerInfoModel) {
+        fun bindData(position: Int, model: MicPlayerInfoModel) {
             this.mPostion = position
             this.mModel = model
 

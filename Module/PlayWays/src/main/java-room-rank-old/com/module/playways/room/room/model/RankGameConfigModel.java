@@ -1,6 +1,6 @@
 package com.module.playways.room.room.model;
 
-import com.zq.live.proto.Room.GameConfig;
+import com.zq.live.proto.GrabRoom.GameConfig;
 import java.io.Serializable;
 import java.util.List;
 

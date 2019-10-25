@@ -96,7 +96,7 @@ import com.moudule.playways.beauty.view.BeautyControlPanelView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
-import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.live.proto.GrabRoom.EQRoundStatus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*

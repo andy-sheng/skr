@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.model;
 
-import com.zq.live.proto.Room.QMLightMsg;
+import com.zq.live.proto.GrabRoom.QMLightMsg;
 
 import java.io.Serializable;
 

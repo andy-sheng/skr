@@ -3,10 +3,10 @@ package com.module.playways.room.prepare.model;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.model.RankRoundInfoModel;
-import com.zq.live.proto.Room.QRoundInfo;
-import com.zq.live.proto.Room.ReadyInfo;
-import com.zq.live.proto.Room.ReadyNoticeMsg;
-import com.zq.live.proto.Room.RoundInfo;
+import com.zq.live.proto.GrabRoom.QRoundInfo;
+import com.zq.live.proto.GrabRoom.ReadyInfo;
+import com.zq.live.proto.GrabRoom.ReadyNoticeMsg;
+import com.zq.live.proto.GrabRoom.RoundInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

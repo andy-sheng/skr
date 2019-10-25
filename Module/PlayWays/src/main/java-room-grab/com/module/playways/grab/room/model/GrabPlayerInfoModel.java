@@ -2,8 +2,8 @@ package com.module.playways.grab.room.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.zq.live.proto.Room.OnlineInfo;
-import com.zq.live.proto.Room.QJoinNoticeMsg;
+import com.zq.live.proto.GrabRoom.OnlineInfo;
+import com.zq.live.proto.GrabRoom.QJoinNoticeMsg;
 
 public class GrabPlayerInfoModel extends PlayerInfoModel {
     protected int role;

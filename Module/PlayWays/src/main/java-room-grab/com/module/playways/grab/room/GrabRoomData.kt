@@ -19,8 +19,8 @@ import com.module.playways.grab.room.model.WorksUploadModel
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.zq.live.proto.RaceRoom.ERUserRole
-import com.zq.live.proto.Room.EQRoundStatus
-import com.zq.live.proto.Room.EQUserRole
+import com.zq.live.proto.GrabRoom.EQRoundStatus
+import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 

@@ -2,7 +2,7 @@ package com.module.playways.mic.room.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
-import com.zq.live.proto.Room.MSPKInnerRoundInfo;
+import com.zq.live.proto.MicRoom.MSPKInnerRoundInfo;
 
 import java.io.Serializable;
 

@@ -17,17 +17,17 @@ import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.StandPlayType;
-import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.live.proto.Room.EQUserRole;
-import com.zq.live.proto.Room.EWantSingType;
-import com.zq.live.proto.Room.OnlineInfo;
-import com.zq.live.proto.Room.QBLightMsg;
-import com.zq.live.proto.Room.QCHOInnerRoundInfo;
-import com.zq.live.proto.Room.QMINIGameInnerRoundInfo;
-import com.zq.live.proto.Room.QMLightMsg;
-import com.zq.live.proto.Room.QRoundInfo;
-import com.zq.live.proto.Room.QSPKInnerRoundInfo;
-import com.zq.live.proto.Room.WantSingInfo;
+import com.zq.live.proto.GrabRoom.EQRoundStatus;
+import com.zq.live.proto.GrabRoom.EQUserRole;
+import com.zq.live.proto.GrabRoom.EWantSingType;
+import com.zq.live.proto.GrabRoom.OnlineInfo;
+import com.zq.live.proto.GrabRoom.QBLightMsg;
+import com.zq.live.proto.GrabRoom.QCHOInnerRoundInfo;
+import com.zq.live.proto.GrabRoom.QMINIGameInnerRoundInfo;
+import com.zq.live.proto.GrabRoom.QMLightMsg;
+import com.zq.live.proto.GrabRoom.QRoundInfo;
+import com.zq.live.proto.GrabRoom.QSPKInnerRoundInfo;
+import com.zq.live.proto.GrabRoom.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

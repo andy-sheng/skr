@@ -1,8 +1,8 @@
 package com.module.playways.room.gift.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
-import com.zq.live.proto.Room.GPrensentGiftMsg;
-import com.zq.live.proto.Room.Property;
+import com.zq.live.proto.GrabRoom.GPrensentGiftMsg;
+import com.zq.live.proto.GrabRoom.Property;
 
 import java.util.ArrayList;
 import java.util.List;

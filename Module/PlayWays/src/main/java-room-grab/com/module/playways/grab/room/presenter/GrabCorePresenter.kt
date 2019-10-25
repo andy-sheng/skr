@@ -75,7 +75,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.ESex
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.Common.UserInfo
-import com.zq.live.proto.Room.*
+import com.zq.live.proto.GrabRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.launch
 import okhttp3.MediaType

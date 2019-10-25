@@ -1,7 +1,7 @@
 package com.module.playways.room.prepare.model;
 
 import com.common.log.MyLog;
-import com.zq.live.proto.Room.ReadyInfo;
+import com.zq.live.proto.GrabRoom.ReadyInfo;
 
 import java.io.Serializable;
 

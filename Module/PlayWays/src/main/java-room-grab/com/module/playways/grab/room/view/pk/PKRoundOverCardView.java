@@ -28,7 +28,7 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Room.EQRoundOverReason;
+import com.zq.live.proto.GrabRoom.EQRoundOverReason;
 
 import java.util.List;
 

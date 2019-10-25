@@ -7,9 +7,9 @@ import com.module.playways.mic.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.Common.StandPlayType
-import com.zq.live.proto.Room.EMRoundStatus
-import com.zq.live.proto.Room.EMWantSingType
-import com.zq.live.proto.Room.MRoundInfo
+import com.zq.live.proto.MicRoom.EMRoundStatus
+import com.zq.live.proto.MicRoom.EMWantSingType
+import com.zq.live.proto.MicRoom.MRoundInfo
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 

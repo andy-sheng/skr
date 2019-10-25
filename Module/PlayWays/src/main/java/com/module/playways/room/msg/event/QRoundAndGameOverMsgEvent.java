@@ -6,9 +6,9 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.zq.live.proto.Room.EQGameOverReason;
-import com.zq.live.proto.Room.QRoundAndGameOverMsg;
-import com.zq.live.proto.Room.QUserCoin;
+import com.zq.live.proto.GrabRoom.EQGameOverReason;
+import com.zq.live.proto.GrabRoom.QRoundAndGameOverMsg;
+import com.zq.live.proto.GrabRoom.QUserCoin;
 
 public final class QRoundAndGameOverMsgEvent {
     public BasePushInfo info;

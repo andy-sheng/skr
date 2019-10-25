@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "Common.proto";
 
-package com.zq.live.proto.Room;
+package com.zq.live.proto.MicRoom;
 
 /**
 

@@ -148,7 +148,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         initRaceMatchView()
         initSignUpView()
 
-        mCorePresenter.onOpeningAnimationOver()
+//        mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
             mWidgetAnimationController.close()
@@ -756,7 +756,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
     }
 
     fun quitGame() {
-        mCorePresenter.exitRoom("quitGame")
+//        mCorePresenter.exitRoom("quitGame")
         finish()
     }
 

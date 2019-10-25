@@ -160,6 +160,7 @@ class MicRoomCreateFragment : BaseFragment() {
             }
 
             if (result.errno == 0) {
+
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
                         .navigation()
                 activity?.finish()

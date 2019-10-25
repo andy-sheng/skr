@@ -7,7 +7,7 @@ import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
 import com.module.playways.grab.room.event.SomeOneJoinPlaySeatEvent
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
-import com.zq.live.proto.Room.EQUserRole
+import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
 import java.io.Serializable
 import java.util.*

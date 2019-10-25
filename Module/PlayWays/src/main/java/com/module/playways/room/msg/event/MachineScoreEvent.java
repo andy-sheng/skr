@@ -1,7 +1,7 @@
 package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.MachineScore;
+import com.zq.live.proto.GrabRoom.MachineScore;
 
 public class MachineScoreEvent {
 

@@ -2,8 +2,8 @@ package com.module.playways.mic.room.model
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
-import com.zq.live.proto.Room.EMUserRole
-import com.zq.live.proto.Room.MOnlineInfo
+import com.zq.live.proto.MicRoom.EMUserRole
+import com.zq.live.proto.MicRoom.MOnlineInfo
 
 class MicPlayerInfoModel : PlayerInfoModel() {
 

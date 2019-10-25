@@ -1,7 +1,7 @@
 package com.module.playways.mic.room.model;
 
 import com.module.playways.mic.room.event.MicChorusUserStatusChangeEvent;
-import com.zq.live.proto.Room.MCHOInnerRoundInfo;
+import com.zq.live.proto.MicRoom.MCHOInnerRoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 

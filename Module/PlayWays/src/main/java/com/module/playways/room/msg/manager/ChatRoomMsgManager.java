@@ -3,8 +3,8 @@ package com.module.playways.room.msg.manager;
 import com.common.log.MyLog;
 import com.module.playways.room.msg.filter.PushMsgFilter;
 import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
-import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.RoomMsg;
+import com.zq.live.proto.GrabRoom.ERoomMsgType;
+import com.zq.live.proto.GrabRoom.RoomMsg;
 
 import java.util.HashSet;
 

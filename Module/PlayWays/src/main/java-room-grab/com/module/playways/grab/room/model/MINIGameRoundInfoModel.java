@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.model;
 
-import com.zq.live.proto.Room.QMINIGameInnerRoundInfo;
+import com.zq.live.proto.GrabRoom.QMINIGameInnerRoundInfo;
 
 import java.io.Serializable;
 

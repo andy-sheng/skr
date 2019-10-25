@@ -25,11 +25,11 @@ import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.BaseRoomData;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
-import com.zq.live.proto.Room.EMsgPosType;
-import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.RoomMsg;
-import com.zq.live.proto.Room.SpecialEmojiMsg;
-import com.zq.live.proto.Room.SpecialEmojiMsgType;
+import com.zq.live.proto.GrabRoom.EMsgPosType;
+import com.zq.live.proto.GrabRoom.ERoomMsgType;
+import com.zq.live.proto.GrabRoom.RoomMsg;
+import com.zq.live.proto.GrabRoom.SpecialEmojiMsg;
+import com.zq.live.proto.GrabRoom.SpecialEmojiMsgType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
