@@ -22,15 +22,15 @@
         app:centerTextStyle="BOLD"
         app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDrawable="@drawable/img_back"
+        app:leftDrawable="@drawable/img_white_back"
         app:leftType="textView"
         app:rightText="创建"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_16_dp"
         app:rightType="textView"
         app:showBottomLine="false"
-        app:statusBarColor="@color/white"
-        app:titleBarColor="@color/white" />
+        app:statusBarColor="@color/transparent"
+        app:titleBarColor="@color/transparent" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/bg_iv"
@@ -79,6 +79,7 @@
         android:layout_marginLeft="@dimen/view_30_dp"
         android:layout_marginTop="@dimen/view_22_dp"
         android:layout_marginRight="@dimen/view_30_dp"
+        android:background="@null"
         android:gravity="center_vertical"
         android:hint="请输入房间名称"
         android:paddingLeft="@dimen/view_12_dp"
@@ -134,6 +135,7 @@
         android:text="白银以上"
         android:textColor="@color/black_trans_70"
         android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
         app:layout_constraintTop_toBottomOf="@+id/all_man_tv" />
 
@@ -154,6 +156,7 @@
         android:text="黄金以上"
         android:textColor="@color/black_trans_70"
         android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/guide_line"
         app:layout_constraintTop_toBottomOf="@+id/enter_room_tip" />
 
@@ -167,6 +170,7 @@
         android:text="铂金以上"
         android:textColor="@color/black_trans_70"
         android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/guide_line"
         app:layout_constraintTop_toBottomOf="@+id/all_man_tv" />
 </android.support.constraint.ConstraintLayout>

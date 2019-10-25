@@ -19,6 +19,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomServerApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -34,8 +35,24 @@ class MicRoomCreateFragment : BaseFragment() {
     lateinit var boGoldTv: ExTextView
 
     val raceRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
+    var selected: Level = Level.RLL_All
 
-    val selectDrawable = DrawableCreator.Builder()
+    val selectDrawable1 = DrawableCreator.Builder()
+            .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
+            .build()
+
+    val selectDrawable2 = DrawableCreator.Builder()
+            .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
+            .build()
+
+    val selectDrawable3 = DrawableCreator.Builder()
+            .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
+            .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
+            .build()
+
+    val selectDrawable4 = DrawableCreator.Builder()
             .setSelectedDrawable(U.getDrawable(R.drawable.chuangjian_xuanzhong))
             .setUnSelectedDrawable(U.getDrawable(R.drawable.chuangjian_weixuanzhong))
             .build()
@@ -54,7 +71,7 @@ class MicRoomCreateFragment : BaseFragment() {
         yellowGoldTv = rootView.findViewById(R.id.yellow_gold_tv)
         boGoldTv = rootView.findViewById(R.id.bo_gold_tv)
 
-        titlebar.leftImageButton.setDebounceViewClickListener {
+        titlebar.leftTextView.setDebounceViewClickListener {
             activity?.finish()
         }
 
@@ -65,37 +82,72 @@ class MicRoomCreateFragment : BaseFragment() {
         allManTv.setDebounceViewClickListener {
             resetSelect()
             allManTv.isSelected = true
+            selected = Level.RLL_All
         }
 
         whiteGoldTv.setDebounceViewClickListener {
             resetSelect()
             whiteGoldTv.isSelected = true
+            selected = Level.RLL_Bai_Yin
         }
 
         yellowGoldTv.setDebounceViewClickListener {
             resetSelect()
             yellowGoldTv.isSelected = true
+            selected = Level.RLL_Huang_Jin
         }
 
         boGoldTv.setDebounceViewClickListener {
             resetSelect()
             boGoldTv.isSelected = true
+            selected = Level.RLL_Bo_Jin
         }
 
-        selectDrawable.bounds = Rect(0, 0, selectDrawable.intrinsicWidth, selectDrawable.intrinsicHeight)
-        allManTv.setCompoundDrawables(selectDrawable, null, null, null)
-        whiteGoldTv.setCompoundDrawables(selectDrawable, null, null, null)
-        yellowGoldTv.setCompoundDrawables(selectDrawable, null, null, null)
-        boGoldTv.setCompoundDrawables(selectDrawable, null, null, null)
+        selectDrawable1.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
+        selectDrawable2.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
+        selectDrawable3.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
+        selectDrawable4.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
+        allManTv.setCompoundDrawables(selectDrawable1, null, null, null)
+        whiteGoldTv.setCompoundDrawables(selectDrawable2, null, null, null)
+        yellowGoldTv.setCompoundDrawables(selectDrawable3, null, null, null)
+        boGoldTv.setCompoundDrawables(selectDrawable4, null, null, null)
 
         resetSelect()
         allManTv.isSelected = true
+        getPermmissionList()
+    }
+
+    private fun getPermmissionList() {
+        launch {
+            val result = subscribe(RequestControl("MicRoomCreateFragment getPermmissionList", ControlType.CancelThis)) {
+                raceRoomServerApi.getRoomPermmissionList()
+            }
+
+            if (result.errno == 0) {
+                val list = JSON.parseArray(result.data.getString("list"), Level::class.java)
+                list?.let {
+                    it.forEach {
+                        when (it) {
+                            Level.RLL_All -> allManTv.visibility = View.VISIBLE
+                            Level.RLL_Bai_Yin -> whiteGoldTv.visibility = View.VISIBLE
+                            Level.RLL_Huang_Jin -> yellowGoldTv.visibility = View.VISIBLE
+                            Level.RLL_Bo_Jin -> boGoldTv.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+                delay(5000)
+                getPermmissionList()
+            }
+        }
     }
 
     private fun createRoom() {
         launch {
             val map = mutableMapOf(
-                    "" to ""
+                    "levelLimit" to selected,
+                    "roomName" to nameEdittext.text.toString()
             )
 
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
@@ -113,10 +165,18 @@ class MicRoomCreateFragment : BaseFragment() {
         }
     }
 
+    override fun useEventBus(): Boolean {
+        return false
+    }
+
     private fun resetSelect() {
         allManTv.isSelected = false
         whiteGoldTv.isSelected = false
         yellowGoldTv.isSelected = false
         boGoldTv.isSelected = false
+    }
+
+    enum class Level {
+        RLL_All, RLL_Bai_Yin, RLL_Huang_Jin, RLL_Bo_Jin;
     }
 }

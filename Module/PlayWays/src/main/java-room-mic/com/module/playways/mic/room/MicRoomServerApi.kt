@@ -13,6 +13,19 @@ interface MicRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v2/raceroom/check-rank")
     abstract fun checkRank(@Query("roomType") roomType: Int): Call<ApiResult>
 
-    @PUT("http://dev.game.inframe.mobi/v1/raceroom/exit-room")
+    /**
+     * 创建房间
+     * {
+     *      "levelLimit": "RLL_All",
+     *      "roomName": "string"
+     * }
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/microom/create-room")
     fun createRoom(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 拉取房间可邀请的段位
+     */
+    @GET("http://dev.game.inframe.mobi/v1/microom/roomtype-permission-list")
+    fun getRoomPermmissionList(): Call<ApiResult>
 }

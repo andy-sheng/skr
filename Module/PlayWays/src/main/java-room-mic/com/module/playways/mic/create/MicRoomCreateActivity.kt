@@ -23,4 +23,8 @@ class MicRoomCreateActivity : BaseActivity() {
                         .build())
         U.getStatusBarUtil().setTransparentBar(this, false)
     }
+
+    override fun useEventBus(): Boolean {
+        return false
+    }
 }
