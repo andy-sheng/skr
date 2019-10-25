@@ -9,12 +9,14 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.engine.statistics.SDataManager;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
+
 import com.zq.mediaengine.util.gles.GLRender;
 
 import java.io.File;
@@ -94,16 +96,58 @@ public class AgoraRTCAdapter {
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
+
+            sInstance.startStatisticThread();
         }
         return sInstance;
     }
 
     public static synchronized void destroy() {
         if (sInstance != null) {
+
+            sInstance.stopStatisticThread();
+
             sInstance.destroy(true);
             sInstance = null;
         }
     }
+
+    private Thread mStatisticThread = null;
+    private boolean mRunStatistic = false;
+    public void startStatisticThread(){
+        if (null == mStatisticThread) {
+            mRunStatistic = true;
+
+            mStatisticThread = new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+
+                    while(mRunStatistic) {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (SDataManager.instance().need2Flush())
+                            SDataManager.instance().flush(0);
+                    }
+                }
+            };
+            mStatisticThread.start();
+        }
+    }
+
+    public void stopStatisticThread()  {
+        try {
+            mRunStatistic = false;
+            mStatisticThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private AgoraRTCAdapter(GLRender glRender) {
         mGLRender = glRender;
@@ -202,6 +246,9 @@ public class AgoraRTCAdapter {
         @Override
         public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
             super.onRejoinChannelSuccess(channel, uid, elapsed);
+
+            SDataManager.instance().setChannelID(channel).setUserID(uid).setChannelJoinElipse(elapsed);
+
             if (mOutCallback != null) {
                 mOutCallback.onRejoinChannelSuccess(channel, uid, elapsed);
             }
@@ -210,6 +257,9 @@ public class AgoraRTCAdapter {
         @Override
         public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
             super.onJoinChannelSuccess(channel, uid, elapsed);
+
+            SDataManager.instance().setChannelID(channel).setUserID(uid).setChannelJoinElipse(elapsed);
+
             if (mOutCallback != null) {
                 mOutCallback.onJoinChannelSuccess(channel, uid, elapsed);
             }
@@ -219,6 +269,9 @@ public class AgoraRTCAdapter {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
+
+            SDataManager.instance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
+
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
             }

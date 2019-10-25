@@ -34,7 +34,9 @@ android {
             res.srcDirs += ['src/main/res-agora']
 
             java.srcDirs += 'src/main/java-tb'
-            
+
+            java.srcDirs += 'src/main/java-statistic'
+
             if (arcCloud.toBoolean()) {
                 java.srcDirs += 'src/main/java-option1'
             }else{

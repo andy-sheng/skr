@@ -3,6 +3,8 @@ package com.engine.agora;
 import android.graphics.Rect;
 
 import com.common.log.MyLog;
+import com.engine.statistics.SDataManager;
+
 
 import io.agora.rtc.IRtcEngineEventHandlerEx;
 
@@ -253,7 +255,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onRtcStats(RtcStats stats) {
         if(vLogShow) {
-            MyLog.d(TAG, "onRtcStats" + " stats=" + stats);
+            SDataManager.instance().getRTCData().addRtcStats(stats);
         }
         super.onRtcStats(stats);
     }
@@ -261,7 +263,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
         if(vLogShow) {
-            MyLog.d(TAG, "onNetworkQuality" + " uid=" + uid + " txQuality=" + txQuality + " rxQuality=" + rxQuality);
+            SDataManager.instance().getRTCData().addNetQualityStats(uid, txQuality, rxQuality);
         }
         super.onNetworkQuality(uid, txQuality, rxQuality);
     }
@@ -269,24 +271,20 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     @Override
     public void onRemoteAudioStats(RemoteAudioStats stats) {
         if(vLogShow) {
-            MyLog.d(TAG, "onRemoteAudioStats uid: " + stats.uid +
-                    " quality: " + stats.quality +
-                    " networkTransportDelay: " + stats.networkTransportDelay +
-                    " jitterBufferDelay: " + stats.jitterBufferDelay +
-                    " audioLossRate: " + stats.audioLossRate);
+            SDataManager.instance().getRTCData().addRemoteAudioStats(stats);
         }
         super.onRemoteAudioStats(stats);
     }
 
     @Override
     public void onLocalVideoStats(LocalVideoStats stats) {
-        MyLog.d(TAG, "onLocalVideoStats" + " stats=" + stats);
+        SDataManager.instance().getRTCData().addLocalVideoStats(stats);
         super.onLocalVideoStats(stats);
     }
 
     @Override
     public void onRemoteVideoStats(RemoteVideoStats stats) {
-        MyLog.d(TAG, "onRemoteVideoStats" + " stats=" + stats);
+        SDataManager.instance().getRTCData().addRemoteVideoStats(stats);
         super.onRemoteVideoStats(stats);
     }
 
@@ -304,13 +302,13 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBitRate) {
-        MyLog.d(TAG, "onRemoteAudioTransportStats" + " uid=" + uid + " delay=" + delay + " lost=" + lost + " rxKBitRate=" + rxKBitRate);
+        SDataManager.instance().getRTCData().addRemoteAudioTransStats(uid, delay, lost, rxKBitRate);
         super.onRemoteAudioTransportStats(uid, delay, lost, rxKBitRate);
     }
 
     @Override
     public void onRemoteVideoTransportStats(int uid, int delay, int lost, int rxKBitRate) {
-        MyLog.d(TAG, "onRemoteVideoTransportStats" + " uid=" + uid + " delay=" + delay + " lost=" + lost + " rxKBitRate=" + rxKBitRate);
+        SDataManager.instance().getRTCData().addRemoteVideoTransStata(uid, delay, lost, rxKBitRate);
         super.onRemoteVideoTransportStats(uid, delay, lost, rxKBitRate);
     }
 
