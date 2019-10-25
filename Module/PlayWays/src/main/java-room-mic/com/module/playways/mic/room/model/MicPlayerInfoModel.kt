@@ -2,40 +2,42 @@ package com.module.playways.mic.room.model
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.room.prepare.model.PlayerInfoModel
-import com.zq.live.proto.RaceRoom.ERUserRole
-import com.zq.live.proto.RaceRoom.ROnlineInfo
+import com.zq.live.proto.Room.EMUserRole
+import com.zq.live.proto.Room.MOnlineInfo
 
 class MicPlayerInfoModel : PlayerInfoModel() {
-//    var role = ERUserRole.ERUR_UNKNOWN.value
-//    override fun toString(): String {
-//        return "${userInfo.toSimpleString()}"
-//    }
+
+    var role = EMUserRole.MRUR_UNKNOWN.value
+
+    override fun toString(): String {
+        return "${userInfo.toSimpleString()}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
+
+//        other as RacePlayerInfoModel
 //
-//    override fun equals(other: Any?): Boolean {
-//        if (this === other) return true
-//        if (javaClass != other?.javaClass) return false
-//        if (!super.equals(other)) return false
-//
-////        other as RacePlayerInfoModel
-////
-////        if (role != other.role) return false
-//
-//        return true
-//    }
-//
-//    override fun hashCode(): Int {
-//        var result = super.hashCode()
-////        result = 31 * result + role
-//        return result
-//    }
+//        if (role != other.role) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+//        result = 31 * result + role
+        return result
+    }
 
 }
 
-//internal fun parseFromROnlineInfoPB(pb: ROnlineInfo): RacePlayerInfoModel {
-//    val model = RacePlayerInfoModel()
-//    model.userInfo = UserInfoModel.parseFromPB(pb.user)
-//    model.userID = model.userInfo.userId
-//    model.isOnline = pb.isOnline
-//    model.role = pb.role.value
-//    return model
-//}
+internal fun parseFromROnlineInfoPB(pb: MOnlineInfo): MicPlayerInfoModel {
+    val model = MicPlayerInfoModel()
+    model.userInfo = UserInfoModel.parseFromPB(pb.userInfo)
+    model.userID = model.userInfo.userId
+    model.isOnline = pb.isOnline
+    model.role = pb.role.value
+    return model
+}

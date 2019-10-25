@@ -1,363 +1,507 @@
 package com.module.playways.mic.room.model
 
+import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
-import com.module.playways.race.room.event.*
+import com.module.playways.mic.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
-import com.zq.live.proto.RaceRoom.ERUserRole
-import com.zq.live.proto.RaceRoom.ERWantSingType
-import com.zq.live.proto.RaceRoom.ERaceRoundStatus
-import com.zq.live.proto.RaceRoom.RaceRoundInfo
+import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.Room.EMRoundStatus
+import com.zq.live.proto.Room.EMWantSingType
+import com.zq.live.proto.Room.MRoundInfo
 import org.greenrobot.eventbus.EventBus
+import java.util.*
+
 
 class MicRoundInfoModel : BaseRoundInfoModel() {
 
-    //    protected int overReason; // 结束的原因
-    //  protected int roundSeq;// 本局轮次
-//    var status = ERaceRoundStatus.ERRS_UNKNOWN.value // 轮次状态在擂台赛中使用
-//    var scores = ArrayList<RaceScore>()
-//    var subRoundSeq = 0 // 子轮次为1 代表第一轮A演唱 2 为第二轮B演唱
-//    var subRoundInfo = ArrayList<RaceSubRoundInfo>() //子轮次信息
-//    var playUsers = ArrayList<RacePlayerInfoModel>() // 选手
-//    var waitUsers = ArrayList<RacePlayerInfoModel>() // 观众
-//    var introBeginMs = 0 //竞选开始相对时间（相对于createTimeMs时间）
-//    var introEndMs = 0 // 竞选结束相对时间（相对于createTimeMs时间）
-//    //var wantSingInfos = ArrayList<RaceWantSingInfo>() // 想唱信息列表
-//
-//    // 以下不是服务器返回的
-//    //var isParticipant = true// 我是不是这局的参与者，能不能抢唱，投票
-//    var elapsedTimeMs: Int = 0//这个轮次当前状态已经经过的时间，一般用于中途加入者使用,相对于子轮次开始的相对时间
-//    var enterStatus: Int = ERaceRoundStatus.ERRS_UNKNOWN.value//你进入房间时当前轮次处于的状态，是一个快照
-//    var enterSubRoundSeq: Int = 0 //中途加入时的子轮次 只在  enterStatus == ERaceRoundStatus.ERRS_ONGOINE 有意义
-//    var currentRoundChoiceUserCnt = 0 // 当前轮次报名人数
+    /* 一唱到底使用 */
+    var status = EMRoundStatus.MRS_UNKNOWN.value
+
+    private var playUsers: ArrayList<MicPlayerInfoModel> = ArrayList() // 参与这轮游戏中的人，包括离线
+
+    //0未知
+    //1有种优秀叫一唱到底（全部唱完）
+    //2有种结束叫刚刚开始（t<30%）
+    //3有份悲伤叫都没及格(30%<=t <60%)
+    //4有种遗憾叫明明可以（60%<=t<90%）
+    //5有种可惜叫我觉得你行（90%<=t<=100%)
+//    var resultType: Int = 0 // 结果类型
+
+    var isParticipant = true// 我是不是这局的参与者
+
+    var elapsedTimeMs: Int = 0//这个轮次当前状态已经经过的时间，一般用于中途加入者使用
+
+    var enterStatus: Int = 0//你进入这个轮次处于的状态
+
+    /**
+     * EWST_DEFAULT = 0; //默认抢唱类型：普通
+     * EWST_ACCOMPANY = 1; //带伴奏抢唱
+     * EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+     * EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
+     */
+    var wantSingType = EMWantSingType.MWST_UNKNOWN.value
+
+    @JSONField(name = "CHORoundInfos")
+    internal var chorusRoundInfoModels: ArrayList<ChorusRoundInfoModel> = ArrayList()
+
+    @JSONField(name = "SPKRoundInfos")
+    internal var sPkRoundInfoModels: ArrayList<SPkRoundInfoModel> = ArrayList()
+
+    var userID: Int = 0// 本人在演唱的人
+    var music: SongModel? = null//本轮次要唱的歌儿的详细信息
+    var singBeginMs: Int = 0 // 轮次开始时间
+    var singEndMs: Int = 0 // 轮次结束时间
+    var startTs: Long = 0// 开始时间，服务器的
+    var endTs: Long = 0// 结束时间，服务器的
+    var sysScore: Int = 0//本轮系统打分，先搞个默认60分
+    var isHasSing = false// 是否已经在演唱，依据时引擎等回调，不是作为是否演唱阶段的依据
+
+    /**
+     * 是否还在房间，用来sync优化
+     * @return
+     */
+    val isContainInRoom: Boolean
+        get() {
+            for (grabPlayerInfoModel in playUsers) {
+                if (grabPlayerInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                    return true
+                }
+            }
+
+            return false
+        }
+
+    val isEnterInSingStatus: Boolean
+        get() = (enterStatus == EMRoundStatus.MRS_SING.value
+                || enterStatus == EMRoundStatus.MRS_CHO_SING.value
+                || enterStatus == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value
+                || enterStatus == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value)
+
+    val isAccRound: Boolean
+        get() = wantSingType == EMWantSingType.MWST_ACCOMPANY.value || wantSingType == EMWantSingType.MWST_SPK.value
+
+    /**
+     * 判断是各种演唱阶段
+     *
+     * @return
+     */
+    val isSingStatus: Boolean
+        get() = (status == EMRoundStatus.MRS_SING.value
+                || status == EMRoundStatus.MRS_CHO_SING.value
+                || status == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value
+                || status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value)
+
+
+    /**
+     * 是否是pk 游戏中 轮次
+     *
+     * @return
+     */
+    val isNormalRound: Boolean
+        get() = music?.playType == StandPlayType.PT_COMMON_TYPE.value
+
+    /**
+     * 是否是合唱 游戏中 轮次
+     *
+     * @return
+     */
+    val isChorusRound: Boolean
+        get() = music?.playType == StandPlayType.PT_CHO_TYPE.value
+
+
+    /**
+     * 是否是pk 游戏中 轮次
+     *
+     * @return
+     */
+    val isPKRound: Boolean
+        get() = music?.playType == StandPlayType.PT_SPK_TYPE.value
+
+
+    /**
+     * 返回当前演唱者的id信息
+     *
+     * @return
+     */
+    val singUserIds: List<Int>
+        get() {
+            val singerUserIds = ArrayList<Int>()
+            if (isPKRound) {
+                for (infoModel in getsPkRoundInfoModels()) {
+                    singerUserIds.add(infoModel.userID)
+                }
+            } else if (isChorusRound) {
+                for (infoModel in getChorusRoundInfoModels()) {
+                    singerUserIds.add(infoModel.userID)
+                }
+            } else {
+                singerUserIds.add(userID)
+            }
+            return singerUserIds
+        }
+
+    /**
+     * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
+     *
+     */
+    /**
+     * pk第一轮和第二轮的演唱时间 和 歌曲截取的部位不一样
+     */
+    val singTotalMs: Int
+        get() {
+            var totalTs = 0
+            if (status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value && getsPkRoundInfoModels().size > 1) {
+                totalTs = getsPkRoundInfoModels()[1].singEndMs - getsPkRoundInfoModels()[1].singBeginMs
+            } else if (status == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value && getsPkRoundInfoModels().size > 0) {
+                totalTs = getsPkRoundInfoModels()[0].singEndMs - getsPkRoundInfoModels()[0].singBeginMs
+            } else {
+                totalTs = singEndMs - singBeginMs
+            }
+            if (totalTs <= 0) {
+                MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正")
+                if (wantSingType == EMWantSingType.MWST_COMMON.value) {
+                    totalTs = 20 * 1000
+                } else if (wantSingType == EMWantSingType.MWST_ACCOMPANY.value) {
+                    totalTs = 30 * 1000
+                } else if (wantSingType == EMWantSingType.MWST_CHORUS.value) {
+                    totalTs = 40 * 1000
+                } else if (wantSingType == EMWantSingType.MWST_SPK.value) {
+                    totalTs = 30 * 1000
+                } else {
+                    totalTs = 20 * 1000
+                }
+            }
+            return totalTs
+        }
 
     override fun getType(): Int {
-        return TYPE_MIC
+        return BaseRoundInfoModel.TYPE_MIC
     }
 
-//    /**
-//     * 有人进入房间
-//     */
-//    fun joinUser(racePlayerInfoModel: RacePlayerInfoModel) {
-//        if (racePlayerInfoModel.role == ERUserRole.ERUR_PLAY_USER.value) {
-//            if (!playUsers?.contains(racePlayerInfoModel)) {
-//                playUsers?.add(racePlayerInfoModel)
-//                EventBus.getDefault().post(RacePlaySeatUpdateEvent(playUsers))
-//            }
-//        } else if (racePlayerInfoModel.role == ERUserRole.ERUR_WAIT_USER.value) {
-//            if (!waitUsers?.contains(racePlayerInfoModel)) {
-//                waitUsers?.add(racePlayerInfoModel)
-//                // 如果选手席还有这人，则移除
-//                if (playUsers?.contains(racePlayerInfoModel)) {
-//                    /**
-//                     * 现在服务器有个bug,轮次里A角色已经是选手
-//                     * 但是房间服务会发一个 JoinNoticePush A选手的角色还是等待中
-//                     */
-//                    MyLog.d(TAG, "选手席已经有该用户了，移除掉")
-//                    playUsers.remove(racePlayerInfoModel)
-//                }
-//                EventBus.getDefault().post(RaceWaitSeatUpdateEvent(playUsers))
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 有人离开房间
-//     */
-//    fun exitUser(userId: Int) {
-//        kotlin.run {
-//            var i = 0
-//            for (p in playUsers) {
-//                if (p.userInfo.userId == userId) {
-//                    playUsers.removeAt(i)
-//                    EventBus.getDefault().post(RacePlaySeatUpdateEvent(playUsers))
-//                    return
-//                }
-//                i++
-//            }
-//        }
-//        kotlin.run {
-//            var i = 0
-//            for (p in waitUsers) {
-//                if (p.userInfo.userId == userId) {
-//                    waitUsers.removeAt(i)
-//                    EventBus.getDefault().post(RaceWaitSeatUpdateEvent(playUsers))
-//                    break
-//                }
-//                i++
-//            }
-//        }
-//
-//    }
-//
-//    fun updatePlayUsers(l: List<RacePlayerInfoModel>?) {
-//        playUsers?.clear()
-//        l?.let {
-//            playUsers?.addAll(it)
-//        }
-//        EventBus.getDefault().post(RacePlaySeatUpdateEvent(playUsers))
-//    }
-//
-//    fun updateWaitUsers(l: List<RacePlayerInfoModel>?) {
-//        waitUsers?.clear()
-//        l?.let {
-//            waitUsers?.addAll(it)
-//        }
-//        EventBus.getDefault().post(RacePlaySeatUpdateEvent(waitUsers))
-//    }
-//
-////    /**
-////     * wantSing 增加人
-////     */
-////    fun addWantSingChange(choiceID: Int, userID: Int) {
-////        val raceWantSingInfo = RaceWantSingInfo().apply {
-////            this.choiceID = choiceID
-////            this.userID = userID
-////            this.timeMs = System.currentTimeMillis()
-////        }
-////
-////        if (!wantSingInfos.contains(raceWantSingInfo)) {
-////            userID?.let {
-////                wantSingInfos.add(raceWantSingInfo)
-////                EventBus.getDefault().post(RaceWantSingChanceEvent(choiceID, it))
-////            }
-////        }
-////    }
-//
-//    fun addBLightUser(notify: Boolean, userID: Int, subRoundSeq: Int, bLightCnt: Int) {
-//        scores.getOrNull(subRoundSeq - 1)?.addBLightUser(notify, userID, bLightCnt)
-//    }
-//
-//    /**
-//     * 更新状态
-//     */
-//    fun updateStatus(notify: Boolean, statusGrab: Int) {
-//        if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
-//            val old = status
-//            status = statusGrab
-//            if (notify) {
-//                EventBus.getDefault().post(RaceRoundStatusChangeEvent(this, old))
-//            }
-//        }
-//    }
-//
-    override fun tryUpdateRoundInfoModel(round: BaseRoundInfoModel, notify: Boolean) {
-//        if (round == null) {
-//            MyLog.e("JsonRoundInfo RoundInfo == null")
-//            return
-//        }
-//        val roundInfo = round as RaceRoundInfoModel
-//        // 更新双方得票
-//        // 观众席与玩家席更新，以最新的为准
-//        run {
-//            var needUpdate = false
-//            if (playUsers.size == roundInfo.playUsers.size) {
-//                var i = 0
-//                while (i < playUsers.size && i < roundInfo.playUsers.size) {
-//                    val infoModel1 = playUsers?.get(i)
-//                    val infoModel2 = roundInfo.playUsers?.get(i)
-//                    if (infoModel1 != infoModel2) {
-//                        needUpdate = true
-//                        break
-//                    }
-//                    i++
-//                }
-//            } else {
-//                needUpdate = true
-//            }
-//            if (needUpdate) {
-//                updatePlayUsers(roundInfo?.playUsers)
-//            }
-//        }
-//
-//        run {
-//            var needUpdate = false
-//            if (waitUsers.size == roundInfo.waitUsers.size) {
-//                var i = 0
-//                while (i < waitUsers.size && i < roundInfo.waitUsers.size) {
-//                    val infoModel1 = waitUsers?.get(i)
-//                    val infoModel2 = roundInfo.waitUsers?.get(i)
-//                    if (infoModel1 != infoModel2) {
-//                        needUpdate = true
-//                        break
-//                    }
-//                    i++
-//                }
-//            } else {
-//                needUpdate = true
-//            }
-//            if (needUpdate) {
-//                updateWaitUsers(roundInfo?.waitUsers)
-//            }
-//        }
-//
-//        if (roundInfo.overReason > 0) {
-//            this.overReason = roundInfo.overReason
-//        }
-//        if (roundInfo.subRoundInfo.size > 0) {
-//            //有数据
-//            if (this.subRoundInfo.isEmpty()) {
-//                this.subRoundInfo.addAll(roundInfo.subRoundInfo)
-//            } else {
-//                // 都有数据
-//                for (i in 0 until this.subRoundInfo.size) {
-//                    this.subRoundInfo[i].tryUpdateInfoModel(roundInfo.subRoundInfo.getOrNull(i))
-//                }
-//            }
-//        }
-//
-//        if (roundInfo.scores.size > 0) {
-//            //有数据
-//            if (this.scores.isEmpty()) {
-//                this.scores.addAll(roundInfo.scores)
-//            } else {
-//                // 都有数据
-//                // 都有数据
-//                for (i in 0 until this.scores.size) {
-//                    this.scores[i].tryUpdateInfoModel(roundInfo.scores.getOrNull(i))
-//                }
-//            }
-//        }
-//        if (roundInfo.currentRoundChoiceUserCnt > 0) {
-//            this.currentRoundChoiceUserCnt = roundInfo.currentRoundChoiceUserCnt
-//        }
-//        if (this.status == roundInfo.status) {
-//            if (this.subRoundSeq != roundInfo.subRoundSeq) {
-//                val old = this.subRoundSeq
-//                this.subRoundSeq = roundInfo.subRoundSeq
-//                // 子轮次有切换
-//                EventBus.getDefault().post(RaceSubRoundChangeEvent(this, old))
-//            }
-//        } else if (getStatusPriority(status) < getStatusPriority(roundInfo.status)) {
-//            // 更新 sub
-//            this.subRoundSeq = roundInfo.subRoundSeq
-//            updateStatus(notify, roundInfo.status)
-//        }
-//
-//        return
+    fun getPlayUsers(): ArrayList<MicPlayerInfoModel> {
+        return playUsers
     }
-//
-//    /**
-//     * 看这个userID 是不是这个大轮次的演唱者
-//     *
-//     */
-//    fun isSingerByUserId(userId: Int): Boolean {
-//        if (this.subRoundInfo.getOrNull(0)?.userID == userId) {
-//            return true
-//        }
-//        if (this.subRoundInfo.getOrNull(1)?.userID == userId) {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    /**
-//     * 当前子轮次是不是正由 userID 在演唱
-//     */
-//    fun isSingerNowByUserId(userId: Int): Boolean {
-//        if (this.subRoundInfo.getOrNull(subRoundSeq - 1)?.userID == userId) {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    /**
-//     * 此时此刻是否由自己演唱
-//     */
-//    fun isSingerNowBySelf(): Boolean {
-//        return isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
-//    }
-//
-//    /**
-//     * 此时此刻演唱的歌曲信息
-//     */
-//    fun getSongModelNow(): SongModel? {
-//        return subRoundInfo.getOrNull(subRoundSeq - 1)?.choiceDetail?.commonMusic
-//    }
-//
-//    /**
-//     * 此时此刻演唱的歌曲信息 根据 choiceID 查找
-//     */
-////    fun getSongModelByChoiceId(choiceID: Int): SongModel? {
-////        return games.getOrNull(choiceID - 1)?.commonMusic
-////    }
-//
-//    /**
-//     * 此时此刻的轮次是否是伴奏模式
-//     */
-//    fun isAccRoundNow(): Boolean {
-//        return isAccRoundBySubRoundSeq(subRoundSeq)
-//    }
-//
-//    /**
-//     * * 轮次是否是伴奏模式 更具子轮次 seq 查找
-//     */
-//    fun isAccRoundBySubRoundSeq(subRoundSeq: Int): Boolean {
-//        return subRoundInfo.getOrNull(subRoundSeq - 1)?.wantSingType == ERWantSingType.ERWST_ACCOMPANY.value
-//    }
-//
-//    /**
-//     *  当前轮次的总时间
-//     */
-//    fun getSingTotalMs(): Int {
-//        val endMs = subRoundInfo.getOrNull(subRoundSeq - 1)?.endMs ?: 0
-//        val beginMs = subRoundInfo.getOrNull(subRoundSeq - 1)?.beginMs ?: 0
-//        var totalMs = endMs - beginMs
-//        if (totalMs <= 0) {
-//            totalMs = 20 * 1000
-//        }
-//        return totalMs
-//    }
-//
-//    fun getSingerIdNow(): Int {
-//        return subRoundInfo.getOrNull(subRoundSeq - 1)?.userID ?: 0
-//    }
-//
-//    override fun toString(): String {
-//        return "RaceRoundInfoModel(roundSeq=${roundSeq} status=$status, scores=$scores, subRoundSeq=$subRoundSeq, subRoundInfo=$subRoundInfo, playUsers=$playUsers, waitUsers=$waitUsers, introBeginMs=$introBeginMs, introEndMs=$introEndMs, elapsedTimeMs=$elapsedTimeMs, enterStatus=$enterStatus, enterSubRoundSeq=$enterSubRoundSeq)"
-//    }
 
+    fun setPlayUsers(playUsers: ArrayList<MicPlayerInfoModel>) {
+        this.playUsers = playUsers
+    }
+
+    fun updateStatus(notify: Boolean, statusGrab: Int) {
+        if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
+            val old = status
+            status = statusGrab
+            if (notify) {
+                EventBus.getDefault().post(MicRoundStatusChangeEvent(this, old))
+            }
+        }
+    }
+
+    /**
+     * 重排一下状态机的优先级
+     *
+     * @param status
+     * @return
+     */
+    internal fun getStatusPriority(status: Int): Int {
+        return status
+    }
+
+
+    fun addPlayUser(notify: Boolean, grabPlayerInfoModel: MicPlayerInfoModel): Boolean {
+        if (!playUsers.contains(grabPlayerInfoModel)) {
+            playUsers.add(grabPlayerInfoModel)
+            if (notify) {
+                val event = SomeOneJoinPlaySeatEvent(grabPlayerInfoModel)
+                EventBus.getDefault().post(event)
+            }
+            return true
+        }
+        return false
+    }
+
+    fun updatePlayUsers(l: List<MicPlayerInfoModel>) {
+        playUsers.clear()
+        playUsers.addAll(l)
+        EventBus.getDefault().post(MicPlaySeatUpdateEvent(playUsers))
+    }
+
+    /**
+     * 一唱到底使用
+     */
+    override fun tryUpdateRoundInfoModel(round: BaseRoundInfoModel?, notify: Boolean) {
+        if (round == null) {
+            MyLog.e("JsonRoundInfo RoundInfo == null")
+            return
+        }
+        val roundInfo = round as MicRoundInfoModel?
+        this.userID = roundInfo!!.userID
+        this.setRoundSeq(roundInfo.getRoundSeq())
+        this.singBeginMs = roundInfo.singBeginMs
+        this.singEndMs = roundInfo.singEndMs
+        if (this.music == null) {
+            this.music = roundInfo.music
+        }
+        // 观众席与玩家席更新，以最新的为准
+        run {
+            var needUpdate = false
+            if (playUsers.size == roundInfo.getPlayUsers().size) {
+                var i = 0
+                while (i < roundInfo.getPlayUsers().size && i < playUsers.size) {
+                    val infoModel1 = playUsers[i]
+                    val infoModel2 = roundInfo.getPlayUsers()[i]
+                    if (infoModel1 != infoModel2) {
+                        needUpdate = true
+                        break
+                    }
+                    i++
+                }
+            } else {
+                needUpdate = true
+            }
+            if (needUpdate) {
+                updatePlayUsers(roundInfo.getPlayUsers())
+            }
+        }
+
+        if (roundInfo.getOverReason() > 0) {
+            this.setOverReason(roundInfo.getOverReason())
+        }
+//        if (roundInfo.resultType > 0) {
+//            this.resultType = roundInfo.resultType
+//        }
+        this.wantSingType = roundInfo.wantSingType
+
+        // 更新合唱信息
+        if (wantSingType == EMWantSingType.MWST_CHORUS.value) {
+            if (this.getChorusRoundInfoModels().size <= 1) {
+                // 不满足两人通知全量更新
+                this.getChorusRoundInfoModels().clear()
+                this.getChorusRoundInfoModels().addAll(roundInfo.getChorusRoundInfoModels())
+            } else {
+                var i = 0
+                while (i < this.getChorusRoundInfoModels().size && i < roundInfo.getChorusRoundInfoModels().size) {
+                    val chorusRoundInfoModel1 = this.getChorusRoundInfoModels()[i]
+                    val chorusRoundInfoModel2 = roundInfo.getChorusRoundInfoModels()[i]
+                    chorusRoundInfoModel1.tryUpdateRoundInfoModel(chorusRoundInfoModel2)
+                    i++
+                }
+            }
+        }
+
+        // 更新pk信息
+        if (wantSingType == EMWantSingType.MWST_SPK.value) {
+            // pk房间
+            if (this.getsPkRoundInfoModels().size <= 1) {
+                // 不满足两人通知全量更新
+                this.getsPkRoundInfoModels().clear()
+                this.getsPkRoundInfoModels().addAll(roundInfo.getsPkRoundInfoModels())
+            } else {
+                var i = 0
+                while (i < this.getsPkRoundInfoModels().size && i < roundInfo.getsPkRoundInfoModels().size) {
+                    val sPkRoundInfoModel1 = this.getsPkRoundInfoModels()[i]
+                    val sPkRoundInfoModel2 = roundInfo.getsPkRoundInfoModels()[i]
+                    sPkRoundInfoModel1.tryUpdateRoundInfoModel(sPkRoundInfoModel2, notify)
+                    i++
+                }
+            }
+        }
+
+        updateStatus(notify, roundInfo.status)
+        return
+    }
+
+    /**
+     * 一唱到底合唱某人放弃了演唱
+     *
+     * @param userID
+     */
+    fun giveUpInChorus(userID: Int) {
+        for (i in 0 until this.getChorusRoundInfoModels().size) {
+            val chorusRoundInfoModel = this.getChorusRoundInfoModels()[i]
+            if (chorusRoundInfoModel.userID == userID) {
+                if (!chorusRoundInfoModel.isHasGiveUp) {
+                    chorusRoundInfoModel.isHasGiveUp = true
+                    EventBus.getDefault().post(MicChorusUserStatusChangeEvent(chorusRoundInfoModel))
+                }
+            }
+        }
+    }
+
+    fun addUser(b: Boolean, playerInfoModel: MicPlayerInfoModel): Boolean {
+            return addPlayUser(b, playerInfoModel)
+    }
+
+    fun removeUser(notify: Boolean, uid: Int) {
+        for (i in playUsers.indices) {
+            val infoModel = playUsers[i]
+            if (infoModel.userID == uid) {
+                playUsers.remove(infoModel)
+                if (notify) {
+                    EventBus.getDefault().post(SomeOneLeavePlaySeatEvent(infoModel))
+                }
+                break
+            }
+        }
+    }
+
+    fun getChorusRoundInfoModels(): ArrayList<ChorusRoundInfoModel> {
+        return chorusRoundInfoModels
+    }
+
+    fun setChorusRoundInfoModels(chorusRoundInfoModels: ArrayList<ChorusRoundInfoModel>) {
+        this.chorusRoundInfoModels = chorusRoundInfoModels
+    }
+
+    fun getsPkRoundInfoModels(): ArrayList<SPkRoundInfoModel> {
+        return sPkRoundInfoModels
+    }
+
+    fun setsPkRoundInfoModels(sPkRoundInfoModels: ArrayList<SPkRoundInfoModel>) {
+        this.sPkRoundInfoModels = sPkRoundInfoModels
+    }
+
+
+    /**
+     * 判断当前是否是自己的演唱轮次
+     *
+     * @return
+     */
+    fun singBySelf(): Boolean {
+        if (status == EMRoundStatus.MRS_SING.value) {
+            return userID.toLong() == MyUserInfoManager.getInstance().uid
+        } else if (status == EMRoundStatus.MRS_CHO_SING.value) {
+            for (roundInfoModel in chorusRoundInfoModels) {
+                if (roundInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid && isParticipant) {
+                    return true
+                }
+            }
+        } else if (status == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value) {
+            if (getsPkRoundInfoModels().isNotEmpty()) {
+                return getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.getInstance().uid
+            }
+        } else if (status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+            if (getsPkRoundInfoModels().size > 1) {
+                return getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.getInstance().uid
+            }
+        }  else if (status == EMRoundStatus.MRS_END.value) {
+            // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
+            if (userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                return true
+            }
+            for (roundInfoModel in chorusRoundInfoModels) {
+                if (roundInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid && isParticipant) {
+                    return true
+                }
+            }
+            if (getsPkRoundInfoModels().isNotEmpty()) {
+                if (getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                    return true
+                }
+                if (getsPkRoundInfoModels().size > 1) {
+                    if (getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+
+    /**
+     * 当前轮次当前阶段是否由 userId 演唱
+     *
+     * @param userId
+     * @return
+     */
+    fun singByUserId(userId: Int): Boolean {
+        if (status == EMRoundStatus.MRS_SING.value) {
+            return userID == userId
+        } else if (status == EMRoundStatus.MRS_CHO_SING.value) {
+            for (roundInfoModel in chorusRoundInfoModels) {
+                if (roundInfoModel.userID == userId) {
+                    return true
+                }
+            }
+        } else if (status == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value) {
+            if (getsPkRoundInfoModels().size > 0) {
+                return getsPkRoundInfoModels()[0].userID == userId
+            }
+        } else if (status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+            if (getsPkRoundInfoModels().size > 1) {
+                return getsPkRoundInfoModels()[1].userID == userId
+            }
+        }
+        return false
+    }
+
+    override fun toString(): String {
+        return "MicRoundInfoModel{" +
+                "roundSeq=" + roundSeq +
+                ", status=" + status +
+                ", userID=" + userID +
+                ", wantSingType=" + wantSingType +
+                ", songModel=" + (if (music == null) "" else music!!.toSimpleString()) +
+                ", singBeginMs=" + singBeginMs +
+                ", singEndMs=" + singEndMs +
+                //                ", startTs=" + startTs +
+                //                ", endTs=" + endTs +
+                //                ", sysScore=" + sysScore +
+                ", hasSing=" + isHasSing +
+                ", overReason=" + overReason +
+                ", playUsers=" + playUsers +
+//                ", resultType=" + resultType +
+                ", isParticipant=" + isParticipant +
+                ", elapsedTimeMs=" + elapsedTimeMs +
+                ", enterStatus=" + enterStatus +
+                ",chorusRoundInfoModels=" + chorusRoundInfoModels +
+                ", sPkRoundInfoModels=" + sPkRoundInfoModels +
+                '}'.toString()
+    }
+
+    companion object {
+
+        fun parseFromRoundInfo(roundInfo: MRoundInfo): MicRoundInfoModel {
+            val roundInfoModel = MicRoundInfoModel()
+            roundInfoModel.userID = roundInfo.userID
+            roundInfoModel.setRoundSeq(roundInfo.roundSeq!!)
+
+            roundInfoModel.singBeginMs = roundInfo.singBeginMs
+            roundInfoModel.singEndMs = roundInfo.singEndMs
+
+            // 轮次状态
+            roundInfoModel.status = roundInfo.status.value
+
+
+            roundInfoModel.setOverReason(roundInfo.overReason.value)
+//            roundInfoModel.resultType = roundInfo.resultType.value
+
+            val songModel = SongModel()
+            songModel.parse(roundInfo.music)
+            roundInfoModel.music = songModel
+
+
+            // 玩家
+            for (m in roundInfo.usersList) {
+                val grabPlayerInfoModel = parseFromROnlineInfoPB(m)
+                roundInfoModel.addPlayUser(false, grabPlayerInfoModel)
+            }
+            // 想唱类型
+            roundInfoModel.wantSingType = roundInfo.wantSingType.value
+
+            for (qchoInnerRoundInfo in roundInfo.choRoundInfosList) {
+                val chorusRoundInfoModel = ChorusRoundInfoModel.parse(qchoInnerRoundInfo)
+                roundInfoModel.getChorusRoundInfoModels().add(chorusRoundInfoModel)
+            }
+
+            for (qspkInnerRoundInfo in roundInfo.spkRoundInfosList) {
+                val pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo)
+                roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel)
+            }
+            return roundInfoModel
+        }
+    }
 
 }
-
-
-///**
-// * 重排一下状态机的优先级
-// *
-// * @param status
-// * @return
-// */
-//internal fun getStatusPriority(status: Int): Int {
-//    return status
-//}
-//
-//internal fun parseFromRoundInfoPB(pb: RaceRoundInfo): RaceRoundInfoModel {
-//    val model = RaceRoundInfoModel()
-//    model.roundSeq = pb.roundSeq
-//    model.subRoundSeq = pb.subRoundSeq
-//    model.status = pb.status.value
-//    model.overReason = pb.overReason.value
-//    pb.subRoundInfoList.forEach {
-//        model.subRoundInfo.add(parseFromSubRoundInfoPB(it))
-//    }
-//    pb.scoresList.forEach {
-//        model.scores.add(parseFromRoundScoreInfoPB(it))
-//    }
-//    pb.waitUsersList.forEach {
-//        model.waitUsers.add(parseFromROnlineInfoPB(it))
-//    }
-//    pb.playUsersList.forEach {
-//        model.playUsers.add(parseFromROnlineInfoPB(it))
-//    }
-//    model.introBeginMs = pb.introBeginMs
-//    model.introEndMs = pb.introEndMs
-////    pb.wantSingInfosList.forEach {
-////        model.wantSingInfos.add(parseFromWantSingInfoPB(it))
-////    }
-//    if (pb.currentRoundChoiceUserCnt > 0) {
-//        model.currentRoundChoiceUserCnt = pb.currentRoundChoiceUserCnt
-//    }
-//    return model
-//}
-
