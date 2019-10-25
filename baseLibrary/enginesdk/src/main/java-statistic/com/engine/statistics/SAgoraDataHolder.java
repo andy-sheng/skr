@@ -1,11 +1,9 @@
 package com.engine.statistics;
 
 
-import com.engine.statistics.datadef.AD;
+import com.engine.statistics.datastruct.SAgora;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.agora.rtc.IRtcEngineEventHandler;
@@ -16,28 +14,28 @@ public class SAgoraDataHolder
 {
 
     private String mLinePrefix = "";
-    private List<AD.SAgoraRTCStats>  mRtcStatsList;
-    private List<AD.SAgoraLocalVideoStats> mLocalVList;
-    private List<AD.SAgoraRemoteAudioStats> mRemoteAList;
-    private List<AD.SAgoraRemoteVideoStats> mRemoteVList;
+    private List<SAgora.SRTCStats>  mRtcStatsList;
+    private List<SAgora.SLocalVideoStats> mLocalVList;
+    private List<SAgora.SRemoteAudioStats> mRemoteAList;
+    private List<SAgora.SRemoteVideoStats> mRemoteVList;
 
-    private List<AD.SAgoraNetworkQuality> mNetQualityList;
-    private List<AD.SAgoraRemoteAudioTransportStats>   mRemoteATransList;
-    private List<AD.SAgoraRemoteVideoTransportStat>    mRemoteVTransList;
-    private List<AD.SAgoraAudioSamplingInfo> mAudioSamplingInfoList;
+    private List<SAgora.SNetworkQuality> mNetQualityList;
+    private List<SAgora.SRemoteAudioTransportStats>   mRemoteATransList;
+    private List<SAgora.SRemoteVideoTransportStat>    mRemoteVTransList;
+    private List<SAgora.SAudioSamplingInfo> mAudioSamplingInfoList;
 
 
 
     public SAgoraDataHolder() {
-        mRtcStatsList = new ArrayList<AD.SAgoraRTCStats>();
-        mLocalVList  = new ArrayList<AD.SAgoraLocalVideoStats>();
-        mRemoteAList = new ArrayList<AD.SAgoraRemoteAudioStats>();
-        mRemoteVList = new ArrayList<AD.SAgoraRemoteVideoStats>();
-        mNetQualityList= new ArrayList<AD.SAgoraNetworkQuality>();
-        mRemoteATransList= new ArrayList<AD.SAgoraRemoteAudioTransportStats>();
-        mRemoteVTransList= new ArrayList<AD.SAgoraRemoteVideoTransportStat>();
+        mRtcStatsList = new ArrayList<SAgora.SRTCStats>();
+        mLocalVList  = new ArrayList<SAgora.SLocalVideoStats>();
+        mRemoteAList = new ArrayList<SAgora.SRemoteAudioStats>();
+        mRemoteVList = new ArrayList<SAgora.SRemoteVideoStats>();
+        mNetQualityList= new ArrayList<SAgora.SNetworkQuality>();
+        mRemoteATransList= new ArrayList<SAgora.SRemoteAudioTransportStats>();
+        mRemoteVTransList= new ArrayList<SAgora.SRemoteVideoTransportStat>();
 
-        mAudioSamplingInfoList = new ArrayList<AD.SAgoraAudioSamplingInfo>();
+        mAudioSamplingInfoList = new ArrayList<SAgora.SAudioSamplingInfo>();
     }
 
     public SAgoraDataHolder setLinePrefix(String prefix) {
@@ -52,7 +50,7 @@ public class SAgoraDataHolder
 
 
     public synchronized void addRtcStats(IRtcEngineEventHandler.RtcStats s ) {
-        AD.SAgoraRTCStats n = new AD.SAgoraRTCStats();
+        SAgora.SRTCStats n = new SAgora.SRTCStats();
         n.timeStamp     = System.currentTimeMillis();
 
         n.cpuAppUsage   = s.cpuAppUsage;
@@ -74,7 +72,7 @@ public class SAgoraDataHolder
     }
 
     public synchronized void addLocalVideoStats(IRtcEngineEventHandler.LocalVideoStats s) {
-        AD.SAgoraLocalVideoStats n = new AD.SAgoraLocalVideoStats();
+        SAgora.SLocalVideoStats n = new SAgora.SLocalVideoStats();
 
         n.timeStamp = System.currentTimeMillis();
         n.sentBitrate = s.sentBitrate;
@@ -90,7 +88,7 @@ public class SAgoraDataHolder
     }
 
     public synchronized void addRemoteAudioStats(IRtcEngineEventHandler.RemoteAudioStats s) {
-        AD.SAgoraRemoteAudioStats n = new AD.SAgoraRemoteAudioStats();
+        SAgora.SRemoteAudioStats n = new SAgora.SRemoteAudioStats();
 
         n.timeStamp = System.currentTimeMillis();
 
@@ -107,7 +105,7 @@ public class SAgoraDataHolder
 
 
     public synchronized void addRemoteVideoStats(IRtcEngineEventHandler.RemoteVideoStats s) {
-        AD.SAgoraRemoteVideoStats n = new AD.SAgoraRemoteVideoStats();
+        SAgora.SRemoteVideoStats n = new SAgora.SRemoteVideoStats();
 
         n.timeStamp = System.currentTimeMillis();
         n.uid = s.uid;
@@ -123,7 +121,7 @@ public class SAgoraDataHolder
     }
 
     public synchronized void addNetQualityStats(int uid, int txQuality,int rxQuality) {
-        AD.SAgoraNetworkQuality n = new AD.SAgoraNetworkQuality();
+        SAgora.SNetworkQuality n = new SAgora.SNetworkQuality();
 
         n.timeStamp = System.currentTimeMillis();
         n.uid = uid;
@@ -136,7 +134,7 @@ public class SAgoraDataHolder
 
 
     public synchronized void addRemoteAudioTransStats(int uid, int delay, int lost, int rxKBitRate) {
-        AD.SAgoraRemoteAudioTransportStats n = new AD.SAgoraRemoteAudioTransportStats();
+        SAgora.SRemoteAudioTransportStats n = new SAgora.SRemoteAudioTransportStats();
 
         n.timeStamp = System.currentTimeMillis();
         n.uid = uid;
@@ -149,7 +147,7 @@ public class SAgoraDataHolder
     }
 
     public synchronized void addRemoteVideoTransStata(int uid, int delay, int lost, int rxKBitRate) {
-        AD.SAgoraRemoteVideoTransportStat n = new AD.SAgoraRemoteVideoTransportStat();
+        SAgora.SRemoteVideoTransportStat n = new SAgora.SRemoteVideoTransportStat();
 
         n.timeStamp = System.currentTimeMillis();
         n.uid = uid;
@@ -161,10 +159,10 @@ public class SAgoraDataHolder
         return;
     }
 
-    public synchronized void addAudioSamplingInfo(AD.SAgoraAudioSamplingInfo o) {
+    public synchronized void addAudioSamplingInfo(SAgora.SAudioSamplingInfo o) {
         if (null == o) return;
 
-        AD.SAgoraAudioSamplingInfo n = new AD.SAgoraAudioSamplingInfo();
+        SAgora.SAudioSamplingInfo n = new SAgora.SAudioSamplingInfo();
 
         n.timeStamp = System.currentTimeMillis();
 
@@ -196,48 +194,6 @@ public class SAgoraDataHolder
     public synchronized String toString() {
 
         String retStr = "";
-
-//        if (mRtcStatsList.size() > 0) {
-//            for (AD.SAgoraRTCStats e : mRtcStatsList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
-//
-//        if (mLocalVList.size() > 0) {
-//            for (AD.SAgoraLocalVideoStats e : mLocalVList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
-//
-//        if (mRemoteAList.size() > 0) {
-//            for (AD.SAgoraRemoteAudioStats e : mRemoteAList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
-//
-//        if (mRemoteVList.size() > 0) {
-//            for (AD.SAgoraRemoteVideoStats e : mRemoteVList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
-//
-//        if (mNetQualityList.size() > 0) {
-//            for (AD.SAgoraNetworkQuality e : mNetQualityList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
-//
-//        if (mRemoteATransList.size() > 0) {
-//            for (AD.SAgoraRemoteAudioTransportStats e : mRemoteATransList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
-//
-//        if (mRemoteVTransList.size() > 0) {
-//            for (AD.SAgoraRemoteVideoTransportStat e: mRemoteVTransList) {
-//                retStr += (mLinePrefix + e.toString());
-//            }
-//        }
 
         retStr += getListString(mRtcStatsList);
         retStr += getListString(mLocalVList);

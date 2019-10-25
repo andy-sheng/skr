@@ -10,14 +10,13 @@ import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
 import com.engine.statistics.SDataManager;
-import com.engine.statistics.datadef.AD;
+import com.engine.statistics.datastruct.SAgora;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
 import com.zq.mediaengine.framework.ImgTexFrame;
 import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
-
 import com.zq.mediaengine.util.gles.GLRender;
 
 import java.io.File;
@@ -274,7 +273,7 @@ public class AgoraRTCAdapter {
             super.onLeaveChannel(stats);
 
             SDataManager.instance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
-            mFirstAudioSampling = true; //下次启动采集的时候看到true，会记录时时间戳
+            mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
             }
@@ -385,22 +384,24 @@ public class AgoraRTCAdapter {
 
     //for audio statistics:
     private long mAudioStatisticTS = 0;
-    private boolean mFirstAudioSampling = true;
-    private AD.SAgoraAudioSamplingInfo mAgoroAduioSmpInfo = new AD.SAgoraAudioSamplingInfo();
+    private boolean mInAudioStatistic = false;
+    private SAgora.SAudioSamplingInfo mAgoroAduioSmpInfo = new SAgora.SAudioSamplingInfo();
 
-    private AD.SAgoraAudioSamplingInfo makeAudioSamplingInfo(int numOfSamples, int bytesPerSample, int channels,
+    private SAgora.SAudioSamplingInfo makeAudioSamplingInfo(int numOfSamples, int bytesPerSample, int channels,
                                                             int samplesPerSec)
     {
-        if (mFirstAudioSampling) {
+        if (!mInAudioStatistic) {
             mAudioStatisticTS = System.currentTimeMillis();
-            mFirstAudioSampling = false;
+//            mAgoroAduioSmpInfo.smpCnt += numOfSamples;
+
+            mInAudioStatistic = true;
             return null;
         }
 
 
         mAgoroAduioSmpInfo.smpCnt += numOfSamples;
         long timeSpan = System.currentTimeMillis() - mAudioStatisticTS;
-        if (timeSpan >= AD.SAgoraAudioSamplingInfo.STATISTIC_SPAN_SETTTING) { //输出一次统计信息
+        if (timeSpan >= SAgora.SAudioSamplingInfo.STATISTIC_SPAN_SETTTING) { //输出一次统计信息
             mAgoroAduioSmpInfo.smpRate = samplesPerSec;
             mAgoroAduioSmpInfo.chCnt = channels;
             mAgoroAduioSmpInfo.statisticSpan = timeSpan;
@@ -533,7 +534,7 @@ public class AgoraRTCAdapter {
                         return true;
                     }
 
-                    AD.SAgoraAudioSamplingInfo smpInfo = makeAudioSamplingInfo(numOfSamples, bytesPerSample, channels, samplesPerSec);
+                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(numOfSamples, bytesPerSample, channels, samplesPerSec);
                     if (null != smpInfo) { //说明达到一次统计间隔
                         SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo);
                         smpInfo.reset();

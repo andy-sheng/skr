@@ -1,4 +1,4 @@
-package com.engine.statistics.datadef;
+package com.engine.statistics.datastruct;
 
 
 import com.engine.statistics.SUtils;
@@ -7,7 +7,7 @@ import io.agora.rtc.IRtcEngineEventHandler;
 
 
 
-public class AD //means AgoraData
+public class SAgora //all struct related to Agora is defined here!
 {
 
 
@@ -25,7 +25,7 @@ public class AD //means AgoraData
     }
 
 
-    public static class SAgoraAudioSamplingInfo {
+    public static class SAudioSamplingInfo {
         public long timeStamp; //统计间隔结束点的时间戳
 
         public long smpRate; //采样率
@@ -49,7 +49,7 @@ public class AD //means AgoraData
                 additionInfo = ", extraInfo="+extraInfo;
             }
 
-            return SUtils.transTime(timeStamp) + " AD.SAgoraAudioSamplingInfo: smpRate=" + smpRate +
+            return SUtils.transTime(timeStamp) + " SAgora.SAudioSamplingInfo: smpRate=" + smpRate +
                     ", chCnt=" + chCnt +
                     ", smpCnt=" + smpCnt +
                     ", pcmDuration=" + pcmDuration +
@@ -69,11 +69,11 @@ public class AD //means AgoraData
 
 
 
-    public static class SAgoraRTCStats extends IRtcEngineEventHandler.RtcStats {
+    public static class SRTCStats extends IRtcEngineEventHandler.RtcStats {
         public long timeStamp;
 
         public String toString() {
-            return SUtils.transTime(timeStamp)+" AD.SAgoraRTCStats: totalDuration="+totalDuration+
+            return SUtils.transTime(timeStamp)+" SAgora.SRTCStats: totalDuration="+totalDuration+
                     ", txBytes=" + txBytes +
                     ", rxBytes=" + rxBytes +
                     ", txKBitRate=" + txKBitRate +
@@ -93,10 +93,10 @@ public class AD //means AgoraData
     }
 
 
-    public static class SAgoraLocalVideoStats extends IRtcEngineEventHandler.LocalVideoStats {
+    public static class SLocalVideoStats extends IRtcEngineEventHandler.LocalVideoStats {
         public long timeStamp;
         public String toString() {
-            return SUtils.transTime(timeStamp)+" AD.SAgoraLocalVideoStats: sentBitrate=" + sentBitrate +
+            return SUtils.transTime(timeStamp)+" SAgora.SLocalVideoStats: sentBitrate=" + sentBitrate +
                     ", sentFrameRate=" + sentFrameRate+
                     ", encoderOutputFrameRate=" + encoderOutputFrameRate+
                     ", rendererOutputFrameRate=" + rendererOutputFrameRate+
@@ -106,13 +106,13 @@ public class AD //means AgoraData
         }
     }
 
-    public static class SAgoraRemoteAudioStats extends IRtcEngineEventHandler.RemoteAudioStats {
+    public static class SRemoteAudioStats extends IRtcEngineEventHandler.RemoteAudioStats {
         public long timeStamp;
 //        public String strQuality; //replace base class's "quality" for explicitly meanning
 
         public String toString() {
 
-            return SUtils.transTime(timeStamp)+" AD.SAgoraRemoteAudioStats: uid=" + uid +
+            return SUtils.transTime(timeStamp)+" SAgora.SRemoteAudioStats: uid=" + uid +
                     ", quality=" + transNetQuality(quality) +
                     ", networkTransportDelay=" + networkTransportDelay+
                     ", jitterBufferDelay=" + jitterBufferDelay+
@@ -120,10 +120,10 @@ public class AD //means AgoraData
         }
     }
 
-    public static class SAgoraRemoteVideoStats extends IRtcEngineEventHandler.RemoteVideoStats {
+    public static class SRemoteVideoStats extends IRtcEngineEventHandler.RemoteVideoStats {
         public long timeStamp;
         public String toString() {
-            return SUtils.transTime(timeStamp)+" AD.SAgoraRemoteVideoStats: uid="+ uid +
+            return SUtils.transTime(timeStamp)+" SAgora.SRemoteVideoStats: uid="+ uid +
                     ", width=" +width+
                     ", height=" +height+
                     ", receivedBitrate=" +receivedBitrate+
@@ -134,7 +134,7 @@ public class AD //means AgoraData
     }
 
 
-    public static class SAgoraRemoteVideoTransportStat{
+    public static class SRemoteVideoTransportStat{
         public long timeStamp;
         public int 	uid;
         public int 	delay;
@@ -142,12 +142,12 @@ public class AD //means AgoraData
         public int 	rxKBitRate;
 
         public String toString() {
-            return SUtils.transTime(timeStamp)+" AD.SAgoraRemoteVideoTransportStat: uid="+uid+"， delay="+delay+"， lost="+lost+"， rxKBitRate="+rxKBitRate + "\n";
+            return SUtils.transTime(timeStamp)+" SAgora.SRemoteVideoTransportStat: uid="+uid+"， delay="+delay+"， lost="+lost+"， rxKBitRate="+rxKBitRate + "\n";
         }
     }
 
 
-    public static class SAgoraRemoteAudioTransportStats{
+    public static class SRemoteAudioTransportStats{
         public long timeStamp;
         public int 	uid;
         public int 	delay;
@@ -155,11 +155,11 @@ public class AD //means AgoraData
         public int 	rxKBitRate;
 
         public String toString(){
-            return SUtils.transTime(timeStamp)+" AD.SAgoraRemoteAudioTransportStats: uid="+uid+"， delay="+delay+"， lost="+lost+"， rxKBitRate="+rxKBitRate + "\n";
+            return SUtils.transTime(timeStamp)+" SAgora.SRemoteAudioTransportStats: uid="+uid+"， delay="+delay+"， lost="+lost+"， rxKBitRate="+rxKBitRate + "\n";
         }
     }
 
-    public static class SAgoraNetworkQuality {
+    public static class SNetworkQuality {
         public long timeStamp;
         public int  uid = -1;
         public int 	txQuality=0;
@@ -169,9 +169,9 @@ public class AD //means AgoraData
 
         public String toString(){
 
-            return SUtils.transTime(timeStamp)+" AD.SAgoraNetworkQuality: uid="+uid+", txQuality="+transNetQuality(txQuality)+", rxQuality="+transNetQuality(rxQuality) + "\n";
+            return SUtils.transTime(timeStamp)+" SAgora.SNetworkQuality: uid="+uid+", txQuality="+transNetQuality(txQuality)+", rxQuality="+transNetQuality(rxQuality) + "\n";
         }
-    } //end of class AD.SAgoraNetworkQuality
+    } //end of class SAgora.SNetworkQuality
 
 
 

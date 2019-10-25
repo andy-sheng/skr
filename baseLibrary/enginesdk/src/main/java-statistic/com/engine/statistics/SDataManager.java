@@ -14,8 +14,6 @@ public class SDataManager
     private SDataMgrBasicInfo mBasicInfo = null;
 
     private SAgoraDataHolder mADHolder = null; //Agora Data Holder
-    private SAgoraPlayerData mAgPlayerData = null; //to del
-    private SAgoraSamplingData mAgSamplingData = null; //to del
 
 
     private String TAG = "SDATA_MANAGER";
@@ -26,9 +24,6 @@ public class SDataManager
 
         mADHolder = new SAgoraDataHolder();
         mADHolder.setLinePrefix(PREFIX_4_AGORA_RTC);
-
-        mAgPlayerData = new SAgoraPlayerData();
-        mAgSamplingData = new SAgoraSamplingData();
     }
 
     public static SDataManager instance() {
@@ -80,8 +75,6 @@ public class SDataManager
         logStr += (PREFIX_4_AGORA_RTC+ "userID="+mBasicInfo.userID + ", channelID=" + mBasicInfo.channelID +
                     ", channelJoinElapsed="+mBasicInfo.channelJoinElapsed+"\n");
         logStr += mADHolder.toString();
-        logStr += mAgPlayerData.toString();
-        logStr += mAgSamplingData.toString();
 
         reset();
 
@@ -93,13 +86,12 @@ public class SDataManager
 
     public SDataManager reset() {
         mADHolder.reset();
-        mAgPlayerData.reset();
-        mAgSamplingData.reset();
+
         return this;
     }
 
     public boolean need2Flush(){
-        return (mADHolder.need2Flush() || mAgPlayerData.need2Flush() || mAgSamplingData.need2Flush());
+        return (mADHolder.need2Flush());
     }
 
 

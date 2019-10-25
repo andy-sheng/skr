@@ -254,25 +254,25 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onRtcStats(RtcStats stats) {
-        if(vLogShow) {
+//        if(vLogShow) {
             SDataManager.instance().getAgoraDataHolder().addRtcStats(stats);
-        }
+//        }
         super.onRtcStats(stats);
     }
 
     @Override
     public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
-        if(vLogShow) {
+//        if(vLogShow) {
             SDataManager.instance().getAgoraDataHolder().addNetQualityStats(uid, txQuality, rxQuality);
-        }
+//        }
         super.onNetworkQuality(uid, txQuality, rxQuality);
     }
 
     @Override
     public void onRemoteAudioStats(RemoteAudioStats stats) {
-        if(vLogShow) {
+//        if(vLogShow) {
             SDataManager.instance().getAgoraDataHolder().addRemoteAudioStats(stats);
-        }
+//        }
         super.onRemoteAudioStats(stats);
     }
 
