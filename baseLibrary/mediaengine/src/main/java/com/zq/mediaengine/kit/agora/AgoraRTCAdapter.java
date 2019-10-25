@@ -92,6 +92,7 @@ public class AgoraRTCAdapter {
     private int mAudioCBCount = 0;
     private int mAudioCBSamples = 0;
     private long mStartCBTime = 0;
+    private int mDataFlushMode = SDataManager.FLUSH_MODE_FILE | SDataManager.FLUSH_MODE_UPLOAD;
 
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
@@ -131,7 +132,7 @@ public class AgoraRTCAdapter {
                         }
 
                         if (SDataManager.instance().need2Flush())
-                            SDataManager.instance().flush(0);
+                            SDataManager.instance().flush(mDataFlushMode);
                     }
                 }
             };
@@ -143,6 +144,7 @@ public class AgoraRTCAdapter {
         try {
             mRunStatistic = false;
             mStatisticThread.join();
+            SDataManager.instance().flush(mDataFlushMode);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -13,9 +13,9 @@ public class SDataManager
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
-    private SAgoraRTCData mAgRtcData = null;
-    private SAgoraPlayerData mAgPlayerData = null;
-    private SAgoraSamplingData mAgSamplingData = null;
+    private SAgoraDataHolder mADHolder = null; //Agora Data Holder
+    private SAgoraPlayerData mAgPlayerData = null; //to del
+    private SAgoraSamplingData mAgSamplingData = null; //to del
 
 
     private String TAG = "SDATA_MANAGER";
@@ -24,8 +24,8 @@ public class SDataManager
     private SDataManager(){
         mBasicInfo = new SDataMgrBasicInfo();
 
-        mAgRtcData = new SAgoraRTCData();
-        mAgRtcData.setLinePrefix(PREFIX_4_AGORA_RTC);
+        mADHolder = new SAgoraDataHolder();
+        mADHolder.setLinePrefix(PREFIX_4_AGORA_RTC);
 
         mAgPlayerData = new SAgoraPlayerData();
         mAgSamplingData = new SAgoraSamplingData();
@@ -66,8 +66,8 @@ public class SDataManager
         mBasicInfo.channelJoinElapsed = elapsed;
         return this;
     }
-    public SAgoraRTCData getRTCData() {
-        return mAgRtcData;
+    public SAgoraDataHolder getRTCData() {
+        return mADHolder;
     }
 
 
@@ -76,9 +76,10 @@ public class SDataManager
     public synchronized SDataManager flush(int flushMode) {
 
         String logStr = "";
-        logStr += PREFIX_4_AGORA_RTC + "userID="+mBasicInfo.userID+", channelID="+mBasicInfo.channelID+
-                    ", channelJoinElapsed="+mBasicInfo.channelJoinElapsed+"\n";
-        logStr += mAgRtcData.toString();
+
+        logStr += (PREFIX_4_AGORA_RTC+ "userID="+mBasicInfo.userID + ", channelID=" + mBasicInfo.channelID +
+                    ", channelJoinElapsed="+mBasicInfo.channelJoinElapsed+"\n");
+        logStr += mADHolder.toString();
         logStr += mAgPlayerData.toString();
         logStr += mAgSamplingData.toString();
 
@@ -91,14 +92,14 @@ public class SDataManager
     }
 
     public SDataManager reset() {
-        mAgRtcData.reset();
+        mADHolder.reset();
         mAgPlayerData.reset();
         mAgSamplingData.reset();
         return this;
     }
 
     public boolean need2Flush(){
-        return (mAgRtcData.need2Flush() || mAgPlayerData.need2Flush() || mAgSamplingData.need2Flush());
+        return (mADHolder.need2Flush() || mAgPlayerData.need2Flush() || mAgSamplingData.need2Flush());
     }
 
 
