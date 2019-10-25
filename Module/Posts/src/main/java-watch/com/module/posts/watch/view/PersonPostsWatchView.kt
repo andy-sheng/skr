@@ -5,6 +5,7 @@ import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -17,6 +18,10 @@ import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
 class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserInfoModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_PERSON), IPersonPostsWall {
+    override fun stopPlay() {
+        SinglePlayer.stop(playerTag)
+        adapter?.stopPlay()
+    }
 
     override fun setUserInfoModel(any: Any?) {
         val model = any as UserInfoModel?

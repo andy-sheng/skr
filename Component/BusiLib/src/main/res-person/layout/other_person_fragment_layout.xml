@@ -231,6 +231,14 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="@id/name_tv" />
 
+                        <com.component.person.view.CommonAudioView
+                            android:id="@+id/audio_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
+                            app:layout_constraintLeft_toLeftOf="@+id/name_tv"
+                            app:layout_constraintTop_toBottomOf="@+id/name_tv" />
+
                         <com.component.person.view.PersonTagView
                             android:id="@+id/person_tag_view"
                             android:layout_width="match_parent"
@@ -240,7 +248,7 @@
                             android:layout_marginRight="@dimen/view_20_dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/name_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/audio_view" />
 
                         <View
                             android:id="@+id/bottom_divider"

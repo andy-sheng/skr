@@ -6,6 +6,7 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -25,6 +26,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, val callBack: RequestCallBack?) : BaseWatchView(fragment, TYPE_PERSON), IPersonFeedsWall {
 
+
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
     var mTipsDialogView: TipsDialogView? = null
 
@@ -34,6 +36,11 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
     override fun selected() {
         super.selected()
         initFeedList(false)
+    }
+
+    override fun stopPlay() {
+        mAdapter.pausePlayModel()
+        SinglePlayer.pause(playerTag)
     }
 
     override fun clickMore(position: Int, it: FeedsWatchModel) {

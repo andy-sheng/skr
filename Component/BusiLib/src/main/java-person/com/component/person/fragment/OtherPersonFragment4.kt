@@ -35,6 +35,8 @@ import com.common.flowlayout.TagFlowLayout
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -45,6 +47,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
+import com.component.busilib.friends.VoiceInfoModel
 import com.component.busilib.view.AvatarView
 import com.component.level.utils.LevelConfigUtils
 
@@ -76,6 +79,7 @@ import java.util.HashMap
 import com.component.person.model.RelationNumModel
 
 import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
+import com.component.person.event.ChildViewPlayAudioEvent
 import com.component.person.model.ScoreDetailModel
 import com.component.person.view.*
 import com.module.feeds.IPersonFeedsWall
@@ -104,6 +108,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
     lateinit var mHonorIv: ImageView
+    lateinit var mAudioView: CommonAudioView
     lateinit var mPersonTagView: PersonTagView
 
     lateinit var mToolbar: Toolbar
@@ -128,6 +133,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     internal var mEditRemarkDialog: DialogPlus? = null
 
     var lastVerticalOffset = Int.MAX_VALUE
+
+    private var isPlay = false
+    private var playTag = "OtherPersonFragment4" + hashCode()
+    private var playCallback: SinglePlayerCallbackAdapter? = null
+    private var mVoiceInfoModel: VoiceInfoModel? = null
 
     // 未关注
     private val mUnFollowDrawable = DrawableCreator.Builder()
@@ -156,6 +166,24 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mPresenter = OtherPersonPresenter(this)
         addPresent(mPresenter)
         bindData()
+
+        playCallback = object : SinglePlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                isPlay = false
+                SinglePlayer.stop(playTag)
+                mAudioView.setPlay(false)
+            }
+
+            override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+                if (newPlayerTag !== playTag) {
+                    isPlay = false
+                    SinglePlayer.stop(playTag)
+                    mAudioView.setPlay(false)
+                }
+            }
+        }
+        SinglePlayer.addCallback(playTag, playCallback!!)
     }
 
     private fun bindData() {
@@ -391,11 +419,32 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
         mHonorIv = rootView.findViewById(R.id.honor_iv)
+        mAudioView = rootView.findViewById(R.id.audio_view)
         mPersonTagView = rootView.findViewById(R.id.person_tag_view)
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
                 BigImageBrowseFragment.open(false, activity, mUserInfoModel!!.avatar)
+            }
+        })
+
+        mAudioView.setOnClickListener(object : DebounceViewClickListener() {
+            override fun clickValid(v: View) {
+                if (isPlay) {
+                    // 暂停音乐
+                    isPlay = false
+                    mAudioView.setPlay(false)
+                    SinglePlayer.stop(playTag)
+                } else {
+                    // 播放音乐
+                    mVoiceInfoModel?.let {
+                        isPlay = true
+                        mFeedsWallView?.stopPlay()
+                        mPostsWallView?.stopPlay()
+                        mAudioView.setPlay(true)
+                        SinglePlayer.startPlay(playTag, it.voiceURL)
+                    }
+                }
             }
         })
     }
@@ -606,13 +655,20 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel) {
+                                  isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
         showUserRelation(isFriend, isFollow)
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
+        mVoiceInfoModel = voiceInfoModel
+        if (voiceInfoModel != null) {
+            mAudioView.bindData(voiceInfoModel.duration)
+            mAudioView.visibility = View.VISIBLE
+        } else {
+            mAudioView.visibility = View.GONE
+        }
     }
 
     private fun showScoreDetail(scoreDetailModel: ScoreDetailModel) {
@@ -716,6 +772,13 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ChildViewPlayAudioEvent) {
+        isPlay = false
+        SinglePlayer.stop(playTag)
+        mAudioView.setPlay(false)
+    }
+
     private fun unFollow(userInfoModel: UserInfoModel?) {
         val tipsDialogView = TipsDialogView.Builder(context)
                 .setTitleTip("取消关注")
@@ -752,6 +815,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun destroy() {
         super.destroy()
+        SinglePlayer.removeCallback(playTag)
         mOtherPhotoWallView?.destory()
         mPostsWallView?.destroy()
         mFeedsWallView?.destroy()

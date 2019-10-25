@@ -1,6 +1,7 @@
 package com.component.person.view
 
 import com.common.core.userinfo.model.UserInfoModel
+import com.component.busilib.friends.VoiceInfoModel
 
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
@@ -10,7 +11,8 @@ interface IOtherPersonView {
     fun showHomePageInfo(userInfoModel: UserInfoModel,
                          relationNumModels: List<RelationNumModel>?,
                          isFriend: Boolean, isFollow: Boolean,
-                         meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel)
+                         meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel,
+                         voiceInfoModel: VoiceInfoModel?)
 
     fun getHomePageFail()
     //    // 展示照片墙

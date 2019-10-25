@@ -272,16 +272,54 @@
                             android:visibility="gone"
                             app:constraint_referenced_ids="open_honor_tv,open_honor_iv" />
 
+                        <com.component.person.view.CommonAudioView
+                            android:id="@+id/audio_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintLeft_toLeftOf="@+id/name_tv"
+                            app:layout_constraintRight_toLeftOf="@id/edit_audio"
+                            app:layout_constraintTop_toBottomOf="@+id/name_tv" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/edit_audio"
+                            android:layout_width="@dimen/view_72_dp"
+                            android:layout_height="@dimen/view_24_dp"
+                            android:layout_marginLeft="@dimen/view_5_dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
+                            android:layout_marginRight="@dimen/view_20_dp"
+                            android:text="+编辑语音"
+                            android:textColor="@color/white_trans_50"
+                            android:textSize="@dimen/textsize_12_dp"
+                            android:gravity="center"
+                            app:bl_shape="rectangle"
+                            app:bl_solid_color="@color/white_trans_10"
+                            app:bl_corners_radius="@dimen/view_16_dp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintLeft_toRightOf="@id/audio_view"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+                        <android.support.constraint.Barrier
+                            android:id="@+id/audio_barrier"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:barrierDirection="bottom"
+                            app:constraint_referenced_ids="audio_view,edit_audio" />
+
                         <com.component.person.view.PersonTagView
                             android:id="@+id/person_tag_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/view_20_dp"
                             android:layout_marginTop="@dimen/view_20_dp"
+                            android:layout_marginLeft="@dimen/view_20_dp"
                             android:layout_marginRight="@dimen/view_20_dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/name_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/audio_barrier" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/fans_num_tv"

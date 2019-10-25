@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
+import com.component.busilib.friends.VoiceInfoModel;
 import com.component.person.model.RelationNumModel;
 
 import com.component.person.model.ScoreDetailModel;
@@ -54,6 +55,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     mLastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
                     ScoreDetailModel scoreDetailModel = JSON.parseObject(result.getData().getString("scoreDetail"), ScoreDetailModel.class);
+                    VoiceInfoModel voiceInfoModel = JSON.parseObject(result.getData().getString("voiceInfo"), VoiceInfoModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
@@ -62,7 +64,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
-                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, scoreDetailModel);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, scoreDetailModel, voiceInfoModel);
                 } else {
                     mView.loadHomePageFailed();
                 }

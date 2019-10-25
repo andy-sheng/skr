@@ -28,9 +28,10 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.player.SinglePlayer;
+import com.common.player.SinglePlayerCallbackAdapter;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -40,9 +41,11 @@ import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.event.PostsPublishSucessEvent;
-import com.component.busilib.view.AvatarView;
+import com.component.busilib.friends.VoiceInfoModel;
 import com.component.level.utils.LevelConfigUtils;
+import com.component.person.event.ChildViewPlayAudioEvent;
 import com.component.person.model.ScoreDetailModel;
+import com.component.person.view.CommonAudioView;
 import com.component.person.view.PersonTagView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
@@ -62,8 +65,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
-import com.zq.live.proto.Common.ESex;
-import com.component.person.utils.StringFromatUtils;
 import com.component.person.photo.view.PhotoWallView;
 import com.component.person.producation.view.ProducationWallView;
 import com.component.person.view.RequestCallBack;
@@ -99,6 +100,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     ImageView mHonorIv;
     Group mOpenHonorArea;
 
+    CommonAudioView mAudioView;
+    ExTextView mEditAudio;
     PersonTagView mPersonTagView;
 
     ExTextView mFriendsNumTv;
@@ -131,7 +134,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     int mFansNum = 0;
     int mFocusNum = 0;
 
+    VoiceInfoModel mVoiceInfoModel; // 声音信息
+
     int lastVerticalOffset = Integer.MAX_VALUE;
+
+    boolean isPlay = false;
+    String playTag = "PersonFragment4" + hashCode();
+    private SinglePlayerCallbackAdapter playCallback;
 
     @Override
     public int initView() {
@@ -152,6 +161,25 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
         refreshUserInfoView();
 
+        playCallback = new SinglePlayerCallbackAdapter() {
+            @Override
+            public void onCompletion() {
+                super.onCompletion();
+                isPlay = false;
+                SinglePlayer.INSTANCE.stop(playTag);
+                mAudioView.setPlay(false);
+            }
+
+            @Override
+            public void onPlaytagChange(@org.jetbrains.annotations.Nullable String oldPlayerTag, @org.jetbrains.annotations.Nullable String newPlayerTag) {
+                if (newPlayerTag != playTag) {
+                    isPlay = false;
+                    SinglePlayer.INSTANCE.stop(playTag);
+                    mAudioView.setPlay(false);
+                }
+            }
+        };
+        SinglePlayer.INSTANCE.addCallback(playTag, playCallback);
     }
 
     private void adjustView() {
@@ -320,6 +348,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mHonorIv = getRootView().findViewById(R.id.honor_iv);
         mOpenHonorArea = getRootView().findViewById(R.id.open_honor_area);
 
+        mAudioView = getRootView().findViewById(R.id.audio_view);
+        mEditAudio = getRootView().findViewById(R.id.edit_audio);
         mPersonTagView = getRootView().findViewById(R.id.person_tag_view);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
@@ -334,6 +364,39 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void clickValid(View v) {
                 // todo 开启VIP的页面
+            }
+        });
+
+        mAudioView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (isPlay) {
+                    // 暂停音乐
+                    isPlay = false;
+                    mAudioView.setPlay(false);
+                    SinglePlayer.INSTANCE.stop(playTag);
+                } else {
+                    // 播放音乐
+                    isPlay = true;
+                    if (mPostWallView != null) {
+                        mPostWallView.stopPlay();
+                    }
+                    if (mFeedsWallView != null) {
+                        mFeedsWallView.stopPlay();
+                    }
+                    if (mProducationWallView != null) {
+                        mProducationWallView.stopPlay();
+                    }
+                    mAudioView.setPlay(true);
+                    SinglePlayer.INSTANCE.startPlay(playTag, mVoiceInfoModel.getVoiceURL());
+                }
+            }
+        });
+
+        mEditAudio.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                //todo 编辑语音
             }
         });
     }
@@ -653,11 +716,22 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, ScoreDetailModel scoreDetailModel) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, ScoreDetailModel scoreDetailModel, VoiceInfoModel voiceInfoModel) {
         mSmartRefresh.finishRefresh();
         showCharmsTotal(meiLiCntTotal);
         showRelationNum(relationNumModels);
         showScoreDetail(scoreDetailModel);
+        showVoiceInfo(voiceInfoModel);
+    }
+
+    private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
+        mVoiceInfoModel = voiceInfoModel;
+        if (voiceInfoModel != null) {
+            mAudioView.bindData(voiceInfoModel.getDuration());
+            mAudioView.setVisibility(View.VISIBLE);
+        } else {
+            mAudioView.setVisibility(View.GONE);
+        }
     }
 
     private void showScoreDetail(ScoreDetailModel scoreDetailModel) {
@@ -766,6 +840,13 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChildViewPlayAudioEvent event) {
+        isPlay = false;
+        SinglePlayer.INSTANCE.stop(playTag);
+        mAudioView.setPlay(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {
         updateSettingRedDot();
     }
@@ -786,6 +867,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     public void destroy() {
         super.destroy();
+        SinglePlayer.INSTANCE.release(playTag);
+        SinglePlayer.INSTANCE.removeCallback(playTag);
         if (mPhotoWallView != null) {
             mPhotoWallView.destory();
         }

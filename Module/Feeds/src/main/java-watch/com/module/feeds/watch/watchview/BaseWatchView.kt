@@ -47,6 +47,7 @@ import com.module.feeds.watch.adapter.FeedsWatchViewAdapter
 import com.module.feeds.watch.listener.FeedsListener
 import com.module.feeds.watch.model.FeedRecommendTagModel
 import com.component.busilib.model.FeedSongModel
+import com.component.person.event.ChildViewPlayAudioEvent
 import com.module.feeds.watch.model.FeedsWatchModel
 import com.module.feeds.watch.viewholder.FeedViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -100,6 +101,12 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         const val TYPE_RECOMMEND = 1  // 推荐
         const val TYPE_FOLLOW = 2   // 关注
         const val TYPE_PERSON = 3   // 个人中心
+    }
+
+    private fun postPlayEvent(){
+        if (type == TYPE_PERSON) {
+            EventBus.getDefault().post(ChildViewPlayAudioEvent())
+        }
     }
 
 
@@ -451,6 +458,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             }
             mSongPlayModeManager?.setCurrentPlayModel(model?.song)
             SinglePlayer.startPlay(playerTag, it)
+            postPlayEvent()
         }
     }
 
@@ -472,6 +480,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                 FeedsPlayStatistics.setCurPlayMode(feedID, FeedPage.HOMEPAGE, 0)
             }
             SinglePlayer.startPlay(playerTag, it)
+            postPlayEvent()
         }
     }
 
