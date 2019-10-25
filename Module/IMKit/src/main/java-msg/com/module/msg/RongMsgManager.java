@@ -198,7 +198,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
 
                 return true;
-            } else if(message.getContent() instanceof BroadcastRoomMsg){
+            } else if (message.getContent() instanceof BroadcastRoomMsg) {
                 BroadcastRoomMsg notificationMsg = (BroadcastRoomMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
                 HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_BROADCAST);
@@ -208,7 +208,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     }
                 }
                 return true;
-            }else if (message.getContent() instanceof SpecailOpMsg) {
+            } else if (message.getContent() instanceof SpecailOpMsg) {
                 /**
                  * 要求别人上传日志，并将结果返回
                  */
@@ -492,6 +492,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("vipInfo", userInfoModel.getVipInfo());
+        jsonObject.put("honorInfo", userInfoModel.getHonorInfo());
         userInfo.setExtra(jsonObject.toJSONString());
         return userInfo;
     }
