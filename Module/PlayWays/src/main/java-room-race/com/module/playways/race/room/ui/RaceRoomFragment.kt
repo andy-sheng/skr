@@ -35,7 +35,6 @@ import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.bottom.RaceBottomContainerView
 import com.module.playways.race.room.event.RaceScoreChangeEvent
 import com.module.playways.race.room.event.RaceWantSingChanceEvent
-import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.presenter.RaceCorePresenter
 import com.module.playways.race.room.view.*
@@ -318,7 +317,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(activity)
                 dismissDialog()
                 if (mRaceVoiceControlPanelView == null) {
-                    mRaceVoiceControlPanelView = RaceVoiceControlPanelView(this@RaceRoomFragment)
+                    mRaceVoiceControlPanelView = RaceVoiceControlPanelView(context!!)
                     mRaceVoiceControlPanelView?.setRoomData(mRoomData)
                 }
                 mRaceVoiceControlPanelView?.showByDialog()

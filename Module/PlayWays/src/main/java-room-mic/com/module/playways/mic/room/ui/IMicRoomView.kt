@@ -1,10 +1,10 @@
-package com.module.playways.race.room.inter
+package com.module.playways.mic.room.ui
 
 import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.song.model.SongModel
 
-interface IRaceRoomView {
+interface IMicRoomView {
     fun showWaiting(showAnimation: Boolean) // 是否需要入场动画
     fun showChoiceView(showNextRound: Boolean)// 是否要显示下一句
     fun showMatchAnimationView(overListener: ()->Unit)// 是否要显示下一句

@@ -1,4 +1,4 @@
-package com.module.playways.race.room.presenter
+package com.module.playways.mic.room.presenter
 
 import android.os.Handler
 import android.os.Message
@@ -26,6 +26,8 @@ import com.engine.Params
 import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.ui.IMicRoomView
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.*
@@ -33,7 +35,6 @@ import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.model.parseFromRoundInfoPB
-import com.module.playways.race.room.ui.IRaceRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -58,7 +59,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.lang.Runnable
 import java.util.*
 
-class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRoomView) : RxLifeCyclePresenter() {
+class MicCorePresenter(var mRoomData: MicRoomData, var mIRaceRoomView: IMicRoomView) : RxLifeCyclePresenter() {
 
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
@@ -216,71 +217,71 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             wantSingType = ERWantSingType.ERWST_ACCOMPANY.value
         }
 
-        launch {
-            val map = mutableMapOf(
-                    "curRoundSeq" to mRoomData.realRoundSeq,
-                    "curRoundStatus" to mRoomData.realRoundInfo?.status,
-                    "itemID" to itemID,
-                    "itemType" to 1,
-                    "roomID" to mRoomData.gameId,
-                    "wantSingType" to wantSingType
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
-            if (result.errno == 0) {
-                mRoomData.hasSignUpSelf = true
-                EventBus.getDefault().post(RaceWantSingChanceEvent(itemID))
-                //mRoomData?.realRoundInfo?.addWantSingChange(itemID, MyUserInfoManager.getInstance().uid.toInt())
-            } else {
-                MyLog.w(TAG, "wantSingChance errno is " + result.errno)
-            }
-        }
+//        launch {
+//            val map = mutableMapOf(
+//                    "curRoundSeq" to mRoomData.realRoundSeq,
+//                    "curRoundStatus" to mRoomData.realRoundInfo?.status,
+//                    "itemID" to itemID,
+//                    "itemType" to 1,
+//                    "roomID" to mRoomData.gameId,
+//                    "wantSingType" to wantSingType
+//            )
+//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//            val result = subscribe { raceRoomServerApi.singMakeChoice(body) }
+//            if (result.errno == 0) {
+//                mRoomData.hasSignUpSelf = true
+//                EventBus.getDefault().post(RaceWantSingChanceEvent(itemID))
+//                //mRoomData?.realRoundInfo?.addWantSingChange(itemID, MyUserInfoManager.getInstance().uid.toInt())
+//            } else {
+//                MyLog.w(TAG, "wantSingChance errno is " + result.errno)
+//            }
+//        }
     }
 
     /**
      * 爆灯&投票
      */
     fun sendBLight(callback: ((isSucess: Boolean) -> Unit)?) {
-        launch {
-            val map = mutableMapOf(
-                    "roomID" to mRoomData.gameId,
-                    "roundSeq" to mRoomData.realRoundSeq,
-                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.bLight(body) }
-            if (result.errno == 0) {
-                callback?.invoke(true)
-            } else {
-                if (result.errno == 8412159) {
-                    // 已经投过票
-                    U.getToastUtil().showShort(result.errmsg)
-                    callback?.invoke(true)
-                } else {
-                    callback?.invoke(false)
-                }
-            }
-        }
+//        launch {
+//            val map = mutableMapOf(
+//                    "roomID" to mRoomData.gameId,
+//                    "roundSeq" to mRoomData.realRoundSeq,
+//                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
+//            )
+//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//            val result = subscribe { raceRoomServerApi.bLight(body) }
+//            if (result.errno == 0) {
+//                callback?.invoke(true)
+//            } else {
+//                if (result.errno == 8412159) {
+//                    // 已经投过票
+//                    U.getToastUtil().showShort(result.errmsg)
+//                    callback?.invoke(true)
+//                } else {
+//                    callback?.invoke(false)
+//                }
+//            }
+//        }
     }
 
     /**
      * 放弃演唱
      */
     fun giveupSing(callback: ((isSucess: Boolean) -> Unit)?) {
-        launch {
-            val map = mutableMapOf(
-                    "roomID" to mRoomData.gameId,
-                    "roundSeq" to mRoomData.realRoundSeq,
-                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.giveup(body) }
-            if (result.errno == 0) {
-                callback?.invoke(true)
-            } else {
-                callback?.invoke(false)
-            }
-        }
+//        launch {
+//            val map = mutableMapOf(
+//                    "roomID" to mRoomData.gameId,
+//                    "roundSeq" to mRoomData.realRoundSeq,
+//                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
+//            )
+//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//            val result = subscribe { raceRoomServerApi.giveup(body) }
+//            if (result.errno == 0) {
+//                callback?.invoke(true)
+//            } else {
+//                callback?.invoke(false)
+//            }
+//        }
     }
 
     /**
@@ -288,20 +289,20 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     fun sendSingComplete(from: String) {
         MyLog.d(TAG, "sendSingComplete from = $from")
-        launch {
-            val map = mutableMapOf(
-                    "roomID" to mRoomData.gameId,
-                    "roundSeq" to mRoomData.realRoundSeq,
-                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
-            )
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.roundOver(body) }
-            if (result.errno == 0) {
-
-            } else {
-
-            }
-        }
+//        launch {
+//            val map = mutableMapOf(
+//                    "roomID" to mRoomData.gameId,
+//                    "roundSeq" to mRoomData.realRoundSeq,
+//                    "subRoundSeq" to mRoomData.realRoundInfo?.subRoundSeq
+//            )
+//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//            val result = subscribe { raceRoomServerApi.roundOver(body) }
+//            if (result.errno == 0) {
+//
+//            } else {
+//
+//            }
+//        }
     }
 
     companion object {
@@ -357,29 +358,29 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 如果确定是自己唱了,预先可以做的操作
      */
     private fun preOpWhenSelfRound() {
-        var needAcc = false
-        val songModel = mRoomData?.realRoundInfo?.getSongModelNow()
-        if (mRoomData.isAccEnable && mRoomData?.realRoundInfo?.isAccRoundNow() == true) {
-            needAcc = true
-        }
-
-        val p = ZqEngineKit.getInstance().params
-        p.isGrabSingNoAcc = !needAcc
-        if (!ZqEngineKit.getInstance().params.isAnchor) {
-            ZqEngineKit.getInstance().setClientRole(true)
-            ZqEngineKit.getInstance().muteLocalAudioStream(false)
-            if (needAcc) {
-                // 如果需要播放伴奏，一定要在角色切换成功才能播
-                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
-                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000)
-            }
-        } else {
-            // 如果是房主,不在这里 解禁，会录进去音效的声音 延后一些再解开
-            mUiHandler.postDelayed({
-                ZqEngineKit.getInstance().muteLocalAudioStream(false)
-                onChangeBroadcastSuccess()
-            }, 500)
-        }
+//        var needAcc = false
+//        val songModel = mRoomData?.realRoundInfo?.getSongModelNow()
+//        if (mRoomData.isAccEnable && mRoomData?.realRoundInfo?.isAccRoundNow() == true) {
+//            needAcc = true
+//        }
+//
+//        val p = ZqEngineKit.getInstance().params
+//        p.isGrabSingNoAcc = !needAcc
+//        if (!ZqEngineKit.getInstance().params.isAnchor) {
+//            ZqEngineKit.getInstance().setClientRole(true)
+//            ZqEngineKit.getInstance().muteLocalAudioStream(false)
+//            if (needAcc) {
+//                // 如果需要播放伴奏，一定要在角色切换成功才能播
+//                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
+//                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000)
+//            }
+//        } else {
+//            // 如果是房主,不在这里 解禁，会录进去音效的声音 延后一些再解开
+//            mUiHandler.postDelayed({
+//                ZqEngineKit.getInstance().muteLocalAudioStream(false)
+//                onChangeBroadcastSuccess()
+//            }, 500)
+//        }
 
 //        songModel?.let {
 //            // 开始acr打分
@@ -461,100 +462,100 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processStatusChange(from: Int, lastRound: RaceRoundInfoModel?, thisRound: RaceRoundInfoModel?) {
-        DebugLogView.println(TAG, "状态更新 from = $from, status = ${thisRound?.status} subRoundSeq = ${thisRound?.subRoundSeq}")
-        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
-        closeEngine()
-        ZqEngineKit.getInstance().stopRecognize()
-        if (thisRound == null) {
-            MyLog.d(TAG, "this round is null")
-            // 游戏结束了
-            mIRaceRoomView.gameOver(lastRound)
-            return
-        }
-
-        if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
-            if (lastRound != null) {
-                // 有上一轮，等待中要飞过来
-                mIRaceRoomView.showRoundOver(lastRound) {
-                    //如果我是上一轮的演唱者，要退出房间
-                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
-                        goResultPage(lastRound)
-                    } else {
-                        mIRaceRoomView.showWaiting(true)
-                    }
-                }
-            } else {
-                mIRaceRoomView.showWaiting(false)
-            }
-        } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
-            if (lastRound != null) {
-                // 有上一轮，等待中要飞过来
-                mIRaceRoomView.showRoundOver(lastRound) {
-                    //如果我是上一轮的演唱者，要退出房间
-                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
-                        goResultPage(lastRound)
-                    } else {
-                        mIRaceRoomView.showChoiceView(true)
-                    }
-                }
-            } else {
-                mIRaceRoomView.showChoiceView(false)
-            }
-        } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-            if (thisRound?.subRoundSeq == 1) {
-                val runnable = {
-                    tryDownloadAccIfSelfSing()
-                    // 变为演唱阶段，第一轮
-                    val subRound1 = thisRound.subRoundInfo.get(0)
-                    if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                        mIRaceRoomView.singBySelfFirstRound(subRound1.choiceDetail?.commonMusic)
-                        preOpWhenSelfRound()
-                    } else {
-                        mIRaceRoomView.singByOtherFirstRound(subRound1.choiceDetail?.commonMusic, mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
-                    }
-                }
-
-                if (lastRound != null) {
-                    // 说明是直接上一轮跳到本轮的演唱阶段了
-                    mIRaceRoomView.showRoundOver(lastRound) {
-                        //如果我是上一轮的演唱者，要退出房间
-                        if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
-                            goResultPage(lastRound)
-                        } else {
-                            // 走匹配动画
-                            mIRaceRoomView.showMatchAnimationView {
-                                // 动画走完执行唱歌相关
-                                runnable.invoke()
-                            }
-                        }
-                    }
-                } else {
-                    if (mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                        //中途进来的
-                        runnable.invoke()
-                    } else {
-                        // 正常从报名阶段 到 演唱阶段
-                        // 走匹配动画
-                        mIRaceRoomView.showMatchAnimationView {
-                            // 动画走完执行唱歌相关
-                            runnable.invoke()
-                        }
-                    }
-                }
-            } else if (thisRound?.subRoundSeq == 2) {
-                // 变为演唱阶段，第二轮
-                val subRound2 = thisRound.subRoundInfo.get(1)
-                if (subRound2.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-                    mIRaceRoomView.singBySelfSecondRound(subRound2.choiceDetail?.commonMusic)
-                    preOpWhenSelfRound()
-                } else {
-                    mIRaceRoomView.singByOtherSecondRound(subRound2.choiceDetail?.commonMusic, mRoomData.getPlayerOrWaiterInfo(subRound2.userID))
-                }
-            }
-        } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
-            // 结束
-//            mIRaceRoomView.roundOver(thisRound?.overReason)
-        }
+//        DebugLogView.println(TAG, "状态更新 from = $from, status = ${thisRound?.status} subRoundSeq = ${thisRound?.subRoundSeq}")
+//        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
+//        closeEngine()
+//        ZqEngineKit.getInstance().stopRecognize()
+//        if (thisRound == null) {
+//            MyLog.d(TAG, "this round is null")
+//            // 游戏结束了
+//            mIRaceRoomView.gameOver(lastRound)
+//            return
+//        }
+//
+//        if (thisRound?.status == ERaceRoundStatus.ERRS_WAITING.value) {
+//            if (lastRound != null) {
+//                // 有上一轮，等待中要飞过来
+//                mIRaceRoomView.showRoundOver(lastRound) {
+//                    //如果我是上一轮的演唱者，要退出房间
+//                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+//                        goResultPage(lastRound)
+//                    } else {
+//                        mIRaceRoomView.showWaiting(true)
+//                    }
+//                }
+//            } else {
+//                mIRaceRoomView.showWaiting(false)
+//            }
+//        } else if (thisRound?.status == ERaceRoundStatus.ERRS_CHOCING.value) {
+//            if (lastRound != null) {
+//                // 有上一轮，等待中要飞过来
+//                mIRaceRoomView.showRoundOver(lastRound) {
+//                    //如果我是上一轮的演唱者，要退出房间
+//                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+//                        goResultPage(lastRound)
+//                    } else {
+//                        mIRaceRoomView.showChoiceView(true)
+//                    }
+//                }
+//            } else {
+//                mIRaceRoomView.showChoiceView(false)
+//            }
+//        } else if (thisRound?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+//            if (thisRound?.subRoundSeq == 1) {
+//                val runnable = {
+//                    tryDownloadAccIfSelfSing()
+//                    // 变为演唱阶段，第一轮
+//                    val subRound1 = thisRound.subRoundInfo.get(0)
+//                    if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+//                        mIRaceRoomView.singBySelfFirstRound(subRound1.choiceDetail?.commonMusic)
+//                        preOpWhenSelfRound()
+//                    } else {
+//                        mIRaceRoomView.singByOtherFirstRound(subRound1.choiceDetail?.commonMusic, mRoomData.getPlayerOrWaiterInfo(subRound1.userID))
+//                    }
+//                }
+//
+//                if (lastRound != null) {
+//                    // 说明是直接上一轮跳到本轮的演唱阶段了
+//                    mIRaceRoomView.showRoundOver(lastRound) {
+//                        //如果我是上一轮的演唱者，要退出房间
+//                        if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+//                            goResultPage(lastRound)
+//                        } else {
+//                            // 走匹配动画
+//                            mIRaceRoomView.showMatchAnimationView {
+//                                // 动画走完执行唱歌相关
+//                                runnable.invoke()
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    if (mRoomData.realRoundInfo?.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value) {
+//                        //中途进来的
+//                        runnable.invoke()
+//                    } else {
+//                        // 正常从报名阶段 到 演唱阶段
+//                        // 走匹配动画
+//                        mIRaceRoomView.showMatchAnimationView {
+//                            // 动画走完执行唱歌相关
+//                            runnable.invoke()
+//                        }
+//                    }
+//                }
+//            } else if (thisRound?.subRoundSeq == 2) {
+//                // 变为演唱阶段，第二轮
+//                val subRound2 = thisRound.subRoundInfo.get(1)
+//                if (subRound2.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+//                    mIRaceRoomView.singBySelfSecondRound(subRound2.choiceDetail?.commonMusic)
+//                    preOpWhenSelfRound()
+//                } else {
+//                    mIRaceRoomView.singByOtherSecondRound(subRound2.choiceDetail?.commonMusic, mRoomData.getPlayerOrWaiterInfo(subRound2.userID))
+//                }
+//            }
+//        } else if (thisRound?.status == ERaceRoundStatus.ERRS_END.value) {
+//            // 结束
+////            mIRaceRoomView.roundOver(thisRound?.overReason)
+//        }
     }
 
     private fun tryDownloadAccIfSelfSing() {
@@ -562,42 +563,42 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
          * 有的网络伴奏在线播有问题，比如公司网络，这里尝试提前下载一下伴奏
          * 下载第一轮伴奏来不及，在第一轮下载第二轮伴奏才差不多
          */
-        var accUrl: String? = null
-//        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+//        var accUrl: String? = null
+////        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+////            // 第一轮是自己唱
+////            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(1) == true) {
+////                // 第一轮是伴奏演唱
+////                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.choiceID?.let {
+////                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
+////                    songModel?.acc?.let {
+////                        accUrl = it
+////                    }
+////                }
+////            }
+////        }
+//        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
 //            // 第一轮是自己唱
-//            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(1) == true) {
+//            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(2) == true) {
 //                // 第一轮是伴奏演唱
-//                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(0)?.choiceID?.let {
-//                    val songModel = mRoomData?.realRoundInfo?.getSongModelByChoiceId(it)
+//                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.let { songModel ->
 //                    songModel?.acc?.let {
 //                        accUrl = it
 //                    }
 //                }
 //            }
 //        }
-        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
-            // 第一轮是自己唱
-            if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(2) == true) {
-                // 第一轮是伴奏演唱
-                mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.let { songModel ->
-                    songModel?.acc?.let {
-                        accUrl = it
-                    }
-                }
-            }
-        }
-        accUrl?.let {
-            //尝试下载伴奏
-            launch(Dispatchers.IO) {
-                val f = SongResUtils.getAccFileByUrl(it)
-                if (f != null && !f.exists()) {
-                    if (!U.getHttpUtils().isDownloading(it)) {
-                        MyLog.d(TAG, "tryDownloadAccIfSelfSing 开始下载伴奏 acc=${it}")
-                        U.getHttpUtils().downloadFileSync(it, f, true, null)
-                    }
-                }
-            }
-        }
+//        accUrl?.let {
+//            //尝试下载伴奏
+//            launch(Dispatchers.IO) {
+//                val f = SongResUtils.getAccFileByUrl(it)
+//                if (f != null && !f.exists()) {
+//                    if (!U.getHttpUtils().isDownloading(it)) {
+//                        MyLog.d(TAG, "tryDownloadAccIfSelfSing 开始下载伴奏 acc=${it}")
+//                        U.getHttpUtils().downloadFileSync(it, f, true, null)
+//                    }
+//                }
+//            }
+//        }
 
     }
 
@@ -632,20 +633,20 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RJoinNoticeEvent) {
-        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.pb.user.userID} 加入房间 角色为${event.pb.role}")
-        ensureInRcRoom()
-        val racePlayerInfoModel = RacePlayerInfoModel()
-        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.user)
-        racePlayerInfoModel.role = event.pb.role.value
-        mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
-
-        if (event.pb.newRoundBegin) {
-            // 游戏开始了
-            if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value) {
-                mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
-            }
-        }
-        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.pb.user))
+//        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.pb.user.userID} 加入房间 角色为${event.pb.role}")
+//        ensureInRcRoom()
+//        val racePlayerInfoModel = RacePlayerInfoModel()
+//        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.user)
+//        racePlayerInfoModel.role = event.pb.role.value
+//        mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
+//
+//        if (event.pb.newRoundBegin) {
+//            // 游戏开始了
+//            if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value) {
+//                mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
+//            }
+//        }
+//        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.pb.user))
     }
 
     /**
@@ -653,9 +654,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RExitGameEvent) {
-        DebugLogView.println(TAG, "RExitGameEvent ${event.pb.userID} 退出房间")
-        ensureInRcRoom()
-        mRoomData.realRoundInfo?.exitUser(event.pb.userID)
+//        DebugLogView.println(TAG, "RExitGameEvent ${event.pb.userID} 退出房间")
+//        ensureInRcRoom()
+//        mRoomData.realRoundInfo?.exitUser(event.pb.userID)
     }
 
     /**
@@ -663,17 +664,17 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RBLightEvent) {
-        DebugLogView.println(TAG, "RBLightEvent ${event.pb.userID} 爆灯")
-        ensureInRcRoom()
-        MyLog.d(TAG, "onEvent event = $event")
-        if (event.pb.roundSeq == mRoomData.realRoundSeq) {
-            mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
-            if (event.pb.userID == UserAccountManager.SYSTEM_GRAB_ID ||
-                    event.pb.userID == UserAccountManager.SYSTEM_RANK_AI) {
-                //TODO  投票打分提示
-                pretendVote(mRoomData.getPlayerOrWaiterInfo(event.pb.userID), mRoomData.getPlayerOrWaiterInfo(mRoomData.realRoundInfo?.getSingerIdNow()))
-            }
-        }
+//        DebugLogView.println(TAG, "RBLightEvent ${event.pb.userID} 爆灯")
+//        ensureInRcRoom()
+//        MyLog.d(TAG, "onEvent event = $event")
+//        if (event.pb.roundSeq == mRoomData.realRoundSeq) {
+//            mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
+//            if (event.pb.userID == UserAccountManager.SYSTEM_GRAB_ID ||
+//                    event.pb.userID == UserAccountManager.SYSTEM_RANK_AI) {
+//                //TODO  投票打分提示
+//                pretendVote(mRoomData.getPlayerOrWaiterInfo(event.pb.userID), mRoomData.getPlayerOrWaiterInfo(mRoomData.realRoundInfo?.getSingerIdNow()))
+//            }
+//        }
     }
 
     private fun pretendVote(userInfoModel: UserInfoModel?, singer: UserInfoModel?) {
@@ -701,37 +702,37 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: RRoundOverEvent) {
-        ensureInRcRoom()
-        if (event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
-            DebugLogView.println(TAG, "RRoundOverEvent 主轮次结束 reason=${event.pb.currentRound.overReason}")
-            // 主轮次结束
-            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
-            val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
-//            event.pb.gamesList.forEach {
-//                nextRoundInfo.games.add(parseFromGameInfoPB(it))
+//        ensureInRcRoom()
+//        if (event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
+//            DebugLogView.println(TAG, "RRoundOverEvent 主轮次结束 reason=${event.pb.currentRound.overReason}")
+//            // 主轮次结束
+//            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
+//            val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
+////            event.pb.gamesList.forEach {
+////                nextRoundInfo.games.add(parseFromGameInfoPB(it))
+////            }
+////            mRoomData.couldChoiceGames.clear()
+////            event.pb.couldChoiceGamesList?.forEach {
+////                mRoomData.couldChoiceGames.add(parseFromGameInfoPB(it))
+////            }
+//            if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
+//                mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, false)
+//                mRoomData.expectRoundInfo = nextRoundInfo
+//                mRoomData.checkRoundInEachMode()
 //            }
-//            mRoomData.couldChoiceGames.clear()
-//            event.pb.couldChoiceGamesList?.forEach {
-//                mRoomData.couldChoiceGames.add(parseFromGameInfoPB(it))
+//            // 第二轮次结束原因
+//            if (curRoundInfo.subRoundInfo.getOrNull(1)?.overReason == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
+//                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(curRoundInfo.subRoundInfo.getOrNull(1)?.userID))
 //            }
-            if (curRoundInfo.roundSeq == mRoomData.realRoundSeq) {
-                mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, false)
-                mRoomData.expectRoundInfo = nextRoundInfo
-                mRoomData.checkRoundInEachMode()
-            }
-            // 第二轮次结束原因
-            if (curRoundInfo.subRoundInfo.getOrNull(1)?.overReason == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
-                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(curRoundInfo.subRoundInfo.getOrNull(1)?.userID))
-            }
-        } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
-            DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
-            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
-            // 第一轮次结束原因
-            if (event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason?.value == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
-                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID))
-            }
-        }
+//        } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
+//            DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
+//            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
+//            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
+//            // 第一轮次结束原因
+//            if (event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason?.value == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
+//                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID))
+//            }
+//        }
     }
 
     private fun pretendGiveUp(userInfoModel: UserInfoModel?) {
@@ -799,55 +800,55 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
     }
 
     private fun processSyncResult(raceRoundInfoModel: RaceRoundInfoModel) {
-        if (raceRoundInfoModel.roundSeq == mRoomData.realRoundSeq) {
-            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(raceRoundInfoModel, true)
-        } else if (raceRoundInfoModel.roundSeq > mRoomData.realRoundSeq) {
-            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
-            // 主轮次结束
-            launch {
-                if (raceRoundInfoModel.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-                    var valid = true
-                    raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemName?.let {
-                        valid = !it.isEmpty()
-                    }
-                    if (!valid) {
-                        // 没有有效数据，请求服务器拉取
-                        val itemID1 = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemID
-                                ?: 0
-                        val itemID2 = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.itemID
-                                ?: 0
-                        if (itemID1 > 0 && itemID2 > 0) {
-                            val l1 = ArrayList<JSONObject>()
-                            // 点击
-                            val ob1 = JSONObject()
-                            ob1["itemID"] = itemID1
-                            ob1["itemType"] = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.roundGameType
-                            l1.add(ob1)
-
-                            val ob2 = JSONObject()
-                            ob2["itemID"] = itemID2
-                            ob2["itemType"] = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.roundGameType
-                            l1.add(ob2)
-                            val mutableSet1 = mapOf(
-                                    "choiceItems" to l1
-                            )
-                            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
-                            // 拉取一下歌曲详情
-                            val result = subscribe { raceRoomServerApi.getGameChoiceItemDetail(body) }
-                            if (result.errno == 0) {
-                                val choiceItems = JSON.parseArray(result.data.getString("choiceDetails"), RaceGamePlayInfo::class.java)
-                                raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail = choiceItems.getOrNull(0)
-                                raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail = choiceItems.getOrNull(1)
-                            } else {
-
-                            }
-                        }
-                    }
-                }
-                mRoomData.expectRoundInfo = raceRoundInfoModel
-                mRoomData.checkRoundInEachMode()
-            }
-        }
+//        if (raceRoundInfoModel.roundSeq == mRoomData.realRoundSeq) {
+//            mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(raceRoundInfoModel, true)
+//        } else if (raceRoundInfoModel.roundSeq > mRoomData.realRoundSeq) {
+//            MyLog.w(TAG, "sync 回来的轮次大，要替换 roundInfo 了")
+//            // 主轮次结束
+//            launch {
+//                if (raceRoundInfoModel.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+//                    var valid = true
+//                    raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemName?.let {
+//                        valid = !it.isEmpty()
+//                    }
+//                    if (!valid) {
+//                        // 没有有效数据，请求服务器拉取
+//                        val itemID1 = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.commonMusic?.itemID
+//                                ?: 0
+//                        val itemID2 = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.commonMusic?.itemID
+//                                ?: 0
+//                        if (itemID1 > 0 && itemID2 > 0) {
+//                            val l1 = ArrayList<JSONObject>()
+//                            // 点击
+//                            val ob1 = JSONObject()
+//                            ob1["itemID"] = itemID1
+//                            ob1["itemType"] = raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail?.roundGameType
+//                            l1.add(ob1)
+//
+//                            val ob2 = JSONObject()
+//                            ob2["itemID"] = itemID2
+//                            ob2["itemType"] = raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail?.roundGameType
+//                            l1.add(ob2)
+//                            val mutableSet1 = mapOf(
+//                                    "choiceItems" to l1
+//                            )
+//                            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
+//                            // 拉取一下歌曲详情
+//                            val result = subscribe { raceRoomServerApi.getGameChoiceItemDetail(body) }
+//                            if (result.errno == 0) {
+//                                val choiceItems = JSON.parseArray(result.data.getString("choiceDetails"), RaceGamePlayInfo::class.java)
+//                                raceRoundInfoModel.subRoundInfo?.getOrNull(0)?.choiceDetail = choiceItems.getOrNull(0)
+//                                raceRoundInfoModel.subRoundInfo?.getOrNull(1)?.choiceDetail = choiceItems.getOrNull(1)
+//                            } else {
+//
+//                            }
+//                        }
+//                    }
+//                }
+//                mRoomData.expectRoundInfo = raceRoundInfoModel
+//                mRoomData.checkRoundInEachMode()
+//            }
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -927,18 +928,18 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     fun onEvent(event: EngineEvent) {
-        if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
-            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
-            if (roleChangeInfo.newRole == 1) {
-                val roundInfoModel = mRoomData.realRoundInfo
-                if (roundInfoModel != null && roundInfoModel.isSingerNowBySelf()) {
-                    MyLog.d(TAG, "演唱环节切换主播成功")
-                    onChangeBroadcastSuccess()
-                }
-            }
-        } else {
-            // 可以考虑监听下房主的说话提示 做下容错
-        }
+//        if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+//            val roleChangeInfo = event.getObj<EngineEvent.RoleChangeInfo>()
+//            if (roleChangeInfo.newRole == 1) {
+//                val roundInfoModel = mRoomData.realRoundInfo
+//                if (roundInfoModel != null && roundInfoModel.isSingerNowBySelf()) {
+//                    MyLog.d(TAG, "演唱环节切换主播成功")
+//                    onChangeBroadcastSuccess()
+//                }
+//            }
+//        } else {
+//            // 可以考虑监听下房主的说话提示 做下容错
+//        }
     }
 
     /**
@@ -960,63 +961,63 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 成功切换为主播
      */
     private fun onChangeBroadcastSuccess() {
-        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
-        mUiHandler.post(Runnable {
-            if (mRoomData.realRoundInfo?.isSingerNowBySelf() == false) {
-                MyLog.d(TAG, "onChangeBroadcastSuccess,但已经不是你的轮次了，cancel")
-                return@Runnable
-            }
-            var songModel = mRoomData?.realRoundInfo?.getSongModelNow()
-            if (songModel == null) {
-                return@Runnable
-            }
-            // 开始开始混伴奏，开始解除引擎mute
-            val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
-            // midi不需要在这下，只要下好，native就会解析，打分就能恢复
-            val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
-            MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} accRound=${mRoomData?.realRoundInfo?.isAccRoundNow()} mRoomData.isAccEnable=${mRoomData.isAccEnable}")
-            val needAcc = mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRoundNow() == true)
-            if (needAcc) {
-                // 下载midi
-                if (midiFile != null && !midiFile.exists()) {
-                    MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
-                    U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
-                }
-
-                //  播放伴奏
-                val songBeginTs = songModel.beginMs
-                if (accFile != null && accFile.exists()) {
-                    // 伴奏文件存在
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-                } else {
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
-                }
-            }
-            // 启动acr打分识别
-            if (needAcc) {
-                //有伴奏模式，手动开启acc
-                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                        .setSongName(songModel.itemName)
-                        .setArtist(songModel.owner)
-                        .setMode(RecognizeConfig.MODE_MANUAL)
-                        .build())
-            } else {
-                // 清唱还需要打分，那就只用 acr 打分
-                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                        .setSongName(songModel.itemName)
-                        .setArtist(songModel.owner)
-                        .setMode(RecognizeConfig.MODE_AUTO)
-                        .setAutoTimes(4)
-                        .setMResultListener { result, list, targetSongInfo, lineNo ->
-                            var mAcrScore = 0
-                            if (targetSongInfo != null) {
-                                mAcrScore = (targetSongInfo.score * 100).toInt()
-                            }
-                            EventBus.getDefault().post(LyricAndAccMatchManager.ScoreResultEvent("onChangeBroadcastSuccess", -1, mAcrScore, 0))
-                        }
-                        .build())
-            }
-        })
+//        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
+//        mUiHandler.post(Runnable {
+//            if (mRoomData.realRoundInfo?.isSingerNowBySelf() == false) {
+//                MyLog.d(TAG, "onChangeBroadcastSuccess,但已经不是你的轮次了，cancel")
+//                return@Runnable
+//            }
+//            var songModel = mRoomData?.realRoundInfo?.getSongModelNow()
+//            if (songModel == null) {
+//                return@Runnable
+//            }
+//            // 开始开始混伴奏，开始解除引擎mute
+//            val accFile = SongResUtils.getAccFileByUrl(songModel.acc)
+//            // midi不需要在这下，只要下好，native就会解析，打分就能恢复
+//            val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
+//            MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} accRound=${mRoomData?.realRoundInfo?.isAccRoundNow()} mRoomData.isAccEnable=${mRoomData.isAccEnable}")
+//            val needAcc = mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRoundNow() == true)
+//            if (needAcc) {
+//                // 下载midi
+//                if (midiFile != null && !midiFile.exists()) {
+//                    MyLog.d(TAG, "onChangeBroadcastSuccess 下载midi文件 url=${songModel.midi} => local=${midiFile.path}")
+//                    U.getHttpUtils().downloadFileAsync(songModel.midi, midiFile, true, null)
+//                }
+//
+//                //  播放伴奏
+//                val songBeginTs = songModel.beginMs
+//                if (accFile != null && accFile.exists()) {
+//                    // 伴奏文件存在
+//                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+//                } else {
+//                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+//                }
+//            }
+//            // 启动acr打分识别
+//            if (needAcc) {
+//                //有伴奏模式，手动开启acc
+//                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+//                        .setSongName(songModel.itemName)
+//                        .setArtist(songModel.owner)
+//                        .setMode(RecognizeConfig.MODE_MANUAL)
+//                        .build())
+//            } else {
+//                // 清唱还需要打分，那就只用 acr 打分
+//                ZqEngineKit.getInstance().startRecognize(RecognizeConfig.newBuilder()
+//                        .setSongName(songModel.itemName)
+//                        .setArtist(songModel.owner)
+//                        .setMode(RecognizeConfig.MODE_AUTO)
+//                        .setAutoTimes(4)
+//                        .setMResultListener { result, list, targetSongInfo, lineNo ->
+//                            var mAcrScore = 0
+//                            if (targetSongInfo != null) {
+//                                mAcrScore = (targetSongInfo.score * 100).toInt()
+//                            }
+//                            EventBus.getDefault().post(LyricAndAccMatchManager.ScoreResultEvent("onChangeBroadcastSuccess", -1, mAcrScore, 0))
+//                        }
+//                        .build())
+//            }
+//        })
     }
 
     /*打分相关*/
@@ -1040,9 +1041,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             return
         }
         //打分传给服务器
-        if (mRoomData.realRoundInfo?.isSingerNowBySelf() == true) {
-            sendScoreToServer(score, line)
-        }
+//        if (mRoomData.realRoundInfo?.isSingerNowBySelf() == true) {
+//            sendScoreToServer(score, line)
+//        }
     }
 
     /**
@@ -1052,47 +1053,47 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * @param line
      */
     private fun sendScoreToServer(score: Int, line: Int) {
-        //score = (int) (Math.mRandom()*100);
-        val map = HashMap<String, Any>()
-        val infoModel = mRoomData.realRoundInfo ?: return
-        map["userID"] = MyUserInfoManager.getInstance().uid
-
-        var itemID = mRoomData.realRoundInfo?.getSingerIdNow() ?: 0
-
-        map["itemID"] = itemID
-        map["score"] = score
-        map["no"] = line
-        map["gameID"] = mRoomData.gameId
-        map["mainLevel"] = 0
-        map["singSecond"] = 0
-        val roundSeq = infoModel.roundSeq
-        map["roundSeq"] = roundSeq
-        val nowTs = System.currentTimeMillis()
-        map["timeMs"] = nowTs
-
-
-        val sb = StringBuilder()
-        sb.append("skrer")
-                .append("|").append(MyUserInfoManager.getInstance().uid)
-                .append("|").append(itemID)
-                .append("|").append(score)
-                .append("|").append(line)
-                .append("|").append(mRoomData.gameId)
-                .append("|").append(0)
-                .append("|").append(0)
-                .append("|").append(roundSeq)
-                .append("|").append(nowTs)
-        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
-        launch {
-            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-            val result = subscribe { raceRoomServerApi.sendPkPerSegmentResult(body) }
-            if (result.errno == 0) {
-                // TODO: 2018/12/13  当前postman返回的为空 待补充
-                MyLog.w(TAG, "单句打分上报成功")
-            } else {
-                MyLog.w(TAG, "单句打分上报失败" + result.errno)
-            }
-        }
+//        //score = (int) (Math.mRandom()*100);
+//        val map = HashMap<String, Any>()
+//        val infoModel = mRoomData.realRoundInfo ?: return
+//        map["userID"] = MyUserInfoManager.getInstance().uid
+//
+//        var itemID = mRoomData.realRoundInfo?.getSingerIdNow() ?: 0
+//
+//        map["itemID"] = itemID
+//        map["score"] = score
+//        map["no"] = line
+//        map["gameID"] = mRoomData.gameId
+//        map["mainLevel"] = 0
+//        map["singSecond"] = 0
+//        val roundSeq = infoModel.roundSeq
+//        map["roundSeq"] = roundSeq
+//        val nowTs = System.currentTimeMillis()
+//        map["timeMs"] = nowTs
+//
+//
+//        val sb = StringBuilder()
+//        sb.append("skrer")
+//                .append("|").append(MyUserInfoManager.getInstance().uid)
+//                .append("|").append(itemID)
+//                .append("|").append(score)
+//                .append("|").append(line)
+//                .append("|").append(mRoomData.gameId)
+//                .append("|").append(0)
+//                .append("|").append(0)
+//                .append("|").append(roundSeq)
+//                .append("|").append(nowTs)
+//        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
+//        launch {
+//            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+//            val result = subscribe { raceRoomServerApi.sendPkPerSegmentResult(body) }
+//            if (result.errno == 0) {
+//                // TODO: 2018/12/13  当前postman返回的为空 待补充
+//                MyLog.w(TAG, "单句打分上报成功")
+//            } else {
+//                MyLog.w(TAG, "单句打分上报失败" + result.errno)
+//            }
+//        }
     }
 
     @CallSuper

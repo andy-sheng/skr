@@ -68,6 +68,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     public static final int FROM_GRAB_ROOM = 2;
     public static final int FROM_DOUBLE_ROOM = 3;
     public static final int FROM_RACE_ROOM = 4;
+    public static final int FROM_MIC_ROOM = 5;
 
     private int mFrom;  //标记举报来源
     int mActionType;

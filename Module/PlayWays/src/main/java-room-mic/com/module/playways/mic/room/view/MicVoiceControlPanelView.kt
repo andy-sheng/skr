@@ -1,4 +1,4 @@
-package com.module.playways.race.room.view
+package com.module.playways.mic.room.view
 
 import android.content.Context
 import android.view.Gravity
@@ -9,11 +9,12 @@ import com.common.utils.U
 import com.component.voice.control.VoiceControlPanelView
 import com.kyleduo.switchbutton.SwitchButton
 import com.module.playways.R
+import com.module.playways.mic.room.MicRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
-class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
+class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
     val TAG = "RaceVoiceControlPanelView"
 
@@ -22,7 +23,7 @@ class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
     // 清唱与伴奏
     private var mSbAcc: SwitchButton? = null
 
-    internal var roomData: RaceRoomData? = null
+    internal var roomData: MicRoomData? = null
 
     private var mDialogPlus: DialogPlus? = null
 
@@ -41,11 +42,11 @@ class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
 
         mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             roomData?.realRoundInfo?.let {
-                if (it.isSingerNowBySelf()) {
-                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-                    mSbAcc?.isChecked = !roomData!!.isAccEnable
-                    return@OnCheckedChangeListener
-                }
+//                if (it.isSingerNowBySelf()) {
+//                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
+//                    mSbAcc?.isChecked = !roomData!!.isAccEnable
+//                    return@OnCheckedChangeListener
+//                }
                 roomData?.isAccEnable = !isChecked
             }
         })
@@ -56,7 +57,7 @@ class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
         mSbAcc?.isChecked = roomData?.isAccEnable != true
     }
 
-    fun setRoomData(raceRoomData: RaceRoomData) {
+    fun setRoomData(raceRoomData: MicRoomData) {
         roomData = raceRoomData
     }
 

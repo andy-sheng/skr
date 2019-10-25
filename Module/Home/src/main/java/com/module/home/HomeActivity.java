@@ -218,6 +218,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
+        if(MyLog.isDebugLogOpen()){
+            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
+                            .navigation();
+                    return false;
+                }
+            });
+        }
         mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
