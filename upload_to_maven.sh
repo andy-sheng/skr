@@ -19,10 +19,10 @@ changeBuildType(){
 
 changeDependLibraryFromServer(){
     echo "dependLibraryFromServer$1"
-	if [[ $1 = debug ]]; then
-		sed -ig 's/dependLibraryFromServer=release/dependLibraryFromServer=debug/' gradle.properties
+	if [[ $1 = true ]]; then
+		sed -ig 's/dependLibraryFromServer=false/dependLibraryFromServer=true/' gradle.properties
 	else
-		sed -ig 's/dependLibraryFromServer=debug/dependLibraryFromServer=release/' gradle.properties
+		sed -ig 's/dependLibraryFromServer=true/dependLibraryFromServer=false/' gradle.properties
 	fi
 	rm gradle.propertiesg
 }

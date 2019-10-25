@@ -4,10 +4,8 @@ changeDependLibraryFromServer(){
     echo "changeBuildModule$1"
 	if [[ $1 = true ]]; then
 		sed -ig 's/dependLibraryFromServer=false/dependLibraryFromServer=true/' gradle.properties
-		echo "sed -ig 's/dependLibraryFromServer=true/dependLibraryFromServer=false/' gradle.properties"
 	else
 		sed -ig 's/dependLibraryFromServer=true/dependLibraryFromServer=false/' gradle.properties
-		echo "sed -ig 's/dependLibraryFromServer=false/dependLibraryFromServer=true/' gradle.properties"
 	fi
 	rm gradle.propertiesg
 }
@@ -27,10 +25,8 @@ changeBuildModule(){
     echo "changeBuildModule$1"
 	if [[ $1 = true ]]; then
 		sed -ig 's/isBuildModule=false/isBuildModule=true/' gradle.properties
-		echo "sed -ig 's/isBuildModule=true/isBuildModule=false/' gradle.properties"
 	else
 		sed -ig 's/isBuildModule=true/isBuildModule=false/' gradle.properties
-		echo "sed -ig 's/isBuildModule=false/isBuildModule=true/' gradle.properties"
 	fi
 	rm gradle.propertiesg
 }
@@ -60,10 +56,8 @@ changeMatrixModule(){
     echo "changeMatrixEnable $1"
 	if [[ $1 = true ]]; then
 		sed -ig 's/MatrixEnable=false/MatrixEnable=true/' gradle.properties
-		echo "sed -ig 's/MatrixEnable=true/MatrixEnable=false/' gradle.properties"
 	else
 		sed -ig 's/MatrixEnable=true/MatrixEnable=false/' gradle.properties
-		echo "sed -ig 's/MatrixEnable=false/MatrixEnable=true/' gradle.properties"
 	fi
 	rm gradle.propertiesg
 }
