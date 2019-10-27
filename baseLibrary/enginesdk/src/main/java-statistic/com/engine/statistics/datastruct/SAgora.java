@@ -24,6 +24,35 @@ public class SAgora //all struct related to Agora is defined here!
         else return "声网没有定义的质量值value("+quality+")";
     }
 
+    public static class SPlayerInfo{
+        public long  ts; //timsstamp;
+
+        public int uid;
+        public String filePath;
+        public String midiPath;
+        public long mixMusicBeginOffset;
+        public boolean loopback;
+        public boolean replace;
+        public int cycle;
+
+        public String extraMsg;
+
+        @Override
+        public String toString() {
+
+            return SUtils.transTime(ts)+ " SAgora.SPlayerInfo: " +
+                    ", uid=" + uid +
+                    ", mixMusicBeginOffset=" + mixMusicBeginOffset+
+                    ", isLoopback=" + loopback+
+                    ", isReplace=" + replace+
+                    ", cycle=" + cycle +
+                    ", filePath=" + filePath +
+                    ", midiPath=" + filePath +
+                    ", extraInfo="+ extraMsg + "\n";
+
+        }
+    }
+
 
     public static class SAudioSamplingInfo {
         public long timeStamp; //统计间隔结束点的时间戳
@@ -34,7 +63,12 @@ public class SAgora //all struct related to Agora is defined here!
         public long pcmDuration; //时间间隔内，总的数据时长
         public long statisticSpan; //实际的统计间隔，与STATISTIC_SPAN_SETTTING会有偏差
 
+        public long maxAbsPCM = -1;
+        public long meanAbsPCM= 0;
         public String extraInfo;
+
+
+        public long totalAbsPCM =0; //用于保留计算的中间值，非log输出
 
         public final static long STATISTIC_SPAN_SETTTING = 1000; //ms 统计时间间隔的设定值
 
@@ -52,6 +86,8 @@ public class SAgora //all struct related to Agora is defined here!
             return SUtils.transTime(timeStamp) + " SAgora.SAudioSamplingInfo: smpRate=" + smpRate +
                     ", chCnt=" + chCnt +
                     ", smpCnt=" + smpCnt +
+                    ", maxAbsPCM=" + maxAbsPCM +
+                    ", meanAbsPCM=" + meanAbsPCM +
                     ", pcmDuration=" + pcmDuration +
                     ", statisticSpan=" + statisticSpan + additionInfo +"\n";
         }
@@ -63,6 +99,9 @@ public class SAgora //all struct related to Agora is defined here!
             this.smpCnt = 0;
             this.pcmDuration = 0;
             this.statisticSpan = 0;
+            this.meanAbsPCM = 0;
+            this.maxAbsPCM = 0;
+            this.totalAbsPCM = 0;
         }
 
     }

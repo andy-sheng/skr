@@ -25,6 +25,7 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.arccloud.AcrRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
+import com.engine.statistics.SDataManager;
 import com.engine.token.AgoraTokenApi;
 import com.zq.mediaengine.capture.AudioCapture;
 import com.zq.mediaengine.capture.AudioPlayerCapture;
@@ -1190,9 +1191,12 @@ public class ZqEngineKit implements AgoraOutCallback {
 
     public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
         if (mCustomHandlerThread != null) {
+
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
+                    SDataManager.instance().getAgoraDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
+
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.d(TAG, "伴奏路径非法");
                         return;

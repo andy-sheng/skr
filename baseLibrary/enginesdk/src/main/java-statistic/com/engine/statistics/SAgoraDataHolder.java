@@ -23,7 +23,7 @@ public class SAgoraDataHolder
     private List<SAgora.SRemoteAudioTransportStats>   mRemoteATransList;
     private List<SAgora.SRemoteVideoTransportStat>    mRemoteVTransList;
     private List<SAgora.SAudioSamplingInfo> mAudioSamplingInfoList;
-
+    private List<SAgora.SPlayerInfo> mPlayerInfo;
 
 
     public SAgoraDataHolder() {
@@ -36,6 +36,7 @@ public class SAgoraDataHolder
         mRemoteVTransList= new ArrayList<SAgora.SRemoteVideoTransportStat>();
 
         mAudioSamplingInfoList = new ArrayList<SAgora.SAudioSamplingInfo>();
+        mPlayerInfo = new ArrayList<SAgora.SPlayerInfo>();
     }
 
     public SAgoraDataHolder setLinePrefix(String prefix) {
@@ -166,6 +167,9 @@ public class SAgoraDataHolder
 
         n.timeStamp = System.currentTimeMillis();
 
+
+        n.meanAbsPCM = o.meanAbsPCM;
+        n.maxAbsPCM = o.maxAbsPCM;
         n.smpCnt = o.smpCnt;
         n.chCnt = o.chCnt;
         n.smpRate = o.smpRate;
@@ -174,6 +178,28 @@ public class SAgoraDataHolder
 
         mAudioSamplingInfoList.add(n);
 
+        return;
+    }
+
+
+    public synchronized void addPlayerInfo(final int uid, final String filePath, final String midiPath,
+                                           final long mixMusicBeginOffset, final boolean loopback,
+                                           final boolean replace, final int cycle)
+    {
+        SAgora.SPlayerInfo n = new SAgora.SPlayerInfo();
+
+        n.ts = System.currentTimeMillis();
+
+        n.uid = uid;
+        n.filePath = filePath;
+        n.midiPath = midiPath;
+        n.mixMusicBeginOffset = mixMusicBeginOffset;
+        n.loopback = loopback;
+        n.replace = replace;
+        n.cycle = cycle;
+
+
+        mPlayerInfo.add(n);
         return;
     }
 
@@ -203,6 +229,7 @@ public class SAgoraDataHolder
         retStr += getListString(mRemoteATransList);
         retStr += getListString(mRemoteVTransList);
         retStr += getListString(mAudioSamplingInfoList);
+        retStr += getListString(mPlayerInfo);
 
         return retStr;
     }
@@ -219,7 +246,7 @@ public class SAgoraDataHolder
         mRemoteVTransList.clear();
 
         mAudioSamplingInfoList.clear();
-
+        mPlayerInfo.clear();
         return this;
     }
 
@@ -231,7 +258,7 @@ public class SAgoraDataHolder
                 mRemoteVList.size() +  mNetQualityList.size() + mRemoteATransList.size() +  mRemoteVTransList.size()+
                 mAudioSamplingInfoList.size();
 
-        if (nowTotalRecords >= recPerListLimit * 8)
+        if (nowTotalRecords >= recPerListLimit * 9)
             return true;
         else
             return false;

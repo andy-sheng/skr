@@ -385,30 +385,51 @@ public class AgoraRTCAdapter {
     //for audio statistics:
     private long mAudioStatisticTS = 0;
     private boolean mInAudioStatistic = false;
-    private SAgora.SAudioSamplingInfo mAgoroAduioSmpInfo = new SAgora.SAudioSamplingInfo();
+    private SAgora.SAudioSamplingInfo mAgoraAduioSmpInfo = new SAgora.SAudioSamplingInfo();
 
-    private SAgora.SAudioSamplingInfo makeAudioSamplingInfo(int numOfSamples, int bytesPerSample, int channels,
+    private SAgora.SAudioSamplingInfo makeAudioSamplingInfo(byte bytes[], int numOfSamples, int bytesPerSample, int channels,
                                                             int samplesPerSec)
     {
+
+
+
         if (!mInAudioStatistic) {
             mAudioStatisticTS = System.currentTimeMillis();
-//            mAgoroAduioSmpInfo.smpCnt += numOfSamples;
+//            mAgoraAduioSmpInfo.smpCnt += numOfSamples;
 
             mInAudioStatistic = true;
             return null;
         }
 
 
-        mAgoroAduioSmpInfo.smpCnt += numOfSamples;
+        //TODO:
+        //  1. 这部分统计要看一下是否会对原流程有性能影响：
+        //  2. 因为设备采集源头都是单声道的，这里只要统计左声道即可
+        long maxValue = -1;
+        long meanValue= 0;
+        long totalValue=0;
+        if (2 == bytesPerSample) {
+            for (int i=0; i<bytes.length; i+=4) {
+                long v = (bytes[0] << 8  | bytes[1]);
+                long absV = (v >= 0) ? v : (-v);
+                if (absV > mAgoraAduioSmpInfo.maxAbsPCM) mAgoraAduioSmpInfo.maxAbsPCM = absV;
+                mAgoraAduioSmpInfo.totalAbsPCM += absV;
+            }
+        }
+        
+        mAgoraAduioSmpInfo.meanAbsPCM= meanValue;
+        mAgoraAduioSmpInfo.smpCnt += numOfSamples;
         long timeSpan = System.currentTimeMillis() - mAudioStatisticTS;
         if (timeSpan >= SAgora.SAudioSamplingInfo.STATISTIC_SPAN_SETTTING) { //输出一次统计信息
-            mAgoroAduioSmpInfo.smpRate = samplesPerSec;
-            mAgoroAduioSmpInfo.chCnt = channels;
-            mAgoroAduioSmpInfo.statisticSpan = timeSpan;
-            mAgoroAduioSmpInfo.pcmDuration = mAgoroAduioSmpInfo.smpCnt * 1000 / samplesPerSec;
+            mAgoraAduioSmpInfo.smpRate = samplesPerSec;
+            mAgoraAduioSmpInfo.chCnt = channels;
+            mAgoraAduioSmpInfo.statisticSpan = timeSpan;
+            mAgoraAduioSmpInfo.pcmDuration = mAgoraAduioSmpInfo.smpCnt * 1000 / samplesPerSec;
+
+            mAgoraAduioSmpInfo.meanAbsPCM = mAgoraAduioSmpInfo.totalAbsPCM / mAgoraAduioSmpInfo.smpCnt;
 
             mAudioStatisticTS = System.currentTimeMillis(); //时间戳重新设定
-            return mAgoroAduioSmpInfo;
+            return mAgoraAduioSmpInfo;
         }
 
         return null;
@@ -529,16 +550,12 @@ public class AgoraRTCAdapter {
                     }
 
                     if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
-                        mAgoroAduioSmpInfo.extraInfo = "(sampleCnt="+samples.length+" numOfSamples="+numOfSamples +
+                        mAgoraAduioSmpInfo.extraInfo = "(sampleCnt="+samples.length+" numOfSamples="+numOfSamples +
                                                     " samplesPerSec="+ samplesPerSec +")";
                         return true;
                     }
 
-                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(numOfSamples, bytesPerSample, channels, samplesPerSec);
-                    if (null != smpInfo) { //说明达到一次统计间隔
-                        SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo);
-                        smpInfo.reset();
-                    }
+
 
                     long curTime = System.nanoTime() / 1000 / 1000;
                     if (mLocalAudioFormat == null) {
@@ -569,6 +586,12 @@ public class AgoraRTCAdapter {
                     int size = numOfSamples * bytesPerSample * channels;
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
                     byteBuffer.order(ByteOrder.nativeOrder());
+
+                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec);
+                    if (null != smpInfo) { //说明达到一次统计间隔
+                        SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo);
+                        smpInfo.reset();
+                    }
 
                     AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);
