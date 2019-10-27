@@ -3,7 +3,6 @@ package com.module.playways.grab.room.presenter
 import android.animation.ValueAnimator
 import android.os.Handler
 import android.os.Message
-import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -57,7 +56,7 @@ import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.*
 import com.module.playways.room.msg.filter.PushMsgFilter
-import com.module.playways.room.msg.manager.ChatRoomMsgManager
+import com.module.playways.room.msg.manager.GrabRoomMsgManager
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.SwapStatusType
 import com.module.playways.room.room.comment.model.CommentLightModel
@@ -165,7 +164,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     internal var mGrabSongResPresenter: GrabSongResPresenter? = GrabSongResPresenter()
 
     init {
-        ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
+        GrabRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
         startSyncGameStateTask(sSyncStateTaskInterval * 2)
@@ -971,7 +970,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
         ZqEngineKit.getInstance().destroy("grabroom")
         mUiHandler.removeCallbacksAndMessages(null)
-        ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
+        GrabRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
         if (mExoPlayer != null) {
             mExoPlayer!!.release()
             mExoPlayer = null

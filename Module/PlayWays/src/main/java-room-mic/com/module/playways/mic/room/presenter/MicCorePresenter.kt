@@ -43,7 +43,8 @@ import com.module.playways.room.msg.event.MachineScoreEvent
 import com.module.playways.room.msg.event.QChangeRoomNameEvent
 import com.module.playways.room.msg.event.QKickUserResultEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
-import com.module.playways.room.msg.manager.ChatRoomMsgManager
+import com.module.playways.room.msg.manager.GrabRoomMsgManager
+import com.module.playways.room.msg.manager.MicRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
@@ -97,7 +98,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     init {
-        ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
+        MicRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
         startSyncGameStatus()
@@ -293,7 +294,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         ZqEngineKit.getInstance().destroy("microom")
         mUiHandler.removeCallbacksAndMessages(null)
-        ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
+        GrabRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
         ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString())
         JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
         MyLog.d(TAG, "destroy over")

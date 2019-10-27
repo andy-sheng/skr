@@ -13,6 +13,7 @@ interface IMicRoomView {
     fun kickBySomeOne(b: Boolean)
     fun dimissKickDialog()
     fun gameOver()
+
 //    fun showWaiting(showAnimation: Boolean) // 是否需要入场动画
 //    fun showChoiceView(showNextRound: Boolean)// 是否要显示下一句
 //    fun showMatchAnimationView(overListener: ()->Unit)// 是否要显示下一句

@@ -1,10 +1,15 @@
-package com.module.playways.room.msg.process.pushprocess;
+package com.module.playways.room.msg.manager;
+
+import android.text.TextUtils;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.AccBeginEvent;
 import com.module.playways.room.msg.event.AppSwapEvent;
+import com.module.playways.room.msg.event.AudioMsgEvent;
+import com.module.playways.room.msg.event.CommentMsgEvent;
+import com.module.playways.room.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.room.msg.event.ExitGameEvent;
 import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.JoinNoticeEvent;
@@ -30,9 +35,13 @@ import com.module.playways.room.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.room.msg.event.QRoundOverMsgEvent;
 import com.module.playways.room.msg.event.QSyncStatusMsgEvent;
 import com.module.playways.room.msg.event.QWantSingChanceMsgEvent;
+import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.msg.event.VoteResultEvent;
-import com.module.playways.room.msg.process.IPushChatRoomMsgProcess;
+import com.module.playways.room.msg.filter.PushMsgFilter;
 import com.zq.live.proto.GrabRoom.AppSwapMsg;
+import com.zq.live.proto.GrabRoom.AudioMsg;
+import com.zq.live.proto.GrabRoom.CommentMsg;
+import com.zq.live.proto.GrabRoom.DynamicEmojiMsg;
 import com.zq.live.proto.GrabRoom.ERoomMsgType;
 import com.zq.live.proto.GrabRoom.ExitGameAfterPlayMsg;
 import com.zq.live.proto.GrabRoom.ExitGameBeforePlayMsg;
@@ -66,117 +75,185 @@ import com.zq.live.proto.GrabRoom.ReadyNoticeMsg;
 import com.zq.live.proto.GrabRoom.RoomMsg;
 import com.zq.live.proto.GrabRoom.RoundAndGameOverMsg;
 import com.zq.live.proto.GrabRoom.RoundOverMsg;
+import com.zq.live.proto.GrabRoom.SpecialEmojiMsg;
 import com.zq.live.proto.GrabRoom.SyncStatusMsg;
 import com.zq.live.proto.GrabRoom.VoteResultMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashSet;
 
-public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess<ERoomMsgType, RoomMsg> {
+/**
+ * 处理所有的RoomMsg
+ */
+public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
 
-    public final String TAG = "ChatRoomGameMsgProcess";
+    public final String TAG = "GrabRoomMsgManager";
 
-    @Override
-    public ERoomMsgType[] acceptType() {
-        return new ERoomMsgType[]{
-                ERoomMsgType.RM_JOIN_ACTION, ERoomMsgType.RM_JOIN_NOTICE,
-                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_SYNC_STATUS,
-                ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
-                ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
-                ERoomMsgType.RM_VOTE_RESULT, ERoomMsgType.RM_ROUND_MACHINE_SCORE,
-                ERoomMsgType.RM_ROUND_ACC_BEGIN, ERoomMsgType.RM_Q_WANT_SING_CHANCE,
-                ERoomMsgType.RM_Q_GET_SING_CHANCE, ERoomMsgType.RM_Q_SYNC_STATUS,
-                ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
-                ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
-                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT,
-                ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
-                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
-                ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE, ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG,
-                ERoomMsgType.RM_Q_CHO_GIVEUP, ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER, ERoomMsgType.RM_Q_CHANGE_ROOM_NAME,
-                ERoomMsgType.RM_G_PRESENT_GIFT
-        };
+    private static class ChatRoomMsgAdapterHolder {
+        private static final GrabRoomMsgManager INSTANCE = new GrabRoomMsgManager();
     }
 
-    @Override
-    public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
-        MyLog.d(TAG, "processRoomMsg" + " messageType=" + messageType.getValue());
-        BasePushInfo basePushInfo = BasePushInfo.parse(msg);
-        MyLog.d(TAG, "processRoomMsg" + " timeMs=" + basePushInfo.getTimeMs());
+    private GrabRoomMsgManager() {
 
-        if (msg.getMsgType() == ERoomMsgType.RM_JOIN_ACTION) {
+    }
+
+    public static final GrabRoomMsgManager getInstance() {
+        return ChatRoomMsgAdapterHolder.INSTANCE;
+    }
+
+    /**
+     * 处理消息分发
+     *
+     * @param msg
+     */
+    public void processRoomMsg(RoomMsg msg) {
+        boolean canGo = true;  //是否放行的flag
+        for (PushMsgFilter filter : mPushMsgFilterList) {
+            canGo = filter.doFilter(msg);
+            if (!canGo) {
+                MyLog.d(TAG, "processRoomMsg " + msg + "被拦截");
+                return;
+            }
+        }
+
+        processRoomMsg(msg.getMsgType(), msg);
+    }
+
+    public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
+        BasePushInfo basePushInfo = BasePushInfo.parse(msg);
+        MyLog.d(TAG, "processRoomMsg messageType=" + messageType+" timeMs=" + basePushInfo.getTimeMs() );
+        if (messageType == ERoomMsgType.RM_COMMENT) {
+            processRMComment(basePushInfo, msg.getCommentMsg());
+        } else if (messageType == ERoomMsgType.RM_SPECIAL_EMOJI) {
+            processRMSpecialEmoji(basePushInfo, msg.getSpecialEmojiMsg());
+        } else if (messageType == ERoomMsgType.RM_DYNAMIC_EMOJI) {
+            processRMDynamicEmoji(basePushInfo, msg.getDynamicemojiMsg());
+        } else if (messageType == ERoomMsgType.RM_AUDIO_MSG) {
+            processRMAudio(basePushInfo, msg.getAudioMsg());
+        } else if (messageType == ERoomMsgType.RM_JOIN_ACTION) {
             processJoinActionMsg(basePushInfo, msg.getJoinActionMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_JOIN_NOTICE) {
+        } else if (messageType == ERoomMsgType.RM_JOIN_NOTICE) {
             processJoinNoticeMsg(basePushInfo, msg.getJoinNoticeMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_READY_NOTICE) {
+        } else if (messageType == ERoomMsgType.RM_READY_NOTICE) {
             processReadyNoticeMsg(basePushInfo, msg.getReadyNoticeMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_OVER) {
+        } else if (messageType == ERoomMsgType.RM_ROUND_OVER) {
             processRoundOverMsg(basePushInfo, msg.getRoundOverMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_AND_GAME_OVER) {
+        } else if (messageType == ERoomMsgType.RM_ROUND_AND_GAME_OVER) {
             processRoundAndGameOverMsg(basePushInfo, msg.getRoundAndGameOverMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_APP_SWAP) {
+        } else if (messageType == ERoomMsgType.RM_APP_SWAP) {
             processAppSwapMsg(basePushInfo, msg.getAppSwapMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_SYNC_STATUS) {
+        } else if (messageType == ERoomMsgType.RM_SYNC_STATUS) {
             processSyncStatusMsg(basePushInfo, msg.getSyncStatusMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY) {
+        } else if (messageType == ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY) {
             processExitGameBeforePlay(basePushInfo, msg.getExitGameBeforePlayMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY) {
+        } else if (messageType == ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY) {
             processExitGameAfterPlay(basePushInfo, msg.getExitGameAfterPlayMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_EXIT_GAME_OUT_ROUND) {
+        } else if (messageType == ERoomMsgType.RM_EXIT_GAME_OUT_ROUND) {
             processExitGameOutRound(basePushInfo, msg.getExitGameOutRoundMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_VOTE_RESULT) {
+        } else if (messageType == ERoomMsgType.RM_VOTE_RESULT) {
             processVoteResult(basePushInfo, msg.getVoteResultMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_MACHINE_SCORE) {
+        } else if (messageType == ERoomMsgType.RM_ROUND_MACHINE_SCORE) {
             processMachineScore(basePushInfo, msg.getMachineScore());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_ROUND_ACC_BEGIN) {
+        } else if (messageType == ERoomMsgType.RM_ROUND_ACC_BEGIN) {
             processAccBeigin(basePushInfo);
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_WANT_SING_CHANCE) {
+        } else if (messageType == ERoomMsgType.RM_Q_WANT_SING_CHANCE) {
             processQWantSingChanceMsg(basePushInfo, msg.getQWantSingChanceMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_GET_SING_CHANCE) {
+        } else if (messageType == ERoomMsgType.RM_Q_GET_SING_CHANCE) {
             processQGetSingChanceMsg(basePushInfo, msg.getQGetSingChanceMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_SYNC_STATUS) {
+        } else if (messageType == ERoomMsgType.RM_Q_SYNC_STATUS) {
             processQSyncStatusMsg(basePushInfo, msg.getQSyncStatusMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_OVER) {
+        } else if (messageType == ERoomMsgType.RM_Q_ROUND_OVER) {
             processQRoundOverMsg(basePushInfo, msg.getQRoundOverMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER) {
+        } else if (messageType == ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER) {
             processQRoundAndGameOverMsg(basePushInfo, msg.getQRoundAndGameOverMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_NO_PASS_SING) {
+        } else if (messageType == ERoomMsgType.RM_Q_NO_PASS_SING) {
             processQNoPassSingMsg(basePushInfo, msg.getQNoPassSingMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
+        } else if (messageType == ERoomMsgType.RM_Q_EXIT_GAME) {
             processQExitGameMsg(basePushInfo, msg.getQExitGameMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_BLIGHT) {
+        } else if (messageType == ERoomMsgType.RM_PK_BLIGHT) {
             processPkBurstLightMsg(basePushInfo, msg.getPkBLightMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_MLIGHT) {
+        } else if (messageType == ERoomMsgType.RM_PK_MLIGHT) {
             processPkLightOffMsg(basePushInfo, msg.getPkMLightMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_BLIGHT) {
+        } else if (messageType == ERoomMsgType.RM_Q_BLIGHT) {
             processGrabLightBurstMsg(basePushInfo, msg.getQBLightMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_MLIGHT) {
+        } else if (messageType == ERoomMsgType.RM_Q_MLIGHT) {
             processGrabLightOffMsg(basePushInfo, msg.getQMLightMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_NOTICE) {
+        } else if (messageType == ERoomMsgType.RM_Q_JOIN_NOTICE) {
             processGrabJoinNoticeMsg(basePushInfo, msg.getQJoinNoticeMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_ACTION) {
+        } else if (messageType == ERoomMsgType.RM_Q_JOIN_ACTION) {
             processGrabJoinActionMsg(basePushInfo, msg.getQJoinActionMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_REQUEST) {
+        } else if (messageType == ERoomMsgType.RM_Q_KICK_USER_REQUEST) {
             processGrabKickRequest(basePushInfo, msg.getQKickUserRequestMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_RESULT) {
+        } else if (messageType == ERoomMsgType.RM_Q_KICK_USER_RESULT) {
             processGrabKickResult(basePushInfo, msg.getQKickUserResultMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_GAME_BEGIN) {
+        } else if (messageType == ERoomMsgType.RM_Q_GAME_BEGIN) {
             processGrabGameBegin(basePushInfo, msg.getQGameBeginMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_COIN_CHANGE) {
+        } else if (messageType == ERoomMsgType.RM_Q_COIN_CHANGE) {
             processGrabCoinChange(basePushInfo, msg.getQCoinChangeMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG) {
+        } else if (messageType == ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG) {
             processChangeMusicTag(basePushInfo, msg.getQChangeMusicTag());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHO_GIVEUP) {
+        } else if (messageType == ERoomMsgType.RM_Q_CHO_GIVEUP) {
             processGrabChoGiveUp(basePushInfo, msg.getQCHOGiveUpMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER) {
+        } else if (messageType == ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER) {
             processGrabPkRoundOver(basePushInfo, msg.getQSPKInnerRoundOverMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_ROOM_NAME) {
+        } else if (messageType == ERoomMsgType.RM_Q_CHANGE_ROOM_NAME) {
             processGrabChangeRoomName(basePushInfo, msg.getQChangeRoomName());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_G_PRESENT_GIFT) {
+        } else if (messageType == ERoomMsgType.RM_G_PRESENT_GIFT) {
             processSendGiftInfo(basePushInfo, msg.getGPrensentGiftMsg());
         }
     }
+
+    // 评论消息
+    public void processRMComment(BasePushInfo info, CommentMsg commentMsg) {
+        if (commentMsg == null) {
+            MyLog.e(TAG, "processRMComment" + " commentMsg == null");
+            return;
+        }
+
+        String text = commentMsg.getText();
+        if (!TextUtils.isEmpty(text)) {
+            EventBus.getDefault().post(new CommentMsgEvent(info, CommentMsgEvent.MSG_TYPE_RECE, commentMsg));
+        }
+    }
+
+    // 特殊表情消息
+    public void processRMSpecialEmoji(BasePushInfo info, SpecialEmojiMsg specialEmojiMsg) {
+        if (specialEmojiMsg == null) {
+            MyLog.e(TAG, "processRMSpecialEmoji" + " specialEmojiMsg == null");
+            return;
+        }
+
+        SpecialEmojiMsgEvent specialEmojiMsgEvent = new SpecialEmojiMsgEvent(info);
+        specialEmojiMsgEvent.emojiType = specialEmojiMsg.getEmojiType();
+        specialEmojiMsgEvent.count = specialEmojiMsg.getCount();
+        specialEmojiMsgEvent.action = specialEmojiMsg.getEmojiAction();
+        specialEmojiMsgEvent.coutinueId = specialEmojiMsg.getContinueId();
+
+        EventBus.getDefault().post(specialEmojiMsgEvent);
+    }
+
+    // 动态表情消息
+    public void processRMDynamicEmoji(BasePushInfo info, DynamicEmojiMsg dynamicEmojiMsg) {
+        if (dynamicEmojiMsg == null) {
+            MyLog.e(TAG, "processRMDynamicEmoji" + " dynamicEmojiMsg == null");
+            return;
+        }
+
+        EventBus.getDefault().post(new DynamicEmojiMsgEvent(info, DynamicEmojiMsgEvent.MSG_TYPE_RECE, dynamicEmojiMsg));
+    }
+
+    private void processRMAudio(BasePushInfo info, AudioMsg audioMsg) {
+        if (audioMsg == null) {
+            MyLog.e(TAG, "processRMAudio" + " info=" + info + " audioMsg = null");
+        }
+
+        EventBus.getDefault().post(new AudioMsgEvent(info, AudioMsgEvent.MSG_TYPE_RECE, audioMsg));
+    }
+
+
+    //////////////////////////////////
+
 
     private void processSendGiftInfo(BasePushInfo basePushInfo, GPrensentGiftMsg gPrensentGiftMsg) {
         if (gPrensentGiftMsg != null) {

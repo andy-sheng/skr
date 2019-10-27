@@ -33,6 +33,8 @@ import com.module.msg.model.CustomChatCombineRoomMsg;
 import com.module.msg.model.CustomChatRoomLowLevelMsg;
 import com.module.msg.model.CustomChatRoomMsg;
 import com.module.msg.model.CustomNotificationMsg;
+import com.module.msg.model.MicRoomHighMsg;
+import com.module.msg.model.MicRoomLowMsg;
 import com.module.msg.model.RaceRoomHighMsg;
 import com.module.msg.model.RaceRoomLowMsg;
 import com.module.msg.model.SpecailOpMsg;
@@ -62,6 +64,7 @@ import io.rong.push.pushconfig.PushConfig;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_BROADCAST;
 import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
+import static com.module.msg.CustomMsgType.MSG_TYPE_MIC_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
 import static com.module.msg.CustomMsgType.MSG_TYPE_RACE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
@@ -182,11 +185,23 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 return true;
             } else if (message.getContent() instanceof RaceRoomLowMsg) {
 
-                RaceRoomHighMsg customChatRoomMsg = (RaceRoomHighMsg) message.getContent();
+                RaceRoomLowMsg customChatRoomMsg = (RaceRoomLowMsg) message.getContent();
                 dispatchRaceRoomMsg(customChatRoomMsg);
 
                 return true;
-            } else if (message.getContent() instanceof CustomNotificationMsg) {
+            }else if (message.getContent() instanceof MicRoomHighMsg) {
+
+                MicRoomHighMsg customChatRoomMsg = (MicRoomHighMsg) message.getContent();
+                dispatchMicRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof MicRoomLowMsg) {
+
+                MicRoomLowMsg customChatRoomMsg = (MicRoomLowMsg) message.getContent();
+                dispatchMicRoomMsg(customChatRoomMsg);
+
+                return true;
+            }  else if (message.getContent() instanceof CustomNotificationMsg) {
                 CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
 
@@ -333,6 +348,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         }
     }
 
+    private void dispatchMicRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof MicRoomHighMsg) {
+            MicRoomHighMsg msg = (MicRoomHighMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_MIC_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_MIC_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof MicRoomLowMsg) {
+            MicRoomLowMsg msg = (MicRoomLowMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_MIC_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_MIC_ROOM, data);
+                }
+            }
+        }
+    }
     // 是否初始化
     private boolean mIsInit = false;
 
