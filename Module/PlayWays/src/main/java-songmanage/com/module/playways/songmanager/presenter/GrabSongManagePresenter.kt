@@ -13,6 +13,7 @@ import com.module.playways.songmanager.event.RoomNameChangeEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.view.ISongManageView
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerServerApi
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -25,6 +26,7 @@ import okhttp3.RequestBody
 
 class GrabSongManagePresenter(internal var mIOwnerManageView: ISongManageView, internal var mRoomData: GrabRoomData) : RxLifeCyclePresenter() {
     var mGrabRoomServerApi: GrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+    var mSongManagerServerApi:SongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
 
     init {
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -57,7 +59,7 @@ class GrabSongManagePresenter(internal var mIOwnerManageView: ISongManageView, i
     }
 
     fun getRecommendTag() {
-        ApiMethods.subscribe(mGrabRoomServerApi.standBillBoards, object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.standBillBoards, object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val recommendTagModelArrayList = JSONObject.parseArray(result.data!!.getString("items"), RecommendTagModel::class.java)
@@ -79,7 +81,7 @@ class GrabSongManagePresenter(internal var mIOwnerManageView: ISongManageView, i
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mGrabRoomServerApi.suggestMusic(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.suggestMusic(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.errno)
                 if (result.errno == 0) {

@@ -24,6 +24,7 @@ import com.module.playways.songmanager.customgame.MakeGamePanelView
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
@@ -47,7 +48,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
     val mContainer: ExFrameLayout
     val mRecyclerView: RecyclerView
     val mRefreshLayout: SmartRefreshLayout
-    val mGrabRoomServerApi: GrabRoomServerApi
+    val mSongManageServerApi: SongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
 
     lateinit var mRecommendSongAdapter: RecommendSongAdapter
     private var mDisposable: Disposable? = null
@@ -66,7 +67,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
         mRecyclerView = findViewById(R.id.recycler_view)
         mRefreshLayout = findViewById(R.id.refreshLayout)
 
-        mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+
         initData()
     }
 
@@ -164,9 +165,9 @@ class RecommendSongView(context: Context, internal var mType: Int,
 
     private fun getListStandBoardObservable(offset: Int): Observable<ApiResult> {
         return if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
-            mGrabRoomServerApi.getListStandBoards(mRecommendTagModel!!.type, offset, mLimit)
+            mSongManageServerApi.getListStandBoards(mRecommendTagModel!!.type, offset, mLimit)
         } else {
-            mGrabRoomServerApi.getDoubleListStandBoards(mRecommendTagModel!!.type, offset, mLimit)
+            mSongManageServerApi.getDoubleListStandBoards(mRecommendTagModel!!.type, offset, mLimit)
         }
     }
 

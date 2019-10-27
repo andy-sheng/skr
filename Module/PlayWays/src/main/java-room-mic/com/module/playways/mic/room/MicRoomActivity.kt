@@ -332,10 +332,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mTopContentView.setRoomData(mRoomData)
 
         mTopContentView.setListener(object : MicTopContentView.Listener {
-            override fun clickMore() {
-                dismissDialog()
-//                mRaceActorPanelView = MicActorPanelView(this@MicRoomActivity, mRoomData)
-//                mRaceActorPanelView?.showByDialog()
+            override fun clickInvite() {
+
             }
 
             override fun clickArrow(open: Boolean) {

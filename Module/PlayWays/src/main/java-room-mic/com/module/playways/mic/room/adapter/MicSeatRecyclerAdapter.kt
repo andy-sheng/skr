@@ -19,7 +19,7 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MicSeatHolder {
         val inflater = LayoutInflater.from(parent.context)
         val micSeatStateItemLayoutBinding: MicSeatStateItemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.mic_seat_state_item_layout, parent, false)
-        return MicSeatHolder(View(parent.context))
+        return MicSeatHolder(micSeatStateItemLayoutBinding.root)
     }
 
     override fun getItemCount(): Int {

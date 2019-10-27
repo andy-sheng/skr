@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:VoiceChartView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_52_dp"
+    android:layout_height="47dp">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/circle_bg_iv"
+        android:layout_width="@dimen/view_42_dp"
+        android:layout_height="@dimen/view_42_dp"
+        app:bl_corners_radius="@dimen/view_42_dp"
+        app:bl_solid_color="@color/transparent"
+        app:bl_stroke_color="@color/black_trans_50"
+        app:bl_stroke_width="@dimen/view_2_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/empty_iv"
+        android:layout_width="@dimen/view_32_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:background="@drawable/yichangdaodi_guanzhong"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/waiting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="候场"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        app:layout_constraintRight_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+
+    <com.component.busilib.view.VoiceChartView
+        android:id="@+id/voice_chart_view"
+        android:layout_width="@dimen/view_0_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_marginRight="@dimen/view_5_dp"
+        VoiceChartView:chartBackColor="@color/white"
+        VoiceChartView:chartDuration="200"
+        VoiceChartView:chartFitWidth="true"
+        VoiceChartView:chartHeight="@dimen/view_16_dp"
+        VoiceChartView:chartMarginLeft="@dimen/view_2_dp"
+        VoiceChartView:chartWidth="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        app:layout_constraintRight_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+
+    <ImageView
+        android:id="@+id/homeowner_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:background="@drawable/ycdi_fangzhubiaoqian"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
+        app:layout_constraintRight_toRightOf="@+id/avatar_iv" />
+</android.support.constraint.ConstraintLayout>
