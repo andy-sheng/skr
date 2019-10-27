@@ -11,6 +11,7 @@ import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
 import com.engine.statistics.SDataManager;
 import com.engine.statistics.datastruct.SAgora;
+import com.engine.statistics.datastruct.SAgoraUserEvent;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -248,9 +249,6 @@ public class AgoraRTCAdapter {
         @Override
         public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
             super.onRejoinChannelSuccess(channel, uid, elapsed);
-
-            SDataManager.instance().setChannelID(channel).setUserID(uid).setChannelJoinElipse(elapsed);
-
             if (mOutCallback != null) {
                 mOutCallback.onRejoinChannelSuccess(channel, uid, elapsed);
             }
@@ -259,9 +257,6 @@ public class AgoraRTCAdapter {
         @Override
         public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
             super.onJoinChannelSuccess(channel, uid, elapsed);
-
-            SDataManager.instance().setChannelID(channel).setUserID(uid).setChannelJoinElipse(elapsed);
-
             if (mOutCallback != null) {
                 mOutCallback.onJoinChannelSuccess(channel, uid, elapsed);
             }

@@ -2,6 +2,7 @@ package com.engine.statistics;
 
 
 import com.engine.statistics.datastruct.SAgora;
+import com.engine.statistics.datastruct.SAgoraUserEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ public class SAgoraDataHolder
     private List<SAgora.SRemoteVideoTransportStat>    mRemoteVTransList;
     private List<SAgora.SAudioSamplingInfo> mAudioSamplingInfoList;
     private List<SAgora.SPlayerInfo> mPlayerInfo;
+    private List<SAgoraUserEvent>  mUserEvenList;
+
 
 
     public SAgoraDataHolder() {
@@ -37,6 +40,7 @@ public class SAgoraDataHolder
 
         mAudioSamplingInfoList = new ArrayList<SAgora.SAudioSamplingInfo>();
         mPlayerInfo = new ArrayList<SAgora.SPlayerInfo>();
+        mUserEvenList = new ArrayList<SAgoraUserEvent>();
     }
 
     public SAgoraDataHolder setLinePrefix(String prefix) {
@@ -204,6 +208,17 @@ public class SAgoraDataHolder
     }
 
 
+    //for user event
+    public synchronized void addUserEvent(SAgoraUserEvent e) {
+        if (null == e) return;
+
+        mUserEvenList.add(e);
+        return;
+    }
+
+
+
+
     private String getListString(List list) {
         String retStr = "";
 
@@ -215,6 +230,10 @@ public class SAgoraDataHolder
 
         return retStr;
     }
+
+
+
+
 
     //SAgoraDataHolder's to String
     public synchronized String toString() {
@@ -230,6 +249,7 @@ public class SAgoraDataHolder
         retStr += getListString(mRemoteVTransList);
         retStr += getListString(mAudioSamplingInfoList);
         retStr += getListString(mPlayerInfo);
+        retStr += getListString(mUserEvenList);
 
         return retStr;
     }
@@ -247,6 +267,7 @@ public class SAgoraDataHolder
 
         mAudioSamplingInfoList.clear();
         mPlayerInfo.clear();
+        mUserEvenList.clear();
         return this;
     }
 
@@ -258,7 +279,7 @@ public class SAgoraDataHolder
                 mRemoteVList.size() +  mNetQualityList.size() + mRemoteATransList.size() +  mRemoteVTransList.size()+
                 mAudioSamplingInfoList.size();
 
-        if (nowTotalRecords >= recPerListLimit * 9)
+        if (nowTotalRecords >= recPerListLimit * 10)
             return true;
         else
             return false;
