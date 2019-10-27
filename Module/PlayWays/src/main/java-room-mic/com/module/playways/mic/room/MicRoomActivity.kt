@@ -11,10 +11,12 @@ import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.ex.ExTextView
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
@@ -82,7 +84,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //    private lateinit var mWaitingCardView: MicWaitingCardView   // 等待中
 //    private lateinit var mRaceWantingSignUpCardView: RaceWantingSignUpCardView   // 正在报名卡片
     private lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-//    private lateinit var mRaceMatchView: RaceMatchView
+    //    private lateinit var mRaceMatchView: RaceMatchView
     private lateinit var mSelfSingLyricView: MicSelfSingLyricView  // 自己唱
     private lateinit var mOtherSingCardView: MicOtherSingCardView   // 别人唱
 //    private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
@@ -91,6 +93,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //    private lateinit var mSignUpView: RaceSignUpBtnView
 
     internal var mVIPEnterView: VIPEnterView? = null
+    private lateinit var mHasSelectSongNumTv: ExTextView
+    private lateinit var mMicSeatView: MicSeatView
 
     // 都是dialogplus
 //    private var mRaceActorPanelView: MicActorPanelView? = null  //参与的人
@@ -147,6 +151,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         initSelectPagerView()
         initRaceMatchView()
         initSignUpView()
+        initMicSeatView()
 
         mCorePresenter.onOpeningAnimationOver()
 
@@ -292,6 +297,15 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //        })
     }
 
+    private fun initMicSeatView() {
+        mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
+        mMicSeatView = findViewById(R.id.mic_seat_view)
+        mMicSeatView.mRoomData = mRoomData
+        mHasSelectSongNumTv.setDebounceViewClickListener {
+            mMicSeatView.show()
+        }
+    }
+
     private fun initVipEnterView() {
         mVIPEnterView = VIPEnterView(findViewById(R.id.vip_enter_view_stub))
     }
@@ -350,7 +364,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
 //                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
 //                } else {
-                    mGiftPanelView.show(null)
+                mGiftPanelView.show(null)
 //                }
             }
         })
@@ -494,7 +508,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         }
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM , userID, false, false)
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, false, false)
                 .setRoomID(mRoomData.gameId)
                 .build()
         mPersonInfoDialog?.show()
@@ -538,7 +552,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
 //                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
 //                                    } else {
-                                        mGiftPanelView.show(null)
+                                    mGiftPanelView.show(null)
 //                                    }
                                 }
                             }
