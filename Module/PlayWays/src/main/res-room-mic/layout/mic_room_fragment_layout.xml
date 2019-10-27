@@ -62,25 +62,6 @@
         android:layout_height="@dimen/view_120_dp"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
-    <!--    <com.module.playways.race.room.view.RaceTopVsView-->
-    <!--        android:id="@+id/race_top_vs_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_20_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/race_top_content_view" />-->
-
-    <!--    &lt;!&ndash;等待中&ndash;&gt;-->
-    <!--    <com.module.playways.mic.room.view.MicWaitingCardView-->
-    <!--        android:id="@+id/wait_card_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_156_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
     <!--下一局-->
     <com.module.playways.mic.room.view.MicTurnInfoCardView
         android:id="@+id/turn_card_view"
@@ -91,90 +72,8 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
-    <!--选歌-->
-    <!--    <com.module.playways.race.room.view.RaceSelectSongView-->
-    <!--        android:id="@+id/race_select_song_view"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_70_dp"-->
-    <!--        android:visibility="visible"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
-    <!--    <include-->
-    <!--        android:id="@+id/next_song_start_tip_tv"-->
-    <!--        layout="@layout/race_next_round_start_tip_layout"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_430_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
-    <!--自己唱的view-->
-    <ViewStub
-        android:id="@+id/self_sing_lyric_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/view_140_dp"
-        android:layout="@layout/mic_self_sing_lyric_layout"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
-
-    <!--别人唱的view-->
-    <ViewStub
-        android:id="@+id/other_sing_lyric_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout="@layout/mic_other_sing_card_stub_layout"
-        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
-
-    <!--    &lt;!&ndash;无人想唱&ndash;&gt;-->
-    <!--    <com.module.playways.race.room.view.RaceNoSingerCardView-->
-    <!--        android:id="@+id/race_nosinger_result_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_156_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
-    <!--正在报名卡片-->
-    <!--    <com.module.playways.race.room.view.RaceWantingSignUpCardView-->
-    <!--        android:id="@+id/race_wanting_signup_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_156_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
-    <!--结果-->
-    <!--    <com.module.playways.race.room.view.RaceMiddleResultView-->
-    <!--        android:id="@+id/race_middle_result_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_100_dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title_bar" />-->
-
-    <!--    <com.module.playways.race.room.view.matchview.RaceMatchView-->
-    <!--        android:id="@+id/race_match_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/view_90_dp"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        android:visibility="gone"/>-->
-
-    <!--    <com.module.playways.race.room.view.RaceSignUpBtnView-->
-    <!--        android:id="@+id/sign_up_view"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        android:layout_width="@dimen/view_80_dp"-->
-    <!--        android:layout_height="@dimen/view_80_dp"-->
-    <!--        android:layout_marginRight="@dimen/view_12_dp"-->
-    <!--        android:layout_marginBottom="@dimen/view_80_dp" />-->
+    <!--自己唱歌场景-->
+    <include layout="@layout/mic_self_sing_card_view_layout" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/has_select_song_num_tv"
@@ -250,12 +149,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!--    <com.module.playways.race.room.view.RacePagerSelectSongView-->
-    <!--        android:id="@+id/select_pager_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:visibility="gone" />-->
-
     <!--右边的操作区域-->
     <com.module.playways.mic.room.view.MicRightOpView
         android:id="@+id/right_op_view"
@@ -288,17 +181,17 @@
         android:layout_marginBottom="@dimen/view_18_dp"
         android:layout="@layout/voice_record_tips_view_layout" />
 
-    <ViewStub
-        android:id="@+id/debug_log_view_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:inflatedId="@+id/debug_log_view"
-        android:layout="@layout/debug_log_view_stub_layout" />
-
+    <!-- 麦席-->
     <com.module.playways.mic.room.view.MicSeatView
         android:id="@+id/mic_seat_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <ViewStub
+        android:id="@+id/debug_log_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/debug_log_view"
+        android:layout="@layout/debug_log_view_stub_layout" />
 </android.support.constraint.ConstraintLayout>

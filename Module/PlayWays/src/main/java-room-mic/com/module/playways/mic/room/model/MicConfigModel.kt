@@ -11,4 +11,6 @@ import java.util.ArrayList
 class MicConfigModel : Serializable{
     @JSONField(name = "maxUserCnt")
     var maxUserCnt = 0
+    @JSONField(name = "MScoreTipMsg")
+    internal var qScoreTipMsg: List<GrabScoreTipMsgModel> = ArrayList()
 }

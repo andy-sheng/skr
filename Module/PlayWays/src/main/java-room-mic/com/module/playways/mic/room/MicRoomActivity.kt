@@ -17,6 +17,7 @@ import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
+import com.component.busilib.constans.GameModeType
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
@@ -32,6 +33,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.bottom.MicBottomContainerView
 import com.module.playways.mic.room.model.MicPlayerInfoModel
+import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
 import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
@@ -39,6 +41,7 @@ import com.module.playways.mic.room.ui.IMicRoomView
 import com.module.playways.mic.room.ui.MicWidgetAnimationController
 import com.module.playways.mic.room.view.*
 import com.module.playways.race.match.activity.RaceHomeActivity
+import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
@@ -58,6 +61,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
 class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
+
     /**
      * 存起该房间一些状态信息
      */
@@ -106,10 +110,26 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        // 销毁其他的除一唱到底页面所有界面
+        for (activity in U.getActivityUtils().activityList) {
+            if (activity === this) {
+                continue
+            }
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+            if (activity is RaceHomeActivity) {
+                continue
+            }
+            activity.finish()
+        }
+
         val joinRaceRoomRspModel = intent.getSerializableExtra("JoinMicRoomRspModel") as JoinMicRoomRspModel?
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
         }
+        H.micRoomData = mRoomData
+        H.curType = GameModeType.GAME_MODE_MIC
 
         mCorePresenter = MicCorePresenter(mRoomData, this)
         addPresent(mCorePresenter)
@@ -155,19 +175,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
         }
 
-        // 销毁其他的除一唱到底页面所有界面
-        for (activity in U.getActivityUtils().activityList) {
-            if (activity === this) {
-                continue
-            }
-            if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            if (activity is RaceHomeActivity) {
-                continue
-            }
-            activity.finish()
-        }
+
         U.getStatusBarUtil().setTransparentBar(this, false)
     }
 
@@ -183,6 +191,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         super.destroy()
         dismissDialog()
         mGiftPanelView?.destroy()
+        H.reset()
     }
 
     override fun finish() {
@@ -223,8 +232,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun initSingSenceView() {
-        mSelfSingLyricView = MicSelfSingLyricView(findViewById(R.id.self_sing_lyric_view_stub) as ViewStub, mRoomData)
-        mOtherSingCardView = MicOtherSingCardView(findViewById(R.id.other_sing_lyric_view_stub) as ViewStub, mRoomData)
     }
 
     private fun initInputView() {
@@ -533,5 +540,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     override fun gameOver() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
+    override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
