@@ -76,3 +76,5 @@ freeline_*.json
 a.txt
 trace.html
 moduletest/src/main/assets/resource.zip
+
+delete_maven_cache.sh
