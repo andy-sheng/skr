@@ -113,15 +113,15 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
     public void computeFlag() {
         mLeftGiveUp = false;
         mRightGiveUp = false;
-        if (mLeft.mChorusRoundInfoModel != null) {
-            if (mLeft.mChorusRoundInfoModel.isHasExit() || mLeft.mChorusRoundInfoModel.isHasGiveUp()) {
+        if (mLeft.getMChorusRoundInfoModel() != null) {
+            if (mLeft.getMChorusRoundInfoModel().isHasExit() || mLeft.getMChorusRoundInfoModel().isHasGiveUp()) {
                 // 左边的人不唱了
                 mLeftGiveUp = true;
             }
         }
 
-        if (mRight.mChorusRoundInfoModel != null) {
-            if (mRight.mChorusRoundInfoModel.isHasExit() || mRight.mChorusRoundInfoModel.isHasGiveUp()) {
+        if (mRight.getMChorusRoundInfoModel() != null) {
+            if (mRight.getMChorusRoundInfoModel().isHasExit() || mRight.getMChorusRoundInfoModel().isHasGiveUp()) {
                 // 右边的人不唱了
                 mRightGiveUp = true;
             }
@@ -170,7 +170,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
             } else if (mLeftGiveUp) {
                 mBlankView.setVisibility(View.GONE);
                 // 左边的人不唱了
-                if (mLeft.mUserInfoModel != null && mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                if (mLeft.getMUserInfoModel() != null && mLeft.getMUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
                     // 左边是自己 ,自己放弃了,设置成灰色
                     mLyricLineTv.setTextColor(colorDisable);
                 } else {
@@ -178,9 +178,9 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
                 }
                 if (position == 0) {
                     // 只有第一排有头像，头像设置成右边的人
-                    if (mRight.mUserInfoModel != null) {
+                    if (mRight.getMUserInfoModel() != null) {
                         mAvatarIv.setVisibility(View.VISIBLE);
-                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.getMUserInfoModel().getAvatar())
                                 .setCircle(true)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                 .setBorderColor(Color.WHITE)
@@ -193,7 +193,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
                 }
             } else if (mRightGiveUp) {
                 mBlankView.setVisibility(View.GONE);
-                if (mRight.mUserInfoModel != null && mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                if (mRight.getMUserInfoModel() != null && mRight.getMUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
                     // 右边是自己，自己放弃了,设置成灰色
                     mLyricLineTv.setTextColor(colorDisable);
                 } else {
@@ -201,9 +201,9 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
                 }
                 if (position == 0) {
                     // 只有第一排有头像，头像设置成右边的人
-                    if (mLeft.mUserInfoModel != null) {
+                    if (mLeft.getMUserInfoModel() != null) {
                         mAvatarIv.setVisibility(View.VISIBLE);
-                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.getMUserInfoModel().getAvatar())
                                 .setCircle(true)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                 .setBorderColor(Color.WHITE)

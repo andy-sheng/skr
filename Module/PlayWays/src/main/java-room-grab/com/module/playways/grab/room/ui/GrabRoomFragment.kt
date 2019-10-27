@@ -618,7 +618,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             val viewStub = rootView.findViewById<ViewStub>(R.id.grab_video_display_view_stub)
             mGrabVideoDisplayView = GrabVideoDisplayView(viewStub, mRoomData!!)
             mGrabVideoDisplayView.setSelfSingCardListener { mCorePresenter?.sendRoundOverInfo() }
-            mGrabVideoDisplayView.setListener {
+            mGrabVideoDisplayView.mBeautyListener = {
                 mBeautyControlPanelView?.show()
             }
         }
@@ -1136,7 +1136,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     private fun initSingStageView() {
-        mSelfSingCardView = SelfSingCardView(rootView, mRoomData!!)
+        mSelfSingCardView = SelfSingCardView(rootView)
         mSelfSingCardView?.setListener {
             removeNoAccSrollTipsView()
             removeGrabSelfSingTipView()

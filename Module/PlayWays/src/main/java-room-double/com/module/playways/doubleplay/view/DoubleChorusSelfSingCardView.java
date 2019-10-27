@@ -91,10 +91,10 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
         mLeft.reset();
         mRight.reset();
 
-        mLeft.mUserInfoModel = mFirstModel;
-        mLeft.mChorusRoundInfoModel = null;
-        mRight.mUserInfoModel = mSecondModel;
-        mRight.mChorusRoundInfoModel = null;
+        mLeft.setMUserInfoModel(mFirstModel);
+        mLeft.setMChorusRoundInfoModel(null);
+        mRight.setMUserInfoModel(mSecondModel);
+        mRight.setMChorusRoundInfoModel(null);
 
         tryInflate();
         setVisibility(View.VISIBLE);
@@ -115,7 +115,7 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
                         if (U.getStringUtils().isJSON(result)) {
                             NewChorusLyricModel newChorusLyricModel = JSON.parseObject(result, NewChorusLyricModel.class);
                             for (NewChorusLyricModel.ItemsBean itemsBean : newChorusLyricModel.getItems()) {
-                                UserInfoModel owner = (itemsBean.getTurn() == 1 ? mLeft.mUserInfoModel : mRight.mUserInfoModel);
+                                UserInfoModel owner = (itemsBean.getTurn() == 1 ? mLeft.getMUserInfoModel() : mRight.getMUserInfoModel());
 
                                 if (lyrics.size() > 0) {
                                     ChorusSelfLyricAdapter.ChorusLineLyricModel bean = lyrics.get(lyrics.size() - 1);
@@ -133,7 +133,7 @@ public class DoubleChorusSelfSingCardView extends ExViewStub {
                                 String[] strings = result.split("\n");
                                 boolean turnLeft = true;
                                 for (int i = 0; i < strings.length; i = i + 2) {
-                                    UserInfoModel owner = turnLeft ? mLeft.mUserInfoModel : mRight.mUserInfoModel;
+                                    UserInfoModel owner = turnLeft ? mLeft.getMUserInfoModel() : mRight.getMUserInfoModel();
                                     turnLeft = !turnLeft;
                                     if ((i + 1) < strings.length) {
                                         lyrics.add(new ChorusSelfLyricAdapter.ChorusLineLyricModel(owner, strings[i] + "\n" + strings[i + 1], DOUBLE_TYPE));

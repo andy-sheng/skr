@@ -29,6 +29,7 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.room.data.H;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
 import com.module.playways.room.song.model.SongModel;
@@ -59,6 +60,8 @@ public class GrabRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        H.INSTANCE.setCurType(GameModeType.GAME_MODE_GRAB);
+        H.INSTANCE.setGrabRoomData(mRoomData);
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
         Boolean isNewUser = getIntent().getBooleanExtra("is_new_user", false);
         SpecialModel specialModel = (SpecialModel) getIntent().getSerializableExtra("special_model");
@@ -189,6 +192,7 @@ public class GrabRoomActivity extends BaseActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         super.destroy();
+        H.INSTANCE.reset();
     }
 
     @Override

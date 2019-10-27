@@ -3,6 +3,9 @@ package com.module.playways.mic.room.model
 import com.alibaba.fastjson.annotation.JSONField
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
+import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent
+import com.module.playways.grab.room.model.ChorusRoundInfoModel
+import com.module.playways.grab.room.model.SPkRoundInfoModel
 import com.module.playways.mic.room.event.*
 import com.module.playways.room.prepare.model.BaseRoundInfoModel
 import com.module.playways.room.song.model.SongModel
@@ -302,7 +305,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 while (i < this.getsPkRoundInfoModels().size && i < roundInfo.getsPkRoundInfoModels().size) {
                     val sPkRoundInfoModel1 = this.getsPkRoundInfoModels()[i]
                     val sPkRoundInfoModel2 = roundInfo.getsPkRoundInfoModels()[i]
-                    sPkRoundInfoModel1.tryUpdateRoundInfoModel(sPkRoundInfoModel2, notify)
+                    sPkRoundInfoModel1.tryUpdateRoundInfoModel(sPkRoundInfoModel2)
                     i++
                 }
             }
@@ -323,7 +326,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
             if (chorusRoundInfoModel.userID == userID) {
                 if (!chorusRoundInfoModel.isHasGiveUp) {
                     chorusRoundInfoModel.isHasGiveUp = true
-                    EventBus.getDefault().post(MicChorusUserStatusChangeEvent(chorusRoundInfoModel))
+                    EventBus.getDefault().post(GrabChorusUserStatusChangeEvent(chorusRoundInfoModel))
                 }
             }
         }

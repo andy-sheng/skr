@@ -41,7 +41,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
 
     var lastSyncTs: Long = 0// 上次同步服务器状态时间,服务器的
 
-    var songModel: SongModel? = null // 歌曲信息
+    //var songModel: SongModel? = null // 歌曲信息
 
     var expectRoundInfo: T? = null// 按理的 期望的当前的轮次
 
@@ -108,7 +108,7 @@ abstract class BaseRoomData<T : BaseRoundInfoModel> : Serializable {
                 ", mGameStartTs=" + gameStartTs +
                 ", mGameOverTs=" + gameOverTs +
                 ", mLastSyncTs=" + lastSyncTs +
-                ", mSongModel=" + songModel +
+                //", mSongModel=" + songModel +
                 ", mExpectRoundInfo=" + expectRoundInfo +
                 ", mRealRoundInfo=" + realRoundInfo +
                 ", mIsGameFinish=" + isIsGameFinish +

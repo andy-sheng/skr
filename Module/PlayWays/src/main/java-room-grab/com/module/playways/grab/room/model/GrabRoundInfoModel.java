@@ -558,12 +558,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setWantSingType(roundInfo.getWantSingType().getValue());
 
         for (QCHOInnerRoundInfo qchoInnerRoundInfo : roundInfo.getCHORoundInfosList()) {
-            ChorusRoundInfoModel chorusRoundInfoModel = ChorusRoundInfoModel.parse(qchoInnerRoundInfo);
+            ChorusRoundInfoModel chorusRoundInfoModel = ChorusRoundInfoModel.Companion.parse(qchoInnerRoundInfo);
             roundInfoModel.getChorusRoundInfoModels().add(chorusRoundInfoModel);
         }
 
         for (QSPKInnerRoundInfo qspkInnerRoundInfo : roundInfo.getSPKRoundInfosList()) {
-            SPkRoundInfoModel pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo);
+            SPkRoundInfoModel pkRoundInfoModel = SPkRoundInfoModel.Companion.parse(qspkInnerRoundInfo);
             roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel);
         }
 

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.grab_sing_count_down2_view_layout.view.*
  */
 class SingCountDownView2 : RelativeLayout {
 
-    internal var mListener: SelfSingCardView.Listener? = null
+    internal var mOverListener: (()->Unit)? = null
     internal var mCounDownTask: HandlerTaskTimer? = null
 
     val container: ExRelativeLayout
@@ -39,7 +39,7 @@ class SingCountDownView2 : RelativeLayout {
         circle_count_down_view.setProgress(0)
         circle_count_down_view.max = 360
         circle_count_down_view.cancelAnim()
-        this.mListener = null
+        this.mOverListener = null
         mCounDownTask?.dispose()
     }
 
@@ -51,8 +51,8 @@ class SingCountDownView2 : RelativeLayout {
         container.background = drawable
     }
 
-    fun setListener(listener: SelfSingCardView.Listener) {
-        this.mListener = listener
+    fun setListener(listener: (()->Unit)?) {
+        this.mOverListener = listener
     }
 
     fun startPlay(fromProgress: Int, totalMs: Int, playNow: Boolean) {
@@ -77,7 +77,7 @@ class SingCountDownView2 : RelativeLayout {
 
                     override fun onComplete() {
                         super.onComplete()
-                        mListener?.onSelfSingOver()
+                        mOverListener?.invoke()
                     }
                 })
     }
