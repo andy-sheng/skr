@@ -18,49 +18,57 @@ message MicRoomMsg
     EMicRoomMsgType msgType = 2; //消息类型
     uint32 roomID           = 3; //房间ID
 
-    MJoinActionMsg mJoinActionMsg       = 100; //加入游戏指令消息
-    MJoinNoticeMsg mJoinNoticeMsg       = 101; //加入游戏通知消息
-    MExitGameMsg mExitGameMsg           = 102; //退出游戏
-    MBLightMsg mBLightMsg               = 103; //爆灯[投票]通知
-    MGetSingChanceMsg mGetSingChanceMsg = 104; //获得演唱
-    MSyncStatusMsg syncStatusMsg        = 105; //同步状态
-    MRoundOverMsg mRoundOverMsg         = 106; //轮次结束
-    MAddMusicMsg mAddMusicMsg           = 107; //点歌
-    MDelMusicMsg mDelMusicMsg           = 108; //删歌
-    MUpMusicMsg mUpMusicMsg             = 109; //置顶歌曲
-    MReqAddMusicMsg mReqAddMusicMsg     = 110; //请求合唱/PK
-
-    MChangeRoomNameMsg mChangeRoomNameMsg             = 111; //修改房间名字
-    MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg = 112; //修改房间等级限制
-    MKickoutUserMsg mKickoutUserMsg                   = 113; //踢人
-    MChangeRoomOwnerMsg mChangeRoomOwnerMsg           = 114; //修改房主
-    // MClosePositionMsg mClosePositionMsg               = 115; //关闭房间位置
-    // MOpenPositionMsg mOpenPositionMsg                 = 116; //打开房间位置
-    MMatchStatusMsg mMatchStatusMsg = 117; //房间匹配开关
+    MJoinActionMsg mJoinActionMsg                     = 100; //加入游戏指令消息
+    MJoinNoticeMsg mJoinNoticeMsg                     = 101; //加入游戏通知消息
+    MExitGameMsg mExitGameMsg                         = 102; //退出游戏
+    MSyncStatusMsg syncStatusMsg                      = 103; //同步状态
+    MRoundOverMsg mRoundOverMsg                       = 104; //轮次结束
+    MAddMusicMsg mAddMusicMsg                         = 105; //点歌
+    MDelMusicMsg mDelMusicMsg                         = 106; //删歌
+    MUpMusicMsg mUpMusicMsg                           = 107; //置顶歌曲
+    MCancelMusic mCancelMusic                         = 108; //取消歌曲：合唱/PK伙伴已退出
+    MReqAddMusicMsg mReqAddMusicMsg                   = 109; //请求合唱/PK
+    MCHOGiveUpMsg mCHOGiveUpMsg                       = 110; //合唱模式放弃演唱
+    MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg       = 111; //spk模式内部轮次结束
+    MChangeRoomNameMsg mChangeRoomNameMsg             = 112; //修改房间名字
+    MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg = 113; //修改房间等级限制
+    MKickoutUserMsg mKickoutUserMsg                   = 114; //踢人
+    MChangeRoomOwnerMsg mChangeRoomOwnerMsg           = 115; //修改房主
+    MMatchStatusMsg mMatchStatusMsg                   = 116; //房间匹配开关
 }
 
 enum EMicRoomMsgType {
     RMT_UNKNOWN = 0; //未知消息
 
-    RMT_JOIN_ACTION   = 100; //加入游戏指令消息
-    RMT_JOIN_NOTICE   = 101; //加入游戏通知消息
-    RMT_EXIT_GAME     = 102; //退出游戏
-    RMT_B_LIGHT       = 103; //爆灯通知
-    RMT_GET_SING      = 104; //获得抢唱的结果
-    RMT_SYNC_STATUS   = 105; //同步状态
-    RMT_ROUND_OVER    = 106; //主轮次or子轮次结束
-    RMT_ADD_MUSIC     = 107; //增加歌曲（点歌）
-    RMT_DEL_MUSIC     = 108; //删除歌曲
-    RMT_UP_MUSIC      = 109; //置顶歌曲
-    RMT_REQ_ADD_MUSIC = 110; //请求合唱/PK
+    RMT_JOIN_ACTION             = 100; //加入游戏指令消息
+    RMT_JOIN_NOTICE             = 101; //加入游戏通知消息
+    RMT_EXIT_GAME               = 102; //退出游戏
+    RMT_SYNC_STATUS             = 103; //同步状态
+    RMT_ROUND_OVER              = 104; //主轮次or子轮次结束
+    RMT_ADD_MUSIC               = 105; //增加歌曲（点歌）
+    RMT_DEL_MUSIC               = 106; //删除歌曲
+    RMT_UP_MUSIC                = 107; //置顶歌曲
+    RMT_CANCEL_MUSIC            = 108; //取消歌曲
+    RMT_REQ_ADD_MUSIC           = 109; //请求合唱/PK
+    RMT_CHO_GIVE_UP             = 110; //合唱模式放弃演唱
+    RMT_SPK_INNER_ROUND_OVER    = 111; //spk模式内部轮次结束
+    RMT_CHANGE_ROOM_NAME        = 112; //修改房间名字
+    RMT_CHANGE_ROOM_LEVEL_LIMIT = 113; //修改房间等级限制
+    RMT_KICKOUT_USER            = 114; //踢人
+    RMT_CHANGE_ROOM_OWNER       = 115; //修改房主
+    RMT_MATCH_STATUS            = 116; //房间匹配开关
+}
 
-    RMT_CHANGE_ROOM_NAME        = 111; //修改房间名字
-    RMT_CHANGE_ROOM_LEVEL_LIMIT = 112; //修改房间等级限制
-    RMT_KICKOUT_USER            = 113; // 踢人
-    RMT_CHANGE_ROOM_OWNER       = 114; //修改房主
-    // RMT_CLOSE_POSITION          = 115; //关闭房间位置
-    // RMT_OPEN_POSITION           = 116; //打开房间位置
-    RMT_MATCH_STATUS = 117; //房间匹配开关
+message MCHOGiveUpMsg
+{
+    uint32 userID   = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message MSPKInnerRoundOverMsg
+{
+    sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+    MRoundInfo currentRound = 2; //当前轮次信息
 }
 
 enum EMRoundOverType {
@@ -93,6 +101,11 @@ message MClosePositionMsg
 message MChangeRoomOwnerMsg
 {
     uint32 userID = 1; //新房主id
+}
+
+message MCancelMusic
+{
+    string cancelMusicMsg = 1; //xxx退出合唱/PK
 }
 
 message MKickoutUserMsg
@@ -202,7 +215,6 @@ message MRoundInfo
 {
     uint32 userID                             = 1; //抢唱成功的玩家id
     uint32 roundSeq                           = 2; //主轮次
-    uint32 subRoundSeq                        = 3; //子轮次
     uint32 introBeginMs                       = 4; //导唱开始相对时间（相对于startTimeMs时间） p.s.导唱为等待阶段
     uint32 introEndMs                         = 5; //导唱结束相对时间（相对于startTimeMs时间） p.s.导唱为等待阶段
     uint32 singBeginMs                        = 6; //演唱开始相对时间（相对于startTimeMs时间）
@@ -210,11 +222,10 @@ message MRoundInfo
     EMRoundStatus status                      = 8; //轮次状态
     EMRoundOverReason overReason              = 9; //切换轮次原因
     Common.MusicInfo music                           = 10; //本轮次的歌曲信息
-    repeated MBLightMsg bLightInfos           = 11; //爆灯[投票]列表
-    repeated MOnlineInfo users                = 12; //用户列表
-    EMWantSingType wantSingType               = 13; //抢唱方式
-    repeated MCHOInnerRoundInfo CHORoundInfos = 14; //合唱：内部轮次信息
-    repeated MSPKInnerRoundInfo SPKRoundInfos = 15; //spk：内部轮次信息
+    repeated MOnlineInfo users                = 11; //用户列表
+    EMWantSingType wantSingType               = 12; //抢唱方式
+    repeated MCHOInnerRoundInfo CHORoundInfos = 13; //合唱：内部轮次信息
+    repeated MSPKInnerRoundInfo SPKRoundInfos = 14; //spk：内部轮次信息
 }
 
 message MSPKInnerRoundInfo
@@ -245,6 +256,8 @@ message MOnlineInfo
     Common.UserInfo userInfo = 1; //用户信息
     bool isOnline     = 2; //是否在线
     EMUserRole role   = 3; //用户角色
+    bool isCurSing    = 4; //当前在唱
+    bool isNextSing   = 5; //下首在唱
 }
 
 enum EMRoundStatus {

@@ -28,8 +28,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
 
   public static final Integer DEFAULT_ROUNDSEQ = 0;
 
-  public static final Integer DEFAULT_SUBROUNDSEQ = 0;
-
   public static final Integer DEFAULT_INTROBEGINMS = 0;
 
   public static final Integer DEFAULT_INTROENDMS = 0;
@@ -61,15 +59,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer roundSeq;
-
-  /**
-   * 子轮次
-   */
-  @WireField(
-      tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer subRoundSeq;
 
   /**
    * 导唱开始相对时间（相对于startTimeMs时间） p.s.导唱为等待阶段
@@ -135,20 +124,10 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
   private final MusicInfo music;
 
   /**
-   * 爆灯[投票]列表
-   */
-  @WireField(
-      tag = 11,
-      adapter = "com.zq.live.proto.MicRoom.MBLightMsg#ADAPTER",
-      label = WireField.Label.REPEATED
-  )
-  private final List<MBLightMsg> bLightInfos;
-
-  /**
    * 用户列表
    */
   @WireField(
-      tag = 12,
+      tag = 11,
       adapter = "com.zq.live.proto.MicRoom.MOnlineInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
@@ -158,7 +137,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
    * 抢唱方式
    */
   @WireField(
-      tag = 13,
+      tag = 12,
       adapter = "com.zq.live.proto.MicRoom.EMWantSingType#ADAPTER"
   )
   private final EMWantSingType wantSingType;
@@ -167,7 +146,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
    * 合唱：内部轮次信息
    */
   @WireField(
-      tag = 14,
+      tag = 13,
       adapter = "com.zq.live.proto.MicRoom.MCHOInnerRoundInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
@@ -177,29 +156,27 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
    * spk：内部轮次信息
    */
   @WireField(
-      tag = 15,
+      tag = 14,
       adapter = "com.zq.live.proto.MicRoom.MSPKInnerRoundInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   private final List<MSPKInnerRoundInfo> SPKRoundInfos;
 
-  public MRoundInfo(Integer userID, Integer roundSeq, Integer subRoundSeq, Integer introBeginMs,
-      Integer introEndMs, Integer singBeginMs, Integer singEndMs, EMRoundStatus status,
-      EMRoundOverReason overReason, MusicInfo music, List<MBLightMsg> bLightInfos,
-      List<MOnlineInfo> users, EMWantSingType wantSingType, List<MCHOInnerRoundInfo> CHORoundInfos,
-      List<MSPKInnerRoundInfo> SPKRoundInfos) {
-    this(userID, roundSeq, subRoundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, bLightInfos, users, wantSingType, CHORoundInfos, SPKRoundInfos, ByteString.EMPTY);
+  public MRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
+      Integer singBeginMs, Integer singEndMs, EMRoundStatus status, EMRoundOverReason overReason,
+      MusicInfo music, List<MOnlineInfo> users, EMWantSingType wantSingType,
+      List<MCHOInnerRoundInfo> CHORoundInfos, List<MSPKInnerRoundInfo> SPKRoundInfos) {
+    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, ByteString.EMPTY);
   }
 
-  public MRoundInfo(Integer userID, Integer roundSeq, Integer subRoundSeq, Integer introBeginMs,
-      Integer introEndMs, Integer singBeginMs, Integer singEndMs, EMRoundStatus status,
-      EMRoundOverReason overReason, MusicInfo music, List<MBLightMsg> bLightInfos,
-      List<MOnlineInfo> users, EMWantSingType wantSingType, List<MCHOInnerRoundInfo> CHORoundInfos,
-      List<MSPKInnerRoundInfo> SPKRoundInfos, ByteString unknownFields) {
+  public MRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
+      Integer singBeginMs, Integer singEndMs, EMRoundStatus status, EMRoundOverReason overReason,
+      MusicInfo music, List<MOnlineInfo> users, EMWantSingType wantSingType,
+      List<MCHOInnerRoundInfo> CHORoundInfos, List<MSPKInnerRoundInfo> SPKRoundInfos,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
-    this.subRoundSeq = subRoundSeq;
     this.introBeginMs = introBeginMs;
     this.introEndMs = introEndMs;
     this.singBeginMs = singBeginMs;
@@ -207,7 +184,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     this.status = status;
     this.overReason = overReason;
     this.music = music;
-    this.bLightInfos = Internal.immutableCopyOf("bLightInfos", bLightInfos);
     this.users = Internal.immutableCopyOf("users", users);
     this.wantSingType = wantSingType;
     this.CHORoundInfos = Internal.immutableCopyOf("CHORoundInfos", CHORoundInfos);
@@ -219,7 +195,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     Builder builder = new Builder();
     builder.userID = userID;
     builder.roundSeq = roundSeq;
-    builder.subRoundSeq = subRoundSeq;
     builder.introBeginMs = introBeginMs;
     builder.introEndMs = introEndMs;
     builder.singBeginMs = singBeginMs;
@@ -227,7 +202,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     builder.status = status;
     builder.overReason = overReason;
     builder.music = music;
-    builder.bLightInfos = Internal.copyOf("bLightInfos", bLightInfos);
     builder.users = Internal.copyOf("users", users);
     builder.wantSingType = wantSingType;
     builder.CHORoundInfos = Internal.copyOf("CHORoundInfos", CHORoundInfos);
@@ -244,7 +218,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(roundSeq, o.roundSeq)
-        && Internal.equals(subRoundSeq, o.subRoundSeq)
         && Internal.equals(introBeginMs, o.introBeginMs)
         && Internal.equals(introEndMs, o.introEndMs)
         && Internal.equals(singBeginMs, o.singBeginMs)
@@ -252,7 +225,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
         && Internal.equals(status, o.status)
         && Internal.equals(overReason, o.overReason)
         && Internal.equals(music, o.music)
-        && bLightInfos.equals(o.bLightInfos)
         && users.equals(o.users)
         && Internal.equals(wantSingType, o.wantSingType)
         && CHORoundInfos.equals(o.CHORoundInfos)
@@ -266,7 +238,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
-      result = result * 37 + (subRoundSeq != null ? subRoundSeq.hashCode() : 0);
       result = result * 37 + (introBeginMs != null ? introBeginMs.hashCode() : 0);
       result = result * 37 + (introEndMs != null ? introEndMs.hashCode() : 0);
       result = result * 37 + (singBeginMs != null ? singBeginMs.hashCode() : 0);
@@ -274,7 +245,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       result = result * 37 + (status != null ? status.hashCode() : 0);
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + (music != null ? music.hashCode() : 0);
-      result = result * 37 + bLightInfos.hashCode();
       result = result * 37 + users.hashCode();
       result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       result = result * 37 + CHORoundInfos.hashCode();
@@ -289,7 +259,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
-    if (subRoundSeq != null) builder.append(", subRoundSeq=").append(subRoundSeq);
     if (introBeginMs != null) builder.append(", introBeginMs=").append(introBeginMs);
     if (introEndMs != null) builder.append(", introEndMs=").append(introEndMs);
     if (singBeginMs != null) builder.append(", singBeginMs=").append(singBeginMs);
@@ -297,7 +266,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     if (status != null) builder.append(", status=").append(status);
     if (overReason != null) builder.append(", overReason=").append(overReason);
     if (music != null) builder.append(", music=").append(music);
-    if (!bLightInfos.isEmpty()) builder.append(", bLightInfos=").append(bLightInfos);
     if (!users.isEmpty()) builder.append(", users=").append(users);
     if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     if (!CHORoundInfos.isEmpty()) builder.append(", CHORoundInfos=").append(CHORoundInfos);
@@ -333,16 +301,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
         return DEFAULT_ROUNDSEQ;
     }
     return roundSeq;
-  }
-
-  /**
-   * 子轮次
-   */
-  public Integer getSubRoundSeq() {
-    if(subRoundSeq==null){
-        return DEFAULT_SUBROUNDSEQ;
-    }
-    return subRoundSeq;
   }
 
   /**
@@ -416,16 +374,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
   }
 
   /**
-   * 爆灯[投票]列表
-   */
-  public List<MBLightMsg> getBLightInfosList() {
-    if(bLightInfos==null){
-        return new java.util.ArrayList<MBLightMsg>();
-    }
-    return bLightInfos;
-  }
-
-  /**
    * 用户列表
    */
   public List<MOnlineInfo> getUsersList() {
@@ -480,13 +428,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
   }
 
   /**
-   * 子轮次
-   */
-  public boolean hasSubRoundSeq() {
-    return subRoundSeq!=null;
-  }
-
-  /**
    * 导唱开始相对时间（相对于startTimeMs时间） p.s.导唱为等待阶段
    */
   public boolean hasIntroBeginMs() {
@@ -536,13 +477,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
   }
 
   /**
-   * 爆灯[投票]列表
-   */
-  public boolean hasBLightInfosList() {
-    return bLightInfos!=null;
-  }
-
-  /**
    * 用户列表
    */
   public boolean hasUsersList() {
@@ -575,8 +509,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
 
     private Integer roundSeq;
 
-    private Integer subRoundSeq;
-
     private Integer introBeginMs;
 
     private Integer introEndMs;
@@ -591,8 +523,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
 
     private MusicInfo music;
 
-    private List<MBLightMsg> bLightInfos;
-
     private List<MOnlineInfo> users;
 
     private EMWantSingType wantSingType;
@@ -602,7 +532,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     private List<MSPKInnerRoundInfo> SPKRoundInfos;
 
     public Builder() {
-      bLightInfos = Internal.newMutableList();
       users = Internal.newMutableList();
       CHORoundInfos = Internal.newMutableList();
       SPKRoundInfos = Internal.newMutableList();
@@ -621,14 +550,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
      */
     public Builder setRoundSeq(Integer roundSeq) {
       this.roundSeq = roundSeq;
-      return this;
-    }
-
-    /**
-     * 子轮次
-     */
-    public Builder setSubRoundSeq(Integer subRoundSeq) {
-      this.subRoundSeq = subRoundSeq;
       return this;
     }
 
@@ -689,15 +610,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     }
 
     /**
-     * 爆灯[投票]列表
-     */
-    public Builder addAllBLightInfos(List<MBLightMsg> bLightInfos) {
-      Internal.checkElementsNotNull(bLightInfos);
-      this.bLightInfos = bLightInfos;
-      return this;
-    }
-
-    /**
      * 用户列表
      */
     public Builder addAllUsers(List<MOnlineInfo> users) {
@@ -734,7 +646,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
 
     @Override
     public MRoundInfo build() {
-      return new MRoundInfo(userID, roundSeq, subRoundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, bLightInfos, users, wantSingType, CHORoundInfos, SPKRoundInfos, super.buildUnknownFields());
+      return new MRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, super.buildUnknownFields());
     }
   }
 
@@ -747,7 +659,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     public int encodedSize(MRoundInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.subRoundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.introBeginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.introEndMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.singBeginMs)
@@ -755,11 +666,10 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
           + EMRoundStatus.ADAPTER.encodedSizeWithTag(8, value.status)
           + EMRoundOverReason.ADAPTER.encodedSizeWithTag(9, value.overReason)
           + MusicInfo.ADAPTER.encodedSizeWithTag(10, value.music)
-          + MBLightMsg.ADAPTER.asRepeated().encodedSizeWithTag(11, value.bLightInfos)
-          + MOnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(12, value.users)
-          + EMWantSingType.ADAPTER.encodedSizeWithTag(13, value.wantSingType)
-          + MCHOInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(14, value.CHORoundInfos)
-          + MSPKInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(15, value.SPKRoundInfos)
+          + MOnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(11, value.users)
+          + EMWantSingType.ADAPTER.encodedSizeWithTag(12, value.wantSingType)
+          + MCHOInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(13, value.CHORoundInfos)
+          + MSPKInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(14, value.SPKRoundInfos)
           + value.unknownFields().size();
     }
 
@@ -767,7 +677,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     public void encode(ProtoWriter writer, MRoundInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.subRoundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.introBeginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.introEndMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.singBeginMs);
@@ -775,11 +684,10 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       EMRoundStatus.ADAPTER.encodeWithTag(writer, 8, value.status);
       EMRoundOverReason.ADAPTER.encodeWithTag(writer, 9, value.overReason);
       MusicInfo.ADAPTER.encodeWithTag(writer, 10, value.music);
-      MBLightMsg.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.bLightInfos);
-      MOnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 12, value.users);
-      EMWantSingType.ADAPTER.encodeWithTag(writer, 13, value.wantSingType);
-      MCHOInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.CHORoundInfos);
-      MSPKInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 15, value.SPKRoundInfos);
+      MOnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.users);
+      EMWantSingType.ADAPTER.encodeWithTag(writer, 12, value.wantSingType);
+      MCHOInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.CHORoundInfos);
+      MSPKInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.SPKRoundInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -791,7 +699,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setSubRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 6: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
@@ -813,9 +720,8 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
             break;
           }
           case 10: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
-          case 11: builder.bLightInfos.add(MBLightMsg.ADAPTER.decode(reader)); break;
-          case 12: builder.users.add(MOnlineInfo.ADAPTER.decode(reader)); break;
-          case 13: {
+          case 11: builder.users.add(MOnlineInfo.ADAPTER.decode(reader)); break;
+          case 12: {
             try {
               builder.setWantSingType(EMWantSingType.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -823,8 +729,8 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
             }
             break;
           }
-          case 14: builder.CHORoundInfos.add(MCHOInnerRoundInfo.ADAPTER.decode(reader)); break;
-          case 15: builder.SPKRoundInfos.add(MSPKInnerRoundInfo.ADAPTER.decode(reader)); break;
+          case 13: builder.CHORoundInfos.add(MCHOInnerRoundInfo.ADAPTER.decode(reader)); break;
+          case 14: builder.SPKRoundInfos.add(MSPKInnerRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -840,7 +746,6 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     public MRoundInfo redact(MRoundInfo value) {
       Builder builder = value.newBuilder();
       if (builder.music != null) builder.music = MusicInfo.ADAPTER.redact(builder.music);
-      Internal.redactElements(builder.bLightInfos, MBLightMsg.ADAPTER);
       Internal.redactElements(builder.users, MOnlineInfo.ADAPTER);
       Internal.redactElements(builder.CHORoundInfos, MCHOInnerRoundInfo.ADAPTER);
       Internal.redactElements(builder.SPKRoundInfos, MSPKInnerRoundInfo.ADAPTER);

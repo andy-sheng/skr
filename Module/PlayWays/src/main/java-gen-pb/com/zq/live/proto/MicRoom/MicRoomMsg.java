@@ -89,28 +89,10 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   private final MExitGameMsg mExitGameMsg;
 
   /**
-   * 爆灯[投票]通知
-   */
-  @WireField(
-      tag = 103,
-      adapter = "com.zq.live.proto.MicRoom.MBLightMsg#ADAPTER"
-  )
-  private final MBLightMsg mBLightMsg;
-
-  /**
-   * 获得演唱
-   */
-  @WireField(
-      tag = 104,
-      adapter = "com.zq.live.proto.MicRoom.MGetSingChanceMsg#ADAPTER"
-  )
-  private final MGetSingChanceMsg mGetSingChanceMsg;
-
-  /**
    * 同步状态
    */
   @WireField(
-      tag = 105,
+      tag = 103,
       adapter = "com.zq.live.proto.MicRoom.MSyncStatusMsg#ADAPTER"
   )
   private final MSyncStatusMsg syncStatusMsg;
@@ -119,7 +101,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 轮次结束
    */
   @WireField(
-      tag = 106,
+      tag = 104,
       adapter = "com.zq.live.proto.MicRoom.MRoundOverMsg#ADAPTER"
   )
   private final MRoundOverMsg mRoundOverMsg;
@@ -128,7 +110,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 点歌
    */
   @WireField(
-      tag = 107,
+      tag = 105,
       adapter = "com.zq.live.proto.MicRoom.MAddMusicMsg#ADAPTER"
   )
   private final MAddMusicMsg mAddMusicMsg;
@@ -137,7 +119,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 删歌
    */
   @WireField(
-      tag = 108,
+      tag = 106,
       adapter = "com.zq.live.proto.MicRoom.MDelMusicMsg#ADAPTER"
   )
   private final MDelMusicMsg mDelMusicMsg;
@@ -146,25 +128,52 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 置顶歌曲
    */
   @WireField(
-      tag = 109,
+      tag = 107,
       adapter = "com.zq.live.proto.MicRoom.MUpMusicMsg#ADAPTER"
   )
   private final MUpMusicMsg mUpMusicMsg;
 
   /**
+   * 取消歌曲：合唱/PK伙伴已退出
+   */
+  @WireField(
+      tag = 108,
+      adapter = "com.zq.live.proto.MicRoom.MCancelMusic#ADAPTER"
+  )
+  private final MCancelMusic mCancelMusic;
+
+  /**
    * 请求合唱/PK
    */
   @WireField(
-      tag = 110,
+      tag = 109,
       adapter = "com.zq.live.proto.MicRoom.MReqAddMusicMsg#ADAPTER"
   )
   private final MReqAddMusicMsg mReqAddMusicMsg;
 
   /**
-   * 修改房间名字
+   * 合唱模式放弃演唱
+   */
+  @WireField(
+      tag = 110,
+      adapter = "com.zq.live.proto.MicRoom.MCHOGiveUpMsg#ADAPTER"
+  )
+  private final MCHOGiveUpMsg mCHOGiveUpMsg;
+
+  /**
+   * spk模式内部轮次结束
    */
   @WireField(
       tag = 111,
+      adapter = "com.zq.live.proto.MicRoom.MSPKInnerRoundOverMsg#ADAPTER"
+  )
+  private final MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg;
+
+  /**
+   * 修改房间名字
+   */
+  @WireField(
+      tag = 112,
       adapter = "com.zq.live.proto.MicRoom.MChangeRoomNameMsg#ADAPTER"
   )
   private final MChangeRoomNameMsg mChangeRoomNameMsg;
@@ -173,7 +182,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 修改房间等级限制
    */
   @WireField(
-      tag = 112,
+      tag = 113,
       adapter = "com.zq.live.proto.MicRoom.MChangeRoomLevelLimitMsg#ADAPTER"
   )
   private final MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg;
@@ -182,7 +191,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 踢人
    */
   @WireField(
-      tag = 113,
+      tag = 114,
       adapter = "com.zq.live.proto.MicRoom.MKickoutUserMsg#ADAPTER"
   )
   private final MKickoutUserMsg mKickoutUserMsg;
@@ -191,41 +200,40 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
    * 修改房主
    */
   @WireField(
-      tag = 114,
+      tag = 115,
       adapter = "com.zq.live.proto.MicRoom.MChangeRoomOwnerMsg#ADAPTER"
   )
   private final MChangeRoomOwnerMsg mChangeRoomOwnerMsg;
 
   /**
-   * MClosePositionMsg mClosePositionMsg               = 115; //关闭房间位置
-   * MOpenPositionMsg mOpenPositionMsg                 = 116; //打开房间位置
    * 房间匹配开关
    */
   @WireField(
-      tag = 117,
+      tag = 116,
       adapter = "com.zq.live.proto.MicRoom.MMatchStatusMsg#ADAPTER"
   )
   private final MMatchStatusMsg mMatchStatusMsg;
 
   public MicRoomMsg(Long timeMs, EMicRoomMsgType msgType, Integer roomID,
       MJoinActionMsg mJoinActionMsg, MJoinNoticeMsg mJoinNoticeMsg, MExitGameMsg mExitGameMsg,
-      MBLightMsg mBLightMsg, MGetSingChanceMsg mGetSingChanceMsg, MSyncStatusMsg syncStatusMsg,
-      MRoundOverMsg mRoundOverMsg, MAddMusicMsg mAddMusicMsg, MDelMusicMsg mDelMusicMsg,
-      MUpMusicMsg mUpMusicMsg, MReqAddMusicMsg mReqAddMusicMsg,
-      MChangeRoomNameMsg mChangeRoomNameMsg, MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg,
-      MKickoutUserMsg mKickoutUserMsg, MChangeRoomOwnerMsg mChangeRoomOwnerMsg,
-      MMatchStatusMsg mMatchStatusMsg) {
-    this(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, mBLightMsg, mGetSingChanceMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mReqAddMusicMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, ByteString.EMPTY);
+      MSyncStatusMsg syncStatusMsg, MRoundOverMsg mRoundOverMsg, MAddMusicMsg mAddMusicMsg,
+      MDelMusicMsg mDelMusicMsg, MUpMusicMsg mUpMusicMsg, MCancelMusic mCancelMusic,
+      MReqAddMusicMsg mReqAddMusicMsg, MCHOGiveUpMsg mCHOGiveUpMsg,
+      MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg, MChangeRoomNameMsg mChangeRoomNameMsg,
+      MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg, MKickoutUserMsg mKickoutUserMsg,
+      MChangeRoomOwnerMsg mChangeRoomOwnerMsg, MMatchStatusMsg mMatchStatusMsg) {
+    this(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mCancelMusic, mReqAddMusicMsg, mCHOGiveUpMsg, mSPKInnerRoundOverMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, ByteString.EMPTY);
   }
 
   public MicRoomMsg(Long timeMs, EMicRoomMsgType msgType, Integer roomID,
       MJoinActionMsg mJoinActionMsg, MJoinNoticeMsg mJoinNoticeMsg, MExitGameMsg mExitGameMsg,
-      MBLightMsg mBLightMsg, MGetSingChanceMsg mGetSingChanceMsg, MSyncStatusMsg syncStatusMsg,
-      MRoundOverMsg mRoundOverMsg, MAddMusicMsg mAddMusicMsg, MDelMusicMsg mDelMusicMsg,
-      MUpMusicMsg mUpMusicMsg, MReqAddMusicMsg mReqAddMusicMsg,
-      MChangeRoomNameMsg mChangeRoomNameMsg, MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg,
-      MKickoutUserMsg mKickoutUserMsg, MChangeRoomOwnerMsg mChangeRoomOwnerMsg,
-      MMatchStatusMsg mMatchStatusMsg, ByteString unknownFields) {
+      MSyncStatusMsg syncStatusMsg, MRoundOverMsg mRoundOverMsg, MAddMusicMsg mAddMusicMsg,
+      MDelMusicMsg mDelMusicMsg, MUpMusicMsg mUpMusicMsg, MCancelMusic mCancelMusic,
+      MReqAddMusicMsg mReqAddMusicMsg, MCHOGiveUpMsg mCHOGiveUpMsg,
+      MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg, MChangeRoomNameMsg mChangeRoomNameMsg,
+      MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg, MKickoutUserMsg mKickoutUserMsg,
+      MChangeRoomOwnerMsg mChangeRoomOwnerMsg, MMatchStatusMsg mMatchStatusMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -233,14 +241,15 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     this.mJoinActionMsg = mJoinActionMsg;
     this.mJoinNoticeMsg = mJoinNoticeMsg;
     this.mExitGameMsg = mExitGameMsg;
-    this.mBLightMsg = mBLightMsg;
-    this.mGetSingChanceMsg = mGetSingChanceMsg;
     this.syncStatusMsg = syncStatusMsg;
     this.mRoundOverMsg = mRoundOverMsg;
     this.mAddMusicMsg = mAddMusicMsg;
     this.mDelMusicMsg = mDelMusicMsg;
     this.mUpMusicMsg = mUpMusicMsg;
+    this.mCancelMusic = mCancelMusic;
     this.mReqAddMusicMsg = mReqAddMusicMsg;
+    this.mCHOGiveUpMsg = mCHOGiveUpMsg;
+    this.mSPKInnerRoundOverMsg = mSPKInnerRoundOverMsg;
     this.mChangeRoomNameMsg = mChangeRoomNameMsg;
     this.mChangeRoomLevelLimitMsg = mChangeRoomLevelLimitMsg;
     this.mKickoutUserMsg = mKickoutUserMsg;
@@ -257,14 +266,15 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     builder.mJoinActionMsg = mJoinActionMsg;
     builder.mJoinNoticeMsg = mJoinNoticeMsg;
     builder.mExitGameMsg = mExitGameMsg;
-    builder.mBLightMsg = mBLightMsg;
-    builder.mGetSingChanceMsg = mGetSingChanceMsg;
     builder.syncStatusMsg = syncStatusMsg;
     builder.mRoundOverMsg = mRoundOverMsg;
     builder.mAddMusicMsg = mAddMusicMsg;
     builder.mDelMusicMsg = mDelMusicMsg;
     builder.mUpMusicMsg = mUpMusicMsg;
+    builder.mCancelMusic = mCancelMusic;
     builder.mReqAddMusicMsg = mReqAddMusicMsg;
+    builder.mCHOGiveUpMsg = mCHOGiveUpMsg;
+    builder.mSPKInnerRoundOverMsg = mSPKInnerRoundOverMsg;
     builder.mChangeRoomNameMsg = mChangeRoomNameMsg;
     builder.mChangeRoomLevelLimitMsg = mChangeRoomLevelLimitMsg;
     builder.mKickoutUserMsg = mKickoutUserMsg;
@@ -286,14 +296,15 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
         && Internal.equals(mJoinActionMsg, o.mJoinActionMsg)
         && Internal.equals(mJoinNoticeMsg, o.mJoinNoticeMsg)
         && Internal.equals(mExitGameMsg, o.mExitGameMsg)
-        && Internal.equals(mBLightMsg, o.mBLightMsg)
-        && Internal.equals(mGetSingChanceMsg, o.mGetSingChanceMsg)
         && Internal.equals(syncStatusMsg, o.syncStatusMsg)
         && Internal.equals(mRoundOverMsg, o.mRoundOverMsg)
         && Internal.equals(mAddMusicMsg, o.mAddMusicMsg)
         && Internal.equals(mDelMusicMsg, o.mDelMusicMsg)
         && Internal.equals(mUpMusicMsg, o.mUpMusicMsg)
+        && Internal.equals(mCancelMusic, o.mCancelMusic)
         && Internal.equals(mReqAddMusicMsg, o.mReqAddMusicMsg)
+        && Internal.equals(mCHOGiveUpMsg, o.mCHOGiveUpMsg)
+        && Internal.equals(mSPKInnerRoundOverMsg, o.mSPKInnerRoundOverMsg)
         && Internal.equals(mChangeRoomNameMsg, o.mChangeRoomNameMsg)
         && Internal.equals(mChangeRoomLevelLimitMsg, o.mChangeRoomLevelLimitMsg)
         && Internal.equals(mKickoutUserMsg, o.mKickoutUserMsg)
@@ -312,14 +323,15 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       result = result * 37 + (mJoinActionMsg != null ? mJoinActionMsg.hashCode() : 0);
       result = result * 37 + (mJoinNoticeMsg != null ? mJoinNoticeMsg.hashCode() : 0);
       result = result * 37 + (mExitGameMsg != null ? mExitGameMsg.hashCode() : 0);
-      result = result * 37 + (mBLightMsg != null ? mBLightMsg.hashCode() : 0);
-      result = result * 37 + (mGetSingChanceMsg != null ? mGetSingChanceMsg.hashCode() : 0);
       result = result * 37 + (syncStatusMsg != null ? syncStatusMsg.hashCode() : 0);
       result = result * 37 + (mRoundOverMsg != null ? mRoundOverMsg.hashCode() : 0);
       result = result * 37 + (mAddMusicMsg != null ? mAddMusicMsg.hashCode() : 0);
       result = result * 37 + (mDelMusicMsg != null ? mDelMusicMsg.hashCode() : 0);
       result = result * 37 + (mUpMusicMsg != null ? mUpMusicMsg.hashCode() : 0);
+      result = result * 37 + (mCancelMusic != null ? mCancelMusic.hashCode() : 0);
       result = result * 37 + (mReqAddMusicMsg != null ? mReqAddMusicMsg.hashCode() : 0);
+      result = result * 37 + (mCHOGiveUpMsg != null ? mCHOGiveUpMsg.hashCode() : 0);
+      result = result * 37 + (mSPKInnerRoundOverMsg != null ? mSPKInnerRoundOverMsg.hashCode() : 0);
       result = result * 37 + (mChangeRoomNameMsg != null ? mChangeRoomNameMsg.hashCode() : 0);
       result = result * 37 + (mChangeRoomLevelLimitMsg != null ? mChangeRoomLevelLimitMsg.hashCode() : 0);
       result = result * 37 + (mKickoutUserMsg != null ? mKickoutUserMsg.hashCode() : 0);
@@ -339,14 +351,15 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     if (mJoinActionMsg != null) builder.append(", mJoinActionMsg=").append(mJoinActionMsg);
     if (mJoinNoticeMsg != null) builder.append(", mJoinNoticeMsg=").append(mJoinNoticeMsg);
     if (mExitGameMsg != null) builder.append(", mExitGameMsg=").append(mExitGameMsg);
-    if (mBLightMsg != null) builder.append(", mBLightMsg=").append(mBLightMsg);
-    if (mGetSingChanceMsg != null) builder.append(", mGetSingChanceMsg=").append(mGetSingChanceMsg);
     if (syncStatusMsg != null) builder.append(", syncStatusMsg=").append(syncStatusMsg);
     if (mRoundOverMsg != null) builder.append(", mRoundOverMsg=").append(mRoundOverMsg);
     if (mAddMusicMsg != null) builder.append(", mAddMusicMsg=").append(mAddMusicMsg);
     if (mDelMusicMsg != null) builder.append(", mDelMusicMsg=").append(mDelMusicMsg);
     if (mUpMusicMsg != null) builder.append(", mUpMusicMsg=").append(mUpMusicMsg);
+    if (mCancelMusic != null) builder.append(", mCancelMusic=").append(mCancelMusic);
     if (mReqAddMusicMsg != null) builder.append(", mReqAddMusicMsg=").append(mReqAddMusicMsg);
+    if (mCHOGiveUpMsg != null) builder.append(", mCHOGiveUpMsg=").append(mCHOGiveUpMsg);
+    if (mSPKInnerRoundOverMsg != null) builder.append(", mSPKInnerRoundOverMsg=").append(mSPKInnerRoundOverMsg);
     if (mChangeRoomNameMsg != null) builder.append(", mChangeRoomNameMsg=").append(mChangeRoomNameMsg);
     if (mChangeRoomLevelLimitMsg != null) builder.append(", mChangeRoomLevelLimitMsg=").append(mChangeRoomLevelLimitMsg);
     if (mKickoutUserMsg != null) builder.append(", mKickoutUserMsg=").append(mKickoutUserMsg);
@@ -426,26 +439,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
-   * 爆灯[投票]通知
-   */
-  public MBLightMsg getMBLightMsg() {
-    if(mBLightMsg==null){
-        return new MBLightMsg.Builder().build();
-    }
-    return mBLightMsg;
-  }
-
-  /**
-   * 获得演唱
-   */
-  public MGetSingChanceMsg getMGetSingChanceMsg() {
-    if(mGetSingChanceMsg==null){
-        return new MGetSingChanceMsg.Builder().build();
-    }
-    return mGetSingChanceMsg;
-  }
-
-  /**
    * 同步状态
    */
   public MSyncStatusMsg getSyncStatusMsg() {
@@ -496,6 +489,16 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
+   * 取消歌曲：合唱/PK伙伴已退出
+   */
+  public MCancelMusic getMCancelMusic() {
+    if(mCancelMusic==null){
+        return new MCancelMusic.Builder().build();
+    }
+    return mCancelMusic;
+  }
+
+  /**
    * 请求合唱/PK
    */
   public MReqAddMusicMsg getMReqAddMusicMsg() {
@@ -503,6 +506,26 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
         return new MReqAddMusicMsg.Builder().build();
     }
     return mReqAddMusicMsg;
+  }
+
+  /**
+   * 合唱模式放弃演唱
+   */
+  public MCHOGiveUpMsg getMCHOGiveUpMsg() {
+    if(mCHOGiveUpMsg==null){
+        return new MCHOGiveUpMsg.Builder().build();
+    }
+    return mCHOGiveUpMsg;
+  }
+
+  /**
+   * spk模式内部轮次结束
+   */
+  public MSPKInnerRoundOverMsg getMSPKInnerRoundOverMsg() {
+    if(mSPKInnerRoundOverMsg==null){
+        return new MSPKInnerRoundOverMsg.Builder().build();
+    }
+    return mSPKInnerRoundOverMsg;
   }
 
   /**
@@ -546,8 +569,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
-   * MClosePositionMsg mClosePositionMsg               = 115; //关闭房间位置
-   * MOpenPositionMsg mOpenPositionMsg                 = 116; //打开房间位置
    * 房间匹配开关
    */
   public MMatchStatusMsg getMMatchStatusMsg() {
@@ -600,20 +621,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
-   * 爆灯[投票]通知
-   */
-  public boolean hasMBLightMsg() {
-    return mBLightMsg!=null;
-  }
-
-  /**
-   * 获得演唱
-   */
-  public boolean hasMGetSingChanceMsg() {
-    return mGetSingChanceMsg!=null;
-  }
-
-  /**
    * 同步状态
    */
   public boolean hasSyncStatusMsg() {
@@ -649,10 +656,31 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
+   * 取消歌曲：合唱/PK伙伴已退出
+   */
+  public boolean hasMCancelMusic() {
+    return mCancelMusic!=null;
+  }
+
+  /**
    * 请求合唱/PK
    */
   public boolean hasMReqAddMusicMsg() {
     return mReqAddMusicMsg!=null;
+  }
+
+  /**
+   * 合唱模式放弃演唱
+   */
+  public boolean hasMCHOGiveUpMsg() {
+    return mCHOGiveUpMsg!=null;
+  }
+
+  /**
+   * spk模式内部轮次结束
+   */
+  public boolean hasMSPKInnerRoundOverMsg() {
+    return mSPKInnerRoundOverMsg!=null;
   }
 
   /**
@@ -684,8 +712,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
-   * MClosePositionMsg mClosePositionMsg               = 115; //关闭房间位置
-   * MOpenPositionMsg mOpenPositionMsg                 = 116; //打开房间位置
    * 房间匹配开关
    */
   public boolean hasMMatchStatusMsg() {
@@ -705,10 +731,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
 
     private MExitGameMsg mExitGameMsg;
 
-    private MBLightMsg mBLightMsg;
-
-    private MGetSingChanceMsg mGetSingChanceMsg;
-
     private MSyncStatusMsg syncStatusMsg;
 
     private MRoundOverMsg mRoundOverMsg;
@@ -719,7 +741,13 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
 
     private MUpMusicMsg mUpMusicMsg;
 
+    private MCancelMusic mCancelMusic;
+
     private MReqAddMusicMsg mReqAddMusicMsg;
+
+    private MCHOGiveUpMsg mCHOGiveUpMsg;
+
+    private MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg;
 
     private MChangeRoomNameMsg mChangeRoomNameMsg;
 
@@ -783,22 +811,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     }
 
     /**
-     * 爆灯[投票]通知
-     */
-    public Builder setMBLightMsg(MBLightMsg mBLightMsg) {
-      this.mBLightMsg = mBLightMsg;
-      return this;
-    }
-
-    /**
-     * 获得演唱
-     */
-    public Builder setMGetSingChanceMsg(MGetSingChanceMsg mGetSingChanceMsg) {
-      this.mGetSingChanceMsg = mGetSingChanceMsg;
-      return this;
-    }
-
-    /**
      * 同步状态
      */
     public Builder setSyncStatusMsg(MSyncStatusMsg syncStatusMsg) {
@@ -839,10 +851,34 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     }
 
     /**
+     * 取消歌曲：合唱/PK伙伴已退出
+     */
+    public Builder setMCancelMusic(MCancelMusic mCancelMusic) {
+      this.mCancelMusic = mCancelMusic;
+      return this;
+    }
+
+    /**
      * 请求合唱/PK
      */
     public Builder setMReqAddMusicMsg(MReqAddMusicMsg mReqAddMusicMsg) {
       this.mReqAddMusicMsg = mReqAddMusicMsg;
+      return this;
+    }
+
+    /**
+     * 合唱模式放弃演唱
+     */
+    public Builder setMCHOGiveUpMsg(MCHOGiveUpMsg mCHOGiveUpMsg) {
+      this.mCHOGiveUpMsg = mCHOGiveUpMsg;
+      return this;
+    }
+
+    /**
+     * spk模式内部轮次结束
+     */
+    public Builder setMSPKInnerRoundOverMsg(MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg) {
+      this.mSPKInnerRoundOverMsg = mSPKInnerRoundOverMsg;
       return this;
     }
 
@@ -879,8 +915,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     }
 
     /**
-     * MClosePositionMsg mClosePositionMsg               = 115; //关闭房间位置
-     * MOpenPositionMsg mOpenPositionMsg                 = 116; //打开房间位置
      * 房间匹配开关
      */
     public Builder setMMatchStatusMsg(MMatchStatusMsg mMatchStatusMsg) {
@@ -890,7 +924,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
 
     @Override
     public MicRoomMsg build() {
-      return new MicRoomMsg(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, mBLightMsg, mGetSingChanceMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mReqAddMusicMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, super.buildUnknownFields());
+      return new MicRoomMsg(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mCancelMusic, mReqAddMusicMsg, mCHOGiveUpMsg, mSPKInnerRoundOverMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, super.buildUnknownFields());
     }
   }
 
@@ -907,19 +941,20 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
           + MJoinActionMsg.ADAPTER.encodedSizeWithTag(100, value.mJoinActionMsg)
           + MJoinNoticeMsg.ADAPTER.encodedSizeWithTag(101, value.mJoinNoticeMsg)
           + MExitGameMsg.ADAPTER.encodedSizeWithTag(102, value.mExitGameMsg)
-          + MBLightMsg.ADAPTER.encodedSizeWithTag(103, value.mBLightMsg)
-          + MGetSingChanceMsg.ADAPTER.encodedSizeWithTag(104, value.mGetSingChanceMsg)
-          + MSyncStatusMsg.ADAPTER.encodedSizeWithTag(105, value.syncStatusMsg)
-          + MRoundOverMsg.ADAPTER.encodedSizeWithTag(106, value.mRoundOverMsg)
-          + MAddMusicMsg.ADAPTER.encodedSizeWithTag(107, value.mAddMusicMsg)
-          + MDelMusicMsg.ADAPTER.encodedSizeWithTag(108, value.mDelMusicMsg)
-          + MUpMusicMsg.ADAPTER.encodedSizeWithTag(109, value.mUpMusicMsg)
-          + MReqAddMusicMsg.ADAPTER.encodedSizeWithTag(110, value.mReqAddMusicMsg)
-          + MChangeRoomNameMsg.ADAPTER.encodedSizeWithTag(111, value.mChangeRoomNameMsg)
-          + MChangeRoomLevelLimitMsg.ADAPTER.encodedSizeWithTag(112, value.mChangeRoomLevelLimitMsg)
-          + MKickoutUserMsg.ADAPTER.encodedSizeWithTag(113, value.mKickoutUserMsg)
-          + MChangeRoomOwnerMsg.ADAPTER.encodedSizeWithTag(114, value.mChangeRoomOwnerMsg)
-          + MMatchStatusMsg.ADAPTER.encodedSizeWithTag(117, value.mMatchStatusMsg)
+          + MSyncStatusMsg.ADAPTER.encodedSizeWithTag(103, value.syncStatusMsg)
+          + MRoundOverMsg.ADAPTER.encodedSizeWithTag(104, value.mRoundOverMsg)
+          + MAddMusicMsg.ADAPTER.encodedSizeWithTag(105, value.mAddMusicMsg)
+          + MDelMusicMsg.ADAPTER.encodedSizeWithTag(106, value.mDelMusicMsg)
+          + MUpMusicMsg.ADAPTER.encodedSizeWithTag(107, value.mUpMusicMsg)
+          + MCancelMusic.ADAPTER.encodedSizeWithTag(108, value.mCancelMusic)
+          + MReqAddMusicMsg.ADAPTER.encodedSizeWithTag(109, value.mReqAddMusicMsg)
+          + MCHOGiveUpMsg.ADAPTER.encodedSizeWithTag(110, value.mCHOGiveUpMsg)
+          + MSPKInnerRoundOverMsg.ADAPTER.encodedSizeWithTag(111, value.mSPKInnerRoundOverMsg)
+          + MChangeRoomNameMsg.ADAPTER.encodedSizeWithTag(112, value.mChangeRoomNameMsg)
+          + MChangeRoomLevelLimitMsg.ADAPTER.encodedSizeWithTag(113, value.mChangeRoomLevelLimitMsg)
+          + MKickoutUserMsg.ADAPTER.encodedSizeWithTag(114, value.mKickoutUserMsg)
+          + MChangeRoomOwnerMsg.ADAPTER.encodedSizeWithTag(115, value.mChangeRoomOwnerMsg)
+          + MMatchStatusMsg.ADAPTER.encodedSizeWithTag(116, value.mMatchStatusMsg)
           + value.unknownFields().size();
     }
 
@@ -931,19 +966,20 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       MJoinActionMsg.ADAPTER.encodeWithTag(writer, 100, value.mJoinActionMsg);
       MJoinNoticeMsg.ADAPTER.encodeWithTag(writer, 101, value.mJoinNoticeMsg);
       MExitGameMsg.ADAPTER.encodeWithTag(writer, 102, value.mExitGameMsg);
-      MBLightMsg.ADAPTER.encodeWithTag(writer, 103, value.mBLightMsg);
-      MGetSingChanceMsg.ADAPTER.encodeWithTag(writer, 104, value.mGetSingChanceMsg);
-      MSyncStatusMsg.ADAPTER.encodeWithTag(writer, 105, value.syncStatusMsg);
-      MRoundOverMsg.ADAPTER.encodeWithTag(writer, 106, value.mRoundOverMsg);
-      MAddMusicMsg.ADAPTER.encodeWithTag(writer, 107, value.mAddMusicMsg);
-      MDelMusicMsg.ADAPTER.encodeWithTag(writer, 108, value.mDelMusicMsg);
-      MUpMusicMsg.ADAPTER.encodeWithTag(writer, 109, value.mUpMusicMsg);
-      MReqAddMusicMsg.ADAPTER.encodeWithTag(writer, 110, value.mReqAddMusicMsg);
-      MChangeRoomNameMsg.ADAPTER.encodeWithTag(writer, 111, value.mChangeRoomNameMsg);
-      MChangeRoomLevelLimitMsg.ADAPTER.encodeWithTag(writer, 112, value.mChangeRoomLevelLimitMsg);
-      MKickoutUserMsg.ADAPTER.encodeWithTag(writer, 113, value.mKickoutUserMsg);
-      MChangeRoomOwnerMsg.ADAPTER.encodeWithTag(writer, 114, value.mChangeRoomOwnerMsg);
-      MMatchStatusMsg.ADAPTER.encodeWithTag(writer, 117, value.mMatchStatusMsg);
+      MSyncStatusMsg.ADAPTER.encodeWithTag(writer, 103, value.syncStatusMsg);
+      MRoundOverMsg.ADAPTER.encodeWithTag(writer, 104, value.mRoundOverMsg);
+      MAddMusicMsg.ADAPTER.encodeWithTag(writer, 105, value.mAddMusicMsg);
+      MDelMusicMsg.ADAPTER.encodeWithTag(writer, 106, value.mDelMusicMsg);
+      MUpMusicMsg.ADAPTER.encodeWithTag(writer, 107, value.mUpMusicMsg);
+      MCancelMusic.ADAPTER.encodeWithTag(writer, 108, value.mCancelMusic);
+      MReqAddMusicMsg.ADAPTER.encodeWithTag(writer, 109, value.mReqAddMusicMsg);
+      MCHOGiveUpMsg.ADAPTER.encodeWithTag(writer, 110, value.mCHOGiveUpMsg);
+      MSPKInnerRoundOverMsg.ADAPTER.encodeWithTag(writer, 111, value.mSPKInnerRoundOverMsg);
+      MChangeRoomNameMsg.ADAPTER.encodeWithTag(writer, 112, value.mChangeRoomNameMsg);
+      MChangeRoomLevelLimitMsg.ADAPTER.encodeWithTag(writer, 113, value.mChangeRoomLevelLimitMsg);
+      MKickoutUserMsg.ADAPTER.encodeWithTag(writer, 114, value.mKickoutUserMsg);
+      MChangeRoomOwnerMsg.ADAPTER.encodeWithTag(writer, 115, value.mChangeRoomOwnerMsg);
+      MMatchStatusMsg.ADAPTER.encodeWithTag(writer, 116, value.mMatchStatusMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -966,19 +1002,20 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
           case 100: builder.setMJoinActionMsg(MJoinActionMsg.ADAPTER.decode(reader)); break;
           case 101: builder.setMJoinNoticeMsg(MJoinNoticeMsg.ADAPTER.decode(reader)); break;
           case 102: builder.setMExitGameMsg(MExitGameMsg.ADAPTER.decode(reader)); break;
-          case 103: builder.setMBLightMsg(MBLightMsg.ADAPTER.decode(reader)); break;
-          case 104: builder.setMGetSingChanceMsg(MGetSingChanceMsg.ADAPTER.decode(reader)); break;
-          case 105: builder.setSyncStatusMsg(MSyncStatusMsg.ADAPTER.decode(reader)); break;
-          case 106: builder.setMRoundOverMsg(MRoundOverMsg.ADAPTER.decode(reader)); break;
-          case 107: builder.setMAddMusicMsg(MAddMusicMsg.ADAPTER.decode(reader)); break;
-          case 108: builder.setMDelMusicMsg(MDelMusicMsg.ADAPTER.decode(reader)); break;
-          case 109: builder.setMUpMusicMsg(MUpMusicMsg.ADAPTER.decode(reader)); break;
-          case 110: builder.setMReqAddMusicMsg(MReqAddMusicMsg.ADAPTER.decode(reader)); break;
-          case 111: builder.setMChangeRoomNameMsg(MChangeRoomNameMsg.ADAPTER.decode(reader)); break;
-          case 112: builder.setMChangeRoomLevelLimitMsg(MChangeRoomLevelLimitMsg.ADAPTER.decode(reader)); break;
-          case 113: builder.setMKickoutUserMsg(MKickoutUserMsg.ADAPTER.decode(reader)); break;
-          case 114: builder.setMChangeRoomOwnerMsg(MChangeRoomOwnerMsg.ADAPTER.decode(reader)); break;
-          case 117: builder.setMMatchStatusMsg(MMatchStatusMsg.ADAPTER.decode(reader)); break;
+          case 103: builder.setSyncStatusMsg(MSyncStatusMsg.ADAPTER.decode(reader)); break;
+          case 104: builder.setMRoundOverMsg(MRoundOverMsg.ADAPTER.decode(reader)); break;
+          case 105: builder.setMAddMusicMsg(MAddMusicMsg.ADAPTER.decode(reader)); break;
+          case 106: builder.setMDelMusicMsg(MDelMusicMsg.ADAPTER.decode(reader)); break;
+          case 107: builder.setMUpMusicMsg(MUpMusicMsg.ADAPTER.decode(reader)); break;
+          case 108: builder.setMCancelMusic(MCancelMusic.ADAPTER.decode(reader)); break;
+          case 109: builder.setMReqAddMusicMsg(MReqAddMusicMsg.ADAPTER.decode(reader)); break;
+          case 110: builder.setMCHOGiveUpMsg(MCHOGiveUpMsg.ADAPTER.decode(reader)); break;
+          case 111: builder.setMSPKInnerRoundOverMsg(MSPKInnerRoundOverMsg.ADAPTER.decode(reader)); break;
+          case 112: builder.setMChangeRoomNameMsg(MChangeRoomNameMsg.ADAPTER.decode(reader)); break;
+          case 113: builder.setMChangeRoomLevelLimitMsg(MChangeRoomLevelLimitMsg.ADAPTER.decode(reader)); break;
+          case 114: builder.setMKickoutUserMsg(MKickoutUserMsg.ADAPTER.decode(reader)); break;
+          case 115: builder.setMChangeRoomOwnerMsg(MChangeRoomOwnerMsg.ADAPTER.decode(reader)); break;
+          case 116: builder.setMMatchStatusMsg(MMatchStatusMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -996,14 +1033,15 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       if (builder.mJoinActionMsg != null) builder.mJoinActionMsg = MJoinActionMsg.ADAPTER.redact(builder.mJoinActionMsg);
       if (builder.mJoinNoticeMsg != null) builder.mJoinNoticeMsg = MJoinNoticeMsg.ADAPTER.redact(builder.mJoinNoticeMsg);
       if (builder.mExitGameMsg != null) builder.mExitGameMsg = MExitGameMsg.ADAPTER.redact(builder.mExitGameMsg);
-      if (builder.mBLightMsg != null) builder.mBLightMsg = MBLightMsg.ADAPTER.redact(builder.mBLightMsg);
-      if (builder.mGetSingChanceMsg != null) builder.mGetSingChanceMsg = MGetSingChanceMsg.ADAPTER.redact(builder.mGetSingChanceMsg);
       if (builder.syncStatusMsg != null) builder.syncStatusMsg = MSyncStatusMsg.ADAPTER.redact(builder.syncStatusMsg);
       if (builder.mRoundOverMsg != null) builder.mRoundOverMsg = MRoundOverMsg.ADAPTER.redact(builder.mRoundOverMsg);
       if (builder.mAddMusicMsg != null) builder.mAddMusicMsg = MAddMusicMsg.ADAPTER.redact(builder.mAddMusicMsg);
       if (builder.mDelMusicMsg != null) builder.mDelMusicMsg = MDelMusicMsg.ADAPTER.redact(builder.mDelMusicMsg);
       if (builder.mUpMusicMsg != null) builder.mUpMusicMsg = MUpMusicMsg.ADAPTER.redact(builder.mUpMusicMsg);
+      if (builder.mCancelMusic != null) builder.mCancelMusic = MCancelMusic.ADAPTER.redact(builder.mCancelMusic);
       if (builder.mReqAddMusicMsg != null) builder.mReqAddMusicMsg = MReqAddMusicMsg.ADAPTER.redact(builder.mReqAddMusicMsg);
+      if (builder.mCHOGiveUpMsg != null) builder.mCHOGiveUpMsg = MCHOGiveUpMsg.ADAPTER.redact(builder.mCHOGiveUpMsg);
+      if (builder.mSPKInnerRoundOverMsg != null) builder.mSPKInnerRoundOverMsg = MSPKInnerRoundOverMsg.ADAPTER.redact(builder.mSPKInnerRoundOverMsg);
       if (builder.mChangeRoomNameMsg != null) builder.mChangeRoomNameMsg = MChangeRoomNameMsg.ADAPTER.redact(builder.mChangeRoomNameMsg);
       if (builder.mChangeRoomLevelLimitMsg != null) builder.mChangeRoomLevelLimitMsg = MChangeRoomLevelLimitMsg.ADAPTER.redact(builder.mChangeRoomLevelLimitMsg);
       if (builder.mKickoutUserMsg != null) builder.mKickoutUserMsg = MKickoutUserMsg.ADAPTER.redact(builder.mKickoutUserMsg);

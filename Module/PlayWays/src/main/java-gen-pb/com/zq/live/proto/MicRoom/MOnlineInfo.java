@@ -27,6 +27,10 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
 
   public static final EMUserRole DEFAULT_ROLE = EMUserRole.MRUR_UNKNOWN;
 
+  public static final Boolean DEFAULT_ISCURSING = false;
+
+  public static final Boolean DEFAULT_ISNEXTSING = false;
+
   /**
    * 用户信息
    */
@@ -54,16 +58,37 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
   )
   private final EMUserRole role;
 
-  public MOnlineInfo(UserInfo userInfo, Boolean isOnline, EMUserRole role) {
-    this(userInfo, isOnline, role, ByteString.EMPTY);
+  /**
+   * 当前在唱
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isCurSing;
+
+  /**
+   * 下首在唱
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isNextSing;
+
+  public MOnlineInfo(UserInfo userInfo, Boolean isOnline, EMUserRole role, Boolean isCurSing,
+      Boolean isNextSing) {
+    this(userInfo, isOnline, role, isCurSing, isNextSing, ByteString.EMPTY);
   }
 
-  public MOnlineInfo(UserInfo userInfo, Boolean isOnline, EMUserRole role,
-      ByteString unknownFields) {
+  public MOnlineInfo(UserInfo userInfo, Boolean isOnline, EMUserRole role, Boolean isCurSing,
+      Boolean isNextSing, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userInfo = userInfo;
     this.isOnline = isOnline;
     this.role = role;
+    this.isCurSing = isCurSing;
+    this.isNextSing = isNextSing;
   }
 
   @Override
@@ -72,6 +97,8 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
     builder.userInfo = userInfo;
     builder.isOnline = isOnline;
     builder.role = role;
+    builder.isCurSing = isCurSing;
+    builder.isNextSing = isNextSing;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -84,7 +111,9 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userInfo, o.userInfo)
         && Internal.equals(isOnline, o.isOnline)
-        && Internal.equals(role, o.role);
+        && Internal.equals(role, o.role)
+        && Internal.equals(isCurSing, o.isCurSing)
+        && Internal.equals(isNextSing, o.isNextSing);
   }
 
   @Override
@@ -95,6 +124,8 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
       result = result * 37 + (userInfo != null ? userInfo.hashCode() : 0);
       result = result * 37 + (isOnline != null ? isOnline.hashCode() : 0);
       result = result * 37 + (role != null ? role.hashCode() : 0);
+      result = result * 37 + (isCurSing != null ? isCurSing.hashCode() : 0);
+      result = result * 37 + (isNextSing != null ? isNextSing.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -106,6 +137,8 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
     if (userInfo != null) builder.append(", userInfo=").append(userInfo);
     if (isOnline != null) builder.append(", isOnline=").append(isOnline);
     if (role != null) builder.append(", role=").append(role);
+    if (isCurSing != null) builder.append(", isCurSing=").append(isCurSing);
+    if (isNextSing != null) builder.append(", isNextSing=").append(isNextSing);
     return builder.replace(0, 2, "MOnlineInfo{").append('}').toString();
   }
 
@@ -150,6 +183,26 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
   }
 
   /**
+   * 当前在唱
+   */
+  public Boolean getIsCurSing() {
+    if(isCurSing==null){
+        return DEFAULT_ISCURSING;
+    }
+    return isCurSing;
+  }
+
+  /**
+   * 下首在唱
+   */
+  public Boolean getIsNextSing() {
+    if(isNextSing==null){
+        return DEFAULT_ISNEXTSING;
+    }
+    return isNextSing;
+  }
+
+  /**
    * 用户信息
    */
   public boolean hasUserInfo() {
@@ -170,12 +223,30 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
     return role!=null;
   }
 
+  /**
+   * 当前在唱
+   */
+  public boolean hasIsCurSing() {
+    return isCurSing!=null;
+  }
+
+  /**
+   * 下首在唱
+   */
+  public boolean hasIsNextSing() {
+    return isNextSing!=null;
+  }
+
   public static final class Builder extends Message.Builder<MOnlineInfo, Builder> {
     private UserInfo userInfo;
 
     private Boolean isOnline;
 
     private EMUserRole role;
+
+    private Boolean isCurSing;
+
+    private Boolean isNextSing;
 
     public Builder() {
     }
@@ -204,9 +275,25 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
       return this;
     }
 
+    /**
+     * 当前在唱
+     */
+    public Builder setIsCurSing(Boolean isCurSing) {
+      this.isCurSing = isCurSing;
+      return this;
+    }
+
+    /**
+     * 下首在唱
+     */
+    public Builder setIsNextSing(Boolean isNextSing) {
+      this.isNextSing = isNextSing;
+      return this;
+    }
+
     @Override
     public MOnlineInfo build() {
-      return new MOnlineInfo(userInfo, isOnline, role, super.buildUnknownFields());
+      return new MOnlineInfo(userInfo, isOnline, role, isCurSing, isNextSing, super.buildUnknownFields());
     }
   }
 
@@ -220,6 +307,8 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
       return UserInfo.ADAPTER.encodedSizeWithTag(1, value.userInfo)
           + ProtoAdapter.BOOL.encodedSizeWithTag(2, value.isOnline)
           + EMUserRole.ADAPTER.encodedSizeWithTag(3, value.role)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(4, value.isCurSing)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.isNextSing)
           + value.unknownFields().size();
     }
 
@@ -228,6 +317,8 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
       UserInfo.ADAPTER.encodeWithTag(writer, 1, value.userInfo);
       ProtoAdapter.BOOL.encodeWithTag(writer, 2, value.isOnline);
       EMUserRole.ADAPTER.encodeWithTag(writer, 3, value.role);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 4, value.isCurSing);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.isNextSing);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -247,6 +338,8 @@ public final class MOnlineInfo extends Message<MOnlineInfo, MOnlineInfo.Builder>
             }
             break;
           }
+          case 4: builder.setIsCurSing(ProtoAdapter.BOOL.decode(reader)); break;
+          case 5: builder.setIsNextSing(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

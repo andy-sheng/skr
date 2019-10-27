@@ -29,71 +29,74 @@ public enum EMicRoomMsgType implements WireEnum {
   RMT_EXIT_GAME(102),
 
   /**
-   * 爆灯通知
-   */
-  RMT_B_LIGHT(103),
-
-  /**
-   * 获得抢唱的结果
-   */
-  RMT_GET_SING(104),
-
-  /**
    * 同步状态
    */
-  RMT_SYNC_STATUS(105),
+  RMT_SYNC_STATUS(103),
 
   /**
    * 主轮次or子轮次结束
    */
-  RMT_ROUND_OVER(106),
+  RMT_ROUND_OVER(104),
 
   /**
    * 增加歌曲（点歌）
    */
-  RMT_ADD_MUSIC(107),
+  RMT_ADD_MUSIC(105),
 
   /**
    * 删除歌曲
    */
-  RMT_DEL_MUSIC(108),
+  RMT_DEL_MUSIC(106),
 
   /**
    * 置顶歌曲
    */
-  RMT_UP_MUSIC(109),
+  RMT_UP_MUSIC(107),
+
+  /**
+   * 取消歌曲
+   */
+  RMT_CANCEL_MUSIC(108),
 
   /**
    * 请求合唱/PK
    */
-  RMT_REQ_ADD_MUSIC(110),
+  RMT_REQ_ADD_MUSIC(109),
+
+  /**
+   * 合唱模式放弃演唱
+   */
+  RMT_CHO_GIVE_UP(110),
+
+  /**
+   * spk模式内部轮次结束
+   */
+  RMT_SPK_INNER_ROUND_OVER(111),
 
   /**
    * 修改房间名字
    */
-  RMT_CHANGE_ROOM_NAME(111),
+  RMT_CHANGE_ROOM_NAME(112),
 
   /**
    * 修改房间等级限制
    */
-  RMT_CHANGE_ROOM_LEVEL_LIMIT(112),
+  RMT_CHANGE_ROOM_LEVEL_LIMIT(113),
 
   /**
    * 踢人
    */
-  RMT_KICKOUT_USER(113),
+  RMT_KICKOUT_USER(114),
 
   /**
    * 修改房主
    */
-  RMT_CHANGE_ROOM_OWNER(114),
+  RMT_CHANGE_ROOM_OWNER(115),
 
   /**
-   * RMT_CLOSE_POSITION          = 115; //关闭房间位置
-   * RMT_OPEN_POSITION           = 116; //打开房间位置
    * 房间匹配开关
    */
-  RMT_MATCH_STATUS(117);
+  RMT_MATCH_STATUS(116);
 
   public static final ProtoAdapter<EMicRoomMsgType> ADAPTER = new ProtoAdapter_EMicRoomMsgType();
 
@@ -112,19 +115,20 @@ public enum EMicRoomMsgType implements WireEnum {
       case 100: return RMT_JOIN_ACTION;
       case 101: return RMT_JOIN_NOTICE;
       case 102: return RMT_EXIT_GAME;
-      case 103: return RMT_B_LIGHT;
-      case 104: return RMT_GET_SING;
-      case 105: return RMT_SYNC_STATUS;
-      case 106: return RMT_ROUND_OVER;
-      case 107: return RMT_ADD_MUSIC;
-      case 108: return RMT_DEL_MUSIC;
-      case 109: return RMT_UP_MUSIC;
-      case 110: return RMT_REQ_ADD_MUSIC;
-      case 111: return RMT_CHANGE_ROOM_NAME;
-      case 112: return RMT_CHANGE_ROOM_LEVEL_LIMIT;
-      case 113: return RMT_KICKOUT_USER;
-      case 114: return RMT_CHANGE_ROOM_OWNER;
-      case 117: return RMT_MATCH_STATUS;
+      case 103: return RMT_SYNC_STATUS;
+      case 104: return RMT_ROUND_OVER;
+      case 105: return RMT_ADD_MUSIC;
+      case 106: return RMT_DEL_MUSIC;
+      case 107: return RMT_UP_MUSIC;
+      case 108: return RMT_CANCEL_MUSIC;
+      case 109: return RMT_REQ_ADD_MUSIC;
+      case 110: return RMT_CHO_GIVE_UP;
+      case 111: return RMT_SPK_INNER_ROUND_OVER;
+      case 112: return RMT_CHANGE_ROOM_NAME;
+      case 113: return RMT_CHANGE_ROOM_LEVEL_LIMIT;
+      case 114: return RMT_KICKOUT_USER;
+      case 115: return RMT_CHANGE_ROOM_OWNER;
+      case 116: return RMT_MATCH_STATUS;
       default: return null;
     }
   }
