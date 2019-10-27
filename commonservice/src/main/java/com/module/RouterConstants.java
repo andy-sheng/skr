@@ -121,6 +121,8 @@ public interface RouterConstants {
 
     String ACTIVITY_MIC_HOME = "/mic/MicHomeActivity";
     String ACTIVITY_CREATE_MIC_ROOM = "/mic/MicRoomCreateActivity";
+
     String ACTIVITY_MIC_ROOM = "/mic/MicRoomActivity";
 
+    String ACTIVITY_MIC_MATCH = "/mic/MicMatchActivity";
 }

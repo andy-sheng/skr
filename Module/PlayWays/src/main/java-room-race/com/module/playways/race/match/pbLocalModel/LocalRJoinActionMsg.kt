@@ -1,5 +1,6 @@
 package com.module.playways.race.match.pbLocalModel
 
+import com.zq.live.proto.MicRoom.MJoinActionMsg
 import com.zq.live.proto.RaceRoom.RJoinActionMsg
 import java.io.Serializable
 
@@ -16,6 +17,16 @@ class LocalRJoinActionMsg : Serializable {
                     this.gameID = it.gameID
                     this.createTimeMs = it.createTimeMs
                     this.agoraToken = it.agoraToken
+                }
+            }
+            return null
+        }
+
+        fun toLocalModel(msg: MJoinActionMsg?): LocalRJoinActionMsg? {
+            msg?.let {
+                return LocalRJoinActionMsg().apply {
+                    this.gameID = it.gameID
+                    this.createTimeMs = it.createTimeMs
                 }
             }
             return null

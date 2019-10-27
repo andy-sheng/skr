@@ -195,6 +195,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
 
+        <activity
+            android:name="com.module.playways.mic.match.MicMatchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
         <meta-data
             android:name="com.module.playways.PlayWaysConfiguration"
             android:value="ConfigModule" />

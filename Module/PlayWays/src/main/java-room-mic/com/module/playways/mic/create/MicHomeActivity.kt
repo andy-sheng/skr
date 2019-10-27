@@ -29,11 +29,13 @@ class MicHomeActivity : BaseActivity() {
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
         quickBegin.setAnimateDebounceViewClickListener {
-            // todo 要去匹配
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
+                    .navigation()
         }
         createRoom.setAnimateDebounceViewClickListener {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
-                    .navigation()}
+                    .navigation()
+        }
     }
 
     override fun useEventBus(): Boolean {
