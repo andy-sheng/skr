@@ -140,7 +140,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mVipEnterPresenter = VipEnterPresenter(this, mRoomData)
         addPresent(mVipEnterPresenter)
         // 请保证从下面的view往上面的view开始初始化
-        findViewById<View>(R.id.mic_root_view).setOnTouchListener { v, event ->
+        findViewById<View>(R.id.main_act_container).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 mInputContainerView.hideSoftInput()
             }
@@ -331,6 +331,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             override fun onClickGameRule() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(this@MicRoomActivity)
                 showGameRuleDialog()
+            }
+
+            override fun onClickSetting() {
+
             }
         })
 
@@ -545,6 +549,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     override fun gameOver() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
     override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -5,13 +5,14 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import com.common.core.view.setDebounceViewClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
-import com.module.playways.race.room.RaceRoomData
 
 class MicTopOpView : RelativeLayout {
+    private val mIvSetting: ImageView
     private val mIvVoiceSetting: ImageView
     private val mGameRuleIv: ImageView
     private val mFeedBackIv: ImageView
@@ -33,9 +34,14 @@ class MicTopOpView : RelativeLayout {
     init {
         View.inflate(context, R.layout.mic_top_op_view, this)
         mGameRuleIv = findViewById(R.id.game_rule_iv)
+        mIvSetting = findViewById(R.id.game_setting)
         mFeedBackIv = findViewById(R.id.feed_back_iv)
         mExitTv = findViewById(R.id.exit_tv)
         mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
+
+        mIvSetting.setDebounceViewClickListener {
+
+        }
 
         mIvVoiceSetting.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -82,5 +88,7 @@ class MicTopOpView : RelativeLayout {
         fun onClickFeedBack()
 
         fun onClickVoiceAudition()
+
+        fun onClickSetting();
     }
 }
