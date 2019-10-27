@@ -211,14 +211,6 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> syncStatus(@Query("roomID") int roomID);
 
     /**
-     * 拉取已点歌曲
-     *
-     * @return
-     */
-    @GET("http://dev.game.inframe.mobi/v1/magpie/list-music")
-    Observable<ApiResult> getSongList(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
-
-    /**
      * {
      * "roomID": 0
      * }
@@ -229,29 +221,6 @@ public interface DoubleRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/magpie/unlock-user-info")
     Observable<ApiResult> unLock(@Body RequestBody body);
 
-    /**
-     * {
-     * "itemID": 0,
-     * "roomID": 0
-     * }
-     *
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/magpie/add-music")
-    Observable<ApiResult> addSong(@Body RequestBody body);
-
-    /**
-     * {
-     * "roomID": 0,
-     * "uniqTag": "string"
-     * }
-     *
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/magpie/del-music")
-    Observable<ApiResult> deleteSong(@Body RequestBody body);
 
     /**
      * {
@@ -359,17 +328,6 @@ public interface DoubleRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/magpie/unchoice-game-item")
     Observable<ApiResult> unChoiceGameItem(@Body RequestBody body);
 
-    /**
-     * 获取推荐tag列表
-     *
-     * @return
-     */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/magpie-billboards")
-    Observable<ApiResult> getDoubleStandBillBoards();
-
-
-    @GET("http://dev.game.inframe.mobi/v1/magpie/get-add-music-cnt")
-    Observable<ApiResult> getAddMusicCnt(@Query("roomID") int roomID);
 
     /**
      * 获取游戏一个小卡片信息

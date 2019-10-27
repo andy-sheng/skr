@@ -22,6 +22,7 @@ import com.module.playways.songmanager.event.AddSuggestSongEvent
 import com.module.playways.songmanager.model.GrabRoomSongModel
 import com.module.playways.songmanager.model.GrabWishSongModel
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerServerApi
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -39,7 +40,9 @@ import okhttp3.RequestBody
  */
 class GrabExistSongManagePresenter(internal var mIGrabSongManageView: IExistSongManageView, internal var mGrabRoomData: GrabRoomData) : RxLifeCyclePresenter() {
 
-    var mGrabRoomServerApi: GrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+    val mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+    val mSongManageServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
+
     var mGetTagsTask: Disposable? = null
     var mGetSongModelListTask: Disposable? = null
     var mSpecialModelList: List<SpecialModel>? = null
@@ -108,7 +111,7 @@ class GrabExistSongManagePresenter(internal var mIGrabSongManageView: IExistSong
 
         MyLog.d(TAG, "getPlayBookList offset is $offset")
 
-        mGetSongModelListTask = ApiMethods.subscribe(mGrabRoomServerApi.getPlaybook(mGrabRoomData.gameId, offset.toLong(), mLimit), object : ApiObserver<ApiResult>() {
+        mGetSongModelListTask = ApiMethods.subscribe(mSongManageServerApi.getPlaybook(mGrabRoomData.gameId, offset.toLong(), mLimit), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val grabRoomSongModels = JSON.parseArray(result.data!!.getString("playbook"), GrabRoomSongModel::class.java)
@@ -162,7 +165,7 @@ class GrabExistSongManagePresenter(internal var mIGrabSongManageView: IExistSong
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mGrabRoomServerApi.delMusic(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManageServerApi.delStandMusic(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "process" + " result=" + result.errno)
                 if (result.errno == 0) {
@@ -225,7 +228,7 @@ class GrabExistSongManagePresenter(internal var mIGrabSongManageView: IExistSong
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mGrabRoomServerApi.addMusic(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManageServerApi.addStandMusic(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.errno)
                 if (result.errno == 0) {
