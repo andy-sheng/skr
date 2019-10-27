@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
+import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseActivity
@@ -11,6 +12,7 @@ import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
@@ -54,6 +56,7 @@ import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
+import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.Subscribe
@@ -78,6 +81,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mTopOpView: MicTopOpView
     internal lateinit var mTopContentView: MicTopContentView
 
+    private lateinit var mAddSongIv: ImageView
     internal lateinit var mRightOpView: MicRightOpView
 
     private lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
@@ -247,6 +251,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun initBottomView() {
+        mAddSongIv = findViewById(R.id.add_song_iv)
+        mAddSongIv.setAnimateDebounceViewClickListener { SongManagerActivity.open(this, mRoomData) }
+
         run {
             val voiceStub = findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
             mVoiceRecordTipsView = VoiceRecordTipsView(voiceStub)

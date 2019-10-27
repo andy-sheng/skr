@@ -159,6 +159,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <!--点歌-->
+    <ImageView
+        android:id="@+id/add_song_iv"
+        android:layout_width="@dimen/view_61_dp"
+        android:layout_height="@dimen/view_61_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_82_dp"
+        android:background="@drawable/mic_add_song_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <!--礼物面板-->
     <com.module.playways.room.gift.view.GiftPanelView
         android:id="@+id/gift_panel_view"

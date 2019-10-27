@@ -155,11 +155,11 @@ class GrabSongManageFragment : BaseFragment(), ISongManageView {
             recommendModel.type = -1
             recommendModel.name = "愿望歌单"
             recommendTagModelList.add(0, recommendModel)
-
             val recommendTagModel = RecommendTagModel()
             recommendTagModel.type = -1
             recommendTagModel.name = "已点0"
             recommendTagModelList.add(0, recommendTagModel)
+
         }
 
         mTagModelList = recommendTagModelList

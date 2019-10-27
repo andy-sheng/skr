@@ -85,5 +85,12 @@ class SongManagerActivity : BaseActivity() {
             intent.putExtra("room_data", roomData)
             activity?.startActivity(intent)
         }
+
+        fun open(activity: FragmentActivity?,roomData: MicRoomData){
+            val intent = Intent(activity, SongManagerActivity::class.java)
+            intent.putExtra("from", TYPE_FROM_MIC)
+            intent.putExtra("room_data", roomData)
+            activity?.startActivity(intent)
+        }
     }
 }

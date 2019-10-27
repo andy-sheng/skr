@@ -5,8 +5,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.FrameLayout
+import com.common.rxretrofit.ApiManager
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.adapter.MicExistSongAdapter
 import com.module.playways.songmanager.model.GrabRoomSongModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -15,15 +17,16 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import com.module.playways.songmanager.adapter.MicExistListener as MicExistListener
 
 // 排麦房的已点
 class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomData) : FrameLayout(context), CoroutineScope by MainScope() {
     val mTag = "MicExistSongManageView"
 
+    val songManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     val refreshLayout: SmartRefreshLayout
     val recyclerView: RecyclerView
-
     val mManageSongAdapter: MicExistSongAdapter
 
     var offset = 0
@@ -64,6 +67,11 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
         })
         recyclerView.adapter = mManageSongAdapter
 
+        // 默认展示，所有默认去拉数据
+        tryLoad()
+    }
+
+    fun tryLoad() {
         getMicExistSongList(0)
     }
 
@@ -72,7 +80,9 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
     }
 
     fun getMicExistSongList(off: Int) {
-        // todo 等服务器给接口吧
+        launch {
+
+        }
     }
 
     fun destory() {
