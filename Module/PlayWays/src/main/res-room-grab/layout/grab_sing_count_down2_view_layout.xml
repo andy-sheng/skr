@@ -9,7 +9,7 @@
     app:bl_solid_color="#5C67C1">
 
 
-    <com.common.view.countdown.CircleCountDownView
+    <com.component.busilib.view.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="@dimen/view_20_dp"
         android:layout_height="@dimen/view_20_dp"

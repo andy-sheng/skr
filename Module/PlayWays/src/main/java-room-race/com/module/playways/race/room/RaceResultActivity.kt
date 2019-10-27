@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.model.ScoreStateModel
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.subscribe
@@ -19,6 +20,7 @@ import com.component.level.view.LevelStarProgressBar
 import com.component.level.view.NormalLevelView2
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.listener.AnimationListener
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.model.LevelResultModel
 import kotlinx.coroutines.delay
@@ -113,7 +115,7 @@ class RaceResultActivity : BaseActivity() {
         descTv.text = "距离下次升段还需${raceResultModel.gap}经验"
         if (raceResultModel.get >= 0) {
             changeTv.text = "+${raceResultModel.get}"
-        }else{
+        } else {
             changeTv.text = raceResultModel.get.toString()
         }
 
@@ -136,6 +138,86 @@ class RaceResultActivity : BaseActivity() {
             goMatchPage()
         }
     }
+
+    // 积分变化用CircleCountDownView 段位变化用一个svga
+    fun levelChangeAnimation(before: ScoreStateModel, after: ScoreStateModel, listener: AnimationListener) {
+        val start = before.currExp.toFloat() / before.maxExp.toFloat()
+        val end = after.currExp.toFloat() / after.maxExp.toFloat()
+        when (isLevelUp(before, after)) {
+            true -> {
+                // 段位上升 积分-段位-积分
+                expAnimation(start, 1f, object : AnimationListener {
+                    override fun onFinish() {
+                        levelAnimation(before, after, object : AnimationListener {
+                            override fun onFinish() {
+                                expAnimation(0f, end, object : AnimationListener {
+                                    override fun onFinish() {
+                                        listener.onFinish()
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+            false -> {
+                // 段位下降 积分-段位-积分
+                expAnimation(start, 0f, object : AnimationListener {
+                    override fun onFinish() {
+                        levelAnimation(before, after, object : AnimationListener {
+                            override fun onFinish() {
+                                expAnimation(1f, end, object : AnimationListener {
+                                    override fun onFinish() {
+                                        listener.onFinish()
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+            else -> {
+                // 段位不变 积分
+                expAnimation(start, end, object : AnimationListener {
+                    override fun onFinish() {
+                        listener.onFinish()
+                    }
+                })
+            }
+        }
+    }
+
+    // 积分动画(两个百分比)
+    fun expAnimation(start: Float, end: Float, listener: AnimationListener) {
+        if (start == end) {
+            listener.onFinish()
+        } else {
+            // 做动画吧
+        }
+    }
+
+    // 段位变化动画
+    fun levelAnimation(before: ScoreStateModel, after: ScoreStateModel, listener: AnimationListener) {
+        if (before.mainRanking == after.mainRanking && before.subRanking == after.subRanking) {
+            listener.onFinish()
+        } else {
+            // 做动画吧
+        }
+    }
+
+    // 段位是否上升 null即没变化 true上升  false下降
+    fun isLevelUp(before: ScoreStateModel, after: ScoreStateModel): Boolean? {
+        return if (after.mainRanking == before.mainRanking && after.subRanking == before.subRanking) {
+            null
+        } else {
+            when {
+                after.mainRanking > before.mainRanking -> true
+                after.mainRanking < before.mainRanking -> false
+                else -> after.subRanking > before.subRanking
+            }
+        }
+    }
+
 
     private fun goMatchPage() {
         finish()

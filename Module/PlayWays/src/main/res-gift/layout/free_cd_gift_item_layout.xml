@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_9_dp" />
 
-    <com.common.view.countdown.CircleCountDownView
+    <com.component.busilib.view.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="@dimen/view_46_dp"
         android:layout_height="@dimen/view_46_dp"

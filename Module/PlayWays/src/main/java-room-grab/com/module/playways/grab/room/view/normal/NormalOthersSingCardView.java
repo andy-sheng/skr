@@ -16,7 +16,7 @@ import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.countdown.CircleCountDownView;
+import com.component.busilib.view.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;

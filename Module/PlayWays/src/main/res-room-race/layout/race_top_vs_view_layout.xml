@@ -93,7 +93,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/left_bg" />
 
-        <com.common.view.countdown.CircleCountDownView
+        <com.component.busilib.view.CircleCountDownView
             android:visibility="gone"
             android:id="@+id/left_circle_count_down_view"
             android:layout_width="@dimen/view_50_dp"
@@ -190,7 +190,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/right_bg" />
 
-        <com.common.view.countdown.CircleCountDownView
+        <com.component.busilib.view.CircleCountDownView
             android:visibility="gone"
             android:id="@+id/right_circle_count_down_view"
             android:layout_width="@dimen/view_50_dp"

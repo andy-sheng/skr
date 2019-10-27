@@ -24,7 +24,7 @@ import com.common.upload.UploadTask
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.common.view.countdown.CircleCountDownView
+import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R
