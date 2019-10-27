@@ -1,6 +1,7 @@
 package com.module.playways.songmanager.view
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -14,6 +15,7 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExFrameLayout
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.RecyclerOnItemClickListener
@@ -62,6 +64,11 @@ class RecommendSongView(context: Context, internal var mType: Int,
             .setCornersRadius(0f, 0f, U.getDisplayUtils().dip2px(8f).toFloat(), U.getDisplayUtils().dip2px(8f).toFloat())
             .build()
 
+    val mMicDrawableBg = DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#576FE3"))
+            .setCornersRadius(8.dp().toFloat())
+            .build()
+
     init {
         View.inflate(context, R.layout.recommend_song_view_layout, this)
         mContainer = findViewById(R.id.container)
@@ -88,6 +95,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
             })
         } else if (mType == SongManagerActivity.TYPE_FROM_MIC) {
             // 排麦房
+            mContainer.background = mMicDrawableBg
             mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
         } else {
             /**

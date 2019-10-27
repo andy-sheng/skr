@@ -142,29 +142,35 @@ class ManageSongAdapter(internal var mType: Int) : DiffAdapter<GrabRoomSongModel
                 }
             }
 
-            if (model.playType == StandPlayType.PT_SPK_TYPE.value) {
-                mSongTagTv.text = "PK"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = SongTagDrawableUtils.pkDrawable
-                mTvSongName.text = "《" + model.displaySongName + "》"
-            } else if (model.playType == StandPlayType.PT_CHO_TYPE.value) {
-                mSongTagTv.text = "合唱"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = SongTagDrawableUtils.chorusDrawable
-                mTvSongName.text = "《" + model.displaySongName + "》"
-            } else if (model.playType == StandPlayType.PT_MINI_GAME_TYPE.value) {
-                mSongTagTv.text = "双人游戏"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = SongTagDrawableUtils.miniGameDrawable
-                mTvSongName.text = "【" + model.itemName + "】"
-            } else if (model.playType == StandPlayType.PT_FREE_MICRO.value) {
-                mSongTagTv.text = "多人游戏"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = SongTagDrawableUtils.freeMicDrawable
-                mTvSongName.text = "【" + model.itemName + "】"
-            } else {
-                mSongTagTv.visibility = View.GONE
-                mTvSongName.text = "《" + model.displaySongName + "》"
+            when {
+                model.playType == StandPlayType.PT_SPK_TYPE.value -> {
+                    mSongTagTv.text = "PK"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.pkDrawable
+                    mTvSongName.text = "《" + model.displaySongName + "》"
+                }
+                model.playType == StandPlayType.PT_CHO_TYPE.value -> {
+                    mSongTagTv.text = "合唱"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.chorusDrawable
+                    mTvSongName.text = "《" + model.displaySongName + "》"
+                }
+                model.playType == StandPlayType.PT_MINI_GAME_TYPE.value -> {
+                    mSongTagTv.text = "双人游戏"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.miniGameDrawable
+                    mTvSongName.text = "【" + model.itemName + "】"
+                }
+                model.playType == StandPlayType.PT_FREE_MICRO.value -> {
+                    mSongTagTv.text = "多人游戏"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.freeMicDrawable
+                    mTvSongName.text = "【" + model.itemName + "】"
+                }
+                else -> {
+                    mSongTagTv.visibility = View.GONE
+                    mTvSongName.text = "《" + model.displaySongName + "》"
+                }
             }
         }
     }
