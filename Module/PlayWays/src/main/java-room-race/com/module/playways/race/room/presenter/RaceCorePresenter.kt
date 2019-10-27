@@ -754,7 +754,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     var syncJob: Job? = null
 
-    fun startSyncRaceStatus() {
+    private fun startSyncRaceStatus() {
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
@@ -874,9 +874,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
         if (giftPresentEvent.mGPrensentGiftMsgModel.receiveUserInfo.userId.toLong() == MyUserInfoManager.getInstance().uid) {
             if (giftPresentEvent.mGPrensentGiftMsgModel.giftInfo.price <= 0) {
-                StatisticsAdapter.recordCountEvent("grab", "game_getflower", null)
+                StatisticsAdapter.recordCountEvent("race", "game_getflower", null)
             } else {
-                StatisticsAdapter.recordCountEvent("grab", "game_getgift", null)
+                StatisticsAdapter.recordCountEvent("race", "game_getgift", null)
             }
         }
     }

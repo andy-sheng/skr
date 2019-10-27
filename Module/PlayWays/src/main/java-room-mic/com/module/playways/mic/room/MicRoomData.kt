@@ -136,14 +136,8 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
             // 结束状态了
             if (realRoundInfo != null) {
                 val lastRoundInfoModel = realRoundInfo
-                lastRoundInfoModel!!.updateStatus(false, EMRoundStatus.MRS_END.value)
+                lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
                 realRoundInfo = null
-                //                if (lastRoundInfoModel != null
-                //                        && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
-                //                        && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                //                    // 一唱到底自动加金币
-                //                    setCoin(getCoin() + 1);
-                //                }
                 EventBus.getDefault().post(MicGameOverEvent(lastRoundInfoModel))
             }
             return
@@ -157,13 +151,6 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
             if (realRoundInfo != null) {
                 (realRoundInfo as MicRoundInfoModel).updateStatus(false, EMRoundStatus.MRS_INTRO.value)
             }
-            // 告知切换到新的轮次了
-            //            if (lastRoundInfoModel != null
-            //                    && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
-            //                    && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-            //                // 一唱到底自动加金币
-            //                setCoin(getCoin() + 1);
-            //            }
             EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, realRoundInfo))
         }
     }

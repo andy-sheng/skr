@@ -18,6 +18,7 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.playways.R
+import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.MicRoomServerApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -160,8 +161,9 @@ class MicRoomCreateFragment : BaseFragment() {
             }
 
             if (result.errno == 0) {
-
+                var rsp = JSON.parseObject(result.data.toString(),JoinMicRoomRspModel::class.java)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
+                        .withSerializable("JoinMicRoomRspModel",rsp)
                         .navigation()
                 activity?.finish()
             } else {

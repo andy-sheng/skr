@@ -29,6 +29,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.bottom.MicBottomContainerView
+import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
 import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
@@ -58,7 +59,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
 class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
-
     /**
      * 存起该房间一些状态信息
      */
@@ -148,7 +148,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         initRaceMatchView()
         initSignUpView()
 
-//        mCorePresenter.onOpeningAnimationOver()
+        mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
             mWidgetAnimationController.close()
@@ -521,23 +521,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         mContinueSendView.startBuy(event.baseGift, event.receiver)
     }
 
-    override fun singBySelfFirstRound(songModel: SongModel?) {
-        MyLog.d(TAG, "singBySelfFirstRound songModel = ${songModel?.toSimpleString()}")
-        hideAllSceneView()
-//        mRaceTopVsView.visibility = View.VISIBLE
-//        mRaceTopVsView.startVs()
-//        mRaceTopVsView.startSingBySelf {
-//            hideAllSceneView()
-//            mRaceRightOpView.showGiveUp(false)
-//            //            mRaceTopVsView.visibility = View.GONE
-//            mRaceSelfSingLyricView.startFly {
-//                mCorePresenter.sendSingComplete("singBySelfFirstRound")
-//            }
-//            mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
-//        }
-
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowHalfRechargeFragmentEvent) {
         val channelService = ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation() as IHomeService
@@ -564,141 +547,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
                         .build())
     }
 
-    override fun singByOtherFirstRound(songModel: SongModel?, userModel: UserInfoModel?) {
-        MyLog.d(TAG, "singByOtherFirstRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
-        hideAllSceneView()
-//        mRaceTopVsView.visibility = View.VISIBLE
-//        mRoomData.realRoundInfo?.let {
-//            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
-//                MyLog.d(TAG, "singByOtherFirstRound 中途进来的, $it")
-                //中途进来的
-//                mRaceTopVsView.bindData()
-//                mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
-//                showRightVote()
-//                mRaceOtherSingCardView.bindData()
-//                hideAllSceneView()
-//                mRaceOtherSingCardView.setVisibility(View.VISIBLE)
-//            } else {
-//                mRaceTopVsView.startVs()
-//                mRaceTopVsView.startSingByOther(1) {
-//                    showRightVote()
-//                    mRaceOtherSingCardView.bindData()
-//                    hideAllSceneView()
-//                    mRaceOtherSingCardView.setVisibility(View.VISIBLE)
-//                }
-//            }
-//        }
-
-    }
-
-
-    override fun singBySelfSecondRound(songModel: SongModel?) {
-        MyLog.d(TAG, "singBySelfSecondRound songModel = ${songModel?.toSimpleString()}")
-//        hideAllSceneView()
-//        mRaceRightOpView.visibility = View.GONE
-//        mRaceTopVsView.visibility = View.VISIBLE
-//        mRaceTopVsView.bindData()
-//        mRaceTopVsView.startSingBySelf {
-//            hideAllSceneView()
-//            mRaceRightOpView.showGiveUp(false)
-//            mRaceSelfSingLyricView.startFly {
-//                mCorePresenter.sendSingComplete("singBySelfSecondRound")
-//            }
-//            mRaceSelfSingLyricView.setVisibility(View.VISIBLE)
-//        }
-
-//        hideSignUpUI(true)
-    }
-
-    override fun singByOtherSecondRound(songModel: SongModel?, userModel: UserInfoModel?) {
-        MyLog.d(TAG, "singByOtherSecondRound songModel = ${songModel?.toSimpleString()}, userModel = ${userModel?.toSimpleString()}")
-//        hideAllSceneView()
-//        mRaceRightOpView.visibility = View.GONE
-//        mRaceTopVsView.visibility = View.VISIBLE
-//        mRoomData.realRoundInfo?.let {
-//            if (it.enterStatus == ERaceRoundStatus.ERRS_ONGOINE.value && it.enterSubRoundSeq == it.subRoundSeq) {
-//                showRightVote()
-//                mRaceTopVsView?.raceTopVsIv.visibility = View.VISIBLE
-//                mRaceTopVsView.bindData()
-//                mRaceOtherSingCardView.bindData()
-//                hideAllSceneView()
-//                mRaceOtherSingCardView.setVisibility(View.VISIBLE)
-//            } else {
-//                mRaceTopVsView.startSingByOther(2) {
-//                    showRightVote()
-//                    mRaceOtherSingCardView.bindData()
-//                    hideAllSceneView()
-//                    mRaceOtherSingCardView.setVisibility(View.VISIBLE)
-//                }
-//            }
-//        }
-    }
-
-    override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {
-        MyLog.d(TAG, "showRoundOver lastRoundInfo = $lastRoundInfo, continueOp = $continueOp")
-//        mRaceRightOpView.visibility = View.GONE
-//        mRaceTopVsView.visibility = View.GONE
-
-//        if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NO_ONE_SING.value ||
-//                lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_NOT_ENOUTH_PLAYER.value) {
-//            // 无人应战
-//            hideAllSceneView()
-//            mRaceNoSingCardView.visibility = View.VISIBLE
-//            mRaceNoSingCardView.showAnimation(object : AnimationListener {
-//                override fun onFinish() {
-//                    continueOp?.invoke()
-//                }
-//            })
-//        } else if (lastRoundInfo.overReason == ERaceRoundOverReason.ERROR_UNKNOWN.value) {
-//            hideAllSceneView()
-//            continueOp?.invoke()
-//        } else {
-//            hideAllSceneView()
-//            mRaceMiddleResultView.visibility = View.VISIBLE
-//            mRaceMiddleResultView.showResult(lastRoundInfo) {
-//                continueOp?.invoke()
-//            }
-//        }
-    }
-
-    override fun showWaiting(showAnimation: Boolean) {
-        MyLog.d(TAG, "showWaiting showAnimation = $showAnimation")
-//        mRaceRightOpView.visibility = View.GONE
-//        hideAllSceneView()
-//        mRaceWaitingCardView.visibility = View.VISIBLE
-//        if (showAnimation) {
-//            mRaceWaitingCardView.animationEnter()
-//        } else {
-//            mRaceWaitingCardView.visibility = View.VISIBLE
-//        }
-    }
-
-    override fun showChoiceView(showNextRound: Boolean) {
-        MyLog.d(TAG, "showChoiceView showNextRound = $showNextRound")
-//        mRaceRightOpView.visibility = View.GONE
-//        if (showNextRound) {
-//            hideAllSceneView()
-//            mRaceTurnInfoCardView.visibility = View.VISIBLE
-//            // 下一首动画
-//            mRaceTurnInfoCardView.showAnimation(object : AnimationListener {
-//                override fun onFinish() {
-//                    showSelectSongView()
-//                }
-//            })
-//        } else {
-//            showSelectSongView()
-//        }
-    }
-
-    override fun showMatchAnimationView(overListener: () -> Unit) {
-        MyLog.d(TAG, "showMatchAnimationView")
-        hideAllSceneView()
-//        mRaceMatchView.visibility = View.VISIBLE
-//        mRaceMatchView.bindData {
-//            overListener.invoke()
-//        }
-    }
-
     /**
      * 直接弹出选歌面板
      */
@@ -708,20 +556,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //
 //            }
 //        })
-    }
-
-    override fun joinNotice(playerInfoModel: UserInfoModel?) {
-        playerInfoModel?.let {
-            mVipEnterPresenter?.addNotice(it)
-        }
-    }
-
-    override fun goResultPage(lastRound: RaceRoundInfoModel) {
-        finish()
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_RESULT)
-                .withInt("roomID", mRoomData.gameId)
-                .withInt("roundSeq", lastRound.roundSeq)
-                .navigation()
     }
 
     override fun useEventBus(): Boolean {
@@ -751,9 +585,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         mTipsDialogView?.showByDialog()
     }
 
-    override fun gameOver(lastRound: RaceRoundInfoModel?) {
-        quitGame()
-    }
 
     fun quitGame() {
 //        mCorePresenter.exitRoom("quitGame")
@@ -769,6 +600,34 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
     }
 
 
+    override fun showWaiting() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
+    override fun singBySelf() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun singByOthers() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun joinNotice(model: MicPlayerInfoModel?) {
+        model?.let {
+            mVipEnterPresenter?.addNotice(it.userInfo)
+        }
+    }
+
+    override fun kickBySomeOne(b: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun dimissKickDialog() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun gameOver() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 }

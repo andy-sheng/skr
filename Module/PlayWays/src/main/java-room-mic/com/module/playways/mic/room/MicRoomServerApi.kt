@@ -1,12 +1,11 @@
 package com.module.playways.mic.room
 
+import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PUT
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MicRoomServerApi {
 
@@ -28,4 +27,23 @@ interface MicRoomServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/microom/roomtype-permission-list")
     fun getRoomPermmissionList(): Call<ApiResult>
+
+
+    @PUT("http://dev.stand.inframe.mobi/v1/micgame/round-over")
+    fun sendRoundOver(@Body body: RequestBody): Call<ApiResult>
+
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/micgame/give-up")
+    fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
+
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.stand.inframe.mobi/v1/microom/req-kick-user")
+    fun reqKickUser(@Body body: RequestBody): Call<ApiResult>
+
+    @Headers(ApiManager.ALWAYS_LOG_TAG)
+    @PUT("http://dev.room.inframe.mobi/v1/microom/exit-room")
+    fun exitRoom(@Body body: RequestBody): Call<ApiResult>
+
+    @GET("http://dev.game.inframe.mobi/v1/micgame/sync-status")
+    fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
 }

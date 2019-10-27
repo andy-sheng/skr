@@ -7,19 +7,19 @@ import com.module.playways.mic.room.model.MicRoundInfoModel;
  * 由第一轮切换到第二轮
  */
 public class MicRoundChangeEvent {
-    public MicRoundInfoModel lastRoundInfo;
-    public MicRoundInfoModel newRoundInfo;
+    public MicRoundInfoModel lastRound;
+    public MicRoundInfoModel newRound;
 
     public MicRoundChangeEvent(MicRoundInfoModel lastRoundInfo, MicRoundInfoModel newRoundInfo) {
-        this.lastRoundInfo = lastRoundInfo;
-        this.newRoundInfo = newRoundInfo;
+        this.lastRound = lastRoundInfo;
+        this.newRound = newRoundInfo;
     }
 
     @Override
     public String toString() {
         return "MicRoundChangeEvent{" +
-                "lastRoundInfo=" + lastRoundInfo +
-                "\nnewRoundInfo=" + newRoundInfo +
+                "lastRoundInfo=" + lastRound +
+                "\nnewRoundInfo=" + newRound +
                 '}';
     }
 }
