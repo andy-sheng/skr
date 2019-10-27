@@ -137,4 +137,12 @@
         app:layout_constraintRight_toRightOf="@+id/play_btn"
         app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
+
+    <com.component.busilib.view.SkrProgressView
+        android:id="@+id/progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:progressText="上传中" />
+
 </android.support.constraint.ConstraintLayout>
