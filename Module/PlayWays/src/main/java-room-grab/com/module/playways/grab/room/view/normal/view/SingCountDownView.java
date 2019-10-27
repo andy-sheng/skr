@@ -6,9 +6,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
-import com.common.view.countdown.CircleCountDownView;
+import com.component.busilib.view.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
 import com.module.playways.R;
 import com.module.playways.grab.room.view.control.SelfSingCardView;

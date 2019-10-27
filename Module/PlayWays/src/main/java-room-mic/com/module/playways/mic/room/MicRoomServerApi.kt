@@ -46,4 +46,11 @@ interface MicRoomServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/micgame/sync-status")
     fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
+    
+    /**
+     * 拉取房间可邀请的段位
+     */
+    @GET("http://dev.game.inframe.mobi/v1/micgame/user-list")
+    fun getMicSeatUserList(@Query("userID") userID: Int,
+                           @Query("roomID") roomID: Int): Call<ApiResult>
 }

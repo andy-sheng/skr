@@ -396,7 +396,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mEditAudio.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                //todo 编辑语音
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
+                        .withInt("from", 2)
+                        .navigation();
             }
         });
     }

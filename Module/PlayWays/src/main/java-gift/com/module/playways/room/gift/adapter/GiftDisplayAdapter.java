@@ -12,7 +12,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.common.view.countdown.CircleCountDownView;
+import com.component.busilib.view.CircleCountDownView;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;

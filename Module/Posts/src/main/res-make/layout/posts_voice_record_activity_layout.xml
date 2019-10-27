@@ -124,7 +124,7 @@
         app:layout_constraintRight_toRightOf="@id/play_btn"
         app:layout_constraintTop_toTopOf="@id/play_btn" />
 
-    <com.common.view.countdown.CircleCountDownView
+    <com.component.busilib.view.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -136,5 +136,13 @@
         app:layout_constraintLeft_toLeftOf="@+id/play_btn"
         app:layout_constraintRight_toRightOf="@+id/play_btn"
         app:layout_constraintTop_toTopOf="@+id/play_btn" />
+
+
+    <com.component.busilib.view.SkrProgressView
+        android:id="@+id/progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:progressText="上传中" />
 
 </android.support.constraint.ConstraintLayout>

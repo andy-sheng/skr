@@ -1,23 +1,21 @@
-package com.common.view.countdown
+package com.component.busilib.view
 
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Style
 import android.graphics.RectF
-import android.graphics.Shader
 import android.graphics.SweepGradient
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 
-import com.common.base.R
 import com.common.utils.U
+import com.component.busilib.R
 
 class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : ProgressBar(context, attrs, defStyle) {
 
@@ -102,9 +100,10 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
         canvas.drawArc(rect!!, mDegree.toFloat(), sweepAngle, false, mPaint!!)
     }
 
-    fun go(start: Int, leave: Int) = go(start,leave,null)
+    // 播放从start到圈满动画，总时间为leave
+    fun go(start: Int, leave: Int) = go(start, leave, null)
 
-    fun go(start: Int, leave: Int,completeListener:(()->Unit)?) {
+    fun go(start: Int, leave: Int, completeListener: (() -> Unit)?) {
         cancelAnim()
         max = 360
         val startD = 360 * start / 100
@@ -116,7 +115,7 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
             val value = animation.animatedValue as Int
             progress = value
         }
-        mRecordAnimator!!.addListener(object: Animator.AnimatorListener{
+        mRecordAnimator!!.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
             }
 
@@ -132,6 +131,41 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
 
         })
         mRecordAnimator!!.start()
+    }
+
+    // 播放从start到end动画，总时间随着刻度改变大小变化
+    fun playProgress(start: Int, end: Int) {
+        playProgress(start, end, null)
+    }
+
+    fun playProgress(start: Int, end: Int, completeListener: (() -> Unit)?) {
+        cancelAnim()
+        val speed = 50  // 每走过一个刻度需要到时间 毫秒
+
+        mRecordAnimator = ValueAnimator.ofInt(start, end)
+        mRecordAnimator!!.duration = kotlin.math.abs(end - start) * speed.toLong()
+        mRecordAnimator!!.interpolator = LinearInterpolator()
+        mRecordAnimator!!.addUpdateListener { animation ->
+            val value = animation.animatedValue as Int
+            progress = value
+        }
+        mRecordAnimator!!.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                completeListener?.invoke()
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+
+        })
+        mRecordAnimator!!.start()
+
     }
 
     override fun setVisibility(visibility: Int) {

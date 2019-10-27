@@ -17,7 +17,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.U
-import com.common.view.countdown.CircleCountDownView
+import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent

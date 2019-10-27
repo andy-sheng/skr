@@ -2,29 +2,19 @@ package com.module.posts.publish.vote
 
 import android.app.Activity
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.TextView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
-import com.common.player.SinglePlayer
-import com.common.recorder.MyMediaRecorder
 import com.common.utils.U
-import com.common.view.DiffuseView
-import com.common.view.countdown.CircleCountDownView
-import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.publish.PostsPublishModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_POSTS_VOTE_EDIT)
 class PostsVoteEditActivity : BaseActivity() {
