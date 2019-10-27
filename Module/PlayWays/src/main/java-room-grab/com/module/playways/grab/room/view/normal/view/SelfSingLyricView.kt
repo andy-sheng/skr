@@ -49,12 +49,15 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         return R.layout.grab_self_sing_lyric_layout
     }
 
-    private fun initLyric() {
-        mSvlyric?.visibility = View.VISIBLE
-        mManyLyricsView?.visibility = View.GONE
-        mManyLyricsView?.initLrcData()
-
-
+    private fun initLyric(acc:Boolean) {
+        if(acc){
+            mSvlyric?.visibility = View.GONE
+            mManyLyricsView?.visibility = View.VISIBLE
+            mManyLyricsView?.initLrcData()
+        }else{
+            mSvlyric?.visibility = View.VISIBLE
+            mManyLyricsView?.visibility = View.GONE
+        }
         if (mIvChallengeIcon != null) {
             var infoModel: GrabRoundInfoModel? = null
             if (H.isGrabRoom()) {
@@ -71,7 +74,7 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     fun playWithAcc(songModel: SongModel?,totalTs: Int) {
         tryInflate()
-        initLyric()
+        initLyric(true)
         if (songModel == null) {
             MyLog.w(TAG, "playWithAcc curSong = null totalTs=$totalTs")
             return
@@ -86,7 +89,6 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
         configParams.accEndTs = songModel.beginMs + totalTs
         configParams.authorName = songModel.uploaderName
         mLyricAndAccMatchManager!!.setArgs(configParams)
-        val finalCurSong = songModel
         mLyricAndAccMatchManager!!.start(object : LyricAndAccMatchManager.Listener {
 
             override fun onLyricParseSuccess(reader: LyricsReader) {
@@ -94,7 +96,7 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
 
             override fun onLyricParseFailed() {
-                playWithNoAcc(finalCurSong)
+                playWithNoAcc(songModel)
             }
 
             override fun onLyricEventPost(lineNum: Int) {
@@ -112,7 +114,7 @@ open class SelfSingLyricView(viewStub: ViewStub) : ExViewStub(viewStub) {
             return
         }
         tryInflate()
-        initLyric()
+        initLyric(false)
         mManyLyricsView!!.visibility = View.GONE
         mSvlyric?.visibility = View.VISIBLE
         mSvlyric?.scrollTo(0, 0)
