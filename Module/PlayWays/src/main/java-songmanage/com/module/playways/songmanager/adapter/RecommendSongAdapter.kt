@@ -17,9 +17,10 @@ import com.common.view.recyclerview.DiffAdapter
 import com.common.view.recyclerview.RecyclerOnItemClickListener
 import com.module.playways.R
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerActivity
 import com.zq.live.proto.Common.StandPlayType
 
-class RecommendSongAdapter(internal var isOwner: Boolean, internal var mListener: RecyclerOnItemClickListener<SongModel>?) : DiffAdapter<SongModel, RecyclerView.ViewHolder>() {
+class RecommendSongAdapter(internal var isOwner: Boolean, var type: Int, internal var mListener: RecyclerOnItemClickListener<SongModel>?) : DiffAdapter<SongModel, RecyclerView.ViewHolder>() {
 
     val pk: Drawable = DrawableCreator.Builder()
             .setStrokeColor(U.getColor(R.color.white_trans_70))
@@ -51,7 +52,7 @@ class RecommendSongAdapter(internal var isOwner: Boolean, internal var mListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recommend_song_item_layout, parent, false)
-        return ItemHolder(view, isOwner)
+        return ItemHolder(view, isOwner, type)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -65,7 +66,7 @@ class RecommendSongAdapter(internal var isOwner: Boolean, internal var mListener
         return mDataList.size
     }
 
-    private inner class ItemHolder(itemView: View, isOwner: Boolean) : RecyclerView.ViewHolder(itemView) {
+    private inner class ItemHolder(itemView: View, isOwner: Boolean, type: Int) : RecyclerView.ViewHolder(itemView) {
 
         var mSelectTv: ExTextView = itemView.findViewById(R.id.select_tv)
         var mSongTag: ExTextView = itemView.findViewById(R.id.song_tag)
@@ -75,12 +76,6 @@ class RecommendSongAdapter(internal var isOwner: Boolean, internal var mListener
         private var mSongModel: SongModel? = null
 
         init {
-            if (isOwner) {
-                mSelectTv.text = "点歌"
-            } else {
-                mSelectTv.text = "想唱"
-            }
-
             mSelectTv.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View) {
                     if (mListener != null) {
@@ -92,6 +87,19 @@ class RecommendSongAdapter(internal var isOwner: Boolean, internal var mListener
 
         fun bind(model: SongModel, position: Int) {
             mSongModel = model
+            if (type == SongManagerActivity.TYPE_FROM_MIC) {
+                if (model.playType == StandPlayType.PT_COMMON_TYPE.value) {
+                    mSelectTv.text = "想唱"
+                } else {
+                    mSelectTv.text = "发起"
+                }
+            } else {
+                if (isOwner) {
+                    mSelectTv.text = "点歌"
+                } else {
+                    mSelectTv.text = "想唱"
+                }
+            }
             mSongNameTv.text = "《" + model.displaySongName + "》"
             mSongTag.visibility = View.VISIBLE
             if (TextUtils.isEmpty(mSongModel?.songDesc)) {

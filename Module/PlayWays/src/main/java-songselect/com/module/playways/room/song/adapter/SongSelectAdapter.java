@@ -23,6 +23,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
     public static int DEFAULT_MODE = 0;          //默认模式
     public static int GRAB_MODE = 1;             //一唱到底搜索
     public static int DOUBLE_MODE = 2;           //双人房模式
+    public static int MIC_MODE = 3;              //排麦房模式
 
     Boolean mHasFooterBack = false;     //是否含底部搜索反馈
 

@@ -10,7 +10,6 @@ import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
-import com.common.core.userinfo.UserInfoManager
 import com.common.core.view.setDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -18,12 +17,15 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
+import com.engine.EngineEvent
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.model.MicSeatModel
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // 右边操作区域，投票
 class MicSeatView : ExConstraintLayout {
@@ -77,7 +79,7 @@ class MicSeatView : ExConstraintLayout {
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("userLists"), MicSeatModel::class.java)
                 list?.let {
-//                    UserInfoManager.getInstance().getRemarkName()
+                    //                    UserInfoManager.getInstance().getRemarkName()
                 }
             }
         }
@@ -88,11 +90,14 @@ class MicSeatView : ExConstraintLayout {
         EventBus.getDefault().register(this)
     }
 
-    private fun hide() {
-        if (visibility == View.VISIBLE) {
-            return
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: EngineEvent) {
+        if (EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS == event.getType()) {
 
+        }
+    }
+
+    private fun hide() {
         if (mUiHandler.hasMessages(HIDE_PANEL) || View.GONE == visibility) {
             return
         }

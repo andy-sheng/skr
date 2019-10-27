@@ -11,10 +11,12 @@ import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.ex.ExTextView
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
@@ -37,8 +39,6 @@ import com.module.playways.mic.room.ui.IMicRoomView
 import com.module.playways.mic.room.ui.MicWidgetAnimationController
 import com.module.playways.mic.room.view.*
 import com.module.playways.race.match.activity.RaceHomeActivity
-import com.module.playways.race.room.event.RaceWantSingChanceEvent
-import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.view.ContinueSendView
@@ -51,14 +51,13 @@ import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
 import com.module.playways.room.room.gift.GiftOverlayAnimationViewGroup
 import com.module.playways.room.room.view.BottomContainerView
-import com.module.playways.room.song.model.SongModel
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
-class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
+class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     /**
      * 存起该房间一些状态信息
      */
@@ -74,26 +73,18 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: MicTopOpView
     internal lateinit var mTopContentView: MicTopContentView
-//    internal lateinit var mRaceTopVsView: RaceTopVsView
 
     internal lateinit var mRightOpView: MicRightOpView
 
-    //    private lateinit var mRaceSelectSongView: RaceSelectSongView   // 选歌
-//    private lateinit var mWaitingCardView: MicWaitingCardView   // 等待中
-//    private lateinit var mRaceWantingSignUpCardView: RaceWantingSignUpCardView   // 正在报名卡片
     private lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-//    private lateinit var mRaceMatchView: RaceMatchView
     private lateinit var mSelfSingLyricView: MicSelfSingLyricView  // 自己唱
     private lateinit var mOtherSingCardView: MicOtherSingCardView   // 别人唱
-//    private lateinit var mRaceNoSingCardView: RaceNoSingerCardView    // 无人响应
-//    private lateinit var mRaceMiddleResultView: RaceMiddleResultView   // 比赛结果
-//    private lateinit var mRacePagerSelectSongView: RacePagerSelectSongView
-//    private lateinit var mSignUpView: RaceSignUpBtnView
 
     internal var mVIPEnterView: VIPEnterView? = null
+    private lateinit var mHasSelectSongNumTv: ExTextView
+    private lateinit var mMicSeatView: MicSeatView
 
     // 都是dialogplus
-//    private var mRaceActorPanelView: MicActorPanelView? = null  //参与的人
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mVoiceControlPanelView: MicVoiceControlPanelView? = null
     private var mGameRuleDialog: DialogPlus? = null
@@ -138,15 +129,11 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
-//        initSelectSongView()
-        initResuleView()
 
         initSingSenceView()
         initRightView()
         initVipEnterView()
-        initSelectPagerView()
-        initRaceMatchView()
-        initSignUpView()
+        initMicSeatView()
 
         mCorePresenter.onOpeningAnimationOver()
 
@@ -212,84 +199,23 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
     }
 
 
-
     private fun hideAllSceneView() {
         mSelfSingLyricView?.setVisibility(View.GONE)
         mOtherSingCardView.setVisibility(View.GONE)
-//        mRaceNoSingCardView?.visibility = View.GONE
-//        mRaceMiddleResultView?.visibility = View.GONE
-//        mRaceSelectSongView?.visibility = View.GONE
-//        mWaitingCardView?.visibility = View.GONE
         mTurnInfoCardView?.visibility = View.GONE
-//        mRaceMatchView?.visibility = View.GONE
-//        mRaceWantingSignUpCardView?.visibility = View.GONE
     }
-
-    private fun initSignUpView() {
-//        mSignUpView = findViewById(R.id.sign_up_view)
-//        mSignUpView.roomData = mRoomData
-//        mSignUpView.clickSignUpBtn = {
-//            mRacePagerSelectSongView.showView()
-//        }
-    }
-
-    private fun initSelectPagerView() {
-//        mRacePagerSelectSongView = findViewById(R.id.select_pager_view)
-//        mRacePagerSelectSongView.mRoomData = mRoomData
-//
-//        mRacePagerSelectSongView.mSignUpMethed = { itemID, model ->
-//            mCorePresenter.wantSingChance(itemID, model?.commonMusic)
-//        }
-//
-//        mRaceWantingSignUpCardView = findViewById(R.id.race_wanting_signup_view)
-//        mRacePagerSelectSongView.showView()
-    }
-
-    private fun initRaceMatchView() {
-//        mRaceMatchView = findViewById(R.id.race_match_view)
-//        mRaceMatchView.roomData = mRoomData
-    }
-
-    private fun initResuleView() {
-//        mRaceNoSingCardView = findViewById(R.id.race_nosinger_result_view)
-//        mRaceMiddleResultView = findViewById(R.id.race_middle_result_view)
-//        mRaceMiddleResultView.setRaceRoomData(mRoomData)
-    }
-
-
-//    private fun initSelectSongView() {
-//        mRaceSelectSongView = findViewById(R.id.race_select_song_view)
-//        mRaceSelectSongView.setRoomData(mRoomData) { choiceID, seq ->
-//            mCorePresenter.wantSingChance(choiceID, seq)
-//        }
-//        mRaceSelectSongView.visibility = View.GONE
-//    }
 
     private fun initRightView() {
         mRightOpView = findViewById(R.id.right_op_view)
-//        mRightOpView.setListener(object : RightOpListener {
-//            override fun onClickGiveUp() {
-//                // 放弃演唱
-//                mCorePresenter.giveupSing {
-//                    if (it) {
-//                        mRaceRightOpView.showGiveUp(true)
-//                    } else {
-//                        MyLog.e(TAG, "onClickGiveUp 请求失败了")
-//                    }
-//                }
-//            }
-//
-//            override fun onClickVote() {
-//                // 投票
-//                mCorePresenter.sendBLight {
-//                    if (it) {
-//                        mRaceRightOpView.showVote(true)
-//                    } else {
-//                        MyLog.e(TAG, "onClickVote 请求失败了")
-//                    }
-//                }
-//            }
-//        })
+    }
+
+    private fun initMicSeatView() {
+        mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
+        mMicSeatView = findViewById(R.id.mic_seat_view)
+        mMicSeatView.mRoomData = mRoomData
+        mHasSelectSongNumTv.setDebounceViewClickListener {
+            mMicSeatView.show()
+        }
     }
 
     private fun initVipEnterView() {
@@ -350,7 +276,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
 //                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
 //                } else {
-                    mGiftPanelView.show(null)
+                mGiftPanelView.show(null)
 //                }
             }
         })
@@ -494,27 +420,16 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
         }
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM , userID, false, false)
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, false, false)
                 .setRoomID(mRoomData.gameId)
                 .build()
         mPersonInfoDialog?.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceWantSingChanceEvent) {
-//        mSignUpView.setType(RaceSignUpBtnView.SignUpType.SIGN_UP_FINISH)
-//        mRacePagerSelectSongView.hideView()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ShowPersonCardEvent) {
         showPersonInfoView(event.uid)
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    fun onEvent(event: RaceScoreChangeEvent) {
-//        mRaceTopVsView.updateData()
-//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BuyGiftEvent) {
@@ -538,24 +453,13 @@ class MicRoomActivity : BaseActivity(), IMicRoomView,IGrabVipView {
 //                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
 //                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
 //                                    } else {
-                                        mGiftPanelView.show(null)
+                                    mGiftPanelView.show(null)
 //                                    }
                                 }
                             }
                         })
                         .setHasAnimation(true)
                         .build())
-    }
-
-    /**
-     * 直接弹出选歌面板
-     */
-    private fun showSelectSongView() {
-//        mRaceWantingSignUpCardView.showAnimation(object : AnimationListener {
-//            override fun onFinish() {
-//
-//            }
-//        })
     }
 
     override fun useEventBus(): Boolean {

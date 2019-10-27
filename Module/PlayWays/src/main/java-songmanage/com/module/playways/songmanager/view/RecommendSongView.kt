@@ -74,7 +74,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
 
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
-            mRecommendSongAdapter = RecommendSongAdapter(isOwner, RecyclerOnItemClickListener { view, position, model ->
+            mRecommendSongAdapter = RecommendSongAdapter(isOwner,mType, RecyclerOnItemClickListener { view, position, model ->
                 if (isOwner && model != null && model.itemID == SongModel.ID_CUSTOM_GAME) {
                     if (mMakeGamePanelView != null) {
                         mMakeGamePanelView!!.dismiss()
@@ -85,12 +85,15 @@ class RecommendSongView(context: Context, internal var mType: Int,
                     EventBus.getDefault().post(AddSongEvent(model!!))
                 }
             })
+        } else if (mType == SongManagerActivity.TYPE_FROM_MIC) {
+            // 排麦房
+            mRecommendSongAdapter =  RecommendSongAdapter(true,mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
         } else {
             /**
              * 双人房默认是直接 点唱
              */
             mContainer.background = mDrawableBg
-            mRecommendSongAdapter = RecommendSongAdapter(true, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+            mRecommendSongAdapter = RecommendSongAdapter(true,mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
         }
 
         mRecyclerView.adapter = mRecommendSongAdapter
