@@ -2,7 +2,6 @@ package com.module.playways.mic.room
 
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiResult
-import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -46,11 +45,29 @@ interface MicRoomServerApi {
 
     @GET("http://dev.game.inframe.mobi/v1/micgame/sync-status")
     fun syncStatus(@Query("roomID") roomID: Long): Call<ApiResult>
-    
+
     /**
      * 拉取房间可邀请的段位
      */
     @GET("http://dev.game.inframe.mobi/v1/micgame/user-list")
     fun getMicSeatUserList(@Query("userID") userID: Int,
                            @Query("roomID") roomID: Int): Call<ApiResult>
+
+    /**
+     * 取消匹配
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/microom/cancel-match")
+    fun cancelMatch(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 取消匹配
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/microom/join-room")
+    fun joinRoom(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     * 取消匹配
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/microom/query-match")
+    fun queryMatch(@Body body: RequestBody): Call<ApiResult>
 }

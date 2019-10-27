@@ -31,7 +31,7 @@
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_5_dp"
         android:layout_marginTop="@dimen/view_5_dp"
-        android:background="@drawable/yichangdaodi_guanzhong"
+        android:background="@drawable/xkf_guanzhong"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

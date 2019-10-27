@@ -1,18 +1,21 @@
 package com.module.playways.songmanager.view
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.FrameLayout
 
 import com.alibaba.fastjson.JSONObject
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.utils.U
+import com.common.utils.dp
 import com.common.view.ex.ExFrameLayout
 import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.RecyclerOnItemClickListener
@@ -61,12 +64,16 @@ class RecommendSongView(context: Context, internal var mType: Int,
             .setCornersRadius(0f, 0f, U.getDisplayUtils().dip2px(8f).toFloat(), U.getDisplayUtils().dip2px(8f).toFloat())
             .build()
 
+    val mMicDrawableBg = DrawableCreator.Builder()
+            .setSolidColor(Color.parseColor("#576FE3"))
+            .setCornersRadius(8.dp().toFloat())
+            .build()
+
     init {
         View.inflate(context, R.layout.recommend_song_view_layout, this)
         mContainer = findViewById(R.id.container)
         mRecyclerView = findViewById(R.id.recycler_view)
         mRefreshLayout = findViewById(R.id.refreshLayout)
-
 
         initData()
     }
@@ -75,7 +82,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
 
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
-            mRecommendSongAdapter = RecommendSongAdapter(isOwner,mType, RecyclerOnItemClickListener { view, position, model ->
+            mRecommendSongAdapter = RecommendSongAdapter(isOwner, mType, RecyclerOnItemClickListener { view, position, model ->
                 if (isOwner && model != null && model.itemID == SongModel.ID_CUSTOM_GAME) {
                     if (mMakeGamePanelView != null) {
                         mMakeGamePanelView!!.dismiss()
@@ -88,13 +95,14 @@ class RecommendSongView(context: Context, internal var mType: Int,
             })
         } else if (mType == SongManagerActivity.TYPE_FROM_MIC) {
             // 排麦房
-            mRecommendSongAdapter =  RecommendSongAdapter(true,mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+            mContainer.background = mMicDrawableBg
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
         } else {
             /**
              * 双人房默认是直接 点唱
              */
             mContainer.background = mDrawableBg
-            mRecommendSongAdapter = RecommendSongAdapter(true,mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
+            mRecommendSongAdapter = RecommendSongAdapter(true, mType, RecyclerOnItemClickListener { view, position, model -> EventBus.getDefault().post(AddSongEvent(model)) })
         }
 
         mRecyclerView.adapter = mRecommendSongAdapter
@@ -136,7 +144,12 @@ class RecommendSongView(context: Context, internal var mType: Int,
                 mRefreshLayout.finishLoadMore()
 
                 if (result.errno == 0) {
-                    val recommendTagModelArrayList = JSONObject.parseArray(result.data!!.getString("items"), SongModel::class.java)
+                    val recommendTagModelArrayList = if (mType == SongManagerActivity.TYPE_FROM_MIC) {
+                        JSONObject.parseArray(result.data!!.getString("details"), SongModel::class.java)
+                    } else {
+                        JSONObject.parseArray(result.data!!.getString("items"), SongModel::class.java)
+                    }
+
                     mOffset = result.data!!.getIntValue("offset")
                     if (recommendTagModelArrayList == null || recommendTagModelArrayList.size == 0) {
                         mRefreshLayout.setEnableLoadMore(false)
@@ -164,10 +177,11 @@ class RecommendSongView(context: Context, internal var mType: Int,
     }
 
     private fun getListStandBoardObservable(offset: Int): Observable<ApiResult> {
-        return if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
-            mSongManageServerApi.getListStandBoards(mRecommendTagModel!!.type, offset, mLimit)
-        } else {
-            mSongManageServerApi.getDoubleListStandBoards(mRecommendTagModel!!.type, offset, mLimit)
+        val tab = mRecommendTagModel?.type ?: 0
+        return when (mType) {
+            SongManagerActivity.TYPE_FROM_GRAB -> mSongManageServerApi.getListStandBoards(tab, offset, mLimit)
+            SongManagerActivity.TYPE_FROM_MIC -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.getInstance().uid.toInt(), tab)
+            else -> mSongManageServerApi.getDoubleListStandBoards(tab, offset, mLimit)
         }
     }
 

@@ -25,7 +25,7 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
     val translateByOpenType: Int
         get() {
             if (openType == OPEN_TYPE_FOR_NORMAL) {
-                return U.getDisplayUtils().dip2px(32f)
+                return U.getDisplayUtils().dip2px(40f)
             } else if (openType == OPEN_TYPE_FOR_LYRIC) {
                 return U.getDisplayUtils().dip2px(120f)
             }

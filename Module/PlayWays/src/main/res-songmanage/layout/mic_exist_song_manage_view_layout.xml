@@ -6,10 +6,8 @@
     android:layout_marginLeft="@dimen/view_12_dp"
     android:layout_marginRight="@dimen/view_12_dp"
     android:padding="@dimen/view_2_dp"
-    app:bl_corners_radius="@dimen/view_16_dp"
-    app:bl_solid_color="#4960CF"
-    app:bl_stroke_color="#3B4E79"
-    app:bl_stroke_width="@dimen/view_2_dp">
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_solid_color="#576FE3">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"

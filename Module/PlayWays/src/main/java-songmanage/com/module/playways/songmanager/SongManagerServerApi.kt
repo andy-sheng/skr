@@ -3,6 +3,7 @@ package com.module.playways.songmanager
 import com.common.rxretrofit.ApiResult
 import io.reactivex.Observable
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -174,7 +175,7 @@ interface SongManagerServerApi {
      *
      */
     @GET("http://dev.micgame.inframe.mobi/v1/micgame/song-tabs")
-    fun getMicSongTagList(): Observable<ApiResult>
+    fun getMicSongTagList(): Call<ApiResult>
 
     /**
      * 获取推荐歌曲列表(排麦房)
@@ -186,7 +187,7 @@ interface SongManagerServerApi {
      * 获取已点歌曲列表(排麦房)
      */
     @GET("http://dev.micgame.inframe.mobi/v1/micgame/list-music")
-    fun getMicExistSongList(@Query("roomID") roomID: Int, @Query("userID") userID: Int, @Query("offset") offset: Int, @Query("limit") limit: Int): Observable<ApiResult>
+    fun getMicExistSongList(@Query("roomID") roomID: Int, @Query("userID") userID: Int, @Query("offset") offset: Int, @Query("limit") limit: Int): Call<ApiResult>
 
 
     /**
@@ -194,7 +195,7 @@ interface SongManagerServerApi {
      * {"itemID": 0,"roomID": 0,"wantSingType": "MWST_UNKNOWN"}
      */
     @PUT("http://dev.micgame.inframe.mobi/v1/micgame/want-sing")
-    fun addWantMicSong(@Body body: RequestBody): Observable<ApiResult>
+    fun addWantMicSong(@Body body: RequestBody): Call<ApiResult>
 
     /**
      * 删除已点歌曲(排麦房)
@@ -204,7 +205,7 @@ interface SongManagerServerApi {
      *     }
      */
     @PUT("http://dev.micgame.inframe.mobi/v1/micgame/list-music")
-    fun deleteMicSong(@Body body: RequestBody): Observable<ApiResult>
+    fun deleteMicSong(@Body body: RequestBody): Call<ApiResult>
 
     /**
      * 置顶已点歌曲(排麦房)
@@ -214,7 +215,7 @@ interface SongManagerServerApi {
      *     }
      */
     @PUT("http://dev.micgame.inframe.mobi/v1/micgame/up-music")
-    fun stickMicSong(@Body body: RequestBody): Observable<ApiResult>
+    fun stickMicSong(@Body body: RequestBody): Call<ApiResult>
 
 
 }

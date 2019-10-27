@@ -408,6 +408,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(RaceRoomLowMsg.class);
             RongIM.registerMessageType(BroadcastRoomMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
+            RongIM.registerMessageType(MicRoomHighMsg.class);
+            RongIM.registerMessageType(MicRoomLowMsg.class);
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 
