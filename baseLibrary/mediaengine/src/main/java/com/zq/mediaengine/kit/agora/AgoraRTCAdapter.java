@@ -12,6 +12,7 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.statistics.SDataManager;
 import com.engine.statistics.datastruct.SAgora;
 import com.engine.statistics.datastruct.SAgoraUserEvent;
+import com.engine.statistics.datastruct.Skr;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -20,8 +21,11 @@ import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.gles.GLRender;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -119,6 +123,7 @@ public class AgoraRTCAdapter {
     public void startStatisticThread(){
         if (null == mStatisticThread) {
             mRunStatistic = true;
+            final String BaiduURL = "www.baidu.com";
 
             mStatisticThread = new Thread(){
                 @Override
@@ -127,10 +132,14 @@ public class AgoraRTCAdapter {
 
                     while(mRunStatistic) {
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+
+                        Skr.PingInfo pingInfo = ping(BaiduURL);
+                        SDataManager.instance().getAgoraDataHolder().addPingInfo(pingInfo);
 
                         if (SDataManager.instance().need2Flush())
                             SDataManager.instance().flush(mDataFlushMode);
@@ -150,6 +159,49 @@ public class AgoraRTCAdapter {
             e.printStackTrace();
         }
     }
+
+
+    public Skr.PingInfo ping(String url) {
+//        String resault = "";
+        Process p;
+        Skr.PingInfo pingInfo = new Skr.PingInfo();
+        try {
+            //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
+            p = Runtime.getRuntime().exec("ping -c 1 -w 10 " + url);
+            int status = p.waitFor();
+
+            InputStream input = p.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer buffer = new StringBuffer();
+            String line = "";
+            while ((line = in.readLine()) != null) {
+                buffer.append(line+"\n");
+            }
+
+//            Log.d(TAG, buffer.toString());
+//            Log.d(TAG, "ping time="+pingTime+" ms");
+
+            if (status == 0) {
+                pingInfo.pingOk = true;
+
+                int idx1 = buffer.indexOf("time=");
+                int idx2 = buffer.indexOf(" ms");
+
+                String time = buffer.substring(idx1+5, idx2);
+                pingInfo.pingTime = Float.parseFloat(time);
+            } else {
+                pingInfo.pingOk = false;
+                pingInfo.pingTime = -1;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return pingInfo;
+    }
+
 
 
     private AgoraRTCAdapter(GLRender glRender) {

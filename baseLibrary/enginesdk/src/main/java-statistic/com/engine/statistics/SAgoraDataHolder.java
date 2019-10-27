@@ -3,6 +3,7 @@ package com.engine.statistics;
 
 import com.engine.statistics.datastruct.SAgora;
 import com.engine.statistics.datastruct.SAgoraUserEvent;
+import com.engine.statistics.datastruct.Skr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class SAgoraDataHolder
     private List<SAgora.SPlayerInfo> mPlayerInfo;
     private List<SAgoraUserEvent>  mUserEvenList;
 
-
+    private List<Skr.PingInfo> mPingInfoList;
 
     public SAgoraDataHolder() {
         mRtcStatsList = new ArrayList<SAgora.SRTCStats>();
@@ -41,6 +42,8 @@ public class SAgoraDataHolder
         mAudioSamplingInfoList = new ArrayList<SAgora.SAudioSamplingInfo>();
         mPlayerInfo = new ArrayList<SAgora.SPlayerInfo>();
         mUserEvenList = new ArrayList<SAgoraUserEvent>();
+
+        mPingInfoList = new ArrayList<Skr.PingInfo>();
     }
 
     public SAgoraDataHolder setLinePrefix(String prefix) {
@@ -216,7 +219,14 @@ public class SAgoraDataHolder
         return;
     }
 
+    public synchronized void addPingInfo(Skr.PingInfo e) {
+        if (null == e) return;
 
+        e.ts = System.currentTimeMillis();
+
+        mPingInfoList.add(e);
+        return;
+    }
 
 
     private String getListString(List list) {
@@ -250,6 +260,7 @@ public class SAgoraDataHolder
         retStr += getListString(mAudioSamplingInfoList);
         retStr += getListString(mPlayerInfo);
         retStr += getListString(mUserEvenList);
+        retStr += getListString(mPingInfoList);
 
         return retStr;
     }
@@ -268,6 +279,7 @@ public class SAgoraDataHolder
         mAudioSamplingInfoList.clear();
         mPlayerInfo.clear();
         mUserEvenList.clear();
+        mPlayerInfo.clear();
         return this;
     }
 
@@ -279,7 +291,7 @@ public class SAgoraDataHolder
                 mRemoteVList.size() +  mNetQualityList.size() + mRemoteATransList.size() +  mRemoteVTransList.size()+
                 mAudioSamplingInfoList.size();
 
-        if (nowTotalRecords >= recPerListLimit * 10)
+        if (nowTotalRecords >= recPerListLimit * 11)
             return true;
         else
             return false;
