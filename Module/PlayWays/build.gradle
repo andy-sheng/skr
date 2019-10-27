@@ -118,6 +118,10 @@ android {
             res.srcDirs += 'src/main/res-room-mic'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
