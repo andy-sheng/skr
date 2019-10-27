@@ -7,7 +7,20 @@ import com.zq.live.proto.MicRoom.MOnlineInfo
 
 class MicPlayerInfoModel : PlayerInfoModel() {
 
-    var role = EMUserRole.MRUR_UNKNOWN.value
+    /**
+     * 用户角色
+     */
+    var role: Int = EMUserRole.MRUR_UNKNOWN.value
+
+    /**
+     * 当前在唱
+     */
+    var isCurSing: Boolean = false
+
+    /**
+     * 下首在唱
+     */
+    var isNextSing: Boolean = false
 
     override fun toString(): String {
         return "${userInfo.toSimpleString()}"
@@ -39,5 +52,7 @@ internal fun parseFromROnlineInfoPB(pb: MOnlineInfo): MicPlayerInfoModel {
     model.userID = model.userInfo.userId
     model.isOnline = pb.isOnline
     model.role = pb.role.value
+    model.isCurSing = pb.isCurSing
+    model.isNextSing = pb.isNextSing
     return model
 }
