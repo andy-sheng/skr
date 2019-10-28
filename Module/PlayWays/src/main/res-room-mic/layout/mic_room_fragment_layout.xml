@@ -106,8 +106,8 @@
     <include layout="@layout/mic_other_sing_card_layout" />
     <!--自己唱歌场景-->
     <include layout="@layout/mic_self_sing_card_view_layout" />
-
-
+    <!--轮次结束卡片-->
+    <include layout="@layout/mic_round_over_card_layout" />
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"

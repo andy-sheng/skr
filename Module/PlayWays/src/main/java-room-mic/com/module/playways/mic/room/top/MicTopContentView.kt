@@ -81,7 +81,7 @@ class MicTopContentView : ConstraintLayout {
             adapter.mDataList.addAll(list)
             adapter.notifyDataSetChanged()
         } else {
-            MyLog.e(TAG, "initData 没人？？？？")
+            MyLog.e(TAG, "initData 没人？？？？from=$from")
         }
     }
 
@@ -107,12 +107,12 @@ class MicTopContentView : ConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
-        initData("RaceRoundChangeEvent")
+        initData("MicRoundChangeEvent")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
-        initData("RacePlaySeatUpdateEvent")
+        initData("MicPlaySeatUpdateEvent")
     }
 
     fun setListener(listener: Listener) {

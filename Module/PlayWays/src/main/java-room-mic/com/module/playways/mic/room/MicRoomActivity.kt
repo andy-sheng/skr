@@ -34,6 +34,7 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabGiveupView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.control.OthersSingCardView
+import com.module.playways.grab.room.view.control.RoundOverCardView
 import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
@@ -99,7 +100,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
     lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
     lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
-    lateinit var mSingBeginTipsCardView: SingBeginTipsCardView
+    lateinit var mSingBeginTipsCardView: SingBeginTipsCardView// 演唱开始提示
+    lateinit var mRoundOverCardView: RoundOverCardView// 结果页
 
     private lateinit var mAddSongIv: ImageView
     private lateinit var mGiveUpView: GrabGiveupView
@@ -250,6 +252,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         if (mGiveUpView != exclude) {
             mGiveUpView.hideWithAnimation(false)
         }
+        if (mRoundOverCardView != exclude) {
+            mRoundOverCardView.setVisibility(View.GONE)
+        }
     }
 
     private fun initSingStageView() {
@@ -289,6 +294,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mTurnInfoCardView.visibility = View.GONE
 
         mSingBeginTipsCardView = SingBeginTipsCardView(findViewById<ViewStub>(R.id.mic_sing_begin_tips_card_stub))
+
+        mRoundOverCardView = RoundOverCardView(findViewById<View>(R.id.main_act_container))
     }
 
     private fun initBottomView() {
@@ -638,7 +645,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
-        continueOp?.invoke()
+        hideAllSceneView(null)
+        mRoundOverCardView.bindData(lastRoundInfo, SVGAListener {
+            continueOp?.invoke()
+        })
     }
 
     override fun kickBySomeOne(b: Boolean) {

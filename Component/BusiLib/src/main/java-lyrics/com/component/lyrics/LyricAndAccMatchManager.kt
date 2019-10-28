@@ -108,7 +108,7 @@ class LyricAndAccMatchManager {
     }
 
     fun stop() {
-        DebugLogView.println(TAG, "stop")
+        MyLog.d(TAG, "stop")
         EventBus.getDefault().unregister(this)
         params?.voiceScaleView?.startWithData(ArrayList(), 0)
         mUiHandler.removeCallbacksAndMessages(null)

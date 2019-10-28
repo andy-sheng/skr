@@ -502,11 +502,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
-        MyLog.d(TAG, "onRaceRoundChangeEvent = $event")
-        if (event.lastRound != null) {
-            DebugLogView.println(TAG, "上一轮结果 overReason = ${event.lastRound?.overReason} ")
-
-        }
+        MyLog.d(TAG, "MicRoundChangeEvent = $event")
         processStatusChange(1, event.lastRound, event.newRound)
     }
 
@@ -522,7 +518,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     private fun processStatusChange(from: Int, lastRound: MicRoundInfoModel?, thisRound: MicRoundInfoModel?) {
-        DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} status=${thisRound?.status}")
+        DebugLogView.println(TAG, "processStatusChange from=$from roundSeq=${thisRound?.roundSeq} statusNow=${thisRound?.status}")
         // 轮次变化尝试更新头像
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS)
         closeEngine()
@@ -869,7 +865,8 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MRoundOverMsg) {
-        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:$event")
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push currentRound:${event.currentRound}")
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push nextRound:${event.nextRound}")
         ensureInRcRoom()
         var currentRound = MicRoundInfoModel.parseFromRoundInfo(event.currentRound)
         var nextRound = MicRoundInfoModel.parseFromRoundInfo(event.nextRound)
@@ -888,7 +885,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         if (nextRound.roundSeq > (mRoomData.expectRoundInfo?.roundSeq ?: 0)) {
             // 游戏轮次结束
             // 轮次确实比当前的高，可以切换
-            MyLog.w(TAG, "轮次确实比当前的高，可以切换")
+            MyLog.w(TAG, "nextRound.roundSeq=${nextRound.roundSeq} 轮次确实比当前的高，可以切换")
             mRoomData.expectRoundInfo = nextRound
             mRoomData.checkRoundInEachMode()
         } else {

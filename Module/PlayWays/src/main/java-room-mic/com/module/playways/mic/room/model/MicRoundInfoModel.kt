@@ -226,10 +226,12 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
         return false
     }
 
-    fun updatePlayUsers(l: List<MicPlayerInfoModel>) {
+    private fun updatePlayUsers(l: List<MicPlayerInfoModel>, notify: Boolean) {
         playUsers.clear()
         playUsers.addAll(l)
-        EventBus.getDefault().post(MicPlaySeatUpdateEvent(playUsers))
+        if(notify){
+            EventBus.getDefault().post(MicPlaySeatUpdateEvent(playUsers))
+        }
     }
 
     /**
@@ -266,7 +268,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 needUpdate = true
             }
             if (needUpdate) {
-                updatePlayUsers(roundInfo.getPlayUsers())
+                updatePlayUsers(roundInfo.getPlayUsers(), notify)
             }
         }
 

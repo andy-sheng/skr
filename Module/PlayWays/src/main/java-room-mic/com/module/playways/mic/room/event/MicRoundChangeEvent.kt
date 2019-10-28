@@ -11,7 +11,7 @@ class MicRoundChangeEvent(var lastRound: MicRoundInfoModel?, var newRound: MicRo
     override fun toString(): String {
         return "MicRoundChangeEvent{" +
                 "lastRoundInfo=" + lastRound +
-                "\nnewRoundInfo=" + newRound +
+                " newRoundInfo=" + newRound +
                 '}'.toString()
     }
 }

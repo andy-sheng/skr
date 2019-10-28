@@ -1019,7 +1019,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             val viewStub = rootView.findViewById<ViewStub>(R.id.grab_sing_begin_tips_card_stub)
             mSingBeginTipsCardView = SingBeginTipsCardView(viewStub)
         }
-        mRoundOverCardView = RoundOverCardView(rootView, mRoomData!!)
+        mRoundOverCardView = RoundOverCardView(rootView)
         mGrabGameOverView = rootView.findViewById(R.id.grab_game_over_view)
     }
 

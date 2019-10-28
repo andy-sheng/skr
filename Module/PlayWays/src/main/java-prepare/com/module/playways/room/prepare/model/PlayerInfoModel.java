@@ -6,6 +6,7 @@ import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public abstract class PlayerInfoModel implements Serializable {
     protected boolean isOnline = true;//是否在线
@@ -69,7 +70,7 @@ public abstract class PlayerInfoModel implements Serializable {
         PlayerInfoModel that = (PlayerInfoModel) o;
 
         if (userID != that.userID) return false;
-        return userInfo != null ? userInfo.equals(that.userInfo) : that.userInfo == null;
+        return Objects.equals(userInfo, that.userInfo);
     }
 
     @Override
