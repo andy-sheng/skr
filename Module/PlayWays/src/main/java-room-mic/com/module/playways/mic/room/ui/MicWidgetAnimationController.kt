@@ -50,7 +50,7 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
             mMainAnimatorSet!!.cancel()
         }
         // 需要改变偏移的对象
-        val viewList = ArrayList<View>()
+        val viewList = ArrayList<View?>()
         fillView(viewList)
 
         val animators = ArrayList<Animator>()
@@ -99,7 +99,7 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
 //        mF.mGameTipsManager.setBaseTranslateY(mF.TAG_INVITE_TIP_VIEW, translateByOpenType)
     }
 
-    internal fun fillView(viewList: MutableList<View>) {
+    internal fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
 //        viewList.add(mF.mTopVsView)
 //        viewList.add(mF.mPracticeFlagIv)
@@ -116,7 +116,8 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
 //        } else {
 //            viewList.addAll(mF.mOthersSingCardView.getRealViews())
 //        }
-//        viewList.addAll(mF.mSelfSingCardView.getRealViews())
+        viewList.addAll(mF.mSelfSingCardView.realViews)
+        viewList.addAll(mF.mOthersSingCardView.realViews)
     }
 
     /**
@@ -127,7 +128,7 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
             mMainAnimatorSet!!.cancel()
         }
         // 需要改变偏移的对象
-        val viewList = ArrayList<View>()
+        val viewList = ArrayList<View?>()
         fillView(viewList)
         val animators = ArrayList<Animator>()
         for (view in viewList) {

@@ -175,7 +175,15 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mCorePresenter.onOpeningAnimationOver()
 
         mUiHanlder.postDelayed(Runnable {
-            mWidgetAnimationController.close()
+            var openOpBarTimes = U.getPreferenceUtils().getSettingInt("key_open_op_bar_times", 0)
+            if (openOpBarTimes < 2) {
+                mWidgetAnimationController.open()
+                openOpBarTimes++
+                U.getPreferenceUtils().setSettingInt("key_open_op_bar_times", openOpBarTimes)
+            } else {
+                mWidgetAnimationController.close()
+            }
+
         }, 500)
         if (MyLog.isDebugLogOpen()) {
             val viewStub = findViewById<ViewStub>(R.id.debug_log_view_stub)

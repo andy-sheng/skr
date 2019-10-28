@@ -8,7 +8,6 @@ import com.component.busilib.constans.GrabRoomType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
-import com.module.playways.mic.room.event.MicGameOverEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
@@ -138,7 +137,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
                 val lastRoundInfoModel = realRoundInfo
                 lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
                 realRoundInfo = null
-                EventBus.getDefault().post(MicGameOverEvent(lastRoundInfoModel))
+                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel,null))
             }
             return
         }
