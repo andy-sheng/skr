@@ -18,11 +18,12 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExImageView
-import com.engine.EngineEvent
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.adapter.MicSeatRecyclerAdapter
+import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
+import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicSeatModel
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -39,6 +40,8 @@ class MicSeatView : ExConstraintLayout {
 
     var mRoomData: MicRoomData? = null
     var adapter: MicSeatRecyclerAdapter? = null
+
+    var callWhenVisible: (() -> Unit)? = null
 
     val raceRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
 
@@ -98,13 +101,6 @@ class MicSeatView : ExConstraintLayout {
         EventBus.getDefault().register(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: EngineEvent) {
-        if (EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS == event.getType()) {
-
-        }
-    }
-
     private fun hide() {
         if (mUiHandler.hasMessages(HIDE_PANEL) || View.GONE == visibility) {
             return
@@ -127,6 +123,9 @@ class MicSeatView : ExConstraintLayout {
             return
         }
 
+        callWhenVisible?.invoke()
+        callWhenVisible = null
+
         clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0f)
@@ -135,6 +134,28 @@ class MicSeatView : ExConstraintLayout {
         animation.fillAfter = true
         startAnimation(animation)
         visibility = View.VISIBLE
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicRoundChangeEvent) {
+        callUpdate {
+            getUserList()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicPlaySeatUpdateEvent) {
+        callUpdate {
+            getUserList()
+        }
+    }
+
+    private fun callUpdate(call: (() -> Unit)) {
+        if (View.VISIBLE == visibility) {
+            call.invoke()
+        } else {
+            callWhenVisible = call
+        }
     }
 
     override fun onDetachedFromWindow() {
