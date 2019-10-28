@@ -28,6 +28,7 @@ import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
+import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.control.OthersSingCardView
@@ -36,6 +37,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.bottom.MicBottomContainerView
+import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
@@ -367,10 +369,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mTopContentView.setRoomData(mRoomData)
 
         mTopContentView.setListener(object : MicTopContentView.Listener {
-            override fun clickInvite() {
-
-            }
-
             override fun clickArrow(open: Boolean) {
                 if (open) {
                     mWidgetAnimationController.open()
@@ -464,6 +462,19 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 .setRoomID(mRoomData.gameId)
                 .build()
         mPersonInfoDialog?.show()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicWantInviteEvent) {
+        // 房主想要邀请别人加入游戏
+        // 打开邀请面板
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, InviteFriendFragment2::class.java)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .addDataBeforeAdd(0, InviteFriendFragment2.FROM_MIC_ROOM)
+                .addDataBeforeAdd(1, mRoomData!!.gameId)
+                .build()
+        )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

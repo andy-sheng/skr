@@ -31,4 +31,6 @@ public interface IPlaywaysModeService extends IProvider {
 
     void createDoubleRoom();
 
+    void jumpMicRoom(int ownerId, int roomID);
+
 }

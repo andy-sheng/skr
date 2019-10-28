@@ -50,9 +50,6 @@ class MicTopContentView : ConstraintLayout {
 
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
-        adapter.inviteCall = {
-            mListener?.clickInvite()
-        }
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -127,6 +124,5 @@ class MicTopContentView : ConstraintLayout {
 
     interface Listener {
         fun clickArrow(open: Boolean)
-        fun clickInvite()
     }
 }

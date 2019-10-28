@@ -15,6 +15,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
+import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.zq.live.proto.MicRoom.EMUserRole
 import org.greenrobot.eventbus.EventBus
@@ -31,8 +32,6 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 field = value
             }
         }
-
-    var inviteCall: (() -> Unit)? = null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MicAvatarTopViewHolder) {
@@ -155,7 +154,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         init {
             item.setOnClickListener(object : DebounceViewClickListener() {
                 override fun clickValid(v: View?) {
-                    inviteCall?.invoke()
+                    EventBus.getDefault().post(MicWantInviteEvent())
                 }
             })
         }

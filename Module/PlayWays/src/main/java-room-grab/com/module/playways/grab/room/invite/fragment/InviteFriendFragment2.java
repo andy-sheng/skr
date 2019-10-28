@@ -21,16 +21,16 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.dialog.InviteFriendDialog;
 import com.module.common.ICallback;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.model.ShareModel;
 import com.module.playways.grab.room.invite.view.InviteFriendView;
 import com.module.playways.grab.room.invite.view.InviteShareFriendView;
-import com.module.playways.grab.room.invite.model.ShareModel;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.component.dialog.InviteFriendDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,6 +41,7 @@ public class InviteFriendFragment2 extends BaseFragment {
 
     public final static int FROM_GRAB_ROOM = 1;
     public final static int FROM_DOUBLE_ROOM = 2;
+    public final static int FROM_MIC_ROOM = 3;
 
     SlidingTabLayout mInviteTab;
     NestViewPager mInviteVp;
@@ -205,8 +206,22 @@ public class InviteFriendFragment2 extends BaseFragment {
 
                 }
             });
-        } else {
+        } else if (mFrom == FROM_DOUBLE_ROOM) {
             SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mMediaType, new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    if (obj != null) {
+                        mKouLingToken = (String) obj;
+                    }
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+
+                }
+            });
+        } else if (mFrom == FROM_MIC_ROOM) {
+            SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -279,9 +294,9 @@ public class InviteFriendFragment2 extends BaseFragment {
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
             if (mFrom == FROM_DOUBLE_ROOM) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID,0, mMediaType, mKouLingToken);
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID, 0, mMediaType, mKouLingToken);
             } else {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID,mTagID, mMediaType, mKouLingToken);
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             }
         }
         mInviteFriendDialog.show();

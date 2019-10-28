@@ -16,9 +16,10 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.component.busilib.event.GrabJoinRoomFailEvent;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.event.GrabJoinRoomFailEvent;
 import com.component.busilib.recommend.RA;
+import com.component.toast.CommonToastView;
 import com.module.RouterConstants;
 import com.module.playways.doubleplay.DoublePlayActivity;
 import com.module.playways.doubleplay.DoubleRoomData;
@@ -30,10 +31,12 @@ import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabMatchActivity;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
+import com.module.playways.mic.match.MicMatchPresenter;
+import com.module.playways.mic.match.model.JoinMicRoomRspModel;
+import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
-import com.component.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -236,6 +239,51 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                 .withSerializable("roomData", doubleRoomData)
                 .navigation();
+    }
+
+    @Override
+    public void jumpMicRoom(int ownerId, int roomID) {
+        HashMap map = new HashMap();
+        map.put("platform", 20);
+        map.put("roomID", roomID);
+        map.put("src", MicMatchPresenter.JOIN_SRC.JRS_INVITE_ONLINE);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
+        ApiMethods.subscribe(mRoomServerApi.joinRoom2(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    //先跳转
+                    JoinMicRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinMicRoomRspModel.class);
+                    rsp.setRoomID(rsp.getRoomID());
+                    rsp.setGameCreateTimeMs(rsp.getGameCreateTimeMs());
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
+                            .withSerializable("JoinMicRoomRspModel", rsp)
+                            .navigation();
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络错误");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络延迟");
+            }
+        });
+
+//        if (result.errno == 0) {
+//            val rsp = JSON.parseObject(result.data.toJSONString(), JoinMicRoomRspModel:: class.java)
+//            rsp.roomID = it.gameID
+//            rsp.gameCreateTimeMs = it.createTimeMs
+//            // TODO 跳到RaceRoomActivity
+//            mIRaceMatchingView.matchRaceSucess(rsp)
+//        }
     }
 
     @Override

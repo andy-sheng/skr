@@ -254,6 +254,18 @@ public interface DoubleRoomServerApi {
     Observable<ApiResult> roomSendInvite(@Body RequestBody body);
 
     /**
+     * 排麦房间内邀请
+     *
+     * @param body {
+     *             "roomID": 0,
+     *             "userID": 0
+     *             }
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/microom/invite")
+    Observable<ApiResult> micRoomSendInvite(@Body RequestBody body);
+
+    /**
      * 双人房邀请响应
      *
      * @param body {

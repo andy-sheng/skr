@@ -40,10 +40,7 @@ import com.component.busilib.manager.WeakRedDotManager
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.dialog.ConfirmDialog
 import com.component.dialog.NotifyDialogView
-import com.component.notification.DoubleInviteNotifyView
-import com.component.notification.FollowNotifyView
-import com.component.notification.GrabFullStarNotifyView
-import com.component.notification.GrabInviteNotifyView
+import com.component.notification.*
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
@@ -84,7 +81,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 MSG_DISMISS_RELATION_FLOAT_WINDOW -> FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW)
                 MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_INVITE_FOALT_WINDOW, 2)
                 MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW, 2)
-                MSG_DISMISS_STAND_FULL_STAR->FloatWindow.destroy(TAG_STAND_FULL_STAR_FOALT_WINDOW,2)
+                MSG_DISMISS_STAND_FULL_STAR -> FloatWindow.destroy(TAG_STAND_FULL_STAR_FOALT_WINDOW, 2)
+                MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW -> FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW, 2)
             }
         }
     }
@@ -110,8 +108,10 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 showDoubleInviteFloatWindow(floatWindowData)
             } else if (floatWindowData.mType == FloatWindowData.Type.DOUBLE_ROOM_INVITE) {
                 showDoubleInviteFromRoomFloatWindow(floatWindowData)
-            }else if(floatWindowData.mType == FloatWindowData.Type.STAND_FULL_STAR){
+            } else if (floatWindowData.mType == FloatWindowData.Type.STAND_FULL_STAR) {
                 showStandFullStarFloatWindow(floatWindowData)
+            } else if (floatWindowData.mType == FloatWindowData.Type.MIC_INVITE) {
+                showMicInviteFromRoomFloatWindow(floatWindowData)
             }
         }
 
@@ -280,6 +280,14 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicRoomInviteEvent) {
+        val floatWindowData = FloatWindowData(FloatWindowData.Type.MIC_INVITE)
+        floatWindowData.userInfoModel = event.mUserInfoModel
+        floatWindowData.roomID = event.inviteMicMsg.roomID
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.add(floatWindowData, true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: CRInviteInCreateRoomNotifyEvent) {
         val floatWindowData = FloatWindowData(FloatWindowData.Type.DOUBLE_ROOM_INVITE)
         floatWindowData.mediaType = EMsgRoomMediaType.EMR_AUDIO.value
@@ -379,6 +387,16 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                         MyLog.e(TAG, e)
                     }
                 }, this@NotifyCorePresenter)
+            }
+        }, true)
+
+    }
+
+    internal fun tryGoMicRoom(ownerId: Int, roomID: Int) {
+        mSkrAudioPermission!!.ensurePermission({
+            mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                iRankingModeService.jumpMicRoom(ownerId, roomID)
             }
         }, true)
 
@@ -608,6 +626,42 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
                 .build()
     }
 
+    internal fun showMicInviteFromRoomFloatWindow(floatWindowData: FloatWindowData) {
+        val userInfoModel = floatWindowData.userInfoModel
+
+        mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW, 5000)
+        val micInviteNotifyView = MicInviteNotifyView(U.app())
+        micInviteNotifyView.bindData(userInfoModel);
+        micInviteNotifyView.setListener {
+            mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
+            FloatWindow.destroy(TAG_MIC_ROOM_INVITE_FOALT_WINDOW)
+            tryGoMicRoom(userInfoModel!!.userId, floatWindowData.roomID)
+        }
+
+        FloatWindow.with(U.app())
+                .setView(micInviteNotifyView)
+                .setMoveType(MoveType.canRemove)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+                .setViewStateListener(object : ViewStateListenerAdapter() {
+                    override fun onDismiss(dismissReason: Int) {
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate!!.endCurrent(floatWindowData)
+                    }
+
+                    override fun onPositionUpdate(x: Int, y: Int) {
+                        super.onPositionUpdate(x, y)
+                        mUiHandler.removeMessages(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW)
+                        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW, 5000)
+                    }
+                })
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setTag(TAG_MIC_ROOM_INVITE_FOALT_WINDOW)
+                .build()
+    }
+
     internal fun showStandFullStarFloatWindow(floatWindowData: FloatWindowData) {
         mUiHandler.removeMessages(MSG_DISMISS_STAND_FULL_STAR)
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_STAND_FULL_STAR, 5000)
@@ -693,7 +747,7 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
          * STAND_FULL_STAR 歌单战5星好评
          */
         enum class Type {
-            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE,STAND_FULL_STAR
+            FOLLOW, GRABINVITE, DOUBLE_GRAB_INVITE, DOUBLE_ROOM_INVITE, STAND_FULL_STAR, MIC_INVITE
         }
     }
 
@@ -704,11 +758,13 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
         internal val TAG_DOUBLE_INVITE_FOALT_WINDOW = "TAG_DOUBLE_INVITE_FOALT_WINDOW"
         internal val TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW = "TAG_DOUBLE_ROOM_INVITE_FOALT_WINDOW"
         internal val TAG_STAND_FULL_STAR_FOALT_WINDOW = "TAG_STAND_FULL_STAR_FOALT_WINDOW"
+        internal val TAG_MIC_ROOM_INVITE_FOALT_WINDOW = "TAG_MIC_ROOM_INVITE_FOALT_WINDOW"
 
         internal val MSG_DISMISS_INVITE_FLOAT_WINDOW = 2
         internal val MSG_DISMISS_RELATION_FLOAT_WINDOW = 3
         internal val MSG_DISMISS_DOUBLE_INVITE_FOALT_WINDOW = 4      // 普通邀请
         internal val MSG_DISMISS_DOUBLE_ROOM_INVITE_FOALT_WINDOW = 5 // 邀请好友，在双人房中的邀请
         internal val MSG_DISMISS_STAND_FULL_STAR = 6
+        internal val MSG_DISMISS_MIC_ROOM_INVITE_FOALT_WINDOW = 7 // 邀请好友，在双人房中的邀请
     }
 }

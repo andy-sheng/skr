@@ -42,6 +42,26 @@ public class SkrKouLingUtils {
         });
     }
 
+    public static void genJoinMicRoomKouling(final int inviterId, final int gameId, final ICallback callback) {
+        String code = String.format("inframeskr://microom/join?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+
+        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    if (callback != null) {
+                        callback.onSucess(obj.getData().getString("token"));
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed("", obj.getErrno(), "口令生成失败");
+                    }
+                }
+            }
+        });
+    }
+
     public static String genJoinDoubleGameKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
