@@ -62,6 +62,20 @@ public class SkrKouLingUtils {
         });
     }
 
+    public static String genJoinMicRoomText(String kouling) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("【复制消息 打开撕歌skr】").append("\n");
+        String name = MyUserInfoManager.getInstance().getNickName();
+        sb.append(name).append(" 邀你加入ta的小k房，一起边唱边聊～").append("\n");
+        sb.append("——————————").append("\n");
+        sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
+        sb.append("撕歌skr 下载地址:http://a.app.icon_qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+        if (MyLog.isDebugLogOpen()) {
+            sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
+        }
+        return sb.toString();
+    }
+
     public static String genJoinDoubleGameKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");

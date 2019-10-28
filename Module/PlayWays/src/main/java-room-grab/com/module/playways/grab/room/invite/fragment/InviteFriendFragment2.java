@@ -261,9 +261,12 @@ public class InviteFriendFragment2 extends BaseFragment {
         if (mFrom == FROM_GRAB_ROOM) {
             web.setTitle("房间已开,就等你来唱");
             web.setDescription("我在撕歌skr开了一个嗨唱包房，快来一起耍呀～");
-        } else {
+        } else if (mFrom == FROM_DOUBLE_ROOM) {
             web.setTitle("房间已开，只等你来");
             web.setDescription("我在撕歌skr开了一个专属我们的唱聊房间，一起边唱边聊吧～");
+        } else if (mFrom == FROM_MIC_ROOM) {
+            web.setTitle("房间已开，就等你来唱");
+            web.setDescription("我在撕歌skr开了一个专属我们的小k房，快来一起耍呀～");
         }
 
         switch (sharePlatform) {
@@ -295,8 +298,10 @@ public class InviteFriendFragment2 extends BaseFragment {
         if (mInviteFriendDialog == null) {
             if (mFrom == FROM_DOUBLE_ROOM) {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID, 0, mMediaType, mKouLingToken);
-            } else {
+            } else if (mFrom == FROM_GRAB_ROOM) {
                 mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
+            } else if (mFrom == FROM_MIC_ROOM) {
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_MIC_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             }
         }
         mInviteFriendDialog.show();
