@@ -95,6 +95,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     // 都是dialogplus
     private var mPersonInfoDialog: PersonInfoDialog? = null
     private var mVoiceControlPanelView: MicVoiceControlPanelView? = null
+    private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
     private var mTipsDialogView: TipsDialogView? = null
 
@@ -334,7 +335,13 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
 
             override fun onClickSetting() {
-
+                //设置界面
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(this@MicRoomActivity)
+                dismissDialog()
+                if (mMicSettingView == null) {
+                    mMicSettingView = MicSettingView(this@MicRoomActivity)
+                }
+                mMicSettingView?.showByDialog()
             }
         })
 

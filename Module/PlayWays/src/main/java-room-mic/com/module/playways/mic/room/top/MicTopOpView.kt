@@ -40,7 +40,7 @@ class MicTopOpView : RelativeLayout {
         mIvVoiceSetting = findViewById<View>(R.id.iv_voice_setting) as ImageView
 
         mIvSetting.setDebounceViewClickListener {
-
+            mListener?.onClickSetting()
         }
 
         mIvVoiceSetting.setOnClickListener(object : DebounceViewClickListener() {
