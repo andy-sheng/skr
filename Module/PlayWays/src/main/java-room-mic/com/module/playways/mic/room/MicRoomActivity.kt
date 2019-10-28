@@ -73,9 +73,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
 class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
-    override fun receiveScoreEvent(score: Int, lineNum: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     /**
      * 存起该房间一些状态信息

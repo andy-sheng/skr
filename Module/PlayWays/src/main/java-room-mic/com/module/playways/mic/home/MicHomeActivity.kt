@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -93,12 +94,14 @@ class MicHomeActivity : BaseActivity() {
             }
 
             override fun onClickUserVoice(model: RecommendMicInfoModel?, position: Int, recomUserInfo: RecommendUserInfo?, childPos: Int) {
-                //todo 播放或者暂停声音
+                MyLog.d(TAG, "onClickUserVoice model = $model, position = $position, recomUserInfo = $recomUserInfo, childPos = $childPos")
                 if (adapter?.isPlay == true && adapter?.playPosition == position && adapter?.playChildPosition == childPos) {
                     // 对同一个的声音的重复点击
+                    MyLog.d(TAG, "onClickUserVoice stopPlay")
                     SinglePlayer.stop(playTag)
                     adapter?.stopPlay()
                 } else {
+                    MyLog.d(TAG, "onClickUserVoice startPlay")
                     SinglePlayer.stop(playTag)
                     recomUserInfo?.voiceInfo?.let {
                         SinglePlayer.startPlay(playTag, it.voiceURL)

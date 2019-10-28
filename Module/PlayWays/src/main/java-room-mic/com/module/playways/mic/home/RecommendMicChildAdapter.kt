@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -24,7 +25,7 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
     var onClickVoice: ((model: RecommendUserInfo?, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecomChildViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recom_child_item_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_child_item_layout, parent, false)
         return RecomChildViewHolder(view)
     }
 
@@ -77,12 +78,14 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
         }
 
         fun starPlay() {
+            MyLog.d("RecomChildViewHolder", "starPlay")
             playIv.visibility = View.GONE
             voiceChartView.visibility = View.VISIBLE
             voiceChartView.start()
         }
 
         fun stopPlay() {
+            MyLog.d("RecomChildViewHolder", "stopPlay")
             playIv.visibility = View.VISIBLE
             voiceChartView.visibility = View.GONE
             voiceChartView.stop()

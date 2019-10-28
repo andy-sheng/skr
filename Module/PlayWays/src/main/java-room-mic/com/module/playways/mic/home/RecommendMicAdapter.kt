@@ -17,10 +17,11 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
     var currPlayModel: RecommendMicInfoModel? = null
 
     val REFRESH_PLAY = 1 //局部刷新播放
+    val REFRESH_STOP = 2 //局部刷新暂停
     private val uiHanlder = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendMicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recom_item_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_item_layout, parent, false)
         return RecommendMicViewHolder(view, listener)
     }
 
@@ -53,6 +54,10 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
                                 holder.stopPlay()
                             }
                         }
+                        REFRESH_STOP -> {
+                            // 停止播放
+                            holder.stopPlay()
+                        }
                     }
                 }
             }
@@ -67,18 +72,20 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
                 // 需要更新 2个holder
                 val lastPos = playPosition
                 currPlayModel = model
+                playPosition = position
                 playChildPosition = childPos
                 notifyItemChanged(position, REFRESH_PLAY)
                 if (lastPos >= 0) {
                     // 停掉之前的
                     uiHanlder.post {
-                        notifyItemChanged(lastPos, REFRESH_PLAY)
+                        notifyItemChanged(lastPos, REFRESH_STOP)
                     }
                 }
 
             }
             childPos != playChildPosition -> {
                 // 需要更新 1个holder
+                currPlayModel = model
                 playChildPosition = childPos
                 notifyItemChanged(position, REFRESH_PLAY)
             }
@@ -90,7 +97,7 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
 
     fun stopPlay() {
         isPlay = false
-        update(playPosition, currPlayModel, REFRESH_PLAY)
+        update(playPosition, currPlayModel, REFRESH_STOP)
         // 重置数据
         playPosition = -1
         playChildPosition = -1
