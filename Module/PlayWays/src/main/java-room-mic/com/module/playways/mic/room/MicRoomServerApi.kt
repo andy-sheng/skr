@@ -9,6 +9,9 @@ import retrofit2.http.*
 
 interface MicRoomServerApi {
 
+    @GET("v1/fuel/mic-room-list")
+    fun getMicHomeRoomList(@Query("offset") offset: Int, @Query("testList") testList: String, @Query("vars") vars: String): Call<ApiResult>
+
     @GET("http://dev.game.inframe.mobi/v2/raceroom/check-rank")
     abstract fun checkRank(@Query("roomType") roomType: Int): Call<ApiResult>
 

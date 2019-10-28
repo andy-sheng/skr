@@ -3,12 +3,13 @@ package com.module.playways.mic.home
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.common.core.userinfo.model.UserInfoModel
 import com.module.playways.R
 
 
-class RecomMicAdapter : RecyclerView.Adapter<RecomMicViewHolder>() {
+class RecomMicAdapter(var listener: RecomMicListener) : RecyclerView.Adapter<RecomMicViewHolder>() {
 
-    var mDataList = ArrayList<RecomMicRoomModel>()
+    var mDataList = ArrayList<RecomMicInfoModel>()
 
     var isPlay = false    //标记是否播放
     var playPosition = -1   //标记播放的位置
@@ -16,7 +17,7 @@ class RecomMicAdapter : RecyclerView.Adapter<RecomMicViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecomMicViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recom_item_layout, parent, false)
-        return RecomMicViewHolder(view)
+        return RecomMicViewHolder(view, listener)
     }
 
     override fun getItemCount(): Int {
@@ -28,7 +29,17 @@ class RecomMicAdapter : RecyclerView.Adapter<RecomMicViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecomMicViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
+        if (payloads.isEmpty()) {
+            holder.bindData(mDataList[position], position)
+        } else {
+            // 局部更新
+        }
     }
 
+}
+
+interface RecomMicListener {
+    fun onClickEnterRoom(model: RecomMicInfoModel?, position: Int)
+
+    fun onClickUserVoice(model: RecomMicInfoModel?, position: Int, userInfoModel: UserInfoModel?, childPos: Int)
 }
