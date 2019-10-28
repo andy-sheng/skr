@@ -62,6 +62,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     var sysScore: Int = 0//本轮系统打分，先搞个默认60分
     var isHasSing = false// 是否已经在演唱，依据时引擎等回调，不是作为是否演唱阶段的依据
 
+    var commonRoundResult:MicRoundResult?=null
     /**
      * 是否还在房间，用来sync优化
      * @return
@@ -504,6 +505,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 val pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo)
                 roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel)
             }
+            roundInfoModel.commonRoundResult = MicRoundResult.parseFromInfoPB(roundInfo.commonRoundResult)
             return roundInfoModel
         }
     }

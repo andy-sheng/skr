@@ -253,7 +253,7 @@ message MRoundInfo
     EMWantSingType wantSingType               = 12; //抢唱方式
     repeated MCHOInnerRoundInfo CHORoundInfos = 13; //合唱：内部轮次信息
     repeated MSPKInnerRoundInfo SPKRoundInfos = 14; //spk：内部轮次信息
-    MCommonRoundResult CommonRoundResult      = 15; //单唱结果
+    MCommonRoundResult commonRoundResult      = 15; //单唱结果
 }
 
 message MCommonRoundResult
