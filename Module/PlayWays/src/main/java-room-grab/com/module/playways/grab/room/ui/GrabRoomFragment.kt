@@ -1105,18 +1105,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabOpBtn.hide("initGrabOpView")
 
         mGrabGiveupView = rootView.findViewById<View>(R.id.grab_giveup_view) as GrabGiveupView
-        mGrabGiveupView.setListener(object : GrabGiveupView.Listener {
-            override fun giveUp(ownerControl: Boolean) {
-                val infoModel = mRoomData!!.realRoundInfo
-                //                if (infoModel != null) {
-                //                    HashMap map = new HashMap();
-                //                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-                //                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                //                            "give_up_sing", map);
-                //                }
-                mCorePresenter?.giveUpSing(ownerControl)
+        mGrabGiveupView.mGiveUpListener = { ownerControl ->
+            mCorePresenter?.giveUpSing(ownerControl) { _ ->
+                mGrabGiveupView.hideWithAnimation(true)
             }
-        })
+        }
         mGrabGiveupView.hideWithAnimation(false)
 
         mMiniOwnerMicIv = rootView.findViewById(R.id.mini_owner_mic_iv)
@@ -1605,10 +1598,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             // 重新决定显示mic按钮
             mBottomContainerView?.setRoomData(mRoomData!!)
         }
-    }
-
-    override fun giveUpSuccess(seq: Int) {
-        mGrabGiveupView.giveUpSuccess()
     }
 
     override fun updateScrollBarProgress(score: Int, songLineNum: Int) {

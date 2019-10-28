@@ -26,7 +26,7 @@ class GrabGiveupView : RelativeLayout {
     private val mIvPass: ExImageView
     private val mOwnerStopIv: ExImageView
 
-    internal var mListener: Listener? = null
+    internal var mGiveUpListener: ((control:Boolean)->Unit)? = null
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -50,26 +50,18 @@ class GrabGiveupView : RelativeLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
-    fun setListener(listener: Listener) {
-        mListener = listener
-    }
-
     init {
         View.inflate(context, R.layout.grab_pass_view_layout, this)
         mIvPass = findViewById<View>(R.id.give_up_iv) as ExImageView
         mIvPass.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (mListener != null) {
-                    mListener!!.giveUp(false)
-                }
+                mGiveUpListener?.invoke(false)
             }
         })
         mOwnerStopIv = findViewById(R.id.owner_stop_iv)
         mOwnerStopIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                if (mListener != null) {
-                    mListener!!.giveUp(true)
-                }
+                mGiveUpListener?.invoke(true)
             }
         })
     }
@@ -87,11 +79,6 @@ class GrabGiveupView : RelativeLayout {
         mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW, 5000)
     }
 
-    fun giveUpSuccess() {
-        mUiHandler.removeMessages(MSG_ANIMATION_SHOW)
-        hideWithAnimation(true)
-    }
-
     fun hideWithAnimation(needAnim: Boolean) {
         MyLog.d(mTag, "hideWithAnimation needAnim=$needAnim")
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW)
@@ -104,7 +91,4 @@ class GrabGiveupView : RelativeLayout {
         mUiHandler.removeCallbacksAndMessages(null)
     }
 
-    interface Listener {
-        fun giveUp(ownerControl: Boolean)
-    }
 }

@@ -1053,7 +1053,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     /**
      * 放弃演唱接口
      */
-    fun giveUpSing(ownerControl: Boolean) {
+    fun giveUpSing(ownerControl: Boolean, okListener: ((seq: Int) -> Unit)?) {
         if (ownerControl) {
             MyLog.w(TAG, "房主结束小游戏")
             estimateOverTsThisRound()
@@ -1069,9 +1069,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 ApiMethods.subscribe(mRoomServerApi.stopFreeMicroByOwner(body), object : ApiObserver<ApiResult>() {
                     override fun process(result: ApiResult) {
                         if (result.errno == 0) {
-                            mIGrabView.giveUpSuccess(now.roundSeq)
                             closeEngine()
                             MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.traceId)
+                            okListener?.invoke(now.roundSeq)
                         } else {
                             MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.traceId)
                         }
@@ -1085,9 +1085,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), object : ApiObserver<ApiResult>() {
                     override fun process(result: ApiResult) {
                         if (result.errno == 0) {
-                            mIGrabView.giveUpSuccess(now.roundSeq)
                             closeEngine()
                             MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.traceId)
+                            okListener?.invoke(now.roundSeq)
                         } else {
                             MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.traceId)
                         }
@@ -1121,7 +1121,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), object : ApiObserver<ApiResult>() {
                 override fun process(result: ApiResult) {
                     if (result.errno == 0) {
-                        mIGrabView.giveUpSuccess(now.roundSeq)
+                        okListener?.invoke(now.roundSeq)
                         closeEngine()
                         MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.traceId)
                     } else {

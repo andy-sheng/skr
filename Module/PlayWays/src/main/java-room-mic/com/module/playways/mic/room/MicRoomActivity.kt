@@ -31,6 +31,7 @@ import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
+import com.module.playways.grab.room.view.GrabGiveupView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.control.SelfSingCardView
@@ -98,7 +99,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mSingBeginTipsCardView: SingBeginTipsCardView
 
     private lateinit var mAddSongIv: ImageView
-    internal lateinit var mRightOpView: MicRightOpView
+    private lateinit var mGiveUpView: GrabGiveupView
 
     internal var mVIPEnterView: VIPEnterView? = null
     private lateinit var mHasSelectSongNumTv: ExTextView
@@ -168,7 +169,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         initTurnSenceView()
         initSingStageView()
 
-        initRightView()
         initVipEnterView()
         initMicSeatView()
 
@@ -244,6 +244,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         if (mTurnInfoCardView != exclude) {
             mTurnInfoCardView.visibility = View.GONE
         }
+        if (mGiveUpView != exclude) {
+            mGiveUpView.hideWithAnimation(false)
+        }
     }
 
     private fun initSingStageView() {
@@ -256,10 +259,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
 //        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
         mOthersSingCardView = OthersSingCardView(rootView)
-    }
-
-    private fun initRightView() {
-        mRightOpView = findViewById(R.id.right_op_view)
     }
 
     private fun initMicSeatView() {
@@ -290,6 +289,12 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     private fun initBottomView() {
+        mGiveUpView = findViewById<GrabGiveupView>(R.id.give_up_view)
+        mGiveUpView.mGiveUpListener = { _ ->
+            mCorePresenter.giveUpSing {
+                mGiveUpView.hideWithAnimation(true)
+            }
+        }
         mAddSongIv = findViewById(R.id.add_song_iv)
         mAddSongIv.setAnimateDebounceViewClickListener { SongManagerActivity.open(this, mRoomData) }
 
@@ -566,6 +571,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         hideAllSceneView(null)
         var step2 = {
             mSelfSingCardView.playLyric()
+            mGiveUpView.delayShowGiveUpView(false)
         }
 
         var step1 = {

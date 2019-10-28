@@ -48,7 +48,7 @@ interface IGrabRoomView {
 
     fun onChangeRoomResult(success: Boolean, errorMsg: String?)
 
-    fun giveUpSuccess(seq: Int)
+//    fun giveUpSuccess(seq: Int)
 
     fun updateScrollBarProgress(score: Int, songLineNum: Int)
 

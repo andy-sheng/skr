@@ -328,7 +328,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     /**
      * 放弃演唱接口
      */
-    fun giveUpSing(ownerControl: Boolean) {
+    fun giveUpSing(okCallback: (()->Unit)?) {
         MyLog.w(TAG, "我放弃演唱")
         val now = mRoomData.realRoundInfo
         if (now == null || !now.singBySelf()) {
@@ -353,6 +353,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             if (result.errno == 0) {
 //                        roomView.giveUpSuccess(now.roundSeq)
                 closeEngine()
+                okCallback?.invoke()
                 MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.traceId)
             } else {
                 MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.traceId)

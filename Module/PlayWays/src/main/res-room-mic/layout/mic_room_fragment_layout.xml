@@ -164,16 +164,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!--右边的操作区域-->
-    <com.module.playways.mic.room.view.MicRightOpView
-        android:id="@+id/right_op_view"
-        android:layout_width="@dimen/view_133_dp"
-        android:layout_height="@dimen/view_133_dp"
-        android:layout_marginBottom="@dimen/view_156_dp"
-        android:clipChildren="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
     <!--点歌-->
     <ImageView
         android:id="@+id/add_song_iv"
@@ -184,6 +174,17 @@
         android:background="@drawable/mic_add_song_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <!--放弃演唱-->
+    <com.module.playways.grab.room.view.GrabGiveupView
+        android:id="@+id/give_up_view"
+        android:layout_width="@dimen/view_97_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/add_song_iv"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/view_20_dp" />
 
     <!--礼物面板-->
     <com.module.playways.room.gift.view.GiftPanelView
