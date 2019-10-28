@@ -25,6 +25,7 @@ import com.engine.Params
 import com.engine.arccloud.RecognizeConfig
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.module.msg.CustomMsgType
 import com.module.playways.BuildConfig
 import com.module.playways.RoomDataUtils
 import com.module.playways.mic.room.MicRoomData
@@ -54,6 +55,12 @@ import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
 import com.module.playways.songmanager.event.RoomNameChangeEvent
 import com.orhanobut.dialogplus.DialogPlus
+import com.zq.live.proto.Common.ESex
+import com.zq.live.proto.Common.UserInfo
+import com.zq.live.proto.GrabRoom.EMsgPosType
+import com.zq.live.proto.GrabRoom.ERoomMsgType
+import com.zq.live.proto.GrabRoom.MachineScore
+import com.zq.live.proto.GrabRoom.RoomMsg
 import com.zq.live.proto.MicRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.Job
@@ -328,7 +335,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     /**
      * 放弃演唱接口
      */
-    fun giveUpSing(okCallback: (()->Unit)?) {
+    fun giveUpSing(okCallback: (() -> Unit)?) {
         MyLog.w(TAG, "我放弃演唱")
         val now = mRoomData.realRoundInfo
         if (now == null || !now.singBySelf()) {
@@ -952,10 +959,9 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MachineScoreEvent) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
-        val infoModel = mRoomData.realRoundInfo
-//        if (infoModel != null && infoModel.singByUserId(event.userId)) {
-//            mIGrabView.updateScrollBarProgress(event.score, event.lineNum)
-//        }
+        if (mRoomData?.realRoundInfo?.singByUserId(event.userId) == true) {
+            roomView.receiveScoreEvent(event.score, event.lineNum)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1005,40 +1011,40 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      */
     private fun sendScoreToOthers(machineScoreItem: MachineScoreItem) {
         // 后续加个优化，如果房间里两人都是机器人就不加了
-//        val msgService = ModuleServiceManager.getInstance().msgService
-//        if (msgService != null) {
-//            val ts = System.currentTimeMillis()
-//            val senderInfo = UserInfo.Builder()
-//                    .setUserID(MyUserInfoManager.getInstance().uid.toInt())
-//                    .setNickName(MyUserInfoManager.getInstance().nickName)
-//                    .setAvatar(MyUserInfoManager.getInstance().avatar)
-//                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().sex))
-//                    .setDescription("")
-//                    .setIsSystem(false)
-//                    .build()
-//
-//            val now = mRoomData.realRoundInfo
-//            if (now != null && now.music != null) {
-//                val roomMsg = RoomMsg.Builder()
-//                        .setTimeMs(ts)
-//                        .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
-//                        .setRoomID(mRoomData.gameId)
-//                        .setNo(ts)
-//                        .setPosType(EMsgPosType.EPT_UNKNOWN)
-//                        .setSender(senderInfo)
-//                        .setMachineScore(MachineScore.Builder()
-//                                .setUserID(MyUserInfoManager.getInstance().uid.toInt())
-//                                .setNo(machineScoreItem.no)
-//                                .setScore(machineScoreItem.score)
-//                                .setItemID(now.music.itemID)
+        val msgService = ModuleServiceManager.getInstance().msgService
+        if (msgService != null) {
+            val ts = System.currentTimeMillis()
+            val senderInfo = UserInfo.Builder()
+                    .setUserID(MyUserInfoManager.getInstance().uid.toInt())
+                    .setNickName(MyUserInfoManager.getInstance().nickName)
+                    .setAvatar(MyUserInfoManager.getInstance().avatar)
+                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().sex))
+                    .setDescription("")
+                    .setIsSystem(false)
+                    .build()
+
+            val now = mRoomData.realRoundInfo
+            if (now != null && now.music != null) {
+                val roomMsg = RoomMsg.Builder()
+                        .setTimeMs(ts)
+                        .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
+                        .setRoomID(mRoomData.gameId)
+                        .setNo(ts)
+                        .setPosType(EMsgPosType.EPT_UNKNOWN)
+                        .setSender(senderInfo)
+                        .setMachineScore(MachineScore.Builder()
+                                .setUserID(MyUserInfoManager.getInstance().uid.toInt())
+                                .setNo(machineScoreItem.no)
+                                .setScore(machineScoreItem.score)
+                                .setItemID(now?.music?.itemID)
 //                                .setLineNum(mRoomData.songLineNum)
-//                                .build()
-//                        )
-//                        .build()
-//                val contnet = U.getBase64Utils().encode(roomMsg.toByteArray())
-//                msgService.sendChatRoomMessage(mRoomData.gameId.toString(), CustomMsgType.MSG_TYPE_ROOM, contnet, null)
-//            }
-//        }
+                                .build()
+                        )
+                        .build()
+                val contnet = U.getBase64Utils().encode(roomMsg.toByteArray())
+                msgService.sendChatRoomMessage(mRoomData.gameId.toString(), CustomMsgType.MSG_TYPE_ROOM, contnet, null)
+            }
+        }
     }
 
 
@@ -1049,61 +1055,57 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      * @param line
      */
     fun sendScoreToServer(score: Int, line: Int) {
-        //score = (int) (Math.mRandom()*100);
-//        val map = HashMap<String, Any>()
-//        val infoModel = mRoomData.realRoundInfo ?: return
-//        map["userID"] = MyUserInfoManager.getInstance().uid
-//
-//        var itemID = 0
-//        if (infoModel.music != null) {
-//            itemID = infoModel.music.itemID
-//            if (infoModel.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
-//                val pkSong = infoModel.music.pkMusic
-//                if (pkSong != null) {
-//                    itemID = pkSong.itemID
-//                }
-//            }
-//        }
-//
-//        map["itemID"] = itemID
-//        map["score"] = score
-//        map["no"] = line
-//        map["gameID"] = mRoomData.gameId
-//        map["mainLevel"] = 0
-//        map["singSecond"] = 0
-//        val roundSeq = infoModel.roundSeq
-//        map["roundSeq"] = roundSeq
-//        val nowTs = System.currentTimeMillis()
-//        map["timeMs"] = nowTs
-//
-//
-//        val sb = StringBuilder()
-//        sb.append("skrer")
-//                .append("|").append(MyUserInfoManager.getInstance().uid)
-//                .append("|").append(itemID)
-//                .append("|").append(score)
-//                .append("|").append(line)
-//                .append("|").append(mRoomData.gameId)
-//                .append("|").append(0)
-//                .append("|").append(0)
-//                .append("|").append(roundSeq)
-//                .append("|").append(nowTs)
-//        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
-//        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-//        ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), object : ApiObserver<ApiResult>() {
-//            override fun process(result: ApiResult) {
-//                if (result.errno == 0) {
-//                    // TODO: 2018/12/13  当前postman返回的为空 待补充
-//                    MyLog.w(TAG, "单句打分上报成功")
-//                } else {
-//                    MyLog.w(TAG, "单句打分上报失败" + result.errno)
-//                }
-//            }
-//
-//            override fun onError(e: Throwable) {
-//                MyLog.e(e)
-//            }
-//        }, this)
+        val map = HashMap<String, Any>()
+        val infoModel = mRoomData.realRoundInfo ?: return
+        map["userID"] = MyUserInfoManager.getInstance().uid
+
+        var itemID = 0
+        if (infoModel.music != null) {
+            itemID = infoModel?.music?.itemID ?: 0
+            if (infoModel.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+                val pkSong = infoModel?.music?.pkMusic
+                if (pkSong != null) {
+                    itemID = pkSong.itemID
+                }
+            }
+        }
+
+        map["itemID"] = itemID
+        map["score"] = score
+        map["no"] = line
+        map["gameID"] = mRoomData.gameId
+        map["mainLevel"] = 0
+        map["singSecond"] = 0
+        val roundSeq = infoModel.roundSeq
+        map["roundSeq"] = roundSeq
+        val nowTs = System.currentTimeMillis()
+        map["timeMs"] = nowTs
+
+
+        val sb = StringBuilder()
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.getInstance().uid)
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.gameId)
+                .append("|").append(0)
+                .append("|").append(0)
+                .append("|").append(roundSeq)
+                .append("|").append(nowTs)
+        map["sign"] = U.getMD5Utils().MD5_32(sb.toString())
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        launch {
+            var result = subscribe {
+                mRoomServerApi.sendPkPerSegmentResult(body)
+            }
+            if (result.errno == 0) {
+                // TODO: 2018/12/13  当前postman返回的为空 待补充
+                MyLog.w(TAG, "单句打分上报成功")
+            } else {
+                MyLog.w(TAG, "单句打分上报失败" + result.errno)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

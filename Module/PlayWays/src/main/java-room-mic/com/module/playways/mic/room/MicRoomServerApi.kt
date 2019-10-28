@@ -83,4 +83,9 @@ interface MicRoomServerApi {
 
     @PUT("http://dev.game.inframe.mobi/v1/microom/heartbeat")
     fun heartbeat(@Body body: RequestBody): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/micgame/pk-commit-segment-result")
+    fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
+
+
 }

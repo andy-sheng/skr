@@ -214,15 +214,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   )
   private final MMatchStatusMsg mMatchStatusMsg;
 
-  /**
-   * 实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
-   */
-  @WireField(
-      tag = 117,
-      adapter = "com.zq.live.proto.MicRoom.MMachineScore#ADAPTER"
-  )
-  private final MMachineScore machineScore;
-
   public MicRoomMsg(Long timeMs, EMicRoomMsgType msgType, Integer roomID,
       MJoinActionMsg mJoinActionMsg, MJoinNoticeMsg mJoinNoticeMsg, MExitGameMsg mExitGameMsg,
       MSyncStatusMsg syncStatusMsg, MRoundOverMsg mRoundOverMsg, MAddMusicMsg mAddMusicMsg,
@@ -230,9 +221,8 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       MReqAddMusicMsg mReqAddMusicMsg, MCHOGiveUpMsg mCHOGiveUpMsg,
       MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg, MChangeRoomNameMsg mChangeRoomNameMsg,
       MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg, MKickoutUserMsg mKickoutUserMsg,
-      MChangeRoomOwnerMsg mChangeRoomOwnerMsg, MMatchStatusMsg mMatchStatusMsg,
-      MMachineScore machineScore) {
-    this(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mCancelMusic, mReqAddMusicMsg, mCHOGiveUpMsg, mSPKInnerRoundOverMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, machineScore, ByteString.EMPTY);
+      MChangeRoomOwnerMsg mChangeRoomOwnerMsg, MMatchStatusMsg mMatchStatusMsg) {
+    this(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mCancelMusic, mReqAddMusicMsg, mCHOGiveUpMsg, mSPKInnerRoundOverMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, ByteString.EMPTY);
   }
 
   public MicRoomMsg(Long timeMs, EMicRoomMsgType msgType, Integer roomID,
@@ -243,7 +233,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg, MChangeRoomNameMsg mChangeRoomNameMsg,
       MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg, MKickoutUserMsg mKickoutUserMsg,
       MChangeRoomOwnerMsg mChangeRoomOwnerMsg, MMatchStatusMsg mMatchStatusMsg,
-      MMachineScore machineScore, ByteString unknownFields) {
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -265,7 +255,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     this.mKickoutUserMsg = mKickoutUserMsg;
     this.mChangeRoomOwnerMsg = mChangeRoomOwnerMsg;
     this.mMatchStatusMsg = mMatchStatusMsg;
-    this.machineScore = machineScore;
   }
 
   @Override
@@ -291,7 +280,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     builder.mKickoutUserMsg = mKickoutUserMsg;
     builder.mChangeRoomOwnerMsg = mChangeRoomOwnerMsg;
     builder.mMatchStatusMsg = mMatchStatusMsg;
-    builder.machineScore = machineScore;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -321,8 +309,7 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
         && Internal.equals(mChangeRoomLevelLimitMsg, o.mChangeRoomLevelLimitMsg)
         && Internal.equals(mKickoutUserMsg, o.mKickoutUserMsg)
         && Internal.equals(mChangeRoomOwnerMsg, o.mChangeRoomOwnerMsg)
-        && Internal.equals(mMatchStatusMsg, o.mMatchStatusMsg)
-        && Internal.equals(machineScore, o.machineScore);
+        && Internal.equals(mMatchStatusMsg, o.mMatchStatusMsg);
   }
 
   @Override
@@ -350,7 +337,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       result = result * 37 + (mKickoutUserMsg != null ? mKickoutUserMsg.hashCode() : 0);
       result = result * 37 + (mChangeRoomOwnerMsg != null ? mChangeRoomOwnerMsg.hashCode() : 0);
       result = result * 37 + (mMatchStatusMsg != null ? mMatchStatusMsg.hashCode() : 0);
-      result = result * 37 + (machineScore != null ? machineScore.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -379,7 +365,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     if (mKickoutUserMsg != null) builder.append(", mKickoutUserMsg=").append(mKickoutUserMsg);
     if (mChangeRoomOwnerMsg != null) builder.append(", mChangeRoomOwnerMsg=").append(mChangeRoomOwnerMsg);
     if (mMatchStatusMsg != null) builder.append(", mMatchStatusMsg=").append(mMatchStatusMsg);
-    if (machineScore != null) builder.append(", machineScore=").append(machineScore);
     return builder.replace(0, 2, "MicRoomMsg{").append('}').toString();
   }
 
@@ -594,16 +579,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
   }
 
   /**
-   * 实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
-   */
-  public MMachineScore getMachineScore() {
-    if(machineScore==null){
-        return new MMachineScore.Builder().build();
-    }
-    return machineScore;
-  }
-
-  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -743,13 +718,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     return mMatchStatusMsg!=null;
   }
 
-  /**
-   * 实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
-   */
-  public boolean hasMachineScore() {
-    return machineScore!=null;
-  }
-
   public static final class Builder extends Message.Builder<MicRoomMsg, Builder> {
     private Long timeMs;
 
@@ -790,8 +758,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
     private MChangeRoomOwnerMsg mChangeRoomOwnerMsg;
 
     private MMatchStatusMsg mMatchStatusMsg;
-
-    private MMachineScore machineScore;
 
     public Builder() {
     }
@@ -956,17 +922,9 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       return this;
     }
 
-    /**
-     * 实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
-     */
-    public Builder setMachineScore(MMachineScore machineScore) {
-      this.machineScore = machineScore;
-      return this;
-    }
-
     @Override
     public MicRoomMsg build() {
-      return new MicRoomMsg(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mCancelMusic, mReqAddMusicMsg, mCHOGiveUpMsg, mSPKInnerRoundOverMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, machineScore, super.buildUnknownFields());
+      return new MicRoomMsg(timeMs, msgType, roomID, mJoinActionMsg, mJoinNoticeMsg, mExitGameMsg, syncStatusMsg, mRoundOverMsg, mAddMusicMsg, mDelMusicMsg, mUpMusicMsg, mCancelMusic, mReqAddMusicMsg, mCHOGiveUpMsg, mSPKInnerRoundOverMsg, mChangeRoomNameMsg, mChangeRoomLevelLimitMsg, mKickoutUserMsg, mChangeRoomOwnerMsg, mMatchStatusMsg, super.buildUnknownFields());
     }
   }
 
@@ -997,7 +955,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
           + MKickoutUserMsg.ADAPTER.encodedSizeWithTag(114, value.mKickoutUserMsg)
           + MChangeRoomOwnerMsg.ADAPTER.encodedSizeWithTag(115, value.mChangeRoomOwnerMsg)
           + MMatchStatusMsg.ADAPTER.encodedSizeWithTag(116, value.mMatchStatusMsg)
-          + MMachineScore.ADAPTER.encodedSizeWithTag(117, value.machineScore)
           + value.unknownFields().size();
     }
 
@@ -1023,7 +980,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       MKickoutUserMsg.ADAPTER.encodeWithTag(writer, 114, value.mKickoutUserMsg);
       MChangeRoomOwnerMsg.ADAPTER.encodeWithTag(writer, 115, value.mChangeRoomOwnerMsg);
       MMatchStatusMsg.ADAPTER.encodeWithTag(writer, 116, value.mMatchStatusMsg);
-      MMachineScore.ADAPTER.encodeWithTag(writer, 117, value.machineScore);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1060,7 +1016,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
           case 114: builder.setMKickoutUserMsg(MKickoutUserMsg.ADAPTER.decode(reader)); break;
           case 115: builder.setMChangeRoomOwnerMsg(MChangeRoomOwnerMsg.ADAPTER.decode(reader)); break;
           case 116: builder.setMMatchStatusMsg(MMatchStatusMsg.ADAPTER.decode(reader)); break;
-          case 117: builder.setMachineScore(MMachineScore.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1092,7 +1047,6 @@ public final class MicRoomMsg extends Message<MicRoomMsg, MicRoomMsg.Builder> {
       if (builder.mKickoutUserMsg != null) builder.mKickoutUserMsg = MKickoutUserMsg.ADAPTER.redact(builder.mKickoutUserMsg);
       if (builder.mChangeRoomOwnerMsg != null) builder.mChangeRoomOwnerMsg = MChangeRoomOwnerMsg.ADAPTER.redact(builder.mChangeRoomOwnerMsg);
       if (builder.mMatchStatusMsg != null) builder.mMatchStatusMsg = MMatchStatusMsg.ADAPTER.redact(builder.mMatchStatusMsg);
-      if (builder.machineScore != null) builder.machineScore = MMachineScore.ADAPTER.redact(builder.machineScore);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -35,7 +35,6 @@ message MicRoomMsg
     MKickoutUserMsg mKickoutUserMsg                   = 114; //踢人
     MChangeRoomOwnerMsg mChangeRoomOwnerMsg           = 115; //修改房主
     MMatchStatusMsg mMatchStatusMsg                   = 116; //房间匹配开关
-    MMachineScore machineScore                        = 117; //实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
 }
 
 enum EMicRoomMsgType {
@@ -59,15 +58,6 @@ enum EMicRoomMsgType {
     RMT_CHANGE_ROOM_OWNER       = 115; //修改房主
     RMT_MATCH_STATUS            = 116; //房间匹配开关
     RMT_ROUND_MACHINE_SCORE     = 117; //实时机器评分
-}
-
-message MMachineScore
-{
-    uint32 userID  = 1; // 演唱者
-    uint32 itemID  = 2; // 演唱曲目
-    uint32 score   = 3; // 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
-    uint32 no      = 4; // 对应截断后的歌词行号
-    uint32 lineNum = 5; // 歌词行数 总分为 100*lineNum*Percent
 }
 
 message MCHOGiveUpMsg
@@ -263,6 +253,14 @@ message MRoundInfo
     EMWantSingType wantSingType               = 12; //抢唱方式
     repeated MCHOInnerRoundInfo CHORoundInfos = 13; //合唱：内部轮次信息
     repeated MSPKInnerRoundInfo SPKRoundInfos = 14; //spk：内部轮次信息
+    MCommonRoundResult CommonRoundResult      = 15; //单唱结果
+}
+
+message MCommonRoundResult
+{
+    float finalScore       = 1; //最终得分分值
+    MScoreTipType finalTip = 2; //最终得分评价
+    string finalMsg        = 3; //最终得分信息
 }
 
 message MSPKInnerRoundInfo
