@@ -3,6 +3,7 @@ package com.module.playways.mic.room.view
 import android.content.Context
 import android.os.Handler
 import android.os.Message
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
@@ -21,6 +22,7 @@ import com.engine.EngineEvent
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.mic.room.adapter.MicSeatRecyclerAdapter
 import com.module.playways.mic.room.model.MicSeatModel
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -36,6 +38,7 @@ class MicSeatView : ExConstraintLayout {
     var recyclerView: RecyclerView
 
     var mRoomData: MicRoomData? = null
+    var adapter: MicSeatRecyclerAdapter? = null
 
     val raceRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
 
@@ -58,6 +61,9 @@ class MicSeatView : ExConstraintLayout {
         View.inflate(context, R.layout.mic_seat_view_layout, this)
         bg = rootView.findViewById(R.id.bg)
         recyclerView = rootView.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = MicSeatRecyclerAdapter()
+        recyclerView.adapter = adapter
 
         setDebounceViewClickListener {
             hide()
@@ -79,7 +85,9 @@ class MicSeatView : ExConstraintLayout {
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("userLists"), MicSeatModel::class.java)
                 list?.let {
-                    //                    UserInfoManager.getInstance().getRemarkName()
+                    adapter?.mDataList?.clear()
+                    adapter?.mDataList?.addAll(list)
+                    adapter?.notifyDataSetChanged()
                 }
             }
         }
