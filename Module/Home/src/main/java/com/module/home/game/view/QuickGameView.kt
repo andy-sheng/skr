@@ -222,6 +222,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onGrabRoomListener() {
                 // 首页抢唱
+                StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_SPECIAL)
                         .navigation()
             }
