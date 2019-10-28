@@ -25,6 +25,8 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
     var mModel: RecomMicInfoModel? = null
     var mPosition: Int = 0
 
+    var playPosition: Int = -1  // 记录下holder的播放位置
+
     init {
         recyclerView.layoutManager = GridLayoutManager(item.context, 3)
         recyclerView.adapter = childAdapter
@@ -42,6 +44,7 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
     fun bindData(model: RecomMicInfoModel, position: Int) {
         this.mPosition = position
         this.mModel = model
+        this.playPosition = -1
 
         childAdapter.mDataList.clear()
         if (model.roomInfo?.userList.isNullOrEmpty()) {
@@ -63,5 +66,27 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
 
         roomNameTv.text = model.roomInfo?.roomName
         levelDescTv.text = LevelConfigUtils.getMicLevelDesc(model.roomInfo?.roomLevel ?: 0)
+    }
+
+    fun startPlay(playPosition: Int) {
+        // 播放指定playPosition 位置的动画(可能需要停掉其他位置的)
+        stopPlay()
+        this.playPosition = playPosition
+
+        val holder = recyclerView.findViewHolderForAdapterPosition(playPosition)
+        if (holder is RecomMicChildAdapter.RecomChildViewHolder) {
+            holder.starPlay()
+        }
+    }
+
+    fun stopPlay() {
+        // 停调所有动画
+        if (playPosition >= 0) {
+            val holder = recyclerView.findViewHolderForAdapterPosition(playPosition)
+            if (holder is RecomMicChildAdapter.RecomChildViewHolder) {
+                holder.stopPlay()
+            }
+        }
+        playPosition = -1
     }
 }
