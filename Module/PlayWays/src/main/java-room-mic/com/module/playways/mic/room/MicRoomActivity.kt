@@ -30,6 +30,8 @@ import com.module.playways.R
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
+import com.module.playways.grab.room.view.control.OthersSingCardView
+import com.module.playways.grab.room.view.control.SelfSingCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
@@ -80,6 +82,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mContinueSendView: ContinueSendView
     internal lateinit var mTopOpView: MicTopOpView
     internal lateinit var mTopContentView: MicTopContentView
+
+    lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
+    lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
 
     private lateinit var mAddSongIv: ImageView
     internal lateinit var mRightOpView: MicRightOpView
@@ -217,6 +222,18 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mSelfSingLyricView?.setVisibility(View.GONE)
         mOtherSingCardView.setVisibility(View.GONE)
         mTurnInfoCardView?.visibility = View.GONE
+    }
+
+    private fun initSingStageView() {
+        var rootView = findViewById<View>(R.id.main_act_container)
+        mSelfSingCardView = SelfSingCardView(rootView)
+        mSelfSingCardView?.setListener {
+//            removeNoAccSrollTipsView()
+//            removeGrabSelfSingTipView()
+            mCorePresenter?.sendRoundOverInfo()
+        }
+//        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
+        mOthersSingCardView = OthersSingCardView(rootView)
     }
 
     private fun initRightView() {

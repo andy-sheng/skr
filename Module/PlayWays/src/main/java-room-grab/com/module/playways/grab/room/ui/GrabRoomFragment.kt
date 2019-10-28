@@ -1143,7 +1143,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             mCorePresenter?.sendRoundOverInfo()
         }
         mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-        mOthersSingCardView = OthersSingCardView(rootView, mRoomData!!)
+        mOthersSingCardView = OthersSingCardView(rootView)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1366,7 +1366,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了")
                 runnable.invoke()
             } else {
-                mSingBeginTipsCardView.bindData { runnable.invoke() }
+                mSingBeginTipsCardView.bindData(SVGAListener { runnable.invoke() })
             }
         } else {
             MyLog.w(TAG, "singBeginTipsPlay" + " grabRoundInfoModel = null ")
@@ -1423,11 +1423,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (lastInfoModel?.isFreeMicRound == true) {
             mSelfSingCardView?.setVisibility(GONE)
         }
-        mRoundOverCardView.bindData(lastInfoModel) {
+        mRoundOverCardView.bindData(lastInfoModel, SVGAListener {
             now?.let {
                 onRoundOverPlayOver(playNextSongInfoCard, now)
             }
-        }
+        })
     }
 
     private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
@@ -1642,9 +1642,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean,continueShow:Boolean) {
+    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean, continueShow: Boolean) {
         if (visiable) {
-            mChallengeStarView.bindData(cnt, justShowInChallenge,continueShow)
+            mChallengeStarView.bindData(cnt, justShowInChallenge, continueShow)
             mChallengeStarView.setVisibility(View.VISIBLE)
         } else {
             mChallengeStarView.setVisibility(View.GONE)

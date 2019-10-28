@@ -72,6 +72,8 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
+    <!--他人唱歌时场景-->
+    <include layout="@layout/mic_other_sing_card_layout" />
     <!--自己唱歌场景-->
     <include layout="@layout/mic_self_sing_card_view_layout" />
 

@@ -10,15 +10,16 @@ import com.module.playways.grab.room.view.minigame.MiniGameOtherSingCardView
 import com.module.playways.grab.room.view.normal.NormalOthersSingCardView
 import com.module.playways.grab.room.view.pk.PKOthersSingCardView
 import com.module.playways.R
+import com.module.playways.room.data.H
 
 import java.util.ArrayList
 
-class OthersSingCardView(mRootView: View, internal var mRoomData: GrabRoomData) {
+class OthersSingCardView(mRootView: View) {
 
-    internal var mNormalOthersSingCardView: NormalOthersSingCardView?=null  // 他人唱歌卡片效果
-    internal var mChorusOtherSingCardView: ChorusOthersSingCardView?=null   // 合唱他人唱歌卡片效果
-    internal var mPKOtherSingCardView: PKOthersSingCardView ?=null          // PK他人唱歌卡片效果
-    internal var mMiniGameOtherSingView: MiniGameOtherSingCardView?=null    // 小游戏卡片效果
+    internal var mNormalOthersSingCardView: NormalOthersSingCardView? = null  // 他人唱歌卡片效果
+    internal var mChorusOtherSingCardView: ChorusOthersSingCardView? = null   // 合唱他人唱歌卡片效果
+    internal var mPKOtherSingCardView: PKOthersSingCardView? = null          // PK他人唱歌卡片效果
+    internal var mMiniGameOtherSingView: MiniGameOtherSingCardView? = null    // 小游戏卡片效果
 
     val realViews: List<View?>
         get() {
@@ -32,19 +33,21 @@ class OthersSingCardView(mRootView: View, internal var mRoomData: GrabRoomData) 
     init {
         run {
             val viewStub = mRootView.findViewById<ViewStub>(R.id.normal_other_sing_card_view_stub)
-            mNormalOthersSingCardView = NormalOthersSingCardView(viewStub, mRoomData)
+            mNormalOthersSingCardView = NormalOthersSingCardView(viewStub)
         }
         run {
             val viewStub = mRootView.findViewById<ViewStub>(R.id.chorus_other_sing_card_view_stub)
-            mChorusOtherSingCardView = ChorusOthersSingCardView(viewStub, mRoomData)
+            mChorusOtherSingCardView = ChorusOthersSingCardView(viewStub)
         }
         run {
             val viewStub = mRootView.findViewById<ViewStub>(R.id.pk_other_sing_card_view_stub)
             mPKOtherSingCardView = PKOthersSingCardView(viewStub)
         }
-        run {
-            val viewStub = mRootView.findViewById<ViewStub>(R.id.mini_game_other_sing_card_view_stub)
-            mMiniGameOtherSingView = MiniGameOtherSingCardView(viewStub, mRoomData)
+        if (H.isGrabRoom()) {
+            run {
+                val viewStub = mRootView.findViewById<ViewStub>(R.id.mini_game_other_sing_card_view_stub)
+                mMiniGameOtherSingView = MiniGameOtherSingCardView(viewStub, H.grabRoomData)
+            }
         }
     }
 
@@ -55,39 +58,70 @@ class OthersSingCardView(mRootView: View, internal var mRoomData: GrabRoomData) 
             mPKOtherSingCardView?.setVisibility(View.GONE)
             mMiniGameOtherSingView?.setVisibility(View.GONE)
         } else if (visibility == View.VISIBLE) {
-            if (RoomDataUtils.isChorusRound(mRoomData)) {
-                mChorusOtherSingCardView?.setVisibility(View.VISIBLE)
-                mPKOtherSingCardView?.setVisibility(View.GONE)
-                mNormalOthersSingCardView?.setVisibility(View.GONE)
-                mMiniGameOtherSingView?.setVisibility(View.GONE)
-            } else if (RoomDataUtils.isPKRound(mRoomData)) {
-                mPKOtherSingCardView?.setVisibility(View.VISIBLE)
-                mChorusOtherSingCardView?.setVisibility(View.GONE)
-                mNormalOthersSingCardView?.setVisibility(View.GONE)
-                mMiniGameOtherSingView?.setVisibility(View.GONE)
-            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
-                mNormalOthersSingCardView?.setVisibility(View.GONE)
-                mChorusOtherSingCardView?.setVisibility(View.GONE)
-                mPKOtherSingCardView?.setVisibility(View.GONE)
-                mMiniGameOtherSingView?.setVisibility(View.VISIBLE)
-            } else {
-                mNormalOthersSingCardView?.setVisibility(View.VISIBLE)
-                mChorusOtherSingCardView?.setVisibility(View.GONE)
-                mPKOtherSingCardView?.setVisibility(View.GONE)
-                mMiniGameOtherSingView?.setVisibility(View.GONE)
+            if (H.isGrabRoom()) {
+                when {
+                    H.grabRoomData?.realRoundInfo?.isChorusRound == true -> {
+                        mChorusOtherSingCardView?.setVisibility(View.VISIBLE)
+                        mPKOtherSingCardView?.setVisibility(View.GONE)
+                        mNormalOthersSingCardView?.setVisibility(View.GONE)
+                        mMiniGameOtherSingView?.setVisibility(View.GONE)
+                    }
+                    H.grabRoomData?.realRoundInfo?.isPKRound == true -> {
+                        mPKOtherSingCardView?.setVisibility(View.VISIBLE)
+                        mChorusOtherSingCardView?.setVisibility(View.GONE)
+                        mNormalOthersSingCardView?.setVisibility(View.GONE)
+                        mMiniGameOtherSingView?.setVisibility(View.GONE)
+                    }
+                    H.grabRoomData?.realRoundInfo?.isMiniGameRound == true -> {
+                        mNormalOthersSingCardView?.setVisibility(View.GONE)
+                        mChorusOtherSingCardView?.setVisibility(View.GONE)
+                        mPKOtherSingCardView?.setVisibility(View.GONE)
+                        mMiniGameOtherSingView?.setVisibility(View.VISIBLE)
+                    }
+                    else -> {
+                        mNormalOthersSingCardView?.setVisibility(View.VISIBLE)
+                        mChorusOtherSingCardView?.setVisibility(View.GONE)
+                        mPKOtherSingCardView?.setVisibility(View.GONE)
+                        mMiniGameOtherSingView?.setVisibility(View.GONE)
+                    }
+                }
+            } else if (H.isMicRoom()) {
+                when {
+                    H.micRoomData?.realRoundInfo?.isChorusRound == true -> {
+                        mChorusOtherSingCardView?.setVisibility(View.VISIBLE)
+                        mPKOtherSingCardView?.setVisibility(View.GONE)
+                        mNormalOthersSingCardView?.setVisibility(View.GONE)
+                    }
+                    H.micRoomData?.realRoundInfo?.isPKRound == true -> {
+                        mPKOtherSingCardView?.setVisibility(View.VISIBLE)
+                        mChorusOtherSingCardView?.setVisibility(View.GONE)
+                        mNormalOthersSingCardView?.setVisibility(View.GONE)
+                    }
+                    else -> {
+                        mNormalOthersSingCardView?.setVisibility(View.VISIBLE)
+                        mChorusOtherSingCardView?.setVisibility(View.GONE)
+                        mPKOtherSingCardView?.setVisibility(View.GONE)
+                    }
+                }
             }
+
         }
     }
 
     fun bindData() {
-        if (RoomDataUtils.isChorusRound(mRoomData)) {
-            mChorusOtherSingCardView?.bindData()
-        } else if (RoomDataUtils.isPKRound(mRoomData)) {
-            mPKOtherSingCardView?.bindData()
-        } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
-            mMiniGameOtherSingView?.bindData()
-        } else {
-            mNormalOthersSingCardView?.bindData()
+        if (H.isGrabRoom()) {
+            when {
+                H.grabRoomData?.realRoundInfo?.isChorusRound == true -> mChorusOtherSingCardView?.bindData()
+                H.grabRoomData?.realRoundInfo?.isPKRound == true -> mPKOtherSingCardView?.bindData()
+                H.grabRoomData?.realRoundInfo?.isMiniGameRound == true -> mMiniGameOtherSingView?.bindData()
+                else -> mNormalOthersSingCardView?.bindData()
+            }
+        } else if (H.isMicRoom()) {
+            when {
+                H.micRoomData?.realRoundInfo?.isChorusRound == true -> mChorusOtherSingCardView?.bindData()
+                H.micRoomData?.realRoundInfo?.isPKRound == true -> mPKOtherSingCardView?.bindData()
+                else -> mNormalOthersSingCardView?.bindData()
+            }
         }
     }
 

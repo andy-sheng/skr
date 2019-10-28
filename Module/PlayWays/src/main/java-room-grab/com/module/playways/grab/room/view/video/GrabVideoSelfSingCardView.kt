@@ -46,39 +46,41 @@ class GrabVideoSelfSingCardView(rootView: View, internal var mRoomData: GrabRoom
             mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
             mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
         } else if (visibility == View.VISIBLE) {
-            if (RoomDataUtils.isChorusRound(mRoomData)) {
-                mVideoNormalSelfSingCardView?.setVisibility(View.GONE)
-                mVideoPkSelfSingCardView?.setVisibility(View.GONE)
-                mVideoChorusSelfSingCardView?.setVisibility(View.VISIBLE)
-                mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
-            } else if (RoomDataUtils.isPKRound(mRoomData)) {
-                mVideoNormalSelfSingCardView?.setVisibility(View.GONE)
-                mVideoPkSelfSingCardView?.setVisibility(View.VISIBLE)
-                mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
-                mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
-            } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
-                mVideoNormalSelfSingCardView?.setVisibility(View.GONE)
-                mVideoPkSelfSingCardView?.setVisibility(View.GONE)
-                mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
-                mVideoMiniGameSelfSingCardView?.setVisibility(View.VISIBLE)
-            } else {
-                mVideoNormalSelfSingCardView?.setVisibility(View.VISIBLE)
-                mVideoPkSelfSingCardView?.setVisibility(View.GONE)
-                mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
-                mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
+            when {
+                mRoomData?.realRoundInfo?.isChorusRound == true -> {
+                    mVideoNormalSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoPkSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoChorusSelfSingCardView?.setVisibility(View.VISIBLE)
+                    mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
+                }
+                mRoomData?.realRoundInfo?.isPKRound == true -> {
+                    mVideoNormalSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoPkSelfSingCardView?.setVisibility(View.VISIBLE)
+                    mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
+                }
+                mRoomData?.realRoundInfo?.isMiniGameRound == true -> {
+                    mVideoNormalSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoPkSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoMiniGameSelfSingCardView?.setVisibility(View.VISIBLE)
+                }
+                else -> {
+                    mVideoNormalSelfSingCardView?.setVisibility(View.VISIBLE)
+                    mVideoPkSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoChorusSelfSingCardView?.setVisibility(View.GONE)
+                    mVideoMiniGameSelfSingCardView?.setVisibility(View.GONE)
+                }
             }
         }
     }
 
     fun playLyric() {
-        if (RoomDataUtils.isChorusRound(mRoomData)) {
-            mVideoChorusSelfSingCardView?.playLyric()
-        } else if (RoomDataUtils.isPKRound(mRoomData)) {
-            mVideoPkSelfSingCardView?.playLyric()
-        } else if (RoomDataUtils.isMiniGameRound(mRoomData)) {
-            mVideoMiniGameSelfSingCardView?.playLyric()
-        } else {
-            mVideoNormalSelfSingCardView?.playLyric()
+        when {
+            mRoomData?.realRoundInfo?.isChorusRound == true -> mVideoChorusSelfSingCardView?.playLyric()
+            mRoomData?.realRoundInfo?.isPKRound == true -> mVideoPkSelfSingCardView?.playLyric()
+            mRoomData?.realRoundInfo?.isMiniGameRound == true -> mVideoMiniGameSelfSingCardView?.playLyric()
+            else -> mVideoNormalSelfSingCardView?.playLyric()
         }
     }
 
