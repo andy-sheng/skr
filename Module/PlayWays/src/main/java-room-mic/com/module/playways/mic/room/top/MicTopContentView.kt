@@ -25,7 +25,7 @@ class MicTopContentView : ConstraintLayout {
     val arrowIv: ImageView
     val recyclerView: RecyclerView
 
-    val adapter: MicTopContentAdapter = MicTopContentAdapter(4)
+    val adapter: MicTopContentAdapter = MicTopContentAdapter()
 
     internal var mIsOpen = true
     private var mRoomData: MicRoomData? = null
@@ -88,6 +88,7 @@ class MicTopContentView : ConstraintLayout {
 
     fun setRoomData(roomData: MicRoomData) {
         mRoomData = roomData
+        adapter.maxUserCount = roomData.configModel.maxUserCnt
         initData("setRoomData")
     }
 

@@ -19,11 +19,18 @@ import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.zq.live.proto.MicRoom.EMUserRole
 import org.greenrobot.eventbus.EventBus
 
-class MicTopContentAdapter(val seatNum: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<MicPlayerInfoModel>()
     val SEAT_TYPE = 0
     val INVITE_TYPE = 1
+
+    var maxUserCount = 1
+        set(value) {
+            if (value > 0) {
+                field = value
+            }
+        }
 
     var inviteCall: (() -> Unit)? = null
 
@@ -46,7 +53,9 @@ class MicTopContentAdapter(val seatNum: Int) : RecyclerView.Adapter<RecyclerView
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position < seatNum) {
+        if (mDataList.size >= maxUserCount) {
+            return SEAT_TYPE
+        } else if (position < maxUserCount) {
             return SEAT_TYPE
         } else {
             return INVITE_TYPE
@@ -54,7 +63,11 @@ class MicTopContentAdapter(val seatNum: Int) : RecyclerView.Adapter<RecyclerView
     }
 
     override fun getItemCount(): Int {
-        return seatNum + 1
+        if (mDataList.size >= maxUserCount) {
+            return mDataList.size
+        } else {
+            return maxUserCount + 1
+        }
     }
 
     inner class MicAvatarTopViewHolder(item: View) : RecyclerView.ViewHolder(item) {
