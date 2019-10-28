@@ -9,6 +9,7 @@ import com.common.utils.U
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.race.match.pbLocalModel.LocalRJoinActionMsg
+import com.zq.live.proto.MicRoom.EJoinRoomSrc
 import com.zq.live.proto.MicRoom.MJoinActionMsg
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -69,7 +70,7 @@ class MicMatchPresenter(val mIRaceMatchingView: IMicMatchingView) : RxLifeCycleP
                 val map = mutableMapOf(
                         "platform" to 20,
                         "roomID" to it.gameID,
-                        "src" to JOIN_SRC.JRS_MATCH
+                        "src" to EJoinRoomSrc.JRS_MATCH
                 )
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 val result = subscribe { mRoomServerApi.joinRoom(body) }
@@ -96,9 +97,5 @@ class MicMatchPresenter(val mIRaceMatchingView: IMicMatchingView) : RxLifeCycleP
                 subscribe { raceRoomServerApi.cancelMatch(body) }
             }
         }
-    }
-
-    enum class JOIN_SRC {
-        JRS_UNKNOWN, JRS_MATCH, JRS_SUGGEST, JRS_INVITE_ONLINE, JRS_INVITE_OFFLINE;
     }
 }

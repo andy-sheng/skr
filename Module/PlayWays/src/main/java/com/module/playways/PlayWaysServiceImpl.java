@@ -31,12 +31,12 @@ import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabMatchActivity;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
-import com.module.playways.mic.match.MicMatchPresenter;
 import com.module.playways.mic.match.model.JoinMicRoomRspModel;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
+import com.zq.live.proto.MicRoom.EJoinRoomSrc;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -246,7 +246,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         HashMap map = new HashMap();
         map.put("platform", 20);
         map.put("roomID", roomID);
-        map.put("src", MicMatchPresenter.JOIN_SRC.JRS_INVITE_ONLINE);
+        map.put("src", EJoinRoomSrc.JRS_INVITE_ONLINE);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
