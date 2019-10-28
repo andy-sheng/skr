@@ -14,6 +14,7 @@ import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
+import com.common.core.scheme.event.MicInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -249,6 +250,15 @@ public class InframeProcessor implements ISchemeProcessor {
             }, true);
         } else if ("/chat_page".equals(path)) {
             EventBus.getDefault().post(new JumpHomeDoubleChatPageEvent());
+        } else if ("/joinmic".equals(path)) {
+            final int ownerID = SchemeUtils.getInt(uri, "owner", 0);
+            if (ownerID == MyUserInfoManager.getInstance().getUid()) {
+                MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
+                return;
+            }
+            final int gameId = SchemeUtils.getInt(uri, "gameId", 0);
+            final int ask = SchemeUtils.getInt(uri, "ask", 0);
+            EventBus.getDefault().post(new MicInviteFromSchemeEvent(ownerID, gameId, ask));
         }
     }
 

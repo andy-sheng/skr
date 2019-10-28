@@ -17,6 +17,8 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import static com.component.dialog.ConfirmDialog.TYPE_MIC_INVITE_CONFIRM;
+
 public class ConfirmDialogView extends RelativeLayout {
     public final String TAG = "GrabKickDialogView";
 
@@ -119,6 +121,17 @@ public class ConfirmDialogView extends RelativeLayout {
             mContentTv.setText(stringBuilder);
             mCancleTv.setText("取消");
             mConfirmTv.setText("踢人");
+        } else if (type == TYPE_MIC_INVITE_CONFIRM) {
+            mKickMaskIv.setVisibility(GONE);
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(" " + mUserInfoModel.getNicknameRemark() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                    .append("\n")
+                    .append("邀请你加入ta的小k房").setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .create();
+            mContentTv.setText(stringBuilder);
+
+            mCancleTv.setText("忽略");
+            mConfirmTv.setText("同意");
         }
     }
 

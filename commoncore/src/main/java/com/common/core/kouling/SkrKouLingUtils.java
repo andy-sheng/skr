@@ -43,7 +43,7 @@ public class SkrKouLingUtils {
     }
 
     public static void genJoinMicRoomKouling(final int inviterId, final int gameId, final ICallback callback) {
-        String code = String.format("inframeskr://microom/join?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+        String code = String.format("inframeskr://room/joinmic?owner=%s&gameId=%s&ask=1", inviterId, gameId);
         KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
 
         ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
