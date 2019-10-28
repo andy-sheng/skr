@@ -1,4 +1,4 @@
-package com.module.playways.mic.create
+package com.module.playways.mic.home
 
 import android.os.Bundle
 import android.widget.ImageView
