@@ -5,7 +5,11 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.CompoundButton
+import com.common.rxretrofit.ApiManager
+import com.kyleduo.switchbutton.SwitchButton
 import com.module.playways.R
+import com.module.playways.mic.room.MicRoomServerApi
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
@@ -16,6 +20,11 @@ class MicSettingView : ConstraintLayout {
 
     private var mDialogPlus: DialogPlus? = null
 
+    // 清唱与伴奏
+    private var mSbAcc: SwitchButton? = null
+
+    internal var mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
+
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -25,7 +34,15 @@ class MicSettingView : ConstraintLayout {
 
     init {
         View.inflate(context, R.layout.mic_setting_view_layout, this)
+        mSbAcc = findViewById(R.id.sb_acc)
 
+        mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+
+        })
+
+        setOnClickListener {
+            //拦截
+        }
     }
 
     fun showByDialog() {
