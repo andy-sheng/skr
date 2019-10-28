@@ -295,7 +295,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         ZqEngineKit.getInstance().destroy("microom")
         mUiHandler.removeCallbacksAndMessages(null)
-        GrabRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
+        MicRoomMsgManager.removeFilter(mPushMsgFilter)
         ModuleServiceManager.getInstance().msgService.leaveChatRoom(mRoomData.gameId.toString())
         JiGuangPush.exitSkrRoomId(mRoomData.gameId.toString())
         MyLog.d(TAG, "destroy over")
