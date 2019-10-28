@@ -12,6 +12,8 @@ import com.common.view.DebounceViewClickListener
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.adapter.MicTopContentAdapter
+import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
+import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
 import com.module.playways.race.room.event.RaceRoundChangeEvent
 import com.module.playways.race.room.event.RaceWaitSeatUpdateEvent
@@ -104,18 +106,13 @@ class MicTopContentView : ConstraintLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceRoundChangeEvent) {
+    fun onEvent(event: MicRoundChangeEvent) {
         initData("RaceRoundChangeEvent")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RacePlaySeatUpdateEvent) {
+    fun onEvent(event: MicPlaySeatUpdateEvent) {
         initData("RacePlaySeatUpdateEvent")
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: RaceWaitSeatUpdateEvent) {
-        initData("RaceWaitSeatUpdateEvent")
     }
 
     fun setListener(listener: Listener) {
