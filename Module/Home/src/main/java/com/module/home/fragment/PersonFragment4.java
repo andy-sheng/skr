@@ -165,21 +165,23 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void onCompletion() {
                 super.onCompletion();
-                isPlay = false;
-                SinglePlayer.INSTANCE.stop(playTag);
-                mAudioView.setPlay(false);
+                stopPlay();
             }
 
             @Override
             public void onPlaytagChange(@org.jetbrains.annotations.Nullable String oldPlayerTag, @org.jetbrains.annotations.Nullable String newPlayerTag) {
                 if (newPlayerTag != playTag) {
-                    isPlay = false;
-                    SinglePlayer.INSTANCE.stop(playTag);
-                    mAudioView.setPlay(false);
+                    stopPlay();
                 }
             }
         };
         SinglePlayer.INSTANCE.addCallback(playTag, playCallback);
+    }
+
+    private void stopPlay() {
+        isPlay = false;
+        SinglePlayer.INSTANCE.stop(playTag);
+        mAudioView.setPlay(false);
     }
 
     private void adjustView() {
@@ -216,6 +218,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     protected void onFragmentInvisible(int from) {
         super.onFragmentInvisible(from);
+        stopPlay();
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
         }
@@ -861,9 +864,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ChildViewPlayAudioEvent event) {
-        isPlay = false;
-        SinglePlayer.INSTANCE.stop(playTag);
-        mAudioView.setPlay(false);
+        stopPlay();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
