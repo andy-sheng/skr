@@ -6,10 +6,10 @@ import com.component.busilib.friends.VoiceInfoModel
 import java.io.Serializable
 
 // 首页推荐房的model
-class RecomMicInfoModel : Serializable {
+class RecommendMicInfoModel : Serializable {
 
     @JSONField(name = "roomInfo")
-    var roomInfo: RecomMicRoomModel? = null
+    var roomInfo: RecommendMicRoomModel? = null
     @JSONField(name = "category")
     var category: Int = 0   // 分类
 
@@ -19,7 +19,7 @@ class RecomMicInfoModel : Serializable {
 }
 
 // 首页推荐房间信息
-class RecomMicRoomModel : Serializable {
+class RecommendMicRoomModel : Serializable {
     @JSONField(name = "roomID")
     var roomID: Int = 0
     @JSONField(name = "inPlayersNum")
@@ -31,7 +31,7 @@ class RecomMicRoomModel : Serializable {
     @JSONField(name = "roomLevel")
     var roomLevel: Int = 0
     @JSONField(name = "userlist")
-    var userList: List<RecomUserInfo>? = null
+    var userList: List<RecommendUserInfo>? = null
 
     override fun toString(): String {
         return "RecomMicRoomModel(roomID=$roomID, inPlayersNum=$inPlayersNum, totalPlayesrNum=$totalPlayesrNum, roomName='$roomName', roomLevel=$roomLevel, userList=$userList)"
@@ -39,7 +39,7 @@ class RecomMicRoomModel : Serializable {
 }
 
 // 首页推荐的用户信息
-class RecomUserInfo : Serializable {
+class RecommendUserInfo : Serializable {
     @JSONField(name = "userInfo")
     var userInfo: UserInfoModel? = null
     @JSONField(name = "voiceInfo")

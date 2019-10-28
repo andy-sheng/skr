@@ -11,7 +11,7 @@ import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
 
-class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.ViewHolder(item) {
+class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : RecyclerView.ViewHolder(item) {
 
     val levelIv: ImageView = item.findViewById(R.id.level_iv)
     val levelDescTv: TextView = item.findViewById(R.id.level_desc_tv)
@@ -20,9 +20,9 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
     val enterRoomTv: ExTextView = item.findViewById(R.id.enter_room_tv)
     val roomNameTv: TextView = item.findViewById(R.id.room_name_tv)
 
-    val childAdapter: RecomMicChildAdapter = RecomMicChildAdapter()
+    val childAdapter: RecommendMicChildAdapter = RecommendMicChildAdapter()
 
-    var mModel: RecomMicInfoModel? = null
+    var mModel: RecommendMicInfoModel? = null
     var mPosition: Int = 0
 
     var playPosition: Int = -1  // 记录下holder的播放位置
@@ -41,7 +41,7 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
         }
     }
 
-    fun bindData(model: RecomMicInfoModel, position: Int) {
+    fun bindData(model: RecommendMicInfoModel, position: Int) {
         this.mPosition = position
         this.mModel = model
         this.playPosition = -1
@@ -74,7 +74,7 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
         this.playPosition = playPosition
 
         val holder = recyclerView.findViewHolderForAdapterPosition(playPosition)
-        if (holder is RecomMicChildAdapter.RecomChildViewHolder) {
+        if (holder is RecommendMicChildAdapter.RecomChildViewHolder) {
             holder.starPlay()
         }
     }
@@ -83,7 +83,7 @@ class RecomMicViewHolder(item: View, listener: RecomMicListener) : RecyclerView.
         // 停调所有动画
         if (playPosition >= 0) {
             val holder = recyclerView.findViewHolderForAdapterPosition(playPosition)
-            if (holder is RecomMicChildAdapter.RecomChildViewHolder) {
+            if (holder is RecommendMicChildAdapter.RecomChildViewHolder) {
                 holder.stopPlay()
             }
         }

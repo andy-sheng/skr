@@ -8,7 +8,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
 import com.common.player.SinglePlayer
@@ -40,7 +39,7 @@ class MicHomeActivity : BaseActivity() {
     lateinit var smartRefresh: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
 
-    var adapter: RecomMicAdapter? = null
+    var adapter: RecommendMicAdapter? = null
 
     val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
 
@@ -88,12 +87,12 @@ class MicHomeActivity : BaseActivity() {
             })
         }
 
-        adapter = RecomMicAdapter(object : RecomMicListener {
-            override fun onClickEnterRoom(model: RecomMicInfoModel?, position: Int) {
+        adapter = RecommendMicAdapter(object : RecommendMicListener {
+            override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
                 //todo 进入房间
             }
 
-            override fun onClickUserVoice(model: RecomMicInfoModel?, position: Int, recomUserInfo: RecomUserInfo?, childPos: Int) {
+            override fun onClickUserVoice(model: RecommendMicInfoModel?, position: Int, recomUserInfo: RecommendUserInfo?, childPos: Int) {
                 //todo 播放或者暂停声音
                 if (adapter?.isPlay == true && adapter?.playPosition == position && adapter?.playChildPosition == childPos) {
                     // 对同一个的声音的重复点击
@@ -137,7 +136,7 @@ class MicHomeActivity : BaseActivity() {
             }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")
-                val list = JSON.parseArray(result.data.getString("rooms"), RecomMicInfoModel::class.java)
+                val list = JSON.parseArray(result.data.getString("rooms"), RecommendMicInfoModel::class.java)
                 addRoomList(list, isClear)
             } else {
                 smartRefresh.finishLoadMore()
@@ -146,7 +145,7 @@ class MicHomeActivity : BaseActivity() {
         }
     }
 
-    private fun addRoomList(list: List<RecomMicInfoModel>?, isClear: Boolean) {
+    private fun addRoomList(list: List<RecommendMicInfoModel>?, isClear: Boolean) {
         if (isClear) {
             adapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {

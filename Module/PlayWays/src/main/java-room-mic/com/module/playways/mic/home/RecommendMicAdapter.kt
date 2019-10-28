@@ -7,32 +7,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.module.playways.R
 
-class RecomMicAdapter(var listener: RecomMicListener) : RecyclerView.Adapter<RecomMicViewHolder>() {
+class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Adapter<RecommendMicViewHolder>() {
 
-    var mDataList = ArrayList<RecomMicInfoModel>()
+    var mDataList = ArrayList<RecommendMicInfoModel>()
 
     var isPlay = false    //标记是否播放
     var playPosition = -1   //标记播放的位置
     var playChildPosition = -1  //标记播放的是holder里面某个位置
-    var currPlayModel: RecomMicInfoModel? = null
+    var currPlayModel: RecommendMicInfoModel? = null
 
     val REFRESH_PLAY = 1 //局部刷新播放
     private val uiHanlder = Handler(Looper.getMainLooper())
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecomMicViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendMicViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recom_item_layout, parent, false)
-        return RecomMicViewHolder(view, listener)
+        return RecommendMicViewHolder(view, listener)
     }
 
     override fun getItemCount(): Int {
         return mDataList.size
     }
 
-    override fun onBindViewHolder(holder: RecomMicViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecommendMicViewHolder, position: Int) {
 
     }
 
-    override fun onBindViewHolder(holder: RecomMicViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: RecommendMicViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) {
             holder.bindData(mDataList[position], position)
             if (isPlay && currPlayModel == mDataList[position]) {
@@ -59,7 +59,7 @@ class RecomMicAdapter(var listener: RecomMicListener) : RecyclerView.Adapter<Rec
         }
     }
 
-    fun startPlay(model: RecomMicInfoModel?, position: Int, recomUserInfo: RecomUserInfo?, childPos: Int) {
+    fun startPlay(model: RecommendMicInfoModel?, position: Int, recomUserInfo: RecommendUserInfo?, childPos: Int) {
         isPlay = true
 
         when {
@@ -97,7 +97,7 @@ class RecomMicAdapter(var listener: RecomMicListener) : RecyclerView.Adapter<Rec
         currPlayModel = null
     }
 
-    fun update(position: Int, model: RecomMicInfoModel?, refreshType: Int) {
+    fun update(position: Int, model: RecommendMicInfoModel?, refreshType: Int) {
         if (mDataList != null || mDataList.size > 0) {
             if (position >= 0 && position < mDataList.size && mDataList[position] === model) {
                 // 位置是对的
@@ -121,8 +121,8 @@ class RecomMicAdapter(var listener: RecomMicListener) : RecyclerView.Adapter<Rec
 
 }
 
-interface RecomMicListener {
-    fun onClickEnterRoom(model: RecomMicInfoModel?, position: Int)
+interface RecommendMicListener {
+    fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int)
 
-    fun onClickUserVoice(model: RecomMicInfoModel?, position: Int, userInfoModel: RecomUserInfo?, childPos: Int)
+    fun onClickUserVoice(model: RecommendMicInfoModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int)
 }

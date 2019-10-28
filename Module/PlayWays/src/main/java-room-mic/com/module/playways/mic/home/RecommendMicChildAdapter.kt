@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
-import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.U
 import com.common.utils.dp
@@ -18,11 +17,11 @@ import com.component.level.utils.LevelConfigUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 
-class RecomMicChildAdapter : RecyclerView.Adapter<RecomMicChildAdapter.RecomChildViewHolder>() {
+class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.RecomChildViewHolder>() {
 
-    var mDataList = ArrayList<RecomUserInfo>()
+    var mDataList = ArrayList<RecommendUserInfo>()
 
-    var onClickVoice: ((model: RecomUserInfo?, position: Int) -> Unit)? = null
+    var onClickVoice: ((model: RecommendUserInfo?, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecomChildViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recom_child_item_layout, parent, false)
@@ -46,7 +45,7 @@ class RecomMicChildAdapter : RecyclerView.Adapter<RecomMicChildAdapter.RecomChil
         val voiceChartView: VoiceChartView = item.findViewById(R.id.voice_chart_view)
         val nameTv: TextView = item.findViewById(R.id.name_tv)
 
-        var mModel: RecomUserInfo? = null
+        var mModel: RecommendUserInfo? = null
         var mPosition: Int = 0
 
         init {
@@ -55,7 +54,7 @@ class RecomMicChildAdapter : RecyclerView.Adapter<RecomMicChildAdapter.RecomChil
             }
         }
 
-        fun bindData(model: RecomUserInfo, position: Int) {
+        fun bindData(model: RecommendUserInfo, position: Int) {
             this.mModel = model
             this.mPosition = position
 
