@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
@@ -19,9 +20,9 @@ import com.module.playways.R
 
 class RecomMicChildAdapter : RecyclerView.Adapter<RecomMicChildAdapter.RecomChildViewHolder>() {
 
-    var mDataList = ArrayList<UserInfoModel>()
+    var mDataList = ArrayList<RecomUserInfo>()
 
-    var onClickVoice: ((model: UserInfoModel?, position: Int) -> Unit)? = null
+    var onClickVoice: ((model: RecomUserInfo?, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecomChildViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recom_child_item_layout, parent, false)
@@ -45,25 +46,47 @@ class RecomMicChildAdapter : RecyclerView.Adapter<RecomMicChildAdapter.RecomChil
         val voiceChartView: VoiceChartView = item.findViewById(R.id.voice_chart_view)
         val nameTv: TextView = item.findViewById(R.id.name_tv)
 
-        var mModel: UserInfoModel? = null
+        var mModel: RecomUserInfo? = null
         var mPosition: Int = 0
 
-        fun bindData(model: UserInfoModel, position: Int) {
+        init {
+            playBg.setAnimateDebounceViewClickListener {
+                onClickVoice?.invoke(mModel, mPosition)
+            }
+        }
+
+        fun bindData(model: RecomUserInfo, position: Int) {
             this.mModel = model
             this.mPosition = position
 
-            if (LevelConfigUtils.getRaceCenterAvatarBg(model.ranking.mainRanking) != 0) {
+            if (LevelConfigUtils.getRaceCenterAvatarBg(model.userInfo?.ranking?.mainRanking
+                            ?: 0) != 0) {
                 levelIv.visibility = View.VISIBLE
-                levelIv.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(model.ranking.mainRanking))
+                levelIv.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(model.userInfo?.ranking?.mainRanking
+                        ?: 0))
             } else {
                 levelIv.visibility = View.INVISIBLE
             }
-            nameTv.text = model.nicknameRemark
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.avatar)
+            nameTv.text = model.userInfo?.nicknameRemark
+            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.userInfo?.avatar)
                     .setCircle(true)
                     .setBorderWidth(2f.dp().toFloat())
                     .setBorderColor(Color.WHITE)
                     .build())
+            playIv.visibility = View.VISIBLE
+            voiceChartView.visibility = View.GONE
+        }
+
+        fun starPlay() {
+            playIv.visibility = View.GONE
+            voiceChartView.visibility = View.VISIBLE
+            voiceChartView.start()
+        }
+
+        fun stopPlay() {
+            playIv.visibility = View.VISIBLE
+            voiceChartView.visibility = View.GONE
+            voiceChartView.stop()
         }
 
     }

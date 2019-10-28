@@ -8,10 +8,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -21,7 +22,6 @@ import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.recommend.RA
 import com.module.RouterConstants
 import com.module.playways.R
-import com.module.playways.battle.songlist.model.BattleTagModel
 import com.module.playways.mic.room.MicRoomServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -30,6 +30,9 @@ import kotlinx.coroutines.launch
 
 @Route(path = RouterConstants.ACTIVITY_MIC_HOME)
 class MicHomeActivity : BaseActivity() {
+
+    val playTag = "MicHomeActivity" + hashCode()
+    lateinit var playCallback: SinglePlayerCallbackAdapter
 
     lateinit var titlebar: CommonTitleBar
     lateinit var quickBegin: ImageView
@@ -90,12 +93,39 @@ class MicHomeActivity : BaseActivity() {
                 //todo 进入房间
             }
 
-            override fun onClickUserVoice(model: RecomMicInfoModel?, position: Int, userInfoModel: UserInfoModel?, childPos: Int) {
+            override fun onClickUserVoice(model: RecomMicInfoModel?, position: Int, recomUserInfo: RecomUserInfo?, childPos: Int) {
                 //todo 播放或者暂停声音
+                if (adapter?.isPlay == true && adapter?.playPosition == position && adapter?.playChildPosition == childPos) {
+                    // 对同一个的声音的重复点击
+                    SinglePlayer.stop(playTag)
+                    adapter?.stopPlay()
+                } else {
+                    SinglePlayer.stop(playTag)
+                    recomUserInfo?.voiceInfo?.let {
+                        SinglePlayer.startPlay(playTag, it.voiceURL)
+                    }
+                    adapter?.startPlay(model, position, recomUserInfo, childPos)
+                }
             }
         })
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+
+        playCallback = object : SinglePlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                SinglePlayer.stop(playTag)
+                adapter?.stopPlay()
+            }
+
+            override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+                if (newPlayerTag != playTag) {
+                    SinglePlayer.stop(playTag)
+                    adapter?.stopPlay()
+                }
+            }
+        }
+        SinglePlayer.addCallback(playTag, playCallback)
 
         getRecomRoomList(0, true)
     }
@@ -129,6 +159,12 @@ class MicHomeActivity : BaseActivity() {
                 adapter?.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun destroy() {
+        super.destroy()
+        SinglePlayer.release(playTag)
+        SinglePlayer.removeCallback(playTag)
     }
 
     override fun useEventBus(): Boolean {
