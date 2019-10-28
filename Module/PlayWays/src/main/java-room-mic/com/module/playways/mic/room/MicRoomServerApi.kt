@@ -80,4 +80,7 @@ interface MicRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/microom/join-room")
     fun joinRoom2(@Body body: RequestBody): Observable<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/microom/heartbeat")
+    fun heartbeat(body: RequestBody): Call<ApiResult>
 }

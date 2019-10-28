@@ -27,15 +27,15 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
 
     var ownerId: Int = 0// 房主id
 
-    private var hasGameBegin = true// 游戏是否已经开始
+//    private var hasGameBegin = true// 游戏是否已经开始
 
     var roomName: String = ""  // 房间名称
 
     var ownerKickTimes = 100  // 房主剩余踢人的次数,默认为100
 
-    var isNewUser = false   // 是否是新手引导房间
+//    var isNewUser = false   // 是否是新手引导房间
 
-    private var mOpenRecording = -1 // 是否开启高光时刻
+//    private var mOpenRecording = -1 // 是否开启高光时刻
 
     /**
      * 是否在选手席位
@@ -155,13 +155,13 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         }
     }
 
-    fun hasGameBegin(): Boolean {
-        return hasGameBegin
-    }
-
-    fun setHasGameBegin(hasGameBegin: Boolean) {
-        this.hasGameBegin = hasGameBegin
-    }
+//    fun hasGameBegin(): Boolean {
+//        return hasGameBegin
+//    }
+//
+//    fun setHasGameBegin(hasGameBegin: Boolean) {
+//        this.hasGameBegin = hasGameBegin
+//    }
 
     fun loadFromRsp(rsp: JoinMicRoomRspModel) {
         this.gameId = rsp.roomID
@@ -195,15 +195,15 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         this.gameCreateTs = rsp.gameCreateTimeMs
         this.gameStartTs = rsp.gameStartTimeMs
         // 游戏未开始
-        if (rsp.isHasGameBegin == null) {
-            if (this.gameStartTs > 0) {
-                this.setHasGameBegin(true)
-            } else {
-                this.setHasGameBegin(false)
-            }
-        } else {
-            this.setHasGameBegin(rsp.isHasGameBegin!!)
-        }
+//        if (rsp.isHasGameBegin == null) {
+//            if (this.gameStartTs > 0) {
+//                this.setHasGameBegin(true)
+//            } else {
+//                this.setHasGameBegin(false)
+//            }
+//        } else {
+//            this.setHasGameBegin(rsp.isHasGameBegin!!)
+//        }
 
 //        this.isChallengeAvailable = rsp.isChallengeAvailable
         this.roomName = rsp.roomName ?: ""
@@ -228,7 +228,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
                 ", configModel=" + configModel +
                 ", roomType=" + roomType +
                 ", ownerId=" + ownerId +
-                ", hasGameBegin=" + hasGameBegin +
+//                ", hasGameBegin=" + hasGameBegin +
                 ", mAgoraToken=" + agoraToken +
                 '}'.toString()
     }

@@ -140,11 +140,8 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             }
             pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
         }
-        if (mRoomData.hasGameBegin()) {
-            startSyncGameStatus()
-        } else {
-            cancelSyncGameStatus()
-        }
+        startHeartbeat()
+        startSyncGameStatus()
     }
 
     private fun joinRcRoom(deep: Int) {
@@ -200,12 +197,8 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      */
     fun onOpeningAnimationOver() {
         // 开始触发触发轮次变化
-        if (mRoomData.hasGameBegin()) {
-            mRoomData.checkRoundInEachMode()
-            ensureInRcRoom()
-        } else {
-            MyLog.d(TAG, "onOpeningAnimationOver 游戏未开始")
-        }
+        mRoomData.checkRoundInEachMode()
+        ensureInRcRoom()
     }
 
     /**
@@ -289,6 +282,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             exitRoom("destroy")
         }
         cancelSyncGameStatus()
+        heartbeatJob?.cancel()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
@@ -416,6 +410,28 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             var result = subscribe { mRoomServerApi.exitRoom(body) }
             if (result.errno == 0) {
                 mRoomData.isHasExitGame = true
+            }
+        }
+    }
+
+    var heartbeatJob: Job? = null
+
+    private fun startHeartbeat() {
+        heartbeatJob?.cancel()
+        heartbeatJob = launch {
+            while (true) {
+                val map = mutableMapOf(
+                        "roomID" to mRoomData.gameId,
+                        "userID" to MyUserInfoManager.getInstance().uid
+                )
+                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+                val result = subscribe { mRoomServerApi.heartbeat(body) }
+                if (result.errno == 0) {
+
+                } else {
+
+                }
+                delay(60 * 1000)
             }
         }
     }
