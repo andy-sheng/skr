@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
-import android.view.animation.Animation
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -75,10 +74,6 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
 class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
-    override fun receiveScoreEvent(score: Int, lineNum: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     /**
      * 存起该房间一些状态信息
      */
@@ -393,6 +388,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 dismissDialog()
                 if (mMicSettingView == null) {
                     mMicSettingView = MicSettingView(this@MicRoomActivity)
+                    mMicSettingView?.mRoomData = mRoomData
                 }
                 mMicSettingView?.showByDialog()
             }
@@ -464,6 +460,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         val giftBigContinueView = findViewById<GiftBigContinuousView>(R.id.gift_big_continue_view)
         giftBigAnimationViewGroup.setGiftBigContinuousView(giftBigContinueView)
         //mDengBigAnimation = findViewById<View>(R.id.deng_big_animation) as GrabDengBigAnimationView
+    }
+
+    override fun receiveScoreEvent(score: Int, lineNum: Int) {
+
     }
 
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {

@@ -87,5 +87,9 @@ interface MicRoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/micgame/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Call<ApiResult>
 
-
+    /**
+     * 取消匹配EMMS_UNKNOWN = 0 : 未知 - EMMS_OPEN = 1 : match 打开 - EMMS_CLOSED = 2 : match 关闭
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/microom/change-match-status")
+    fun changeMatchStatus(@Body body: RequestBody): Call<ApiResult>
 }
