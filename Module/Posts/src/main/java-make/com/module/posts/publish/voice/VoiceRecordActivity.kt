@@ -68,6 +68,9 @@ class VoiceRecordActivity : BaseActivity() {
     lateinit var okTv: ExTextView
     lateinit var recordDiffuseView: DiffuseView
     lateinit var circleCountDownView: CircleCountDownView
+
+
+    lateinit var tipsTv: TextView
     lateinit var progressView: SkrProgressView
 
     var startRecordTs = 0L
@@ -98,6 +101,11 @@ class VoiceRecordActivity : BaseActivity() {
         recordDiffuseView = findViewById(R.id.record_diffuse_view)
         circleCountDownView = findViewById(R.id.circle_count_down_view)
         progressView = findViewById(R.id.progress_view)
+        tipsTv = findViewById(R.id.tips_tv)
+
+        if (from == FROM_PERSON) {
+            tipsTv.visibility = View.VISIBLE
+        }
 
         titleBar.leftImageButton.setOnClickListener {
             finish()
