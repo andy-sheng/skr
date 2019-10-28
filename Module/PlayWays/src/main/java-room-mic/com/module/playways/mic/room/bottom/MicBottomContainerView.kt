@@ -15,6 +15,7 @@ import com.module.playways.BaseRoomData
 import com.module.playways.R
 import com.module.playways.grab.room.dynamicmsg.DynamicMsgView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTextView
+import com.module.playways.mic.room.MicRoomData
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.room.view.BottomContainerView
 
@@ -29,8 +30,6 @@ class MicBottomContainerView : BottomContainerView {
 
     var mDynamicMsgPopWindow: PopupWindow? = null    //动态表情弹出面板
     var mDynamicMsgView: DynamicMsgView? = null
-
-    var mRaceRoomData: RaceRoomData? = null
 
     internal var type = TYPE_TEXT_INPUT
 
@@ -137,10 +136,7 @@ class MicBottomContainerView : BottomContainerView {
 
     override fun setRoomData(roomData: BaseRoomData<*>) {
         super.setRoomData(roomData)
-        if (mRoomData is RaceRoomData) {
-            mRaceRoomData = mRoomData as RaceRoomData
-            mVoiceRecordBtn.mRoomData = mRaceRoomData
-        }
+        mVoiceRecordBtn.mRoomData = roomData
     }
 
     internal fun adjustUi(grabOwner: Boolean, isOwnerRoom: Boolean) {
