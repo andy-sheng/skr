@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.view.DebounceViewClickListener;
@@ -14,10 +15,12 @@ import com.component.busilib.view.AvatarView;
 import com.zq.live.proto.Common.ESex;
 
 public class MicInviteNotifyView extends ConstraintLayout {
+    ImageView mAvatarBg;
     AvatarView mAvatarIv;
-    ExTextView mInviterNameTv;
-    ExImageView mSexIv;
-    ExTextView mAgreeButton;
+    ExTextView mNameTv;
+    ImageView mSexIv;
+    ExTextView mHintTv;
+    ExImageView mOkBtn;
 
     UserInfoModel mUserInfoModel;
 
@@ -41,19 +44,21 @@ public class MicInviteNotifyView extends ConstraintLayout {
     private void init() {
         inflate(getContext(), R.layout.mic_invite_notification_view_layout, this);
 
-        mAvatarIv = findViewById(R.id.avatar_iv);
-        mInviterNameTv = findViewById(R.id.inviter_name_tv);
-        mSexIv = findViewById(R.id.sex_iv);
-        mAgreeButton = findViewById(R.id.agree_button);
+        mAvatarBg = (ImageView) findViewById(R.id.avatar_bg);
+        mAvatarIv = (AvatarView) findViewById(R.id.avatar_iv);
+        mNameTv = (ExTextView) findViewById(R.id.name_tv);
+        mSexIv = (ImageView) findViewById(R.id.sex_iv);
+        mHintTv = (ExTextView) findViewById(R.id.hint_tv);
+        mOkBtn = (ExImageView) findViewById(R.id.ok_btn);
     }
 
     public void bindData(UserInfoModel userInfoModel) {
         this.mUserInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mInviterNameTv.setText(userInfoModel.getNickname() + " 邀请你加入小k房");
+        mNameTv.setText(userInfoModel.getNickname());
 
-        mAgreeButton.setOnClickListener(new DebounceViewClickListener() {
+        mOkBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
