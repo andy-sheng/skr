@@ -137,6 +137,20 @@
         app:layout_constraintRight_toRightOf="@+id/play_btn"
         app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
+    <TextView
+        android:id="@+id/tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_80_dp"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/view_4_dp"
+        android:text="录制的声音将出现在个人中心和房间卡片\n试试唱几句拿手的\n让别人发现你的好声音吧～"
+        android:textColor="@color/black_trans_60"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/play_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.component.busilib.view.SkrProgressView
         android:id="@+id/progress_view"
