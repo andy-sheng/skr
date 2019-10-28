@@ -22,6 +22,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     /* 一唱到底使用 */
     var status = EMRoundStatus.MRS_UNKNOWN.value
 
+    @JSONField(name = "users")
     private var playUsers: ArrayList<MicPlayerInfoModel> = ArrayList() // 参与这轮游戏中的人，包括离线
 
     //0未知
