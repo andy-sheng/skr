@@ -32,19 +32,19 @@ interface MicRoomServerApi {
     fun getRoomPermmissionList(): Call<ApiResult>
 
 
-    @PUT("http://dev.stand.inframe.mobi/v1/micgame/round-over")
+    @PUT("http://dev.game.inframe.mobi/v1/micgame/round-over")
     fun sendRoundOver(@Body body: RequestBody): Call<ApiResult>
 
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/micgame/give-up")
+    @PUT("http://dev.game.inframe.mobi/v1/micgame/give-up")
     fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
 
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.stand.inframe.mobi/v1/microom/req-kick-user")
+    @PUT("http://dev.game.inframe.mobi/v1/microom/req-kick-user")
     fun reqKickUser(@Body body: RequestBody): Call<ApiResult>
 
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.room.inframe.mobi/v1/microom/exit-room")
+    @PUT("http://dev.game.inframe.mobi/v1/microom/exit-room")
     fun exitRoom(@Body body: RequestBody): Call<ApiResult>
 
     @GET("http://dev.game.inframe.mobi/v1/micgame/sync-status")

@@ -460,7 +460,6 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
 
-
     private fun processSyncResult(roundInfo: MicRoundInfoModel) {
         if (roundInfo.roundSeq == mRoomData.realRoundSeq) {
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(roundInfo, true)
@@ -511,22 +510,39 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         if (thisRound.status == EMRoundStatus.MRS_INTRO.value) {
             // 等待阶段
-            roomView.showWaiting()
-        } else if (thisRound.isSingStatus) {
-            // 演唱阶段
-            if (thisRound.singBySelf()) {
-                preOpWhenSelfRound()
-                roomView.singBySelf()
-
+            if (lastRound != null) {
+                roomView.showRoundOver(lastRound) {
+                    roomView.showWaiting()
+                }
             } else {
-                preOpWhenOtherRound()
-                roomView.singByOthers()
+                roomView.showWaiting()
+            }
+        } else if (thisRound.isSingStatus) {
+            if (lastRound != null) {
+                roomView.showRoundOver(lastRound) {
+                    // 演唱阶段
+                    if (thisRound.singBySelf()) {
+                        preOpWhenSelfRound()
+                        roomView.singBySelf(true)
+                    } else {
+                        preOpWhenOtherRound()
+                        roomView.singByOthers(true)
+                    }
+                }
+            } else {
+                // 演唱阶段
+                if (thisRound.singBySelf()) {
+                    preOpWhenSelfRound()
+                    roomView.singBySelf(false)
+                } else {
+                    preOpWhenOtherRound()
+                    roomView.singByOthers(false)
+                }
             }
         } else if (thisRound.status == EMRoundStatus.MRS_END.value) {
 
         }
     }
-
 
     private fun closeEngine() {
         if (mRoomData.gameId > 0) {
@@ -677,7 +693,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         playerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
         playerInfoModel.role = event.role.value
 
-        mRoomData.realRoundInfo?.addUser(true,playerInfoModel)
+        mRoomData.realRoundInfo?.addUser(true, playerInfoModel)
         roomView.joinNotice(playerInfoModel)
     }
 
@@ -688,7 +704,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MExitGameMsg) {
-        mRoomData.realRoundInfo?.removeUser(true,event.userID)
+        mRoomData.realRoundInfo?.removeUser(true, event.userID)
     }
 
     /**
@@ -833,7 +849,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         ensureInRcRoom()
         var currentRound = MicRoundInfoModel.parseFromRoundInfo(event.currentRound)
         var nextRound = MicRoundInfoModel.parseFromRoundInfo(event.nextRound)
-        if (RoomDataUtils.isCurrentRunningRound(currentRound.roundSeq, mRoomData)) {
+        if (currentRound.roundSeq == mRoomData.realRoundInfo?.roundSeq) {
             // 如果是当前轮次
             mRoomData.realRoundInfo!!.tryUpdateRoundInfoModel(currentRound, false)
 
@@ -845,14 +861,14 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
                 }
             }
         }
-        if (RoomDataUtils.roundSeqLarger<MicRoundInfoModel>(nextRound, mRoomData.expectRoundInfo)) {
+        if (nextRound.roundSeq > (mRoomData.expectRoundInfo?.roundSeq ?: 0)) {
             // 游戏轮次结束
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换")
             mRoomData.expectRoundInfo = nextRound
             mRoomData.checkRoundInEachMode()
         } else {
-            MyLog.w(TAG, "轮次比当前轮次还小,直接忽略 当前轮次:" + mRoomData.expectRoundInfo!!.roundSeq
+            MyLog.w(TAG, "轮次比当前轮次还小,直接忽略 当前轮次:" + mRoomData.expectRoundInfo?.roundSeq
                     + " push轮次:" + event.currentRound.roundSeq)
         }
     }
@@ -1119,7 +1135,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             }
         } else {
             // 别人被踢出去
-            roomView.dimissKickDialog()
+            roomView.dismissKickDialog()
             pretendSystemMsg(qKickUserResultEvent.kickResultContent)
         }
     }

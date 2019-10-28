@@ -15,6 +15,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder> {
@@ -33,19 +34,32 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
   )
   private final Integer maxUserCnt;
 
-  public MGameConfig(Integer maxUserCnt) {
-    this(maxUserCnt, ByteString.EMPTY);
+  /**
+   * 反馈分提示语
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.zq.live.proto.MicRoom.MScoreTipMsg#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<MScoreTipMsg> mScoreTipMsg;
+
+  public MGameConfig(Integer maxUserCnt, List<MScoreTipMsg> mScoreTipMsg) {
+    this(maxUserCnt, mScoreTipMsg, ByteString.EMPTY);
   }
 
-  public MGameConfig(Integer maxUserCnt, ByteString unknownFields) {
+  public MGameConfig(Integer maxUserCnt, List<MScoreTipMsg> mScoreTipMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.maxUserCnt = maxUserCnt;
+    this.mScoreTipMsg = Internal.immutableCopyOf("mScoreTipMsg", mScoreTipMsg);
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.maxUserCnt = maxUserCnt;
+    builder.mScoreTipMsg = Internal.copyOf("mScoreTipMsg", mScoreTipMsg);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -56,7 +70,8 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
     if (!(other instanceof MGameConfig)) return false;
     MGameConfig o = (MGameConfig) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(maxUserCnt, o.maxUserCnt);
+        && Internal.equals(maxUserCnt, o.maxUserCnt)
+        && mScoreTipMsg.equals(o.mScoreTipMsg);
   }
 
   @Override
@@ -65,6 +80,7 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (maxUserCnt != null ? maxUserCnt.hashCode() : 0);
+      result = result * 37 + mScoreTipMsg.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -74,6 +90,7 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (maxUserCnt != null) builder.append(", maxUserCnt=").append(maxUserCnt);
+    if (!mScoreTipMsg.isEmpty()) builder.append(", mScoreTipMsg=").append(mScoreTipMsg);
     return builder.replace(0, 2, "MGameConfig{").append('}').toString();
   }
 
@@ -98,16 +115,36 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
   }
 
   /**
+   * 反馈分提示语
+   */
+  public List<MScoreTipMsg> getMScoreTipMsgList() {
+    if(mScoreTipMsg==null){
+        return new java.util.ArrayList<MScoreTipMsg>();
+    }
+    return mScoreTipMsg;
+  }
+
+  /**
    * 最大用户数（座位数）
    */
   public boolean hasMaxUserCnt() {
     return maxUserCnt!=null;
   }
 
+  /**
+   * 反馈分提示语
+   */
+  public boolean hasMScoreTipMsgList() {
+    return mScoreTipMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<MGameConfig, Builder> {
     private Integer maxUserCnt;
 
+    private List<MScoreTipMsg> mScoreTipMsg;
+
     public Builder() {
+      mScoreTipMsg = Internal.newMutableList();
     }
 
     /**
@@ -118,9 +155,18 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
       return this;
     }
 
+    /**
+     * 反馈分提示语
+     */
+    public Builder addAllMScoreTipMsg(List<MScoreTipMsg> mScoreTipMsg) {
+      Internal.checkElementsNotNull(mScoreTipMsg);
+      this.mScoreTipMsg = mScoreTipMsg;
+      return this;
+    }
+
     @Override
     public MGameConfig build() {
-      return new MGameConfig(maxUserCnt, super.buildUnknownFields());
+      return new MGameConfig(maxUserCnt, mScoreTipMsg, super.buildUnknownFields());
     }
   }
 
@@ -132,12 +178,14 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
     @Override
     public int encodedSize(MGameConfig value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.maxUserCnt)
+          + MScoreTipMsg.ADAPTER.asRepeated().encodedSizeWithTag(2, value.mScoreTipMsg)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, MGameConfig value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.maxUserCnt);
+      MScoreTipMsg.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.mScoreTipMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -148,6 +196,7 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setMaxUserCnt(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.mScoreTipMsg.add(MScoreTipMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -162,6 +211,7 @@ public final class MGameConfig extends Message<MGameConfig, MGameConfig.Builder>
     @Override
     public MGameConfig redact(MGameConfig value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.mScoreTipMsg, MScoreTipMsg.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

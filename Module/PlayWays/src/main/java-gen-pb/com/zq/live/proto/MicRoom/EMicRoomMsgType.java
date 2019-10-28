@@ -96,7 +96,12 @@ public enum EMicRoomMsgType implements WireEnum {
   /**
    * 房间匹配开关
    */
-  RMT_MATCH_STATUS(116);
+  RMT_MATCH_STATUS(116),
+
+  /**
+   * 实时机器评分
+   */
+  RMT_ROUND_MACHINE_SCORE(117);
 
   public static final ProtoAdapter<EMicRoomMsgType> ADAPTER = new ProtoAdapter_EMicRoomMsgType();
 
@@ -129,6 +134,7 @@ public enum EMicRoomMsgType implements WireEnum {
       case 114: return RMT_KICKOUT_USER;
       case 115: return RMT_CHANGE_ROOM_OWNER;
       case 116: return RMT_MATCH_STATUS;
+      case 117: return RMT_ROUND_MACHINE_SCORE;
       default: return null;
     }
   }

@@ -19,9 +19,10 @@ import com.module.playways.grab.room.view.minigame.MiniGameSingBeginTipsCardView
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView
 import com.module.playways.grab.room.view.pk.PKSingBeginTipsCardView
 import com.module.playways.R
+import com.module.playways.room.data.H
 import com.opensource.svgaplayer.SVGAImageView
 
-class SingBeginTipsCardView(viewStub: ViewStub, internal var mRoomData: GrabRoomData) : ExViewStub(viewStub) {
+class SingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     internal var mNormalSingBeginTipsCardView = NormalSingBeginTipsCardView() // 提示xxx演唱开始的卡片
     internal var mChorusSingBeginTipsCardView = ChorusSingBeginTipsCardView() // 合唱对战开始
@@ -62,42 +63,74 @@ class SingBeginTipsCardView(viewStub: ViewStub, internal var mRoomData: GrabRoom
     }
 
     fun bindData(svgaListener: SVGAListener) {
-        val grabRoundInfoModel = mRoomData.realRoundInfo
         tryInflate()
         setVisibility(View.VISIBLE)
-        mSVGAImageView!!.visibility = View.VISIBLE
-        if (grabRoundInfoModel != null) {
-            if (mRoomData?.realRoundInfo?.isChorusRound == true) {
-                val list = grabRoundInfoModel.chorusRoundInfoModels
-                if (list != null && list.size >= 2) {
-                    val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
-                    val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
-                    val lp = mSVGAImageView!!.layoutParams
-                    lp.height = U.getDisplayUtils().dip2px(154f)
-                    mChorusSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
-                }
-            } else if (mRoomData?.realRoundInfo?.isPKRound == true) {
-                val list = grabRoundInfoModel.getsPkRoundInfoModels()
-                if (list != null && list.size >= 2) {
-                    val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
-                    val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+        if (H.isGrabRoom()) {
+            var mRoomData = H.grabRoomData
+            val grabRoundInfoModel = mRoomData?.realRoundInfo
+            mSVGAImageView!!.visibility = View.VISIBLE
+            if (grabRoundInfoModel != null) {
+                if (mRoomData?.realRoundInfo?.isChorusRound == true) {
+                    val list = grabRoundInfoModel.chorusRoundInfoModels
+                    if (list != null && list.size >= 2) {
+                        val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
+                        val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+                        val lp = mSVGAImageView!!.layoutParams
+                        lp.height = U.getDisplayUtils().dip2px(154f)
+                        mChorusSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    }
+                } else if (mRoomData?.realRoundInfo?.isPKRound == true) {
+                    val list = grabRoundInfoModel.getsPkRoundInfoModels()
+                    if (list != null && list.size >= 2) {
+                        val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
+                        val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+                        val lp = mSVGAImageView!!.layoutParams
+                        lp.height = U.getDisplayUtils().dip2px(181f)
+                        mPKSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    }
+                } else if (mRoomData?.realRoundInfo?.isMiniGameRound == true) {
+                    val list = grabRoundInfoModel.miniGameRoundInfoModels
+                    if (list != null && list.size >= 2) {
+                        val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
+                        val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+                        val lp = mSVGAImageView!!.layoutParams
+                        lp.height = U.getDisplayUtils().dip2px(154f)
+                        mMiniGameSingBegin.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    }
+                } else {
                     val lp = mSVGAImageView!!.layoutParams
                     lp.height = U.getDisplayUtils().dip2px(181f)
-                    mPKSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    mNormalSingBeginTipsCardView.bindData(mSVGAImageView, mRoomData?.getPlayerOrWaiterInfo(grabRoundInfoModel.userID), grabRoundInfoModel.music, svgaListener, grabRoundInfoModel.isChallengeRound)
                 }
-            } else if (mRoomData?.realRoundInfo?.isMiniGameRound == true) {
-                val list = grabRoundInfoModel.miniGameRoundInfoModels
-                if (list != null && list.size >= 2) {
-                    val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
-                    val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+            }
+        } else if (H.isMicRoom()) {
+            var mRoomData = H.micRoomData
+            val grabRoundInfoModel = mRoomData?.realRoundInfo
+            mSVGAImageView!!.visibility = View.VISIBLE
+            if (grabRoundInfoModel != null) {
+                if (mRoomData?.realRoundInfo?.isChorusRound == true) {
+                    val list = grabRoundInfoModel.chorusRoundInfoModels
+                    if (list != null && list.size >= 2) {
+                        val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
+                        val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+                        val lp = mSVGAImageView!!.layoutParams
+                        lp.height = U.getDisplayUtils().dip2px(154f)
+                        mChorusSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    }
+                } else if (mRoomData?.realRoundInfo?.isPKRound == true) {
+                    val list = grabRoundInfoModel.getsPkRoundInfoModels()
+                    if (list != null && list.size >= 2) {
+                        val userInfoModel1 = mRoomData.getPlayerOrWaiterInfo(list[0].userID)
+                        val userInfoModel2 = mRoomData.getPlayerOrWaiterInfo(list[1].userID)
+                        val lp = mSVGAImageView!!.layoutParams
+                        lp.height = U.getDisplayUtils().dip2px(181f)
+                        mPKSingBeginTipsCardView.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    }
+                } else {
                     val lp = mSVGAImageView!!.layoutParams
-                    lp.height = U.getDisplayUtils().dip2px(154f)
-                    mMiniGameSingBegin.bindData(mSVGAImageView, userInfoModel1, userInfoModel2, svgaListener)
+                    lp.height = U.getDisplayUtils().dip2px(181f)
+                    mNormalSingBeginTipsCardView.bindData(mSVGAImageView, mRoomData?.getPlayerOrWaiterInfo(grabRoundInfoModel.userID), grabRoundInfoModel.music, svgaListener, false)
                 }
-            } else {
-                val lp = mSVGAImageView!!.layoutParams
-                lp.height = U.getDisplayUtils().dip2px(181f)
-                mNormalSingBeginTipsCardView.bindData(mSVGAImageView, mRoomData.getPlayerOrWaiterInfo(grabRoundInfoModel.userID), grabRoundInfoModel.music, svgaListener, grabRoundInfoModel.isChallengeRound)
             }
         }
     }

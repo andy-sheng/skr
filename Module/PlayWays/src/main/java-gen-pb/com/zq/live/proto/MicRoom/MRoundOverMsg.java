@@ -24,8 +24,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
 
-  public static final EMRoundOverType DEFAULT_OVERTYPE = EMRoundOverType.EMROT_UNKNOWN;
-
   /**
    * 本轮次结束的毫秒时间戳
    */
@@ -36,19 +34,10 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   private final Long roundOverTimeMs;
 
   /**
-   * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound)
-   */
-  @WireField(
-      tag = 2,
-      adapter = "com.zq.live.proto.MicRoom.EMRoundOverType#ADAPTER"
-  )
-  private final EMRoundOverType overType;
-
-  /**
    * 当前结束轮次的信息
    */
   @WireField(
-      tag = 3,
+      tag = 2,
       adapter = "com.zq.live.proto.MicRoom.MRoundInfo#ADAPTER"
   )
   private final MRoundInfo currentRound;
@@ -57,21 +46,19 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
    * 下个轮次的信息
    */
   @WireField(
-      tag = 4,
+      tag = 3,
       adapter = "com.zq.live.proto.MicRoom.MRoundInfo#ADAPTER"
   )
   private final MRoundInfo nextRound;
 
-  public MRoundOverMsg(Long roundOverTimeMs, EMRoundOverType overType, MRoundInfo currentRound,
-      MRoundInfo nextRound) {
-    this(roundOverTimeMs, overType, currentRound, nextRound, ByteString.EMPTY);
+  public MRoundOverMsg(Long roundOverTimeMs, MRoundInfo currentRound, MRoundInfo nextRound) {
+    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
   }
 
-  public MRoundOverMsg(Long roundOverTimeMs, EMRoundOverType overType, MRoundInfo currentRound,
-      MRoundInfo nextRound, ByteString unknownFields) {
+  public MRoundOverMsg(Long roundOverTimeMs, MRoundInfo currentRound, MRoundInfo nextRound,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
-    this.overType = overType;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
   }
@@ -80,7 +67,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.roundOverTimeMs = roundOverTimeMs;
-    builder.overType = overType;
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
     builder.addUnknownFields(unknownFields());
@@ -94,7 +80,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     MRoundOverMsg o = (MRoundOverMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
-        && Internal.equals(overType, o.overType)
         && Internal.equals(currentRound, o.currentRound)
         && Internal.equals(nextRound, o.nextRound);
   }
@@ -105,7 +90,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
-      result = result * 37 + (overType != null ? overType.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       super.hashCode = result;
@@ -117,7 +101,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
-    if (overType != null) builder.append(", overType=").append(overType);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     return builder.replace(0, 2, "MRoundOverMsg{").append('}').toString();
@@ -141,16 +124,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
         return DEFAULT_ROUNDOVERTIMEMS;
     }
     return roundOverTimeMs;
-  }
-
-  /**
-   * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound)
-   */
-  public EMRoundOverType getOverType() {
-    if(overType==null){
-        return new EMRoundOverType.Builder().build();
-    }
-    return overType;
   }
 
   /**
@@ -181,13 +154,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   }
 
   /**
-   * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound)
-   */
-  public boolean hasOverType() {
-    return overType!=null;
-  }
-
-  /**
    * 当前结束轮次的信息
    */
   public boolean hasCurrentRound() {
@@ -204,8 +170,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   public static final class Builder extends Message.Builder<MRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
-    private EMRoundOverType overType;
-
     private MRoundInfo currentRound;
 
     private MRoundInfo nextRound;
@@ -218,14 +182,6 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
      */
     public Builder setRoundOverTimeMs(Long roundOverTimeMs) {
       this.roundOverTimeMs = roundOverTimeMs;
-      return this;
-    }
-
-    /**
-     * 轮次结束类型(如果子轮次结束需解析currentRound，如果主轮次结束需解析nextRound)
-     */
-    public Builder setOverType(EMRoundOverType overType) {
-      this.overType = overType;
       return this;
     }
 
@@ -247,7 +203,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
 
     @Override
     public MRoundOverMsg build() {
-      return new MRoundOverMsg(roundOverTimeMs, overType, currentRound, nextRound, super.buildUnknownFields());
+      return new MRoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
     }
   }
 
@@ -259,18 +215,16 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     @Override
     public int encodedSize(MRoundOverMsg value) {
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
-          + EMRoundOverType.ADAPTER.encodedSizeWithTag(2, value.overType)
-          + MRoundInfo.ADAPTER.encodedSizeWithTag(3, value.currentRound)
-          + MRoundInfo.ADAPTER.encodedSizeWithTag(4, value.nextRound)
+          + MRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
+          + MRoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, MRoundOverMsg value) throws IOException {
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
-      EMRoundOverType.ADAPTER.encodeWithTag(writer, 2, value.overType);
-      MRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.currentRound);
-      MRoundInfo.ADAPTER.encodeWithTag(writer, 4, value.nextRound);
+      MRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
+      MRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -281,16 +235,8 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 2: {
-            try {
-              builder.setOverType(EMRoundOverType.ADAPTER.decode(reader));
-            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
-              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
-            }
-            break;
-          }
-          case 3: builder.setCurrentRound(MRoundInfo.ADAPTER.decode(reader)); break;
-          case 4: builder.setNextRound(MRoundInfo.ADAPTER.decode(reader)); break;
+          case 2: builder.setCurrentRound(MRoundInfo.ADAPTER.decode(reader)); break;
+          case 3: builder.setNextRound(MRoundInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

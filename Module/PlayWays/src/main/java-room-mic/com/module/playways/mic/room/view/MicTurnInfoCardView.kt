@@ -36,6 +36,7 @@ class MicTurnInfoCardView : ConstraintLayout {
     }
 
     fun showAnimation(listener: AnimationListener) {
+        visibility = View.VISIBLE
         // 入场，停一秒，离场, 肯定是一次播完的
         mListener = listener
         animationEnter()

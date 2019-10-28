@@ -134,6 +134,7 @@ class SelfSingCardView(mRootView: View) {
     }
 
     fun playLyric() {
+        setVisibility(View.VISIBLE)
         if (H.isGrabRoom()) {
             when {
                 H.grabRoomData!!.realRoundInfo?.isChorusRound == true -> mChorusSelfSingCardView?.playLyric()

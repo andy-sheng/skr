@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
+import android.view.animation.Animation
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -33,8 +34,11 @@ import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.control.SelfSingCardView
+import com.module.playways.grab.room.view.control.SingBeginTipsCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
+import com.module.playways.listener.AnimationListener
+import com.module.playways.listener.SVGAListener
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.bottom.MicBottomContainerView
 import com.module.playways.mic.room.event.MicWantInviteEvent
@@ -63,6 +67,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.MicRoom.EMRoundStatus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -76,6 +81,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     internal lateinit var mCorePresenter: MicCorePresenter
 
+    //基础ui组件
     internal lateinit var mInputContainerView: MicInputContainerView
     internal lateinit var mBottomContainerView: MicBottomContainerView
     internal lateinit var mVoiceRecordTipsView: VoiceRecordTipsView
@@ -85,15 +91,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mTopOpView: MicTopOpView
     internal lateinit var mTopContentView: MicTopContentView
 
+    // 专场ui组件
+    lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
     lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
     lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
+    lateinit var mSingBeginTipsCardView: SingBeginTipsCardView
 
     private lateinit var mAddSongIv: ImageView
     internal lateinit var mRightOpView: MicRightOpView
-
-    private lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
-    private lateinit var mSelfSingLyricView: MicSelfSingLyricView  // 自己唱
-    private lateinit var mOtherSingCardView: MicOtherSingCardView   // 别人唱
 
     internal var mVIPEnterView: VIPEnterView? = null
     private lateinit var mHasSelectSongNumTv: ExTextView
@@ -161,8 +166,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
+        initSingStageView()
 
-        initSingSenceView()
         initRightView()
         initVipEnterView()
         initMicSeatView()
@@ -203,6 +208,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         super.destroy()
         dismissDialog()
         mGiftPanelView?.destroy()
+        mSelfSingCardView?.destroy()
         H.reset()
     }
 
@@ -220,17 +226,23 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
 
-    private fun hideAllSceneView() {
-        mSelfSingLyricView?.setVisibility(View.GONE)
-        mOtherSingCardView.setVisibility(View.GONE)
-        mTurnInfoCardView?.visibility = View.GONE
+    private fun hideAllSceneView(exclude: Any?) {
+        if (mSelfSingCardView != exclude) {
+            mSelfSingCardView.setVisibility(View.GONE)
+        }
+        if (mOthersSingCardView != exclude) {
+            mOthersSingCardView.setVisibility(View.GONE)
+        }
+        if (mTurnInfoCardView != exclude) {
+            mTurnInfoCardView.visibility = View.GONE
+        }
     }
 
     private fun initSingStageView() {
         var rootView = findViewById<View>(R.id.main_act_container)
         mSelfSingCardView = SelfSingCardView(rootView)
         mSelfSingCardView?.setListener {
-//            removeNoAccSrollTipsView()
+            //            removeNoAccSrollTipsView()
 //            removeGrabSelfSingTipView()
             mCorePresenter?.sendRoundOverInfo()
         }
@@ -255,9 +267,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mVIPEnterView = VIPEnterView(findViewById(R.id.vip_enter_view_stub))
     }
 
-    private fun initSingSenceView() {
-    }
-
     private fun initInputView() {
         mInputContainerView = findViewById(R.id.input_container_view)
         mInputContainerView.setRoomData(mRoomData)
@@ -268,6 +277,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 //        mWaitingCardView.visibility = View.GONE
         mTurnInfoCardView = findViewById(R.id.turn_card_view)
         mTurnInfoCardView.visibility = View.GONE
+
+        mSingBeginTipsCardView = SingBeginTipsCardView(findViewById<ViewStub>(R.id.mic_sing_begin_tips_card_stub))
     }
 
     private fun initBottomView() {
@@ -377,21 +388,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 }
             }
         })
-//        mPracticeFlagIv = findViewById<ExImageView>(R.id.practice_flag_iv)
-        // 加上状态栏的高度
-        val statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(this)
-
-//        run {
-//            val topLayoutParams = mTopOpView.getLayoutParams() as ConstraintLayout.LayoutParams
-//            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin
-//        }
-//        run {
-//            val topLayoutParams = mTopContentView.getLayoutParams() as ConstraintLayout.LayoutParams
-//            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin
-//        }
-
-//        mRaceTopVsView = findViewById(R.id.race_top_vs_view)
-//        mRaceTopVsView.setRaceRoomData(mRoomData)
     }
 
     private fun showGameRuleDialog() {
@@ -554,17 +550,68 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mTipsDialogView?.dismiss(false)
     }
 
-
     override fun showWaiting() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideAllSceneView(null)
     }
 
-    override fun singBySelf() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun singBySelf(hasLastRound: Boolean) {
+        hideAllSceneView(null)
+        var step2 = {
+            mSelfSingCardView.playLyric()
+        }
+
+        var step1 = {
+            //不是pk 第二轮 都显示 卡片
+            if (mRoomData?.realRoundInfo?.status != EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+                mSingBeginTipsCardView.bindData(SVGAListener {
+                    step2.invoke()
+                })
+            } else {
+                step2.invoke()
+            }
+        }
+
+        if (hasLastRound) {
+            // 有上一局 肯定要显示下一首
+            mTurnInfoCardView.showAnimation(object : AnimationListener {
+                override fun onFinish() {
+                    step1.invoke()
+                }
+            })
+        } else {
+            step1.invoke()
+        }
     }
 
-    override fun singByOthers() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun singByOthers(hasLastRound: Boolean) {
+        hideAllSceneView(null)
+        var step2 = {
+            mOthersSingCardView.bindData()
+        }
+
+        var step1 = {
+            //不是pk 第二轮 都显示 卡片
+            var b1 = mRoomData?.realRoundInfo?.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value
+            var b2 = (mRoomData?.realRoundInfo?.isParticipant == false) && (mRoomData?.realRoundInfo?.isEnterInSingStatus == true)
+            if (b2 || b1) {
+                step2.invoke()
+            } else {
+                mSingBeginTipsCardView.bindData(SVGAListener {
+                    step2.invoke()
+                })
+            }
+        }
+
+        if (hasLastRound) {
+            // 有上一局 肯定要显示下一首
+            mTurnInfoCardView.showAnimation(object : AnimationListener {
+                override fun onFinish() {
+                    step1.invoke()
+                }
+            })
+        } else {
+            step1.invoke()
+        }
     }
 
     override fun joinNotice(model: MicPlayerInfoModel?) {
@@ -573,19 +620,20 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
-    override fun kickBySomeOne(b: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
+        continueOp?.invoke()
     }
 
-    override fun dimissKickDialog() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun kickBySomeOne(b: Boolean) {
+    }
+
+    override fun dismissKickDialog() {
     }
 
     override fun gameOver() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mCorePresenter.exitRoom("gameOver")
+        finish()
     }
 
-    override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 }

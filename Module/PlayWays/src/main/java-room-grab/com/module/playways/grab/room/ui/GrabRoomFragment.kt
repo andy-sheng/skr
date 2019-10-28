@@ -1017,7 +1017,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mSongInfoCardView = rootView.findViewById(R.id.turn_change_song_info_card_view)
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.grab_sing_begin_tips_card_stub)
-            mSingBeginTipsCardView = SingBeginTipsCardView(viewStub, mRoomData!!)
+            mSingBeginTipsCardView = SingBeginTipsCardView(viewStub)
         }
         mRoundOverCardView = RoundOverCardView(rootView, mRoomData!!)
         mGrabGameOverView = rootView.findViewById(R.id.grab_game_over_view)
