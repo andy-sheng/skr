@@ -70,7 +70,7 @@ class MicMatchPresenter(val mIRaceMatchingView: IMicMatchingView) : RxLifeCycleP
                 val map = mutableMapOf(
                         "platform" to 20,
                         "roomID" to it.gameID,
-                        "src" to EJoinRoomSrc.JRS_MATCH
+                        "src" to EJoinRoomSrc.JRS_MATCH.value
                 )
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 val result = subscribe { mRoomServerApi.joinRoom(body) }

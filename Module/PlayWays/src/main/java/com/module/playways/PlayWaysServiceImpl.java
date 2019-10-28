@@ -246,7 +246,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         HashMap map = new HashMap();
         map.put("platform", 20);
         map.put("roomID", roomID);
-        map.put("src", EJoinRoomSrc.JRS_INVITE_ONLINE);
+        map.put("src", EJoinRoomSrc.JRS_INVITE_ONLINE.getValue());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
