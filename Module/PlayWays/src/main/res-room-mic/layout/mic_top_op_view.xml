@@ -5,9 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/view_34_dp"
+    android:background="@color/black_trans_80"
     android:orientation="vertical"
     tools:parentTag="android.widget.RelativeLayout">
 
+
+    <ImageView
+        android:id="@+id/game_setting"
+        android:layout_width="@dimen/view_41_dp"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/xkf_shezhi" />
 
     <ImageView
         android:id="@+id/game_rule_iv"
@@ -15,6 +24,7 @@
         android:layout_height="@dimen/view_26_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_toRightOf="@+id/iv_voice_setting"
         android:background="@drawable/race_rule_icon" />
 
     <ImageView
@@ -27,12 +37,11 @@
 
     <ImageView
         android:id="@+id/iv_voice_setting"
-        android:layout_width="@dimen/view_50_dp"
+        android:layout_width="@dimen/view_40_dp"
         android:layout_height="@dimen/view_26_dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/feed_back_iv"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:background="@drawable/race_voice_icon" />
+        android:layout_toRightOf="@id/game_setting"
+        android:background="@drawable/xkf_yinyue" />
 
 
     <com.common.view.ex.ExTextView
@@ -48,8 +57,8 @@
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_solid_color="@color/transparent"
         app:bl_stroke_color="@color/white_trans_20"
-        app:bl_stroke_width="@dimen/view_1_dp"
-        app:bl_solid_color="@color/transparent" />
+        app:bl_stroke_width="@dimen/view_1_dp" />
 
 </merge>

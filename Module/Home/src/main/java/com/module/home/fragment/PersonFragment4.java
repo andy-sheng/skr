@@ -32,6 +32,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.player.SinglePlayer;
 import com.common.player.SinglePlayerCallbackAdapter;
+import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -44,9 +45,13 @@ import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.friends.VoiceInfoModel;
 import com.component.level.utils.LevelConfigUtils;
 import com.component.person.event.ChildViewPlayAudioEvent;
+import com.component.person.model.RelationNumModel;
 import com.component.person.model.ScoreDetailModel;
+import com.component.person.photo.view.PhotoWallView;
+import com.component.person.producation.view.ProducationWallView;
 import com.component.person.view.CommonAudioView;
 import com.component.person.view.PersonTagView;
+import com.component.person.view.RequestCallBack;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -65,16 +70,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
-import com.component.person.photo.view.PhotoWallView;
-import com.component.person.producation.view.ProducationWallView;
-import com.component.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-
-import com.component.person.model.RelationNumModel;
 
 /**
  * 自己
@@ -399,6 +399,24 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
                         .withInt("from", 2)
                         .navigation();
+            }
+        });
+
+        getRootView().findViewById(R.id.open_honor_tv).setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                        .greenChannel().navigation();
+            }
+        });
+
+        mHonorIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                        .greenChannel().navigation();
             }
         });
     }
