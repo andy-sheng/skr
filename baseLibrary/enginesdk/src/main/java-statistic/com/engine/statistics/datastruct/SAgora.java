@@ -5,6 +5,9 @@ import com.engine.statistics.SUtils;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 
+import static io.agora.rtc.Constants.ADAPT_DOWN_BANDWIDTH;
+import static io.agora.rtc.Constants.ADAPT_NONE;
+import static io.agora.rtc.Constants.ADAPT_UP_BANDWIDTH;
 
 
 public class SAgora //all struct related to Agora is defined here!
@@ -134,6 +137,26 @@ public class SAgora //all struct related to Agora is defined here!
 
     public static class SLocalVideoStats extends IRtcEngineEventHandler.LocalVideoStats {
         public long timeStamp;
+
+        private String transQualityAdaptIndication(int q) {
+            String retStr = "";
+            switch (q) {
+                case ADAPT_NONE:
+                    retStr = "本地视频质量不变";
+                    break;
+                case ADAPT_UP_BANDWIDTH:
+                    retStr = "因网络带宽增加，本地视频质量改善";
+                    break;
+                case ADAPT_DOWN_BANDWIDTH:
+                    retStr = "因网络带宽减少，本地视频质量变差";
+                    break;
+                default:
+                    retStr = "Unknow indication("+q+")";
+                    break;
+            }
+            return retStr;
+        }
+
         public String toString() {
             return SUtils.transTime(timeStamp)+" SAgora.SLocalVideoStats: sentBitrate=" + sentBitrate +
                     ", sentFrameRate=" + sentFrameRate+
@@ -141,7 +164,7 @@ public class SAgora //all struct related to Agora is defined here!
                     ", rendererOutputFrameRate=" + rendererOutputFrameRate+
                     ", targetBitrate=" + targetBitrate+
                     ", targetFrameRate=" + targetFrameRate+
-                    ", qualityAdaptIndication=" + qualityAdaptIndication+"\n";
+                    ", qualityAdaptIndication=" + transQualityAdaptIndication(qualityAdaptIndication)+"\n";
         }
     }
 
