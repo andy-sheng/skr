@@ -122,9 +122,7 @@ class VoiceRecordTextView : ExTextView {
                         U.getToastUtil().showShort("在麦上无法录音")
                         return false
                     }
-                }
-
-                if (mRoomData is RaceRoomData) {
+                } else if (mRoomData is RaceRoomData) {
                     val roundInfoModel = mRoomData?.realRoundInfo as RaceRoundInfoModel?
                     roundInfoModel?.let {
                         if (it.isSingerNowBySelf()) {
