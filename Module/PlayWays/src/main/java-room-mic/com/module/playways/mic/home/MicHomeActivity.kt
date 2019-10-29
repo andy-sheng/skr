@@ -21,6 +21,7 @@ import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.recommend.RA
 import com.module.RouterConstants
+import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomServerApi
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -90,7 +91,10 @@ class MicHomeActivity : BaseActivity() {
 
         adapter = RecommendMicAdapter(object : RecommendMicListener {
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
-                //todo 进入房间
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                model?.roomInfo?.roomID?.let {
+                    iRankingModeService?.jumpMicRoomBySuggest(it)
+                }
             }
 
             override fun onClickUserVoice(model: RecommendMicInfoModel?, position: Int, recomUserInfo: RecommendUserInfo?, childPos: Int) {

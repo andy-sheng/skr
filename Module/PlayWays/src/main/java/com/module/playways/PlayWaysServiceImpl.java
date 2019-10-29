@@ -242,12 +242,16 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     @Override
-    public void jumpMicRoom(int ownerId, int roomID) {
+    public void jumpMicRoomBySuggest(int roomID) {
         HashMap map = new HashMap();
         map.put("platform", 20);
         map.put("roomID", roomID);
-        map.put("src", EJoinRoomSrc.JRS_INVITE_ONLINE.getValue());
+        map.put("src", EJoinRoomSrc.JRS_SUGGEST.getValue());
 
+        goMicRoom(map);
+    }
+
+    private void goMicRoom(HashMap map) {
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
         ApiMethods.subscribe(mRoomServerApi.joinRoom2(body), new ApiObserver<ApiResult>() {
@@ -276,14 +280,16 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 U.getToastUtil().showShort("网络延迟");
             }
         });
+    }
 
-//        if (result.errno == 0) {
-//            val rsp = JSON.parseObject(result.data.toJSONString(), JoinMicRoomRspModel:: class.java)
-//            rsp.roomID = it.gameID
-//            rsp.gameCreateTimeMs = it.createTimeMs
-//            // TODO 跳到RaceRoomActivity
-//            mIRaceMatchingView.matchRaceSucess(rsp)
-//        }
+    @Override
+    public void jumpMicRoom(int roomID) {
+        HashMap map = new HashMap();
+        map.put("platform", 20);
+        map.put("roomID", roomID);
+        map.put("src", EJoinRoomSrc.JRS_INVITE_ONLINE.getValue());
+
+        goMicRoom(map);
     }
 
     @Override
