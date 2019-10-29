@@ -484,6 +484,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     }
 
+    override fun showSongCount(count: Int) {
+        mHasSelectSongNumTv?.text = "已点${count}首"
+    }
+
     override fun startEnterAnimation(playerInfoModel: UserInfoModel, finishCall: () -> Unit) {
         mVIPEnterView?.enter(playerInfoModel, finishCall)
     }

@@ -91,12 +91,6 @@ class MicSeatView : ExViewStub {
                         adapter?.mDataList?.clear()
                         adapter?.mDataList?.addAll(list)
                         adapter?.notifyDataSetChanged()
-
-                        var songNum = 0
-                        it.forEach {
-                            songNum = songNum + it.music?.size
-                        }
-                        hasSelectSongNumTv?.text = "已点${songNum}首"
                     }
                 }
             }

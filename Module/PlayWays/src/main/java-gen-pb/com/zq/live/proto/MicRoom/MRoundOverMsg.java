@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
@@ -23,6 +24,8 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   private static final long serialVersionUID = 0L;
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
+
+  public static final Integer DEFAULT_MUSICCNT = 0;
 
   /**
    * 本轮次结束的毫秒时间戳
@@ -51,16 +54,27 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   )
   private final MRoundInfo nextRound;
 
-  public MRoundOverMsg(Long roundOverTimeMs, MRoundInfo currentRound, MRoundInfo nextRound) {
-    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
+  /**
+   * 轮次结束时剩余歌曲总数量
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer musicCnt;
+
+  public MRoundOverMsg(Long roundOverTimeMs, MRoundInfo currentRound, MRoundInfo nextRound,
+      Integer musicCnt) {
+    this(roundOverTimeMs, currentRound, nextRound, musicCnt, ByteString.EMPTY);
   }
 
   public MRoundOverMsg(Long roundOverTimeMs, MRoundInfo currentRound, MRoundInfo nextRound,
-      ByteString unknownFields) {
+      Integer musicCnt, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
+    this.musicCnt = musicCnt;
   }
 
   @Override
@@ -69,6 +83,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     builder.roundOverTimeMs = roundOverTimeMs;
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
+    builder.musicCnt = musicCnt;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -81,7 +96,8 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(nextRound, o.nextRound);
+        && Internal.equals(nextRound, o.nextRound)
+        && Internal.equals(musicCnt, o.musicCnt);
   }
 
   @Override
@@ -92,6 +108,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
+      result = result * 37 + (musicCnt != null ? musicCnt.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -103,6 +120,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
+    if (musicCnt != null) builder.append(", musicCnt=").append(musicCnt);
     return builder.replace(0, 2, "MRoundOverMsg{").append('}').toString();
   }
 
@@ -147,6 +165,16 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
   }
 
   /**
+   * 轮次结束时剩余歌曲总数量
+   */
+  public Integer getMusicCnt() {
+    if(musicCnt==null){
+        return DEFAULT_MUSICCNT;
+    }
+    return musicCnt;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -167,12 +195,21 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
     return nextRound!=null;
   }
 
+  /**
+   * 轮次结束时剩余歌曲总数量
+   */
+  public boolean hasMusicCnt() {
+    return musicCnt!=null;
+  }
+
   public static final class Builder extends Message.Builder<MRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
     private MRoundInfo currentRound;
 
     private MRoundInfo nextRound;
+
+    private Integer musicCnt;
 
     public Builder() {
     }
@@ -201,9 +238,17 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
       return this;
     }
 
+    /**
+     * 轮次结束时剩余歌曲总数量
+     */
+    public Builder setMusicCnt(Integer musicCnt) {
+      this.musicCnt = musicCnt;
+      return this;
+    }
+
     @Override
     public MRoundOverMsg build() {
-      return new MRoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
+      return new MRoundOverMsg(roundOverTimeMs, currentRound, nextRound, musicCnt, super.buildUnknownFields());
     }
   }
 
@@ -217,6 +262,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
           + MRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + MRoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.musicCnt)
           + value.unknownFields().size();
     }
 
@@ -225,6 +271,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
       MRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       MRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.musicCnt);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -237,6 +284,7 @@ public final class MRoundOverMsg extends Message<MRoundOverMsg, MRoundOverMsg.Bu
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 2: builder.setCurrentRound(MRoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setNextRound(MRoundInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.setMusicCnt(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
