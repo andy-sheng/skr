@@ -88,6 +88,7 @@ class MicSettingView : ExConstraintLayout {
                 .setCancelable(canCancel)
                 .create()
         mDialogPlus?.show()
+        layoutParams.height = U.getDisplayUtils().dip2px(180f)
     }
 
     fun dismiss() {
