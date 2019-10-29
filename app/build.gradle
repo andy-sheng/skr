@@ -217,10 +217,6 @@ android {
         additionalParameters = ['--multi-dex', '--minimal-main-dex',
                                 '--set-max-idx-number=1000']
     }
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
