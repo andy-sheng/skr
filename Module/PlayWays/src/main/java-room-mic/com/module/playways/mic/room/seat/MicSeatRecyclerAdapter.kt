@@ -1,4 +1,4 @@
-package com.module.playways.mic.room.adapter
+package com.module.playways.mic.room.seat
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView

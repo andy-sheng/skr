@@ -169,21 +169,21 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       tag = 15,
       adapter = "com.zq.live.proto.MicRoom.MCommonRoundResult#ADAPTER"
   )
-  private final MCommonRoundResult CommonRoundResult;
+  private final MCommonRoundResult commonRoundResult;
 
   public MRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
       Integer singBeginMs, Integer singEndMs, EMRoundStatus status, EMRoundOverReason overReason,
       MusicInfo music, List<MOnlineInfo> users, EMWantSingType wantSingType,
       List<MCHOInnerRoundInfo> CHORoundInfos, List<MSPKInnerRoundInfo> SPKRoundInfos,
-      MCommonRoundResult CommonRoundResult) {
-    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, CommonRoundResult, ByteString.EMPTY);
+      MCommonRoundResult commonRoundResult) {
+    this(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, commonRoundResult, ByteString.EMPTY);
   }
 
   public MRoundInfo(Integer userID, Integer roundSeq, Integer introBeginMs, Integer introEndMs,
       Integer singBeginMs, Integer singEndMs, EMRoundStatus status, EMRoundOverReason overReason,
       MusicInfo music, List<MOnlineInfo> users, EMWantSingType wantSingType,
       List<MCHOInnerRoundInfo> CHORoundInfos, List<MSPKInnerRoundInfo> SPKRoundInfos,
-      MCommonRoundResult CommonRoundResult, ByteString unknownFields) {
+      MCommonRoundResult commonRoundResult, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
@@ -198,7 +198,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     this.wantSingType = wantSingType;
     this.CHORoundInfos = Internal.immutableCopyOf("CHORoundInfos", CHORoundInfos);
     this.SPKRoundInfos = Internal.immutableCopyOf("SPKRoundInfos", SPKRoundInfos);
-    this.CommonRoundResult = CommonRoundResult;
+    this.commonRoundResult = commonRoundResult;
   }
 
   @Override
@@ -217,7 +217,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     builder.wantSingType = wantSingType;
     builder.CHORoundInfos = Internal.copyOf("CHORoundInfos", CHORoundInfos);
     builder.SPKRoundInfos = Internal.copyOf("SPKRoundInfos", SPKRoundInfos);
-    builder.CommonRoundResult = CommonRoundResult;
+    builder.commonRoundResult = commonRoundResult;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -241,7 +241,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
         && Internal.equals(wantSingType, o.wantSingType)
         && CHORoundInfos.equals(o.CHORoundInfos)
         && SPKRoundInfos.equals(o.SPKRoundInfos)
-        && Internal.equals(CommonRoundResult, o.CommonRoundResult);
+        && Internal.equals(commonRoundResult, o.commonRoundResult);
   }
 
   @Override
@@ -262,7 +262,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       result = result * 37 + CHORoundInfos.hashCode();
       result = result * 37 + SPKRoundInfos.hashCode();
-      result = result * 37 + (CommonRoundResult != null ? CommonRoundResult.hashCode() : 0);
+      result = result * 37 + (commonRoundResult != null ? commonRoundResult.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -284,7 +284,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     if (!CHORoundInfos.isEmpty()) builder.append(", CHORoundInfos=").append(CHORoundInfos);
     if (!SPKRoundInfos.isEmpty()) builder.append(", SPKRoundInfos=").append(SPKRoundInfos);
-    if (CommonRoundResult != null) builder.append(", CommonRoundResult=").append(CommonRoundResult);
+    if (commonRoundResult != null) builder.append(", commonRoundResult=").append(commonRoundResult);
     return builder.replace(0, 2, "MRoundInfo{").append('}').toString();
   }
 
@@ -432,10 +432,10 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
    * 单唱结果
    */
   public MCommonRoundResult getCommonRoundResult() {
-    if(CommonRoundResult==null){
+    if(commonRoundResult==null){
         return new MCommonRoundResult.Builder().build();
     }
-    return CommonRoundResult;
+    return commonRoundResult;
   }
 
   /**
@@ -533,7 +533,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
    * 单唱结果
    */
   public boolean hasCommonRoundResult() {
-    return CommonRoundResult!=null;
+    return commonRoundResult!=null;
   }
 
   public static final class Builder extends Message.Builder<MRoundInfo, Builder> {
@@ -563,7 +563,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
 
     private List<MSPKInnerRoundInfo> SPKRoundInfos;
 
-    private MCommonRoundResult CommonRoundResult;
+    private MCommonRoundResult commonRoundResult;
 
     public Builder() {
       users = Internal.newMutableList();
@@ -681,14 +681,14 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
     /**
      * 单唱结果
      */
-    public Builder setCommonRoundResult(MCommonRoundResult CommonRoundResult) {
-      this.CommonRoundResult = CommonRoundResult;
+    public Builder setCommonRoundResult(MCommonRoundResult commonRoundResult) {
+      this.commonRoundResult = commonRoundResult;
       return this;
     }
 
     @Override
     public MRoundInfo build() {
-      return new MRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, CommonRoundResult, super.buildUnknownFields());
+      return new MRoundInfo(userID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, overReason, music, users, wantSingType, CHORoundInfos, SPKRoundInfos, commonRoundResult, super.buildUnknownFields());
     }
   }
 
@@ -712,7 +712,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
           + EMWantSingType.ADAPTER.encodedSizeWithTag(12, value.wantSingType)
           + MCHOInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(13, value.CHORoundInfos)
           + MSPKInnerRoundInfo.ADAPTER.asRepeated().encodedSizeWithTag(14, value.SPKRoundInfos)
-          + MCommonRoundResult.ADAPTER.encodedSizeWithTag(15, value.CommonRoundResult)
+          + MCommonRoundResult.ADAPTER.encodedSizeWithTag(15, value.commonRoundResult)
           + value.unknownFields().size();
     }
 
@@ -731,7 +731,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       EMWantSingType.ADAPTER.encodeWithTag(writer, 12, value.wantSingType);
       MCHOInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.CHORoundInfos);
       MSPKInnerRoundInfo.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.SPKRoundInfos);
-      MCommonRoundResult.ADAPTER.encodeWithTag(writer, 15, value.CommonRoundResult);
+      MCommonRoundResult.ADAPTER.encodeWithTag(writer, 15, value.commonRoundResult);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -794,7 +794,7 @@ public final class MRoundInfo extends Message<MRoundInfo, MRoundInfo.Builder> {
       Internal.redactElements(builder.users, MOnlineInfo.ADAPTER);
       Internal.redactElements(builder.CHORoundInfos, MCHOInnerRoundInfo.ADAPTER);
       Internal.redactElements(builder.SPKRoundInfos, MSPKInnerRoundInfo.ADAPTER);
-      if (builder.CommonRoundResult != null) builder.CommonRoundResult = MCommonRoundResult.ADAPTER.redact(builder.CommonRoundResult);
+      if (builder.commonRoundResult != null) builder.commonRoundResult = MCommonRoundResult.ADAPTER.redact(builder.commonRoundResult);
       builder.clearUnknownFields();
       return builder.build();
     }

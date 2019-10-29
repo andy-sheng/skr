@@ -36,7 +36,12 @@ public enum EMRoundOverReason implements WireEnum {
   /**
    * 合唱失败
    */
-  MROR_CHO_FAILED(5);
+  MROR_CHO_FAILED(5),
+
+  /**
+   * 等待阶段结束
+   */
+  MROR_INTRO_OVER(6);
 
   public static final ProtoAdapter<EMRoundOverReason> ADAPTER = new ProtoAdapter_EMRoundOverReason();
 
@@ -57,6 +62,7 @@ public enum EMRoundOverReason implements WireEnum {
       case 3: return MROR_SELF_GIVE_UP;
       case 4: return MROR_CHO_SUCCESS;
       case 5: return MROR_CHO_FAILED;
+      case 6: return MROR_INTRO_OVER;
       default: return null;
     }
   }

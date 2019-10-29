@@ -1,4 +1,4 @@
-package com.module.playways.mic.room.adapter
+package com.module.playways.mic.room.top
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -141,6 +141,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             AvatarUtils.loadAvatarByUrl(avatarIv,
                     AvatarUtils.newParamsBuilder(mModel?.userInfo?.avatar)
+                            .setGray(mModel?.isOnline==false)
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)

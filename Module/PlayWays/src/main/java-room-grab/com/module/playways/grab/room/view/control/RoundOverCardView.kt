@@ -3,8 +3,6 @@ package com.module.playways.grab.room.view.control
 import android.view.View
 import android.view.ViewStub
 
-import com.module.playways.RoomDataUtils
-import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.listener.SVGAListener
 import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.view.minigame.MiniGameRoundOverCardView
@@ -15,6 +13,7 @@ import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.view.normal.MicNormalRoundOverCardView
 import com.module.playways.room.data.H
 import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.MicRoom.EMRoundOverReason
 
 import java.util.ArrayList
 
@@ -35,18 +34,18 @@ class RoundOverCardView(mRootView: View) {
         }
 
     init {
+        run {
+            val viewStub = mRootView.findViewById<ViewStub>(R.id.normal_round_over_card_view_stub)
+            mNormalRoundOverCardView = NormalRoundOverCardView(viewStub)
+        }
         if (H.isGrabRoom()) {
-            run {
-                val viewStub = mRootView.findViewById<ViewStub>(R.id.normal_round_over_card_view_stub)
-                mNormalRoundOverCardView = NormalRoundOverCardView(viewStub)
-            }
             run {
                 val viewStub = mRootView.findViewById<ViewStub>(R.id.mini_game_over_card_view_stub)
                 mMiniGameOverCardView = MiniGameRoundOverCardView(viewStub)
             }
         } else if (H.isMicRoom()) {
             run {
-                val viewStub = mRootView.findViewById<ViewStub>(R.id.normal_round_over_card_view_stub)
+                val viewStub = mRootView.findViewById<ViewStub>(R.id.mic_normal_round_over_card_view_stub)
                 mMicNormalRoundOverCardView = MicNormalRoundOverCardView(viewStub)
             }
         }
@@ -91,8 +90,12 @@ class RoundOverCardView(mRootView: View) {
                 }
             }
         }
+        if(lastRoundInfo?.overReason == EMRoundOverReason.MROR_ROUND_NORMAL_OVER.value){
+            mMicNormalRoundOverCardView?.bindData(lastRoundInfo, svgaListener)
+        }else{
+            mNormalRoundOverCardView?.bindData(lastRoundInfo,svgaListener)
+        }
 
-        mMicNormalRoundOverCardView?.bindData(lastRoundInfo, svgaListener)
     }
 
     fun setVisibility(visibility: Int) {
@@ -102,48 +105,52 @@ class RoundOverCardView(mRootView: View) {
             mPKRoundOverCardView?.setVisibility(View.GONE)
             mMiniGameOverCardView?.setVisibility(View.GONE)
         } else if (visibility == View.VISIBLE) {
-            if (H.isGrabRoom()) {
-                when {
-                    H.grabRoomData?.realRoundInfo?.isChorusRound == true -> {
-                        mNormalRoundOverCardView?.setVisibility(View.VISIBLE)
-                        mPKRoundOverCardView?.setVisibility(View.GONE)
-                        mMiniGameOverCardView?.setVisibility(View.GONE)
-                    }
-                    H.grabRoomData?.realRoundInfo?.isPKRound == true -> {
-                        mPKRoundOverCardView?.setVisibility(View.VISIBLE)
-                        mNormalRoundOverCardView?.setVisibility(View.GONE)
-                        mMiniGameOverCardView?.setVisibility(View.GONE)
-                    }
-                    H.grabRoomData?.realRoundInfo?.isMiniGameRound == true -> {
-                        mMiniGameOverCardView?.setVisibility(View.VISIBLE)
-                        mNormalRoundOverCardView?.setVisibility(View.GONE)
-                        mPKRoundOverCardView?.setVisibility(View.GONE)
-                    }
-                    else -> {
-                        mNormalRoundOverCardView?.setVisibility(View.VISIBLE)
-                        mPKRoundOverCardView?.setVisibility(View.GONE)
-                        mMiniGameOverCardView?.setVisibility(View.GONE)
-                    }
-                }
-            } else if (H.isMicRoom()) {
-                when {
-                    H.micRoomData?.realRoundInfo?.isChorusRound == true -> {
-                        mMicNormalRoundOverCardView?.setVisibility(View.VISIBLE)
-                        mPKRoundOverCardView?.setVisibility(View.GONE)
-                        mMiniGameOverCardView?.setVisibility(View.GONE)
-                    }
-                    H.micRoomData?.realRoundInfo?.isPKRound == true -> {
-                        mPKRoundOverCardView?.setVisibility(View.VISIBLE)
-                        mMicNormalRoundOverCardView?.setVisibility(View.GONE)
-                        mMiniGameOverCardView?.setVisibility(View.GONE)
-                    }
-                    else -> {
-                        mMicNormalRoundOverCardView?.setVisibility(View.VISIBLE)
-                        mPKRoundOverCardView?.setVisibility(View.GONE)
-                        mMiniGameOverCardView?.setVisibility(View.GONE)
-                    }
-                }
-            }
+//            if (H.isGrabRoom()) {
+//                when {
+//                    H.grabRoomData?.realRoundInfo?.isChorusRound == true -> {
+//                        mNormalRoundOverCardView?.setVisibility(View.VISIBLE)
+//                        mPKRoundOverCardView?.setVisibility(View.GONE)
+//                        mMiniGameOverCardView?.setVisibility(View.GONE)
+//                    }
+//                    H.grabRoomData?.realRoundInfo?.isPKRound == true -> {
+//                        mPKRoundOverCardView?.setVisibility(View.VISIBLE)
+//                        mNormalRoundOverCardView?.setVisibility(View.GONE)
+//                        mMiniGameOverCardView?.setVisibility(View.GONE)
+//                    }
+//                    H.grabRoomData?.realRoundInfo?.isMiniGameRound == true -> {
+//                        mMiniGameOverCardView?.setVisibility(View.VISIBLE)
+//                        mNormalRoundOverCardView?.setVisibility(View.GONE)
+//                        mPKRoundOverCardView?.setVisibility(View.GONE)
+//                    }
+//                    else -> {
+//                        mNormalRoundOverCardView?.setVisibility(View.VISIBLE)
+//                        mPKRoundOverCardView?.setVisibility(View.GONE)
+//                        mMiniGameOverCardView?.setVisibility(View.GONE)
+//                    }
+//                }
+//            } else if (H.isMicRoom()) {
+//                when {
+//                    H.micRoomData?.realRoundInfo?.isChorusRound == true -> {
+//                        mMicNormalRoundOverCardView?.setVisibility(View.VISIBLE)
+//                        mPKRoundOverCardView?.setVisibility(View.GONE)
+//                        mMiniGameOverCardView?.setVisibility(View.GONE)
+//                        mNormalRoundOverCardView?.setVisibility(View.GONE)
+//                    }
+//                    H.micRoomData?.realRoundInfo?.isPKRound == true -> {
+//                        mPKRoundOverCardView?.setVisibility(View.VISIBLE)
+//                        mMicNormalRoundOverCardView?.setVisibility(View.GONE)
+//                        mMiniGameOverCardView?.setVisibility(View.GONE)
+//                        mNormalRoundOverCardView?.setVisibility(View.GONE)
+//                    }
+//                    else -> {
+//                        // 不确定显示哪一个
+//                        mMicNormalRoundOverCardView?.setVisibility(View.VISIBLE)
+//                        mNormalRoundOverCardView?.setVisibility(View.GONE)
+//                        mPKRoundOverCardView?.setVisibility(View.GONE)
+//                        mMiniGameOverCardView?.setVisibility(View.GONE)
+//                    }
+//                }
+//            }
         }
     }
 }

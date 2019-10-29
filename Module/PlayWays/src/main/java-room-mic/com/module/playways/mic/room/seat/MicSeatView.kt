@@ -1,4 +1,4 @@
-package com.module.playways.mic.room.view
+package com.module.playways.mic.room.seat
 
 import android.os.Handler
 import android.os.Message
@@ -20,7 +20,6 @@ import com.common.view.ex.ExImageView
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
-import com.module.playways.mic.room.adapter.MicSeatRecyclerAdapter
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicSeatModel

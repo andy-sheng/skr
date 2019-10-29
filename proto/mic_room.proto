@@ -313,6 +313,7 @@ enum EMRoundOverReason {
     MROR_SELF_GIVE_UP         = 3; //自己放弃演唱
     MROR_CHO_SUCCESS          = 4; //合唱成功
     MROR_CHO_FAILED           = 5; //合唱失败
+    MROR_INTRO_OVER           = 6; //等待阶段结束
 }
 
 enum EMWantSingType {

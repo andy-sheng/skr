@@ -46,6 +46,7 @@ import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
+import com.module.playways.mic.room.seat.MicSeatView
 import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
 import com.module.playways.mic.room.ui.IMicRoomView
@@ -68,6 +69,7 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
+import com.zq.live.proto.MicRoom.EMRoundOverReason
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -98,7 +100,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mSingBeginTipsCardView: SingBeginTipsCardView// 演唱开始提示
     lateinit var mRoundOverCardView: RoundOverCardView// 结果页
 
-    private lateinit var mAddSongIv: ImageView
+    lateinit var mAddSongIv: ImageView
     private lateinit var mGiveUpView: GrabGiveupView
 
     internal var mVIPEnterView: VIPEnterView? = null
@@ -653,9 +655,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
         hideAllSceneView(null)
-        mRoundOverCardView.bindData(lastRoundInfo, SVGAListener {
+        if (lastRoundInfo?.overReason == EMRoundOverReason.MROR_INTRO_OVER.value) {
+            // 等待阶段直接跳转 不走结果页
             continueOp?.invoke()
-        })
+        } else {
+            mRoundOverCardView.bindData(lastRoundInfo, SVGAListener {
+                continueOp?.invoke()
+            })
+        }
     }
 
     override fun kickBySomeOne(b: Boolean) {

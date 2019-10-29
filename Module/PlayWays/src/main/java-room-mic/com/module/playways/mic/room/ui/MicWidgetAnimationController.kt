@@ -22,7 +22,7 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
         internal set
     internal var mMainAnimatorSet: AnimatorSet? = null
 
-    val translateByOpenType: Int
+    private val translateByOpenType: Int
         get() {
             if (openType == OPEN_TYPE_FOR_NORMAL) {
                 return U.getDisplayUtils().dip2px(40f)
@@ -86,10 +86,10 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
                 super.onAnimationEnd(animation)
                 mF.mTopContentView.setArrowIcon(true)
                 if (openType == OPEN_TYPE_FOR_NORMAL) {
-                    mF.mTopOpView.setVisibility(View.VISIBLE)
+                    mF.mTopOpView.visibility = View.VISIBLE
 //                    mF.mRaceVideoSelfSingCardView.setVisibility(View.GONE)
                 } else if (openType == OPEN_TYPE_FOR_LYRIC) {
-                    mF.mTopOpView.setVisibility(View.GONE)
+                    mF.mTopOpView.visibility = View.GONE
 //                    mF.mRaceVideoSelfSingCardView.setVisibility(View.VISIBLE)
                 }
                 isOpen = true
@@ -101,6 +101,7 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
 
     internal fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
+        viewList.add(mF.mAddSongIv)
 //        viewList.add(mF.mTopVsView)
 //        viewList.add(mF.mPracticeFlagIv)
 //        viewList.add(mF.mGameTipsManager.getViewByKey(mF.TAG_SELF_SING_TIP_VIEW))
