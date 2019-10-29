@@ -179,7 +179,7 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
                 .build()
         )
         tryBindMainVideoStream(false)
-        if (userId.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (userId.userId.toLong() == MyUserInfoManager.uid) {
             mBeautySettingBtn!!.visibility = View.VISIBLE
         } else {
             mBeautySettingBtn!!.visibility = View.GONE
@@ -226,7 +226,7 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
             tryBindRightVideoStream(false)
         }
         startSingCountDown()
-        if (mRightUserId.toLong() == MyUserInfoManager.getInstance().uid || mLeftUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mRightUserId.toLong() == MyUserInfoManager.uid || mLeftUserId.toLong() == MyUserInfoManager.uid) {
             mBeautySettingBtn!!.visibility = View.VISIBLE
         } else {
             mBeautySettingBtn!!.visibility = View.GONE
@@ -348,7 +348,7 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
             return
         }
         if (mMainUserId != 0) {
-            if (mMainUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+            if (mMainUserId.toLong() == MyUserInfoManager.uid) {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0f, 0f, 1f, 1f, 1f)
                 ZqEngineKit.getInstance().startCameraPreview()
@@ -375,7 +375,7 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
             return
         }
         if (mLeftUserId != 0) {
-            if (mLeftUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+            if (mLeftUserId.toLong() == MyUserInfoManager.uid) {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0f, 0f, 0.5f, 1f, 1f)
                 ZqEngineKit.getInstance().startCameraPreview()
@@ -403,7 +403,7 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
             return
         }
         if (mRightUserId != 0) {
-            if (mRightUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+            if (mRightUserId.toLong() == MyUserInfoManager.uid) {
                 // 是自己
                 ZqEngineKit.getInstance().setLocalVideoRect(0.5f, 0f, 0.5f, 1f, 1f)
                 ZqEngineKit.getInstance().startCameraPreview()
@@ -445,11 +445,11 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
                     ZqEngineKit.getInstance().stopCameraPreview()
                 }
                 //变成观众了 2 是观众
-                if (MyUserInfoManager.getInstance().uid == mLeftUserId.toLong()) {
+                if (MyUserInfoManager.uid == mLeftUserId.toLong()) {
                     mLeftAvatarIv?.visibility = View.VISIBLE
                     mLeftTipsTv?.visibility = View.VISIBLE
                     mLeftTipsTv?.text = "不唱了"
-                } else if (MyUserInfoManager.getInstance().uid == mRightUserId.toLong()) {
+                } else if (MyUserInfoManager.uid == mRightUserId.toLong()) {
                     mRightAvatarIv?.visibility = View.VISIBLE
                     mRightTipsTv?.visibility = View.VISIBLE
                     mRightTipsTv?.text = "不唱了"
@@ -501,13 +501,13 @@ class GrabVideoDisplayView(viewStub: ViewStub, private val mRoomData: GrabRoomDa
 
     internal fun onCameraFirstFrameRendered() {
         mUiHandler.removeMessages(MSG_ENSURE_FIRST_CAMERA_DECODED)
-        if (MyUserInfoManager.getInstance().uid == mLeftUserId.toLong()) {
+        if (MyUserInfoManager.uid == mLeftUserId.toLong()) {
             mLeftAvatarIv?.visibility = View.GONE
             mLeftTipsTv?.visibility = View.GONE
-        } else if (MyUserInfoManager.getInstance().uid == mRightUserId.toLong()) {
+        } else if (MyUserInfoManager.uid == mRightUserId.toLong()) {
             mRightAvatarIv?.visibility = View.GONE
             mRightTipsTv?.visibility = View.GONE
-        } else if (MyUserInfoManager.getInstance().uid == mMainUserId.toLong()) {
+        } else if (MyUserInfoManager.uid == mMainUserId.toLong()) {
             mMiddleAvatarIv?.visibility = View.GONE
         }
     }

@@ -111,8 +111,8 @@ public class GrabRoomActivity extends BaseActivity {
                     GrabPlayerInfoModel playerInfoModel = new GrabPlayerInfoModel();
                     UserInfoModel userInfoModel = new UserInfoModel();
                     if (i == 0) {
-                        userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-                        userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
+                        userInfoModel.setAvatar(MyUserInfoManager.INSTANCE.getAvatar());
+                        userInfoModel.setUserId((int) MyUserInfoManager.INSTANCE.getUid());
                         userInfoModel.setNickname("用户：" + i);
                     } else {
                         userInfoModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);

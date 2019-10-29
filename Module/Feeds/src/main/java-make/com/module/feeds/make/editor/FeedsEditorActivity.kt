@@ -181,7 +181,7 @@ class FeedsEditorActivity : BaseActivity() {
 
         })
 
-        AvatarUtils.loadAvatarByUrl(cdAvatar, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+        AvatarUtils.loadAvatarByUrl(cdAvatar, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
                 .build())
 

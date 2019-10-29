@@ -160,7 +160,7 @@ public class MicInputContainerView extends InputContainerView {
         Iterator<MicPlayerInfoModel> it = racePlayerInfoModelList.iterator();
         while (it.hasNext()) {
             MicPlayerInfoModel racePlayerInfoModel = it.next();
-            if (racePlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (racePlayerInfoModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 it.remove();
             }
         }

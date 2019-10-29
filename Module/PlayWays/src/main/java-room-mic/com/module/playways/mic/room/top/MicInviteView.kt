@@ -133,7 +133,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             }
         } else {
             if (micUserMusicModel?.peerID != 0) {
-                if (micUserMusicModel?.peerID == MyUserInfoManager.getInstance().uid.toInt()) {
+                if (micUserMusicModel?.peerID == MyUserInfoManager.uid.toInt()) {
                     resultGroup?.visibility = View.GONE
                     inviteGroup?.visibility = View.VISIBLE
 
@@ -159,7 +159,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 inviteGroup?.visibility = View.GONE
                 // 没人和你合唱 只给发起人
                 setVisibility(View.GONE)
-                if (micUserMusicModel.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                if (micUserMusicModel.userID == MyUserInfoManager.uid.toInt()) {
                     when {
                         micUserMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value -> U.getToastUtil().showShort("发起${micUserMusicModel?.music?.displaySongName}合唱失败")
                         micUserMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value -> U.getToastUtil().showShort("发起${micUserMusicModel?.music?.displaySongName}PK失败")
@@ -185,7 +185,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 micRoomServerApi.agreeSing(body)
             }
             if (result.errno == 0) {
-                userMusicModel?.peerID = MyUserInfoManager.getInstance().uid.toInt()
+                userMusicModel?.peerID = MyUserInfoManager.uid.toInt()
                 showInvite(userMusicModel, -1, false)
             } else {
                 U.getToastUtil().showShort(result.errmsg)

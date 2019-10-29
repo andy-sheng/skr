@@ -679,9 +679,9 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
         if (event.isLike) {
             val feedUserInfo = UserInfoModel()
                     .apply {
-                        userId = MyUserInfoManager.getInstance().uid.toInt()
-                        avatar = MyUserInfoManager.getInstance().avatar
-                        nickname = MyUserInfoManager.getInstance().nickName
+                        userId = MyUserInfoManager.uid.toInt()
+                        avatar = MyUserInfoManager.avatar
+                        nickname = MyUserInfoManager.nickName
                     }
             for (watchModel in mAdapter.mDataList) {
                 if (watchModel.feedID == event.feedID) {
@@ -692,7 +692,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
             for (watchModel in mAdapter.mDataList) {
                 if (watchModel.feedID == event.feedID) {
                     for (like in watchModel.feedLikeUserList) {
-                        if (like.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                        if (like.userId == MyUserInfoManager.uid.toInt()) {
                             watchModel.feedLikeUserList.remove(like)
                             break
                         }
@@ -749,15 +749,15 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
                     model.starCnt = model.starCnt.plus(1)
                     val feedUserInfo = UserInfoModel()
                             .apply {
-                                userId = MyUserInfoManager.getInstance().uid.toInt()
-                                avatar = MyUserInfoManager.getInstance().avatar
-                                nickname = MyUserInfoManager.getInstance().nickName
+                                userId = MyUserInfoManager.uid.toInt()
+                                avatar = MyUserInfoManager.avatar
+                                nickname = MyUserInfoManager.nickName
                             }
                     model.feedLikeUserList.add(0, feedUserInfo)
                 } else {
                     model.starCnt = model.starCnt.minus(1)
                     for (like in model.feedLikeUserList) {
-                        if (like.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                        if (like.userId == MyUserInfoManager.uid.toInt()) {
                             model.feedLikeUserList.remove(like)
                             break
                         }
@@ -774,7 +774,7 @@ abstract class BaseWatchView(val fragment: BaseFragment, val type: Int) : Constr
 
     fun addShareCount(model: FeedsWatchModel) {
         launch {
-            val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.getInstance().uid.toInt())
+            val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.uid.toInt())
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe { mFeedServerApi.shareAdd(body) }
             if (result.errno == 0) {

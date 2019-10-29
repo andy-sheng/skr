@@ -180,7 +180,7 @@ class RecommendSongView(context: Context, internal var mType: Int,
         val tab = mRecommendTagModel?.type ?: 0
         return when (mType) {
             SongManagerActivity.TYPE_FROM_GRAB -> mSongManageServerApi.getListStandBoards(tab, offset, mLimit)
-            SongManagerActivity.TYPE_FROM_MIC -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.getInstance().uid.toInt(), tab)
+            SongManagerActivity.TYPE_FROM_MIC -> mSongManageServerApi.getMicSongList(offset, mLimit, MyUserInfoManager.uid.toInt(), tab)
             else -> mSongManageServerApi.getDoubleListStandBoards(tab, offset, mLimit)
         }
     }

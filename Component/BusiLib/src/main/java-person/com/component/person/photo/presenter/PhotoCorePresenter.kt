@@ -65,7 +65,7 @@ class PhotoCorePresenter(internal var mView: IPhotoWallView, private var mFragme
     @JvmOverloads
     fun getPhotos(offset: Int, cnt: Int, callback: Callback<List<PhotoModel>>? = null) {
         MyLog.d(TAG, "getPhotos offset=$offset cnt=$cnt callback=$callback")
-        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(MyUserInfoManager.getInstance().uid.toInt().toLong(), offset, cnt), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(MyUserInfoManager.uid.toInt().toLong(), offset, cnt), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult?) {
                 if (result!!.errno == 0) {
                     if (result != null && result.errno == 0) {

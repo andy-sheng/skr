@@ -79,7 +79,7 @@ class RaceSelectSongItemView : ExConstraintLayout {
             avatarIv2.visibility = View.GONE
             avatarIv3.visibility = View.GONE
             for (i in 0 until it.size) {
-                if (roomData?.getPlayerOrWaiterInfo(it[i].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt() && !hasAnimate) {
+                if (roomData?.getPlayerOrWaiterInfo(it[i].userID)?.userId == MyUserInfoManager.uid.toInt() && !hasAnimate) {
                     startSelectedAnimation()
                 }
 

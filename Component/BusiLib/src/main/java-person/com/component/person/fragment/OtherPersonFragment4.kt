@@ -194,7 +194,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             mPresenter.getHomePage(mUserId)
         }
 
-        if (mUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mUserId.toLong() == MyUserInfoManager.uid) {
             mFunctionArea.visibility = View.GONE
             mMoreBtn.visibility = View.GONE
         }
@@ -695,7 +695,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         this.mUserInfoModel = model
         mFeedsWallView?.setUserInfoModel(model)
         mPostsWallView?.setUserInfoModel(model)
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
                 .build())
         mNameTv.text = model.nicknameRemark

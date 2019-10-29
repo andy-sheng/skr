@@ -319,7 +319,7 @@ class FeedsRankDetailActivity : BaseActivity() {
 
     private fun loadData(off: Int, isClean: Boolean, dataOkListener: (() -> Unit)? = null) {
         launch {
-            val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), challengeID, if (mRankType == MOUTH_RANK) 1 else 2) }
+            val result = subscribe { mFeedRankServerApi.getFeedRankDetailList(off, mCNT, MyUserInfoManager.uid.toInt(), challengeID, if (mRankType == MOUTH_RANK) 1 else 2) }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("rankInfos"), FeedsWatchModel::class.java)
                 offset = result.data.getIntValue("offset")

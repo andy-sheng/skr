@@ -220,7 +220,7 @@ class FeedsMoreDialogView(var activity: Activity, type: Int, val model: FeedsWat
 
             override fun onStart(p0: SHARE_MEDIA?) {
                 launch {
-                    val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.getInstance().uid.toInt())
+                    val map = mapOf("feedID" to model.feedID, "userID" to MyUserInfoManager.uid.toInt())
                     val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                     val result = subscribe { mFeedServerApi.shareAdd(body) }
                     if (result.errno == 0) {

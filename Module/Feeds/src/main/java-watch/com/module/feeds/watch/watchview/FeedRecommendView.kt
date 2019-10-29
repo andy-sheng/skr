@@ -371,7 +371,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
             override fun clickValid(v: View?) {
                 mCurModel?.let {
                     mFeedsMoreDialogView?.dismiss(false)
-                    if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
                         mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
                         mFeedsMoreDialogView?.showByDialog()
                     } else {
@@ -517,7 +517,7 @@ class FeedRecommendView(val fragment: BaseFragment) : ConstraintLayout(fragment.
         launch {
             for (i in 0..5) {
                 val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
-                    mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), RA.getVars(), RA.getTestList())
+                    mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.uid.toInt(), RA.getVars(), RA.getTestList())
                 }
                 if (obj.errno == 0) {
                     mHasInitData = true

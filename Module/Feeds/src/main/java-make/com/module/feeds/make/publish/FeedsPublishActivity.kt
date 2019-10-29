@@ -387,7 +387,7 @@ class FeedsPublishActivity : BaseActivity() {
                     "tagIDs" to tagsIds,
                     "title" to mFeedsMakeModel?.songModel?.title,
                     "tplID" to mFeedsMakeModel?.songModel?.songTpl?.tplID,
-                    "userID" to MyUserInfoManager.getInstance().uid.toInt(),
+                    "userID" to MyUserInfoManager.uid.toInt(),
                     "workName" to mFeedsMakeModel?.songModel?.workName
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))

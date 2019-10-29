@@ -70,7 +70,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
     val isContainInRoom: Boolean
         get() {
             for (grabPlayerInfoModel in playUsers) {
-                if (grabPlayerInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                if (grabPlayerInfoModel.userID.toLong() == MyUserInfoManager.uid) {
                     return true
                 }
             }
@@ -377,37 +377,37 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
      */
     fun singBySelf(): Boolean {
         if (status == EMRoundStatus.MRS_SING.value) {
-            return userID.toLong() == MyUserInfoManager.getInstance().uid
+            return userID.toLong() == MyUserInfoManager.uid
         } else if (status == EMRoundStatus.MRS_CHO_SING.value) {
             for (roundInfoModel in chorusRoundInfoModels) {
-                if (roundInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid && isParticipant) {
+                if (roundInfoModel.userID.toLong() == MyUserInfoManager.uid && isParticipant) {
                     return true
                 }
             }
         } else if (status == EMRoundStatus.MRS_SPK_FIRST_PEER_SING.value) {
             if (getsPkRoundInfoModels().isNotEmpty()) {
-                return getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.getInstance().uid
+                return getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.uid
             }
         } else if (status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
             if (getsPkRoundInfoModels().size > 1) {
-                return getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.getInstance().uid
+                return getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.uid
             }
         }  else if (status == EMRoundStatus.MRS_END.value) {
             // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
-            if (userID.toLong() == MyUserInfoManager.getInstance().uid) {
+            if (userID.toLong() == MyUserInfoManager.uid) {
                 return true
             }
             for (roundInfoModel in chorusRoundInfoModels) {
-                if (roundInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid && isParticipant) {
+                if (roundInfoModel.userID.toLong() == MyUserInfoManager.uid && isParticipant) {
                     return true
                 }
             }
             if (getsPkRoundInfoModels().isNotEmpty()) {
-                if (getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                if (getsPkRoundInfoModels()[0].userID.toLong() == MyUserInfoManager.uid) {
                     return true
                 }
                 if (getsPkRoundInfoModels().size > 1) {
-                    if (getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                    if (getsPkRoundInfoModels()[1].userID.toLong() == MyUserInfoManager.uid) {
                         return true
                     }
                 }

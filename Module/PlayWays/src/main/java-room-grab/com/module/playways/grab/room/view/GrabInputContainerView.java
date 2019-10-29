@@ -162,7 +162,7 @@ public class GrabInputContainerView extends InputContainerView {
         Iterator<GrabPlayerInfoModel> it = grabPlayerInfoModelList.iterator();
         while (it.hasNext()) {
             GrabPlayerInfoModel grabPlayerInfoModel = it.next();
-            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 it.remove();
             }
         }

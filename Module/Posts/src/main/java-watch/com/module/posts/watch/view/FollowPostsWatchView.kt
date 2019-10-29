@@ -41,7 +41,7 @@ class FollowPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(acti
     private fun getFollowPosts(off: Int, isClear: Boolean) {
         launch {
             val result = subscribe(RequestControl("getFollowPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getPostsFollowList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+                postsWatchServerApi.getPostsFollowList(off, mCNT, MyUserInfoManager.uid.toInt())
             }
             if (result.errno == 0) {
                 mHasInitData = true

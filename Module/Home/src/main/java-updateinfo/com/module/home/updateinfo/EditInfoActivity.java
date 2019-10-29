@@ -129,27 +129,27 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void initViewData() {
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.INSTANCE.getAvatar())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(Color.WHITE)
                         .build());
-        mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
-        mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getAgeStageString())) {
+        mNicknameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
+        mSignTv.setText(MyUserInfoManager.INSTANCE.getSignature());
+        if (TextUtils.isEmpty(MyUserInfoManager.INSTANCE.getAgeStageString())) {
             mAgeTv.setText("无");
         } else {
-            mAgeTv.setText(MyUserInfoManager.getInstance().getAgeStageString());
+            mAgeTv.setText(MyUserInfoManager.INSTANCE.getAgeStageString());
         }
 
         String sex = "保密";
-        if (MyUserInfoManager.getInstance().getSex() == 1) {
+        if (MyUserInfoManager.INSTANCE.getSex() == 1) {
             sex = "男";
-        } else if (MyUserInfoManager.getInstance().getSex() == 2) {
+        } else if (MyUserInfoManager.INSTANCE.getSex() == 2) {
             sex = "女";
         }
         mSexTv.setText(sex);
-        mLocationTv.setText(MyUserInfoManager.getInstance().getLocationProvince());
+        mLocationTv.setText(MyUserInfoManager.INSTANCE.getLocationProvince());
     }
 
     @Override
@@ -178,7 +178,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                             @Override
                             public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                                 if (requestCode == 0) {
-                                    mLocationTv.setText(MyUserInfoManager.getInstance().getLocationProvince());
+                                    mLocationTv.setText(MyUserInfoManager.INSTANCE.getLocationProvince());
                                 }
                             }
                         })
@@ -296,7 +296,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.GONE);
         }
-        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+        MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE
                 .newMyInfoUpdateParamsBuilder()
                 .setAvatar(url)
                 .build(), false, false, new MyUserInfoManager.ServerCallback() {

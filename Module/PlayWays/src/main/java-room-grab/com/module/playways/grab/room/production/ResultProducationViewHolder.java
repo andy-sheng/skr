@@ -116,9 +116,9 @@ public class ResultProducationViewHolder extends RecyclerView.ViewHolder {
             MyLog.w(TAG, "bindData" + " position=" + position + " momentModel=" + momentModel + " isPlay=" + isPlay);
         }
 
-        mSongOwnerTv.setText(MyUserInfoManager.getInstance().getNickName());
+        mSongOwnerTv.setText(MyUserInfoManager.INSTANCE.getNickName());
         FrescoWorker.loadImage(mCoverIv,
-                ImageFactory.newPathImage(MyUserInfoManager.getInstance().getAvatar())
+                ImageFactory.newPathImage(MyUserInfoManager.INSTANCE.getAvatar())
                         .setCornerRadius(U.getDisplayUtils().dip2px(7))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setBorderColor(U.getColor(R.color.white))

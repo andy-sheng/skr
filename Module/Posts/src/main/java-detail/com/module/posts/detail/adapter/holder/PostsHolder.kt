@@ -400,7 +400,7 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
 
         postsLikeTv.isSelected = mModel?.isLiked ?: false
 
-        if (mModel?.relationShip == null && mModel?.posts?.userID != MyUserInfoManager.getInstance().uid.toInt()) {
+        if (mModel?.relationShip == null && mModel?.posts?.userID != MyUserInfoManager.uid.toInt()) {
             iDetailClickListener?.getRelation(mModel?.posts?.userID ?: 0)
         }
 
@@ -430,7 +430,7 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
             emptyTv.visibility = View.GONE
         }
 
-        if (mModel?.posts?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+        if (mModel?.posts?.userID == MyUserInfoManager.uid.toInt()) {
             followTv.visibility = View.GONE
         } else {
             followTv.visibility = View.VISIBLE

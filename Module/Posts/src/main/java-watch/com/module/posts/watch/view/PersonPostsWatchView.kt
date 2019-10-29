@@ -61,10 +61,10 @@ class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserIn
     private fun getPersonPosts(off: Int, isClear: Boolean) {
         launch {
             val result = subscribe(RequestControl("getPersonPosts", ControlType.CancelThis)) {
-                if (userInfoModel.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.getInstance().uid, userInfoModel.userId.toLong(), 1)
+                if (userInfoModel.userId == MyUserInfoManager.uid.toInt()) {
+                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.uid, userInfoModel.userId.toLong(), 1)
                 } else {
-                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.getInstance().uid, userInfoModel.userId.toLong(), 2)
+                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.uid, userInfoModel.userId.toLong(), 2)
                 }
             }
             if (result.errno == 0) {

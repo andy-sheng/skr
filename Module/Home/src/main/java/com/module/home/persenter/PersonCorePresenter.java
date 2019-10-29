@@ -44,7 +44,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        getHomePage((int) MyUserInfoManager.getInstance().getUid());
+        getHomePage((int) MyUserInfoManager.INSTANCE.getUid());
     }
 
     private void getHomePage(int userID) {
@@ -60,7 +60,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                    MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true, "getHomePage");
+                    MyUserInfoManager.INSTANCE.setMyUserInfo(myUserInfo, true, "getHomePage");
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 

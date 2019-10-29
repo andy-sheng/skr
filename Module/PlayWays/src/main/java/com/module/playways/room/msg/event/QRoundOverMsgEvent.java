@@ -35,7 +35,7 @@ public final class QRoundOverMsgEvent {
         this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getCurrentRound());
         this.nextRound = GrabRoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getNextRound());
         for(QUserCoin c :qRoundOverMsg.getQUserCoinList()){
-            if(c.getUserID()== MyUserInfoManager.getInstance().getUid()){
+            if(c.getUserID()== MyUserInfoManager.INSTANCE.getUid()){
                 long a = c.getCoin();
                 myCoin = (int) a;
             }

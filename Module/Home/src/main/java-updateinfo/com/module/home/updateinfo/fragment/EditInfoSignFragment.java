@@ -56,9 +56,9 @@ public class EditInfoSignFragment extends BaseFragment {
             }
         });
 
-        mSignEt.setText(MyUserInfoManager.getInstance().getSignature());
-        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getSignature())) {
-            mSignTextSize.setText("" + MyUserInfoManager.getInstance().getSignature().length() + "/20");
+        mSignEt.setText(MyUserInfoManager.INSTANCE.getSignature());
+        if (!TextUtils.isEmpty(MyUserInfoManager.INSTANCE.getSignature())) {
+            mSignTextSize.setText("" + MyUserInfoManager.INSTANCE.getSignature().length() + "/20");
         } else {
             mSignTextSize.setText("0/20");
         }
@@ -98,12 +98,12 @@ public class EditInfoSignFragment extends BaseFragment {
             return;
         }
 
-        if (sign.equals(MyUserInfoManager.getInstance().getSignature())) {
+        if (sign.equals(MyUserInfoManager.INSTANCE.getSignature())) {
             // 签名一样没改
             U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+            MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
                     .setSign(sign)
                     .build(), false, false, new MyUserInfoManager.ServerCallback() {
                 @Override

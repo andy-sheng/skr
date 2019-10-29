@@ -228,7 +228,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                     feedsInputContainerView?.setETHint("回复")
                 }
 
-                if (mPostFirstLevelCommentModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                if (mPostFirstLevelCommentModel?.commentUser?.userId == MyUserInfoManager.uid.toInt()) {
                     deleteTv.visibility = View.VISIBLE
                     deleteTv.setDebounceViewClickListener {
                         dismiss(false)
@@ -319,7 +319,7 @@ class PostsCommentDetailActivity : BaseActivity(), IPostsCommentDetailView {
                         feedsInputContainerView?.setETHint("回复 ${postsCommentModel.commentUser.nicknameRemark}")
                     }
 
-                    if (postsCommentModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (postsCommentModel?.commentUser?.userId == MyUserInfoManager.uid.toInt()) {
                         deleteTv.visibility = View.VISIBLE
                         deleteTv.setDebounceViewClickListener {
                             dismiss(false)

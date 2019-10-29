@@ -69,7 +69,7 @@ public class DoubleSelfSingCardView {
 
         if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             mDoubleChorusSelfSingCardView.setVisibility(View.VISIBLE);
-            if (songModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (songModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getMyUser(), roomData.getAntherUser());
             } else {
                 mDoubleChorusSelfSingCardView.playLyric(mSongModel, roomData.getAntherUser(), roomData.getMyUser());

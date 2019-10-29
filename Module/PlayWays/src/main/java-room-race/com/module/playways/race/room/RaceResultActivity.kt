@@ -96,7 +96,7 @@ class RaceResultActivity : BaseActivity() {
 
     private fun getResult() {
         launch {
-            val result = subscribe { raceRoomServerApi.getResult(roomID, MyUserInfoManager.getInstance().uid.toInt(), roundSeq) }
+            val result = subscribe { raceRoomServerApi.getResult(roomID, MyUserInfoManager.uid.toInt(), roundSeq) }
             if (result.errno == 0) {
                 val raceResultModel = JSON.parseObject(result.data.getString("userScoreChange"), LevelResultModel::class.java)
                 if (raceResultModel != null) {

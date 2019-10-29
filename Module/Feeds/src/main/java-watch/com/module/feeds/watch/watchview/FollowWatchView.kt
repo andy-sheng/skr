@@ -36,7 +36,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
 
     override fun clickMore(position: Int, it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
-        if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+        if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
             mFeedsMoreDialogView?.showByDialog()
         } else {
@@ -93,7 +93,7 @@ class FollowWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_FOL
     private fun getFollowFeedList(offset: Int, isClear: Boolean, dataOkCallback: (() -> Unit)? = null) {
         launch {
             val result = subscribe(RequestControl("getFollowFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+                mFeedServerApi.getFeedFollowList(offset, mCNT, MyUserInfoManager.uid.toInt())
             }
             if (result.errno == 0) {
                 mHasInitData = true

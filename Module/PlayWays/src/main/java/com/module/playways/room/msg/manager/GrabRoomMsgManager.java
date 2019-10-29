@@ -257,7 +257,7 @@ public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
 
     private void processSendGiftInfo(BasePushInfo basePushInfo, GPrensentGiftMsg gPrensentGiftMsg) {
         if (gPrensentGiftMsg != null) {
-            if (gPrensentGiftMsg.getSendUserInfo().getUserID() != MyUserInfoManager.getInstance().getUid()) {
+            if (gPrensentGiftMsg.getSendUserInfo().getUserID() != MyUserInfoManager.INSTANCE.getUid()) {
                 GiftPresentEvent giftPresentEvent = new GiftPresentEvent(basePushInfo, gPrensentGiftMsg);
                 EventBus.getDefault().post(giftPresentEvent);
             } else {
@@ -562,7 +562,7 @@ public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
     private void processGrabKickResult(BasePushInfo basePushInfo, QKickUserResultMsg qKickUserResultMsg) {
         if (basePushInfo != null && qKickUserResultMsg != null) {
             // 过滤，被踢人 也可以放在收事件的地方，但是觉得没有必要
-            if (MyUserInfoManager.getInstance().getUid() == qKickUserResultMsg.getKickUserID()) {
+            if (MyUserInfoManager.INSTANCE.getUid() == qKickUserResultMsg.getKickUserID()) {
                 QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
                 EventBus.getDefault().post(qKickUserResultEvent);
                 return;
@@ -570,7 +570,7 @@ public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
             // 过滤下, 所有投同意票
             if (qKickUserResultMsg.getGiveYesVoteUserIDsList() != null) {
                 for (Integer integer : qKickUserResultMsg.getGiveYesVoteUserIDsList()) {
-                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                    if (integer == MyUserInfoManager.INSTANCE.getUid()) {
                         QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
                         EventBus.getDefault().post(qKickUserResultEvent);
                         return;
@@ -581,7 +581,7 @@ public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
             // 过滤下, 所有投不同意票
             if (qKickUserResultMsg.getGiveNoVoteUserIDsList() != null) {
                 for (Integer integer : qKickUserResultMsg.getGiveNoVoteUserIDsList()) {
-                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                    if (integer == MyUserInfoManager.INSTANCE.getUid()) {
                         QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
                         EventBus.getDefault().post(qKickUserResultEvent);
                         return;
@@ -592,7 +592,7 @@ public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
             // 过滤下, 所有未知票
             if (qKickUserResultMsg.getGiveUnknownVoteUserIDsList() != null) {
                 for (Integer integer : qKickUserResultMsg.getGiveUnknownVoteUserIDsList()) {
-                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                    if (integer == MyUserInfoManager.INSTANCE.getUid()) {
                         QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
                         EventBus.getDefault().post(qKickUserResultEvent);
                         return;
@@ -609,7 +609,7 @@ public class GrabRoomMsgManager extends BaseMsgManager<ERoomMsgType, RoomMsg> {
             // 过滤下,所有投票者
             if (qKickUserRequestMsg.getOtherOnlineUserIDsList() != null && qKickUserRequestMsg.getOtherOnlineUserIDsList().size() > 0) {
                 for (Integer integer : qKickUserRequestMsg.getOtherOnlineUserIDsList()) {
-                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                    if (integer == MyUserInfoManager.INSTANCE.getUid()) {
                         QKickUserReqEvent qKickUserReqEvent = new QKickUserReqEvent(basePushInfo, qKickUserRequestMsg);
                         EventBus.getDefault().post(qKickUserReqEvent);
                         return;

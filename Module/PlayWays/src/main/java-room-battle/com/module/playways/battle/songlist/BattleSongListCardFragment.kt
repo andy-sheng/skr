@@ -222,7 +222,7 @@ class BattleSongListCardFragment : BaseFragment() {
         launch {
             delay(200)
             val result = subscribe(RequestControl("getStandSongList", ControlType.CancelThis)) {
-                battleServerApi.getStandSongList(MyUserInfoManager.getInstance().uid, model?.tagID
+                battleServerApi.getStandSongList(MyUserInfoManager.uid, model?.tagID
                         ?: 0)
             }
             if (result.errno == 0) {

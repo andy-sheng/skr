@@ -79,7 +79,7 @@ class MicSeatView : ExViewStub {
         if (hasInflate()) {
             launch {
                 val result = subscribe(RequestControl("MicSeatView getUserList", ControlType.CancelThis)) {
-                    raceRoomServerApi.getMicSeatUserList(MyUserInfoManager.getInstance().uid.toInt(), mRoomData?.gameId!!)
+                    raceRoomServerApi.getMicSeatUserList(MyUserInfoManager.uid.toInt(), mRoomData?.gameId!!)
                 }
 
                 if (result.errno == 0) {

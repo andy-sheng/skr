@@ -55,7 +55,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
      */
     val isInPlayerList: Boolean
         get() {
-            val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())
+            val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())
             if (p != null && (p.role == EQUserRole.EQUR_PLAY_USER.value || p.role == EQUserRole.EQUR_ROOM_OWNER.value)) {
                 return true
             }
@@ -78,7 +78,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
      * @return
      */
     val isOwner: Boolean
-        get() = this.ownerId.toLong() == MyUserInfoManager.getInstance().uid
+        get() = this.ownerId.toLong() == MyUserInfoManager.uid
 
 //    val worksUploadModel: List<WorksUploadModel>
 //        get() = mWorksUploadList
@@ -113,11 +113,11 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
                 p.isSkrer = false
                 p.isOnline = true
                 p.role = EQUserRole.EQUR_PLAY_USER.value
-                p.userID = MyUserInfoManager.getInstance().uid.toInt()
+                p.userID = MyUserInfoManager.uid.toInt()
                 val userInfoModel = UserInfoModel()
-                userInfoModel.userId = MyUserInfoManager.getInstance().uid.toInt()
-                userInfoModel.avatar = MyUserInfoManager.getInstance().avatar
-                userInfoModel.nickname = MyUserInfoManager.getInstance().nickName
+                userInfoModel.userId = MyUserInfoManager.uid.toInt()
+                userInfoModel.avatar = MyUserInfoManager.avatar
+                userInfoModel.nickname = MyUserInfoManager.nickName
                 p.userInfo = userInfoModel
                 l.add(p)
             }

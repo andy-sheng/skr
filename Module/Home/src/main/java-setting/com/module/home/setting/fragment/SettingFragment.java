@@ -304,7 +304,7 @@ public class SettingFragment extends BaseFragment {
 
     private void initVersion() {
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.getInstance().getUid()),
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.INSTANCE.getUid()),
                 new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult apiResult) {

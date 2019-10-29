@@ -337,7 +337,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 R.raw.grab_nobodywants, R.raw.grab_readygo,
                 R.raw.grab_xlight, R.raw.normal_click)
 
-        MyLog.w(TAG, "gameid 是 " + mRoomData!!.gameId + " userid 是 " + MyUserInfoManager.getInstance().uid)
+        MyLog.w(TAG, "gameid 是 " + mRoomData!!.gameId + " userid 是 " + MyUserInfoManager.uid)
 
         mUiHanlder.postDelayed({
             onBattleBeginPlayOver()
@@ -390,7 +390,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         enterRoomEvent()
 
-        MyUserInfoManager.getInstance().myUserInfo?.let {
+        MyUserInfoManager.myUserInfo?.let {
             mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
         }
     }
@@ -398,7 +398,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     private fun enterRoomEvent() {
         if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_COMMON) {
             StatisticsAdapter.recordCountEvent("grab", "normalroom_enter", null)
-        } else if (mRoomData!!.ownerId.toLong() != MyUserInfoManager.getInstance().uid) {
+        } else if (mRoomData!!.ownerId.toLong() != MyUserInfoManager.uid) {
             if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_PUBLIC) {
                 StatisticsAdapter.recordCountEvent("grab", "hostroom_enter", null)
             } else if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_FRIEND) {
@@ -776,7 +776,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     if (userInfoModel.isFriend) {
                         mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
                     } else {
-                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
+                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
                             override fun onServerSucess(isFans: Boolean?) {
                                 if (isFans!!) {
                                     mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
@@ -863,7 +863,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mRoomData?.realRoundInfo?.let {
                     if (it.status == EQRoundStatus.QRS_INTRO.value) {
                         for (wantSingerInfo in it.wantSingInfos) {
-                            if (wantSingerInfo.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                            if (wantSingerInfo.userID.toLong() == MyUserInfoManager.uid) {
                                 U.getToastUtil().showShort("抢唱了不能切换房间哦～")
                                 return
                             }
@@ -1142,7 +1142,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabSomeOneLightOffEvent) {
         // 灭灯
-        if (event.getUid().toLong() == MyUserInfoManager.getInstance().uid) {
+        if (event.getUid().toLong() == MyUserInfoManager.uid) {
             U.getSoundUtils().play(TAG, R.raw.grab_xlight)
         }
     }
@@ -1182,9 +1182,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (RoomDataUtils.isMyRound(mRoomData!!.realRoundInfo)) {
             // 当前我是演唱者
             mDengBigAnimation?.translationY = U.getDisplayUtils().dip2px(200f).toFloat()
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.getInstance().uid)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid)
         } else {
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.getInstance().uid)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid)
         }
     }
 
@@ -1327,7 +1327,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             // pk的第二轮，没有 vs 的演唱开始提示了
             if (now != null && now.isParticipant
                     && mRoomData!!.isInPlayerList
-                    && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().uid)) {
+                    && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.uid)) {
                 // 不是参与者 不是选手 如果是pk的轮次 pk的参与者 都没有爆灭灯按钮
                 mGrabOpBtn.toOtherSingState()
             } else {
@@ -1340,7 +1340,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 if (grabRoundInfoModel != null
                         && grabRoundInfoModel.isParticipant
                         && mRoomData!!.isInPlayerList
-                        && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().uid)
+                        && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.uid)
                         && !(grabRoundInfoModel.isMiniGameRound && mRoomData!!.isOwner)) {
                     // 参与者 & 游戏列表中 & 不是本轮演唱者 &  不是小游戏中的房主
                     mGrabOpBtn.toOtherSingState()

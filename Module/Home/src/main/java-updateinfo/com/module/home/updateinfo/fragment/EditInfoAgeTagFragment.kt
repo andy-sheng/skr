@@ -46,8 +46,8 @@ class EditInfoAgeTagFragment : BaseFragment() {
             }
         })
 
-        if (MyUserInfoManager.getInstance().ageStage != 0) {
-            mAgeTagView.setSelectTag(MyUserInfoManager.getInstance().ageStage)
+        if (MyUserInfoManager.ageStage != 0) {
+            mAgeTagView.setSelectTag(MyUserInfoManager.ageStage)
         }
 
         if (mFrom == FROM_HOME) {
@@ -59,12 +59,12 @@ class EditInfoAgeTagFragment : BaseFragment() {
         var ageStage = mAgeTagView.getSelectTag()
         if (ageStage == 0) {
             U.getToastUtil().showShort("您当前选择的年龄段为空")
-        } else if (ageStage == MyUserInfoManager.getInstance().ageStage) {
+        } else if (ageStage == MyUserInfoManager.ageStage) {
             mAgeStage = ageStage
             mActionRunnable?.run()
             activity?.finish()
         } else {
-            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+            MyUserInfoManager.updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                     .setAgeStage(ageStage)
                     .build(), false, false, object : MyUserInfoManager.ServerCallback {
                 override fun onSucess() {

@@ -24,7 +24,7 @@ class FeedsCommentPresenter(var mFeedId: Int, val mIFirstLevelCommentView: IFirs
     }
 
     fun getFirstLevelCommentList() {
-        ApiMethods.subscribe(mFeedsDetailServerApi.getFirstLevelCommentList(mOffset, mCount, mFeedId, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mFeedsDetailServerApi.getFirstLevelCommentList(mOffset, mCount, mFeedId, MyUserInfoManager.uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)

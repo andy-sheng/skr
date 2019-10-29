@@ -257,7 +257,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                                 .navigation()
                     }
 
-                    if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.uid.toInt()) {
                         deleteTv.visibility = View.VISIBLE
                         deleteTv.setDebounceViewClickListener {
                             dismiss(false)

@@ -41,7 +41,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
      */
     val isInPlayerList: Boolean
         get() {
-            val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())
+            val p = getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())
             if (p != null && (p.role == EMUserRole.MQUR_ROOM_OWNER.value || p.role == EMUserRole.MRUR_PLAY_USER.value)) {
                 return true
             }
@@ -64,7 +64,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
      * @return
      */
     val isOwner: Boolean
-        get() = this.ownerId.toLong() == MyUserInfoManager.getInstance().uid
+        get() = this.ownerId.toLong() == MyUserInfoManager.uid
 
 //    val worksUploadModel: List<WorksUploadModel>
 //        get() = mWorksUploadList

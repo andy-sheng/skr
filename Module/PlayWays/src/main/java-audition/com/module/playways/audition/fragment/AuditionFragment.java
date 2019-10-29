@@ -416,9 +416,9 @@ public class AuditionFragment extends BaseFragment {
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
             if (ZqEngineKit.RECORD_FOR_DEBUG) {
-                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
+                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
             } else {
-                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
             }
         }
     }

@@ -30,7 +30,7 @@ public class VoteResultEvent {
 
         ScoreResultModel scoreResultModel = new ScoreResultModel();
         for (UserScoreResult userScoreResult : voteResultMsg.getScoreResultsList()) {
-            if (userScoreResult.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (userScoreResult.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 scoreResultModel.parse(userScoreResult);
             }
         }

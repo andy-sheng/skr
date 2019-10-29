@@ -35,7 +35,7 @@ class TopicPostsWatchView(activity: FragmentActivity, val topicID: Long, val mod
     private fun getTopicPosts(off: Int, isClear: Boolean) {
         launch {
             val result = subscribe(RequestControl("getTopicPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getTopicPostsList(off, mCNT, MyUserInfoManager.getInstance().uid, topicID, model.tabType)
+                postsWatchServerApi.getTopicPostsList(off, mCNT, MyUserInfoManager.uid, topicID, model.tabType)
             }
             if (result.errno == 0) {
                 mHasInitData = true

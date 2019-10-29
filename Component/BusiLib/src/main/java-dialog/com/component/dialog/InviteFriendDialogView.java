@@ -64,7 +64,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, mTagID, mMediaType, new ICallback() {
+                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mTagID, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -85,7 +85,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, mMediaType, new ICallback() {
+                SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -102,7 +102,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     }
                 });
             } else if (mType == INVITE_GRAB_FRIEND) {
-                SkrKouLingUtils.genNormalReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), new ICallback() {
+                SkrKouLingUtils.genNormalReqFollowKouling((int) MyUserInfoManager.INSTANCE.getUid(), new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -119,7 +119,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     }
                 });
             } else if (mType == INVITE_MIC_GAME) {
-                SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, new ICallback() {
+                SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {

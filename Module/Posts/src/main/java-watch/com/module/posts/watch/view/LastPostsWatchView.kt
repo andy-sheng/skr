@@ -50,7 +50,7 @@ class LastPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(activi
         }
         launch {
             val result = subscribe(RequestControl("getLastPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getPostsLastList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt(), lastTimeMs)
+                postsWatchServerApi.getPostsLastList(off, mCNT, MyUserInfoManager.uid.toInt(), lastTimeMs)
             }
             if (result.errno == 0) {
                 mHasInitData = true

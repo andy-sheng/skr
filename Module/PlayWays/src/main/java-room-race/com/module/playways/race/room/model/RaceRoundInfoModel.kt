@@ -266,7 +266,7 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
      * 此时此刻是否由自己演唱
      */
     fun isSingerNowBySelf(): Boolean {
-        return isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+        return isSingerNowByUserId(MyUserInfoManager.uid.toInt())
     }
 
     /**

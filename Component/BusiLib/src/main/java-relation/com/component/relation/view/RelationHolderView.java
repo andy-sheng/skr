@@ -72,7 +72,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
             mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
         } else {
-            if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            if (userInfoModel.getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {

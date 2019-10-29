@@ -132,7 +132,7 @@ public class SkrVerifyUtils {
     }
 
     public void checkAgeSettingState(final Runnable successCallback) {
-        if (MyUserInfoManager.getInstance().hasAgeStage()) {
+        if (MyUserInfoManager.INSTANCE.hasAgeStage()) {
             if (successCallback != null) {
                 successCallback.run();
             }
@@ -149,7 +149,7 @@ public class SkrVerifyUtils {
                 successCallback.run();
             }
             if (isAuth) {
-                MyUserInfoManager.getInstance().setRealNameVerified(true);
+                MyUserInfoManager.INSTANCE.setRealNameVerified(true);
             }
         } else {
             if (8344161 == obj.getErrno()) {

@@ -132,10 +132,10 @@ public abstract class BottomContainerView extends RelativeLayout {
             }
 
             UserInfo senderInfo = new UserInfo.Builder()
-                    .setUserID((int) MyUserInfoManager.getInstance().getUid())
-                    .setNickName(MyUserInfoManager.getInstance().getNickName())
-                    .setAvatar(MyUserInfoManager.getInstance().getAvatar())
-                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
+                    .setUserID((int) MyUserInfoManager.INSTANCE.getUid())
+                    .setNickName(MyUserInfoManager.INSTANCE.getNickName())
+                    .setAvatar(MyUserInfoManager.INSTANCE.getAvatar())
+                    .setSex(ESex.fromValue(MyUserInfoManager.INSTANCE.getSex()))
                     .setDescription("")
                     .setIsSystem(false)
                     .build();

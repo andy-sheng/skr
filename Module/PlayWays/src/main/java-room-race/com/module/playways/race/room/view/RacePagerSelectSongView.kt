@@ -181,7 +181,7 @@ class RacePagerSelectSongView : ExConstraintLayout {
 
         launch {
             val result = subscribe(RequestControl(TAG + "getPlaybookItemList", ControlType.CancelThis)) {
-                raceRoomServerApi.getPlaybookItemList(mOffset, mCnt, MyUserInfoManager.getInstance().uid.toInt())
+                raceRoomServerApi.getPlaybookItemList(mOffset, mCnt, MyUserInfoManager.uid.toInt())
             }
 
             mLoadMore = false

@@ -18,7 +18,7 @@ public class CommentGiftModel extends CommentModel {
                 .create();
         setNameBuilder(nameBuilder);
 
-        if (giftPlayModel.getReceiver().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+        if (giftPlayModel.getReceiver().getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append("对 你 送出了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                     .append(giftPlayModel.getGift().getGiftName()).setForegroundColor(CommentModel.GRAB_TEXT_COLOR)

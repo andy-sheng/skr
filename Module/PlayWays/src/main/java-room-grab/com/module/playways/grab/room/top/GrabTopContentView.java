@@ -614,7 +614,7 @@ public class GrabTopContentView extends ConstraintLayout {
                 //MyLog.d(TAG,"UserVolumeInfo uv=" + uv);
                 int uid = uv.getUid();
                 if (uid == 0) {
-                    uid = (int) MyUserInfoManager.getInstance().getUid();
+                    uid = (int) MyUserInfoManager.INSTANCE.getUid();
                 }
                 VP vp = mInfoMap.get(uid);
                 if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView.isShown()) {

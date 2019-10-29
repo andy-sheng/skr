@@ -66,7 +66,7 @@ class PostsRedPkgDialogView(var activity: Activity, var model: PostsRedPkgModel)
     private fun getRedPacketDetail(isFirst: Boolean) {
         launch {
             val result = subscribe(RequestControl("getRedPacketDetail", ControlType.CancelThis)) {
-                postsWatchServerApi.getRedPkgDetail(MyUserInfoManager.getInstance().uid, model.redpacketID)
+                postsWatchServerApi.getRedPkgDetail(MyUserInfoManager.uid, model.redpacketID)
             }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("records"), PostsRedPkgUserModel::class.java)

@@ -97,7 +97,7 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
     fun getPostsDetail(postsID: Int) {
         launch(Dispatchers.Main) {
             val result = subscribe {
-                mPostsDetailServerApi.getPostsDetail(MyUserInfoManager.getInstance().uid.toInt(), postsID)
+                mPostsDetailServerApi.getPostsDetail(MyUserInfoManager.uid.toInt(), postsID)
             }
 
             if (result.errno == 0) {
@@ -128,7 +128,7 @@ class PostsDetailPresenter : RxLifeCyclePresenter {
         launch(Dispatchers.Main) {
             val result = subscribe {
                 mPostsDetailServerApi.getFirstLevelCommentList(mOffset, mLimit, model?.postsID?.toInt()
-                        ?: 0, MyUserInfoManager.getInstance().uid.toInt())
+                        ?: 0, MyUserInfoManager.uid.toInt())
             }
 
             if (result.errno == 0) {

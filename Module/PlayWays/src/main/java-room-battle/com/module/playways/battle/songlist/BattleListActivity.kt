@@ -117,7 +117,7 @@ class BattleListActivity : BaseActivity() {
 
         launch {
             val result = subscribe(RequestControl("getStandTagList", ControlType.CancelThis)) {
-                battleServerApi.getStandTagList(MyUserInfoManager.getInstance().uid, off, mCNT)
+                battleServerApi.getStandTagList(MyUserInfoManager.uid, off, mCNT)
             }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")

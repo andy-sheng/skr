@@ -118,7 +118,7 @@ public class UserAccountManager {
             setAccount(account, true);
             U.getActivityUtils().showSnackbar("登录成功", false);
 
-            if (!MyUserInfoManager.getInstance().isFirstLogin()) {
+            if (!MyUserInfoManager.INSTANCE.isFirstLogin()) {
                 // 是个老用户，打个点
                 StatisticsAdapter.recordCountEvent("signup", "oldid", null, true);
             }
@@ -136,7 +136,7 @@ public class UserAccountManager {
             // 进入实名模式
 //            MiLinkClientAdapter.getInstance().initCallBackFirst();
             // 同步昵称等详细信息
-            MyUserInfoManager.getInstance().init();
+            MyUserInfoManager.INSTANCE.init();
 
             if (fromServer) {
                 // 与融云服务器建立连接
@@ -382,10 +382,10 @@ public class UserAccountManager {
         myUserInfo.setLocation(location);
         myUserInfo.setLocation2(location2);
         myUserInfo.setAgeStage(ageStage);
-        MyUserInfoManager.getInstance().setFirstLogin(isFirstLogin);
-        MyUserInfoManager.getInstance().setNeedBeginnerGuide(needBeginnerGuide);
+        MyUserInfoManager.INSTANCE.setFirstLogin(isFirstLogin);
+        MyUserInfoManager.INSTANCE.setNeedBeginnerGuide(needBeginnerGuide);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true, "parseRsp");
+        MyUserInfoManager.INSTANCE.setMyUserInfo(myUserInfo, true, "parseRsp");
 
         UserAccount userAccount = new UserAccount();
         userAccount.setPhoneNum(phoneNum);
@@ -470,7 +470,7 @@ public class UserAccountManager {
                     UserInfoManager.getInstance().clearRemark();
                     UmengStatistics.onProfileSignOff();
                     JiGuangPush.clearAlias(userId);
-                    MyUserInfoManager.getInstance().logoff();
+                    MyUserInfoManager.INSTANCE.logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     mUiHanlder.post(new Runnable() {
                         @Override

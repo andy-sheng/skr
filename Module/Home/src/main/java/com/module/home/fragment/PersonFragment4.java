@@ -568,7 +568,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 帖子
-                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mPostWallView == null) {
                         IPostModuleService postModuleService = ModuleServiceManager.getInstance().getPostsService();
                         mPostWallView = postModuleService.getPostsWall(PersonFragment4.this.getActivity(), userInfoModel, PersonFragment4.this);
@@ -583,7 +583,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mPostWallView;
                 } else if (position == 2) {
                     // 神曲
-                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mFeedsWallView == null) {
                         IFeedsModuleService feedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
                         mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment4.this, userInfoModel, PersonFragment4.this);
@@ -598,7 +598,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mFeedsWallView;
                 } else if (position == 3) {
                     // 作品
-                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mProducationWallView == null) {
                         mProducationWallView = new ProducationWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
@@ -814,30 +814,30 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void refreshUserInfoView() {
-        if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+        if (MyUserInfoManager.INSTANCE.hasMyUserInfo()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.INSTANCE.getAvatar())
                     .setCircle(true)
                     .build());
-            mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            mPersonTagView.setUserID((int) MyUserInfoManager.getInstance().getUid());
-            mPersonTagView.setSex(MyUserInfoManager.getInstance().getSex());
-            mPersonTagView.setLocation(MyUserInfoManager.getInstance().getLocation());
-            mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
+            mNameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
+            mSrlNameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
+            mPersonTagView.setUserID((int) MyUserInfoManager.INSTANCE.getUid());
+            mPersonTagView.setSex(MyUserInfoManager.INSTANCE.getSex());
+            mPersonTagView.setLocation(MyUserInfoManager.INSTANCE.getLocation());
+            mSignTv.setText(MyUserInfoManager.INSTANCE.getSignature());
 
-            if (MyUserInfoManager.getInstance().getVipInfo() != null && MyUserInfoManager.getInstance().getVipType() > 0) {
+            if (MyUserInfoManager.INSTANCE.getVipInfo() != null && MyUserInfoManager.INSTANCE.getVipType() > 0) {
                 // 展示vip
                 mSignTv.setVisibility(View.GONE);
                 mVerifyTv.setVisibility(View.VISIBLE);
-                mVerifyTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
+                mVerifyTv.setText(MyUserInfoManager.INSTANCE.getVipInfo().getVipDesc());
             } else {
                 // 展示签名
                 mSignTv.setVisibility(View.VISIBLE);
                 mVerifyTv.setVisibility(View.GONE);
             }
 
-            if (MyUserInfoManager.getInstance().getHonorInfo() != null &&
-                    MyUserInfoManager.getInstance().getHonorInfo().isHonor()) {
+            if (MyUserInfoManager.INSTANCE.getHonorInfo() != null &&
+                    MyUserInfoManager.INSTANCE.getHonorInfo().isHonor()) {
                 mHonorIv.setVisibility(View.VISIBLE);
                 mOpenHonorArea.setVisibility(View.GONE);
             } else {
@@ -850,7 +850,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         refreshUserInfoView();
-        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
         if (mProducationWallView != null) {
             mProducationWallView.setUserInfoModel(userInfoModel);
         }

@@ -179,7 +179,7 @@ class RaceMatchView : ConstraintLayout {
         matchStatusIv.background = U.getDrawable(R.drawable.race_match_sucess_icon)
 
         if (roomData?.hasSignUpSelf == true) {
-            if (roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+            if (roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true) {
                 resultIv.setImageResource(R.drawable.race_select_icon)
                 U.getSoundUtils().play(mTag, R.raw.race_select)
             } else {

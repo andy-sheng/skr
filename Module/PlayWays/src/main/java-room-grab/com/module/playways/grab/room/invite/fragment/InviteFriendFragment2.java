@@ -193,7 +193,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         });
 
         if (mFrom == FROM_GRAB_ROOM) {
-            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mTagID, mMediaType, new ICallback() {
+            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, mTagID, mMediaType, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -207,7 +207,7 @@ public class InviteFriendFragment2 extends BaseFragment {
                 }
             });
         } else if (mFrom == FROM_DOUBLE_ROOM) {
-            SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mMediaType, new ICallback() {
+            SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, mMediaType, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -221,7 +221,7 @@ public class InviteFriendFragment2 extends BaseFragment {
                 }
             });
         } else if (mFrom == FROM_MIC_ROOM) {
-            SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, new ICallback() {
+            SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -241,7 +241,7 @@ public class InviteFriendFragment2 extends BaseFragment {
     private void shareUrl(SharePlatform sharePlatform) {
         StringBuilder sb = new StringBuilder();
         sb.append("http://test.app.inframe.mobi/room/invitation")
-                .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
+                .append("?skerId=").append(String.valueOf(MyUserInfoManager.INSTANCE.getUid()))
                 .append("&code=");
         String code = String.valueOf(mKouLingToken);
         try {

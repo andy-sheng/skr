@@ -91,7 +91,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
         map.put("taskID", "1");
         map.put("nonce", ts);
         String sign = U.getMD5Utils().MD5_32("skrer" + "|"
-                + MyUserInfoManager.getInstance().getUid() + "|"
+                + MyUserInfoManager.INSTANCE.getUid() + "|"
                 + "OTQ2MmE0ZjAtZDNkNi00Mzc1LWE1OdyN" + "|"
                 + ts);
         map.put("sign", sign);

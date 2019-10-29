@@ -32,7 +32,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
+        if (MyUserInfoManager.INSTANCE.isNeedCompleteInfo()) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
                     .setAddToBackStack(false)

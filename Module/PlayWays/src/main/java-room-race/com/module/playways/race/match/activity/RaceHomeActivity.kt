@@ -154,7 +154,7 @@ class RaceHomeActivity : BaseActivity() {
         })
 
         mUserInfoTitle?.setListener {
-            BigImageBrowseFragment.open(false, this, MyUserInfoManager.getInstance().avatar)
+            BigImageBrowseFragment.open(false, this, MyUserInfoManager.avatar)
         }
 
         mLevelGapTv?.setOnClickListener(object : DebounceViewClickListener() {
@@ -183,7 +183,7 @@ class RaceHomeActivity : BaseActivity() {
     }
 
     private fun getLevelPage() {
-        ApiMethods.subscribe(userInfoServerApi.getLevelDetail(MyUserInfoManager.getInstance().uid), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.getLevelDetail(MyUserInfoManager.uid), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val scoreDetailModel = JSON.parseObject(result.data!!.toJSONString(), ScoreDetailModel::class.java)

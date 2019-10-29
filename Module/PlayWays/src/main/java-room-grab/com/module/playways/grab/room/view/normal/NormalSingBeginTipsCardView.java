@@ -101,7 +101,7 @@ public class NormalSingBeginTipsCardView {
 
         String text1 = "";
         String text2 = "";
-        if (userInfoModel.getUserId() != MyUserInfoManager.getInstance().getUid()) {
+        if (userInfoModel.getUserId() != MyUserInfoManager.INSTANCE.getUid()) {
             text1 = userInfoModel.getNicknameRemark();
             text2 = "获得演唱机会!";
         } else {

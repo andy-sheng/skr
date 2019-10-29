@@ -60,7 +60,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
         mProducationView.layoutManager = linearLayoutManager
 
         var isSelf = false
-        if (userInfoModel.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (userInfoModel.userId.toLong() == MyUserInfoManager.uid) {
             isSelf = true
         }
 

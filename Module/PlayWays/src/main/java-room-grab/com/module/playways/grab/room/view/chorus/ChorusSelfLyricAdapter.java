@@ -150,7 +150,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
             if (!mLeftGiveUp && !mRightGiveUp) {
                 mBlankView.setVisibility(View.VISIBLE);
                 if (mChorusLineLyricModel.getUserInfoModel() != null &&
-                        mChorusLineLyricModel.getUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                        mChorusLineLyricModel.getUserInfoModel().getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                     // 左边是自己
                     mLyricLineTv.setTextColor(colorEnable);
                 } else {
@@ -170,7 +170,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
             } else if (mLeftGiveUp) {
                 mBlankView.setVisibility(View.GONE);
                 // 左边的人不唱了
-                if (mLeft.getMUserInfoModel() != null && mLeft.getMUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                if (mLeft.getMUserInfoModel() != null && mLeft.getMUserInfoModel().getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                     // 左边是自己 ,自己放弃了,设置成灰色
                     mLyricLineTv.setTextColor(colorDisable);
                 } else {
@@ -193,7 +193,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
                 }
             } else if (mRightGiveUp) {
                 mBlankView.setVisibility(View.GONE);
-                if (mRight.getMUserInfoModel() != null && mRight.getMUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                if (mRight.getMUserInfoModel() != null && mRight.getMUserInfoModel().getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                     // 右边是自己，自己放弃了,设置成灰色
                     mLyricLineTv.setTextColor(colorDisable);
                 } else {
@@ -234,7 +234,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter {
 
             mBlankView.setVisibility(View.VISIBLE);
             if (mChorusLineLyricModel.getUserInfoModel() != null &&
-                    mChorusLineLyricModel.getUserInfoModel().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                    mChorusLineLyricModel.getUserInfoModel().getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                 // 左边是自己
                 mLyricLineTv.setTextColor(colorEnable);
             } else {

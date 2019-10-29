@@ -229,14 +229,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                  */
                 SpecailOpMsg specailOpMsg = (SpecailOpMsg) message.getContent();
                 if (specailOpMsg.getMessageType() == 1) {
-                    U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
+                    U.getLogUploadUtils().upload(MyUserInfoManager.INSTANCE.getUid(), new LogUploadUtils.Callback() {
                         @Override
                         public void onSuccess(String url) {
                             //上传日志成功
                             JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("uploaderId", MyUserInfoManager.getInstance().getUid());
-                            jsonObject.put("uploaderName", MyUserInfoManager.getInstance().getNickName());
-                            jsonObject.put("uploaderAvatar", MyUserInfoManager.getInstance().getAvatar());
+                            jsonObject.put("uploaderId", MyUserInfoManager.INSTANCE.getUid());
+                            jsonObject.put("uploaderName", MyUserInfoManager.INSTANCE.getNickName());
+                            jsonObject.put("uploaderAvatar", MyUserInfoManager.INSTANCE.getAvatar());
                             jsonObject.put("url", url);
                             jsonObject.put("date", U.getDateTimeUtils().formatDetailTimeStringNow());
 
@@ -495,8 +495,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     @Override
     public UserInfo getUserInfo(String useId) {
         MyLog.d(TAG, "getUserInfo" + " useId = " + useId);
-        if (MyUserInfoManager.getInstance().getUid() == Integer.valueOf(useId)) {
-            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
+        if (MyUserInfoManager.INSTANCE.getUid() == Integer.valueOf(useId)) {
+            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo()));
             RongIM.getInstance().refreshUserInfoCache(userInfo);
             return userInfo;
         }
@@ -790,7 +790,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public void updateCurrentUserInfo() {
         if (RongContext.getInstance() != null) {
-            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
+            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo()));
             RongIM.getInstance().setCurrentUserInfo(userInfo);
             RongIM.getInstance().refreshUserInfoCache(userInfo);
         }

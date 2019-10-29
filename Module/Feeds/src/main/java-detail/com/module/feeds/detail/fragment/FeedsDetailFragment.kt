@@ -526,7 +526,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
                 override fun onStart(p0: SHARE_MEDIA?) {
                     mFeedsWatchModel?.shareCnt = mFeedsWatchModel!!.shareCnt.plus(1)
                     mShareNumTv?.text = StringFromatUtils.formatTenThousand(mFeedsWatchModel!!.shareCnt!!)
-                    mFeedsDetailPresenter?.addShareCount(MyUserInfoManager.getInstance().uid.toInt(), mFeedsWatchModel?.feedID
+                    mFeedsDetailPresenter?.addShareCount(MyUserInfoManager.uid.toInt(), mFeedsWatchModel?.feedID
                             ?: 0)
                 }
             })
@@ -596,7 +596,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
         }
 
         SinglePlayer.addCallback(playerTag, playCallback)
-        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+        mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.uid.toInt(), mFeedID)
         if (needContinueByFrom()) {
             RemoteControlHelper.registerHeadsetControl(playerTag)
         }
@@ -671,7 +671,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
     private fun tryLoadNewFeed(newFeedId: Int) {
         if (newFeedId != mFeedID) {
             mFeedID = newFeedId
-            mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.getInstance().uid.toInt(), mFeedID)
+            mFeedsDetailPresenter?.getFeedsWatchModel(MyUserInfoManager.uid.toInt(), mFeedID)
         } else {
             mSeekBar?.progress = 0
             mPassTimeTv?.text = "00:00"
@@ -727,7 +727,7 @@ class FeedsDetailFragment : BaseFragment(), IFeedsDetailView {
             mFeedsInputContainerView?.setETHint("回复 ${mFeedsWatchModel?.user?.nickname}")
         }
 
-        mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userId != MyUserInfoManager.getInstance().uid.toInt()) View.VISIBLE else View.GONE
+        mFollowTv?.visibility = if (mFeedsWatchModel?.user?.userId != MyUserInfoManager.uid.toInt()) View.VISIBLE else View.GONE
 
         mFeedsWatchModel?.user?.avatar?.let {
             mRadioView?.setAvatar(it, mFeedsWatchModel?.song?.needShareTag == true)

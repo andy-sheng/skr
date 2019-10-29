@@ -39,7 +39,7 @@ class VipReceiveCoinPresenter(val baseActivity: BaseActivity) : RxLifeCyclePrese
             return
         }
 
-        if (!MyUserInfoManager.getInstance().honorInfo.isHonor()) {
+        if (MyUserInfoManager.honorInfo?.isHonor()==false) {
             MyLog.w(TAG, "not a honor")
             return
         }

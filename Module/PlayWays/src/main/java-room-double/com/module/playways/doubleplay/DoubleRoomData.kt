@@ -200,9 +200,9 @@ class DoubleRoomData() : Serializable {
     }
 
     fun selfUnLock() {
-        if (userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()] != null) {
-            userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]?.isHasLock = false
-            EventBus.getDefault().post(UpdateLockEvent(MyUserInfoManager.getInstance().uid.toInt(), false))
+        if (userLockInfoMap[MyUserInfoManager.uid.toInt()] != null) {
+            userLockInfoMap[MyUserInfoManager.uid.toInt()]?.isHasLock = false
+            EventBus.getDefault().post(UpdateLockEvent(MyUserInfoManager.uid.toInt(), false))
         }
     }
 
@@ -253,7 +253,7 @@ class DoubleRoomData() : Serializable {
         val map = userInfoListMap
         if (map != null) {
             for (info in map) {
-                if (info.key.toLong() != MyUserInfoManager.getInstance().uid) {
+                if (info.key.toLong() != MyUserInfoManager.uid) {
                     return info.value
                 }
             }
@@ -263,7 +263,7 @@ class DoubleRoomData() : Serializable {
     }
 
     fun getAvatarById(id: Int): String {
-        if (id == MyUserInfoManager.getInstance().uid.toInt()) {
+        if (id == MyUserInfoManager.uid.toInt()) {
             return getSelfAvatar()
         } else {
             return getPartnerAvatar()
@@ -287,7 +287,7 @@ class DoubleRoomData() : Serializable {
         val info = getMyUser()
         if (info != null) {
             if (enableNoLimitDuration) {
-                return MyUserInfoManager.getInstance().avatar
+                return MyUserInfoManager.avatar
             } else {
                 return getMaskAvatar(info.sex)
             }
@@ -309,7 +309,7 @@ class DoubleRoomData() : Serializable {
         val map = userInfoListMap
         if (map != null) {
             for (info in map) {
-                if (info.key.toLong() == MyUserInfoManager.getInstance().uid) {
+                if (info.key.toLong() == MyUserInfoManager.uid) {
                     return info.value
                 }
             }
@@ -319,7 +319,7 @@ class DoubleRoomData() : Serializable {
 
     fun getToken(): String {
         for (token in tokens) {
-            if (token.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+            if (token.userID.toLong() == MyUserInfoManager.uid) {
                 return token.token
             }
         }

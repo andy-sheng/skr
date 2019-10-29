@@ -364,7 +364,7 @@ public class PlayRecordFragment extends BaseFragment {
             mShareWorksDialog.dismiss(false);
         }
         mShareWorksDialog = new ShareWorksDialog(PlayRecordFragment.this, mSongModel.getItemName(), containSaveTips);
-        mShareWorksDialog.setData((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar()
+        mShareWorksDialog.setData((int) MyUserInfoManager.INSTANCE.getUid(), MyUserInfoManager.INSTANCE.getNickName(), MyUserInfoManager.INSTANCE.getAvatar()
                 , mSongModel.getItemName(), mUrl, mWorksId);
         mShareWorksDialog.show();
     }

@@ -35,7 +35,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
 
     override fun clickMore(position: Int, it: FeedsWatchModel) {
         mFeedsMoreDialogView?.dismiss(false)
-        if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+        if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_FEED_HOME, it, true)
             mFeedsMoreDialogView?.showByDialog()
         } else {
@@ -91,7 +91,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
     private fun getRecommendTagList() {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
-                mFeedServerApi.getRecomendTagList(0, 4, MyUserInfoManager.getInstance().uid)
+                mFeedServerApi.getRecomendTagList(0, 4, MyUserInfoManager.uid)
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)
@@ -111,7 +111,7 @@ class RecommendWatchView(fragment: BaseFragment) : BaseWatchView(fragment, TYPE_
     private fun getRecommendFeedList(offset: Int, isClear: Boolean,dataOkCallback: (() -> Unit)?=null) {
         launch {
             val obj = subscribe(RequestControl("getRecommendFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(),RA.getVars(),RA.getTestList())
+                mFeedServerApi.getFeedRecommendList(offset, mCNT, MyUserInfoManager.uid.toInt(),RA.getVars(),RA.getTestList())
             }
             if (obj.errno == 0) {
                 mHasInitData = true

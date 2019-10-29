@@ -106,7 +106,7 @@ public class DoubleMiniGameSelfSingCardView extends ExViewStub {
     public boolean playLyric(LocalCombineRoomMusic music, DoubleRoomData roomData) {
         mMusic = music;
         mDoubleRoomData = roomData;
-        if (music.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+        if (music.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
             mIsOwner = true;
             mOwnerInfo = roomData.getMyUser();
         } else {

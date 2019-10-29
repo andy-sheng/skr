@@ -322,7 +322,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         //设置图片,通知标题,发送时间,提示方式等属性
         Notification.Builder mBuilder = new Notification.Builder(this);
-        mBuilder.setContentTitle("@" + MyUserInfoManager.getInstance().getNickName())                        //标题
+        mBuilder.setContentTitle("@" + MyUserInfoManager.INSTANCE.getNickName())                        //标题
                 .setContentText("你的好友" + event.mUserInfoModel.getNicknameRemark() + "邀请你玩游戏")      //内容
                 .setWhen(System.currentTimeMillis())           //设置通知时间
                 .setSmallIcon(R.drawable.app_icon)            //设置小图标

@@ -434,7 +434,7 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabSomeOneLightBurstEvent) {
-        if (mSeq == event.getRoundInfo().roundSeq && event.uid.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mSeq == event.getRoundInfo().roundSeq && event.uid.toLong() == MyUserInfoManager.uid) {
             mStatus = STATUS_HAS_OP
             onChangeState()
         } else {
@@ -444,7 +444,7 @@ class GrabOpView(context: Context, attrs: AttributeSet) : RelativeLayout(context
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabSomeOneLightOffEvent) {
-        if (mSeq == event.getRoundInfo().roundSeq && event.uid.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mSeq == event.getRoundInfo().roundSeq && event.uid.toLong() == MyUserInfoManager.uid) {
             mStatus = STATUS_HAS_OP
             onChangeState()
         }

@@ -65,7 +65,7 @@ public class SkrKouLingUtils {
     public static String genJoinMicRoomText(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
         sb.append(name).append(" 邀你加入ta的小k房，一起边唱边聊～").append("\n");
         sb.append("——————————").append("\n");
         sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
@@ -79,7 +79,7 @@ public class SkrKouLingUtils {
     public static String genJoinDoubleGameKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
         sb.append(name).append(" 邀你加入ta的双人唱聊房间，一起边唱边聊～").append("\n");
         sb.append("——————————").append("\n");
         sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
@@ -114,7 +114,7 @@ public class SkrKouLingUtils {
     public static String genJoinGrabGameKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
 //                    if (!TextUtils.isEmpty(name)) {
 //                        name = name.replaceAll("\\$", "");
 //                    }
@@ -151,7 +151,7 @@ public class SkrKouLingUtils {
     public static String genReqFollowKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
 //                    if (!TextUtils.isEmpty(name)) {
 //                        name = name.replaceAll("\\$", "");
 //                    }

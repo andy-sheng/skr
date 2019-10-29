@@ -342,7 +342,7 @@ class GrabExistSongManagePresenter(internal var mIGrabSongManageView: IExistSong
         MyLog.d(TAG, "onEvent event=$event")
         // 添加非房主想唱的歌曲
         val grabRoomSongModel = GrabRoomSongModel()
-        grabRoomSongModel.owner = MyUserInfoManager.getInstance().nickName
+        grabRoomSongModel.owner = MyUserInfoManager.nickName
         grabRoomSongModel.itemName = "自定义小游戏"
         grabRoomSongModel.itemID = SongModel.ID_CUSTOM_GAME
         grabRoomSongModel.playType = 4

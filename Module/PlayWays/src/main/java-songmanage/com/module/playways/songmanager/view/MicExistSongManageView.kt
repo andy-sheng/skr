@@ -111,7 +111,7 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
 
     private fun getMicExistSongList(off: Int, isClear: Boolean) {
         launch {
-            var result = subscribe { songManagerServerApi.getMicExistSongList(mRoomData.gameId, MyUserInfoManager.getInstance().uid.toInt(), off, mCnt) }
+            var result = subscribe { songManagerServerApi.getMicExistSongList(mRoomData.gameId, MyUserInfoManager.uid.toInt(), off, mCnt) }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")
                 hasMore = result.data.getBooleanValue("hasMore")

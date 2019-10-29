@@ -34,7 +34,7 @@ public final class QRoundAndGameOverMsgEvent {
         this.roundInfoModel = GrabRoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
 
         for (QUserCoin c : qRoundAndGameOverMsg.getQUserCoinList()) {
-            if (c.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (c.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 long a = c.getCoin();
                 myCoin = (int) a;
             }

@@ -65,12 +65,12 @@ class FeedsShareActivity : BaseActivity() {
         ivBack = this.findViewById(R.id.iv_back)
 
         AvatarUtils.loadAvatarByUrl(avatarIv,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                         .setBorderColor(U.getColor(R.color.white))
                         .setBorderWidth(2.dp().toFloat())
                         .setCircle(true)
                         .build())
-        nameTv.text = MyUserInfoManager.getInstance().nickName
+        nameTv.text = MyUserInfoManager.nickName
         songTv.text = "《${mFeedsMakeModel?.songModel?.workName}》"
 
         ivBack.setOnClickListener(object : DebounceViewClickListener() {
@@ -112,11 +112,11 @@ class FeedsShareActivity : BaseActivity() {
     }
 
     private fun shareUrl(sharePlatform: SharePlatform) {
-        var url = String.format("http://www.skrer.mobi/feed/song?songID=%s&userID=%s", mFeedsMakeModel?.songModel?.songID, MyUserInfoManager.getInstance().uid)
+        var url = String.format("http://www.skrer.mobi/feed/song?songID=%s&userID=%s", mFeedsMakeModel?.songModel?.songID, MyUserInfoManager.uid)
         if (!TextUtils.isEmpty(url)) {
             val music = UMusic(mFeedsMakeModel?.songModel?.playURL)
             music.title = "" + mFeedsMakeModel?.songModel?.workName
-            music.description = MyUserInfoManager.getInstance().nickName
+            music.description = MyUserInfoManager.nickName
 
             if (sharePlatform == SharePlatform.WEIXIN_CIRCLE || sharePlatform == SharePlatform.WEIXIN) {
                 music.setThumb(UMImage(this, R.drawable.share_app_weixin_circle_icon))

@@ -176,7 +176,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                         from = PostsMoreDialogView.FROM_POSTS_TOPIC
                     }
                     postsMoreDialogView = PostsMoreDialogView(activity, from, it)
-                    if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
                         postsMoreDialogView?.apply {
                             reportTv.text = "删除"
                             reportTv.setOnClickListener(object : DebounceViewClickListener() {

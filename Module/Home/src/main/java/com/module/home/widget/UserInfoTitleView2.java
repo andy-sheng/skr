@@ -58,7 +58,7 @@ public class UserInfoTitleView2 extends RelativeLayout {
 
     public void showBaseInfo() {
         AvatarUtils.loadAvatarByUrl(mIvUserIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.INSTANCE.getAvatar())
                         .setCircle(true)
                         .build());
     }

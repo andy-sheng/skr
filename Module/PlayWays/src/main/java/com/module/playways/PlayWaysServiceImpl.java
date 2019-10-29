@@ -302,7 +302,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                 if (result.getErrno() == 0) {
                     DoubleRoomData doubleRoomData = DoubleRoomData.Companion.makeRoomDataFromJsonObject(result.getData());
                     doubleRoomData.setDoubleRoomOri(DoubleRoomData.DoubleRoomOri.CREATE);
-                    doubleRoomData.setInviterId(MyUserInfoManager.getInstance().getUid());
+                    doubleRoomData.setInviterId(MyUserInfoManager.INSTANCE.getUid());
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation();

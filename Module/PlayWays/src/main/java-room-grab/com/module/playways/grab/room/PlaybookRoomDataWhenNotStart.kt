@@ -44,11 +44,11 @@ class PlaybookRoomDataWhenNotStart : Serializable {
             p.isSkrer = false
             p.isOnline = true
             p.role = EQUserRole.EQUR_PLAY_USER.value
-            p.userID = MyUserInfoManager.getInstance().uid.toInt()
+            p.userID = MyUserInfoManager.uid.toInt()
             val userInfoModel = UserInfoModel()
-            userInfoModel.userId = MyUserInfoManager.getInstance().uid.toInt()
-            userInfoModel.avatar = MyUserInfoManager.getInstance().avatar
-            userInfoModel.nickname = MyUserInfoManager.getInstance().nickName
+            userInfoModel.userId = MyUserInfoManager.uid.toInt()
+            userInfoModel.avatar = MyUserInfoManager.avatar
+            userInfoModel.nickname = MyUserInfoManager.nickName
             p.userInfo = userInfoModel
             listOf(p)
         }

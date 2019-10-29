@@ -165,7 +165,7 @@ class PostsTopicActivity : BaseActivity(), RequestCallBack {
     private fun getTopicDetail() {
         launch {
             val result = subscribe(RequestControl("getTopicDetail", ControlType.CancelThis)) {
-                postsWatchServerApi.getTopicDetail(MyUserInfoManager.getInstance().uid, topicID)
+                postsWatchServerApi.getTopicDetail(MyUserInfoManager.uid, topicID)
             }
             if (result.errno == 0) {
                 val detail = JSON.parseObject(result.data.toJSONString(), Topic::class.java)

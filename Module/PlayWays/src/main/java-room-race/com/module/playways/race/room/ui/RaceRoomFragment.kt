@@ -172,7 +172,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             showGameRuleDialog()
         }
 
-        MyUserInfoManager.getInstance().myUserInfo?.let {
+        MyUserInfoManager.myUserInfo?.let {
             mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
         }
     }
@@ -542,7 +542,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
 
-        hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true)
+        hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true)
     }
 
     private fun hideSignUpUI(hide: Boolean) {
@@ -553,11 +553,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     }
 
     private fun showRightVote() {
-        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true) {
+        if (mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true) {
             MyLog.d(TAG, "showRightVote 是演唱者")
             mRaceRightOpView.visibility = View.GONE
         } else {
-            val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.getInstance().uid.toInt())?.role
+            val role = mRoomData.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid.toInt())?.role
             if (role == ERUserRole.ERUR_PLAY_USER.value) {
                 MyLog.d(TAG, "showRightVote 当前身份是play")
                 mRaceRightOpView.showVote(false)
@@ -609,7 +609,7 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
             }
         }
 
-        hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt()) == true)
+        hideSignUpUI(mRoomData.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt()) == true)
     }
 
     override fun showRoundOver(lastRoundInfo: RaceRoundInfoModel, continueOp: (() -> Unit)?) {

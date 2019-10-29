@@ -29,7 +29,7 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
         int userId = Integer.valueOf(userInfo.getUserId());
-        if (userId != MyUserInfoManager.getInstance().getUid() && userId != UserInfoModel.USER_ID_XIAOZHUSHOU) {
+        if (userId != MyUserInfoManager.INSTANCE.getUid() && userId != UserInfoModel.USER_ID_XIAOZHUSHOU) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();
             bundle.putInt("bundle_user_id", Integer.valueOf(userInfo.getUserId()));

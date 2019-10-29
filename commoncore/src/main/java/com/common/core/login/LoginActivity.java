@@ -161,9 +161,9 @@ public class LoginActivity extends BaseActivity {
             }
         }
         if (apiResult.getErrno() == 0) {
-            if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
+            if (MyUserInfoManager.INSTANCE.hasMyUserInfo() && MyUserInfoManager.INSTANCE.isUserInfoFromServer()) {
                 // 如果有账号了
-                if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
+                if (MyUserInfoManager.INSTANCE.isNeedCompleteInfo()) {
                     boolean isUpAc = U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("UploadAccountInfoActivity");
                     if (!isUpAc) {
                         IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();

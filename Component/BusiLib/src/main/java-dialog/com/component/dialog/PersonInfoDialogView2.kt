@@ -199,7 +199,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         }
 
         // 自己卡片的处理
-        if (mUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mUserId.toLong() == MyUserInfoManager.uid) {
             isShowKick = false
             mMoreBtn.visibility = View.GONE
             mToolbar.visibility = View.GONE
@@ -549,7 +549,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             mPhotoAdapter.dataList!!.clear()
         }
 
-        if (totalCount <= 0 && mUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (totalCount <= 0 && mUserId.toLong() == MyUserInfoManager.uid) {
             mEmptyMyPhoto.visibility = View.VISIBLE
         }
 

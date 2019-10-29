@@ -197,7 +197,7 @@ public class InframeProcessor implements ISchemeProcessor {
             int ask = SchemeUtils.getInt(uri, "ask", 0);
             int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
-                if (ownerId == MyUserInfoManager.getInstance().getUid()) {
+                if (ownerId == MyUserInfoManager.INSTANCE.getUid()) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
                     return;
                 }
@@ -215,7 +215,7 @@ public class InframeProcessor implements ISchemeProcessor {
             int ask = SchemeUtils.getInt(uri, "ask", 0);
             int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
-                if (ownerId == MyUserInfoManager.getInstance().getUid()) {
+                if (ownerId == MyUserInfoManager.INSTANCE.getUid()) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
                     return;
                 }
@@ -252,7 +252,7 @@ public class InframeProcessor implements ISchemeProcessor {
             EventBus.getDefault().post(new JumpHomeDoubleChatPageEvent());
         } else if ("/joinmic".equals(path)) {
             final int ownerID = SchemeUtils.getInt(uri, "owner", 0);
-            if (ownerID == MyUserInfoManager.getInstance().getUid()) {
+            if (ownerID == MyUserInfoManager.INSTANCE.getUid()) {
                 MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
                 return;
             }
@@ -286,7 +286,7 @@ public class InframeProcessor implements ISchemeProcessor {
         String path = uri.getPath();
         if ("/bothfollow".equals(path)) {
             int inviterId = SchemeUtils.getInt(uri, "inviterId", 0);
-            if (inviterId > 0 && inviterId != MyUserInfoManager.getInstance().getUid()) {
+            if (inviterId > 0 && inviterId != MyUserInfoManager.INSTANCE.getUid()) {
                 BothRelationFromSchemeEvent event = new BothRelationFromSchemeEvent();
                 event.useId = inviterId;
                 EventBus.getDefault().post(event);

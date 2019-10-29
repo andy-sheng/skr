@@ -196,9 +196,9 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         })
 
         mRightAvatarSdv?.setDebounceViewClickListener {
-            val info = mRoomData!!.userLockInfoMap[MyUserInfoManager.getInstance().uid.toInt()]
+            val info = mRoomData!!.userLockInfoMap[MyUserInfoManager.uid.toInt()]
             if (info != null && !info.isHasLock) {
-                showPersonInfoView(MyUserInfoManager.getInstance().uid.toInt())
+                showPersonInfoView(MyUserInfoManager.uid.toInt())
             }
         }
 
@@ -608,7 +608,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
         }
 
         //只有主动邀请的人打点
-        if (mRoomData!!.inviterId != null && mRoomData!!.inviterId == MyUserInfoManager.getInstance().uid) {
+        if (mRoomData!!.inviterId != null && mRoomData!!.inviterId == MyUserInfoManager.uid) {
             if (mRoomData!!.isGrabInviteRoom()) {
                 StatisticsAdapter.recordCountEvent("cp", "invite2_success", null)
             } else if (mRoomData!!.isCreateRoom()) {
@@ -635,7 +635,7 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
 
     override fun showLockState(userID: Int, lockState: Boolean) {
         if (!lockState) {
-            if (userID.toLong() == MyUserInfoManager.getInstance().uid) {
+            if (userID.toLong() == MyUserInfoManager.uid) {
                 unLockSelf()
             } else {
                 unLockOther()
@@ -709,14 +709,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
     fun unLockSelf() {
         if (mRoomData!!.isMatchRoom()) {
             if (mRoomData!!.enableNoLimitDuration) {
-                AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setBorderColor(Color.WHITE)
                         .build())
 
                 mUnlockTv?.visibility = GONE
-                mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
+                mRightNameTv?.text = MyUserInfoManager.nickName
                 mRightNameTv?.visibility = VISIBLE
                 mRightLockIcon?.visibility = GONE
             } else {
@@ -726,14 +726,14 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             }
         } else {
             if (mRoomData!!.enableNoLimitDuration) {
-                AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+                AvatarUtils.loadAvatarByUrl(mRightAvatarSdv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setBorderColor(Color.WHITE)
                         .build())
 
                 mUnlockTv?.visibility = GONE
-                mRightNameTv?.text = MyUserInfoManager.getInstance().nickName
+                mRightNameTv?.text = MyUserInfoManager.nickName
                 mRightNameTv?.visibility = VISIBLE
                 mRightLockIcon?.visibility = GONE
             }

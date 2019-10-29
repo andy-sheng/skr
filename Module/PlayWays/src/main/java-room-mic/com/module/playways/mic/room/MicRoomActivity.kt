@@ -205,7 +205,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             showGameRuleDialog()
         }
 
-        MyUserInfoManager.getInstance().myUserInfo?.let {
+        MyUserInfoManager.myUserInfo?.let {
             mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
         }
 
@@ -498,14 +498,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     fun onEvent(event: MReqAddMusicMsg) {
         // 请求合唱或者pk
         val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
-        if (micUserMusicModel.userID != MyUserInfoManager.getInstance().uid.toInt()) {
+        if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
             mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MAddMusicMsg) {
-        // 点歌成功，要来判断是否当前合唱
+        // 合唱 pk 成功 点歌成功，要来判断是否当前合唱
         val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
         if (userMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value || userMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value) {
             // 合唱或者pk
