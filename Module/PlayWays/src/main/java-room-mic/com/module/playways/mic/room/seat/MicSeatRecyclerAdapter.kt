@@ -94,7 +94,7 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
                 for (i in 0 until it.size) {
                     val index = i + 1
                     if (i == 0) {
-                        if (model!!.user?.isNextSing == true) {
+                        if (model!!.user?.isCurSing == true) {
                             spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(Color.parseColor("#FFC15B"))
                         } else {
                             spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
