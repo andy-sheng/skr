@@ -625,9 +625,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         hideAllSceneView(null)
     }
 
-    override fun singBySelf(hasLastRound: Boolean) {
+    override fun singBySelf(hasLastRound: Boolean,singCardShowListener:()->Unit) {
         hideAllSceneView(null)
         var step2 = {
+            singCardShowListener.invoke()
             mSelfSingCardView.playLyric()
             mGiveUpView.delayShowGiveUpView(false)
         }

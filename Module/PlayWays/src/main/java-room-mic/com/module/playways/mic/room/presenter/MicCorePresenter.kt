@@ -208,11 +208,11 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      * 如果确定是自己唱了,预先可以做的操作
      */
     internal fun preOpWhenSelfRound() {
-        var needAcc = (mRoomData?.realRoundInfo?.wantSingType == EMWantSingType.MWST_ACCOMPANY.value ||
-                mRoomData?.realRoundInfo?.wantSingType == EMWantSingType.MWST_SPK.value)
+        var needAcc = mRoomData?.realRoundInfo?.isAccRound==true
 
         val p = ZqEngineKit.getInstance().params
         p.isGrabSingNoAcc = !needAcc
+
         if (!ZqEngineKit.getInstance().params.isAnchor) {
             ZqEngineKit.getInstance().setClientRole(true)
             ZqEngineKit.getInstance().muteLocalAudioStream(false)
@@ -540,8 +540,9 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
                 roomView.showRoundOver(lastRound) {
                     // 演唱阶段
                     if (thisRound.singBySelf()) {
-                        preOpWhenSelfRound()
-                        roomView.singBySelf(true)
+                        roomView.singBySelf(true){
+                            preOpWhenSelfRound()
+                        }
                     } else {
                         preOpWhenOtherRound()
                         roomView.singByOthers(true)
@@ -550,8 +551,9 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             } else {
                 // 演唱阶段
                 if (thisRound.singBySelf()) {
-                    preOpWhenSelfRound()
-                    roomView.singBySelf(false)
+                    roomView.singBySelf(false){
+                        preOpWhenSelfRound()
+                    }
                 } else {
                     preOpWhenOtherRound()
                     roomView.singByOthers(false)
