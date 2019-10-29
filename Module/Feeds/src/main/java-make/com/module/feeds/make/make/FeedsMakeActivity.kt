@@ -705,8 +705,9 @@ class FeedsMakeActivity : BaseActivity() {
         return true
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         finishPage()
+        return true
     }
 }
 

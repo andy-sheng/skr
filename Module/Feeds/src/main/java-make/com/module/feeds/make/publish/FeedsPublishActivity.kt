@@ -429,9 +429,9 @@ class FeedsPublishActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        //setResult(Activity.RESULT_OK)
+    override fun onBackPressedForActivity(): Boolean {
         finishPage()
+        return true
     }
 
     private fun finishPage() {

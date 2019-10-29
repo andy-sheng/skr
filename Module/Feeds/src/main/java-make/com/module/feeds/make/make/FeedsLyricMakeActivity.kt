@@ -220,8 +220,9 @@ class FeedsLyricMakeActivity : BaseActivity() {
         return true
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         finishPage()
+        return true
     }
 
     private fun finishPage() {

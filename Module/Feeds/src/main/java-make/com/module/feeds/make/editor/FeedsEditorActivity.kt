@@ -476,8 +476,9 @@ class FeedsEditorActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         finishPage()
+        return true
     }
 
     private fun finishPage() {

@@ -27,7 +27,7 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.recommend.RA;
 import com.component.busilib.view.AvatarView;
 import com.module.playways.R;
-import com.module.playways.race.room.model.RacePlayerInfoModel;
+import com.module.playways.mic.room.model.MicPlayerInfoModel;
 import com.module.playways.room.msg.event.EventHelper;
 import com.module.playways.room.room.RoomServerApi;
 import com.module.playways.room.room.view.InputContainerView;
@@ -43,7 +43,7 @@ import okhttp3.RequestBody;
 public class MicInputContainerView extends InputContainerView {
     RecyclerView mRecyclerView;
     PlayerAdapter mPlayerAdapter;
-    RacePlayerInfoModel mRacePlayerInfoModel;
+    MicPlayerInfoModel mRacePlayerInfoModel;
     ExImageView mBackgroundIv;
 
     public MicInputContainerView(Context context) {
@@ -90,7 +90,7 @@ public class MicInputContainerView extends InputContainerView {
                     map.put("receiver", new UserInfo[]{userInfo});
                 }
 
-                RacePlayerInfoModel racePlayerInfoModel = mRacePlayerInfoModel;
+                MicPlayerInfoModel racePlayerInfoModel = mRacePlayerInfoModel;
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
@@ -133,9 +133,9 @@ public class MicInputContainerView extends InputContainerView {
     @Override
     public void onBoradShow() {
         super.onBoradShow();
-        List<RacePlayerInfoModel> racePlayerInfoModelList = getPlayerInfoListExpectSelf();
+        List<MicPlayerInfoModel> racePlayerInfoModelList = getPlayerInfoListExpectSelf();
         if (racePlayerInfoModelList.size() > 0) {
-            racePlayerInfoModelList.add(0, new RacePlayerInfoModel());
+            racePlayerInfoModelList.add(0, new MicPlayerInfoModel());
             mRacePlayerInfoModel = racePlayerInfoModelList.get(0);
         }
 
@@ -155,11 +155,11 @@ public class MicInputContainerView extends InputContainerView {
         mBackgroundIv.setVisibility(GONE);
     }
 
-    private List<RacePlayerInfoModel> getPlayerInfoListExpectSelf() {
-        List<RacePlayerInfoModel> racePlayerInfoModelList = mRoomData.getInSeatPlayerInfoList();
-        Iterator<RacePlayerInfoModel> it = racePlayerInfoModelList.iterator();
+    private List<MicPlayerInfoModel> getPlayerInfoListExpectSelf() {
+        List<MicPlayerInfoModel> racePlayerInfoModelList = mRoomData.getInSeatPlayerInfoList();
+        Iterator<MicPlayerInfoModel> it = racePlayerInfoModelList.iterator();
         while (it.hasNext()) {
-            RacePlayerInfoModel racePlayerInfoModel = it.next();
+            MicPlayerInfoModel racePlayerInfoModel = it.next();
             if (racePlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 it.remove();
             }
@@ -168,7 +168,7 @@ public class MicInputContainerView extends InputContainerView {
         return racePlayerInfoModelList;
     }
 
-    public class PlayerAdapter extends DiffAdapter<RacePlayerInfoModel, RecyclerView.ViewHolder> {
+    public class PlayerAdapter extends DiffAdapter<MicPlayerInfoModel, RecyclerView.ViewHolder> {
 
         @NonNull
         @Override
@@ -180,7 +180,7 @@ public class MicInputContainerView extends InputContainerView {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            RacePlayerInfoModel model = mDataList.get(position);
+            MicPlayerInfoModel model = mDataList.get(position);
 
             WalletRecordItemHolder reportItemHolder = (WalletRecordItemHolder) holder;
             reportItemHolder.bind(model);
@@ -196,7 +196,7 @@ public class MicInputContainerView extends InputContainerView {
             AvatarView mPlayerIv;
             ExTextView mSelected;
 
-            RacePlayerInfoModel mWalletRecordModel;
+            MicPlayerInfoModel mWalletRecordModel;
 
             public WalletRecordItemHolder(View itemView) {
                 super(itemView);
@@ -224,7 +224,7 @@ public class MicInputContainerView extends InputContainerView {
                 });
             }
 
-            public void bind(RacePlayerInfoModel model) {
+            public void bind(MicPlayerInfoModel model) {
                 this.mWalletRecordModel = model;
                 String avatar = "";
                 if (model.getUserInfo() != null) {

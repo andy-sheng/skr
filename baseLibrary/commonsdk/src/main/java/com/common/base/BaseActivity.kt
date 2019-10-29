@@ -333,7 +333,7 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
     }
 
 
-    override fun onBackPressed() {
+    final override fun onBackPressed() {
         if (U.getCommonUtils().isFastDoubleClick()) {
             return
         }

@@ -552,13 +552,13 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         progressView.visibility = View.GONE
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         if (feedsInputContainerView.visibility == View.VISIBLE) {
             feedsInputContainerView.hideSoftInput()
-            return
+            return true
         }
 
-        return super.onBackPressed()
+        return super.onBackPressedForActivity()
     }
 
     override fun voteSuccess(position: Int) {
