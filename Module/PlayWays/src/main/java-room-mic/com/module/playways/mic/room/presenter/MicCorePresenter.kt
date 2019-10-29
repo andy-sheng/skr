@@ -32,7 +32,6 @@ import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
-import com.module.playways.mic.room.event.SomeOneLeavePlaySeatEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.ui.IMicRoomView
@@ -725,24 +724,13 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MExitGameMsg) {
         mRoomData.realRoundInfo?.removeUser(true, event.userID)
-    }
-
-    /**
-     * 某人离开选手席
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: SomeOneLeavePlaySeatEvent) {
         val grabRoundInfoModel = mRoomData.realRoundInfo
         if (grabRoundInfoModel != null) {
             for (chorusRoundInfoModel in grabRoundInfoModel.chorusRoundInfoModels) {
-                if (event.mPlayerInfoModel != null) {
-                    if (chorusRoundInfoModel.userID == event.mPlayerInfoModel.userID) {
+                    if (chorusRoundInfoModel.userID == event.userID) {
                         chorusRoundInfoModel.userExit()
-                        pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.mPlayerInfoModel.userID))
+                        pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.userID))
                     }
-                }
             }
         }
     }
