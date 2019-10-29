@@ -96,7 +96,7 @@ interface MicRoomServerApi {
     /**
      *  同意合唱/PK的结果 {"roomID": 0,"uniqTag": "string"}
      */
-    @GET("http://dev.game.inframe.mobi/v1/micgame/agree-sing")
+    @PUT("http://dev.game.inframe.mobi/v1/micgame/agree-sing")
     fun agreeSing(@Body body: RequestBody): Call<ApiResult>
 
     /**
