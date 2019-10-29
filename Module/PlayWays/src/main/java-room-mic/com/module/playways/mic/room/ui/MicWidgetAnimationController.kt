@@ -101,7 +101,6 @@ class MicWidgetAnimationController(internal var mF: MicRoomActivity) {
 
     internal fun fillView(viewList: MutableList<View?>) {
         viewList.add(mF.mTopContentView)
-        viewList.add(mF.mAddSongIv)
         viewList.add(mF.mMicInviteView?.realView)
 //        viewList.add(mF.mTopVsView)
 //        viewList.add(mF.mPracticeFlagIv)
