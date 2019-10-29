@@ -1,5 +1,13 @@
 package com.zq.mediaengine.kit.agora;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkRequest;
+import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -9,6 +17,10 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.engine.statistics.SDataManager;
+import com.engine.statistics.SUtils;
+import com.engine.statistics.datastruct.SAgora;
+import com.engine.statistics.datastruct.Skr;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -90,20 +102,162 @@ public class AgoraRTCAdapter {
     private int mAudioCBCount = 0;
     private int mAudioCBSamples = 0;
     private long mStartCBTime = 0;
+    private int mDataFlushMode = SDataManager.FLUSH_MODE_FILE | SDataManager.FLUSH_MODE_UPLOAD;
+
+
+    private HandlerThread mLogMonThread = null;
+    private Handler mLogMonHandler= null;
+
+
 
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
+
+            sInstance.startStatisticThread();
         }
         return sInstance;
     }
 
     public static synchronized void destroy() {
         if (sInstance != null) {
+
+            sInstance.stopStatisticThread();
+
             sInstance.destroy(true);
             sInstance = null;
         }
     }
+
+
+    private final static int LM_MSG_UPDATE_PING_INFO = 1;
+    private final static int LM_MSG_UPDATE_NETWORK_INFO = 2;
+    private final static int LM_MSG_FLUSH_LOG = 3;
+
+    public void startStatisticThread(){
+        if (null == mLogMonThread) {
+            mLogMonThread = new HandlerThread("Log-Monitor-Thread");
+            mLogMonThread.start();
+            synchronized (mLogMonThread) {
+                try {
+                    mLogMonThread.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            mLogMonHandler = new Handler(mLogMonThread.getLooper()){
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+
+                    switch (msg.what) {
+                        case LM_MSG_UPDATE_PING_INFO:
+                            {
+                                String baiduURL = "www.baidu.com";
+                                Skr.PingInfo pingInfo = SUtils.ping(baiduURL);
+                                SDataManager.instance().getAgoraDataHolder().addPingInfo(pingInfo);
+
+                                Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
+                                mLogMonHandler.sendMessageDelayed(msgLoop, 2000);//进入循环
+                            }
+                            break;
+                        case LM_MSG_UPDATE_NETWORK_INFO:
+                            {
+                                Context ctx = U.app().getApplicationContext();
+                                Skr.NetworkInfo nwInfo = SUtils.getNetworkInfo(ctx);
+
+                                if (null != msg.obj && msg.obj instanceof String) {
+                                    nwInfo.extraInfo = (String)msg.obj;
+                                }
+                                SDataManager.instance().getAgoraDataHolder().addNetworkInfo(nwInfo);
+                                /////////////////////////////////////////////////////////
+//                                SDataManager.instance().flush(mDataFlushMode);
+//                                Log.d("MyDemo", nwInfo.toString());
+                                /////////////////////////////////////////////////////////
+                            }
+                            break;
+                        case LM_MSG_FLUSH_LOG:
+                            {
+                                if (SDataManager.instance().need2Flush())
+                                    SDataManager.instance().flush(mDataFlushMode);
+
+                                mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 2000);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            };
+            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO), 0);
+            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
+            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
+        }
+
+        Context ctx = U.app().getApplicationContext();
+        startMonitorNetwork(ctx);
+    }
+
+    public void stopStatisticThread() {
+        if (null != mLogMonThread) {
+            try {
+                mLogMonThread.getLooper().quit();
+                mLogMonThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        SDataManager.instance().flush(mDataFlushMode);
+    }
+
+
+    public void startMonitorNetwork(Context ctx) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+            connectivityManager.requestNetwork(new NetworkRequest.Builder().
+                    build(), new ConnectivityManager.NetworkCallback() {
+
+                @Override
+                public void onAvailable(Network network) {
+                    super.onAvailable(network);
+//                    Log.d(TAG, "onAvailable: 网络已连接");
+                    mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络已连接"),0);
+                }
+
+                @Override
+                public void onLost(Network network) {
+                    super.onLost(network);
+//                    Log.e(TAG, "onLost: 网络已断开");
+                    mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络丢失"),0);
+                }
+
+//                @Override
+//                public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
+//                    super.onCapabilitiesChanged(network, networkCapabilities);
+//                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+//                        if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+//                            Log.d(TAG, "onCapabilitiesChanged: 网络类型为wifi");
+//                        } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+//                            Log.d(TAG, "onCapabilitiesChanged: 蜂窝网络");
+//                        } else {
+//                            Log.d(TAG, "onCapabilitiesChanged: 其他网络");
+//                        }
+//                        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络切换"),0);
+//                    }
+//                }
+
+
+            });
+        }
+    }
+
+
+
+
 
     private AgoraRTCAdapter(GLRender glRender) {
         mGLRender = glRender;
@@ -219,6 +373,9 @@ public class AgoraRTCAdapter {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
+
+            SDataManager.instance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
+            mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
             }
@@ -326,6 +483,62 @@ public class AgoraRTCAdapter {
         }
     }
 
+
+    //for audio statistics:
+    private long mAudioStatisticTS = 0;
+    private boolean mInAudioStatistic = false;
+    private SAgora.SAudioSamplingInfo mAgoraAduioSmpInfo = new SAgora.SAudioSamplingInfo();
+
+    private SAgora.SAudioSamplingInfo makeAudioSamplingInfo(byte bytes[], int numOfSamples, int bytesPerSample, int channels,
+                                                            int samplesPerSec)
+    {
+
+
+
+        if (!mInAudioStatistic) {
+            mAudioStatisticTS = System.currentTimeMillis();
+//            mAgoraAduioSmpInfo.smpCnt += numOfSamples;
+
+            mInAudioStatistic = true;
+            return null;
+        }
+
+
+        //TODO:
+        //  1. 这部分统计要看一下是否会对原流程有性能影响：
+        //  2. 因为设备采集源头都是单声道的，这里只要统计左声道即可
+        long maxValue = -1;
+        long meanValue= 0;
+        long totalValue=0;
+        if (2 == bytesPerSample) {
+            for (int i=0; i<bytes.length; i+=4) {
+                long v = (bytes[0] << 8  | bytes[1]);
+                long absV = (v >= 0) ? v : (-v);
+                if (absV > mAgoraAduioSmpInfo.maxAbsPCM) mAgoraAduioSmpInfo.maxAbsPCM = absV;
+                mAgoraAduioSmpInfo.totalAbsPCM += absV;
+            }
+        }
+        
+        mAgoraAduioSmpInfo.meanAbsPCM= meanValue;
+        mAgoraAduioSmpInfo.smpCnt += numOfSamples;
+        long timeSpan = System.currentTimeMillis() - mAudioStatisticTS;
+        if (timeSpan >= SAgora.SAudioSamplingInfo.STATISTIC_SPAN_SETTTING) { //输出一次统计信息
+            mAgoraAduioSmpInfo.smpRate = samplesPerSec;
+            mAgoraAduioSmpInfo.chCnt = channels;
+            mAgoraAduioSmpInfo.statisticSpan = timeSpan;
+            mAgoraAduioSmpInfo.pcmDuration = mAgoraAduioSmpInfo.smpCnt * 1000 / samplesPerSec;
+
+            mAgoraAduioSmpInfo.meanAbsPCM = mAgoraAduioSmpInfo.totalAbsPCM / mAgoraAduioSmpInfo.smpCnt;
+
+            mAudioStatisticTS = System.currentTimeMillis(); //时间戳重新设定
+            return mAgoraAduioSmpInfo;
+        }
+
+        return null;
+    }
+
+
+
     /**
      * 初始化参数
      */
@@ -427,8 +640,8 @@ public class AgoraRTCAdapter {
                                              int numOfSamples, // 512
                                              int bytesPerSample,// 2
                                              int channels,// 2
-                                             int samplesPerSec//44100
-                ) {
+                                             int samplesPerSec/*44100*/)
+                {
                     if (VERBOSE) {
                         Log.d(TAG, "onRecordFrame" +
                                 " samples=" + samples +
@@ -439,8 +652,12 @@ public class AgoraRTCAdapter {
                     }
 
                     if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
+                        mAgoraAduioSmpInfo.extraInfo = "(sampleCnt="+samples.length+" numOfSamples="+numOfSamples +
+                                                    " samplesPerSec="+ samplesPerSec +")";
                         return true;
                     }
+
+
 
                     long curTime = System.nanoTime() / 1000 / 1000;
                     if (mLocalAudioFormat == null) {
@@ -471,6 +688,12 @@ public class AgoraRTCAdapter {
                     int size = numOfSamples * bytesPerSample * channels;
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
                     byteBuffer.order(ByteOrder.nativeOrder());
+
+                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec);
+                    if (null != smpInfo) { //说明达到一次统计间隔
+                        SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo);
+                        smpInfo.reset();
+                    }
 
                     AudioBufFrame frame = new AudioBufFrame(mLocalAudioFormat, byteBuffer, pts);
                     mLocalAudioSrcPin.onFrameAvailable(frame);
