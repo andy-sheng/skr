@@ -43,7 +43,6 @@ import com.module.playways.room.msg.event.MachineScoreEvent
 import com.module.playways.room.msg.event.QChangeRoomNameEvent
 import com.module.playways.room.msg.event.QKickUserResultEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
-import com.module.playways.room.msg.manager.GrabRoomMsgManager
 import com.module.playways.room.msg.manager.MicRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
@@ -727,10 +726,10 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         val grabRoundInfoModel = mRoomData.realRoundInfo
         if (grabRoundInfoModel != null) {
             for (chorusRoundInfoModel in grabRoundInfoModel.chorusRoundInfoModels) {
-                    if (chorusRoundInfoModel.userID == event.userID) {
-                        chorusRoundInfoModel.userExit()
-                        pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.userID))
-                    }
+                if (chorusRoundInfoModel.userID == event.userID) {
+                    chorusRoundInfoModel.userExit()
+                    pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.userID))
+                }
             }
         }
     }
@@ -801,6 +800,18 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MAddMusicMsg) {
+        MyLog.d(TAG, "MAddMusicMsg event=$event")
+        roomView.showSongCount(event.musicCnt)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MDelMusicMsg) {
+        MyLog.d(TAG, "MAddMusicMsg event=$event")
+        roomView.showSongCount(event.musicCnt)
+    }
+
     private fun pretendGiveUp(userInfoModel: UserInfoModel?) {
         if (userInfoModel != null) {
             val commentModel = CommentTextModel()
@@ -856,6 +867,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push currentRound:${event.currentRound}")
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push nextRound:${event.nextRound}")
         ensureInRcRoom()
+        roomView.showSongCount(event.musicCnt)
         var currentRound = MicRoundInfoModel.parseFromRoundInfo(event.currentRound)
         var nextRound = MicRoundInfoModel.parseFromRoundInfo(event.nextRound)
         if (currentRound.roundSeq == mRoomData.realRoundInfo?.roundSeq) {

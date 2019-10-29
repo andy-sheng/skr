@@ -148,6 +148,7 @@ enum ESongStatus {
 message MDelMusicMsg
 {
     string uniqTag = 1; //歌曲标识
+    uint32 musicCnt = 2; //歌曲总数量
 }
 
 message MUpMusicMsg
@@ -158,6 +159,7 @@ message MUpMusicMsg
 message MAddMusicMsg
 {
     UserMusicDetail detail = 1;
+    uint32 musicCnt = 2; //歌曲总数量
 }
 
 message MRoundOverMsg
@@ -165,6 +167,7 @@ message MRoundOverMsg
     sint64 roundOverTimeMs   = 1; //本轮次结束的毫秒时间戳
     MRoundInfo currentRound  = 2; //当前结束轮次的信息
     MRoundInfo nextRound     = 3; //下个轮次的信息
+    uint32 musicCnt         = 4; //轮次结束时剩余歌曲总数量
 }
 
 message MGetSingChanceMsg

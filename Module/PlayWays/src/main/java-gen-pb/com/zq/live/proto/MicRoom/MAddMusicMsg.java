@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -21,25 +22,38 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
 
   private static final long serialVersionUID = 0L;
 
+  public static final Integer DEFAULT_MUSICCNT = 0;
+
   @WireField(
       tag = 1,
       adapter = "com.zq.live.proto.MicRoom.UserMusicDetail#ADAPTER"
   )
   private final UserMusicDetail detail;
 
-  public MAddMusicMsg(UserMusicDetail detail) {
-    this(detail, ByteString.EMPTY);
+  /**
+   * 歌曲总数量
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer musicCnt;
+
+  public MAddMusicMsg(UserMusicDetail detail, Integer musicCnt) {
+    this(detail, musicCnt, ByteString.EMPTY);
   }
 
-  public MAddMusicMsg(UserMusicDetail detail, ByteString unknownFields) {
+  public MAddMusicMsg(UserMusicDetail detail, Integer musicCnt, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.detail = detail;
+    this.musicCnt = musicCnt;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.detail = detail;
+    builder.musicCnt = musicCnt;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -50,7 +64,8 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
     if (!(other instanceof MAddMusicMsg)) return false;
     MAddMusicMsg o = (MAddMusicMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(detail, o.detail);
+        && Internal.equals(detail, o.detail)
+        && Internal.equals(musicCnt, o.musicCnt);
   }
 
   @Override
@@ -59,6 +74,7 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (detail != null ? detail.hashCode() : 0);
+      result = result * 37 + (musicCnt != null ? musicCnt.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -68,6 +84,7 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (detail != null) builder.append(", detail=").append(detail);
+    if (musicCnt != null) builder.append(", musicCnt=").append(musicCnt);
     return builder.replace(0, 2, "MAddMusicMsg{").append('}').toString();
   }
 
@@ -88,12 +105,31 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
     return detail;
   }
 
+  /**
+   * 歌曲总数量
+   */
+  public Integer getMusicCnt() {
+    if(musicCnt==null){
+        return DEFAULT_MUSICCNT;
+    }
+    return musicCnt;
+  }
+
   public boolean hasDetail() {
     return detail!=null;
   }
 
+  /**
+   * 歌曲总数量
+   */
+  public boolean hasMusicCnt() {
+    return musicCnt!=null;
+  }
+
   public static final class Builder extends Message.Builder<MAddMusicMsg, Builder> {
     private UserMusicDetail detail;
+
+    private Integer musicCnt;
 
     public Builder() {
     }
@@ -103,9 +139,17 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
       return this;
     }
 
+    /**
+     * 歌曲总数量
+     */
+    public Builder setMusicCnt(Integer musicCnt) {
+      this.musicCnt = musicCnt;
+      return this;
+    }
+
     @Override
     public MAddMusicMsg build() {
-      return new MAddMusicMsg(detail, super.buildUnknownFields());
+      return new MAddMusicMsg(detail, musicCnt, super.buildUnknownFields());
     }
   }
 
@@ -117,12 +161,14 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
     @Override
     public int encodedSize(MAddMusicMsg value) {
       return UserMusicDetail.ADAPTER.encodedSizeWithTag(1, value.detail)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.musicCnt)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, MAddMusicMsg value) throws IOException {
       UserMusicDetail.ADAPTER.encodeWithTag(writer, 1, value.detail);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.musicCnt);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -133,6 +179,7 @@ public final class MAddMusicMsg extends Message<MAddMusicMsg, MAddMusicMsg.Build
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setDetail(UserMusicDetail.ADAPTER.decode(reader)); break;
+          case 2: builder.setMusicCnt(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
