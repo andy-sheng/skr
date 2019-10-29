@@ -11,6 +11,9 @@ public interface CustomMsgType {
 
     int MSG_TYPE_COMBINE_ROOM = 6; // CombineRoomMsg 消息类型
 
-    int MSG_TYPE_RACE_ROOM = 7; // CombineRoomMsg 消息类型
+    int MSG_TYPE_RACE_ROOM = 7;
+
     int MSG_TYPE_BROADCAST = 8; // BroadcastRoomMsg 消息类型
+
+    int MSG_TYPE_MIC_ROOM = 9;
 }

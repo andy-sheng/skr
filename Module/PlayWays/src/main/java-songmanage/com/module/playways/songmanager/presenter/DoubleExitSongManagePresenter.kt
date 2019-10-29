@@ -10,18 +10,15 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
-import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
-import com.module.playways.doubleplay.DoubleRoomServerApi
-import com.module.playways.doubleplay.model.DoubleCurSongInfoEvent
 import com.module.playways.doubleplay.pushEvent.DoubleAddMusicEvent
 import com.module.playways.doubleplay.pushEvent.DoubleDelMusicEvent
 import com.module.playways.grab.room.event.GrabRoundChangeEvent
 import com.module.playways.songmanager.view.IExistSongManageView
 import com.module.playways.songmanager.event.AddCustomGameEvent
-import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.GrabRoomSongModel
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerServerApi
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -39,7 +36,7 @@ import okhttp3.RequestBody
  */
 class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSongManageView, internal var mDoubleRoomData: DoubleRoomData) : RxLifeCyclePresenter() {
 
-    val mDoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
+    val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     var mGetSongModelListTask: Disposable? = null
     var mGrabRoomSongModelList: MutableList<GrabRoomSongModel>? = ArrayList()
 
@@ -64,7 +61,7 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
         if (isRefresh) {
             mOffset = 0
         }
-        mGetSongModelListTask = ApiMethods.subscribe(mDoubleRoomServerApi.getSongList(mDoubleRoomData.gameId, mOffset.toLong(), mLimit), object : ApiObserver<ApiResult>() {
+        mGetSongModelListTask = ApiMethods.subscribe(mSongManagerServerApi.getDoubleExistSongList(mDoubleRoomData.gameId, mOffset.toLong(), mLimit), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val grabRoomSongModels = JSON.parseArray(result.data!!.getString("playbook"), GrabRoomSongModel::class.java)
@@ -117,7 +114,7 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mDoubleRoomServerApi.deleteSong(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.deleteDoubleSong(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "process" + " result=" + result.errno)
                 if (result.errno == 0) {
@@ -190,7 +187,7 @@ class DoubleExitSongManagePresenter(internal var mIGrabSongManageView: IExistSon
     fun onEvent(event: AddCustomGameEvent) {
         // 添加非房主想唱的歌曲
         val grabRoomSongModel = GrabRoomSongModel()
-        grabRoomSongModel.owner = MyUserInfoManager.getInstance().nickName
+        grabRoomSongModel.owner = MyUserInfoManager.nickName
         grabRoomSongModel.itemName = "自定义小游戏"
         grabRoomSongModel.itemID = SongModel.ID_CUSTOM_GAME
         grabRoomSongModel.playType = 4

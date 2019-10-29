@@ -1,17 +1,8 @@
 apply plugin: 'com.android.library'
-
+apply from: "$rootDir/base_lib.gradle"
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang',
@@ -54,11 +45,29 @@ android {
 }
 
 dependencies {
-    compileOnly project(":baseLibrary:commonsdk")
+    if(dependLibraryFromServer.toBoolean()){
+        debugCompileOnly "com.common.sdk:commonsdk:1.0-debug"
+        releaseCompileOnly "com.common.sdk:commonsdk:1.0-release"
+    }else{
+        compileOnly project(":baseLibrary:commonsdk")
+    }
     api files('libs/agora-rtc-sdk.jar')
 //    api 'io.agora.rtc:full-sdk:2.4.0'
     if (arcCloud.toBoolean()) {
-        api project(":baseLibrary:arcCloud")
+        if(dependLibraryFromServer.toBoolean()){
+            debugApi "com.common.sdk:arcCloud:1.0-debug"
+            releaseApi "com.common.sdk:arcCloud:1.0-release"
+        }else{
+            api project(":baseLibrary:arcCloud")
+        }
     }
 }
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
 
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'enginesdk'
+    }
+}

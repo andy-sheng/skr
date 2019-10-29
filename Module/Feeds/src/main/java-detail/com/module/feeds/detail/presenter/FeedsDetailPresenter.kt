@@ -35,9 +35,9 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                         firstLevelCommentModel.comment = model
                         firstLevelCommentModel.comment.content = content
                         firstLevelCommentModel.commentUser = UserInfoModel()
-                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
-                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
+                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.nickName
+                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.avatar
+                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.uid.toInt()
                         mIFeedsDetailView.addCommentSuccess(firstLevelCommentModel)
                     }
                 } else {
@@ -65,9 +65,9 @@ class FeedsDetailPresenter(val mIFeedsDetailView: IFeedsDetailView) : RxLifeCycl
                         firstLevelCommentModel.comment = model
                         firstLevelCommentModel.comment.content = content
                         firstLevelCommentModel.commentUser = UserInfoModel()
-                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
-                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
+                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.nickName
+                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.avatar
+                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.uid.toInt()
                         firstLevelCommentModel.replyUser = refuseModel.commentUser
                         callBack.invoke(firstLevelCommentModel)
                     }

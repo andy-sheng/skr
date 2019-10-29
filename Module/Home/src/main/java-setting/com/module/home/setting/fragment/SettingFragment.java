@@ -304,7 +304,7 @@ public class SettingFragment extends BaseFragment {
 
     private void initVersion() {
         UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
-        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.getInstance().getUid()),
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode(), (int) MyUserInfoManager.INSTANCE.getUid()),
                 new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult apiResult) {
@@ -346,7 +346,7 @@ public class SettingFragment extends BaseFragment {
                             mDialogPlus.dismiss(false);
                         }
                         U.getFragmentUtils().popFragment(SettingFragment.this);
-                        UserAccountManager.getInstance().logoff(2, null);
+                        UserAccountManager.INSTANCE.logoff(2, null);
                     }
                 })
                 .setCancelBtnClickListener(new AnimateClickListener() {

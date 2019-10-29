@@ -33,7 +33,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".publish.voice.PostsVoiceRecordActivity"
+            android:name=".publish.voice.VoiceRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 

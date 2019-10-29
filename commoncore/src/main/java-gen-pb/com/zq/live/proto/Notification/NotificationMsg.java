@@ -201,14 +201,23 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   )
   private final PostsCommentAddMsg postsCommentAddMsg;
 
+  /**
+   * 排麦房邀请用户
+   */
+  @WireField(
+      tag = 23,
+      adapter = "com.zq.live.proto.Notification.InviteMicMsg#ADAPTER"
+  )
+  private final InviteMicMsg inviteMicMsg;
+
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
       EMsgPosType posType, UserInfo sender, FollowMsg followMsg, InviteStandMsg inviteStandMsg,
       SysWarningMsg sysWarningMsg, CombineRoomInviteMsg inviteMsg, CombineRoomEnterMsg enterMsg,
       CombineRoomRefuseMsg refuseMsg, CombineRoomInviteV2Msg inviteV2Msg, FeedLikeMsg feedLikeMsg,
       FeedCommentLikeMsg feedCommentLikeMsg, FeedCommentAddMsg feedCommentAddMsg,
       PostsLikeMsg postsLikeMsg, PostsCommentLikeMsg postsCommentLikeMsg,
-      PostsCommentAddMsg postsCommentAddMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, ByteString.EMPTY);
+      PostsCommentAddMsg postsCommentAddMsg, InviteMicMsg inviteMicMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, ByteString.EMPTY);
   }
 
   public NotificationMsg(Long timeMs, ENotificationMsgType msgType, Integer roomID, Long no,
@@ -217,7 +226,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       CombineRoomRefuseMsg refuseMsg, CombineRoomInviteV2Msg inviteV2Msg, FeedLikeMsg feedLikeMsg,
       FeedCommentLikeMsg feedCommentLikeMsg, FeedCommentAddMsg feedCommentAddMsg,
       PostsLikeMsg postsLikeMsg, PostsCommentLikeMsg postsCommentLikeMsg,
-      PostsCommentAddMsg postsCommentAddMsg, ByteString unknownFields) {
+      PostsCommentAddMsg postsCommentAddMsg, InviteMicMsg inviteMicMsg, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -238,6 +247,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     this.postsLikeMsg = postsLikeMsg;
     this.postsCommentLikeMsg = postsCommentLikeMsg;
     this.postsCommentAddMsg = postsCommentAddMsg;
+    this.inviteMicMsg = inviteMicMsg;
   }
 
   @Override
@@ -262,6 +272,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     builder.postsLikeMsg = postsLikeMsg;
     builder.postsCommentLikeMsg = postsCommentLikeMsg;
     builder.postsCommentAddMsg = postsCommentAddMsg;
+    builder.inviteMicMsg = inviteMicMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -290,7 +301,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
         && Internal.equals(feedCommentAddMsg, o.feedCommentAddMsg)
         && Internal.equals(postsLikeMsg, o.postsLikeMsg)
         && Internal.equals(postsCommentLikeMsg, o.postsCommentLikeMsg)
-        && Internal.equals(postsCommentAddMsg, o.postsCommentAddMsg);
+        && Internal.equals(postsCommentAddMsg, o.postsCommentAddMsg)
+        && Internal.equals(inviteMicMsg, o.inviteMicMsg);
   }
 
   @Override
@@ -317,6 +329,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       result = result * 37 + (postsLikeMsg != null ? postsLikeMsg.hashCode() : 0);
       result = result * 37 + (postsCommentLikeMsg != null ? postsCommentLikeMsg.hashCode() : 0);
       result = result * 37 + (postsCommentAddMsg != null ? postsCommentAddMsg.hashCode() : 0);
+      result = result * 37 + (inviteMicMsg != null ? inviteMicMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -344,6 +357,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     if (postsLikeMsg != null) builder.append(", postsLikeMsg=").append(postsLikeMsg);
     if (postsCommentLikeMsg != null) builder.append(", postsCommentLikeMsg=").append(postsCommentLikeMsg);
     if (postsCommentAddMsg != null) builder.append(", postsCommentAddMsg=").append(postsCommentAddMsg);
+    if (inviteMicMsg != null) builder.append(", inviteMicMsg=").append(inviteMicMsg);
     return builder.replace(0, 2, "NotificationMsg{").append('}').toString();
   }
 
@@ -539,6 +553,16 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
   }
 
   /**
+   * 排麦房邀请用户
+   */
+  public InviteMicMsg getInviteMicMsg() {
+    if(inviteMicMsg==null){
+        return new InviteMicMsg.Builder().build();
+    }
+    return inviteMicMsg;
+  }
+
+  /**
    * 消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -662,6 +686,13 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     return postsCommentAddMsg!=null;
   }
 
+  /**
+   * 排麦房邀请用户
+   */
+  public boolean hasInviteMicMsg() {
+    return inviteMicMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<NotificationMsg, Builder> {
     private Long timeMs;
 
@@ -700,6 +731,8 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
     private PostsCommentLikeMsg postsCommentLikeMsg;
 
     private PostsCommentAddMsg postsCommentAddMsg;
+
+    private InviteMicMsg inviteMicMsg;
 
     public Builder() {
     }
@@ -847,9 +880,17 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       return this;
     }
 
+    /**
+     * 排麦房邀请用户
+     */
+    public Builder setInviteMicMsg(InviteMicMsg inviteMicMsg) {
+      this.inviteMicMsg = inviteMicMsg;
+      return this;
+    }
+
     @Override
     public NotificationMsg build() {
-      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, super.buildUnknownFields());
+      return new NotificationMsg(timeMs, msgType, roomID, no, posType, sender, followMsg, inviteStandMsg, sysWarningMsg, inviteMsg, enterMsg, refuseMsg, inviteV2Msg, feedLikeMsg, feedCommentLikeMsg, feedCommentAddMsg, postsLikeMsg, postsCommentLikeMsg, postsCommentAddMsg, inviteMicMsg, super.buildUnknownFields());
     }
   }
 
@@ -879,6 +920,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           + PostsLikeMsg.ADAPTER.encodedSizeWithTag(20, value.postsLikeMsg)
           + PostsCommentLikeMsg.ADAPTER.encodedSizeWithTag(21, value.postsCommentLikeMsg)
           + PostsCommentAddMsg.ADAPTER.encodedSizeWithTag(22, value.postsCommentAddMsg)
+          + InviteMicMsg.ADAPTER.encodedSizeWithTag(23, value.inviteMicMsg)
           + value.unknownFields().size();
     }
 
@@ -903,6 +945,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       PostsLikeMsg.ADAPTER.encodeWithTag(writer, 20, value.postsLikeMsg);
       PostsCommentLikeMsg.ADAPTER.encodeWithTag(writer, 21, value.postsCommentLikeMsg);
       PostsCommentAddMsg.ADAPTER.encodeWithTag(writer, 22, value.postsCommentAddMsg);
+      InviteMicMsg.ADAPTER.encodeWithTag(writer, 23, value.inviteMicMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -945,6 +988,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
           case 20: builder.setPostsLikeMsg(PostsLikeMsg.ADAPTER.decode(reader)); break;
           case 21: builder.setPostsCommentLikeMsg(PostsCommentLikeMsg.ADAPTER.decode(reader)); break;
           case 22: builder.setPostsCommentAddMsg(PostsCommentAddMsg.ADAPTER.decode(reader)); break;
+          case 23: builder.setInviteMicMsg(InviteMicMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -973,6 +1017,7 @@ public final class NotificationMsg extends Message<NotificationMsg, Notification
       if (builder.postsLikeMsg != null) builder.postsLikeMsg = PostsLikeMsg.ADAPTER.redact(builder.postsLikeMsg);
       if (builder.postsCommentLikeMsg != null) builder.postsCommentLikeMsg = PostsCommentLikeMsg.ADAPTER.redact(builder.postsCommentLikeMsg);
       if (builder.postsCommentAddMsg != null) builder.postsCommentAddMsg = PostsCommentAddMsg.ADAPTER.redact(builder.postsCommentAddMsg);
+      if (builder.inviteMicMsg != null) builder.inviteMicMsg = InviteMicMsg.ADAPTER.redact(builder.inviteMicMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

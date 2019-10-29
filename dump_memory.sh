@@ -1,3 +1,4 @@
+#! /bin/bash
 #输入进程名，会dump出 prof 到downloads目录
 heap_dump_location='/data/local/tmp/tmp.hprof'
 packageName=com.zq.live

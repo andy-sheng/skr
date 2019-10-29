@@ -1,18 +1,7 @@
 apply plugin: 'com.android.library'
+apply from: "$rootDir/base_lib.gradle"
 
 android {
-
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
-    }
-
     sourceSets {
         main {
             java.srcDirs = ['src/main/java']
@@ -32,7 +21,14 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly project(":baseLibrary:commonsdk")
+
+    if(dependLibraryFromServer.toBoolean()){
+        debugCompileOnly "com.common.sdk:commonsdk:1.0-debug"
+        releaseCompileOnly "com.common.sdk:commonsdk:1.0-release"
+    }else{
+        compileOnly project(":baseLibrary:commonsdk")
+    }
+
     implementation rootProject.ext.dependencies["appcompat-v7"]
     implementation rootProject.ext.dependencies["recyclerview-v7"]
     implementation rootProject.ext.dependencies["constraint-layout"]
@@ -46,10 +42,15 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
-
     //compileOnly 'com.squareup.okio:okio:1.11.0'
     // hooker需要
     debugCompileOnly 'com.didichuxing.doraemonkit:compiler:1.0.0'
 }
 
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = "doraemonkit"
+    }
+}
 

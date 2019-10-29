@@ -6,6 +6,7 @@ import com.common.base.BaseFragment
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -25,6 +26,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, val callBack: RequestCallBack?) : BaseWatchView(fragment, TYPE_PERSON), IPersonFeedsWall {
 
+
     var mFeedsMoreDialogView: FeedsMoreDialogView? = null
     var mTipsDialogView: TipsDialogView? = null
 
@@ -36,8 +38,13 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         initFeedList(false)
     }
 
+    override fun stopPlay() {
+        mAdapter.pausePlayModel()
+        SinglePlayer.pause(playerTag)
+    }
+
     override fun clickMore(position: Int, it: FeedsWatchModel) {
-        if (userInfoModel.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (userInfoModel.userId.toLong() == MyUserInfoManager.uid) {
             mFeedsMoreDialogView = FeedsMoreDialogView(fragment.activity!!, FeedsMoreDialogView.FROM_PERSON, it, null)
                     .apply {
                         mCopyReportTv.text = "删除"
@@ -140,7 +147,7 @@ class PersonWatchView(fragment: BaseFragment, var userInfoModel: UserInfoModel, 
         //todo 只要审核通过的
         launch {
             var result = subscribe(RequestControl("getPersonFeedList", ControlType.CancelThis)) {
-                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, 2)
+                mFeedServerApi.queryFeedsList(offset, mCNT, MyUserInfoManager.uid.toInt(), userInfoModel.userId, 2)
             }
             if (result.errno == 0) {
                 mHasInitData = true

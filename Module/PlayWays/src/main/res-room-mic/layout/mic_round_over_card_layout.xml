@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <ViewStub
+        android:id="@+id/normal_round_over_card_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:inflatedId="@+id/normal_round_over_card_view"
+        android:layout="@layout/grab_normal_round_over_card_stub_layout"
+        android:visibility="gone" />
+
+    <ViewStub
+        android:id="@+id/mic_normal_round_over_card_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/view_182_dp"
+        android:layout="@layout/mic_normal_round_over_card_stub_layout"
+        android:visibility="gone" />
+
+    <ViewStub
+        android:id="@+id/pk_round_over_card_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout="@layout/grab_pk_round_over_card_stub_layout"
+        android:visibility="gone" />
+
+</merge>

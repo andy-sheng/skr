@@ -9,9 +9,11 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
+import com.component.busilib.friends.VoiceInfoModel
 import com.component.person.view.IOtherPersonView
 
 import com.component.person.model.RelationNumModel
+import com.component.person.model.ScoreDetailModel
 
 class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePresenter() {
 
@@ -23,6 +25,8 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                 if (result.errno == 0) {
                     val userInfoModel = JSON.parseObject(result.data?.getString("userBaseInfo"), UserInfoModel::class.java)
                     val relationNumModes = JSON.parseArray(result.data?.getJSONObject("userRelationCntInfo")?.getString("cnt"), RelationNumModel::class.java)
+                    val scoreDetailModel = JSON.parseObject(result.data!!.getString("scoreDetail"), ScoreDetailModel::class.java)
+                    val voiceInfoModel = JSON.parseObject(result.data!!.getString("voiceInfo"), VoiceInfoModel::class.java)
 
                     val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
                     val isFollow = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFollow")
@@ -35,7 +39,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
 
                     val meiLiCntTotal = result.data!!.getIntValue("meiLiCntTotal")
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes,isFriend, isFollow, meiLiCntTotal)
+                    view.showHomePageInfo(userInfoModel, relationNumModes, isFriend, isFollow, meiLiCntTotal, scoreDetailModel, voiceInfoModel)
                 } else {
                     view.getHomePageFail()
                 }

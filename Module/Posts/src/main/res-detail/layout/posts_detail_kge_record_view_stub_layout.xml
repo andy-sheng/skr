@@ -113,7 +113,7 @@
         app:layout_constraintRight_toRightOf="@+id/ok_iv"
         app:layout_constraintTop_toBottomOf="@+id/ok_iv" />
 
-    <com.common.view.countdown.CircleCountDownView
+    <com.component.busilib.view.CircleCountDownView
         android:id="@+id/circle_count_down_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

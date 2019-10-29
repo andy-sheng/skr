@@ -66,7 +66,7 @@ public abstract class GiftPlayControlTemplate implements GiftContinueViewGroup.G
                 //以防崩溃
                 try {
                     if (canCutLine()) {
-                        if (model.getSender().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                        if (model.getSender().getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                             updateOrPushGiftModel(mOwnerGiftMap, model, true);
                         } else if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
                             updateOrPushGiftModel(mFreeQueueMap, model, true);

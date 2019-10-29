@@ -6,6 +6,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.utils.U
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.NickNameView
 import com.module.posts.R
 import com.module.posts.watch.adapter.PostsWatchListener
 import com.module.posts.watch.model.PostsWatchModel
@@ -14,13 +15,13 @@ import com.module.posts.watch.model.PostsWatchModel
 // posts_watch_view_item_layout
 class PostsWatchViewHolder(item: View, listener: PostsWatchListener) : PostsViewHolder(item, listener) {
 
-    val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
-    val nicknameTv: TextView = item.findViewById(R.id.nickname_tv)
-    val timeTv: TextView = item.findViewById(R.id.time_tv)
+    private val avatarIv: AvatarView = item.findViewById(R.id.avatar_iv)
+    private val nickNameView: NickNameView = item.findViewById(R.id.name_view)
+    private val timeTv: TextView = item.findViewById(R.id.time_tv)
 
     init {
         avatarIv.setDebounceViewClickListener { listener.onClickPostsAvatar(pos, mModel) }
-        nicknameTv.setDebounceViewClickListener { listener.onClickPostsAvatar(pos, mModel) }
+        nickNameView.setDebounceViewClickListener { listener.onClickPostsAvatar(pos, mModel) }
     }
 
     override fun bindData(pos: Int, model: PostsWatchModel) {
@@ -28,7 +29,7 @@ class PostsWatchViewHolder(item: View, listener: PostsWatchListener) : PostsView
 
         if (mModel?.user != null) {
             avatarIv.bindData(mModel?.user!!)
-            nicknameTv.text = mModel?.user?.nicknameRemark
+            nickNameView.setHonorText(mModel?.user?.nicknameRemark, mModel?.user?.honorInfo)
         } else {
             MyLog.e("PostsWatchViewHolder", "bindData error pos = $pos, model = $model")
         }

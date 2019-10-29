@@ -37,6 +37,14 @@ message NotificationMsg
     PostsLikeMsg postsLikeMsg = 20; //点赞帖子 信令
     PostsCommentLikeMsg postsCommentLikeMsg = 21; //点赞帖子评论 信令
     PostsCommentAddMsg postsCommentAddMsg = 22; //增加帖子评论 信令
+
+    InviteMicMsg inviteMicMsg = 23; //排麦房邀请用户
+}
+
+message InviteMicMsg
+{
+    Common.UserInfo user               = 1; //发起邀请的用户详情
+    uint32 roomID               = 2; //房间id
 }
 
 //帖子点赞
@@ -170,6 +178,8 @@ enum ENotificationMsgType {
     NM_PS_LIKE = 11; //点赞帖子
         NM_PS_COMMENT_LIKE = 12; //点赞帖子评论信令
         NM_PS_COMMENT_ADD = 13; //添加帖子评论信令
+
+    NM_INVITE_MIC = 14; // 排麦房邀请用户
 
 }
 

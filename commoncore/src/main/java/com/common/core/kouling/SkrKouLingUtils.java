@@ -42,10 +42,44 @@ public class SkrKouLingUtils {
         });
     }
 
+    public static void genJoinMicRoomKouling(final int inviterId, final int gameId, final ICallback callback) {
+        String code = String.format("inframeskr://room/joinmic?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+
+        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    if (callback != null) {
+                        callback.onSucess(obj.getData().getString("token"));
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed("", obj.getErrno(), "口令生成失败");
+                    }
+                }
+            }
+        });
+    }
+
+    public static String genJoinMicRoomText(String kouling) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("【复制消息 打开撕歌skr】").append("\n");
+        String name = MyUserInfoManager.INSTANCE.getNickName();
+        sb.append(name).append(" 邀你加入ta的小k房，一起边唱边聊～").append("\n");
+        sb.append("——————————").append("\n");
+        sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
+        sb.append("撕歌skr 下载地址:http://a.app.icon_qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+        if (MyLog.isDebugLogOpen()) {
+            sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
+        }
+        return sb.toString();
+    }
+
     public static String genJoinDoubleGameKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
         sb.append(name).append(" 邀你加入ta的双人唱聊房间，一起边唱边聊～").append("\n");
         sb.append("——————————").append("\n");
         sb.append("房间口令:").append("$").append(kouling).append("$").append("\n");
@@ -80,7 +114,7 @@ public class SkrKouLingUtils {
     public static String genJoinGrabGameKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
 //                    if (!TextUtils.isEmpty(name)) {
 //                        name = name.replaceAll("\\$", "");
 //                    }
@@ -117,7 +151,7 @@ public class SkrKouLingUtils {
     public static String genReqFollowKouling(String kouling) {
         StringBuilder sb = new StringBuilder();
         sb.append("【复制消息 打开撕歌skr】").append("\n");
-        String name = MyUserInfoManager.getInstance().getNickName();
+        String name = MyUserInfoManager.INSTANCE.getNickName();
 //                    if (!TextUtils.isEmpty(name)) {
 //                        name = name.replaceAll("\\$", "");
 //                    }
@@ -152,7 +186,7 @@ public class SkrKouLingUtils {
                             String scheme = obj.getData().getString("code");
                             if (!TextUtils.isEmpty(scheme)) {
                                 // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
-                                if (UserAccountManager.getInstance().hasAccount()) {
+                                if (UserAccountManager.INSTANCE.hasAccount()) {
                                     Uri uri = Uri.parse(scheme);
                                     ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
                                 } else {

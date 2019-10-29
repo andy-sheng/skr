@@ -1,3 +1,4 @@
+#! /bin/bash
 # 获取所有项目
 curl --basic -u 4d12d1f858d244d9adaa80738d30ce7b:5dc4ca0495564fb582ec8958c70ed6af  https://api.agora.io/dev/v1/projects/
 

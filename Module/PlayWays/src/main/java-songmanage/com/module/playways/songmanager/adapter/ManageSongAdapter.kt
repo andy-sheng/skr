@@ -1,7 +1,5 @@
 package com.module.playways.songmanager.adapter
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -10,61 +8,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.common.log.MyLog
-import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
-import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.recyclerview.DiffAdapter
 import com.module.playways.R
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.songmanager.SongManagerActivity
 import com.module.playways.songmanager.model.GrabRoomSongModel
+import com.module.playways.songmanager.utils.SongTagDrawableUtils
 import com.zq.live.proto.Common.StandPlayType
 
 class ManageSongAdapter(internal var mType: Int) : DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder>() {
     private var mRoomData: GrabRoomData? = null
-
-    val mRedDrawable: Drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45f).toFloat())
-            .setSolidColor(Color.parseColor("#FF8AB6"))
-            .setStrokeColor(Color.parseColor("#3B4E79"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
-            .setCornersRadius(U.getDisplayUtils().dip2px(16f).toFloat())
-            .build()
-
-    val mChorusDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#7088FF"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(10f).toFloat())
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
-            .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .build()
-
-    val mPKDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#E55088"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(10f).toFloat())
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
-            .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .build()
-
-    val mMiniGameDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#61B14F"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(10f).toFloat())
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
-            .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .build()
-
-    val mFreeMicDrawable: Drawable = DrawableCreator.Builder()
-            .setSolidColor(Color.parseColor("#C856E0"))
-            .setCornersRadius(U.getDisplayUtils().dip2px(10f).toFloat())
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
-            .setStrokeColor(U.getColor(R.color.white_trans_70))
-            .build()
-
-    val mGrayDrawable: Drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45f).toFloat())
-            .setSolidColor(Color.parseColor("#B1AC99"))
-            .setStrokeColor(Color.parseColor("#3B4E79"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
-            .setCornersRadius(U.getDisplayUtils().dip2px(16f).toFloat())
-            .build()
 
     var onClickDelete: ((grabRoomSongModel: GrabRoomSongModel?) -> Unit)? = null
 
@@ -160,56 +115,62 @@ class ManageSongAdapter(internal var mType: Int) : DiffAdapter<GrabRoomSongModel
                     if (mRoomData!!.realRoundSeq == model.roundSeq) {
                         mTvManage.isEnabled = false
                         mTvManage.text = "演唱中"
-                        mTvManage.background = mGrayDrawable
+                        mTvManage.background = SongTagDrawableUtils.grayDrawable
                     } else if (mRoomData!!.realRoundSeq + 1 == model.roundSeq) {
                         mTvManage.isEnabled = false
                         mTvManage.text = "已加载"
-                        mTvManage.background = mGrayDrawable
+                        mTvManage.background = SongTagDrawableUtils.grayDrawable
                     } else {
                         mTvManage.text = "删除"
                         mTvManage.isEnabled = true
-                        mTvManage.background = mRedDrawable
+                        mTvManage.background = SongTagDrawableUtils.redDrawable
                     }
                 } else {
                     if (position == 0) {
                         mTvManage.text = "演唱中"
                         mTvManage.isEnabled = false
-                        mTvManage.background = mGrayDrawable
+                        mTvManage.background = SongTagDrawableUtils.grayDrawable
                     } else if (position == 1) {
                         mTvManage.text = "已加载"
                         mTvManage.isEnabled = false
-                        mTvManage.background = mGrayDrawable
+                        mTvManage.background = SongTagDrawableUtils.grayDrawable
                     } else {
                         mTvManage.text = "删除"
                         mTvManage.isEnabled = true
-                        mTvManage.background = mRedDrawable
+                        mTvManage.background = SongTagDrawableUtils.redDrawable
                     }
                 }
             }
 
-            if (model.playType == StandPlayType.PT_SPK_TYPE.value) {
-                mSongTagTv.text = "PK"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = mPKDrawable
-                mTvSongName.text = "《" + model.displaySongName + "》"
-            } else if (model.playType == StandPlayType.PT_CHO_TYPE.value) {
-                mSongTagTv.text = "合唱"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = mChorusDrawable
-                mTvSongName.text = "《" + model.displaySongName + "》"
-            } else if (model.playType == StandPlayType.PT_MINI_GAME_TYPE.value) {
-                mSongTagTv.text = "双人游戏"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = mMiniGameDrawable
-                mTvSongName.text = "【" + model.itemName + "】"
-            } else if (model.playType == StandPlayType.PT_FREE_MICRO.value) {
-                mSongTagTv.text = "多人游戏"
-                mSongTagTv.visibility = View.VISIBLE
-                mSongTagTv.background = mFreeMicDrawable
-                mTvSongName.text = "【" + model.itemName + "】"
-            } else {
-                mSongTagTv.visibility = View.GONE
-                mTvSongName.text = "《" + model.displaySongName + "》"
+            when {
+                model.playType == StandPlayType.PT_SPK_TYPE.value -> {
+                    mSongTagTv.text = "PK"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.pkDrawable
+                    mTvSongName.text = "《" + model.displaySongName + "》"
+                }
+                model.playType == StandPlayType.PT_CHO_TYPE.value -> {
+                    mSongTagTv.text = "合唱"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.chorusDrawable
+                    mTvSongName.text = "《" + model.displaySongName + "》"
+                }
+                model.playType == StandPlayType.PT_MINI_GAME_TYPE.value -> {
+                    mSongTagTv.text = "双人游戏"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.miniGameDrawable
+                    mTvSongName.text = "【" + model.itemName + "】"
+                }
+                model.playType == StandPlayType.PT_FREE_MICRO.value -> {
+                    mSongTagTv.text = "多人游戏"
+                    mSongTagTv.visibility = View.VISIBLE
+                    mSongTagTv.background = SongTagDrawableUtils.freeMicDrawable
+                    mTvSongName.text = "【" + model.itemName + "】"
+                }
+                else -> {
+                    mSongTagTv.visibility = View.GONE
+                    mTvSongName.text = "《" + model.displaySongName + "》"
+                }
             }
         }
     }

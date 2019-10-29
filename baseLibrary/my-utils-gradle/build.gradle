@@ -20,7 +20,7 @@ apply plugin: 'maven'
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: local_maven)
+        repository(url: rootProject.ext.local_maven)
         pom.groupId = 'com.csm.gradleutils'
         pom.artifactId = 'manyutils'
         pom.version = '1.1'

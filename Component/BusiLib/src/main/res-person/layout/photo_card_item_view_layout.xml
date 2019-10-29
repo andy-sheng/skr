@@ -12,8 +12,8 @@
 
     <com.common.view.ex.ExFrameLayout
         android:id="@+id/error_container"
-        android:layout_width="@dimen/view_105_dp"
-        android:layout_height="@dimen/view_142_dp"
+        android:layout_width="@dimen/view_96_dp"
+        android:layout_height="@dimen/view_120_dp"
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_solid_color="@color/black_trans_30">

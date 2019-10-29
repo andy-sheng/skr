@@ -69,7 +69,7 @@ public class UploadAgeTagActivity extends BaseActivity {
                 if (ageStage == 0) {
                     U.getToastUtil().showShort("您当前选择的年龄段为空");
                 } else {
-                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                    MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
                             .setNickName(mNickName)
                             .setSex(mSex)
                             .setAgeStage(ageStage)
@@ -105,7 +105,7 @@ public class UploadAgeTagActivity extends BaseActivity {
             playwaysModeService.tryGoNewGrabMatch(this);
         }
         // TODO: 2019/5/16 因为fastLogin的标记为用在是否要完善资料上了
-        MyUserInfoManager.getInstance().setFirstLogin(false);
+        MyUserInfoManager.INSTANCE.setFirstLogin(false);
 
         StatisticsAdapter.recordCountEvent("signup", "success2", null, true);
     }

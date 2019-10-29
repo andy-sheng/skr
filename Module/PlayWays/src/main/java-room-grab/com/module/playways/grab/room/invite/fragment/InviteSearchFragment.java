@@ -98,6 +98,8 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                     mPresenter.inviteFriend(mRoomID, mTagID, model, view);
                 } else if (mFrom == InviteFriendFragment2.FROM_DOUBLE_ROOM) {
                     mPresenter.inviteDoubleFriend(mRoomID, model, view);
+                } else if (mFrom == InviteFriendFragment2.FROM_MIC_ROOM) {
+                    mPresenter.inviteMicFriend(mRoomID, model, view);
                 }
             }
 

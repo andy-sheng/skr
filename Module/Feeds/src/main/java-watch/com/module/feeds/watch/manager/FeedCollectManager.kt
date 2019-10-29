@@ -50,7 +50,7 @@ object FeedCollectManager {
             while (baohu < 100) {
                 baohu++
                 try {
-                    val result = feedWatchServerApi.getCollectListByPage(offset, mCnt, MyUserInfoManager.getInstance().uid)
+                    val result = feedWatchServerApi.getCollectListByPage(offset, mCnt, MyUserInfoManager.uid)
                     val response = result.execute()
                     val obj = response.body()
                     if (obj == null || obj.data == null || obj.errno != 0) {
@@ -85,7 +85,7 @@ object FeedCollectManager {
             while (baohu < 100) {
                 baohu++
                 try {
-                    val result = feedWatchServerApi.getCollectListByIndex(collectMarkerWater, MyUserInfoManager.getInstance().uid)
+                    val result = feedWatchServerApi.getCollectListByIndex(collectMarkerWater, MyUserInfoManager.uid)
                     val response = result.execute()
                     val obj = response.body()
                     if (obj != null && !obj.data.isNullOrEmpty() && obj.errno == 0) {

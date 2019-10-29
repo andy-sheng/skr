@@ -464,7 +464,7 @@ class FeedsMakeActivity : BaseActivity() {
             runBlocking {
                 val bgmFile = bgmFileJob?.await()
                 bgmFile?.absolutePath?.let {
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), it, null, 0, false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), it, null, 0, false, false, 1)
                 }
                 goLyric(true)
             }
@@ -705,8 +705,9 @@ class FeedsMakeActivity : BaseActivity() {
         return true
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         finishPage()
+        return true
     }
 }
 

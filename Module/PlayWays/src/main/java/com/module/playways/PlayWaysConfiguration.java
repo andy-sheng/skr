@@ -25,15 +25,10 @@ import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.module.ModuleServiceManager;
 import com.module.msg.IMsgService;
-import com.module.playways.room.msg.manager.ChatRoomMsgManager;
+import com.module.playways.room.msg.dispatcher.RoomMsgDispater;
+import com.module.playways.room.msg.manager.GrabRoomMsgManager;
 import com.module.playways.room.msg.manager.DoubleRoomMsgManager;
 import com.module.playways.room.msg.manager.RaceRoomMsgManager;
-import com.module.playways.room.msg.process.RaceRoomMsgProcess;
-import com.module.playways.room.msg.process.pushprocess.ChatRoomChatMsgProcess;
-import com.module.playways.room.msg.process.pushprocess.ChatRoomGameMsgProcess;
-import com.module.playways.room.msg.process.ChatRoomMsgProcess;
-import com.module.playways.room.msg.process.pushprocess.DoubleRoomGameMsgProcess;
-import com.module.playways.room.msg.process.DoubleRoomMsgProcess;
 
 import java.util.List;
 
@@ -70,15 +65,7 @@ public class PlayWaysConfiguration implements ConfigModule {
                 Log.d(TAG, "application onCreate");
                 IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
                 if (msgService != null) {
-                    msgService.addMsgProcessor(new ChatRoomMsgProcess());
-                    ChatRoomMsgManager.getInstance().addChatRoomMsgProcessor(new ChatRoomChatMsgProcess());
-                    ChatRoomMsgManager.getInstance().addChatRoomMsgProcessor(new ChatRoomGameMsgProcess());
-
-                    msgService.addMsgProcessor(new DoubleRoomMsgProcess());
-                    DoubleRoomMsgManager.getInstance().addChatRoomMsgProcessor(new DoubleRoomGameMsgProcess());
-
-                    msgService.addMsgProcessor(new RaceRoomMsgProcess());
-                    RaceRoomMsgManager.INSTANCE.addChatRoomMsgProcessor(new com.module.playways.room.msg.process.pushprocess.RaceRoomMsgProcess());
+                    msgService.addMsgProcessor(RoomMsgDispater.INSTANCE);
                 }
             }
 

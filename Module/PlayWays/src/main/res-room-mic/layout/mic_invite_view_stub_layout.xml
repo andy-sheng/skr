@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/content_bg"
+        android:layout_width="@dimen/view_250_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_gradient_endColor="#4A3BCC"
+        app:bl_gradient_startColor="#7668FF"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ImageView
+        android:id="@+id/triangle_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_30_dp"
+        android:src="@drawable/mic_invite_triangle_icon"
+        app:layout_constraintBottom_toTopOf="@id/content_bg"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/invite_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="name_tv,desc_tv,song_name_tv,agree_tv" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="KTV酒彪子KTV酒彪子KTV酒彪子KTV酒彪子KTV酒彪子"
+        android:textColor="#FCBF5D"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/desc_tv"
+        app:layout_constraintTop_toTopOf="@id/content_bg" />
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_5_dp"
+        android:text="邀请合唱"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/name_tv"
+        app:layout_constraintRight_toLeftOf="@id/agree_tv"
+        app:layout_constraintTop_toTopOf="@id/name_tv" />
+
+    <TextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_marginRight="@dimen/view_5_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="《十年之前十年之后十年之前十年之后》"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintRight_toLeftOf="@id/agree_tv"
+        app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/agree_tv"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:gravity="center"
+        android:text="抢唱5s"
+        app:bl_corners_radius="@dimen/view_21_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#FFC15B"
+        app:layout_constraintBottom_toBottomOf="@id/content_bg"
+        app:layout_constraintRight_toRightOf="@id/content_bg"
+        app:layout_constraintTop_toTopOf="@id/content_bg" />
+
+    <android.support.constraint.Group
+        android:id="@+id/result_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="result_avatar,result_name,result_desc" />
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/result_avatar"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        app:layout_constraintBottom_toBottomOf="@id/content_bg"
+        app:layout_constraintLeft_toLeftOf="@id/content_bg"
+        app:layout_constraintTop_toTopOf="@id/content_bg" />
+
+    <TextView
+        android:id="@+id/result_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#FCBF5D"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/result_desc"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/result_avatar"
+        app:layout_constraintRight_toRightOf="@id/content_bg"
+        app:layout_constraintTop_toTopOf="@id/content_bg"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/result_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/content_bg"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/result_avatar"
+        app:layout_constraintRight_toRightOf="@id/content_bg"
+        app:layout_constraintTop_toBottomOf="@id/result_name" />
+
+</android.support.constraint.ConstraintLayout>

@@ -68,6 +68,7 @@ public class QuickFeedbackFragment extends BaseFragment {
     public static final int FROM_GRAB_ROOM = 2;
     public static final int FROM_DOUBLE_ROOM = 3;
     public static final int FROM_RACE_ROOM = 4;
+    public static final int FROM_MIC_ROOM = 5;
 
     private int mFrom;  //标记举报来源
     int mActionType;
@@ -131,7 +132,7 @@ public class QuickFeedbackFragment extends BaseFragment {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 mUploadProgressBar.setVisibility(View.VISIBLE);
                 if (mActionType == FEED_BACK) {
-                    U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
+                    U.getLogUploadUtils().upload(MyUserInfoManager.INSTANCE.getUid(), new LogUploadUtils.Callback() {
                         @Override
                         public void onSuccess(String url) {
                             tryUploadPic(typeList, content, imageItemList, url);
@@ -416,8 +417,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             U.getToastUtil().showLong("调试模式，请通过微信将反馈分享给研发");
             SharePanel sharePanel = new SharePanel(getActivity());
             StringBuilder sb = new StringBuilder();
-            sb.append("userID=").append(UserAccountManager.getInstance().getUuid());
-            sb.append(" name=").append(MyUserInfoManager.getInstance().getNickName());
+            sb.append("userID=").append(UserAccountManager.INSTANCE.getUuid());
+            sb.append(" name=").append(MyUserInfoManager.INSTANCE.getNickName());
             sb.append(" ts=").append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis()));
 //            sb.append("屏宽:").append(U.getDisplayUtils().getScreenWidth())
 //                    .append(" 屏高:").append(U.getDisplayUtils().getScreenHeight())
@@ -439,7 +440,7 @@ public class QuickFeedbackFragment extends BaseFragment {
 
 //            sb.append("deviceId(参考miui唯一设备号的方法):").append(U.getDeviceUtils().getDeviceID()).append("\n");
             sb.append("agora sdk version:").append(RtcEngine.getSdkVersion());
-            sharePanel.setShareContent(MyUserInfoManager.getInstance().getAvatar(), "请将url分享给研发(只在调试模式开启)", sb.toString(), event.mUrl);
+            sharePanel.setShareContent(MyUserInfoManager.INSTANCE.getAvatar(), "请将url分享给研发(只在调试模式开启)", sb.toString(), event.mUrl);
             sharePanel.share(SharePlatform.WEIXIN, ShareType.URL);
         }
     }

@@ -5,7 +5,7 @@ import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.prepare.model.ResourceInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
-import com.zq.live.proto.Room.PlayerInfo;
+import com.zq.live.proto.GrabRoom.PlayerInfo;
 
 import java.util.ArrayList;
 import java.util.List;

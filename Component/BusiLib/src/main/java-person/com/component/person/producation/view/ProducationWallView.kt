@@ -19,6 +19,7 @@ import com.common.utils.SpanUtils
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.R
 import com.component.dialog.ShareWorksDialog
+import com.component.person.event.ChildViewPlayAudioEvent
 import com.component.person.producation.adapter.ProducationAdapter
 import com.component.person.producation.model.ProducationModel
 import com.component.person.view.RequestCallBack
@@ -27,6 +28,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 /**
@@ -58,7 +60,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
         mProducationView.layoutManager = linearLayoutManager
 
         var isSelf = false
-        if (userInfoModel.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (userInfoModel.userId.toLong() == MyUserInfoManager.uid) {
             isSelf = true
         }
 
@@ -104,6 +106,7 @@ class ProducationWallView(internal var mFragment: BaseFragment, var userInfoMode
                 if (model != null) {
                     SinglePlayer.startPlay(playerTag, model?.worksURL ?: "")
                     playProducation(model, position)
+                    EventBus.getDefault().post(ChildViewPlayAudioEvent())
                     // 开始播放当前postion，
                     // 清楚上一个
                     mAdapter.setPlayPosition(model.worksID)

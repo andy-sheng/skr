@@ -5,6 +5,7 @@ import android.view.View
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
+import com.common.player.SinglePlayer
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
@@ -17,6 +18,10 @@ import com.module.posts.watch.model.PostsWatchModel
 import kotlinx.coroutines.launch
 
 class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserInfoModel, val callback: RequestCallBack) : BasePostsWatchView(activity, TYPE_POST_PERSON), IPersonPostsWall {
+    override fun stopPlay() {
+        SinglePlayer.stop(playerTag)
+        adapter?.stopPlay()
+    }
 
     override fun setUserInfoModel(any: Any?) {
         val model = any as UserInfoModel?
@@ -56,10 +61,10 @@ class PersonPostsWatchView(activity: FragmentActivity, var userInfoModel: UserIn
     private fun getPersonPosts(off: Int, isClear: Boolean) {
         launch {
             val result = subscribe(RequestControl("getPersonPosts", ControlType.CancelThis)) {
-                if (userInfoModel.userId == MyUserInfoManager.getInstance().uid.toInt()) {
-                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.getInstance().uid, userInfoModel.userId.toLong(), 1)
+                if (userInfoModel.userId == MyUserInfoManager.uid.toInt()) {
+                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.uid, userInfoModel.userId.toLong(), 1)
                 } else {
-                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.getInstance().uid, userInfoModel.userId.toLong(), 2)
+                    postsWatchServerApi.getHomePagePostsList(off, mCNT, MyUserInfoManager.uid, userInfoModel.userId.toLong(), 2)
                 }
             }
             if (result.errno == 0) {

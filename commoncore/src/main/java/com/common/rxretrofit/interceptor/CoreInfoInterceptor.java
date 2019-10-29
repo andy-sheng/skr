@@ -34,7 +34,7 @@ public class CoreInfoInterceptor implements Interceptor {
         if (!TextUtils.isEmpty(noNeedLogin)) {
             request = request.newBuilder().removeHeader("NO_NEED_LOGIN").build();
         } else {
-            if (!UserAccountManager.getInstance().hasAccount()) {
+            if (!UserAccountManager.INSTANCE.hasAccount()) {
                 MyLog.e(TAG, "未登录前不能发送该请求-->" + request.url());
                 HashMap hashMap = new HashMap<>();
                 hashMap.put("errno", 102);

@@ -96,7 +96,7 @@ class ProducationHolder(itemView: View, mIsSelf: Boolean,
 
         if (model != null) {
             mSongNameTv.text = "" + model.name!!
-            mSongOwnerTv.text = MyUserInfoManager.getInstance().nickName
+            mSongOwnerTv.text = MyUserInfoManager.nickName
             mPlayNumTv.text = "" + model.playCnt + "次播放"
         }
 

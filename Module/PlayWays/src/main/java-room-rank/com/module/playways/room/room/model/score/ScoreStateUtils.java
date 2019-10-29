@@ -2,7 +2,7 @@ package com.module.playways.room.room.model.score;
 
 import com.common.log.MyLog;
 import com.common.core.userinfo.model.ScoreStateModel;
-import com.zq.live.proto.Room.ScoreState;
+import com.zq.live.proto.GrabRoom.ScoreState;
 
 public class ScoreStateUtils {
 

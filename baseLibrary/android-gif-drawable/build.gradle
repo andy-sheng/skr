@@ -1,63 +1,11 @@
-//plugins {
-//    id "pl.droidsonroids.ui.test" version "2.0.0"
-//}
-
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco-android'
-//apply from: 'gradle-mvn-push.gradle'
+apply from: "$rootDir/base_lib.gradle"
 
 version = VERSION_NAME
 group = GROUP
 
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
-    }
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-
-        vectorDrawables.useSupportLibrary = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-            }
-        }
-    }
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-        consumerProguardFiles 'consumer-proguard-rules.pro'
-
-//        ndk {
-//            abiFilters 'armeabi-v7a'
-//        }
-//        externalNativeBuild {
-//            cmake {
-//                arguments "-DANDROID_PLATFORM=android-$rootProject.ext.android.minSdkVersion", "-DANDROID_STL=none"
-//                cFlags '-std=c11', '-Weverything', '-Wall'
-////                if (isDebugBuild()) {
-////                    cFlags '-DDEBUG', '-g'
-////                } else {
-//                    cFlags '-DNDEBUG', '-Os', '-g0', '-fvisibility=hidden'
-////                }
-//            }
-//        }
-    }
 //    externalNativeBuild {
 //        cmake {
 //            path 'src/main/c/CMakeLists.txt'
@@ -89,4 +37,11 @@ android {
 dependencies {
     //annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     compileOnly "androidx.annotation:annotation:1.0.0"
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'android-gif-drawable'
+    }
 }

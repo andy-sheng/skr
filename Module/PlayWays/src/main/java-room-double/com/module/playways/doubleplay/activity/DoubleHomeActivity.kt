@@ -93,7 +93,7 @@ class DoubleHomeActivity : BaseActivity() {
                             /**
                              * 判断有没有年龄段
                              */
-                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                            if (!MyUserInfoManager.hasAgeStage()) {
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
                                         .withInt("from", 0)
                                         .navigation()
@@ -150,7 +150,7 @@ class DoubleHomeActivity : BaseActivity() {
                         /**
                          * 判断有没有年龄段
                          */
-                        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                        if (!MyUserInfoManager.hasAgeStage()) {
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
                                     .withInt("from", 0)
                                     .navigation()
@@ -180,7 +180,7 @@ class DoubleHomeActivity : BaseActivity() {
                 if (result.errno == 0) {
                     val doubleRoomData = DoubleRoomData.makeRoomDataFromJsonObject(result.data!!)
                     doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.CREATE
-                    doubleRoomData.inviterId = MyUserInfoManager.getInstance().uid
+                    doubleRoomData.inviterId = MyUserInfoManager.uid
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()

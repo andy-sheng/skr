@@ -3,7 +3,6 @@ package com.module.playways.race.room.presenter
 import android.os.Handler
 import android.os.Message
 import android.support.annotation.CallSuper
-import android.text.SpannableStringBuilder
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.common.core.account.UserAccountManager
@@ -30,11 +29,11 @@ import com.module.common.ICallback
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.*
-import com.module.playways.race.room.inter.IRaceRoomView
 import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.race.room.model.parseFromRoundInfoPB
+import com.module.playways.race.room.ui.IRaceRoomView
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -121,7 +120,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 }
                 ZqEngineKit.getInstance().init("raceroom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), false, mRoomData.agoraToken)
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), false, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true)
         }
@@ -340,7 +339,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             while (true) {
                 val map = mutableMapOf(
                         "roomID" to mRoomData.gameId,
-                        "userID" to MyUserInfoManager.getInstance().uid
+                        "userID" to MyUserInfoManager.uid
                 )
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                 val result = subscribe { raceRoomServerApi.heartbeat(body) }
@@ -478,7 +477,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 // 有上一轮，等待中要飞过来
                 mIRaceRoomView.showRoundOver(lastRound) {
                     //如果我是上一轮的演唱者，要退出房间
-                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+                    if (lastRound.isSingerByUserId(MyUserInfoManager.uid.toInt())) {
                         goResultPage(lastRound)
                     } else {
                         mIRaceRoomView.showWaiting(true)
@@ -492,7 +491,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 // 有上一轮，等待中要飞过来
                 mIRaceRoomView.showRoundOver(lastRound) {
                     //如果我是上一轮的演唱者，要退出房间
-                    if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+                    if (lastRound.isSingerByUserId(MyUserInfoManager.uid.toInt())) {
                         goResultPage(lastRound)
                     } else {
                         mIRaceRoomView.showChoiceView(true)
@@ -507,7 +506,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     tryDownloadAccIfSelfSing()
                     // 变为演唱阶段，第一轮
                     val subRound1 = thisRound.subRoundInfo.get(0)
-                    if (subRound1.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (subRound1.userID == MyUserInfoManager.uid.toInt()) {
                         mIRaceRoomView.singBySelfFirstRound(subRound1.choiceDetail?.commonMusic)
                         preOpWhenSelfRound()
                     } else {
@@ -519,7 +518,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                     // 说明是直接上一轮跳到本轮的演唱阶段了
                     mIRaceRoomView.showRoundOver(lastRound) {
                         //如果我是上一轮的演唱者，要退出房间
-                        if (lastRound.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())) {
+                        if (lastRound.isSingerByUserId(MyUserInfoManager.uid.toInt())) {
                             goResultPage(lastRound)
                         } else {
                             // 走匹配动画
@@ -545,7 +544,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             } else if (thisRound?.subRoundSeq == 2) {
                 // 变为演唱阶段，第二轮
                 val subRound2 = thisRound.subRoundInfo.get(1)
-                if (subRound2.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+                if (subRound2.userID == MyUserInfoManager.uid.toInt()) {
                     mIRaceRoomView.singBySelfSecondRound(subRound2.choiceDetail?.commonMusic)
                     preOpWhenSelfRound()
                 } else {
@@ -576,7 +575,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 //                }
 //            }
 //        }
-        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID == MyUserInfoManager.getInstance().uid.toInt()) {
+        if (mRoomData?.realRoundInfo?.subRoundInfo?.getOrNull(1)?.userID == MyUserInfoManager.uid.toInt()) {
             // 第一轮是自己唱
             if (mRoomData?.realRoundInfo?.isAccRoundBySubRoundSeq(2) == true) {
                 // 第一轮是伴奏演唱
@@ -682,13 +681,16 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val commentModel = CommentTextModel()
             commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val stringBuilder: SpannableStringBuilder
-            val spanUtils = SpanUtils()
-                    .append(userInfoModel.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+            val nameBuilder = SpanUtils()
+                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+
+            val stringBuilder = SpanUtils()
                     .append("给").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                     .append(singer.nicknameRemark).setForegroundColor(CommentModel.GRAB_NAME_COLOR)
                     .append("投了一票").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            stringBuilder = spanUtils.create()
+                    .create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
@@ -737,11 +739,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val commentModel = CommentTextModel()
             commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val stringBuilder: SpannableStringBuilder
-            val spanUtils = SpanUtils()
+            val nameBuilder = SpanUtils()
                     .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                    .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            stringBuilder = spanUtils.create()
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+            val stringBuilder = SpanUtils()
+                    .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR).create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
@@ -750,7 +754,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     var syncJob: Job? = null
 
-    fun startSyncRaceStatus() {
+    private fun startSyncRaceStatus() {
         syncJob?.cancel()
         syncJob = launch {
             while (true) {
@@ -853,7 +857,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
         if (giftPresentEvent.mGPrensentGiftMsgModel.propertyModelList != null) {
             for (property in giftPresentEvent.mGPrensentGiftMsgModel.propertyModelList) {
-                if (property.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                if (property.userID.toLong() == MyUserInfoManager.uid) {
                     if (property.coinBalance != -1f) {
                         UpdateCoinEvent.sendEvent(property.coinBalance.toInt(), property.lastChangeMs)
                     }
@@ -868,11 +872,11 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             }
         }
 
-        if (giftPresentEvent.mGPrensentGiftMsgModel.receiveUserInfo.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (giftPresentEvent.mGPrensentGiftMsgModel.receiveUserInfo.userId.toLong() == MyUserInfoManager.uid) {
             if (giftPresentEvent.mGPrensentGiftMsgModel.giftInfo.price <= 0) {
-                StatisticsAdapter.recordCountEvent("grab", "game_getflower", null)
+                StatisticsAdapter.recordCountEvent("race", "game_getflower", null)
             } else {
-                StatisticsAdapter.recordCountEvent("grab", "game_getgift", null)
+                StatisticsAdapter.recordCountEvent("race", "game_getgift", null)
             }
         }
     }
@@ -983,9 +987,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
                 val songBeginTs = songModel.beginMs
                 if (accFile != null && accFile.exists()) {
                     // 伴奏文件存在
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                 } else {
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                 }
             }
             // 启动acr打分识别
@@ -1051,7 +1055,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         //score = (int) (Math.mRandom()*100);
         val map = HashMap<String, Any>()
         val infoModel = mRoomData.realRoundInfo ?: return
-        map["userID"] = MyUserInfoManager.getInstance().uid
+        map["userID"] = MyUserInfoManager.uid
 
         var itemID = mRoomData.realRoundInfo?.getSingerIdNow() ?: 0
 
@@ -1069,7 +1073,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
         val sb = StringBuilder()
         sb.append("skrer")
-                .append("|").append(MyUserInfoManager.getInstance().uid)
+                .append("|").append(MyUserInfoManager.uid)
                 .append("|").append(itemID)
                 .append("|").append(score)
                 .append("|").append(line)

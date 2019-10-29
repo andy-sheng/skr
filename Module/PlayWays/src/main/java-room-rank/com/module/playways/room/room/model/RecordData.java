@@ -20,7 +20,7 @@ public class RecordData implements Serializable {
 
     public VoteInfoModel getSelfVoteInfoModel() {
         for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
-            if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (voteInfoModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 return voteInfoModel;
             }
         }
@@ -40,7 +40,7 @@ public class RecordData implements Serializable {
 
     public int getSelfWinType() {
         for (UserGameResultModel userGameResultModel : mUserGameResultModels) {
-            if (userGameResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (userGameResultModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 return userGameResultModel.getWinType();
             }
         }

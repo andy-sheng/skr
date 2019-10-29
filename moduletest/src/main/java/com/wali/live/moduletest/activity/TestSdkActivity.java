@@ -2,7 +2,6 @@ package com.wali.live.moduletest.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,7 +30,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.player.VideoPlayerAdapter;
+import com.common.player.video.VideoPlayerAdapter;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;

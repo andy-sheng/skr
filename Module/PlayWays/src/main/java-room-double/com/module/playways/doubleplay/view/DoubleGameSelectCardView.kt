@@ -111,13 +111,13 @@ class DoubleGameSelectCardView : ExConstraintLayout {
     }
 
     fun getSelect(): Boolean {
-        return userInfoListMap[MyUserInfoManager.getInstance().uid.toInt()] == null
+        return userInfoListMap[MyUserInfoManager.uid.toInt()] == null
     }
 
     fun setSelectUser(userInfoModel: UserInfoModel, roomData: DoubleRoomData, isChoiced: Boolean) {
         mRoomData = roomData
         if (isChoiced) {
-            if (userInfoModel.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+            if (userInfoModel.userId == MyUserInfoManager.uid.toInt()) {
                 startAnimation()
             }
 

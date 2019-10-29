@@ -11,7 +11,6 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.view.ex.ExTextView;
-import com.dialog.view.StrokeTextView;
 import com.module.playways.doubleplay.DoubleRoomServerApi;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.view.IInviteSearchView;
@@ -23,7 +22,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class InviteSearchPresenter extends RxLifeCyclePresenter {
-
+    public final static String TAG = "InviteSearchPresenter";
     GrabRoomServerApi mGrabRoomServerApi;
     DoubleRoomServerApi mDoubleRoomServerApi;
     IInviteSearchView mView;
@@ -99,6 +98,33 @@ public class InviteSearchPresenter extends RxLifeCyclePresenter {
             @Override
             public void onError(Throwable e) {
                 MyLog.e(getTAG(), e);
+            }
+        }, this);
+    }
+
+    public void inviteMicFriend(int roomID, UserInfoModel model, ExTextView view) {
+        MyLog.d(TAG, "inviteMicFriend" + " roomID=" + roomID + " model=" + model + " view=" + view);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", roomID);
+        map.put("userID", model.getUserId());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mDoubleRoomServerApi.micRoomSendInvite(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                if (result.getErrno() == 0) {
+                    // 更新视图
+                    mView.updateInvited(view);
+                } else {
+                    MyLog.w(TAG, "inviteMicFriend failed, " + " traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
             }
         }, this);
     }

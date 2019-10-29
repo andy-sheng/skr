@@ -35,6 +35,7 @@ import com.component.toast.CommonToastView;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -55,6 +56,8 @@ public class GrabSearchSongFragment extends BaseFragment {
     String mKeyword;
     DialogPlus mSearchFeedbackDialog;
 
+    SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+
     CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
     DisposableObserver<ApiResult> mDisposableObserver;
@@ -70,15 +73,17 @@ public class GrabSearchSongFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
-        mSearchResult = (RecyclerView) getRootView().findViewById(R.id.search_result);
+        mTitlebar = getRootView().findViewById(R.id.titlebar);
+        mSearchResult = getRootView().findViewById(R.id.search_result);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
 
         int selectMode = SongSelectAdapter.GRAB_MODE;
-        if (mFrom == SongManagerActivity.Companion.getTYPE_FROM_DOUBLE()) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_DOUBLE) {
             selectMode = SongSelectAdapter.DOUBLE_MODE;
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
+            selectMode = SongSelectAdapter.MIC_MODE;
         }
         mSongSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
@@ -152,9 +157,8 @@ public class GrabSearchSongFragment extends BaseFragment {
             U.getToastUtil().showShort("搜索内容为空");
             return;
         }
-        SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-        ApiMethods.subscribe(mFrom == SongManagerActivity.Companion.getTYPE_FROM_GRAB() ? songSelectServerApi.searchGrabMusicItems(keyword)
-                : songSelectServerApi.searchDoubleMusicItems(keyword), new ApiObserver<ApiResult>() {
+
+        ApiMethods.subscribe(getServerSearch(keyword), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -277,16 +281,22 @@ public class GrabSearchSongFragment extends BaseFragment {
         }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
             @Override
             public ObservableSource<ApiResult> apply(String string) throws Exception {
-                SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
-                if (mFrom == SongManagerActivity.Companion.getTYPE_FROM_GRAB()) {
-                    return songSelectServerApi.searchGrabMusicItems(string).subscribeOn(Schedulers.io());
-                } else {
-                    return songSelectServerApi.searchDoubleMusicItems(string).subscribeOn(Schedulers.io());
-                }
+                return getServerSearch(string);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
         mCompositeDisposable = new CompositeDisposable();
         mCompositeDisposable.add(mDisposableObserver);
+    }
+
+    private Observable<ApiResult> getServerSearch(String content) {
+        if (mFrom == SongManagerActivity.TYPE_FROM_GRAB) {
+            return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
+        } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
+            // todo 等服务器给接口
+            return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
+        } else {
+            return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
+        }
     }
 
     @Override

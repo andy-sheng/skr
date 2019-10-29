@@ -24,8 +24,8 @@ public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
 
     GrabRootView mGrabRootView;
 
-    public VideoChorusSelfSingCardView(ViewStub viewStub, GrabRoomData roomData, GrabRootView rootView) {
-        super(viewStub, roomData);
+    public VideoChorusSelfSingCardView(ViewStub viewStub, GrabRootView rootView) {
+        super(viewStub);
         mGrabRootView = rootView;
     }
 
@@ -40,8 +40,8 @@ public class VideoChorusSelfSingCardView extends BaseChorusSelfCardView {
         mGrabRootView.addOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (mLyricRecycleView.isShown()) {
-                    return mLyricRecycleView.onTouchEvent(event);
+                if (getMLyricRecycleView().isShown()) {
+                    return getMLyricRecycleView().onTouchEvent(event);
                 }
                 return false;
             }

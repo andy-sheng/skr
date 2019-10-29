@@ -35,7 +35,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
-import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.GrabRoom.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -614,7 +614,7 @@ public class GrabTopContentView extends ConstraintLayout {
                 //MyLog.d(TAG,"UserVolumeInfo uv=" + uv);
                 int uid = uv.getUid();
                 if (uid == 0) {
-                    uid = (int) MyUserInfoManager.getInstance().getUid();
+                    uid = (int) MyUserInfoManager.INSTANCE.getUid();
                 }
                 VP vp = mInfoMap.get(uid);
                 if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView.isShown()) {

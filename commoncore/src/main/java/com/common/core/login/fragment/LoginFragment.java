@@ -282,7 +282,7 @@ public class LoginFragment extends BaseFragment implements Callback {
     }
 
     private void loginWithThirdPard(int mode, String accessToken, String openId) {
-        UserAccountManager.getInstance().loginByThirdPart(mode, accessToken, openId, this);
+        UserAccountManager.INSTANCE.loginByThirdPart(mode, accessToken, openId, this);
     }
 
     @Override

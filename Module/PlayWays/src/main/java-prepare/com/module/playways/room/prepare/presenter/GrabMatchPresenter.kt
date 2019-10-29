@@ -76,7 +76,7 @@ class GrabMatchPresenter(@param:NonNull internal var mView: IGrabMatchingView, i
             map["tagID"] = mPrepareData.tagId
             if (mPrepareData.isNewUser) {
                 map["isNewUser"] = true
-                map["ageStage"] = MyUserInfoManager.getInstance().ageStage
+                map["ageStage"] = MyUserInfoManager.ageStage
             }
             map["vars"] = RA.getVars()
             map["testList"] = RA.getTestList()

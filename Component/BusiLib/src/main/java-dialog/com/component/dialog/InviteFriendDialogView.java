@@ -18,6 +18,7 @@ import com.module.common.ICallback;
 import static com.component.dialog.InviteFriendDialog.INVITE_DOUBLE_GAME;
 import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_FRIEND;
 import static com.component.dialog.InviteFriendDialog.INVITE_GRAB_GAME;
+import static com.component.dialog.InviteFriendDialog.INVITE_MIC_GAME;
 
 public class InviteFriendDialogView extends RelativeLayout {
     public final String TAG = "InviteFriendDialogView";
@@ -36,7 +37,7 @@ public class InviteFriendDialogView extends RelativeLayout {
 
     Listener mListener;
 
-    public InviteFriendDialogView(Context context, int type, int gameId,int tagID, int mediaType, String kouLingToken) {
+    public InviteFriendDialogView(Context context, int type, int gameId, int tagID, int mediaType, String kouLingToken) {
         super(context);
         this.mType = type;
         this.mGameId = gameId;
@@ -63,7 +64,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId,mTagID, mMediaType, new ICallback() {
+                SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mTagID, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -84,7 +85,7 @@ public class InviteFriendDialogView extends RelativeLayout {
                     MyLog.w(TAG, "init" + " context=" + context + "mGameId = 0");
                     return;
                 }
-                SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameId, mMediaType, new ICallback() {
+                SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, mMediaType, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -101,7 +102,24 @@ public class InviteFriendDialogView extends RelativeLayout {
                     }
                 });
             } else if (mType == INVITE_GRAB_FRIEND) {
-                SkrKouLingUtils.genNormalReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), new ICallback() {
+                SkrKouLingUtils.genNormalReqFollowKouling((int) MyUserInfoManager.INSTANCE.getUid(), new ICallback() {
+                    @Override
+                    public void onSucess(Object obj) {
+                        if (obj != null) {
+                            mKouLingToken = (String) obj;
+                            mTvKouling.setText(mKouLingToken);
+                        } else {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(Object obj, int errcode, String message) {
+                        U.getToastUtil().showShort("口令生成失败");
+                    }
+                });
+            } else if (mType == INVITE_MIC_GAME) {
+                SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameId, new ICallback() {
                     @Override
                     public void onSucess(Object obj) {
                         if (obj != null) {
@@ -131,6 +149,8 @@ public class InviteFriendDialogView extends RelativeLayout {
                         text = SkrKouLingUtils.genJoinGrabGameKouling(mKouLingToken);
                     } else if (mType == INVITE_DOUBLE_GAME) {
                         text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
+                    } else if (mType == INVITE_MIC_GAME) {
+                        text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
                     }
 
                     mListener.onClickQQShare(text);
@@ -149,6 +169,8 @@ public class InviteFriendDialogView extends RelativeLayout {
                         text = SkrKouLingUtils.genJoinGrabGameKouling(mKouLingToken);
                     } else if (mType == INVITE_DOUBLE_GAME) {
                         text = SkrKouLingUtils.genJoinDoubleGameKouling(mKouLingToken);
+                    } else if (mType == INVITE_MIC_GAME) {
+                        text = SkrKouLingUtils.genJoinMicRoomText(mKouLingToken);
                     }
 
                     mListener.onClickWeixinShare(text);

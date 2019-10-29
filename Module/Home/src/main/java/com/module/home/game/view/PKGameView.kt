@@ -135,7 +135,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
         mUserInfoTitle.setListener {
             BigImageBrowseFragment.open(false,
-                    fragment.activity, MyUserInfoManager.getInstance().avatar)
+                    fragment.activity, MyUserInfoManager.avatar)
         }
 
         mLevelGapTv.setOnClickListener(object : DebounceViewClickListener() {
@@ -202,7 +202,7 @@ class PKGameView(fragment: BaseFragment) : RelativeLayout(fragment.context), IPk
 
     fun initData(flag: Boolean) {
         refreshBaseInfo()
-        mPkInfoPresenter?.getLevelPage(MyUserInfoManager.getInstance().uid, flag)
+        mPkInfoPresenter?.getLevelPage(MyUserInfoManager.uid, flag)
     }
 
     override fun showUserLevel(model: ScoreStateModel?) {

@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.dynamicmsg;
 
-import com.zq.live.proto.Room.DynamicEmojiMsg;
+import com.zq.live.proto.GrabRoom.DynamicEmojiMsg;
 
 import java.io.Serializable;
 

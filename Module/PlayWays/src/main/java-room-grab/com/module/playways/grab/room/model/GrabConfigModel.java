@@ -1,8 +1,8 @@
 package com.module.playways.grab.room.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.zq.live.proto.Room.QGameConfig;
-import com.zq.live.proto.Room.QScoreTipMsg;
+import com.zq.live.proto.GrabRoom.QGameConfig;
+import com.zq.live.proto.GrabRoom.QScoreTipMsg;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -15,15 +15,15 @@ public class WalletRecordModel implements Serializable {
      * eventDesc : 段位升级奖励1
      */
 
-    private String recordID;
-    private int action;
-    private int incrEvent;
-    private int decrEvent;
-    private String changeAmount;   //金额
-    private String remark;         //原因
-    private String dateTime;       //时间
-    private String failedMsg;
-    private String eventDesc;
+    public String recordID;
+    public int action;
+    public int incrEvent;
+    public int decrEvent;
+    public String changeAmount;   //金额
+    public String remark;         //原因
+    public String dateTime;       //时间
+    public String failedMsg;
+    public String eventDesc;
 
     public String getRecordID() {
         return recordID;

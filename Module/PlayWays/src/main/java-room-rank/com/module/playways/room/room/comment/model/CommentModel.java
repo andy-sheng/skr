@@ -35,6 +35,7 @@ public abstract class CommentModel {
 
     private UserInfoModel userInfo;                //消息发送者信息(头像，昵称，vip和id)
     private int avatarColor;                       //消息发送者头像颜色
+    private SpannableStringBuilder mNameBuilder;   //昵称的内容
     private SpannableStringBuilder mStringBuilder; //消息的内容
 
     public SpannableStringBuilder getStringBuilder() {
@@ -43,6 +44,14 @@ public abstract class CommentModel {
 
     public void setStringBuilder(SpannableStringBuilder stringBuilder) {
         mStringBuilder = stringBuilder;
+    }
+
+    public SpannableStringBuilder getNameBuilder() {
+        return mNameBuilder;
+    }
+
+    public void setNameBuilder(SpannableStringBuilder nameBuilder) {
+        mNameBuilder = nameBuilder;
     }
 
     public int getCommentType() {

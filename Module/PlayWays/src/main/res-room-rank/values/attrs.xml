@@ -30,6 +30,7 @@
             <enum name="rank" value="4" />
             <enum name="grab" value="5" />
             <enum name="race" value="6" />
+            <enum name="mic" value="7" />
         </attr>
     </declare-styleable>
 

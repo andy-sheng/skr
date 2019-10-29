@@ -123,7 +123,8 @@ class PhotoAdapter(internal var mType: Int) : RecyclerView.Adapter<RecyclerView.
 
         return if (position == 0 && mHasUpdate) {
             PHOTO_ADD_TYPE
-        } else PHOTO_ITEM_TYPE
+        } else
+            PHOTO_ITEM_TYPE
 
     }
 

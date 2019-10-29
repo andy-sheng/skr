@@ -12,6 +12,8 @@ public interface IPersonPostsWall {
 
     void unselected(int reason);
 
+    void stopPlay();
+
     boolean isHasMore();
 
     void destroy();

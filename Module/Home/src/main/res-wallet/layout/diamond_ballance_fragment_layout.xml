@@ -1,88 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7187FF"
-    android:orientation="vertical">
-
-    <com.common.view.titlebar.CommonTitleBar
-        android:id="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:centerText="余额"
-        app:centerTextColor="@color/white"
-        app:centerTextSize="@dimen/textsize_20_dp"
-        app:centerType="textView"
-        app:leftDrawable="@drawable/img_back"
-        app:leftType="textView"
-        app:rightText="充值记录"
-        app:rightTextColor="@color/white"
-        app:rightTextSize="@dimen/textsize_14_dp"
-        app:rightType="textView"
-        app:showBottomLine="false"
-        app:statusBarColor="#7187FF"
-        app:titleBarColor="#7187FF" />
+    android:orientation="vertical"
+    app:bl_corners_topLeftRadius="@dimen/view_16_dp"
+    app:bl_corners_topRightRadius="@dimen/view_16_dp"
+    app:bl_solid_color="@color/white">
 
     <com.common.view.ex.ExRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:orientation="vertical"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/colorSolidPrimary">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_20_dp">
 
         <ImageView
-            android:id="@+id/iv_diamond_icon"
-            android:layout_width="@dimen/view_52_dp"
-            android:layout_height="@dimen/view_58_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/jinbiyue_bg" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_66_dp"
-            android:background="@drawable/yue_zuanshiyue" />
+            android:layout_marginTop="@dimen/view_56_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/jinbi_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_40_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingBottom="@dimen/view_9_dp"
+                android:text="金币"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.common.view.ex.ExRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/zuanshi_bg" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_diamond_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_diamond_icon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_25_dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/view_13_dp"
+            android:layout_marginRight="@dimen/view_16_dp"
             android:text="钻石余额"
-            android:textColor="#ff41547e"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/tv_diamond_balance"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_diamond_text"
             android:layout_centerHorizontal="true"
-            android:text="44"
-            android:textColor="#ff3b4e79"
-            android:textSize="42sp" />
+            android:layout_marginTop="@dimen/view_56_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_diamond_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_40_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingBottom="@dimen/view_9_dp"
+                android:text="钻"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
 
         <com.common.view.ex.ExTextView
             android:id="@+id/recharge_btn"
-            android:layout_width="@dimen/view_152_dp"
-            android:layout_height="@dimen/view_40_dp"
+            android:layout_width="@dimen/view_120_dp"
+            android:layout_height="@dimen/view_32_dp"
             android:layout_below="@+id/feedback_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/view_30_dp"
-            android:layout_marginBottom="@dimen/view_125_dp"
+            android:layout_marginTop="@dimen/view_129_dp"
             android:gravity="center"
             android:text="充值"
-            android:textColor="#AD6C00"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_18_dp"
-            android:textStyle="bold"
             app:bl_corners_radius="@dimen/view_20_dp"
             app:bl_shape="rectangle"
-            app:bl_solid_color="#FFC15B" />
+            app:bl_solid_color="@color/transparent"
+            app:bl_stroke_color="@color/white"
+            app:bl_stroke_width="@dimen/view_1_dp" />
     </com.common.view.ex.ExRelativeLayout>
-</LinearLayout>
+</com.common.view.ex.ExLinearLayout>

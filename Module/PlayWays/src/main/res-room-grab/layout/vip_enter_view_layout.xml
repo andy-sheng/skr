@@ -1,54 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/view_34_dp"
-    android:paddingRight="@dimen/view_38_dp">
+    android:layout_gravity="center_horizontal">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/bg"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="@dimen/view_35_dp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/normal_area"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/fangjian_gaoduanwei"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingLeft="@dimen/view_34_dp"
+        android:paddingRight="@dimen/view_38_dp"
+        android:visibility="gone">
 
-    <com.common.view.ex.ExImageView
-        android:layout_marginRight="@dimen/view_12_dp"
-        app:layout_constraintRight_toLeftOf="@+id/name_tv"
-        android:id="@+id/vip_level_iv"
-        android:layout_width="@dimen/view_49_dp"
-        android:layout_height="@dimen/view_42_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.common.view.ex.ExImageView
+            android:id="@+id/bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_35_dp"
+            android:background="@drawable/fangjian_gaoduanwei"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/name_tv"
+        <com.common.view.ex.ExImageView
+            android:id="@+id/vip_level_iv"
+            android:layout_width="@dimen/view_49_dp"
+            android:layout_height="@dimen/view_42_dp"
+            android:layout_marginRight="@dimen/view_12_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/name_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_22_dp"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/view_80_dp"
+            android:maxLines="1"
+            android:text="芝麻是只猫"
+            android:textColor="#FFFFC15B"
+            android:textSize="@dimen/view_14_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/bg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:text="进入了房间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/view_14_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/name_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/honor_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_22_dp"
-        android:ellipsize="end"
-        android:maxWidth="@dimen/view_80_dp"
-        android:maxLines="1"
-        android:text="芝麻是只猫"
-        android:textColor="#FFFFC15B"
-        android:textSize="@dimen/view_14_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/bg"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="@dimen/view_34_dp"
+        android:paddingRight="@dimen/view_38_dp"
+        android:visibility="gone">
 
-    <com.common.view.ex.ExTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_5_dp"
-        android:text="进入了房间"
-        android:textColor="@color/white"
-        android:textSize="@dimen/view_14_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/name_tv"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        <com.common.view.ex.ExTextView
+            android:id="@+id/honor_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/view_49_dp"
+            android:paddingTop="@dimen/view_4_dp"
+            android:paddingRight="@dimen/view_11_dp"
+            android:paddingBottom="@dimen/view_4_dp"
+            android:text="飞飞是大王 进入房间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_12_dp"
+            app:bl_corners_radius="@dimen/view_8_dp"
+            app:bl_gradient_endColor="#CA1515"
+            app:bl_gradient_startColor="#FF5252"
+            app:bl_stroke_color="#FFD66E"
+            app:bl_stroke_width="@dimen/view_1_33_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/honor_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/honor_vip_iv"
+            android:layout_width="@dimen/view_55_dp"
+            android:layout_height="@dimen/view_36_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/honor_avatar"
+            android:layout_width="@dimen/view_32_dp"
+            android:layout_height="@dimen/view_32_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/honor_vip_iv"
+            app:layout_constraintLeft_toLeftOf="@+id/honor_vip_iv"
+            app:layout_constraintRight_toRightOf="@+id/honor_vip_iv"
+            app:layout_constraintTop_toTopOf="@+id/honor_vip_iv" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/honor_enter_star"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

@@ -5,22 +5,16 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.KeyboardEvent;
 import com.common.utils.U;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.HashSet;
 
 /**
  * CSDN_LQR
@@ -189,7 +183,7 @@ public class  EmotionKeyboard {
         mPlaceHolderView.getLayoutParams().height = softInputHeight;
         mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
         if (mBoardStatusListener != null) {
-            mBoardStatusListener.onBoradShow();
+            mBoardStatusListener.onBoardShow();
         }
     }
 
@@ -208,7 +202,7 @@ public class  EmotionKeyboard {
                 mPlaceHolderView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
                 if (mBoardStatusListener != null) {
-                    mBoardStatusListener.onBoradHide();
+                    mBoardStatusListener.onBoardHide();
                 }
             }
         }
@@ -267,7 +261,7 @@ public class  EmotionKeyboard {
      */
     public void showSoftInput() {
         if (mBoardStatusListener != null) {
-            mBoardStatusListener.onBoradShow();
+            mBoardStatusListener.onBoardShow();
         }
         mEditText.requestFocus();
         mEditText.post(new Runnable() {
@@ -283,7 +277,7 @@ public class  EmotionKeyboard {
      */
     public void hideSoftInput() {
         if (mBoardStatusListener != null) {
-            mBoardStatusListener.onBoradHide();
+            mBoardStatusListener.onBoardHide();
         }
         mEditText.clearFocus();
         // 防止闪一下 在 设置 PlaceHolder 高度为0
@@ -333,7 +327,7 @@ public class  EmotionKeyboard {
 
                     // 隐藏键盘且不显示表情面板
                     if (mBoardStatusListener != null) {
-                        mBoardStatusListener.onBoradHide();
+                        mBoardStatusListener.onBoardHide();
                     }
                 } else {
                     // 表情面板仍然需要显示， 延迟修改布局，防止闪一下
@@ -354,8 +348,8 @@ public class  EmotionKeyboard {
     }
 
     public interface BoardStatusListener {
-        void onBoradShow();
+        void onBoardShow();
 
-        void onBoradHide();
+        void onBoardHide();
     }
 }

@@ -6,23 +6,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 //kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
 apply plugin: 'kotlin-kapt'
-
+apply from: "$rootDir/base_lib.gradle"
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-                includeCompileClasspath true
-            }
-        }
-    }
 
     sourceSets {
         main {
@@ -62,8 +47,12 @@ android {
 }
 
 dependencies {
-    api project(":commoncore")
-
+    if (dependLibraryFromServer.toBoolean()) {
+        debugApi 'com.zq.live:commoncore:1.0-debug'
+        releaseApi 'com.zq.live:commoncore:1.0-release'
+    } else {
+        api project(":commoncore")
+    }
     if (isBuildModule.toBoolean()) {
 //        tools
         kapt rootProject.ext.dependencies["arouter-compiler"]

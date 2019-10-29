@@ -12,7 +12,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.DiffuseView
 import com.common.view.ExViewStub
-import com.common.view.countdown.CircleCountDownView
+import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.posts.R

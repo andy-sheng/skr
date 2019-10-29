@@ -14,7 +14,7 @@ public class CommentSysModel extends CommentModel {
     // 普通系统消息
     public CommentSysModel(int gameType, String text) {
         setCommentType(CommentModel.TYPE_SYSTEM);
-        setUserInfo(UserAccountManager.getInstance().getSystemModel());
+        setUserInfo(UserAccountManager.INSTANCE.getSystemModel());
         setAvatarColor(CommentModel.AVATAR_COLOR);
 
         if (gameType == GameModeType.GAME_MODE_GRAB) {
@@ -37,7 +37,7 @@ public class CommentSysModel extends CommentModel {
     public CommentSysModel(String roomName, int type) {
         setCommentType(CommentModel.TYPE_SYSTEM);
         setAvatarColor(CommentModel.AVATAR_COLOR);
-        setUserInfo(UserAccountManager.getInstance().getSystemModel());
+        setUserInfo(UserAccountManager.INSTANCE.getSystemModel());
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
         if (type == TYPE_ENTER_ROOM) {
             stringBuilder = new SpanUtils()
@@ -62,7 +62,7 @@ public class CommentSysModel extends CommentModel {
     // 离开系统消息
     public CommentSysModel(String nickName, String leaveText) {
         setCommentType(CommentModel.TYPE_SYSTEM);
-        setUserInfo(UserAccountManager.getInstance().getSystemModel());
+        setUserInfo(UserAccountManager.INSTANCE.getSystemModel());
         setAvatarColor(CommentModel.AVATAR_COLOR);
 
         SpannableStringBuilder stringBuilder = new SpanUtils()

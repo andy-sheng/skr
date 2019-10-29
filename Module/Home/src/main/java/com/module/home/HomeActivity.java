@@ -54,6 +54,7 @@ import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
+import com.module.home.persenter.VipReceiveCoinPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
@@ -88,6 +89,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
     CheckInPresenter mCheckInPresenter;
+    VipReceiveCoinPresenter mVipReceiveCoinPresenter;
 
     Handler mUiHandler = new Handler(Looper.getMainLooper());
 
@@ -194,7 +196,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mHomePresenter = new
 
                 HomeCorePresenter(this, this);
-        if (!UserAccountManager.getInstance().hasAccount()) {
+        if (!UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
@@ -218,6 +220,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
+        if (MyLog.isDebugLogOpen()) {
+            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_HOME)
+                            .navigation();
+                    return false;
+                }
+            });
+        }
         mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
@@ -263,6 +275,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         addPresent(mNotifyCorePresenter);
 
+        mVipReceiveCoinPresenter = new VipReceiveCoinPresenter(this);
+
+        addPresent(mVipReceiveCoinPresenter);
+
         mMainVp.setCurrentItem(0, false);
 
         selectTab(0);
@@ -306,7 +322,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         //设置图片,通知标题,发送时间,提示方式等属性
         Notification.Builder mBuilder = new Notification.Builder(this);
-        mBuilder.setContentTitle("@" + MyUserInfoManager.getInstance().getNickName())                        //标题
+        mBuilder.setContentTitle("@" + MyUserInfoManager.INSTANCE.getNickName())                        //标题
                 .setContentText("你的好友" + event.mUserInfoModel.getNicknameRemark() + "邀请你玩游戏")      //内容
                 .setWhen(System.currentTimeMillis())           //设置通知时间
                 .setSmallIcon(R.drawable.app_icon)            //设置小图标
@@ -369,7 +385,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (getIntent() != null) {
             String scheme = getIntent().getStringExtra("from_scheme");
             if (!TextUtils.isEmpty(scheme)) {
-                if (UserAccountManager.getInstance().hasAccount()) {
+                if (UserAccountManager.INSTANCE.hasAccount()) {
                     goSchemeActivity(scheme);
                 } else {
                     MyLog.d(TAG, "挂起scheme mPengingSchemeUri:" + mPengingSchemeUri);
@@ -441,7 +457,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             //mSkrLocationPermission.ensurePermission(null, false);
         }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(this)) {
-            if (mFromCreate && UserAccountManager.getInstance().hasAccount()) {
+            if (mFromCreate && UserAccountManager.INSTANCE.hasAccount()) {
                 mSkrSdcardPermission.ensurePermission(this, null, true);
             }
         }
@@ -450,8 +466,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         UpgradeManager.getInstance().checkUpdate1();
         mRedPkgPresenter.checkRedPkg();
         mCheckInPresenter.check();
+        mVipReceiveCoinPresenter.checkVip();
 
-        if (UserAccountManager.getInstance().hasAccount()) {
+        if (UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
         }
     }
@@ -513,7 +530,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     /**
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -2,18 +2,17 @@ package com.module.home.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,22 +29,29 @@ import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
+import com.common.player.SinglePlayer;
+import com.common.player.SinglePlayerCallbackAdapter;
+import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
-import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExConstraintLayout;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.event.PostsPublishSucessEvent;
-import com.component.busilib.view.AvatarView;
+import com.component.busilib.friends.VoiceInfoModel;
+import com.component.level.utils.LevelConfigUtils;
+import com.component.person.event.ChildViewPlayAudioEvent;
+import com.component.person.model.RelationNumModel;
+import com.component.person.model.ScoreDetailModel;
+import com.component.person.photo.view.PhotoWallView;
+import com.component.person.producation.view.ProducationWallView;
+import com.component.person.view.CommonAudioView;
+import com.component.person.view.PersonTagView;
+import com.component.person.view.RequestCallBack;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
@@ -57,7 +63,6 @@ import com.module.home.view.IPersonView;
 import com.module.post.IPersonPostsWall;
 import com.module.post.IPostModuleService;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
@@ -65,21 +70,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
-import com.component.dialog.BusinessCardDialogView;
-import com.component.level.view.NormalLevelView2;
-import com.zq.live.proto.Common.ESex;
-import com.component.person.utils.StringFromatUtils;
-import com.component.person.fragment.OtherPersonFragment4;
-import com.component.person.photo.view.PhotoWallView;
-import com.component.person.producation.view.ProducationWallView;
-import com.component.person.view.RequestCallBack;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-
-import com.component.person.model.RelationNumModel;
 
 /**
  * 自己
@@ -88,41 +83,36 @@ import com.component.person.model.RelationNumModel;
 public class PersonFragment4 extends BaseFragment implements IPersonView, RequestCallBack {
 
     SmartRefreshLayout mSmartRefresh;
-    ExConstraintLayout mUserInfoArea;
+    ConstraintLayout mUserInfoArea;
 
-    ImageView mSettingImgIv;
+    ImageView mWalletIv;
+    ImageView mSettingIv;
     ExImageView mSettingRedDot;
 
-    SimpleDraweeView mImageBg;
-    ImageView mSexIv;
-    AvatarView mAvatarIv;
-    NormalLevelView2 mLevelView;
-    ExTextView mCharmTv;
-    TextView mVipTv;
+    ImageView mImageBg;
 
-    ExTextView mNameTv;
+    SimpleDraweeView mAvatarIv;
+    ImageView mLevelBg;
+    TextView mLevelDesc;
+    TextView mVerifyTv;
     ExTextView mSignTv;
+    ExTextView mNameTv;
+    ImageView mHonorIv;
+    Group mOpenHonorArea;
 
-    ImageView mBusinessCard;
+    CommonAudioView mAudioView;
+    ExTextView mEditAudio;
+    PersonTagView mPersonTagView;
 
     ExTextView mFriendsNumTv;
     ExTextView mFansNumTv;
     ExTextView mFollowsNumTv;
 
-    ExImageView mIncomeIv;
-    ExImageView mWalletIv;
-    ExImageView mRechargeIv;
-
     AppBarLayout mAppbar;
     Toolbar mToolbar;
     ConstraintLayout mToolbarLayout;
 
-    AvatarView mSrlAvatarIv;
     TextView mSrlNameTv;
-    ImageView mSrlSexIv;
-    ExTextView mSrlCharmTv;
-    ExTextView mSrlSignTv;
-    TextView mSrlVipTv;
 
     PersonCorePresenter mPresenter;
 
@@ -138,12 +128,19 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     DialogPlus mDialogPlus;
 
+    int srollDivider = U.getDisplayUtils().dip2px(84);  // 滑到分界线的时候
+
     int mFriendNum = 0;
     int mFansNum = 0;
     int mFocusNum = 0;
-    int mCharmNum = 0;
+
+    VoiceInfoModel mVoiceInfoModel; // 声音信息
 
     int lastVerticalOffset = Integer.MAX_VALUE;
+
+    boolean isPlay = false;
+    String playTag = "PersonFragment4" + hashCode();
+    private SinglePlayerCallbackAdapter playCallback;
 
     @Override
     public int initView() {
@@ -164,22 +161,49 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
         refreshUserInfoView();
 
+        playCallback = new SinglePlayerCallbackAdapter() {
+            @Override
+            public void onCompletion() {
+                super.onCompletion();
+                stopPlay();
+            }
+
+            @Override
+            public void onPlaytagChange(@org.jetbrains.annotations.Nullable String oldPlayerTag, @org.jetbrains.annotations.Nullable String newPlayerTag) {
+                if (newPlayerTag != playTag) {
+                    stopPlay();
+                }
+            }
+        };
+        SinglePlayer.INSTANCE.addCallback(playTag, playCallback);
+    }
+
+    private void stopPlay() {
+        isPlay = false;
+        SinglePlayer.INSTANCE.stop(playTag);
+        mAudioView.setPlay(false);
     }
 
     private void adjustView() {
-        if (U.getDeviceUtils().hasNotch(U.app())) {
-            ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
-            params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
-            mToolbarLayout.setLayoutParams(params);
+        ViewGroup.LayoutParams params = mToolbarLayout.getLayoutParams();
+        params.height = params.height + U.getStatusBarUtil().getStatusBarHeight(U.app());
+        mToolbarLayout.setLayoutParams(params);
 
+        if (U.getDeviceUtils().hasNotch(U.app())) {
             CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mUserInfoArea.getLayoutParams();
             layoutParams.topMargin = layoutParams.topMargin + U.getStatusBarUtil().getStatusBarHeight(U.app());
             mUserInfoArea.setLayoutParams(layoutParams);
-        }
 
-        ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
-        containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(96 + 54);
-        mContainer.setLayoutParams(containerParams);
+            ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
+            containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(56 + 54);
+            mContainer.setLayoutParams(containerParams);
+        } else {
+            ViewGroup.LayoutParams containerParams = mContainer.getLayoutParams();
+            containerParams.height = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(56 + 54) - U.getStatusBarUtil().getStatusBarHeight(U.app());
+            mContainer.setLayoutParams(containerParams);
+
+            srollDivider = srollDivider - U.getStatusBarUtil().getStatusBarHeight(U.app());
+        }
     }
 
 
@@ -194,6 +218,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     protected void onFragmentInvisible(int from) {
         super.onFragmentInvisible(from);
+        stopPlay();
         if (mProducationWallView != null) {
             mProducationWallView.stopPlay();
         }
@@ -216,15 +241,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mAppbar = getRootView().findViewById(R.id.appbar);
         mToolbar = getRootView().findViewById(R.id.toolbar);
         mToolbarLayout = getRootView().findViewById(R.id.toolbar_layout);
-        mSrlAvatarIv = getRootView().findViewById(R.id.srl_avatar_iv);
         mSrlNameTv = getRootView().findViewById(R.id.srl_name_tv);
-        mSrlSexIv = getRootView().findViewById(R.id.srl_sex_iv);
-        mSrlCharmTv = getRootView().findViewById(R.id.srl_charm_tv);
-        mSrlSignTv = getRootView().findViewById(R.id.srl_sign_tv);
-        mSrlVipTv = getRootView().findViewById(R.id.srl_vip_tv);
-
-        FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
-                .build());
 
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(true);
@@ -291,18 +308,25 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mImageBg.setTranslationY(verticalOffset);
                 if (lastVerticalOffset != verticalOffset) {
                     lastVerticalOffset = verticalOffset;
-                    int srollLimit = appBarLayout.getTotalScrollRange();
+
+                    int srollLimit = appBarLayout.getTotalScrollRange();  // 总的滑动长度
                     if (verticalOffset == 0) {
                         // 展开状态
                         if (mToolbar.getVisibility() != View.GONE) {
                             mToolbar.setVisibility(View.GONE);
                             mToolbarLayout.setVisibility(View.GONE);
                         }
-                    } else if (Math.abs(verticalOffset) >= srollLimit) {
+                    } else if (Math.abs(verticalOffset) >= srollDivider) {
                         // 完全收缩状态
                         if (mToolbar.getVisibility() != View.VISIBLE) {
                             mToolbar.setVisibility(View.VISIBLE);
                             mToolbarLayout.setVisibility(View.VISIBLE);
+                        }
+
+                        if (Math.abs(verticalOffset) >= srollLimit) {
+                            mSrlNameTv.setAlpha(1);
+                        } else {
+                            mSrlNameTv.setAlpha((float) (Math.abs(verticalOffset) - srollDivider) / (float) (srollLimit - srollDivider));
                         }
                     } else {
                         // TODO: 2019/4/8 过程中，可以加动画，先直接显示
@@ -318,14 +342,18 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
 
     private void initUserInfoArea() {
         mAvatarIv = getRootView().findViewById(R.id.avatar_iv);
-        mLevelView = getRootView().findViewById(R.id.level_view);
-        mNameTv = getRootView().findViewById(R.id.name_tv);
-        mSexIv = getRootView().findViewById(R.id.sex_iv);
+        mLevelBg = getRootView().findViewById(R.id.level_bg);
+        mLevelDesc = getRootView().findViewById(R.id.level_desc);
         mSignTv = getRootView().findViewById(R.id.sign_tv);
-        mCharmTv = getRootView().findViewById(R.id.charm_tv);
-        mVipTv = getRootView().findViewById(R.id.vip_tv);
+        mVerifyTv = getRootView().findViewById(R.id.verify_tv);
 
-        mBusinessCard = (ImageView) getRootView().findViewById(R.id.business_card);
+        mNameTv = getRootView().findViewById(R.id.name_tv);
+        mHonorIv = getRootView().findViewById(R.id.honor_iv);
+        mOpenHonorArea = getRootView().findViewById(R.id.open_honor_area);
+
+        mAudioView = getRootView().findViewById(R.id.audio_view);
+        mEditAudio = getRootView().findViewById(R.id.edit_audio);
+        mPersonTagView = getRootView().findViewById(R.id.person_tag_view);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -335,38 +363,87 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mBusinessCard.setOnClickListener(new DebounceViewClickListener() {
+        mOpenHonorArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // TODO: 2019-06-19 打开名片页面
-                showBusinessCard();
+                // todo 开启VIP的页面
+            }
+        });
+
+        mAudioView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (isPlay) {
+                    // 暂停音乐
+                    isPlay = false;
+                    mAudioView.setPlay(false);
+                    SinglePlayer.INSTANCE.stop(playTag);
+                } else {
+                    // 播放音乐
+                    isPlay = true;
+                    if (mPostWallView != null) {
+                        mPostWallView.stopPlay();
+                    }
+                    if (mFeedsWallView != null) {
+                        mFeedsWallView.stopPlay();
+                    }
+                    if (mProducationWallView != null) {
+                        mProducationWallView.stopPlay();
+                    }
+                    mAudioView.setPlay(true);
+                    SinglePlayer.INSTANCE.startPlay(playTag, mVoiceInfoModel.getVoiceURL());
+                }
+            }
+        });
+
+        mEditAudio.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
+                        .withInt("from", 2)
+                        .navigation();
+            }
+        });
+
+        getRootView().findViewById(R.id.open_honor_tv).setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                        .greenChannel().navigation();
+            }
+        });
+
+        mHonorIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                        .greenChannel().navigation();
             }
         });
     }
 
-    private void showBusinessCard() {
-        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
-        BusinessCardDialogView businessCardDialogView = new BusinessCardDialogView(getContext(), userInfoModel, mFansNum, mCharmNum);
-        mDialogPlus = DialogPlus.newDialog(getActivity())
-                .setContentHolder(new ViewHolder(businessCardDialogView))
-                .setGravity(Gravity.CENTER)
-                .setMargin(U.getDisplayUtils().dip2px(40), -1, U.getDisplayUtils().dip2px(40), -1)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create();
-        mDialogPlus.show();
-    }
-
     private void initSettingArea() {
-        mSettingImgIv = (ImageView) getRootView().findViewById(R.id.setting_img_iv);
-        mSettingRedDot = (ExImageView) getRootView().findViewById(R.id.setting_red_dot);
+        mSettingIv = getRootView().findViewById(R.id.setting_iv);
+        mSettingRedDot = getRootView().findViewById(R.id.setting_red_dot);
 
-        mSettingImgIv.setOnClickListener(new DebounceViewClickListener() {
+        mWalletIv = getRootView().findViewById(R.id.wallet_iv);
+
+
+        mSettingIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance()
                         .build(RouterConstants.ACTIVITY_SETTING)
+                        .navigation();
+            }
+        });
+        mWalletIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_WALLET)
                         .navigation();
             }
         });
@@ -387,38 +464,34 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mFollowsNumTv = (ExTextView) getRootView().findViewById(R.id.follows_num_tv);
         mFansNumTv = (ExTextView) getRootView().findViewById(R.id.fans_num_tv);
 
-        mWalletIv = (ExImageView) getRootView().findViewById(R.id.wallet_iv);
-        mIncomeIv = (ExImageView) getRootView().findViewById(R.id.income_iv);
-        mRechargeIv = (ExImageView) getRootView().findViewById(R.id.recharge_iv);
-
-        mWalletIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
-                        .navigation();
-            }
-        });
-
-        mIncomeIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_INCOME)
-                        .navigation();
-            }
-        });
-
-        mRechargeIv.setOnClickListener(new AnimateClickListener() {
-            @Override
-            public void click(View view) {
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), BallanceFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
-            }
-        });
+//        mWalletIv.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                ARouter.getInstance()
+//                        .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
+//                        .navigation();
+//            }
+//        });
+//
+//        mIncomeIv.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                ARouter.getInstance()
+//                        .build(RouterConstants.ACTIVITY_INCOME)
+//                        .navigation();
+//            }
+//        });
+//
+//        mRechargeIv.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                U.getFragmentUtils().addFragment(
+//                        FragmentUtils.newAddParamsBuilder(getActivity(), BallanceFragment.class)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .build());
+//            }
+//        });
 
         mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -459,9 +532,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void initPersonArea() {
-        mContainer = (LinearLayout) getRootView().findViewById(R.id.container);
-        mPersonTab = (SlidingTabLayout) getRootView().findViewById(R.id.person_tab);
-        mPersonVp = (NestViewPager) getRootView().findViewById(R.id.person_vp);
+        mContainer = getRootView().findViewById(R.id.container);
+        mPersonTab = getRootView().findViewById(R.id.person_tab);
+        mPersonVp = getRootView().findViewById(R.id.person_vp);
 
         mPersonTab.setCustomTabView(R.layout.person_tab_view, R.id.tab_tv);
         mPersonTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
@@ -495,7 +568,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mPhotoWallView;
                 } else if (position == 1) {
                     // 帖子
-                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mPostWallView == null) {
                         IPostModuleService postModuleService = ModuleServiceManager.getInstance().getPostsService();
                         mPostWallView = postModuleService.getPostsWall(PersonFragment4.this.getActivity(), userInfoModel, PersonFragment4.this);
@@ -510,7 +583,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mPostWallView;
                 } else if (position == 2) {
                     // 神曲
-                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mFeedsWallView == null) {
                         IFeedsModuleService feedsModuleService = ModuleServiceManager.getInstance().getFeedsService();
                         mFeedsWallView = feedsModuleService.getPersonFeedsWall(PersonFragment4.this, userInfoModel, PersonFragment4.this);
@@ -525,7 +598,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     return mFeedsWallView;
                 } else if (position == 3) {
                     // 作品
-                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+                    UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
                     if (mProducationWallView == null) {
                         mProducationWallView = new ProducationWallView(PersonFragment4.this, userInfoModel, PersonFragment4.this);
                     }
@@ -666,16 +739,38 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     @Override
-    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal) {
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, int meiLiCntTotal, ScoreDetailModel scoreDetailModel, VoiceInfoModel voiceInfoModel) {
         mSmartRefresh.finishRefresh();
         showCharmsTotal(meiLiCntTotal);
         showRelationNum(relationNumModels);
+        showScoreDetail(scoreDetailModel);
+        showVoiceInfo(voiceInfoModel);
+    }
+
+    private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
+        mVoiceInfoModel = voiceInfoModel;
+        if (voiceInfoModel != null) {
+            mAudioView.bindData(voiceInfoModel.getDuration());
+            mAudioView.setVisibility(View.VISIBLE);
+        } else {
+            mAudioView.setVisibility(View.GONE);
+        }
+    }
+
+    private void showScoreDetail(ScoreDetailModel scoreDetailModel) {
+        if (scoreDetailModel.getScoreStateModel() != null && LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.getScoreStateModel().getMainRanking()) != 0) {
+            mLevelBg.setVisibility(View.VISIBLE);
+            mLevelDesc.setVisibility(View.VISIBLE);
+            mLevelBg.setBackground(U.getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.getScoreStateModel().getMainRanking())));
+            mLevelDesc.setText(scoreDetailModel.getScoreStateModel().getRankingDesc());
+        } else {
+            mLevelBg.setVisibility(View.GONE);
+            mLevelDesc.setVisibility(View.GONE);
+        }
     }
 
     private void showCharmsTotal(int meiLiCntTotal) {
-        mCharmNum = meiLiCntTotal;
-        mCharmTv.setText("魅力：" + StringFromatUtils.formatMillion(meiLiCntTotal));
-        mSrlCharmTv.setText("魅力：" + StringFromatUtils.formatMillion(meiLiCntTotal));
+        mPersonTagView.setCharmTotal(meiLiCntTotal);
     }
 
     public void showRelationNum(List<RelationNumModel> list) {
@@ -689,25 +784,26 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         }
 
+//        mPersonTagView.setFansNum(mFansNum);
         refreshRelationNum();
     }
 
     private void refreshRelationNum() {
         SpannableStringBuilder friendBuilder = new SpanUtils()
                 .append(String.valueOf(mFriendNum)).setFontSize(24, true)
-                .append("好友").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append(" 好友").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
                 .create();
         mFriendsNumTv.setText(friendBuilder);
 
         SpannableStringBuilder fansBuilder = new SpanUtils()
                 .append(String.valueOf(mFansNum)).setFontSize(24, true)
-                .append("粉丝").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append(" 粉丝").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
                 .create();
         mFansNumTv.setText(fansBuilder);
 
         SpannableStringBuilder focusBuilder = new SpanUtils()
                 .append(String.valueOf(mFocusNum)).setFontSize(24, true)
-                .append("关注").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
+                .append(" 关注").setFontSize(14, true).setForegroundColor(U.getColor(R.color.white_trans_50))
                 .create();
         mFollowsNumTv.setText(focusBuilder);
     }
@@ -718,44 +814,35 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     }
 
     private void refreshUserInfoView() {
-        if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
-            mAvatarIv.bindData(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
-            mSrlAvatarIv.bindData(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
-            mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
-                mSexIv.setVisibility(View.VISIBLE);
-                mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
-                mSrlSexIv.setVisibility(View.VISIBLE);
-                mSrlSexIv.setBackgroundResource(R.drawable.sex_man_icon);
-            } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
-                mSexIv.setVisibility(View.VISIBLE);
-                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
-                mSrlSexIv.setVisibility(View.VISIBLE);
-                mSrlSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
-            } else {
-                mSexIv.setVisibility(View.GONE);
-                mSrlSexIv.setVisibility(View.GONE);
-            }
-            mSrlSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-            mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
+        if (MyUserInfoManager.INSTANCE.hasMyUserInfo()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.INSTANCE.getAvatar())
+                    .setCircle(true)
+                    .build());
+            mNameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
+            mSrlNameTv.setText(MyUserInfoManager.INSTANCE.getNickName());
+            mPersonTagView.setUserID((int) MyUserInfoManager.INSTANCE.getUid());
+            mPersonTagView.setSex(MyUserInfoManager.INSTANCE.getSex());
+            mPersonTagView.setLocation(MyUserInfoManager.INSTANCE.getLocation());
+            mSignTv.setText(MyUserInfoManager.INSTANCE.getSignature());
 
-            if (MyUserInfoManager.getInstance().getVipInfo() != null && MyUserInfoManager.getInstance().getVipType() > 0) {
+            if (MyUserInfoManager.INSTANCE.getVipInfo() != null && MyUserInfoManager.INSTANCE.getVipType() > 0) {
                 // 展示vip
                 mSignTv.setVisibility(View.GONE);
-                mSrlSignTv.setVisibility(View.GONE);
-
-                mVipTv.setVisibility(View.VISIBLE);
-                mSrlVipTv.setVisibility(View.VISIBLE);
-                mVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
-                mSrlVipTv.setText(MyUserInfoManager.getInstance().getVipInfo().getVipDesc());
+                mVerifyTv.setVisibility(View.VISIBLE);
+                mVerifyTv.setText(MyUserInfoManager.INSTANCE.getVipInfo().getVipDesc());
             } else {
                 // 展示签名
                 mSignTv.setVisibility(View.VISIBLE);
-                mSrlSignTv.setVisibility(View.VISIBLE);
+                mVerifyTv.setVisibility(View.GONE);
+            }
 
-                mVipTv.setVisibility(View.GONE);
-                mSrlVipTv.setVisibility(View.GONE);
+            if (MyUserInfoManager.INSTANCE.getHonorInfo() != null &&
+                    MyUserInfoManager.INSTANCE.getHonorInfo().isHonor()) {
+                mHonorIv.setVisibility(View.VISIBLE);
+                mOpenHonorArea.setVisibility(View.GONE);
+            } else {
+                mHonorIv.setVisibility(View.GONE);
+                mOpenHonorArea.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -763,7 +850,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         refreshUserInfoView();
-        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo());
+        UserInfoModel userInfoModel = MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo());
         if (mProducationWallView != null) {
             mProducationWallView.setUserInfoModel(userInfoModel);
         }
@@ -773,6 +860,11 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mPostWallView != null) {
             mPostWallView.setUserInfoModel(userInfoModel);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChildViewPlayAudioEvent event) {
+        stopPlay();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -796,6 +888,8 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     @Override
     public void destroy() {
         super.destroy();
+        SinglePlayer.INSTANCE.release(playTag);
+        SinglePlayer.INSTANCE.removeCallback(playTag);
         if (mPhotoWallView != null) {
             mPhotoWallView.destory();
         }

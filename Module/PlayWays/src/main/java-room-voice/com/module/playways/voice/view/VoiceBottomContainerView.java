@@ -18,7 +18,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.quickmsg.QuickMsgView;
 import com.module.playways.R;
-import com.zq.live.proto.Room.SpecialEmojiMsgType;
+import com.zq.live.proto.GrabRoom.SpecialEmojiMsgType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

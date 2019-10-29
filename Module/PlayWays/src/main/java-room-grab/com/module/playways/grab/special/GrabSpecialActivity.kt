@@ -144,7 +144,7 @@ class GrabSpecialActivity : BaseActivity() {
 
         launch {
             val result = subscribe(RequestControl("getStandTagList", ControlType.CancelThis)) {
-                grabRooServerApi.getStandTagList(MyUserInfoManager.getInstance().uid, off, mCNT)
+                grabRooServerApi.getStandTagList(MyUserInfoManager.uid, off, mCNT)
             }
             if (result.errno == 0) {
                 offset = result.data.getIntValue("offset")

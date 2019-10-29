@@ -102,6 +102,7 @@ android {
             java.srcDirs += 'src/main/java-room-race'
             res.srcDirs += 'src/main/res-room-race'
 
+            // 歌单战 要遗弃的
             java.srcDirs += 'src/main/java-room-battle'
             res.srcDirs += 'src/main/res-room-battle'
 
@@ -111,7 +112,15 @@ android {
 
             // 老的排位
             //java.srcDirs += 'src/main/java-room-rank-old'
+
+            // 排麦房
+            java.srcDirs += 'src/main/java-room-mic'
+            res.srcDirs += 'src/main/res-room-mic'
         }
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 

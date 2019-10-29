@@ -95,7 +95,7 @@ public class DebugLogView extends ExViewStub {
      * 这样的日志会打在屏幕上
      */
     public static void println(String TAG, String line) {
-        MyLog.d(TAG, line);
+        MyLog.w(TAG, line);
         if (MyLog.isDebugLogOpen()) {
             EventBus.getDefault().post(new DebugLogView.LogEvent(TAG, line));
         }

@@ -48,7 +48,7 @@ public class EditInfoNameFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) getRootView().findViewById(R.id.titlebar);
         mNicknameEt = (NoLeakEditText) getRootView().findViewById(R.id.nickname_et);
 
-        mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
+        mNicknameEt.setText(MyUserInfoManager.INSTANCE.getNickName());
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class EditInfoNameFragment extends BaseFragment {
 
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
 
-        if (nickName.equals(MyUserInfoManager.getInstance().getNickName())) {
+        if (nickName.equals(MyUserInfoManager.INSTANCE.getNickName())) {
             // 昵称一样,没改
             U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
         } else {
@@ -115,7 +115,7 @@ public class EditInfoNameFragment extends BaseFragment {
                         boolean isValid = result.getData().getBooleanValue("isValid");
                         String unValidReason = result.getData().getString("unValidReason");
                         if (isValid) {
-                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
                                     .setNickName(nickName)
                                     .build(), false, false, new MyUserInfoManager.ServerCallback() {
                                 @Override
@@ -166,7 +166,7 @@ public class EditInfoNameFragment extends BaseFragment {
                         if (view instanceof ExTextView) {
                             if (view.getId() == R.id.confirm_tv) {
                                 dialog.dismiss();
-                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
                                         .setNickName(nickName)
                                         .build(), false);
                                 U.getFragmentUtils().popFragment(EditInfoNameFragment.this);

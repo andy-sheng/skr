@@ -8,8 +8,9 @@ import com.common.cache.LruCache;
 import com.common.core.userinfo.ResultCallback;
 import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.VipInfo;
+import com.common.core.userinfo.model.VerifyInfo;
 import com.common.log.MyLog;
 import com.module.ModuleServiceManager;
 
@@ -84,6 +85,7 @@ public class BuddyCache {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("vipInfo", buddyCacheEntry.vipInfo);
+        jsonObject.put("honorInfo", buddyCacheEntry.honorInfo);
         ModuleServiceManager.getInstance().getMsgService().refreshUserInfoCache(buddyCacheEntry.getUuid(), buddyCacheEntry.getName(), buddyCacheEntry.getAvatar(), jsonObject.toJSONString());
         mLruCache.put(buddyCacheEntry.getUuid(), buddyCacheEntry);
     }
@@ -136,7 +138,7 @@ public class BuddyCache {
             public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
                 UserInfoModel userInfoModel = UserInfoLocalApi.getUserInfoByUUid(uuid);
                 if (userInfoModel != null) {
-                    BuddyCacheEntry buddyCacheEntry = new BuddyCacheEntry(userInfoModel.getUserId(), userInfoModel.getNicknameRemark(), userInfoModel.getAvatar(), userInfoModel.getVipInfo());
+                    BuddyCacheEntry buddyCacheEntry = new BuddyCacheEntry(userInfoModel);
                     putBuddy(buddyCacheEntry);
                 }
                 emitter.onComplete();
@@ -156,7 +158,8 @@ public class BuddyCache {
         private String name;
         private String avatar;
 
-        private VipInfo vipInfo;
+        private VerifyInfo vipInfo;
+        private HonorInfo honorInfo;
 
         public int getUuid() {
             return uuid;
@@ -182,12 +185,20 @@ public class BuddyCache {
             this.avatar = avatar;
         }
 
-        public VipInfo getVipInfo() {
+        public VerifyInfo getVipInfo() {
             return vipInfo;
         }
 
-        public void setVipInfo(VipInfo vipInfo) {
+        public void setVipInfo(VerifyInfo vipInfo) {
             this.vipInfo = vipInfo;
+        }
+
+        public HonorInfo getHonorInfo() {
+            return honorInfo;
+        }
+
+        public void setHonorInfo(HonorInfo honorInfo) {
+            this.honorInfo = honorInfo;
         }
 
         @Override
@@ -208,13 +219,6 @@ public class BuddyCache {
             return this.uuid == data.uuid;
         }
 
-        public BuddyCacheEntry(int uuid, String name, String avatar, VipInfo vipInfo) {
-            this.uuid = uuid;
-            this.name = name;
-            this.avatar = avatar;
-            this.vipInfo = vipInfo;
-        }
-
         public BuddyCacheEntry(UserInfoModel userInfoModel) {
             if (userInfoModel == null) {
                 return;
@@ -223,6 +227,7 @@ public class BuddyCache {
             this.name = userInfoModel.getNicknameRemark();
             this.avatar = userInfoModel.getAvatar();
             this.vipInfo = userInfoModel.getVipInfo();
+            this.honorInfo = userInfoModel.getHonorInfo();
         }
 
         @Override
@@ -230,7 +235,9 @@ public class BuddyCache {
             return "BuddyCacheEntry{" +
                     "uuid=" + uuid +
                     ", name='" + name + '\'' +
-                    ", avatar =" + avatar +
+                    ", avatar='" + avatar + '\'' +
+                    ", vipInfo=" + vipInfo +
+                    ", honorInfo=" + honorInfo +
                     '}';
         }
 

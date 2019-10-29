@@ -18,6 +18,7 @@ public class InviteFriendDialog {
     public final static int INVITE_GRAB_GAME = 1;
     public final static int INVITE_GRAB_FRIEND = 2;
     public final static int INVITE_DOUBLE_GAME = 3;
+    public final static int INVITE_MIC_GAME = 4;
 
     DialogPlus mShareDialog;
 

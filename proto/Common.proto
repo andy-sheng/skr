@@ -20,6 +20,17 @@ message UserInfo {
     uint32 mainLevel = 7; //主段位
     VipInfo vipInfo    = 8; //vip类型
     UserRanking ranking = 9; //排位信息
+    HonorInfo honorInfo = 10;//会员信息
+}
+
+message HonorInfo
+{
+    EHonorType honorType = 1; //会员类型
+}
+
+enum EHonorType {
+    EHT_UNKNOWN  = 0; //不是会员
+    EHT_COMMON   = 1; //普通会员
 }
 
 //段位描述

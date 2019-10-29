@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleCountDownView">
+        <!--形状类型 圆角矩形 椭圆 执行 圆环-->
+        <attr name="inner_stroke_width" format="dimension" />
+        <!--形状内填充的颜色-->
+        <attr name="inner_color" format="color" />
+        <attr name="inner_stroke_raduis" format="dimension" />
+        <attr name="degree" format="integer" />
+        <attr name="stroke_bg_color" format="color" />
+        <attr name="bg_color" format="color" />
+        <attr name="stroke_bg_width" format="dimension" />
+    </declare-styleable>
+</resources>

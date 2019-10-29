@@ -181,7 +181,7 @@ class FeedsEditorActivity : BaseActivity() {
 
         })
 
-        AvatarUtils.loadAvatarByUrl(cdAvatar, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+        AvatarUtils.loadAvatarByUrl(cdAvatar, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setCircle(true)
                 .build())
 
@@ -476,8 +476,9 @@ class FeedsEditorActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         finishPage()
+        return true
     }
 
     private fun finishPage() {

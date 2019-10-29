@@ -79,7 +79,12 @@ public enum ENotificationMsgType implements WireEnum {
   /**
    * 添加帖子评论信令
    */
-  NM_PS_COMMENT_ADD(13);
+  NM_PS_COMMENT_ADD(13),
+
+  /**
+   * 排麦房邀请用户
+   */
+  NM_INVITE_MIC(14);
 
   public static final ProtoAdapter<ENotificationMsgType> ADAPTER = new ProtoAdapter_ENotificationMsgType();
 
@@ -108,6 +113,7 @@ public enum ENotificationMsgType implements WireEnum {
       case 11: return NM_PS_LIKE;
       case 12: return NM_PS_COMMENT_LIKE;
       case 13: return NM_PS_COMMENT_ADD;
+      case 14: return NM_INVITE_MIC;
       default: return null;
     }
   }

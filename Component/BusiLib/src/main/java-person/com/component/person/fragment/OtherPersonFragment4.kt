@@ -35,7 +35,8 @@ import com.common.flowlayout.TagFlowLayout
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
-import com.common.log.MyLog
+import com.common.player.SinglePlayer
+import com.common.player.SinglePlayerCallbackAdapter
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -46,7 +47,9 @@ import com.common.view.ex.drawable.DrawableCreator
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
+import com.component.busilib.friends.VoiceInfoModel
 import com.component.busilib.view.AvatarView
+import com.component.level.utils.LevelConfigUtils
 
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
@@ -60,17 +63,12 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
-import com.component.dialog.BusinessCardDialogView
 import com.component.level.view.NormalLevelView2
 import com.zq.live.proto.Common.ESex
 import com.component.person.utils.StringFromatUtils
 import com.component.person.model.TagModel
 import com.component.person.presenter.OtherPersonPresenter
-import com.component.person.view.EditRemarkView
-import com.component.person.view.IOtherPersonView
 import com.component.person.photo.view.OtherPhotoWallView
-import com.component.person.view.PersonMoreOpView
-import com.component.person.view.RequestCallBack
 
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -81,46 +79,37 @@ import java.util.HashMap
 import com.component.person.model.RelationNumModel
 
 import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
+import com.component.person.event.ChildViewPlayAudioEvent
+import com.component.person.model.ScoreDetailModel
+import com.component.person.view.*
 import com.module.feeds.IPersonFeedsWall
 import com.module.post.IPersonPostsWall
 import kotlin.math.abs
 
 class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
-    private val mTags = ArrayList<TagModel>()  //标签
-    private val mHashMap = HashMap<Int, String>()
-
-    lateinit var mTagAdapter: TagAdapter<TagModel>
-    private var fansNum = 0 // 粉丝数
-    private var charmNum = 0 // 魅力值
-
-    internal var isAppbarCanSrcoll = true  // AppBarLayout是否可以滚动
-
     internal var mUserInfoModel: UserInfoModel = UserInfoModel()
     internal var mUserId: Int = 0
 
-    internal var mDialogPlus: DialogPlus? = null
-
     lateinit var mPresenter: OtherPersonPresenter
 
-    lateinit var mImageBg: SimpleDraweeView
+    lateinit var mImageBg: ImageView
     lateinit var mSmartRefresh: SmartRefreshLayout
     lateinit var mAppbar: AppBarLayout
     lateinit var mUserInfoArea: ConstraintLayout
 
     lateinit var mIvBack: ExImageView
     lateinit var mMoreBtn: ExImageView
-    private var mPersonMoreOpView: PersonMoreOpView? = null
 
-    lateinit var mAvatarIv: AvatarView
-    lateinit var mLevelView: NormalLevelView2
-    lateinit var mNameTv: ExTextView
-    lateinit var mSexIv: ImageView
-    lateinit var mBusinessCard: ImageView
+    lateinit var mAvatarIv: SimpleDraweeView
+    lateinit var mLevelBg: ImageView
+    lateinit var mLevelDesc: TextView
+    lateinit var mVerifyTv: TextView
     lateinit var mSignTv: ExTextView
-    lateinit var mFlowlayout: TagFlowLayout
-    lateinit var mUseridTv: TextView
-    lateinit var mVipTv: TextView
+    lateinit var mNameTv: ExTextView
+    lateinit var mHonorIv: ImageView
+    lateinit var mAudioView: CommonAudioView
+    lateinit var mPersonTagView: PersonTagView
 
     lateinit var mToolbar: Toolbar
     lateinit var mToolbarLayout: RelativeLayout
@@ -129,6 +118,9 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonTab: SlidingTabLayout
     lateinit var mPersonVp: NestViewPager
     lateinit var mPersonTabAdapter: PagerAdapter
+
+    private var mPersonMoreOpView: PersonMoreOpView? = null
+    private var mDialogPlus: DialogPlus? = null
 
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
     internal var mPostsWallView: IPersonPostsWall? = null
@@ -141,6 +133,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     internal var mEditRemarkDialog: DialogPlus? = null
 
     var lastVerticalOffset = Int.MAX_VALUE
+
+    private var isPlay = false
+    private var playTag = "OtherPersonFragment4" + hashCode()
+    private var playCallback: SinglePlayerCallbackAdapter? = null
+    private var mVoiceInfoModel: VoiceInfoModel? = null
 
     // 未关注
     private val mUnFollowDrawable = DrawableCreator.Builder()
@@ -169,6 +166,24 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mPresenter = OtherPersonPresenter(this)
         addPresent(mPresenter)
         bindData()
+
+        playCallback = object : SinglePlayerCallbackAdapter() {
+            override fun onCompletion() {
+                super.onCompletion()
+                isPlay = false
+                SinglePlayer.stop(playTag)
+                mAudioView.setPlay(false)
+            }
+
+            override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
+                if (newPlayerTag !== playTag) {
+                    isPlay = false
+                    SinglePlayer.stop(playTag)
+                    mAudioView.setPlay(false)
+                }
+            }
+        }
+        SinglePlayer.addCallback(playTag, playCallback!!)
     }
 
     private fun bindData() {
@@ -179,7 +194,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             mPresenter.getHomePage(mUserId)
         }
 
-        if (mUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mUserId.toLong() == MyUserInfoManager.uid) {
             mFunctionArea.visibility = View.GONE
             mMoreBtn.visibility = View.GONE
         }
@@ -192,16 +207,13 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     private fun initBaseContainArea() {
-        mImageBg = rootView.findViewById<View>(R.id.image_bg) as SimpleDraweeView
-        mSmartRefresh = rootView.findViewById<View>(R.id.smart_refresh) as SmartRefreshLayout
-        mAppbar = rootView.findViewById<View>(R.id.appbar) as AppBarLayout
-        mToolbarLayout = rootView.findViewById<View>(R.id.toolbar_layout) as RelativeLayout
-        mUserInfoArea = rootView.findViewById<View>(R.id.user_info_area) as ConstraintLayout
-        mToolbar = rootView.findViewById<View>(R.id.toolbar) as Toolbar
-        mSrlNameTv = rootView.findViewById<View>(R.id.srl_name_tv) as TextView
-
-        FrescoWorker.loadImage(mImageBg, ImageFactory.newPathImage(OtherPersonFragment4.PERSON_CENTER_TOP_ICON)
-                .build<BaseImage>())
+        mImageBg = rootView.findViewById(R.id.image_bg)
+        mSmartRefresh = rootView.findViewById(R.id.smart_refresh)
+        mAppbar = rootView.findViewById(R.id.appbar)
+        mToolbarLayout = rootView.findViewById(R.id.toolbar_layout)
+        mUserInfoArea = rootView.findViewById(R.id.user_info_area)
+        mToolbar = rootView.findViewById(R.id.toolbar)
+        mSrlNameTv = rootView.findViewById(R.id.srl_name_tv)
 
         mSmartRefresh.setEnableRefresh(true)
         mSmartRefresh.setEnableLoadMore(true)
@@ -250,7 +262,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                         mToolbar.visibility = View.GONE
                         mToolbarLayout.visibility = View.GONE
                     }
-                } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
+                } else if (abs(verticalOffset) >= appBarLayout.totalScrollRange) {
                     // 完全收缩状态
                     if (mToolbar.visibility != View.VISIBLE) {
                         mToolbar.visibility = View.VISIBLE
@@ -399,32 +411,16 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     private fun initUserInfoArea() {
-        mAvatarIv = rootView.findViewById(R.id.avatar_iv)
-        mLevelView = rootView.findViewById(R.id.level_view)
-        mNameTv = rootView.findViewById(R.id.name_tv)
-        mSexIv = rootView.findViewById(R.id.sex_iv)
-        mBusinessCard = rootView.findViewById(R.id.business_card)
-        mUseridTv = rootView.findViewById(R.id.userid_tv)
-        mVipTv = rootView.findViewById(R.id.vip_tv);
-        mSignTv = rootView.findViewById(R.id.sign_tv)
-        mFlowlayout = rootView.findViewById(R.id.flowlayout)
 
-        mTagAdapter = object : TagAdapter<TagModel>(mTags) {
-            override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
-                return if (tagModel.type != CHARM_TAG) {
-                    val tv = LayoutInflater.from(context).inflate(R.layout.other_person_tag_textview,
-                            mFlowlayout, false) as ExTextView
-                    tv.text = tagModel.content
-                    tv
-                } else {
-                    val tv = LayoutInflater.from(context).inflate(R.layout.other_person_charm_tag,
-                            mFlowlayout, false) as ExTextView
-                    tv.text = tagModel.content
-                    tv
-                }
-            }
-        }
-        mFlowlayout.adapter = mTagAdapter
+        mAvatarIv = rootView.findViewById(R.id.avatar_iv)
+        mLevelBg = rootView.findViewById(R.id.level_bg)
+        mLevelDesc = rootView.findViewById(R.id.level_desc)
+        mVerifyTv = rootView.findViewById(R.id.verify_tv)
+        mSignTv = rootView.findViewById(R.id.sign_tv)
+        mNameTv = rootView.findViewById(R.id.name_tv)
+        mHonorIv = rootView.findViewById(R.id.honor_iv)
+        mAudioView = rootView.findViewById(R.id.audio_view)
+        mPersonTagView = rootView.findViewById(R.id.person_tag_view)
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -432,45 +428,44 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mBusinessCard.setOnClickListener(object : DebounceViewClickListener() {
+        mAudioView.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
-                // TODO: 2019-06-19 打开名片页面
-                showBusinessCard()
+                if (isPlay) {
+                    // 暂停音乐
+                    isPlay = false
+                    mAudioView.setPlay(false)
+                    SinglePlayer.stop(playTag)
+                } else {
+                    // 播放音乐
+                    mVoiceInfoModel?.let {
+                        isPlay = true
+                        mFeedsWallView?.stopPlay()
+                        mPostsWallView?.stopPlay()
+                        mAudioView.setPlay(true)
+                        SinglePlayer.startPlay(playTag, it.voiceURL)
+                    }
+                }
             }
         })
     }
 
-    private fun showBusinessCard() {
-        val businessCardDialogView = BusinessCardDialogView(context!!, mUserInfoModel!!, fansNum, charmNum)
-        mDialogPlus = DialogPlus.newDialog(activity!!)
-                .setContentHolder(ViewHolder(businessCardDialogView))
-                .setGravity(Gravity.CENTER)
-                .setMargin(U.getDisplayUtils().dip2px(40f), -1, U.getDisplayUtils().dip2px(40f), -1)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create()
-        mDialogPlus!!.show()
-    }
-
-
-    private fun setAppBarCanScroll(canScroll: Boolean) {
-        if (isAppbarCanSrcoll == canScroll) {
-            return
-        }
-        if (mAppbar != null && mAppbar!!.layoutParams != null) {
-            val params = mAppbar!!.layoutParams as CoordinatorLayout.LayoutParams
-            val behavior = AppBarLayout.Behavior()
-            behavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
-                override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                    isAppbarCanSrcoll = canScroll
-                    return canScroll
-                }
-            })
-            params.behavior = behavior
-            mAppbar.layoutParams = params
-        }
-    }
+//    private fun setAppBarCanScroll(canScroll: Boolean) {
+//        if (isAppbarCanSrcoll == canScroll) {
+//            return
+//        }
+//        if (mAppbar != null && mAppbar!!.layoutParams != null) {
+//            val params = mAppbar!!.layoutParams as CoordinatorLayout.LayoutParams
+//            val behavior = AppBarLayout.Behavior()
+//            behavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+//                override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+//                    isAppbarCanSrcoll = canScroll
+//                    return canScroll
+//                }
+//            })
+//            params.behavior = behavior
+//            mAppbar.layoutParams = params
+//        }
+//    }
 
     private fun initPersonTabArea() {
         mPersonTab = rootView.findViewById<View>(R.id.person_tab) as SlidingTabLayout
@@ -660,19 +655,36 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int) {
+                                  isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
         showUserRelation(isFriend, isFollow)
         showCharms(meiLiCntTotal)
+        showScoreDetail(scoreDetailModel)
+        mVoiceInfoModel = voiceInfoModel
+        if (voiceInfoModel != null) {
+            mAudioView.bindData(voiceInfoModel.duration)
+            mAudioView.visibility = View.VISIBLE
+        } else {
+            mAudioView.visibility = View.GONE
+        }
+    }
+
+    private fun showScoreDetail(scoreDetailModel: ScoreDetailModel) {
+        if (scoreDetailModel.scoreStateModel != null && LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.scoreStateModel!!.mainRanking) != 0) {
+            mLevelBg.visibility = View.VISIBLE
+            mLevelDesc.visibility = View.VISIBLE
+            mLevelBg.background = U.getDrawable(LevelConfigUtils.getAvatarLevelBg(scoreDetailModel.scoreStateModel!!.mainRanking))
+            mLevelDesc.text = scoreDetailModel.scoreStateModel!!.rankingDesc
+        } else {
+            mLevelBg.visibility = View.GONE
+            mLevelDesc.visibility = View.GONE
+        }
     }
 
     private fun showCharms(meiLiCntTotal: Int) {
-        charmNum = meiLiCntTotal
-
-        mHashMap.put(CHARM_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
-        refreshTag()
+        mPersonTagView.setCharmTotal(meiLiCntTotal)
     }
 
     override fun getHomePageFail() {
@@ -683,62 +695,31 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         this.mUserInfoModel = model
         mFeedsWallView?.setUserInfoModel(model)
         mPostsWallView?.setUserInfoModel(model)
-        mAvatarIv.bindData(model)
-
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+                .setCircle(true)
+                .build())
         mNameTv.text = model.nicknameRemark
-        mUseridTv.text = "ID:" + model.userId
-        when {
-            model.sex == ESex.SX_MALE.value -> {
-                mSexIv.visibility = View.VISIBLE
-                mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
-            }
-            model.sex == ESex.SX_FEMALE.value -> {
-                mSexIv.visibility = View.VISIBLE
-                mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
-            }
-            else -> mSexIv.visibility = View.GONE
-        }
-
         mSrlNameTv.text = model.nicknameRemark
         mSignTv.text = model.signature
 
-        if (model.location != null && !TextUtils.isEmpty(model.location.province)) {
-            mHashMap.put(LOCATION_TAG, model.location.province)
-        } else {
-            mHashMap.put(LOCATION_TAG, "火星")
-        }
-
         if (model.vipInfo != null && model.vipInfo.vipType > 0) {
-            mVipTv.visibility = View.VISIBLE
             mSignTv.visibility = View.GONE
-
-            mVipTv.text = model.vipInfo.vipDesc
+            mVerifyTv.visibility = View.VISIBLE
+            mVerifyTv.text = model.vipInfo.vipDesc
         } else {
-            mVipTv.visibility = View.GONE
+            mVerifyTv.visibility = View.GONE
             mSignTv.visibility = View.VISIBLE
         }
 
-        refreshTag()
-    }
-
-    private fun refreshTag() {
-        mTags.clear()
-        if (mHashMap != null) {
-            if (!TextUtils.isEmpty(mHashMap.get(CHARM_TAG))) {
-                mTags.add(TagModel(CHARM_TAG, mHashMap.get(CHARM_TAG)))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
-                mTags.add(TagModel(FANS_NUM_TAG, mHashMap.get(FANS_NUM_TAG)))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap.get(LOCATION_TAG))) {
-                mTags.add(TagModel(LOCATION_TAG, mHashMap.get(LOCATION_TAG)))
-            }
-
+        if (model.honorInfo != null && model.honorInfo.isHonor()) {
+            mHonorIv.visibility = View.VISIBLE
+        } else {
+            mHonorIv.visibility = View.GONE
         }
-        mTagAdapter.setTagDatas(mTags)
-        mTagAdapter.notifyDataChanged()
+
+        mPersonTagView.setSex(model.sex)
+        mPersonTagView.setLocation(model.location)
+        mPersonTagView.setUserID(model.userId)
     }
 
 
@@ -746,59 +727,34 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         if (list != null && list.isNotEmpty()) {
             for (mode in list) {
                 if (mode.relation == UserInfoManager.RELATION.FANS.value) {
-                    fansNum = mode.cnt
+                    mPersonTagView.setFansNum(mode.cnt)
                 }
             }
         }
-
-        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatTenThousand(fansNum))
-
-        refreshTag()
-    }
-
-
-    private fun showReginRank(list: List<UserRankModel>?) {
-        //        mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        //        UserRankModel reginRankModel = new UserRankModel();
-        //        UserRankModel countryRankModel = new UserRankModel();
-        //        if (list != null && list.size() > 0) {
-        //            for (UserRankModel model : list) {
-        //                if (model.getCategory() == UserRankModel.REGION) {
-        //                    reginRankModel = model;
-        //                }
-        //                if (model.getCategory() == UserRankModel.COUNTRY) {
-        //                    countryRankModel = model;
-        //                }
-        //            }
-        //        }
-        //
-        //        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
-        //            mRankText.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
-        //        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
-        //            mRankText.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
-        //        } else {
-        //            mRankText.setText(getResources().getString(R.string.default_rank_text));
-        //        }
     }
 
     private fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
-        mUserInfoModel!!.isFriend = isFriend
-        mUserInfoModel!!.isFollow = isFollow
-        if (isFriend) {
-            mFollowIv.isClickable = false
-            mFollowIv.text = "互关"
-            mFollowIv.background = mFollowDrawable
-            mFollowIv.tag = RELATION_FOLLOWED
-        } else if (isFollow) {
-            mFollowIv.isClickable = false
-            mFollowIv.text = "已关注"
-            mFollowIv.tag = RELATION_FOLLOWED
-            mFollowIv.background = mFollowDrawable
-        } else {
-            mFollowIv.isClickable = true
-            mFollowIv.text = "关注Ta"
-            mFollowIv.tag = RELATION_UN_FOLLOW
-            mFollowIv.background = mUnFollowDrawable
+        mUserInfoModel.isFriend = isFriend
+        mUserInfoModel.isFollow = isFollow
+        when {
+            isFriend -> {
+                mFollowIv.isClickable = false
+                mFollowIv.text = "互关"
+                mFollowIv.background = mFollowDrawable
+                mFollowIv.tag = RELATION_FOLLOWED
+            }
+            isFollow -> {
+                mFollowIv.isClickable = false
+                mFollowIv.text = "已关注"
+                mFollowIv.tag = RELATION_FOLLOWED
+                mFollowIv.background = mFollowDrawable
+            }
+            else -> {
+                mFollowIv.isClickable = true
+                mFollowIv.text = "关注Ta"
+                mFollowIv.tag = RELATION_UN_FOLLOW
+                mFollowIv.background = mUnFollowDrawable
+            }
         }
     }
 
@@ -814,6 +770,13 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         if (event.userId == mUserInfoModel!!.userId) {
             mNameTv.text = mUserInfoModel!!.nicknameRemark
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ChildViewPlayAudioEvent) {
+        isPlay = false
+        SinglePlayer.stop(playTag)
+        mAudioView.setPlay(false)
     }
 
     private fun unFollow(userInfoModel: UserInfoModel?) {
@@ -852,6 +815,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun destroy() {
         super.destroy()
+        SinglePlayer.removeCallback(playTag)
         mOtherPhotoWallView?.destory()
         mPostsWallView?.destroy()
         mFeedsWallView?.destroy()
@@ -872,9 +836,5 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
         const val RELATION_FOLLOWED = 1 // 已关注关系
         const val RELATION_UN_FOLLOW = 2 // 未关注关系
-
-        const val CHARM_TAG = 0            // 魅力值
-        const val FANS_NUM_TAG = 1         // 粉丝数标签
-        const val LOCATION_TAG = 2         // 地区标签  省
     }
 }

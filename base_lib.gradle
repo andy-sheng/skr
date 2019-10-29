@@ -1,0 +1,64 @@
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+        vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+        // 这个方法可以 会使 uploadArchives 上传多出一个 xxx-version-debug.aar 的版本
+        // 具体教程看这 https://discuss.gradle.org/t/what-does-uploadarchives-task-upload/12922
+//        android.libraryVariants.all { variant ->
+//            println variant.name
+//            println android.defaultPublishConfig
+//            // Publish a main artifact, otherwise the maven pom is not generated
+//            if(  variant.name != android.defaultPublishConfig ) {
+//                def bundleTask = tasks["bundle${name.capitalize()}Aar"]
+//                println bundleTask
+//                artifacts {
+//                    archives(bundleTask.archivePath) {
+//                        classifier variant.name
+//                        builtBy bundleTask
+//                    }
+//                }
+//            }
+//        }
+    }
+
+    //    resourcePrefix "public_" //给 Module 内的资源名增加前缀, 避免资源名冲突
+
+    // gradle 默认构建的版本
+    defaultPublishConfig buildTypeForMaven
+
+    //发布所有版本的库工程，发布多个库工程版本意味着会产生多个aar包
+    // publishNonDefault true
+}
+
+// 添加上传到本地 maven 仓库 ，基本配置信息
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: rootProject.ext.local_maven){
+            authentication(userName: rootProject.ext.nexus_name, password: rootProject.ext.nexus_password)
+        }
+        pom.version = "1.0-${android.defaultPublishConfig}"
+    }
+}

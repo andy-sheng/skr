@@ -1,0 +1,325 @@
+syntax = "proto3";
+
+import "Common.proto";
+
+package com.zq.live.proto.MicRoom;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ mic_room.proto
+
+*/
+
+// 排麦房信令消息
+message MicRoomMsg
+{
+    sint64 timeMs           = 1; //房间消息产生时间，单位毫秒
+    EMicRoomMsgType msgType = 2; //消息类型
+    uint32 roomID           = 3; //房间ID
+
+    MJoinActionMsg mJoinActionMsg                     = 100; //加入游戏指令消息
+    MJoinNoticeMsg mJoinNoticeMsg                     = 101; //加入游戏通知消息
+    MExitGameMsg mExitGameMsg                         = 102; //退出游戏
+    MSyncStatusMsg syncStatusMsg                      = 103; //同步状态
+    MRoundOverMsg mRoundOverMsg                       = 104; //轮次结束
+    MAddMusicMsg mAddMusicMsg                         = 105; //点歌
+    MDelMusicMsg mDelMusicMsg                         = 106; //删歌
+    MUpMusicMsg mUpMusicMsg                           = 107; //置顶歌曲
+    MCancelMusic mCancelMusic                         = 108; //取消歌曲：合唱/PK伙伴已退出
+    MReqAddMusicMsg mReqAddMusicMsg                   = 109; //请求合唱/PK
+    MCHOGiveUpMsg mCHOGiveUpMsg                       = 110; //合唱模式放弃演唱
+    MSPKInnerRoundOverMsg mSPKInnerRoundOverMsg       = 111; //spk模式内部轮次结束
+    MChangeRoomNameMsg mChangeRoomNameMsg             = 112; //修改房间名字
+    MChangeRoomLevelLimitMsg mChangeRoomLevelLimitMsg = 113; //修改房间等级限制
+    MKickoutUserMsg mKickoutUserMsg                   = 114; //踢人
+    MChangeRoomOwnerMsg mChangeRoomOwnerMsg           = 115; //修改房主
+    MMatchStatusMsg mMatchStatusMsg                   = 116; //房间匹配开关
+}
+
+enum EMicRoomMsgType {
+    RMT_UNKNOWN = 0; //未知消息
+
+    RMT_JOIN_ACTION             = 100; //加入游戏指令消息
+    RMT_JOIN_NOTICE             = 101; //加入游戏通知消息
+    RMT_EXIT_GAME               = 102; //退出游戏
+    RMT_SYNC_STATUS             = 103; //同步状态
+    RMT_ROUND_OVER              = 104; //主轮次or子轮次结束
+    RMT_ADD_MUSIC               = 105; //增加歌曲（点歌）
+    RMT_DEL_MUSIC               = 106; //删除歌曲
+    RMT_UP_MUSIC                = 107; //置顶歌曲
+    RMT_CANCEL_MUSIC            = 108; //取消歌曲
+    RMT_REQ_ADD_MUSIC           = 109; //请求合唱/PK
+    RMT_CHO_GIVE_UP             = 110; //合唱模式放弃演唱
+    RMT_SPK_INNER_ROUND_OVER    = 111; //spk模式内部轮次结束
+    RMT_CHANGE_ROOM_NAME        = 112; //修改房间名字
+    RMT_CHANGE_ROOM_LEVEL_LIMIT = 113; //修改房间等级限制
+    RMT_KICKOUT_USER            = 114; //踢人
+    RMT_CHANGE_ROOM_OWNER       = 115; //修改房主
+    RMT_MATCH_STATUS            = 116; //房间匹配开关
+    RMT_ROUND_MACHINE_SCORE     = 117; //实时机器评分
+}
+
+message MCHOGiveUpMsg
+{
+    uint32 userID   = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+}
+
+message MSPKInnerRoundOverMsg
+{
+    sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+    MRoundInfo currentRound = 2; //当前轮次信息
+}
+
+enum EMRoundOverType {
+    EMROT_UNKNOWN         = 0; //未知
+    EMROT_SUB_ROUND_OVER  = 1; //子轮次结束
+    EMROT_MAIN_ROUND_OVER = 2; //主轮次结束
+}
+
+enum ERoomMatchStatus {
+    EMMS_UNKNOWN = 0; //未知
+    EMMS_OPEN    = 1; // match 打开
+    EMMS_CLOSED  = 2; // match 关闭
+}
+
+message MMatchStatusMsg
+{
+    ERoomMatchStatus matchStatus = 1;
+}
+
+message MOpenPositionMsg
+{
+    uint32 positionID = 1; //位置id
+}
+
+message MClosePositionMsg
+{
+    uint32 positionID = 1; //位置id
+}
+
+message MChangeRoomOwnerMsg
+{
+    uint32 userID = 1; //新房主id
+}
+
+message MCancelMusic
+{
+    string cancelMusicMsg = 1; //xxx退出合唱/PK
+}
+
+message MKickoutUserMsg
+{
+    uint32 kickUserID = 1; //用户id
+}
+
+message MChangeRoomNameMsg
+{
+    string newRoomName = 1; //房间名称
+}
+
+message MChangeRoomLevelLimitMsg
+{
+    uint32 levelLimit = 1; //房间等级限制
+}
+
+message MReqAddMusicMsg
+{
+    UserMusicDetail detail = 1;
+}
+
+message UserMusicDetail
+{
+    uint32 userID               = 1; //发起用户
+    uint32 peerID               = 2; //合唱用户
+    string uniqTag              = 3; //歌曲标识
+    Common.MusicInfo music             = 4; //演唱音乐
+    ESongStatus status          = 5; //状态
+    EMWantSingType wantSingType = 6; //想唱方式
+}
+
+enum ESongStatus {
+    EUSI_UNKNOWN   = 0; //未知
+    EUSI_IN_PLAY   = 1; //演唱中
+    EUSI_NEXT_PLAY = 2; //下一首
+}
+
+message MDelMusicMsg
+{
+    string uniqTag = 1; //歌曲标识
+}
+
+message MUpMusicMsg
+{
+    string uniqTag = 1; //歌曲标识
+}
+
+message MAddMusicMsg
+{
+    UserMusicDetail detail = 1;
+}
+
+message MRoundOverMsg
+{
+    sint64 roundOverTimeMs   = 1; //本轮次结束的毫秒时间戳
+    MRoundInfo currentRound  = 2; //当前结束轮次的信息
+    MRoundInfo nextRound     = 3; //下个轮次的信息
+}
+
+message MGetSingChanceMsg
+{
+    MRoundInfo currentRound = 3; //当前轮次信息
+}
+
+message MBLightMsg
+{
+    uint32 userID      = 1; //玩家id
+    uint32 RoundSeq    = 2; //主轮次顺序
+    uint32 subRoundSeq = 3; //子轮次顺序
+    uint32 bLightCnt   = 4; //当前爆灯总数量
+}
+
+message MJoinActionMsg
+{
+    uint32 gameID       = 1; //游戏ID
+    sint64 createTimeMs = 2; //创建毫秒时间戳
+    // string agoraToken   = 3; //声网token
+    // MGameConfig config  = 4; //配置信息
+}
+
+message MGameConfig
+{
+    uint32 maxUserCnt = 1; //最大用户数（座位数）
+    repeated MScoreTipMsg mScoreTipMsg = 2; //反馈分提示语
+}
+
+message MScoreTipMsg
+{
+    MScoreTipType tipType = 1;
+    string tipDesc        = 2;
+    uint32 fromScore      = 3;
+    uint32 toScore        = 4;
+}
+
+enum MScoreTipType {
+    MST_UNKNOWN      = 0; //未知
+    MST_TOO_BAD      = 1; //加油哦
+    MST_NOT_BAD      = 2; //不错哦
+    MST_VERY_GOOD    = 3; //太棒了
+    MST_NICE_PERFECT = 4; //超完美
+ }
+
+// 加入房间来源，匹配，邀请等
+enum EJoinRoomSrc {
+    JRS_UNKNOWN        = 0;
+    JRS_MATCH          = 1; // 匹配进房
+    JRS_SUGGEST        = 2; // 推荐列表进房
+    JRS_INVITE_ONLINE  = 3; // 端内邀请在线好友
+    JRS_INVITE_OFFLINE = 4; // 端内邀请离线好友
+    JRS_INVITE_OUT_APP = 5; // 段外邀请（微信，qq等）
+}
+
+message MExitGameMsg
+{
+    uint32 userID = 1; //用户id
+}
+
+message MJoinNoticeMsg
+{
+    Common.UserInfo userInfo = 1; //加入游戏的信息
+    EMUserRole role   = 2; //用户角色
+    sint64 joinTimeMs = 3; //加入毫秒时间戳
+}
+
+message MSyncStatusMsg
+{
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    MRoundInfo currentRound = 2; //当前轮次信息
+}
+
+message MRoundInfo
+{
+    uint32 userID                             = 1; //抢唱成功的玩家id
+    uint32 roundSeq                           = 2; //主轮次
+    uint32 introBeginMs                       = 4; //导唱开始相对时间（相对于startTimeMs时间） p.s.导唱为等待阶段
+    uint32 introEndMs                         = 5; //导唱结束相对时间（相对于startTimeMs时间） p.s.导唱为等待阶段
+    uint32 singBeginMs                        = 6; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs                          = 7; //演唱结束相对时间（相对于startTimeMs时间）
+    EMRoundStatus status                      = 8; //轮次状态
+    EMRoundOverReason overReason              = 9; //切换轮次原因
+    Common.MusicInfo music                           = 10; //本轮次的歌曲信息
+    repeated MOnlineInfo users                = 11; //用户列表
+    EMWantSingType wantSingType               = 12; //抢唱方式
+    repeated MCHOInnerRoundInfo CHORoundInfos = 13; //合唱：内部轮次信息
+    repeated MSPKInnerRoundInfo SPKRoundInfos = 14; //spk：内部轮次信息
+    MCommonRoundResult commonRoundResult      = 15; //单唱结果
+}
+
+message MCommonRoundResult
+{
+    float finalScore       = 1; //最终得分分值
+    MScoreTipType finalTip = 2; //最终得分评价
+    string finalMsg        = 3; //最终得分信息
+}
+
+message MSPKInnerRoundInfo
+{
+    uint32 userID                = 1; //抢唱成功的玩家id
+    uint32 singBeginMs           = 2; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs             = 3; //演唱结束相对时间（相对于startTimeMs时间）
+    EMRoundOverReason overReason = 4; //切换轮次原因
+    float SPKFinalScore          = 5; //最终得分
+    bool isWin                   = 6; //是否获胜
+}
+
+message MCHOInnerRoundInfo
+{
+    uint32 userID  = 1; //抢唱成功的玩家id
+    bool hasGiveUp = 2; //是否已经放弃
+    bool hasExit   = 3; //是否已经退出
+}
+
+enum EMUserRole {
+    MRUR_UNKNOWN    = 0; //未知角色
+    MQUR_ROOM_OWNER = 1; //房主角色
+    MRUR_PLAY_USER  = 2; //在玩的用户角色
+}
+
+message MOnlineInfo
+{
+    Common.UserInfo userInfo = 1; //用户信息
+    bool isOnline     = 2; //是否在线
+    EMUserRole role   = 3; //用户角色
+    bool isCurSing    = 4; //当前在唱
+    bool isNextSing   = 5; //下首在唱
+}
+
+enum EMRoundStatus {
+    MRS_UNKNOWN              = 0; //轮次状态未知
+    MRS_INTRO                = 1; //轮次进入导唱阶段(等待阶段)
+    MRS_SING                 = 2; //轮次进入演唱阶段(单人演唱)
+    MRS_CHO_SING             = 3; //合唱演唱阶段
+    MRS_SPK_FIRST_PEER_SING  = 4; //spk第一位用户演唱
+    MRS_SPK_SECOND_PEER_SING = 5; //spk第二位用户演唱
+    MRS_PAUSE                = 6; //暂停(用户游戏插入活动)
+    MRS_END                  = 7; //轮次已结束
+}
+
+enum EMRoundOverReason {
+    MROR_UNKNOWN              = 0; //未知
+    MROR_ROUND_NORMAL_OVER    = 1; //上个轮次结束
+    MROR_IN_ROUND_PLAYER_EXIT = 2; //当前玩家退出
+    MROR_SELF_GIVE_UP         = 3; //自己放弃演唱
+    MROR_CHO_SUCCESS          = 4; //合唱成功
+    MROR_CHO_FAILED           = 5; //合唱失败
+    MROR_INTRO_OVER           = 6; //等待阶段结束
+}
+
+enum EMWantSingType {
+    MWST_UNKNOWN   = 0; //未知
+    MWST_COMMON    = 1; //普通清唱
+    MWST_ACCOMPANY = 2; //带伴奏抢唱
+    MWST_CHORUS    = 3; //合唱模式
+    MWST_SPK       = 4; //pk模式
+}

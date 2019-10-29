@@ -11,7 +11,7 @@ import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.player.VideoPlayerAdapter;
+import com.common.player.video.VideoPlayerAdapter;
 import com.common.utils.U;
 import com.respicker.model.VideoItem;
 

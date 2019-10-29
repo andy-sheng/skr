@@ -78,7 +78,7 @@ class DoubleRoomInvitePresenter() : RxLifeCyclePresenter() {
                 if (obj?.errno == 0 && obj.data.getBooleanValue("hasInvitedRoom")) {
                     val doubleRoomData = DoubleRoomData.makeRoomDataFromJsonObject(obj.data)
                     doubleRoomData.doubleRoomOri = DoubleRoomData.DoubleRoomOri.GRAB_INVITE
-                    doubleRoomData.inviterId = MyUserInfoManager.getInstance().uid
+                    doubleRoomData.inviterId = MyUserInfoManager.uid
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_PLAY)
                             .withSerializable("roomData", doubleRoomData)
                             .navigation()

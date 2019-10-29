@@ -1,6 +1,6 @@
 package com.module.playways.room.room.model;
 
-import com.zq.live.proto.Room.PKScoreTipMsg;
+import com.zq.live.proto.GrabRoom.PKScoreTipMsg;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.module.playways.grab.room.model;
 
-import com.zq.live.proto.Room.EWantSingType;
-import com.zq.live.proto.Room.WantSingInfo;
+import com.zq.live.proto.GrabRoom.EWantSingType;
+import com.zq.live.proto.GrabRoom.WantSingInfo;
 
 import java.io.Serializable;
 

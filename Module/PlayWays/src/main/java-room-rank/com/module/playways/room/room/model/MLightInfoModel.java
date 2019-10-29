@@ -1,6 +1,6 @@
 package com.module.playways.room.room.model;
 
-import com.zq.live.proto.Room.MLightInfo;
+import com.zq.live.proto.GrabRoom.MLightInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

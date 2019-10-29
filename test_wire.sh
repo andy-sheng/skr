@@ -1,3 +1,4 @@
+#! /bin/bash
 #测试wire
 cd ../../wire/
 ./gradlew :wire-compiler:build

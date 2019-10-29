@@ -35,7 +35,7 @@ public class JudgeLoginInterceptor implements IInterceptor {
             return;
         }
 
-        if (UserAccountManager.getInstance().hasAccount()) {
+        if (UserAccountManager.INSTANCE.hasAccount()) {
             callback.onContinue(postcard);
         } else {
             // 不需要登陆

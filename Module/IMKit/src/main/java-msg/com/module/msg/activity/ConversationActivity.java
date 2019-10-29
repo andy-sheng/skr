@@ -130,7 +130,7 @@ public class ConversationActivity extends BaseActivity {
 
 
     private void checkMsgTimes() {
-        if (MyUserInfoManager.getInstance().getVipType() == EVIPType.EVT_GOLDEN_V.getValue()) {
+        if (MyUserInfoManager.INSTANCE.getVipType() == EVIPType.EVT_GOLDEN_V.getValue()) {
             return;
         }
 

@@ -96,7 +96,7 @@ class RefuseFeedsFragment : BaseFragment() {
     private fun getList() {
         launch(Dispatchers.Main) {
             val result = subscribe(RequestControl(mTag + "getList", ControlType.CancelThis)) {
-                mFeedsDetailServerApi.getRefuseCommentList(MyUserInfoManager.getInstance().uid.toInt(), mOffset, mCount)
+                mFeedsDetailServerApi.getRefuseCommentList(MyUserInfoManager.uid.toInt(), mOffset, mCount)
             }
 
             mRefreshLayout?.finishLoadMore()

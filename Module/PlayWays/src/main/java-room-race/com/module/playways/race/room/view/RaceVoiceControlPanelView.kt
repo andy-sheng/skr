@@ -13,7 +13,7 @@ import com.module.playways.race.room.RaceRoomData
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
-class RaceVoiceControlPanelView(val fragment: BaseFragment) : VoiceControlPanelView(fragment.context) {
+class RaceVoiceControlPanelView ( cxt: Context) : VoiceControlPanelView(cxt) {
 
     val TAG = "RaceVoiceControlPanelView"
 

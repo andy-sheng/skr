@@ -1,27 +1,21 @@
 apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
-    }
-
-    sourceSets {
-        main {
-        }
-    }
-}
+apply from: "$rootDir/base_lib.gradle"
 
 dependencies {
-    compileOnly project(":baseLibrary:commonsdk")
+    if(dependLibraryFromServer.toBoolean()){
+        debugCompileOnly "com.common.sdk:commonsdk:1.0-debug"
+        releaseCompileOnly "com.common.sdk:commonsdk:1.0-release"
+    }else{
+        compileOnly project(":baseLibrary:commonsdk")
+    }
     api files('libs/acrcloud-universal-sdk-1.2.9.jar')
 }
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.common.sdk'
+        pom.artifactId = 'arcCloud'
+    }
+}
+
 

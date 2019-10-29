@@ -178,7 +178,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mOwnInfoItem.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                gotoPersonFragment((int) MyUserInfoManager.getInstance().getUid());
+                gotoPersonFragment((int) MyUserInfoManager.INSTANCE.getUid());
             }
         });
 
@@ -212,11 +212,11 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             }
         });
 
-        if (MyUserInfoManager.getInstance().hasRealLocation()) {
+        if (MyUserInfoManager.INSTANCE.hasRealLocation()) {
             // 有地理位置，显示地理榜单
             mRankMode = UserRankModel.REGION;
             mRefreshLocation.setVisibility(View.VISIBLE);
-            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.INSTANCE.getRealLocation()));
             mLeaderboardPresenter.reset();
             refreshData();
         } else {
@@ -239,10 +239,10 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         // 切换榜单
         if (mRankMode == UserRankModel.COUNTRY) {
             // 切成地域榜
-            if (MyUserInfoManager.getInstance().hasRealLocation()) {
+            if (MyUserInfoManager.INSTANCE.hasRealLocation()) {
                 mRankMode = UserRankModel.REGION;
                 mRefreshLocation.setVisibility(View.VISIBLE);
-                mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+                mTvArea.setText(getAreaFromLocation(MyUserInfoManager.INSTANCE.getRealLocation()));
                 mLeaderboardPresenter.reset();
                 refreshData();
             } else {
@@ -272,13 +272,13 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                             l.setCity(location.getCity());
                             l.setDistrict(location.getDistrict());
 
-                            if (MyUserInfoManager.getInstance().hasRealLocation() 
-                                    && l.getProvince().equals(MyUserInfoManager.getInstance().getRealLocation().getProvince())
-                                    && l.getCity().equals(MyUserInfoManager.getInstance().getRealLocation().getCity())
-                                    && l.getDistrict().equals(MyUserInfoManager.getInstance().getRealLocation().getDistrict())) {
+                            if (MyUserInfoManager.INSTANCE.hasRealLocation()
+                                    && l.getProvince().equals(MyUserInfoManager.INSTANCE.getRealLocation().getProvince())
+                                    && l.getCity().equals(MyUserInfoManager.INSTANCE.getRealLocation().getCity())
+                                    && l.getDistrict().equals(MyUserInfoManager.INSTANCE.getRealLocation().getDistrict())) {
                                 U.getToastUtil().showShort("定位位置与当前位置一致");
                             } else {
-                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE
                                         .newMyInfoUpdateParamsBuilder()
                                         .setRealLocation(l)
                                         .build(), true, false, new MyUserInfoManager.ServerCallback() {
@@ -287,7 +287,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                                         U.getToastUtil().showShort("位置更新成功");
                                         mRankMode = UserRankModel.REGION;
                                         mRefreshLocation.setVisibility(View.VISIBLE);
-                                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+                                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.INSTANCE.getRealLocation()));
                                         mLeaderboardPresenter.reset();
                                         refreshData();
                                     }
@@ -317,8 +317,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             mPopupWindow.showAsDropDown(mTvArea);
         }
         if (mRankMode == UserRankModel.COUNTRY) {
-            if (MyUserInfoManager.getInstance().hasRealLocation()) {
-                mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getRealLocation()));
+            if (MyUserInfoManager.INSTANCE.hasRealLocation()) {
+                mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.INSTANCE.getRealLocation()));
             } else {
                 mTvOtherArea.setText("地域榜");
             }
@@ -376,13 +376,13 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
         normalLevelView.bindData(userRankModel.getMainRanking(), userRankModel.getSubRanking());
 
-        tvName.setText(MyUserInfoManager.getInstance().getNickName());
+        tvName.setText(MyUserInfoManager.INSTANCE.getNickName());
         tvSegment.setText(userRankModel.getLevelDesc());
         AvatarUtils.loadAvatarByUrl(sdvIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.INSTANCE.getAvatar())
                         .setCircle(true)
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue())
+                        .setBorderColorBySex(MyUserInfoManager.INSTANCE.getSex() == ESex.SX_MALE.getValue())
                         .build());
     }
 

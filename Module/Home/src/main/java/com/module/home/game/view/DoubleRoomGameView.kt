@@ -89,7 +89,7 @@ class DoubleRoomGameView : RelativeLayout {
                             /**
                              * 判断有没有年龄段
                              */
-                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                            if (!MyUserInfoManager.hasAgeStage()) {
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
                                         .withInt("from", 0)
                                         .navigation()
@@ -146,7 +146,7 @@ class DoubleRoomGameView : RelativeLayout {
                         /**
                          * 判断有没有年龄段
                          */
-                        if (!MyUserInfoManager.getInstance().hasAgeStage()) {
+                        if (!MyUserInfoManager.hasAgeStage()) {
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
                                     .withInt("from", 0)
                                     .navigation()

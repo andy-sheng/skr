@@ -102,9 +102,9 @@ class FeedsTagActivity : BaseActivity() {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
                 if (from == COLLECT) {
-                    mFeedServerApi.getAlbumCollectList(offset, mCNT, MyUserInfoManager.getInstance().uid)
+                    mFeedServerApi.getAlbumCollectList(offset, mCNT, MyUserInfoManager.uid)
                 } else {
-                    mFeedServerApi.getRecomendTagList(offset, mCNT, MyUserInfoManager.getInstance().uid)
+                    mFeedServerApi.getRecomendTagList(offset, mCNT, MyUserInfoManager.uid)
                 }
             }
             if (obj.errno == 0) {

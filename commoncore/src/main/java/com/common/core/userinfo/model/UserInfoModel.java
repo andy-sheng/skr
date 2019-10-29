@@ -55,8 +55,9 @@ public class UserInfoModel implements Serializable, Cloneable {
     private String statusDesc;  //状态描述
     private int ageStage;   // 年龄段（目前只有homepage的接口里面带）
 
-    private VipInfo vipInfo;  // vip的信息
+    private VerifyInfo vipInfo;  // 加V的信息
     private ScoreStateModel ranking;  // 段位描述
+    private HonorInfo honorInfo;  // 会员信息
 
     public UserInfoModel() {
     }
@@ -203,12 +204,20 @@ public class UserInfoModel implements Serializable, Cloneable {
         this.ranking = ranking;
     }
 
-    public VipInfo getVipInfo() {
+    public VerifyInfo getVipInfo() {
         return vipInfo;
     }
 
-    public void setVipInfo(VipInfo vipInfo) {
+    public void setVipInfo(VerifyInfo vipInfo) {
         this.vipInfo = vipInfo;
+    }
+
+    public HonorInfo getHonorInfo() {
+        return honorInfo;
+    }
+
+    public void setHonorInfo(HonorInfo honorInfo) {
+        this.honorInfo = honorInfo;
     }
 
     public String getAgeStageString() {
@@ -326,8 +335,9 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setSignature(model.getDescription());
             userInfoModel.setIsSystem(model.getIsSystem());
             userInfoModel.setMainLevel(model.getMainLevel());
-            userInfoModel.setVipInfo(VipInfo.Companion.parseFromPB(model.getVipInfo()));
+            userInfoModel.setVipInfo(VerifyInfo.Companion.parseFromPB(model.getVipInfo()));
             userInfoModel.setRanking(ScoreStateModel.Companion.parseFromPB(model.getUserID(),model.getRanking()));
+            userInfoModel.setHonorInfo(HonorInfo.Companion.parseFromPB(model.getUserID(), model.getHonorInfo()));
         }
         return userInfoModel;
     }
@@ -359,6 +369,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
             jsonObject.put("vipInfo",userInfModel.getVipInfo());
             jsonObject.put("ranking",userInfModel.getRanking());
+            jsonObject.put("honorInfo", userInfModel.getHonorInfo());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -387,16 +398,12 @@ public class UserInfoModel implements Serializable, Cloneable {
             String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
-                Location location = jsonObject.getObject("location", Location.class);
-                userInfoModel.setLocation(location);
-                Location location2 = jsonObject.getObject("location2", Location.class);
-                userInfoModel.setLoaction2(location2);
-                int mainLevel = jsonObject.getIntValue("mainLevel");
-                userInfoModel.setMainLevel(mainLevel);
-                VipInfo vipInfo = jsonObject.getObject("vipInfo", VipInfo.class);
-                userInfoModel.setVipInfo(vipInfo);
-                ScoreStateModel stateModel = jsonObject.getObject("ranking", ScoreStateModel.class);
-                userInfoModel.setRanking(stateModel);
+                userInfoModel.setLocation(jsonObject.getObject("location", Location.class));
+                userInfoModel.setLoaction2(jsonObject.getObject("location2", Location.class));
+                userInfoModel.setMainLevel(jsonObject.getIntValue("mainLevel"));
+                userInfoModel.setVipInfo(jsonObject.getObject("vipInfo", VerifyInfo.class));
+                userInfoModel.setRanking(jsonObject.getObject("ranking", ScoreStateModel.class));
+                userInfoModel.setHonorInfo(jsonObject.getObject("honorInfo", HonorInfo.class));
             }
         }
         return userInfoModel;
@@ -424,6 +431,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", ageStage=" + ageStage +
                 ", vipInfo=" + vipInfo +
                 ", ranking=" + ranking +
+                ", honorInfo=" + honorInfo +
                 '}';
     }
 

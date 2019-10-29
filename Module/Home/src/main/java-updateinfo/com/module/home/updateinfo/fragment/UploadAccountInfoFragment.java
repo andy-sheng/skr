@@ -83,7 +83,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // HomeAcitivy的
-                UserAccountManager.getInstance().logoff(1, new Callback() {
+                UserAccountManager.INSTANCE.logoff(1, new Callback() {
                     @Override
                     public void onCallback(int r, Object obj) {
                         if (getActivity() != null) {
@@ -160,19 +160,19 @@ public class UploadAccountInfoFragment extends BaseFragment {
         });
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.INSTANCE.getAvatar())
                         .setCircle(true)
                         .build());
 
-        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
-            mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
-            mNicknameEt.setSelection(MyUserInfoManager.getInstance().getNickName().length());
+        if (!TextUtils.isEmpty(MyUserInfoManager.INSTANCE.getNickName())) {
+            mNicknameEt.setText(MyUserInfoManager.INSTANCE.getNickName());
+            mNicknameEt.setSelection(MyUserInfoManager.INSTANCE.getNickName().length());
             setCompleteTv(true);
         } else {
             setCompleteTv(false);
         }
 
-        setSex(MyUserInfoManager.getInstance().getSex());
+        setSex(MyUserInfoManager.INSTANCE.getSex());
 
         initPublishSubject();
     }
@@ -197,7 +197,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+        if (TextUtils.isEmpty(MyUserInfoManager.INSTANCE.getNickName())) {
             mNicknameEt.requestFocus();
             U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
         } else {
@@ -207,7 +207,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
 
     private void verifyName(String nickName) {
-        if (nickName.equals(MyUserInfoManager.getInstance().getNickName()) && (mSex == MyUserInfoManager.getInstance().getSex())) {
+        if (nickName.equals(MyUserInfoManager.INSTANCE.getNickName()) && (mSex == MyUserInfoManager.INSTANCE.getSex())) {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             goAgeTagUpload();
             return;

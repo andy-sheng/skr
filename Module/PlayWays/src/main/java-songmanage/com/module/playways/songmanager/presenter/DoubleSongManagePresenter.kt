@@ -9,6 +9,7 @@ import com.common.utils.U
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
 import com.module.playways.room.song.model.SongModel
+import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.view.ISongManageView
@@ -24,7 +25,7 @@ import okhttp3.RequestBody
 
 class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, internal var mDoubleRoomData: DoubleRoomData) : RxLifeCyclePresenter() {
 
-    internal var mDoubleRoomServerApi: DoubleRoomServerApi = ApiManager.getInstance().createService(DoubleRoomServerApi::class.java)
+    private var mSongManagerServerApi: SongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
 
     init {
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -33,7 +34,7 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
     }
 
     fun getRecommendTag() {
-        ApiMethods.subscribe(mDoubleRoomServerApi.doubleStandBillBoards, object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.getDoubleStandBillBoards(), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val recommendTagModelArrayList = JSONObject.parseArray(result.data!!.getString("items"), RecommendTagModel::class.java)
@@ -47,7 +48,7 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
     }
 
     fun getAddMusicCnt() {
-        ApiMethods.subscribe(mDoubleRoomServerApi.getAddMusicCnt(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.getAddMusicCnt(mDoubleRoomData.gameId), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val musicCnt = result.data.getIntValue("musicCnt")
@@ -70,7 +71,7 @@ class DoubleSongManagePresenter(internal var mSongManageView: ISongManageView, i
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mDoubleRoomServerApi.addSong(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.addDoubleSong(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.errno)
                 if (result.errno == 0) {

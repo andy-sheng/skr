@@ -17,7 +17,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.utils.U
-import com.common.view.countdown.CircleCountDownView
+import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.person.event.ShowPersonCardEvent
@@ -198,7 +198,7 @@ class RaceTopVsView : ExConstraintLayout {
     fun updateData() {
         roomData?.realRoundInfo?.scores?.let {
             if (it.size == 2) {
-                if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                if (!(roomData?.realRoundInfo?.isSingerByUserId(MyUserInfoManager.uid.toInt())
                                 ?: false)) {
 
                     leftTicketGroup.visibility = View.VISIBLE
@@ -220,7 +220,7 @@ class RaceTopVsView : ExConstraintLayout {
 
                     if (roomData?.realRoundInfo?.subRoundSeq == 1) {
 
-                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt())
                                         ?: true) {
 
                             resetLeftPlayCount(it[0].bLightCnt - leftTicketCountTv.text.toString().toInt())
@@ -236,7 +236,7 @@ class RaceTopVsView : ExConstraintLayout {
                         }
                     } else if (roomData?.realRoundInfo?.subRoundSeq == 2) {
 
-                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.getInstance().uid.toInt())
+                        if (roomData?.realRoundInfo?.isSingerNowByUserId(MyUserInfoManager.uid.toInt())
                                         ?: true) {
 
                             leftState.text = "**"
@@ -275,7 +275,7 @@ class RaceTopVsView : ExConstraintLayout {
     fun startSingBySelf(call: (() -> Unit)?) {
         roomData?.realRoundInfo?.subRoundInfo?.let {
             if (it.size == 2) {
-                if (roomData?.getPlayerOrWaiterInfo(it[0].userID)?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                if (roomData?.getPlayerOrWaiterInfo(it[0].userID)?.userId == MyUserInfoManager.uid.toInt()) {
                     leftCircleCountDownView.visibility = View.VISIBLE
                     leftCircleCountDownView.go(0, 1 * 1000) {
                         leftCircleCountDownView.visibility = View.GONE

@@ -96,7 +96,7 @@ import com.moudule.playways.beauty.view.BeautyControlPanelView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
-import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.live.proto.GrabRoom.EQRoundStatus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
@@ -337,7 +337,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 R.raw.grab_nobodywants, R.raw.grab_readygo,
                 R.raw.grab_xlight, R.raw.normal_click)
 
-        MyLog.w(TAG, "gameid 是 " + mRoomData!!.gameId + " userid 是 " + MyUserInfoManager.getInstance().uid)
+        MyLog.w(TAG, "gameid 是 " + mRoomData!!.gameId + " userid 是 " + MyUserInfoManager.uid)
 
         mUiHanlder.postDelayed({
             onBattleBeginPlayOver()
@@ -390,7 +390,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
         enterRoomEvent()
 
-        MyUserInfoManager.getInstance().myUserInfo?.let {
+        MyUserInfoManager.myUserInfo?.let {
             mVipEnterPresenter?.addNotice(MyUserInfo.toUserInfoModel(it))
         }
     }
@@ -398,7 +398,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     private fun enterRoomEvent() {
         if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_COMMON) {
             StatisticsAdapter.recordCountEvent("grab", "normalroom_enter", null)
-        } else if (mRoomData!!.ownerId.toLong() != MyUserInfoManager.getInstance().uid) {
+        } else if (mRoomData!!.ownerId.toLong() != MyUserInfoManager.uid) {
             if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_PUBLIC) {
                 StatisticsAdapter.recordCountEvent("grab", "hostroom_enter", null)
             } else if (mRoomData!!.roomType == GrabRoomType.ROOM_TYPE_FRIEND) {
@@ -618,7 +618,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             val viewStub = rootView.findViewById<ViewStub>(R.id.grab_video_display_view_stub)
             mGrabVideoDisplayView = GrabVideoDisplayView(viewStub, mRoomData!!)
             mGrabVideoDisplayView.setSelfSingCardListener { mCorePresenter?.sendRoundOverInfo() }
-            mGrabVideoDisplayView.setListener {
+            mGrabVideoDisplayView.mBeautyListener = {
                 mBeautyControlPanelView?.show()
             }
         }
@@ -776,7 +776,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                     if (userInfoModel.isFriend) {
                         mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
                     } else {
-                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.getInstance().uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
+                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
                             override fun onServerSucess(isFans: Boolean?) {
                                 if (isFans!!) {
                                     mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
@@ -863,7 +863,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 mRoomData?.realRoundInfo?.let {
                     if (it.status == EQRoundStatus.QRS_INTRO.value) {
                         for (wantSingerInfo in it.wantSingInfos) {
-                            if (wantSingerInfo.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                            if (wantSingerInfo.userID.toLong() == MyUserInfoManager.uid) {
                                 U.getToastUtil().showShort("抢唱了不能切换房间哦～")
                                 return
                             }
@@ -1017,9 +1017,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mSongInfoCardView = rootView.findViewById(R.id.turn_change_song_info_card_view)
         run {
             val viewStub = rootView.findViewById<ViewStub>(R.id.grab_sing_begin_tips_card_stub)
-            mSingBeginTipsCardView = SingBeginTipsCardView(viewStub, mRoomData!!)
+            mSingBeginTipsCardView = SingBeginTipsCardView(viewStub)
         }
-        mRoundOverCardView = RoundOverCardView(rootView, mRoomData!!)
+        mRoundOverCardView = RoundOverCardView(rootView)
         mGrabGameOverView = rootView.findViewById(R.id.grab_game_over_view)
     }
 
@@ -1105,18 +1105,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         mGrabOpBtn.hide("initGrabOpView")
 
         mGrabGiveupView = rootView.findViewById<View>(R.id.grab_giveup_view) as GrabGiveupView
-        mGrabGiveupView.setListener(object : GrabGiveupView.Listener {
-            override fun giveUp(ownerControl: Boolean) {
-                val infoModel = mRoomData!!.realRoundInfo
-                //                if (infoModel != null) {
-                //                    HashMap map = new HashMap();
-                //                    map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-                //                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                //                            "give_up_sing", map);
-                //                }
-                mCorePresenter?.giveUpSing(ownerControl)
+        mGrabGiveupView.mGiveUpListener = { ownerControl ->
+            mCorePresenter?.giveUpSing(ownerControl) { _ ->
+                mGrabGiveupView.hideWithAnimation(true)
             }
-        })
+        }
         mGrabGiveupView.hideWithAnimation(false)
 
         mMiniOwnerMicIv = rootView.findViewById(R.id.mini_owner_mic_iv)
@@ -1136,20 +1129,20 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
     }
 
     private fun initSingStageView() {
-        mSelfSingCardView = SelfSingCardView(rootView, mRoomData!!)
+        mSelfSingCardView = SelfSingCardView(rootView)
         mSelfSingCardView?.setListener {
             removeNoAccSrollTipsView()
             removeGrabSelfSingTipView()
             mCorePresenter?.sendRoundOverInfo()
         }
         mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-        mOthersSingCardView = OthersSingCardView(rootView, mRoomData!!)
+        mOthersSingCardView = OthersSingCardView(rootView)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: GrabSomeOneLightOffEvent) {
         // 灭灯
-        if (event.getUid().toLong() == MyUserInfoManager.getInstance().uid) {
+        if (event.getUid().toLong() == MyUserInfoManager.uid) {
             U.getSoundUtils().play(TAG, R.raw.grab_xlight)
         }
     }
@@ -1189,9 +1182,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (RoomDataUtils.isMyRound(mRoomData!!.realRoundInfo)) {
             // 当前我是演唱者
             mDengBigAnimation?.translationY = U.getDisplayUtils().dip2px(200f).toFloat()
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.getInstance().uid)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid)
         } else {
-            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.getInstance().uid)
+            mDengBigAnimation?.playBurstAnimation(event.uid.toLong() == MyUserInfoManager.uid)
         }
     }
 
@@ -1334,7 +1327,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
             // pk的第二轮，没有 vs 的演唱开始提示了
             if (now != null && now.isParticipant
                     && mRoomData!!.isInPlayerList
-                    && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().uid)) {
+                    && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.uid)) {
                 // 不是参与者 不是选手 如果是pk的轮次 pk的参与者 都没有爆灭灯按钮
                 mGrabOpBtn.toOtherSingState()
             } else {
@@ -1347,7 +1340,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 if (grabRoundInfoModel != null
                         && grabRoundInfoModel.isParticipant
                         && mRoomData!!.isInPlayerList
-                        && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().uid)
+                        && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.uid)
                         && !(grabRoundInfoModel.isMiniGameRound && mRoomData!!.isOwner)) {
                     // 参与者 & 游戏列表中 & 不是本轮演唱者 &  不是小游戏中的房主
                     mGrabOpBtn.toOtherSingState()
@@ -1366,7 +1359,7 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
                 MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了")
                 runnable.invoke()
             } else {
-                mSingBeginTipsCardView.bindData { runnable.invoke() }
+                mSingBeginTipsCardView.bindData(SVGAListener { runnable.invoke() })
             }
         } else {
             MyLog.w(TAG, "singBeginTipsPlay" + " grabRoundInfoModel = null ")
@@ -1423,11 +1416,11 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         if (lastInfoModel?.isFreeMicRound == true) {
             mSelfSingCardView?.setVisibility(GONE)
         }
-        mRoundOverCardView.bindData(lastInfoModel) {
+        mRoundOverCardView.bindData(lastInfoModel, SVGAListener {
             now?.let {
                 onRoundOverPlayOver(playNextSongInfoCard, now)
             }
-        }
+        })
     }
 
     private fun onRoundOverPlayOver(playNextSongInfoCard: Boolean, now: GrabRoundInfoModel?) {
@@ -1607,10 +1600,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    override fun giveUpSuccess(seq: Int) {
-        mGrabGiveupView.giveUpSuccess()
-    }
-
     override fun updateScrollBarProgress(score: Int, songLineNum: Int) {
         mGrabScoreTipsView.updateScore(score, songLineNum)
     }
@@ -1642,9 +1631,9 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
         }
     }
 
-    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean,continueShow:Boolean) {
+    override fun showChallengeStarView(cnt: Int, visiable: Boolean, justShowInChallenge: Boolean, continueShow: Boolean) {
         if (visiable) {
-            mChallengeStarView.bindData(cnt, justShowInChallenge,continueShow)
+            mChallengeStarView.bindData(cnt, justShowInChallenge, continueShow)
             mChallengeStarView.setVisibility(View.VISIBLE)
         } else {
             mChallengeStarView.setVisibility(View.GONE)

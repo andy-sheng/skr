@@ -20,21 +20,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.view.LayoutInflaterCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
-import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
-
 import com.common.base.delegate.IActivity
-import com.common.cache.Cache
-import com.common.cache.IntelligentCache
 import com.common.lifecycle.ActivityLifecycleForRxLifecycle
 import com.common.lifecycle.ActivityLifecycleable
 import com.common.log.MyLog
@@ -46,16 +34,13 @@ import com.jude.swipbackhelper.SwipeBackHelper
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.RxLifecycle
 import com.trello.rxlifecycle2.android.ActivityEvent
-
-import org.greenrobot.eventbus.EventBus
-
-import java.util.HashSet
-
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 /**
  * ================================================
@@ -68,7 +53,7 @@ import kotlinx.coroutines.cancel
  * [Follow me](https://github.com/JessYanCoding)
  * ================================================
  */
-abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecycleable,CoroutineScope by MainScope() {
+abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecycleable, CoroutineScope by MainScope() {
     protected val TAG = this.javaClass.simpleName
     private val mLifecycleSubject = BehaviorSubject.create<ActivityEvent>()
     // 想加入activity生命周期管理的presenter放在这里
@@ -348,7 +333,7 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
     }
 
 
-    override fun onBackPressed() {
+    final override fun onBackPressed() {
         if (U.getCommonUtils().isFastDoubleClick()) {
             return
         }
@@ -361,6 +346,13 @@ abstract class BaseActivity : AppCompatActivity(), IActivity, ActivityLifecyclea
         if (fragment != null) {
             if (fragment.onBackPressed()) {
                 // 以及消费掉了
+                return
+            }
+
+            //这个fragment加入了activity的栈里
+            if (fragment.addToBackStack) {
+                //需要系统的返回
+                super.onBackPressed()
                 return
             }
         }

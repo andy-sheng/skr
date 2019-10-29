@@ -101,12 +101,12 @@ class FeedsInputContainerView : RelativeLayout, EmotionKeyboard.BoardStatusListe
         mEmotionKeyboard?.setBoardStatusListener(this)
     }
 
-    override fun onBoradShow() {
+    override fun onBoardShow() {
         EventBus.getDefault().post(FeedCommentBoardEvent(true))
         mInputContainer?.visibility = View.VISIBLE
     }
 
-    override fun onBoradHide() {
+    override fun onBoardHide() {
         EventBus.getDefault().post(FeedCommentBoardEvent(false))
         mInputContainer?.visibility = View.GONE
         mEtContent?.hint = ""

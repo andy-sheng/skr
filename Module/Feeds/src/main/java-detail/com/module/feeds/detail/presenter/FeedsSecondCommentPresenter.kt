@@ -27,7 +27,7 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
     }
 
     fun getSecondLevelCommentList(commentID: Int) {
-        ApiMethods.subscribe(mFeedsDetailServerApi.getSecondLevelCommentList(mOffset, mCount, mFeedId, commentID, MyUserInfoManager.getInstance().uid.toInt()), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mFeedsDetailServerApi.getSecondLevelCommentList(mOffset, mCount, mFeedId, commentID, MyUserInfoManager.uid.toInt()), object : ApiObserver<ApiResult>() {
             override fun process(obj: ApiResult?) {
                 if (obj?.errno == 0) {
                     val list: List<FirstLevelCommentModel>? = JSON.parseArray(obj.data.getString("comments"), FirstLevelCommentModel::class.java)
@@ -98,9 +98,9 @@ class FeedsSecondCommentPresenter(val mFeedId: Int, val mIFirstLevelCommentView:
                         firstLevelCommentModel.comment = model
                         firstLevelCommentModel.comment.content = content
                         firstLevelCommentModel.commentUser = UserInfoModel()
-                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.getInstance().nickName
-                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.getInstance().avatar
-                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.getInstance().uid.toInt()
+                        firstLevelCommentModel.commentUser.nickname = MyUserInfoManager.nickName
+                        firstLevelCommentModel.commentUser.avatar = MyUserInfoManager.avatar
+                        firstLevelCommentModel.commentUser.userId = MyUserInfoManager.uid.toInt()
                         firstLevelCommentModel.replyUser = refuseModel.commentUser
                         callBack.invoke(firstLevelCommentModel)
                     }

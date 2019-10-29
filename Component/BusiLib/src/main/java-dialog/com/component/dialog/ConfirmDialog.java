@@ -5,13 +5,13 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.common.core.global.event.ShowDialogInHomeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -22,6 +22,7 @@ public class ConfirmDialog {
     public static final int TYPE_INVITE_CONFIRM = 3;// 邀请确认
     public static final int TYPE_OWNER_KICK_CONFIRM = 4;// 房主发起踢人确认
     public static final int TYPE_DOUBLE_INVITE_CONFIRM = 5; //双人房邀请确认
+    public static final int TYPE_MIC_INVITE_CONFIRM = 6; //排麦房口令邀请确认
 
     DialogPlus mDialogPlus;
     UserInfoModel mUserInfoModel;

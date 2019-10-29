@@ -2,10 +2,9 @@ package com.module.playways.room.room.model.score;
 
 import com.common.log.MyLog;
 import com.common.core.userinfo.model.ScoreStateModel;
-import com.zq.live.proto.Room.EFightForceWhy;
-import com.zq.live.proto.Room.ScoreItem;
-import com.zq.live.proto.Room.ScoreState;
-import com.zq.live.proto.Room.UserScoreResult;
+import com.zq.live.proto.GrabRoom.ScoreItem;
+import com.zq.live.proto.GrabRoom.ScoreState;
+import com.zq.live.proto.GrabRoom.UserScoreResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -124,11 +123,11 @@ public class ScoreResultModel implements Serializable {
     // 是否战力值满，兑换星星（表示战力变化才有）
     public boolean isExchangeStar() {
         if (battleIndexChange != null && battleIndexChange.size() > 0) {
-            for (ScoreItemModel scoreItemModel : battleIndexChange) {
-                if (scoreItemModel.getIndex() == EFightForceWhy.ExchangeStarDecr.getValue()) {
-                    return true;
-                }
-            }
+//            for (ScoreItemModel scoreItemModel : battleIndexChange) {
+//                if (scoreItemModel.getIndex() == EFightForceWhy.ExchangeStarDecr.getValue()) {
+//                    return true;
+//                }
+//            }
         }
         return false;
     }
@@ -136,11 +135,11 @@ public class ScoreResultModel implements Serializable {
     // 是否掉段保护，兑换星星（表示战力变化才有）
     public boolean isProtectRank() {
         if (battleIndexChange != null && battleIndexChange.size() > 0) {
-            for (ScoreItemModel scoreItemModel : battleIndexChange) {
-                if (scoreItemModel.getIndex() == EFightForceWhy.ProtectRankingDecr.getValue()) {
-                    return true;
-                }
-            }
+//            for (ScoreItemModel scoreItemModel : battleIndexChange) {
+//                if (scoreItemModel.getIndex() == EFightForceWhy.ProtectRankingDecr.getValue()) {
+//                    return true;
+//                }
+//            }
         }
         return false;
     }
@@ -149,12 +148,12 @@ public class ScoreResultModel implements Serializable {
     public int getBattleChange() {
         int total = 0;
         if (battleIndexChange != null && battleIndexChange.size() > 0) {
-            for (ScoreItemModel scoreItemModel : battleIndexChange) {
-                if (scoreItemModel.getIndex() != EFightForceWhy.ProtectRankingDecr.getValue()
-                        && scoreItemModel.getIndex() != EFightForceWhy.ExchangeStarDecr.getValue()) {
-                    total = total + scoreItemModel.getScore();
-                }
-            }
+//            for (ScoreItemModel scoreItemModel : battleIndexChange) {
+//                if (scoreItemModel.getIndex() != EFightForceWhy.ProtectRankingDecr.getValue()
+//                        && scoreItemModel.getIndex() != EFightForceWhy.ExchangeStarDecr.getValue()) {
+//                    total = total + scoreItemModel.getScore();
+//                }
+//            }
         }
         return total;
     }

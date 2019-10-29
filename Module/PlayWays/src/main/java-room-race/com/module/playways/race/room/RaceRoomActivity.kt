@@ -7,11 +7,13 @@ import com.common.base.BaseActivity
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.ui.RaceRoomFragment
+import com.module.playways.room.data.H
 
 @Route(path = RouterConstants.ACTIVITY_RACE_ROOM)
 class RaceRoomActivity : BaseActivity() {
@@ -26,6 +28,8 @@ class RaceRoomActivity : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        H.curType = GameModeType.GAME_MODE_RACE
+        H.raceRoomData = mRoomData
         val joinRaceRoomRspModel = intent.getSerializableExtra("JoinRaceRoomRspModel") as JoinRaceRoomRspModel?
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
@@ -70,6 +74,7 @@ class RaceRoomActivity : BaseActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
         super.destroy()
+        H.reset()
     }
 
     override fun finish() {

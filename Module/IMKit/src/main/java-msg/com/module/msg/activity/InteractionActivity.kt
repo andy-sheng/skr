@@ -77,9 +77,9 @@ class InteractionActivity : BaseActivity() {
         mTabPagerAdapter?.notifyDataSetChanged()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onBackPressedForActivity(): Boolean {
         finish()
+        return true
     }
 
     override fun canSlide(): Boolean {

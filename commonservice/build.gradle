@@ -1,28 +1,18 @@
 apply plugin: 'com.android.library'
 
-android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-}
+apply from: "$rootDir/base_lib.gradle"
 
 dependencies {
     compileOnly rootProject.ext.dependencies["arouter"]
     compileOnly rootProject.ext.dependencies["fastjson-android"]
+}
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.zq.live'
+        pom.artifactId = 'commonservice'
+    }
 }

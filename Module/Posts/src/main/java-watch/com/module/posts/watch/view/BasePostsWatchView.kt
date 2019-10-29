@@ -23,6 +23,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.component.busilib.callback.EmptyCallback
+import com.component.person.event.ChildViewPlayAudioEvent
 import com.dialog.view.TipsDialogView
 import com.imagebrowse.ImageBrowseView
 import com.imagebrowse.big.BigImageBrowseActivity
@@ -175,7 +176,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                         from = PostsMoreDialogView.FROM_POSTS_TOPIC
                     }
                     postsMoreDialogView = PostsMoreDialogView(activity, from, it)
-                    if (it.user?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (it.user?.userId == MyUserInfoManager.uid.toInt()) {
                         postsMoreDialogView?.apply {
                             reportTv.text = "删除"
                             reportTv.setOnClickListener(object : DebounceViewClickListener() {
@@ -210,6 +211,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 } else {
                     model?.posts?.audios?.let {
                         SinglePlayer.startPlay(playerTag, it[0].url)
+                        postPlayEvent()
                     }
                 }
                 adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_AUDIO)
@@ -222,6 +224,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 } else {
                     model?.posts?.song?.playURL?.let {
                         SinglePlayer.startPlay(playerTag, it)
+                        postPlayEvent()
                     }
                 }
                 adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_SONG)
@@ -304,6 +307,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 } else {
                     model?.bestComment?.comment?.audios?.let {
                         SinglePlayer.startPlay(playerTag, it[0].url)
+                        postPlayEvent()
                     }
                 }
                 adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO)
@@ -316,6 +320,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                 } else {
                     model?.bestComment?.comment?.song?.playURL?.let {
                         SinglePlayer.startPlay(playerTag, it)
+                        postPlayEvent()
                     }
                 }
                 adapter?.startOrPauseAudio(position, model, PostsWatchViewAdapter.PLAY_POSTS_COMMENT_SONG)
@@ -373,6 +378,12 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             })
 
             addOnScrollListenerToRv()
+        }
+    }
+
+    private fun postPlayEvent(){
+        if (type == TYPE_POST_PERSON) {
+            EventBus.getDefault().post(ChildViewPlayAudioEvent())
         }
     }
 

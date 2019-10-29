@@ -27,9 +27,8 @@ public interface RouterConstants {
     String ACTIVITY_GRAB_MATCH_ROOM = "/rankingmode/GrabMatchActivity";
     String ACTIVITY_GRAB_SPECIAL = "/rankingmode/GrabSpecialActivity";
 
-    String ACTIVITY_WALLET = "/home/WalletActivity";
     String ACTIVITY_BALANCE = "/home/BalanceActivity";
-    String ACTIVITY_DIAMOND_BALANCE = "/home/DiamondBallanceActivity";
+    String ACTIVITY_WALLET = "/home/DiamondBallanceActivity";
     String ACTIVITY_INCOME = "/home/InComeActivity";
     String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
@@ -115,7 +114,15 @@ public interface RouterConstants {
     String ACTIVITY_POSTS_COMMENT_DETAIL = "/posts/PostsCommentDetailActivity";
     String ACTIVITY_POSTS_PUBLISH = "/posts/PostsPublishActivity";
     String ACTIVITY_POSTS_REPORT = "/posts/PostsReportActivity";
-    String ACTIVITY_POSTS_VOICE_RECORD = "/posts/PostsVoiceRecordActivity";
     String ACTIVITY_POSTS_VOTE_EDIT = "/posts/PostsVoteEditActivity";
     String ACTIVITY_POSTS_RED_PKG_EDIT = "/posts/PostsRedPkgEditActivity";
+
+    String ACTIVITY_VOICE_RECORD = "/posts/VoiceRecordActivity";
+
+    String ACTIVITY_MIC_HOME = "/mic/MicHomeActivity";
+    String ACTIVITY_CREATE_MIC_ROOM = "/mic/MicRoomCreateActivity";
+
+    String ACTIVITY_MIC_ROOM = "/mic/MicRoomActivity";
+
+    String ACTIVITY_MIC_MATCH = "/mic/MicMatchActivity";
 }

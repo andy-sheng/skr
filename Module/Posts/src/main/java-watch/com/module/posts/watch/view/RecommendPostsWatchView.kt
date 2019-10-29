@@ -41,7 +41,7 @@ class RecommendPostsWatchView(activity: FragmentActivity) : BasePostsWatchView(a
     private fun getRecommendPosts(off: Int, isClear: Boolean) {
         launch {
             val result = subscribe(RequestControl("getRecommendPosts", ControlType.CancelThis)) {
-                postsWatchServerApi.getPostsRecommendList(off, mCNT, MyUserInfoManager.getInstance().uid.toInt())
+                postsWatchServerApi.getPostsRecommendList(off, mCNT, MyUserInfoManager.uid.toInt())
             }
             if (result.errno == 0) {
                 mHasInitData = true

@@ -39,9 +39,9 @@ public abstract class ApiObserver<T> implements Observer<T> {
             }
             // TODO: 2018/12/24 身份解析失败，需要调到登陆页面
             if (result.errno == 107) {
-                UserAccountManager.getInstance().notifyAccountExpired();
+                UserAccountManager.INSTANCE.notifyAccountExpired();
             } else if (result.errno == 0) {
-                UserAccountManager.getInstance().accountValidFromServer();
+                UserAccountManager.INSTANCE.accountValidFromServer();
             }
         }
         process(obj);

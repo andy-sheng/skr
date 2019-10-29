@@ -98,6 +98,9 @@ public class ZqEngineKit implements AgoraOutCallback {
     private static final int DEFAULT_PREVIEW_WIDTH = 720;
     private static final int DEFAULT_PREVIEW_HEIGHT = 1280;
 
+    // 用来打分的音频采样率, 过高的采样率会造成很大的性能消耗
+    private static final int SCORE_SAMPLE_RATE = 16000;
+
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
@@ -142,6 +145,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private AgoraRTCAdapter mAgoraRTCAdapter;
     private AudioDummyFilter mAudioDummyFilter;
     private AudioFilterMgt mAudioFilterMgt;
+    private AudioResampleFilter mScoreResampleFilter;
     private CbAudioScorer mCbAudioScorer;
     private AcrRecognizer mAcrRecognizer;
 
@@ -488,6 +492,7 @@ public class ZqEngineKit implements AgoraOutCallback {
     private void initAudioModules() {
         MyLog.d(TAG, "initAudioModules");
         mAudioFilterMgt = new AudioFilterMgt();
+        mScoreResampleFilter = new AudioResampleFilter();
         mCbAudioScorer = new CbAudioScorer();
         // 单mic数据PCM录制
         mRawFrameWriter = new RawFrameWriter();
@@ -563,15 +568,22 @@ public class ZqEngineKit implements AgoraOutCallback {
         mHumanVoiceAudioEncoder.getSrcPin().connect(mHumanVoiceFilePublisher.getAudioSink());
         mHumanVoiceFilePublisher.setPubListener(mPubListener);
 
+        // 打分重采样, 使用16k采样率, 单声道
+        AudioBufFormat scoreFormat = new AudioBufFormat(AVConst.AV_SAMPLE_FMT_S16, SCORE_SAMPLE_RATE, 1);
+        mScoreResampleFilter.setOutFormat(scoreFormat, true);
         if (SCORE_DEBUG) {
             mAudioDummyFilter = new AudioDummyFilter();
             mAudioLocalSrcPin.connect(mAudioDummyFilter.getSinkPin());
-            mAudioDummyFilter.getSrcPin().connect(mCbAudioScorer.getSinkPin());
-            mAudioDummyFilter.getSrcPin().connect(mAcrRecognizer.getSinkPin());
+            mAudioDummyFilter.getSrcPin().connect(mScoreResampleFilter.getSinkPin());
+            SrcPin<AudioBufFrame> scoreSrcPin = mScoreResampleFilter.getSrcPin();
+            scoreSrcPin.connect(mCbAudioScorer.getSinkPin());
+            scoreSrcPin.connect(mAcrRecognizer.getSinkPin());
             mAudioDummyFilter.getSrcPin().connect(mAudioFilterMgt.getSinkPin());
         } else {
-            mAudioLocalSrcPin.connect(mCbAudioScorer.getSinkPin());
-            mAudioLocalSrcPin.connect(mAcrRecognizer.getSinkPin());
+            mAudioLocalSrcPin.connect(mScoreResampleFilter.getSinkPin());
+            SrcPin<AudioBufFrame> scoreSrcPin = mScoreResampleFilter.getSrcPin();
+            scoreSrcPin.connect(mCbAudioScorer.getSinkPin());
+            scoreSrcPin.connect(mAcrRecognizer.getSinkPin());
             mAudioLocalSrcPin.connect(mAudioFilterMgt.getSinkPin());
         }
 

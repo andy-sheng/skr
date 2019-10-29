@@ -104,7 +104,7 @@ class BattleRankActivity : BaseActivity() {
     private fun getMineRank() {
         launch {
             val result = subscribe(RequestControl("getMineRank", ControlType.CancelThis)) {
-                battleServerApi.getStandRankMine(MyUserInfoManager.getInstance().uid, tagID)
+                battleServerApi.getStandRankMine(MyUserInfoManager.uid, tagID)
             }
             if (result.errno == 0) {
                 val mineRank = JSON.parseObject(result.data.getString("detail"), BattleRankInfoModel::class.java)

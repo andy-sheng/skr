@@ -14,8 +14,12 @@ public class CommentAiModel extends CommentModel {
         setCommentType(CommentModel.TYPE_AI);
         setUserInfo(ai.getUserInfo());
         setAvatarColor(CommentModel.AVATAR_COLOR);
-        SpannableStringBuilder stringBuilder = new SpanUtils()
+        SpannableStringBuilder nameBuilder = new SpanUtils()
                 .append("AI裁判 ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
+                .create();
+        setNameBuilder(nameBuilder);
+
+        SpannableStringBuilder stringBuilder = new SpanUtils()
                 .append(text).setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                 .create();
         setStringBuilder(stringBuilder);

@@ -24,7 +24,7 @@ import com.module.playways.race.room.model.RaceRoundInfoModel
 import com.module.playways.room.msg.event.EventHelper
 import com.module.playways.room.room.RoomServerApi
 import com.module.playways.songmanager.event.MuteAllVoiceEvent
-import com.zq.live.proto.Room.EQRoundStatus
+import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.mediaengine.kit.ZqEngineKit
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -122,9 +122,7 @@ class VoiceRecordTextView : ExTextView {
                         U.getToastUtil().showShort("在麦上无法录音")
                         return false
                     }
-                }
-
-                if (mRoomData is RaceRoomData) {
+                } else if (mRoomData is RaceRoomData) {
                     val roundInfoModel = mRoomData?.realRoundInfo as RaceRoundInfoModel?
                     roundInfoModel?.let {
                         if (it.isSingerNowBySelf()) {

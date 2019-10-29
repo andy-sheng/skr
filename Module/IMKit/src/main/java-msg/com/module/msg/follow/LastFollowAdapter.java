@@ -128,7 +128,7 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
                 mSexIv.setVisibility(View.GONE);
             }
 
-            if (lastFollowModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (lastFollowModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {

@@ -66,7 +66,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 when (msg?.what) {
                     SYNC_MSG -> syncStatus()
                     PICK_MSG -> {
-                        val mutableSet1 = mutableMapOf("count" to mPickNum, "fromPickuserID" to MyUserInfoManager.getInstance().uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
+                        val mutableSet1 = mutableMapOf("count" to mPickNum, "fromPickuserID" to MyUserInfoManager.uid, "roomID" to mRoomData.gameId, "toPickUserID" to mRoomData.getAntherUser()?.userId)
                         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(mutableSet1))
                         ApiMethods.subscribe(mDoubleRoomServerApi.pickOther(body), null, this@DoubleCorePresenter)
                         mPickNum = 0
@@ -98,7 +98,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
                 params.isEnableVideo = false
                 ZqEngineKit.getInstance().init("doubleRoom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), true, mRoomData.getToken())
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), true, mRoomData.getToken())
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(false)
         }
@@ -303,7 +303,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAskChangeSceneEvent) {
-        if (event.reqChangeUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+        if (event.reqChangeUserID.toLong() != MyUserInfoManager.uid) {
             mIDoublePlayView.askSceneChange(event.sceneType, event.noticeMsgDesc)
         }
     }
@@ -323,7 +323,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoubleAgreeChangeSceneEvent) {
-        if (event.agreeChangeUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+        if (event.agreeChangeUserID.toLong() != MyUserInfoManager.uid) {
             if (event.mBasePushInfo.timeMs > mSyncStatusTimeMs) {
                 if (event.isAgree) {
                     mRoomData!!.changeScene(event.sceneType)
@@ -449,7 +449,7 @@ class DoubleCorePresenter(private val mRoomData: DoubleRoomData, private val mID
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: DoublePickPushEvent) {
-        if (event.fromPickUserID.toLong() != MyUserInfoManager.getInstance().uid) {
+        if (event.fromPickUserID.toLong() != MyUserInfoManager.uid) {
             mIDoublePlayView.picked(event.count)
         }
     }

@@ -11,6 +11,7 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.U
 import com.module.playways.grab.room.GrabRoomData
 import com.module.playways.grab.room.GrabRoomServerApi
+import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.view.IGrabWishManageView
 import com.module.playways.songmanager.event.AddSuggestSongEvent
 import com.module.playways.songmanager.model.GrabWishSongModel
@@ -27,7 +28,8 @@ import okhttp3.RequestBody
  * 愿望清单这个view 的 presenter
  */
 class GrabWishSongPresenter(internal var mView: IGrabWishManageView, internal var mGrabRoomData: GrabRoomData) : RxLifeCyclePresenter() {
-    var mGrabRoomServerApi: GrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi::class.java)
+
+    val mSongManagerServerApi = ApiManager.getInstance().createService(SongManagerServerApi::class.java)
     var mGetSuggestListTask: Disposable? = null
     var mLimit = 20
 
@@ -40,7 +42,7 @@ class GrabWishSongPresenter(internal var mView: IGrabWishManageView, internal va
             MyLog.w(TAG, "已经加载中了...")
             return
         }
-        mGetSuggestListTask = ApiMethods.subscribe(mGrabRoomServerApi.getListMusicSuggested(mGrabRoomData.gameId, offset, mLimit), object : ApiObserver<ApiResult>() {
+        mGetSuggestListTask = ApiMethods.subscribe(mSongManagerServerApi.getListMusicSuggested(mGrabRoomData.gameId, offset, mLimit), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val grabWishSongModels = JSONObject.parseArray(result.data!!.getString("items"), GrabWishSongModel::class.java)
@@ -68,7 +70,7 @@ class GrabWishSongPresenter(internal var mView: IGrabWishManageView, internal va
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mGrabRoomServerApi.addSuggestMusic(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.addSuggestMusic(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "addWishSong result=$result")
                 if (result.errno == 0) {
@@ -99,7 +101,7 @@ class GrabWishSongPresenter(internal var mView: IGrabWishManageView, internal va
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
 
-        ApiMethods.subscribe(mGrabRoomServerApi.deleteSuggestMusic(body), object : ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mSongManagerServerApi.deleteSuggestMusic(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 MyLog.d(TAG, "addWishSong result=$result")
                 if (result.errno == 0) {

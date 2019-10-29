@@ -14,6 +14,7 @@ import com.common.core.scheme.event.DoubleInviteFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent;
 import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
+import com.common.core.scheme.event.MicInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -60,7 +61,7 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndContinue;
                 }
             } else {
-                if (!UserAccountManager.getInstance().hasAccount()) {
+                if (!UserAccountManager.INSTANCE.hasAccount()) {
                     MyLog.w(TAG, "processWebUrl 没有登录");
                     return ProcessResult.AcceptedAndReturn;
                 }
@@ -106,7 +107,7 @@ public class InframeProcessor implements ISchemeProcessor {
             if (beforeHomeExistJudge) {
 
             } else {
-                if (!UserAccountManager.getInstance().hasAccount()) {
+                if (!UserAccountManager.INSTANCE.hasAccount()) {
                     MyLog.w(TAG, "processWebUrl 没有登录");
                     return ProcessResult.AcceptedAndReturn;
                 }
@@ -196,7 +197,7 @@ public class InframeProcessor implements ISchemeProcessor {
             int ask = SchemeUtils.getInt(uri, "ask", 0);
             int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
-                if (ownerId == MyUserInfoManager.getInstance().getUid()) {
+                if (ownerId == MyUserInfoManager.INSTANCE.getUid()) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
                     return;
                 }
@@ -214,7 +215,7 @@ public class InframeProcessor implements ISchemeProcessor {
             int ask = SchemeUtils.getInt(uri, "ask", 0);
             int mediaType = SchemeUtils.getInt(uri, "mediaType", 0);
             if (ownerId > 0 && roomId > 0) {
-                if (ownerId == MyUserInfoManager.getInstance().getUid()) {
+                if (ownerId == MyUserInfoManager.INSTANCE.getUid()) {
                     MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
                     return;
                 }
@@ -249,6 +250,15 @@ public class InframeProcessor implements ISchemeProcessor {
             }, true);
         } else if ("/chat_page".equals(path)) {
             EventBus.getDefault().post(new JumpHomeDoubleChatPageEvent());
+        } else if ("/joinmic".equals(path)) {
+            final int ownerID = SchemeUtils.getInt(uri, "owner", 0);
+            if (ownerID == MyUserInfoManager.INSTANCE.getUid()) {
+                MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
+                return;
+            }
+            final int gameId = SchemeUtils.getInt(uri, "gameId", 0);
+            final int ask = SchemeUtils.getInt(uri, "ask", 0);
+            EventBus.getDefault().post(new MicInviteFromSchemeEvent(ownerID, gameId, ask));
         }
     }
 
@@ -276,7 +286,7 @@ public class InframeProcessor implements ISchemeProcessor {
         String path = uri.getPath();
         if ("/bothfollow".equals(path)) {
             int inviterId = SchemeUtils.getInt(uri, "inviterId", 0);
-            if (inviterId > 0 && inviterId != MyUserInfoManager.getInstance().getUid()) {
+            if (inviterId > 0 && inviterId != MyUserInfoManager.INSTANCE.getUid()) {
                 BothRelationFromSchemeEvent event = new BothRelationFromSchemeEvent();
                 event.useId = inviterId;
                 EventBus.getDefault().post(event);

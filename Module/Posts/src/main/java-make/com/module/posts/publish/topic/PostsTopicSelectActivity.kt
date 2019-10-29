@@ -111,7 +111,7 @@ class PostsTopicSelectActivity : BaseActivity() {
                 .build().register(mainActContainer)
 
         launch {
-            val result = subscribe { api.getTopicCategoryList(0, 1000, MyUserInfoManager.getInstance().uid.toInt()) }
+            val result = subscribe { api.getTopicCategoryList(0, 1000, MyUserInfoManager.uid.toInt()) }
             loadService.showSuccess()
             if (result.errno == 0) {
                 val l = JSON.parseArray(result.data.getString("categorys"), Category::class.java)
@@ -130,7 +130,7 @@ class PostsTopicSelectActivity : BaseActivity() {
 
     private fun getTopicListByCategory() {
         launch {
-            val result = subscribe { api.getTopicList(offset, 50, MyUserInfoManager.getInstance().uid.toInt(), postsTopicClassifyAdapter.selectModel!!.categoryID!!) }
+            val result = subscribe { api.getTopicList(offset, 50, MyUserInfoManager.uid.toInt(), postsTopicClassifyAdapter.selectModel!!.categoryID!!) }
             if (result.errno == 0) {
                 val l = JSON.parseArray(result.data.getString("topics"), Topic::class.java)
                 val newOffset = result.data.getIntValue("offset")

@@ -93,6 +93,10 @@ android {
             res.srcDirs += 'src/main/res-ranked'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {

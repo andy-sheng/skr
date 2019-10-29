@@ -94,7 +94,7 @@ class LikeWorksFragment : BaseFragment() {
     private fun getList() {
         launch(Dispatchers.Main) {
             val result = subscribe(RequestControl(mTag + "getList", ControlType.CancelThis)) {
-                mFeedsDetailServerApi.getLikeWorkList(MyUserInfoManager.getInstance().uid.toInt(), mOffset, mCount)
+                mFeedsDetailServerApi.getLikeWorkList(MyUserInfoManager.uid.toInt(), mOffset, mCount)
             }
 
             mRefreshLayout?.finishLoadMore()

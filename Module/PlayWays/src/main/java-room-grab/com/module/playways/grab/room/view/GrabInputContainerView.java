@@ -12,10 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.image.fresco.BaseImageView;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -135,8 +133,8 @@ public class GrabInputContainerView extends InputContainerView {
     }
 
     @Override
-    public void onBoradShow() {
-        super.onBoradShow();
+    public void onBoardShow() {
+        super.onBoardShow();
         List<GrabPlayerInfoModel> grabPlayerInfoModelList = getPlayerInfoListExpectSelf();
         if (grabPlayerInfoModelList.size() > 0) {
             grabPlayerInfoModelList.add(0, new GrabPlayerInfoModel());
@@ -153,8 +151,8 @@ public class GrabInputContainerView extends InputContainerView {
     }
 
     @Override
-    public void onBoradHide() {
-        super.onBoradHide();
+    public void onBoardHide() {
+        super.onBoardHide();
         mRecyclerView.setVisibility(GONE);
         mBackgroundIv.setVisibility(GONE);
     }
@@ -164,7 +162,7 @@ public class GrabInputContainerView extends InputContainerView {
         Iterator<GrabPlayerInfoModel> it = grabPlayerInfoModelList.iterator();
         while (it.hasNext()) {
             GrabPlayerInfoModel grabPlayerInfoModel = it.next();
-            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 it.remove();
             }
         }

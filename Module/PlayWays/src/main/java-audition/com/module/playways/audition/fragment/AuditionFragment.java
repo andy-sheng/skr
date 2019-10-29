@@ -127,7 +127,7 @@ public class AuditionFragment extends BaseFragment {
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
             ZqEngineKit.getInstance().joinRoom("csm" + System.currentTimeMillis(),
-                    (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
+                    (int) UserAccountManager.INSTANCE.getUuidAsLong(), isAnchor, null);
         } else {
             ZqEngineKit.getInstance().resumeAudioMixing();
         }
@@ -416,9 +416,9 @@ public class AuditionFragment extends BaseFragment {
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
             if (ZqEngineKit.RECORD_FOR_DEBUG) {
-                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
+                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
             } else {
-                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+                ZqEngineKit.getInstance().startAudioMixing((int) MyUserInfoManager.INSTANCE.getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
             }
         }
     }

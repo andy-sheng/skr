@@ -59,7 +59,7 @@ class EditInfoLocationFragment : BaseFragment() {
         mProvinceArray = resources.getStringArray(R.array.province_list).toList() as ArrayList<String>
         mAdapter?.dataList = mProvinceArray
 
-        mPreProvince = MyUserInfoManager.getInstance().locationProvince
+        mPreProvince = MyUserInfoManager.locationProvince
 
         mTitlebar?.leftTextView?.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
@@ -120,7 +120,7 @@ class EditInfoLocationFragment : BaseFragment() {
             return
         }
 
-        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+        MyUserInfoManager.updateInfo(MyUserInfoManager
                 .newMyInfoUpdateParamsBuilder()
                 .setLocation(l)
                 .build(), true)

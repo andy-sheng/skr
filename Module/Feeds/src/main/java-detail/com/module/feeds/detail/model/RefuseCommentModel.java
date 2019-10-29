@@ -1,7 +1,8 @@
 package com.module.feeds.detail.model;
 
+import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.VipInfo;
+import com.common.core.userinfo.model.VerifyInfo;
 
 import java.io.Serializable;
 
@@ -20,7 +21,8 @@ public class RefuseCommentModel implements Serializable {
     private String avatar;
     private String content;
     private String nickname;
-    private VipInfo vipInfo;
+    private VerifyInfo vipInfo;
+    private HonorInfo honorInfo;
     private int feedID;
     private long timeMs;
     private int userID;
@@ -67,12 +69,20 @@ public class RefuseCommentModel implements Serializable {
     }
 
 
-    public VipInfo getVipInfo() {
+    public VerifyInfo getVipInfo() {
         return vipInfo;
     }
 
-    public void setVipInfo(VipInfo vipInfo) {
+    public void setVipInfo(VerifyInfo vipInfo) {
         this.vipInfo = vipInfo;
+    }
+
+    public HonorInfo getHonorInfo() {
+        return honorInfo;
+    }
+
+    public void setHonorInfo(HonorInfo honorInfo) {
+        this.honorInfo = honorInfo;
     }
 
     public long getTimeMs() {

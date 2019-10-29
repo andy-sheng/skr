@@ -90,7 +90,7 @@ class GiftTimerPresenter(val mUpdateCallBack: IUpdateFreeGiftCountView) : RxLife
         val ts = System.currentTimeMillis()
         val map = HashMap<String, Any>()
         map["timestamp"] = ts
-        map["userID"] = MyUserInfoManager.getInstance().uid
+        map["userID"] = MyUserInfoManager.uid
         map["appSecret"] = "bf9502ede1260d1109c46c2301721efa"
 
         val signV2 = U.getMD5Utils().signReq(map)

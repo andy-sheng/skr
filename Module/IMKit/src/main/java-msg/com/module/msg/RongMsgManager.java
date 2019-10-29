@@ -33,6 +33,8 @@ import com.module.msg.model.CustomChatCombineRoomMsg;
 import com.module.msg.model.CustomChatRoomLowLevelMsg;
 import com.module.msg.model.CustomChatRoomMsg;
 import com.module.msg.model.CustomNotificationMsg;
+import com.module.msg.model.MicRoomHighMsg;
+import com.module.msg.model.MicRoomLowMsg;
 import com.module.msg.model.RaceRoomHighMsg;
 import com.module.msg.model.RaceRoomLowMsg;
 import com.module.msg.model.SpecailOpMsg;
@@ -62,6 +64,7 @@ import io.rong.push.pushconfig.PushConfig;
 
 import static com.module.msg.CustomMsgType.MSG_TYPE_BROADCAST;
 import static com.module.msg.CustomMsgType.MSG_TYPE_COMBINE_ROOM;
+import static com.module.msg.CustomMsgType.MSG_TYPE_MIC_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
 import static com.module.msg.CustomMsgType.MSG_TYPE_RACE_ROOM;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
@@ -92,7 +95,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (msg.what == MSG_RECONNECT) {
                 // 重连
                 mUiHanlder.removeMessages(MSG_RECONNECT);
-                UserAccountManager.getInstance().tryConnectRongIM(true);
+                UserAccountManager.INSTANCE.tryConnectRongIM(true);
             }
         }
     };
@@ -182,11 +185,23 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 return true;
             } else if (message.getContent() instanceof RaceRoomLowMsg) {
 
-                RaceRoomHighMsg customChatRoomMsg = (RaceRoomHighMsg) message.getContent();
+                RaceRoomLowMsg customChatRoomMsg = (RaceRoomLowMsg) message.getContent();
                 dispatchRaceRoomMsg(customChatRoomMsg);
 
                 return true;
-            } else if (message.getContent() instanceof CustomNotificationMsg) {
+            }else if (message.getContent() instanceof MicRoomHighMsg) {
+
+                MicRoomHighMsg customChatRoomMsg = (MicRoomHighMsg) message.getContent();
+                dispatchMicRoomMsg(customChatRoomMsg);
+
+                return true;
+            } else if (message.getContent() instanceof MicRoomLowMsg) {
+
+                MicRoomLowMsg customChatRoomMsg = (MicRoomLowMsg) message.getContent();
+                dispatchMicRoomMsg(customChatRoomMsg);
+
+                return true;
+            }  else if (message.getContent() instanceof CustomNotificationMsg) {
                 CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
 
@@ -198,7 +213,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
 
                 return true;
-            } else if(message.getContent() instanceof BroadcastRoomMsg){
+            } else if (message.getContent() instanceof BroadcastRoomMsg) {
                 BroadcastRoomMsg notificationMsg = (BroadcastRoomMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
                 HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_BROADCAST);
@@ -208,20 +223,20 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     }
                 }
                 return true;
-            }else if (message.getContent() instanceof SpecailOpMsg) {
+            } else if (message.getContent() instanceof SpecailOpMsg) {
                 /**
                  * 要求别人上传日志，并将结果返回
                  */
                 SpecailOpMsg specailOpMsg = (SpecailOpMsg) message.getContent();
                 if (specailOpMsg.getMessageType() == 1) {
-                    U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
+                    U.getLogUploadUtils().upload(MyUserInfoManager.INSTANCE.getUid(), new LogUploadUtils.Callback() {
                         @Override
                         public void onSuccess(String url) {
                             //上传日志成功
                             JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("uploaderId", MyUserInfoManager.getInstance().getUid());
-                            jsonObject.put("uploaderName", MyUserInfoManager.getInstance().getNickName());
-                            jsonObject.put("uploaderAvatar", MyUserInfoManager.getInstance().getAvatar());
+                            jsonObject.put("uploaderId", MyUserInfoManager.INSTANCE.getUid());
+                            jsonObject.put("uploaderName", MyUserInfoManager.INSTANCE.getNickName());
+                            jsonObject.put("uploaderAvatar", MyUserInfoManager.INSTANCE.getAvatar());
                             jsonObject.put("url", url);
                             jsonObject.put("date", U.getDateTimeUtils().formatDetailTimeStringNow());
 
@@ -333,6 +348,29 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         }
     }
 
+    private void dispatchMicRoomMsg(MessageContent messageContent) {
+        if (messageContent instanceof MicRoomHighMsg) {
+            MicRoomHighMsg msg = (MicRoomHighMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_MIC_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_MIC_ROOM, data);
+                }
+            }
+        } else if (messageContent instanceof MicRoomLowMsg) {
+            MicRoomLowMsg msg = (MicRoomLowMsg) messageContent;
+            byte[] data = U.getBase64Utils().decode(msg.getContentJsonStr());
+
+            HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_MIC_ROOM);
+            if (processors != null) {
+                for (IPushMsgProcess process : processors) {
+                    process.process(MSG_TYPE_MIC_ROOM, data);
+                }
+            }
+        }
+    }
     // 是否初始化
     private boolean mIsInit = false;
 
@@ -370,6 +408,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(RaceRoomLowMsg.class);
             RongIM.registerMessageType(BroadcastRoomMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
+            RongIM.registerMessageType(MicRoomHighMsg.class);
+            RongIM.registerMessageType(MicRoomLowMsg.class);
 
             RongIM.getInstance().registerConversationTemplate(new MyPrivateConversationProvider());
 
@@ -395,7 +435,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                             mUiHanlder.sendEmptyMessageDelayed(MSG_RECONNECT, 15 * 1000);
                             break;
                         case KICKED_OFFLINE_BY_OTHER_CLIENT://用户账户在其他设备登录，本机会被踢掉线
-                            UserAccountManager.getInstance().rcKickedByOthers(0);
+                            UserAccountManager.INSTANCE.rcKickedByOthers(0);
                             break;
                     }
                 }
@@ -455,8 +495,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     @Override
     public UserInfo getUserInfo(String useId) {
         MyLog.d(TAG, "getUserInfo" + " useId = " + useId);
-        if (MyUserInfoManager.getInstance().getUid() == Integer.valueOf(useId)) {
-            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
+        if (MyUserInfoManager.INSTANCE.getUid() == Integer.valueOf(useId)) {
+            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo()));
             RongIM.getInstance().refreshUserInfoCache(userInfo);
             return userInfo;
         }
@@ -492,6 +532,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNicknameRemark(), Uri.parse(userInfoModel.getAvatar()));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("vipInfo", userInfoModel.getVipInfo());
+        jsonObject.put("honorInfo", userInfoModel.getHonorInfo());
         userInfo.setExtra(jsonObject.toJSONString());
         return userInfo;
     }
@@ -749,7 +790,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public void updateCurrentUserInfo() {
         if (RongContext.getInstance() != null) {
-            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.getInstance().getMyUserInfo()));
+            UserInfo userInfo = toRongUserInfo(MyUserInfo.toUserInfoModel(MyUserInfoManager.INSTANCE.getMyUserInfo()));
             RongIM.getInstance().setCurrentUserInfo(userInfo);
             RongIM.getInstance().refreshUserInfoCache(userInfo);
         }

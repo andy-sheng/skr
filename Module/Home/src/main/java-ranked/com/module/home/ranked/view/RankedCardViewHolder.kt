@@ -62,7 +62,7 @@ class RankedCardViewHolder(itemView: View, listener: RecyclerOnItemClickListener
             }
         }
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().avatar)
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
                 .setBorderColor(U.getColor(R.color.white))
                 .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                 .setCircle(true)

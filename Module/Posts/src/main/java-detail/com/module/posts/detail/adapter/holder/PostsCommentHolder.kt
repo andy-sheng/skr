@@ -17,22 +17,23 @@ import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.NickNameView
+import com.component.person.view.CommonAudioView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentAdapter
 import com.module.posts.detail.model.PostFirstLevelCommentModel
-import com.module.posts.view.PostsCommentAudioView
 import com.module.posts.view.PostsNineGridLayout
 import com.module.posts.view.PostsSongView
 
 class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.IDetailClickListener, val postsOwnerID: Int) : RecyclerView.ViewHolder(itemView) {
     var commenterAvaterIv: AvatarView
-    var nameTv: ExTextView
+    var nicknameTv: NickNameView
     var commentTimeTv: ExTextView
     var xinIv: ExImageView
     var likeNum: ExTextView
     var contentTv: ExTextView
-    var postsAudioView: PostsCommentAudioView
+    var postsAudioView: CommonAudioView
     var nineGridVp: PostsNineGridLayout
     var postsBarrier: Barrier
     var replyNum: ExTextView
@@ -47,7 +48,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
     init {
         postsSongView = itemView.findViewById(R.id.posts_song_view)
         commenterAvaterIv = itemView.findViewById(R.id.commenter_avater_iv)
-        nameTv = itemView.findViewById(R.id.name_tv)
+        nicknameTv = itemView.findViewById(R.id.nickname_tv)
         commentTimeTv = itemView.findViewById(R.id.comment_time_tv)
         xinIv = itemView.findViewById(R.id.xin_iv)
         likeNum = itemView.findViewById(R.id.like_num)
@@ -244,7 +245,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
         } else {
             ownerTv.visibility = View.GONE
         }
-        nameTv.text = model.commentUser?.nicknameRemark
+        nicknameTv.setHonorText(model.commentUser?.nicknameRemark!!, model.commentUser?.honorInfo)
         commentTimeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
                 ?: 0, System.currentTimeMillis())
         likeNum.text = model.comment?.likedCnt.toString()

@@ -25,11 +25,11 @@ import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.BaseRoomData;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
-import com.zq.live.proto.Room.EMsgPosType;
-import com.zq.live.proto.Room.ERoomMsgType;
-import com.zq.live.proto.Room.RoomMsg;
-import com.zq.live.proto.Room.SpecialEmojiMsg;
-import com.zq.live.proto.Room.SpecialEmojiMsgType;
+import com.zq.live.proto.GrabRoom.EMsgPosType;
+import com.zq.live.proto.GrabRoom.ERoomMsgType;
+import com.zq.live.proto.GrabRoom.RoomMsg;
+import com.zq.live.proto.GrabRoom.SpecialEmojiMsg;
+import com.zq.live.proto.GrabRoom.SpecialEmojiMsgType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -132,10 +132,10 @@ public abstract class BottomContainerView extends RelativeLayout {
             }
 
             UserInfo senderInfo = new UserInfo.Builder()
-                    .setUserID((int) MyUserInfoManager.getInstance().getUid())
-                    .setNickName(MyUserInfoManager.getInstance().getNickName())
-                    .setAvatar(MyUserInfoManager.getInstance().getAvatar())
-                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
+                    .setUserID((int) MyUserInfoManager.INSTANCE.getUid())
+                    .setNickName(MyUserInfoManager.INSTANCE.getNickName())
+                    .setAvatar(MyUserInfoManager.INSTANCE.getAvatar())
+                    .setSex(ESex.fromValue(MyUserInfoManager.INSTANCE.getSex()))
                     .setDescription("")
                     .setIsSystem(false)
                     .build();

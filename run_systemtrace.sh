@@ -1,4 +1,4 @@
-
+#! /bin/bash
 echo "
 systemtrace 支持的模块如下 说明文档 https://zhuanlan.zhihu.com/p/27331842
 如果要测试界面流畅度，我们一般只关注图形性能。因此必須选择Graphics和View gfx view

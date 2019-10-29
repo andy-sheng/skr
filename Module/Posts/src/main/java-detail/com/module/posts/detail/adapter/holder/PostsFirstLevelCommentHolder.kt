@@ -13,6 +13,7 @@ import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.NickNameView
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.detail.adapter.PostsCommentDetailAdapter
@@ -24,7 +25,7 @@ import com.module.posts.view.PostsSongView
 
 class PostsFirstLevelCommentHolder(itemView: View, val mIDetailClickListener: PostsCommentDetailAdapter.ICommentDetailClickListener) : RecyclerView.ViewHolder(itemView) {
     var timeTv: TextView
-    var nicknameTv: TextView
+    var nicknameTv: NickNameView
     var avatarIv: AvatarView
     var content: ExpandTextView
     var postsAudioView: PostsAudioView
@@ -153,7 +154,7 @@ class PostsFirstLevelCommentHolder(itemView: View, val mIDetailClickListener: Po
         this.mModel = model
 
         avatarIv.bindData(model.commentUser)
-        nicknameTv.text = model.commentUser?.nicknameRemark
+        nicknameTv.setHonorText(model.commentUser?.nicknameRemark!!, model.commentUser?.honorInfo)
         timeTv.text = U.getDateTimeUtils().formatHumanableDateForSkrFeed(model.comment?.createdAt
                 ?: 0, System.currentTimeMillis())
 

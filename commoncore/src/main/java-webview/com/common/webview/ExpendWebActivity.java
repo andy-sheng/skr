@@ -1,6 +1,7 @@
 package com.common.webview;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jsbridge.CallBackFunction;
 
@@ -62,6 +64,7 @@ public class ExpendWebActivity extends AgentWebActivity {
                 }
             }
         });
+        U.getStatusBarUtil().setTransparentBar(ExpendWebActivity.this, false);
     }
 
     protected void pageFinished(WebView view, String url) {

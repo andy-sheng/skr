@@ -5,10 +5,10 @@ import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.room.model.UserGameResultModel;
 import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.model.VoteInfoModel;
-import com.zq.live.proto.Room.UserGameResult;
-import com.zq.live.proto.Room.UserScoreResult;
-import com.zq.live.proto.Room.VoteInfo;
-import com.zq.live.proto.Room.VoteResultMsg;
+import com.zq.live.proto.GrabRoom.UserGameResult;
+import com.zq.live.proto.GrabRoom.UserScoreResult;
+import com.zq.live.proto.GrabRoom.VoteInfo;
+import com.zq.live.proto.GrabRoom.VoteResultMsg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class VoteResultEvent {
 
         ScoreResultModel scoreResultModel = new ScoreResultModel();
         for (UserScoreResult userScoreResult : voteResultMsg.getScoreResultsList()) {
-            if (userScoreResult.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (userScoreResult.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 scoreResultModel.parse(userScoreResult);
             }
         }

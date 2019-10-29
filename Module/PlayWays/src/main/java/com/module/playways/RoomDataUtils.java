@@ -276,60 +276,6 @@ public class RoomDataUtils {
         return false;
     }
 
-//    public static RankRoundInfoModel getRoundInfoFromRoundInfoListInRankMode(RankRoomData roomData, RankRoundInfoModel roundInfoModel) {
-//        if (roundInfoModel == null) {
-//            return null;
-//        }
-//
-//        for (RankRoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
-//            if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
-//                roundInfo.tryUpdateRoundInfoModel(roundInfoModel, false);
-//                return roundInfo;
-//            }
-//        }
-//        return null;
-//    }
-
-    public static boolean isChorusRound(GrabRoomData roomData) {
-        if (roomData != null) {
-            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
-            if (infoModel != null) {
-                return infoModel.isChorusRound();
-            }
-        }
-        return false;
-    }
-
-    public static boolean isPKRound(GrabRoomData roomData) {
-        if (roomData != null) {
-            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
-            if (infoModel != null) {
-                return infoModel.isPKRound();
-            }
-        }
-        return false;
-    }
-
-    public static boolean isMiniGameRound(GrabRoomData roomData) {
-        if (roomData != null) {
-            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
-            if (infoModel != null) {
-                return infoModel.isMiniGameRound();
-            }
-        }
-        return false;
-    }
-
-    public static boolean isFreeMicRound(GrabRoomData roomData) {
-        if (roomData != null) {
-            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
-            if (infoModel != null) {
-                return infoModel.isFreeMicRound();
-            }
-        }
-        return false;
-    }
-
     /**
      * 这个轮次的演唱者
      *

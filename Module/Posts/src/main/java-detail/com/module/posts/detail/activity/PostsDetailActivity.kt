@@ -257,7 +257,7 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
                                 .navigation()
                     }
 
-                    if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.getInstance().uid.toInt()) {
+                    if (postFirstLevelModel?.commentUser?.userId == MyUserInfoManager.uid.toInt()) {
                         deleteTv.visibility = View.VISIBLE
                         deleteTv.setDebounceViewClickListener {
                             dismiss(false)
@@ -552,13 +552,13 @@ class PostsDetailActivity : BaseActivity(), IPostsDetailView {
         progressView.visibility = View.GONE
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         if (feedsInputContainerView.visibility == View.VISIBLE) {
             feedsInputContainerView.hideSoftInput()
-            return
+            return true
         }
 
-        return super.onBackPressed()
+        return super.onBackPressedForActivity()
     }
 
     override fun voteSuccess(position: Int) {

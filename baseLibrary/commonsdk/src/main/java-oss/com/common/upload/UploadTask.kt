@@ -1,5 +1,6 @@
 package com.common.upload
 
+import android.os.Bundle
 import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.*
@@ -17,6 +18,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
+import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import top.zibin.luban.CompressionPredicate
@@ -79,7 +81,11 @@ class UploadTask(private val mUploadParams: UploadParams) {
                     ?: 0L) < 90 * 1000L)
             if (timeOk) {
                 ossParams = lastUploadOssParams!!
-                whenGetOssParams(uploadCallback)
+                Observable.create<Bundle> {
+                    whenGetOssParams(uploadCallback)
+                    it.onComplete()
+                }.subscribeOn(Schedulers.io())
+                        .subscribe()
                 return this
             }
         }

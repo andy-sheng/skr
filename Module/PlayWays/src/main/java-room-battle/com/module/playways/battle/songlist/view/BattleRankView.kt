@@ -100,7 +100,7 @@ class BattleRankView(context: Context, val tag: BattleRankTagModel, val tagID: I
     private fun getBattleRankList(off: Int, isClean: Boolean) {
         launch {
             val result = subscribe(RequestControl("getBattleRankList", ControlType.CancelThis)) {
-                battleServerApi.getStandRankList(MyUserInfoManager.getInstance().uid, tagID, off, mCNT, tag.tabType)
+                battleServerApi.getStandRankList(MyUserInfoManager.uid, tagID, off, mCNT, tag.tabType)
             }
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("details"), BattleRankInfoModel::class.java)

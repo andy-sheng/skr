@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.anim.ObjectPlayControlTemplate
 import com.common.base.BaseActivity
-import com.common.core.scheme.event.JumpHomeFromSchemeEvent
 import com.common.core.view.setDebounceViewClickListener
-import com.common.log.MyLog
-import com.common.player.PlayerCallbackAdapter
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -50,7 +46,7 @@ import com.module.posts.publish.redpkg.PostsRedPkgEditActivity
 import com.module.posts.publish.redpkg.RedPkgModel
 import com.module.posts.publish.topic.PostsTopicSelectActivity
 import com.module.posts.publish.topic.Topic
-import com.module.posts.publish.voice.PostsVoiceRecordActivity
+import com.module.posts.publish.voice.VoiceRecordActivity
 import com.module.posts.publish.vote.PostsVoteEditActivity
 import com.module.posts.view.PostsAudioView
 import com.module.posts.view.PostsSongView
@@ -593,9 +589,9 @@ class PostsPublishActivity : BaseActivity() {
             tipsDialogView?.showByDialog()
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(this@PostsPublishActivity)
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_POSTS_VOICE_RECORD)
-                    .withSerializable("model", model)
-                    .navigation(this@PostsPublishActivity, PostsVoiceRecordActivity.REQ_CODE_VOICE_RECORD)
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
+                    .withInt("from", VoiceRecordActivity.FROM_POSTS)
+                    .navigation(this@PostsPublishActivity, VoiceRecordActivity.REQ_CODE_VOICE_RECORD)
         }
     }
 
@@ -658,7 +654,7 @@ class PostsPublishActivity : BaseActivity() {
                 if (postsPublishImgAdapter.dataList.isNotEmpty()) {
                     imageRecyclerView.visibility = View.VISIBLE
                 }
-            } else if (requestCode == PostsVoiceRecordActivity.REQ_CODE_VOICE_RECORD) {
+            } else if (requestCode == VoiceRecordActivity.REQ_CODE_VOICE_RECORD) {
                 model.recordDurationMs = data?.getIntExtra("duration", 0) ?: 0
                 model.recordVoicePath = PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH
                 postsAudioView.visibility = View.VISIBLE

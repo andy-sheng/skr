@@ -31,11 +31,11 @@ public class AudioDummyFilter extends AudioFilterBase {
     protected AudioBufFormat doFormatChanged(AudioBufFormat format) {
         try {
             if (mRandomAccessFile != null) {
-                Log.e(TAG, "close file: " + mPath);
+                Log.d(TAG, "close file: " + mPath);
                 mFileChannel.close();
                 mRandomAccessFile.close();
             }
-            Log.e(TAG, "create file: " + mPath);
+            Log.d(TAG, "create file: " + mPath);
             mRandomAccessFile = new RandomAccessFile(mPath, "r");
             mFileChannel = mRandomAccessFile.getChannel();
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class AudioDummyFilter extends AudioFilterBase {
         try {
             mFileChannel.read(frame.buf);
             frame.buf.flip();
-            Log.e(TAG, "read " + frame.buf.limit() + " bytes");
+            //Log.d(TAG, "read " + frame.buf.limit() + " bytes");
         } catch (IOException e) {
             e.printStackTrace();
         }

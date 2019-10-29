@@ -60,11 +60,11 @@ class RaceSelfSingLyricView(viewStub: ViewStub, protected var mRoomData: RaceRoo
 
     fun startFly(call: (() -> Unit)?) {
         tryInflate()
-        val infoModel = mRoomData!!.realRoundInfo
-        mSingCountDownView2.startPlay(0, infoModel!!.getSingTotalMs(), true)
-        mSingCountDownView2.setListener(SelfSingCardView.Listener {
+        val infoModel = mRoomData?.realRoundInfo
+        mSingCountDownView2.startPlay(0, infoModel?.getSingTotalMs()?:0, true)
+        mSingCountDownView2.setListener {
             call?.invoke()
-        })
+        }
 
         var withAcc = false
         if (infoModel != null) {

@@ -27,7 +27,6 @@ public interface MainPageSlideApi {
     Observable<ApiResult> getSlideList();
 
     /**
-     *
      * @param mode  UNKnow 未知模式
      *              ClassicRankMode = 1  经典排位模式
      *              FunnyMode = 2 娱乐模式
@@ -117,8 +116,21 @@ public interface MainPageSlideApi {
     Observable<ApiResult> getRemainTime();
 
     @GET("http://dev.game.inframe.mobi/v2/raceroom/check-rank")
-    Call<ApiResult> checkRank(@Query("roomType")int roomType);
+    Call<ApiResult> checkRank(@Query("roomType") int roomType);
 
     @GET("http://test.api.inframe.mobi/v1/home/game-tab-blocks")
     Observable<ApiResult> getIndexTabBlocks();
+
+    /**
+     * 领取金币
+     * {
+     * "peerUserID": 0,
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://api.inframe.mobi/v1/honor/take-coin")
+    Observable<ApiResult> vipTakeCoin(@Body RequestBody body);
 }

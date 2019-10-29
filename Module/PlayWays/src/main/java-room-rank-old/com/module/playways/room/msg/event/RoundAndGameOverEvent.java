@@ -7,10 +7,10 @@ import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.room.model.UserGameResultModel;
 import com.module.playways.room.room.model.VoteInfoModel;
 import com.module.playways.room.room.model.score.ScoreResultModel;
-import com.zq.live.proto.Room.RoundAndGameOverMsg;
-import com.zq.live.proto.Room.UserGameResult;
-import com.zq.live.proto.Room.UserScoreResult;
-import com.zq.live.proto.Room.VoteInfo;
+import com.zq.live.proto.GrabRoom.RoundAndGameOverMsg;
+import com.zq.live.proto.GrabRoom.UserGameResult;
+import com.zq.live.proto.GrabRoom.UserScoreResult;
+import com.zq.live.proto.GrabRoom.VoteInfo;
 
 import java.util.ArrayList;
 import java.util.List;

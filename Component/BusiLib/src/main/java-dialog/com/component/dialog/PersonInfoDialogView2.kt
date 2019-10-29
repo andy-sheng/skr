@@ -11,9 +11,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 
@@ -28,9 +26,6 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
-import com.common.flowlayout.FlowLayout
-import com.common.flowlayout.TagAdapter
-import com.common.flowlayout.TagFlowLayout
 import com.common.log.MyLog
 import com.common.notification.event.FollowNotifyEvent
 import com.common.rxretrofit.ApiManager
@@ -47,6 +42,7 @@ import com.common.view.ex.ExTextView
 import com.common.view.ex.drawable.DrawableCreator
 import com.component.busilib.R
 import com.component.busilib.view.AvatarView
+import com.component.busilib.view.NickNameView
 import com.component.busilib.view.MarqueeTextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.ImageBrowseView
@@ -58,23 +54,17 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.component.level.view.NormalLevelView2
-import com.zq.live.proto.Common.ESex
-import com.component.person.utils.StringFromatUtils
 import com.component.person.photo.adapter.PhotoAdapter
 import com.component.person.photo.model.PhotoModel
-import com.component.person.model.TagModel
 import com.component.person.view.PersonMoreOpView
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-import java.util.ArrayList
-import java.util.HashMap
-
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
-import kotlinx.android.synthetic.main.photo_item_view_layout.view.*
+import com.component.person.view.PersonTagView
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
 
@@ -92,11 +82,10 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     lateinit var mMoreBtn: ExImageView
 
     lateinit var mLevelView: NormalLevelView2
-    lateinit var mNameTv: ExTextView
-    lateinit var mSexIv: ImageView
+    lateinit var mHonorTv: NickNameView
     lateinit var mSignTv: MarqueeTextView
-    lateinit var mVipTv: TextView
-    lateinit var mFlowlayout: TagFlowLayout
+    lateinit var mVerifyTv: TextView
+    lateinit var mPersonTagView: PersonTagView
 
     lateinit var mFunctionArea: ConstraintLayout
     lateinit var mInviteIv: ExTextView
@@ -108,11 +97,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     lateinit var mPhotoView: RecyclerView
     lateinit var mEmptyMyPhoto: ExTextView
-
-    private var mTags = ArrayList<TagModel>()  //标签
-    private var mHashMap = HashMap<Int, String?>()
-
-    lateinit var mTagAdapter: TagAdapter<TagModel>
 
     lateinit var mPhotoAdapter: PhotoAdapter
 
@@ -215,7 +199,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         }
 
         // 自己卡片的处理
-        if (mUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (mUserId.toLong() == MyUserInfoManager.uid) {
             isShowKick = false
             mMoreBtn.visibility = View.GONE
             mToolbar.visibility = View.GONE
@@ -364,29 +348,10 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mAvatarIv = this.findViewById(R.id.avatar_iv)
         mMoreBtn = this.findViewById(R.id.more_btn)
         mLevelView = this.findViewById(R.id.level_view)
-        mNameTv = this.findViewById(R.id.name_tv)
-        mNameTv = this.findViewById(R.id.name_tv)
-        mSexIv = this.findViewById(R.id.sex_iv)
+        mHonorTv = this.findViewById(R.id.honor_tv)
         mSignTv = this.findViewById(R.id.sign_tv)
-        mVipTv = this.findViewById(R.id.vip_tv)
-        mFlowlayout = this.findViewById(R.id.flowlayout)
-
-        mTagAdapter = object : TagAdapter<TagModel>(mTags) {
-            override fun getView(parent: FlowLayout, position: Int, tagModel: TagModel): View {
-                if (tagModel.type != CHARMS_TAG) {
-                    val tv = LayoutInflater.from(context).inflate(R.layout.person_center_business_tag,
-                            mFlowlayout, false) as ExTextView
-                    tv.text = tagModel.content
-                    return tv
-                } else {
-                    val tv = LayoutInflater.from(context).inflate(R.layout.person_card_charm_tag,
-                            mFlowlayout, false) as ExTextView
-                    tv.text = tagModel.content
-                    return tv
-                }
-            }
-        }
-        mFlowlayout.adapter = mTagAdapter
+        mVerifyTv = this.findViewById(R.id.verify_tv)
+        mPersonTagView = this.findViewById(R.id.person_tag_view)
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -584,7 +549,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             mPhotoAdapter.dataList!!.clear()
         }
 
-        if (totalCount <= 0 && mUserId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (totalCount <= 0 && mUserId.toLong() == MyUserInfoManager.uid) {
             mEmptyMyPhoto.visibility = View.VISIBLE
         }
 
@@ -647,38 +612,19 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)
                             .build())
-
-            mNameTv.text = model.nicknameRemark
+            mHonorTv.setAllStateText(model.nicknameRemark, model.sex, model.honorInfo)
             mSignTv.text = model.signature
 
             if (model.vipInfo != null && model.vipInfo.vipType > 0) {
                 mSignTv.visibility = View.GONE
-                mVipTv.visibility = View.VISIBLE
-                mVipTv.text = model.vipInfo.vipDesc
+                mVerifyTv.visibility = View.VISIBLE
+                mVerifyTv.text = model.vipInfo.vipDesc
             } else {
                 mSignTv.visibility = View.VISIBLE
-                mVipTv.visibility = View.GONE
+                mVerifyTv.visibility = View.GONE
             }
 
-            when {
-                model.sex == ESex.SX_MALE.value -> {
-                    mSexIv.visibility = View.VISIBLE
-                    mSexIv.setBackgroundResource(R.drawable.sex_man_icon)
-                }
-                model.sex == ESex.SX_FEMALE.value -> {
-                    mSexIv.visibility = View.VISIBLE
-                    mSexIv.setBackgroundResource(R.drawable.sex_woman_icon)
-                }
-                else -> mSexIv.visibility = View.GONE
-            }
-
-            if (model.location != null && !TextUtils.isEmpty(model.location.province)) {
-                mHashMap.put(LOCATION_TAG, model.location.province)
-            } else {
-                mHashMap.put(LOCATION_TAG, "火星")
-            }
-
-            refreshTag()
+            mPersonTagView.setLocation(model.location)
         }
     }
 
@@ -693,15 +639,11 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             }
         }
 
-        mHashMap.put(FANS_NUM_TAG, "粉丝 " + StringFromatUtils.formatTenThousand(fansNum))
-
-        refreshTag()
+        mPersonTagView.setFansNum(fansNum)
     }
 
     private fun showCharmsTag(meiLiCntTotal: Int) {
-        mHashMap.put(CHARMS_TAG, "魅力 " + StringFromatUtils.formatMillion(meiLiCntTotal))
-
-        refreshTag()
+        mPersonTagView.setCharmTotal(meiLiCntTotal)
     }
 
     fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
@@ -748,34 +690,5 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             mFollowIv.isClickable = true
             mFollowIv.background = mUnFollowDrawable
         }
-    }
-
-
-    private fun refreshTag() {
-        mTags.clear()
-        if (mHashMap != null) {
-
-            if (!TextUtils.isEmpty(mHashMap[CHARMS_TAG])) {
-                mTags.add(TagModel(CHARMS_TAG, mHashMap[CHARMS_TAG]))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[FANS_NUM_TAG])) {
-                mTags.add(TagModel(FANS_NUM_TAG, mHashMap[FANS_NUM_TAG]))
-            }
-
-            if (!TextUtils.isEmpty(mHashMap[LOCATION_TAG])) {
-                mTags.add(TagModel(LOCATION_TAG, mHashMap[LOCATION_TAG]))
-            }
-
-        }
-        mTagAdapter.setTagDatas(mTags)
-        mTagAdapter.notifyDataChanged()
-    }
-
-    companion object {
-
-        private val CHARMS_TAG = 1
-        private val LOCATION_TAG = 2           //城市标签
-        private val FANS_NUM_TAG = 3      //粉丝数标签
     }
 }

@@ -23,7 +23,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.common.base.delegate.IFragment
 import com.common.lifecycle.ActivityLifecycleForRxLifecycle
 import com.common.lifecycle.FragmentLifecycleable
@@ -34,16 +33,12 @@ import com.common.utils.U
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.RxLifecycle
 import com.trello.rxlifecycle2.android.FragmentEvent
-
-import org.greenrobot.eventbus.EventBus
-
-import java.io.Serializable
-import java.util.HashMap
-import java.util.HashSet
-
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import java.io.Serializable
+import java.util.*
 
 /**
  * ================================================
@@ -76,6 +71,8 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
         private set
 
     protected var mRequestCode = 0
+
+    var addToBackStack = false
 
     /**
      * Fragment A 启动 Fragment B 处理业务后想拿到结果
@@ -291,12 +288,12 @@ abstract class BaseFragment : Fragment(), IFragment, FragmentLifecycleable, Coro
                             } else {
                                 onFragmentInvisible(INVISIBLE_REASON_TO_DESKTOP)
                             }
-                            exec =true
+                            exec = true
                             break
                         }
                     }
                     MyLog.d(TAG, "onPause exec=$exec")
-                    if(!exec){
+                    if (!exec) {
                         onFragmentInvisible(INVISIBLE_REASON_TO_OTHER_ACTIVITY)
                     }
                 }

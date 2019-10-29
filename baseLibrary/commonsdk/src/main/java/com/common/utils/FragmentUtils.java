@@ -269,6 +269,7 @@ public class FragmentUtils {
          */
         if (params.addToBackStack) {
             ft = ft.addToBackStack(showTag);
+            fragment.setAddToBackStack(true);
         }
         ft = ft.add(params.containerViewId, fragment, showTag);
         if (params.allowStateLoss) {

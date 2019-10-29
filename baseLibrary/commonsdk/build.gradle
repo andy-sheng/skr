@@ -8,47 +8,8 @@ apply plugin: 'kotlin-android-extensions'
 //kotlin-kapt 需要使用kapt替换原来的annotationProcessor等complie方式
 apply plugin: 'kotlin-kapt'
 
+apply from: "$rootDir/base_lib.gradle"
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
-
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
-    }
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
-
-        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
-
-        vectorDrawables.useSupportLibrary = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-            }
-        }
-    }
-
-    buildTypes {
-
-        debug {
-            debuggable true
-
-            resValue("string", "PORT_NUMBER", "8089")
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-//    resourcePrefix "public_" //给 Module 内的资源名增加前缀, 避免资源名冲突
-
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen-db', 'src/main/java-gen-pb']
@@ -231,7 +192,13 @@ dependencies {
     //api(rootProject.ext.dependencies["fresco-okhttp"])
     // 流畅的gif
     //api(rootProject.ext.dependencies["android-gif-drawable"])
-    implementation project(":baseLibrary:android-gif-drawable")
+    if(dependLibraryFromServer.toBoolean()){
+        debugImplementation "com.common.sdk:android-gif-drawable:1.0-debug"
+        releaseImplementation "com.common.sdk:android-gif-drawable:1.0-release"
+    }else{
+        implementation project(":baseLibrary:android-gif-drawable")
+    }
+
     // SuperTextView
     //api project(":baseLibrary:SuperTextView")
     // 超大图加载
@@ -387,14 +354,9 @@ greendao {
 
 }
 
-// 添加上传到本地 maven 仓库
-apply plugin: 'maven'
-
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: local_maven)
         pom.groupId = 'com.common.sdk'
-        pom.artifactId = 'common-sdk'
-        pom.version = '2.0'
+        pom.artifactId = 'commonsdk'
     }
 }

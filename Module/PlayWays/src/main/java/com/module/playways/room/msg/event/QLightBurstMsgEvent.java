@@ -3,7 +3,7 @@
 package com.module.playways.room.msg.event;
 
 import com.module.playways.room.msg.BasePushInfo;
-import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.GrabRoom.QBLightMsg;
 
 public final class QLightBurstMsgEvent {
   public BasePushInfo info;

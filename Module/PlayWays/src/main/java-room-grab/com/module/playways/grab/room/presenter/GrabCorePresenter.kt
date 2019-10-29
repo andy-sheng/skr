@@ -3,7 +3,6 @@ package com.module.playways.grab.room.presenter
 import android.animation.ValueAnimator
 import android.os.Handler
 import android.os.Message
-import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -57,7 +56,7 @@ import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.*
 import com.module.playways.room.msg.filter.PushMsgFilter
-import com.module.playways.room.msg.manager.ChatRoomMsgManager
+import com.module.playways.room.msg.manager.GrabRoomMsgManager
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.SwapStatusType
 import com.module.playways.room.room.comment.model.CommentLightModel
@@ -75,7 +74,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.ESex
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.Common.UserInfo
-import com.zq.live.proto.Room.*
+import com.zq.live.proto.GrabRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -165,7 +164,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     internal var mGrabSongResPresenter: GrabSongResPresenter? = GrabSongResPresenter()
 
     init {
-        ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
+        GrabRoomMsgManager.getInstance().addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
         startSyncGameStateTask(sSyncStateTaskInterval * 2)
@@ -204,7 +203,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 params.isEnableVideo = mRoomData.isVideoRoom
                 ZqEngineKit.getInstance().init("grabroom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), false, mRoomData.agoraToken)
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), false, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true)
             if (mRoomData.isVideoRoom) {
@@ -518,7 +517,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
         val infoModel = mRoomData.realRoundInfo
         if (infoModel != null) {
-            if (infoModel.wantSingInfos.contains(WantSingerInfo(MyUserInfoManager.getInstance().uid.toInt()))) {
+            if (infoModel.wantSingInfos.contains(WantSingerInfo(MyUserInfoManager.uid.toInt()))) {
                 MyLog.w(TAG, "grabThisRound cancel 想唱列表中已经有你了")
                 return
             }
@@ -584,7 +583,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
 
         map["wantSingType"] = wantSingType
-        map["hasPassedCertify"] = MyUserInfoManager.getInstance().hasGrabCertifyPassed()
+        map["hasPassedCertify"] = MyUserInfoManager.hasGrabCertifyPassed()
 
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), object : ApiObserver<ApiResult>() {
@@ -595,13 +594,13 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     val mHasPassedCertify = result.data!!.getBoolean("hasPassedCertify")!!
 
                     if (mHasPassedCertify) {
-                        MyUserInfoManager.getInstance().setGrabCertifyPassed(mHasPassedCertify)
+                        MyUserInfoManager.setGrabCertifyPassed(mHasPassedCertify)
                         //抢成功了
                         val now = mRoomData.realRoundInfo
                         if (now != null && now.roundSeq == seq) {
                             val wantSingerInfo = WantSingerInfo()
                             wantSingerInfo.wantSingType = wantSingType
-                            wantSingerInfo.userID = MyUserInfoManager.getInstance().uid.toInt()
+                            wantSingerInfo.userID = MyUserInfoManager.uid.toInt()
                             wantSingerInfo.timeMs = System.currentTimeMillis()
                             now.addGrabUid(true, wantSingerInfo)
 
@@ -692,7 +691,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     val now = mRoomData.realRoundInfo
                     if (now != null && now.roundSeq == roundSeq) {
                         val noPassingInfo = MLightInfoModel()
-                        noPassingInfo.userID = MyUserInfoManager.getInstance().uid.toInt()
+                        noPassingInfo.userID = MyUserInfoManager.uid.toInt()
                         now.addLightOffUid(true, noPassingInfo)
                     }
                 } else {
@@ -742,7 +741,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                         mRoomData.setCoin(coin)
                         if (result.data!!.getBoolean("isBLightSuccess")!!) {
                             val m = BLightInfoModel()
-                            m.userID = MyUserInfoManager.getInstance().uid.toInt()
+                            m.userID = MyUserInfoManager.uid.toInt()
                             now.addLightBurstUid(true, m)
                         } else {
                             val reason = result.data!!.getString("bLightFailedMsg")
@@ -971,7 +970,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         }
         ZqEngineKit.getInstance().destroy("grabroom")
         mUiHandler.removeCallbacksAndMessages(null)
-        ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
+        GrabRoomMsgManager.getInstance().removeFilter(mPushMsgFilter)
         if (mExoPlayer != null) {
             mExoPlayer!!.release()
             mExoPlayer = null
@@ -1054,7 +1053,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     /**
      * 放弃演唱接口
      */
-    fun giveUpSing(ownerControl: Boolean) {
+    fun giveUpSing(ownerControl: Boolean, okListener: ((seq: Int) -> Unit)?) {
         if (ownerControl) {
             MyLog.w(TAG, "房主结束小游戏")
             estimateOverTsThisRound()
@@ -1070,9 +1069,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 ApiMethods.subscribe(mRoomServerApi.stopFreeMicroByOwner(body), object : ApiObserver<ApiResult>() {
                     override fun process(result: ApiResult) {
                         if (result.errno == 0) {
-                            mIGrabView.giveUpSuccess(now.roundSeq)
                             closeEngine()
                             MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.traceId)
+                            okListener?.invoke(now.roundSeq)
                         } else {
                             MyLog.w(TAG, "房主结束自由麦成功 traceid is " + result.traceId)
                         }
@@ -1086,9 +1085,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 ApiMethods.subscribe(mRoomServerApi.stopMiniGameByOwner(body), object : ApiObserver<ApiResult>() {
                     override fun process(result: ApiResult) {
                         if (result.errno == 0) {
-                            mIGrabView.giveUpSuccess(now.roundSeq)
                             closeEngine()
                             MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.traceId)
+                            okListener?.invoke(now.roundSeq)
                         } else {
                             MyLog.w(TAG, "房主结束小游戏成功 traceid is " + result.traceId)
                         }
@@ -1122,7 +1121,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), object : ApiObserver<ApiResult>() {
                 override fun process(result: ApiResult) {
                     if (result.errno == 0) {
-                        mIGrabView.giveUpSuccess(now.roundSeq)
+                        okListener?.invoke(now.roundSeq)
                         closeEngine()
                         MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.traceId)
                     } else {
@@ -1572,7 +1571,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 if (t > 1 && (t - 1) % mRoomData.grabConfigModel.challengeRoundCnt == 0) {
                     //拉取最新的星级数据
                     launch {
-                        val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq-1) }
+                        val result = subscribe { mRoomServerApi.getChallengeStarCount(mRoomData.gameId, mRoomData.enterRoundSeq, now.roundSeq - 1) }
                         if (result.errno == 0) {
                             val cnt = result.data.getIntValue("starCnt")
 //                            var continueShow = false
@@ -1654,7 +1653,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 if (now.status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.value) {
                     // pk的第一轮
                     val pkRoundInfoModel2 = now.getsPkRoundInfoModels()[1]
-                    if (MyUserInfoManager.getInstance().uid == pkRoundInfoModel2.userID.toLong()) {
+                    if (MyUserInfoManager.uid == pkRoundInfoModel2.userID.toLong()) {
                         // 本人第二个唱
                         if (pkRoundInfoModel2.overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.value || pkRoundInfoModel2.overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.value) {
                             needCloseEngine = true
@@ -1665,7 +1664,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 } else if (now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
                     // pk第二轮
                     val pkRoundInfoModel1 = now.getsPkRoundInfoModels()[0]
-                    if (MyUserInfoManager.getInstance().uid == pkRoundInfoModel1.userID.toLong()) {
+                    if (MyUserInfoManager.uid == pkRoundInfoModel1.userID.toLong()) {
                         // 本人第二个唱
                         if (pkRoundInfoModel1.overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.value || pkRoundInfoModel1.overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.value) {
                             needCloseEngine = true
@@ -1836,9 +1835,9 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 val songBeginTs = songModel.beginMs
                 if (accFile != null && accFile.exists()) {
                     // 伴奏文件存在
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), accFile.absolutePath, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                 } else {
-                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.getInstance().uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
+                    ZqEngineKit.getInstance().startAudioMixing(MyUserInfoManager.uid.toInt(), songModel.acc, midiFile.absolutePath, songBeginTs.toLong(), false, false, 1)
                 }
             }
         })
@@ -2013,7 +2012,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         var canAdd = false
         val playerInfoModel = event.infoModel
         MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel!!.userID + " name=" + playerInfoModel.userInfo.nicknameRemark + " role=" + playerInfoModel.role + " roundSeq=" + event.roundSeq)
-        if (playerInfoModel != null && playerInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (playerInfoModel != null && playerInfoModel.userID.toLong() == MyUserInfoManager.uid) {
             /**
              * 自己加入房间不提示
              * 因为会有一个bug，
@@ -2085,7 +2084,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: QCoinChangeEvent) {
-        if (event.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (event.userID.toLong() == MyUserInfoManager.uid) {
             if (event.remainCoin > 0) {
                 mRoomData.setCoin(event.remainCoin)
             }
@@ -2110,7 +2109,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                     for (chorusRoundInfoModel in list) {
                         if (chorusRoundInfoModel.userID == event.userID) {
                             val userInfoModel = mRoomData.getPlayerOrWaiterInfo(event.userID)
-                            if (event.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                            if (event.userID.toLong() == MyUserInfoManager.uid) {
                                 // 是我自己不唱了
                                 U.getToastUtil().showShort("你已经退出合唱")
                             } else if (now.singBySelf()) {
@@ -2165,11 +2164,14 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             val commentModel = CommentTextModel()
             commentModel.userInfo = userInfoModel
             commentModel.avatarColor = CommentModel.AVATAR_COLOR
-            val stringBuilder: SpannableStringBuilder
-            val spanUtils = SpanUtils()
+            val nameBuilder = SpanUtils()
                     .append(userInfoModel.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                    .create()
+            commentModel.nameBuilder = nameBuilder
+
+            val stringBuilder = SpanUtils()
                     .append("不唱了").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            stringBuilder = spanUtils.create()
+                    .create()
             commentModel.stringBuilder = stringBuilder
             EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
         }
@@ -2179,21 +2181,24 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         val commentModel = CommentTextModel()
         commentModel.userInfo = playerInfoModel.userInfo
         commentModel.avatarColor = CommentModel.AVATAR_COLOR
-        val stringBuilder: SpannableStringBuilder
-        if (playerInfoModel.userInfo.userId == UserAccountManager.SYSTEM_GRAB_ID) {
-            stringBuilder = SpanUtils()
-                    .append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+        val nameBuilder = SpanUtils()
+                .append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                .create()
+        commentModel.nameBuilder = nameBuilder
+
+        val stringBuilder = when {
+            playerInfoModel.userInfo.userId != UserAccountManager.SYSTEM_GRAB_ID -> {
+                val spanUtils = SpanUtils()
+                        .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
+                if (BuildConfig.DEBUG) {
+                    spanUtils.append(" 角色为" + playerInfoModel.role)
+                            .append(" 在线状态为" + playerInfoModel.isOnline)
+                }
+                spanUtils.create()
+            }
+            else -> SpanUtils()
                     .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                     .create()
-        } else {
-            val spanUtils = SpanUtils()
-                    .append(playerInfoModel.userInfo.nicknameRemark + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
-                    .append("加入了房间").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
-            if (BuildConfig.DEBUG) {
-                spanUtils.append(" 角色为" + playerInfoModel.role)
-                        .append(" 在线状态为" + playerInfoModel.isOnline)
-            }
-            stringBuilder = spanUtils.create()
         }
         commentModel.stringBuilder = stringBuilder
         EventBus.getDefault().post(PretendCommentMsgEvent(commentModel))
@@ -2469,10 +2474,10 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         if (msgService != null) {
             val ts = System.currentTimeMillis()
             val senderInfo = UserInfo.Builder()
-                    .setUserID(MyUserInfoManager.getInstance().uid.toInt())
-                    .setNickName(MyUserInfoManager.getInstance().nickName)
-                    .setAvatar(MyUserInfoManager.getInstance().avatar)
-                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().sex))
+                    .setUserID(MyUserInfoManager.uid.toInt())
+                    .setNickName(MyUserInfoManager.nickName)
+                    .setAvatar(MyUserInfoManager.avatar)
+                    .setSex(ESex.fromValue(MyUserInfoManager.sex))
                     .setDescription("")
                     .setIsSystem(false)
                     .build()
@@ -2487,7 +2492,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                         .setPosType(EMsgPosType.EPT_UNKNOWN)
                         .setSender(senderInfo)
                         .setMachineScore(MachineScore.Builder()
-                                .setUserID(MyUserInfoManager.getInstance().uid.toInt())
+                                .setUserID(MyUserInfoManager.uid.toInt())
                                 .setNo(machineScoreItem.no)
                                 .setScore(machineScoreItem.score)
                                 .setItemID(now.music.itemID)
@@ -2512,7 +2517,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
         //score = (int) (Math.mRandom()*100);
         val map = HashMap<String, Any>()
         val infoModel = mRoomData.realRoundInfo ?: return
-        map["userID"] = MyUserInfoManager.getInstance().uid
+        map["userID"] = MyUserInfoManager.uid
 
         var itemID = 0
         if (infoModel.music != null) {
@@ -2539,7 +2544,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
         val sb = StringBuilder()
         sb.append("skrer")
-                .append("|").append(MyUserInfoManager.getInstance().uid)
+                .append("|").append(MyUserInfoManager.uid)
                 .append("|").append(itemID)
                 .append("|").append(score)
                 .append("|").append(line)
@@ -2580,7 +2585,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
 
         if (giftPresentEvent.mGPrensentGiftMsgModel.propertyModelList != null) {
             for (property in giftPresentEvent.mGPrensentGiftMsgModel.propertyModelList) {
-                if (property.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                if (property.userID.toLong() == MyUserInfoManager.uid) {
                     if (property.coinBalance != -1f) {
                         UpdateCoinEvent.sendEvent(property.coinBalance.toInt(), property.lastChangeMs)
                     }
@@ -2595,7 +2600,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
             }
         }
 
-        if (giftPresentEvent.mGPrensentGiftMsgModel.receiveUserInfo.userId.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (giftPresentEvent.mGPrensentGiftMsgModel.receiveUserInfo.userId.toLong() == MyUserInfoManager.uid) {
             if (giftPresentEvent.mGPrensentGiftMsgModel.giftInfo.price <= 0) {
                 StatisticsAdapter.recordCountEvent("grab", "game_getflower", null)
             } else {
@@ -2608,7 +2613,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
     fun onEvent(qKickUserResultEvent: QKickUserResultEvent) {
         MyLog.d(TAG, "onEvent qKickUserResultEvent=$qKickUserResultEvent")
         // 踢人的结果
-        if (qKickUserResultEvent.kickUserID.toLong() == MyUserInfoManager.getInstance().uid) {
+        if (qKickUserResultEvent.kickUserID.toLong() == MyUserInfoManager.uid) {
             // 自己被踢出去
             if (qKickUserResultEvent.isKickSuccess) {
                 if (mRoomData.ownerId == qKickUserResultEvent.sourceUserID) {

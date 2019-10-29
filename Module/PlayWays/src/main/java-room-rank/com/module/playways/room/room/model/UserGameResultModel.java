@@ -1,7 +1,7 @@
 package com.module.playways.room.room.model;
 
-import com.zq.live.proto.Room.AudienceScore;
-import com.zq.live.proto.Room.UserGameResult;
+import com.zq.live.proto.GrabRoom.AudienceScore;
+import com.zq.live.proto.GrabRoom.UserGameResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;

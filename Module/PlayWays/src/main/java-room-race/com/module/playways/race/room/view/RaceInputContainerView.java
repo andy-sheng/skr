@@ -131,8 +131,8 @@ public class RaceInputContainerView extends InputContainerView {
     }
 
     @Override
-    public void onBoradShow() {
-        super.onBoradShow();
+    public void onBoardShow() {
+        super.onBoardShow();
         List<RacePlayerInfoModel> racePlayerInfoModelList = getPlayerInfoListExpectSelf();
         if (racePlayerInfoModelList.size() > 0) {
             racePlayerInfoModelList.add(0, new RacePlayerInfoModel());
@@ -149,8 +149,8 @@ public class RaceInputContainerView extends InputContainerView {
     }
 
     @Override
-    public void onBoradHide() {
-        super.onBoradHide();
+    public void onBoardHide() {
+        super.onBoardHide();
         mRecyclerView.setVisibility(GONE);
         mBackgroundIv.setVisibility(GONE);
     }
@@ -160,7 +160,7 @@ public class RaceInputContainerView extends InputContainerView {
         Iterator<RacePlayerInfoModel> it = racePlayerInfoModelList.iterator();
         while (it.hasNext()) {
             RacePlayerInfoModel racePlayerInfoModel = it.next();
-            if (racePlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (racePlayerInfoModel.getUserID() == MyUserInfoManager.INSTANCE.getUid()) {
                 it.remove();
             }
         }

@@ -72,12 +72,11 @@ class PhotoViewHolder(itemView: View,
         FrescoWorker.loadImage(mPhotoIv,
                 ImageFactory.newPathImage(path)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8f).toFloat())
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                         .setFailureDrawable(U.app().resources.getDrawable(R.drawable.load_img_error))
                         .setLoadingDrawable(U.app().resources.getDrawable(R.drawable.loading_place_holder_img))
                         .setLowImageUri(ImageUtils.SIZE.SIZE_160)
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.w).build())
-                        .setBorderColor(Color.parseColor("#3B4E79")).build<BaseImage>())
+                        .build<BaseImage>())
         mUploadTipsTv.visibility = View.VISIBLE
         mUploadTipsTv.setTextColor(Color.WHITE)
         mErrorContainer.visibility = View.GONE

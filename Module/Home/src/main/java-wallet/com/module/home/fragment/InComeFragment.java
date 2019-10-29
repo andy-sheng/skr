@@ -40,11 +40,9 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     public static final int DQ_EXCHANGE_REQ = 100;
 
     LinearLayout mMainActContainer;
-    CommonTitleBar mTitlebar;
     ExTextView mTvCashDetail;
     ExTextView mTvCashNum;
     ExTextView mStvWithdraw;
-    ImageView mIvAttention;
     ExTextView mTvDqDetail;
     ExTextView mTvDqNum;
     ExTextView mBtnExchangeDiamond;
@@ -76,24 +74,13 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = getRootView().findViewById(R.id.main_act_container);
-        mTitlebar = getRootView().findViewById(R.id.titlebar);
         mTvCashDetail = getRootView().findViewById(R.id.tv_cash_detail);
         mTvCashNum = getRootView().findViewById(R.id.tv_cash_num);
         mStvWithdraw = getRootView().findViewById(R.id.stv_withdraw);
-        mIvAttention = getRootView().findViewById(R.id.iv_attention);
         mTvDqDetail = getRootView().findViewById(R.id.tv_dq_detail);
         mTvDqNum = getRootView().findViewById(R.id.tv_dq_num);
         mBtnExchangeDiamond = getRootView().findViewById(R.id.btn_exchange_diamond);
         mBtnExchangeCash = getRootView().findViewById(R.id.btn_exchange_cash);
-
-        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-        });
 
         mTvCashDetail.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -180,25 +167,6 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                                 .setHasAnimation(true)
                                 .setFragmentDataListener(mFragmentDataListener)
                                 .build());
-            }
-        });
-
-        mIvAttention.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mDqRuleDialogPlus == null) {
-                    mDqRuleDialogPlus = DialogPlus.newDialog(getActivity())
-                            .setContentHolder(new ViewHolder(R.layout.dq_rule_layout))
-                            .setGravity(Gravity.CENTER)
-                            .setContentBackgroundResource(R.color.transparent)
-                            .setOverlayBackgroundResource(R.color.black_trans_80)
-                            .setExpanded(false)
-                            .setCancelable(true)
-                            .create();
-                }
-
-                mDqRuleDialogPlus.show();
-                mInComePresenter.getRule();
             }
         });
 

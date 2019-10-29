@@ -87,8 +87,9 @@ class FeedSelectModeActivity : BaseActivity() {
         return false
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         finish()
+        return true
     }
 
     override fun finish() {

@@ -1,7 +1,8 @@
 package com.module.feeds.detail.model;
 
+import com.common.core.userinfo.model.HonorInfo;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.core.userinfo.model.VipInfo;
+import com.common.core.userinfo.model.VerifyInfo;
 
 import java.io.Serializable;
 
@@ -23,7 +24,17 @@ public class FeedLikeModel implements Serializable {
     private int feedID;
     private long timeMs;
     private int userID;
-    private VipInfo vipInfo;
+    private VerifyInfo vipInfo;
+
+    public HonorInfo getHonorInfo() {
+        return honorInfo;
+    }
+
+    public void setHonorInfo(HonorInfo honorInfo) {
+        this.honorInfo = honorInfo;
+    }
+
+    private HonorInfo honorInfo;
     private int postsID;
 
     public int getPostsID() {
@@ -90,11 +101,11 @@ public class FeedLikeModel implements Serializable {
         this.userID = userID;
     }
 
-    public VipInfo getVipInfo() {
+    public VerifyInfo getVipInfo() {
         return vipInfo;
     }
 
-    public void setVipInfo(VipInfo vipInfo) {
+    public void setVipInfo(VerifyInfo vipInfo) {
         this.vipInfo = vipInfo;
     }
 

@@ -7,7 +7,7 @@ import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent
 import com.module.playways.grab.room.event.SomeOneJoinPlaySeatEvent
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
-import com.zq.live.proto.Room.EQUserRole
+import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
 import java.io.Serializable
 import java.util.*
@@ -44,11 +44,11 @@ class PlaybookRoomDataWhenNotStart : Serializable {
             p.isSkrer = false
             p.isOnline = true
             p.role = EQUserRole.EQUR_PLAY_USER.value
-            p.userID = MyUserInfoManager.getInstance().uid.toInt()
+            p.userID = MyUserInfoManager.uid.toInt()
             val userInfoModel = UserInfoModel()
-            userInfoModel.userId = MyUserInfoManager.getInstance().uid.toInt()
-            userInfoModel.avatar = MyUserInfoManager.getInstance().avatar
-            userInfoModel.nickname = MyUserInfoManager.getInstance().nickName
+            userInfoModel.userId = MyUserInfoManager.uid.toInt()
+            userInfoModel.avatar = MyUserInfoManager.avatar
+            userInfoModel.nickname = MyUserInfoManager.nickName
             p.userInfo = userInfoModel
             listOf(p)
         }

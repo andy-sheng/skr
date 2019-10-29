@@ -19,6 +19,12 @@ import retrofit2.http.Query;
 public interface UserInfoServerApi {
 
     /**
+     *
+     */
+    @PUT("/v1/profile/my-voice")
+    Observable<ApiResult> uploadVoiceTag(@Body RequestBody body);
+
+    /**
      * 拿到某个人基本的信息
      *
      * @param userID
@@ -46,7 +52,7 @@ public interface UserInfoServerApi {
      * @param userID
      * @return
      */
-    @GET("/v2/skr/homepage")
+    @GET("/v3/skr/homepage")
     Observable<ApiResult> getHomePage(@Query("userID") long userID);
 
 

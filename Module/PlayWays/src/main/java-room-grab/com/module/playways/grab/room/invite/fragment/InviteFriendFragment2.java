@@ -21,16 +21,16 @@ import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.dialog.InviteFriendDialog;
 import com.module.common.ICallback;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.model.ShareModel;
 import com.module.playways.grab.room.invite.view.InviteFriendView;
 import com.module.playways.grab.room.invite.view.InviteShareFriendView;
-import com.module.playways.grab.room.invite.model.ShareModel;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.component.dialog.InviteFriendDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,6 +41,7 @@ public class InviteFriendFragment2 extends BaseFragment {
 
     public final static int FROM_GRAB_ROOM = 1;
     public final static int FROM_DOUBLE_ROOM = 2;
+    public final static int FROM_MIC_ROOM = 3;
 
     SlidingTabLayout mInviteTab;
     NestViewPager mInviteVp;
@@ -192,7 +193,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         });
 
         if (mFrom == FROM_GRAB_ROOM) {
-            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mTagID, mMediaType, new ICallback() {
+            SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, mTagID, mMediaType, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -205,8 +206,22 @@ public class InviteFriendFragment2 extends BaseFragment {
 
                 }
             });
-        } else {
-            SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mGameID, mMediaType, new ICallback() {
+        } else if (mFrom == FROM_DOUBLE_ROOM) {
+            SkrKouLingUtils.genDoubleJoinGrabGameKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, mMediaType, new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    if (obj != null) {
+                        mKouLingToken = (String) obj;
+                    }
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+
+                }
+            });
+        } else if (mFrom == FROM_MIC_ROOM) {
+            SkrKouLingUtils.genJoinMicRoomKouling((int) MyUserInfoManager.INSTANCE.getUid(), mGameID, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     if (obj != null) {
@@ -226,7 +241,7 @@ public class InviteFriendFragment2 extends BaseFragment {
     private void shareUrl(SharePlatform sharePlatform) {
         StringBuilder sb = new StringBuilder();
         sb.append("http://test.app.inframe.mobi/room/invitation")
-                .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
+                .append("?skerId=").append(String.valueOf(MyUserInfoManager.INSTANCE.getUid()))
                 .append("&code=");
         String code = String.valueOf(mKouLingToken);
         try {
@@ -246,9 +261,12 @@ public class InviteFriendFragment2 extends BaseFragment {
         if (mFrom == FROM_GRAB_ROOM) {
             web.setTitle("房间已开,就等你来唱");
             web.setDescription("我在撕歌skr开了一个嗨唱包房，快来一起耍呀～");
-        } else {
+        } else if (mFrom == FROM_DOUBLE_ROOM) {
             web.setTitle("房间已开，只等你来");
             web.setDescription("我在撕歌skr开了一个专属我们的唱聊房间，一起边唱边聊吧～");
+        } else if (mFrom == FROM_MIC_ROOM) {
+            web.setTitle("房间已开，就等你来唱");
+            web.setDescription("我在撕歌skr开了一个专属我们的小k房，快来一起耍呀～");
         }
 
         switch (sharePlatform) {
@@ -279,9 +297,11 @@ public class InviteFriendFragment2 extends BaseFragment {
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
             if (mFrom == FROM_DOUBLE_ROOM) {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID,0, mMediaType, mKouLingToken);
-            } else {
-                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID,mTagID, mMediaType, mKouLingToken);
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_DOUBLE_GAME, mGameID, 0, mMediaType, mKouLingToken);
+            } else if (mFrom == FROM_GRAB_ROOM) {
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
+            } else if (mFrom == FROM_MIC_ROOM) {
+                mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_MIC_GAME, mGameID, mTagID, mMediaType, mKouLingToken);
             }
         }
         mInviteFriendDialog.show();

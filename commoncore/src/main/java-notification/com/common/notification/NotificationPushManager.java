@@ -13,6 +13,7 @@ import com.common.notification.event.FeedCommentLikeNotifyEvent;
 import com.common.notification.event.FeedLikeNotifyEvent;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.notification.event.MicRoomInviteEvent;
 import com.common.notification.event.PostsCommentAddEvent;
 import com.common.notification.event.PostsCommentLikeEvent;
 import com.common.notification.event.PostsLikeEvent;
@@ -28,6 +29,7 @@ import com.zq.live.proto.Notification.FeedCommentAddMsg;
 import com.zq.live.proto.Notification.FeedCommentLikeMsg;
 import com.zq.live.proto.Notification.FeedLikeMsg;
 import com.zq.live.proto.Notification.FollowMsg;
+import com.zq.live.proto.Notification.InviteMicMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
 import com.zq.live.proto.Notification.NotificationMsg;
 import com.zq.live.proto.Notification.PostsCommentAddMsg;
@@ -120,6 +122,8 @@ public class NotificationPushManager {
             processPostsCommentLikeMsg(baseNotiInfo, msg.getPostsCommentLikeMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_PS_COMMENT_ADD) {
             processPostsCommentAddMsg(baseNotiInfo, msg.getPostsCommentAddMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_INVITE_MIC) {
+            processMicInviteMsg(baseNotiInfo, msg.getInviteMicMsg());
         }
     }
 
@@ -138,6 +142,15 @@ public class NotificationPushManager {
             EventBus.getDefault().post(feedCommentAddNotifyEvent);
         } else {
             MyLog.e(TAG, "processPostsCommentLikeMsg postsCommentLikeMsg=null");
+        }
+    }
+
+    private void processMicInviteMsg(BaseNotiInfo baseNotiInfo, InviteMicMsg inviteMicMsg) {
+        if (inviteMicMsg != null) {
+            MicRoomInviteEvent micRoomInviteEvent = new MicRoomInviteEvent(baseNotiInfo, inviteMicMsg);
+            EventBus.getDefault().post(micRoomInviteEvent);
+        } else {
+            MyLog.e(TAG, "processMicInviteMsg postsCommentAddMsg=null");
         }
     }
 

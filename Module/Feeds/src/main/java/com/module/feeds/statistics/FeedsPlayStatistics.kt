@@ -198,7 +198,7 @@ object FeedsPlayStatistics {
 //        completeMap.clear()
         val mutableSet1 = mapOf(
                 "stats" to l1,
-                "userID" to MyUserInfoManager.getInstance().uid,
+                "userID" to MyUserInfoManager.uid,
                 "platform" to 20,
                 "vars" to RA.getVars(),
                 "testList" to RA.getTestList()

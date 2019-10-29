@@ -3,6 +3,8 @@ package com.component.busilib.constans;
 public class GameModeType {
 
 
+    public static final int GAME_MODE_UNKNOW = 0; // 未知
+
     public static final int GAME_MODE_CLASSIC_RANK = 4; // 经典排位模式
 
     //public static final int GAME_MODE_FUNNY = 2; // 娱乐模式
@@ -12,4 +14,6 @@ public class GameModeType {
     public static final int GAME_MODE_RACE = 6; // 新排位赛模式
 
     public static final int GAME_MODE_PLAYBOOK = 7; // 歌单战模式
+
+    public static final int GAME_MODE_MIC = 8; // 新排位赛模式
 }

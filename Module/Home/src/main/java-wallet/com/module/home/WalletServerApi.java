@@ -182,6 +182,14 @@ public interface WalletServerApi {
     Observable<ApiResult> getZSBalance();
 
     /**
+     * 获取金币数量
+     *
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
+    Observable<ApiResult> getCoinNum();
+
+    /**
      * 获取红钻余额
      *
      * @return

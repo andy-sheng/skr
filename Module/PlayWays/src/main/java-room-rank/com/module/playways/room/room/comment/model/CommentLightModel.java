@@ -22,10 +22,14 @@ public class CommentLightModel extends CommentModel {
 
         setUserInfo(voter.getUserInfo());
         setAvatarColor(CommentModel.AVATAR_COLOR);
+        SpannableStringBuilder nameBuilder = new SpanUtils()
+                .append(voter.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR)
+                .create();
+        setNameBuilder(nameBuilder);
+
         SpannableStringBuilder stringBuilder = null;
         if (mGameType == GameModeType.GAME_MODE_GRAB) {
-            SpanUtils spanUtils = new SpanUtils()
-                    .append(voter.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.GRAB_NAME_COLOR);
+            SpanUtils spanUtils = new SpanUtils();
             if (isMiniGame) {
                 stringBuilder = spanUtils.append(isBao ? "对表演爆灯啦" : "对表演灭灯啦").setForegroundColor(CommentModel.GRAB_TEXT_COLOR)
                         .create();
@@ -42,13 +46,11 @@ public class CommentLightModel extends CommentModel {
             }
         } else if (mGameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
             stringBuilder = new SpanUtils()
-                    .append(voter.getUserInfo().getNicknameRemark() + " ").setForegroundColor(CommentModel.RANK_NAME_COLOR)
                     .append("对").setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                     .append(singer.getUserInfo().getNicknameRemark()).setForegroundColor(CommentModel.RANK_NAME_COLOR)
                     .append(isBao ? "爆了个灯" : "按了“x”").setForegroundColor(CommentModel.RANK_TEXT_COLOR)
                     .create();
         }
-
         setStringBuilder(stringBuilder);
     }
 }

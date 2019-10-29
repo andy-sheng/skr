@@ -40,7 +40,7 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
             }
         } else {
             tryInflate()
-            mParentView?.setVisibility(visibility)
+            mParentView?.visibility = visibility
         }
     }
 

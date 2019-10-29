@@ -16,7 +16,6 @@ import com.common.log.MyLog
 import com.common.player.IPlayer
 import com.common.player.MyMediaPlayer
 import com.common.player.PlayerCallbackAdapter
-import com.common.player.VideoPlayerAdapter
 import com.common.recorder.MyMediaRecorder
 import com.common.rxretrofit.*
 import com.common.upload.UploadCallback
@@ -25,7 +24,7 @@ import com.common.upload.UploadTask
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
-import com.common.view.countdown.CircleCountDownView
+import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.module.playways.R

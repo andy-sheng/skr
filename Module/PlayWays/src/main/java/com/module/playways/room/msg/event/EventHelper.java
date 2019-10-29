@@ -33,19 +33,19 @@ public class EventHelper {
             basePushInfo.setRoomID(roomId);
 
             ESex sex = ESex.SX_UNKNOWN;
-            if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+            if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_MALE.getValue()) {
                 sex = ESex.SX_MALE;
-            } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+            } else if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_FEMALE.getValue()) {
                 sex = ESex.SX_FEMALE;
             }
-            UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
-                    , MyUserInfoManager.getInstance().getNickName()
-                    , MyUserInfoManager.getInstance().getAvatar()
+            UserInfo userInfo = new UserInfo((int) MyUserInfoManager.INSTANCE.getUid()
+                    , MyUserInfoManager.INSTANCE.getNickName()
+                    , MyUserInfoManager.INSTANCE.getAvatar()
                     , sex
                     , ""
                     , false
                     , 0
-                    , null, null);
+                    , null, null,null);
 
             basePushInfo.setSender(userInfo);
             CommentMsgEvent commentMsgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
@@ -67,19 +67,19 @@ public class EventHelper {
             basePushInfo.setRoomID(roomId);
 
             ESex sex = ESex.SX_UNKNOWN;
-            if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+            if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_MALE.getValue()) {
                 sex = ESex.SX_MALE;
-            } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+            } else if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_FEMALE.getValue()) {
                 sex = ESex.SX_FEMALE;
             }
-            UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
-                    , MyUserInfoManager.getInstance().getNickName()
-                    , MyUserInfoManager.getInstance().getAvatar()
+            UserInfo userInfo = new UserInfo((int) MyUserInfoManager.INSTANCE.getUid()
+                    , MyUserInfoManager.INSTANCE.getNickName()
+                    , MyUserInfoManager.INSTANCE.getAvatar()
                     , sex
                     , ""
                     , false
                     , 0
-                    , null, null);
+                    , null, null,null);
 
             basePushInfo.setSender(userInfo);
             EventBus.getDefault().post(new DynamicEmojiMsgEvent(basePushInfo, DynamicEmojiMsgEvent.MSG_TYPE_SEND, dynamicModel));
@@ -92,20 +92,20 @@ public class EventHelper {
         basePushInfo.setRoomID(roomId);
 
         ESex sex = ESex.SX_UNKNOWN;
-        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+        if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_MALE.getValue()) {
             sex = ESex.SX_MALE;
-        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+        } else if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_FEMALE.getValue()) {
             sex = ESex.SX_FEMALE;
         }
 
-        UserInfo userInfo = new UserInfo((int) MyUserInfoManager.getInstance().getUid()
-                , MyUserInfoManager.getInstance().getNickName()
-                , MyUserInfoManager.getInstance().getAvatar()
+        UserInfo userInfo = new UserInfo((int) MyUserInfoManager.INSTANCE.getUid()
+                , MyUserInfoManager.INSTANCE.getNickName()
+                , MyUserInfoManager.INSTANCE.getAvatar()
                 , sex
                 , ""
                 , false
                 , 0
-                , null, null);
+                , null, null,null);
         basePushInfo.setSender(userInfo);
         EventBus.getDefault().post(new AudioMsgEvent(basePushInfo, AudioMsgEvent.MSG_TYPE_SEND, localPath, duration, url));
     }

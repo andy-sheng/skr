@@ -160,7 +160,7 @@ class FeedsTagDetailActivity : BaseActivity() {
                 override fun click(view: View?) {
                     launch {
                         val obj = subscribe(RequestControl("FeedsTagDetailActivity", ControlType.CancelThis)) {
-                            val map = mutableMapOf("albumID" to model!!.rankID, "isCollected" to !model!!.isCollected, "userID" to MyUserInfoManager.getInstance().uid)
+                            val map = mutableMapOf("albumID" to model!!.rankID, "isCollected" to !model!!.isCollected, "userID" to MyUserInfoManager.uid)
                             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
                             mFeedServerApi.albumCollect(body)
                         }
@@ -186,7 +186,7 @@ class FeedsTagDetailActivity : BaseActivity() {
 
             launch {
                 val obj = subscribe(RequestControl("FeedsTagDetailActivity", ControlType.CancelThis)) {
-                    mFeedServerApi.checkAlbumCollect(model!!.rankID, MyUserInfoManager.getInstance().uid)
+                    mFeedServerApi.checkAlbumCollect(model!!.rankID, MyUserInfoManager.uid)
                 }
 
                 if (obj.errno == 0) {
@@ -462,7 +462,7 @@ class FeedsTagDetailActivity : BaseActivity() {
     private fun getRecomendTagDetailList(offset: Int, queryTime: String, date: Date, isClean: Boolean, dataOkListener: (() -> Unit)? = null) {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagDetailList", ControlType.CancelThis)) {
-                mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.rankID!!, queryTime, MyUserInfoManager.getInstance().uid)
+                mFeedServerApi.getRecomendTagDetailList(offset, mCNT, model?.rankID!!, queryTime, MyUserInfoManager.uid)
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("rankInfos"), FeedsWatchModel::class.java)

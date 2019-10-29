@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -16,15 +15,13 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.component.busilib.view.AvatarView;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.zq.live.proto.Common.ESex;
+import com.component.busilib.view.NickNameView;
 import com.component.relation.adapter.RelationAdapter;
 
 public class RelationHolderView extends RecyclerView.ViewHolder {
     ConstraintLayout mContent;
     AvatarView mAvatarIv;
-    ExTextView mNameTv;
-    ImageView mSexIv;
+    NickNameView mNickNameTv;
     ExTextView mFollowTv;
     ExTextView mStatusTv;
 
@@ -38,8 +35,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.mMode = mode;
         mContent = itemView.findViewById(R.id.content);
         mAvatarIv = itemView.findViewById(R.id.avatar_iv);
-        mSexIv = itemView.findViewById(R.id.sex_iv);
-        mNameTv = itemView.findViewById(R.id.name_tv);
+        mNickNameTv = itemView.findViewById(R.id.nickname_tv);
         mFollowTv = itemView.findViewById(R.id.follow_tv);
         mStatusTv = itemView.findViewById(R.id.status_tv);
 
@@ -67,16 +63,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.userInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mNameTv.setText(userInfoModel.getNicknameRemark());
-        if (userInfoModel.getSex() == ESex.SX_MALE.getValue()) {
-            mSexIv.setVisibility(View.VISIBLE);
-            mSexIv.setBackgroundResource(R.drawable.sex_man_icon);
-        } else if (userInfoModel.getSex() == ESex.SX_FEMALE.getValue()) {
-            mSexIv.setVisibility(View.VISIBLE);
-            mSexIv.setBackgroundResource(R.drawable.sex_woman_icon);
-        } else {
-            mSexIv.setVisibility(View.GONE);
-        }
+        mNickNameTv.setAllStateText(userInfoModel.getNicknameRemark(), userInfoModel.getSex(), userInfoModel.getHonorInfo());
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
@@ -85,7 +72,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
             mFollowTv.setBackground(RelationAdapter.mFollowDrawable);
         } else {
-            if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            if (userInfoModel.getUserId() == MyUserInfoManager.INSTANCE.getUid()) {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {

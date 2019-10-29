@@ -8,7 +8,7 @@ import com.zq.live.proto.Notification.CombineRoomEnterMsg;
  * 通过在唱聊房内邀请之后对方同意之后收到的push
  */
 public class CRStartByCreateNotifyEvent {
-    private long inviterId = MyUserInfoManager.getInstance().getUid();
+    private long inviterId = MyUserInfoManager.INSTANCE.getUid();
     BaseNotiInfo basePushInfo;
     CombineRoomEnterMsg combineRoomEnterMsg;
 

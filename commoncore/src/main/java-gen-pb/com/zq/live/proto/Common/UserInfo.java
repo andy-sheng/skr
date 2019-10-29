@@ -123,14 +123,24 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   )
   private final UserRanking ranking;
 
+  /**
+   * 会员信息
+   */
+  @WireField(
+      tag = 10,
+      adapter = "com.zq.live.proto.Common.HonorInfo#ADAPTER"
+  )
+  private final HonorInfo honorInfo;
+
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
-      Boolean isSystem, Integer mainLevel, VipInfo vipInfo, UserRanking ranking) {
-    this(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipInfo, ranking, ByteString.EMPTY);
+      Boolean isSystem, Integer mainLevel, VipInfo vipInfo, UserRanking ranking,
+      HonorInfo honorInfo) {
+    this(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipInfo, ranking, honorInfo, ByteString.EMPTY);
   }
 
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
       Boolean isSystem, Integer mainLevel, VipInfo vipInfo, UserRanking ranking,
-      ByteString unknownFields) {
+      HonorInfo honorInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.nickName = nickName;
@@ -141,6 +151,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     this.mainLevel = mainLevel;
     this.vipInfo = vipInfo;
     this.ranking = ranking;
+    this.honorInfo = honorInfo;
   }
 
   @Override
@@ -155,6 +166,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     builder.mainLevel = mainLevel;
     builder.vipInfo = vipInfo;
     builder.ranking = ranking;
+    builder.honorInfo = honorInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -173,7 +185,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
         && Internal.equals(isSystem, o.isSystem)
         && Internal.equals(mainLevel, o.mainLevel)
         && Internal.equals(vipInfo, o.vipInfo)
-        && Internal.equals(ranking, o.ranking);
+        && Internal.equals(ranking, o.ranking)
+        && Internal.equals(honorInfo, o.honorInfo);
   }
 
   @Override
@@ -190,6 +203,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       result = result * 37 + (mainLevel != null ? mainLevel.hashCode() : 0);
       result = result * 37 + (vipInfo != null ? vipInfo.hashCode() : 0);
       result = result * 37 + (ranking != null ? ranking.hashCode() : 0);
+      result = result * 37 + (honorInfo != null ? honorInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -207,6 +221,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     if (mainLevel != null) builder.append(", mainLevel=").append(mainLevel);
     if (vipInfo != null) builder.append(", vipInfo=").append(vipInfo);
     if (ranking != null) builder.append(", ranking=").append(ranking);
+    if (honorInfo != null) builder.append(", honorInfo=").append(honorInfo);
     return builder.replace(0, 2, "UserInfo{").append('}').toString();
   }
 
@@ -311,6 +326,16 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   }
 
   /**
+   * 会员信息
+   */
+  public HonorInfo getHonorInfo() {
+    if(honorInfo==null){
+        return new HonorInfo.Builder().build();
+    }
+    return honorInfo;
+  }
+
+  /**
    * 用户ID
    */
   public boolean hasUserID() {
@@ -373,6 +398,13 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     return ranking!=null;
   }
 
+  /**
+   * 会员信息
+   */
+  public boolean hasHonorInfo() {
+    return honorInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<UserInfo, Builder> {
     private Integer userID;
 
@@ -391,6 +423,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     private VipInfo vipInfo;
 
     private UserRanking ranking;
+
+    private HonorInfo honorInfo;
 
     public Builder() {
     }
@@ -467,9 +501,17 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       return this;
     }
 
+    /**
+     * 会员信息
+     */
+    public Builder setHonorInfo(HonorInfo honorInfo) {
+      this.honorInfo = honorInfo;
+      return this;
+    }
+
     @Override
     public UserInfo build() {
-      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipInfo, ranking, super.buildUnknownFields());
+      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, mainLevel, vipInfo, ranking, honorInfo, super.buildUnknownFields());
     }
   }
 
@@ -489,6 +531,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.mainLevel)
           + VipInfo.ADAPTER.encodedSizeWithTag(8, value.vipInfo)
           + UserRanking.ADAPTER.encodedSizeWithTag(9, value.ranking)
+          + HonorInfo.ADAPTER.encodedSizeWithTag(10, value.honorInfo)
           + value.unknownFields().size();
     }
 
@@ -503,6 +546,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.mainLevel);
       VipInfo.ADAPTER.encodeWithTag(writer, 8, value.vipInfo);
       UserRanking.ADAPTER.encodeWithTag(writer, 9, value.ranking);
+      HonorInfo.ADAPTER.encodeWithTag(writer, 10, value.honorInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -528,6 +572,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           case 7: builder.setMainLevel(ProtoAdapter.UINT32.decode(reader)); break;
           case 8: builder.setVipInfo(VipInfo.ADAPTER.decode(reader)); break;
           case 9: builder.setRanking(UserRanking.ADAPTER.decode(reader)); break;
+          case 10: builder.setHonorInfo(HonorInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -544,6 +589,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       Builder builder = value.newBuilder();
       if (builder.vipInfo != null) builder.vipInfo = VipInfo.ADAPTER.redact(builder.vipInfo);
       if (builder.ranking != null) builder.ranking = UserRanking.ADAPTER.redact(builder.ranking);
+      if (builder.honorInfo != null) builder.honorInfo = HonorInfo.ADAPTER.redact(builder.honorInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

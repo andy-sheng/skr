@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -46,8 +46,8 @@
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/view_60_dp"
                     android:fitsSystemWindows="true"
+                    android:minHeight="@dimen/view_60_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <android.support.constraint.ConstraintLayout
@@ -64,7 +64,7 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             avatarView:borderColor="@color/white"
-                            avatarView:borderWidth="@dimen/view_2_dp"/>
+                            avatarView:borderWidth="@dimen/view_2_dp" />
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/more_btn"
@@ -90,30 +90,19 @@
                             levelView2:subHeight2="@dimen/view_3_dp"
                             levelView2:subWidth2="@dimen/view_5_dp" />
 
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/name_tv"
-                            android:layout_width="wrap_content"
+                        <com.component.busilib.view.NickNameView
+                            android:id="@+id/honor_tv"
+                            android:layout_width="@dimen/view_0_dp"
                             android:layout_height="@dimen/view_25_dp"
                             android:layout_marginLeft="@dimen/view_5_dp"
                             android:layout_marginTop="@dimen/view_5_dp"
+                            android:layout_marginRight="@dimen/view_10_dp"
                             android:ellipsize="end"
-                            android:gravity="left|center_vertical"
-                            android:maxEms="7"
                             android:maxLines="1"
-                            android:paddingRight="@dimen/view_20_dp"
                             android:singleLine="true"
-                            android:textColor="#3B4E79"
-                            android:textSize="@dimen/textsize_18_dp"
                             app:layout_constraintLeft_toRightOf="@id/level_view"
+                            app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="@id/avatar_iv" />
-
-                        <ImageView
-                            android:id="@+id/sex_iv"
-                            android:layout_width="@dimen/view_16_dp"
-                            android:layout_height="@dimen/view_16_dp"
-                            app:layout_constraintBottom_toBottomOf="@id/name_tv"
-                            app:layout_constraintRight_toRightOf="@id/name_tv"
-                            app:layout_constraintTop_toTopOf="@id/name_tv" />
 
                         <com.component.busilib.view.MarqueeTextView
                             android:id="@+id/sign_tv"
@@ -131,31 +120,31 @@
                             android:textColor="#3B4E79"
                             android:textSize="@dimen/textsize_14_dp"
                             app:layout_constraintStart_toStartOf="@id/level_view"
-                            app:layout_constraintTop_toBottomOf="@id/name_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/honor_tv" />
 
                         <TextView
-                            android:id="@+id/vip_tv"
+                            android:id="@+id/verify_tv"
                             android:layout_width="@dimen/view_0_dp"
                             android:layout_height="@dimen/view_20_dp"
                             android:layout_marginTop="@dimen/view_4_dp"
                             android:layout_marginRight="@dimen/view_10_dp"
-                            android:textSize="@dimen/textsize_14_dp"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:ellipsize="end"
-                            android:textColor="#cc3B4E79"
-                            android:text="ahafhafhafafhafhahgagagaggag"
                             android:drawableLeft="@drawable/gerenxinxi_sigerenzheng"
                             android:drawablePadding="@dimen/view_8_dp"
+                            android:ellipsize="end"
                             android:gravity="left|center_vertical"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text="ahafhafhafafhafhahgagagaggag"
+                            android:textColor="#cc3B4E79"
+                            android:textSize="@dimen/textsize_14_dp"
+                            android:visibility="gone"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintStart_toStartOf="@id/level_view"
-                            app:layout_constraintTop_toBottomOf="@id/name_tv"
-                            android:visibility="gone"/>
+                            app:layout_constraintTop_toBottomOf="@id/honor_tv" />
 
-                        <com.common.flowlayout.TagFlowLayout
-                            android:id="@+id/flowlayout"
+                        <com.component.person.view.PersonTagView
+                            android:id="@+id/person_tag_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/view_16_dp"
@@ -173,7 +162,7 @@
                             android:background="#33404A9A"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/flowlayout" />
+                            app:layout_constraintTop_toBottomOf="@id/person_tag_view" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/empty_my_photo"

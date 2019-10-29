@@ -107,7 +107,7 @@ class GiftPanelView : FrameLayout {
                     ?: ArrayList()
 
             for (grabPlayerInfoModel in grabPlayerInfoModelList) {
-                if (grabPlayerInfoModel.getUserID().toLong() != MyUserInfoManager.getInstance().uid) {
+                if (grabPlayerInfoModel.getUserID().toLong() != MyUserInfoManager.uid) {
                     return grabPlayerInfoModel
                 }
             }
@@ -123,7 +123,7 @@ class GiftPanelView : FrameLayout {
             val it = grabPlayerInfoModelList.iterator()
             while (it.hasNext()) {
                 val grabPlayerInfoModel = it.next()
-                if (grabPlayerInfoModel.getUserID().toLong() == MyUserInfoManager.getInstance().uid) {
+                if (grabPlayerInfoModel.getUserID().toLong() == MyUserInfoManager.uid) {
                     it.remove()
                 }
             }
@@ -449,14 +449,14 @@ class GiftPanelView : FrameLayout {
     private fun setSelectArea(playerInfoModel: PlayerInfoModel?) {
         if (mRoomData?.realRoundInfo == null
                 || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 0
-                || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.getInstance().uid.toInt()) {
+                || getGrabRoomData()?.getInSeatPlayerInfoList()?.size === 1 && getGrabRoomData()?.getInSeatPlayerInfoList()?.get(0)?.getUserID() === MyUserInfoManager.uid.toInt()) {
             //只有自己
             mRlPlayerSelectArea.visibility = View.GONE
         } else {
             mRlPlayerSelectArea.visibility = View.VISIBLE
 
             if (playerInfoModel != null) {
-                if (playerInfoModel.userID.toLong() == MyUserInfoManager.getInstance().uid) {
+                if (playerInfoModel.userID.toLong() == MyUserInfoManager.uid) {
                     //自己在麦上
                     selectSendGiftPlayer(null)
                 } else {

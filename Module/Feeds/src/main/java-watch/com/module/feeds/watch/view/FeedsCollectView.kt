@@ -295,7 +295,7 @@ class FeedsCollectView(var fragment: BaseFragment) : ExConstraintLayout(fragment
     private fun getRecommendTagList() {
         launch {
             val obj = subscribe(RequestControl("getRecomendTagList", ControlType.CancelThis)) {
-                mFeedServerApi.getAlbumCollectList(0, 10, MyUserInfoManager.getInstance().uid)
+                mFeedServerApi.getAlbumCollectList(0, 10, MyUserInfoManager.uid)
             }
             if (obj.errno == 0) {
                 val list = JSON.parseArray(obj.data.getString("tags"), FeedRecommendTagModel::class.java)

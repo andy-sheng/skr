@@ -27,14 +27,6 @@ interface GrabRoomServerApi {
     val dynamicEmoji: Observable<ApiResult>
 
     /**
-     * 获取推荐tag列表
-     *
-     * @return
-     */
-    @get:GET("http://dev.api.inframe.mobi/v1/playbook/stand-billboards")
-    val standBillBoards: Observable<ApiResult>
-
-    /**
      * room 相关
      */
 
@@ -268,17 +260,6 @@ interface GrabRoomServerApi {
     fun receiveCash(@Body body: RequestBody): Observable<ApiResult>
 
     /**
-     * 获取房间内的歌曲
-     *
-     * @param roomID
-     * @param offset
-     * @param limit
-     * @return
-     */
-    @GET("http://dev.room.inframe.mobi/v2/room/playbook")
-    fun getPlaybook(@Query("roomID") roomID: Int, @Query("offset") offset: Long, @Query("limit") limit: Int): Observable<ApiResult>
-
-    /**
      * 房主改变当前房间的tag
      * {
      * "newTagID": 0,
@@ -290,31 +271,6 @@ interface GrabRoomServerApi {
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/change-music-tag")
     fun changeMusicTag(@Body body: RequestBody): Observable<ApiResult>
-
-    /**
-     * 房主添加歌曲
-     * {
-     * "playbookItemID": 0
-     * }
-     *
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.room.inframe.mobi/v2/room/add-music")
-    fun addMusic(@Body body: RequestBody): Observable<ApiResult>
-
-    /**
-     * 房主闪促歌曲
-     * {
-     * "playbookItemID": 0,
-     * "roundReq": 0
-     * }
-     *
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.room.inframe.mobi/v2/room/del-music")
-    fun delMusic(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 修改房间名
@@ -435,71 +391,6 @@ message STCommitSegmentResultReq
     @Headers(ApiManager.ALWAYS_LOG_TAG)
     @PUT("http://dev.stand.inframe.mobi/v1/stand/pk-commit-segment-result")
     fun sendPkPerSegmentResult(@Body body: RequestBody): Observable<ApiResult>
-
-    /**
-     * 获取推荐歌曲
-     *
-     * @return
-     */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-billboard")
-    fun getListStandBoards(@Query("type") type: Int, @Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
-
-    /**
-     * 获取推荐歌曲
-     *
-     * @return
-     */
-    @GET("http://dev.api.inframe.mobi/v1/playbook/list-magpie-billboard")
-    fun getDoubleListStandBoards(@Query("type") type: Int, @Query("offset") offset: Int, @Query("cnt") count: Int): Observable<ApiResult>
-
-
-    /**
-     * 非房主申请点歌
-     *
-     * @param body {
-     * "itemID": 0,
-     * "roomID": 0
-     * }
-     * @return
-     */
-    @PUT("http://dev.room.inframe.mobi/v1/room/suggest-music")
-    fun suggestMusic(@Body body: RequestBody): Observable<ApiResult>
-
-
-    /**
-     * 房主获取用户点的歌曲
-     *
-     * @param roomID
-     * @param offset
-     * @param limit
-     * @return
-     */
-    @GET("http://dev.room.inframe.mobi/v1/room/list-music-suggested")
-    fun getListMusicSuggested(@Query("roomID") roomID: Int, @Query("offset") offset: Long, @Query("limit") limit: Int): Observable<ApiResult>
-
-    /**
-     * 房主添加用户点的歌曲
-     *
-     * @param body {
-     * "itemID": 0,
-     * "roomID": 0
-     * }
-     * @return
-     */
-    @PUT("http://dev.room.inframe.mobi/v1/room/add-music-suggested")
-    fun addSuggestMusic(@Body body: RequestBody): Observable<ApiResult>
-
-    /**
-     * 房主删除用户点的歌曲
-     *
-     * @param body {
-     * "itemID": 0,
-     * "roomID": 0
-     * }
-     * @return
-     */
-    @PUT("http://dev.room.inframe.mobi/v1/room/del-music-suggested")
-    fun deleteSuggestMusic(@Body body: RequestBody): Observable<ApiResult>
 
     /**
      * 房主添加自定义小游戏

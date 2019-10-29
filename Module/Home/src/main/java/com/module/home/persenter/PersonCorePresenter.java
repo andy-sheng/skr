@@ -12,8 +12,10 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
+import com.component.busilib.friends.VoiceInfoModel;
 import com.component.person.model.RelationNumModel;
 
+import com.component.person.model.ScoreDetailModel;
 import com.module.home.view.IPersonView;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        getHomePage((int) MyUserInfoManager.getInstance().getUid());
+        getHomePage((int) MyUserInfoManager.INSTANCE.getUid());
     }
 
     private void getHomePage(int userID) {
@@ -52,15 +54,17 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     mLastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
+                    ScoreDetailModel scoreDetailModel = JSON.parseObject(result.getData().getString("scoreDetail"), ScoreDetailModel.class);
+                    VoiceInfoModel voiceInfoModel = JSON.parseObject(result.getData().getString("voiceInfo"), VoiceInfoModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
 
                     MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
                     MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-                    MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true, "getHomePage");
+                    MyUserInfoManager.INSTANCE.setMyUserInfo(myUserInfo, true, "getHomePage");
 
                     int meiLiCntTotal = result.getData().getIntValue("meiLiCntTotal");
 
-                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal);
+                    mView.showHomePageInfo(relationNumModes, meiLiCntTotal, scoreDetailModel, voiceInfoModel);
                 } else {
                     mView.loadHomePageFailed();
                 }

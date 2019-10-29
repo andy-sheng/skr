@@ -62,9 +62,9 @@ public class EditInfoSexFragment extends BaseFragment {
             }
         });
 
-        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+        if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_MALE.getValue()) {
             selectSex(true);
-        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+        } else if (MyUserInfoManager.INSTANCE.getSex() == ESex.SX_FEMALE.getValue()) {
             selectSex(false);
         }
     }
@@ -73,11 +73,11 @@ public class EditInfoSexFragment extends BaseFragment {
         if (this.sex == 0) {
             U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
             return;
-        } else if (this.sex == MyUserInfoManager.getInstance().getSex()) {
+        } else if (this.sex == MyUserInfoManager.INSTANCE.getSex()) {
             U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
             return;
         } else {
-            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+            MyUserInfoManager.INSTANCE.updateInfo(MyUserInfoManager.INSTANCE.newMyInfoUpdateParamsBuilder()
                     .setSex(sex)
                     .build(), false, false, new MyUserInfoManager.ServerCallback() {
                 @Override

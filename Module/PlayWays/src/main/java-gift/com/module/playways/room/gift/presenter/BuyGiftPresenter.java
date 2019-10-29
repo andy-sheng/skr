@@ -99,7 +99,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 map.put("roundSeq", seq);
                 map.put("isSingBegin", false);
                 map.put("gameScene", scene);
-                map.put("sendUserID", MyUserInfoManager.getInstance().getUid());
+                map.put("sendUserID", MyUserInfoManager.INSTANCE.getUid());
 
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
@@ -158,10 +158,10 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     }
 
                     UserInfoModel own = new UserInfoModel();
-                    own.setUserId((int) MyUserInfoManager.getInstance().getUid());
-                    own.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-                    own.setNickname(MyUserInfoManager.getInstance().getNickName());
-                    own.setSex(MyUserInfoManager.getInstance().getSex());
+                    own.setUserId((int) MyUserInfoManager.INSTANCE.getUid());
+                    own.setAvatar(MyUserInfoManager.INSTANCE.getAvatar());
+                    own.setNickname(MyUserInfoManager.INSTANCE.getNickName());
+                    own.setSex(MyUserInfoManager.INSTANCE.getSex());
 
                     BasePushInfo basePushInfo = new BasePushInfo();
                     basePushInfo.setRoomID((int) roomId);
