@@ -1,5 +1,6 @@
 package com.module.home.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
@@ -39,7 +40,7 @@ class WalletActivity : BaseActivity() {
 
         slidingTab?.apply {
             setCustomTabView(R.layout.ranked_tab_view, R.id.tab_tv)
-            setSelectedIndicatorColors(U.getColor(R.color.black_trans_20))
+            setSelectedIndicatorColors(Color.parseColor("#596CCC"))
             setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER)
             setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE)
             setIndicatorWidth(U.getDisplayUtils().dip2px(56f))

@@ -99,7 +99,7 @@ public class JsRegister {
                 mBaseActivity.finish();
             }
         } else if (CHECK_WX.equals(opt)) {
-            if (U.getCommonUtils().hasInstallApp("com.tencent.mobileqq")) {
+            if (U.getCommonUtils().hasInstallApp("com.tencent.mm")) {
                 callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
                         new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("hasWx", true)))).toJSONString());
             } else {
