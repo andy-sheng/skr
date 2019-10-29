@@ -92,4 +92,18 @@ interface MicRoomServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/microom/change-match-status")
     fun changeMatchStatus(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     *  同意合唱/PK的结果 {"roomID": 0,"uniqTag": "string"}
+     */
+    @GET("http://dev.game.inframe.mobi/v1/micgame/agree-sing")
+    fun agreeSing(@Body body: RequestBody): Call<ApiResult>
+
+    /**
+     *  查询同意合唱/PK的结果 {"roomID": 0,"uniqTag": "string"}
+     */
+    @GET("http://dev.game.inframe.mobi/v1/micgame/agree-sing-result")
+    fun getAgreeSingResult(@Query("roomID") roomID: Int, @Query("uniqTag") uniqTag: String): Call<ApiResult>
+
+
 }

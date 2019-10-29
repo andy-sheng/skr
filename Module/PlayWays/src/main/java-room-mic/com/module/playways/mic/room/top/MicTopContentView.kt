@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import com.common.log.MyLog
+import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
@@ -85,6 +86,21 @@ class MicTopContentView : ConstraintLayout {
         mRoomData = roomData
         adapter.maxUserCount = roomData.configModel.maxUserCnt
         initData("setRoomData")
+    }
+
+    fun getViewLeft(userID: Int): Int {
+        var targetPosition = -1
+        adapter.mDataList.forEachIndexed { index, model ->
+            if (model.userID == userID) {
+                targetPosition = index
+                return@forEachIndexed
+            }
+        }
+        if (targetPosition >= 0) {
+            val width = recyclerView.findViewHolderForAdapterPosition(targetPosition).itemView.measuredHeight
+            return (targetPosition * width + width * 0.5).toInt()
+        }
+        return 26.dp()
     }
 
     override fun onAttachedToWindow() {

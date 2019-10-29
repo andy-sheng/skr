@@ -45,8 +45,10 @@ import com.module.playways.mic.room.bottom.MicBottomContainerView
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
+import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.mic.room.presenter.MicCorePresenter
 import com.module.playways.mic.room.seat.MicSeatView
+import com.module.playways.mic.room.top.MicInviteView
 import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
 import com.module.playways.mic.room.ui.IMicRoomView
@@ -70,7 +72,10 @@ import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.MicRoom.EMRoundOverReason
+import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMRoundStatus
+import com.zq.live.proto.MicRoom.MAddMusicMsg
+import com.zq.live.proto.MicRoom.MReqAddMusicMsg
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -93,6 +98,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     internal lateinit var mTopOpView: MicTopOpView
     internal lateinit var mTopContentView: MicTopContentView
 
+    internal var mMicInviteView: MicInviteView? = null
+
     // 专场ui组件
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
     lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
@@ -103,7 +110,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mAddSongIv: ImageView
     private lateinit var mGiveUpView: GrabGiveupView
 
-    internal var mVIPEnterView: VIPEnterView? = null
+    private var mVIPEnterView: VIPEnterView? = null
     private lateinit var mHasSelectSongNumTv: ExTextView
     private lateinit var mMicSeatView: MicSeatView
 
@@ -409,6 +416,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 }
             }
         })
+
+        mMicInviteView = MicInviteView(findViewById(R.id.mic_invite_view_stub))
     }
 
     private fun showGameRuleDialog() {
@@ -483,6 +492,25 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 .setRoomID(mRoomData.gameId)
                 .build()
         mPersonInfoDialog?.show()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MReqAddMusicMsg) {
+        // 请求合唱或者pk
+        val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        if (micUserMusicModel.userID != MyUserInfoManager.getInstance().uid.toInt()) {
+            mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MAddMusicMsg) {
+        // 点歌成功，要来判断是否当前合唱
+        val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        if (userMusicModel.music?.playType == StandPlayType.PT_SPK_TYPE.value || userMusicModel.music?.playType == StandPlayType.PT_CHO_TYPE.value) {
+            // 合唱或者pk
+            mMicInviteView?.showInvite(userMusicModel, mTopContentView.getViewLeft(userMusicModel.userID), false)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
