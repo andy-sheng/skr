@@ -29,7 +29,7 @@ class CommentTextModel : CommentModel() {
                     commentModel.userInfo = UserInfoModel.parseFromPB(event.info.sender)
                 }
             }
-            if (roomData != null && (roomData.gameType == GameModeType.GAME_MODE_GRAB || roomData.gameType == GameModeType.GAME_MODE_RACE)) {
+            if (roomData != null && (roomData.gameType == GameModeType.GAME_MODE_GRAB || roomData.gameType == GameModeType.GAME_MODE_RACE|| roomData.gameType == GameModeType.GAME_MODE_MIC)) {
                 if (event.mUserInfoModelList == null || event.mUserInfoModelList.size == 0) {
                     val nameSsb = SpanUtils()
                             .append(commentModel.userInfo.nicknameRemark + " ").setForegroundColor(GRAB_NAME_COLOR)
