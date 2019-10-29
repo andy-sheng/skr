@@ -115,7 +115,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     private lateinit var mGiveUpView: GrabGiveupView
 
     private var mVIPEnterView: VIPEnterView? = null
-    private lateinit var mHasSelectSongNumTv: ExTextView
+    lateinit var mHasSelectSongNumTv: ExTextView
     private lateinit var mMicSeatView: MicSeatView
 
     // 都是dialogplus
