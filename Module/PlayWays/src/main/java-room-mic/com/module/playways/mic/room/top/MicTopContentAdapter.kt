@@ -15,6 +15,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
+import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.zq.live.proto.MicRoom.EMUserRole
@@ -25,6 +26,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var mDataList = ArrayList<MicPlayerInfoModel>()
     val SEAT_TYPE = 0
     val INVITE_TYPE = 1
+    var mRoomData: MicRoomData? = null
 
     var maxUserCount = 1
         set(value) {
@@ -62,10 +64,14 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        if (mDataList.size >= maxUserCount) {
-            return mDataList.size
+        if (mRoomData?.isOwner == true) {
+            if (mDataList.size >= maxUserCount) {
+                return mDataList.size
+            } else {
+                return maxUserCount + 1
+            }
         } else {
-            return maxUserCount + 1
+            return maxUserCount
         }
     }
 
@@ -141,7 +147,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             AvatarUtils.loadAvatarByUrl(avatarIv,
                     AvatarUtils.newParamsBuilder(mModel?.userInfo?.avatar)
-                            .setGray(mModel?.isOnline==false)
+                            .setGray(mModel?.isOnline == false)
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
                             .setCircle(true)

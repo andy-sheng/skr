@@ -85,6 +85,7 @@ class MicTopContentView : ConstraintLayout {
     fun setRoomData(roomData: MicRoomData) {
         mRoomData = roomData
         adapter.maxUserCount = roomData.configModel.maxUserCnt
+        adapter.mRoomData = mRoomData
         initData("setRoomData")
     }
 
