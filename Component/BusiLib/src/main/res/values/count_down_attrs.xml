@@ -10,5 +10,9 @@
         <attr name="stroke_bg_color" format="color" />
         <attr name="bg_color" format="color" />
         <attr name="stroke_bg_width" format="dimension" />
+        <!--方向，默认false为逆时针，true为顺时针-->
+        <attr name="stroke_direction" format="boolean"/>
+        <!--方向，默认true为倒计时，false为正常进度-->
+        <attr name="is_count_down" format="boolean"/>
     </declare-styleable>
 </resources>

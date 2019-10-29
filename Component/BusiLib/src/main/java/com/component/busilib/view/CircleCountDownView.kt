@@ -28,6 +28,8 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
     private var mBgColor = U.getColor(R.color.transparent)
     private var mBgStrokeWidth = strokeWidth//画笔画线的宽度
     internal var mColor = Color.parseColor("#E9AC1A")
+    private var direction = false // 默认来个逆时针吧
+    private var isCountDown = true  // 默认是倒计时
 
     private var rect: RectF? = null
 
@@ -47,6 +49,8 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
             mBgStrokeColor = typedArray.getColor(R.styleable.CircleCountDownView_stroke_bg_color, U.getColor(R.color.transparent))
             mBgColor = typedArray.getColor(R.styleable.CircleCountDownView_bg_color, U.getColor(R.color.transparent))
             mBgStrokeWidth = typedArray.getDimension(R.styleable.CircleCountDownView_stroke_bg_width, strokeWidth)
+            direction = typedArray.getBoolean(R.styleable.CircleCountDownView_stroke_direction, false)
+            isCountDown = typedArray.getBoolean(R.styleable.CircleCountDownView_is_count_down, true)
             typedArray.recycle()
         }
 
@@ -96,8 +100,16 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
         mPaint!!.shader = mShader
         mPaint!!.strokeWidth = strokeWidth//覆盖线的宽度
 
-        val sweepAngle = (max - progress * 1.0f) / max * 360//根据现在值和最大值的百分比计算出弧线现在的度数
-        canvas.drawArc(rect!!, mDegree.toFloat(), sweepAngle, false, mPaint!!)
+        val sweepAngle = if (isCountDown) {
+            (max - progress * 1.0f) / max * 360//根据现在值和最大值的百分比计算出弧线现在的度数
+        } else {
+            (progress * 1.0f) / max * 360//根据现在值和最大值的百分比计算出弧线现在的度数
+        }
+        if (direction) {
+            canvas.drawArc(rect!!, mDegree.toFloat() - sweepAngle, sweepAngle, false, mPaint!!)
+        } else {
+            canvas.drawArc(rect!!, mDegree.toFloat(), sweepAngle, false, mPaint!!)
+        }
     }
 
     // 播放从start到圈满动画，总时间为leave
@@ -140,7 +152,11 @@ class CircleCountDownView @JvmOverloads constructor(context: Context, attrs: Att
 
     fun playProgress(start: Int, end: Int, completeListener: (() -> Unit)?) {
         cancelAnim()
-        val speed = 50  // 每走过一个刻度需要到时间 毫秒
+        if (start == end) {
+            completeListener?.invoke()
+            return
+        }
+        val speed = 4  // 每走过一个刻度需要到时间 毫秒
 
         mRecordAnimator = ValueAnimator.ofInt(start, end)
         mRecordAnimator!!.duration = kotlin.math.abs(end - start) * speed.toLong()

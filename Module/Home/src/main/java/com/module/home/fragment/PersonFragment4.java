@@ -363,13 +363,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mOpenHonorArea.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // todo 开启VIP的页面
-            }
-        });
-
         mAudioView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

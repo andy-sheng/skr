@@ -743,6 +743,11 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
     fun quitGame() {
         mCorePresenter.exitRoom("quitGame")
         activity?.finish()
+
+//        ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_RESULT)
+//                .withInt("roomID", mRoomData.gameId)
+//                .withInt("roundSeq", mRoomData.realRoundSeq)
+//                .navigation()
     }
 
     override fun destroy() {

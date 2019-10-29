@@ -6,50 +6,191 @@
     android:layout_height="match_parent"
     android:background="@drawable/race_result_bg">
 
-    <ImageView
-        android:id="@+id/level_background"
-        android:layout_width="@dimen/view_144_dp"
-        android:layout_height="@dimen/view_156_dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/view_146_dp"
-        android:background="@drawable/level_bg_icon"
+    <com.component.busilib.view.CircleCountDownView
+        android:id="@+id/circle_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_128_dp"
+        app:bg_color="@color/transparent"
+        app:inner_color="#FFC15B"
+        app:inner_stroke_raduis="@dimen/view_74_dp"
+        app:inner_stroke_width="@dimen/view_6_dp"
+        app:is_count_down="false"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:stroke_bg_color="@color/black_trans_30"
+        app:stroke_bg_width="@dimen/view_8_dp"
+        app:stroke_direction="true" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_130_dp"
+        android:layout_height="@dimen/view_130_dp"
+        app:bl_corners_radius="@dimen/view_65_dp"
+        app:bl_gradient_endColor="#2B4BA3"
+        app:bl_gradient_startColor="#5974E0"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="@id/circle_view"
+        app:layout_constraintLeft_toLeftOf="@id/circle_view"
+        app:layout_constraintRight_toRightOf="@id/circle_view"
+        app:layout_constraintTop_toTopOf="@id/circle_view" />
 
     <com.component.level.view.NormalLevelView2
         android:id="@+id/level_view"
         android:layout_width="@dimen/view_92_dp"
         android:layout_height="@dimen/view_80_dp"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintLeft_toLeftOf="@id/level_background"
-        app:layout_constraintRight_toRightOf="@id/level_background"
-        app:layout_constraintTop_toTopOf="@id/level_background"
-        app:layout_constraintBottom_toBottomOf="@id/level_background"
+        app:layout_constraintBottom_toBottomOf="@id/circle_view"
+        app:layout_constraintLeft_toLeftOf="@id/circle_view"
+        app:layout_constraintRight_toRightOf="@id/circle_view"
+        app:layout_constraintTop_toTopOf="@id/circle_view"
         levelView2:mainHeight2="@dimen/view_80_dp"
         levelView2:mainWidth2="@dimen/view_92_dp"
         levelView2:subBottom2="@dimen/view_5_dp"
         levelView2:subHeight2="@dimen/view_10_dp"
         levelView2:subWidth2="@dimen/view_18_dp" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/level_svga"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_400_dp"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:layout_constraintBottom_toBottomOf="@id/circle_view"
+        app:layout_constraintLeft_toLeftOf="@id/circle_view"
+        app:layout_constraintRight_toRightOf="@id/circle_view"
+        app:layout_constraintTop_toTopOf="@id/circle_view" />
+
     <com.common.view.ex.ExTextView
         android:id="@+id/level_desc_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_10_dp"
         android:gravity="center"
         android:textColor="#ccFFC15B"
         android:textSize="@dimen/textsize_16_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/level_background" />
+        app:layout_constraintTop_toBottomOf="@id/circle_view" />
 
-    <com.component.level.view.LevelStarProgressBar
-        android:id="@+id/level_progress"
-        android:layout_width="@dimen/view_140_dp"
-        android:layout_height="@dimen/view_34_dp"
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:drawableRight="@drawable/level_gap_dec_icon"
+        android:drawablePadding="@dimen/view_4_dp"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/level_desc_tv" />
+
+    <com.component.busilib.view.CircleCountDownView
+        android:id="@+id/level_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_106_dp"
+        app:bg_color="@color/transparent"
+        app:inner_color="#FF7A7A"
+        app:inner_stroke_raduis="@dimen/view_32_dp"
+        app:inner_stroke_width="@dimen/view_4_dp"
+        app:is_count_down="false"
+        app:layout_constraintBottom_toTopOf="@id/play_again_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/vip_level_save"
+        app:stroke_bg_color="@color/black_trans_30"
+        app:stroke_bg_width="@dimen/view_6_dp"
+        app:stroke_direction="true" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/level_solid"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_gradient_endColor="#2B4BA3"
+        app:bl_gradient_startColor="#5974E0"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="@id/level_save"
+        app:layout_constraintLeft_toLeftOf="@id/level_save"
+        app:layout_constraintRight_toRightOf="@id/level_save"
+        app:layout_constraintTop_toTopOf="@id/level_save" />
+
+    <ImageView
+        android:id="@+id/level_media"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        app:layout_constraintBottom_toBottomOf="@id/level_save"
+        app:layout_constraintLeft_toLeftOf="@id/level_save"
+        app:layout_constraintRight_toRightOf="@id/level_save"
+        app:layout_constraintTop_toTopOf="@id/level_save"
+        android:src="@drawable/race_simple_media"/>
+
+    <TextView
+        android:id="@+id/level_save_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:text="日常保段"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="@color/white_trans_50"
+        app:layout_constraintLeft_toLeftOf="@id/level_save"
+        app:layout_constraintRight_toRightOf="@id/level_save"
+        app:layout_constraintTop_toBottomOf="@id/level_save" />
+
+    <com.component.busilib.view.CircleCountDownView
+        android:id="@+id/vip_level_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_106_dp"
+        app:bg_color="@color/transparent"
+        app:inner_color="#FF7A7A"
+        app:inner_stroke_raduis="@dimen/view_32_dp"
+        app:inner_stroke_width="@dimen/view_4_dp"
+        app:is_count_down="false"
+        app:layout_constraintBottom_toTopOf="@id/play_again_tv"
+        app:layout_constraintLeft_toRightOf="@id/level_save"
+        app:layout_constraintRight_toRightOf="parent"
+        app:stroke_bg_color="@color/black_trans_30"
+        app:stroke_bg_width="@dimen/view_6_dp"
+        app:stroke_direction="true" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/vip_level_solid"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_50_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        app:bl_gradient_endColor="#2B4BA3"
+        app:bl_gradient_startColor="#5974E0"
+        app:bl_shape="rectangle"
+        app:layout_constraintBottom_toBottomOf="@id/vip_level_save"
+        app:layout_constraintLeft_toLeftOf="@id/vip_level_save"
+        app:layout_constraintRight_toRightOf="@id/vip_level_save"
+        app:layout_constraintTop_toTopOf="@id/vip_level_save" />
+
+    <ImageView
+        android:id="@+id/vip_level_media"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_24_dp"
+        app:layout_constraintBottom_toBottomOf="@id/vip_level_save"
+        app:layout_constraintLeft_toLeftOf="@id/vip_level_save"
+        app:layout_constraintRight_toRightOf="@id/vip_level_save"
+        app:layout_constraintTop_toTopOf="@id/vip_level_save"
+        android:src="@drawable/person_open_honor_icon"/>
+
+    <TextView
+        android:id="@+id/vip_level_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:text="VIP保段"
+        android:textSize="@dimen/textsize_12_dp"
+        android:textColor="#FFC15B"
+        app:layout_constraintLeft_toLeftOf="@id/vip_level_save"
+        app:layout_constraintRight_toRightOf="@id/vip_level_save"
+        app:layout_constraintTop_toBottomOf="@id/vip_level_save" />
 
     <TextView
         android:id="@+id/change_tv"
@@ -57,22 +198,10 @@
         android:layout_height="wrap_content"
         android:textColor="#FFD693"
         android:textSize="@dimen/textsize_24_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        app:layout_constraintLeft_toRightOf="@id/level_progress"
-        app:layout_constraintTop_toTopOf="@id/level_progress"
-        app:layout_constraintBottom_toBottomOf="@id/level_progress"/>
-
-    <TextView
-        android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/view_4_dp"
-        android:drawableRight="@drawable/level_gap_dec_icon"
-        android:textColor="@color/white_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/level_progress" />
+        android:layout_marginBottom="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@id/circle_view"
+        app:layout_constraintRight_toRightOf="@id/circle_view"
+        app:layout_constraintBottom_toTopOf="@id/circle_view"/>
 
     <TextView
         android:id="@+id/count_down_tv"
@@ -111,7 +240,7 @@
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/back_close_white"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

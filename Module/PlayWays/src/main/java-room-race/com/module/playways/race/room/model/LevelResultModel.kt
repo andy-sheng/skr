@@ -13,7 +13,10 @@ class LevelResultModel : Serializable {
     var userID: Int = 0
     @JSONField(name = "states")
     var states: List<ScoreStateModel>? = null
-
+    @JSONField(name = "simpleSaveStates")
+    var simpleSaveStates: List<SaveRankModel>? = null
+    @JSONField(name = "vipSaveStates")
+    var vipSaveStates: List<SaveRankModel>? = null
 
     // 最新状态
     fun getLastState(): ScoreStateModel? {
@@ -22,4 +25,21 @@ class LevelResultModel : Serializable {
         }
         return null
     }
+
+    //
+}
+
+class SaveRankModel : Serializable {
+    companion object {
+        const val ESRS_DISABLE = 1 //未启用
+        const val ESRS_ENABLE = 2  //已启用
+        const val ESRS_USED = 3    //已使用
+    }
+
+    @JSONField(name = "status")
+    var status = 0  // 状态
+    @JSONField(name = "curBar")
+    var curBar = 0
+    @JSONField(name = "maxBar")
+    var maxBar = 0
 }
