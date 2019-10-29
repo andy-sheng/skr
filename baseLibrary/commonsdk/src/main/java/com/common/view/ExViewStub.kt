@@ -17,7 +17,7 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
             mViewStub
         } else mParentView
 
-    fun tryInflate() {
+    fun tryInflate():Boolean {
         if (mParentView == null) {
             mParentView = mViewStub!!.inflate()
             mParentView?.let {
@@ -29,7 +29,9 @@ abstract class ExViewStub(protected var mViewStub: ViewStub?) : View.OnAttachSta
             mParentView?.translationX = mViewStub?.translationX ?: 0f
             mParentView?.translationY = mViewStub?.translationY ?: 0f
             mViewStub = null
+            return false
         }
+        return true
     }
 
     open fun setVisibility(visibility: Int) {

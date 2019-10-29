@@ -103,6 +103,9 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     init {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
         MicRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
@@ -187,13 +190,6 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     private fun pretendRoomNameSystemMsg(roomName: String?, type: Int) {
         val commentSysModel = CommentSysModel(roomName, type)
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
-    }
-
-    override fun start() {
-        super.start()
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
     }
 
     /**

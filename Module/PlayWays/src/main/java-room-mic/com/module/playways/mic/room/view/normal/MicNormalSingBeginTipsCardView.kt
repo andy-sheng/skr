@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.common.core.avatar.AvatarUtils
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.module.playways.R
@@ -49,21 +50,30 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
 
     fun bindData(overListener: SVGAListener) {
         this.overListener = overListener
-        tryInflate()
-        setVisibility(View.VISIBLE)
-
+        var b = tryInflate()
         songNameTv?.text = "演唱《${H.micRoomData?.realRoundInfo?.music?.displaySongName}》"
         var userInfo = H.micRoomData?.getPlayerOrWaiterInfo(H.micRoomData?.realRoundInfo?.userID)
         singerNameTv?.text = "${userInfo?.nicknameRemark}"
 
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(userInfo?.avatar)
                 .setBorderWidth(2.dp().toFloat())
+                .setCircle(true)
                 .setBorderColor(R.color.white)
                 .build())
-        startAnimation()
+
+        if(b){
+            startAnimation()
+        }else{
+            // 否则width 还是0
+            this.setTranslateX(-U.getDisplayUtils().screenWidth.toFloat())
+            realView?.post {
+                startAnimation()
+            }
+        }
     }
 
     private fun startAnimation() {
+        MyLog.d("MicNormalSingBeginTipsCardView","this.realView!!.width=${this.realView!!.width.toFloat()}")
         val anim1 = ObjectAnimator.ofFloat(this.realView!!, View.TRANSLATION_X, -this.realView!!.width.toFloat(), 0f)
         anim1?.duration = 500
 
@@ -83,6 +93,11 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
                 super.onAnimationCancel(animation)
                 overListener?.onFinished()
                 overListener = null
+            }
+
+            override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
+                super.onAnimationStart(animation, isReverse)
+                setVisibility(View.VISIBLE)
             }
         })
         anim?.playSequentially(anim1, anim2)
