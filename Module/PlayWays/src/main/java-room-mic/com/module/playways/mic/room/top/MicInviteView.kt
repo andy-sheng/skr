@@ -179,7 +179,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         launch {
             val map = mutableMapOf(
                     "roomID" to (H.micRoomData?.gameId ?: 0),
-                    "matchStatus" to (userMusicModel?.uniqTag ?: ""))
+                    "uniqTag" to (userMusicModel?.uniqTag ?: ""))
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             val result = subscribe(RequestControl("agreeInvite", ControlType.CancelLast)) {
                 micRoomServerApi.agreeSing(body)
