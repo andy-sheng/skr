@@ -18,11 +18,6 @@ import com.module.playways.room.prepare.model.PrepareData;
 
 @Route(path = RouterConstants.ACTIVITY_MIC_MATCH)
 public class MicMatchActivity extends BaseActivity {
-    public static void open(Activity activity, PrepareData prepareData) {
-        Intent intent = new Intent(activity, MicMatchActivity.class);
-        intent.putExtra("prepare_data", prepareData);
-        activity.startActivity(intent);
-    }
 
     /**
      * 存起该房间一些状态信息
