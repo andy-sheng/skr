@@ -37,6 +37,7 @@ class GameTypeViewHolder(itemView: View,
                 GrabSpecialModel.TBT_GORANKING_TAB -> listener.onPkRoomListener()
                 GrabSpecialModel.TBT_GODOUBLE_TAB -> listener.onDoubleRoomListener()
                 GrabSpecialModel.TBT_GOALBUM_TAB -> listener.onGrabRoomListener()
+                GrabSpecialModel.TBT_MICROOM_TAB -> listener.onMicRoomListener()
             }
         }
         recyclerView.adapter = mGrabGameAdapter

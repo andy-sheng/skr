@@ -118,4 +118,5 @@ interface ClickGameListener {
     fun onDoubleRoomListener()
     fun onBattleRoomListener()
     fun onGrabRoomListener()
+    fun onMicRoomListener()
 }

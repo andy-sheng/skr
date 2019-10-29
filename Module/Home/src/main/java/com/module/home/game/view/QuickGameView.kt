@@ -226,6 +226,12 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_SPECIAL)
                         .navigation()
             }
+
+            override fun onMicRoomListener() {
+                // 小K房
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_HOME)
+                        .navigation()
+            }
         })
 
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
