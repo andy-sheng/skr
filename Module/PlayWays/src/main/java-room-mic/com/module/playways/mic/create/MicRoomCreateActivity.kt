@@ -27,7 +27,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 
 @Route(path = RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
-class MicRoomCreateActiviy: BaseActivity() {
+class MicRoomCreateActiviy : BaseActivity() {
 
     lateinit var titlebar: CommonTitleBar
     lateinit var nameEdittext: NoLeakEditText
@@ -132,7 +132,7 @@ class MicRoomCreateActiviy: BaseActivity() {
                 list?.let {
                     it.forEach {
                         when (it) {
-                            Level.RLL_All,Level.RLL_Qing_Tong -> allManTv.visibility = View.VISIBLE
+                            Level.RLL_All, Level.RLL_Qing_Tong -> allManTv.visibility = View.VISIBLE
                             Level.RLL_Bai_Yin -> whiteGoldTv.visibility = View.VISIBLE
                             Level.RLL_Huang_Jin -> yellowGoldTv.visibility = View.VISIBLE
                             Level.RLL_Bo_Jin -> boGoldTv.visibility = View.VISIBLE
@@ -154,7 +154,7 @@ class MicRoomCreateActiviy: BaseActivity() {
     private fun createRoom() {
         launch {
             val map = mutableMapOf(
-                    "levelLimit" to selected,
+                    "levelLimit" to selected.value,
                     "roomName" to nameEdittext.text.toString()
             )
 
@@ -164,9 +164,9 @@ class MicRoomCreateActiviy: BaseActivity() {
             }
 
             if (result.errno == 0) {
-                var rsp = JSON.parseObject(result.data.toString(),JoinMicRoomRspModel::class.java)
+                var rsp = JSON.parseObject(result.data.toString(), JoinMicRoomRspModel::class.java)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
-                        .withSerializable("JoinMicRoomRspModel",rsp)
+                        .withSerializable("JoinMicRoomRspModel", rsp)
                         .navigation()
                 finish()
             } else {
@@ -186,7 +186,10 @@ class MicRoomCreateActiviy: BaseActivity() {
         boGoldTv.isSelected = false
     }
 
-    enum class Level {
-        RLL_All, RLL_Qing_Tong, RLL_Bai_Yin, RLL_Huang_Jin, RLL_Bo_Jin;
+    enum class Level(val level: Int) {
+        RLL_All(0), RLL_Qing_Tong(1), RLL_Bai_Yin(2), RLL_Huang_Jin(3), RLL_Bo_Jin(4);
+
+        val value: Int
+            get() = level
     }
 }
