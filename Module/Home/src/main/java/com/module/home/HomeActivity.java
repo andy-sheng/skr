@@ -54,6 +54,7 @@ import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
+import com.module.home.persenter.VipReceiveCoinPresenter;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.INotifyView;
 import com.module.msg.IMsgService;
@@ -88,6 +89,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
     CheckInPresenter mCheckInPresenter;
+    VipReceiveCoinPresenter mVipReceiveCoinPresenter;
 
     Handler mUiHandler = new Handler(Looper.getMainLooper());
 
@@ -218,7 +220,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        if(MyLog.isDebugLogOpen()){
+        if (MyLog.isDebugLogOpen()) {
             mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -272,6 +274,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mNotifyCorePresenter = new NotifyCorePresenter(this);
 
         addPresent(mNotifyCorePresenter);
+
+        mVipReceiveCoinPresenter = new VipReceiveCoinPresenter(this);
+
+        addPresent(mVipReceiveCoinPresenter);
 
         mMainVp.setCurrentItem(0, false);
 
@@ -460,6 +466,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         UpgradeManager.getInstance().checkUpdate1();
         mRedPkgPresenter.checkRedPkg();
         mCheckInPresenter.check();
+        mVipReceiveCoinPresenter.checkVip();
 
         if (UserAccountManager.getInstance().hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
@@ -523,7 +530,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     }
 
     /**
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
