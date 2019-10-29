@@ -1,6 +1,13 @@
 package com.zq.mediaengine.kit.agora;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkRequest;
+import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,7 +20,6 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.statistics.SDataManager;
 import com.engine.statistics.SUtils;
 import com.engine.statistics.datastruct.SAgora;
-import com.engine.statistics.datastruct.SAgoraUserEvent;
 import com.engine.statistics.datastruct.Skr;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
@@ -23,11 +29,8 @@ import com.zq.mediaengine.framework.SinkPin;
 import com.zq.mediaengine.framework.SrcPin;
 import com.zq.mediaengine.util.gles.GLRender;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -101,6 +104,12 @@ public class AgoraRTCAdapter {
     private long mStartCBTime = 0;
     private int mDataFlushMode = SDataManager.FLUSH_MODE_FILE | SDataManager.FLUSH_MODE_UPLOAD;
 
+
+    private HandlerThread mLogMonThread = null;
+    private Handler mLogMonHandler= null;
+
+
+
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
@@ -120,107 +129,133 @@ public class AgoraRTCAdapter {
         }
     }
 
-    private Thread mStatisticThread = null;
-    private boolean mRunStatistic = false;
+
+    private final static int LM_MSG_UPDATE_PING_INFO = 1;
+    private final static int LM_MSG_UPDATE_NETWORK_INFO = 2;
+    private final static int LM_MSG_FLUSH_LOG = 3;
+
     public void startStatisticThread(){
-        if (null == mStatisticThread) {
-            mRunStatistic = true;
-            final String BaiduURL = "www.baidu.com";
+        if (null == mLogMonThread) {
+            mLogMonThread = new HandlerThread("Log-Monitor-Thread");
+            mLogMonThread.start();
+            synchronized (mLogMonThread) {
+                try {
+                    mLogMonThread.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
-
-
-            mStatisticThread = new Thread(){
+            mLogMonHandler = new Handler(mLogMonThread.getLooper()){
                 @Override
-                public void run() {
-                    super.run();
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
 
-                    boolean gotNetworkInfo = false;
-                    int maxInterval = 2000; //ms
+                    switch (msg.what) {
+                        case LM_MSG_UPDATE_PING_INFO:
+                            {
+                                String baiduURL = "www.baidu.com";
+                                Skr.PingInfo pingInfo = SUtils.ping(baiduURL);
+                                SDataManager.instance().getAgoraDataHolder().addPingInfo(pingInfo);
 
-                    while(mRunStatistic) {
-                        long tempTS = System.currentTimeMillis();
-
-
-                        Skr.PingInfo pingInfo = ping(BaiduURL);
-                        SDataManager.instance().getAgoraDataHolder().addPingInfo(pingInfo);
-
-                        if (SDataManager.instance().need2Flush())
-                            SDataManager.instance().flush(mDataFlushMode);
-
-                        if (!gotNetworkInfo) {
-                            Context ctx = U.app().getApplicationContext();
-                            Skr.NetworkInfo nwInfo = SUtils.getNetworkInfo(ctx);
-                            SDataManager.instance().getAgoraDataHolder().addNetworkInfo(nwInfo);
-                            gotNetworkInfo = true;
-                        }
-
-
-                        long onceTC = System.currentTimeMillis() - tempTS;
-                        if (onceTC < maxInterval) {
-                            try {
-                                Thread.sleep(maxInterval - onceTC);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
+                                mLogMonHandler.sendMessageDelayed(msgLoop, 2000);//进入循环
                             }
-                        }
+                            break;
+                        case LM_MSG_UPDATE_NETWORK_INFO:
+                            {
+                                Context ctx = U.app().getApplicationContext();
+                                Skr.NetworkInfo nwInfo = SUtils.getNetworkInfo(ctx);
+
+                                if (null != msg.obj && msg.obj instanceof String) {
+                                    nwInfo.extraInfo = (String)msg.obj;
+                                }
+                                SDataManager.instance().getAgoraDataHolder().addNetworkInfo(nwInfo);
+                                /////////////////////////////////////////////////////////
+//                                SDataManager.instance().flush(mDataFlushMode);
+//                                Log.d("MyDemo", nwInfo.toString());
+                                /////////////////////////////////////////////////////////
+                            }
+                            break;
+                        case LM_MSG_FLUSH_LOG:
+                            {
+                                if (SDataManager.instance().need2Flush())
+                                    SDataManager.instance().flush(mDataFlushMode);
+
+                                mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 2000);
+                            }
+                            break;
+                        default:
+                            break;
                     }
+
                 }
             };
-            mStatisticThread.start();
+            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO), 0);
+            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO), 0);
+            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 4000);//触发进入循环
         }
+
+        Context ctx = U.app().getApplicationContext();
+        startMonitorNetwork(ctx);
     }
 
-    public void stopStatisticThread()  {
-        try {
-            mRunStatistic = false;
-            mStatisticThread.join();
-            SDataManager.instance().flush(mDataFlushMode);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public Skr.PingInfo ping(String url) {
-//        String resault = "";
-        Process p;
-        Skr.PingInfo pingInfo = new Skr.PingInfo();
-        try {
-            //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
-            p = Runtime.getRuntime().exec("ping -c 1 -w 10 " + url);
-            int status = p.waitFor();
-
-            InputStream input = p.getInputStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(input));
-            StringBuffer buffer = new StringBuffer();
-            String line = "";
-            while ((line = in.readLine()) != null) {
-                buffer.append(line+"\n");
+    public void stopStatisticThread() {
+        if (null != mLogMonThread) {
+            try {
+                mLogMonThread.getLooper().quit();
+                mLogMonThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-//            Log.d(TAG, buffer.toString());
-//            Log.d(TAG, "ping time="+timeCost+" ms");
-
-            if (status == 0) {
-                pingInfo.isPingOk = true;
-
-                int idx1 = buffer.indexOf("time=");
-                int idx2 = buffer.indexOf(" ms");
-
-                String time = buffer.substring(idx1+5, idx2);
-                pingInfo.timeCost = Float.parseFloat(time);
-            } else {
-                pingInfo.isPingOk = false;
-                pingInfo.timeCost = -1;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
-        return pingInfo;
+        SDataManager.instance().flush(mDataFlushMode);
     }
+
+
+    public void startMonitorNetwork(Context ctx) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+            connectivityManager.requestNetwork(new NetworkRequest.Builder().
+                    build(), new ConnectivityManager.NetworkCallback() {
+
+                @Override
+                public void onAvailable(Network network) {
+                    super.onAvailable(network);
+//                    Log.d(TAG, "onAvailable: 网络已连接");
+                    mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络已连接"),0);
+                }
+
+                @Override
+                public void onLost(Network network) {
+                    super.onLost(network);
+//                    Log.e(TAG, "onLost: 网络已断开");
+                    mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络丢失"),0);
+                }
+
+//                @Override
+//                public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
+//                    super.onCapabilitiesChanged(network, networkCapabilities);
+//                    if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+//                        if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+//                            Log.d(TAG, "onCapabilitiesChanged: 网络类型为wifi");
+//                        } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+//                            Log.d(TAG, "onCapabilitiesChanged: 蜂窝网络");
+//                        } else {
+//                            Log.d(TAG, "onCapabilitiesChanged: 其他网络");
+//                        }
+//                        mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_UPDATE_NETWORK_INFO, "网络切换"),0);
+//                    }
+//                }
+
+
+            });
+        }
+    }
+
+
 
 
 

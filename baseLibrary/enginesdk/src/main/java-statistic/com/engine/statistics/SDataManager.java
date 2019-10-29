@@ -26,7 +26,7 @@ public class SDataManager
         mADHolder.setLinePrefix(PREFIX_4_AGORA_RTC);
     }
 
-    public static SDataManager instance() {
+    public static synchronized SDataManager instance() {
         if (null == gDMInstance) {
             gDMInstance = new SDataManager();
         }
@@ -61,7 +61,7 @@ public class SDataManager
         mBasicInfo.channelJoinElapsed = elapsed;
         return this;
     }
-    public SAgoraDataHolder getAgoraDataHolder() {
+    public synchronized SAgoraDataHolder getAgoraDataHolder() {
         return mADHolder;
     }
 

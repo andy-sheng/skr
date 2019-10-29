@@ -36,12 +36,20 @@ public class Skr
         public int externlIP;
         public String geoLocation;
 
+        public String extraInfo;
 
         public String toString() {
-            return SUtils.transTime(ts)+" Skr.NetworkInfo: networkType="+SUtils.trans2NetworkTypeStr(networkType)+
-                    ", opName="+operatorName +
-                    ", externalIP="+SUtils.intToIPStr(externlIP) +
-                    "\n";
+            String retStr = SUtils.transTime(ts)+" Skr.NetworkInfo: networkType="+SUtils.trans2NetworkTypeStr(networkType)+
+                            ", opName="+operatorName +
+                            ", externalIP="+SUtils.intToIPStr(externlIP);
+            if (null != extraInfo) {
+                retStr += (", extraInfo="+extraInfo+"\n");
+            }
+            else{
+                retStr += "\n";
+            }
+
+            return retStr;
         }
     }
 

@@ -267,4 +267,47 @@ public class SUtils
         return a;
     }
 
+
+
+    public static Skr.PingInfo ping(String url) {
+
+        Process p;
+        Skr.PingInfo pingInfo = new Skr.PingInfo();
+        try {
+            //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
+            p = Runtime.getRuntime().exec("ping -c 1 -w 10 " + url);
+            int status = p.waitFor();
+
+            InputStream input = p.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer buffer = new StringBuffer();
+            String line = "";
+            while ((line = in.readLine()) != null) {
+                buffer.append(line+"\n");
+            }
+
+//            Log.d(TAG, buffer.toString());
+//            Log.d(TAG, "ping time="+timeCost+" ms");
+
+            if (status == 0) {
+                pingInfo.isPingOk = true;
+
+                int idx1 = buffer.indexOf("time=");
+                int idx2 = buffer.indexOf(" ms");
+
+                String time = buffer.substring(idx1+5, idx2);
+                pingInfo.timeCost = Float.parseFloat(time);
+            } else {
+                pingInfo.isPingOk = false;
+                pingInfo.timeCost = -1;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return pingInfo;
+    }
+
 }
