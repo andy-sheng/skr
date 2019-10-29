@@ -75,8 +75,6 @@ class MicSeatView : ExConstraintLayout {
         bg.setDebounceViewClickListener {
             //拦截
         }
-
-        getUserList()
     }
 
     private fun getUserList() {
@@ -125,6 +123,10 @@ class MicSeatView : ExConstraintLayout {
 
         callWhenVisible?.invoke()
         callWhenVisible = null
+
+        if (adapter?.mDataList?.size == 0) {
+            getUserList()
+        }
 
         clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
