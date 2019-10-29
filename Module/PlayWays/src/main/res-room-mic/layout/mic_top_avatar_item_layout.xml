@@ -9,6 +9,7 @@
         android:id="@+id/circle_bg_iv"
         android:layout_width="@dimen/view_42_dp"
         android:layout_height="@dimen/view_42_dp"
+        android:layout_marginTop="@dimen/view_1_dp"
         app:bl_corners_radius="@dimen/view_42_dp"
         app:bl_solid_color="@color/transparent"
         app:bl_stroke_color="@color/white_trans_50"
@@ -21,7 +22,7 @@
         android:layout_width="@dimen/view_32_dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_marginTop="@dimen/view_6_dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
