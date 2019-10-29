@@ -30,6 +30,9 @@ import com.module.playways.songmanager.event.AddSongEvent
 import com.module.playways.songmanager.model.RecommendTagModel
 import com.module.playways.songmanager.view.MicExistSongManageView
 import com.module.playways.songmanager.view.RecommendSongView
+import com.zq.live.proto.Common.MusicInfo
+import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.MicRoom.EMWantSingType
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -223,8 +226,18 @@ class MicSongManageFragment : BaseFragment() {
         val map = HashMap<String, Any>()
         map["itemID"] = event.songModel.itemID
         map["roomID"] = mRoomData?.gameId ?: 0
-        map["wantSingType"] = event.songModel.playType
-
+        // pk的歌曲
+        if(event.songModel.playType == StandPlayType.PT_SPK_TYPE.value){
+            map["wantSingType"] = EMWantSingType.MWST_SPK.value
+        }else if(event.songModel.playType == StandPlayType.PT_CHO_TYPE.value){
+            map["wantSingType"] = EMWantSingType.MWST_CHORUS.value
+        }else{
+            if(mRoomData?.isAccEnable==true && event.songModel?.acc.isNotEmpty()){
+                map["wantSingType"] = EMWantSingType.MWST_ACCOMPANY.value
+            }else{
+                map["wantSingType"] = EMWantSingType.MWST_COMMON.value
+            }
+        }
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         launch {
             var result = subscribe { mSongManagerServerApi.addWantMicSong(body) }
