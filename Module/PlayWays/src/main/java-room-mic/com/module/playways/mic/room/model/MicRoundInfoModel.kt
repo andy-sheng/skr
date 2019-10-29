@@ -218,7 +218,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
         if (!playUsers.contains(grabPlayerInfoModel)) {
             playUsers.add(grabPlayerInfoModel)
             if (notify) {
-                val event = SomeOneJoinPlaySeatEvent(grabPlayerInfoModel)
+                val event = MicPlaySeatUpdateEvent(playUsers)
                 EventBus.getDefault().post(event)
             }
             return true
@@ -346,7 +346,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
             if (infoModel.userID == uid) {
                 playUsers.remove(infoModel)
                 if (notify) {
-                    EventBus.getDefault().post(SomeOneLeavePlaySeatEvent(infoModel))
+                    EventBus.getDefault().post(MicPlaySeatUpdateEvent(playUsers))
                 }
                 break
             }
