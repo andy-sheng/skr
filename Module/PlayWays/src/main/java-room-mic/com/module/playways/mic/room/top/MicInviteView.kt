@@ -107,7 +107,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             leftMargin = left
         }
 
-        cancleJob()
+        cancelJob()
         if (isInvite) {
             resultGroup?.visibility = View.GONE
             inviteGroup?.visibility = View.VISIBLE
@@ -149,10 +149,10 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     resultAvatar?.bindData(peerModel)
                     resultName?.text = peerModel?.nicknameRemark
                     resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
-                    resultJob = launch {
-                        delay(2000)
-                        setVisibility(View.GONE)
-                    }
+                }
+                resultJob = launch {
+                    delay(2000)
+                    setVisibility(View.GONE)
                 }
             } else {
                 resultGroup?.visibility = View.VISIBLE
@@ -170,7 +170,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
     }
 
-    private fun cancleJob() {
+    private fun cancelJob() {
         inviteJob?.cancel()
         resultJob?.cancel()
     }
@@ -209,12 +209,19 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
     }
 
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility == View.GONE) {
+            cancelJob()
+        }
+    }
+
     override fun onViewAttachedToWindow(v: View) {
         super.onViewAttachedToWindow(v)
     }
 
     override fun onViewDetachedFromWindow(v: View) {
         super.onViewDetachedFromWindow(v)
-        cancleJob()
+        cancelJob()
     }
 }
