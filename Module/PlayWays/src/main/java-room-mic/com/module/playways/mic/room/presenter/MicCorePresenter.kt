@@ -655,7 +655,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             // midi不需要在这下，只要下好，native就会解析，打分就能恢复
             val midiFile = SongResUtils.getMIDIFileByUrl(songModel.midi)
             MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节 info=${songModel.toSimpleString()} acc=${songModel.acc} midi=${songModel.midi} accRound=${mRoomData?.realRoundInfo?.isAccRound} mRoomData.isAccEnable=${mRoomData.isAccEnable}")
-            val needAcc = mRoomData.isAccEnable && (mRoomData?.realRoundInfo?.isAccRound == true)
+            val needAcc = mRoomData?.realRoundInfo?.isAccRound == true && songModel.acc.isNotEmpty()
             if (needAcc) {
                 // 下载midi
                 if (midiFile != null && !midiFile.exists()) {

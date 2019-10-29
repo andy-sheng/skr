@@ -21,7 +21,7 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
     internal var mSelfSingLyricView: SelfSingLyricView? = null
     internal var mSingCountDownView: SingCountDownView2? = null
 
-    var mOverListener:(()->Unit)?=null
+    var mOverListener: (() -> Unit)? = null
 
     override fun init(parentView: View) {
         run {
@@ -49,7 +49,7 @@ class NormalSelfSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
         val totalTs = getTotalMs()
         val songModel = H.getSongModel()
-        if (isAccRound()) {
+        if (isAccRound() && songModel?.acc?.isNotEmpty() == true) {
             mSelfSingLyricView!!.playWithAcc(songModel, totalTs)
         } else {
             mSelfSingLyricView!!.playWithNoAcc(songModel)
