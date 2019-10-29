@@ -13,6 +13,7 @@ interface IMicRoomView {
     fun gameOver()
     fun showRoundOver(lastRoundInfo:MicRoundInfoModel?,continueOp:(()->Unit)?)
     fun receiveScoreEvent(score: Int, lineNum: Int)
+    fun showSongCount(count: Int)
 //    fun showWaiting(showAnimation: Boolean) // 是否需要入场动画
 //    fun showChoiceView(showNextRound: Boolean)// 是否要显示下一句
 //    fun showMatchAnimationView(overListener: ()->Unit)// 是否要显示下一句

@@ -105,5 +105,10 @@ interface MicRoomServerApi {
     @GET("http://dev.game.inframe.mobi/v1/micgame/agree-sing-result")
     fun getAgreeSingResult(@Query("roomID") roomID: Int, @Query("uniqTag") uniqTag: String): Call<ApiResult>
 
+    /**
+     *  拉取已点歌曲数量
+     */
+    @GET("http://dev.game.inframe.mobi/v1/micgame/get-add-music-cnt")
+    fun getAddMusicCnt(@Query("roomID") roomID: Int, @Query("userID") userID: Int): Call<ApiResult>
 
 }

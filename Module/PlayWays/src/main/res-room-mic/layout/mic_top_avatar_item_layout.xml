@@ -44,6 +44,7 @@
         android:text="候场"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_10_dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
         app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
         app:layout_constraintRight_toRightOf="@+id/avatar_iv"
