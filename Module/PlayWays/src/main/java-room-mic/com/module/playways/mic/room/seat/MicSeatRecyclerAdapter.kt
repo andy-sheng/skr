@@ -54,6 +54,8 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
 
         fun bindData(model: MicSeatModel, position: Int) {
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.user?.userInfo?.avatar)
+                    .setBorderColor(U.getColor(R.color.white))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
                     .setCircle(true)
                     .build())
 
