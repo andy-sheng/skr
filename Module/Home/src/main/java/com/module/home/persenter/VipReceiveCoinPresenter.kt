@@ -34,7 +34,7 @@ class VipReceiveCoinPresenter(val baseActivity: BaseActivity) : RxLifeCyclePrese
     internal var mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
 
     fun checkVip() {
-        if (!UserAccountManager.getInstance().hasAccount()) {
+        if (!UserAccountManager.hasAccount()) {
             MyLog.w(TAG, "no account")
             return
         }

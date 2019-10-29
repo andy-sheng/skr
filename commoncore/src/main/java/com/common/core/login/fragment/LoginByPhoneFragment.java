@@ -104,11 +104,11 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                                 mSkrPermission.ensurePermission(new Runnable() {
                                     @Override
                                     public void run() {
-                                        UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode, LoginByPhoneFragment.this);
+                                        UserAccountManager.INSTANCE.loginByPhoneNum(mPhoneNumber, mCode, LoginByPhoneFragment.this);
                                     }
                                 }, true);
                             } else {
-                                UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode, LoginByPhoneFragment.this);
+                                UserAccountManager.INSTANCE.loginByPhoneNum(mPhoneNumber, mCode, LoginByPhoneFragment.this);
                             }
                         }
                     } else {

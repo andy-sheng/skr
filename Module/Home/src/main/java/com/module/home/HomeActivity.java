@@ -196,7 +196,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mHomePresenter = new
 
                 HomeCorePresenter(this, this);
-        if (!UserAccountManager.getInstance().hasAccount()) {
+        if (!UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.GONE);
             mUiHandler.postDelayed(new Runnable() {
                 @Override
@@ -385,7 +385,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         if (getIntent() != null) {
             String scheme = getIntent().getStringExtra("from_scheme");
             if (!TextUtils.isEmpty(scheme)) {
-                if (UserAccountManager.getInstance().hasAccount()) {
+                if (UserAccountManager.INSTANCE.hasAccount()) {
                     goSchemeActivity(scheme);
                 } else {
                     MyLog.d(TAG, "挂起scheme mPengingSchemeUri:" + mPengingSchemeUri);
@@ -457,7 +457,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             //mSkrLocationPermission.ensurePermission(null, false);
         }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe(this)) {
-            if (mFromCreate && UserAccountManager.getInstance().hasAccount()) {
+            if (mFromCreate && UserAccountManager.INSTANCE.hasAccount()) {
                 mSkrSdcardPermission.ensurePermission(this, null, true);
             }
         }
@@ -468,7 +468,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mCheckInPresenter.check();
         mVipReceiveCoinPresenter.checkVip();
 
-        if (UserAccountManager.getInstance().hasAccount()) {
+        if (UserAccountManager.INSTANCE.hasAccount()) {
             mMainActContainer.setVisibility(View.VISIBLE);
         }
     }

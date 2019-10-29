@@ -76,7 +76,7 @@ public class CoreConfiguration implements ConfigModule {
                     msgService.initRongIM(U.app());
                     msgService.addMsgProcessor(new NotificationMsgProcess());
                 }
-                UserAccountManager.getInstance().init();
+                UserAccountManager.INSTANCE.init();
                 DoraemonManager.init();
                 InitManager.initMainThread(new Runnable() {
                     @Override

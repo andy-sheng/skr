@@ -203,7 +203,7 @@ class GrabCorePresenter(@param:NotNull internal var mIGrabView: IGrabRoomView, @
                 params.isEnableVideo = mRoomData.isVideoRoom
                 ZqEngineKit.getInstance().init("grabroom", params)
             }
-            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.getInstance().uuidAsLong.toInt(), false, mRoomData.agoraToken)
+            ZqEngineKit.getInstance().joinRoom(mRoomData.gameId.toString(), UserAccountManager.uuidAsLong.toInt(), false, mRoomData.agoraToken)
             // 不发送本地音频, 会造成第一次抢没声音
             ZqEngineKit.getInstance().muteLocalAudioStream(true)
             if (mRoomData.isVideoRoom) {

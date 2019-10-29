@@ -61,7 +61,7 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndContinue;
                 }
             } else {
-                if (!UserAccountManager.getInstance().hasAccount()) {
+                if (!UserAccountManager.INSTANCE.hasAccount()) {
                     MyLog.w(TAG, "processWebUrl 没有登录");
                     return ProcessResult.AcceptedAndReturn;
                 }
@@ -107,7 +107,7 @@ public class InframeProcessor implements ISchemeProcessor {
             if (beforeHomeExistJudge) {
 
             } else {
-                if (!UserAccountManager.getInstance().hasAccount()) {
+                if (!UserAccountManager.INSTANCE.hasAccount()) {
                     MyLog.w(TAG, "processWebUrl 没有登录");
                     return ProcessResult.AcceptedAndReturn;
                 }

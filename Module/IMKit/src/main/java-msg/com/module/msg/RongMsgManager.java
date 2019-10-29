@@ -95,7 +95,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (msg.what == MSG_RECONNECT) {
                 // 重连
                 mUiHanlder.removeMessages(MSG_RECONNECT);
-                UserAccountManager.getInstance().tryConnectRongIM(true);
+                UserAccountManager.INSTANCE.tryConnectRongIM(true);
             }
         }
     };
@@ -435,7 +435,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                             mUiHanlder.sendEmptyMessageDelayed(MSG_RECONNECT, 15 * 1000);
                             break;
                         case KICKED_OFFLINE_BY_OTHER_CLIENT://用户账户在其他设备登录，本机会被踢掉线
-                            UserAccountManager.getInstance().rcKickedByOthers(0);
+                            UserAccountManager.INSTANCE.rcKickedByOthers(0);
                             break;
                     }
                 }

@@ -424,7 +424,7 @@ class ChorusOthersSingCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 for (u in l) {
                     var uid = u.uid
                     if (uid == 0) {
-                        uid = UserAccountManager.getInstance().uuidAsLong.toInt()
+                        uid = UserAccountManager.uuidAsLong.toInt()
                     }
                     if (u.volume > 30) {
                         if (mLeftUserInfoModel != null && mLeftUserInfoModel!!.userId == uid) {

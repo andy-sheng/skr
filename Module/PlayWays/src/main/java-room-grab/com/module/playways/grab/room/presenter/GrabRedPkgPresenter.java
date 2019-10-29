@@ -45,7 +45,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        if (!UserAccountManager.getInstance().hasAccount()) {
+        if (!UserAccountManager.INSTANCE.hasAccount()) {
             MyLog.w(TAG, "no account");
             return;
         }

@@ -83,7 +83,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // HomeAcitivy的
-                UserAccountManager.getInstance().logoff(1, new Callback() {
+                UserAccountManager.INSTANCE.logoff(1, new Callback() {
                     @Override
                     public void onCallback(int r, Object obj) {
                         if (getActivity() != null) {

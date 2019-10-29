@@ -67,7 +67,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
     }
 
     public void check() {
-        if (!UserAccountManager.getInstance().hasAccount()) {
+        if (!UserAccountManager.INSTANCE.hasAccount()) {
             MyLog.w(TAG, "no account");
             return;
         }

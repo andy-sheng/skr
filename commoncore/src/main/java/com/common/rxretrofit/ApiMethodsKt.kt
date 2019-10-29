@@ -54,9 +54,9 @@ private suspend fun subscribe(apiKey: String? = null, api: () -> Call<ApiResult>
             }
         }
         if (result?.errno == 107) {
-            UserAccountManager.getInstance().notifyAccountExpired()
+            UserAccountManager.notifyAccountExpired()
         } else if (result?.errno == 0) {
-            UserAccountManager.getInstance().accountValidFromServer()
+            UserAccountManager.accountValidFromServer()
         }
         return result
     } catch (e: Exception) {

@@ -417,7 +417,7 @@ public class QuickFeedbackFragment extends BaseFragment {
             U.getToastUtil().showLong("调试模式，请通过微信将反馈分享给研发");
             SharePanel sharePanel = new SharePanel(getActivity());
             StringBuilder sb = new StringBuilder();
-            sb.append("userID=").append(UserAccountManager.getInstance().getUuid());
+            sb.append("userID=").append(UserAccountManager.INSTANCE.getUuid());
             sb.append(" name=").append(MyUserInfoManager.INSTANCE.getNickName());
             sb.append(" ts=").append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis()));
 //            sb.append("屏宽:").append(U.getDisplayUtils().getScreenWidth())

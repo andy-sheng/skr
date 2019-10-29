@@ -127,7 +127,7 @@ public class AuditionFragment extends BaseFragment {
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
             ZqEngineKit.getInstance().joinRoom("csm" + System.currentTimeMillis(),
-                    (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
+                    (int) UserAccountManager.INSTANCE.getUuidAsLong(), isAnchor, null);
         } else {
             ZqEngineKit.getInstance().resumeAudioMixing();
         }

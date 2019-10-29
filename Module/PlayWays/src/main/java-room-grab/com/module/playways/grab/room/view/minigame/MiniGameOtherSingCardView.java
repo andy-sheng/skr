@@ -374,7 +374,7 @@ public class MiniGameOtherSingCardView extends ExViewStub {
                 for (EngineEvent.UserVolumeInfo u : l) {
                     int uid = u.getUid();
                     if (uid == 0) {
-                        uid = (int) UserAccountManager.getInstance().getUuidAsLong();
+                        uid = (int) UserAccountManager.INSTANCE.getUuidAsLong();
                     }
                     if (u.getVolume() > 30) {
                         if (mLeftUserInfoModel != null && mLeftUserInfoModel.getUserId() == uid) {

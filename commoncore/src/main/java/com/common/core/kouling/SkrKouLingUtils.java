@@ -186,7 +186,7 @@ public class SkrKouLingUtils {
                             String scheme = obj.getData().getString("code");
                             if (!TextUtils.isEmpty(scheme)) {
                                 // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
-                                if (UserAccountManager.getInstance().hasAccount()) {
+                                if (UserAccountManager.INSTANCE.hasAccount()) {
                                     Uri uri = Uri.parse(scheme);
                                     ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
                                 } else {

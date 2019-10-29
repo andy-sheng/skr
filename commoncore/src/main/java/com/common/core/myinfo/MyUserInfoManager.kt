@@ -74,7 +74,7 @@ object MyUserInfoManager {
         get() = if (myUserInfo != null && myUserInfo!!.userId != 0L) {
             myUserInfo!!.userId
         } else {
-            UserAccountManager.getInstance().uuidAsLong
+            UserAccountManager.uuidAsLong
         }
 
     val nickName: String
@@ -192,12 +192,12 @@ object MyUserInfoManager {
 
     private fun load() {
         Observable.create(ObservableOnSubscribe<Any> { emitter ->
-            if (UserAccountManager.getInstance().hasAccount()) {
+            if (UserAccountManager.hasAccount()) {
                 if (isUserInfoFromServer && myUserInfo != null) {
                     MyLog.d(TAG, "load。 mUser 有效 来自server，取消本次")
                 } else {
-                    val userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().uuidAsLong)
-                    MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().uuidAsLong)
+                    val userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.uuidAsLong)
+                    MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.uuidAsLong)
                     MyLog.d(TAG, "load myUserInfo=" + userInfo!!)
                     if (userInfo != null) {
                         setMyUserInfo(userInfo, false, "load")
@@ -251,7 +251,7 @@ object MyUserInfoManager {
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo)
                             setMyUserInfo(myUserInfo, true, "syncMyInfoFromServer")
                         } else if (obj.errno == 107) {
-                            UserAccountManager.getInstance().notifyAccountExpired()
+                            UserAccountManager.notifyAccountExpired()
                         }
                     } else {
                         MyLog.w(TAG, "syncMyInfoFromServer obj==null")
@@ -376,7 +376,7 @@ object MyUserInfoManager {
                     Observable.create(ObservableOnSubscribe<Any> { emitter ->
                         MyUserInfoLocalApi.insertOrUpdate(myUserInfo)
                         // 取得个人信息
-                        val userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().uuidAsLong)
+                        val userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.uuidAsLong)
                         if (userInfo != null) {
                             setMyUserInfo(myUserInfo, true, "updateInfo")
                         }
