@@ -1,0 +1,53 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/card_bg_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:src="@drawable/xkf_gequban"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_70_dp"
+        android:layout_height="@dimen/view_70_dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_bg_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/card_bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/card_bg_iv"
+        app:layout_constraintTop_toTopOf="@+id/card_bg_iv"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/singer_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:text="演唱者"
+        android:textColor="#8B572A"
+        android:textSize="@dimen/view_16_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/card_bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/card_bg_iv"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_iv" />
+
+    <TextView
+        android:id="@+id/song_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:text="演唱《歌曲名字》"
+        android:textColor="#C88B572A"
+        android:textSize="@dimen/view_16_dp"
+        app:layout_goneMarginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="@+id/card_bg_iv"
+        app:layout_constraintRight_toRightOf="@+id/card_bg_iv"
+        app:layout_constraintTop_toBottomOf="@+id/singer_name_tv" />
+
+</android.support.constraint.ConstraintLayout>

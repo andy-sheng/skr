@@ -57,6 +57,7 @@ import com.module.playways.mic.room.view.MicInputContainerView
 import com.module.playways.mic.room.view.MicSettingView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
 import com.module.playways.mic.room.view.MicVoiceControlPanelView
+import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
 import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
@@ -107,7 +108,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mTurnInfoCardView: MicTurnInfoCardView  // 下一局
     lateinit var mOthersSingCardView: OthersSingCardView// 他人演唱卡片
     lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
-    lateinit var mSingBeginTipsCardView: SingBeginTipsCardView// 演唱开始提示
+    lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
     lateinit var mRoundOverCardView: RoundOverCardView// 结果页
 
     lateinit var mAddSongIv: ImageView
@@ -179,7 +180,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         initGiftDisplayView()
         initTopView()
         initTurnSenceView()
-        initSingStageView()
 
         initVipEnterView()
         initMicSeatView()
@@ -262,18 +262,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         if (mRoundOverCardView != exclude) {
             mRoundOverCardView.setVisibility(View.GONE)
         }
-    }
-
-    private fun initSingStageView() {
-        var rootView = findViewById<View>(R.id.main_act_container)
-        mSelfSingCardView = SelfSingCardView(rootView)
-        mSelfSingCardView?.setListener {
-            //            removeNoAccSrollTipsView()
-//            removeGrabSelfSingTipView()
-            mCorePresenter?.sendRoundOverInfo()
+        if (mSingBeginTipsCardView != exclude) {
+            mSingBeginTipsCardView.setVisibility(View.GONE)
         }
-//        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
-        mOthersSingCardView = OthersSingCardView(rootView)
     }
 
     private fun initMicSeatView() {
@@ -298,12 +289,24 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     private fun initTurnSenceView() {
 //        mWaitingCardView = findViewById(R.id.wait_card_view)
 //        mWaitingCardView.visibility = View.GONE
+        var rootView = findViewById<View>(R.id.main_act_container)
+        // 下一首
         mTurnInfoCardView = findViewById(R.id.turn_card_view)
         mTurnInfoCardView.visibility = View.GONE
-
-        mSingBeginTipsCardView = SingBeginTipsCardView(findViewById<ViewStub>(R.id.mic_sing_begin_tips_card_stub))
-
-        mRoundOverCardView = RoundOverCardView(findViewById<View>(R.id.main_act_container))
+        // 演唱开始名片
+        mSingBeginTipsCardView = MicSingBeginTipsCardView(rootView)
+        // 自己演唱
+        mSelfSingCardView = SelfSingCardView(rootView)
+        mSelfSingCardView?.setListener {
+            //            removeNoAccSrollTipsView()
+//            removeGrabSelfSingTipView()
+            mCorePresenter?.sendRoundOverInfo()
+        }
+        // 他人演唱
+//        mSelfSingCardView?.setListener4FreeMic { mCorePresenter?.sendMyGrabOver("onSelfSingOver") }
+        mOthersSingCardView = OthersSingCardView(rootView)
+        // 结果页面
+        mRoundOverCardView = RoundOverCardView(rootView)
     }
 
     private fun initBottomView() {
