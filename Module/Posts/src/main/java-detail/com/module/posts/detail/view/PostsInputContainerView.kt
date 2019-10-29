@@ -455,13 +455,13 @@ class PostsInputContainerView : ConstraintLayout, EmotionKeyboard.BoardStatusLis
         mEmotionKeyboard?.setEmotionLayout(findViewById(R.id.elEmotion))
     }
 
-    override fun onBoradShow() {
+    override fun onBoardShow() {
         EventBus.getDefault().post(PostsCommentBoardEvent(true))
         visibility = View.VISIBLE
         showTid()
     }
 
-    override fun onBoradHide() {
+    override fun onBoardHide() {
         if (showType == SHOW_TYPE.KEY_BOARD || mForceHide) {
             //当前是键盘状态，需要收起键盘，reset
             invokeHideCall()

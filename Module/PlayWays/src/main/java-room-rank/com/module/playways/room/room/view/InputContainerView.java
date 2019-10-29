@@ -175,13 +175,13 @@ public class InputContainerView extends RelativeLayout implements EmotionKeyboar
     }
 
     @Override
-    public void onBoradShow() {
+    public void onBoardShow() {
         EventBus.getDefault().post(new InputBoardEvent(true));
         mInputContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onBoradHide() {
+    public void onBoardHide() {
         EventBus.getDefault().post(new InputBoardEvent(false));
         mInputContainer.setVisibility(View.GONE);
     }
