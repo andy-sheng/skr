@@ -528,35 +528,19 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         if (thisRound.status == EMRoundStatus.MRS_INTRO.value) {
             // 等待阶段
-            if (lastRound != null) {
-                roomView.showRoundOver(lastRound) {
-                    roomView.showWaiting()
-                }
-            } else {
+            roomView.showRoundOver(lastRound) {
                 roomView.showWaiting()
             }
         } else if (thisRound.isSingStatus) {
-            if (lastRound != null) {
-                roomView.showRoundOver(lastRound) {
-                    // 演唱阶段
-                    if (thisRound.singBySelf()) {
-                        roomView.singBySelf(true){
-                            preOpWhenSelfRound()
-                        }
-                    } else {
-                        preOpWhenOtherRound()
-                        roomView.singByOthers(true)
-                    }
-                }
-            } else {
+            roomView.showRoundOver(lastRound) {
                 // 演唱阶段
                 if (thisRound.singBySelf()) {
-                    roomView.singBySelf(false){
+                    roomView.singBySelf(lastRound){
                         preOpWhenSelfRound()
                     }
                 } else {
                     preOpWhenOtherRound()
-                    roomView.singByOthers(false)
+                    roomView.singByOthers(lastRound)
                 }
             }
         } else if (thisRound.status == EMRoundStatus.MRS_END.value) {

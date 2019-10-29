@@ -625,7 +625,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         hideAllSceneView(null)
     }
 
-    override fun singBySelf(hasLastRound: Boolean,singCardShowListener:()->Unit) {
+    override fun singBySelf(lastRoundInfo:MicRoundInfoModel?,singCardShowListener:()->Unit) {
         hideAllSceneView(null)
         var step2 = {
             singCardShowListener.invoke()
@@ -644,7 +644,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         }
 
-        if (hasLastRound) {
+        if (lastRoundInfo!=null && lastRoundInfo.overReason!=EMRoundOverReason.MROR_INTRO_OVER.value) {
             // 有上一局 肯定要显示下一首
             mTurnInfoCardView.showAnimation(object : AnimationListener {
                 override fun onFinish() {
@@ -656,7 +656,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
-    override fun singByOthers(hasLastRound: Boolean) {
+    override fun singByOthers(lastRoundInfo:MicRoundInfoModel?) {
         hideAllSceneView(null)
         var step2 = {
             mOthersSingCardView.bindData()
@@ -675,7 +675,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         }
 
-        if (hasLastRound) {
+        if (lastRoundInfo!=null && lastRoundInfo.overReason!=EMRoundOverReason.MROR_INTRO_OVER.value) {
             // 有上一局 肯定要显示下一首
             mTurnInfoCardView.showAnimation(object : AnimationListener {
                 override fun onFinish() {
@@ -695,7 +695,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
         hideAllSceneView(null)
-        if (lastRoundInfo?.overReason == EMRoundOverReason.MROR_INTRO_OVER.value) {
+        if (lastRoundInfo==null || lastRoundInfo?.overReason == EMRoundOverReason.MROR_INTRO_OVER.value) {
             // 等待阶段直接跳转 不走结果页
             continueOp?.invoke()
         } else {
