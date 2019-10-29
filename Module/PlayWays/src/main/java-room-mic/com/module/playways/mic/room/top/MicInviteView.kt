@@ -26,6 +26,7 @@ import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.room.data.H
 import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.MicRoom.EMWantSingType
 import com.zq.live.proto.MicRoom.MAddMusicMsg
 import kotlinx.coroutines.*
 import okhttp3.MediaType
@@ -136,11 +137,9 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 if (micUserMusicModel?.peerID == MyUserInfoManager.uid.toInt()) {
                     resultGroup?.visibility = View.GONE
                     inviteGroup?.visibility = View.VISIBLE
-
                     agreeTv?.text = "加入成功"
                     agreeTv?.isClickable = false
                     agreeTv?.background = grayDrawable
-
                 } else {
                     resultGroup?.visibility = View.VISIBLE
                     inviteGroup?.visibility = View.GONE
@@ -148,7 +147,11 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     val peerModel = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.peerID)  // 接收人
                     resultAvatar?.bindData(peerModel)
                     resultName?.text = peerModel?.nicknameRemark
-                    resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
+                    if(micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value){
+                        resultDesc?.text = "已接受${model?.nicknameRemark}的PK"
+                    }else{
+                        resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
+                    }
                 }
                 resultJob = launch {
                     delay(2000)
