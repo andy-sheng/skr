@@ -53,7 +53,10 @@ import com.module.playways.mic.room.top.MicTopContentView
 import com.module.playways.mic.room.top.MicTopOpView
 import com.module.playways.mic.room.ui.IMicRoomView
 import com.module.playways.mic.room.ui.MicWidgetAnimationController
-import com.module.playways.mic.room.view.*
+import com.module.playways.mic.room.view.MicInputContainerView
+import com.module.playways.mic.room.view.MicSettingView
+import com.module.playways.mic.room.view.MicTurnInfoCardView
+import com.module.playways.mic.room.view.MicVoiceControlPanelView
 import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
@@ -71,8 +74,8 @@ import com.module.playways.room.room.view.BottomContainerView
 import com.module.playways.songmanager.SongManagerActivity
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import com.zq.live.proto.MicRoom.EMRoundOverReason
 import com.zq.live.proto.Common.StandPlayType
+import com.zq.live.proto.MicRoom.EMRoundOverReason
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.MAddMusicMsg
 import com.zq.live.proto.MicRoom.MReqAddMusicMsg
@@ -276,6 +279,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     private fun initMicSeatView() {
         mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
         mMicSeatView = MicSeatView(findViewById(R.id.mic_seat_view_layout_view_stub))
+        mMicSeatView.hasSelectSongNumTv = mHasSelectSongNumTv
         mMicSeatView.mRoomData = mRoomData
         mHasSelectSongNumTv.setDebounceViewClickListener {
             mMicSeatView.show()

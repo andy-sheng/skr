@@ -53,6 +53,7 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
         }
 
         fun bindData(model: MicSeatModel, position: Int) {
+            this.model = model
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.user?.userInfo?.avatar)
                     .setBorderColor(U.getColor(R.color.white))
                     .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
@@ -63,7 +64,16 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
             songNameList.text = getSongNameList()
 
             model!!.user?.let {
+                if (it.isNextSing) {
+                    waitingTv.visibility = View.VISIBLE
+                } else {
+                    waitingTv.visibility = View.GONE
+                }
+            }
+
+            model!!.user?.let {
                 if (it.isCurSing) {
+                    waitingTv.visibility = View.GONE
                     voiceChartView.visibility = View.VISIBLE
                     voiceChartView.start()
                 } else {
@@ -71,33 +81,26 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
                     voiceChartView.stop()
                 }
             }
-
-            model!!.user?.let {
-                if (it.isNextSing) {
-                    waitingTv.visibility = View.VISIBLE
-                } else {
-                    waitingTv.visibility = View.GONE
-                }
-            }
         }
 
         fun getSongNameList(): SpannableStringBuilder {
             val spanUtils = SpanUtils()
-            if (model?.music == null && model?.music?.size ?: 0 == 0) {
+            if (model?.music == null || model?.music?.size ?: 0 == 0) {
                 spanUtils.append("暂无歌曲").setForegroundColor(U.getColor(R.color.white_trans_50))
                 return spanUtils.create()
             }
 
             model?.music?.let {
                 for (i in 0 until it.size) {
+                    val index = i + 1
                     if (i == 0) {
-                        if (model!!.user?.isNextSing == true) {
-                            spanUtils.append("$i.《${it[i].itemName.toString()}》").setForegroundColor(Color.parseColor("#FFC15B"))
+                        if (model!!.user?.isCurSing == true) {
+                            spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(Color.parseColor("#FFC15B"))
                         } else {
-                            spanUtils.append("$i.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
+                            spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
                         }
                     } else {
-                        spanUtils.append("$i.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
+                        spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
                     }
                 }
             }

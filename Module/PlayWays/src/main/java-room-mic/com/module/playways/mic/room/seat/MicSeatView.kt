@@ -17,6 +17,7 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.view.ExViewStub
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
@@ -43,6 +44,8 @@ class MicSeatView : ExViewStub {
     var callWhenVisible: (() -> Unit)? = null
 
     val raceRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
+
+    var hasSelectSongNumTv: ExTextView? = null
 
     internal var mUiHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -88,6 +91,12 @@ class MicSeatView : ExViewStub {
                         adapter?.mDataList?.clear()
                         adapter?.mDataList?.addAll(list)
                         adapter?.notifyDataSetChanged()
+
+                        var songNum = 0
+                        it.forEach {
+                            songNum = songNum + it.music?.size
+                        }
+                        hasSelectSongNumTv?.text = "已点${songNum}首"
                     }
                 }
             }
@@ -145,9 +154,10 @@ class MicSeatView : ExViewStub {
         callWhenVisible?.invoke()
         callWhenVisible = null
 
-        if (adapter?.mDataList?.size == 0) {
-            getUserList()
-        }
+        //todo 调试
+//        if (adapter?.mDataList?.size == 0) {
+        getUserList()
+//        }
 
         mParentView?.clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,

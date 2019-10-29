@@ -5,11 +5,9 @@ import java.io.Serializable
 
 class MicSeatModel : Serializable {
     @JSONField(name = "music")
-    var music: List<SeatMusicInfo>? = null
+    var music: List<SeatMusicInfo> = ArrayList()
     @JSONField(name = "user")
     var user: MicPlayerInfoModel? = null
-
-    class SeatState
 
     class SeatMusicInfo : Serializable {
         @JSONField(name = "itemID")
