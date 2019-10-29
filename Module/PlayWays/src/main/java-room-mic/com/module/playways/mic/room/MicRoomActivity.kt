@@ -266,7 +266,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     private fun initMicSeatView() {
         mHasSelectSongNumTv = findViewById(R.id.has_select_song_num_tv)
-        mMicSeatView = findViewById(R.id.mic_seat_view)
+        mMicSeatView = MicSeatView(findViewById(R.id.mic_seat_view_layout_view_stub))
         mMicSeatView.mRoomData = mRoomData
         mHasSelectSongNumTv.setDebounceViewClickListener {
             mMicSeatView.show()
@@ -542,6 +542,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
 
         if (mGiftPanelView.onBackPressed()) {
+            return true
+        }
+
+        if (mMicSeatView.onBackPressed()) {
             return true
         }
 
