@@ -1,5 +1,6 @@
 package com.zq.mediaengine.kit.agora;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
 import com.engine.statistics.SDataManager;
+import com.engine.statistics.SUtils;
 import com.engine.statistics.datastruct.SAgora;
 import com.engine.statistics.datastruct.SAgoraUserEvent;
 import com.engine.statistics.datastruct.Skr;
@@ -125,17 +127,18 @@ public class AgoraRTCAdapter {
             mRunStatistic = true;
             final String BaiduURL = "www.baidu.com";
 
+
+
             mStatisticThread = new Thread(){
                 @Override
                 public void run() {
                     super.run();
 
+                    boolean gotNetworkInfo = false;
+                    int maxInterval = 2000; //ms
+
                     while(mRunStatistic) {
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        long tempTS = System.currentTimeMillis();
 
 
                         Skr.PingInfo pingInfo = ping(BaiduURL);
@@ -143,6 +146,23 @@ public class AgoraRTCAdapter {
 
                         if (SDataManager.instance().need2Flush())
                             SDataManager.instance().flush(mDataFlushMode);
+
+                        if (!gotNetworkInfo) {
+                            Context ctx = U.app().getApplicationContext();
+                            Skr.NetworkInfo nwInfo = SUtils.getNetworkInfo(ctx);
+                            SDataManager.instance().getAgoraDataHolder().addNetworkInfo(nwInfo);
+                            gotNetworkInfo = true;
+                        }
+
+
+                        long onceTC = System.currentTimeMillis() - tempTS;
+                        if (onceTC < maxInterval) {
+                            try {
+                                Thread.sleep(maxInterval - onceTC);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             };
@@ -179,19 +199,19 @@ public class AgoraRTCAdapter {
             }
 
 //            Log.d(TAG, buffer.toString());
-//            Log.d(TAG, "ping time="+pingTime+" ms");
+//            Log.d(TAG, "ping time="+timeCost+" ms");
 
             if (status == 0) {
-                pingInfo.pingOk = true;
+                pingInfo.isPingOk = true;
 
                 int idx1 = buffer.indexOf("time=");
                 int idx2 = buffer.indexOf(" ms");
 
                 String time = buffer.substring(idx1+5, idx2);
-                pingInfo.pingTime = Float.parseFloat(time);
+                pingInfo.timeCost = Float.parseFloat(time);
             } else {
-                pingInfo.pingOk = false;
-                pingInfo.pingTime = -1;
+                pingInfo.isPingOk = false;
+                pingInfo.timeCost = -1;
             }
         } catch (IOException e) {
             e.printStackTrace();

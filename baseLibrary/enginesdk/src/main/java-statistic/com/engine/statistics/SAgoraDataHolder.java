@@ -29,6 +29,7 @@ public class SAgoraDataHolder
     private List<SAgoraUserEvent>  mUserEvenList;
 
     private List<Skr.PingInfo> mPingInfoList;
+    private List<Skr.NetworkInfo> mNetworkInfoList;
 
     public SAgoraDataHolder() {
         mRtcStatsList = new ArrayList<SAgora.SRTCStats>();
@@ -44,6 +45,7 @@ public class SAgoraDataHolder
         mUserEvenList = new ArrayList<SAgoraUserEvent>();
 
         mPingInfoList = new ArrayList<Skr.PingInfo>();
+        mNetworkInfoList = new ArrayList<Skr.NetworkInfo>();
     }
 
     public SAgoraDataHolder setLinePrefix(String prefix) {
@@ -228,6 +230,14 @@ public class SAgoraDataHolder
         return;
     }
 
+    public synchronized void addNetworkInfo(Skr.NetworkInfo e) {
+        if (null == e) return;
+
+        e.ts = System.currentTimeMillis();
+        mNetworkInfoList.add(e);
+        return;
+    }
+
 
     private String getListString(List list) {
         String retStr = "";
@@ -261,7 +271,7 @@ public class SAgoraDataHolder
         retStr += getListString(mPlayerInfo);
         retStr += getListString(mUserEvenList);
         retStr += getListString(mPingInfoList);
-
+        retStr += getListString(mNetworkInfoList);
         return retStr;
     }
 
@@ -280,6 +290,7 @@ public class SAgoraDataHolder
         mPlayerInfo.clear();
         mUserEvenList.clear();
         mPlayerInfo.clear();
+        mNetworkInfoList.clear();
         return this;
     }
 
