@@ -536,13 +536,15 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         return true
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedForActivity(): Boolean {
         if (mInputContainerView.onBackPressed()) {
-            return
+            return true
         }
+
         if (mGiftPanelView.onBackPressed()) {
-            return
+            return true
         }
+
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
                 .setMessageTip("确定要退出排位赛吗")
@@ -557,6 +559,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 }
                 .build()
         mTipsDialogView?.showByDialog()
+        return true
     }
 
 
