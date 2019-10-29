@@ -12,6 +12,8 @@ class MicSeatModel : Serializable {
     class SeatMusicInfo : Serializable {
         @JSONField(name = "peerID")
         var peerID: Int = 0
+        @JSONField(name = "peerName")
+        var peerName: String? = null
         @JSONField(name = "wantSingType")
         var wantSingType: Int = 0
         @JSONField(name = "music")
