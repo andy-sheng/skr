@@ -87,16 +87,13 @@ class MicSeatView : ExViewStub {
 
                 if (result.errno == 0) {
                     val list = JSON.parseArray(result.data.getString("userLists"), MicSeatModel::class.java)
+                    val songNum = result.data.getIntValue("musicCnt")
+                    hasSelectSongNumTv?.text = "已点${songNum}首"
+
                     list?.let {
                         adapter?.mDataList?.clear()
                         adapter?.mDataList?.addAll(list)
                         adapter?.notifyDataSetChanged()
-
-                        var songNum = 0
-                        it.forEach {
-                            songNum = songNum + it.music?.size
-                        }
-                        hasSelectSongNumTv?.text = "已点${songNum}首"
                     }
                 }
             }

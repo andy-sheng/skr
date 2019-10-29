@@ -95,12 +95,12 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
                     val index = i + 1
                     if (i == 0) {
                         if (model!!.user?.isCurSing == true) {
-                            spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(Color.parseColor("#FFC15B"))
+                            spanUtils.append("$index.《${it[i].music?.itemName.toString()}》").setForegroundColor(Color.parseColor("#FFC15B"))
                         } else {
-                            spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
+                            spanUtils.append("$index.《${it[i].music?.itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
                         }
                     } else {
-                        spanUtils.append("$index.《${it[i].itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
+                        spanUtils.append("$index.《${it[i].music?.itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
                     }
                 }
             }
