@@ -19,6 +19,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.event.GrabJoinRoomFailEvent;
 import com.component.busilib.recommend.RA;
+import com.component.busilib.verify.SkrVerifyUtils;
 import com.component.toast.CommonToastView;
 import com.module.RouterConstants;
 import com.module.playways.doubleplay.DoublePlayActivity;
@@ -72,6 +73,8 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     Disposable mJoinRoomDisposable;
+
+    SkrVerifyUtils skrVerifyUtils = new SkrVerifyUtils();
 
     @Override
     public void tryGoGrabRoom(int roomID, int inviteType) {
@@ -252,32 +255,37 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     }
 
     private void goMicRoom(HashMap map) {
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
-        ApiMethods.subscribe(mRoomServerApi.joinRoom2(body), new ApiObserver<ApiResult>() {
+        skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
             @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    //先跳转
-                    JoinMicRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinMicRoomRspModel.class);
-                    rsp.setRoomID(rsp.getRoomID());
-                    rsp.setGameCreateTimeMs(rsp.getGameCreateTimeMs());
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
-                            .withSerializable("JoinMicRoomRspModel", rsp)
-                            .navigation();
-                } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
-                }
-            }
+            public void run() {
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                MicRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi.class);
+                ApiMethods.subscribe(mRoomServerApi.joinRoom2(body), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            //先跳转
+                            JoinMicRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinMicRoomRspModel.class);
+                            rsp.setRoomID(rsp.getRoomID());
+                            rsp.setGameCreateTimeMs(rsp.getGameCreateTimeMs());
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
+                                    .withSerializable("JoinMicRoomRspModel", rsp)
+                                    .navigation();
+                        } else {
+                            U.getToastUtil().showShort(result.getErrmsg());
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络错误");
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        U.getToastUtil().showShort("网络错误");
+                    }
 
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                U.getToastUtil().showShort("网络延迟");
+                    @Override
+                    public void onNetworkError(ErrorType errorType) {
+                        U.getToastUtil().showShort("网络延迟");
+                    }
+                });
             }
         });
     }
