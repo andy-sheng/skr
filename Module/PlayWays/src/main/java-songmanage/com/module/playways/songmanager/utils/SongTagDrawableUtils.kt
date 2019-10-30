@@ -9,7 +9,7 @@ import com.module.playways.R
 object SongTagDrawableUtils {
 
     // 红色按钮背景
-    val redDrawable: Drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45f).toFloat())
+    val redDrawable: Drawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#FF8AB6"))
             .setStrokeColor(Color.parseColor("#3B4E79"))
             .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())
@@ -17,7 +17,7 @@ object SongTagDrawableUtils {
             .build()
 
     // 灰色按钮背景
-    val grayDrawable: Drawable = DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45f).toFloat())
+    val grayDrawable: Drawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#B1AC99"))
             .setStrokeColor(Color.parseColor("#3B4E79"))
             .setStrokeWidth(U.getDisplayUtils().dip2px(1.5f).toFloat())

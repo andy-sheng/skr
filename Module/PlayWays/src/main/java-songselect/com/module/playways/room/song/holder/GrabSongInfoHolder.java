@@ -5,12 +5,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.R;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
+import com.module.playways.songmanager.utils.SongTagDrawableUtils;
 import com.zq.live.proto.Common.StandPlayType;
 
 public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
@@ -58,13 +60,13 @@ public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
         }
 
         if (mSongModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
-            mSongTag.setBackground(SongSelectAdapter.pk);
+            mSongTag.setBackground(SongTagDrawableUtils.INSTANCE.getPkDrawable());
             mSongTag.setText("PK");
         } else if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
-            mSongTag.setBackground(SongSelectAdapter.togather);
+            mSongTag.setBackground(SongTagDrawableUtils.INSTANCE.getChorusDrawable());
             mSongTag.setText("合唱");
         } else if (mSongModel.getPlayType() == StandPlayType.PT_MINI_GAME_TYPE.getValue()) {
-            mSongTag.setBackground(SongSelectAdapter.game);
+            mSongTag.setBackground(SongTagDrawableUtils.INSTANCE.getMiniGameDrawable());
             mSongTag.setText("双人游戏");
         } else {
             mSongTag.setVisibility(View.GONE);
