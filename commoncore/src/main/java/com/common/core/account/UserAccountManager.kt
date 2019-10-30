@@ -356,7 +356,7 @@ object UserAccountManager {
     /**
      * 用户主动退出登录
      */
-    fun logoff(from: Int, callback: Callback<ApiResult?>) {
+    fun logoff(from: Int, callback: Callback<ApiResult?>?) {
         logoff(from, false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true, callback)
         mUiHanlder.removeCallbacksAndMessages(null)
     }
@@ -381,7 +381,7 @@ object UserAccountManager {
      *
      * @param deleteAccount
      */
-    fun logoff(from: Int, deleteAccount: Boolean, reason: Int, notifyServer: Boolean, callback: Callback<ApiResult?>?) {
+    private fun logoff(from: Int, deleteAccount: Boolean, reason: Int, notifyServer: Boolean, callback: Callback<ApiResult?>?) {
         MyLog.w(TAG, "logoff deleteAccount=$deleteAccount reason=$reason notifyServer=$notifyServer")
         if (!hasAccount()) {
             MyLog.w(TAG, "logoff but hasAccount = false")
