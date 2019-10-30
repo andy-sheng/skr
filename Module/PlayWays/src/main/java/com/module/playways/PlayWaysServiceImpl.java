@@ -33,6 +33,7 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabMatchActivity;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.mic.match.model.JoinMicRoomRspModel;
+import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
@@ -265,6 +266,12 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
                             //先跳转
+                            for (Activity activity : U.getActivityUtils().getActivityList()) {
+                                if (activity instanceof MicRoomActivity) {
+                                    activity.finish();
+                                }
+                            }
+
                             JoinMicRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinMicRoomRspModel.class);
                             rsp.setRoomID(rsp.getRoomID());
                             rsp.setGameCreateTimeMs(rsp.getGameCreateTimeMs());
