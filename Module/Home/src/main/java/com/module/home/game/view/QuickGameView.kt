@@ -199,10 +199,21 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     fun initData(flag: Boolean) {
         mQuickGamePresenter.initOperationArea(flag)
 //        mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
-        mQuickGamePresenter.initGameTypeArea(flag)
-        mQuickGamePresenter.getReginDiff(flag)
-//        mQuickGamePresenter.initQuickRoom(false)
+        //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
+        if (!flag) {
+            if (mQuickGamePresenter.isUserInfoChange) {
+                mQuickGamePresenter.isUserInfoChange = false
+                mQuickGamePresenter.initGameTypeArea(true)
+                mQuickGamePresenter.getReginDiff(true)
+            } else {
+                mQuickGamePresenter.initGameTypeArea(false)
+                mQuickGamePresenter.getReginDiff(false)
+            }
+        } else {
+            mQuickGamePresenter.initGameTypeArea(true)
+            mQuickGamePresenter.getReginDiff(true)
+        }
     }
 
     fun stopTimer() {

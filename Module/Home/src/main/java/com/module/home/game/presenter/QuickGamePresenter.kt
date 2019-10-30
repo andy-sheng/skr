@@ -42,6 +42,8 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     private var mIsFirstQuick = true   // 是否第一次拉去首页
     var mRecommendInterval: Int = 0    // 拉去推荐房的时间间隔
 
+    var isUserInfoChange = false
+
     init {
         addToLifeCycle()
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -243,8 +245,10 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
-        initGameTypeArea(true)
-        getReginDiff(true)
+        isUserInfoChange = true
+        // 在页面才去刷新去
+//        initGameTypeArea(true)
+//        getReginDiff(true)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
