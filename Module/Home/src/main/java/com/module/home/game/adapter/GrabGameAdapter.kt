@@ -17,6 +17,7 @@ class GrabGameAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHol
     var mReginDiff: UserRankModel? = null
 
     var onClickTagListener: ((model: GrabSpecialModel?) -> Unit)? = null
+    var onClickRaceRankListener: ((model: GrabSpecialModel?) -> Unit)? = null
 
     // 针对首页加个类型
     val VIEW_TYPE_RACE = 1
@@ -33,7 +34,7 @@ class GrabGameAdapter(val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHol
                 GameTagViewHolder(view, onClickTagListener)
             } else {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.game_home_race_tag_view_layout, parent, false)
-                GameRaceViewHolder(view, onClickTagListener)
+                GameRaceViewHolder(view, onClickTagListener, onClickRaceRankListener)
             }
         }
     }

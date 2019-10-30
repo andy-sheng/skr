@@ -40,6 +40,11 @@ class GameTypeViewHolder(itemView: View,
                 GrabSpecialModel.TBT_MICROOM_TAB -> listener.onMicRoomListener()
             }
         }
+
+        mGrabGameAdapter.onClickRaceRankListener = {
+            listener.onClickRankArea()
+        }
+
         recyclerView.adapter = mGrabGameAdapter
     }
 

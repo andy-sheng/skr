@@ -123,4 +123,6 @@ interface ClickGameListener {
     fun onBattleRoomListener()
     fun onGrabRoomListener()
     fun onMicRoomListener()
+
+    fun onClickRankArea()
 }

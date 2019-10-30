@@ -22,7 +22,7 @@ import com.module.home.R
 import com.module.home.game.model.GrabSpecialModel
 import java.util.regex.Pattern
 
-class GameRaceViewHolder(item: View, onClickTagListener: ((model: GrabSpecialModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
+class GameRaceViewHolder(item: View, onClickTagListener: ((model: GrabSpecialModel?) -> Unit)?, onClickRaceRankListener: ((model: GrabSpecialModel?) -> Unit)?) : RecyclerView.ViewHolder(item) {
 
     val imageSdv: SimpleDraweeView = item.findViewById(R.id.image_sdv)
     val levelBg: ExImageView = item.findViewById(R.id.level_bg)
@@ -39,7 +39,7 @@ class GameRaceViewHolder(item: View, onClickTagListener: ((model: GrabSpecialMod
         }
 
         levelBg.setAnimateDebounceViewClickListener {
-            
+            onClickRaceRankListener?.invoke(model)
         }
     }
 
