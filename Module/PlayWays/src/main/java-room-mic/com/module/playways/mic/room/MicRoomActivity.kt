@@ -592,7 +592,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出排位赛吗")
+                .setMessageTip("确定要退出小K房吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
