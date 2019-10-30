@@ -540,6 +540,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         val micUserMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
         if (micUserMusicModel.userID != MyUserInfoManager.uid.toInt()) {
             mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
+        } else {
+            // 启一个任务去同步
+            mMicInviteView?.startCheckSelfJob()
         }
     }
 

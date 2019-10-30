@@ -8,7 +8,6 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -33,7 +32,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
     public static final String KEY_ROOM_TYPE = "key_room_type";
     public static final int ErrNoPublicRoomPermission = 8344139; //达成一唱到底60首，才能开启
     public static final int ErrRealAuth = 8344158; //实名认证未通过
-    public static final int ErrCountNotEnoughtError = 8344156; //实名认证未通过
+    public static final int ErrCountNotEnoughtError = 8344403; //普通的次数用完了
 
     ExImageView mIvBack;
     ExImageView mFriendsRoom;
@@ -125,37 +124,32 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                 mTipsDialogView.dismiss();
                             }
 
-                            if (MyUserInfoManager.INSTANCE.getMyUserInfo().getHonorInfo().isHonor()) {
-                                showErrorMsgDialog("" + result.getErrmsg());
-                            } else {
-                                mTipsDialogView = new TipsDialogView.Builder((BaseActivity) getContext())
-                                        .setMessageTip("开通VIP特权，立即获得更多派对开房权限")
-                                        .setConfirmTip("立即开通")
-                                        .setCancelTip("取消")
-                                        .setConfirmBtnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                if (mTipsDialogView != null) {
-                                                    mTipsDialogView.dismiss(true);
-                                                }
-
-                                                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
-                                                        .greenChannel().navigation();
+                            mTipsDialogView = new TipsDialogView.Builder((BaseActivity) getContext())
+                                    .setMessageTip("开通VIP特权，立即获得更多派对开房权限")
+                                    .setConfirmTip("立即开通")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (mTipsDialogView != null) {
+                                                mTipsDialogView.dismiss(true);
                                             }
-                                        })
-                                        .setCancelBtnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                if (mTipsDialogView != null) {
-                                                    mTipsDialogView.dismiss(true);
-                                                }
-                                            }
-                                        })
-                                        .build();
-                                mTipsDialogView.showByDialog();
-                            }
 
+                                            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                    .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                                    .greenChannel().navigation();
+                                        }
+                                    })
+                                    .setCancelBtnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (mTipsDialogView != null) {
+                                                mTipsDialogView.dismiss(true);
+                                            }
+                                        }
+                                    })
+                                    .build();
+                            mTipsDialogView.showByDialog();
                         } else {
                             if (TextUtils.isEmpty(result.getErrmsg())) {
                                 showErrorMsgDialog("您还没有权限创建公开房间");
