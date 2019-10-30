@@ -729,7 +729,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MChangeRoomOwnerMsg) {
         mRoomData.ownerId = event.userID
-        EventBus.getDefault().post(MicPlaySeatUpdateEvent(mRoomData.getPlayerAndWaiterInfoList()))
+//        EventBus.getDefault().post(MicPlaySeatUpdateEvent(mRoomData.getPlayerAndWaiterInfoList()))
     }
 
     /**
