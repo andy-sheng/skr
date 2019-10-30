@@ -49,7 +49,7 @@ class GrabScoreTipsView : RelativeLayout {
             scoreTipMsgModelList = H.micRoomData?.configModel?.qScoreTipMsg
         }
         // 总分是这个肯定没错
-        if (scoreTipMsgModelList != null) {
+        if (scoreTipMsgModelList?.isNotEmpty()==true) {
             for (m in scoreTipMsgModelList) {
                 if (score1 >= m.fromScore && score1 < m.toScore) {
                     // 命中

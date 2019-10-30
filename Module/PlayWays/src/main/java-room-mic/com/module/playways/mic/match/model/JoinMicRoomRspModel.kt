@@ -1,5 +1,6 @@
 package com.module.playways.mic.match.model
 
+import com.alibaba.fastjson.annotation.JSONField
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel

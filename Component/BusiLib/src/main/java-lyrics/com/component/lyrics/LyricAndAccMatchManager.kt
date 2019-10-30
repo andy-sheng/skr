@@ -89,7 +89,7 @@ class LyricAndAccMatchManager {
 
     fun setArgs(params: ConfigParams
     ) {
-        DebugLogView.println(TAG, "setArgs params=$params")
+        MyLog.w(TAG, "setArgs params=$params")
         this.params = params
         mLrcLoadOk = false
         mHasLauncher = false
@@ -207,7 +207,7 @@ class LyricAndAccMatchManager {
     fun onEvent(event: EngineEvent) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             val `in` = event.getObj<EngineEvent.MixMusicTimeInfo>()
-            DebugLogView.println(TAG, "伴奏 ts=" + `in`!!.current)
+            MyLog.w(TAG, "伴奏 ts=" + `in`!!.current)
             if (`in` != null && `in`.current > 0) {
                 if (params?.accLoadOk == false) {
                     DebugLogView.println(TAG, "伴奏加载ready")
@@ -261,7 +261,7 @@ class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LrcEvent.LineLineEndEvent) {
-        DebugLogView.println(TAG, "LineLineEndEvent event=$event")
+        DebugLogView.println(TAG, "获取第${event.lineNum}句得分")
         if (this.params?.needScore == false) {
             return
         }
