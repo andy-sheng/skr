@@ -137,7 +137,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 waitingTv.visibility = View.GONE
             }
 
-            if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value) {
+            if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value || model?.userID == mRoomData?.ownerId) {
                 mRoomData?.ownerId = model.userID
                 homeownerIv.visibility = View.VISIBLE
             } else {

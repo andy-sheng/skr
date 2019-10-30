@@ -134,6 +134,7 @@ class MicTopContentView : ConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         mUiHandler.removeMessages(REFRESH_DATA)
         val msg = mUiHandler.obtainMessage()
         msg.what = REFRESH_DATA
@@ -143,6 +144,7 @@ class MicTopContentView : ConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         mUiHandler.removeMessages(REFRESH_DATA)
         val msg = mUiHandler.obtainMessage()
         msg.what = REFRESH_DATA
@@ -152,6 +154,7 @@ class MicTopContentView : ConstraintLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicHomeOwnerChangeEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
         mUiHandler.removeMessages(REFRESH_DATA)
         val msg = mUiHandler.obtainMessage()
         msg.what = REFRESH_DATA
