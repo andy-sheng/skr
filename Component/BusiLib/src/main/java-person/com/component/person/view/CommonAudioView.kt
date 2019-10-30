@@ -58,6 +58,11 @@ class CommonAudioView : ConstraintLayout {
         speakerAnimationIv.reset()
     }
 
+    fun bindData(audioMs: Long, desc: String) {
+        bindData(audioMs)
+        durationTv.text = desc
+    }
+
     fun setPlay(isPlay: Boolean) {
         isPlaying = isPlay
         if (isPlay) {

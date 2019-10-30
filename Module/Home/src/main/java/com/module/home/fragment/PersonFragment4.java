@@ -743,7 +743,12 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
         mVoiceInfoModel = voiceInfoModel;
         if (voiceInfoModel != null) {
-            mAudioView.bindData(voiceInfoModel.getDuration());
+            if(voiceInfoModel.getAuditStatus() == VoiceInfoModel.EVAS_UN_AUDIT){
+                // 未审核
+                mAudioView.bindData(voiceInfoModel.getDuration(), "审核中");
+            }else {
+                mAudioView.bindData(voiceInfoModel.getDuration());
+            }
             mAudioView.setVisibility(View.VISIBLE);
         } else {
             mAudioView.setVisibility(View.GONE);
