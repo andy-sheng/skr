@@ -6,12 +6,11 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
-import com.common.image.fresco.BaseImageView
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.AvatarView
 import com.component.busilib.view.VoiceChartView
 import com.module.playways.R
 import com.module.playways.mic.room.model.MicSeatModel
@@ -37,7 +36,7 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
     inner class MicSeatHolder : RecyclerView.ViewHolder {
         var model: MicSeatModel? = null
         var position: Int? = null
-        var avatarIv: BaseImageView
+        var avatarIv: AvatarView
         var waitingTv: ExTextView
         var voiceChartView: VoiceChartView
         var userName: ExTextView
@@ -55,11 +54,10 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
 
         fun bindData(model: MicSeatModel, position: Int) {
             this.model = model
-            AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.user?.userInfo?.avatar)
-                    .setBorderColor(U.getColor(R.color.white))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
-                    .setCircle(true)
-                    .build())
+
+            model.user?.userInfo?.let {
+                avatarIv.bindData(it)
+            }
 
             userName.text = UserInfoManager.getInstance().getRemarkName(model?.user?.userInfo?.userId!!, model.user?.userInfo?.nickname)
             songNameList.text = getSongNameList()
