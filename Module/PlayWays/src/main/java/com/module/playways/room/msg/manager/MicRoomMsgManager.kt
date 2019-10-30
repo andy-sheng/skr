@@ -23,7 +23,7 @@ object MicRoomMsgManager : BaseMsgManager<EMicRoomMsgType, MicRoomMsg>() {
         for (filter in mPushMsgFilterList) {
             canGo = filter.doFilter(msg)
             if (!canGo) {
-                MyLog.d("RaceRoomMsgManager", "processRoomMsg " + msg + "被拦截")
+                MyLog.d("MicRoomMsgManager", "processRoomMsg " + msg + "被拦截")
                 return
             }
         }
