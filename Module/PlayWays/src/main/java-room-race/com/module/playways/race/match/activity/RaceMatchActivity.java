@@ -39,9 +39,6 @@ public class RaceMatchActivity extends BaseActivity {
             if (activity == this) {
                 continue;
             }
-            if (activity instanceof RaceHomeActivity) {
-                continue;
-            }
             activity.finish();
         }
 //        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");

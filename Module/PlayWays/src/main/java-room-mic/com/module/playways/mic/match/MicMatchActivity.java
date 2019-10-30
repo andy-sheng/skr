@@ -1,7 +1,6 @@
 package com.module.playways.mic.match;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
@@ -13,8 +12,6 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.R;
 import com.module.playways.mic.match.fragment.MicMatchFragment;
-import com.module.playways.race.match.activity.RaceHomeActivity;
-import com.module.playways.room.prepare.model.PrepareData;
 
 @Route(path = RouterConstants.ACTIVITY_MIC_MATCH)
 public class MicMatchActivity extends BaseActivity {
@@ -35,9 +32,7 @@ public class MicMatchActivity extends BaseActivity {
             if (activity == this) {
                 continue;
             }
-            if (activity instanceof RaceHomeActivity) {
-                continue;
-            }
+
             activity.finish();
         }
 //        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");

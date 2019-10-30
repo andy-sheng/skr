@@ -10,7 +10,6 @@ import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.module.RouterConstants
 import com.module.playways.R
-import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.ui.RaceRoomFragment
 import com.module.playways.room.data.H
@@ -51,9 +50,6 @@ class RaceRoomActivity : BaseActivity() {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            if (activity is RaceHomeActivity) {
                 continue
             }
             activity.finish()

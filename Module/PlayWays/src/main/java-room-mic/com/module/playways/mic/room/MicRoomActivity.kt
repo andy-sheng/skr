@@ -57,7 +57,6 @@ import com.module.playways.mic.room.view.MicSettingView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
 import com.module.playways.mic.room.view.MicVoiceControlPanelView
 import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
-import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -146,9 +145,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            if (activity is RaceHomeActivity) {
                 continue
             }
             activity.finish()
