@@ -40,7 +40,7 @@ interface MicRoomServerApi {
     fun giveUpSing(@Body body: RequestBody): Call<ApiResult>
 
     @Headers(ApiManager.ALWAYS_LOG_TAG)
-    @PUT("http://dev.game.inframe.mobi/v1/microom/req-kick-user")
+    @PUT("http://dev.game.inframe.mobi/v1/microom/kickout")
     fun reqKickUser(@Body body: RequestBody): Call<ApiResult>
 
     @Headers(ApiManager.ALWAYS_LOG_TAG)

@@ -24,6 +24,7 @@ import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
+import com.component.toast.CommonToastView
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
@@ -41,6 +42,7 @@ import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
 import com.module.playways.listener.SVGAListener
+import com.module.playways.mic.home.MicHomeActivity
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.bottom.MicBottomContainerView
 import com.module.playways.mic.room.event.MicWantInviteEvent
@@ -146,6 +148,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         // 销毁其他的除一唱到底页面所有界面
         for (activity in U.getActivityUtils().activityList) {
             if (activity === this) {
+                continue
+            }
+            if (MicHomeActivity::class.java == activity::class.java) {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
@@ -732,7 +737,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
-    override fun kickBySomeOne(b: Boolean) {
+    override fun kickBySomeOne(isOwner: Boolean) {
+        MyLog.d(TAG, "kickBySomeOne isOwner=$isOwner")
+        //onGrabGameOver("kickBySomeOne");
+        U.getToastUtil().showSkrCustomLong(CommonToastView.Builder(U.app())
+                .setImage(R.drawable.touxiangshezhishibai_icon)
+                .setText(if (isOwner) "房主将你请出了房间" else "超过半数玩家请你出房间，要友好文明游戏哦~")
+                .build())
+        mCorePresenter?.exitRoom("kickBySomeOne")
     }
 
     override fun dismissKickDialog() {
