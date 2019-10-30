@@ -20,6 +20,7 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
+import com.component.dialog.ConfirmDialog
 import com.component.dialog.PersonInfoDialog
 import com.component.person.event.ShowPersonCardEvent
 import com.component.report.fragment.QuickFeedbackFragment
@@ -120,6 +121,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     // 都是dialogplus
     private var mPersonInfoDialog: PersonInfoDialog? = null
+    private var mGrabKickDialog: ConfirmDialog? = null
     private var mVoiceControlPanelView: MicVoiceControlPanelView? = null
     private var mMicSettingView: MicSettingView? = null
     private var mGameRuleDialog: DialogPlus? = null
@@ -485,7 +487,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     override fun receiveScoreEvent(score: Int) {
-        mGrabScoreTipsView.updateScore(score,-1)
+        mGrabScoreTipsView.updateScore(score, -1)
     }
 
     override fun showSongCount(count: Int) {
@@ -505,8 +507,26 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mInputContainerView.hideSoftInput()
         mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, true, true)
                 .setRoomID(mRoomData.gameId)
+                .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }
                 .build()
         mPersonInfoDialog?.show()
+    }
+
+    // 确认踢人弹窗
+    private fun showKickConfirmDialog(userInfoModel: UserInfoModel) {
+        MyLog.d(TAG, "showKickConfirmDialog userInfoModel=$userInfoModel")
+        dismissDialog()
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this)
+        if (!mRoomData.isOwner) {
+            U.getToastUtil().showShort("只有房主才可以踢人")
+            return
+        }
+        mGrabKickDialog = ConfirmDialog(U.getActivityUtils().topActivity, userInfoModel, ConfirmDialog.TYPE_OWNER_KICK_CONFIRM, 0)
+        mGrabKickDialog?.setListener { userInfoModel ->
+            // 发起踢人请求
+            mCorePresenter?.reqKickUser(userInfoModel.userId)
+        }
+        mGrabKickDialog?.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -623,6 +643,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 //        mRaceVoiceControlPanelView?.dismiss(false)
         mGameRuleDialog?.dismiss(false)
         mTipsDialogView?.dismiss(false)
+        mGrabKickDialog?.dismiss(false)
     }
 
     override fun showWaiting() {
