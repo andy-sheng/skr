@@ -428,10 +428,8 @@ class NotifyCorePresenter(internal var mINotifyView: INotifyView) : RxLifeCycleP
 
     internal fun tryGoMicRoom(ownerId: Int, roomID: Int) {
         mSkrAudioPermission!!.ensurePermission({
-            mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                iRankingModeService.jumpMicRoom(roomID)
-            }
+            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+            iRankingModeService.jumpMicRoom(roomID)
         }, true)
 
     }
