@@ -18,6 +18,7 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
+import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.recommend.RA
 import com.module.RouterConstants
@@ -36,8 +37,8 @@ class MicHomeActivity : BaseActivity() {
     lateinit var playCallback: SinglePlayerCallbackAdapter
 
     lateinit var titlebar: CommonTitleBar
-    lateinit var quickBegin: ImageView
-    lateinit var createRoom: ImageView
+    lateinit var quickBegin: ExImageView
+    lateinit var createRoom: ExImageView
     lateinit var smartRefresh: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
 
