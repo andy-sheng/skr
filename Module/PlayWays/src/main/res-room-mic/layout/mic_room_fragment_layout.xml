@@ -88,7 +88,7 @@
         app:bl_gradient_endColor="#835DFD"
         app:bl_gradient_startColor="#835DFD"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <!--下一局-->
     <com.module.playways.mic.room.view.MicTurnInfoCardView
