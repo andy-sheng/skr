@@ -1,6 +1,8 @@
 package com.module.playways.mic.room.top
 
 import android.content.Context
+import android.os.Handler
+import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,6 +23,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MicTopContentView : ConstraintLayout {
     val TAG = "MicTopContentView"
+    val REFRESH_DATA = 1
 
     val arrowIv: ImageView
     val recyclerView: RecyclerView
@@ -31,6 +34,14 @@ class MicTopContentView : ConstraintLayout {
     private var mRoomData: MicRoomData? = null
 
     internal var mListener: Listener? = null
+
+    internal var mUiHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            if (REFRESH_DATA == msg?.what) {
+                initData(msg.obj as String)
+            }
+        }
+    }
 
     constructor(context: Context) : super(context) {}
 
@@ -48,7 +59,7 @@ class MicTopContentView : ConstraintLayout {
             EventBus.getDefault().register(this)
         }
 
-        recyclerView.layoutManager = RecyclerViewNoBugLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
@@ -117,21 +128,35 @@ class MicTopContentView : ConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+
+        mUiHandler.removeCallbacksAndMessages(null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
-        initData("MicRoundChangeEvent")
+        mUiHandler.removeMessages(REFRESH_DATA)
+        val msg = mUiHandler.obtainMessage()
+        msg.what = REFRESH_DATA
+        msg.obj = "MicRoundChangeEvent"
+        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
-        initData("MicPlaySeatUpdateEvent")
+        mUiHandler.removeMessages(REFRESH_DATA)
+        val msg = mUiHandler.obtainMessage()
+        msg.what = REFRESH_DATA
+        msg.obj = "MicPlaySeatUpdateEvent"
+        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicHomeOwnerChangeEvent) {
-        initData("MicHomeOwnerChangeEvent")
+        mUiHandler.removeMessages(REFRESH_DATA)
+        val msg = mUiHandler.obtainMessage()
+        msg.what = REFRESH_DATA
+        msg.obj = "MicHomeOwnerChangeEvent"
+        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     fun setListener(listener: Listener) {
