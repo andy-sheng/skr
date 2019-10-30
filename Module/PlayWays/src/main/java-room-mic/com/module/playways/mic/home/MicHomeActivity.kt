@@ -72,12 +72,16 @@ class MicHomeActivity : BaseActivity() {
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
         quickBegin.setAnimateDebounceViewClickListener {
+            SinglePlayer.stop(playTag)
+            adapter?.stopPlay()
             skrVerifyUtils.checkHasMicAudioPermission {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
                         .navigation()
             }
         }
         createRoom.setAnimateDebounceViewClickListener {
+            SinglePlayer.stop(playTag)
+            adapter?.stopPlay()
             skrVerifyUtils.checkHasMicAudioPermission {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
                         .navigation()
