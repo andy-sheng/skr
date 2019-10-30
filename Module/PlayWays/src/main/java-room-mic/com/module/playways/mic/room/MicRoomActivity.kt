@@ -35,7 +35,6 @@ import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.control.RoundOverCardView
 import com.module.playways.grab.room.view.control.SelfSingCardView
-import com.module.playways.grab.room.view.control.SingBeginTipsCardView
 import com.module.playways.grab.room.voicemsg.VoiceRecordTipsView
 import com.module.playways.grab.room.voicemsg.VoiceRecordUiController
 import com.module.playways.listener.AnimationListener
@@ -58,7 +57,6 @@ import com.module.playways.mic.room.view.MicSettingView
 import com.module.playways.mic.room.view.MicTurnInfoCardView
 import com.module.playways.mic.room.view.MicVoiceControlPanelView
 import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
-import com.module.playways.race.match.activity.RaceHomeActivity
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
@@ -147,9 +145,6 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            if (activity is RaceHomeActivity) {
                 continue
             }
             activity.finish()
@@ -430,7 +425,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     private fun showGameRuleDialog() {
         dismissDialog()
         mGameRuleDialog = DialogPlus.newDialog(this)
-                .setContentHolder(ViewHolder(R.layout.race_game_rule_view_layout))
+                .setContentHolder(ViewHolder(R.layout.mic_game_rule_view_layout))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setMargin(U.getDisplayUtils().dip2px(16f), -1, U.getDisplayUtils().dip2px(16f), -1)
@@ -592,7 +587,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
         dismissDialog()
         mTipsDialogView = TipsDialogView.Builder(this)
-                .setMessageTip("确定要退出排位赛吗")
+                .setMessageTip("确定要退出小K房吗")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
                 .setConfirmBtnClickListener {
@@ -625,9 +620,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         hideAllSceneView(null)
     }
 
-    override fun singBySelf(hasLastRound: Boolean) {
+    override fun singBySelf(lastRoundInfo: MicRoundInfoModel?, singCardShowListener: () -> Unit) {
         hideAllSceneView(null)
         var step2 = {
+            singCardShowListener.invoke()
             mSelfSingCardView.playLyric()
             mGiveUpView.delayShowGiveUpView(false)
         }
@@ -643,7 +639,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         }
 
-        if (hasLastRound) {
+        if (lastRoundInfo != null && lastRoundInfo.overReason != EMRoundOverReason.MROR_INTRO_OVER.value) {
             // 有上一局 肯定要显示下一首
             mTurnInfoCardView.showAnimation(object : AnimationListener {
                 override fun onFinish() {
@@ -655,7 +651,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
     }
 
-    override fun singByOthers(hasLastRound: Boolean) {
+    override fun singByOthers(lastRoundInfo: MicRoundInfoModel?) {
         hideAllSceneView(null)
         var step2 = {
             mOthersSingCardView.bindData()
@@ -674,7 +670,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         }
 
-        if (hasLastRound) {
+        if (lastRoundInfo != null && lastRoundInfo.overReason != EMRoundOverReason.MROR_INTRO_OVER.value) {
             // 有上一局 肯定要显示下一首
             mTurnInfoCardView.showAnimation(object : AnimationListener {
                 override fun onFinish() {
@@ -694,7 +690,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     override fun showRoundOver(lastRoundInfo: MicRoundInfoModel?, continueOp: (() -> Unit)?) {
         hideAllSceneView(null)
-        if (lastRoundInfo?.overReason == EMRoundOverReason.MROR_INTRO_OVER.value) {
+        if (lastRoundInfo == null || lastRoundInfo?.overReason == EMRoundOverReason.MROR_INTRO_OVER.value) {
             // 等待阶段直接跳转 不走结果页
             continueOp?.invoke()
         } else {

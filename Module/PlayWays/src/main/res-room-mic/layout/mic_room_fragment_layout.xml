@@ -108,6 +108,18 @@
     <include layout="@layout/mic_self_sing_card_view_layout" />
     <!--轮次结束卡片-->
     <include layout="@layout/mic_round_over_card_layout" />
+
+    <!--点歌-->
+    <ImageView
+        android:id="@+id/add_song_iv"
+        android:layout_width="@dimen/view_61_dp"
+        android:layout_height="@dimen/view_61_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_82_dp"
+        android:background="@drawable/mic_add_song_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <!--礼物连送按钮-->
     <com.module.playways.room.gift.view.ContinueSendView
         android:id="@+id/continue_send_view"
@@ -163,17 +175,6 @@
         android:paddingLeft="@dimen/view_16_dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!--点歌-->
-    <ImageView
-        android:id="@+id/add_song_iv"
-        android:layout_width="@dimen/view_61_dp"
-        android:layout_height="@dimen/view_61_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:layout_marginBottom="@dimen/view_82_dp"
-        android:background="@drawable/mic_add_song_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 
     <!--放弃演唱-->
     <com.module.playways.grab.room.view.GrabGiveupView

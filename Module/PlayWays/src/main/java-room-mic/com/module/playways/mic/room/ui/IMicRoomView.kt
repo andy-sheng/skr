@@ -5,8 +5,8 @@ import com.module.playways.mic.room.model.MicRoundInfoModel
 
 interface IMicRoomView {
     fun showWaiting()
-    fun singBySelf(hasLastRound:Boolean)
-    fun singByOthers(hasLastRound:Boolean)
+    fun singBySelf(lastRoundInfo:MicRoundInfoModel?,singCardShowListener:()->Unit)
+    fun singByOthers(lastRoundInfo:MicRoundInfoModel?)
     fun joinNotice(model: MicPlayerInfoModel?)
     fun kickBySomeOne(b: Boolean)
     fun dismissKickDialog()

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -21,6 +22,11 @@ import com.module.RouterConstants;
 import com.module.home.IHomeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.tencent.mm.opensdk.constants.Build;
+
+import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class SkrVerifyUtils {
 
@@ -107,6 +113,67 @@ public class SkrVerifyUtils {
                 process2(obj, successCallback);
             }
         }, new RequestControl("checkCreatePublicRoomPermission", ControlType.CancelThis));
+    }
+
+    /**
+     * 是否有录制的语音，用于进入小k房前做
+     *
+     * @param successCallback
+     */
+    public void checkHasMicAudioPermission(final Runnable successCallback) {
+        if (MyLog.isDebugLogOpen()) {
+            if (successCallback != null) {
+                successCallback.run();
+            }
+            return;
+        }
+
+        HashMap map = new HashMap();
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        final VerifyServerApi grabRoomServerApi = ApiManager.getInstance().createService(VerifyServerApi.class);
+        ApiMethods.subscribe(grabRoomServerApi.checkHasMicAudioPermission(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    int status = obj.getData().getInteger("status");
+                    if (status == 0 || status == 3) {
+                        showGoToRecordAudioDialog(successCallback);
+                    } else {
+                        //直接进房
+                        successCallback.run();
+                    }
+                }
+            }
+        }, new RequestControl("checkHasMicAudioPermission", ControlType.CancelThis));
+    }
+
+    private void showGoToRecordAudioDialog(final Runnable successCallback) {
+        if (mTipsDialogView != null) {
+            mTipsDialogView.dismiss();
+        }
+        // 去实名认证
+        mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                .setMessageTip("清唱几句，让别人通过歌声认识你吧～")
+                .setConfirmTip("录制")
+                .setCancelTip("暂不")
+                .setConfirmBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        mTipsDialogView.dismiss();
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
+                                .withInt("from", 2)
+                                .navigation();
+                    }
+                })
+                .setCancelBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        mTipsDialogView.dismiss();
+                        successCallback.run();
+                    }
+                })
+                .build();
+        mTipsDialogView.showByDialog();
     }
 
     /**

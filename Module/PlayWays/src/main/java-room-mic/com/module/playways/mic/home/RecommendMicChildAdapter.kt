@@ -1,7 +1,9 @@
 package com.module.playways.mic.home
 
 import android.graphics.Color
+import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,7 +76,16 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
                     .setBorderColor(Color.WHITE)
                     .build())
             playIv.visibility = View.VISIBLE
-            voiceChartView.visibility = View.GONE
+
+            if (model.voiceInfo != null && !TextUtils.isEmpty(model.voiceInfo?.voiceURL)) {
+                playBg.visibility = View.VISIBLE
+                playIv.visibility = View.VISIBLE
+                voiceChartView.visibility = View.GONE
+            } else {
+                playBg.visibility = View.GONE
+                playIv.visibility = View.GONE
+                voiceChartView.visibility = View.GONE
+            }
         }
 
         fun starPlay() {

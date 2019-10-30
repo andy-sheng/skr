@@ -148,10 +148,9 @@ class MicSeatView : ExViewStub {
         callWhenVisible?.invoke()
         callWhenVisible = null
 
-        //todo 调试
-//        if (adapter?.mDataList?.size == 0) {
-        getUserList()
-//        }
+        if (adapter?.mDataList?.size == 0) {
+            getUserList()
+        }
 
         mParentView?.clearAnimation()
         val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,

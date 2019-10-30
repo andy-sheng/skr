@@ -13,15 +13,18 @@ import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.UserInfoServerApi
 import com.common.player.SinglePlayer
 import com.common.recorder.MyMediaRecorder
-import com.common.rxretrofit.*
+import com.common.rxretrofit.ApiManager
+import com.common.rxretrofit.ApiMethods
+import com.common.rxretrofit.ApiObserver
+import com.common.rxretrofit.ApiResult
 import com.common.upload.UploadCallback
 import com.common.upload.UploadParams
 import com.common.utils.U
 import com.common.view.DiffuseView
-import com.component.busilib.view.CircleCountDownView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.SkrProgressView
 import com.module.RouterConstants
 import com.module.posts.R
@@ -32,7 +35,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
-import java.util.HashMap
+import java.util.*
 
 //帖子声音录制和个人中心声音录制
 @Route(path = RouterConstants.ACTIVITY_VOICE_RECORD)
@@ -42,6 +45,7 @@ class VoiceRecordActivity : BaseActivity() {
 
         const val FROM_POSTS = 1    // 从帖子中来
         const val FROM_PERSON = 2    // 从个人中心来
+        const val FROM_MIC_AUDIO_CHECK = 2    // 从小k房校验来的
     }
 
     private var from = FROM_POSTS   //默认来源于帖子

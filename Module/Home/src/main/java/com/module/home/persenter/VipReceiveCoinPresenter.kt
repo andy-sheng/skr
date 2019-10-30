@@ -39,7 +39,7 @@ class VipReceiveCoinPresenter(val baseActivity: BaseActivity) : RxLifeCyclePrese
             return
         }
 
-        if (MyUserInfoManager.honorInfo?.isHonor()==false) {
+        if (MyUserInfoManager.honorInfo?.isHonor() == false) {
             MyLog.w(TAG, "not a honor")
             return
         }
@@ -91,6 +91,10 @@ class VipReceiveCoinPresenter(val baseActivity: BaseActivity) : RxLifeCyclePrese
                         mHasShow = true
                     }
                     .create()
+
+            vipDialog?.getHolderView()?.setOnClickListener {
+                vipDialog?.dismiss()
+            }
         }
         EventBus.getDefault().post(ShowDialogInHomeEvent(vipDialog, 40))
     }

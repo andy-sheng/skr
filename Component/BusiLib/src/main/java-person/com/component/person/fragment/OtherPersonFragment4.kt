@@ -695,7 +695,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         this.mUserInfoModel = model
         mFeedsWallView?.setUserInfoModel(model)
         mPostsWallView?.setUserInfoModel(model)
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(model.avatar)
                 .setCircle(true)
                 .build())
         mNameTv.text = model.nicknameRemark

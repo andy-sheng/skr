@@ -19,8 +19,6 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.module.playways.BaseRoomData
 import com.module.playways.R
-import com.module.playways.grab.room.GrabRoomData
-import com.module.playways.race.room.RaceRoomData
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.inter.IContinueSendView
 import com.module.playways.room.gift.model.BaseGift
@@ -88,10 +86,7 @@ class ContinueSendView : FrameLayout, IContinueSendView {
     }
 
     fun getGrabRoomData(): BaseRoomData<*>? {
-        if (mRoomData is GrabRoomData? || mRoomData is RaceRoomData?) {
-            return mRoomData
-        }
-        return null
+        return mRoomData
     }
 
     fun setObserver(observer: OnVisibleStateListener) {

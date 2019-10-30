@@ -290,6 +290,8 @@ public class QuickFeedbackFragment extends BaseFragment {
             map.put("source", 3);
         } else if (mFrom == FROM_RACE_ROOM) {
             map.put("source", 8);
+        } else if (mFrom == FROM_MIC_ROOM) {
+            map.put("source", 11);
         }
         map.put("type", typeList);
         map.put("content", content);

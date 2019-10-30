@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.jsbridge.BridgeHandler;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.CallBackFunction;
@@ -23,6 +24,7 @@ public class JsRegister {
     public static final String CHECK_CAMERA_PERM = "checkCameraPerm";
     public static final String CHECK_AUDIO_PERM = "checkAudioPerm";
     public static final String GO_BACK = "back";
+    public static final String CHECK_WX = "checkWx";
 
     BridgeWebView mBridgeWebView;
 
@@ -95,6 +97,14 @@ public class JsRegister {
                 mBridgeWebView.goBack();
             } else {
                 mBaseActivity.finish();
+            }
+        } else if (CHECK_WX.equals(opt)) {
+            if (U.getCommonUtils().hasInstallApp("com.tencent.mm")) {
+                callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                        new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("hasWx", true)))).toJSONString());
+            } else {
+                callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                        new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("hasWx", false)))).toJSONString());
             }
         } else {
             mJsBridgeImpl.noMethed(callBackFunction);

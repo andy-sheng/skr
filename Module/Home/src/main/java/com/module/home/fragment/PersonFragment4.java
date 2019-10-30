@@ -363,13 +363,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             }
         });
 
-        mOpenHonorArea.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // todo 开启VIP的页面
-            }
-        });
-
         mAudioView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -409,7 +402,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
                         .greenChannel().navigation();
             }
         });
@@ -418,7 +411,7 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
                         .greenChannel().navigation();
             }
         });

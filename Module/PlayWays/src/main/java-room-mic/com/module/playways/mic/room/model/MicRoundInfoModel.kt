@@ -314,7 +314,9 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 }
             }
         }
-
+        if(commonRoundResult==null || commonRoundResult?.finalMsg?.isEmpty()==true){
+            commonRoundResult = roundInfo.commonRoundResult
+        }
         updateStatus(notify, roundInfo.status)
         return
     }
@@ -465,6 +467,7 @@ class MicRoundInfoModel : BaseRoundInfoModel() {
                 ", enterStatus=" + enterStatus +
                 ",chorusRoundInfoModels=" + chorusRoundInfoModels +
                 ", sPkRoundInfoModels=" + sPkRoundInfoModels +
+                ", MicRoundResult=" + commonRoundResult +
                 '}'.toString()
     }
 

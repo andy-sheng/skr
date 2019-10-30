@@ -3,7 +3,7 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FA7F70">
+    android:background="#404A9A">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -15,11 +15,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightDrawable="@drawable/wallet_tips"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="textView"
         app:showBottomLine="false"
-        app:statusBarColor="#FA7F70"
+        app:statusBarColor="#404A9A"
         app:titleBarColor="@color/transparent" />
 
     <com.common.view.viewpager.SlidingTabLayout

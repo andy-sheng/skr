@@ -15,6 +15,7 @@ import com.common.view.ex.ExTextView
 import com.component.busilib.view.VoiceChartView
 import com.module.playways.R
 import com.module.playways.mic.room.model.MicSeatModel
+import com.zq.live.proto.MicRoom.EMWantSingType
 
 class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSeatHolder>() {
     val mDataList: ArrayList<MicSeatModel> = ArrayList()
@@ -92,20 +93,36 @@ class MicSeatRecyclerAdapter : RecyclerView.Adapter<MicSeatRecyclerAdapter.MicSe
 
             model?.music?.let {
                 for (i in 0 until it.size) {
-                    val index = i + 1
                     if (i == 0) {
                         if (model!!.user?.isCurSing == true) {
-                            spanUtils.append("$index.《${it[i].music?.itemName.toString()}》").setForegroundColor(Color.parseColor("#FFC15B"))
+                            spanUtils.append(getCombineName(i)).setForegroundColor(Color.parseColor("#FFC15B"))
                         } else {
-                            spanUtils.append("$index.《${it[i].music?.itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
+                            spanUtils.append(getCombineName(i)).setForegroundColor(U.getColor(R.color.white_trans_50))
                         }
                     } else {
-                        spanUtils.append("$index.《${it[i].music?.itemName.toString()}》").setForegroundColor(U.getColor(R.color.white_trans_50))
+                        spanUtils.append(getCombineName(i)).setForegroundColor(U.getColor(R.color.white_trans_50))
                     }
                 }
             }
 
             return spanUtils.create()
+        }
+
+        fun getCombineName(i: Int): String {
+            model?.music?.let {
+                val index = i + 1
+                var conbine = ""
+
+                if (it[i].wantSingType == EMWantSingType.MWST_CHORUS.value) {
+                    conbine = "（合唱&${UserInfoManager.getInstance().getRemarkName(it[i].peerID, it[i].peerName)}）"
+                } else if (it[i].wantSingType == EMWantSingType.MWST_SPK.value) {
+                    conbine = "（pkVS ${UserInfoManager.getInstance().getRemarkName(it[i].peerID, it[i].peerName)}）"
+                }
+
+                return "$index.《${it[i].music?.itemName.toString()}》$conbine"
+            }
+
+            return ""
         }
     }
 }

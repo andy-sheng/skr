@@ -3,7 +3,6 @@ package com.module.playways.mic.home
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -17,9 +16,12 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
+import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.recommend.RA
+import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
@@ -36,8 +38,8 @@ class MicHomeActivity : BaseActivity() {
     lateinit var playCallback: SinglePlayerCallbackAdapter
 
     lateinit var titlebar: CommonTitleBar
-    lateinit var quickBegin: ImageView
-    lateinit var createRoom: ImageView
+    lateinit var quickBegin: ExImageView
+    lateinit var createRoom: ExImageView
     lateinit var smartRefresh: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
 
@@ -45,7 +47,9 @@ class MicHomeActivity : BaseActivity() {
 
     val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
 
-    var offset = 0
+    var offset = 0  // todo 只给服务器用 透传给服务器就行
+
+    val skrVerifyUtils = SkrVerifyUtils()
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.mic_home_activity_layout
@@ -63,12 +67,16 @@ class MicHomeActivity : BaseActivity() {
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
         quickBegin.setAnimateDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
-                    .navigation()
+            skrVerifyUtils.checkHasMicAudioPermission {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
+                        .navigation()
+            }
         }
         createRoom.setAnimateDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
-                    .navigation()
+            skrVerifyUtils.checkHasMicAudioPermission {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
+                        .navigation()
+            }
         }
 
         smartRefresh.apply {
@@ -80,7 +88,7 @@ class MicHomeActivity : BaseActivity() {
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     // 加载更多
-                    getRecomRoomList(offset, false)
+                    getRecomRoomList(offset, true)
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -91,9 +99,12 @@ class MicHomeActivity : BaseActivity() {
 
         adapter = RecommendMicAdapter(object : RecommendMicListener {
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
-                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                model?.roomInfo?.roomID?.let {
-                    iRankingModeService?.jumpMicRoomBySuggest(it)
+                skrVerifyUtils.checkHasMicAudioPermission {
+                    StatisticsAdapter.recordCountEvent("KTV", "room_click", null)
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    model?.roomInfo?.roomID?.let {
+                        iRankingModeService?.jumpMicRoomBySuggest(it)
+                    }
                 }
             }
 
@@ -106,6 +117,7 @@ class MicHomeActivity : BaseActivity() {
                     adapter?.stopPlay()
                 } else {
                     MyLog.d(TAG, "onClickUserVoice startPlay")
+                    StatisticsAdapter.recordCountEvent("KTV", "Voice_click", null)
                     SinglePlayer.stop(playTag)
                     recomUserInfo?.voiceInfo?.let {
                         SinglePlayer.startPlay(playTag, it.voiceURL)
@@ -145,6 +157,8 @@ class MicHomeActivity : BaseActivity() {
                 offset = result.data.getIntValue("offset")
                 val list = JSON.parseArray(result.data.getString("rooms"), RecommendMicInfoModel::class.java)
                 addRoomList(list, isClear)
+                smartRefresh.finishLoadMore()
+                smartRefresh.finishRefresh()
             } else {
                 smartRefresh.finishLoadMore()
                 smartRefresh.finishRefresh()

@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.core.upgrade.UpgradeManager
@@ -17,6 +16,7 @@ import com.common.image.model.ImageFactory
 import com.common.log.MyLog
 import com.common.rxretrofit.*
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
@@ -25,13 +25,17 @@ import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.busilib.view.SelectSexDialogView
+import com.component.person.model.UserRankModel
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
-import com.module.home.game.model.*
+import com.module.home.game.model.BannerModel
+import com.module.home.game.model.FuncationModel
+import com.module.home.game.model.GameTypeModel
+import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
@@ -40,12 +44,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
-import kotlinx.android.synthetic.main.quick_game_view_layout.view.recycler_view
-import kotlinx.android.synthetic.main.quick_game_view_layout.view.refreshLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -54,6 +53,7 @@ import kotlinx.coroutines.launch
  * 快速游戏
  */
 class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.context), IQuickGameView3 {
+
     val TAG: String = "QuickGameView"
 
     var mQuickGamePresenter: QuickGamePresenter
@@ -152,66 +152,13 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onPkRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_rank", null)
-//                openPlayWaysActivityByRank(context)
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_HOME)
-                        .navigation()
+                openRaceActivity(context)
             }
 
             override fun onDoubleRoomListener() {
                 StatisticsAdapter.recordCountEvent("game", "express_cp", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_DOUBLE_HOME)
                         .navigation()
-//                if (!U.getNetworkUtils().hasNetwork()) {
-//                    U.getToastUtil().showLong("网络连接失败 请检查网络")
-//                } else {
-//                    mSkrAudioPermission.ensurePermission({
-//                        mRealNameVerifyUtils.checkJoinDoubleRoomPermission {
-//                            /**
-//                             * 判断有没有年龄段
-//                             */
-//                            if (!MyUserInfoManager.getInstance().hasAgeStage()) {
-//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_AGE)
-//                                        .withInt("from", 0)
-//                                        .navigation()
-//                            } else {
-//                                val sex = object {
-//                                    var mIsFindMale: Boolean? = null
-//                                    var mMeIsMale: Boolean? = null
-//                                }
-//
-//                                Observable.create<Boolean> {
-//                                    if (U.getPreferenceUtils().hasKey("is_find_male") && U.getPreferenceUtils().hasKey("is_me_male")) {
-//                                        sex.mIsFindMale = U.getPreferenceUtils().getSettingBoolean("is_find_male", true)
-//                                        sex.mMeIsMale = U.getPreferenceUtils().getSettingBoolean("is_me_male", true)
-//                                        it.onNext(true)
-//                                    } else {
-//                                        it.onNext(false)
-//                                    }
-//
-//                                    it.onComplete()
-//                                }.subscribeOn(Schedulers.io())
-//                                        .observeOn(AndroidSchedulers.mainThread())
-//                                        .subscribe({
-//                                            if (it) {
-//                                                val bundle = Bundle()
-//                                                bundle.putBoolean("is_find_male", sex.mIsFindMale
-//                                                        ?: true)
-//                                                bundle.putBoolean("is_me_male", sex.mMeIsMale
-//                                                        ?: true)
-//                                                ARouter.getInstance()
-//                                                        .build(RouterConstants.ACTIVITY_DOUBLE_MATCH)
-//                                                        .withBundle("bundle", bundle)
-//                                                        .navigation()
-//                                            } else {
-//                                                showSexFilterView(true)
-//                                            }
-//                                        }, {
-//                                            MyLog.e("SelectSexDialogView", it)
-//                                        })
-//                            }
-//                        }
-//                    }, true)
-//                }
             }
 
             override fun onBattleRoomListener() {
@@ -225,6 +172,23 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 StatisticsAdapter.recordCountEvent("game", "express_grab_hot", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_SPECIAL)
                         .navigation()
+            }
+
+            override fun onMicRoomListener() {
+                // 小K房
+                StatisticsAdapter.recordCountEvent("game", "express_KTV", null)
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_HOME)
+                        .navigation()
+            }
+
+            override fun onClickRankArea() {
+                StatisticsAdapter.recordCountEvent("game_rank", "ranklist", null)
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                val baseFragment = iRankingModeService.leaderboardFragmentClass as Class<BaseFragment>
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(fragment.activity, baseFragment)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build())
             }
         })
 
@@ -302,7 +266,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 //        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
 //    }
 
-    override fun setGameType(list: MutableList<GrabSpecialModel>?) {
+    override fun setGameType(list: MutableList<GrabSpecialModel>?, fromServer: Boolean) {
         refreshLayout.finishRefresh()
         if (list != null && list.size > 0) {
             val iterator = list.iterator()
@@ -322,8 +286,25 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             return
         }
 
-        val gameTypeModel = GameTypeModel(list)
-        mGameAdapter.updateGameTypeInfo(gameTypeModel)
+        if (mGameAdapter.getGameTypeInfo() != null) {
+            mGameAdapter.getGameTypeInfo()?.mSpecialModel = list
+            mGameAdapter.updateGameTypeInfo(mGameAdapter.getGameTypeInfo())
+        } else {
+            val gameTypeModel = GameTypeModel()
+            gameTypeModel.mSpecialModel = list
+            mGameAdapter.updateGameTypeInfo(gameTypeModel)
+        }
+
+        if (fromServer) {
+            mQuickGamePresenter.getReginDiff()
+        }
+    }
+
+    override fun setReginDiff(model: UserRankModel?) {
+        if (mGameAdapter.getGameTypeInfo() != null) {
+            mGameAdapter.getGameTypeInfo()?.mReginDiff = model
+            mGameAdapter.updateGameTypeInfo(mGameAdapter.getGameTypeInfo())
+        }
     }
 
     fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {
@@ -386,6 +367,48 @@ fun openBattleActivity(ctx: Context) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_BATTLE_LIST)
                         .navigation()
             }
+        } else {
+            if (check.errno == ERROR_NETWORK_BROKEN) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
+                        .setMessageTip("网络连接不可用，请检查网络后重试")
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                            }
+                        })
+                        .build()
+                tipsDialogView?.showByDialog()
+            } else if (check.errno > 0) {
+                tipsDialogView?.dismiss()
+                tipsDialogView = TipsDialogView.Builder(ctx)
+                        .setMessageTip(check.errmsg)
+                        .setOkBtnTip("确定")
+                        .setOkBtnClickListener(object : DebounceViewClickListener() {
+                            override fun clickValid(v: View?) {
+                                tipsDialogView?.dismiss()
+                            }
+                        })
+                        .build()
+                tipsDialogView?.showByDialog()
+            }
+        }
+    }
+}
+
+fun openRaceActivity(ctx: Context) {
+    GlobalScope.launch(Dispatchers.Main) {
+        var tipsDialogView: TipsDialogView? = null
+        val api = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
+        val check = subscribe(RequestControl("checkRank", ControlType.CancelThis)) { api.checkRank(1) }
+        if (check.errno == 0) {
+            // 可以进房间
+            val skrAudioPermission = SkrAudioPermission()
+            skrAudioPermission.ensurePermission({
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+                        .navigation()
+            }, true)
         } else {
             if (check.errno == ERROR_NETWORK_BROKEN) {
                 tipsDialogView?.dismiss()

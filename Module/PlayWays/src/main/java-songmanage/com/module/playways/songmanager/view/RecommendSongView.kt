@@ -75,11 +75,6 @@ class RecommendSongView(context: Context, internal var mType: Int,
         mRecyclerView = findViewById(R.id.recycler_view)
         mRefreshLayout = findViewById(R.id.refreshLayout)
 
-        initData()
-    }
-
-    fun initData() {
-
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (mType == SongManagerActivity.TYPE_FROM_GRAB) {
             mRecommendSongAdapter = RecommendSongAdapter(isOwner, mType, RecyclerOnItemClickListener { view, position, model ->
@@ -114,23 +109,23 @@ class RecommendSongView(context: Context, internal var mType: Int,
 
         mRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                getSongList(mOffset)
+                getSongList(mOffset, false)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                getSongList(0)
+                getSongList(0, true)
             }
         })
-        getSongList(0)
     }
 
     fun tryLoad() {
+        // 确认一下，历史需要即使更新么
         if (mRecommendSongAdapter.dataList.isEmpty()) {
-            getSongList(0)
+            getSongList(0, true)
         }
     }
 
-    private fun getSongList(offset: Int) {
+    private fun getSongList(offset: Int, isClean: Boolean) {
         if (mRecommendTagModel == null) {
             MyLog.e(TAG, "getSongList mRecommendTagModel is null")
             return
@@ -149,31 +144,42 @@ class RecommendSongView(context: Context, internal var mType: Int,
                     } else {
                         JSONObject.parseArray(result.data!!.getString("items"), SongModel::class.java)
                     }
-
                     mOffset = result.data!!.getIntValue("offset")
-                    if (recommendTagModelArrayList == null || recommendTagModelArrayList.size == 0) {
-                        mRefreshLayout.setEnableLoadMore(false)
-                        return
-                    }
-                    if (offset == 0) {
-                        mRecommendSongAdapter.dataList.clear()
-                        if (mRecommendTagModel.type == 4 && isOwner) {
-                            // 是双人游戏那一例
-                            val songModel = SongModel()
-                            songModel.itemID = SongModel.ID_CUSTOM_GAME
-                            songModel.playType = StandPlayType.PT_MINI_GAME_TYPE.value
-                            songModel.itemName = "自定义游戏"
-                            mRecommendSongAdapter.dataList.add(songModel)
-                        }
-                    }
-                    mRecommendSongAdapter.dataList.addAll(recommendTagModelArrayList)
-                    mRecommendSongAdapter.notifyDataSetChanged()
+
+                    addRecommendList(recommendTagModelArrayList, isClean)
                 } else {
                     U.getToastUtil().showShort(result.errmsg + "")
                 }
 
             }
         })
+    }
+
+    private fun addRecommendList(list: List<SongModel>?, clean: Boolean) {
+        mRefreshLayout.finishRefresh()
+        mRefreshLayout.finishLoadMore()
+        mRefreshLayout.setEnableLoadMore(!list.isNullOrEmpty())
+
+        if (clean) {
+            mRecommendSongAdapter.dataList.clear()
+            if (mRecommendTagModel?.type == 4 && isOwner) {
+                // 是双人游戏那一例
+                val songModel = SongModel()
+                songModel.itemID = SongModel.ID_CUSTOM_GAME
+                songModel.playType = StandPlayType.PT_MINI_GAME_TYPE.value
+                songModel.itemName = "自定义游戏"
+                mRecommendSongAdapter.dataList.add(songModel)
+            }
+            if (!list.isNullOrEmpty()) {
+                mRecommendSongAdapter.dataList.addAll(list)
+            }
+            mRecommendSongAdapter.notifyDataSetChanged()
+        } else {
+            if (!list.isNullOrEmpty()) {
+                mRecommendSongAdapter.dataList.addAll(list)
+                mRecommendSongAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun getListStandBoardObservable(offset: Int): Observable<ApiResult> {

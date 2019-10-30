@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -25,6 +26,7 @@ import com.common.base.R;
 import com.common.core.WebIpcCallback;
 import com.common.core.WebIpcService;
 import com.common.core.scheme.SchemeSdkActivity;
+import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;
 import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.utils.U;
@@ -305,6 +307,16 @@ class AgentWebActivity extends CameraAdapWebActivity {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
 //        String url = "http://test.app.inframe.mobi/test/bridge";
+
+        {
+            Uri uri = Uri.parse(url);
+            int title = SchemeUtils.getInt(uri, "title", 0);
+            if (title == 1) {
+                mTitlebar.setVisibility(View.GONE);
+            } else {
+                mTitlebar.setVisibility(View.VISIBLE);
+            }
+        }
 
         BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView) {
             @Override

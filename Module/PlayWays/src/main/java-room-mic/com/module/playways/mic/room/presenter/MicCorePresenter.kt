@@ -30,11 +30,13 @@ import com.module.playways.BuildConfig
 import com.module.playways.RoomDataUtils
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.ui.IMicRoomView
+import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
@@ -61,6 +63,7 @@ import com.zq.live.proto.GrabRoom.MachineScore
 import com.zq.live.proto.GrabRoom.RoomMsg
 import com.zq.live.proto.MicRoom.*
 import com.zq.mediaengine.kit.ZqEngineKit
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -103,6 +106,9 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     init {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
         MicRoomMsgManager.addFilter(mPushMsgFilter)
         joinRoomAndInit(true)
         U.getFileUtils().deleteAllFiles(U.getAppInfoUtils().getSubDirPath("grab_save"))
@@ -189,13 +195,6 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
     }
 
-    override fun start() {
-        super.start()
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
     /**
      * 由ui层告知
      * 开场动画结束
@@ -210,11 +209,11 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      * 如果确定是自己唱了,预先可以做的操作
      */
     internal fun preOpWhenSelfRound() {
-        var needAcc = (mRoomData?.realRoundInfo?.wantSingType == EMWantSingType.MWST_ACCOMPANY.value ||
-                mRoomData?.realRoundInfo?.wantSingType == EMWantSingType.MWST_SPK.value)
+        var needAcc = mRoomData?.realRoundInfo?.isAccRound==true
 
         val p = ZqEngineKit.getInstance().params
         p.isGrabSingNoAcc = !needAcc
+
         if (!ZqEngineKit.getInstance().params.isAnchor) {
             ZqEngineKit.getInstance().setClientRole(true)
             ZqEngineKit.getInstance().muteLocalAudioStream(false)
@@ -411,11 +410,13 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         MyLog.w(TAG, "exitRoom from=$from")
         val map = HashMap<String, Any>()
         map["roomID"] = mRoomData.gameId
+        mRoomData.isHasExitGame = true
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        launch {
+        // 不想 destroy 时被取消
+        GlobalScope.launch {
             var result = subscribe { mRoomServerApi.exitRoom(body) }
             if (result.errno == 0) {
-                mRoomData.isHasExitGame = true
+
             }
         }
     }
@@ -528,33 +529,19 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         if (thisRound.status == EMRoundStatus.MRS_INTRO.value) {
             // 等待阶段
-            if (lastRound != null) {
-                roomView.showRoundOver(lastRound) {
-                    roomView.showWaiting()
-                }
-            } else {
+            roomView.showRoundOver(lastRound) {
                 roomView.showWaiting()
             }
         } else if (thisRound.isSingStatus) {
-            if (lastRound != null) {
-                roomView.showRoundOver(lastRound) {
-                    // 演唱阶段
-                    if (thisRound.singBySelf()) {
-                        preOpWhenSelfRound()
-                        roomView.singBySelf(true)
-                    } else {
-                        preOpWhenOtherRound()
-                        roomView.singByOthers(true)
-                    }
-                }
-            } else {
+            roomView.showRoundOver(lastRound) {
                 // 演唱阶段
                 if (thisRound.singBySelf()) {
-                    preOpWhenSelfRound()
-                    roomView.singBySelf(false)
+                    roomView.singBySelf(lastRound){
+                        preOpWhenSelfRound()
+                    }
                 } else {
                     preOpWhenOtherRound()
-                    roomView.singByOthers(false)
+                    roomView.singByOthers(lastRound)
                 }
             }
         } else if (thisRound.status == EMRoundStatus.MRS_END.value) {
@@ -735,6 +722,17 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     /**
+     * 房主改变
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MChangeRoomOwnerMsg) {
+        mRoomData.ownerId = event.userID
+        EventBus.getDefault().post(MicPlaySeatUpdateEvent(mRoomData.getPlayerAndWaiterInfoList()))
+    }
+
+    /**
      * 合唱某人放弃了演唱
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -904,7 +902,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MSyncStatusMsg) {
         ensureInRcRoom()
-        MyLog.w(TAG, "收到服务器 sync push更新状态,event.currentRound是" + event.currentRound.roundSeq + ", timeMs 是" + event.syncStatusTimeMs)
+        MyLog.w(TAG, "收到服务器 sync push更新状态 ,event=$event")
         var thisRound = MicRoundInfoModel.parseFromRoundInfo(event.currentRound)
         // 延迟10秒sync ，一旦启动sync 间隔 5秒 sync 一次
         startSyncGameStatus()
@@ -1161,6 +1159,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接
 
         internal val MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21 // 确保用户切换成主播成功，防止引擎不回调的保护
+
 
     }
 

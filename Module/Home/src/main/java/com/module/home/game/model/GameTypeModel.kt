@@ -1,3 +1,8 @@
 package com.module.home.game.model
 
-class GameTypeModel(var mSpecialModel: MutableList<GrabSpecialModel>?)
+import com.component.person.model.UserRankModel
+
+class GameTypeModel {
+    var mSpecialModel: MutableList<GrabSpecialModel>? = null
+    var mReginDiff: UserRankModel? = null
+}

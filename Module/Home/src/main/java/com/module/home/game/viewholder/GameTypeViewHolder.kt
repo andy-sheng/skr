@@ -34,11 +34,17 @@ class GameTypeViewHolder(itemView: View,
 //                GrabSpecialModel.TBT_DOUBLECHAT -> listener.onDoubleRoomListener()
                 // 新版本
                 GrabSpecialModel.TBT_STANDCREATE -> listener.onCreateRoomListener()
-                GrabSpecialModel.TBT_GORANKING_TAB -> listener.onPkRoomListener()
+                GrabSpecialModel.TBT_RACE_TAB -> listener.onPkRoomListener()
                 GrabSpecialModel.TBT_GODOUBLE_TAB -> listener.onDoubleRoomListener()
                 GrabSpecialModel.TBT_GOALBUM_TAB -> listener.onGrabRoomListener()
+                GrabSpecialModel.TBT_MICROOM_TAB -> listener.onMicRoomListener()
             }
         }
+
+        mGrabGameAdapter.onClickRaceRankListener = {
+            listener.onClickRankArea()
+        }
+
         recyclerView.adapter = mGrabGameAdapter
     }
 
@@ -47,7 +53,8 @@ class GameTypeViewHolder(itemView: View,
         gameTypeModel.mSpecialModel?.let {
             mGrabGameAdapter.mDataList.clear()
             mGrabGameAdapter.mDataList.addAll(it)
-            mGrabGameAdapter.notifyDataSetChanged()
         }
+        mGrabGameAdapter.mReginDiff = gameTypeModel.mReginDiff
+        mGrabGameAdapter.notifyDataSetChanged()
     }
 }
