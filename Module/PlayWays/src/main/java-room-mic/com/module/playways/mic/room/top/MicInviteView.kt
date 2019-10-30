@@ -95,6 +95,14 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         return R.layout.mic_invite_view_stub_layout
     }
 
+    fun startCheckSelfJob() {
+        inviteJob = launch {
+            delay(8000)
+            // 去拉一下演唱的状态
+            syncInviteResult()
+        }
+    }
+
     fun showInvite(micUserMusicModel: MicUserMusicModel?, left: Int, isInvite: Boolean) {
         tryInflate()
 
@@ -147,9 +155,9 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     val peerModel = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.peerID)  // 接收人
                     resultAvatar?.bindData(peerModel)
                     resultName?.text = peerModel?.nicknameRemark
-                    if(micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value){
+                    if (micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value) {
                         resultDesc?.text = "已接受${model?.nicknameRemark}的PK"
-                    }else{
+                    } else {
                         resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
                     }
                 }
@@ -158,8 +166,6 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     setVisibility(View.GONE)
                 }
             } else {
-                resultGroup?.visibility = View.VISIBLE
-                inviteGroup?.visibility = View.GONE
                 // 没人和你合唱 只给发起人
                 setVisibility(View.GONE)
                 if (micUserMusicModel.userID == MyUserInfoManager.uid.toInt()) {
