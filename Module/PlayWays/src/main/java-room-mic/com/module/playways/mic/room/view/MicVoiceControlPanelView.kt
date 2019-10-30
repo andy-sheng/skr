@@ -4,13 +4,11 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.CompoundButton
 import android.widget.LinearLayout
-import com.common.base.BaseFragment
 import com.common.utils.U
 import com.component.voice.control.VoiceControlPanelView
 import com.kyleduo.switchbutton.SwitchButton
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
-import com.module.playways.race.room.RaceRoomData
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 
@@ -42,11 +40,11 @@ class MicVoiceControlPanelView(val cxt: Context) : VoiceControlPanelView(cxt) {
 
         mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             roomData?.realRoundInfo?.let {
-//                if (it.isSingerNowBySelf()) {
-//                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
-//                    mSbAcc?.isChecked = !roomData!!.isAccEnable
-//                    return@OnCheckedChangeListener
-//                }
+                if (it.singBySelf()) {
+                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式")
+                    mSbAcc?.isChecked = !roomData!!.isAccEnable
+                    return@OnCheckedChangeListener
+                }
                 roomData?.isAccEnable = !isChecked
             }
         })
