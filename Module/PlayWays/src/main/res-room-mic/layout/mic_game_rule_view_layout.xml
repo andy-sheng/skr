@@ -92,29 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="Pk和合唱的歌曲会向房间所有用户发起邀请"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_12_dp"
-            android:layout_marginRight="@dimen/view_13_dp"
-            android:orientation="horizontal">
-
-            <com.common.view.ex.ExImageView
-                android:layout_width="@dimen/view_21_dp"
-                android:layout_height="@dimen/view_21_dp"
-                android:background="@drawable/grab_guize_4" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_8_dp"
-                android:text="最先加入的用户歌曲配对成功"
+                android:text="PK和合唱的歌曲会向房间所有用户发起邀请,最先加入的用户歌曲配对成功"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
