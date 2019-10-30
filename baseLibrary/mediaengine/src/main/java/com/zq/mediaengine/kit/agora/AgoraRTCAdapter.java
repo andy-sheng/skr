@@ -459,7 +459,7 @@ public class AgoraRTCAdapter {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
-                        MyLog.d(TAG, "InitRtcEngine");
+                        MyLog.d(TAG, "InitRtcEngine version: " + RtcEngine.getSdkVersion());
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
 
@@ -1138,7 +1138,7 @@ public class AgoraRTCAdapter {
      */
     public void enableAudioVolumeIndication(int interval, int smooth) {
         if (mRtcEngine != null) {
-            mRtcEngine.enableAudioVolumeIndication(interval, smooth);
+            mRtcEngine.enableAudioVolumeIndication(interval, smooth, true);
         }
     }
 

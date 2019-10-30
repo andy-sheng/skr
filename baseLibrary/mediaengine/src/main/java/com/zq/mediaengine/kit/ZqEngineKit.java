@@ -1239,6 +1239,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         if (mConfig.isUseExternalAudio()) {
                             mAudioPlayerCapture.start(filePath, cycle);
                         } else {
+                            MyLog.d(TAG, "start audio mixing with agora");
                             mAgoraRTCAdapter.startAudioMixing(filePath, midiPath, loopback, replace, cycle);
 
                             // 伴奏播放打点上传
@@ -1525,7 +1526,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                         file.delete();
                     }
 
-                    if (!mConfig.isUseExternalAudio() && !recordHumanVoice) {
+                    if (!mConfig.isUseExternalAudio() && mConfig.isUseExternalAudioRecord() && !recordHumanVoice) {
                         // 用声网采集，需要录制的时候再连接
                         connectRecord();
                     }
@@ -1540,9 +1541,9 @@ public class ZqEngineKit implements AgoraOutCallback {
                     } else {
                         EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_RECORD_START);
                         EventBus.getDefault().post(engineEvent);
-                        if (mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
+                        if (mConfig.isUseExternalAudio() || mConfig.isUseExternalAudioRecord() || recordHumanVoice) {
                             // 未加入房间时需要先开启音频采集
-                            if (mConfig.isUseExternalAudioRecord()) {
+                            if (mConfig.isUseExternalAudio()) {
                                 if (!mInChannel && mAudioCapture != null) {
                                     mAudioCapture.start();
                                 }
@@ -1596,7 +1597,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mHumanVoiceAudioEncoder.stop();
                             mAudioEncoder.stop();
                             // 未加入房间时需要停止音频采集
-                            if (!mInChannel && mAudioCapture != null) {
+                            if (mConfig.isUseExternalAudio() && !mInChannel && mAudioCapture != null) {
                                 mAudioCapture.stop();
                             }
                         } else {
@@ -1610,7 +1611,7 @@ public class ZqEngineKit implements AgoraOutCallback {
                             mBgmRawFrameWriter.stop();
                         }
                     }
-                    if (!mConfig.isUseExternalAudio()) {
+                    if (!mConfig.isUseExternalAudio() && mConfig.isUseExternalAudioRecord()) {
                         // 用声网采集，录制完成断开连接
                         disconnectRecord();
                     }
