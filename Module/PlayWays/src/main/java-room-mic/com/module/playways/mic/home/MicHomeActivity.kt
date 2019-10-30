@@ -170,6 +170,8 @@ class MicHomeActivity : BaseActivity() {
                 }
             }
         }
+
+        SinglePlayer.reset(playTag)
         SinglePlayer.addCallback(playTag, playCallback)
     }
 
@@ -235,7 +237,7 @@ class MicHomeActivity : BaseActivity() {
 
     override fun destroy() {
         super.destroy()
-        SinglePlayer.release(playTag)
+        SinglePlayer.stop(playTag)
         SinglePlayer.removeCallback(playTag)
         stopTimer()
     }
