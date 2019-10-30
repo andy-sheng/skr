@@ -47,7 +47,7 @@ class MicHomeActivity : BaseActivity() {
 
     val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
 
-    var offset = 0
+    var offset = 0  // todo 只给服务器用 透传给服务器就行
 
     val skrVerifyUtils = SkrVerifyUtils()
 
@@ -88,7 +88,7 @@ class MicHomeActivity : BaseActivity() {
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     // 加载更多
-                    getRecomRoomList(offset, false)
+                    getRecomRoomList(offset, true)
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -157,6 +157,8 @@ class MicHomeActivity : BaseActivity() {
                 offset = result.data.getIntValue("offset")
                 val list = JSON.parseArray(result.data.getString("rooms"), RecommendMicInfoModel::class.java)
                 addRoomList(list, isClear)
+                smartRefresh.finishLoadMore()
+                smartRefresh.finishRefresh()
             } else {
                 smartRefresh.finishLoadMore()
                 smartRefresh.finishRefresh()
