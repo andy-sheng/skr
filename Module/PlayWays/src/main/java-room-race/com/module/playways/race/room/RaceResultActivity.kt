@@ -1,7 +1,6 @@
 package com.module.playways.race.room
 
 import android.os.Bundle
-import android.support.constraint.Group
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,7 +21,6 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.CircleCountDownView
 import com.component.level.utils.LevelConfigUtils
-import com.component.level.view.LevelStarProgressBar
 import com.component.level.view.NormalLevelView2
 import com.glidebitmappool.BitmapFactoryAdapter
 import com.module.RouterConstants
@@ -32,7 +30,6 @@ import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.model.LevelResultModel
 import com.module.playways.race.room.model.SaveRankModel
 import com.opensource.svgaplayer.*
-import kotlinx.android.synthetic.main.invite_share_view_layout.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -264,7 +261,7 @@ class RaceResultActivity : BaseActivity() {
                 vipLevelDesc.text = "开启VIP保段"
                 vipLevelDesc.setDebounceViewClickListener {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?titile=1"))
+                            .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
                             .greenChannel().navigation()
                     finish()
                 }

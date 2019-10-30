@@ -310,7 +310,7 @@ class AgentWebActivity extends CameraAdapWebActivity {
 
         {
             Uri uri = Uri.parse(url);
-            int title = SchemeUtils.getInt(uri, "titile", 0);
+            int title = SchemeUtils.getInt(uri, "title", 0);
             if (title == 1) {
                 mTitlebar.setVisibility(View.GONE);
             } else {
