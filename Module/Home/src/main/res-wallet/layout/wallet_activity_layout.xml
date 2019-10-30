@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightDrawable="@drawable/wallet_tips"
         app:rightTextColor="@color/white"
         app:rightTextSize="@dimen/textsize_14_dp"
         app:rightType="textView"

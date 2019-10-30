@@ -16,7 +16,7 @@
         android:layout_height="@dimen/view_50_dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="红钻规则说明"
+        android:text="规则说明"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_18_dp"
         android:textStyle="bold" />
