@@ -105,12 +105,10 @@ class MicHomeActivity : BaseActivity() {
 
         adapter = RecommendMicAdapter(object : RecommendMicListener {
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
-                skrVerifyUtils.checkHasMicAudioPermission {
-                    StatisticsAdapter.recordCountEvent("KTV", "room_click", null)
-                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                    model?.roomInfo?.roomID?.let {
-                        iRankingModeService?.jumpMicRoomBySuggest(it)
-                    }
+                StatisticsAdapter.recordCountEvent("KTV", "room_click", null)
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                model?.roomInfo?.roomID?.let {
+                    iRankingModeService?.jumpMicRoomBySuggest(it)
                 }
             }
 
