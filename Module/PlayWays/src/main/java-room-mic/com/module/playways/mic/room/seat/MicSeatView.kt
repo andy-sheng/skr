@@ -21,6 +21,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicSeatModel
@@ -164,6 +165,13 @@ class MicSeatView : ExViewStub {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
+        callUpdate {
+            getUserList()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicHomeOwnerChangeEvent) {
         callUpdate {
             getUserList()
         }

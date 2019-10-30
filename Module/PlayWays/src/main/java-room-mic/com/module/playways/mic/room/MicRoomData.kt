@@ -8,6 +8,7 @@ import com.component.busilib.constans.GrabRoomType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
@@ -15,7 +16,8 @@ import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.EMUserRole
 import org.greenrobot.eventbus.EventBus
-import java.util.ArrayList
+import java.util.*
+import kotlin.properties.Delegates
 
 class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var configModel = MicConfigModel()// 一唱到底配置
@@ -24,7 +26,12 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
 
     private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
 
-    var ownerId: Int = 0// 房主id
+    var ownerId: Int by Delegates.observable(0) { prop, old, new ->
+        if (old != new) {
+            EventBus.getDefault().post(MicHomeOwnerChangeEvent(new))
+        }
+    }
+
 
 //    private var hasGameBegin = true// 游戏是否已经开始
 
@@ -137,7 +144,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
                 val lastRoundInfoModel = realRoundInfo
                 lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
                 realRoundInfo = null
-                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel,null))
+                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, null))
             }
             return
         }

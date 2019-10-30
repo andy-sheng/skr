@@ -12,6 +12,7 @@ import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import org.greenrobot.eventbus.EventBus
@@ -126,6 +127,11 @@ class MicTopContentView : ConstraintLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
         initData("MicPlaySeatUpdateEvent")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicHomeOwnerChangeEvent) {
+        initData("MicHomeOwnerChangeEvent")
     }
 
     fun setListener(listener: Listener) {
