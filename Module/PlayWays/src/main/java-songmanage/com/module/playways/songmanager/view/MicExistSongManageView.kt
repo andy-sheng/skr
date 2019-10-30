@@ -198,18 +198,6 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: MicRoundChangeEvent) {
-        if(event.newRound?.singBySelf() == true){
-            // TODO 当前页面被选中
-            if(true){
-
-            }else{
-                isSongChange = true
-            }
-        }
-    }
-
     fun destory() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
