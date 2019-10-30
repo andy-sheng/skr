@@ -815,6 +815,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun destroy() {
         super.destroy()
+        SinglePlayer.stop(playTag)
         SinglePlayer.removeCallback(playTag)
         mOtherPhotoWallView?.destory()
         mPostsWallView?.destroy()
