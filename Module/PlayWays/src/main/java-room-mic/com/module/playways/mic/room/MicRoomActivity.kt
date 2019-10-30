@@ -395,13 +395,17 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
             override fun onClickSetting() {
                 //设置界面
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(this@MicRoomActivity)
-                dismissDialog()
-                if (mMicSettingView == null) {
-                    mMicSettingView = MicSettingView(this@MicRoomActivity)
-                    mMicSettingView?.mRoomData = mRoomData
+                if (mRoomData.isOwner) {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(this@MicRoomActivity)
+                    dismissDialog()
+                    if (mMicSettingView == null) {
+                        mMicSettingView = MicSettingView(this@MicRoomActivity)
+                        mMicSettingView?.mRoomData = mRoomData
+                    }
+                    mMicSettingView?.showByDialog()
+                } else {
+                    U.getToastUtil().showShort("只有房主能设置哦～")
                 }
-                mMicSettingView?.showByDialog()
             }
         })
 
