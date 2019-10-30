@@ -22,10 +22,12 @@ import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.busilib.view.SelectSexDialogView
+import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
@@ -59,6 +61,8 @@ class DoubleHomeActivity : BaseActivity() {
     var mSelectSexDialogPlus: DialogPlus? = null
 
     var mSelectView: SelectSexDialogView? = null
+
+    var mTipsDialogView: TipsDialogView? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.double_home_activity_layout
@@ -136,7 +140,29 @@ class DoubleHomeActivity : BaseActivity() {
                         }
                     }, true)
                 } else {
-                    U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
+                    if (MyUserInfoManager.myUserInfo?.honorInfo?.isHonor() == true) {
+                        U.getToastUtil().showLong("今日唱聊匹配次数用完啦～")
+                    } else {
+                        mTipsDialogView = TipsDialogView.Builder(this@DoubleHomeActivity)
+                                .setMessageTip("开通VIP特权，立即获得更多唱聊机会")
+                                .setConfirmTip("立即开通")
+                                .setCancelTip("取消")
+                                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                    override fun click(view: View) {
+                                        mTipsDialogView?.dismiss(false)
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                                .greenChannel().navigation()
+                                    }
+                                })
+                                .setCancelBtnClickListener(object : AnimateClickListener() {
+                                    override fun click(view: View) {
+                                        mTipsDialogView?.dismiss(true)
+                                    }
+                                })
+                                .build()
+                        mTipsDialogView?.showByDialog(true)
+                    }
                     StatisticsAdapter.recordCountEvent("game_cp", "invite1_outchance", null)
                 }
             }
