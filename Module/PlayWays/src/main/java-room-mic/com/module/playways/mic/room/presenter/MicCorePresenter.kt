@@ -30,6 +30,7 @@ import com.module.playways.BuildConfig
 import com.module.playways.RoomDataUtils
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
@@ -718,6 +719,17 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
                 }
             }
         }
+    }
+
+    /**
+     * 房主改变
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MChangeRoomOwnerMsg) {
+        mRoomData.ownerId = event.userID
+        EventBus.getDefault().post(MicPlaySeatUpdateEvent(mRoomData.getPlayerAndWaiterInfoList()))
     }
 
     /**
