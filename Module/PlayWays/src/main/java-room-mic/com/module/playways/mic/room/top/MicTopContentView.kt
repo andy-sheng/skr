@@ -48,7 +48,7 @@ class MicTopContentView : ConstraintLayout {
             EventBus.getDefault().register(this)
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = RecyclerViewNoBugLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
