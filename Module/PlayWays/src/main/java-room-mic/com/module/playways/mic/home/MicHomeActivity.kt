@@ -3,7 +3,6 @@ package com.module.playways.mic.home
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -21,6 +20,7 @@ import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
 import com.component.busilib.recommend.RA
+import com.component.busilib.verify.SkrVerifyUtils
 import com.module.RouterConstants
 import com.module.playways.IPlaywaysModeService
 import com.module.playways.R
@@ -48,6 +48,8 @@ class MicHomeActivity : BaseActivity() {
 
     var offset = 0
 
+    val skrVerifyUtils = SkrVerifyUtils()
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.mic_home_activity_layout
     }
@@ -64,12 +66,16 @@ class MicHomeActivity : BaseActivity() {
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
         quickBegin.setAnimateDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
-                    .navigation()
+            skrVerifyUtils.checkHasMicAudioPermission {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
+                        .navigation()
+            }
         }
         createRoom.setAnimateDebounceViewClickListener {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
-                    .navigation()
+            skrVerifyUtils.checkHasMicAudioPermission {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_CREATE_MIC_ROOM)
+                        .navigation()
+            }
         }
 
         smartRefresh.apply {
@@ -92,9 +98,11 @@ class MicHomeActivity : BaseActivity() {
 
         adapter = RecommendMicAdapter(object : RecommendMicListener {
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
-                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                model?.roomInfo?.roomID?.let {
-                    iRankingModeService?.jumpMicRoomBySuggest(it)
+                skrVerifyUtils.checkHasMicAudioPermission {
+                    val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                    model?.roomInfo?.roomID?.let {
+                        iRankingModeService?.jumpMicRoomBySuggest(it)
+                    }
                 }
             }
 
