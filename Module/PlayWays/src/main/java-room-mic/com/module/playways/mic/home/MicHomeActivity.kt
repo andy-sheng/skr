@@ -16,6 +16,7 @@ import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
+import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
@@ -99,6 +100,7 @@ class MicHomeActivity : BaseActivity() {
         adapter = RecommendMicAdapter(object : RecommendMicListener {
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
                 skrVerifyUtils.checkHasMicAudioPermission {
+                    StatisticsAdapter.recordCountEvent("KTV", "room_click", null)
                     val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                     model?.roomInfo?.roomID?.let {
                         iRankingModeService?.jumpMicRoomBySuggest(it)
@@ -115,6 +117,7 @@ class MicHomeActivity : BaseActivity() {
                     adapter?.stopPlay()
                 } else {
                     MyLog.d(TAG, "onClickUserVoice startPlay")
+                    StatisticsAdapter.recordCountEvent("KTV", "Voice_click", null)
                     SinglePlayer.stop(playTag)
                     recomUserInfo?.voiceInfo?.let {
                         SinglePlayer.startPlay(playTag, it.voiceURL)

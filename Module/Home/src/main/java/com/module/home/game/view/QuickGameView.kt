@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
-import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.permission.SkrAudioPermission
 import com.common.core.permission.SkrCameraPermission
 import com.common.core.upgrade.UpgradeManager
@@ -33,7 +32,10 @@ import com.module.home.MainPageSlideApi
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GameAdapter
-import com.module.home.game.model.*
+import com.module.home.game.model.BannerModel
+import com.module.home.game.model.FuncationModel
+import com.module.home.game.model.GameTypeModel
+import com.module.home.game.model.GrabSpecialModel
 import com.module.home.game.presenter.QuickGamePresenter
 import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
@@ -42,12 +44,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.quick_game_view_layout.view.*
-import kotlinx.android.synthetic.main.quick_game_view_layout.view.recycler_view
-import kotlinx.android.synthetic.main.quick_game_view_layout.view.refreshLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -179,6 +176,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 
             override fun onMicRoomListener() {
                 // 小K房
+                StatisticsAdapter.recordCountEvent("game", "express_KTV", null)
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_HOME)
                         .navigation()
             }
@@ -424,7 +422,7 @@ fun openRaceActivity(ctx: Context) {
                         })
                         .build()
                 tipsDialogView?.showByDialog()
-            } else if (check.errno > 0){
+            } else if (check.errno > 0) {
                 tipsDialogView?.dismiss()
                 tipsDialogView = TipsDialogView.Builder(ctx)
                         .setMessageTip(check.errmsg)
