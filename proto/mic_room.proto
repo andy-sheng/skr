@@ -112,6 +112,7 @@ message MCancelMusic
 message MKickoutUserMsg
 {
     uint32 kickUserID = 1; //用户id
+    string kickResultContent = 2;// 系统弹幕文案
 }
 
 message MChangeRoomNameMsg

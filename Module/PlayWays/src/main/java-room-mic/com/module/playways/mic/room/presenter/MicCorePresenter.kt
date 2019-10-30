@@ -214,7 +214,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      * 如果确定是自己唱了,预先可以做的操作
      */
     internal fun preOpWhenSelfRound() {
-        var needAcc = mRoomData?.realRoundInfo?.isAccRound==true
+        var needAcc = mRoomData?.realRoundInfo?.isAccRound == true
 
         val p = ZqEngineKit.getInstance().params
         p.isGrabSingNoAcc = !needAcc
@@ -556,7 +556,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             roomView.showRoundOver(lastRound) {
                 // 演唱阶段
                 if (thisRound.singBySelf()) {
-                    roomView.singBySelf(lastRound){
+                    roomView.singBySelf(lastRound) {
                         preOpWhenSelfRound()
                     }
                 } else {
@@ -1155,22 +1155,16 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(qKickUserResultEvent: QKickUserResultEvent) {
-        MyLog.d(TAG, "onEvent qKickUserResultEvent=$qKickUserResultEvent")
+    fun onEvent(event: MKickoutUserMsg) {
+        MyLog.d(TAG, "onEvent qKickUserResultEvent=$event")
         // 踢人的结果
-        if (qKickUserResultEvent.kickUserID.toLong() == MyUserInfoManager.uid) {
+        if (event.kickUserID.toLong() == MyUserInfoManager.uid) {
             // 自己被踢出去
-            if (qKickUserResultEvent.isKickSuccess) {
-                if (mRoomData.ownerId == qKickUserResultEvent.sourceUserID) {
-                    roomView.kickBySomeOne(true)
-                } else {
-                    roomView.kickBySomeOne(false)
-                }
-            }
+            roomView.kickBySomeOne(true)
         } else {
             // 别人被踢出去
             roomView.dismissKickDialog()
-            pretendSystemMsg(qKickUserResultEvent.kickResultContent)
+            pretendSystemMsg(event.kickResultContent)
         }
     }
 

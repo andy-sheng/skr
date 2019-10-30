@@ -24,6 +24,8 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
 
   public static final Integer DEFAULT_KICKUSERID = 0;
 
+  public static final String DEFAULT_KICKRESULTCONTENT = "";
+
   /**
    * 用户id
    */
@@ -33,19 +35,30 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
   )
   private final Integer kickUserID;
 
-  public MKickoutUserMsg(Integer kickUserID) {
-    this(kickUserID, ByteString.EMPTY);
+  /**
+   * 系统弹幕文案
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String kickResultContent;
+
+  public MKickoutUserMsg(Integer kickUserID, String kickResultContent) {
+    this(kickUserID, kickResultContent, ByteString.EMPTY);
   }
 
-  public MKickoutUserMsg(Integer kickUserID, ByteString unknownFields) {
+  public MKickoutUserMsg(Integer kickUserID, String kickResultContent, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.kickUserID = kickUserID;
+    this.kickResultContent = kickResultContent;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.kickUserID = kickUserID;
+    builder.kickResultContent = kickResultContent;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -56,7 +69,8 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
     if (!(other instanceof MKickoutUserMsg)) return false;
     MKickoutUserMsg o = (MKickoutUserMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(kickUserID, o.kickUserID);
+        && Internal.equals(kickUserID, o.kickUserID)
+        && Internal.equals(kickResultContent, o.kickResultContent);
   }
 
   @Override
@@ -65,6 +79,7 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (kickUserID != null ? kickUserID.hashCode() : 0);
+      result = result * 37 + (kickResultContent != null ? kickResultContent.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -74,6 +89,7 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (kickUserID != null) builder.append(", kickUserID=").append(kickUserID);
+    if (kickResultContent != null) builder.append(", kickResultContent=").append(kickResultContent);
     return builder.replace(0, 2, "MKickoutUserMsg{").append('}').toString();
   }
 
@@ -98,14 +114,33 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
   }
 
   /**
+   * 系统弹幕文案
+   */
+  public String getKickResultContent() {
+    if(kickResultContent==null){
+        return DEFAULT_KICKRESULTCONTENT;
+    }
+    return kickResultContent;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasKickUserID() {
     return kickUserID!=null;
   }
 
+  /**
+   * 系统弹幕文案
+   */
+  public boolean hasKickResultContent() {
+    return kickResultContent!=null;
+  }
+
   public static final class Builder extends Message.Builder<MKickoutUserMsg, Builder> {
     private Integer kickUserID;
+
+    private String kickResultContent;
 
     public Builder() {
     }
@@ -118,9 +153,17 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
       return this;
     }
 
+    /**
+     * 系统弹幕文案
+     */
+    public Builder setKickResultContent(String kickResultContent) {
+      this.kickResultContent = kickResultContent;
+      return this;
+    }
+
     @Override
     public MKickoutUserMsg build() {
-      return new MKickoutUserMsg(kickUserID, super.buildUnknownFields());
+      return new MKickoutUserMsg(kickUserID, kickResultContent, super.buildUnknownFields());
     }
   }
 
@@ -132,12 +175,14 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
     @Override
     public int encodedSize(MKickoutUserMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.kickUserID)
+          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.kickResultContent)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, MKickoutUserMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.kickUserID);
+      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.kickResultContent);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -148,6 +193,7 @@ public final class MKickoutUserMsg extends Message<MKickoutUserMsg, MKickoutUser
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setKickUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.setKickResultContent(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
