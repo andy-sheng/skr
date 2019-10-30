@@ -204,7 +204,7 @@ interface SongManagerServerApi {
      *       "uniqTag": "string"
      *     }
      */
-    @PUT("http://dev.micgame.inframe.mobi/v1/micgame/list-music")
+    @PUT("http://dev.micgame.inframe.mobi/v1/micgame/del-music")
     fun deleteMicSong(@Body body: RequestBody): Call<ApiResult>
 
     /**
