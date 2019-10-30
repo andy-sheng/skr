@@ -46,7 +46,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mPresenter: GamePresenter3
 
     val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
-//    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
+    //    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
 //    val mDoubleRoomGameView: DoubleRoomGameView by lazy { DoubleRoomGameView(context!!) }
 //    val mPkGameView: PKGameView by lazy { PKGameView(this) }
@@ -274,8 +274,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 //        if (mGameVp.currentItem == 0) {
 //            mFriendRoomGameView.initData(true)
 //        }
-
-        mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+        // 存一下刷新间隔
+        U.getPreferenceUtils().setSettingInt("homepage_ticker_interval", gameKConfigModel.homepagetickerinterval)
+        mQuickGameView.mRecommendInterval = gameKConfigModel.homepagetickerinterval
         if (mGameVp.currentItem == 1 && this.fragmentVisible) {
             mQuickGameView.initData(true)
         }

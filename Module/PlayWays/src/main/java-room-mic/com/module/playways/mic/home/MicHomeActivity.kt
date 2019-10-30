@@ -17,6 +17,7 @@ import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.statistics.StatisticsAdapter
+import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.common.view.ex.ExImageView
 import com.common.view.titlebar.CommonTitleBar
@@ -43,6 +44,9 @@ class MicHomeActivity : BaseActivity() {
     lateinit var smartRefresh: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
 
+    private var recommendTimer: HandlerTaskTimer? = null
+    private var recommendInterval: Int = 15   // 自动刷新等时间间隔
+
     var adapter: RecommendMicAdapter? = null
 
     val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
@@ -58,6 +62,7 @@ class MicHomeActivity : BaseActivity() {
     override fun initData(savedInstanceState: Bundle?) {
 
         U.getStatusBarUtil().setTransparentBar(this, false)
+        recommendInterval = U.getPreferenceUtils().getSettingInt("homepage_ticker_interval", 15)
 
         titlebar = findViewById(R.id.titlebar)
         quickBegin = findViewById(R.id.quick_begin)
@@ -89,6 +94,7 @@ class MicHomeActivity : BaseActivity() {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
                     // 加载更多
                     getRecomRoomList(offset, true)
+                    starTimer(recommendInterval * 1000.toLong())
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
@@ -115,7 +121,9 @@ class MicHomeActivity : BaseActivity() {
                     MyLog.d(TAG, "onClickUserVoice stopPlay")
                     SinglePlayer.stop(playTag)
                     adapter?.stopPlay()
+                    starTimer((recommendInterval * 1000).toLong())
                 } else {
+                    stopTimer()
                     MyLog.d(TAG, "onClickUserVoice startPlay")
                     StatisticsAdapter.recordCountEvent("KTV", "Voice_click", null)
                     SinglePlayer.stop(playTag)
@@ -129,23 +137,44 @@ class MicHomeActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
+        val listener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (adapter?.isPlay == false) {
+                        // 没有播放时 才让刷新
+                        starTimer((recommendInterval * 1000).toLong())
+                    }
+                } else {
+                    stopTimer()
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        }
+        recyclerView.addOnScrollListener(listener)
+
         playCallback = object : SinglePlayerCallbackAdapter() {
             override fun onCompletion() {
                 super.onCompletion()
                 SinglePlayer.stop(playTag)
                 adapter?.stopPlay()
+                starTimer((recommendInterval * 1000).toLong())
             }
 
             override fun onPlaytagChange(oldPlayerTag: String?, newPlayerTag: String?) {
                 if (newPlayerTag != playTag) {
                     SinglePlayer.stop(playTag)
                     adapter?.stopPlay()
+                    starTimer((recommendInterval * 1000).toLong())
                 }
             }
         }
         SinglePlayer.addCallback(playTag, playCallback)
 
-        getRecomRoomList(0, true)
+        starTimer(0)
     }
 
     private fun getRecomRoomList(off: Int, isClear: Boolean) {
@@ -181,10 +210,28 @@ class MicHomeActivity : BaseActivity() {
         }
     }
 
+    private fun starTimer(delayTimeMill: Long) {
+        stopTimer()
+        recommendTimer = HandlerTaskTimer.newBuilder()
+                .delay(delayTimeMill)
+                .take(-1)
+                .interval((recommendInterval * 1000).toLong())
+                .start(object : HandlerTaskTimer.ObserverW() {
+                    override fun onNext(t: Int) {
+                        getRecomRoomList(0, true)
+                    }
+                })
+    }
+
+    private fun stopTimer() {
+        recommendTimer?.dispose()
+    }
+
     override fun destroy() {
         super.destroy()
         SinglePlayer.release(playTag)
         SinglePlayer.removeCallback(playTag)
+        stopTimer()
     }
 
     override fun useEventBus(): Boolean {
