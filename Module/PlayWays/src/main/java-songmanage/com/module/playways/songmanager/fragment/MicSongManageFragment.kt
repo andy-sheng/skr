@@ -233,7 +233,7 @@ class MicSongManageFragment : BaseFragment() {
         }else if(event.songModel.playType == StandPlayType.PT_CHO_TYPE.value){
             map["wantSingType"] = EMWantSingType.MWST_CHORUS.value
         }else{
-            if(mRoomData?.isAccEnable==true && event.songModel?.acc.isNotEmpty()){
+            if(mRoomData?.isAccEnable==true ){
                 map["wantSingType"] = EMWantSingType.MWST_ACCOMPANY.value
             }else{
                 map["wantSingType"] = EMWantSingType.MWST_COMMON.value
