@@ -60,8 +60,7 @@ class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : Recyc
             levelIv.background = U.getDrawable(LevelConfigUtils.getImageResoucesLevel(model.roomInfo?.roomLevel
                     ?: 0))
         } else {
-            //todo 全名局 缺个图标
-            levelIv.visibility = View.INVISIBLE
+            levelIv.background = U.getDrawable(R.drawable.mic_all_people_icon)
         }
 
         roomNameTv.text = model.roomInfo?.roomName
