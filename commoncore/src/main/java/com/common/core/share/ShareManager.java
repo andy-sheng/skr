@@ -2,7 +2,6 @@ package com.common.core.share;
 
 import android.app.Activity;
 
-import com.common.umeng.UmengInit;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;

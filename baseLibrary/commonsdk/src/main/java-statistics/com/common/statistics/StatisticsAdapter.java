@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.common.cache.LruCache;
 import com.common.log.MyLog;
+import com.common.statistics.umeng.UmengStatistics;
 import com.common.utils.U;
 
 import java.util.HashMap;
