@@ -78,7 +78,7 @@ public class SDataManager
 
         reset();
 
-        MyLog.d(TAG, logStr);
+        MyLog.w(TAG, logStr);
         MyLog.flushLog();
 
         return this;
