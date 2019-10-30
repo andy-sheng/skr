@@ -109,6 +109,12 @@
     <!--轮次结束卡片-->
     <include layout="@layout/mic_round_over_card_layout" />
 
+    <com.module.playways.grab.room.view.GrabScoreTipsView
+        android:id="@+id/grab_score_tips_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/view_30_dp" />
+
     <!--点歌-->
     <ImageView
         android:id="@+id/add_song_iv"

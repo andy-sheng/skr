@@ -31,6 +31,7 @@ import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabGiveupView
+import com.module.playways.grab.room.view.GrabScoreTipsView
 import com.module.playways.grab.room.view.VIPEnterView
 import com.module.playways.grab.room.view.control.OthersSingCardView
 import com.module.playways.grab.room.view.control.RoundOverCardView
@@ -108,6 +109,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     lateinit var mSelfSingCardView: SelfSingCardView // 自己演唱卡片
     lateinit var mSingBeginTipsCardView: MicSingBeginTipsCardView// 演唱开始提示
     lateinit var mRoundOverCardView: RoundOverCardView// 结果页
+    lateinit var mGrabScoreTipsView: GrabScoreTipsView // 打分提示
 
     lateinit var mAddSongIv: ImageView
     private lateinit var mGiveUpView: GrabGiveupView
@@ -302,6 +304,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mOthersSingCardView = OthersSingCardView(rootView)
         // 结果页面
         mRoundOverCardView = RoundOverCardView(rootView)
+
+        // 打分
+        mGrabScoreTipsView = rootView.findViewById(R.id.grab_score_tips_view)
     }
 
     private fun initBottomView() {
@@ -479,8 +484,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         //mDengBigAnimation = findViewById<View>(R.id.deng_big_animation) as GrabDengBigAnimationView
     }
 
-    override fun receiveScoreEvent(score: Int, lineNum: Int) {
-
+    override fun receiveScoreEvent(score: Int) {
+        mGrabScoreTipsView.updateScore(score,-1)
     }
 
     override fun showSongCount(count: Int) {
@@ -627,6 +632,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     override fun singBySelf(lastRoundInfo: MicRoundInfoModel?, singCardShowListener: () -> Unit) {
         hideAllSceneView(null)
         var step2 = {
+            mGrabScoreTipsView.reset()
             singCardShowListener.invoke()
             mSelfSingCardView.playLyric()
             mGiveUpView.delayShowGiveUpView(false)
@@ -658,6 +664,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     override fun singByOthers(lastRoundInfo: MicRoundInfoModel?) {
         hideAllSceneView(null)
         var step2 = {
+            mGrabScoreTipsView.reset()
             mOthersSingCardView.bindData()
         }
 

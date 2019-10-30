@@ -955,7 +955,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     fun onEvent(event: MachineScoreEvent) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (mRoomData?.realRoundInfo?.singByUserId(event.userId) == true) {
-            roomView.receiveScoreEvent(event.score, event.lineNum)
+            roomView.receiveScoreEvent(event.score)
         }
     }
 
@@ -972,7 +972,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
     }
 
-    internal fun processScore(score: Int, line: Int) {
+    private fun processScore(score: Int, line: Int) {
         if (score < 0) {
             return
         }
@@ -986,7 +986,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         machineScoreItem.no = line
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem)
-//        mUiHandler.post { mIGrabView.updateScrollBarProgress(score, mRoomData.songLineNum) }
+        roomView.receiveScoreEvent(score)
         //打分传给服务器
         val now = mRoomData.realRoundInfo
         if (now != null) {
