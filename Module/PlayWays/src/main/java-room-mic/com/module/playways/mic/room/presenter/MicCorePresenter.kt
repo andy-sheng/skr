@@ -28,8 +28,12 @@ import com.module.common.ICallback
 import com.module.msg.CustomMsgType
 import com.module.playways.BuildConfig
 import com.module.playways.RoomDataUtils
+import com.module.playways.event.GrabChangeRoomEvent
+import com.module.playways.grab.room.event.GrabSwitchRoomEvent
+import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.mic.room.event.MicChangeRoomEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
@@ -46,6 +50,7 @@ import com.module.playways.room.msg.event.QChangeRoomNameEvent
 import com.module.playways.room.msg.event.QKickUserResultEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.MicRoomMsgManager
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
@@ -402,7 +407,6 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
     }
 
-
     /**
      * 退出房间
      */
@@ -418,6 +422,22 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             if (result.errno == 0) {
 
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicChangeRoomEvent) {
+        onChangeRoomSuccess(event.mJoinGrabRoomRspModel)
+    }
+
+    private fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinMicRoomRspModel?) {
+        MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
+        if (joinGrabRoomRspModel != null) {
+            EventBus.getDefault().post(GrabSwitchRoomEvent())
+            mRoomData.loadFromRsp(joinGrabRoomRspModel)
+            joinRoomAndInit(false)
+            mRoomData.checkRoundInEachMode()
+            roomView.dismissKickDialog()
         }
     }
 
