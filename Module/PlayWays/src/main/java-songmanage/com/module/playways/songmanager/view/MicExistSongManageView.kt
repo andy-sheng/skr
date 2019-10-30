@@ -13,18 +13,23 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.adapter.MicExistSongAdapter
 import com.module.playways.songmanager.model.MicExistSongModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.zq.live.proto.MicRoom.MAddMusicMsg
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
 import com.module.playways.songmanager.adapter.MicExistListener as MicExistListener
 
@@ -41,7 +46,13 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
     var hasMore = true
     val mCnt = 20
 
+    var isSongChange = false
+
     init {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+
         View.inflate(context, R.layout.mic_exist_song_manage_view_layout, this)
         refreshLayout = this.findViewById(R.id.refreshLayout)
         recyclerView = this.findViewById(R.id.recycler_view)
@@ -102,7 +113,9 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
     }
 
     fun tryLoad() {
-        getMicExistSongList(0, true)
+        if (manageSongAdapter.mDataList.isEmpty() || isSongChange) {
+            getMicExistSongList(0, true)
+        }
     }
 
     fun loadMore() {
@@ -117,6 +130,8 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
                 hasMore = result.data.getBooleanValue("hasMore")
                 val list = JSON.parseArray(result.data.getString("musics"), MicExistSongModel::class.java)
                 addSongList(list, isClear)
+                // 每次拉到歌重置标记位
+                isSongChange = false
             } else {
                 U.getToastUtil().showShort(result.errmsg)
             }
@@ -174,8 +189,19 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MAddMusicMsg) {
+        val userMusicModel = MicUserMusicModel.parseFromInfoPB(event.detail)
+        if (userMusicModel.userID == MyUserInfoManager.uid.toInt()) {
+            isSongChange = true
+        }
+    }
+
 
     fun destory() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
         cancel()
     }
 }

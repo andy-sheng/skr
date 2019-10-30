@@ -204,6 +204,7 @@ class MicSongManageFragment : BaseFragment() {
             if (micSongManageView == null) {
                 micSongManageView = MicExistSongManageView(context!!, mRoomData!!)
             }
+            micSongManageView?.tag = position
             view = micSongManageView!!
         } else {
             val recommendTagModel = recommendTagModelList[position]
