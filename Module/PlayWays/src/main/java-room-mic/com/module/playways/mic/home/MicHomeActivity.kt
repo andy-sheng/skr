@@ -110,6 +110,8 @@ class MicHomeActivity : BaseActivity() {
         adapter = RecommendMicAdapter(object : RecommendMicListener {
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
                 StatisticsAdapter.recordCountEvent("KTV", "room_click", null)
+                SinglePlayer.stop(playTag)
+                adapter?.stopPlay()
                 val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
                 model?.roomInfo?.roomID?.let {
                     iRankingModeService?.jumpMicRoomBySuggest(it)

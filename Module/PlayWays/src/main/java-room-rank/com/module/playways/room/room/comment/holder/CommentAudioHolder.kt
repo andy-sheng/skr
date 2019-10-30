@@ -21,6 +21,7 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
 
     private val mAvatarIv: AvatarView = itemView.findViewById(R.id.avatar_iv)
     private val mNameTv: ExTextView = itemView.findViewById(R.id.name_tv)
+    private val mHonorIv: ImageView = itemView.findViewById(R.id.honor_iv)
     private val mAudioTv: ExTextView = itemView.findViewById(R.id.audio_tv)
     private val mAudioPlayIv: ImageView = itemView.findViewById(R.id.audio_play_iv)
     private val mRedIv: ExImageView = itemView.findViewById(R.id.red_iv)
@@ -89,9 +90,9 @@ class CommentAudioHolder(itemView: View, listener: CommentAdapter.CommentAdapter
             spanUtils.append(model.nameBuilder)
         }
         if (model.userInfo.honorInfo != null && model.userInfo.honorInfo.isHonor()) {
-            val honorDrawable = U.getDrawable(R.drawable.person_honor_icon)
-            honorDrawable.setBounds(0, 0, U.getDisplayUtils().dip2px(23f), U.getDisplayUtils().dip2px(14f))
-            spanUtils.appendImage(honorDrawable, SpanUtils.ALIGN_CENTER).append(" ")
+            mHonorIv.visibility = View.VISIBLE
+        } else {
+            mHonorIv.visibility = View.GONE
         }
         if (!TextUtils.isEmpty(model.stringBuilder)) {
             spanUtils.append(model.stringBuilder)
