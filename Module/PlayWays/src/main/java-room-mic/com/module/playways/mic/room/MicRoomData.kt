@@ -17,7 +17,6 @@ import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.EMUserRole
 import org.greenrobot.eventbus.EventBus
 import java.util.*
-import kotlin.properties.Delegates
 
 class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var configModel = MicConfigModel()// 一唱到底配置
@@ -26,11 +25,13 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
 
     private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
 
-    var ownerId: Int by Delegates.observable(0) { prop, old, new ->
-        if (old != new) {
-            EventBus.getDefault().post(MicHomeOwnerChangeEvent(new))
+    var ownerId = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                EventBus.getDefault().post(MicHomeOwnerChangeEvent(field))
+            }
         }
-    }
 
 
 //    private var hasGameBegin = true// 游戏是否已经开始
