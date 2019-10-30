@@ -498,7 +498,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         }
         dismissDialog()
         mInputContainerView.hideSoftInput()
-        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, false, false)
+        mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, true, true)
                 .setRoomID(mRoomData.gameId)
                 .build()
         mPersonInfoDialog?.show()
