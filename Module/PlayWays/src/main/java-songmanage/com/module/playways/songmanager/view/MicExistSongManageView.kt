@@ -13,6 +13,7 @@ import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.songmanager.SongManagerServerApi
 import com.module.playways.songmanager.adapter.MicExistSongAdapter
@@ -197,6 +198,17 @@ class MicExistSongManageView(context: Context, internal var mRoomData: MicRoomDa
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicRoundChangeEvent) {
+        if(event.newRound?.singBySelf() == true){
+            // TODO 当前页面被选中
+            if(true){
+
+            }else{
+                isSongChange = true
+            }
+        }
+    }
 
     fun destory() {
         if (EventBus.getDefault().isRegistered(this)) {
