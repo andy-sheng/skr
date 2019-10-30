@@ -38,6 +38,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     private var mRecommendTimer: HandlerTaskTimer? = null
     private var mLastUpdateRecomendInfo = 0L    //上次拉去推荐房间剩余次数的时间
     private var mLastUpdateGameType = 0L // 上次拉去首页游戏列表时间
+    private var mLastUpdateReginDiff = 0L // 上传拉diff的时间
     private var mIsFirstQuick = true   // 是否第一次拉去首页
     var mRecommendInterval: Int = 0    // 拉去推荐房的时间间隔
 
@@ -142,10 +143,18 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         }, this, RequestControl("getSepcialList", ControlType.CancelThis))
     }
 
-    fun getReginDiff() {
+    fun getReginDiff(isFlag: Boolean) {
+        val now = System.currentTimeMillis()
+        if (!isFlag) {
+            // diff 接口更新
+            if (now - mLastUpdateReginDiff < 5 * 60 * 1000) {
+                return
+            }
+        }
         ApiMethods.subscribe(userInfoServerApi.reginDiff, object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
+                    mLastUpdateReginDiff = System.currentTimeMillis()
                     val userRankModel = JSON.parseObject(result.data!!.getString("diff"), UserRankModel::class.java)
                     mIGameView3.setReginDiff(userRankModel)
                 }
@@ -227,6 +236,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         initOperationArea(true)
 //        initRecommendRoom(true, mRecommendInterval)
         initGameTypeArea(true)
+        getReginDiff(true)
 //        initQuickRoom(true)
         checkTaskRedDot()
     }
@@ -234,6 +244,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
         initGameTypeArea(true)
+        getReginDiff(true)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

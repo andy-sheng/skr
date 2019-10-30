@@ -171,8 +171,16 @@ class MicHomeActivity : BaseActivity() {
             }
         }
         SinglePlayer.addCallback(playTag, playCallback)
+    }
 
+    override fun onResume() {
+        super.onResume()
         starTimer(0)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopTimer()
     }
 
     private fun getRecomRoomList(off: Int, isClear: Boolean) {

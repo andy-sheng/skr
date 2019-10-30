@@ -200,6 +200,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
         mQuickGamePresenter.initOperationArea(flag)
 //        mQuickGamePresenter.initRecommendRoom(flag, mRecommendInterval)
         mQuickGamePresenter.initGameTypeArea(flag)
+        mQuickGamePresenter.getReginDiff(flag)
 //        mQuickGamePresenter.initQuickRoom(false)
         mQuickGamePresenter.checkTaskRedDot()
     }
@@ -293,10 +294,6 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             val gameTypeModel = GameTypeModel()
             gameTypeModel.mSpecialModel = list
             mGameAdapter.updateGameTypeInfo(gameTypeModel)
-        }
-
-        if (fromServer) {
-            mQuickGamePresenter.getReginDiff()
         }
     }
 
