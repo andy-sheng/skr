@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.core.myinfo.event.MyUserInfoEvent
+import com.common.core.userinfo.UserInfoServerApi
 import com.common.log.MyLog
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.*
@@ -14,6 +15,7 @@ import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
 import com.component.busilib.friends.RecommendModel
 import com.component.busilib.recommend.RA
+import com.component.person.model.UserRankModel
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
 import com.module.home.game.model.GrabSpecialModel
@@ -26,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
 class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: IQuickGameView3) : RxLifeCyclePresenter() {
 
     private val mMainPageSlideApi: MainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi::class.java)
+    private val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
     private val mGrabSongApi: GrabSongApi = ApiManager.getInstance().createService(GrabSongApi::class.java)
 
     private var mLastUpdateOperaArea = 0L    //广告位上次更新成功时间
@@ -117,7 +120,7 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
                 try {
                     var jsonObject = JSON.parseObject(spResult, JSONObject::class.java)
                     var list = JSON.parseArray(jsonObject.getString("items"), GrabSpecialModel::class.java)
-                    mIGameView3.setGameType(list)
+                    mIGameView3.setGameType(list, false)
                 } catch (e: Exception) {
                 }
 
@@ -132,12 +135,32 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
                     if (obj.data!!.toJSONString() != finalSpResult) {
                         U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().longlySp(), "game_type_tags", obj.data!!.toJSONString())
                         val list = JSON.parseArray(obj.data!!.getString("items"), GrabSpecialModel::class.java)
-                        mIGameView3.setGameType(list)
+                        mIGameView3.setGameType(list, true)
                     }
                 }
             }
         }, this, RequestControl("getSepcialList", ControlType.CancelThis))
     }
+
+    fun getReginDiff() {
+        ApiMethods.subscribe(userInfoServerApi.reginDiff, object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val userRankModel = JSON.parseObject(result.data!!.getString("diff"), UserRankModel::class.java)
+                    mIGameView3.setReginDiff(userRankModel)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                U.getToastUtil().showShort("网络异常")
+            }
+
+            override fun onNetworkError(errorType: ApiObserver.ErrorType) {
+                U.getToastUtil().showShort("网络超时")
+            }
+        }, this)
+    }
+
 
     //TODO 这个接口得换，等服务器更新
     fun initRecommendRoom(flag: Boolean, interval: Int) {

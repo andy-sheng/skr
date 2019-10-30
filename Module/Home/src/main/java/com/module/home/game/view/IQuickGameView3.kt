@@ -1,9 +1,7 @@
 package com.module.home.game.view
 
-import com.component.busilib.friends.RecommendModel
-import com.component.busilib.friends.SpecialModel
+import com.component.person.model.UserRankModel
 import com.module.home.game.model.GrabSpecialModel
-import com.module.home.model.GameKConfigModel
 import com.module.home.model.SlideShowModel
 
 interface IQuickGameView3 {
@@ -15,5 +13,7 @@ interface IQuickGameView3 {
 
     fun showTaskRedDot(show: Boolean)
 
-    fun setGameType(list: MutableList<GrabSpecialModel>?)
+    fun setGameType(list: MutableList<GrabSpecialModel>?, fromServer: Boolean)
+
+    fun setReginDiff(model: UserRankModel?)
 }

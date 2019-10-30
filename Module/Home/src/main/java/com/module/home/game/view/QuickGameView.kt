@@ -25,6 +25,7 @@ import com.component.busilib.friends.RecommendModel
 import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.busilib.view.SelectSexDialogView
+import com.component.person.model.UserRankModel
 import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.MainPageSlideApi
@@ -54,6 +55,7 @@ import kotlinx.coroutines.launch
  * 快速游戏
  */
 class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.context), IQuickGameView3 {
+
     val TAG: String = "QuickGameView"
 
     var mQuickGamePresenter: QuickGamePresenter
@@ -308,7 +310,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
 //        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel)
 //    }
 
-    override fun setGameType(list: MutableList<GrabSpecialModel>?) {
+    override fun setGameType(list: MutableList<GrabSpecialModel>?, fromServer: Boolean) {
         refreshLayout.finishRefresh()
         if (list != null && list.size > 0) {
             val iterator = list.iterator()
@@ -328,8 +330,25 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
             return
         }
 
-        val gameTypeModel = GameTypeModel(list)
-        mGameAdapter.updateGameTypeInfo(gameTypeModel)
+        if (mGameAdapter.getGameTypeInfo() != null) {
+            mGameAdapter.getGameTypeInfo()?.mSpecialModel = list
+            mGameAdapter.updateGameTypeInfo(mGameAdapter.getGameTypeInfo())
+        } else {
+            val gameTypeModel = GameTypeModel()
+            gameTypeModel.mSpecialModel = list
+            mGameAdapter.updateGameTypeInfo(gameTypeModel)
+        }
+
+        if (fromServer) {
+            mQuickGamePresenter.getReginDiff()
+        }
+    }
+
+    override fun setReginDiff(model: UserRankModel?) {
+        if (mGameAdapter.getGameTypeInfo() != null) {
+            mGameAdapter.getGameTypeInfo()?.mReginDiff = model
+            mGameAdapter.updateGameTypeInfo(mGameAdapter.getGameTypeInfo())
+        }
     }
 
     fun showRedOperationView(homepagesitefirstBean: GameKConfigModel.HomepagesitefirstBean?) {

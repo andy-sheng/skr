@@ -20,7 +20,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
 
     private val TYPE_BANNER_HOLDER = 0       // 广告
     private val TYPE_FUNCATION_HOLDER = 1    // 功能区域（做任务，排行榜，练歌房）
-//    private val TYPE_RECOMMEND_HOLDER = 2    // 推荐房
+    //    private val TYPE_RECOMMEND_HOLDER = 2    // 推荐房
     private val TYPE_GAMETYPE_HOLDER = 2     // 玩法区域
 
     private var mObjArr = arrayOfNulls<Any>(5)
@@ -48,6 +48,10 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
     fun updateGameTypeInfo(gameTypeModel: GameTypeModel?) {
         mObjArr[TYPE_GAMETYPE_HOLDER] = gameTypeModel
         setDataList()
+    }
+
+    fun getGameTypeInfo(): GameTypeModel? {
+        return mObjArr[TYPE_GAMETYPE_HOLDER] as GameTypeModel?
     }
 
     private fun setDataList() {

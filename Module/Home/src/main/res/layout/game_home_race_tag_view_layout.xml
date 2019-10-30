@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/view_4_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/image_sdv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/level_bg"
+        android:layout_width="@dimen/view_150_dp"
+        android:layout_height="@dimen/view_44_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#b34B6BEB"
+        app:layout_constraintBottom_toBottomOf="@id/image_sdv"
+        app:layout_constraintLeft_toLeftOf="@id/image_sdv"
+        app:layout_constraintRight_toRightOf="@id/image_sdv"
+        app:layout_constraintTop_toTopOf="@id/image_sdv" />
+
+    <ImageView
+        android:id="@+id/level_iv"
+        android:layout_width="@dimen/view_37_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        app:layout_constraintBottom_toBottomOf="@id/level_bg"
+        app:layout_constraintLeft_toLeftOf="@id/level_bg"
+        app:layout_constraintTop_toTopOf="@id/level_bg" />
+
+    <TextView
+        android:id="@+id/level_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:gravity="center"
+        android:text="钻石巨星II"
+        android:textColor="#FFC15B"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@id/level_iv"
+        app:layout_constraintTop_toTopOf="@id/level_iv" />
+
+    <TextView
+        android:id="@+id/diff_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_14_dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="朝阳区 第26名"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_10_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/level_desc_tv"
+        app:layout_constraintRight_toRightOf="@id/level_bg"
+        app:layout_constraintTop_toBottomOf="@id/level_desc_tv" />
+
+
+</android.support.constraint.ConstraintLayout>
