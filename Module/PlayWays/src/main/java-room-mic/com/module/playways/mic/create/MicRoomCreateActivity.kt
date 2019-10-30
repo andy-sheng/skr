@@ -2,6 +2,8 @@ package com.module.playways.mic.create
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -107,6 +109,27 @@ class MicRoomCreateActiviy : BaseActivity() {
             boGoldTv.isSelected = true
             selected = Level.RLL_Bo_Jin
         }
+
+        nameEdittext.addTextChangedListener(object : TextWatcher {
+            var preString = ""
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                preString = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                val length = U.getStringUtils().getStringLength(str)
+                if (length > 14) {
+                    nameEdittext.setText(preString)
+                    nameEdittext.setSelection(preString.length - 1)
+                    U.getToastUtil().showShort("昵称不能超过7个汉字或14个英文")
+                }
+            }
+        })
 
         selectDrawable1.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
         selectDrawable2.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
