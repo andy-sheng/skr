@@ -232,6 +232,8 @@ class MicHomeActivity : BaseActivity() {
                 .interval((recommendInterval * 1000).toLong())
                 .start(object : HandlerTaskTimer.ObserverW() {
                     override fun onNext(t: Int) {
+                        SinglePlayer.stop(playTag)
+                        adapter?.stopPlay()
                         getRecomRoomList(0, true)
                     }
                 })
