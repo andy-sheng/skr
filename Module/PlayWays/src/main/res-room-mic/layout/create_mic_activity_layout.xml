@@ -135,7 +135,6 @@
         android:text="白银以上"
         android:textColor="@color/black_trans_70"
         android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/bg_iv"
         app:layout_constraintTop_toBottomOf="@+id/all_man_tv" />
 
@@ -156,7 +155,6 @@
         android:text="黄金以上"
         android:textColor="@color/black_trans_70"
         android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/guide_line"
         app:layout_constraintTop_toBottomOf="@+id/enter_room_tip" />
 
@@ -170,7 +168,6 @@
         android:text="铂金以上"
         android:textColor="@color/black_trans_70"
         android:textSize="@dimen/textsize_14_dp"
-        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/guide_line"
         app:layout_constraintTop_toBottomOf="@+id/all_man_tv" />
 </android.support.constraint.ConstraintLayout>

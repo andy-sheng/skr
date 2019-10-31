@@ -41,6 +41,8 @@ class MicRoomCreateActiviy : BaseActivity() {
     lateinit var yellowGoldTv: ExTextView
     lateinit var boGoldTv: ExTextView
 
+    var levelList: ArrayList<Level> = ArrayList()
+
     val raceRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
     var selected: Level = Level.RLL_All
 
@@ -69,6 +71,7 @@ class MicRoomCreateActiviy : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        levelList.add(Level.RLL_All)
         titlebar = this.findViewById(R.id.titlebar)
         nameEdittext = this.findViewById(R.id.name_edittext)
         divider = this.findViewById(R.id.divider)
@@ -87,27 +90,19 @@ class MicRoomCreateActiviy : BaseActivity() {
         }
 
         allManTv.setDebounceViewClickListener {
-            resetSelect()
-            allManTv.isSelected = true
-            selected = Level.RLL_All
+            trySelect(Level.RLL_All, allManTv)
         }
 
         whiteGoldTv.setDebounceViewClickListener {
-            resetSelect()
-            whiteGoldTv.isSelected = true
-            selected = Level.RLL_Bai_Yin
+            trySelect(Level.RLL_Bai_Yin, whiteGoldTv)
         }
 
         yellowGoldTv.setDebounceViewClickListener {
-            resetSelect()
-            yellowGoldTv.isSelected = true
-            selected = Level.RLL_Huang_Jin
+            trySelect(Level.RLL_Huang_Jin, yellowGoldTv)
         }
 
         boGoldTv.setDebounceViewClickListener {
-            resetSelect()
-            boGoldTv.isSelected = true
-            selected = Level.RLL_Bo_Jin
+            trySelect(Level.RLL_Bo_Jin, boGoldTv)
         }
 
         nameEdittext.addTextChangedListener(object : TextWatcher {
@@ -145,6 +140,16 @@ class MicRoomCreateActiviy : BaseActivity() {
         getPermmissionList(0)
     }
 
+    private fun trySelect(level: Level, textView: ExTextView) {
+        if (levelList.contains(level)) {
+            resetSelect()
+            textView.isSelected = true
+            selected = level
+        } else {
+            U.getToastUtil().showShort("段位还没有达到哦～")
+        }
+    }
+
     private fun getPermmissionList(loop: Int) {
         launch {
             val result = subscribe(RequestControl("MicRoomCreateFragment getPermmissionList", ControlType.CancelThis)) {
@@ -153,16 +158,8 @@ class MicRoomCreateActiviy : BaseActivity() {
 
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("list"), Level::class.java)
-                list?.let {
-                    it.forEach {
-                        when (it) {
-                            Level.RLL_All, Level.RLL_Qing_Tong -> allManTv.visibility = View.VISIBLE
-                            Level.RLL_Bai_Yin -> whiteGoldTv.visibility = View.VISIBLE
-                            Level.RLL_Huang_Jin -> yellowGoldTv.visibility = View.VISIBLE
-                            Level.RLL_Bo_Jin -> boGoldTv.visibility = View.VISIBLE
-                        }
-                    }
-                }
+                levelList.clear()
+                levelList.addAll(list)
             } else {
                 if (loop < 5) {
                     delay(300)
