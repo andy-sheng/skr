@@ -5,13 +5,13 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1B134B">
+    android:background="#020310">
 
     <ImageView
         android:id="@+id/top_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_465_dp"
-        android:background="@drawable/race_room_bg"
+        android:background="@drawable/mic_room_bg"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.titlebar.CommonTitleBar
