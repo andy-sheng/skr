@@ -15,12 +15,14 @@
 
         <activity
             android:name=".detail.activity.PostsDetailActivity"
+            android:theme="@style/TransparentTheme"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".detail.activity.PostsCommentDetailActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/TransparentTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity android:name=".activity.PostsReportActivity"
