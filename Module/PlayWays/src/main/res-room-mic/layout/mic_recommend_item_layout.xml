@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/view_12_dp"
@@ -72,4 +73,4 @@
         app:layout_constraintTop_toTopOf="@id/enter_room_tv" />
 
 
-</android.support.constraint.ConstraintLayout>
+</com.common.view.ex.ExConstraintLayout>

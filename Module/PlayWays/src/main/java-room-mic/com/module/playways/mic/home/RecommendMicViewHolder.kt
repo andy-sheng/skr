@@ -1,5 +1,6 @@
 package com.module.playways.mic.home
 
+import android.graphics.Color
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -8,12 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.U
+import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
+import com.common.view.ex.shadow.ShadowConfig
 import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
 
 class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : RecyclerView.ViewHolder(item) {
 
+    val background: ExConstraintLayout = item.findViewById(R.id.background)
     val levelIv: ImageView = item.findViewById(R.id.level_iv)
     val levelDescTv: TextView = item.findViewById(R.id.level_desc_tv)
     val recyclerView: RecyclerView = item.findViewById(R.id.recycler_view)
@@ -46,6 +50,14 @@ class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : Recyc
         this.mPosition = position
         this.mModel = model
         this.playPosition = -1
+
+        val shadowConfig = ShadowConfig.obtain()
+                .color(Color.parseColor("#809F6CDF"))
+                .radius(9f)
+                .leftBottomCorner(48)
+                .rightBottomCorner(48)
+                .yOffset(18)
+        background.setShadowConfig(shadowConfig)
 
         childAdapter.mDataList.clear()
         if (model.roomInfo?.userList.isNullOrEmpty()) {
