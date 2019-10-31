@@ -125,7 +125,7 @@ class MicRoomCreateActiviy : BaseActivity() {
                     val selectIndex = preString.length
                     nameEdittext.setText(preString)
                     nameEdittext.setSelection(selectIndex)
-                    U.getToastUtil().showShort("昵称不能超过7个汉字或14个英文")
+                    U.getToastUtil().showShort("昵称不能超过8个汉字或16个英文")
                 }
             }
         })
