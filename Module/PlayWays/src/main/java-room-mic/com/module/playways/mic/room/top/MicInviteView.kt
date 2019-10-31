@@ -110,12 +110,18 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         this.userMusicModel = micUserMusicModel
         setVisibility(View.VISIBLE)
         // 自适应一下箭头的位置
-        if (left >= 0 && left != leftMargin) { // 外面用-1的时候不改变他的位置,且位置改变了
-            val contentLayoutParams = triangleArrow?.layoutParams as ConstraintLayout.LayoutParams?
-            contentLayoutParams?.leftMargin = left
-            triangleArrow?.layoutParams = contentLayoutParams
-            leftMargin = left
+        if (left == -1) {
+            triangleArrow?.visibility = View.GONE
+        } else {
+            triangleArrow?.visibility = View.VISIBLE
+            if (left >= 0 && left != leftMargin) { // 外面用-1的时候不改变他的位置,且位置改变了
+                val contentLayoutParams = triangleArrow?.layoutParams as ConstraintLayout.LayoutParams?
+                contentLayoutParams?.leftMargin = left
+                triangleArrow?.layoutParams = contentLayoutParams
+                leftMargin = left
+            }
         }
+
 
         cancelJob()
         if (isInvite) {
