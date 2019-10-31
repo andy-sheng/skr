@@ -15,6 +15,7 @@ import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.EMUserRole
+import com.zq.live.proto.MicRoom.ERoomMatchStatus
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
@@ -227,6 +228,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         this.inChallenge = rsp.inChallenge
 
         this.maxGetBLightCnt = rsp.maxGetBLightCnt
+        this.matchStatusOpen = (rsp.matchStatus == ERoomMatchStatus.EMMS_OPEN.value)
 
     }
 

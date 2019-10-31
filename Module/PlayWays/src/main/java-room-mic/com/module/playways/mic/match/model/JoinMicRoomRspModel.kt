@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
+import com.zq.live.proto.MicRoom.ERoomMatchStatus
 import java.io.Serializable
 
 class JoinMicRoomRspModel : Serializable {
@@ -30,7 +31,7 @@ class JoinMicRoomRspModel : Serializable {
     var hongZuan: Float = 0.toFloat() // 红钻
     var mediaType: Int = 0// 2为视频房
     var waitUsers: List<MicPlayerInfoModel>? = null // 歌单战等待状态给的用户信息
-
+    var matchStatus = ERoomMatchStatus.EMMS_OPEN.value
     override fun toString(): String {
         return "JoinMicRoomRspModel{" +
                 "coin=" + coin +
