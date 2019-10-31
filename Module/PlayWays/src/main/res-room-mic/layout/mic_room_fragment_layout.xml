@@ -39,7 +39,7 @@
         android:layout_marginBottom="@dimen/view_10_dp"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingBottom="@dimen/view_7_dp"
-        app:edge_position="top|bottom"
+        app:edge_position="top"
         app:edge_width="30dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_container_view"
