@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -113,14 +114,17 @@ class MicRoomCreateActiviy : BaseActivity() {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 preString = s.toString()
+                MyLog.d(TAG, "beforeTextChanged s = $preString")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
                 val length = U.getStringUtils().getStringLength(str)
                 if (length > 14) {
+                    MyLog.d(TAG, "onTextChanged s = $str")
+                    val selectIndex = preString.length
                     nameEdittext.setText(preString)
-                    nameEdittext.setSelection(preString.length - 1)
+                    nameEdittext.setSelection(selectIndex)
                     U.getToastUtil().showShort("昵称不能超过7个汉字或14个英文")
                 }
             }
