@@ -743,6 +743,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 .setText(if (isOwner) "房主将你请出了房间" else "超过半数玩家请你出房间，要友好文明游戏哦~")
                 .build())
         mCorePresenter?.exitRoom("kickBySomeOne")
+        finish()
     }
 
     override fun dismissKickDialog() {
