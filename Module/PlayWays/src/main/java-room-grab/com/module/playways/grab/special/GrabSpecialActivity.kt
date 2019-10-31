@@ -3,6 +3,7 @@ package com.module.playways.grab.special
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 class GrabSpecialActivity : BaseActivity() {
 
     private var titlebar: CommonTitleBar? = null
-    private var createRoom: ExTextView? = null
+    private var createRoom: ImageView? = null
     private var refreshLayout: SmartRefreshLayout? = null
     private var recyclerView: RecyclerView? = null
     private val adapter: GrabSpecialAdapter = GrabSpecialAdapter()
