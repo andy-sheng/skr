@@ -61,7 +61,9 @@ class MicExistSongAdapter(var listener: MicExistListener?) : RecyclerView.Adapte
                 stickIv.visibility = View.GONE
                 tvManage.background = SongTagDrawableUtils.grayDrawable
             } else {
-                if (hasSing && position == 1) {
+                if (position == 0) {
+                    stickIv.visibility = View.GONE
+                } else if (hasSing && position == 1) {
                     // 除去演唱中，第一个不需要置顶
                     stickIv.visibility = View.GONE
                 } else {
