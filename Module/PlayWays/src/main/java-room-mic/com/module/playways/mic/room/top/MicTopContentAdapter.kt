@@ -131,7 +131,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 voiceChartView.stop()
             }
 
-            if (model!!.isNextSing) {
+            if (model!!.isNextSing && !model!!.isCurSing) {
                 waitingTv.visibility = View.VISIBLE
             } else {
                 waitingTv.visibility = View.GONE
