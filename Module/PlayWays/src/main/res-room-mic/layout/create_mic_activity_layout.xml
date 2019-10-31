@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:bl_gradient_angle="0"
-        app:bl_gradient_endColor="#6C0069"
-        app:bl_gradient_startColor="#0045A1" />
+        app:bl_gradient_endColor="#CF98FF"
+        app:bl_gradient_startColor="#CF98FF" />
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -32,17 +32,14 @@
         app:statusBarColor="@color/transparent"
         app:titleBarColor="@color/transparent" />
 
-    <com.common.view.ex.ExImageView
+    <ImageView
         android:id="@+id/bg_iv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_0_dp"
         android:layout_marginLeft="@dimen/view_12_dp"
         android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_12_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_gradient_endColor="#FFFFFF"
-        app:bl_gradient_startColor="#80F8CBFF"
+        android:background="@drawable/common_gradient_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titlebar" />
 
