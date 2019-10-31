@@ -224,7 +224,7 @@ public interface WalletServerApi {
      *
      * @return
      */
-    @GET("/v1/wallet/exchange-info")
+    @GET("/v2/wallet/exchange-info")
     Observable<ApiResult> getExChangeInfo();
 
     /**
