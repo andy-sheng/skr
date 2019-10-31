@@ -32,6 +32,7 @@ import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
 import com.module.playways.doubleplay.DoubleRoomServerApi
+import com.module.playways.doubleplay.event.DoubleChatStartEvent
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import io.reactivex.Observable
@@ -39,6 +40,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_DOUBLE_HOME)
 class DoubleHomeActivity : BaseActivity() {
@@ -63,6 +66,8 @@ class DoubleHomeActivity : BaseActivity() {
     var mSelectView: SelectSexDialogView? = null
 
     var mTipsDialogView: TipsDialogView? = null
+
+    var callWhenRecharge: (() -> Unit)? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.double_home_activity_layout
@@ -153,6 +158,10 @@ class DoubleHomeActivity : BaseActivity() {
                                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                                                 .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
                                                 .greenChannel().navigation()
+
+                                        callWhenRecharge = {
+                                            getRemainTimes()
+                                        }
                                     }
                                 })
                                 .setCancelBtnClickListener(object : AnimateClickListener() {
@@ -199,6 +208,11 @@ class DoubleHomeActivity : BaseActivity() {
         getRemainTimes()
     }
 
+    override fun onResume() {
+        super.onResume()
+        callWhenRecharge?.invoke()
+    }
+
     fun goCreateDoubleRoom() {
         val body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(null))
         ApiMethods.subscribe(mainPageSlideApi.createRoom(body), object : ApiObserver<ApiResult>() {
@@ -223,6 +237,11 @@ class DoubleHomeActivity : BaseActivity() {
                 U.getToastUtil().showShort("网络延迟")
             }
         }, this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: DoubleChatStartEvent) {
+        getRemainTimes()
     }
 
     private fun getRemainTimes() {
@@ -276,6 +295,6 @@ class DoubleHomeActivity : BaseActivity() {
     }
 
     override fun useEventBus(): Boolean {
-        return false
+        return true
     }
 }

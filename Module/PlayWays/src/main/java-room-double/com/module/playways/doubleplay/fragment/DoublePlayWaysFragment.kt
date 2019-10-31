@@ -43,6 +43,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.module.RouterConstants
 import com.module.playways.R
 import com.module.playways.doubleplay.DoubleRoomData
+import com.module.playways.doubleplay.event.DoubleChatStartEvent
 import com.module.playways.doubleplay.inter.IDoublePlayView
 import com.module.playways.doubleplay.pbLocalModel.LocalCombineRoomMusic
 import com.module.playways.doubleplay.pbLocalModel.LocalGameItemInfo
@@ -60,6 +61,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.Common.ESceneType
 import com.zq.mediaengine.kit.ZqEngineKit
+import org.greenrobot.eventbus.EventBus
 import kotlin.properties.Delegates
 
 
@@ -149,6 +151,8 @@ class DoublePlayWaysFragment : BaseFragment(), IDoublePlayView {
             MyLog.w(mTag, "initData mRoomData is null")
             return
         }
+
+        EventBus.getDefault().post(DoubleChatStartEvent())
 
         ZqEngineKit.getInstance().muteLocalAudioStream(false)
         U.getSoundUtils().preLoad(mTag, R.raw.double_chat_cd)
