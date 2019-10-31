@@ -89,20 +89,20 @@ class MicHomeActivity : BaseActivity() {
         }
 
         smartRefresh.apply {
-            setEnableLoadMore(true)
-            setEnableRefresh(false)
+            setEnableLoadMore(false)
+            setEnableRefresh(true)
             setEnableLoadMoreWhenContentNotFull(false)
             setEnableOverScrollDrag(true)
 
             setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
                 override fun onLoadMore(refreshLayout: RefreshLayout) {
-                    // 加载更多
-                    getRecomRoomList(offset, true)
-                    starTimer(recommendInterval * 1000.toLong())
+//                    // 加载更多
+//                    getRecomRoomList(offset, true)
+//                    starTimer(recommendInterval * 1000.toLong())
                 }
 
                 override fun onRefresh(refreshLayout: RefreshLayout) {
-
+                    starTimer(0)
                 }
             })
         }
