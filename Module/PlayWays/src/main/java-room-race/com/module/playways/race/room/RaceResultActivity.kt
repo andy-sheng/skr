@@ -240,9 +240,18 @@ class RaceResultActivity : BaseActivity() {
 
     private fun setSimpleSaveInfo(model: SaveRankModel?) {
         when {
-            model?.status == SaveRankModel.ESRS_USED -> setSimpleSaveAreaAlph(0.3f)
-            model?.status == SaveRankModel.ESRS_ENABLE -> setSimpleSaveAreaAlph(1f)
-            else -> setSimpleSaveAreaAlph(1f)
+            model?.status == SaveRankModel.ESRS_USED -> {
+                setSimpleSaveAreaAlph(0.3f)
+                levelSaveDesc.text = "日常保段已使用"
+            }
+            model?.status == SaveRankModel.ESRS_ENABLE ->{
+                setSimpleSaveAreaAlph(1f)
+                levelSaveDesc.text = "日常保段"
+            }
+            else -> {
+                setSimpleSaveAreaAlph(1f)
+                levelSaveDesc.text = "日常保段"
+            }
         }
     }
 
