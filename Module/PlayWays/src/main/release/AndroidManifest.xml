@@ -17,9 +17,16 @@
 
         </activity>
 
+<!--        <activity-->
+<!--            android:name="com.module.playways.room.room.activity.RankRoomActivity"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:windowSoftInputMode="adjustResize">-->
+
+<!--        </activity>-->
+
         <activity
-            android:name="com.module.playways.room.room.activity.RankRoomActivity"
-            android:launchMode="singleTask"
+            android:name=".grab.room.invite.InviteFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
 
@@ -119,13 +126,13 @@
 
         </activity>
 
-        <activity
-            android:name="com.module.playways.voice.activity.VoiceRoomActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+<!--        <activity-->
+<!--            android:name="com.module.playways.voice.activity.VoiceRoomActivity"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:windowSoftInputMode="adjustResize">-->
 
-        </activity>
+<!--        </activity>-->
 
         <activity
             android:name="com.module.playways.race.room.RaceRoomActivity"

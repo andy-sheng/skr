@@ -558,15 +558,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicWantInviteEvent) {
-        // 房主想要邀请别人加入游戏
-        // 打开邀请面板
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, InviteFriendFragment2::class.java)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .addDataBeforeAdd(0, InviteFriendFragment2.FROM_MIC_ROOM)
-                .addDataBeforeAdd(1, mRoomData!!.gameId)
-                .build()
-        )
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
+                .withInt("from",InviteFriendFragment2.FROM_MIC_ROOM)
+                .withInt("roomId",mRoomData!!.gameId)
+                .navigation()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
