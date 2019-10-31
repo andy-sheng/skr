@@ -304,6 +304,11 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mInputContainerView.setRoomData(mRoomData)
     }
 
+    override fun invitedToOtherRoom() {
+        mMicSettingView?.dismiss(false)
+        mVoiceControlPanelView?.dismiss(false)
+    }
+
     private fun initTurnSenceView() {
 //        mWaitingCardView = findViewById(R.id.wait_card_view)
 //        mWaitingCardView.visibility = View.GONE

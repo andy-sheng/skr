@@ -461,6 +461,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             joinRoomAndInit(false)
             mRoomData.checkRoundInEachMode()
             roomView.dismissKickDialog()
+            roomView.invitedToOtherRoom()
         }
     }
 

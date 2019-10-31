@@ -15,6 +15,7 @@ interface IMicRoomView {
     fun receiveScoreEvent(score: Int)
     fun showSongCount(count: Int)
     fun ensureActivtyTop()
+    fun invitedToOtherRoom()
 //    fun showWaiting(showAnimation: Boolean) // 是否需要入场动画
 //    fun showChoiceView(showNextRound: Boolean)// 是否要显示下一句
 //    fun showMatchAnimationView(overListener: ()->Unit)// 是否要显示下一句
