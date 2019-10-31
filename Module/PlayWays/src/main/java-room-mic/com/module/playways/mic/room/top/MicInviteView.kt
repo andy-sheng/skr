@@ -95,11 +95,12 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         return R.layout.mic_invite_view_stub_layout
     }
 
-    fun startCheckSelfJob() {
+    fun startCheckSelfJob(micUserMusicModel: MicUserMusicModel?) {
+        this.userMusicModel = micUserMusicModel
         inviteJob = launch {
             delay(8000)
             // 去拉一下演唱的状态
-            syncInviteResult()
+            syncInviteResult(micUserMusicModel?.uniqTag)
         }
     }
 
@@ -138,7 +139,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                 }
                 agreeTv?.text = "抢唱0s"
                 // 去拉一下演唱的状态
-                syncInviteResult()
+                syncInviteResult(micUserMusicModel?.uniqTag)
             }
         } else {
             if (micUserMusicModel?.peerID != 0) {
@@ -202,12 +203,11 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
     }
 
-    private fun syncInviteResult() {
+    private fun syncInviteResult(uniqTag: String?) {
         launch {
             val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
                 micRoomServerApi.getAgreeSingResult(H.micRoomData?.gameId
-                        ?: 0, userMusicModel?.uniqTag
-                        ?: "")
+                        ?: 0, uniqTag ?: "")
             }
             if (result.errno == 0) {
                 val userMusicModel = JSON.parseObject(result.data.getString("music"), MicUserMusicModel::class.java)

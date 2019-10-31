@@ -613,7 +613,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             mMicInviteView?.showInvite(micUserMusicModel, mTopContentView.getViewLeft(micUserMusicModel.userID), true)
         } else {
             // 启一个任务去同步
-            mMicInviteView?.startCheckSelfJob()
+            mMicInviteView?.startCheckSelfJob(micUserMusicModel)
         }
     }
 

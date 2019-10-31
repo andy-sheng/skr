@@ -58,7 +58,6 @@ class RecommendSongAdapter(internal var isOwner: Boolean, var type: Int, interna
         fun bind(model: SongModel, position: Int) {
             mSongModel = model
             if (type == SongManagerActivity.TYPE_FROM_MIC) {
-                MyLog.d(TAG, "bind ItemHolder = type = $type")
                 if (model.playType == StandPlayType.PT_COMMON_TYPE.value) {
                     mSelectTv.text = "点歌"
                 } else {
