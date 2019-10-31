@@ -82,7 +82,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
-        if (mFrom == FROM_GRAB_ROOM) {
+        if (mFrom == FROM_GRAB_ROOM || mFrom == FROM_MIC_ROOM) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
             mTitleList.put(0, "好友");
             mTitleList.put(1, "粉丝");
