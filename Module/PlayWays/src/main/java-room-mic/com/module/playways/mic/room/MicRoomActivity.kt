@@ -29,6 +29,7 @@ import com.dialog.view.TipsDialogView
 import com.module.RouterConstants
 import com.module.home.IHomeService
 import com.module.playways.R
+import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
 import com.module.playways.grab.room.presenter.VipEnterPresenter
@@ -359,13 +360,31 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
             override fun showGiftPanel() {
                 mContinueSendView.setVisibility(View.GONE)
-//                if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-//                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
-//                } else {
-                mGiftPanelView.show(null)
-//                }
+                showPanelView()
             }
         })
+    }
+
+    private fun showPanelView() {
+        if (mRoomData!!.realRoundInfo != null) {
+            val now = mRoomData!!.realRoundInfo
+            if (now != null) {
+                if (now.isPKRound && now.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+                    if (now.getsPkRoundInfoModels().size == 2) {
+                        val userId = now.getsPkRoundInfoModels()[1].userID
+                        mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, userId))
+                    } else {
+                        mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                    }
+                } else {
+                    mGiftPanelView?.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID))
+                }
+            } else {
+                mGiftPanelView?.show(null)
+            }
+        } else {
+            mGiftPanelView?.show(null)
+        }
     }
 
     private fun initTopView() {
@@ -559,8 +578,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicWantInviteEvent) {
         ARouter.getInstance().build(RouterConstants.ACTIVITY_INVITE_FRIEND)
-                .withInt("from",InviteFriendFragment2.FROM_MIC_ROOM)
-                .withInt("roomId",mRoomData!!.gameId)
+                .withInt("from", InviteFriendFragment2.FROM_MIC_ROOM)
+                .withInt("roomId", mRoomData!!.gameId)
                 .navigation()
     }
 
@@ -588,11 +607,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                                 //充值成功
                                 if (requestCode == 100 && resultCode == 0) {
                                     mGiftPanelView.updateZS()
-//                                    if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
-//                                        mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID))
-//                                    } else {
-                                    mGiftPanelView.show(null)
-//                                    }
+                                    showPanelView()
                                 }
                             }
                         })
