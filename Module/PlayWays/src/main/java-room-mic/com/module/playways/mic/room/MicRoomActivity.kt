@@ -50,6 +50,7 @@ import com.module.playways.listener.SVGAListener
 import com.module.playways.mic.home.MicHomeActivity
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.bottom.MicBottomContainerView
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicWantInviteEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
@@ -74,6 +75,8 @@ import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
+import com.module.playways.room.room.comment.model.CommentSysModel
+import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
 import com.module.playways.room.room.gift.GiftBigContinuousView
 import com.module.playways.room.room.gift.GiftContinueViewGroup
@@ -87,6 +90,7 @@ import com.zq.live.proto.MicRoom.EMRoundOverReason
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.MAddMusicMsg
 import com.zq.live.proto.MicRoom.MReqAddMusicMsg
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -610,6 +614,14 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         } else {
             // 启一个任务去同步
             mMicInviteView?.startCheckSelfJob()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicHomeOwnerChangeEvent) {
+        RoomDataUtils.getPlayerInfoById(mRoomData, event.ownerId)?.let {
+            val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "${UserInfoManager.getInstance().getRemarkName(event.ownerId, it.userInfo.nickname)} 已成为新的房主，房主可通过设置功能，更新房间属性")
+            EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
         }
     }
 
