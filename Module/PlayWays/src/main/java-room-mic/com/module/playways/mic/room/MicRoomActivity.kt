@@ -11,6 +11,8 @@ import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.userinfo.ResponseCallBack
+import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.core.view.setDebounceViewClickListener
@@ -18,6 +20,7 @@ import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
 import com.common.utils.U
+import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
 import com.component.busilib.constans.GameModeType
 import com.component.dialog.ConfirmDialog
@@ -32,6 +35,7 @@ import com.module.playways.R
 import com.module.playways.RoomDataUtils
 import com.module.playways.grab.room.inter.IGrabVipView
 import com.module.playways.grab.room.invite.fragment.InviteFriendFragment2
+import com.module.playways.grab.room.presenter.DoubleRoomInvitePresenter
 import com.module.playways.grab.room.presenter.VipEnterPresenter
 import com.module.playways.grab.room.view.GrabGiveupView
 import com.module.playways.grab.room.view.GrabScoreTipsView
@@ -93,8 +97,8 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
      */
     internal var mRoomData = MicRoomData()
 
-    internal lateinit var mCorePresenter: MicCorePresenter
-
+    private lateinit var mCorePresenter: MicCorePresenter
+    internal var mDoubleRoomInvitePresenter = DoubleRoomInvitePresenter()
     //基础ui组件
     internal lateinit var mInputContainerView: MicInputContainerView
     internal lateinit var mBottomContainerView: MicBottomContainerView
@@ -531,6 +535,41 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         mInputContainerView.hideSoftInput()
         mPersonInfoDialog = PersonInfoDialog.Builder(this, QuickFeedbackFragment.FROM_MIC_ROOM, userID, true, true)
                 .setRoomID(mRoomData.gameId)
+                .setInviteDoubleListener { userInfoModel ->
+                    if (userInfoModel.isFriend) {
+                        mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
+                    } else {
+                        UserInfoManager.getInstance().checkIsFans(MyUserInfoManager.uid.toInt(), userInfoModel.userId, object : ResponseCallBack<Boolean>() {
+                            override fun onServerSucess(isFans: Boolean?) {
+                                if (isFans!!) {
+                                    mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
+                                } else {
+                                    mTipsDialogView = TipsDialogView.Builder(U.getActivityUtils().topActivity)
+                                            .setMessageTip("对方不是您的好友或粉丝\n要花2金币邀请ta加入双人唱聊房吗？")
+                                            .setConfirmTip("邀请")
+                                            .setCancelTip("取消")
+                                            .setConfirmBtnClickListener(object : AnimateClickListener() {
+                                                override fun click(view: View) {
+                                                    mDoubleRoomInvitePresenter?.inviteToDoubleRoom(userInfoModel.userId)
+                                                    mTipsDialogView?.dismiss()
+                                                }
+                                            })
+                                            .setCancelBtnClickListener(object : AnimateClickListener() {
+                                                override fun click(view: View) {
+                                                    mTipsDialogView?.dismiss()
+                                                }
+                                            })
+                                            .build()
+                                    mTipsDialogView?.showByDialog()
+                                }
+                            }
+
+                            override fun onServerFailed() {
+
+                            }
+                        })
+                    }
+                }
                 .setKickListener { userInfoModel -> showKickConfirmDialog(userInfoModel) }
                 .build()
         mPersonInfoDialog?.show()
