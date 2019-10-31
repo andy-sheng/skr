@@ -41,7 +41,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
-    lateinit var mInviteFriendTv: ExTextView
+    lateinit var mInviteFriendIv:ImageView
     lateinit var mTabPagerAdapter: PagerAdapter
     lateinit var mPresenter: GamePresenter3
 
@@ -65,9 +65,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
         mGameTab = rootView.findViewById(R.id.game_tab)
         mGameVp = rootView.findViewById(R.id.game_vp)
-        mInviteFriendTv = rootView.findViewById(R.id.invite_friend_tv)
+        mInviteFriendIv = rootView.findViewById(R.id.invite_friend_iv)
 
-        mInviteFriendTv.setAnimateDebounceViewClickListener {
+        mInviteFriendIv.setAnimateDebounceViewClickListener {
             showShareDialog()
         }
 

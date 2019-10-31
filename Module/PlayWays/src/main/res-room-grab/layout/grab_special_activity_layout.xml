@@ -47,8 +47,8 @@
 
     <ImageView
         android:id="@+id/create_room"
-        android:layout_width="@dimen/view_106_dp"
-        android:layout_height="@dimen/view_42_dp"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_marginBottom="@dimen/view_16_dp"
         android:background="@drawable/grab_create_room_icon"
         app:layout_constraintBottom_toTopOf="@id/recycler_bg"

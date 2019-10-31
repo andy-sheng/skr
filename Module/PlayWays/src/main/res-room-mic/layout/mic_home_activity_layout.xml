@@ -26,8 +26,8 @@
 
     <ImageView
         android:id="@+id/create_room"
-        android:layout_width="@dimen/view_106_dp"
-        android:layout_height="@dimen/view_42_dp"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_14_dp"
         android:layout_marginBottom="@dimen/view_8_dp"
         android:background="@drawable/mic_create_room_icon"
