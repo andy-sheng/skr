@@ -73,10 +73,8 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
                     .build<BaseImage>())
 
             if (!TextUtils.isEmpty(model.rankInfoDesc)) {
-                rankDesc.setTextColor(U.getColor(R.color.black_trans_50))
                 rankDesc.text = model.rankInfoDesc
             } else {
-                rankDesc.setTextColor(U.getColor(R.color.black_trans_20))
                 rankDesc.text = "暂无排名"
             }
             if (!model.showPermissionLock && model.status == GrabTagDetailModel.SST_UNLOCK) {
