@@ -161,7 +161,7 @@ public class SkrVerifyUtils {
                     public void click(View view) {
                         mTipsDialogView.dismiss();
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICE_RECORD)
-                                .withInt("from", 2)
+                                .withInt("from", 3)
                                 .navigation();
                     }
                 })
