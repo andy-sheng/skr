@@ -53,6 +53,8 @@ class MicSeatView : ExViewStub {
             if (msg.what == HIDE_PANEL) {
                 mParentView?.clearAnimation()
                 mParentView?.visibility = View.GONE
+            } else if (REFRESH_DATA == msg?.what) {
+                getUserList()
             }
         }
     }
@@ -186,7 +188,9 @@ class MicSeatView : ExViewStub {
 
     private fun callUpdate(call: (() -> Unit)) {
         if (View.VISIBLE == mParentView?.visibility) {
-            call.invoke()
+            if (!mUiHandler.hasMessages(REFRESH_DATA)) {
+                mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(REFRESH_DATA), 500)
+            }
         } else {
             callWhenVisible = call
         }
@@ -199,6 +203,7 @@ class MicSeatView : ExViewStub {
 
     companion object {
         val HIDE_PANEL = 1
+        val REFRESH_DATA = 2
         val ANIMATION_DURATION = 300
     }
 }
