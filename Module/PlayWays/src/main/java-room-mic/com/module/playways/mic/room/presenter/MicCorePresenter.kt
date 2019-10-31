@@ -31,6 +31,7 @@ import com.module.playways.RoomDataUtils
 import com.module.playways.event.GrabChangeRoomEvent
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
+import com.module.playways.mic.room.MicRoomActivity
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.event.MicChangeRoomEvent
@@ -556,6 +557,20 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             roomView.showRoundOver(lastRound) {
                 // 演唱阶段
                 if (thisRound.singBySelf()) {
+                    val size = U.getActivityUtils().activityList.size
+                    var needTips = false
+                    for (i in size - 1 downTo 0) {
+                        val activity = U.getActivityUtils().activityList[i]
+                        if (activity is MicRoomActivity) {
+                            break
+                        } else {
+                            activity.finish()
+                            needTips = true
+                        }
+                    }
+                    if (needTips) {
+                        U.getToastUtil().showLong("你的演唱开始了")
+                    }
                     roomView.singBySelf(lastRound) {
                         preOpWhenSelfRound()
                     }
@@ -1166,6 +1181,12 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             roomView.dismissKickDialog()
             pretendSystemMsg(event.kickResultContent)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MCancelMusic) {
+        MyLog.d(TAG, "onEvent MCancelMusic=$event")
+        pretendSystemMsg(event.cancelMusicMsg)
     }
 
     companion object {

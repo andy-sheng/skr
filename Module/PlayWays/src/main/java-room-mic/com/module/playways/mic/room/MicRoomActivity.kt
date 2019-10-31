@@ -150,7 +150,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             if (activity === this) {
                 continue
             }
-            if (MicHomeActivity::class.java == activity::class.java) {
+            if (activity is MicHomeActivity) {
                 continue
             }
             if (U.getActivityUtils().isHomeActivity(activity)) {
