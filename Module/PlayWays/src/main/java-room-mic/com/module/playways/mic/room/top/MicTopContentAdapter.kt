@@ -121,20 +121,21 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 emptyIv.visibility = View.GONE
             }
 
+            if (model!!.isNextSing && !model!!.isCurSing) {
+                waitingTv.visibility = View.VISIBLE
+            } else {
+                waitingTv.visibility = View.GONE
+            }
+
             if (model!!.isCurSing) {
                 circleBgIv.visibility = View.VISIBLE
                 voiceChartView.visibility = View.VISIBLE
+                waitingTv.visibility = View.GONE
                 voiceChartView.start()
             } else {
                 circleBgIv.visibility = View.GONE
                 voiceChartView.visibility = View.GONE
                 voiceChartView.stop()
-            }
-
-            if (model!!.isNextSing && !model!!.isCurSing) {
-                waitingTv.visibility = View.VISIBLE
-            } else {
-                waitingTv.visibility = View.GONE
             }
 
             if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value || model?.userID == mRoomData?.ownerId) {
