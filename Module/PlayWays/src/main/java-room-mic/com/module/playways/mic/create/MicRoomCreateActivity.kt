@@ -120,7 +120,7 @@ class MicRoomCreateActiviy : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
                 val length = U.getStringUtils().getStringLength(str)
-                if (length > 14) {
+                if (length > 16) {
                     MyLog.d(TAG, "onTextChanged s = $str")
                     val selectIndex = preString.length
                     nameEdittext.setText(preString)
