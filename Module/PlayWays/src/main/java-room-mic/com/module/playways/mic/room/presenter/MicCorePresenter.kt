@@ -1190,6 +1190,19 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         pretendSystemMsg(event.cancelMusicMsg)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MMatchStatusMsg) {
+        MyLog.d(TAG, "onEvent MCancelMusic=$event")
+        if (event.matchStatus.value == ERoomMatchStatus.EMMS_CLOSED.value) {
+            mRoomData.matchStatusOpen = false
+            pretendSystemMsg("房主已将房间设置为 不允许用户匹配进入")
+        } else if (event.matchStatus.value == ERoomMatchStatus.EMMS_OPEN.value) {
+            mRoomData.matchStatusOpen = true
+            pretendSystemMsg("房主已将房间设置为 允许用户匹配进入")
+        }
+    }
+
+
     companion object {
 
         internal val MSG_ENSURE_IN_RC_ROOM = 9// 确保在融云的聊天室，保证融云的长链接

@@ -92,7 +92,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
 class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
-    
+
     override fun ensureActivtyTop() {
         // 销毁其他的除排麦房页面所有界面
         for (activity in U.getActivityUtils().activityList) {
