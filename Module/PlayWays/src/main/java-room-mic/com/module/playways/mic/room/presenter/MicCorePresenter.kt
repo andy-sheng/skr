@@ -150,7 +150,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
                 }
                 pretendEnterRoom(playerInfoModel)
             }
-            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
+            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_MIC_ENTER_ROOM)
         }
         startHeartbeat()
         startSyncGameStatus()
