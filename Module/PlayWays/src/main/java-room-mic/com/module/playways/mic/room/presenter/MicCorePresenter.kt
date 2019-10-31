@@ -428,6 +428,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicChangeRoomEvent) {
+        roomView.ensureActivtyTop()
         onChangeRoomSuccess(event.mJoinGrabRoomRspModel)
     }
 

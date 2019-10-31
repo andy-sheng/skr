@@ -89,7 +89,7 @@ class RecommendSongAdapter(internal var isOwner: Boolean, var type: Int, interna
             mSongModel = model
             if (type == SongManagerActivity.TYPE_FROM_MIC) {
                 if (model.playType == StandPlayType.PT_COMMON_TYPE.value) {
-                    mSelectTv.text = "想唱"
+                    mSelectTv.text = "点歌"
                 } else {
                     mSelectTv.text = "发起"
                 }

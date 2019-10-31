@@ -92,6 +92,23 @@ import org.greenrobot.eventbus.ThreadMode
 
 @Route(path = RouterConstants.ACTIVITY_MIC_ROOM)
 class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
+    
+    override fun ensureActivtyTop() {
+        // 销毁其他的除排麦房页面所有界面
+        for (activity in U.getActivityUtils().activityList) {
+            if (activity === this) {
+                continue
+            }
+            if (activity is MicHomeActivity) {
+                continue
+            }
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+            activity.finish()
+        }
+    }
+
     /**
      * 存起该房间一些状态信息
      */
@@ -150,20 +167,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        // 销毁其他的除一唱到底页面所有界面
-        for (activity in U.getActivityUtils().activityList) {
-            if (activity === this) {
-                continue
-            }
-            if (activity is MicHomeActivity) {
-                continue
-            }
-            if (U.getActivityUtils().isHomeActivity(activity)) {
-                continue
-            }
-            activity.finish()
-        }
-
+        ensureActivtyTop()
         val joinRaceRoomRspModel = intent.getSerializableExtra("JoinMicRoomRspModel") as JoinMicRoomRspModel?
         joinRaceRoomRspModel?.let {
             mRoomData.loadFromRsp(it)
