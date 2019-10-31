@@ -65,16 +65,22 @@
         app:layout_constraintLeft_toLeftOf="@id/play_bg"
         app:layout_constraintRight_toRightOf="@id/play_bg" />
 
-    <TextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:paddingLeft="@dimen/view_11_dp"
+        android:paddingRight="@dimen/view_11_dp"
         android:ellipsize="end"
+        android:gravity="center"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_12_dp"
+        app:bl_corners_radius="@dimen/view_11_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#33CF98FF"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/level_iv"

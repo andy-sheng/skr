@@ -15,6 +15,7 @@ import com.common.log.MyLog
 import com.common.utils.U
 import com.common.utils.dp
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.component.busilib.view.VoiceChartView
 import com.component.level.utils.LevelConfigUtils
 import com.facebook.drawee.view.SimpleDraweeView
@@ -46,7 +47,7 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
         val playBg: ExImageView = item.findViewById(R.id.play_bg)
         val playIv: ImageView = item.findViewById(R.id.play_iv)
         val voiceChartView: VoiceChartView = item.findViewById(R.id.voice_chart_view)
-        val nameTv: TextView = item.findViewById(R.id.name_tv)
+        val nameTv: ExTextView = item.findViewById(R.id.name_tv)
 
         var mModel: RecommendUserInfo? = null
         var mPosition: Int = 0
