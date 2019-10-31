@@ -440,6 +440,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                     if (mMicSettingView == null) {
                         mMicSettingView = MicSettingView(this@MicRoomActivity)
                         mMicSettingView?.mRoomData = mRoomData
+
+                        mMicSettingView?.callUpdate = {
+                            mCorePresenter?.changeMatchState(it)
+                        }
                     }
                     mMicSettingView?.showByDialog()
                 } else {

@@ -12,15 +12,19 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
+import com.component.busilib.constans.GameModeType
 import com.kyleduo.switchbutton.SwitchButton
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.room.room.comment.model.CommentSysModel
+import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 
 // 右边操作区域，投票
 class MicSettingView : ExConstraintLayout {
@@ -36,6 +40,8 @@ class MicSettingView : ExConstraintLayout {
 
     internal var mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
 
+    var callUpdate: ((Boolean) -> Unit)? = null
+
     constructor(context: Context) : super(context) {}
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
@@ -49,23 +55,8 @@ class MicSettingView : ExConstraintLayout {
 
         mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             //EMMS_UNKNOWN = 0 : 未知 - EMMS_OPEN = 1 : match 打开 - EMMS_CLOSED = 2 : match 关闭
-            launch {
-                val map = mutableMapOf(
-                        "roomID" to mRoomData?.gameId,
-                        "matchStatus" to (if (isChecked) 2 else 1)
-                )
+            callUpdate?.invoke(isChecked)
 
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe(RequestControl("$mTag matchStatus", ControlType.CancelLast)) {
-                    mRoomServerApi.changeMatchStatus(body)
-                }
-
-                if (result.errno == 0) {
-
-                } else {
-                    U.getToastUtil().showShort(result.errmsg)
-                }
-            }
         })
 
         setOnClickListener {

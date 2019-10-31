@@ -18,6 +18,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
@@ -28,30 +29,24 @@ import com.module.common.ICallback
 import com.module.msg.CustomMsgType
 import com.module.playways.BuildConfig
 import com.module.playways.RoomDataUtils
-import com.module.playways.event.GrabChangeRoomEvent
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
 import com.module.playways.mic.room.MicRoomActivity
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.event.MicChangeRoomEvent
-import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.ui.IMicRoomView
-import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.event.MachineScoreEvent
 import com.module.playways.room.msg.event.QChangeRoomNameEvent
-import com.module.playways.room.msg.event.QKickUserResultEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.MicRoomMsgManager
-import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
 import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.comment.model.CommentTextModel
@@ -159,6 +154,32 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
         startHeartbeat()
         startSyncGameStatus()
+    }
+
+    fun changeMatchState(isChecked: Boolean) {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData?.gameId,
+                    "matchStatus" to (if (isChecked) 2 else 1)
+            )
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("$TAG changeMatchState", ControlType.CancelLast)) {
+                mRoomServerApi.changeMatchStatus(body)
+            }
+
+            if (result.errno == 0) {
+                if (isChecked) {
+//                    val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "房主已将房间设置为 不允许用户匹配进入")
+//                    EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+                } else {
+//                    val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "房主已将房间设置为 允许用户匹配进入")
+//                    EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+                }
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     private fun joinRcRoom(deep: Int) {
