@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.module.playways.R
 
-class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Adapter<RecommendMicViewHolder>() {
+class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = ArrayList<RecommendMicInfoModel>()
+
+    val VIEW_TYPE_HEAD = 1
+    val VIEW_TYPE_ITEM = 2
 
     var isPlay = false    //标记是否播放
     var playPosition = -1   //标记播放的位置
@@ -20,43 +23,58 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
     val REFRESH_STOP = 2 //局部刷新暂停
     private val uiHanlder = Handler(Looper.getMainLooper())
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendMicViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_item_layout, parent, false)
-        return RecommendMicViewHolder(view, listener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_ITEM) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_item_layout, parent, false)
+            RecommendMicViewHolder(view, listener)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.mic_recommend_head_layout, parent, false)
+            RecommendMicHeadHolder(view, listener)
+        }
     }
 
     override fun getItemCount(): Int {
-        return mDataList.size
+        return mDataList.size + 1
     }
 
-    override fun onBindViewHolder(holder: RecommendMicViewHolder, position: Int) {
-
-    }
-
-    override fun onBindViewHolder(holder: RecommendMicViewHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            holder.bindData(mDataList[position], position)
-            if (isPlay && currPlayModel == mDataList[position]) {
-                holder.startPlay(playChildPosition)
-            } else {
-                holder.stopPlay()
-            }
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            VIEW_TYPE_HEAD
         } else {
-            // 局部更新
-            payloads.forEach { refreshType ->
-                if (refreshType is Int) {
-                    when (refreshType) {
-                        REFRESH_PLAY -> {
-                            // 只有播放
-                            if (isPlay && currPlayModel === mDataList[position]) {
-                                holder.startPlay(playChildPosition)
-                            } else {
+            VIEW_TYPE_ITEM
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (holder is RecommendMicViewHolder) {
+            if (payloads.isEmpty()) {
+                holder.bindData(mDataList[position - 1], position)
+                if (isPlay && currPlayModel == mDataList[position - 1]) {
+                    holder.startPlay(playChildPosition)
+                } else {
+                    holder.stopPlay()
+                }
+            } else {
+                // 局部更新
+                payloads.forEach { refreshType ->
+                    if (refreshType is Int) {
+                        when (refreshType) {
+                            REFRESH_PLAY -> {
+                                // 只有播放
+                                if (isPlay && currPlayModel === mDataList[position - 1]) {
+                                    holder.startPlay(playChildPosition)
+                                } else {
+                                    holder.stopPlay()
+                                }
+                            }
+                            REFRESH_STOP -> {
+                                // 停止播放
                                 holder.stopPlay()
                             }
-                        }
-                        REFRESH_STOP -> {
-                            // 停止播放
-                            holder.stopPlay()
                         }
                     }
                 }
@@ -106,7 +124,7 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
 
     fun update(position: Int, model: RecommendMicInfoModel?, refreshType: Int) {
         if (mDataList != null || mDataList.size > 0) {
-            if (position >= 0 && position < mDataList.size && mDataList[position] === model) {
+            if (position >= 0 && position < mDataList.size && mDataList[position - 1] === model) {
                 // 位置是对的
                 notifyItemChanged(position, refreshType)
                 return
@@ -114,7 +132,7 @@ class RecommendMicAdapter(var listener: RecommendMicListener) : RecyclerView.Ada
                 // 位置是错的
                 for (i in mDataList.indices) {
                     if (mDataList[i] === model) {
-                        notifyItemChanged(i, refreshType)
+                        notifyItemChanged(i + 1, refreshType)
                         return
                     }
                 }
@@ -132,4 +150,6 @@ interface RecommendMicListener {
     fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int)
 
     fun onClickUserVoice(model: RecommendMicInfoModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int)
+
+    fun onClickQuickEnterRoom()
 }

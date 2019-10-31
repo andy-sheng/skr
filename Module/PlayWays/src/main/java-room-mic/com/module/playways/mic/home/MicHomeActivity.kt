@@ -3,6 +3,7 @@ package com.module.playways.mic.home
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -39,8 +40,7 @@ class MicHomeActivity : BaseActivity() {
     lateinit var playCallback: SinglePlayerCallbackAdapter
 
     lateinit var titlebar: CommonTitleBar
-    lateinit var quickBegin: ExImageView
-    lateinit var createRoom: ExImageView
+    lateinit var createRoom: ImageView
     lateinit var smartRefresh: SmartRefreshLayout
     lateinit var recyclerView: RecyclerView
 
@@ -65,20 +65,12 @@ class MicHomeActivity : BaseActivity() {
         recommendInterval = U.getPreferenceUtils().getSettingInt("homepage_ticker_interval", 15)
 
         titlebar = findViewById(R.id.titlebar)
-        quickBegin = findViewById(R.id.quick_begin)
         createRoom = findViewById(R.id.create_room)
         smartRefresh = findViewById(R.id.smart_refresh)
         recyclerView = findViewById(R.id.recycler_view)
 
         titlebar.leftTextView.setDebounceViewClickListener { finish() }
-        quickBegin.setAnimateDebounceViewClickListener {
-            SinglePlayer.stop(playTag)
-            adapter?.stopPlay()
-            skrVerifyUtils.checkHasMicAudioPermission {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
-                        .navigation()
-            }
-        }
+
         createRoom.setAnimateDebounceViewClickListener {
             SinglePlayer.stop(playTag)
             adapter?.stopPlay()
@@ -108,6 +100,15 @@ class MicHomeActivity : BaseActivity() {
         }
 
         adapter = RecommendMicAdapter(object : RecommendMicListener {
+            override fun onClickQuickEnterRoom() {
+                SinglePlayer.stop(playTag)
+                adapter?.stopPlay()
+                skrVerifyUtils.checkHasMicAudioPermission {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_MATCH)
+                            .navigation()
+                }
+            }
+
             override fun onClickEnterRoom(model: RecommendMicInfoModel?, position: Int) {
                 StatisticsAdapter.recordCountEvent("KTV", "room_click", null)
                 SinglePlayer.stop(playTag)
