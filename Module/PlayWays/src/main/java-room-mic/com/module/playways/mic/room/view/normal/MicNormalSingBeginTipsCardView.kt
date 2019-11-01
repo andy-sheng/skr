@@ -4,9 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.view.View
 import android.view.ViewStub
 import android.widget.ImageView
@@ -19,9 +16,7 @@ import com.common.utils.dp
 import com.common.view.ExViewStub
 import com.module.playways.R
 import com.module.playways.listener.SVGAListener
-import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.room.data.H
-import com.zq.live.proto.MicRoom.MScoreTipType
 
 /**
  * 轮次结束 合唱和正常结束都用此板
@@ -61,9 +56,9 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
                 .setBorderColor(R.color.white)
                 .build())
 
-        if(b){
+        if (b) {
             startAnimation()
-        }else{
+        } else {
             // 否则width 还是0
             this.setTranslateX(-U.getDisplayUtils().screenWidth.toFloat())
             realView?.post {
@@ -73,7 +68,7 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
     }
 
     private fun startAnimation() {
-        MyLog.d("MicNormalSingBeginTipsCardView","this.realView!!.width=${this.realView!!.width.toFloat()}")
+        MyLog.d("MicNormalSingBeginTipsCardView", "this.realView!!.width=${this.realView!!.width.toFloat()}")
         val anim1 = ObjectAnimator.ofFloat(this.realView!!, View.TRANSLATION_X, -this.realView!!.width.toFloat(), 0f)
         anim1?.duration = 500
 
@@ -91,8 +86,8 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
 
             override fun onAnimationCancel(animation: Animator?) {
                 super.onAnimationCancel(animation)
-                overListener?.onFinished()
-                overListener = null
+//                overListener?.onFinished()
+//                overListener = null
             }
 
             override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
@@ -108,7 +103,9 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
-            anim?.cancel()
+            if (anim?.isRunning == true) {
+                anim?.cancel()
+            }
         }
     }
 }
