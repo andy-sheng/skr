@@ -24,8 +24,10 @@ import com.common.view.DiffuseView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.friends.VoiceInfoModel
 import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.SkrProgressView
+import com.component.person.event.UploadMyVoiceInfo
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.publish.PostsPublishModel
@@ -34,6 +36,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
 
@@ -106,7 +109,7 @@ class VoiceRecordActivity : BaseActivity() {
         progressView = findViewById(R.id.progress_view)
         tipsTv = findViewById(R.id.tips_tv)
 
-        if (from == FROM_PERSON || from == FROM_MIC_AUDIO_CHECK ) {
+        if (from == FROM_PERSON || from == FROM_MIC_AUDIO_CHECK) {
             tipsTv.visibility = View.VISIBLE
         }
 
@@ -180,6 +183,8 @@ class VoiceRecordActivity : BaseActivity() {
         ApiMethods.subscribe<ApiResult>(userServerApi.uploadVoiceTag(body), object : ApiObserver<ApiResult>() {
             override fun process(apiResult: ApiResult) {
                 if (apiResult.errno == 0) {
+                    val voiceInfo = JSON.parseObject(apiResult.data.toJSONString(), VoiceInfoModel::class.java)
+                    EventBus.getDefault().post(UploadMyVoiceInfo(voiceInfo))
                     finish()
                     U.getToastUtil().showShort("等待审核中")
                 } else {

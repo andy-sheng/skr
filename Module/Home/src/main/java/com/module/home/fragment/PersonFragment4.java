@@ -45,6 +45,7 @@ import com.component.busilib.event.PostsPublishSucessEvent;
 import com.component.busilib.friends.VoiceInfoModel;
 import com.component.level.utils.LevelConfigUtils;
 import com.component.person.event.ChildViewPlayAudioEvent;
+import com.component.person.event.UploadMyVoiceInfo;
 import com.component.person.model.RelationNumModel;
 import com.component.person.model.ScoreDetailModel;
 import com.component.person.photo.view.PhotoWallView;
@@ -743,10 +744,10 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
     private void showVoiceInfo(VoiceInfoModel voiceInfoModel) {
         mVoiceInfoModel = voiceInfoModel;
         if (voiceInfoModel != null) {
-            if(voiceInfoModel.getAuditStatus() == VoiceInfoModel.EVAS_UN_AUDIT){
+            if (voiceInfoModel.getAuditStatus() == VoiceInfoModel.EVAS_UN_AUDIT) {
                 // 未审核
                 mAudioView.bindData(voiceInfoModel.getDuration(), "审核中");
-            }else {
+            } else {
                 mAudioView.bindData(voiceInfoModel.getDuration());
             }
             mAudioView.setVisibility(View.VISIBLE);
@@ -860,6 +861,11 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         if (mPostWallView != null) {
             mPostWallView.setUserInfoModel(userInfoModel);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UploadMyVoiceInfo event) {
+        showVoiceInfo(event.getModel());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
