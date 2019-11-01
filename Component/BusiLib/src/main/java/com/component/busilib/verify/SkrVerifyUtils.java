@@ -153,7 +153,7 @@ public class SkrVerifyUtils {
         }
         // 去实名认证
         mTipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
-                .setMessageTip("清唱几句，让别人通过歌声认识你吧～")
+                .setMessageTip("小k房，以歌会友，添加你的专属声音签名，让小伙伴快速认识你吧～")
                 .setConfirmTip("录制")
                 .setCancelTip("暂不")
                 .setConfirmBtnClickListener(new AnimateClickListener() {

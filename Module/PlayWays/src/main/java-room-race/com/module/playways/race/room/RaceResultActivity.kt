@@ -224,7 +224,7 @@ class RaceResultActivity : BaseActivity() {
 
         launch {
             repeat(8) {
-                countDownTv.text = "${8 - it}后自动进入下一场挑战"
+                countDownTv.text = "${8 - it}s后自动进入下一场挑战"
                 delay(1000)
             }
             goMatchPage()
