@@ -30,6 +30,7 @@ import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.model.LevelResultModel
 import com.module.playways.race.room.model.SaveRankModel
 import com.opensource.svgaplayer.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -63,6 +64,8 @@ class RaceResultActivity : BaseActivity() {
 
     var roomID: Int = -1
     var roundSeq: Int = -1
+
+    var goMatchJob: Job? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.race_result_activity_layout
@@ -117,6 +120,8 @@ class RaceResultActivity : BaseActivity() {
 
         descTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                goMatchJob?.cancel()
+                countDownTv.visibility = View.GONE
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3gf3ujzxsw97z.html")
                         .navigation()
@@ -222,7 +227,8 @@ class RaceResultActivity : BaseActivity() {
                     ?: 0, raceResultModel.getLastState()?.subRanking ?: 0)
         }
 
-        launch {
+        goMatchJob?.cancel()
+        goMatchJob = launch {
             repeat(8) {
                 countDownTv.text = "${8 - it}s后自动进入下一场挑战"
                 delay(1000)
