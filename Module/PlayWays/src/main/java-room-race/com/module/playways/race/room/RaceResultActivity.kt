@@ -190,17 +190,22 @@ class RaceResultActivity : BaseActivity() {
             // 开始动画
             levelChangeAnimation(begin, middle, object : AnimationListener {
                 override fun onFinish() {
-                    // 是否要用保段动画
-                    if (beginVip.status == endVip.status) {
-                        // 不用变
-                    } else {
-                        setVipInfo(endVip)
-                    }
                     levelSaveAnimationGo(beginSimple, middleSimple, endSimple, object : AnimationListener {
                         override fun onFinish() {
-                            setSimpleSaveInfo(endSimple)
                             launch {
                                 delay(500)  // 等一下
+                                // 是否要用保段动画
+                                if (beginVip.status == endVip.status) {
+                                    // 不用变
+                                } else {
+                                    setVipInfo(endVip)
+                                }
+                                setSimpleSaveInfo(endSimple)
+                                if (checkHasSaveAnimation(beginSimple, middleSimple, endSimple) == 1) {
+                                    U.getToastUtil().showShort("保段成功")
+                                } else if (endVip.status > beginVip.status && endVip.status == SaveRankModel.ESRS_USED) {
+                                    U.getToastUtil().showShort("VIP保段成功")
+                                }
                                 levelChangeAnimation(middle, end, object : AnimationListener {
                                     override fun onFinish() {
 
@@ -244,7 +249,7 @@ class RaceResultActivity : BaseActivity() {
                 setSimpleSaveAreaAlph(0.3f)
                 levelSaveDesc.text = "日常保段已使用"
             }
-            model?.status == SaveRankModel.ESRS_ENABLE ->{
+            model?.status == SaveRankModel.ESRS_ENABLE -> {
                 setSimpleSaveAreaAlph(1f)
                 levelSaveDesc.text = "日常保段"
             }
