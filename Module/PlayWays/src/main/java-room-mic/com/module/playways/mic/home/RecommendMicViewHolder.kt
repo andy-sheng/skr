@@ -1,6 +1,5 @@
 package com.module.playways.mic.home
 
-import android.graphics.Color
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -9,9 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.utils.U
-import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
-import com.common.view.ex.shadow.ShadowConfig
 import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
 

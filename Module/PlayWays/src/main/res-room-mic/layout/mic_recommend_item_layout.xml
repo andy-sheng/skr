@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginBottom="@dimen/view_4_dp"
         android:textColor="@color/black_trans_60"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constraintTop_toTopOf="@id/level_iv"
