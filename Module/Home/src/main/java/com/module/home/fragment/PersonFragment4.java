@@ -367,25 +367,29 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mAudioView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (isPlay) {
-                    // 暂停音乐
-                    isPlay = false;
-                    mAudioView.setPlay(false);
-                    SinglePlayer.INSTANCE.stop(playTag);
+                if (mVoiceInfoModel != null) {
+                    if (isPlay) {
+                        // 暂停音乐
+                        isPlay = false;
+                        mAudioView.setPlay(false);
+                        SinglePlayer.INSTANCE.stop(playTag);
+                    } else {
+                        // 播放音乐
+                        isPlay = true;
+                        if (mPostWallView != null) {
+                            mPostWallView.stopPlay();
+                        }
+                        if (mFeedsWallView != null) {
+                            mFeedsWallView.stopPlay();
+                        }
+                        if (mProducationWallView != null) {
+                            mProducationWallView.stopPlay();
+                        }
+                        mAudioView.setPlay(true);
+                        SinglePlayer.INSTANCE.startPlay(playTag, mVoiceInfoModel.getVoiceURL());
+                    }
                 } else {
-                    // 播放音乐
-                    isPlay = true;
-                    if (mPostWallView != null) {
-                        mPostWallView.stopPlay();
-                    }
-                    if (mFeedsWallView != null) {
-                        mFeedsWallView.stopPlay();
-                    }
-                    if (mProducationWallView != null) {
-                        mProducationWallView.stopPlay();
-                    }
-                    mAudioView.setPlay(true);
-                    SinglePlayer.INSTANCE.startPlay(playTag, mVoiceInfoModel.getVoiceURL());
+                    MyLog.e("PersonFragment4", "空的voiceInfo");
                 }
             }
         });
