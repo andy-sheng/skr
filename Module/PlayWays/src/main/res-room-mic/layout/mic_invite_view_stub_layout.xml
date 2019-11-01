@@ -58,6 +58,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toRightOf="@id/name_tv"
         app:layout_constraintRight_toLeftOf="@id/agree_tv"
         app:layout_constraintTop_toTopOf="@id/name_tv" />
@@ -71,10 +72,10 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="《十年之前十年之后十年之前十年之后》"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="@id/name_tv"
         app:layout_constraintRight_toLeftOf="@id/agree_tv"
         app:layout_constraintTop_toBottomOf="@id/name_tv" />
