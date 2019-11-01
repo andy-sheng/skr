@@ -97,6 +97,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
 
     fun startCheckSelfJob(micUserMusicModel: MicUserMusicModel?) {
         this.userMusicModel = micUserMusicModel
+        cancelJob()
         inviteJob = launch {
             delay(8000)
             // 去拉一下演唱的状态
