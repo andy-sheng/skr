@@ -12,6 +12,7 @@ import com.common.base.BaseActivity
 import com.common.base.FragmentDataListener
 import com.common.core.myinfo.MyUserInfo
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.userinfo.ResponseCallBack
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
@@ -162,6 +163,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     lateinit var mVoiceRecordUiController: VoiceRecordUiController
     val mWidgetAnimationController = MicWidgetAnimationController(this)
+    internal var mSkrAudioPermission = SkrAudioPermission()
 
     val mUiHanlder = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -240,6 +242,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     override fun onResume() {
         super.onResume()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe(this)
     }
 
     override fun destroy() {
@@ -346,7 +349,11 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         }
         mAddSongIv = findViewById(R.id.add_song_iv)
-        mAddSongIv.setAnimateDebounceViewClickListener { SongManagerActivity.open(this, mRoomData) }
+        mAddSongIv.setAnimateDebounceViewClickListener {
+            mSkrAudioPermission.ensurePermission({
+                SongManagerActivity.open(this, mRoomData)
+            }, true)
+        }
 
         run {
             val voiceStub = findViewById<ViewStub>(R.id.voice_record_tip_view_stub)
@@ -480,6 +487,11 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
         })
 
         mMicInviteView = MicInviteView(findViewById(R.id.mic_invite_view_stub))
+        mMicInviteView?.agreeInviteListener = {
+            mSkrAudioPermission.ensurePermission({
+                mMicInviteView?.agreeInvite()
+            }, true)
+        }
     }
 
     private fun showGameRuleDialog() {

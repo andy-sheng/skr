@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -25,6 +26,7 @@ import com.module.playways.R
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.room.data.H
+import com.module.playways.songmanager.SongManagerActivity
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMWantSingType
 import com.zq.live.proto.MicRoom.MAddMusicMsg
@@ -58,6 +60,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
     private var leftMargin: Int = 0
 
     private val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
+    var agreeInviteListener:(()->Unit)? = null
 
     val grayDrawable: Drawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#B1AC99"))
@@ -68,6 +71,8 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             .setSolidColor(Color.parseColor("#FFC15B"))
             .setCornersRadius(21.dp().toFloat())
             .build()
+
+    val mSkrAudioPermission = SkrAudioPermission()
 
     override fun init(parentView: View) {
         // 指向某个view的三角形
@@ -87,7 +92,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         resultDesc = parentView.findViewById(R.id.result_desc)
 
         agreeTv?.setAnimateDebounceViewClickListener {
-            agreeInvite()
+            agreeInviteListener?.invoke()
         }
     }
 
@@ -192,7 +197,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         resultJob?.cancel()
     }
 
-    private fun agreeInvite() {
+    fun agreeInvite() {
         launch {
             val map = mutableMapOf(
                     "roomID" to (H.micRoomData?.gameId ?: 0),
