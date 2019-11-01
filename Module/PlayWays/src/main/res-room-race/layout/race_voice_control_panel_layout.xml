@@ -34,10 +34,11 @@
                 android:layout_height="@dimen/view_23_dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/view_12_dp"
+                android:checked="true"
                 android:visibility="visible"
-                app:kswThumbMargin="@dimen/view_0_dp"
                 app:kswBackDrawable="@drawable/ty_cao_da"
-                app:kswThumbDrawable="@drawable/ty_anniu_da" />
+                app:kswThumbDrawable="@drawable/ty_anniu_da"
+                app:kswThumbMargin="@dimen/view_0_dp" />
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"

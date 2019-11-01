@@ -25,7 +25,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
     var isHasExitGame = false// 是否已经正常退出房间
 
-    private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
+    private var mIsAccEnable = true // 是否开启伴奏,只代表设置里伴奏开关
 
     var ownerId = 0
         set(value) {
@@ -88,7 +88,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var enterRoundSeq = 0 // 刚进入房间时，所处的轮次
 
     init {
-        mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
+        mIsAccEnable = true
     }
 
 
