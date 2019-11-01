@@ -13,6 +13,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -386,7 +387,11 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                             mProducationWallView.stopPlay();
                         }
                         mAudioView.setPlay(true);
-                        SinglePlayer.INSTANCE.startPlay(playTag, mVoiceInfoModel.getVoiceURL());
+                        if (!TextUtils.isEmpty(mVoiceInfoModel.getVoiceURL())) {
+                            SinglePlayer.INSTANCE.startPlay(playTag, mVoiceInfoModel.getVoiceURL());
+                        } else {
+                            MyLog.e("PersonFragment4", "非voiceInfo 空的url");
+                        }
                     }
                 } else {
                     MyLog.e("PersonFragment4", "空的voiceInfo");
