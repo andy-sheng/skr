@@ -141,6 +141,28 @@
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_13_dp"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_13_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExImageView
+                android:layout_width="@dimen/view_21_dp"
+                android:layout_height="@dimen/view_21_dp"
+                android:background="@drawable/grab_guize_6" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:text="每天给别人投票满6次，获得每日1次保段机会；VIP用户将获得每日额外1次保段机会"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp" />
+        </LinearLayout>
+
     </com.common.view.ex.ExLinearLayout>
 
 </com.common.view.ex.ExLinearLayout>
