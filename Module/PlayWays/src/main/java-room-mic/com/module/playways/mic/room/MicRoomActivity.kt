@@ -769,6 +769,7 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     override fun singByOthers(lastRoundInfo: MicRoundInfoModel?) {
         hideAllSceneView(null)
         var step2 = {
+            hideAllSceneView(null)
             mGrabScoreTipsView.reset()
             mOthersSingCardView.bindData()
         }
