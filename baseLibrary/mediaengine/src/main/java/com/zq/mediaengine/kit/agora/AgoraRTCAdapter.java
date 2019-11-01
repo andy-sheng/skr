@@ -21,6 +21,9 @@ import com.engine.statistics.SDataManager;
 import com.engine.statistics.SUtils;
 import com.engine.statistics.datastruct.SAgora;
 import com.engine.statistics.datastruct.Skr;
+
+import com.engine.statistics.logservice.SLogServiceAgent;
+import com.engine.statistics.logservice.SLogServiceBase;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;
@@ -107,14 +110,16 @@ public class AgoraRTCAdapter {
 
     private HandlerThread mLogMonThread = null;
     private Handler mLogMonHandler= null;
-
+    private SLogServiceBase mLs = null;
 
 
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
 
+            sInstance.initLogService();
             sInstance.startStatisticThread();
+
         }
         return sInstance;
     }
@@ -127,6 +132,20 @@ public class AgoraRTCAdapter {
             sInstance.destroy(true);
             sInstance = null;
         }
+    }
+
+    public void initLogService()
+    {
+        mLs = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
+        SLogServiceAgent.AliYunSLInitParam initParam = new SLogServiceAgent.AliYunSLInitParam();
+        initParam.skrUid = 10001; //先写死，回头看，怎么桥接app的MyUserInfoManager.INSTANCE.getUid();
+        initParam.appCtx = U.app().getApplicationContext();
+        try {
+            mLs.init(initParam);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SDataManager.instance().setLogServices(mLs);
     }
 
 

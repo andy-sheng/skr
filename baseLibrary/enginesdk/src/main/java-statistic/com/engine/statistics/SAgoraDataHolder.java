@@ -1,9 +1,11 @@
 package com.engine.statistics;
 
 
+import com.engine.statistics.datastruct.ILogItem;
 import com.engine.statistics.datastruct.SAgora;
 import com.engine.statistics.datastruct.SAgoraUserEvent;
 import com.engine.statistics.datastruct.Skr;
+import com.engine.statistics.logservice.SLogServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class SAgoraDataHolder
 {
 
     private String mLinePrefix = "";
+    private SLogServiceBase mLS = null;
     private List<SAgora.SRTCStats>  mRtcStatsList;
     private List<SAgora.SLocalVideoStats> mLocalVList;
     private List<SAgora.SRemoteAudioStats> mRemoteAList;
@@ -56,7 +59,9 @@ public class SAgoraDataHolder
     }
 
 
-
+    public void setLogServices(SLogServiceBase ls) {
+        mLS = ls;
+    }
 
 
     public synchronized void addRtcStats(IRtcEngineEventHandler.RtcStats s ) {
@@ -309,4 +314,31 @@ public class SAgoraDataHolder
 
     }
 
+    private void flushLogGroup2LS(List list) {
+
+        if (null != list && list.size() > 0) {
+            for (Object e : list) {
+                mLS.appendLog((ILogItem) e);
+            }
+
+            mLS.flushLog(true);
+        }
+    }
+
+    public void flushLS() {
+        if (null == mLS) return;
+
+        flushLogGroup2LS(mRtcStatsList);
+        flushLogGroup2LS(mLocalVList);
+        flushLogGroup2LS(mRemoteAList);
+        flushLogGroup2LS(mRemoteVList);
+        flushLogGroup2LS(mNetQualityList);
+        flushLogGroup2LS(mRemoteATransList);
+        flushLogGroup2LS(mRemoteVTransList);
+        flushLogGroup2LS(mAudioSamplingInfoList);
+        flushLogGroup2LS(mPlayerInfo);
+        flushLogGroup2LS(mUserEvenList);
+        flushLogGroup2LS(mPingInfoList);
+        flushLogGroup2LS(mNetworkInfoList);
+    }
 }

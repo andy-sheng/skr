@@ -2,6 +2,7 @@ package com.engine.statistics;
 
 
 import com.common.log.MyLog;
+import com.engine.statistics.logservice.SLogServiceBase;
 
 
 public class SDataManager
@@ -17,13 +18,13 @@ public class SDataManager
 
 
     private String TAG = "SDATA_MANAGER";
-    private String PREFIX_4_AGORA_RTC = "["+TAG+"_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
+    private String LOG_PREFIX = "["+TAG+"_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
 
     private SDataManager(){
         mBasicInfo = new SDataMgrBasicInfo();
 
         mADHolder = new SAgoraDataHolder();
-        mADHolder.setLinePrefix(PREFIX_4_AGORA_RTC);
+        mADHolder.setLinePrefix(LOG_PREFIX);
     }
 
     public static synchronized SDataManager instance() {
@@ -41,7 +42,9 @@ public class SDataManager
         public int channelJoinElapsed= -1; //退出的时候要复位
     }
 
-
+    public void setLogServices(SLogServiceBase ls) {
+        mADHolder.setLogServices(ls);
+    }
 
     public SDataManager setBasicInfo(SDataMgrBasicInfo info){
         mBasicInfo.userID   = info.userID;
@@ -72,11 +75,13 @@ public class SDataManager
 
         String logStr = "";
 
-        logStr += (PREFIX_4_AGORA_RTC+ "userID="+mBasicInfo.userID + ", channelID=" + mBasicInfo.channelID +
+        logStr += (LOG_PREFIX+ "userID="+mBasicInfo.userID + ", channelID=" + mBasicInfo.channelID +
                     ", channelJoinElapsed="+mBasicInfo.channelJoinElapsed+"\n");
         logStr += mADHolder.toString();
 
-        reset();
+
+        mADHolder.flushLS();
+        mADHolder.reset();
 
         MyLog.w(TAG, logStr);
         MyLog.flushLog();

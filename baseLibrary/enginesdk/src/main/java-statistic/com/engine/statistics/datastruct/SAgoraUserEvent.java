@@ -3,10 +3,13 @@ package com.engine.statistics.datastruct;
 
 import com.engine.statistics.SUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static io.agora.rtc.Constants.*;
 
 //单独起一个类，用于记录一系列用户行为事件
-public class SAgoraUserEvent
+public class SAgoraUserEvent implements ILogItem
 {
 
     public long ts;//timestamp
@@ -211,7 +214,7 @@ public class SAgoraUserEvent
             this.err = err;
         }
 
-        public String transState2String(int state) {
+        public static String transState2String(int state) {
             switch (state) {
                 case MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY:
                     return "音乐文件正常播放";
@@ -227,7 +230,7 @@ public class SAgoraUserEvent
             }
         }
 
-        public String transErr2String(int err) {
+        public static String transErr2String(int err) {
             switch (err) {
                 case 0:
                     return "正常";
@@ -266,7 +269,7 @@ public class SAgoraUserEvent
             this.routine = routine;
         }
 
-        private String transRoutine2String(int routine) {
+        public static String transRoutine2String(int routine) {
             switch (routine) {
                 case AUDIO_ROUTE_DEFAULT:
                     return "使用默认的音频路由";
@@ -361,6 +364,105 @@ public class SAgoraUserEvent
 
         return SUtils.transTime(ts)+ " SAgoraUserEvent: type("+transEventType2String(type)+"), uid="
                 + uid + ", " + evenStr +"\n";
+    }
+
+    @Override
+    public JSONObject toJSONObject() {
+        JSONObject jsObj = new JSONObject();
+        try {
+            jsObj.put("timeStampStr", SUtils.transTime(ts));
+            jsObj.put("timeStampValue", ts);
+
+            jsObj.put("typeStr", transEventType2String(type));
+            jsObj.put("typeID", type);
+
+
+            //add additional info by type
+            switch (type) {
+                case EVENT_TYPE_REMOTE_JOINED:
+                    {
+                        jsObj.put("elapsed", ((Integer)event).intValue());
+                    }
+                    break;
+                case EVENT_TYPE_REMOTE_Mute_Audio:
+                case EVENT_TYPE_REMOTE_MuteVideo:
+                    {
+                        jsObj.put("isMute", ((Boolean)event).booleanValue());
+                    }
+                    break;
+                case EVENT_TYPE_REMOTE_Offline:
+                    {
+                        int value = ((Integer)event).intValue();
+                        jsObj.put("reasonID", value);
+                        jsObj.put("reasonStr", transOfflineReasonString(value));
+                    }
+                    break;
+                case EVENT_TYPE_REMOTE_EnableVideo:
+                    {
+                        jsObj.put("isEnable", ((Boolean)event).booleanValue());
+                    }
+                    break;
+                case EVENT_TYPE_VideoSizeChanged:
+                    {
+                        VideoSizeInfo vsInfo = (VideoSizeInfo)event;
+                        jsObj.put("w", vsInfo.w);
+                        jsObj.put("h", vsInfo.h);
+                        jsObj.put("rotation", vsInfo.rotation);
+
+                    }
+                    break;
+                case EVENT_TYPE_ClientRoleChanged:
+                    {
+                        RolePair pair = (RolePair)event;
+                        jsObj.put("oldRoleID", pair.oldRole);
+                        jsObj.put("newRoleID", pair.newRole);
+                        jsObj.put("oldRoleStr", transClientRole2String(pair.oldRole));
+                        jsObj.put("newRoleStr", transClientRole2String(pair.newRole));
+                    }
+                    break;
+                case EVENT_TYPE_FIRST_REMOTE_VIDEO_DECODED:
+                    {
+                        VideoInfo vInfo = (VideoInfo)event;
+                        jsObj.put("w", vInfo.w);
+                        jsObj.put("h", vInfo.h);
+                        jsObj.put("elapsed", vInfo.elapsed);
+                    }
+                    break;
+                case EVENT_TYPE_onAudioMixingStateChanged:
+                    {
+                        AudioMixState state = (AudioMixState)event;
+                        jsObj.put("stateID", state.state);
+                        jsObj.put("stateStr", AudioMixState.transState2String(state.state));
+                        jsObj.put("errID", state.err);
+                        jsObj.put("errStr", AudioMixState.transErr2String(state.err));
+                    }
+                    break;
+                case EVENT_TYPE_onAudioRouteChanged:
+                    {
+                        AudioRouting ar = (AudioRouting)event;
+                        jsObj.put("routineType", ar.routine);
+                        jsObj.put("routineString", AudioRouting.transRoutine2String(ar.routine));
+                    }
+                    break;
+                case EVENT_TYPE_onError:
+                    {
+                        jsObj.put("errID", ((Integer)event).intValue());
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsObj;
+    }
+
+    @Override
+    public String getKey() {
+        return getClass().getSimpleName();
     }
 
 

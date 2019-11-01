@@ -3,6 +3,9 @@ package com.engine.statistics.datastruct;
 
 import com.engine.statistics.SUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.agora.rtc.IRtcEngineEventHandler;
 
 import static io.agora.rtc.Constants.ADAPT_DOWN_BANDWIDTH;
@@ -12,7 +15,6 @@ import static io.agora.rtc.Constants.ADAPT_UP_BANDWIDTH;
 
 public class SAgora //all struct related to Agora is defined here!
 {
-
 
     //将数值转回为相应的语义字符串
     protected static String transNetQuality(int quality) {
@@ -27,7 +29,7 @@ public class SAgora //all struct related to Agora is defined here!
         else return "声网没有定义的质量值value("+quality+")";
     }
 
-    public static class SPlayerInfo{
+    public static class SPlayerInfo implements ILogItem{
         public long  ts; //timsstamp;
 
         public int uid;
@@ -54,10 +56,40 @@ public class SAgora //all struct related to Agora is defined here!
                     ", extraInfo="+ extraMsg + "\n";
 
         }
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+
+                jsObj.put("timeStampStr", SUtils.transTime(ts));
+                jsObj.put("timeStampValue", ts);
+
+                jsObj.put("uid", uid);
+                jsObj.put("filePath", filePath);
+                jsObj.put("midiPath", midiPath);
+                jsObj.put("mixMusicBeginOffset", mixMusicBeginOffset);
+                jsObj.put("loopback", loopback);
+                jsObj.put("replace", replace);
+                jsObj.put("cycle", cycle);
+
+                if (null != extraMsg) {
+                    jsObj.put("extraMsg", extraMsg);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
 
-    public static class SAudioSamplingInfo {
+    public static class SAudioSamplingInfo implements ILogItem {
         public long timeStamp; //统计间隔结束点的时间戳
 
         public long smpRate; //采样率
@@ -95,6 +127,34 @@ public class SAgora //all struct related to Agora is defined here!
                     ", statisticSpan=" + statisticSpan + additionInfo +"\n";
         }
 
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("smpRate",smpRate);
+                jsObj.put("chCnt", chCnt);
+                jsObj.put("smpCnt", smpCnt);
+                jsObj.put("pcmDuration", pcmDuration);
+                jsObj.put("statisticSpan", statisticSpan);
+                jsObj.put("maxAbsPCM", maxAbsPCM);
+                jsObj.put("meanAbsPCM", meanAbsPCM);
+                jsObj.put("extraInfo", extraInfo);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
+
         public void reset() {
             this.timeStamp = 0;
             this.smpRate = 0;
@@ -110,12 +170,11 @@ public class SAgora //all struct related to Agora is defined here!
     }
 
 
-
-    public static class SRTCStats extends IRtcEngineEventHandler.RtcStats {
+    public static class SRTCStats extends IRtcEngineEventHandler.RtcStats implements ILogItem {
         public long timeStamp;
 
         public String toString() {
-            return SUtils.transTime(timeStamp)+" SAgora.SRTCStats: totalDuration="+totalDuration+
+            return SUtils.transTime(timeStamp) + " SAgora.SRTCStats: totalDuration=" + totalDuration +
                     ", txBytes=" + txBytes +
                     ", rxBytes=" + rxBytes +
                     ", txKBitRate=" + txKBitRate +
@@ -132,10 +191,43 @@ public class SAgora //all struct related to Agora is defined here!
                     ", cpuAppUsage=" + cpuAppUsage + "\n";
 
         }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("totalDuration", totalDuration);
+                jsObj.put("txBytes", txBytes);
+                jsObj.put("rxBytes", rxBytes);
+                jsObj.put("txKBitRate", txKBitRate);
+                jsObj.put("rxKBitRate", rxKBitRate);
+                jsObj.put("txAudioKBitRate", txAudioKBitRate);
+                jsObj.put("rxAudioKBitRate", rxAudioKBitRate);
+                jsObj.put("txVideoKBitRate", txVideoKBitRate);
+                jsObj.put("rxVideoKBitRate", rxVideoKBitRate);
+                jsObj.put("users", users);
+                jsObj.put("lastmileDelay", lastmileDelay);
+                jsObj.put("txPacketLossRate", rxPacketLossRate);
+                jsObj.put("cpuTotalUsage", cpuTotalUsage);
+                jsObj.put("cpuAppUsage", cpuAppUsage);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
 
-    public static class SLocalVideoStats extends IRtcEngineEventHandler.LocalVideoStats {
+    public static class SLocalVideoStats extends IRtcEngineEventHandler.LocalVideoStats implements ILogItem {
         public long timeStamp;
 
         private String transQualityAdaptIndication(int q) {
@@ -166,9 +258,36 @@ public class SAgora //all struct related to Agora is defined here!
                     ", targetFrameRate=" + targetFrameRate+
                     ", qualityAdaptIndication=" + transQualityAdaptIndication(qualityAdaptIndication)+"\n";
         }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("sentBitrate", sentBitrate);
+                jsObj.put("sentFrameRate", sentFrameRate);
+                jsObj.put("encoderOutputFrameRate", encoderOutputFrameRate);
+                jsObj.put("rendererOutputFrameRate", rendererOutputFrameRate);
+                jsObj.put("targetBitrate", targetBitrate);
+                jsObj.put("targetFrameRate", targetFrameRate);
+                jsObj.put("qualityAdaptIndication", transQualityAdaptIndication(qualityAdaptIndication));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
-    public static class SRemoteAudioStats extends IRtcEngineEventHandler.RemoteAudioStats {
+    public static class SRemoteAudioStats extends IRtcEngineEventHandler.RemoteAudioStats implements ILogItem {
         public long timeStamp;
 //        public String strQuality; //replace base class's "quality" for explicitly meanning
 
@@ -180,9 +299,34 @@ public class SAgora //all struct related to Agora is defined here!
                     ", jitterBufferDelay=" + jitterBufferDelay+
                     ", audioLossRate=" + audioLossRate+"\n";
         }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("uid", uid);
+                jsObj.put("quality", transNetQuality(quality));
+                jsObj.put("networkTransportDelay", networkTransportDelay);
+                jsObj.put("jitterBufferDelay", jitterBufferDelay);
+                jsObj.put("audioLossRate", audioLossRate);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
-    public static class SRemoteVideoStats extends IRtcEngineEventHandler.RemoteVideoStats {
+    public static class SRemoteVideoStats extends IRtcEngineEventHandler.RemoteVideoStats implements ILogItem {
         public long timeStamp;
         public String toString() {
             return SUtils.transTime(timeStamp)+" SAgora.SRemoteVideoStats: uid="+ uid +
@@ -193,10 +337,37 @@ public class SAgora //all struct related to Agora is defined here!
                     ", rendererOutputFrameRate=" +rendererOutputFrameRate+
                     ", rxStreamType=" +rxStreamType+"\n";
         }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("uid", uid);
+                jsObj.put("width", width);
+                jsObj.put("height", height);
+                jsObj.put("receivedBitrate", receivedBitrate);
+                jsObj.put("decoderOutputFrameRate", decoderOutputFrameRate);
+                jsObj.put("rendererOutputFrameRate", rendererOutputFrameRate);
+                jsObj.put("rxStreamType", rxStreamType);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
 
-    public static class SRemoteVideoTransportStat{
+    public static class SRemoteVideoTransportStat implements ILogItem {
         public long timeStamp;
         public int 	uid;
         public int 	delay;
@@ -206,10 +377,34 @@ public class SAgora //all struct related to Agora is defined here!
         public String toString() {
             return SUtils.transTime(timeStamp)+" SAgora.SRemoteVideoTransportStat: uid="+uid+"， delay="+delay+"， lost="+lost+"， rxKBitRate="+rxKBitRate + "\n";
         }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("uid", uid);
+                jsObj.put("delay", delay);
+                jsObj.put("lost", lost);
+                jsObj.put("rxKBitRate", rxKBitRate);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
 
-    public static class SRemoteAudioTransportStats{
+    public static class SRemoteAudioTransportStats implements ILogItem {
         public long timeStamp;
         public int 	uid;
         public int 	delay;
@@ -219,9 +414,33 @@ public class SAgora //all struct related to Agora is defined here!
         public String toString(){
             return SUtils.transTime(timeStamp)+" SAgora.SRemoteAudioTransportStats: uid="+uid+"， delay="+delay+"， lost="+lost+"， rxKBitRate="+rxKBitRate + "\n";
         }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("uid", uid);
+                jsObj.put("delay", delay);
+                jsObj.put("lost", lost);
+                jsObj.put("rxKBitRate", rxKBitRate);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
+        }
     }
 
-    public static class SNetworkQuality {
+    public static class SNetworkQuality implements ILogItem {
         public long timeStamp;
         public int  uid = -1;
         public int 	txQuality=0;
@@ -232,6 +451,29 @@ public class SAgora //all struct related to Agora is defined here!
         public String toString(){
 
             return SUtils.transTime(timeStamp)+" SAgora.SNetworkQuality: uid="+uid+", txQuality="+transNetQuality(txQuality)+", rxQuality="+transNetQuality(rxQuality) + "\n";
+        }
+
+        @Override
+        public JSONObject toJSONObject() {
+            JSONObject jsObj = new JSONObject();
+            try {
+                jsObj.put("timeStampStr", SUtils.transTime(timeStamp));
+                jsObj.put("timeStampValue", timeStamp);
+
+                jsObj.put("uid", uid);
+                jsObj.put("txQuality", txQuality);
+                jsObj.put("rxQuality", rxQuality);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsObj;
+        }
+
+        @Override
+        public String getKey() {
+            return getClass().getSimpleName();
         }
     } //end of class SAgora.SNetworkQuality
 
