@@ -86,10 +86,10 @@
         android:layout_height="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
-        android:text="抢唱5s"
         app:bl_corners_radius="@dimen/view_21_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#FFC15B"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/content_bg"
         app:layout_constraintRight_toRightOf="@id/content_bg"
         app:layout_constraintTop_toTopOf="@id/content_bg" />
