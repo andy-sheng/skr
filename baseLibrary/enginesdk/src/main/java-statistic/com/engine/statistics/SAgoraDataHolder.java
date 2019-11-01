@@ -258,21 +258,21 @@ public class SAgoraDataHolder
     //SAgoraDataHolder's to String
     public synchronized String toString() {
 
-        String retStr = "";
+        StringBuilder sb = new StringBuilder();
 
-        retStr += getListString(mRtcStatsList);
-        retStr += getListString(mLocalVList);
-        retStr += getListString(mRemoteAList);
-        retStr += getListString(mRemoteVList);
-        retStr += getListString(mNetQualityList);
-        retStr += getListString(mRemoteATransList);
-        retStr += getListString(mRemoteVTransList);
-        retStr += getListString(mAudioSamplingInfoList);
-        retStr += getListString(mPlayerInfo);
-        retStr += getListString(mUserEvenList);
-        retStr += getListString(mPingInfoList);
-        retStr += getListString(mNetworkInfoList);
-        return retStr;
+        sb.append(getListString(mRtcStatsList));
+        sb.append(getListString(mLocalVList));
+        sb.append(getListString(mRemoteAList));
+        sb.append(getListString(mRemoteVList));
+        sb.append(getListString(mNetQualityList));
+        sb.append(getListString(mRemoteATransList));
+        sb.append(getListString(mRemoteVTransList));
+        sb.append(getListString(mAudioSamplingInfoList));
+        sb.append(getListString(mPlayerInfo));
+        sb.append(getListString(mUserEvenList));
+        sb.append(getListString(mPingInfoList));
+        sb.append(getListString(mNetworkInfoList));
+        return sb.toString();
     }
 
 

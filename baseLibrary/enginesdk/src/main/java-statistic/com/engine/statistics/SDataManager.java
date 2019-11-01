@@ -70,16 +70,16 @@ public class SDataManager
     public final static int FLUSH_MODE_UPLOAD = 0x00000002; //not support now!
     public synchronized SDataManager flush(int flushMode) {
 
-        String logStr = "";
+        StringBuilder logStr = new StringBuilder();
 
-        logStr += (PREFIX_4_AGORA_RTC+ "userID="+mBasicInfo.userID + ", channelID=" + mBasicInfo.channelID +
-                    ", channelJoinElapsed="+mBasicInfo.channelJoinElapsed+"\n");
-        logStr += mADHolder.toString();
+        logStr.append(PREFIX_4_AGORA_RTC).append("userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
+                .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
+        logStr.append(mADHolder.toString());
 
         reset();
 
-        MyLog.w(TAG, logStr);
-        MyLog.flushLog();
+        MyLog.w(TAG, logStr.toString());
+//        MyLog.flushLog();
 
         return this;
     }
