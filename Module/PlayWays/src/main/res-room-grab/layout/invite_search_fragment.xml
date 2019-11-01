@@ -31,17 +31,19 @@
             android:layout_toLeftOf="@id/cancle_tv"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:gravity="center_vertical|left"
+            android:paddingTop="@dimen/view_0_dp"
+            android:paddingBottom="@dimen/view_0_dp"
             android:hint="备注、昵称和ID"
             android:imeOptions="actionSearch"
             android:paddingLeft="@dimen/view_35_dp"
             android:singleLine="true"
-            android:gravity="center"
             android:textColor="@color/white"
             android:textColorHint="@color/white_trans_50"
             android:textSize="@dimen/textsize_16_dp"
+            app:bl_corners_radius="@dimen/view_8_dp"
             app:bl_shape="rectangle"
-            app:bl_solid_color="#576FE3"
-            app:bl_corners_radius="@dimen/view_8_dp"/>
+            app:bl_solid_color="#576FE3" />
 
         <ImageView
             android:layout_width="@dimen/view_23_dp"
