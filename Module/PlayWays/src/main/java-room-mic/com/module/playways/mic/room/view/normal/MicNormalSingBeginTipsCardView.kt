@@ -22,7 +22,7 @@ import com.module.playways.room.data.H
  * 轮次结束 合唱和正常结束都用此板
  */
 class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
-
+    val TAG = "MicNormalSingBeginTipsCardView"
     lateinit var cardBgIv: ImageView
     lateinit var avatarIv: BaseImageView
     lateinit var singerNameTv: TextView
@@ -68,6 +68,7 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
     }
 
     private fun startAnimation() {
+        setVisibility(View.VISIBLE)
         MyLog.d("MicNormalSingBeginTipsCardView", "this.realView!!.width=${this.realView!!.width.toFloat()}")
         val anim1 = ObjectAnimator.ofFloat(this.realView!!, View.TRANSLATION_X, -this.realView!!.width.toFloat(), 0f)
         anim1?.duration = 500
@@ -103,7 +104,9 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == View.GONE) {
+            anim?.removeAllListeners()
             if (anim?.isRunning == true) {
+                MyLog.d(TAG, "cancel")
                 anim?.cancel()
             }
         }
