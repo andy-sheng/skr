@@ -89,7 +89,7 @@ public interface SongSelectServerApi {
      * @param keyword
      * @return
      */
-    @GET("/v1/micgame/search-stand-intro")
+    @GET("http://dev.game.inframe.mobi/v1/micgame/search-stand-intro")
     Observable<ApiResult> searchMicMusicItems(@Query("keyword")String keyword);
 
     @GET("/v1/playbook/report-not-exist-song")
