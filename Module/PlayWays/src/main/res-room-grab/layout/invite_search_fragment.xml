@@ -24,21 +24,24 @@
             android:textColor="@color/white_trans_80"
             android:textSize="@dimen/textsize_16_dp" />
 
-        <EditText
+        <com.common.view.ex.NoLeakEditText
             android:id="@+id/search_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/cancle_tv"
-            android:background="@drawable/friend_search_bg"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="备注、昵称和ID"
             android:imeOptions="actionSearch"
             android:paddingLeft="@dimen/view_35_dp"
             android:singleLine="true"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textColorHint="@color/white_trans_50"
-            android:textSize="@dimen/textsize_16_dp" />
+            android:textSize="@dimen/textsize_16_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#576FE3"
+            app:bl_corners_radius="@dimen/view_8_dp"/>
 
         <ImageView
             android:layout_width="@dimen/view_23_dp"

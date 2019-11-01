@@ -28,6 +28,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.NoLeakEditText;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
@@ -59,7 +60,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
-    EditText mSearchContent;
+    NoLeakEditText mSearchContent;
     RecyclerView mRecyclerView;
 
     InviteFirendAdapter mInviteFirendAdapter;
@@ -75,10 +76,10 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSearchArea = (RelativeLayout) getRootView().findViewById(R.id.search_area);
-        mCancleTv = (TextView) getRootView().findViewById(R.id.cancle_tv);
-        mSearchContent = (EditText) getRootView().findViewById(R.id.search_content);
-        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
+        mSearchArea = getRootView().findViewById(R.id.search_area);
+        mCancleTv = getRootView().findViewById(R.id.cancle_tv);
+        mSearchContent = getRootView().findViewById(R.id.search_content);
+        mRecyclerView = getRootView().findViewById(R.id.recycler_view);
 
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         Bundle bundle = getArguments();
