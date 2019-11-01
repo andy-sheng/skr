@@ -30,6 +30,15 @@ public class CommentSysModel extends CommentModel {
         }
     }
 
+    // 普通系统消息
+    public CommentSysModel(int gameType, SpannableStringBuilder stringBuilder) {
+        setCommentType(CommentModel.TYPE_SYSTEM);
+        setUserInfo(UserAccountManager.INSTANCE.getSystemModel());
+        setAvatarColor(CommentModel.AVATAR_COLOR);
+
+        setStringBuilder(stringBuilder);
+    }
+
     public static final int TYPE_ENTER_ROOM = 1;
     public static final int TYPE_MODIFY_ROOM_NAME = 2;
     public static final int TYPE_ENTER_ROOM_PLAYBOOK = 3;

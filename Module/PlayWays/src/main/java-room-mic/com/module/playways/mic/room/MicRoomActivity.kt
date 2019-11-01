@@ -1,5 +1,6 @@
 package com.module.playways.mic.room
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -19,6 +20,7 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.DebugLogView
 import com.common.log.MyLog
 import com.common.utils.FragmentUtils
+import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
 import com.common.view.ex.ExTextView
@@ -75,6 +77,7 @@ import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
 import com.module.playways.room.room.comment.CommentView
 import com.module.playways.room.room.comment.listener.CommentViewItemListener
+import com.module.playways.room.room.comment.model.CommentModel
 import com.module.playways.room.room.comment.model.CommentSysModel
 import com.module.playways.room.room.event.PretendCommentMsgEvent
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup
@@ -625,7 +628,12 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicHomeOwnerChangeEvent) {
         RoomDataUtils.getPlayerInfoById(mRoomData, event.ownerId)?.let {
-            val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "${UserInfoManager.getInstance().getRemarkName(event.ownerId, it.userInfo.nickname)} 已成为新的房主，房主可通过设置功能，更新房间属性")
+            val stringBuilder = SpanUtils()
+                    .append("${UserInfoManager.getInstance().getRemarkName(event.ownerId, it.userInfo.nickname)}").setForegroundColor(Color.parseColor("#FFC15B"))
+                    .append(" 已成为新的房主，房主可通过设置功能，更新房间属性").setForegroundColor(CommentModel.RANK_SYSTEM_COLOR)
+                    .create()
+
+            val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, stringBuilder)
             EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
         }
     }
