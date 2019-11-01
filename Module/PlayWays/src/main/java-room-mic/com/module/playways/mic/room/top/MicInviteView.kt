@@ -139,8 +139,8 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             agreeTv?.isClickable = true
             agreeTv?.background = yellowDrawable
             inviteJob = launch {
-                repeat(5) {
-                    agreeTv?.text = "抢唱${5 - it}s"
+                repeat(8) {
+                    agreeTv?.text = "抢唱${8 - it}s"
                     delay(1000)
                 }
                 agreeTv?.text = "抢唱0s"
