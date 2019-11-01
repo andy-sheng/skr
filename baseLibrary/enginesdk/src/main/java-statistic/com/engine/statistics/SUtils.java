@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
 
+import com.common.log.MyLog;
 import com.engine.statistics.datastruct.Skr;
 
 import org.json.JSONException;
@@ -301,10 +302,8 @@ public class SUtils
                 pingInfo.isPingOk = false;
                 pingInfo.timeCost = -1;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            MyLog.e(e);
         }
 
         return pingInfo;
