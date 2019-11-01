@@ -53,7 +53,7 @@ class MicNormalSingBeginTipsCardView(viewStub: ViewStub) : ExViewStub(viewStub) 
         AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(userInfo?.avatar)
                 .setBorderWidth(2.dp().toFloat())
                 .setCircle(true)
-                .setBorderColor(R.color.white)
+                .setBorderColor(U.getColor(R.color.white))
                 .build())
 
         if (b) {
