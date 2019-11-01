@@ -301,7 +301,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         if (mFrom == SongManagerActivity.TYPE_FROM_GRAB) {
             return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
         } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
-            return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
+            return songSelectServerApi.searchMicMusicItems(content).subscribeOn(Schedulers.io());
         } else {
             return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }

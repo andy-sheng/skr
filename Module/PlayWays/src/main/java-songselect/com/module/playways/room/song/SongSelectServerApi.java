@@ -84,11 +84,21 @@ public interface SongSelectServerApi {
     @GET("/v1/playbook/search-magpie-item")
     Observable<ApiResult> searchDoubleMusicItems(@Query("keyword")String keyword);
 
+    /**
+     * 排麦房搜歌
+     * @param keyword
+     * @return
+     */
+    @GET("/v1/micgame/search-stand-intro")
+    Observable<ApiResult> searchMicMusicItems(@Query("keyword")String keyword);
+
     @GET("/v1/playbook/report-not-exist-song")
     Observable<ApiResult> reportNotExistSong(@Query("name") String name,
                                              @Query("artist") String artist);
 
     @PUT("http://dev.game.inframe.mobi/v1/game/practice-room/enter")
     Observable<ApiResult> reportAuditionSong(@Body RequestBody body);
+
+
 }
 
