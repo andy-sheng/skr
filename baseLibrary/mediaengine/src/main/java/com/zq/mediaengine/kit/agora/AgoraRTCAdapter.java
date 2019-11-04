@@ -118,7 +118,7 @@ public class AgoraRTCAdapter {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
 
-            sInstance.startStatisticThread();
+//            sInstance.startStatisticThread();
         }
         return sInstance;
     }
@@ -126,7 +126,7 @@ public class AgoraRTCAdapter {
     public static synchronized void destroy() {
         if (sInstance != null) {
 
-            sInstance.stopStatisticThread();
+//            sInstance.stopStatisticThread();
 
             sInstance.destroy(true);
             sInstance = null;
@@ -138,7 +138,7 @@ public class AgoraRTCAdapter {
     private final static int LM_MSG_UPDATE_NETWORK_INFO = 2;
     private final static int LM_MSG_FLUSH_LOG = 3;
 
-    public void startStatisticThread() {
+    public synchronized void startStatisticThread() {
         if (null == mLogMonThread) {
             mLogMonThread = new HandlerThread("Log-Monitor-Thread");
             mLogMonThread.start();
@@ -204,7 +204,7 @@ public class AgoraRTCAdapter {
         }
     }
 
-    public void stopStatisticThread() {
+    public synchronized void stopStatisticThread() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -384,7 +384,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
-
+            stopStatisticThread();
             SDataManager.instance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
             mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
@@ -840,7 +840,12 @@ public class AgoraRTCAdapter {
         if (!TextUtils.isEmpty(token)) {
             t = token;
         }
+        startStatisticThread();
+
         int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
+        if (0 != retCode)
+            stopStatisticThread();
+
         return retCode;
     }
 

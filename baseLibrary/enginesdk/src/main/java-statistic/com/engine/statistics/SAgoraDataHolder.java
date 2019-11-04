@@ -289,7 +289,8 @@ public class SAgoraDataHolder
         mAudioSamplingInfoList.clear();
         mPlayerInfo.clear();
         mUserEvenList.clear();
-        mPlayerInfo.clear();
+        mPingInfoList.clear();
+
         mNetworkInfoList.clear();
         return this;
     }
