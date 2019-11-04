@@ -68,7 +68,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AgoraRTCAdapter {
     public final String TAG = "AgoraRTCAdapter";
-    private final static boolean VERBOSE = true;
+    private final static boolean VERBOSE = true && MyLog.isDebugLogOpen();
 
     private static AgoraRTCAdapter sInstance;
     private static final String APP_ID;
@@ -214,7 +214,7 @@ public class AgoraRTCAdapter {
                 mLogMonThread.join();
                 mLogMonThread = null;
             } catch (InterruptedException e) {
-                MyLog.e(TAG,e);
+                MyLog.e(TAG, e);
             }
         }
         SDataManager.instance().flush(mDataFlushMode);
@@ -501,11 +501,11 @@ public class AgoraRTCAdapter {
     private SAgora.SAudioSamplingInfo mAgoraAduioSmpInfo = new SAgora.SAudioSamplingInfo();
 
     private SAgora.SAudioSamplingInfo makeAudioSamplingInfo(byte bytes[], int numOfSamples, int bytesPerSample, int channels,
-                                                            int samplesPerSec) {
+                                                            int samplesPerSec, long curTs) {
 
 
         if (!mInAudioStatistic) {
-            mAudioStatisticTS = System.currentTimeMillis();
+            mAudioStatisticTS = curTs;
 //            mAgoraAduioSmpInfo.smpCnt += numOfSamples;
 
             mInAudioStatistic = true;
@@ -523,14 +523,16 @@ public class AgoraRTCAdapter {
             for (int i = 0; i < bytes.length; i += 4) {
                 long v = (bytes[0] << 8 | bytes[1]);
                 long absV = (v >= 0) ? v : (-v);
-                if (absV > mAgoraAduioSmpInfo.maxAbsPCM) mAgoraAduioSmpInfo.maxAbsPCM = absV;
+                if (absV > mAgoraAduioSmpInfo.maxAbsPCM) {
+                    mAgoraAduioSmpInfo.maxAbsPCM = absV;
+                }
                 mAgoraAduioSmpInfo.totalAbsPCM += absV;
             }
         }
 
         mAgoraAduioSmpInfo.meanAbsPCM = meanValue;
         mAgoraAduioSmpInfo.smpCnt += numOfSamples;
-        long timeSpan = System.currentTimeMillis() - mAudioStatisticTS;
+        long timeSpan = curTs - mAudioStatisticTS;
         if (timeSpan >= SAgora.SAudioSamplingInfo.STATISTIC_SPAN_SETTTING) { //输出一次统计信息
             mAgoraAduioSmpInfo.smpRate = samplesPerSec;
             mAgoraAduioSmpInfo.chCnt = channels;
@@ -539,7 +541,7 @@ public class AgoraRTCAdapter {
 
             mAgoraAduioSmpInfo.meanAbsPCM = mAgoraAduioSmpInfo.totalAbsPCM / mAgoraAduioSmpInfo.smpCnt;
 
-            mAudioStatisticTS = System.currentTimeMillis(); //时间戳重新设定
+            mAudioStatisticTS = curTs; //时间戳重新设定
             return mAgoraAduioSmpInfo;
         }
 
@@ -666,7 +668,7 @@ public class AgoraRTCAdapter {
                     }
 
 
-                    long curTime = System.nanoTime() / 1000 / 1000;
+                    long curTime = System.currentTimeMillis();
                     if (mLocalAudioFormat == null) {
                         MyLog.i(TAG, "mLocalAudioFormat changed");
                         mAudioCBCount = 0;
@@ -696,9 +698,9 @@ public class AgoraRTCAdapter {
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
                     byteBuffer.order(ByteOrder.nativeOrder());
 
-                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec);
+                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, curTime);
                     if (null != smpInfo) { //说明达到一次统计间隔
-                        SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo);
+                        SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo, curTime);
                         smpInfo.reset();
                     }
 

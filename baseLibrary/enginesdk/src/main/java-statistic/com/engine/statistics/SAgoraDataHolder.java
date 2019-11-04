@@ -169,7 +169,7 @@ public class SAgoraDataHolder
         return;
     }
 
-    public synchronized void addAudioSamplingInfo(SAgora.SAudioSamplingInfo o) {
+    public synchronized void addAudioSamplingInfo(SAgora.SAudioSamplingInfo o,long curTs) {
         if (null == o) return;
 
         SAgora.SAudioSamplingInfo n = new SAgora.SAudioSamplingInfo();
