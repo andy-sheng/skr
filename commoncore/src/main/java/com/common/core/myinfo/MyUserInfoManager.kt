@@ -1,7 +1,6 @@
 package com.common.core.myinfo
 
 import android.text.TextUtils
-
 import com.alibaba.fastjson.JSON
 import com.common.core.account.UserAccountManager
 import com.common.core.myinfo.event.MyUserInfoEvent
@@ -17,19 +16,13 @@ import com.common.rxretrofit.ApiResult
 import com.common.utils.LbsUtils
 import com.common.utils.U
 import com.module.ModuleServiceManager
-
-import org.greenrobot.eventbus.EventBus
-
-import java.util.Calendar
-import java.util.HashMap
-
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Response
+import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 /**
  * 保存个人详细信息，我的信息的管理, 其实是对User的decorate
@@ -78,7 +71,7 @@ object MyUserInfoManager {
         }
 
     val nickName: String
-        get() = if (myUserInfo != null) myUserInfo!!.userNickname else ""
+        get() = if (myUserInfo?.userNickname != null) myUserInfo!!.userNickname else ""
 
     val age: Int
         get() {
