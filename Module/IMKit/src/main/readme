@@ -1,0 +1,6 @@
+更改内容
+列表中 rc_fr_conversationlist 中的rc_conversation_list_empty图片和rc_conversation_list_empty_prompt文字
+
+会话中 rc_item_message 中AsyncImageView头像加上app:RCShape="circle" 变圆形
+
+rc_color.xml中一些颜色
