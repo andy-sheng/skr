@@ -112,7 +112,7 @@ public class AgoraRTCAdapter {
 
     private HandlerThread mLogMonThread = null;
     private Handler mLogMonHandler = null;
-
+    private boolean mRunStatistic = false;
 
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
@@ -139,6 +139,8 @@ public class AgoraRTCAdapter {
     private final static int LM_MSG_FLUSH_LOG = 3;
 
     public synchronized void startStatisticThread() {
+        mRunStatistic = true;
+
         if (null == mLogMonThread) {
             mLogMonThread = new HandlerThread("Log-Monitor-Thread");
             mLogMonThread.start();
@@ -161,8 +163,10 @@ public class AgoraRTCAdapter {
                             Skr.PingInfo pingInfo = SUtils.ping(baiduURL);
                             SDataManager.instance().getAgoraDataHolder().addPingInfo(pingInfo);
 
-                            Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
-                            mLogMonHandler.sendMessageDelayed(msgLoop, 2000);//进入循环
+                            if (mRunStatistic) {
+                                Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
+                                mLogMonHandler.sendMessageDelayed(msgLoop, 2000);//进入循环
+                            }
                         }
                         break;
                         case LM_MSG_UPDATE_NETWORK_INFO: {
@@ -183,7 +187,8 @@ public class AgoraRTCAdapter {
                             if (SDataManager.instance().need2Flush())
                                 SDataManager.instance().flush(mDataFlushMode);
 
-                            mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 2000);
+                            if (mRunStatistic)
+                                mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 2000);
                         }
                         break;
                         default:
@@ -204,10 +209,15 @@ public class AgoraRTCAdapter {
         }
     }
 
+    public void stopStatistics() {//考虑到退出房间的时候，以标志量的方式更好。
+        mRunStatistic = false;
+    }
+
     public synchronized void stopStatisticThread() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+
         if (null != mLogMonThread) {
             try {
                 mLogMonThread.getLooper().quit();
@@ -217,6 +227,7 @@ public class AgoraRTCAdapter {
                 MyLog.e(TAG, e);
             }
         }
+        mRunStatistic = false;
         SDataManager.instance().flush(mDataFlushMode);
     }
 
@@ -384,7 +395,7 @@ public class AgoraRTCAdapter {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
-            stopStatisticThread();
+            stopStatistics();
             SDataManager.instance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
             mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
