@@ -173,8 +173,8 @@ class FeedSongSearchActivity : BaseActivity() {
                     mAdapter.mDataList.clear()
                     if (!list.isNullOrEmpty()) {
                         mAdapter.mDataList.addAll(list)
-                        mAdapter.notifyDataSetChanged()
                     }
+                    mAdapter.notifyDataSetChanged()
                     if (!isAutoSearch && mAdapter.mDataList.isEmpty()) {
                         mLoadService?.showCallback(EmptyCallback::class.java)
                     }
