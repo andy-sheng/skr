@@ -3,7 +3,6 @@ package com.module.playways.grab.room
 import com.common.core.myinfo.MyUserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.log.MyLog
-import com.common.utils.DeviceUtils
 import com.common.utils.U
 import com.component.busilib.constans.GameModeType
 import com.component.busilib.constans.GrabRoomType
@@ -15,10 +14,7 @@ import com.module.playways.grab.room.event.GrabRoundChangeEvent
 import com.module.playways.grab.room.model.GrabConfigModel
 import com.module.playways.grab.room.model.GrabPlayerInfoModel
 import com.module.playways.grab.room.model.GrabRoundInfoModel
-import com.module.playways.grab.room.model.WorksUploadModel
-import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel
-import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.GrabRoom.EQRoundStatus
 import com.zq.live.proto.GrabRoom.EQUserRole
 import org.greenrobot.eventbus.EventBus
@@ -129,7 +125,7 @@ class GrabRoomData : BaseRoomData<GrabRoundInfoModel>() {
         if (userID == null || userID == 0) {
             return null
         }
-        val playerInfoModel = userInfoMap[userID] as GrabPlayerInfoModel?
+        val playerInfoModel = userInfoMap?.get(userID) as GrabPlayerInfoModel?
         if (playerInfoModel == null || playerInfoModel.role == EQUserRole.EQUR_WAIT_USER.value) {
             val l = getPlayerAndWaiterInfoList()
             for (playerInfo in l) {
