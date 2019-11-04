@@ -60,6 +60,9 @@ public class MyUserInfo implements Serializable {
     }
 
     public String getUserNickname() {
+        if(userNickname==null){
+            return "";
+        }
         return userNickname;
     }
 

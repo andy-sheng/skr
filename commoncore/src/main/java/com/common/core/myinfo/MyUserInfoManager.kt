@@ -77,7 +77,7 @@ object MyUserInfoManager {
             UserAccountManager.uuidAsLong
         }
 
-    val nickName: String?
+    val nickName: String
         get() = if (myUserInfo != null) myUserInfo!!.userNickname else ""
 
     val age: Int
