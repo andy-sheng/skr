@@ -77,7 +77,7 @@ object MyUserInfoManager {
             UserAccountManager.uuidAsLong
         }
 
-    val nickName: String
+    val nickName: String?
         get() = if (myUserInfo != null) myUserInfo!!.userNickname else ""
 
     val age: Int
@@ -198,7 +198,7 @@ object MyUserInfoManager {
                 } else {
                     val userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.uuidAsLong)
                     MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.uuidAsLong)
-                    MyLog.d(TAG, "load myUserInfo=" + userInfo!!)
+                    MyLog.d(TAG, "load myUserInfo=$userInfo")
                     if (userInfo != null) {
                         setMyUserInfo(userInfo, false, "load")
                     }

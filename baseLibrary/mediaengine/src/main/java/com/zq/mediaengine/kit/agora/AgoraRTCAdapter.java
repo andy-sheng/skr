@@ -659,7 +659,8 @@ public class AgoraRTCAdapter {
                     }
 
                     if (samples == null || numOfSamples <= 0 || samplesPerSec == 0) {
-                        mAgoraAduioSmpInfo.extraInfo = "(sampleCnt=" + samples.length + " numOfSamples=" + numOfSamples +
+                        // 不能用 samples.length samples 都为null
+                        mAgoraAduioSmpInfo.extraInfo = "(sampleCnt=" + samples + " numOfSamples=" + numOfSamples +
                                 " samplesPerSec=" + samplesPerSec + ")";
                         return true;
                     }
