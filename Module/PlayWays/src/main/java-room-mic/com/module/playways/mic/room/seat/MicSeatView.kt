@@ -64,7 +64,19 @@ class MicSeatView : ExViewStub {
     override fun init(parentView: View) {
         bg = parentView.findViewById(R.id.bg)
         recyclerView = parentView.findViewById(R.id.recycler_view)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.layoutManager = object : LinearLayoutManager(context) {
+
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+                try {
+                    //RecyclerView内部崩溃，保护一下
+                    super.onLayoutChildren(recycler, state);
+                } catch (e: IndexOutOfBoundsException) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
         adapter = MicSeatRecyclerAdapter()
         recyclerView?.adapter = adapter
 
