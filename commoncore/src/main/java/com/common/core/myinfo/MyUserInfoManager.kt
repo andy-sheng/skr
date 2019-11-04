@@ -243,6 +243,7 @@ object MyUserInfoManager {
                             val myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel)
                             MyUserInfoLocalApi.insertOrUpdate(myUserInfo)
                             setMyUserInfo(myUserInfo, true, "syncMyInfoFromServer")
+                            UserAccountManager.accountValidFromServer()
                         } else if (obj.errno == 107) {
                             UserAccountManager.notifyAccountExpired()
                         }
