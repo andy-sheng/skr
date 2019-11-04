@@ -1382,18 +1382,18 @@ public class ZqEngineKit implements AgoraOutCallback {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         MyLog.d(TAG, "PlayTimeListener accept ts=" + aLong);
-                        int currentPostion = getAudioMixingCurrentPosition();
-                        mConfig.setCurrentMusicTs(currentPostion);
+                        int currentPosition = getAudioMixingCurrentPosition();
+                        mConfig.setCurrentMusicTs(currentPosition);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
                         if (duration < 0) {
                             duration = getAudioMixingDuration();
                         }
-                        if (currentPostion < duration) {
+                        if (currentPosition < duration) {
                             EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER);
-                            engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPostion, duration);
+                            engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPosition, duration);
                             EventBus.getDefault().post(engineEvent);
                         } else {
-                            MyLog.d(TAG, "playtime不合法,currentPostion=" + currentPostion + " duration=" + duration);
+                            MyLog.d(TAG, "playtime不合法,currentPostion=" + currentPosition + " duration=" + duration);
                         }
                     }
                 }, new Consumer<Throwable>() {
