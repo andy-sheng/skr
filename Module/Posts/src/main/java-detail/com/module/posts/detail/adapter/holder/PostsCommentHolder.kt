@@ -75,6 +75,7 @@ class PostsCommentHolder(itemView: View, val iDetailClickListener: PostsCommentA
 
         xinIv.setDebounceViewClickListener {
             mModel?.let {
+                StatisticsAdapter.recordCountEvent("posts", "content_like", null)
                 iDetailClickListener?.likeFirstLevelComment(it)
             }
         }

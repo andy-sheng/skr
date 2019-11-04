@@ -112,6 +112,7 @@ class PostsHolder(itemView: View, val iDetailClickListener: PostsCommentAdapter.
 
         postsLikeTv.setDebounceViewClickListener {
             mModel?.let {
+                StatisticsAdapter.recordCountEvent("posts", "content_like", null)
                 iDetailClickListener?.likePosts(it)
             }
         }
