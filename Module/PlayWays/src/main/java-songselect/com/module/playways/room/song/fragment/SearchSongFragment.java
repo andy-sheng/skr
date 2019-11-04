@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -67,6 +68,8 @@ public class SearchSongFragment extends BaseFragment {
     PublishSubject<String> mPublishSubject;
     DisposableObserver<ApiResult> mDisposableObserver;
 
+    SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
+
     @Override
     public int initView() {
         return R.layout.search_song_fragment_layout;
@@ -96,9 +99,14 @@ public class SearchSongFragment extends BaseFragment {
                 }
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
-                            .withSerializable("songModel", songModel)
-                            .navigation();
+                    skrAudioPermission.ensurePermission(new Runnable() {
+                        @Override
+                        public void run() {
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                                    .withSerializable("songModel", songModel)
+                                    .navigation();
+                        }
+                    }, true);
                     return;
                 }
 
@@ -310,6 +318,12 @@ public class SearchSongFragment extends BaseFragment {
             mSongSelectAdapter.notifyDataSetChanged();
             mSearchResult.scrollToPosition(0);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        skrAudioPermission.onBackFromPermisionManagerMaybe(getActivity());
     }
 
     @Override

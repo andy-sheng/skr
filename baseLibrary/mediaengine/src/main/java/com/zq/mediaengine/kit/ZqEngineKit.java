@@ -1514,7 +1514,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
             mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
-                    " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel) {
+                    " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel+" mConfig.isUseExternalAudioRecord()="+mConfig.isUseExternalAudioRecord()) {
                 @Override
                 public void realRun() {
                     File file = new File(path);

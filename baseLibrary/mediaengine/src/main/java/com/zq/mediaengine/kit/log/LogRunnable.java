@@ -11,9 +11,9 @@ public abstract class LogRunnable implements Runnable {
 
     @Override
     public final void run() {
-        MyLog.d("ZqEngineKit", log + " begin");
+        MyLog.w("ZqEngineKit", log + " begin");
         realRun();
-        MyLog.d("ZqEngineKit", log + " end");
+        MyLog.w("ZqEngineKit", log + " end");
     }
 
     public abstract void realRun();

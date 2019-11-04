@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Interceptor;
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback;
 import com.alibaba.android.arouter.facade.template.IInterceptor;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.core.permission.SkrAudioPermission;
 import com.module.RouterConstants;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.LoginActivity;
@@ -15,8 +16,8 @@ import com.common.core.login.execption.UnloginException;
 import com.common.log.MyLog;
 
 @Interceptor(priority = 1)
-public class JudgeLoginInterceptor implements IInterceptor {
-    public final String TAG = "JudgeLoginInterceptor";
+public class SkrArouterInterceptor implements IInterceptor {
+    public final String TAG = "SkrArouterInterceptor";
 
     /**
      * 我们经常需要在目标页面中配置一些属性，比方说"是否需要登陆"之类的
@@ -26,6 +27,7 @@ public class JudgeLoginInterceptor implements IInterceptor {
      * @Route(path = "/test/activity", extras = Consts.XXXX)
      */
     public static final int NO_NEED_LOGIN = 0x0001;
+//    SkrAudioPermission skrAudioPermission = new SkrAudioPermission();
 
     @Override
     public void process(Postcard postcard, InterceptorCallback callback) {
@@ -36,7 +38,13 @@ public class JudgeLoginInterceptor implements IInterceptor {
         }
 
         if (UserAccountManager.INSTANCE.hasAccount()) {
-            callback.onContinue(postcard);
+//            if(postcard.getPath().equals(RouterConstants.ACTIVITY_AUDITION_ROOM)){
+//                skrAudioPermission.ensurePermission({
+//                        callback.onContinue(postcard);
+//                },true);
+//            }else{
+                callback.onContinue(postcard);
+//            }
         } else {
             // 不需要登陆
             boolean noNeedLogin = (postcard.getExtra() & NO_NEED_LOGIN) > 0;
