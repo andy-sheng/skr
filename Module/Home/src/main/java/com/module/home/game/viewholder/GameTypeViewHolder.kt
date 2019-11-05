@@ -3,18 +3,11 @@ package com.module.home.game.viewholder
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
-import android.widget.ImageView
-import com.common.log.MyLog
-import com.common.utils.U
-import com.common.view.AnimateClickListener
-import com.common.view.DebounceViewClickListener
-import com.component.busilib.friends.SpecialModel
 import com.module.home.R
 import com.module.home.game.adapter.ClickGameListener
 import com.module.home.game.adapter.GrabGameAdapter
 import com.module.home.game.model.GameTypeModel
 import com.module.home.game.model.GrabSpecialModel
-import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 
 class GameTypeViewHolder(itemView: View,
                          val listener: ClickGameListener) : RecyclerView.ViewHolder(itemView) {

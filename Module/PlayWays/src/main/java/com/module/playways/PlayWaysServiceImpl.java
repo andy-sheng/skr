@@ -29,6 +29,7 @@ import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel;
 import com.module.playways.event.GrabChangeRoomEvent;
+import com.module.playways.friendroom.FriendRoomGameView;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabMatchActivity;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
@@ -254,6 +255,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         map.put("src", EJoinRoomSrc.JRS_SUGGEST.getValue());
 
         goMicRoom(map);
+    }
+
+    @Override
+    public IFriendRoomView getFriendRoomView(Context context) {
+        return new FriendRoomGameView(context);
     }
 
     private void goMicRoom(HashMap map) {

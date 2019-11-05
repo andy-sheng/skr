@@ -1,6 +1,7 @@
 package com.module.playways;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 
@@ -34,5 +35,7 @@ public interface IPlaywaysModeService extends IProvider {
     void jumpMicRoom(int roomID);
 
     void jumpMicRoomBySuggest(int roomID);
+
+    IFriendRoomView getFriendRoomView(Context context);
 
 }
