@@ -4,71 +4,63 @@ package com.engine.statistics;
 import com.common.log.MyLog;
 
 
-public class SDataManager
-{
-    /**
-     * singleton of SDataManager
-     */
-    private static SDataManager gDMInstance = null;
+public class SDataManager {
+
+    private String TAG = "SDATA_MANAGER";
+
+    private String PREFIX_4_AGORA_RTC = "[" + TAG + "_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
     private SAgoraDataHolder mADHolder = null; //Agora Data Holder
 
-
-    private String TAG = "SDATA_MANAGER";
-    private String PREFIX_4_AGORA_RTC = "["+TAG+"_FLUSHED]"; //"[SDATA_MANAGER FLUSHED]"
-
-    private SDataManager(){
+    private SDataManager() {
         mBasicInfo = new SDataMgrBasicInfo();
 
         mADHolder = new SAgoraDataHolder();
         mADHolder.setLinePrefix(PREFIX_4_AGORA_RTC);
     }
 
-    public static synchronized SDataManager instance() {
-        if (null == gDMInstance) {
-            gDMInstance = new SDataManager();
-        }
-        return gDMInstance;
+    private static class SDataManagerHolder {
+        private static final SDataManager INSTANCE = new SDataManager();
     }
 
 
-    //用户基本信息
-    public static class SDataMgrBasicInfo {
-        public long userID  = -1;  //Skr的用户ID//退出的时候要复位
-        public String channelID ="no-channel";//退出的时候要复位
-        public int channelJoinElapsed= -1; //退出的时候要复位
+    public static final SDataManager getInstance() {
+        return SDataManagerHolder.INSTANCE;
     }
 
 
-
-    public SDataManager setBasicInfo(SDataMgrBasicInfo info){
-        mBasicInfo.userID   = info.userID;
+    public SDataManager setBasicInfo(SDataMgrBasicInfo info) {
+        mBasicInfo.userID = info.userID;
 //        mBasicInfo.userName = info.userName;
         return this;
     }
 
-    public synchronized SDataManager setChannelID(String channelID) {
+    public SDataManager setChannelID(String channelID) {
         mBasicInfo.channelID = channelID;
         return this;
     }
-    public synchronized SDataManager setUserID(int userID) {
+
+    public SDataManager setUserID(int userID) {
         mBasicInfo.userID = userID;
         return this;
     }
-    public synchronized SDataManager setChannelJoinElipse(int elapsed) {
+
+    public SDataManager setChannelJoinElipse(int elapsed) {
         mBasicInfo.channelJoinElapsed = elapsed;
         return this;
     }
-    public synchronized SAgoraDataHolder getAgoraDataHolder() {
+
+    public SAgoraDataHolder getAgoraDataHolder() {
         return mADHolder;
     }
 
 
     public final static int FLUSH_MODE_FILE = 0x00000001;
     public final static int FLUSH_MODE_UPLOAD = 0x00000002; //not support now!
-    public synchronized SDataManager flush(int flushMode) {
+
+    public SDataManager flush(int flushMode) {
 
         StringBuilder logStr = new StringBuilder();
 
@@ -90,9 +82,15 @@ public class SDataManager
         return this;
     }
 
-    public boolean need2Flush(){
+    public boolean need2Flush() {
         return (mADHolder.need2Flush());
     }
 
+    //用户基本信息
+    public static class SDataMgrBasicInfo {
+        public long userID = -1;  //Skr的用户ID//退出的时候要复位
+        public String channelID = "no-channel";//退出的时候要复位
+        public int channelJoinElapsed = -1; //退出的时候要复位
+    }
 
 }

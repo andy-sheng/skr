@@ -161,7 +161,7 @@ public class AgoraRTCAdapter {
                         case LM_MSG_UPDATE_PING_INFO: {
                             String baiduURL = "www.baidu.com";
                             Skr.PingInfo pingInfo = SUtils.ping(baiduURL);
-                            SDataManager.instance().getAgoraDataHolder().addPingInfo(pingInfo);
+                            SDataManager.getInstance().getAgoraDataHolder().addPingInfo(pingInfo);
 
                             if (mRunStatistic) {
                                 Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
@@ -176,7 +176,7 @@ public class AgoraRTCAdapter {
                             if (null != msg.obj && msg.obj instanceof String) {
                                 nwInfo.extraInfo = (String) msg.obj;
                             }
-                            SDataManager.instance().getAgoraDataHolder().addNetworkInfo(nwInfo);
+                            SDataManager.getInstance().getAgoraDataHolder().addNetworkInfo(nwInfo);
                             /////////////////////////////////////////////////////////
 //                                SDataManager.instance().flush(mDataFlushMode);
 //                                Log.d("MyDemo", nwInfo.toString());
@@ -184,11 +184,13 @@ public class AgoraRTCAdapter {
                         }
                         break;
                         case LM_MSG_FLUSH_LOG: {
-                            if (SDataManager.instance().need2Flush())
-                                SDataManager.instance().flush(mDataFlushMode);
+                            if (SDataManager.getInstance().need2Flush()) {
+                                SDataManager.getInstance().flush(mDataFlushMode);
+                            }
 
-                            if (mRunStatistic)
+                            if (mRunStatistic) {
                                 mLogMonHandler.sendMessageDelayed(mLogMonHandler.obtainMessage(LM_MSG_FLUSH_LOG), 2000);
+                            }
                         }
                         break;
                         default:
@@ -228,7 +230,7 @@ public class AgoraRTCAdapter {
             }
         }
         mRunStatistic = false;
-        SDataManager.instance().flush(mDataFlushMode);
+        SDataManager.getInstance().flush(mDataFlushMode);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -396,7 +398,7 @@ public class AgoraRTCAdapter {
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
             stopStatistics();
-            SDataManager.instance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
+            SDataManager.getInstance().setChannelID("no-channel").setChannelJoinElipse(-1).setUserID(-1);
             mInAudioStatistic = false; //下次启动采集的时候看到true，会记录时时间戳
             if (mOutCallback != null) {
                 mOutCallback.onLeaveChannel(stats);
@@ -679,7 +681,7 @@ public class AgoraRTCAdapter {
                     }
 
 
-                    long curTime = System.currentTimeMillis();
+                    long curTime = System.nanoTime() / 1000 / 1000;
                     if (mLocalAudioFormat == null) {
                         MyLog.i(TAG, "mLocalAudioFormat changed");
                         mAudioCBCount = 0;
@@ -709,9 +711,9 @@ public class AgoraRTCAdapter {
                     ByteBuffer byteBuffer = ByteBuffer.wrap(samples, 0, size);
                     byteBuffer.order(ByteOrder.nativeOrder());
 
-                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, curTime);
+                    SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, System.currentTimeMillis());
                     if (null != smpInfo) { //说明达到一次统计间隔
-                        SDataManager.instance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo, curTime);
+                        SDataManager.getInstance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo, curTime);
                         smpInfo.reset();
                     }
 
