@@ -89,7 +89,7 @@ class GameAdapter(internal var mBaseFragment: BaseFragment, val listener: ClickG
         when (val obj = mDataList[position]) {
             is BannerModel -> (holder as BannerViewHolder).bindData(obj)
             is FuncationModel -> (holder as FuncationAreaViewHolder).bindData(obj)
-            is RecommendRoomModel -> (holder as RecommendRoomViewHolder).bindData(obj)
+//            is RecommendRoomModel -> (holder as RecommendRoomViewHolder).bindData(obj)
             is GameTypeModel -> (holder as GameTypeViewHolder).bindData(obj)
         }
     }

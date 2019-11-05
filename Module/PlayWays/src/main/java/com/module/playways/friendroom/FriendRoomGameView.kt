@@ -1,4 +1,4 @@
-package com.module.home.game.view
+package com.module.playways.friendroom
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
@@ -30,18 +30,19 @@ import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
-import com.module.home.R
 import com.module.playways.IPlaywaysModeService
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.component.dialog.InviteFriendDialog
+import com.module.playways.IFriendRoomView
+import com.module.playways.R
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.friend_room_view_layout.view.*
 
 /**
- * 好友房(暂时不用)
+ * 好友房
  */
-class FriendRoomGameView : RelativeLayout {
+class FriendRoomGameView : RelativeLayout, IFriendRoomView {
 
     val mTag = "FriendRoomGameView"
     val playerTag = mTag + hashCode()
@@ -195,7 +196,7 @@ class FriendRoomGameView : RelativeLayout {
     /**
      * flag标记是不是要立马更新
      */
-    fun initData(flag: Boolean) {
+    override fun initData(flag: Boolean) {
         if (mRecommendInterval <= 0) {
             mRecommendInterval = 15
         }
@@ -226,11 +227,11 @@ class FriendRoomGameView : RelativeLayout {
                 })
     }
 
-    fun stopTimer() {
+    override fun stopTimer() {
         mRecommendTimer?.dispose()
     }
 
-    fun stopPlay() {
+    override fun stopPlay() {
         SinglePlayer.stop(playerTag)
         mFriendRoomVeritAdapter?.stopPlay()
     }
@@ -372,7 +373,7 @@ class FriendRoomGameView : RelativeLayout {
         super.onDetachedFromWindow()
     }
 
-    fun destory() {
+    override fun destory() {
         SinglePlayer.removeCallback(playerTag)
         SinglePlayer.reset(playerTag)
         mRecommendTimer?.dispose()
