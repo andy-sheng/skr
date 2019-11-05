@@ -1,13 +1,12 @@
 package com.module.playways.mic.room.view
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.TranslateAnimation
 import android.widget.ImageView
-
 import com.common.utils.U
 import com.module.playways.R
 import com.module.playways.listener.AnimationListener
@@ -15,7 +14,7 @@ import com.module.playways.listener.AnimationListener
 
 class MicTurnInfoCardView : ConstraintLayout {
 
-    val TAG = "TurnInfoCardView"
+    val TAG = "MicTurnInfoCardView"
 
     constructor(context: Context) : super(context) {}
 
@@ -25,8 +24,8 @@ class MicTurnInfoCardView : ConstraintLayout {
 
     private val resultIv: ImageView
 
-    internal var mEnterTranslateAnimation: TranslateAnimation? = null // 飞入的进场动画
-    internal var mLeaveTranslateAnimation: TranslateAnimation? = null // 飞出的离场动画
+    internal var mEnterTranslateAnimation: ObjectAnimator? = null // 飞入的进场动画
+    internal var mLeaveTranslateAnimation: ObjectAnimator? = null // 飞出的离场动画
 
     var mListener: AnimationListener? = null
 
@@ -47,47 +46,41 @@ class MicTurnInfoCardView : ConstraintLayout {
 
     // 入场动画
     private fun animationEnter() {
+        visibility = View.VISIBLE
         if (mEnterTranslateAnimation == null) {
-            mEnterTranslateAnimation = TranslateAnimation((-U.getDisplayUtils().screenWidth).toFloat(), 0.0f, 0.0f, 0.0f)
+            mEnterTranslateAnimation = ObjectAnimator.ofFloat(this, "translationX", -U.getDisplayUtils().screenWidth.toFloat(), 0.0f)
             mEnterTranslateAnimation?.duration = 200
         }
-        mEnterTranslateAnimation?.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
 
-            override fun onAnimationEnd(animation: Animation?) {
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-                visibility = View.VISIBLE
-            }
-        })
-        this.startAnimation(mEnterTranslateAnimation)
+        mEnterTranslateAnimation?.start()
     }
 
     // 离场动画
     private fun animationLeave() {
         if (this != null && this.visibility == View.VISIBLE) {
             if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = TranslateAnimation(0.0f, U.getDisplayUtils().screenWidth.toFloat(), 0.0f, 0.0f)
+                mLeaveTranslateAnimation = ObjectAnimator.ofFloat(this, "translationX", 0.0f, U.getDisplayUtils().screenWidth.toFloat())
                 mLeaveTranslateAnimation?.duration = 200
             }
-            mLeaveTranslateAnimation?.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationStart(animation: Animation) {
+            mLeaveTranslateAnimation?.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator?) {
 
                 }
 
-                override fun onAnimationEnd(animation: Animation) {
+                override fun onAnimationEnd(animation: Animator?) {
                     clearAnimation()
                     visibility = View.GONE
                     mListener?.onFinish()
                 }
 
-                override fun onAnimationRepeat(animation: Animation) {
+                override fun onAnimationCancel(animation: Animator?) {
+                }
 
+                override fun onAnimationStart(animation: Animator?) {
                 }
             })
-            this.startAnimation(mLeaveTranslateAnimation)
+
+            mLeaveTranslateAnimation?.start()
         } else {
             clearAnimation()
             visibility = View.GONE
@@ -101,10 +94,10 @@ class MicTurnInfoCardView : ConstraintLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mEnterTranslateAnimation?.setAnimationListener(null)
+        mEnterTranslateAnimation?.removeAllListeners()
         mEnterTranslateAnimation?.cancel()
 
-        mLeaveTranslateAnimation?.setAnimationListener(null)
+        mLeaveTranslateAnimation?.removeAllListeners()
         mLeaveTranslateAnimation?.cancel()
 
     }

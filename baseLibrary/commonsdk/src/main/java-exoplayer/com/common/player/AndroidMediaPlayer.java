@@ -20,7 +20,7 @@ import java.io.IOException;
  * 有的手机播放本地 aac 会没法播放，一 start 立马回调 onCompletion
  */
 public class AndroidMediaPlayer extends BasePlayer {
-    public static String TAG = "AndroidMediaPlayer";
+    public String TAG = "AndroidMediaPlayer";
 
     // 为了预加载使用
     private static MediaPlayer sPrePlayer;

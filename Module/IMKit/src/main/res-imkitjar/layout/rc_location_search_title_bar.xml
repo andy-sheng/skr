@@ -31,7 +31,6 @@
         android:textColor="#ffffff"
         android:focusableInTouchMode="true"
         android:maxLines="1"
-        android:singleLine="true"
         android:textSize="16sp"
         android:imeOptions="actionSearch"
         android:inputType="textNoSuggestions"

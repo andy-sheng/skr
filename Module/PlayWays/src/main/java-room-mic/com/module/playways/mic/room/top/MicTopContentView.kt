@@ -1,6 +1,8 @@
 package com.module.playways.mic.room.top
 
 import android.content.Context
+import android.os.Handler
+import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,6 +14,7 @@ import com.common.utils.dp
 import com.common.view.DebounceViewClickListener
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import org.greenrobot.eventbus.EventBus
@@ -20,6 +23,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MicTopContentView : ConstraintLayout {
     val TAG = "MicTopContentView"
+    val REFRESH_DATA = 1
 
     val arrowIv: ImageView
     val recyclerView: RecyclerView
@@ -30,6 +34,14 @@ class MicTopContentView : ConstraintLayout {
     private var mRoomData: MicRoomData? = null
 
     internal var mListener: Listener? = null
+
+    internal var mUiHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            if (REFRESH_DATA == msg?.what) {
+                initData(msg.obj as String)
+            }
+        }
+    }
 
     constructor(context: Context) : super(context) {}
 
@@ -98,8 +110,12 @@ class MicTopContentView : ConstraintLayout {
             }
         }
         if (targetPosition >= 0) {
-            val width = recyclerView.findViewHolderForAdapterPosition(targetPosition).itemView.measuredHeight
-            return (targetPosition * width + width * 0.5).toInt()
+            return if (targetPosition >= 5) {
+                -1
+            } else {
+                val width = recyclerView.findViewHolderForAdapterPosition(targetPosition).itemView.measuredHeight
+                (targetPosition * width + width * 0.5).toInt()
+            }
         }
         return 26.dp()
     }
@@ -116,16 +132,38 @@ class MicTopContentView : ConstraintLayout {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
+
+        mUiHandler.removeCallbacksAndMessages(null)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicRoundChangeEvent) {
-        initData("MicRoundChangeEvent")
+        MyLog.d(TAG, "onEvent event = $event")
+        mUiHandler.removeMessages(REFRESH_DATA)
+        val msg = mUiHandler.obtainMessage()
+        msg.what = REFRESH_DATA
+        msg.obj = "MicRoundChangeEvent"
+        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
-        initData("MicPlaySeatUpdateEvent")
+        MyLog.d(TAG, "onEvent event = $event")
+        mUiHandler.removeMessages(REFRESH_DATA)
+        val msg = mUiHandler.obtainMessage()
+        msg.what = REFRESH_DATA
+        msg.obj = "MicPlaySeatUpdateEvent"
+        mUiHandler.sendMessageDelayed(msg, 500)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicHomeOwnerChangeEvent) {
+        MyLog.d(TAG, "onEvent event = $event")
+        mUiHandler.removeMessages(REFRESH_DATA)
+        val msg = mUiHandler.obtainMessage()
+        msg.what = REFRESH_DATA
+        msg.obj = "MicHomeOwnerChangeEvent"
+        mUiHandler.sendMessageDelayed(msg, 500)
     }
 
     fun setListener(listener: Listener) {

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:VoiceChartView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:avatarView="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/view_52_dp"
     android:layout_height="47dp">
 
@@ -17,14 +18,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.common.image.fresco.BaseImageView
+    <com.component.busilib.view.AvatarView
         android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_32_dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_marginLeft="@dimen/view_5_dp"
         android:layout_marginTop="@dimen/view_6_dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        avatarView:borderColor="@color/white"
+        avatarView:borderWidth="@dimen/view_2_dp" />
 
     <ImageView
         android:id="@+id/empty_iv"
@@ -53,16 +56,15 @@
 
     <com.component.busilib.view.VoiceChartView
         android:id="@+id/voice_chart_view"
-        android:layout_width="@dimen/view_0_dp"
+        android:layout_width="@dimen/view_16_dp"
         android:layout_height="@dimen/view_20_dp"
-        android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginRight="@dimen/view_5_dp"
+        android:layout_marginLeft="@dimen/view_1_dp"
         VoiceChartView:chartBackColor="@color/white"
         VoiceChartView:chartDuration="200"
         VoiceChartView:chartFitWidth="true"
         VoiceChartView:chartHeight="@dimen/view_16_dp"
         VoiceChartView:chartMarginLeft="@dimen/view_2_dp"
-        VoiceChartView:chartWidth="@dimen/view_1_dp"
+        VoiceChartView:chartWidth="@dimen/view_2_dp"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
         app:layout_constraintLeft_toLeftOf="@+id/avatar_iv"
         app:layout_constraintRight_toRightOf="@+id/avatar_iv"

@@ -31,15 +31,15 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.SkrConfig;
 import com.component.busilib.view.SkrProgressView;
-import com.module.playways.R;
-import com.module.playways.room.song.model.SongModel;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.component.dialog.ShareWorksDialog;
 import com.component.lyrics.LyricsManager;
 import com.component.lyrics.LyricsReader;
 import com.component.lyrics.widget.AbstractLrcView;
 import com.component.lyrics.widget.ManyLyricsView;
 import com.component.person.producation.model.ProducationModel;
+import com.module.playways.R;
+import com.module.playways.room.song.model.SongModel;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -78,6 +78,8 @@ public class PlayRecordFragment extends BaseFragment {
 
     ShareWorksDialog mShareWorksDialog;
     SkrProgressView mProgressView;
+
+    boolean mIsOnComplete = false;
 
     @Override
     public int initView() {
@@ -139,6 +141,12 @@ public class PlayRecordFragment extends BaseFragment {
                 } else {
                     // 播放
                     mManyLyricsView.resume();
+                    if (mIsOnComplete) {
+                        mPlayer.startPlay(mPath);
+                        mIsOnComplete = false;
+                    } else {
+                        mPlayer.resume();
+                    }
                     mPlayer.resume();
                     mIsPlay = true;
                     mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_zanting), null, null);
@@ -258,6 +266,7 @@ public class PlayRecordFragment extends BaseFragment {
                 @Override
                 public void onCompletion() {
                     super.onCompletion();
+                    mIsOnComplete = true;
                     mManyLyricsView.seekTo(mSongModel.getBeginMs());
                     mUiHanlder.postDelayed(new Runnable() {
                         @Override
@@ -310,7 +319,7 @@ public class PlayRecordFragment extends BaseFragment {
         map.put("category", ProducationModel.TYPE_PRACTICE);
         if (mDuration <= 0) {
             // 这是个耗时操作
-            mDuration = U.getMediaUtils().getDuration(mPath,0);
+            mDuration = U.getMediaUtils().getDuration(mPath, 0);
         }
         // 单位毫秒
         map.put("duration", mDuration);

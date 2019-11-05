@@ -22,6 +22,7 @@ import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
+import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.room.song.fragment.GrabSearchSongFragment
 import com.module.playways.room.song.model.SongModel
 import com.module.playways.songmanager.SongManagerActivity
@@ -222,20 +223,32 @@ class MicSongManageFragment : BaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicRoundChangeEvent) {
+        if (event.newRound?.singBySelf() == true || event.lastRound?.singBySelf() == true) {
+            // TODO 当前页面被选中
+            micSongManageView?.isSongChange = true
+            if (viewpager.currentItem == 0) {
+                // 当前页面就是已点，直接去更新吧
+                micSongManageView?.tryLoad()
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AddSongEvent) {
         // 想唱或者发起邀请
         val map = HashMap<String, Any>()
         map["itemID"] = event.songModel.itemID
         map["roomID"] = mRoomData?.gameId ?: 0
         // pk的歌曲
-        if(event.songModel.playType == StandPlayType.PT_SPK_TYPE.value){
+        if (event.songModel.playType == StandPlayType.PT_SPK_TYPE.value) {
             map["wantSingType"] = EMWantSingType.MWST_SPK.value
-        }else if(event.songModel.playType == StandPlayType.PT_CHO_TYPE.value){
+        } else if (event.songModel.playType == StandPlayType.PT_CHO_TYPE.value) {
             map["wantSingType"] = EMWantSingType.MWST_CHORUS.value
-        }else{
-            if(mRoomData?.isAccEnable==true && event.songModel?.acc.isNotEmpty()){
+        } else {
+            if (mRoomData?.isAccEnable == true) {
                 map["wantSingType"] = EMWantSingType.MWST_ACCOMPANY.value
-            }else{
+            } else {
                 map["wantSingType"] = EMWantSingType.MWST_COMMON.value
             }
         }
@@ -250,6 +263,7 @@ class MicSongManageFragment : BaseFragment() {
             }
         }
     }
+
 
     override fun useEventBus(): Boolean {
         return true

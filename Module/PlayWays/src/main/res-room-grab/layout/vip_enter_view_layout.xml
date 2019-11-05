@@ -73,7 +73,10 @@
             android:id="@+id/honor_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/view_49_dp"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/view_250_dp"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/view_64_dp"
             android:paddingTop="@dimen/view_4_dp"
             android:paddingRight="@dimen/view_11_dp"
             android:paddingBottom="@dimen/view_4_dp"
@@ -96,6 +99,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="@dimen/view_19_dp"
+            android:layout_height="@dimen/view_17_dp"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:background="@drawable/vip_enter_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/honor_avatar"
+            app:layout_constraintLeft_toRightOf="@+id/honor_avatar"
+            app:layout_constraintTop_toTopOf="@+id/honor_avatar" />
 
         <com.common.image.fresco.BaseImageView
             android:id="@+id/honor_avatar"

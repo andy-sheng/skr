@@ -1207,7 +1207,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
-                    SDataManager.instance().getAgoraDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
+                    SDataManager.getInstance().getAgoraDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
 
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.d(TAG, "伴奏路径非法");
@@ -1382,18 +1382,18 @@ public class ZqEngineKit implements AgoraOutCallback {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         MyLog.d(TAG, "PlayTimeListener accept ts=" + aLong);
-                        int currentPostion = getAudioMixingCurrentPosition();
-                        mConfig.setCurrentMusicTs(currentPostion);
+                        int currentPosition = getAudioMixingCurrentPosition();
+                        mConfig.setCurrentMusicTs(currentPosition);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
                         if (duration < 0) {
                             duration = getAudioMixingDuration();
                         }
-                        if (currentPostion < duration) {
+                        if (currentPosition < duration) {
                             EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER);
-                            engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPostion, duration);
+                            engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPosition, duration);
                             EventBus.getDefault().post(engineEvent);
                         } else {
-                            MyLog.d(TAG, "playtime不合法,currentPostion=" + currentPostion + " duration=" + duration);
+                            MyLog.d(TAG, "playtime不合法,currentPostion=" + currentPosition + " duration=" + duration);
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -1514,7 +1514,7 @@ public class ZqEngineKit implements AgoraOutCallback {
         if (mCustomHandlerThread != null) {
             mConfig.setRecording(true);
             mCustomHandlerThread.post(new LogRunnable("startAudioRecording" + " path=" + path +
-                    " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel) {
+                    " recordHumanVoice=" + recordHumanVoice + " mInChannel=" + mInChannel+" mConfig.isUseExternalAudioRecord()="+mConfig.isUseExternalAudioRecord()) {
                 @Override
                 public void realRun() {
                     File file = new File(path);

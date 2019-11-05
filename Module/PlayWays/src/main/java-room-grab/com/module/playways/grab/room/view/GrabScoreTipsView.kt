@@ -12,6 +12,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel
 import com.module.playways.grab.room.model.GrabScoreTipMsgModel
 import com.module.playways.room.room.score.bar.ScoreTipsView
 import com.module.playways.R
+import com.module.playways.room.data.H
 
 class GrabScoreTipsView : RelativeLayout {
 
@@ -35,34 +36,33 @@ class GrabScoreTipsView : RelativeLayout {
         super.onDetachedFromWindow()
     }
 
-    fun setRoomData(roomData: GrabRoomData) {
-        mRoomData = roomData
-    }
-
     fun updateScore(score1: Int, songLineNum: Int) {
         MyLog.d(mTag, "updateScore score1=$score1 songLineNum=$songLineNum")
 
-        val gameConfigModel = mRoomData?.grabConfigModel
         val item = ScoreTipsView.Item()
+        var scoreTipMsgModelList: List<GrabScoreTipMsgModel>? = null
 
-        if (gameConfigModel != null) {
-            // 总分是这个肯定没错
-            val scoreTipMsgModelList = gameConfigModel.qScoreTipMsg
-            if (scoreTipMsgModelList != null) {
-                for (m in scoreTipMsgModelList) {
-                    if (score1 >= m.fromScore && score1 < m.toScore) {
-                        // 命中
-                        when (m.tipType) {
-                            0 -> {
-                            }
-                            1 -> item.level = ScoreTipsView.Level.Grab_renzhen
-                            2 -> item.level = ScoreTipsView.Level.Grab_jiayou
-                            3 -> item.level = ScoreTipsView.Level.Grab_bucuo
-                            4 -> item.level = ScoreTipsView.Level.Grab_taibang
-                            5 -> item.level = ScoreTipsView.Level.Grab_wanmei
+        if (H.isGrabRoom()) {
+            scoreTipMsgModelList = H.grabRoomData?.grabConfigModel?.qScoreTipMsg
+        }
+        if (H.isMicRoom()) {
+            scoreTipMsgModelList = H.micRoomData?.configModel?.qScoreTipMsg
+        }
+        // 总分是这个肯定没错
+        if (scoreTipMsgModelList?.isNotEmpty()==true) {
+            for (m in scoreTipMsgModelList) {
+                if (score1 >= m.fromScore && score1 < m.toScore) {
+                    // 命中
+                    when (m.tipType) {
+                        0 -> {
                         }
-                        break
+                        1 -> item.level = ScoreTipsView.Level.Grab_renzhen
+                        2 -> item.level = ScoreTipsView.Level.Grab_jiayou
+                        3 -> item.level = ScoreTipsView.Level.Grab_bucuo
+                        4 -> item.level = ScoreTipsView.Level.Grab_taibang
+                        5 -> item.level = ScoreTipsView.Level.Grab_wanmei
                     }
+                    break
                 }
             }
         } else {

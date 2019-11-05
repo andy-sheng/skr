@@ -29,12 +29,14 @@ import com.module.playways.doubleplay.pbLocalModel.LocalAgoraTokenInfo;
 import com.module.playways.doubleplay.pbLocalModel.LocalEnterRoomModel;
 import com.module.playways.doubleplay.pbLocalModel.LocalGameSenceDataModel;
 import com.module.playways.event.GrabChangeRoomEvent;
+import com.module.playways.friendroom.FriendRoomGameView;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabMatchActivity;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.mic.match.model.JoinMicRoomRspModel;
 import com.module.playways.mic.room.MicRoomActivity;
 import com.module.playways.mic.room.MicRoomServerApi;
+import com.module.playways.mic.room.event.MicChangeRoomEvent;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
@@ -255,6 +257,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
         goMicRoom(map);
     }
 
+    @Override
+    public IFriendRoomView getFriendRoomView(Context context) {
+        return new FriendRoomGameView(context);
+    }
+
     private void goMicRoom(HashMap map) {
         skrVerifyUtils.checkHasMicAudioPermission(new Runnable() {
             @Override
@@ -266,15 +273,16 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
                             //先跳转
-                            for (Activity activity : U.getActivityUtils().getActivityList()) {
-                                if (activity instanceof MicRoomActivity) {
-                                    activity.finish();
-                                }
-                            }
-
                             JoinMicRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinMicRoomRspModel.class);
                             rsp.setRoomID(rsp.getRoomID());
                             rsp.setGameCreateTimeMs(rsp.getGameCreateTimeMs());
+                            for (Activity activity : U.getActivityUtils().getActivityList()) {
+                                if (activity instanceof MicRoomActivity) {
+                                    MyLog.d(TAG, " 存在排麦房页面了，发event刷新view");
+                                    EventBus.getDefault().post(new MicChangeRoomEvent(rsp));
+                                    return ;
+                                }
+                            }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_ROOM)
                                     .withSerializable("JoinMicRoomRspModel", rsp)
                                     .navigation();

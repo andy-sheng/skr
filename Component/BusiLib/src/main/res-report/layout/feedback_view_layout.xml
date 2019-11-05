@@ -227,7 +227,7 @@
         android:textStyle="bold"
         app:bl_corners_radius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#DFEBFC" />
+        app:bl_solid_color="#B6DAEC" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/content_text_size"

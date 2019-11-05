@@ -29,7 +29,8 @@ import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.matrix.MatrixInit;
-import com.common.umeng.UmengInit;
+import com.common.statistics.talkingdata.TDStatistics;
+import com.common.statistics.umeng.UmengStatistics;
 import com.common.utils.CommonReceiver;
 import com.common.utils.U;
 import com.glidebitmappool.BitmapPoolAdapter;
@@ -85,7 +86,8 @@ public class CommonConfiguration implements ConfigModule {
                 //PgyCrashManager.register();
                 CommonReceiver.register();
                 MyLog.w(TAG, "Umeng begin");
-                UmengInit.init();
+                UmengStatistics.init();
+                TDStatistics.init();
                 MyLog.w(TAG, "Jiguang begin");
 
                 InitManager.initMainThread(new Runnable() {
@@ -171,7 +173,7 @@ public class CommonConfiguration implements ConfigModule {
                  * com.zq.live:channel 是友盟的push的通道，只针对这个进程再init一次就好了
                  */
                 if (U.getProcessName().endsWith(":channel")) {
-                    UmengInit.init();
+                    UmengStatistics.init();
                 } else if (U.getProcessName().endsWith(":pushcore")) {
                     JiGuangPush.init(false);
                 }

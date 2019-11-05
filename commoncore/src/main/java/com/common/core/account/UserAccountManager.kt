@@ -30,22 +30,21 @@ import com.common.rxretrofit.ApiMethods
 import com.common.rxretrofit.ApiObserver
 import com.common.rxretrofit.ApiResult
 import com.common.statistics.StatisticsAdapter
-import com.common.statistics.UmengStatistics
+import com.common.statistics.talkingdata.TDStatistics
+import com.common.statistics.umeng.UmengStatistics
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.module.ModuleServiceManager
 import com.module.common.ICallback
+import com.tendcloud.tenddata.TDAccount
 
 import org.greenrobot.eventbus.EventBus
 
 import java.util.HashMap
 
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Response
 
 
 /**
@@ -225,6 +224,7 @@ object UserAccountManager {
                     override fun process(obj: ApiResult) {
                         if (obj.errno == 0) {
                             val userAccount = parseRsp(obj.data!!, phoneNum)
+                            TDStatistics.onProfileSignIn(userAccount.uid,TDAccount.AccountType.REGISTERED,MyUserInfoManager.nickName,MyUserInfoManager.isFirstLogin)
                             UmengStatistics.onProfileSignIn("phone", userAccount.uid)
                         } else {
                             //U.getToastUtil().showShort(obj.getErrmsg());
@@ -273,8 +273,10 @@ object UserAccountManager {
                         if (obj.errno == 0) {
                             val userAccount = parseRsp(obj.data!!, "")
                             if (mode == 3) {
+                                TDStatistics.onProfileSignIn(userAccount.uid,TDAccount.AccountType.WEIXIN,MyUserInfoManager.nickName,MyUserInfoManager.isFirstLogin)
                                 UmengStatistics.onProfileSignIn("wx", userAccount.uid)
                             } else if (mode == 2) {
+                                TDStatistics.onProfileSignIn(userAccount.uid,TDAccount.AccountType.QQ,MyUserInfoManager.nickName,MyUserInfoManager.isFirstLogin)
                                 UmengStatistics.onProfileSignIn("icon_qq", userAccount.uid)
                             }
                         } else {

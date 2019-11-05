@@ -30,6 +30,7 @@ import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.room.model.LevelResultModel
 import com.module.playways.race.room.model.SaveRankModel
 import com.opensource.svgaplayer.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -63,6 +64,8 @@ class RaceResultActivity : BaseActivity() {
 
     var roomID: Int = -1
     var roundSeq: Int = -1
+
+    var goMatchJob: Job? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.race_result_activity_layout
@@ -117,6 +120,8 @@ class RaceResultActivity : BaseActivity() {
 
         descTv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
+                goMatchJob?.cancel()
+                countDownTv.visibility = View.GONE
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString(RouterConstants.KEY_WEB_URL, "https://fe.inframe.mobi/pages/banner/2p8p3gf3ujzxsw97z.html")
                         .navigation()
@@ -190,17 +195,22 @@ class RaceResultActivity : BaseActivity() {
             // 开始动画
             levelChangeAnimation(begin, middle, object : AnimationListener {
                 override fun onFinish() {
-                    // 是否要用保段动画
-                    if (beginVip.status == endVip.status) {
-                        // 不用变
-                    } else {
-                        setVipInfo(endVip)
-                    }
                     levelSaveAnimationGo(beginSimple, middleSimple, endSimple, object : AnimationListener {
                         override fun onFinish() {
-                            setSimpleSaveInfo(endSimple)
                             launch {
                                 delay(500)  // 等一下
+                                // 是否要用保段动画
+                                if (beginVip.status == endVip.status) {
+                                    // 不用变
+                                } else {
+                                    setVipInfo(endVip)
+                                }
+                                setSimpleSaveInfo(endSimple)
+                                if (checkHasSaveAnimation(beginSimple, middleSimple, endSimple) == 1) {
+                                    U.getToastUtil().showShort("保段成功")
+                                } else if (endVip.status > beginVip.status && endVip.status == SaveRankModel.ESRS_USED) {
+                                    U.getToastUtil().showShort("VIP保段成功")
+                                }
                                 levelChangeAnimation(middle, end, object : AnimationListener {
                                     override fun onFinish() {
 
@@ -217,9 +227,10 @@ class RaceResultActivity : BaseActivity() {
                     ?: 0, raceResultModel.getLastState()?.subRanking ?: 0)
         }
 
-        launch {
+        goMatchJob?.cancel()
+        goMatchJob = launch {
             repeat(8) {
-                countDownTv.text = "${8 - it}后自动进入下一场挑战"
+                countDownTv.text = "${8 - it}s后自动进入下一场挑战"
                 delay(1000)
             }
             goMatchPage()
@@ -240,9 +251,18 @@ class RaceResultActivity : BaseActivity() {
 
     private fun setSimpleSaveInfo(model: SaveRankModel?) {
         when {
-            model?.status == SaveRankModel.ESRS_USED -> setSimpleSaveAreaAlph(0.3f)
-            model?.status == SaveRankModel.ESRS_ENABLE -> setSimpleSaveAreaAlph(1f)
-            else -> setSimpleSaveAreaAlph(1f)
+            model?.status == SaveRankModel.ESRS_USED -> {
+                setSimpleSaveAreaAlph(0.3f)
+                levelSaveDesc.text = "日常保段已使用"
+            }
+            model?.status == SaveRankModel.ESRS_ENABLE -> {
+                setSimpleSaveAreaAlph(1f)
+                levelSaveDesc.text = "日常保段"
+            }
+            else -> {
+                setSimpleSaveAreaAlph(1f)
+                levelSaveDesc.text = "日常保段"
+            }
         }
     }
 

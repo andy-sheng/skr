@@ -28,6 +28,12 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.NoLeakEditText;
+import com.component.busilib.callback.EmptyCallback;
+import com.component.busilib.model.SearchModel;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.invite.adapter.InviteFirendAdapter;
@@ -59,14 +65,17 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     RelativeLayout mSearchArea;
     TextView mCancleTv;
-    EditText mSearchContent;
+    NoLeakEditText mSearchContent;
     RecyclerView mRecyclerView;
 
     InviteFirendAdapter mInviteFirendAdapter;
 
-    PublishSubject<String> mPublishSubject;
+    PublishSubject<SearchModel> mPublishSubject;
 
     InviteSearchPresenter mPresenter;
+
+    private Boolean isAutoSearch = false;      // 标记是否是自动搜索
+    private LoadService mLoadService;
 
     @Override
     public int initView() {
@@ -75,10 +84,10 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mSearchArea = (RelativeLayout) getRootView().findViewById(R.id.search_area);
-        mCancleTv = (TextView) getRootView().findViewById(R.id.cancle_tv);
-        mSearchContent = (EditText) getRootView().findViewById(R.id.search_content);
-        mRecyclerView = (RecyclerView) getRootView().findViewById(R.id.recycler_view);
+        mSearchArea = getRootView().findViewById(R.id.search_area);
+        mCancleTv = getRootView().findViewById(R.id.cancle_tv);
+        mSearchContent = getRootView().findViewById(R.id.search_content);
+        mRecyclerView = getRootView().findViewById(R.id.recycler_view);
 
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         Bundle bundle = getArguments();
@@ -134,7 +143,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             @Override
             public void afterTextChanged(Editable editable) {
                 if (mPublishSubject != null) {
-                    mPublishSubject.onNext(editable.toString());
+                    mPublishSubject.onNext(new SearchModel(editable.toString(), true));
                 }
             }
         });
@@ -149,7 +158,7 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                         return false;
                     }
                     if (mPublishSubject != null) {
-                        mPublishSubject.onNext(keyword);
+                        mPublishSubject.onNext(new SearchModel(keyword, false));
                     }
                     U.getKeyBoardUtils().hideSoftInput(mSearchContent);
                 }
@@ -164,6 +173,16 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
                 U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
         }, 200);
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new EmptyCallback(R.drawable.relation_follow_empty_icon, "空空如也", "#A2C7D9"))
+                .build();
+        mLoadService = mLoadSir.register(mRecyclerView, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+
+            }
+        });
     }
 
 
@@ -171,16 +190,17 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
         mPublishSubject = PublishSubject.create();
         if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             // 粉丝
-            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<SearchModel>() {
                 @Override
-                public boolean test(String s) {
-                    return s.length() > 0;
+                public boolean test(SearchModel s) {
+                    return !TextUtils.isEmpty(s.getSearchContent());
                 }
-            }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
+            }).switchMap(new Function<SearchModel, ObservableSource<ApiResult>>() {
                 @Override
-                public ObservableSource<ApiResult> apply(String s) {
+                public ObservableSource<ApiResult> apply(SearchModel model) {
+                    isAutoSearch = model.isAutoSearch();
                     GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                    return grabRoomServerApi.searchFans(s);
+                    return grabRoomServerApi.searchFans(model.getSearchContent());
                 }
             }), new ApiObserver<ApiResult>() {
                 @Override
@@ -194,16 +214,17 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
             }, this);
         } else {
             // 好友
-            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+            ApiMethods.subscribe(mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<SearchModel>() {
                 @Override
-                public boolean test(String s) {
-                    return s.length() > 0;
+                public boolean test(SearchModel s) {
+                    return !TextUtils.isEmpty(s.getSearchContent());
                 }
-            }).switchMap(new Function<String, ObservableSource<List<UserInfoModel>>>() {
+            }).switchMap(new Function<SearchModel, ObservableSource<List<UserInfoModel>>>() {
                 @Override
-                public ObservableSource<List<UserInfoModel>> apply(String string) {
+                public ObservableSource<List<UserInfoModel>> apply(SearchModel model) {
                     // TODO: 2019/5/23 区分好友和关注
-                    List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(string);
+                    isAutoSearch = model.isAutoSearch();
+                    List<UserInfoModel> userInfoModels = UserInfoLocalApi.searchFollow(model.getSearchContent());
                     UserInfoManager.getInstance().fillUserOnlineStatus(userInfoModels, true);
                     return Observable.just(userInfoModels);
                 }
@@ -220,12 +241,18 @@ public class InviteSearchFragment extends BaseFragment implements IInviteSearchV
     @Override
     public void showUserInfoList(List<UserInfoModel> list) {
         // TODO: 2019/5/23 后续补充
-        if (list != null && list.size() > 0) {
-            mInviteFirendAdapter.getDataList().clear();
-            mInviteFirendAdapter.getDataList().addAll(list);
-            mInviteFirendAdapter.notifyDataSetChanged();
+        mInviteFirendAdapter.getDataList().clear();
+        mInviteFirendAdapter.getDataList().addAll(list);
+        mInviteFirendAdapter.notifyDataSetChanged();
+
+        if (!isAutoSearch && mInviteFirendAdapter.getDataList().isEmpty()) {
+            // 不是自动搜索才有空页面
+            mLoadService.showCallback(EmptyCallback.class);
         }
 
+        if (mInviteFirendAdapter.getDataList() != null && mInviteFirendAdapter.getDataList().size() > 0) {
+            mLoadService.showSuccess();
+        }
     }
 
     @Override

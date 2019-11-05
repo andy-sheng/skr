@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.alibaba.fastjson.JSON
 import com.common.core.myinfo.MyUserInfoManager
+import com.common.core.permission.SkrAudioPermission
 import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
@@ -25,6 +26,7 @@ import com.module.playways.R
 import com.module.playways.mic.room.MicRoomServerApi
 import com.module.playways.mic.room.model.MicUserMusicModel
 import com.module.playways.room.data.H
+import com.module.playways.songmanager.SongManagerActivity
 import com.zq.live.proto.Common.StandPlayType
 import com.zq.live.proto.MicRoom.EMWantSingType
 import com.zq.live.proto.MicRoom.MAddMusicMsg
@@ -58,6 +60,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
     private var leftMargin: Int = 0
 
     private val micRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
+    var agreeInviteListener:(()->Unit)? = null
 
     val grayDrawable: Drawable = DrawableCreator.Builder()
             .setSolidColor(Color.parseColor("#B1AC99"))
@@ -68,6 +71,8 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             .setSolidColor(Color.parseColor("#FFC15B"))
             .setCornersRadius(21.dp().toFloat())
             .build()
+
+    val mSkrAudioPermission = SkrAudioPermission()
 
     override fun init(parentView: View) {
         // 指向某个view的三角形
@@ -87,12 +92,22 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         resultDesc = parentView.findViewById(R.id.result_desc)
 
         agreeTv?.setAnimateDebounceViewClickListener {
-            agreeInvite()
+            agreeInviteListener?.invoke()
         }
     }
 
     override fun layoutDesc(): Int {
         return R.layout.mic_invite_view_stub_layout
+    }
+
+    fun startCheckSelfJob(micUserMusicModel: MicUserMusicModel?) {
+        this.userMusicModel = micUserMusicModel
+        cancelJob()
+        inviteJob = launch {
+            delay(8000)
+            // 去拉一下演唱的状态
+            syncInviteResult(micUserMusicModel?.uniqTag)
+        }
     }
 
     fun showInvite(micUserMusicModel: MicUserMusicModel?, left: Int, isInvite: Boolean) {
@@ -101,12 +116,18 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         this.userMusicModel = micUserMusicModel
         setVisibility(View.VISIBLE)
         // 自适应一下箭头的位置
-        if (left >= 0 && left != leftMargin) { // 外面用-1的时候不改变他的位置,且位置改变了
-            val contentLayoutParams = triangleArrow?.layoutParams as ConstraintLayout.LayoutParams?
-            contentLayoutParams?.leftMargin = left
-            triangleArrow?.layoutParams = contentLayoutParams
-            leftMargin = left
+        if (left == -1) {
+            triangleArrow?.visibility = View.GONE
+        } else {
+            triangleArrow?.visibility = View.VISIBLE
+            if (left >= 0 && left != leftMargin) { // 外面用-1的时候不改变他的位置,且位置改变了
+                val contentLayoutParams = triangleArrow?.layoutParams as ConstraintLayout.LayoutParams?
+                contentLayoutParams?.leftMargin = left
+                triangleArrow?.layoutParams = contentLayoutParams
+                leftMargin = left
+            }
         }
+
 
         cancelJob()
         if (isInvite) {
@@ -124,13 +145,13 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
             agreeTv?.isClickable = true
             agreeTv?.background = yellowDrawable
             inviteJob = launch {
-                repeat(5) {
-                    agreeTv?.text = "抢唱${5 - it}s"
+                repeat(8) {
+                    agreeTv?.text = "抢唱${8 - it}s"
                     delay(1000)
                 }
                 agreeTv?.text = "抢唱0s"
                 // 去拉一下演唱的状态
-                syncInviteResult()
+                syncInviteResult(micUserMusicModel?.uniqTag)
             }
         } else {
             if (micUserMusicModel?.peerID != 0) {
@@ -147,9 +168,9 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     val peerModel = H.micRoomData?.getPlayerOrWaiterInfo(micUserMusicModel?.peerID)  // 接收人
                     resultAvatar?.bindData(peerModel)
                     resultName?.text = peerModel?.nicknameRemark
-                    if(micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value){
+                    if (micUserMusicModel?.wantSingType == EMWantSingType.MWST_SPK.value) {
                         resultDesc?.text = "已接受${model?.nicknameRemark}的PK"
-                    }else{
+                    } else {
                         resultDesc?.text = "已加入${model?.nicknameRemark}的合唱"
                     }
                 }
@@ -158,8 +179,6 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
                     setVisibility(View.GONE)
                 }
             } else {
-                resultGroup?.visibility = View.VISIBLE
-                inviteGroup?.visibility = View.GONE
                 // 没人和你合唱 只给发起人
                 setVisibility(View.GONE)
                 if (micUserMusicModel.userID == MyUserInfoManager.uid.toInt()) {
@@ -178,7 +197,7 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         resultJob?.cancel()
     }
 
-    private fun agreeInvite() {
+    fun agreeInvite() {
         launch {
             val map = mutableMapOf(
                     "roomID" to (H.micRoomData?.gameId ?: 0),
@@ -196,12 +215,11 @@ class MicInviteView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
     }
 
-    private fun syncInviteResult() {
+    private fun syncInviteResult(uniqTag: String?) {
         launch {
             val result = subscribe(RequestControl("syncInviteResult", ControlType.CancelLast)) {
                 micRoomServerApi.getAgreeSingResult(H.micRoomData?.gameId
-                        ?: 0, userMusicModel?.uniqTag
-                        ?: "")
+                        ?: 0, uniqTag ?: "")
             }
             if (result.errno == 0) {
                 val userMusicModel = JSON.parseObject(result.data.getString("music"), MicUserMusicModel::class.java)

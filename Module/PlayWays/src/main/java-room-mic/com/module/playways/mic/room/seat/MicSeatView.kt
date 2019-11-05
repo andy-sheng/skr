@@ -21,6 +21,7 @@ import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicSeatModel
@@ -52,6 +53,8 @@ class MicSeatView : ExViewStub {
             if (msg.what == HIDE_PANEL) {
                 mParentView?.clearAnimation()
                 mParentView?.visibility = View.GONE
+            } else if (REFRESH_DATA == msg?.what) {
+                getUserList()
             }
         }
     }
@@ -61,7 +64,19 @@ class MicSeatView : ExViewStub {
     override fun init(parentView: View) {
         bg = parentView.findViewById(R.id.bg)
         recyclerView = parentView.findViewById(R.id.recycler_view)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.layoutManager = object : LinearLayoutManager(context) {
+
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+                try {
+                    //RecyclerView内部崩溃，保护一下
+                    super.onLayoutChildren(recycler, state);
+                } catch (e: IndexOutOfBoundsException) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
         adapter = MicSeatRecyclerAdapter()
         recyclerView?.adapter = adapter
 
@@ -170,6 +185,13 @@ class MicSeatView : ExViewStub {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicHomeOwnerChangeEvent) {
+        callUpdate {
+            getUserList()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MicPlaySeatUpdateEvent) {
         callUpdate {
             getUserList()
@@ -178,7 +200,9 @@ class MicSeatView : ExViewStub {
 
     private fun callUpdate(call: (() -> Unit)) {
         if (View.VISIBLE == mParentView?.visibility) {
-            call.invoke()
+            if (!mUiHandler.hasMessages(REFRESH_DATA)) {
+                mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(REFRESH_DATA), 500)
+            }
         } else {
             callWhenVisible = call
         }
@@ -191,6 +215,7 @@ class MicSeatView : ExViewStub {
 
     companion object {
         val HIDE_PANEL = 1
+        val REFRESH_DATA = 2
         val ANIMATION_DURATION = 300
     }
 }

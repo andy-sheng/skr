@@ -31,9 +31,9 @@ class MicPlayerInfoModel : PlayerInfoModel() {
         if (javaClass != other?.javaClass) return false
         if (!super.equals(other)) return false
 
-//        other as RacePlayerInfoModel
+        other as MicPlayerInfoModel
 //
-//        if (role != other.role) return false
+        if (role != other.role) return false
 
         return true
     }

@@ -3,83 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7088FF">
+    android:background="#CF98FF">
+
+    <ImageView
+        android:layout_width="@dimen/view_147_dp"
+        android:layout_height="@dimen/view_65_dp"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:background="@drawable/mic_room_icon"
+        app:layout_constraintBottom_toTopOf="@id/smart_refresh"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="小K房"
-        app:centerTextColor="@color/white"
-        app:centerTextSize="@dimen/textsize_20_dp"
-        app:centerType="textView"
         app:layout_constraintTop_toTopOf="parent"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
         app:showBottomLine="false"
-        app:statusBarColor="#7088FF"
-        app:titleBarColor="#7088FF" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/quick_begin"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_48_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
-        app:bl_corners_radius="@dimen/view_24_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#FFC971"
-        app:layout_constrainedWidth="true"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        app:layout_constraintBottom_toTopOf="@id/smart_refresh"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/create_room"
-        app:layout_constraintTop_toBottomOf="@id/titlebar" />
+        app:statusBarColor="@color/transparent"
+        app:titleBarColor="@color/transparent" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mic_quick_join_icon"
-        app:layout_constraintLeft_toLeftOf="@id/quick_begin"
-        app:layout_constraintRight_toRightOf="@id/quick_begin"
-        app:layout_constraintTop_toTopOf="@id/quick_begin"
-        app:layout_constraintBottom_toBottomOf="@id/quick_begin"/>
-
-    <com.common.view.ex.ExImageView
         android:id="@+id/create_room"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_48_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        app:bl_corners_radius="@dimen/view_24_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#AEE4FF"
-        app:layout_constrainedWidth="true"
-        android:layout_marginRight="@dimen/view_10_dp"
-        app:layout_constraintLeft_toRightOf="@id/quick_begin"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/quick_begin" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_14_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
         android:background="@drawable/mic_create_room_icon"
-        app:layout_constraintLeft_toLeftOf="@id/create_room"
-        app:layout_constraintRight_toRightOf="@id/create_room"
-        app:layout_constraintTop_toTopOf="@id/create_room"
-        app:layout_constraintBottom_toBottomOf="@id/create_room"/>
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/smart_refresh"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_goneMarginRight="@dimen/view_14_dp" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_0_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quick_begin">
+        app:layout_constraintTop_toBottomOf="@id/titlebar">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:srlAccentColor="@color/white" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:srlAccentColor="@color/white" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

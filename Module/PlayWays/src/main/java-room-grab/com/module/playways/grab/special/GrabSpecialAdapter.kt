@@ -1,6 +1,5 @@
 package com.module.playways.grab.special
 
-import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -10,11 +9,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.view.setAnimateDebounceViewClickListener
+import com.common.image.fresco.FrescoWorker
+import com.common.image.model.BaseImage
+import com.common.image.model.ImageFactory
 import com.common.utils.U
-import com.common.utils.dp
 import com.common.view.ex.ExImageView
-import com.common.view.ex.drawable.DrawableCreator
 import com.component.person.utils.StringFromatUtils
+import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 import com.module.playways.battle.songlist.view.BattleStarView
 
@@ -24,33 +26,6 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
 
     var onClickListener: ((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
     var onClickRankListener: ((model: GrabTagDetailModel?, position: Int) -> Unit)? = null
-
-    val bgDrawable1 = DrawableCreator.Builder()
-            .setGradientColor(Color.parseColor("#FFBEDC"), Color.parseColor("#FF8AB6"), Color.parseColor("#FF8AB6"))
-            .setGradientAngle(315)
-            .setCornersRadius(8.dp().toFloat())
-            .build()
-
-
-    val bgDrawable2 = DrawableCreator.Builder()
-            .setGradientColor(Color.parseColor("#FFE293"), Color.parseColor("#FFC15A"), Color.parseColor("#FFC15A"))
-            .setGradientAngle(315)
-            .setCornersRadius(8.dp().toFloat())
-            .build()
-
-
-    val bgDrawable3 = DrawableCreator.Builder()
-            .setGradientColor(Color.parseColor("#A2E8FF"), Color.parseColor("#69CCFE"), Color.parseColor("#69CCFE"))
-            .setGradientAngle(315)
-            .setCornersRadius(8.dp().toFloat())
-            .build()
-
-
-    val bgDrawable4 = DrawableCreator.Builder()
-            .setGradientColor(Color.parseColor("#BFEFD2"), Color.parseColor("#8ADBA6"), Color.parseColor("#8ADBA6"))
-            .setGradientAngle(315)
-            .setCornersRadius(8.dp().toFloat())
-            .build()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GrabSpecialViewHolder {
@@ -68,21 +43,21 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
 
     inner class GrabSpecialViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
-        val background: ConstraintLayout = item.findViewById(R.id.background)
-        val specialNameTv: TextView = item.findViewById(R.id.special_name_tv)
-        val maskIv: ExImageView = item.findViewById(R.id.mask_iv)
-        val champainIv: ImageView = item.findViewById(R.id.champain_iv)
-        val rankDesc: TextView = item.findViewById(R.id.rank_desc)
-        val starView: BattleStarView = item.findViewById(R.id.star_view)
-        val lockIv: ImageView = item.findViewById(R.id.lock_iv)
-        val playNumTv: TextView = item.findViewById(R.id.play_num_tv)
+
+        private val specialBg: SimpleDraweeView = item.findViewById(R.id.special_bg)
+        private val specialTitleSdv: SimpleDraweeView = item.findViewById(R.id.special_title_sdv)
+        private val playNumTv: TextView = item.findViewById(R.id.play_num_tv)
+        private val rankIv: ImageView = item.findViewById(R.id.rank_iv)
+        private val rankDesc: TextView = item.findViewById(R.id.rank_desc)
+        private val starView: BattleStarView = item.findViewById(R.id.star_view)
+        private val lockIv: ImageView = item.findViewById(R.id.lock_iv)
 
         var mPos = -1
         var model: GrabTagDetailModel? = null
 
         init {
             item.setAnimateDebounceViewClickListener { onClickListener?.invoke(model, mPos) }
-            champainIv.setAnimateDebounceViewClickListener { onClickRankListener?.invoke(model, mPos) }
+            rankIv.setAnimateDebounceViewClickListener { onClickRankListener?.invoke(model, mPos) }
             rankDesc.setAnimateDebounceViewClickListener { onClickRankListener?.invoke(model, mPos) }
         }
 
@@ -90,18 +65,16 @@ class GrabSpecialAdapter : RecyclerView.Adapter<GrabSpecialAdapter.GrabSpecialVi
             this.mPos = position
             this.model = model
 
-            when (position % 4) {
-                1 -> background.setBackground(bgDrawable2)
-                2 -> background.setBackground(bgDrawable3)
-                3 -> background.setBackground(bgDrawable4)
-                else -> background.setBackground(bgDrawable1)
-            }
-            specialNameTv.text = model.tagName
+            FrescoWorker.loadImage(specialBg, ImageFactory.newPathImage(model.cardBg?.url)
+                    .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                    .build<BaseImage>())
+            FrescoWorker.loadImage(specialTitleSdv, ImageFactory.newPathImage(model.cardTitle?.url)
+                    .setScaleType(ScalingUtils.ScaleType.FIT_START)
+                    .build<BaseImage>())
+
             if (!TextUtils.isEmpty(model.rankInfoDesc)) {
-                rankDesc.setTextColor(U.getColor(R.color.black_trans_50))
                 rankDesc.text = model.rankInfoDesc
             } else {
-                rankDesc.setTextColor(U.getColor(R.color.black_trans_20))
                 rankDesc.text = "暂无排名"
             }
             if (!model.showPermissionLock && model.status == GrabTagDetailModel.SST_UNLOCK) {

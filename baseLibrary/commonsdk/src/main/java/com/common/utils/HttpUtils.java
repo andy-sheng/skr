@@ -473,7 +473,7 @@ public class HttpUtils {
      */
     public boolean downloadFileSync(String urlStr, final File outputFile,
                                     boolean needTempFile, OnDownloadProgress progress, int maxSaveSize) {
-        MyLog.d(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + outputFile.getAbsolutePath());
+        MyLog.w(TAG, "downloadFileSync" + " urlStr=" + urlStr + " out=" + outputFile.getAbsolutePath());
         if (Looper.getMainLooper() == Looper.myLooper()) {
             throw new IllegalThreadStateException("cannot downloadFile on mainthread");
         }
@@ -515,6 +515,7 @@ public class HttpUtils {
             int count;
             long downloaded = 0;
             long totalLength = conn.getContentLength();
+            MyLog.w(TAG,"conn.getResponseCode()="+conn.getResponseCode());
             DownloadParams downloadParams = mDownLoadMap.get(urlStr);
             while ((count = input.read(buffer)) != -1) {
                 output.write(buffer, 0, count);

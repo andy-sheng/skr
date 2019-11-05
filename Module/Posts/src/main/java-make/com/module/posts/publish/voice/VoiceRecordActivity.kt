@@ -24,8 +24,10 @@ import com.common.view.DiffuseView
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.friends.VoiceInfoModel
 import com.component.busilib.view.CircleCountDownView
 import com.component.busilib.view.SkrProgressView
+import com.component.person.event.UploadMyVoiceInfo
 import com.module.RouterConstants
 import com.module.posts.R
 import com.module.posts.publish.PostsPublishModel
@@ -34,6 +36,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
 
@@ -45,7 +48,7 @@ class VoiceRecordActivity : BaseActivity() {
 
         const val FROM_POSTS = 1    // 从帖子中来
         const val FROM_PERSON = 2    // 从个人中心来
-        const val FROM_MIC_AUDIO_CHECK = 2    // 从小k房校验来的
+        const val FROM_MIC_AUDIO_CHECK = 3    // 从小k房校验来的
     }
 
     private var from = FROM_POSTS   //默认来源于帖子
@@ -73,7 +76,6 @@ class VoiceRecordActivity : BaseActivity() {
     lateinit var recordDiffuseView: DiffuseView
     lateinit var circleCountDownView: CircleCountDownView
 
-
     lateinit var tipsTv: TextView
     lateinit var progressView: SkrProgressView
 
@@ -89,7 +91,7 @@ class VoiceRecordActivity : BaseActivity() {
         from = intent.getIntExtra("from", FROM_POSTS)
         if (from == FROM_POSTS) {
             recordPath = PostsPublishModel.POSTS_PUBLISH_AUDIO_FILE_PATH
-        } else if (from == FROM_PERSON) {
+        } else if (from == FROM_PERSON || from == FROM_MIC_AUDIO_CHECK) {
             recordPath = File(U.getAppInfoUtils().mainDir, "person_audio_tag.m4a").path
         }
 
@@ -107,7 +109,7 @@ class VoiceRecordActivity : BaseActivity() {
         progressView = findViewById(R.id.progress_view)
         tipsTv = findViewById(R.id.tips_tv)
 
-        if (from == FROM_PERSON) {
+        if (from == FROM_PERSON || from == FROM_MIC_AUDIO_CHECK) {
             tipsTv.visibility = View.VISIBLE
         }
 
@@ -120,7 +122,11 @@ class VoiceRecordActivity : BaseActivity() {
                     startRecord()
                 }, true)
                 STATUS_RECORDING -> {
-                    if ((System.currentTimeMillis() - startRecordTs) < 2 * 1000) {
+                    var minTime = 2 * 1000 // 默认两秒
+                    if (from == FROM_PERSON || from == FROM_MIC_AUDIO_CHECK) {
+                        minTime = 10 * 1000
+                    }
+                    if ((System.currentTimeMillis() - startRecordTs) < minTime) {
                         U.getToastUtil().showShort("太短了，多录制几句吧")
                         return@setOnClickListener
                     }
@@ -140,7 +146,7 @@ class VoiceRecordActivity : BaseActivity() {
                 data.putExtra("duration", myMediaRecorder?.mDuration ?: 0)
                 setResult(Activity.RESULT_OK, data)
                 finish()
-            } else if (from == FROM_PERSON) {
+            } else if (from == FROM_PERSON || from == FROM_MIC_AUDIO_CHECK) {
                 // 上传个人录音
                 progressView.visibility = View.VISIBLE
                 UploadParams.newBuilder(recordPath)
@@ -177,6 +183,8 @@ class VoiceRecordActivity : BaseActivity() {
         ApiMethods.subscribe<ApiResult>(userServerApi.uploadVoiceTag(body), object : ApiObserver<ApiResult>() {
             override fun process(apiResult: ApiResult) {
                 if (apiResult.errno == 0) {
+                    val voiceInfo = JSON.parseObject(apiResult.data.toJSONString(), VoiceInfoModel::class.java)
+                    EventBus.getDefault().post(UploadMyVoiceInfo(voiceInfo))
                     finish()
                     U.getToastUtil().showShort("等待审核中")
                 } else {

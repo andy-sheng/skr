@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -31,6 +32,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
     public static final String KEY_ROOM_TYPE = "key_room_type";
     public static final int ErrNoPublicRoomPermission = 8344139; //达成一唱到底60首，才能开启
     public static final int ErrRealAuth = 8344158; //实名认证未通过
+    public static final int ErrCountNotEnoughtError = 8344403; //普通的次数用完了
 
     ExImageView mIvBack;
     ExImageView mFriendsRoom;
@@ -113,6 +115,37 @@ public class GrabCreateRoomFragment extends BaseFragment {
                                         @Override
                                         public void click(View view) {
                                             mTipsDialogView.dismiss();
+                                        }
+                                    })
+                                    .build();
+                            mTipsDialogView.showByDialog();
+                        } else if (ErrCountNotEnoughtError == result.getErrno()) {
+                            if (mTipsDialogView != null) {
+                                mTipsDialogView.dismiss();
+                            }
+
+                            mTipsDialogView = new TipsDialogView.Builder((BaseActivity) getContext())
+                                    .setMessageTip("开通VIP特权，立即获得更多派对开房权限")
+                                    .setConfirmTip("立即开通")
+                                    .setCancelTip("取消")
+                                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (mTipsDialogView != null) {
+                                                mTipsDialogView.dismiss(true);
+                                            }
+
+                                            ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                    .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                                    .greenChannel().navigation();
+                                        }
+                                    })
+                                    .setCancelBtnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (mTipsDialogView != null) {
+                                                mTipsDialogView.dismiss(true);
+                                            }
                                         }
                                     })
                                     .build();

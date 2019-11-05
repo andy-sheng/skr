@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/rc_item_conversation"
@@ -21,10 +22,9 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
             app:RCCornerRadius="3dp"
-            app:RCDefDrawable="@drawable/avatar_default_b"
-            app:RCShape="circle" />
+            app:RCDefDrawable="@drawable/rc_default_portrait"
+            app:RCShape="square" />
 
         <FrameLayout
             android:id="@+id/rc_unread_view_left"
@@ -68,10 +68,8 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
             app:RCCornerRadius="3dp"
-            app:RCDefDrawable="@drawable/avatar_default_b"
-            app:RCShape="circle" />
+            app:RCDefDrawable="@drawable/rc_default_portrait" />
 
         <FrameLayout
             android:id="@+id/rc_unread_view_right"

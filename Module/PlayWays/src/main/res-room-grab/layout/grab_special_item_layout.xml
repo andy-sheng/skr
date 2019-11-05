@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_120_dp"
-    android:layout_marginBottom="@dimen/view_10_dp">
+    android:layout_height="@dimen/view_136_dp"
+    android:layout_marginLeft="@dimen/view_12_dp"
+    android:layout_marginRight="@dimen/view_12_dp"
+    android:layout_marginBottom="@dimen/view_4_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/special_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/special_title_sdv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_39_dp"
+        android:layout_marginLeft="@dimen/view_26_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        app:layout_constraintLeft_toLeftOf="@id/special_bg"
+        app:layout_constraintTop_toTopOf="@id/special_bg" />
 
     <TextView
-        android:id="@+id/special_name_tv"
+        android:id="@+id/play_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_20_dp"
-        android:textStyle="bold"
+        android:layout_marginTop="@dimen/view_8_dp"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_32_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/mask_iv"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_40_dp"
-        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
-        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/white_trans_80"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintTop_toBottomOf="@id/special_title_sdv"
+        app:layout_constraintLeft_toLeftOf="@id/special_title_sdv" />
 
     <ImageView
-        android:id="@+id/champain_iv"
+        android:id="@+id/rank_iv"
         android:layout_width="@dimen/view_25_dp"
         android:layout_height="@dimen/view_25_dp"
         android:layout_marginLeft="@dimen/view_20_dp"
-        android:background="@drawable/gedan_paihangbang"
-        app:layout_constraintBottom_toBottomOf="@id/mask_iv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mask_iv" />
+        android:layout_marginBottom="@dimen/view_18_dp"
+        android:background="@drawable/grab_special_rank_icon"
+        app:layout_constraintBottom_toBottomOf="@id/special_bg"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/rank_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:textColor="@color/black_trans_50"
-        android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="@id/mask_iv"
-        app:layout_constraintLeft_toRightOf="@id/champain_iv"
-        app:layout_constraintTop_toTopOf="@id/mask_iv" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constraintBottom_toBottomOf="@id/rank_iv"
+        app:layout_constraintLeft_toRightOf="@id/rank_iv"
+        app:layout_constraintTop_toTopOf="@id/rank_iv" />
 
     <com.module.playways.battle.songlist.view.BattleStarView
         android:id="@+id/star_view"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_20_dp"
-        app:layout_constraintBottom_toBottomOf="@id/mask_iv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mask_iv"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/rank_iv"
+        app:layout_constraintRight_toRightOf="@id/special_bg"
+        app:layout_constraintTop_toTopOf="@id/rank_iv" />
 
     <ImageView
         android:id="@+id/lock_iv"
@@ -65,20 +68,9 @@
         android:layout_height="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_20_dp"
         android:background="@drawable/grab_special_lock_icon"
-        app:layout_constraintBottom_toBottomOf="@id/mask_iv"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mask_iv"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/play_num_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_12_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/mask_iv"/>
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/rank_iv"
+        app:layout_constraintRight_toRightOf="@id/special_bg"
+        app:layout_constraintTop_toTopOf="@id/rank_iv" />
 
 </android.support.constraint.ConstraintLayout>

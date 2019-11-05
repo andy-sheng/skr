@@ -259,14 +259,13 @@ public class AcrCloudManager implements IACRCloudListener {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            // 识别次数打点
-                            StatisticsAdapter.recordCountEvent("acr", "recognize", null);
                             long beginTs = System.currentTimeMillis();
                             RecognizeConfig recognizeConfig = AcrCloudManager.this.mRecognizeConfig;
                             if (recognizeConfig != null
                                     && recognizeConfig.getResultListener() != null
                                     && mLength >= BUFFER_LEN) {
-
+                                // 识别次数打点
+                                StatisticsAdapter.recordCountEvent("acr", "recognize", null);
                                 mProcessing = true;
                                 ACRCloudConfig.RecognizerType recType = ACRCloudConfig.RecognizerType.HUMMING;
                                 HashMap hashMap = new HashMap();

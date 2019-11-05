@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -800,6 +801,12 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     public void setStatusBarColor(int color) {
         if (viewStatusBarFill != null) {
             viewStatusBarFill.setBackgroundColor(color);
+        }
+    }
+
+    public void setCenterSearchBgResource(Drawable drawable) {
+        if (rlMainCenterSearch != null) {
+            rlMainCenterSearch.setBackground(drawable);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.module.playways.room.song.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +21,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.playways.room.song.SongSelectServerApi;
@@ -75,6 +78,12 @@ public class GrabSearchSongFragment extends BaseFragment {
 
         mTitlebar = getRootView().findViewById(R.id.titlebar);
         mSearchResult = getRootView().findViewById(R.id.search_result);
+
+        Drawable drawable = new DrawableCreator.Builder()
+                .setSolidColor(Color.parseColor("#576FE3"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(8f))
+                .build();
+        mTitlebar.setCenterSearchBgResource(drawable);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mSearchResult.setLayoutManager(mLinearLayoutManager);
@@ -292,8 +301,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         if (mFrom == SongManagerActivity.TYPE_FROM_GRAB) {
             return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
         } else if (mFrom == SongManagerActivity.TYPE_FROM_MIC) {
-            // todo 等服务器给接口
-            return songSelectServerApi.searchGrabMusicItems(content).subscribeOn(Schedulers.io());
+            return songSelectServerApi.searchMicMusicItems(content).subscribeOn(Schedulers.io());
         } else {
             return songSelectServerApi.searchDoubleMusicItems(content).subscribeOn(Schedulers.io());
         }

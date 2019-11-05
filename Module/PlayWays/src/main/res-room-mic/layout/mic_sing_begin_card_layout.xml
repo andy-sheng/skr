@@ -14,9 +14,9 @@
         android:layout_marginTop="@dimen/view_175_dp"
         android:layout="@layout/grab_sing_begin_tips_card_stub_layout"
         android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        app:layout_constraintTop_toTopOf="parent"
+         />
 
     <!--演唱开始提示的板子页面-->
     <ViewStub
@@ -26,7 +26,6 @@
         android:layout_marginTop="@dimen/view_175_dp"
         android:layout="@layout/mic_sing_begin_tips_card_stub_layout"
         android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+         />
 </merge>

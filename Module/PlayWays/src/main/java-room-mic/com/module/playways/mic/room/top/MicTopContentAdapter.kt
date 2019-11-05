@@ -6,12 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.common.core.account.UserAccountManager
-import com.common.core.avatar.AvatarUtils
-import com.common.image.fresco.BaseImageView
-import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
+import com.component.busilib.view.AvatarView
 import com.component.busilib.view.VoiceChartView
 import com.component.person.event.ShowPersonCardEvent
 import com.module.playways.R
@@ -81,7 +79,7 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var mModel: MicPlayerInfoModel? = null
 
         var circleBgIv: ExImageView
-        var avatarIv: BaseImageView
+        var avatarIv: AvatarView
         var waitingTv: ExTextView
         var voiceChartView: VoiceChartView
         var homeownerIv: ImageView
@@ -123,9 +121,16 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 emptyIv.visibility = View.GONE
             }
 
+            if (model!!.isNextSing && !model!!.isCurSing) {
+                waitingTv.visibility = View.VISIBLE
+            } else {
+                waitingTv.visibility = View.GONE
+            }
+
             if (model!!.isCurSing) {
                 circleBgIv.visibility = View.VISIBLE
                 voiceChartView.visibility = View.VISIBLE
+                waitingTv.visibility = View.GONE
                 voiceChartView.start()
             } else {
                 circleBgIv.visibility = View.GONE
@@ -133,26 +138,16 @@ class MicTopContentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 voiceChartView.stop()
             }
 
-            if (model!!.isNextSing) {
-                waitingTv.visibility = View.VISIBLE
-            } else {
-                waitingTv.visibility = View.GONE
-            }
-
-            if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value) {
+            if (model?.role == EMUserRole.MQUR_ROOM_OWNER.value || model?.userID == mRoomData?.ownerId) {
                 mRoomData?.ownerId = model.userID
                 homeownerIv.visibility = View.VISIBLE
             } else {
                 homeownerIv.visibility = View.GONE
             }
 
-            AvatarUtils.loadAvatarByUrl(avatarIv,
-                    AvatarUtils.newParamsBuilder(mModel?.userInfo?.avatar)
-                            .setGray(mModel?.isOnline == false)
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2f).toFloat())
-                            .setCircle(true)
-                            .build())
+            mModel?.userInfo?.let {
+                avatarIv.bindData(it)
+            }
         }
     }
 

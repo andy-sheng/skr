@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
 
+import com.common.log.MyLog;
 import com.engine.statistics.datastruct.Skr;
 
 import org.json.JSONException;
@@ -275,7 +276,7 @@ public class SUtils
         Skr.PingInfo pingInfo = new Skr.PingInfo();
         try {
             //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
-            p = Runtime.getRuntime().exec("ping -c 1 -w 10 " + url);
+            p = Runtime.getRuntime().exec("ping -c 1 -w 1 " + url);
             int status = p.waitFor();
 
             InputStream input = p.getInputStream();
@@ -301,10 +302,8 @@ public class SUtils
                 pingInfo.isPingOk = false;
                 pingInfo.timeCost = -1;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            MyLog.e(e);
         }
 
         return pingInfo;

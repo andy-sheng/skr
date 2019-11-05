@@ -66,7 +66,7 @@ class MicNormalRoundOverCardView(viewStub: ViewStub) : ExViewStub(viewStub) {
         }
         rankDescTv?.text = lastRoundInfo?.commonRoundResult?.finalMsg
         handler.removeMessages(MSG_HIDE)
-        handler.sendEmptyMessageDelayed(MSG_HIDE, 2000)
+        handler.sendEmptyMessageDelayed(MSG_HIDE, 3000)
     }
 
     override fun setVisibility(visibility: Int) {

@@ -18,6 +18,7 @@ import com.common.statistics.StatisticsAdapter
 import com.common.utils.ActivityUtils
 import com.common.utils.SpanUtils
 import com.common.utils.U
+import com.component.busilib.constans.GameModeType
 import com.component.lyrics.LyricAndAccMatchManager
 import com.component.lyrics.utils.SongResUtils
 import com.engine.EngineEvent
@@ -28,22 +29,22 @@ import com.module.common.ICallback
 import com.module.msg.CustomMsgType
 import com.module.playways.BuildConfig
 import com.module.playways.RoomDataUtils
+import com.module.playways.mic.match.model.JoinMicRoomRspModel
+import com.module.playways.mic.room.MicRoomActivity
 import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
-import com.module.playways.mic.room.event.MicPlaySeatUpdateEvent
+import com.module.playways.mic.room.event.MicChangeRoomEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.event.MicRoundStatusChangeEvent
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.module.playways.mic.room.ui.IMicRoomView
-import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
 import com.module.playways.room.msg.event.MachineScoreEvent
 import com.module.playways.room.msg.event.QChangeRoomNameEvent
-import com.module.playways.room.msg.event.QKickUserResultEvent
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.MicRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentModel
@@ -149,10 +150,36 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
                 }
                 pretendEnterRoom(playerInfoModel)
             }
-            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_ENTER_ROOM)
+            pretendRoomNameSystemMsg(mRoomData.roomName, CommentSysModel.TYPE_MIC_ENTER_ROOM)
         }
         startHeartbeat()
         startSyncGameStatus()
+    }
+
+    fun changeMatchState(isChecked: Boolean) {
+        launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData?.gameId,
+                    "matchStatus" to (if (isChecked) 2 else 1)
+            )
+
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            val result = subscribe(RequestControl("$TAG changeMatchState", ControlType.CancelLast)) {
+                mRoomServerApi.changeMatchStatus(body)
+            }
+
+            if (result.errno == 0) {
+                if (isChecked) {
+//                    val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "房主已将房间设置为 不允许用户匹配进入")
+//                    EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+                } else {
+//                    val commentSysModel = CommentSysModel(GameModeType.GAME_MODE_RACE, "房主已将房间设置为 允许用户匹配进入")
+//                    EventBus.getDefault().post(PretendCommentMsgEvent(commentSysModel))
+                }
+            } else {
+                U.getToastUtil().showShort(result.errmsg)
+            }
+        }
     }
 
     private fun joinRcRoom(deep: Int) {
@@ -209,7 +236,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      * 如果确定是自己唱了,预先可以做的操作
      */
     internal fun preOpWhenSelfRound() {
-        var needAcc = mRoomData?.realRoundInfo?.isAccRound==true
+        var needAcc = mRoomData?.realRoundInfo?.isAccRound == true
 
         val p = ZqEngineKit.getInstance().params
         p.isGrabSingNoAcc = !needAcc
@@ -402,7 +429,6 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
     }
 
-
     /**
      * 退出房间
      */
@@ -418,6 +444,24 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             if (result.errno == 0) {
 
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MicChangeRoomEvent) {
+        roomView.ensureActivtyTop()
+        onChangeRoomSuccess(event.mJoinGrabRoomRspModel)
+    }
+
+    private fun onChangeRoomSuccess(joinGrabRoomRspModel: JoinMicRoomRspModel?) {
+        MyLog.d(TAG, "onChangeRoomSuccess joinGrabRoomRspModel=$joinGrabRoomRspModel")
+        if (joinGrabRoomRspModel != null) {
+//            EventBus.getDefault().post(GrabSwitchRoomEvent())
+            mRoomData.loadFromRsp(joinGrabRoomRspModel)
+            joinRoomAndInit(false)
+            mRoomData.checkRoundInEachMode()
+            roomView.dismissKickDialog()
+            roomView.invitedToOtherRoom()
         }
     }
 
@@ -536,7 +580,21 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
             roomView.showRoundOver(lastRound) {
                 // 演唱阶段
                 if (thisRound.singBySelf()) {
-                    roomView.singBySelf(lastRound){
+                    val size = U.getActivityUtils().activityList.size
+                    var needTips = false
+                    for (i in size - 1 downTo 0) {
+                        val activity = U.getActivityUtils().activityList[i]
+                        if (activity is MicRoomActivity) {
+                            break
+                        } else {
+                            activity.finish()
+                            needTips = true
+                        }
+                    }
+                    if (needTips) {
+                        U.getToastUtil().showLong("你的演唱开始了")
+                    }
+                    roomView.singBySelf(lastRound) {
                         preOpWhenSelfRound()
                     }
                 } else {
@@ -728,8 +786,8 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: MChangeRoomOwnerMsg) {
+        MyLog.d(TAG, "onEvent event = $event")
         mRoomData.ownerId = event.userID
-        EventBus.getDefault().post(MicPlaySeatUpdateEvent(mRoomData.getPlayerAndWaiterInfoList()))
     }
 
     /**
@@ -955,7 +1013,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     fun onEvent(event: MachineScoreEvent) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (mRoomData?.realRoundInfo?.singByUserId(event.userId) == true) {
-            roomView.receiveScoreEvent(event.score, event.lineNum)
+            roomView.receiveScoreEvent(event.score)
         }
     }
 
@@ -972,7 +1030,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         }
     }
 
-    internal fun processScore(score: Int, line: Int) {
+    private fun processScore(score: Int, line: Int) {
         if (score < 0) {
             return
         }
@@ -986,7 +1044,7 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
         machineScoreItem.no = line
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem)
-//        mUiHandler.post { mIGrabView.updateScrollBarProgress(score, mRoomData.songLineNum) }
+        roomView.receiveScoreEvent(score)
         //打分传给服务器
         val now = mRoomData.realRoundInfo
         if (now != null) {
@@ -1135,24 +1193,37 @@ class MicCorePresenter(var mRoomData: MicRoomData, var roomView: IMicRoomView) :
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(qKickUserResultEvent: QKickUserResultEvent) {
-        MyLog.d(TAG, "onEvent qKickUserResultEvent=$qKickUserResultEvent")
+    fun onEvent(event: MKickoutUserMsg) {
+        MyLog.d(TAG, "onEvent qKickUserResultEvent=$event")
         // 踢人的结果
-        if (qKickUserResultEvent.kickUserID.toLong() == MyUserInfoManager.uid) {
+        if (event.kickUserID.toLong() == MyUserInfoManager.uid) {
             // 自己被踢出去
-            if (qKickUserResultEvent.isKickSuccess) {
-                if (mRoomData.ownerId == qKickUserResultEvent.sourceUserID) {
-                    roomView.kickBySomeOne(true)
-                } else {
-                    roomView.kickBySomeOne(false)
-                }
-            }
+            roomView.kickBySomeOne(true)
         } else {
             // 别人被踢出去
             roomView.dismissKickDialog()
-            pretendSystemMsg(qKickUserResultEvent.kickResultContent)
+            pretendSystemMsg(event.kickResultContent)
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MCancelMusic) {
+        MyLog.d(TAG, "onEvent MCancelMusic=$event")
+        pretendSystemMsg(event.cancelMusicMsg)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MMatchStatusMsg) {
+        MyLog.d(TAG, "onEvent MCancelMusic=$event")
+        if (event.matchStatus.value == ERoomMatchStatus.EMMS_CLOSED.value) {
+            mRoomData.matchStatusOpen = false
+            pretendSystemMsg("房主已将房间设置为 不允许用户匹配进入")
+        } else if (event.matchStatus.value == ERoomMatchStatus.EMMS_OPEN.value) {
+            mRoomData.matchStatusOpen = true
+            pretendSystemMsg("房主已将房间设置为 允许用户匹配进入")
+        }
+    }
+
 
     companion object {
 

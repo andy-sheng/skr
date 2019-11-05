@@ -220,16 +220,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        if (MyLog.isDebugLogOpen()) {
-            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_HOME)
-                            .navigation();
-                    return false;
-                }
-            });
-        }
+//        if (MyLog.isDebugLogOpen()) {
+//            mGameArea.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    ARouter.getInstance().build(RouterConstants.ACTIVITY_MIC_HOME)
+//                            .navigation();
+//                    return false;
+//                }
+//            });
+//        }
         mPostsArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
@@ -250,9 +250,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 selectTab(2);
 
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 1);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 1);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 1);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 1);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 1);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 1);
@@ -508,9 +505,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         selectTab(event.getChannel());
         if (event.getChannel() == 2) {
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE, 1);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE, 1);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 1);
@@ -580,9 +574,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     public int[] acceptType() {
         return new int[]{
                 WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                , WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE
                 , WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
                 , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
                 , WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE};
@@ -591,9 +582,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     @Override
     public void onWeakRedDotChange(int type, int value) {
         if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                || type == WeakRedDotManager.MESSAGE_FEED_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_FEED_COMMENT_ADD_TYPE
                 || type == WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
                 || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
                 || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE) {

@@ -69,28 +69,28 @@ class SelfSingCardView(mRootView: View) {
         } else if (visibility == View.VISIBLE) {
             if (H.isGrabRoom()) {
                 when {
-                    H.grabRoomData!!.realRoundInfo?.isChorusRound == true -> {
+                    H.grabRoomData?.realRoundInfo?.isChorusRound == true -> {
                         mChorusSelfSingCardView?.setVisibility(View.VISIBLE)
                         mNormalSelfSingCardView?.setVisibility(View.GONE)
                         mPKSelfSingCardView?.setVisibility(View.GONE)
                         mMiniGameSelfSingView?.setVisibility(View.GONE)
                         mFreeMicSelfSingCardView?.setVisibility(View.GONE)
                     }
-                    H.grabRoomData!!.realRoundInfo?.isPKRound == true -> {
+                    H.grabRoomData?.realRoundInfo?.isPKRound == true -> {
                         mPKSelfSingCardView?.setVisibility(View.VISIBLE)
                         mNormalSelfSingCardView?.setVisibility(View.GONE)
                         mChorusSelfSingCardView?.setVisibility(View.GONE)
                         mMiniGameSelfSingView?.setVisibility(View.GONE)
                         mFreeMicSelfSingCardView?.setVisibility(View.GONE)
                     }
-                    H.grabRoomData!!.realRoundInfo?.isMiniGameRound == true -> {
+                    H.grabRoomData?.realRoundInfo?.isMiniGameRound == true -> {
                         mMiniGameSelfSingView?.setVisibility(View.VISIBLE)
                         mNormalSelfSingCardView?.setVisibility(View.GONE)
                         mChorusSelfSingCardView?.setVisibility(View.GONE)
                         mPKSelfSingCardView?.setVisibility(View.GONE)
                         mFreeMicSelfSingCardView?.setVisibility(View.GONE)
                     }
-                    H.grabRoomData!!.realRoundInfo?.isFreeMicRound == true -> {
+                    H.grabRoomData?.realRoundInfo?.isFreeMicRound == true -> {
                         mMiniGameSelfSingView?.setVisibility(View.GONE)
                         mNormalSelfSingCardView?.setVisibility(View.GONE)
                         mChorusSelfSingCardView?.setVisibility(View.GONE)
@@ -107,14 +107,14 @@ class SelfSingCardView(mRootView: View) {
                 }
             } else if (H.isMicRoom()) {
                 when {
-                    H.micRoomData!!.realRoundInfo?.isChorusRound == true -> {
+                    H.micRoomData?.realRoundInfo?.isChorusRound == true -> {
                         mChorusSelfSingCardView?.setVisibility(View.VISIBLE)
                         mNormalSelfSingCardView?.setVisibility(View.GONE)
                         mPKSelfSingCardView?.setVisibility(View.GONE)
                         mMiniGameSelfSingView?.setVisibility(View.GONE)
                         mFreeMicSelfSingCardView?.setVisibility(View.GONE)
                     }
-                    H.micRoomData!!.realRoundInfo?.isPKRound == true -> {
+                    H.micRoomData?.realRoundInfo?.isPKRound == true -> {
                         mPKSelfSingCardView?.setVisibility(View.VISIBLE)
                         mNormalSelfSingCardView?.setVisibility(View.GONE)
                         mChorusSelfSingCardView?.setVisibility(View.GONE)
@@ -137,16 +137,16 @@ class SelfSingCardView(mRootView: View) {
         setVisibility(View.VISIBLE)
         if (H.isGrabRoom()) {
             when {
-                H.grabRoomData!!.realRoundInfo?.isChorusRound == true -> mChorusSelfSingCardView?.playLyric()
-                H.grabRoomData!!.realRoundInfo?.isPKRound == true -> mPKSelfSingCardView?.playLyric()
-                H.grabRoomData!!.realRoundInfo?.isMiniGameRound == true -> mMiniGameSelfSingView?.playLyric()
-                H.grabRoomData!!.realRoundInfo?.isFreeMicRound == true -> mFreeMicSelfSingCardView?.playLyric()
+                H.grabRoomData?.realRoundInfo?.isChorusRound == true -> mChorusSelfSingCardView?.playLyric()
+                H.grabRoomData?.realRoundInfo?.isPKRound == true -> mPKSelfSingCardView?.playLyric()
+                H.grabRoomData?.realRoundInfo?.isMiniGameRound == true -> mMiniGameSelfSingView?.playLyric()
+                H.grabRoomData?.realRoundInfo?.isFreeMicRound == true -> mFreeMicSelfSingCardView?.playLyric()
                 else -> mNormalSelfSingCardView?.playLyric()
             }
         } else {
             when {
-                H.micRoomData!!.realRoundInfo?.isChorusRound == true -> mChorusSelfSingCardView?.playLyric()
-                H.micRoomData!!.realRoundInfo?.isPKRound == true -> mPKSelfSingCardView?.playLyric()
+                H.micRoomData?.realRoundInfo?.isChorusRound == true -> mChorusSelfSingCardView?.playLyric()
+                H.micRoomData?.realRoundInfo?.isPKRound == true -> mPKSelfSingCardView?.playLyric()
                 else -> mNormalSelfSingCardView?.playLyric()
             }
         }

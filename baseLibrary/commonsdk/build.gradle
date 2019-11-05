@@ -22,6 +22,7 @@ android {
             // commontitlebar
             res.srcDirs += 'src/main/res-titlebar'
 
+            java.srcDirs += 'src/main/java-statistics'
             //xlog
             //java.srcDirs += 'src/main/java-xlog'
             java.srcDirs += 'src/main/java-xlog-wx'
@@ -339,6 +340,7 @@ dependencies {
         implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: MATRIX_VERSION, changing: true
         //releaseImplementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk-no-op", version: MATRIX_VERSION, changing: true
     }
+    api files('libs/SaaS_AppAnalytics_Android_SDK_V4.0.33.jar')
 
 }
 

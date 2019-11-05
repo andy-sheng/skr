@@ -205,6 +205,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsAudio(position: Int, model: PostsWatchModel?) {
+                StatisticsAdapter.recordCountEvent("posts", "list_voice_click", null)
                 recordClick(model)
                 if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_AUDIO && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
@@ -218,6 +219,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsSong(position: Int, model: PostsWatchModel?) {
+                StatisticsAdapter.recordCountEvent("posts", "list_music_click", null)
                 recordClick(model)
                 if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_SONG && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
@@ -231,6 +233,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickPostsImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
+                StatisticsAdapter.recordCountEvent("posts", "list_picture_click", null)
                 recordClick(model)
                 goBigImageBrowse(index, model?.posts?.pictures)
             }
@@ -275,6 +278,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
                     if (model.posts?.voteInfo?.hasVoted == true) {
                         // 已投票，不让投了
                     } else {
+                        StatisticsAdapter.recordCountEvent("posts", "list_vote_click", null)
                         recordClick(model)
                         votePosts(position, model, index)
                     }
@@ -301,6 +305,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickCommentAudio(position: Int, model: PostsWatchModel?) {
+                StatisticsAdapter.recordCountEvent("posts", "list_voice_click", null)
                 recordClick(model)
                 if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_COMMENT_AUDIO && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
@@ -314,6 +319,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickCommentSong(position: Int, model: PostsWatchModel?) {
+                StatisticsAdapter.recordCountEvent("posts", "list_music_click", null)
                 recordClick(model)
                 if (adapter?.playStatus == PostsWatchViewAdapter.PLAY_POSTS_COMMENT_SONG && model == adapter?.mCurrentPlayModel) {
                     SinglePlayer.stop(playerTag)
@@ -327,6 +333,7 @@ abstract class BasePostsWatchView(val activity: FragmentActivity, val type: Int)
             }
 
             override fun onClickCommentImage(position: Int, model: PostsWatchModel?, index: Int, url: String?) {
+                StatisticsAdapter.recordCountEvent("posts", "list_picture_click", null)
                 recordClick(model)
                 goBigImageBrowse(index, model?.bestComment?.comment?.pictures)
             }

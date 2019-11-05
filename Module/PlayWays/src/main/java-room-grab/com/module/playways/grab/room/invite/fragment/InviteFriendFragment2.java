@@ -24,6 +24,7 @@ import com.common.view.viewpager.SlidingTabLayout;
 import com.component.dialog.InviteFriendDialog;
 import com.module.common.ICallback;
 import com.module.playways.R;
+import com.module.playways.grab.room.invite.InviteFriendActivity;
 import com.module.playways.grab.room.invite.model.ShareModel;
 import com.module.playways.grab.room.invite.view.InviteFriendView;
 import com.module.playways.grab.room.invite.view.InviteShareFriendView;
@@ -81,7 +82,7 @@ public class InviteFriendFragment2 extends BaseFragment {
         mInviteTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
         mInviteTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
-        if (mFrom == FROM_GRAB_ROOM) {
+        if (mFrom == FROM_GRAB_ROOM || mFrom == FROM_MIC_ROOM) {
             mInviteTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
             mTitleList.put(0, "好友");
             mTitleList.put(1, "粉丝");
@@ -137,7 +138,11 @@ public class InviteFriendFragment2 extends BaseFragment {
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(InviteFriendFragment2.this);
+                if (getActivity() instanceof InviteFriendActivity) {
+                    getActivity().finish();
+                } else {
+                    U.getFragmentUtils().popFragment(InviteFriendFragment2.this);
+                }
             }
         });
 

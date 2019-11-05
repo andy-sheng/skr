@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.ImageView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.account.event.AccountEvent
 import com.common.core.scheme.event.JumpHomeDoubleChatPageEvent
@@ -18,15 +19,17 @@ import com.common.core.view.setDebounceViewClickListener
 import com.common.log.MyLog
 import com.common.statistics.StatisticsAdapter
 import com.common.utils.U
-import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
 import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.dialog.InviteFriendDialog
+import com.module.RouterConstants
 import com.module.home.R
 import com.module.home.game.presenter.GamePresenter3
 import com.module.home.game.view.*
 import com.module.home.model.GameKConfigModel
+import com.module.playways.IFriendRoomView
+import com.module.playways.IPlaywaysModeService
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import org.greenrobot.eventbus.Subscribe
@@ -41,12 +44,15 @@ class GameFragment3 : BaseFragment(), IGameView3 {
     lateinit var mNavigationBgIv: ImageView
     lateinit var mGameTab: SlidingTabLayout
     lateinit var mGameVp: NestViewPager
-    lateinit var mInviteFriendTv: ExTextView
+    lateinit var mInviteFriendIv: ImageView
     lateinit var mTabPagerAdapter: PagerAdapter
     lateinit var mPresenter: GamePresenter3
 
-    val mFriendRoomGameView: FriendRoomGameView by lazy { FriendRoomGameView(context!!) }
-//    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
+    val mFriendRoomGameView: IFriendRoomView by lazy {
+        val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+        iRankingModeService.getFriendRoomView(context!!)
+    }
+    //    val mGrabGameView: GrabGameView by lazy { GrabGameView(context!!) }
     val mQuickGameView: QuickGameView by lazy { QuickGameView(this) }
 //    val mDoubleRoomGameView: DoubleRoomGameView by lazy { DoubleRoomGameView(context!!) }
 //    val mPkGameView: PKGameView by lazy { PKGameView(this) }
@@ -65,9 +71,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
         mNavigationBgIv = rootView.findViewById(R.id.navigation_bg_iv)
         mGameTab = rootView.findViewById(R.id.game_tab)
         mGameVp = rootView.findViewById(R.id.game_vp)
-        mInviteFriendTv = rootView.findViewById(R.id.invite_friend_tv)
+        mInviteFriendIv = rootView.findViewById(R.id.invite_friend_iv)
 
-        mInviteFriendTv.setAnimateDebounceViewClickListener {
+        mInviteFriendIv.setAnimateDebounceViewClickListener {
             showShareDialog()
         }
 
@@ -91,7 +97,7 @@ class GameFragment3 : BaseFragment(), IGameView3 {
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
                 MyLog.d(TAG, "instantiateItem container=$container position=$position")
                 var view: View? = when (position) {
-                    0 -> mFriendRoomGameView
+                    0 -> mFriendRoomGameView as View
                     1 -> mQuickGameView
 //                    2 -> mPkGameView
 //                    3 -> mDoubleRoomGameView
@@ -274,8 +280,9 @@ class GameFragment3 : BaseFragment(), IGameView3 {
 //        if (mGameVp.currentItem == 0) {
 //            mFriendRoomGameView.initData(true)
 //        }
-
-        mQuickGameView.mRecommendInterval = gameKConfigModel!!.homepagetickerinterval
+        // 存一下刷新间隔
+        U.getPreferenceUtils().setSettingInt("homepage_ticker_interval", gameKConfigModel.homepagetickerinterval)
+        mQuickGameView.mRecommendInterval = gameKConfigModel.homepagetickerinterval
         if (mGameVp.currentItem == 1 && this.fragmentVisible) {
             mQuickGameView.initData(true)
         }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_180_dp"
+    android:layout_height="@dimen/view_160_dp"
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <com.common.view.ex.ExImageView
@@ -37,10 +37,10 @@
         android:id="@+id/tips_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
         android:text="不允许用户匹配加入"
         android:textColor="#3B4E79"
         android:textSize="@dimen/textsize_16_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sb_acc"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"

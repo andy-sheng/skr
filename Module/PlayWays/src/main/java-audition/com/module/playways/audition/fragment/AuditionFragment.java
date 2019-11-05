@@ -62,7 +62,7 @@ public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
-    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
+    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.mp4").getAbsolutePath();
 
     RankTopContainerView2 mRankTopView;
     LinearLayout mBottomContainer;

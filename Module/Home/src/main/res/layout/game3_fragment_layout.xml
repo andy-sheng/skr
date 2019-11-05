@@ -48,19 +48,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_tab" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/invite_friend_tv"
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_24_dp"
+    <ImageView
+        android:id="@+id/invite_friend_iv"
+        android:layout_width="@dimen/view_110_dp"
+        android:layout_height="@dimen/view_40_dp"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:text="邀请好友"
-        android:textColor="#7088FF"
-        android:textSize="@dimen/textsize_14_dp"
-        android:gravity="center"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#AEE4FF"
-        app:layout_constraintBottom_toBottomOf="@id/game_tab"
+        android:background="@drawable/game_home_invite_icon"
+        app:layout_constraintBottom_toTopOf="@id/game_vp"
         app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

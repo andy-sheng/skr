@@ -29,7 +29,6 @@
         android:id="@+id/invite_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:constraint_referenced_ids="name_tv,desc_tv,song_name_tv,agree_tv" />
 
     <TextView
@@ -41,13 +40,12 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="KTV酒彪子KTV酒彪子KTV酒彪子KTV酒彪子KTV酒彪子"
         android:textColor="#FCBF5D"
         android:textSize="@dimen/textsize_12_dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/content_bg"
         app:layout_constraintRight_toLeftOf="@id/desc_tv"
         app:layout_constraintTop_toTopOf="@id/content_bg" />
 
@@ -56,9 +54,9 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_5_dp"
-        android:text="邀请合唱"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintLeft_toRightOf="@id/name_tv"
         app:layout_constraintRight_toLeftOf="@id/agree_tv"
         app:layout_constraintTop_toTopOf="@id/name_tv" />
@@ -72,10 +70,10 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="《十年之前十年之后十年之前十年之后》"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp"
         app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintLeft_toLeftOf="@id/name_tv"
         app:layout_constraintRight_toLeftOf="@id/agree_tv"
         app:layout_constraintTop_toBottomOf="@id/name_tv" />
@@ -86,7 +84,6 @@
         android:layout_height="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_10_dp"
         android:gravity="center"
-        android:text="抢唱5s"
         app:bl_corners_radius="@dimen/view_21_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#FFC15B"

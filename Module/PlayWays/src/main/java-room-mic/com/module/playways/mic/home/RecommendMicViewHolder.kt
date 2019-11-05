@@ -2,6 +2,7 @@ package com.module.playways.mic.home
 
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -63,7 +64,12 @@ class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : Recyc
             levelIv.background = U.getDrawable(R.drawable.mic_all_people_icon)
         }
 
-        roomNameTv.text = model.roomInfo?.roomName
+        if (TextUtils.isEmpty(model.roomInfo?.roomName)) {
+            roomNameTv.text = "小K房 以歌会友"
+        } else {
+            roomNameTv.text = model.roomInfo?.roomName
+        }
+
         levelDescTv.text = LevelConfigUtils.getMicLevelDesc(model.roomInfo?.roomLevel ?: 0)
     }
 

@@ -2,6 +2,7 @@ package com.module.playways.grab.special
 
 import java.io.Serializable
 import com.alibaba.fastjson.annotation.JSONField
+import com.component.busilib.friends.TagImageModel
 
 
 class GrabTagDetailModel : Serializable {
@@ -32,4 +33,9 @@ class GrabTagDetailModel : Serializable {
     var showPermissionLock: Boolean = false
     @JSONField(name = "tagType")
     var tagType: Int = 0
+
+    @JSONField(name = "cardTitle")
+    var cardTitle: TagImageModel? = null  //卡片的文字
+    @JSONField(name = "cardBg")
+    var cardBg: TagImageModel? = null // 卡片的背景
 }

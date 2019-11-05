@@ -1,26 +1,23 @@
 package com.module.playways;
 
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
+import com.module.playways.mic.room.MicRoomData;
+import com.module.playways.mic.room.model.MicPlayerInfoModel;
 import com.module.playways.race.room.RaceRoomData;
 import com.module.playways.race.room.model.RacePlayerInfoModel;
 import com.module.playways.race.room.model.RaceRoundInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.module.playways.room.prepare.model.PlayerInfoModel;
+
+import java.util.List;
+
 //import com.module.playways.room.room.RankRoomData;
 //import com.module.playways.room.room.model.RankPlayerInfoModel;
 //import com.module.playways.room.room.model.RankRoundInfoModel;
-import com.module.playways.room.song.model.SongModel;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * 针对排位模式的数据处理
@@ -215,6 +212,10 @@ public class RoomDataUtils {
 //    }
 
     public static GrabPlayerInfoModel getPlayerInfoById(GrabRoomData roomData, int uid) {
+        return roomData.getPlayerOrWaiterInfoModel(uid);
+    }
+
+    public static MicPlayerInfoModel getPlayerInfoById(MicRoomData roomData, int uid) {
         return roomData.getPlayerOrWaiterInfoModel(uid);
     }
 

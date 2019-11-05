@@ -2,12 +2,15 @@ package com.module.playways.mic.create
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.view.setDebounceViewClickListener
+import com.common.log.MyLog
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ControlType
 import com.common.rxretrofit.RequestControl
@@ -39,6 +42,8 @@ class MicRoomCreateActiviy : BaseActivity() {
     lateinit var yellowGoldTv: ExTextView
     lateinit var boGoldTv: ExTextView
 
+    var levelList: ArrayList<Level> = ArrayList()
+
     val raceRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
     var selected: Level = Level.RLL_All
 
@@ -67,6 +72,7 @@ class MicRoomCreateActiviy : BaseActivity() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        levelList.add(Level.RLL_All)
         titlebar = this.findViewById(R.id.titlebar)
         nameEdittext = this.findViewById(R.id.name_edittext)
         divider = this.findViewById(R.id.divider)
@@ -85,28 +91,44 @@ class MicRoomCreateActiviy : BaseActivity() {
         }
 
         allManTv.setDebounceViewClickListener {
-            resetSelect()
-            allManTv.isSelected = true
-            selected = Level.RLL_All
+            trySelect(Level.RLL_All, allManTv)
         }
 
         whiteGoldTv.setDebounceViewClickListener {
-            resetSelect()
-            whiteGoldTv.isSelected = true
-            selected = Level.RLL_Bai_Yin
+            trySelect(Level.RLL_Bai_Yin, whiteGoldTv)
         }
 
         yellowGoldTv.setDebounceViewClickListener {
-            resetSelect()
-            yellowGoldTv.isSelected = true
-            selected = Level.RLL_Huang_Jin
+            trySelect(Level.RLL_Huang_Jin, yellowGoldTv)
         }
 
         boGoldTv.setDebounceViewClickListener {
-            resetSelect()
-            boGoldTv.isSelected = true
-            selected = Level.RLL_Bo_Jin
+            trySelect(Level.RLL_Bo_Jin, boGoldTv)
         }
+
+        nameEdittext.addTextChangedListener(object : TextWatcher {
+            var preString = ""
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                preString = s.toString()
+                MyLog.d(TAG, "beforeTextChanged s = $preString")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                val length = U.getStringUtils().getStringLength(str)
+                if (length > 16) {
+                    MyLog.d(TAG, "onTextChanged s = $str")
+                    val selectIndex = preString.length
+                    nameEdittext.setText(preString)
+                    nameEdittext.setSelection(selectIndex)
+                    U.getToastUtil().showShort("昵称不能超过8个汉字或16个英文")
+                }
+            }
+        })
 
         selectDrawable1.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
         selectDrawable2.bounds = Rect(0, 0, selectDrawable1.intrinsicWidth, selectDrawable1.intrinsicHeight)
@@ -122,6 +144,16 @@ class MicRoomCreateActiviy : BaseActivity() {
         getPermmissionList(0)
     }
 
+    private fun trySelect(level: Level, textView: ExTextView) {
+        if (levelList.contains(level)) {
+            resetSelect()
+            textView.isSelected = true
+            selected = level
+        } else {
+            U.getToastUtil().showShort("段位还没有达到哦～")
+        }
+    }
+
     private fun getPermmissionList(loop: Int) {
         launch {
             val result = subscribe(RequestControl("MicRoomCreateFragment getPermmissionList", ControlType.CancelThis)) {
@@ -130,16 +162,8 @@ class MicRoomCreateActiviy : BaseActivity() {
 
             if (result.errno == 0) {
                 val list = JSON.parseArray(result.data.getString("list"), Level::class.java)
-                list?.let {
-                    it.forEach {
-                        when (it) {
-                            Level.RLL_All, Level.RLL_Qing_Tong -> allManTv.visibility = View.VISIBLE
-                            Level.RLL_Bai_Yin -> whiteGoldTv.visibility = View.VISIBLE
-                            Level.RLL_Huang_Jin -> yellowGoldTv.visibility = View.VISIBLE
-                            Level.RLL_Bo_Jin -> boGoldTv.visibility = View.VISIBLE
-                        }
-                    }
-                }
+                levelList.clear()
+                levelList.addAll(list)
             } else {
                 if (loop < 5) {
                     delay(300)

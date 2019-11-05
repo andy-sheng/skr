@@ -24,16 +24,18 @@
 
     </style>
 
-    <!--支持右滑推出的activity的设置 默认的application 主题-->
+    <!--支持右滑推出的activity的设置 默认的application 主题 -->
     <style name="AppTheme_Swipe" parent="AppTheme_Base">
-        <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>
+        <!-- 默认不透明 不然会有桌面返回顶部有个透明界面盖住的bug -->
+        <item name="android:windowIsTranslucent">false</item>
+<!--        <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>-->
         <item name="android:windowAnimationStyle">@style/Activity_Animation</item>
     </style>
 
-    <style name="AppTheme_noAnimation" parent="AppTheme_Base">
-        <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>
-        <item name="android:windowAnimationStyle">@style/notAnimation</item>
-    </style>
+<!--    <style name="AppTheme_noAnimation" parent="AppTheme_Base">-->
+<!--        <item name="android:windowIsTranslucent">@bool/translucent_no_bug</item>-->
+<!--        <item name="android:windowAnimationStyle">@style/notAnimation</item>-->
+<!--    </style>-->
 
     <style name="TransparentTheme" parent="AppTheme_Base">
         <item name="android:windowBackground">@android:color/transparent</item>

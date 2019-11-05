@@ -1039,7 +1039,6 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
     private fun initScoreView() {
         mGrabScoreTipsView = rootView.findViewById(R.id.grab_score_tips_view)
-        mGrabScoreTipsView.setRoomData(mRoomData!!)
     }
 
     private fun initGrabOpView() {

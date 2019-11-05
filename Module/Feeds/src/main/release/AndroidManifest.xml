@@ -12,12 +12,14 @@
         <activity
             android:name=".detail.activity.FeedsDetailActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/TransparentTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".detail.activity.FeedsSecondCommentDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/TransparentTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <!--Feed制作-->

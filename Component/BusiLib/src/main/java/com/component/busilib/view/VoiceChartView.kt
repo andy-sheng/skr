@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.common.log.MyLog
 import com.common.utils.dp
 import com.common.view.ExPaint
 import com.component.busilib.R
@@ -104,7 +103,7 @@ class VoiceChartView : View {
             }
             rectF.top = mHeight.toFloat() - height
             rectF.bottom = mHeight.toFloat()
-            canvas?.drawRoundRect(rectF, 0f, 0f, paint)
+            canvas?.drawRoundRect(rectF, chartWidth.toFloat() / 2, chartWidth.toFloat() / 2, paint)
         }
 
         if (play) {

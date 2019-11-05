@@ -8,23 +8,33 @@ import com.component.busilib.constans.GrabRoomType
 import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.mic.match.model.JoinMicRoomRspModel
+import com.module.playways.mic.room.event.MicHomeOwnerChangeEvent
 import com.module.playways.mic.room.event.MicRoundChangeEvent
 import com.module.playways.mic.room.model.MicConfigModel
 import com.module.playways.mic.room.model.MicPlayerInfoModel
 import com.module.playways.mic.room.model.MicRoundInfoModel
 import com.zq.live.proto.MicRoom.EMRoundStatus
 import com.zq.live.proto.MicRoom.EMUserRole
+import com.zq.live.proto.MicRoom.ERoomMatchStatus
 import org.greenrobot.eventbus.EventBus
-import java.util.ArrayList
+import java.util.*
 
 class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
+    var matchStatusOpen: Boolean = true // 是否允许匹配 默认开启
     var configModel = MicConfigModel()// 一唱到底配置
     var roomType: Int = GrabRoomType.ROOM_TYPE_COMMON// 一唱到底房间类型，公开，好友，私密，普通 5为歌单房间
     var isHasExitGame = false// 是否已经正常退出房间
 
-    private var mIsAccEnable = false// 是否开启伴奏,只代表设置里伴奏开关
+    private var mIsAccEnable = true // 是否开启伴奏,只代表设置里伴奏开关
 
-    var ownerId: Int = 0// 房主id
+    var ownerId = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                EventBus.getDefault().post(MicHomeOwnerChangeEvent(field))
+            }
+        }
+
 
 //    private var hasGameBegin = true// 游戏是否已经开始
 
@@ -78,7 +88,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
     var enterRoundSeq = 0 // 刚进入房间时，所处的轮次
 
     init {
-        mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false)
+        mIsAccEnable = true
     }
 
 
@@ -137,7 +147,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
                 val lastRoundInfoModel = realRoundInfo
                 lastRoundInfoModel?.updateStatus(false, EMRoundStatus.MRS_END.value)
                 realRoundInfo = null
-                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel,null))
+                EventBus.getDefault().post(MicRoundChangeEvent(lastRoundInfoModel, null))
             }
             return
         }
@@ -218,6 +228,7 @@ class MicRoomData : BaseRoomData<MicRoundInfoModel>() {
         this.inChallenge = rsp.inChallenge
 
         this.maxGetBLightCnt = rsp.maxGetBLightCnt
+        this.matchStatusOpen = (rsp.matchStatus == ERoomMatchStatus.EMMS_OPEN.value)
 
     }
 

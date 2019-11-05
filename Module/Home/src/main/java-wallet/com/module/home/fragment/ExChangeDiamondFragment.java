@@ -2,10 +2,8 @@ package com.module.home.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.support.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,12 +16,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.toast.CommonToastView;
 import com.dialog.view.StrokeTextView;
 import com.module.home.R;
 import com.module.home.inter.IExchangeDiamomdView;
 import com.module.home.model.ExChangeInfoModel;
 import com.module.home.presenter.ExChangeDiamondPresenter;
-import com.component.toast.CommonToastView;
 
 import static com.module.home.fragment.InComeFragment.DQ_EXCHANGE_REQ;
 
@@ -48,6 +46,8 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     float mMaxDiamond = 0;
     //目前剩余的红钻
     float mDq = 0;
+
+    int toZSRadio = 0;
 
     @Override
     public int initView() {
@@ -81,7 +81,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
         mTvExchangeWhole.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mEditCashNum.setText(String.valueOf(mMaxDiamond));
+                mEditCashNum.setText(String.valueOf(mDq));
                 mEditCashNum.setSelection(mEditCashNum.length());
             }
         });
@@ -122,7 +122,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
 
                     mEditCashNum.setTextSize(24);
                     float inputNum = Float.parseFloat(editString);
-                    if (inputNum > mMaxDiamond) {
+                    if (inputNum > mDq) {
                         mIvExchangeBtn.setEnabled(false);
                         mTvTip.setTextColor(U.getColor(R.color.red));
                         mTvTip.setText("已超过可兑换红钻余额");
@@ -130,7 +130,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                         mClearIv.setVisibility(View.VISIBLE);
                     } else {
                         mTvTip.setTextColor(Color.parseColor("#ff3b4e79"));
-                        mTvTip.setText(String.format("预计可兑换%.1f钻石", inputNum));
+                        mTvTip.setText(String.format("预计可兑换%.1f钻石", inputNum * (float) toZSRadio / 1000f));
                         mTvExchangeWhole.setVisibility(View.VISIBLE);
                         mClearIv.setVisibility(View.VISIBLE);
                         if (inputNum == 0) {
@@ -178,6 +178,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
     public void showDQ(ExChangeInfoModel exChangeInfoModel) {
         mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxDiamond = mDq * exChangeInfoModel.getToZSRatio();
+        toZSRadio = exChangeInfoModel.getToZSRatio();
         mTvTip.setText(String.format("红钻余额%.1f", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToZSDesc());
     }

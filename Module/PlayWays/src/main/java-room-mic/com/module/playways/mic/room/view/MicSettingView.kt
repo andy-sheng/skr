@@ -5,11 +5,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.CompoundButton
-import com.alibaba.fastjson.JSON
 import com.common.rxretrofit.ApiManager
-import com.common.rxretrofit.ControlType
-import com.common.rxretrofit.RequestControl
-import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.ex.ExConstraintLayout
 import com.kyleduo.switchbutton.SwitchButton
@@ -18,9 +14,6 @@ import com.module.playways.mic.room.MicRoomData
 import com.module.playways.mic.room.MicRoomServerApi
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
-import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.RequestBody
 
 // 右边操作区域，投票
 class MicSettingView : ExConstraintLayout {
@@ -34,7 +27,7 @@ class MicSettingView : ExConstraintLayout {
 
     var mRoomData: MicRoomData? = null
 
-    internal var mRoomServerApi = ApiManager.getInstance().createService(MicRoomServerApi::class.java)
+    var callUpdate: ((Boolean) -> Unit)? = null
 
     constructor(context: Context) : super(context) {}
 
@@ -46,27 +39,6 @@ class MicSettingView : ExConstraintLayout {
     init {
         View.inflate(context, R.layout.mic_setting_view_layout, this)
         mSbAcc = findViewById(R.id.sb_acc)
-
-        mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            //EMMS_UNKNOWN = 0 : 未知 - EMMS_OPEN = 1 : match 打开 - EMMS_CLOSED = 2 : match 关闭
-            launch {
-                val map = mutableMapOf(
-                        "roomID" to mRoomData?.gameId,
-                        "matchStatus" to (if (isChecked) 2 else 1)
-                )
-
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe(RequestControl("$mTag matchStatus", ControlType.CancelLast)) {
-                    mRoomServerApi.changeMatchStatus(body)
-                }
-
-                if (result.errno == 0) {
-
-                } else {
-                    U.getToastUtil().showShort(result.errmsg)
-                }
-            }
-        })
 
         setOnClickListener {
             //拦截
@@ -89,6 +61,13 @@ class MicSettingView : ExConstraintLayout {
                 .create()
         mDialogPlus?.show()
         layoutParams.height = U.getDisplayUtils().dip2px(180f)
+
+        mSbAcc?.setOnCheckedChangeListener(null)
+        mSbAcc?.isChecked = !mRoomData?.matchStatusOpen!!
+        mSbAcc?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            //EMMS_UNKNOWN = 0 : 未知 - EMMS_OPEN = 1 : match 打开 - EMMS_CLOSED = 2 : match 关闭
+            callUpdate?.invoke(isChecked)
+        })
     }
 
     fun dismiss() {
