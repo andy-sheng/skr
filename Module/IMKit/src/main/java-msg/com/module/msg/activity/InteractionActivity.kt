@@ -50,10 +50,8 @@ class InteractionActivity : BaseActivity() {
             override fun getItem(position: Int): Fragment {
                 MyLog.d(TAG, "getItem position=$position")
                 if (position == 0) {
-                    return LastFollowFragment()
-                } else if (position == 1) {
                     return service.refuseCommentFragment
-                } else if (position == 2) {
+                } else if (position == 1) {
                     return service.likeWorkFragment
                 }
                 return LastFollowFragment()
@@ -61,14 +59,13 @@ class InteractionActivity : BaseActivity() {
 
             override fun getPageTitle(position: Int): CharSequence? {
                 return when (position) {
-                    0 -> "最新关注"
-                    1 -> "评论"
-                    2 -> "获赞"
+                    0 -> "评论"
+                    1 -> "获赞"
                     else -> super.getPageTitle(position)
                 }
             }
 
-            override fun getCount(): Int = 3
+            override fun getCount(): Int = 2
         }
 
         mRelationVp?.setOffscreenPageLimit(3);
