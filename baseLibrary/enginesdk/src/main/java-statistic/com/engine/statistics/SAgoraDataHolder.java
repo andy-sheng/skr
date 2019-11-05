@@ -227,10 +227,9 @@ public class SAgoraDataHolder {
 
     private String getListString(List list) {
         StringBuilder retStr = new StringBuilder();
-        if (list.size() > 0) {
-            for (Object e : list) {
-                retStr.append(mLinePrefix).append(e.toString());
-            }
+        int size = list.size();
+        for(int i=0;i<size;i++){
+            retStr.append(mLinePrefix).append(list.get(i).toString());
         }
         return retStr.toString();
     }
