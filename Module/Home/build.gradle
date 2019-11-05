@@ -91,6 +91,9 @@ android {
 
             java.srcDirs += 'src/main/java-ranked'
             res.srcDirs += 'src/main/res-ranked'
+
+            java.srcDirs += 'src/main/java-mall'
+            res.srcDirs += 'src/main/res-mall'
         }
     }
 }
