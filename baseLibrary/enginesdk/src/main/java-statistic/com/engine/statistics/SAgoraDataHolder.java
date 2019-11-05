@@ -296,9 +296,11 @@ public class SAgoraDataHolder {
 
     private void flushLogGroup2LS(List list) {
 
-        if (null != list && list.size() > 0) {
-            for (Object e : list) {
-                mLS.appendLog((ILogItem) e);
+        int listSize = 0;
+        if (null != list && (listSize = list.size()) > 0) {
+            for (int i=0; i<listSize; i++) {
+                ILogItem e = (ILogItem)list.get(i);
+                mLS.appendLog(e);
             }
 
             mLS.flushLog(true);

@@ -122,7 +122,7 @@ public class AgoraRTCAdapter {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
 
-            sInstance.initLogService();
+
 //            sInstance.startStatisticThread();
         }
         return sInstance;
@@ -140,16 +140,20 @@ public class AgoraRTCAdapter {
 
     public void initLogService()
     {
-        mLs = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
-        SLogServiceAgent.AliYunSLInitParam initParam = new SLogServiceAgent.AliYunSLInitParam();
-        initParam.skrUid = 10001; //先写死，回头看，怎么桥接app的MyUserInfoManager.INSTANCE.getUid();
-        initParam.appCtx = U.app().getApplicationContext();
-        try {
-            mLs.init(initParam);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (null == mLs) {
+            mLs = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
+            SLogServiceAgent.AliYunSLInitParam initParam = new SLogServiceAgent.AliYunSLInitParam();
+            initParam.skrUid = 10001; //先写死，回头看，怎么桥接app的MyUserInfoManager.INSTANCE.getUid();
+            initParam.appCtx = U.app().getApplicationContext();
+            try {
+                mLs.init(initParam);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            SDataManager.getInstance().setLogServices(mLs);
         }
-        SDataManager.getInstance().setLogServices(mLs);
+
+
     }
 
 
@@ -872,6 +876,7 @@ public class AgoraRTCAdapter {
         if (!TextUtils.isEmpty(token)) {
             t = token;
         }
+        initLogService();
         startStatisticThread();
 
         int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
