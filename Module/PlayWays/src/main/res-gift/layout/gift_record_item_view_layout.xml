@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_104_dp">
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/avatar_view"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.component.busilib.view.NickNameView
+        android:id="@+id/nickname_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        NickNameView:textColor="@color/textColorPrimary"
+        NickNameView:textSize="@dimen/textsize_16_dp"
+        NickNameView:textStyle="BOLD"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/time_desc_tv"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/avatar_view"
+        app:layout_constraintRight_toLeftOf="@id/gift_sdv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/time_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:text="下午12:23"
+        android:textColor="#cc3B4E79"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toTopOf="@id/gift_desc_tv"
+        app:layout_constraintLeft_toRightOf="@id/avatar_view"
+        app:layout_constraintTop_toBottomOf="@id/nickname_view" />
+
+    <TextView
+        android:id="@+id/gift_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#e63B4E79"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/avatar_view"
+        app:layout_constraintRight_toLeftOf="@id/gift_sdv"
+        app:layout_constraintTop_toBottomOf="@id/time_desc_tv" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/gift_sdv"
+        android:layout_width="@dimen/view_77_dp"
+        android:layout_height="@dimen/view_77_dp"
+        android:layout_marginRight="@dimen/view_24_dp"
+        NickNameView:layout_constraintBottom_toBottomOf="parent"
+        NickNameView:layout_constraintRight_toRightOf="parent"
+        NickNameView:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="#193E5181"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

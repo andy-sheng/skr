@@ -4,6 +4,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -39,5 +40,9 @@ public interface GiftServerApi {
      */
     @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
     Observable<ApiResult> getCoinNum();
+
+
+    @GET("/v1/msgbox/gift-list")
+    Call<ApiResult> getGiftRecordList(@Query("userID") int userID, @Query("offset") int offset, @Query("cnt") int cnt);
 }
 
