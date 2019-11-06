@@ -157,6 +157,7 @@ android {
             debuggable true
             signingConfig signingConfigs.myConfig
             aaptOptions.cruncherEnabled = false
+            ext.enableCrashlytics = false
         }
 
         release {
@@ -214,9 +215,14 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
         preDexLibraries = false
+        incremental true
         additionalParameters = ['--multi-dex', '--minimal-main-dex',
                                 '--set-max-idx-number=1000']
     }
+}
+
+kapt {
+    useBuildCache = true
 }
 
 dependencies {

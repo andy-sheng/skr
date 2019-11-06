@@ -18,12 +18,12 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     public AgoraEngineCallbackWithLog(String tag) {
         super();
         TAG = tag;
-        MyLog.d(TAG, "AgoraEngineCallbackWithLog");
+        MyLog.w(TAG, "AgoraEngineCallbackWithLog");
     }
 
     @Override
     public void onAudioTransportQuality(int uid, int bitrate, short delay, short lost) {
-        MyLog.d(TAG, "onAudioTransportQuality" + " uid=" + uid + " bitrate=" + bitrate + " delay=" + delay + " lost=" + lost);
+        MyLog.w(TAG, "onAudioTransportQuality" + " uid=" + uid + " bitrate=" + bitrate + " delay=" + delay + " lost=" + lost);
         super.onAudioTransportQuality(uid, bitrate, delay, lost);
     }
 
@@ -47,7 +47,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onError(int err) {
-        MyLog.d(TAG, "onError" + " err=" + err);
+        MyLog.w(TAG, "onError" + " err=" + err);
         super.onError(err);
     }
 
@@ -195,7 +195,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onFirstRemoteVideoFrame(int uid, int width, int height, int elapsed) {
-        MyLog.d(TAG, "onFirstRemoteVideoFrame" + " uid=" + uid + " width=" + width + " height=" + height + " elapsed=" + elapsed);
+        MyLog.w(TAG, "onFirstRemoteVideoFrame" + " uid=" + uid + " width=" + width + " height=" + height + " elapsed=" + elapsed);
         super.onFirstRemoteVideoFrame(uid, width, height, elapsed);
     }
 
@@ -228,7 +228,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onUserEnableLocalVideo(int uid, boolean enabled) {
-        MyLog.d(TAG, "onUserEnableLocalVideo" + " uid=" + uid + " enabled=" + enabled);
+        MyLog.w(TAG, "onUserEnableLocalVideo" + " uid=" + uid + " enabled=" + enabled);
         super.onUserEnableLocalVideo(uid, enabled);
     }
 
@@ -247,7 +247,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onLocalPublishFallbackToAudioOnly(boolean isFallbackOrRecover) {
-        MyLog.d(TAG, "onLocalPublishFallbackToAudioOnly" + " isFallbackOrRecover=" + isFallbackOrRecover);
+        MyLog.v(TAG, "onLocalPublishFallbackToAudioOnly" + " isFallbackOrRecover=" + isFallbackOrRecover);
         super.onLocalPublishFallbackToAudioOnly(isFallbackOrRecover);
     }
 
@@ -346,7 +346,7 @@ public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
 
     @Override
     public void onAudioMixingFinished() {
-        MyLog.d(TAG, "onAudioMixingFinished");
+        MyLog.w(TAG, "onAudioMixingFinished");
         super.onAudioMixingFinished();
     }
 

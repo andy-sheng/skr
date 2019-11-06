@@ -44,10 +44,10 @@ upload(){
 	./gradlew :baseLibrary:doraemonkit:uploadArchives
 	./gradlew :baseLibrary:arcCloud:uploadArchives
 	./gradlew :baseLibrary:effectsdk:uploadArchives
-	./gradlew :baseLibrary:enginesdk:uploadArchives
-	./gradlew :baseLibrary:mediaengine:uploadArchives
-	./gradlew :commoncore:uploadArchives
-	./gradlew :commonservice:uploadArchives
+#	./gradlew :baseLibrary:enginesdk:uploadArchives
+#	./gradlew :baseLibrary:mediaengine:uploadArchives
+#	./gradlew :commoncore:uploadArchives
+#	./gradlew :commonservice:uploadArchives
 }
 
 changeDependLibraryFromServer true
