@@ -121,18 +121,12 @@ public class AgoraRTCAdapter {
     public static synchronized AgoraRTCAdapter create(GLRender glRender) {
         if (sInstance == null) {
             sInstance = new AgoraRTCAdapter(glRender);
-
-
-//            sInstance.startStatisticThread();
         }
         return sInstance;
     }
 
     public static synchronized void destroy() {
         if (sInstance != null) {
-
-//            sInstance.stopStatisticThread();
-
             sInstance.destroy(true);
             sInstance = null;
         }
