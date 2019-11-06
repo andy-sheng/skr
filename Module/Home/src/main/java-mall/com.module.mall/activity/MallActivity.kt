@@ -15,6 +15,7 @@ import com.common.view.viewpager.SlidingTabLayout
 import com.module.RouterConstants
 import com.module.home.R
 import com.module.mall.view.EffectView
+import com.module.mall.view.ProductView
 
 @Route(path = RouterConstants.ACTIVITY_MALL_MALL)
 class MallActivity : BaseActivity() {
@@ -77,7 +78,7 @@ class MallActivity : BaseActivity() {
             override fun onPageSelected(position: Int) {
                 val view = viewpager.findViewWithTag<View>(position)
                 if (view != null) {
-                    if (view is EffectView) {
+                    if (view is ProductView) {
                         view.tryLoad()
                     }
                 }
