@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_10_dp"
-        app:centerText="最新关注"
+        app:centerText="评论和赞"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"
@@ -21,33 +21,32 @@
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary" />
 
-    <com.common.view.ex.ExRelativeLayout
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titlebar"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:paddingLeft="@dimen/view_3_dp"
-        android:paddingTop="@dimen/view_10_dp"
-        android:paddingRight="@dimen/view_3_dp"
-        app:bl_corners_topLeftRadius="@dimen/view_16_dp"
-        app:bl_corners_topRightRadius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/colorSolidPrimary">
+        android:layout_below="@+id/titlebar"
+        android:layout_marginTop="-20dp"
+        android:orientation="vertical">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
+        <com.common.view.viewpager.SlidingTabLayout
+            android:id="@+id/relation_tab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/view_52_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/view_40_dp"
+            android:layout_marginRight="@dimen/view_40_dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/content_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <com.common.view.viewpager.NestViewPager
+            android:id="@+id/relation_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none" />
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-
-    </com.common.view.ex.ExRelativeLayout>
-
+    </LinearLayout>
 </RelativeLayout>

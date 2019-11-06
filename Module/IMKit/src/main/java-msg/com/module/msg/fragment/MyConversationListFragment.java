@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.component.busilib.manager.WeakRedDotManager;
+import com.module.RouterConstants;
 import com.module.msg.custom.MyConversationListAdapter;
 
 import java.util.List;
@@ -65,28 +68,37 @@ public class MyConversationListFragment extends ConversationListFragment {
         mSpecialFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_SPECIAL_FOLLOW)
+                        .navigation();
             }
         });
 
         mLastFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_LAST_FOLLOW)
+                        .navigation();
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 0);
             }
         });
 
         mCommentLikeArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_COMMENT_LIKE)
+                        .navigation();
 
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 0);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 0);
             }
         });
 
         mGiftArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_GIFT_RECORD)
+                        .navigation();
             }
         });
         heads.add(head);

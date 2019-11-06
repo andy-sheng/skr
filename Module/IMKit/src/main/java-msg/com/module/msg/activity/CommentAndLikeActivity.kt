@@ -13,18 +13,17 @@ import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
-import com.module.msg.follow.LastFollowFragment
 import io.rong.imkit.R
 
-//互动通知界面
-@Route(path = RouterConstants.ACTIVITY_INTERACTION)
+//评论和赞的页面
+@Route(path = RouterConstants.ACTIVITY_COMMENT_LIKE)
 class CommentAndLikeActivity : BaseActivity() {
     var mRelationTab: SlidingTabLayout? = null
     var mRelationVp: NestViewPager? = null
     internal var mTabPagerAdapter: FragmentPagerAdapter? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
-        return R.layout.interaction_fragment_layout
+        return R.layout.comment_like_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -49,12 +48,11 @@ class CommentAndLikeActivity : BaseActivity() {
         mTabPagerAdapter = object : FragmentPagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
                 MyLog.d(TAG, "getItem position=$position")
-                if (position == 0) {
-                    return service.refuseCommentFragment
-                } else if (position == 1) {
-                    return service.likeWorkFragment
+                return if (position == 0) {
+                    service.refuseCommentFragment
+                } else {
+                    service.likeWorkFragment
                 }
-                return LastFollowFragment()
             }
 
             override fun getPageTitle(position: Int): CharSequence? {

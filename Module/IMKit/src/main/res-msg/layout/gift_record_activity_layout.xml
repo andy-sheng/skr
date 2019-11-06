@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/view_10_dp"
-        app:centerText="最新关注"
+        app:centerText="礼物记录"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"

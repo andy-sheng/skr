@@ -32,8 +32,27 @@
             android:name="com.module.msg.RongIMConfiguration"
             android:value="ConfigModule" />
 
-        <!--会话列表-->
+        <activity
+            android:name="com.module.msg.activity.LastFollowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name="com.module.msg.activity.CommentAndLikeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="com.module.msg.activity.SpecialFollowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name="com.module.msg.activity.GiftRecordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!--会话列表-->
         <!--会话界面-->
         <activity
             android:name="com.module.msg.activity.ConversationActivity"
@@ -65,16 +84,6 @@
         <activity
             android:name="io.rong.imkit.plugin.image.PictureSelectorActivity"
             android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.module.msg.activity.LastFollowActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity
-            android:name="com.module.msg.activity.CommentAndLikeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name="io.rong.imkit.plugin.image.PicturePreviewActivity"
