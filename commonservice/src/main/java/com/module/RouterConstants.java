@@ -127,4 +127,6 @@ public interface RouterConstants {
     String ACTIVITY_MIC_MATCH = "/mic/MicMatchActivity";
 
     String ACTIVITY_INVITE_FRIEND = "/room/InviteFriendActivity";
+
+    String ACTIVITY_MALL_MALL = "/mall/MallActivity";
 }
