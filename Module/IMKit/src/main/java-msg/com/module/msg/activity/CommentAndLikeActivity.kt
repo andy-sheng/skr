@@ -18,7 +18,7 @@ import io.rong.imkit.R
 
 //互动通知界面
 @Route(path = RouterConstants.ACTIVITY_INTERACTION)
-class InteractionActivity : BaseActivity() {
+class CommentAndLikeActivity : BaseActivity() {
     var mRelationTab: SlidingTabLayout? = null
     var mRelationVp: NestViewPager? = null
     internal var mTabPagerAdapter: FragmentPagerAdapter? = null

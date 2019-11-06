@@ -99,7 +99,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="com.module.msg.activity.InteractionActivity"
+            android:name="com.module.msg.activity.CommentAndLikeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
