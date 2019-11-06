@@ -41,7 +41,6 @@ public interface RouterConstants {
     String ACTIVITY_SPECIAL_FOLLOW = "/msg/SpecialFollowActivity";
     String ACTIVITY_GIFT_RECORD = "/rankingmode/GiftRecordActivity";
 
-    String ACTIVITY_FRIEND_ROOM = "/busilib/FriendMoreRoomActivity";
     String ACTIVITY_RELATION = "/busilib/RelationActivity";
     String ACTIVITY_OTHER_PERSON = "/busilib/OtherPersonActivity";
 

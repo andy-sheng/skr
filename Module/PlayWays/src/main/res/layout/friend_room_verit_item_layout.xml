@@ -2,10 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:VoiceChartView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_160_dp"
-    android:layout_marginBottom="@dimen/view_10_dp">
+    android:layout_marginBottom="@dimen/view_10_dp"
+    android:background="@drawable/common_gradient_bg">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"

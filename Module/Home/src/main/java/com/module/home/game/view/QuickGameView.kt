@@ -20,9 +20,6 @@ import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExRelativeLayout
-import com.component.busilib.beauty.FROM_FRIEND_RECOMMEND
-import com.component.busilib.friends.RecommendModel
-import com.component.busilib.friends.SpecialModel
 import com.component.busilib.verify.SkrVerifyUtils
 import com.component.busilib.view.SelectSexDialogView
 import com.component.person.model.UserRankModel
@@ -109,39 +106,6 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
                 StatisticsAdapter.recordCountEvent("game", "express_practice", null)
             }
 
-            override fun onMoreRoomListener() {
-                // 更多房间
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_FRIEND_ROOM)
-                        .navigation()
-            }
-
-            override fun onEnterRoomListener(model: RecommendModel) {
-                // 进入房间
-                if (model.roomInfo.mediaType == SpecialModel.TYPE_VIDEO) {
-                    mSkrAudioPermission.ensurePermission({
-                        mCameraPermission.ensurePermission({
-                            mRealNameVerifyUtils.checkJoinVideoPermission {
-                                // 进入视频预览
-                                ARouter.getInstance()
-                                        .build(RouterConstants.ACTIVITY_BEAUTY_PREVIEW)
-                                        .withInt("mFrom", FROM_FRIEND_RECOMMEND)
-                                        .withInt("mRoomId", model.roomInfo.roomID)
-                                        .withInt("mInviteType", 0)
-                                        .navigation()
-                            }
-                        }, true)
-                    }, true)
-                } else {
-                    mSkrAudioPermission.ensurePermission({
-                        mRealNameVerifyUtils.checkJoinAudioPermission(model.roomInfo.tagID) {
-                            val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
-                            iRankingModeService?.tryGoGrabRoom(model.roomInfo.roomID, 0)
-                        }
-                    }, true)
-                }
-                StatisticsAdapter.recordCountEvent("game", "express_room_outsideclick", null)
-            }
-
             override fun onCreateRoomListener() {
                 // 创建房间
                 MyLog.d(TAG, "createRoom")
@@ -217,7 +181,7 @@ class QuickGameView(var fragment: BaseFragment) : ExRelativeLayout(fragment.cont
     }
 
     fun stopTimer() {
-        mQuickGamePresenter.stopTimer()
+        // 原来用来停止更新的
     }
 
     fun showSexFilterView(needMatch: Boolean) {

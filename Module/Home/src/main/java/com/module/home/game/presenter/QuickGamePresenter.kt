@@ -13,8 +13,6 @@ import com.common.rxretrofit.*
 import com.common.utils.HandlerTaskTimer
 import com.common.utils.U
 import com.component.busilib.friends.GrabSongApi
-import com.component.busilib.friends.RecommendModel
-import com.component.busilib.recommend.RA
 import com.component.person.model.UserRankModel
 import com.module.home.MainPageSlideApi
 import com.module.home.event.CheckInSuccessEvent
@@ -33,8 +31,6 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
 
     private var mLastUpdateOperaArea = 0L    //广告位上次更新成功时间
     private var mLastUpdateRemainTime = 0L   // 上次拉取唱聊剩余次数时间
-    //    private var mLastUpdateQuickInfo: Long = 0    //快速加入房间更新成功时间
-//    private var mIsFirstQuick = true
     private var mRecommendTimer: HandlerTaskTimer? = null
     private var mLastUpdateRecomendInfo = 0L    //上次拉去推荐房间剩余次数的时间
     private var mLastUpdateGameType = 0L // 上次拉去首页游戏列表时间
@@ -172,74 +168,11 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
         }, this)
     }
 
-
-    //TODO 这个接口得换，等服务器更新
-    fun initRecommendRoom(flag: Boolean, interval: Int) {
-        mRecommendInterval = interval
-        if (interval <= 0) {
-            mRecommendInterval = 15
-        }
-
-        if (!flag) {
-            var now = System.currentTimeMillis();
-            if ((now - mLastUpdateRecomendInfo) > mRecommendInterval * 1000) {
-                // 距离上次已经过去一个时间间隔
-                starTimer(0)
-            } else {
-                // 没过去一个间隔
-                var delayTime = mRecommendInterval * 1000 - (now - mLastUpdateRecomendInfo)
-                starTimer(delayTime)
-            }
-        } else {
-            // 立即更新
-            starTimer(0)
-        }
-    }
-
-    fun starTimer(delayTimeMill: Long) {
-        stopTimer()
-        mRecommendTimer = HandlerTaskTimer.newBuilder()
-                .delay(delayTimeMill)
-                .take(-1)
-                .interval((mRecommendInterval * 1000).toLong())
-                .start(object : HandlerTaskTimer.ObserverW() {
-                    override fun onNext(t: Int) {
-                        loadRecommendRoomData()
-                    }
-                })
-    }
-
-    fun stopTimer() {
-        if (mRecommendTimer != null) {
-            mRecommendTimer!!.dispose()
-        }
-    }
-
-    private fun loadRecommendRoomData() {
-        // 加个保护
-        if (!fragment.fragmentVisible) {
-            stopTimer()
-            return
-        }
-        ApiMethods.subscribe(mGrabSongApi.getFirstPageRecommendRoomList(RA.getTestList(), RA.getVars()), object : ApiObserver<ApiResult>() {
-            override fun process(obj: ApiResult) {
-                if (obj.errno == 0) {
-                    mLastUpdateRecomendInfo = System.currentTimeMillis()
-                    val list = JSON.parseArray(obj.data!!.getString("rooms"), RecommendModel::class.java)
-//                    mIGameView3.setRecommendInfo(list)
-                }
-            }
-        }, this, RequestControl("getRecommendRoomList", ControlType.CancelThis))
-    }
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AccountEvent.SetAccountEvent) {
         initOperationArea(true)
-//        initRecommendRoom(true, mRecommendInterval)
         initGameTypeArea(true)
         getReginDiff(true)
-//        initQuickRoom(true)
         checkTaskRedDot()
     }
 
@@ -247,8 +180,6 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
     fun onEvent(event: MyUserInfoEvent.UserInfoChangeEvent) {
         isUserInfoChange = true
         // 在页面才去刷新去
-//        initGameTypeArea(true)
-//        getReginDiff(true)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -259,7 +190,6 @@ class QuickGamePresenter(val fragment: BaseFragment, internal var mIGameView3: I
 
     override fun destroy() {
         super.destroy()
-        stopTimer()
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
