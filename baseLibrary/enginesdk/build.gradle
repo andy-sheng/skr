@@ -70,8 +70,10 @@ dependencies {
 //    implementation 'com.squareup.okhttp3:okhttp:3.4.1' //全局config.gradle里用3.12.0,
 //    implementation 'org.greenrobot:greendao:3.2.2'  //与全局config.gradle里的一样
 
+    api rootProject.ext.dependencies["aliyun-sls"]
 
-    implementation files('libs/aliyun-log-sdk-android-2.1.0.jar')
+//    implementation 'com.aliyun.openservices:aliyun-log-android-sdk:2.1.0' //阿里云日志服务
+//    implementation files('libs/aliyun-log-sdk-android-2.1.0.jar')
 
 }
 // 添加上传到本地 maven 仓库

@@ -88,7 +88,7 @@ public class DownloadTask {
                             conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
 
 
-                            mOss = new OSSClient(U.app(), null, credentialProvider, conf);
+                            mOss = new OSSClient(U.app(), credentialProvider, conf);
                             download();
                         }
                     }
@@ -111,18 +111,18 @@ public class DownloadTask {
     private void download() {
         GetObjectRequest get = new GetObjectRequest(mBucketName, mObjectId);
 
-//        get.setProgressListener(new OSSProgressCallback<GetObjectRequest>() {
-//            @Override
-//            public void onProgress(GetObjectRequest request, long currentSize, long totalSize) {
-//                if (mOssDownloadAdapter != null) {
-//                    if(mOssDownloadAdapter.isCancel()){
-//                        if (mTask != null) {
-//                            mTask.cancel();
-//                        }
-//                    }
-//                }
-//            }
-//        });
+        get.setProgressListener(new OSSProgressCallback<GetObjectRequest>() {
+            @Override
+            public void onProgress(GetObjectRequest request, long currentSize, long totalSize) {
+                if (mOssDownloadAdapter != null) {
+                    if(mOssDownloadAdapter.isCancel()){
+                        if (mTask != null) {
+                            mTask.cancel();
+                        }
+                    }
+                }
+            }
+        });
 
         if (mTask != null) {
             mTask.cancel();
