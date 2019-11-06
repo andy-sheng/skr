@@ -18,6 +18,7 @@ import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.VoiceChartView
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.view.CommonAudioView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
 
@@ -44,16 +45,14 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
 
         val levelIv: ImageView = item.findViewById(R.id.level_iv)
         val avatarIv: SimpleDraweeView = item.findViewById(R.id.avatar_iv)
-        val playBg: ExImageView = item.findViewById(R.id.play_bg)
-        val playIv: ImageView = item.findViewById(R.id.play_iv)
-        val voiceChartView: VoiceChartView = item.findViewById(R.id.voice_chart_view)
         val nameTv: ExTextView = item.findViewById(R.id.name_tv)
+        val audioView: CommonAudioView = item.findViewById(R.id.audio_view)
 
         var mModel: RecommendUserInfo? = null
         var mPosition: Int = 0
 
         init {
-            playBg.setAnimateDebounceViewClickListener {
+            audioView.setAnimateDebounceViewClickListener {
                 onClickVoice?.invoke(mModel, mPosition)
             }
         }
@@ -76,31 +75,23 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
                     .setBorderWidth(2f.dp().toFloat())
                     .setBorderColor(Color.WHITE)
                     .build())
-            playIv.visibility = View.VISIBLE
 
             if (model.voiceInfo != null && !TextUtils.isEmpty(model.voiceInfo?.voiceURL)) {
-                playBg.visibility = View.VISIBLE
-                playIv.visibility = View.VISIBLE
-                voiceChartView.visibility = View.GONE
+                audioView.visibility = View.VISIBLE
+                audioView.bindData(model.voiceInfo?.duration ?: 0)
             } else {
-                playBg.visibility = View.GONE
-                playIv.visibility = View.GONE
-                voiceChartView.visibility = View.GONE
+                audioView.visibility = View.GONE
             }
         }
 
         fun starPlay() {
             MyLog.d("RecomChildViewHolder", "starPlay")
-            playIv.visibility = View.GONE
-            voiceChartView.visibility = View.VISIBLE
-            voiceChartView.start()
+            audioView.setPlay(true)
         }
 
         fun stopPlay() {
             MyLog.d("RecomChildViewHolder", "stopPlay")
-            playIv.visibility = View.VISIBLE
-            voiceChartView.visibility = View.GONE
-            voiceChartView.stop()
+            audioView.setPlay(false)
         }
 
     }

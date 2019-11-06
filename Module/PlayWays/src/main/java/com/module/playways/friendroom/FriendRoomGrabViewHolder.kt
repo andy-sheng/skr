@@ -9,6 +9,7 @@ import android.widget.TextView
 
 import com.common.core.avatar.AvatarUtils
 import com.common.core.userinfo.UserInfoManager
+import com.common.core.view.setAnimateDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.ImageFactory
 import com.common.log.MyLog
@@ -19,6 +20,7 @@ import com.common.view.ex.ExConstraintLayout
 import com.common.view.ex.ExTextView
 import com.component.busilib.view.VoiceChartView
 import com.component.level.utils.LevelConfigUtils
+import com.component.person.view.CommonAudioView
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.SimpleDraweeView
 import com.module.playways.R
@@ -34,26 +36,20 @@ class FriendRoomGrabViewHolder(itemView: View, var mOnItemClickListener: FriendR
     private val mMediaTagSdv: SimpleDraweeView = itemView.findViewById(R.id.media_tag_sdv)
     private val mAvatarIv: SimpleDraweeView = itemView.findViewById(R.id.avatar_iv)
     private val mLevelBg: ImageView = itemView.findViewById(R.id.level_bg)
-    private val mLevelDesc: TextView = itemView.findViewById(R.id.level_desc)
     private val mNameTv: ExTextView = itemView.findViewById(R.id.name_tv)
     private val mRoomPlayerNumTv: ExTextView = itemView.findViewById(R.id.room_player_num_tv)
     private val mRoomInfoTv: ExTextView = itemView.findViewById(R.id.room_info_tv)
-
-    private val mVoiceArea: ExConstraintLayout = itemView.findViewById(R.id.voice_area)
-    private val mPlayIv: ImageView = itemView.findViewById(R.id.play_iv)
-    private val mVoiceName: TextView = itemView.findViewById(R.id.voice_name)
-    private val mVoiceChartView: VoiceChartView = itemView.findViewById(R.id.voice_chart_view)
+    private val enterRoomTv: ExTextView = itemView.findViewById(R.id.enter_room_tv)
+    private val audioView: CommonAudioView = itemView.findViewById(R.id.audio_view)
 
     init {
-        itemView.setOnClickListener(object : AnimateClickListener() {
-            override fun click(view: View) {
-                mOnItemClickListener?.onClickGrabRoom(mPos, mFriendRoomModel)
-            }
-        })
+        enterRoomTv.setAnimateDebounceViewClickListener {
+            mOnItemClickListener.onClickGrabRoom(mPos, mFriendRoomModel)
+        }
 
-        mVoiceArea.setOnClickListener(object : AnimateClickListener() {
+        audioView.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View) {
-                mOnItemClickListener?.onClickGrabVoice(mPos, mFriendRoomModel)
+                mOnItemClickListener.onClickGrabVoice(mPos, mFriendRoomModel)
             }
         })
     }
@@ -72,34 +68,21 @@ class FriendRoomGrabViewHolder(itemView: View, var mOnItemClickListener: FriendR
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(friendRoomModel.userInfo?.avatar)
                     .setCircle(true)
                     .build())
-            if (friendRoomModel.userInfo?.ranking != null && LevelConfigUtils.getAvatarLevelBg(friendRoomModel.userInfo?.ranking?.mainRanking
+            if (friendRoomModel.userInfo?.ranking != null && LevelConfigUtils.getRaceCenterAvatarBg(friendRoomModel.userInfo?.ranking?.mainRanking
                             ?: 0) != 0) {
                 mLevelBg.visibility = View.VISIBLE
-                mLevelDesc.visibility = View.VISIBLE
-                mLevelBg.background = U.getDrawable(LevelConfigUtils.getAvatarLevelBg(friendRoomModel.userInfo?.ranking?.mainRanking
+                mLevelBg.background = U.getDrawable(LevelConfigUtils.getRaceCenterAvatarBg(friendRoomModel.userInfo?.ranking?.mainRanking
                         ?: 0))
-                mLevelDesc.text = friendRoomModel.userInfo?.ranking?.rankingDesc
             } else {
                 mLevelBg.visibility = View.GONE
-                mLevelDesc.visibility = View.GONE
             }
         }
 
-        mVoiceChartView.stop()
         if (friendRoomModel.voiceInfo != null) {
-            mVoiceArea.visibility = View.VISIBLE
-            if (!TextUtils.isEmpty(friendRoomModel.voiceInfo?.songName)) {
-                mVoiceName.text = friendRoomModel.voiceInfo?.songName
-            } else {
-                val duration = friendRoomModel.voiceInfo?.duration ?: 0
-                if (duration > duration / 1000 * 1000) {
-                    mVoiceName.text = "${(duration / 1000 + 1)}s"
-                } else {
-                    mVoiceName.text = "${(duration / 1000)}s"
-                }
-            }
+            audioView.visibility = View.VISIBLE
+            audioView.bindData(friendRoomModel.voiceInfo?.duration ?: 0)
         } else {
-            mVoiceArea.visibility = View.GONE
+            audioView.visibility = View.GONE
         }
 
         if (friendRoomModel.userInfo != null && friendRoomModel.roomInfo != null) {
@@ -154,16 +137,10 @@ class FriendRoomGrabViewHolder(itemView: View, var mOnItemClickListener: FriendR
     }
 
     fun startPlay() {
-        mPlayIv.isSelected = true
-        mVoiceName.visibility = View.INVISIBLE
-        mVoiceChartView.visibility = View.VISIBLE
-        mVoiceChartView.start()
+        audioView.setPlay(true)
     }
 
     fun stopPlay() {
-        mPlayIv.isSelected = false
-        mVoiceName.visibility = View.VISIBLE
-        mVoiceChartView.visibility = View.GONE
-        mVoiceChartView.stop()
+        audioView.setPlay(false)
     }
 }
