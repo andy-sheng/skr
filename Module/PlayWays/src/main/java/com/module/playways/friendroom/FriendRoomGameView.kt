@@ -99,44 +99,20 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
 
         recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         friendRoomAdapter = FriendRoomAdapter(object : FriendRoomAdapter.FriendRoomClickListener {
-            override fun onClickMicRoom(model: RecommendMicInfoModel?, position: Int) {
-                // 进入排麦房
-            }
-
-            override fun onClickMicVoice(model: RecommendMicInfoModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int) {
-                // 点击排麦房的声音
-            }
-
-            override fun onClickGrabVoice(position: Int, model: GrabRecommendModel?) {
-                // 点击抢唱房的声音标签
-                if (friendRoomAdapter?.mCurrPlayModel != null && friendRoomAdapter?.mCurrPlayModel == model) {
-                    SinglePlayer.stop(playerTag)
-                    // 自动刷新去
-                    starTimer((mRecommendInterval * 1000).toLong())
-                } else {
-                    // 播放中 不能刷新，停止自动刷新
-                    stopTimer()
-                    model?.voiceInfo?.voiceURL?.let {
-                        SinglePlayer.startPlay(playerTag, it)
-                    }
-                }
-                friendRoomAdapter?.startOrPauseAudio(position, model)
-            }
-
-            override fun onClickGrabRoom(position: Int, model: GrabRecommendModel?) {
+            override fun onClickGrabRoom(position: Int, model: RecommendRoomModel?) {
                 // 进入抢唱房间
                 SinglePlayer.stop(playerTag)
                 friendRoomAdapter?.stopPlay()
                 if (model != null) {
                     StatisticsAdapter.recordCountEvent("grab", "room_click4", null)
 
-                    if (model.roomInfo != null) {
-                        if (model?.category == GrabRecommendModel.TYPE_FOLLOW || model.category == GrabRecommendModel.TYPE_FRIEND) {
+                    if (model.grabRoom?.roomInfo != null) {
+                        if (model.grabRoom?.category == RecommendGrabRoomModel.TYPE_FOLLOW || model.grabRoom?.category == RecommendGrabRoomModel.TYPE_FRIEND) {
                             // 好友或者关注
-                            checkUserRoom(model.userInfo?.userId
+                            checkUserRoom(model.grabRoom?.userInfo?.userId
                                     ?: 0, model, position)
                         } else {
-                            model.roomInfo?.let { tryJoinRoom(it) }
+                            model.grabRoom?.roomInfo?.let { tryJoinRoom(it) }
                         }
                     } else {
                         MyLog.w(mTag, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null")
@@ -149,6 +125,30 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                         MyLog.w(mTag, "onClickFriendRoom position=$position model=$model")
                     }
                 }
+            }
+
+            override fun onClickGrabVoice(position: Int, model: RecommendRoomModel?) {
+                // 点击抢唱房的声音标签
+                if (friendRoomAdapter?.mCurrPlayModel != null && friendRoomAdapter?.mCurrPlayModel == model) {
+                    SinglePlayer.stop(playerTag)
+                    // 自动刷新去
+                    starTimer((mRecommendInterval * 1000).toLong())
+                } else {
+                    // 播放中 不能刷新，停止自动刷新
+                    stopTimer()
+                    model?.grabRoom?.voiceInfo?.voiceURL?.let {
+                        SinglePlayer.startPlay(playerTag, it)
+                    }
+                }
+                friendRoomAdapter?.startOrPauseAudio(position, model)
+            }
+
+            override fun onClickMicRoom(model: RecommendRoomModel?, position: Int) {
+                // 进入排麦房
+            }
+
+            override fun onClickMicVoice(model: RecommendRoomModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int) {
+                // 点击排麦房的声音
             }
         })
 
@@ -274,7 +274,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         }
     }
 
-    fun checkUserRoom(userID: Int, friendRoomModelGrab: GrabRecommendModel, position: Int) {
+    fun checkUserRoom(userID: Int, friendRoomInfo: RecommendRoomModel, position: Int) {
         if (mCheckDisposable != null && !mCheckDisposable!!.isDisposed) {
             mCheckDisposable?.dispose()
         }
@@ -284,13 +284,13 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                 if (obj.errno == 0) {
                     var roomInfo = JSON.parseObject(obj.data.getString("roomInfo"), GrabSimpleRoomInfo::class.java)
                     if (roomInfo != null) {
-                        if (roomInfo.roomID == friendRoomModelGrab.roomInfo?.roomID) {
+                        if (roomInfo.roomID == friendRoomInfo?.grabRoom?.roomInfo?.roomID) {
                             StatisticsAdapter.recordCountEvent("grab", "1.1roomclick_same", null)
                         } else {
                             StatisticsAdapter.recordCountEvent("grab", "1.1roomclick_diff", null)
                             // 更新下本地的数据
-                            friendRoomModelGrab.roomInfo = roomInfo
-                            friendRoomAdapter?.update(friendRoomModelGrab, position)
+                            friendRoomInfo.grabRoom?.roomInfo = roomInfo
+                            friendRoomAdapter?.update(friendRoomInfo, position)
                         }
                         if (roomInfo.roomType != 1) {
                             // 不再私密房里面
@@ -329,7 +329,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
             override fun process(obj: ApiResult) {
                 if (obj.errno == 0) {
                     mLastLoadDateTime = System.currentTimeMillis()
-                    val list = JSON.parseArray(obj.data.getString("rooms"), GrabRecommendModel::class.java)
+                    val list = JSON.parseArray(obj.data.getString("roomInfo"), RecommendRoomModel::class.java)
                     val newOffset = obj.data!!.getIntValue("offset")
                     if (offset == 0) {
                         refreshView(list, true, newOffset)
@@ -355,7 +355,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
      *
      * @param list
      */
-    private fun refreshView(list: List<GrabRecommendModel>?, clear: Boolean, newOffset: Int) {
+    private fun refreshView(list: List<RecommendRoomModel>?, clear: Boolean, newOffset: Int) {
         mOffset = newOffset
         refreshLayout.finishRefresh()
         refreshLayout.finishLoadMore()
@@ -363,19 +363,19 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
         if (clear) {
             SinglePlayer.stop(playerTag)
             friendRoomAdapter?.stopPlay()
-            friendRoomAdapter?.dataList?.clear()
+            friendRoomAdapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {
-                friendRoomAdapter?.dataList?.addAll(list)
+                friendRoomAdapter?.mDataList?.addAll(list)
             }
             friendRoomAdapter?.notifyDataSetChanged()
         } else {
             if (!list.isNullOrEmpty()) {
-                friendRoomAdapter?.dataList?.addAll(list)
+                friendRoomAdapter?.mDataList?.addAll(list)
                 friendRoomAdapter?.notifyDataSetChanged()
             }
         }
 
-        if (!friendRoomAdapter?.dataList.isNullOrEmpty()) {
+        if (!friendRoomAdapter?.mDataList.isNullOrEmpty()) {
             mLoadService.showSuccess()
         } else {
             mLoadService.showCallback(EmptyCallback::class.java)

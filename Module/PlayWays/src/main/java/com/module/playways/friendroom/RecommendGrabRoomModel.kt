@@ -7,7 +7,7 @@ import com.component.busilib.friends.VoiceInfoModel
 
 import java.io.Serializable
 
-class GrabRecommendModel : Serializable {
+class RecommendGrabRoomModel : Serializable {
 
     /**
      * roomInfo : {"inPlayersNum":0,"isOwner":true,"roomID":0,"roomTag":"URT_UNKNOWN","roomType":"RT_UNKNOWN","tagID":0,"totalPlayersNum":0,"userID":0}

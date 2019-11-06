@@ -11,8 +11,18 @@ import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.component.level.utils.LevelConfigUtils
 import com.module.playways.R
+import com.module.playways.friendroom.FriendRoomAdapter
+import com.module.playways.friendroom.RecommendRoomModel
 
-class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : RecyclerView.ViewHolder(item) {
+class RecommendMicViewHolder(item: View) : RecyclerView.ViewHolder(item) {
+
+    constructor(item: View, listener: RecommendMicListener) : this(item) {
+        this.listener = listener
+    }
+
+    constructor(item: View, roomListener: FriendRoomAdapter.FriendRoomClickListener) : this(item) {
+        this.roomListener = roomListener
+    }
 
     val levelIv: ImageView = item.findViewById(R.id.level_iv)
     val levelDescTv: TextView = item.findViewById(R.id.level_desc_tv)
@@ -24,9 +34,13 @@ class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : Recyc
     val childAdapter: RecommendMicChildAdapter = RecommendMicChildAdapter()
 
     var mModel: RecommendMicInfoModel? = null
+    var mRoomModel: RecommendRoomModel? = null
     var mPosition: Int = 0
 
     var playPosition: Int = -1  // 记录下holder的播放位置
+
+    var listener: RecommendMicListener? = null
+    var roomListener: FriendRoomAdapter.FriendRoomClickListener? = null
 
     init {
         recyclerView.layoutManager = GridLayoutManager(item.context, 3)
@@ -34,11 +48,22 @@ class RecommendMicViewHolder(item: View, listener: RecommendMicListener) : Recyc
 
         enterRoomTv.setAnimateDebounceViewClickListener {
             // todo 进入房间中
-            listener.onClickEnterRoom(mModel, mPosition)
+            listener?.onClickEnterRoom(mModel, mPosition)
+            roomListener?.onClickMicRoom(mRoomModel, mPosition)
         }
 
         childAdapter.onClickVoice = { model, position ->
-            listener.onClickUserVoice(mModel, mPosition, model, position)
+            listener?.onClickUserVoice(mModel, mPosition, model, position)
+            roomListener?.onClickMicVoice(mRoomModel, mPosition, model, position)
+        }
+    }
+
+    fun bindRoomData(model: RecommendRoomModel, position: Int) {
+        this.mRoomModel = model
+        this.mPosition = position
+
+        mRoomModel?.micRoom?.let {
+            bindData(it, position)
         }
     }
 
