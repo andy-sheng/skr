@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.common.base.BaseActivity
+import com.common.core.view.setDebounceViewClickListener
 import com.common.utils.U
 import com.common.view.ex.ExTextView
 import com.common.view.titlebar.CommonTitleBar
@@ -27,12 +28,14 @@ class MallActivity : BaseActivity() {
     lateinit var viewpager: ViewPager
 
     var pagerAdapter: PagerAdapter? = null
+    var viewList: ArrayList<ProductView>? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.mall_activity_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        U.getStatusBarUtil().setTransparentBar(this, false)
         title = findViewById(R.id.title)
         btnBack = findViewById(R.id.btn_back)
         mallTv = findViewById(R.id.mall_tv)
@@ -47,6 +50,16 @@ class MallActivity : BaseActivity() {
         tagTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(24f).toFloat())
         tagTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(12f).toFloat())
 
+        viewList = ArrayList()
+        viewList?.add(ProductView(this))
+        viewList?.add(ProductView(this))
+        viewList?.add(ProductView(this))
+        viewList?.add(ProductView(this))
+
+        btnBack.setDebounceViewClickListener {
+            finish()
+        }
+
         pagerAdapter = object : PagerAdapter() {
 
             override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -54,7 +67,11 @@ class MallActivity : BaseActivity() {
             }
 
             override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                return ""
+                val view = viewList?.get(position)
+                if (container.indexOfChild(view) == -1) {
+                    container.addView(view)
+                }
+                return view!!
             }
 
             override fun getCount(): Int {
@@ -66,7 +83,13 @@ class MallActivity : BaseActivity() {
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
-                return ""
+                return when (position) {
+                    0 -> "精选套装"
+                    1 -> "演唱声纹"
+                    2 -> "头像框"
+                    3 -> "舞台"
+                    else -> super.getPageTitle(position)
+                }
             }
         }
 
@@ -91,5 +114,13 @@ class MallActivity : BaseActivity() {
 
         viewpager.adapter = pagerAdapter
         tagTab.setViewPager(viewpager)
+    }
+
+    override fun canSlide(): Boolean {
+        return false
+    }
+
+    override fun useEventBus(): Boolean {
+        return false
     }
 }
