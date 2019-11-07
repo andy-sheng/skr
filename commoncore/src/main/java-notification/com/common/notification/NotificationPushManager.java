@@ -124,6 +124,12 @@ public class NotificationPushManager {
             processPostsCommentAddMsg(baseNotiInfo, msg.getPostsCommentAddMsg());
         } else if (msg.getMsgType() == ENotificationMsgType.NM_INVITE_MIC) {
             processMicInviteMsg(baseNotiInfo, msg.getInviteMicMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_SPFOLLOW_NEWPOST) {
+            EventBus.getDefault().post(msg.getSpFollowNewPostMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_SPFOLLOW_UPDATEALBUM) {
+            EventBus.getDefault().post(msg.getSpFollowUpdateAlbumMsg());
+        } else if (msg.getMsgType() == ENotificationMsgType.NM_GIFT_RECEIVES) {
+            EventBus.getDefault().post(msg.getGiftReceivesMsg());
         }
     }
 

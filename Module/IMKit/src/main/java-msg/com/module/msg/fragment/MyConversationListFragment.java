@@ -40,6 +40,11 @@ public class MyConversationListFragment extends ConversationListFragment {
     ExImageView mGiftRedIv;
     TextView mGiftDescTv;
 
+    boolean isShowSpRed = false;
+    boolean isShowLastRed = false;
+    boolean isShowCommentLikeRed = false;
+    boolean isShowGiftRed = false;
+
     public void showLastNews(List<LastNewsModel> news) {
         if (news != null && news.size() > 0) {
             for (int i = 0; i < news.size(); i++) {
@@ -52,6 +57,50 @@ public class MyConversationListFragment extends ConversationListFragment {
                 } else if (news.get(i).getListType() == LastNewsModel.TYPE_GIFT) {
                     mGiftDescTv.setText(news.get(i).getLatestNews());
                 }
+            }
+        }
+    }
+
+    public void showSPRedDot(boolean isShow) {
+        isShowSpRed = isShow;
+        if (mSpecialRedIv != null) {
+            if (isShow) {
+                mSpecialRedIv.setVisibility(View.VISIBLE);
+            } else {
+                mSpecialRedIv.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void showLastFollowRedDot(boolean isShow) {
+        isShowLastRed = isShow;
+        if (mLastRedIv != null) {
+            if (isShow) {
+                mLastRedIv.setVisibility(View.VISIBLE);
+            } else {
+                mLastRedIv.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void showCommentLikeRedDot(boolean isShow) {
+        isShowCommentLikeRed = isShow;
+        if (mCommentLikeRedIv != null) {
+            if (isShow) {
+                mCommentLikeRedIv.setVisibility(View.VISIBLE);
+            } else {
+                mCommentLikeRedIv.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void showGiftRedDot(boolean isShow) {
+        isShowGiftRed = isShow;
+        if (mGiftRedIv != null) {
+            if (isShow) {
+                mGiftRedIv.setVisibility(View.VISIBLE);
+            } else {
+                mGiftRedIv.setVisibility(View.GONE);
             }
         }
     }
@@ -82,11 +131,17 @@ public class MyConversationListFragment extends ConversationListFragment {
         mGiftRedIv = head.findViewById(R.id.gift_red_iv);
         mGiftDescTv = head.findViewById(R.id.gift_desc_tv);
 
+        showSPRedDot(isShowSpRed);
+        showLastFollowRedDot(isShowLastRed);
+        showCommentLikeRedDot(isShowCommentLikeRed);
+        showGiftRedDot(isShowGiftRed);
+
         mSpecialFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_SPECIAL_FOLLOW)
                         .navigation();
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_SP_FOLLOW, 0);
             }
         });
 
@@ -104,10 +159,7 @@ public class MyConversationListFragment extends ConversationListFragment {
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_COMMENT_LIKE)
                         .navigation();
-
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 0);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 0);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 0);
             }
         });
 
@@ -116,6 +168,7 @@ public class MyConversationListFragment extends ConversationListFragment {
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_GIFT_RECORD)
                         .navigation();
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_GIFT_TYPE, 0);
             }
         });
         heads.add(head);

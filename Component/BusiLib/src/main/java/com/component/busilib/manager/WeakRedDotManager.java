@@ -13,21 +13,21 @@ public class WeakRedDotManager {
 
     public final String TAG = "WeakRedDotManager";
 
-    public final static String SP_KEY_NEW_MESSAGE_FOLLOW = "SP_KEY_NEW_FOLLOW";  //关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
-    public final static String SP_KEY_POSTS_LIKE = "SP_KEY_POSTS_LIKE";  //
-    public final static String SP_KEY_POSTS_COMMENT_LIKE = "SP_KEY_POSTS_COMMENT_LIKE";  //
-    public final static String SP_KEY_POSTS_COMMENT_ADD = "SP_KEY_POSTS_COMMENT_ADD";  //
+    public final static String SP_KEY_NEW_MESSAGE_FOLLOW = "SP_KEY_NEW_FOLLOW";     //最新关注，包含自己关注和别人关注,消息页面使用 消息2 最新关注1
+    public final static String SP_KEY_POSTS_COMMENT_LIKE = "SP_KEY_POSTS_COMMENT_LIKE"; // 帖子的评论或者赞
+    public final static String SP_KEY_NEW_MESSAGE_SP_FOLLOW = "SP_KEY_SP_FOLLOW";   // 特别关注
+    public final static String SP_KEY_NEW_MESSAGE_GIFT = "SP_KEY_GIFT";  // 礼物
 
     //这个先不删，之后增加的不可以占用现在的和现在已经注掉的
 //    public static final int FANS_RED_ROD_TYPE = 1;
 //    public static final int FRIEND_RED_ROD_TYPE = 2;
-    public static final int MESSAGE_FOLLOW_RED_ROD_TYPE = 3;
+    public static final int MESSAGE_FOLLOW_RED_ROD_TYPE = 3;   // 最新关注
     //    public static final int MESSAGE_FEED_LIKE_TYPE = 4;
 //    public static final int MESSAGE_FEED_COMMENT_LIKE_TYPE = 5;
 //    public static final int MESSAGE_FEED_COMMENT_ADD_TYPE = 6;
-    public static final int MESSAGE_POSTS_LIKE_TYPE = 7;
-    public static final int MESSAGE_POSTS_COMMENT_LIKE_TYPE = 8;
-    public static final int MESSAGE_POSTS_COMMENT_ADD_TYPE = 9;
+    public static final int MESSAGE_POSTS_COMMENT_LIKE_TYPE = 7;  // 评论或者赞
+    public static final int MESSAGE_SP_FOLLOW = 8; // 特别关注
+    public static final int MESSAGE_GIFT_TYPE = 9; // 礼物
 
     HashMap<Integer, HashSet<WeakRedDotListener>> mMap = new HashMap<>();
 
@@ -119,11 +119,11 @@ public class WeakRedDotManager {
 //            }
 //        }
 
-        if (type == MESSAGE_POSTS_LIKE_TYPE) {
-            if (U.getPreferenceUtils().getSettingInt(SP_KEY_POSTS_LIKE, 0) < value && !isFlag) {
+        if (type == MESSAGE_SP_FOLLOW) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_MESSAGE_SP_FOLLOW, 0) < value && !isFlag) {
                 return;
             } else {
-                U.getPreferenceUtils().setSettingInt(SP_KEY_POSTS_LIKE, value);
+                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_MESSAGE_SP_FOLLOW, value);
             }
         }
 
@@ -135,11 +135,11 @@ public class WeakRedDotManager {
             }
         }
 
-        if (type == MESSAGE_POSTS_COMMENT_ADD_TYPE) {
-            if (U.getPreferenceUtils().getSettingInt(SP_KEY_POSTS_COMMENT_ADD, 0) < value && !isFlag) {
+        if (type == MESSAGE_GIFT_TYPE) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_MESSAGE_GIFT, 0) < value && !isFlag) {
                 return;
             } else {
-                U.getPreferenceUtils().setSettingInt(SP_KEY_POSTS_COMMENT_ADD, value);
+                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_MESSAGE_GIFT, value);
             }
         }
 

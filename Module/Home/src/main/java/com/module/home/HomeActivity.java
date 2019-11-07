@@ -96,7 +96,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
 
-    int mMessageFollowRedDotValue = 0;
+    int lastFollowRedDotValue;
+    int postRedDotValue;
+    int spFollowRedDotValue;
+    int giftRedDotValue;
 
     NotificationManager mNManager;
 
@@ -250,10 +253,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 mMainVp.setCurrentItem(2, false);
                 selectTab(2);
 
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_SP_FOLLOW, 1);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 1);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 1);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 1);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_GIFT_TYPE, 1);
             }
         });
 
@@ -284,11 +287,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mFromCreate = true;
 
         WeakRedDotManager.getInstance().addListener(this);
-
-        mMessageFollowRedDotValue = U.getPreferenceUtils().
-
-                getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
-
+        spFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_SP_FOLLOW, 0);
+        lastFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+        postRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_POSTS_COMMENT_LIKE, 0);
+        giftRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_GIFT, 0);
         refreshMessageRedDot();
 
         mUiHandler.postDelayed(new Runnable() {
@@ -505,10 +507,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainVp.setCurrentItem(event.getChannel(), false);
         selectTab(event.getChannel());
         if (event.getChannel() == 2) {
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_SP_FOLLOW, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 1);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE, 1);
             WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 1);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE, 1);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_GIFT_TYPE, 1);
         }
     }
 
@@ -575,18 +577,28 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     public int[] acceptType() {
         return new int[]{
                 WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
+                , WeakRedDotManager.MESSAGE_SP_FOLLOW
                 , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE};
+                , WeakRedDotManager.MESSAGE_GIFT_TYPE};
     }
 
     @Override
     public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE) {
-            mMessageFollowRedDotValue = value;
+        switch (type) {
+            case WeakRedDotManager.MESSAGE_SP_FOLLOW:
+                spFollowRedDotValue = value;
+                break;
+            case WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE:
+                lastFollowRedDotValue = value;
+                break;
+            case WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE:
+                postRedDotValue = value;
+                break;
+            case WeakRedDotManager.MESSAGE_GIFT_TYPE:
+                giftRedDotValue = value;
+                break;
+            default:
+                break;
         }
 
         refreshMessageRedDot();
@@ -594,7 +606,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
 
     private void refreshMessageRedDot() {
-        if (mMessageFollowRedDotValue < 2) {
+        boolean hasMessageRedDot = false;
+        if (spFollowRedDotValue >= 2 || lastFollowRedDotValue >= 2 || postRedDotValue >= 2 || giftRedDotValue >= 2) {
+            hasMessageRedDot = true;
+        }
+        if (!hasMessageRedDot) {
             mMessageRedDot.setVisibility(View.GONE);
         } else {
             if (mUnreadNumTv.getVisibility() == View.VISIBLE) {
