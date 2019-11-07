@@ -74,7 +74,6 @@ class LastFollowActivity : BaseActivity() {
 
         mLastFollowAdapter = LastFollowAdapter(RecyclerOnItemClickListener { view, position, model ->
             if (view.id == R.id.content) {
-                // TODO: 2019/4/24 跳到主页还是开始聊天？？？
                 val bundle = Bundle()
                 bundle.putInt("bundle_user_id", model.userID)
                 ARouter.getInstance()
@@ -82,6 +81,7 @@ class LastFollowActivity : BaseActivity() {
                         .with(bundle)
                         .navigation()
             } else if (view.id == R.id.follow_tv) {
+                // todo 和产品想的有点出入,后面优化一下
                 if (!model.isIsFollow && !model.isIsFriend) {
                     UserInfoManager.getInstance().mateRelation(model.userID, UserInfoManager.RA_BUILD, model.isIsFriend)
                 }

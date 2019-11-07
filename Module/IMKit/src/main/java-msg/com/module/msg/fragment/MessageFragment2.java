@@ -7,13 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -25,19 +24,17 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.component.dialog.InviteFriendDialog;
 import com.component.relation.fragment.SearchUserFragment;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
-import com.module.msg.follow.LastFollowModel;
+import com.module.msg.follow.LastNewsModel;
 
 import java.util.List;
 
 import io.rong.imkit.R;
-import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
 public class MessageFragment2 extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
@@ -55,7 +52,12 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     MyConversationListFragment mConversationListFragment; //获取融云的会话列表对象
 
     long mLastUpdateTime = 0;  //最新关注第一条刷新时间
-    int mMessageFollowRedDotValue = 0;
+
+    // 红点的值
+    int mMessageSPFollow = 0;
+    int mMessageLastFollow = 0;
+    int mMessageCommentLike = 0;
+    int mMessageGift = 0;
 
     @Override
     public int initView() {
@@ -125,7 +127,10 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
         });
 
         WeakRedDotManager.getInstance().addListener(this);
-        mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+        mMessageSPFollow = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_SP_FOLLOW, 0);
+        mMessageLastFollow = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+        mMessageCommentLike = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_POSTS_COMMENT_LIKE, 0);
+        mMessageGift = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_GIFT, 0);
         refreshMessageRedDot();
     }
 
@@ -156,8 +161,11 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    String str = result.getData().getString("latestNews");
-                    long timeMs = result.getData().getLongValue("timeMs");
+                    mLastUpdateTime = System.currentTimeMillis();
+                    List<LastNewsModel> list = JSON.parseArray(result.getData().getString("news"), LastNewsModel.class);
+                    if (mConversationListFragment != null) {
+                        mConversationListFragment.showLastNews(list);
+                    }
                 }
             }
         }, this);
@@ -215,19 +223,29 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     @Override
     public int[] acceptType() {
         return new int[]{
-                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
-                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE};
+                WeakRedDotManager.MESSAGE_SP_FOLLOW                   // 特别关注
+                , WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE       // 最新关注
+                , WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE   // 评论或赞
+                , WeakRedDotManager.MESSAGE_GIFT_TYPE};               // 礼物
     }
 
     @Override
     public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE
-                || type == WeakRedDotManager.MESSAGE_POSTS_COMMENT_ADD_TYPE) {
-            mMessageFollowRedDotValue = value;
+        switch (type) {
+            case WeakRedDotManager.MESSAGE_SP_FOLLOW:
+                mMessageSPFollow = value;
+                break;
+            case WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE:
+                mMessageLastFollow = value;
+                break;
+            case WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE:
+                mMessageCommentLike = value;
+                break;
+            case WeakRedDotManager.MESSAGE_GIFT_TYPE:
+                mMessageGift = value;
+                break;
+            default:
+                break;
         }
 
         refreshMessageRedDot();
@@ -235,6 +253,25 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
     }
 
     private void refreshMessageRedDot() {
-
+        if (mMessageSPFollow >= 1) {
+            mConversationListFragment.showSPRedDot(true);
+        } else {
+            mConversationListFragment.showSPRedDot(false);
+        }
+        if (mMessageLastFollow >= 1) {
+            mConversationListFragment.showLastFollowRedDot(true);
+        } else {
+            mConversationListFragment.showLastFollowRedDot(false);
+        }
+        if (mMessageCommentLike >= 1) {
+            mConversationListFragment.showCommentLikeRedDot(true);
+        } else {
+            mConversationListFragment.showCommentLikeRedDot(false);
+        }
+        if (mMessageGift >= 1) {
+            mConversationListFragment.showGiftRedDot(true);
+        } else {
+            mConversationListFragment.showGiftRedDot(false);
+        }
     }
 }

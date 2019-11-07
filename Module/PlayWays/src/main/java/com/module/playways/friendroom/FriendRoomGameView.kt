@@ -131,6 +131,7 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                 // 点击抢唱房的声音标签
                 if (friendRoomAdapter?.mCurrPlayModel != null && friendRoomAdapter?.mCurrPlayModel == model) {
                     SinglePlayer.stop(playerTag)
+                    friendRoomAdapter?.stopPlay()
                     // 自动刷新去
                     starTimer((mRecommendInterval * 1000).toLong())
                 } else {
@@ -139,16 +140,36 @@ class FriendRoomGameView : RelativeLayout, IFriendRoomView {
                     model?.grabRoom?.voiceInfo?.voiceURL?.let {
                         SinglePlayer.startPlay(playerTag, it)
                     }
+                    friendRoomAdapter?.startPlay(position, model, -1)
                 }
-                friendRoomAdapter?.startOrPauseAudio(position, model)
             }
 
             override fun onClickMicRoom(model: RecommendRoomModel?, position: Int) {
                 // 进入排麦房
+                SinglePlayer.stop(playerTag)
+                friendRoomAdapter?.stopPlay()
+                val iRankingModeService = ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation() as IPlaywaysModeService
+                model?.micRoom?.roomInfo?.roomID?.let {
+                    iRankingModeService.jumpMicRoomBySuggest(it)
+                }
             }
 
             override fun onClickMicVoice(model: RecommendRoomModel?, position: Int, userInfoModel: RecommendUserInfo?, childPos: Int) {
                 // 点击排麦房的声音
+                MyLog.d(mTag, "onClickMicVoice model = $model, position = $position, userInfoModel = $userInfoModel, childPos = $childPos")
+                if (friendRoomAdapter?.isPlay == true && friendRoomAdapter?.mCurrPlayPosition == position && friendRoomAdapter?.mCurrChildPosition == childPos) {
+                    // 对同一个的声音的重复点击
+                    SinglePlayer.stop(playerTag)
+                    friendRoomAdapter?.stopPlay()
+                    starTimer((mRecommendInterval * 1000).toLong())
+                } else {
+                    stopTimer()
+                    SinglePlayer.stop(playerTag)
+                    userInfoModel?.voiceInfo?.let {
+                        SinglePlayer.startPlay(playerTag, it.voiceURL)
+                    }
+                    friendRoomAdapter?.startPlay(position, model, childPos)
+                }
             }
         })
 

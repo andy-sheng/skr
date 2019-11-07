@@ -51,7 +51,7 @@
             android:layout_marginLeft="@dimen/view_12_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
             android:text="暂无特别关注消息"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/special_follow_iv" />
@@ -110,7 +110,7 @@
             android:layout_marginLeft="@dimen/view_12_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
             android:text="暂无关注消息"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/last_follow_iv" />
@@ -169,7 +169,7 @@
             android:layout_marginLeft="@dimen/view_12_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
             android:text="暂无广场互动消息"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/comment_like_iv" />
@@ -228,7 +228,7 @@
             android:layout_marginLeft="@dimen/view_12_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
             android:text="暂无礼物消息"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/gift_iv" />
