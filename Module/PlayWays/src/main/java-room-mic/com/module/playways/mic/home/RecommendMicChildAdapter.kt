@@ -72,8 +72,6 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
             nameTv.text = model.userInfo?.nicknameRemark
             AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(model.userInfo?.avatar)
                     .setCircle(true)
-                    .setBorderWidth(2f.dp().toFloat())
-                    .setBorderColor(Color.WHITE)
                     .build())
 
             if (model.voiceInfo != null && !TextUtils.isEmpty(model.voiceInfo?.voiceURL)) {

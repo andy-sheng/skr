@@ -3,7 +3,7 @@
     xmlns:VoiceChartView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_160_dp"
+    android:layout_height="@dimen/view_182_dp"
     android:layout_marginLeft="@dimen/view_12_dp"
     android:layout_marginRight="@dimen/view_12_dp"
     android:layout_marginBottom="@dimen/view_10_dp"
@@ -11,28 +11,28 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_64_dp"
-        android:layout_height="@dimen/view_64_dp"
-        android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginTop="@dimen/view_22_dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="@dimen/view_58_dp"
+        android:layout_height="@dimen/view_58_dp"
+        app:layout_constraintBottom_toBottomOf="@id/level_bg"
+        app:layout_constraintLeft_toLeftOf="@id/level_bg"
+        app:layout_constraintRight_toRightOf="@id/level_bg"
+        app:layout_constraintTop_toTopOf="@id/level_bg" />
 
     <ImageView
         android:id="@+id/level_bg"
-        android:layout_width="@dimen/view_107_dp"
-        android:layout_height="@dimen/view_73_dp"
-        app:layout_constraintLeft_toLeftOf="@id/avatar_iv"
-        app:layout_constraintRight_toRightOf="@id/avatar_iv"
-        app:layout_constraintTop_toTopOf="@id/avatar_iv"
-        app:layout_constraintBottom_toBottomOf="@id/avatar_iv"/>
+        android:layout_width="@dimen/view_105_dp"
+        android:layout_height="@dimen/view_112_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
-        android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
@@ -43,7 +43,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toRightOf="@id/avatar_iv"
+        app:layout_constraintLeft_toRightOf="@id/level_bg"
         app:layout_constraintRight_toLeftOf="@id/recommend_tag_sdv"
         app:layout_constraintTop_toTopOf="@id/level_bg"
         app:layout_goneMarginRight="@dimen/view_10_dp" />
@@ -79,8 +79,8 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        app:layout_constraintTop_toBottomOf="@id/name_tv"
-        app:layout_constraintLeft_toLeftOf="@id/name_tv"/>
+        app:layout_constraintLeft_toLeftOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/name_tv" />
 
     <View
         android:id="@+id/divider"
@@ -102,19 +102,19 @@
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/room_player_num_tv"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/room_player_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/view_12_dp"
         android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
         android:textColor="@color/black_trans_50"
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold"
