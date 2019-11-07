@@ -555,7 +555,7 @@ class FeedsMakeActivity : BaseActivity() {
     }
 
     private fun recordOk(from:String) {
-        MyLog.d(TAG, "recordOk1 from = $from")
+        MyLog.d(TAG, "recordOk from = $from")
         stopRecord()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
