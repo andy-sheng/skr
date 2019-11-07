@@ -121,7 +121,7 @@ class FeedsMakeActivity : BaseActivity() {
                                         .setText("太短啦\n再唱几句吧~")
                                         .build())
                             } else {
-                                recordOk()
+                                recordOk("click")
                             }
                         } else {
                             //因为一些资源的原因，录制还未真正开启
@@ -511,7 +511,7 @@ class FeedsMakeActivity : BaseActivity() {
                     val leave = mFeedsMakeModel?.songModel?.songTpl?.bgmDurMs?.toInt()
                             ?: 60 * 1000
                     qcProgressBarView?.go(0, leave) {
-                        recordOk()
+                        recordOk("qcProgressBarView over1")
                     }
                     countDownBegin()
                 }
@@ -525,7 +525,7 @@ class FeedsMakeActivity : BaseActivity() {
             mFeedsMakeModel?.recording = true
             val leave = 90 * 1000
             qcProgressBarView?.go(0, leave) {
-                recordOk()
+                recordOk("qcProgressBarView over2")
             }
             countDownBegin()
         }
@@ -554,7 +554,8 @@ class FeedsMakeActivity : BaseActivity() {
         }
     }
 
-    private fun recordOk() {
+    private fun recordOk(from:String) {
+        MyLog.d(TAG, "recordOk1 from = $from")
         stopRecord()
         mFeedsMakeModel?.apply {
             recordDuration = System.currentTimeMillis() - beginRecordTs
@@ -663,7 +664,7 @@ class FeedsMakeActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EngineEvent) {
         when (event.getType()) {
-            EngineEvent.TYPE_MUSIC_PLAY_FINISH -> recordOk()
+            EngineEvent.TYPE_MUSIC_PLAY_FINISH -> recordOk("TYPE_MUSIC_PLAY_FINISH")
             EngineEvent.TYPE_MUSIC_PLAY_START -> {
 
             }

@@ -48,7 +48,7 @@ public class DbTestModelDao extends AbstractDao<DbTestModel, Long> {
                 "\"DATE\" INTEGER," + // 2: date
                 "\"BBB\" TEXT);"); // 3: bbb
         // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_DB_TEST_MODEL_dbtext_DATE_DESC ON DB_TEST_MODEL" +
+        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_DB_TEST_MODEL_dbtext_DATE_DESC ON \"DB_TEST_MODEL\"" +
                 " (\"dbtext\" ASC,\"DATE\" DESC);");
     }
 

@@ -11,19 +11,18 @@ import io.agora.rtc.IRtcEngineEventHandlerEx;
 
 public class AgoraEngineCallbackWithLog extends IRtcEngineEventHandlerEx {
     private String TAG;
-
     // 比较不重要的log
     boolean vLogShow = false;
 
     public AgoraEngineCallbackWithLog(String tag) {
         super();
         TAG = tag;
-        MyLog.w(TAG, "AgoraEngineCallbackWithLog");
+        MyLog.d(TAG, "AgoraEngineCallbackWithLog");
     }
 
     @Override
     public void onAudioTransportQuality(int uid, int bitrate, short delay, short lost) {
-        MyLog.w(TAG, "onAudioTransportQuality" + " uid=" + uid + " bitrate=" + bitrate + " delay=" + delay + " lost=" + lost);
+        MyLog.d(TAG, "onAudioTransportQuality" + " uid=" + uid + " bitrate=" + bitrate + " delay=" + delay + " lost=" + lost);
         super.onAudioTransportQuality(uid, bitrate, delay, lost);
     }
 

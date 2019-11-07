@@ -64,7 +64,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
                 "\"RONG_TOKEN\" TEXT," + // 10: rongToken
                 "\"EXT\" TEXT);"); // 11: ext
         // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_ACCOUNT_UID_DESC ON USER_ACCOUNT" +
+        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_ACCOUNT_UID_DESC ON \"USER_ACCOUNT\"" +
                 " (\"UID\" DESC);");
     }
 

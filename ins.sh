@@ -193,6 +193,7 @@ echo "运行示例 ./ins.sh app release apkcanary 开启apk包体静态检查"
 echo "运行示例 ./ins.sh app test pre 把上一次打的test包安装"
 echo "运行示例 ./ins.sh app test server  不从服务器拉取依赖，只根据本地依赖编译"
 echo "运行示例 ./ins.sh app test server refresh 强制更新依赖"
+echo "运行示例 ./ins.sh app test scan 输出构建报告"
 if [ $# -le 0 ] ; then 
 	echo "请根据示例输入参数"
 	exit 1; 
@@ -222,6 +223,8 @@ do
         server=true
     elif [[ $p = refresh ]]; then
         refresh=true
+    elif [[ $p = scan ]]; then
+        scan=true
     fi
 done
 
@@ -300,8 +303,14 @@ if [ $refresh = true ]; then
     echo "强制检查所有gradle library的依赖 会比较慢 在确定快照库有更新时可以加这个参数"
     rd='--refresh-dependencies'
     echo "依赖更新结束"
+else
+    rd='--offline'
 fi
 
+if [ $scan = true ]; then
+    echo "输出报告"
+    rd=$rd' --profile --scan'
+fi
 if [[ $1 = "app" ]]; then
 	if [[ $isBuildModule = false ]]; then
 		#如果是app 并且 之前的 isBuildModule 为false，则直接编译
@@ -355,7 +364,7 @@ if [[ $1 = "app" ]]; then
 		fi
 		rm -rf app/build/outputs/apk
 		./gradlew :app:assembleDebugChannels --stacktrace $rd
-        if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
+        if [[ -f "app/build/outputs/apk/debug/app-debug.apk" ]]; then
             if [ $apkcanary = true ]; then
 		           ./apk_canary.sh
 		    fi
