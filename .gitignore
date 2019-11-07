@@ -30,6 +30,7 @@ Thumbs.db
 # OSX files
 .DS_Store
 reports/
+app/proguardMapping.txt
 # built application files
 *.apk
 *.ap_
