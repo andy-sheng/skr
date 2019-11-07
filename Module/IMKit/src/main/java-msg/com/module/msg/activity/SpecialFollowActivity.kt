@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
@@ -73,8 +74,10 @@ class SpecialFollowActivity : BaseActivity() {
         contentRv.adapter = adapter
 
         adapter.onClickItemListener = { model, _ ->
-            model?.let {
-                //todo 跳转
+            model?.spFollowInfo?.schema?.let {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                        .withString("uri", it)
+                        .navigation()
             }
         }
 

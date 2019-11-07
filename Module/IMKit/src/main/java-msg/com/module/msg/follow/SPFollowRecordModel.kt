@@ -27,6 +27,8 @@ class SPFollowInfo : Serializable {
     var nType: Int = 0
     @JSONField(name = "postsID")
     var postsID: Int = 0
+    @JSONField(name = "schema")
+    var schema: String? = null
     @JSONField(name = "timeMs")
     var timeMs: Long = 0L
     @JSONField(name = "userID")
