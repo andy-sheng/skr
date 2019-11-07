@@ -467,35 +467,6 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
         mFollowsNumTv = (ExTextView) getRootView().findViewById(R.id.follows_num_tv);
         mFansNumTv = (ExTextView) getRootView().findViewById(R.id.fans_num_tv);
 
-//        mWalletIv.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
-//                        .navigation();
-//            }
-//        });
-//
-//        mIncomeIv.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                ARouter.getInstance()
-//                        .build(RouterConstants.ACTIVITY_INCOME)
-//                        .navigation();
-//            }
-//        });
-//
-//        mRechargeIv.setOnClickListener(new AnimateClickListener() {
-//            @Override
-//            public void click(View view) {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newAddParamsBuilder(getActivity(), BallanceFragment.class)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .build());
-//            }
-//        });
-
         mFriendsNumTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -560,7 +531,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                     // 照片墙
                     if (mPhotoWallView == null) {
                         mPhotoWallView = new PhotoWallView(PersonFragment4.this, PersonFragment4.this);
-                        mPhotoWallView.getPhotos(false);
+                        if (PersonFragment4.this.getFragmentVisible()) {
+                            mPhotoWallView.getPhotos(false);
+                        }
                     }
                     if (container.indexOfChild(mPhotoWallView) == -1) {
                         if (mPhotoWallView.getParent() != null) {

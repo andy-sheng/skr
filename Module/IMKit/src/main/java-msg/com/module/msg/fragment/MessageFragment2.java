@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -33,6 +34,7 @@ import com.component.relation.fragment.SearchUserFragment;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowModel;
+import com.module.msg.follow.LastNewsModel;
 
 import java.util.List;
 
@@ -156,8 +158,11 @@ public class MessageFragment2 extends BaseFragment implements IMessageFragment, 
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    String str = result.getData().getString("latestNews");
-                    long timeMs = result.getData().getLongValue("timeMs");
+                    mLastUpdateTime = System.currentTimeMillis();
+                    List<LastNewsModel> list = JSON.parseArray(result.getData().getString("news"), LastNewsModel.class);
+                    if (mConversationListFragment != null) {
+                        mConversationListFragment.showLastNews(list);
+                    }
                 }
             }
         }, this);

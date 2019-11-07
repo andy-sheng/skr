@@ -13,6 +13,7 @@ import com.common.view.ex.ExImageView;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.module.RouterConstants;
 import com.module.msg.custom.MyConversationListAdapter;
+import com.module.msg.follow.LastNewsModel;
 
 import java.util.List;
 
@@ -38,6 +39,22 @@ public class MyConversationListFragment extends ConversationListFragment {
     ImageView mGiftIv;
     ExImageView mGiftRedIv;
     TextView mGiftDescTv;
+
+    public void showLastNews(List<LastNewsModel> news) {
+        if (news != null && news.size() > 0) {
+            for (int i = 0; i < news.size(); i++) {
+                if (news.get(i).getListType() == LastNewsModel.TYPE_SP_FOLLOW) {
+                    mSpecialDescTv.setText(news.get(i).getLatestNews());
+                } else if (news.get(i).getListType() == LastNewsModel.TYPE_LAST_FOLLOW) {
+                    mLastDescTv.setText(news.get(i).getLatestNews());
+                } else if (news.get(i).getListType() == LastNewsModel.TYPE_POSTS_COMMENT_LIKE) {
+                    mCommentLikeDescTv.setText(news.get(i).getLatestNews());
+                } else if (news.get(i).getListType() == LastNewsModel.TYPE_GIFT) {
+                    mGiftDescTv.setText(news.get(i).getLatestNews());
+                }
+            }
+        }
+    }
 
     @Override
     public ConversationListAdapter onResolveAdapter(Context context) {
