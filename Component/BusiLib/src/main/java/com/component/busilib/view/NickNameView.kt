@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.common.core.userinfo.model.HonorInfo
+import com.common.core.userinfo.model.UserInfoModel
 import com.common.utils.SpanUtils
 import com.common.utils.U
 import com.common.utils.dp
@@ -77,6 +78,10 @@ class NickNameView : ConstraintLayout {
         } else {
             honorIv.visibility = View.GONE
         }
+    }
+
+    fun setAllStateText(model: UserInfoModel?) {
+        setAllStateText(model?.nicknameRemark, model?.sex, model?.honorInfo)
     }
 
     /**

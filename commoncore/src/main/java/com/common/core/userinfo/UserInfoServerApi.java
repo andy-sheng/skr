@@ -373,7 +373,7 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getBlackList();
 
     @GET("/v1/mate/is-blacked")
-    Observable<ApiResult> checkIsBlack(@Query("userID")int userID);
+    Observable<ApiResult> checkIsBlack(@Query("userID") int userID);
 
     @GET("/v3/msgbox/latest-news")
     Observable<ApiResult> getLatestNews(@Query("userID") long userID);
@@ -382,6 +382,8 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getLevelDetail(@Query("userID") long userID);
 
     @GET("v1/score/rankings")
-    Call<ApiResult> getRankings(@Query("userIDs")ArrayList<Integer> userIDs);
+    Call<ApiResult> getRankings(@Query("userIDs") ArrayList<Integer> userIDs);
 
+    @GET("/v1/msgbox/sp-follow-list")
+    Call<ApiResult> getSPFollowRecordList(@Query("userID") int userID, @Query("offset") int offset, @Query("cnt") int cnt);
 }

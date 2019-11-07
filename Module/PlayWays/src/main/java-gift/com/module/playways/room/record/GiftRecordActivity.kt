@@ -86,6 +86,8 @@ class GiftRecordActivity : BaseActivity() {
                 hasMore = result.data.getBoolean("hasMore")
                 addList(list, isClean)
             } else {
+                refreshLayout.finishRefresh()
+                refreshLayout.finishLoadMore()
                 if (result.errno == -2) {
                     U.getToastUtil().showShort("网络出错了，请检查网络后重试")
                 }
@@ -94,6 +96,9 @@ class GiftRecordActivity : BaseActivity() {
     }
 
     private fun addList(list: List<GiftRecordModel>?, isClean: Boolean) {
+        refreshLayout.finishRefresh()
+        refreshLayout.finishLoadMore()
+        refreshLayout.setEnableLoadMore(hasMore)
         if (isClean) {
             adapter?.mDataList?.clear()
             if (!list.isNullOrEmpty()) {

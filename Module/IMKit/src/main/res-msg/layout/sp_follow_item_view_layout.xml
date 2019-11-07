@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_93_dp">
+
+    <com.component.busilib.view.AvatarView
+        android:id="@+id/avatar_view"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_marginTop="@dimen/view_15_dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:textColor="#993B4E79"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toBottomOf="@id/name_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/name_view" />
+
+    <com.component.busilib.view.NickNameView
+        android:id="@+id/name_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
+        NickNameView:textColor="@color/textColorPrimary"
+        NickNameView:textSize="@dimen/textsize_16_dp"
+        NickNameView:textStyle="BOLD"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toRightOf="@id/avatar_view"
+        app:layout_constraintRight_toLeftOf="@id/time_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/action_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_2_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#993B4E79"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/name_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_view" />
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_14_dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/name_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/action_desc_tv" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_1_dp"
+        android:background="#193E5181"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>
