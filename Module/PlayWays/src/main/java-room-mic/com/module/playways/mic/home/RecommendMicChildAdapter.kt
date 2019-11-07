@@ -93,6 +93,5 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
             MyLog.d("RecomChildViewHolder", "stopPlay")
             audioView.setPlay(false)
         }
-
     }
 }
