@@ -1,11 +1,11 @@
-package com.engine.statistics;
+package com.zq.engine.avstatistics;
 
 
-import com.engine.statistics.datastruct.ILogItem;
-import com.engine.statistics.datastruct.SAgora;
-import com.engine.statistics.datastruct.SAgoraUserEvent;
-import com.engine.statistics.datastruct.Skr;
-import com.engine.statistics.logservice.SLogServiceBase;
+import com.zq.engine.avstatistics.datastruct.ILogItem;
+import com.zq.engine.avstatistics.datastruct.SAgora;
+import com.zq.engine.avstatistics.datastruct.SAgoraUserEvent;
+import com.zq.engine.avstatistics.datastruct.Skr;
+import com.zq.engine.avstatistics.logservice.SLogServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,7 +285,8 @@ public class SAgoraDataHolder {
         int recPerListLimit = 3;
         int nowTotalRecords = mRtcStatsList.size() + mLocalVList.size() + mRemoteAList.size() +
                 mRemoteVList.size() + mNetQualityList.size() + mRemoteATransList.size() + mRemoteVTransList.size() +
-                mAudioSamplingInfoList.size();
+                mAudioSamplingInfoList.size() + mPlayerInfo.size() + mUserEvenList.size() + mPingInfoList.size() +
+                mNetworkInfoList.size();
 
         if (nowTotalRecords >= recPerListLimit * 11)
             return true;

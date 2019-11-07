@@ -1,14 +1,14 @@
-package com.engine.statistics.logservice;
+package com.zq.engine.avstatistics.logservice;
 
 
-import com.engine.statistics.datastruct.ILogItem;
+import com.zq.engine.avstatistics.datastruct.ILogItem;
 
 import org.json.JSONObject;
 
 /**
  * @author gongjun@skr.net 2019.10.18
- * @brief SLogServiceBase is the basic definition of the Log-Service. Log-Service is initialized by app, and used by {@link com.engine.statistics.SDataManager}
- * refer to {@link com.engine.statistics.SDataManager#setLogServices(SLogServiceBase)}, {@link com.engine.statistics.SDataManager#flush(int)} and {@link SLogServiceBase#init(Object)}
+ * @brief SLogServiceBase is the basic definition of the Log-Service. Log-Service is initialized by app, and used by {@link com.zq.engine.avstatistics.SDataManager}
+ * refer to {@link com.zq.engine.avstatistics.SDataManager#setLogServices(SLogServiceBase)}, {@link com.zq.engine.avstatistics.SDataManager#flush(int)} and {@link SLogServiceBase#init(Object)}
  * for more info.
  *
  */

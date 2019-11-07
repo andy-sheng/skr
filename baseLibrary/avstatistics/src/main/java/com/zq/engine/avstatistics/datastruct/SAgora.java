@@ -1,7 +1,7 @@
-package com.engine.statistics.datastruct;
+package com.zq.engine.avstatistics.datastruct;
 
 
-import com.engine.statistics.SUtils;
+import com.zq.engine.avstatistics.SUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

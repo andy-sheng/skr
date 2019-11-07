@@ -1,7 +1,7 @@
-package com.engine.statistics.datastruct;
+package com.zq.engine.avstatistics.datastruct;
 
 
-import com.engine.statistics.SUtils;
+import com.zq.engine.avstatistics.SUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +12,7 @@ public class Skr
     {
         public long ts = 0; //timestamp;
 
-        public float timeCost = 0;
+        public long timeCost = 0;
         public boolean isPingOk = false;
 
         public PingInfo() {
@@ -20,7 +20,7 @@ public class Skr
             isPingOk = false;
         }
 
-        public PingInfo(int timeCost, boolean isOK) {
+        public PingInfo(long timeCost, boolean isOK) {
             this.timeCost = timeCost;
             this.isPingOk = isOK;
         }

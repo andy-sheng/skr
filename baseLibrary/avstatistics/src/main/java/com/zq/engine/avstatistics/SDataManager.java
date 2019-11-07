@@ -1,8 +1,8 @@
-package com.engine.statistics;
+package com.zq.engine.avstatistics;
 
 
 import com.common.log.MyLog;
-import com.engine.statistics.logservice.SLogServiceBase;
+import com.zq.engine.avstatistics.logservice.SLogServiceBase;
 
 
 public class SDataManager {

@@ -1,4 +1,4 @@
-package com.engine.statistics.logservice;
+package com.zq.engine.avstatistics.logservice;
 
 
 import android.content.Context;
@@ -14,13 +14,10 @@ import com.aliyun.sls.android.sdk.model.LogGroup;
 import com.aliyun.sls.android.sdk.request.PostLogRequest;
 import com.aliyun.sls.android.sdk.result.PostLogResult;
 import com.common.log.MyLog;
-import com.engine.statistics.datastruct.ILogItem;
+import com.zq.engine.avstatistics.datastruct.ILogItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Calendar;
-import java.util.Random;
 
 /**
  * @author gongjun@skr.net 2019.10.18

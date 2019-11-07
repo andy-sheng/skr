@@ -1,4 +1,4 @@
-package com.engine.statistics.logservice;
+package com.zq.engine.avstatistics.logservice;
 
 
 import android.content.Context;

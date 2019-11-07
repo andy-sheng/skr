@@ -1,10 +1,6 @@
 package com.zq.mediaengine.kit.agora;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkRequest;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
@@ -18,13 +14,12 @@ import com.engine.Params;
 import com.engine.agora.AgoraEngineCallbackWithLog;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.engine.statistics.SDataManager;
-import com.engine.statistics.SUtils;
-import com.engine.statistics.datastruct.SAgora;
-import com.engine.statistics.datastruct.Skr;
-
-import com.engine.statistics.logservice.SLogServiceAgent;
-import com.engine.statistics.logservice.SLogServiceBase;
+import com.zq.engine.avstatistics.SDataManager;
+import com.zq.engine.avstatistics.SUtils;
+import com.zq.engine.avstatistics.datastruct.SAgora;
+import com.zq.engine.avstatistics.datastruct.Skr;
+import com.zq.engine.avstatistics.logservice.SLogServiceAgent;
+import com.zq.engine.avstatistics.logservice.SLogServiceBase;
 import com.zq.mediaengine.framework.AVConst;
 import com.zq.mediaengine.framework.AudioBufFormat;
 import com.zq.mediaengine.framework.AudioBufFrame;

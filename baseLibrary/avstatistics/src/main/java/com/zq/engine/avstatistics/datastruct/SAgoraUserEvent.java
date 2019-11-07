@@ -1,12 +1,30 @@
-package com.engine.statistics.datastruct;
+package com.zq.engine.avstatistics.datastruct;
 
 
-import com.engine.statistics.SUtils;
+import com.zq.engine.avstatistics.SUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static io.agora.rtc.Constants.*;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_DEFAULT;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_EARPIECE;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSET;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSETBLUETOOTH;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_HEADSETNOMIC;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_LOUDSPEAKER;
+import static io.agora.rtc.Constants.AUDIO_ROUTE_SPEAKERPHONE;
+import static io.agora.rtc.Constants.CLIENT_ROLE_AUDIENCE;
+import static io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_ERROR_MIXING_OPEN;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_ERROR_MIXING_TOO_FREQUENT;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_ERROR;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_INTERRUPTED_EOF;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PAUSED;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_PLAY;
+import static io.agora.rtc.Constants.MEDIA_ENGINE_AUDIO_EVENT_MIXING_STOPPED;
+import static io.agora.rtc.Constants.USER_OFFLINE_BECOME_AUDIENCE;
+import static io.agora.rtc.Constants.USER_OFFLINE_DROPPED;
+import static io.agora.rtc.Constants.USER_OFFLINE_QUIT;
 
 //单独起一个类，用于记录一系列用户行为事件
 public class SAgoraUserEvent implements ILogItem

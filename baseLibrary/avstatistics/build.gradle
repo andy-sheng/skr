@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+apply from: "$rootDir/base_lib.gradle"
+//android {
+//    compileSdkVersion 27
+//    buildToolsVersion "28.0.3"
+//
+//
+//    defaultConfig {
+//        minSdkVersion 19
+//        targetSdkVersion 27
+//        versionCode 1
+//        versionName "1.0"
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        consumerProguardFiles 'consumer-rules.pro'
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//
+//}
+
+dependencies {
+//    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation 'androidx.appcompat:appcompat:1.0.2'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    //for aliyun sls
+//    implementation 'com.aliyun.openservices:aliyun-log-android-sdk:2.0.0'
+
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.4.2'
+
+    implementation 'com.squareup.okio:okio:1.9.0'   //全局config.gradle里没有
+//    implementation 'com.aliyun.dpa:oss-android-sdk:2.4.2' //在主工程的config.gradle里添加了依赖，暂时保留注释项:
+//    implementation 'com.alibaba:fastjson:1.2.35'   //原config.gradle里用1.1.71
+//    implementation 'com.squareup.okhttp3:okhttp:3.4.1' //全局config.gradle里用3.12.0,
+//    implementation 'org.greenrobot:greendao:3.2.2'  //与全局config.gradle里的一样
+
+    implementation project(':baseLibrary:commonsdk')
+    api rootProject.ext.dependencies["aliyun-sls"]
+
+    //avstatistics也会用到Agora的数据结构，这种模块划分还不够清晰，后期要做的更清晰
+    implementation files('../enginesdk/libs/agora-rtc-sdk.jar')
+}
+
+
+// 添加上传到本地 maven 仓库
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.zq.engine'
+        pom.artifactId = 'avstatistics'
+    }
+}

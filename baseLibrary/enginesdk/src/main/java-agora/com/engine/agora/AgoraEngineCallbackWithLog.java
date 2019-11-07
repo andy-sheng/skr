@@ -3,9 +3,8 @@ package com.engine.agora;
 import android.graphics.Rect;
 
 import com.common.log.MyLog;
-import com.engine.statistics.SDataManager;
-import com.engine.statistics.datastruct.SAgoraUserEvent;
-
+import com.zq.engine.avstatistics.SDataManager;
+import com.zq.engine.avstatistics.datastruct.SAgoraUserEvent;
 
 import io.agora.rtc.IRtcEngineEventHandlerEx;
 

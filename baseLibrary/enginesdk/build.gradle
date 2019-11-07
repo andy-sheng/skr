@@ -61,16 +61,11 @@ dependencies {
             api project(":baseLibrary:arcCloud")
         }
     }
-//    compile project(':aliyun-sls-android-sdk')
 
 
-    implementation 'com.squareup.okio:okio:1.9.0'   //全局config.gradle里没有
-//    implementation 'com.aliyun.dpa:oss-android-sdk:2.4.2' //在主工程的config.gradle里添加了依赖，暂时保留注释项:
-//    implementation 'com.alibaba:fastjson:1.2.35'   //原config.gradle里用1.1.71
-//    implementation 'com.squareup.okhttp3:okhttp:3.4.1' //全局config.gradle里用3.12.0,
-//    implementation 'org.greenrobot:greendao:3.2.2'  //与全局config.gradle里的一样
+    implementation project(':baseLibrary:avstatistics')
 
-    api rootProject.ext.dependencies["aliyun-sls"]
+
 
 //    implementation 'com.aliyun.openservices:aliyun-log-android-sdk:2.1.0' //阿里云日志服务
 //    implementation files('libs/aliyun-log-sdk-android-2.1.0.jar')

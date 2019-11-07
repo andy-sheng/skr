@@ -1,15 +1,13 @@
-package com.engine.statistics;
+package com.zq.engine.avstatistics;
 
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.os.Message;
 import android.telephony.TelephonyManager;
 
 import com.common.log.MyLog;
-import com.engine.statistics.datastruct.Skr;
+import com.zq.engine.avstatistics.datastruct.Skr;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -297,7 +295,7 @@ public class SUtils
                 int idx2 = buffer.indexOf(" ms");
 
                 String time = buffer.substring(idx1+5, idx2);
-                pingInfo.timeCost = Float.parseFloat(time);
+                pingInfo.timeCost = (long)Float.parseFloat(time);
             } else {
                 pingInfo.isPingOk = false;
                 pingInfo.timeCost = -1;
