@@ -14,7 +14,12 @@ import org.json.JSONObject;
  */
 public abstract class SLogServiceBase {
 
-    public final static int OP_LOCK_LOGGROUP = 1;
+    public final static int OP_LOCK_LOGGROUP = 1;//not in used yet
+
+    /**
+     * when set this prop via {@link this#setProp(int, Object)}, the prop-object should be Long.
+     */
+    public final static int PROP_USER_ID     = 2;
 
     /**
      * @param param usually there are some parameter related to app, so this API is usually called by app-context
@@ -40,5 +45,8 @@ public abstract class SLogServiceBase {
      * @param isSync every implementation of the log-services and decide the sync-style by themself
      */
     public abstract void flushLog(boolean isSync);
+
+
+    public abstract void setProp(int propID, Object prop) throws Exception;
 }
 

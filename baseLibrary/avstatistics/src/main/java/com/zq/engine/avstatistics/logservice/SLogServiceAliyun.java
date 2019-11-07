@@ -108,6 +108,26 @@ class SLogServiceAliyun extends SLogServiceBase{
         mLogGroup = new LogGroup(LOG_TOPIC, LOG_SOURSE);
     }
 
+    @Override
+    public void setProp(int propID, Object prop) throws Exception {
+        switch (propID) {
+            case PROP_USER_ID:
+                {
+                    if (!(prop instanceof Long)) {
+                        throw new Exception("when set propID("+propID+"), the prop object should be Long");
+                    }
+
+                    mParam.skrUid = ((Long)prop).longValue();
+                }
+                break;
+            default:
+                {
+                    throw new Exception("This ClassName("+
+                            this.getClass().getSimpleName()+") doesn't support the propID("+propID+")");
+                }
+
+        }
+    }
 
 
     private void setupSLSClient(Context ctx) {

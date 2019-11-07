@@ -132,7 +132,7 @@ public class AgoraRTCAdapter {
         if (null == mLs) {
             mLs = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
             SLogServiceAgent.AliYunSLInitParam initParam = new SLogServiceAgent.AliYunSLInitParam();
-            initParam.skrUid = 10001; //先写死，回头看，怎么桥接app的MyUserInfoManager.INSTANCE.getUid();
+            initParam.skrUid = mConfig.getSelfUid();
             initParam.appCtx = U.app().getApplicationContext();
             try {
                 mLs.init(initParam);
@@ -140,6 +140,10 @@ public class AgoraRTCAdapter {
                 e.printStackTrace();
             }
             SDataManager.getInstance().setLogServices(mLs);
+        }
+        else {
+			//以防切换其他用户
+            SDataManager.getInstance().setUserID(mConfig.getSelfUid());
         }
 
 
