@@ -63,7 +63,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         this.userInfoModel = userInfoModel;
 
         mAvatarIv.bindData(userInfoModel);
-        mNickNameTv.setAllStateText(userInfoModel.getNicknameRemark(), userInfoModel.getSex(), userInfoModel.getHonorInfo());
+        mNickNameTv.setAllStateText(userInfoModel);
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);

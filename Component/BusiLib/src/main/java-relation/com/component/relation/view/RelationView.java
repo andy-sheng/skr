@@ -67,6 +67,8 @@ public class RelationView extends RelativeLayout {
 
     Handler mHandler = new Handler();
 
+    boolean hasInitData = false;
+
     public RelationView(Context context, int mode) {
         super(context);
         init(context, mode);
@@ -157,8 +159,6 @@ public class RelationView extends RelativeLayout {
                 loadData(0);
             }
         });
-
-        loadData(0);
     }
 
     private void unFollow(final UserInfoModel userInfoModel) {
@@ -203,8 +203,15 @@ public class RelationView extends RelativeLayout {
         mDialogPlus.show();
     }
 
+    public void initData(boolean flag) {
+        if (!flag && hasInitData) {
+            // 已经初始化过了 并且falg为false
+        } else {
+            loadData(0);
+        }
+    }
 
-    public void loadData(final int offset) {
+    private void loadData(final int offset) {
         this.mOffset = offset;
         if (mMode == UserInfoManager.RELATION.FRIENDS.getValue()) {
             UserInfoManager.getInstance().getMyFriends(UserInfoManager.ONLINE_PULL_NORMAL, new UserInfoManager.UserInfoListCallback() {
@@ -213,6 +220,7 @@ public class RelationView extends RelativeLayout {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            hasInitData = true;
                             mRefreshLayout.setEnableLoadMore(false);
                             if (list != null && list.size() != 0) {
                                 mRefreshLayout.finishLoadMore();
@@ -242,6 +250,7 @@ public class RelationView extends RelativeLayout {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            hasInitData = true;
                             mRefreshLayout.setEnableLoadMore(false);
                             if (list != null && list.size() != 0) {
                                 mRefreshLayout.finishLoadMore();
@@ -268,6 +277,7 @@ public class RelationView extends RelativeLayout {
             UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
                 @Override
                 public void onSuccess(UserInfoManager.FROM from, final int offset, final List<UserInfoModel> list) {
+                    hasInitData = true;
                     if (list != null && list.size() != 0) {
                         mRefreshLayout.finishLoadMore();
                         mLoadService.showSuccess();

@@ -251,11 +251,16 @@ public class RelationFragment extends BaseFragment {
             mFollow.setSelected(false);
             mFans.setSelected(true);
         }
+
+        RelationView relationView = mTitleAndViewMap.get(position);
+        if (relationView != null) {
+            relationView.initData(false);
+        }
     }
 
     private void showShareDialog() {
         if (mInviteFriendDialog == null) {
-            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0,0,0, null);
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, 0, 0, null);
         }
         mInviteFriendDialog.show();
     }
