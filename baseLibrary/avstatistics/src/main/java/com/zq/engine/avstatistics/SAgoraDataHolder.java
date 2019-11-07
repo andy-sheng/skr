@@ -61,6 +61,10 @@ public class SAgoraDataHolder {
         mLS = ls;
     }
 
+    public SLogServiceBase getLogServices() {
+        return mLS;
+    }
+
 
     public synchronized void addRtcStats(IRtcEngineEventHandler.RtcStats s ) {
         SAgora.SRTCStats n = new SAgora.SRTCStats();
