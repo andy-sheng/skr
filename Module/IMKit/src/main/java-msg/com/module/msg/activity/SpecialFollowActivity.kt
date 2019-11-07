@@ -3,6 +3,7 @@ package com.module.msg.activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
@@ -16,6 +17,10 @@ import com.common.rxretrofit.RequestControl
 import com.common.rxretrofit.subscribe
 import com.common.utils.U
 import com.common.view.titlebar.CommonTitleBar
+import com.component.busilib.callback.EmptyCallback
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadService
+import com.kingja.loadsir.core.LoadSir
 import com.module.RouterConstants
 import com.module.msg.follow.SPFollowAdapter
 import com.module.msg.follow.SPFollowRecordModel
@@ -40,6 +45,8 @@ class SpecialFollowActivity : BaseActivity() {
     val mCnt = 20
 
     val userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+
+    var mLoadService: LoadService<*>? = null
 
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.special_follow_activity_layout
@@ -82,6 +89,12 @@ class SpecialFollowActivity : BaseActivity() {
         }
 
         getSPFollowRecordList(0, true)
+
+
+        mLoadService =  LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon,"没有特别关注","#ffffff"))
+                .build().register(refreshLayout) { getSPFollowRecordList(0,true) }
+
     }
 
     private fun getSPFollowRecordList(off: Int, isClean: Boolean) {
@@ -119,6 +132,11 @@ class SpecialFollowActivity : BaseActivity() {
                 adapter.mDataList.addAll(list)
                 adapter.notifyDataSetChanged()
             }
+        }
+        if(adapter.mDataList.isEmpty()){
+            mLoadService?.showCallback(EmptyCallback::class.java)
+        }else{
+            mLoadService?.showSuccess()
         }
     }
 
