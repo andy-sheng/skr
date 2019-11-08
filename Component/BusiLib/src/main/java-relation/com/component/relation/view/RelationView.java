@@ -334,7 +334,8 @@ public class RelationView extends RelativeLayout {
     public void onEvent(FollowNotifyEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
-        loadData(0);
+        hasInitData = false;
+//        loadData(0);
     }
 
     /**
@@ -346,13 +347,15 @@ public class RelationView extends RelativeLayout {
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
         this.mOffset = 0;
-        loadData(0);
+        hasInitData = false;
+//        loadData(0);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RemarkChangeEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         this.mOffset = 0;
-        loadData(0);
+        hasInitData = false;
+//        loadData(0);
     }
 }

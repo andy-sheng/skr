@@ -13,7 +13,10 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.event.RelationChangeEvent;
+import com.common.core.userinfo.event.RemarkChangeEvent;
 import com.common.log.MyLog;
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -25,6 +28,9 @@ import com.component.busilib.R;
 import com.component.dialog.InviteFriendDialog;
 import com.component.relation.activity.RelationActivity;
 import com.component.relation.view.RelationView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -216,20 +222,16 @@ public class RelationFragment extends BaseFragment {
             mFriendNum = bundle.getInt(RelationActivity.FRIEND_NUM_KEY);
             mFansNum = bundle.getInt(RelationActivity.FANS_NUM_KEY);
             mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
-            if (relation == UserInfoManager.RA_UNKNOWN) {
-                selectPosition(0);
-            } else {
+            if (relation != UserInfoManager.RA_UNKNOWN) {
                 if (relation == UserInfoManager.RELATION.FRIENDS.getValue()) {
                     mRelationVp.setCurrentItem(0);
-                    selectPosition(0);
                 } else if (relation == UserInfoManager.RELATION.FOLLOW.getValue()) {
                     mRelationVp.setCurrentItem(1);
-                    selectPosition(1);
                 } else if (relation == UserInfoManager.RELATION.FANS.getValue()) {
                     mRelationVp.setCurrentItem(2);
-                    selectPosition(2);
                 }
             }
+            selectPosition(mRelationVp.getCurrentItem());
         } else {
             MyLog.w(getTAG(), "initData" + " savedInstanceState=" + savedInstanceState);
         }
@@ -267,7 +269,44 @@ public class RelationFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        selectPosition(mRelationVp.getCurrentItem());
+    }
+
+    /**
+     * 别人关注的事件,所有的关系都是从我出发
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        if (this.getFragmentVisible() == true) {
+            selectPosition(mRelationVp.getCurrentItem());
+        }
+    }
+
+    /**
+     * 自己主动关注或取关事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RelationChangeEvent event) {
+        if (this.getFragmentVisible() == true) {
+            selectPosition(mRelationVp.getCurrentItem());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RemarkChangeEvent event) {
+        if (this.getFragmentVisible() == true) {
+            selectPosition(mRelationVp.getCurrentItem());
+        }
     }
 
     @Override
