@@ -49,12 +49,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="暂无特别关注消息"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/special_follow_iv" />
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@id/special_follow_iv"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <View
             android:layout_width="match_parent"
@@ -108,12 +115,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="暂无关注消息"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/last_follow_iv" />
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@id/last_follow_iv"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <View
             android:layout_width="match_parent"
@@ -167,12 +181,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="暂无广场互动消息"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/comment_like_iv" />
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@id/comment_like_iv"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <View
             android:layout_width="match_parent"
@@ -226,12 +247,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginRight="@dimen/view_10_dp"
             android:layout_marginBottom="@dimen/view_14_dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="暂无礼物消息"
             android:textColor="#993B4E79"
             android:textSize="@dimen/textsize_12_dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/gift_iv" />
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@id/gift_iv"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <View
             android:layout_width="match_parent"
