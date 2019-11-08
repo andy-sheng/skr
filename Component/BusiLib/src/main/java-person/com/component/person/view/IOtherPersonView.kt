@@ -10,7 +10,8 @@ interface IOtherPersonView {
     // 展示homepage回来的结果
     fun showHomePageInfo(userInfoModel: UserInfoModel,
                          relationNumModels: List<RelationNumModel>?,
-                         meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel,
+                         meiLiCntTotal: Int, qinMiCntTotal: Int,
+                         scoreDetailModel: ScoreDetailModel,
                          voiceInfoModel: VoiceInfoModel?)
 
     fun getHomePageFail()

@@ -35,14 +35,17 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                     val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
                             ?: false
 
-                    userInfoModel.isFriend = isFriend
-                    userInfoModel.isFollow = isFollow
-                    userInfoModel.isSPFollow = isSpFollow
-                    UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
+                    if (isFollow) {
+                        userInfoModel.isFriend = isFriend
+                        userInfoModel.isFollow = isFollow
+                        userInfoModel.isSPFollow = isSpFollow
+                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
+                    }
 
-                    val meiLiCntTotal = result.data!!.getIntValue("meiLiCntTotal")
+                    val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0
+                    val qinMiCntTotal = result.data?.getIntValue("qinMiCntTotal") ?: 0
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, scoreDetailModel, voiceInfoModel)
+                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, qinMiCntTotal, scoreDetailModel, voiceInfoModel)
                 } else {
                     view.getHomePageFail()
                 }

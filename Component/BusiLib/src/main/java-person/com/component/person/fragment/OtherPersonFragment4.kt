@@ -648,7 +648,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
+                                  meiLiCntTotal: Int, qinMiCntTotal: Int,
+                                  scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)

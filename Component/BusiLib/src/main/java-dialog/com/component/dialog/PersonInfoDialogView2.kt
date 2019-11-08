@@ -228,20 +228,22 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
                     val userInfoModel = JSON.parseObject(result.data!!.getString("userBaseInfo"), UserInfoModel::class.java)
-                    //                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
                     val relationNumModes = JSON.parseArray(result.data!!.getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel::class.java)
-//                    val userLevelModels = JSON.parseArray(result.data!!.getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel::class.java)
-                    //                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
-
                     val scoreDetailModel = JSON.parseObject(result.data.getString("scoreDetail"), ScoreDetailModel::class.java)
-                    val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
-                    val isFollow = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFollow")
+                    val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
+                            ?: false
+                    val isFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFollow")
+                            ?: false
+                    val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
+                            ?: false
 
-                    val meiLiCntTotal = result.data!!.getIntValue("meiLiCntTotal")
+                    val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0
+                    val qinMiCntTotal = result.data?.getIntValue("qinMiCntTotal") ?: 0
 
                     if (isFollow) {
                         userInfoModel.isFollow = isFollow
                         userInfoModel.isFriend = isFriend
+                        userInfoModel.isSPFollow = isSpFollow
                         UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
                     }
                     showUserInfo(userInfoModel)
@@ -249,6 +251,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     showUserRelationNum(relationNumModes)
                     showUserRelation(isFriend, isFollow)
                     showCharmsTag(meiLiCntTotal)
+                    showQinMiTag(qinMiCntTotal)
                 }
             }
         }, mContext as BaseActivity)
@@ -644,6 +647,10 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     private fun showCharmsTag(meiLiCntTotal: Int) {
         mPersonTagView.setCharmTotal(meiLiCntTotal)
+    }
+
+    private fun showQinMiTag(qinMiCntTotal: Int) {
+        mPersonTagView.setQinMiTotal(qinMiCntTotal)
     }
 
     fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
