@@ -421,4 +421,7 @@ message STCommitSegmentResultReq
 
     @GET("http://dev.stand.inframe.mobi/v1/stand/challenge-star-cnt")
     fun getChallengeStarCount(@Query("roomID") roomID: Int, @Query("enterRoundSeq") enterRoundSeq: Int, @Query("curRoundSeq") curRoundSeq: Int): Call<ApiResult>
+
+    @PUT("http://dev.game.inframe.mobi/v1/game/user-statistic")
+    fun userStatistic(@Body body: RequestBody): Call<ApiResult>
 }
