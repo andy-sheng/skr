@@ -1,6 +1,7 @@
 package com.common.core.scheme.processor;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -101,6 +102,9 @@ public class InframeProcessor implements ISchemeProcessor {
                     case SchemeConstants.HOST_POSTS:
                         processPostsUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_USER:
+                        processUserUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
                 }
             }
         } else if ("rong".equals(scheme)) {
@@ -171,6 +175,20 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if (SchemeConstants.PATH_GRAB_MATCH.equals(path)) {
 
+        } else {
+
+        }
+    }
+
+    private void processUserUrl(Uri uri) {
+        String path = uri.getPath();
+        if (SchemeConstants.PATH_OTHER_USER_DETAIL.equals(path)) {
+            int userId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_USER_ID, 0);
+            Bundle bundle = new Bundle();
+            bundle.putInt("bundle_user_id", userId);
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                    .with(bundle)
+                    .navigation();
         } else {
 
         }
