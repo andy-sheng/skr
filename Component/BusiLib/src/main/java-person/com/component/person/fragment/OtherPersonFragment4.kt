@@ -147,8 +147,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     // 已关注 或 互关
     private val mFollowDrawable = DrawableCreator.Builder()
-            .setStrokeColor(Color.parseColor("#AD6C00"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+            .setSolidColor(Color.parseColor("#DB8800"))
             .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
             .build()
 
@@ -251,7 +250,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
             }
         })
 
-        mAppbar?.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             // TODO: 2019-06-23 也可以加效果，看产品怎么说
             mImageBg.translationY = verticalOffset.toFloat()
             if (lastVerticalOffset != verticalOffset) {
@@ -617,16 +616,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     return
                 }
                 if (mUserInfoModel != null) {
-                    var tag: Int? = null
-                    if (mFollowIv.tag != null) {
-                        tag = mFollowIv.tag as Int
-                    }
-                    if (tag != null) {
-                        if (tag == RELATION_FOLLOWED) {
-                            unFollow(mUserInfoModel)
-                        } else if (tag == RELATION_UN_FOLLOW) {
-                            UserInfoManager.getInstance().mateRelation(mUserInfoModel!!.userId, UserInfoManager.RA_BUILD, mUserInfoModel!!.isFriend)
-                        }
+                    if (mUserInfoModel.isFollow) {
+                        unFollow(mUserInfoModel)
+                    } else {
+                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.userId, UserInfoManager.RA_BUILD, mUserInfoModel.isFriend)
                     }
                 }
             }
@@ -655,11 +648,11 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     override fun showHomePageInfo(userInfoModel: UserInfoModel,
                                   relationNumModels: List<RelationNumModel>?,
-                                  isFriend: Boolean, isFollow: Boolean, meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
+                                  meiLiCntTotal: Int, scoreDetailModel: ScoreDetailModel, voiceInfoModel: VoiceInfoModel?) {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
-        showUserRelation(isFriend, isFollow)
+        showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow)
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
         mVoiceInfoModel = voiceInfoModel
@@ -738,21 +731,15 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mUserInfoModel.isFollow = isFollow
         when {
             isFriend -> {
-                mFollowIv.isClickable = false
                 mFollowIv.text = "互关"
                 mFollowIv.background = mFollowDrawable
-                mFollowIv.tag = RELATION_FOLLOWED
             }
             isFollow -> {
-                mFollowIv.isClickable = false
                 mFollowIv.text = "已关注"
-                mFollowIv.tag = RELATION_FOLLOWED
                 mFollowIv.background = mFollowDrawable
             }
             else -> {
-                mFollowIv.isClickable = true
                 mFollowIv.text = "关注Ta"
-                mFollowIv.tag = RELATION_UN_FOLLOW
                 mFollowIv.background = mUnFollowDrawable
             }
         }
@@ -834,8 +821,5 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     companion object {
         const val PERSON_CENTER_TOP_ICON = "http://res-static.inframe.mobi/app/person_center_top_bg.png"
-
-        const val RELATION_FOLLOWED = 1 // 已关注关系
-        const val RELATION_UN_FOLLOW = 2 // 未关注关系
     }
 }
