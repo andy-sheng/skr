@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -32,6 +33,8 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.component.person.photo.model.PhotoModel;
 import com.component.person.view.EditRemarkView;
 import com.component.report.fragment.QuickFeedbackFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -299,6 +302,10 @@ public class PersonInfoDialog {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
+                    Boolean isFriend = obj.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
+                    Boolean isFollow = obj.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
+                    Boolean isSpFollow = obj.getData().getJSONObject("userMateInfo").getBooleanValue("isSPFollow");
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UN_SP_FOLLOW_TYPE, userId, isFriend, isFollow, isSpFollow));
                     U.getToastUtil().showShort("取消特别关注成功");
                 } else {
                     U.getToastUtil().showShort(obj.getErrmsg());

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.model.UserInfoModel
 import com.common.core.userinfo.UserInfoServerApi
+import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.mvp.RxLifeCyclePresenter
 import com.common.rxretrofit.ApiManager
 import com.common.rxretrofit.ApiMethods
@@ -17,6 +18,7 @@ import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import java.util.HashMap
 
 class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePresenter() {
@@ -75,6 +77,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                             ?: false
                     val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
                             ?: false
+                    EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userID, isFriend, isFollow, isSpFollow))
                     view.refreshRelation(isFriend, isFollow, isSpFollow)
                 } else {
                     when {
@@ -107,6 +110,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                             ?: false
                     val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
                             ?: false
+                    EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.UN_SP_FOLLOW_TYPE, userID, isFriend, isFollow, isSpFollow))
                     view.refreshRelation(isFriend, isFollow, isSpFollow)
                     U.getToastUtil().showShort("已开启特别关注")
                 } else {

@@ -663,6 +663,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     mUserInfoModel.isFollow = isFollow
                     mUserInfoModel.isFriend = isFriend
                     mUserInfoModel.isSPFollow = isSpFollow
+                    EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userId, isFriend, isFollow, isSpFollow))
                     refreshFollow()
                 } else {
                     when (result.errno) {
