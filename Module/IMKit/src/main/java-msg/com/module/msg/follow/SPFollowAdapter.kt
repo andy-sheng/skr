@@ -15,6 +15,7 @@ class SPFollowAdapter : RecyclerView.Adapter<SPFollowAdapter.SPFollowViewHolder>
 
     var mDataList = ArrayList<SPFollowRecordModel>()
     var onClickItemListener: ((model: SPFollowRecordModel?, position: Int) -> Unit)? = null
+    var onClickAvatarListener: ((model: SPFollowRecordModel?, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SPFollowViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.sp_follow_item_view_layout, parent, false)
@@ -43,6 +44,10 @@ class SPFollowAdapter : RecyclerView.Adapter<SPFollowAdapter.SPFollowViewHolder>
         init {
             item.setDebounceViewClickListener {
                 onClickItemListener?.invoke(mModel, mPos)
+            }
+
+            avatarView.setDebounceViewClickListener {
+                onClickAvatarListener?.invoke(mModel, mPos)
             }
         }
 

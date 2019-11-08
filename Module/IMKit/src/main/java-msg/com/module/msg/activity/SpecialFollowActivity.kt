@@ -88,12 +88,23 @@ class SpecialFollowActivity : BaseActivity() {
             }
         }
 
+        adapter.onClickAvatarListener = { model, _ ->
+            model?.userInfo?.userId?.let {
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", it)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
+        }
+
         getSPFollowRecordList(0, true)
 
 
-        mLoadService =  LoadSir.Builder()
-                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon,"没有特别关注","#ffffff"))
-                .build().register(refreshLayout) { getSPFollowRecordList(0,true) }
+        mLoadService = LoadSir.Builder()
+                .addCallback(EmptyCallback(R.drawable.home_list_empty_icon, "没有特别关注", "#ffffff"))
+                .build().register(refreshLayout) { getSPFollowRecordList(0, true) }
 
     }
 
@@ -133,9 +144,9 @@ class SpecialFollowActivity : BaseActivity() {
                 adapter.notifyDataSetChanged()
             }
         }
-        if(adapter.mDataList.isEmpty()){
+        if (adapter.mDataList.isEmpty()) {
             mLoadService?.showCallback(EmptyCallback::class.java)
-        }else{
+        } else {
             mLoadService?.showSuccess()
         }
     }
