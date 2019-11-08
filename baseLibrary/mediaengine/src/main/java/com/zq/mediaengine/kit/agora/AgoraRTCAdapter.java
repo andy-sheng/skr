@@ -129,24 +129,9 @@ public class AgoraRTCAdapter {
 
     public void initLogService()
     {
-        if (null == mLs) {
-            mLs = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
-            SLogServiceAgent.AliYunSLInitParam initParam = new SLogServiceAgent.AliYunSLInitParam();
-            initParam.skrUid = mConfig.getSelfUid();
-            initParam.appCtx = U.app().getApplicationContext();
-            try {
-                mLs.init(initParam);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            SDataManager.getInstance().setLogServices(mLs);
-        }
-        else {
-			//以防切换其他用户
-            SDataManager.getInstance().setUserID(mConfig.getSelfUid());
-        }
-
-
+        int skrUid = mConfig.getSelfUid();
+        Context ctx = U.app().getApplicationContext();
+        SDataManager.getInstance().setAppContext(ctx).setUserID(skrUid);
     }
 
 
@@ -177,7 +162,7 @@ public class AgoraRTCAdapter {
                         case LM_MSG_UPDATE_PING_INFO: {
                             String baiduURL = "www.baidu.com";
                             Skr.PingInfo pingInfo = SUtils.ping(baiduURL);
-                            SDataManager.getInstance().getAgoraDataHolder().addPingInfo(pingInfo);
+                            SDataManager.getInstance().getDataHolder().addPingInfo(pingInfo);
 
                             if (mRunStatistic) {
                                 Message msgLoop = mLogMonHandler.obtainMessage(LM_MSG_UPDATE_PING_INFO);
@@ -192,7 +177,7 @@ public class AgoraRTCAdapter {
                             if (null != msg.obj && msg.obj instanceof String) {
                                 nwInfo.extraInfo = (String) msg.obj;
                             }
-                            SDataManager.getInstance().getAgoraDataHolder().addNetworkInfo(nwInfo);
+                            SDataManager.getInstance().getDataHolder().addNetworkInfo(nwInfo);
                             /////////////////////////////////////////////////////////
 //                                SDataManager.instance().flush(mDataFlushMode);
 //                                Log.d("MyDemo", nwInfo.toString());
@@ -729,7 +714,7 @@ public class AgoraRTCAdapter {
 
                     SAgora.SAudioSamplingInfo smpInfo = makeAudioSamplingInfo(samples, numOfSamples, bytesPerSample, channels, samplesPerSec, System.currentTimeMillis());
                     if (null != smpInfo) { //说明达到一次统计间隔
-                        SDataManager.getInstance().getAgoraDataHolder().addAudioSamplingInfo(smpInfo, curTime);
+                        SDataManager.getInstance().getDataHolder().addAudioSamplingInfo(smpInfo, curTime);
                         smpInfo.reset();
                     }
 

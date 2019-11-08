@@ -46,29 +46,31 @@ class SLogServiceAliyun extends SLogServiceBase{
     private boolean isAsyncGetIp = false;
     //client的生命周期和app保持一致
     private LOGClient mLogClient;
-    private SLogServiceAgent.AliYunSLInitParam mParam = null;
+    private SLogServiceAgent.SAliYunSLParam mParam = null;
 
-
+    private boolean mHasInitialized = false;
     private LogGroup mLogGroup = null;
 
     public SLogServiceAliyun() {
-        mParam = new SLogServiceAgent.AliYunSLInitParam();
+        mParam = new SLogServiceAgent.SAliYunSLParam();
+
     }
 
     @Override
     public void init(Object param) throws Exception {
-        if (!(param instanceof SLogServiceAgent.AliYunSLInitParam)) {
-            throw new Exception("When init Aliyun LogSerivce, you should use: " + SLogServiceAgent.AliYunSLInitParam.class.getName());
+        if (!(param instanceof Context)) {
+            throw new Exception("When init Aliyun LogSerivce, you should use: " + Context.class.getName());
         }
-
-        SLogServiceAgent.AliYunSLInitParam initParam = (SLogServiceAgent.AliYunSLInitParam)param;
-
-        mParam.skrUid = initParam.skrUid;
-        mParam.appCtx = initParam.appCtx;
+//
+//        SLogServiceAgent.SAliYunSLParam initParam = (SLogServiceAgent.SAliYunSLParam)param;
+//
+//        mParam.skrUid = initParam.skrUid;
+//        mParam.appCtx = initParam.appCtx;
+        mParam.appCtx = (Context)param;
         setupSLSClient(mParam.appCtx);
 
         mLogGroup = new LogGroup(LOG_TOPIC, LOG_SOURSE);
-
+        mHasInitialized = true;
         return;
     }
 
@@ -114,7 +116,7 @@ class SLogServiceAliyun extends SLogServiceBase{
             case PROP_USER_ID:
                 {
                     if (!(prop instanceof Long)) {
-                        throw new Exception("when set propID("+propID+"), the prop object should be Long");
+                        throw new Exception("when set propID("+propID+"), the prop object should be Long!");
                     }
 
                     mParam.skrUid = ((Long)prop).longValue();
@@ -127,6 +129,21 @@ class SLogServiceAliyun extends SLogServiceBase{
                 }
 
         }
+    }
+
+    @Override
+    public Object getProp(int propID) {
+        Object obj = null;
+        switch (propID) {
+            case PROP_IS_INITIALIZED:
+                {
+                    obj = new Boolean(mHasInitialized);
+                }
+                break;
+            default:
+                break;
+        }
+        return obj;
     }
 
 

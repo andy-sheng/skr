@@ -1207,7 +1207,7 @@ public class ZqEngineKit implements AgoraOutCallback {
             mCustomHandlerThread.post(new LogRunnable("startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle) {
                 @Override
                 public void realRun() {
-                    SDataManager.getInstance().getAgoraDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
+                    SDataManager.getInstance().getDataHolder().addPlayerInfo(uid, filePath,midiPath,mixMusicBeginOffset,loopback,replace,cycle);
 
                     if (TextUtils.isEmpty(filePath)) {
                         MyLog.d(TAG, "伴奏路径非法");

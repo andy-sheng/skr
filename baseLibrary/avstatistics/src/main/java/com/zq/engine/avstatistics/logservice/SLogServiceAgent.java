@@ -44,7 +44,7 @@ public class SLogServiceAgent {
     /**
      * this is for {@link SLogServiceBase#init(Object)} which is the type of {@link this#LS_PROVIDER_ALIYUN};
      */
-    public static class AliYunSLInitParam{
+    public static class SAliYunSLParam{
         public Context appCtx;
         public long skrUid;
 

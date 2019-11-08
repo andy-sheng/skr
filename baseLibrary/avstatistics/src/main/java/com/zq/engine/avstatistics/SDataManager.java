@@ -1,8 +1,15 @@
 package com.zq.engine.avstatistics;
 
 
+import android.content.Context;
+import android.util.Log;
+
 import com.common.log.MyLog;
+import com.zq.engine.avstatistics.datastruct.ILogItem;
+import com.zq.engine.avstatistics.logservice.SLogServiceAgent;
 import com.zq.engine.avstatistics.logservice.SLogServiceBase;
+
+import java.util.List;
 
 
 public class SDataManager {
@@ -13,31 +20,48 @@ public class SDataManager {
 
     private SDataMgrBasicInfo mBasicInfo = null;
 
-    private SAgoraDataHolder mADHolder = null; //Agora Data Holder
+    private SDataHolderEx mADHolder = null; //Agora Data Holder
+    private SLogServiceBase mLS = null;
 
     private SDataManager() {
         mBasicInfo = new SDataMgrBasicInfo();
 
-        mADHolder = new SAgoraDataHolder();
+        mADHolder = new SDataHolderEx();
         mADHolder.setLinePrefix(LOG_PREFIX);
+
+        mLS = SLogServiceAgent.getService(SLogServiceAgent.LS_PROVIDER_ALIYUN);
     }
 
-    private static class SDataManagerHolder {
-        private static final SDataManager INSTANCE = new SDataManager();
-    }
-
+    private final static SDataManager INSTANCE = new SDataManager();
 
     public static final SDataManager getInstance() {
-        return SDataManagerHolder.INSTANCE;
+        return INSTANCE;
     }
 
-    /**
-     * Pay attention to this: only after you call this {@link this#setLogServices(SLogServiceBase)},
-     * then you can call other API {@link this#setUserID(int)}. Otherwise, the usedID will not passed to log-services
-     */
-    public void setLogServices(SLogServiceBase ls) {
-        mADHolder.setLogServices(ls);
+
+
+    public SDataManager setUserID(long userID) {
+        try {
+            mLS.setProp(SLogServiceBase.PROP_USER_ID, Long.valueOf(userID));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this;
     }
+
+    public SDataManager setAppContext(Context ctx) {
+        Boolean hasInit = (Boolean)mLS.getProp(SLogServiceBase.PROP_IS_INITIALIZED);
+        if (!hasInit) {
+            try {
+                mLS.init(ctx);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return this;
+    }
+
 
     public SDataManager setBasicInfo(SDataMgrBasicInfo info) {
         mBasicInfo.userID = info.userID;
@@ -51,55 +75,61 @@ public class SDataManager {
         return this;
     }
 
-    /**
-     * This API should be called after {@link this#setLogServices(SLogServiceBase)}
-     */
-    public SDataManager setUserID(int userID) {
-        mBasicInfo.userID = userID;
-
-        passUserID2LogServices(mBasicInfo.userID);
-        return this;
-    }
 
     public SDataManager setChannelJoinElipse(int elapsed) {
         mBasicInfo.channelJoinElapsed = elapsed;
         return this;
     }
 
-    public SAgoraDataHolder getAgoraDataHolder() {
+    public SDataHolderEx getDataHolder() {
         return mADHolder;
     }
 
 
     public final static int FLUSH_MODE_FILE = 0x00000001;
-    public final static int FLUSH_MODE_UPLOAD = 0x00000002; //not support now!
+    public final static int FLUSH_MODE_UPLOAD = 0x00000002;
+    public final static int FLUSH_MODE_ALL = (FLUSH_MODE_FILE | FLUSH_MODE_UPLOAD);
 
-    public SDataManager flush(int flushMode) {
+    public SDataManager flush(int flushMode) {//flush mode暂时留了个口子，目前是文件log和上传都处理
 
         StringBuilder logStr = new StringBuilder();
 
-        logStr.append(LOG_PREFIX).append("userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
+        logStr.append(LOG_PREFIX).append(" userID=").append(mBasicInfo.userID).append(", channelID=").append(mBasicInfo.channelID)
                 .append(", channelJoinElapsed=").append(mBasicInfo.channelJoinElapsed).append("\n");
         logStr.append(mADHolder.toString());
+        MyLog.w(TAG, logStr.toString());
 
 
-        mADHolder.flushLS();
+        logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
+
+        List<ILogItem> itemList = mADHolder.getItemList();
+        int listSize = 0;
+        if (null != itemList && (listSize = itemList.size()) > 0) {
+            for (int i=0; i<listSize; i++) {
+                ILogItem e = itemList.get(i);
+
+                logStr.append(e.toString());
+                MyLog.w(TAG, logStr.toString());//MyLog的flush行为由其自己控制
+                logStr.delete(LOG_PREFIX.length()+1, logStr.length()); //+1是给空格留的
+
+                mLS.appendLog(e);
+            }
+
+            mLS.flushLog(true);
+        }
+
+        Log.d("SDataManager", "Flush List Cnt="+listSize);
+
         mADHolder.reset();
 
-        MyLog.w(TAG, logStr.toString());
 //        MyLog.flushLog();
 
         return this;
     }
 
-    public SDataManager reset() {
-        mADHolder.reset();
-
-        return this;
-    }
 
     public boolean need2Flush() {
-        return (mADHolder.need2Flush());
+        return mADHolder.need2Flush();
     }
 
     //用户基本信息
@@ -109,18 +139,4 @@ public class SDataManager {
         public int channelJoinElapsed = -1; //退出的时候要复位
     }
 
-
-    private void passUserID2LogServices(long userID) {
-        SLogServiceBase ls = mADHolder.getLogServices();
-
-        if (null != ls) {
-            try {
-                ls.setProp(SLogServiceBase.PROP_USER_ID, Long.valueOf(mBasicInfo.userID));
-            } catch (Exception e) {
-                MyLog.e(TAG, e.toString());
-
-            }
-        }
-        return;
-    }
 }
