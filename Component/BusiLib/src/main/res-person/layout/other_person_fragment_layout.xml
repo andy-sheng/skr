@@ -77,8 +77,8 @@
                     android:layout_height="@dimen/view_53_dp"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:paddingLeft="@dimen/view_12_dp"
-                    android:background="#7088FF" />
+                    android:background="#7088FF"
+                    android:paddingLeft="@dimen/view_12_dp" />
 
                 <com.common.view.viewpager.NestViewPager
                     android:id="@+id/person_vp"
@@ -183,6 +183,33 @@
                             android:layout_height="wrap_content"
                             app:barrierDirection="bottom"
                             app:constraint_referenced_ids="verify_tv,sign_tv" />
+
+                        <TextView
+                            android:id="@+id/qinmi_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_28_dp"
+                            android:layout_marginRight="@dimen/view_14_dp"
+                            android:background="@drawable/person_qinmi_bg"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/view_26_dp"
+                            android:paddingRight="@dimen/view_16_dp"
+                            android:paddingBottom="@dimen/view_3_dp"
+                            android:textColor="#CA4F91"
+                            android:textSize="@dimen/textsize_20_dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/level_bg"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/level_bg" />
+
+                        <ImageView
+                            android:layout_width="@dimen/view_50_dp"
+                            android:layout_height="@dimen/view_50_dp"
+                            android:background="@drawable/person_qinmi_icon"
+                            app:layout_constraintTop_toTopOf="@id/qinmi_tv"
+                            app:layout_constraintBottom_toBottomOf="@id/qinmi_tv"
+                            app:layout_constraintLeft_toLeftOf="@id/qinmi_tv"
+                            app:layout_constraintRight_toLeftOf="@id/qinmi_tv"/>
+
 
                         <com.common.view.ex.ExImageView
                             android:id="@+id/user_info_bg"
@@ -325,8 +352,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="@dimen/view_24_dp"
         android:layout_marginTop="@dimen/view_6_dp"
+        android:padding="@dimen/view_24_dp"
         android:src="@drawable/common_more_icon" />
 
     <LinearLayout

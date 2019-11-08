@@ -104,6 +104,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mAvatarIv: SimpleDraweeView
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
+    lateinit var mQinmiTv: TextView
     lateinit var mVerifyTv: TextView
     lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
@@ -414,6 +415,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAvatarIv = rootView.findViewById(R.id.avatar_iv)
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
+        mQinmiTv = rootView.findViewById(R.id.qinmi_tv)
         mVerifyTv = rootView.findViewById(R.id.verify_tv)
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
@@ -656,6 +658,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow)
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
+        
+        mQinmiTv.text = qinMiCntTotal.toString()
         mVoiceInfoModel = voiceInfoModel
         if (voiceInfoModel != null) {
             mAudioView.bindData(voiceInfoModel.duration)
