@@ -302,9 +302,9 @@ public class PersonInfoDialog {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    Boolean isFriend = obj.getData().getJSONObject("userMateInfo").getBooleanValue("isFriend");
-                    Boolean isFollow = obj.getData().getJSONObject("userMateInfo").getBooleanValue("isFollow");
-                    Boolean isSpFollow = obj.getData().getJSONObject("userMateInfo").getBooleanValue("isSPFollow");
+                    Boolean isFriend = obj.getData().getJSONObject("relationInfo").getBooleanValue("isFriend");
+                    Boolean isFollow = obj.getData().getJSONObject("relationInfo").getBooleanValue("isFollow");
+                    Boolean isSpFollow = obj.getData().getJSONObject("relationInfo").getBooleanValue("isSPFollow");
                     EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UN_SP_FOLLOW_TYPE, userId, isFriend, isFollow, isSpFollow));
                     U.getToastUtil().showShort("取消特别关注成功");
                 } else {

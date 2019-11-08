@@ -71,11 +71,11 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
         ApiMethods.subscribe(mUserInfoServerApi.addSpecialFollow(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
-                    val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
+                    val isFriend = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isFriend")
                             ?: false
-                    val isFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFollow")
+                    val isFollow = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isFollow")
                             ?: false
-                    val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
+                    val isSpFollow = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isSPFollow")
                             ?: false
                     EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userID, isFriend, isFollow, isSpFollow))
                     view.refreshRelation(isFriend, isFollow, isSpFollow)
@@ -104,11 +104,11 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
         ApiMethods.subscribe(mUserInfoServerApi.delSpecialFollow(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {
                 if (result.errno == 0) {
-                    val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
+                    val isFriend = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isFriend")
                             ?: false
-                    val isFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFollow")
+                    val isFollow = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isFollow")
                             ?: false
-                    val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
+                    val isSpFollow = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isSPFollow")
                             ?: false
                     EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.UN_SP_FOLLOW_TYPE, userID, isFriend, isFollow, isSpFollow))
                     view.refreshRelation(isFriend, isFollow, isSpFollow)
