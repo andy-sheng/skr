@@ -45,6 +45,11 @@ public class MyConversationListFragment extends ConversationListFragment {
     boolean isShowCommentLikeRed = false;
     boolean isShowGiftRed = false;
 
+    LastNewsModel commentModel;
+    LastNewsModel likeModel;
+
+    int postNews = 0;  // 1最新的是评论 2代表最新等是赞
+
     public void showLastNews(List<LastNewsModel> news) {
         if (news != null && news.size() > 0) {
             for (int i = 0; i < news.size(); i++) {
@@ -52,12 +57,33 @@ public class MyConversationListFragment extends ConversationListFragment {
                     mSpecialDescTv.setText(news.get(i).getLatestNews());
                 } else if (news.get(i).getListType() == LastNewsModel.TYPE_LAST_FOLLOW) {
                     mLastDescTv.setText(news.get(i).getLatestNews());
-                } else if (news.get(i).getListType() == LastNewsModel.TYPE_POSTS_COMMENT_LIKE) {
-                    mCommentLikeDescTv.setText(news.get(i).getLatestNews());
+                } else if (news.get(i).getListType() == LastNewsModel.TYPE_POSTS_COMMENT) {
+                    commentModel = news.get(i);
+                } else if (news.get(i).getListType() == LastNewsModel.TYPE_POSTS_LIKE) {
+                    likeModel = news.get(i);
                 } else if (news.get(i).getListType() == LastNewsModel.TYPE_GIFT) {
                     mGiftDescTv.setText(news.get(i).getLatestNews());
                 }
             }
+        }
+
+        if (commentModel != null && likeModel != null) {
+            if (commentModel.getTimeMs() > likeModel.getTimeMs()) {
+                postNews = 1;
+                mCommentLikeDescTv.setText(commentModel.getLatestNews());
+            } else {
+                postNews = 2;
+                mCommentLikeDescTv.setText(likeModel.getLatestNews());
+            }
+        } else if (commentModel != null) {
+            postNews = 1;
+            mCommentLikeDescTv.setText(commentModel.getLatestNews());
+        } else if (likeModel != null) {
+            postNews = 2;
+            mCommentLikeDescTv.setText(likeModel.getLatestNews());
+        } else {
+            postNews = 1;
+            mCommentLikeDescTv.setText("暂无广场互动消息");
         }
     }
 
@@ -158,6 +184,7 @@ public class MyConversationListFragment extends ConversationListFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_COMMENT_LIKE)
+                        .withInt("type", postNews)
                         .navigation();
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_POSTS_COMMENT_LIKE_TYPE, 0);
             }
