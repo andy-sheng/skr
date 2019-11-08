@@ -35,6 +35,7 @@ class NickNameView : ConstraintLayout {
     private val nameTv: TextView
     private val sexIv: ImageView
     private val honorIv: ImageView
+    private val specialTv: ExTextView
 
     private var textColor: Int = Color.parseColor("#3B4E79")   // 昵称TextView颜色
     private var textSize: Float = 18.dp().toFloat()                      // 昵称TextView文字大小
@@ -56,6 +57,8 @@ class NickNameView : ConstraintLayout {
         nameTv = this.findViewById(R.id.name_tv)
         sexIv = this.findViewById(R.id.sex_iv)
         honorIv = this.findViewById(R.id.honor_iv)
+        specialTv = this.findViewById(R.id.special_tv)
+
     }
 
     private fun initNameTv() {
@@ -81,6 +84,11 @@ class NickNameView : ConstraintLayout {
     }
 
     fun setAllStateText(model: UserInfoModel?) {
+        if (model?.isSPFollow == true) {
+            specialTv.visibility = View.VISIBLE
+        } else {
+            specialTv.visibility = View.GONE
+        }
         setAllStateText(model?.nicknameRemark, model?.sex, model?.honorInfo)
     }
 

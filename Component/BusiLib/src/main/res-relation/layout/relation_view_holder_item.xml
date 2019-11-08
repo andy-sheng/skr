@@ -1,7 +1,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:avatarView="http://schemas.android.com/apk/res-auto"
-    xmlns:NickNameView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_70_dp">
@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         avatarView:borderColor="@color/white"
-        avatarView:borderWidth="@dimen/view_2_dp"/>
+        avatarView:borderWidth="@dimen/view_2_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/follow_tv"
@@ -35,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         NickNameView:textColor="#0C2275"
         NickNameView:textSize="@dimen/textsize_16_dp"
         NickNameView:textStyle="BOLD"
