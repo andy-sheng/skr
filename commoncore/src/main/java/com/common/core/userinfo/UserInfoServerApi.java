@@ -56,6 +56,21 @@ public interface UserInfoServerApi {
     @GET("/v3/skr/homepage")
     Observable<ApiResult> getHomePage(@Query("userID") long userID);
 
+    /**
+     * 加入特别关注
+     * @param body {toUserID}
+     * @return
+     */
+    @PUT("/v1/mate/set-special-follow")
+    Observable<ApiResult> addSpecialFollow(@Body RequestBody body);
+
+    /**
+     * 移除特别关注
+     * @param body {toUserID}
+     * @return
+     */
+    @PUT("/v1/mate/del-special-follow")
+    Observable<ApiResult> delSpecialFollow(@Body RequestBody body);
 
     /**
      * 处理关系
