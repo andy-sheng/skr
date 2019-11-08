@@ -3,6 +3,7 @@ package com.common.core.userinfo;
 import com.common.rxretrofit.ApiResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -336,6 +337,9 @@ public interface UserInfoServerApi {
 
     @POST("/v2/mate/multi-check-online-status")
     Observable<ApiResult> checkUserOnlineStatus(@Body RequestBody body);
+
+    @GET("/v1/bonus/multi-get-user-status")
+    Observable<ApiResult> checkUserOnlineStatusWithIntimacy(@Query("userIDs") List<Integer> list);
 
     @POST("/v2/mate/multi-check-game-status")
     Observable<ApiResult> checkUserGameStatus(@Body RequestBody body);

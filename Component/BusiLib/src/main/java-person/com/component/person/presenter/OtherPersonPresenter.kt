@@ -25,21 +25,24 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                 if (result.errno == 0) {
                     val userInfoModel = JSON.parseObject(result.data?.getString("userBaseInfo"), UserInfoModel::class.java)
                     val relationNumModes = JSON.parseArray(result.data?.getJSONObject("userRelationCntInfo")?.getString("cnt"), RelationNumModel::class.java)
-                    val scoreDetailModel = JSON.parseObject(result.data!!.getString("scoreDetail"), ScoreDetailModel::class.java)
-                    val voiceInfoModel = JSON.parseObject(result.data!!.getString("voiceInfo"), VoiceInfoModel::class.java)
+                    val scoreDetailModel = JSON.parseObject(result.data?.getString("scoreDetail"), ScoreDetailModel::class.java)
+                    val voiceInfoModel = JSON.parseObject(result.data?.getString("voiceInfo"), VoiceInfoModel::class.java)
 
-                    val isFriend = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFriend")
-                    val isFollow = result.data!!.getJSONObject("userMateInfo").getBooleanValue("isFollow")
+                    val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
+                            ?: false
+                    val isFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFollow")
+                            ?: false
+                    val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
+                            ?: false
 
-                    if (isFollow) {
-                        userInfoModel.isFriend = isFriend
-                        userInfoModel.isFollow = isFollow
-                        UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
-                    }
+                    userInfoModel.isFriend = isFriend
+                    userInfoModel.isFollow = isFollow
+                    userInfoModel.isSPFollow = isSpFollow
+                    UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
 
                     val meiLiCntTotal = result.data!!.getIntValue("meiLiCntTotal")
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, isFriend, isFollow, meiLiCntTotal, scoreDetailModel, voiceInfoModel)
+                    view.showHomePageInfo(userInfoModel, relationNumModes, meiLiCntTotal, scoreDetailModel, voiceInfoModel)
                 } else {
                     view.getHomePageFail()
                 }
