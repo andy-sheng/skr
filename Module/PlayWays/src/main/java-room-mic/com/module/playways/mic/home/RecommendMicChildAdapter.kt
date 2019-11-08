@@ -55,6 +55,10 @@ class RecommendMicChildAdapter : RecyclerView.Adapter<RecommendMicChildAdapter.R
             audioView.setAnimateDebounceViewClickListener {
                 onClickVoice?.invoke(mModel, mPosition)
             }
+
+            // 限制下长度
+            audioView.minSize = 70.dp()
+            audioView.maxSize = 70.dp()
         }
 
         fun bindData(model: RecommendUserInfo, position: Int) {
