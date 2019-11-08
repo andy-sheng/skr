@@ -60,6 +60,20 @@ public class UserInfoModel implements Serializable, Cloneable {
     private ScoreStateModel ranking;  // 段位描述
     private HonorInfo honorInfo;  // 会员信息
 
+    private int intimacy = -1;   // 亲密度
+
+    public int getIntimacy() {
+        return intimacy;
+    }
+
+    public void setIntimacy(int intimacy) {
+        this.intimacy = intimacy;
+    }
+
+    public boolean hasIntimacy() {
+        return intimacy > 0;
+    }
+
     public UserInfoModel() {
     }
 

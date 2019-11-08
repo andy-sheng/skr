@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_10_dp"
+        android:maxWidth="@dimen/view_185_dp"
         NickNameView:textColor="#0C2275"
         NickNameView:textSize="@dimen/textsize_16_dp"
         NickNameView:textStyle="BOLD"
@@ -59,6 +59,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/nickname_tv"
         app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/intimacy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/view_15_dp"
+        android:text="亲密度 0"
+        android:textColor="#F390C5"
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <View

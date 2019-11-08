@@ -494,8 +494,9 @@ public class UserInfoManager {
     /**
      * @param pullOnlineStatus     是否拉取在线状态
      * @param userInfoListCallback
+     * @param needIntimacy         需要亲密度
      */
-    public void getMyFollow(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback) {
+    public void getMyFollow(final int pullOnlineStatus, final UserInfoListCallback userInfoListCallback, final boolean needIntimacy) {
         Observable.create(new ObservableOnSubscribe<List<UserInfoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserInfoModel>> emitter) {
@@ -597,7 +598,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, true);
+                    fillUserOnlineStatus(resultList, true, false);
                 } else if (pullOnlineStatus == ONLINE_PULL_NORMAL) {
                     if (resultList.size() > 100) {
                         // 结果数据大于100 了 ，考虑到拉取状态可能比较耗时，先让数据展示
@@ -605,7 +606,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false);
+                    fillUserOnlineStatus(resultList, false, needIntimacy);
                 } else {
 
                 }
@@ -694,7 +695,7 @@ public class UserInfoManager {
                             userInfoListCallback.onSuccess(FROM.DB, resultList.size(), resultList);
                         }
                     }
-                    fillUserOnlineStatus(resultList, false);
+                    fillUserOnlineStatus(resultList, false, true);
                 } else {
 
                 }
@@ -702,7 +703,7 @@ public class UserInfoManager {
                     userInfoListCallback.onSuccess(from, resultList.size(), resultList);
                 }
             }
-        });
+        }, true);
     }
 
     /**
@@ -867,17 +868,21 @@ public class UserInfoManager {
     }
 
     public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus) {
+        fillUserOnlineStatus(list, pullGameStatus, false);
+    }
+
+    public void fillUserOnlineStatus(final List<UserInfoModel> list, final boolean pullGameStatus, boolean needIntimacy) {
         final HashSet<Integer> idSets = new HashSet();
         for (UserInfoModel userInfoModel : list) {
             OnlineModel onlineModel = mStatusMap.get(userInfoModel.getUserId());
-            if (onlineModel == null) {
+            if (onlineModel == null || (needIntimacy && !onlineModel.hasQinMiCnt())) {
                 idSets.add(userInfoModel.getUserId());
             } else {
                 long t = System.currentTimeMillis() - onlineModel.getRecordTs();
                 if (onlineModel.isOnline()) {
                     if (Math.abs(t) < 30 * 1000) {
                         // 认为状态缓存有效，不去这个id的状态了
-                        fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                        setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                     } else {
                         idSets.add(userInfoModel.getUserId());
                     }
@@ -887,14 +892,14 @@ public class UserInfoManager {
                         // 已经离线超出15天了，没道理这会就上线了，缓存久一点
                         if (Math.abs(t) < 5 * 60 * 1000) {
                             // 认为状态缓存有效，不去这个id的状态了
-                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                            setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                         } else {
                             idSets.add(userInfoModel.getUserId());
                         }
                     } else {
                         if (Math.abs(t) < 60 * 1000) {
                             // 认为状态缓存有效，不去这个id的状态了
-                            fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                            setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                         } else {
                             idSets.add(userInfoModel.getUserId());
                         }
@@ -926,7 +931,11 @@ public class UserInfoManager {
                 if (pullGameStatus) {
                     observable = checkUserGameStatusByIds(qqq);
                 } else {
-                    observable = checkUserOnlineStatusByIds(qqq);
+                    if (needIntimacy) {
+                        observable = checkUserOnlineStatusByIdsWithIntimacy(qqq);
+                    } else {
+                        observable = checkUserOnlineStatusByIds(qqq);
+                    }
                 }
 
                 observable.map(new Function<HashMap<Integer, OnlineModel>, List<UserInfoModel>>() {
@@ -951,7 +960,7 @@ public class UserInfoManager {
             for (UserInfoModel userInfoModel : list) {
                 if (idSets.contains(userInfoModel.getUserId())) {
                     OnlineModel onlineModel = onlineMap.get(userInfoModel.getUserId());
-                    fillUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
+                    setUserOnlineStatus(userInfoModel, onlineModel, pullGameStatus);
                 }
             }
         }
@@ -987,7 +996,7 @@ public class UserInfoManager {
         });
     }
 
-    private void fillUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
+    private void setUserOnlineStatus(UserInfoModel userInfoModel, OnlineModel onlineModel, boolean pullGameStatus) {
         // 认为状态缓存有效，不去这个id的状态了
         if (onlineModel != null && onlineModel.isOnline()) {
             userInfoModel.setStatus(UserInfoModel.EF_ONLINE);
@@ -1018,6 +1027,10 @@ public class UserInfoManager {
             } else {
                 userInfoModel.setStatusDesc(timeDesc + "在线");
             }
+        }
+
+        if (onlineModel.hasQinMiCnt()) {
+            userInfoModel.setIntimacy(onlineModel.getQinMiCntTotal());
         }
     }
 
@@ -1057,6 +1070,45 @@ public class UserInfoManager {
                                     mStatusMap.put(offlineModel.getUserID(), offlineModel);
                                 }
                             }
+                            return hashSet;
+                        }
+                        return null;
+                    }
+                });
+    }
+
+    /**
+     * 查询用户简单在线状态,携带亲密度
+     *
+     * @param list
+     * @return
+     */
+    public Observable<HashMap<Integer, OnlineModel>> checkUserOnlineStatusByIdsWithIntimacy(List<Integer> list) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userIDs", list);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        return userInfoServerApi.checkUserOnlineStatusWithIntimacy(list)
+                .map(new Function<ApiResult, HashMap<Integer, OnlineModel>>() {
+                    @Override
+                    public HashMap<Integer, OnlineModel> apply(ApiResult obj) {
+                        if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
+                            HashMap<Integer, OnlineModel> hashSet = new HashMap<>();
+                            List<OnlineModel> onlineModelList = JSON.parseArray(obj.getData().getString("userStatus"), OnlineModel.class);
+
+                            if (onlineModelList != null) {
+                                for (OnlineModel onlineModel : onlineModelList) {
+                                    if (onlineModel.getOnlineTime() > 0) {
+                                        onlineModel.setOnline(true);
+                                    } else {
+                                        onlineModel.setOnline(false);
+                                    }
+                                    onlineModel.setRecordTs(System.currentTimeMillis());
+                                    hashSet.put(onlineModel.getUserID(), onlineModel);
+                                    mStatusMap.put(onlineModel.getUserID(), onlineModel);
+                                }
+                            }
+
                             return hashSet;
                         }
                         return null;

@@ -24,6 +24,11 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.relation.adapter.RelationAdapter;
+import com.component.relation.callback.FansEmptyCallback;
+import com.component.relation.callback.FollowEmptyCallback;
+import com.component.relation.callback.FriendsEmptyCallback;
+import com.component.relation.fragment.SearchFriendFragment;
 import com.dialog.view.TipsDialogView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -35,11 +40,6 @@ import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.component.relation.adapter.RelationAdapter;
-import com.component.relation.callback.FansEmptyCallback;
-import com.component.relation.callback.FollowEmptyCallback;
-import com.component.relation.callback.FriendsEmptyCallback;
-import com.component.relation.fragment.SearchFriendFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -272,7 +272,7 @@ public class RelationView extends RelativeLayout {
                         }
                     });
                 }
-            });
+            }, false);
         } else if (mMode == UserInfoManager.RELATION.FANS.getValue()) {
             UserInfoManager.getInstance().getFans(offset, DEFAULT_COUNT, new UserInfoManager.UserInfoListCallback() {
                 @Override
