@@ -652,7 +652,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mSmartRefresh.finishRefresh()
         showUserInfo(userInfoModel)
         showRelationNum(relationNumModels)
-        showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow)
+        showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow, userInfoModel.isSPFollow)
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
 
@@ -667,11 +667,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     }
 
     override fun refreshRelation(isFriend: Boolean, isFollow: Boolean, isSpFollow: Boolean) {
-        mUserInfoModel.isFriend = isFriend
-        mUserInfoModel.isSPFollow = isSpFollow
-        mUserInfoModel.isFollow = isFollow
-
-        showUserRelation(isFriend, isFollow)
+        showUserRelation(isFriend, isFollow, isSpFollow)
     }
 
     private fun showScoreDetail(scoreDetailModel: ScoreDetailModel) {
@@ -736,9 +732,10 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         }
     }
 
-    private fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
+    private fun showUserRelation(isFriend: Boolean, isFollow: Boolean, isSpFollow: Boolean) {
         mUserInfoModel.isFriend = isFriend
         mUserInfoModel.isFollow = isFollow
+        mUserInfoModel.isSPFollow = isSpFollow
         when {
             isFriend -> {
                 mFollowIv.text = "互关"
@@ -757,8 +754,8 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
-        if (event.useId == mUserInfoModel!!.userId) {
-            showUserRelation(event.isFriend, event.isFollow)
+        if (event.useId == mUserInfoModel.userId) {
+            showUserRelation(event.isFriend, event.isFollow, event.isSpFollow)
         }
     }
 

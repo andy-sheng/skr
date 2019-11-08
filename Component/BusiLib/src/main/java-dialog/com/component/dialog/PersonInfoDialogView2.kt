@@ -684,6 +684,8 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         if (event.useId == mUserId) {
             mUserInfoModel.isFollow = event.isFollow
             mUserInfoModel.isFriend = event.isFriend
+            mUserInfoModel.isSPFollow = event.isSpFollow
+
             refreshFollow()
         }
     }

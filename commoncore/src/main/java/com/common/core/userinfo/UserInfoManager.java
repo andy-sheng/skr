@@ -316,7 +316,7 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false));
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userID, false, false, false));
                     // TODO: 2019-07-03 可能服务器加成功，加融云失败，有问题找服务器
                     msgService.addToBlacklist(String.valueOf(userID), new ICallback() {
                         @Override
@@ -439,14 +439,15 @@ public class UserInfoManager {
                 if (obj.getErrno() == 0) {
                     final boolean isFriend = obj.getData().getBooleanValue("isFriend");
                     final boolean isFollow = obj.getData().getBooleanValue("isFollow");
+                    final boolean isSPFollow = obj.getData().getBooleanValue("isSPFollow");
                     if (responseCallBack != null) {
                         responseCallBack.onServerSucess(isFriend);
                     }
                     if (action == RA_BUILD) {
                         StatisticsAdapter.recordCountEvent("social", "follow", null);
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, isFriend, isFollow));
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, isFriend, isFollow, isSPFollow));
                     } else if (action == RA_UNBUILD) {
-                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, isFriend, isFollow));
+                        EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, isFriend, isFollow, isSPFollow));
                     }
                 } else {
                     MyLog.w(TAG, "process" + " obj=" + obj);
