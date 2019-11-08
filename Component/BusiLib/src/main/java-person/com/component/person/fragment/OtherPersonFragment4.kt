@@ -106,6 +106,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mLevelBg: ImageView
     lateinit var mLevelDesc: TextView
     lateinit var mQinmiTv: TextView
+    lateinit var mQinmiIv: ImageView
     lateinit var mVerifyTv: TextView
     lateinit var mSignTv: ExTextView
     lateinit var mNameTv: ExTextView
@@ -413,12 +414,21 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mLevelBg = rootView.findViewById(R.id.level_bg)
         mLevelDesc = rootView.findViewById(R.id.level_desc)
         mQinmiTv = rootView.findViewById(R.id.qinmi_tv)
+        mQinmiIv = rootView.findViewById(R.id.qinmi_iv)
         mVerifyTv = rootView.findViewById(R.id.verify_tv)
         mSignTv = rootView.findViewById(R.id.sign_tv)
         mNameTv = rootView.findViewById(R.id.name_tv)
         mHonorIv = rootView.findViewById(R.id.honor_iv)
         mAudioView = rootView.findViewById(R.id.audio_view)
         mPersonTagView = rootView.findViewById(R.id.person_tag_view)
+
+        if (mUserId == MyUserInfoManager.uid.toInt()) {
+            mQinmiTv.visibility = View.GONE
+            mQinmiIv.visibility = View.GONE
+        } else {
+            mQinmiTv.visibility = View.VISIBLE
+            mQinmiIv.visibility = View.VISIBLE
+        }
 
         mAvatarIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
