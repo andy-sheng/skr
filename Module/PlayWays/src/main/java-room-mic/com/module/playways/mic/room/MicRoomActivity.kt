@@ -821,7 +821,9 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
 
     override fun joinNotice(model: MicPlayerInfoModel?) {
         model?.let {
-            mVipEnterPresenter?.addNotice(it.userInfo)
+            if (it.userID != MyUserInfoManager.myUserInfo?.userId?.toInt()) {
+                mVipEnterPresenter?.addNotice(it.userInfo)
+            }
         }
     }
 
