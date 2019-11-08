@@ -101,6 +101,9 @@ class SLogServiceAliyun extends SLogServiceBase{
 
         Log log = new Log();
         log.PutContent(itemOp.getKey(), jsObj.toString());
+
+//        android.util.Log.d(TAG, "Key is: "+itemOp.getKey());
+
         mLogGroup.PutLog(log);
     }
 
