@@ -48,13 +48,6 @@
 #milink
 -keep public class com.mi.milink.sdk.connection.** { *; }
 
-#greenDao
--keep class de.greenrobot.dao.** {*;}
--keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
-    public static java.lang.String TABLENAME;
-}
--keep class **$Properties
-
 #rx
 -dontwarn sun.misc.**
 -keep class rx.** {*;}
@@ -247,12 +240,16 @@
 -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
 public static java.lang.String TABLENAME;
 }
--keep class **$Properties
+#-keep class **$Properties
+
+-keep class **$Properties{*;}
 
 # If you do not use SQLCipher:
 -dontwarn org.greenrobot.greendao.database.**
 # If you do not use Rx:
 -dontwarn rx.**
+
+
 
 -keep class **.BuildConfig {*;}
 
