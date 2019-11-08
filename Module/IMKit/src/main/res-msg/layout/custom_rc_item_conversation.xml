@@ -17,8 +17,8 @@
 
         <io.rong.imkit.widget.AsyncImageView
             android:id="@+id/rc_left"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
@@ -74,8 +74,8 @@
 
         <io.rong.imkit.widget.AsyncImageView
             android:id="@id/rc_right"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"

@@ -65,6 +65,9 @@ import org.greenrobot.eventbus.ThreadMode
 import com.component.person.model.RelationNumModel
 import com.component.person.model.ScoreDetailModel
 import com.component.person.view.PersonTagView
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import java.util.HashMap
 
 class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: Int, showKick: Boolean, showInvite: Boolean) : RelativeLayout(mContext) {
 
@@ -104,19 +107,17 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     internal var mUserInfoModel = UserInfoModel()
     internal var isShowKick: Boolean = false
     internal var isShowInvite: Boolean = false
-    internal var isFollow: Boolean = false
-    internal var isFriend: Boolean = false
 
     var mPersonMoreOpView: PersonMoreOpView? = null
 
-    internal val mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
+    private val mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi::class.java)
 
-    internal var mOffset = 0
-    internal var mHasMore = false
-    internal var DEFAULT_CNT = 10
+    private var mOffset = 0
+    private var mHasMore = false
+    private var DEFAULT_CNT = 10
 
-    internal var hasInitHeight = false
-    internal var isAppBarCanScroll = true   // AppBarLayout是否可以滚动
+    private var hasInitHeight = false
+    private var isAppBarCanScroll = true   // AppBarLayout是否可以滚动
     var lastVerticalOffset = Int.MAX_VALUE
 
     internal var mClickListener: PersonInfoDialog.PersonCardClickListener? = null
@@ -139,8 +140,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     // 已关注 或 互关
     private val mFollowDrawable = DrawableCreator.Builder()
-            .setStrokeColor(Color.parseColor("#AD6C00"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+            .setSolidColor(Color.parseColor("#DB8800"))
             .setCornersRadius(U.getDisplayUtils().dip2px(20f).toFloat())
             .build()
 
@@ -184,6 +184,11 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mUserId = userID
         isShowKick = showKick
         isShowInvite = showInvite
+
+        if (mUserInfoModel == null) {
+            mUserInfoModel = UserInfoModel()
+        }
+        mUserInfoModel.userId = userID
 
         // 多音和ai裁判
         if (mUserId == UserAccountManager.SYSTEM_GRAB_ID || mUserId == UserAccountManager.SYSTEM_RANK_AI) {
@@ -240,18 +245,19 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                     val meiLiCntTotal = result.data?.getIntValue("meiLiCntTotal") ?: 0
                     val qinMiCntTotal = result.data?.getIntValue("qinMiCntTotal") ?: 0
 
+                    userInfoModel.isFollow = isFollow
+                    userInfoModel.isFriend = isFriend
+                    userInfoModel.isSPFollow = isSpFollow
                     if (isFollow) {
-                        userInfoModel.isFollow = isFollow
-                        userInfoModel.isFriend = isFriend
-                        userInfoModel.isSPFollow = isSpFollow
                         UserInfoManager.getInstance().insertUpdateDBAndCache(userInfoModel)
                     }
                     showUserInfo(userInfoModel)
                     showUserLevel(scoreDetailModel)
                     showUserRelationNum(relationNumModes)
-                    showUserRelation(isFriend, isFollow)
                     showCharmsTag(meiLiCntTotal)
                     showQinMiTag(qinMiCntTotal)
+
+                    refreshFollow()
                 }
             }
         }, mContext as BaseActivity)
@@ -388,44 +394,36 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView!!.dismiss()
                 }
-                mPersonMoreOpView = PersonMoreOpView(context, mUserInfoModel.userId, false, isShowKick)
+                mPersonMoreOpView = PersonMoreOpView(context, mUserInfoModel.userId, mUserInfoModel.isFollow, mUserInfoModel.isSPFollow, isShowKick)
                 mPersonMoreOpView!!.setListener(object : PersonMoreOpView.Listener {
-                    override fun onClickRemark() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-                        if (mClickListener != null) {
-                            mClickListener!!.onClickRemark(mUserInfoModel)
+                    override fun onClickSpFollow() {
+                        mPersonMoreOpView?.dismiss()
+                        if (mUserInfoModel.isSPFollow) {
+                            // 取消特别关注
+                            mClickListener?.showUnSpFollowDialog(mUserId)
+                        } else {
+                            // 新增特别关注
+                            addSpecialFollow(mUserId)
                         }
                     }
 
-                    override fun onClickUnFollow() {
-
+                    override fun onClickRemark() {
+                        mPersonMoreOpView?.dismiss()
+                        mClickListener?.onClickRemark(mUserInfoModel)
                     }
 
                     override fun onClickReport() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-                        if (mClickListener != null) {
-                            mClickListener!!.onClickReport(mUserId)
-                        }
+                        mPersonMoreOpView?.dismiss()
+                        mClickListener?.onClickReport(mUserId)
                     }
 
                     override fun onClickKick() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-                        if (mClickListener != null) {
-                            mClickListener!!.onClickKick(mUserInfoModel)
-                        }
+                        mPersonMoreOpView?.dismiss()
+                        mClickListener?.onClickKick(mUserInfoModel)
                     }
 
                     override fun onClickBlack(isInBlack: Boolean) {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-
+                        mPersonMoreOpView?.dismiss()
                         if (isInBlack) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
@@ -475,9 +473,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
         mFollowIv.setOnClickListener(object : AnimateClickListener() {
             override fun click(view: View) {
-                if (mClickListener != null) {
-                    mClickListener!!.onClickFollow(mUserId, isFriend, isFollow)
-                }
+                mClickListener?.onClickFollow(mUserId, mUserInfoModel.isFriend, mUserInfoModel.isFollow)
             }
         })
 
@@ -485,9 +481,7 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
             override fun click(view: View) {
                 // 点击邀请唱聊
                 StatisticsAdapter.recordCountEvent("cp", "invite2", null)
-                if (mClickListener != null) {
-                    mClickListener!!.onClickDoubleInvite(mUserInfoModel)
-                }
+                mClickListener?.onClickDoubleInvite(mUserInfoModel)
             }
         })
     }
@@ -653,19 +647,43 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
         mPersonTagView.setQinMiTotal(qinMiCntTotal)
     }
 
-    fun showUserRelation(isFriend: Boolean, isFollow: Boolean) {
-        this.isFollow = isFollow
-        this.isFriend = isFriend
-
-        refreshFollow()
+    private fun addSpecialFollow(userId: Int) {
+        val map = HashMap<String, Any>()
+        map["toUserID"] = userId
+        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+        ApiMethods.subscribe(mUserInfoServerApi.addSpecialFollow(body), object : ApiObserver<ApiResult>() {
+            override fun process(result: ApiResult) {
+                if (result.errno == 0) {
+                    val isFriend = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFriend")
+                            ?: false
+                    val isFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isFollow")
+                            ?: false
+                    val isSpFollow = result.data?.getJSONObject("userMateInfo")?.getBooleanValue("isSPFollow")
+                            ?: false
+                    mUserInfoModel.isFollow = isFollow
+                    mUserInfoModel.isFriend = isFriend
+                    mUserInfoModel.isSPFollow = isSpFollow
+                    refreshFollow()
+                } else {
+                    when (result.errno) {
+                        8302701 -> {
+                            // 普通关注数量触上限
+                            mClickListener?.showOpenVipDialog()
+                        }
+                        8302702 -> // 特别关注数量触及vip上限
+                            U.getToastUtil().showShort(result.errmsg)
+                        else -> U.getToastUtil().showShort(result.errmsg)
+                    }
+                }
+            }
+        }, mContext as BaseActivity)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RelationChangeEvent) {
         if (event.useId == mUserId) {
-            isFollow = event.isFollow
-            isFriend = event.isFriend
-
+            mUserInfoModel.isFollow = event.isFollow
+            mUserInfoModel.isFriend = event.isFriend
             refreshFollow()
         }
     }
@@ -673,8 +691,8 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FollowNotifyEvent) {
         if (event.mUserInfoModel != null && event.mUserInfoModel.userId == mUserId) {
-            isFollow = event.mUserInfoModel.isFollow
-            isFriend = event.mUserInfoModel.isFriend
+            mUserInfoModel.isFollow = event.mUserInfoModel.isFollow
+            mUserInfoModel.isFriend = event.mUserInfoModel.isFriend
 
             refreshFollow()
         }
@@ -682,20 +700,19 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     // TODO: 2019/4/14 在卡片内，不提供取关功能
     private fun refreshFollow() {
-        mUserInfoModel.isFollow = isFollow
-        mUserInfoModel.isFriend = isFriend
-        if (isFriend) {
-            mFollowIv.text = "互关"
-            mFollowIv.isClickable = false
-            mFollowIv.background = mFollowDrawable
-        } else if (isFollow) {
-            mFollowIv.text = "已关注"
-            mFollowIv.isClickable = false
-            mFollowIv.background = mFollowDrawable
-        } else {
-            mFollowIv.text = "关注Ta"
-            mFollowIv.isClickable = true
-            mFollowIv.background = mUnFollowDrawable
+        when {
+            mUserInfoModel.isFriend -> {
+                mFollowIv.text = "互关"
+                mFollowIv.background = mFollowDrawable
+            }
+            mUserInfoModel.isFollow -> {
+                mFollowIv.text = "已关注"
+                mFollowIv.background = mFollowDrawable
+            }
+            else -> {
+                mFollowIv.text = "关注Ta"
+                mFollowIv.background = mUnFollowDrawable
+            }
         }
     }
 }

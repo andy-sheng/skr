@@ -37,6 +37,7 @@ import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
+import com.common.rxretrofit.ApiManager
 import com.common.utils.FragmentUtils
 import com.common.utils.U
 import com.common.view.AnimateClickListener
@@ -121,7 +122,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     lateinit var mPersonTabAdapter: PagerAdapter
 
     private var mPersonMoreOpView: PersonMoreOpView? = null
-    private var mDialogPlus: DialogPlus? = null
+    private var mTipsDialogView: TipsDialogView? = null
 
     internal var mOtherPhotoWallView: OtherPhotoWallView? = null
     internal var mPostsWallView: IPersonPostsWall? = null
@@ -296,27 +297,26 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                 if (mPersonMoreOpView != null) {
                     mPersonMoreOpView!!.dismiss()
                 }
-                mPersonMoreOpView = PersonMoreOpView(context, mUserInfoModel!!.userId, mUserInfoModel!!.isFollow, false)
+                mPersonMoreOpView = PersonMoreOpView(context, mUserInfoModel.userId, mUserInfoModel.isFollow, mUserInfoModel.isSPFollow, false)
                 mPersonMoreOpView!!.setListener(object : PersonMoreOpView.Listener {
                     override fun onClickRemark() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-                        // TODO: 2019/5/22 修改备注昵称
+                        mPersonMoreOpView?.dismiss()
                         showRemarkDialog()
                     }
 
-                    override fun onClickUnFollow() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
+                    override fun onClickSpFollow() {
+                        mPersonMoreOpView?.dismiss()
+                        if (mUserInfoModel.isSPFollow) {
+                            // 取消特别关注
+                            delSpFollow(mUserInfoModel)
+                        } else {
+                            // 特别关注去
+                            mPresenter.addSpFollow(mUserId)
                         }
-                        unFollow(mUserInfoModel)
                     }
 
                     override fun onClickReport() {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
+                        mPersonMoreOpView?.dismiss()
 
                         val channelService = ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation() as IHomeService
                         val baseFragmentClass = channelService.getData(3, null) as Class<BaseFragment>
@@ -336,10 +336,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                     }
 
                     override fun onClickBlack(isInBlack: Boolean) {
-                        if (mPersonMoreOpView != null) {
-                            mPersonMoreOpView!!.dismiss()
-                        }
-
+                        mPersonMoreOpView?.dismiss()
                         if (isInBlack) {
                             UserInfoManager.getInstance().removeBlackList(mUserId, object : ResponseCallBack<Any?>() {
                                 override fun onServerSucess(o: Any?) {
@@ -658,7 +655,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         showUserRelation(userInfoModel.isFriend, userInfoModel.isFollow)
         showCharms(meiLiCntTotal)
         showScoreDetail(scoreDetailModel)
-        
+
         mQinmiTv.text = qinMiCntTotal.toString()
         mVoiceInfoModel = voiceInfoModel
         if (voiceInfoModel != null) {
@@ -667,6 +664,14 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         } else {
             mAudioView.visibility = View.GONE
         }
+    }
+
+    override fun refreshRelation(isFriend: Boolean, isFollow: Boolean, isSpFollow: Boolean) {
+        mUserInfoModel.isFriend = isFriend
+        mUserInfoModel.isSPFollow = isSpFollow
+        mUserInfoModel.isFollow = isFollow
+
+        showUserRelation(isFriend, isFollow)
     }
 
     private fun showScoreDetail(scoreDetailModel: ScoreDetailModel) {
@@ -771,38 +776,71 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mAudioView.setPlay(false)
     }
 
+    override fun showSpFollowVip() {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("非VIP最多特别关注3个用户，是否开通vip享受15人上限～")
+                .setConfirmTip("开通VIP")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                .greenChannel().navigation()
+                    }
+                })
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .build()
+        mTipsDialogView?.showByDialog()
+    }
+
+    private fun delSpFollow(userInfoModel: UserInfoModel?) {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收特关于ta的别提醒啦")
+                .setConfirmTip("取消")
+                .setCancelTip("关闭")
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                        mPresenter.delSpFollow(mUserId)
+                    }
+                })
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .build()
+
+        mTipsDialogView?.showByDialog()
+    }
+
     private fun unFollow(userInfoModel: UserInfoModel?) {
-        val tipsDialogView = TipsDialogView.Builder(context)
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
                 .setTitleTip("取消关注")
                 .setMessageTip("是否取消关注")
                 .setConfirmTip("取消关注")
                 .setCancelTip("不了")
                 .setConfirmBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
-                        if (mDialogPlus != null) {
-                            mDialogPlus!!.dismiss()
-                        }
+                        mTipsDialogView?.dismiss()
                         UserInfoManager.getInstance().mateRelation(userInfoModel!!.userId, UserInfoManager.RA_UNBUILD, userInfoModel.isFriend)
                     }
                 })
                 .setCancelBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
-                        if (mDialogPlus != null) {
-                            mDialogPlus!!.dismiss()
-                        }
+                        mTipsDialogView?.dismiss()
                     }
                 })
                 .build()
-
-        mDialogPlus = DialogPlus.newDialog(context!!)
-                .setContentHolder(ViewHolder(tipsDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setOnDismissListener { }
-                .create()
-        mDialogPlus!!.show()
+        mTipsDialogView?.showByDialog()
     }
 
     override fun destroy() {
@@ -812,7 +850,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mOtherPhotoWallView?.destory()
         mPostsWallView?.destroy()
         mFeedsWallView?.destroy()
-        mDialogPlus?.dismiss()
+        mTipsDialogView?.dismiss(false)
         mPersonMoreOpView?.dismiss()
         mEditRemarkDialog?.dismiss(false)
         mFeedsWallView?.destroy()

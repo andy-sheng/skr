@@ -4,17 +4,28 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.component.busilib.R;
 import com.component.busilib.recommend.RA;
 import com.component.busilib.verify.SkrVerifyUtils;
+import com.dialog.view.TipsDialogView;
 import com.imagebrowse.big.BigImageBrowseFragment;
+import com.module.RouterConstants;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -23,6 +34,9 @@ import com.component.person.view.EditRemarkView;
 import com.component.report.fragment.QuickFeedbackFragment;
 
 import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 // 个人信息卡片
@@ -89,9 +103,7 @@ public class PersonInfoDialog {
             public void onClickFollow(int userID, boolean isFriend, boolean isFollow) {
                 // 关注
                 if (isFollow || isFriend) {
-                    // TODO: 2019/3/28 个人信息卡片不让取关
-//                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-//                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
+                    UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_UNBUILD, isFriend, mRoomID, null);
                 } else {
                     UserInfoManager.getInstance().mateRelation(userID, UserInfoManager.RA_BUILD, isFriend, mRoomID, null);
                     if (RA.hasTestList()) {
@@ -134,6 +146,22 @@ public class PersonInfoDialog {
                         }
                     });
                 }
+            }
+
+            @Override
+            public void showUnSpFollowDialog(int userID) {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+                showCancelSpFollowDialog(userID);
+            }
+
+            @Override
+            public void showOpenVipDialog() {
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+                showVipOpenDialog();
             }
         });
 
@@ -184,6 +212,105 @@ public class PersonInfoDialog {
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(useAnimation);
         }
+    }
+
+    private void showVipOpenDialog() {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
+                .setMessageTip("非VIP最多特别关注3个用户，是否开通vip享受15人上限～")
+                .setConfirmTip("开通VIP")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", ApiManager.getInstance().findRealUrlByChannel("https://app.inframe.mobi/user/vip?title=1"))
+                                .greenChannel().navigation();
+                    }
+                })
+                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(mActivity)
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setInAnimation(R.anim.fade_in)
+                .setOutAnimation(R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .create();
+        mDialogPlus.show();
+    }
+
+    private void showCancelSpFollowDialog(int userID) {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
+                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收特关于ta的别提醒啦")
+                .setConfirmTip("取消")
+                .setCancelTip("关闭")
+                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                        delSpecialFollow(userID);
+                    }
+                })
+                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(mActivity)
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setInAnimation(R.anim.fade_in)
+                .setOutAnimation(R.anim.fade_out)
+                .setExpanded(false)
+                .setGravity(Gravity.BOTTOM)
+                .create();
+        mDialogPlus.show();
+    }
+
+    private void delSpecialFollow(int userId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("toUserID", userId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        UserInfoServerApi mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(mUserInfoServerApi.delSpecialFollow(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    U.getToastUtil().showShort("取消特别关注成功");
+                } else {
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                U.getToastUtil().showShort("网络异常，请检查网络状态后重试");
+            }
+        }, (BaseActivity) mActivity);
     }
 
     private void showRemarkDialog(final UserInfoModel userInfoModel) {
@@ -271,6 +398,10 @@ public class PersonInfoDialog {
         void onClickRemark(UserInfoModel userInfoModel);
 
         void onClickDoubleInvite(UserInfoModel userInfoModel);
+
+        void showUnSpFollowDialog(int userID);
+
+        void showOpenVipDialog();
     }
 
     public static final class Builder {

@@ -248,6 +248,7 @@
                             android:text="开启VIP"
                             android:textColor="#404A9A"
                             android:textSize="@dimen/textsize_12_dp"
+                            android:textStyle="bold"
                             app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
                             app:bl_corners_topRightRadius="@dimen/view_8_dp"
                             app:bl_shape="rectangle"
@@ -290,22 +291,26 @@
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/edit_audio"
-                            android:layout_width="@dimen/view_72_dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_24_dp"
                             android:layout_marginLeft="@dimen/view_5_dp"
                             android:layout_marginTop="@dimen/view_10_dp"
                             android:layout_marginRight="@dimen/view_20_dp"
                             android:gravity="center"
+                            android:paddingLeft="@dimen/view_10_dp"
+                            android:paddingRight="@dimen/view_10_dp"
                             android:text="+编辑语音"
-                            android:textColor="@color/white_trans_50"
+                            android:textColor="#404A9A"
                             android:textSize="@dimen/textsize_12_dp"
+                            android:textStyle="bold"
                             app:bl_corners_radius="@dimen/view_16_dp"
                             app:bl_shape="rectangle"
-                            app:bl_solid_color="@color/white_trans_10"
+                            app:bl_solid_color="#FFC15B"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintLeft_toRightOf="@id/audio_view"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/name_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/name_tv"
+                            app:layout_goneMarginLeft="@dimen/view_0_dp" />
 
                         <android.support.constraint.Barrier
                             android:id="@+id/audio_barrier"

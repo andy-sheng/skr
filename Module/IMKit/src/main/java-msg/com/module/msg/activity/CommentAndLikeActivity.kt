@@ -22,13 +22,17 @@ class CommentAndLikeActivity : BaseActivity() {
     var mRelationVp: NestViewPager? = null
     internal var mTabPagerAdapter: FragmentPagerAdapter? = null
 
+    var postNews: Int = 0  // 0是默认 1是评论 2是赞
+
     override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.comment_like_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mRelationTab = findViewById<View>(R.id.relation_tab) as SlidingTabLayout
-        mRelationVp = findViewById<View>(R.id.relation_vp) as NestViewPager
+        postNews = intent.extras.getInt("type", 0)
+
+        mRelationTab = findViewById(R.id.relation_tab)
+        mRelationVp = findViewById(R.id.relation_vp)
 
         val mTitleBar = findViewById<CommonTitleBar>(R.id.titlebar)
         mTitleBar.leftTextView?.setOnClickListener {
@@ -70,6 +74,11 @@ class CommentAndLikeActivity : BaseActivity() {
         mRelationVp?.setAdapter(mTabPagerAdapter)
         mRelationTab?.setViewPager(mRelationVp)
         mTabPagerAdapter?.notifyDataSetChanged()
+
+        if (postNews == 2) {
+            // 最新的是赞
+            mRelationVp?.setCurrentItem(1, false)
+        }
     }
 
     override fun onBackPressedForActivity(): Boolean {

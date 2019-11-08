@@ -2,6 +2,7 @@ package com.component.person.view;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +20,14 @@ import com.component.busilib.R;
 public class PersonMoreOpView extends RelativeLayout {
 
     int mUserID;
-    boolean mHasUnFollow;
     boolean mHasKick;
     boolean isInBlacked;
 
     LinearLayout mMenuContainer;
     RelativeLayout mModifyRemarkArea;
     ExTextView mModifyRemarkTv;
-    RelativeLayout mUnfollowArea;
-    ExTextView mUnfollowTv;
+    RelativeLayout mSpFollowArea;
+    ExTextView mSpFollowTv;
     RelativeLayout mKickArea;
     ExTextView mKickTv;
     RelativeLayout mBlackArea;
@@ -38,10 +38,14 @@ public class PersonMoreOpView extends RelativeLayout {
     Listener mListener;
     PopupWindow mPopupWindow;
 
-    public PersonMoreOpView(Context context, int mUserID, boolean hasUnFollow, boolean hasKick) {
+    boolean isFollow;
+    boolean isSpFollow;
+
+    public PersonMoreOpView(Context context, int mUserID, boolean isFollow, boolean isSpFollow, boolean hasKick) {
         super(context);
         this.mUserID = mUserID;
-        this.mHasUnFollow = hasUnFollow;
+        this.isFollow = isFollow;
+        this.isSpFollow = isSpFollow;
         this.mHasKick = hasKick;
         init();
     }
@@ -50,20 +54,36 @@ public class PersonMoreOpView extends RelativeLayout {
         inflate(getContext(), R.layout.person_more_op_view_layout, this);
         setBackgroundResource(R.drawable.common_menu_bg);
 
-        mMenuContainer = (LinearLayout) findViewById(R.id.menu_container);
-        mModifyRemarkArea = (RelativeLayout) findViewById(R.id.modify_remark_area);
-        mModifyRemarkTv = (ExTextView) findViewById(R.id.modify_remark_tv);
-        mUnfollowArea = (RelativeLayout) findViewById(R.id.unfollow_area);
-        mUnfollowTv = (ExTextView) findViewById(R.id.unfollow_tv);
-        mKickArea = (RelativeLayout) findViewById(R.id.kick_area);
-        mKickTv = (ExTextView) findViewById(R.id.kick_tv);
-        mBlackArea = (RelativeLayout) findViewById(R.id.black_area);
-        mBlackTv = (ExTextView) findViewById(R.id.black_tv);
-        mReportArea = (RelativeLayout) findViewById(R.id.report_area);
-        mReportTv = (ExTextView) findViewById(R.id.report_tv);
+        mMenuContainer = findViewById(R.id.menu_container);
+        mModifyRemarkArea = findViewById(R.id.modify_remark_area);
+        mModifyRemarkTv = findViewById(R.id.modify_remark_tv);
+        mSpFollowArea = findViewById(R.id.sp_follow_area);
+        mSpFollowTv = findViewById(R.id.sp_follow_tv);
+        mKickArea = findViewById(R.id.kick_area);
+        mKickTv = findViewById(R.id.kick_tv);
+        mBlackArea = findViewById(R.id.black_area);
+        mBlackTv = findViewById(R.id.black_tv);
+        mReportArea = findViewById(R.id.report_area);
+        mReportTv = findViewById(R.id.report_tv);
 
-        mUnfollowArea.setVisibility(mHasUnFollow ? VISIBLE : GONE);
         mKickArea.setVisibility(mHasKick ? VISIBLE : GONE);
+
+        if (isFollow) {
+            mSpFollowArea.setVisibility(VISIBLE);
+            if (isSpFollow) {
+                Drawable drawable = U.getDrawable(R.drawable.person_sp_unfollow_icon);
+                drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(21), U.getDisplayUtils().dip2px(18));
+                mSpFollowTv.setCompoundDrawables(drawable, null, null, null);
+                mSpFollowTv.setText("取消特关");
+            } else {
+                Drawable drawable = U.getDrawable(R.drawable.person_sp_follow_icon);
+                drawable.setBounds(0, 0, U.getDisplayUtils().dip2px(21), U.getDisplayUtils().dip2px(18));
+                mSpFollowTv.setCompoundDrawables(drawable, null, null, null);
+                mSpFollowTv.setText("特别关注Ta");
+            }
+        } else {
+            mSpFollowArea.setVisibility(GONE);
+        }
 
         mModifyRemarkArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -74,11 +94,11 @@ public class PersonMoreOpView extends RelativeLayout {
             }
         });
 
-        mUnfollowArea.setOnClickListener(new DebounceViewClickListener() {
+        mSpFollowArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {
-                    mListener.onClickUnFollow();
+                    mListener.onClickSpFollow();
                 }
             }
         });
@@ -158,7 +178,7 @@ public class PersonMoreOpView extends RelativeLayout {
     public interface Listener {
         void onClickRemark();
 
-        void onClickUnFollow();
+        void onClickSpFollow();
 
         void onClickReport();
 

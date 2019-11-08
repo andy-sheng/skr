@@ -733,9 +733,9 @@ public class PersonFragment4 extends BaseFragment implements IPersonView, Reques
                 mAudioView.bindData(voiceInfoModel.getDuration());
             }
             mAudioView.setVisibility(View.VISIBLE);
-            mEditAudio.setText("编辑语音");
+            mEditAudio.setText("+编辑语音");
         } else {
-            mEditAudio.setText("添加语音");
+            mEditAudio.setText("+添加声音签名");
             mAudioView.setVisibility(View.GONE);
         }
     }
