@@ -118,7 +118,7 @@ public class SDataManager {
             mLS.flushLog(true);
         }
 
-        Log.d("SDataManager", "Flush List Cnt="+listSize);
+//        Log.d("SDataManager", "Flush List Cnt="+listSize);
 
         mADHolder.reset();
 
