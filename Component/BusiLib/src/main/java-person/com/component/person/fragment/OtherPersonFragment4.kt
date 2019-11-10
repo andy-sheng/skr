@@ -5,20 +5,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.base.BaseFragment
 import com.common.core.avatar.AvatarUtils
@@ -28,13 +25,6 @@ import com.common.core.userinfo.UserInfoManager
 import com.common.core.userinfo.event.RelationChangeEvent
 import com.common.core.userinfo.event.RemarkChangeEvent
 import com.common.core.userinfo.model.UserInfoModel
-import com.component.person.model.UserRankModel
-import com.common.flowlayout.FlowLayout
-import com.common.flowlayout.TagAdapter
-import com.common.flowlayout.TagFlowLayout
-import com.common.image.fresco.FrescoWorker
-import com.common.image.model.BaseImage
-import com.common.image.model.ImageFactory
 import com.common.player.SinglePlayer
 import com.common.player.SinglePlayerCallbackAdapter
 import com.common.rxretrofit.ApiManager
@@ -49,42 +39,30 @@ import com.common.view.viewpager.NestViewPager
 import com.common.view.viewpager.SlidingTabLayout
 import com.component.busilib.R
 import com.component.busilib.friends.VoiceInfoModel
-import com.component.busilib.view.AvatarView
 import com.component.level.utils.LevelConfigUtils
-
+import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
+import com.component.person.event.ChildViewPlayAudioEvent
+import com.component.person.model.RelationNumModel
+import com.component.person.model.ScoreDetailModel
+import com.component.person.photo.view.OtherPhotoWallView
+import com.component.person.presenter.OtherPersonPresenter
+import com.component.person.view.*
 import com.dialog.view.TipsDialogView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.imagebrowse.big.BigImageBrowseFragment
 import com.module.ModuleServiceManager
 import com.module.RouterConstants
+import com.module.feeds.IPersonFeedsWall
 import com.module.home.IHomeService
+import com.module.post.IPersonPostsWall
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
-import com.component.level.view.NormalLevelView2
-import com.zq.live.proto.Common.ESex
-import com.component.person.utils.StringFromatUtils
-import com.component.person.model.TagModel
-import com.component.person.presenter.OtherPersonPresenter
-import com.component.person.photo.view.OtherPhotoWallView
-
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
-import java.util.ArrayList
-import java.util.HashMap
-
-import com.component.person.model.RelationNumModel
-
-import com.component.person.OtherPersonActivity.Companion.BUNDLE_USER_ID
-import com.component.person.event.ChildViewPlayAudioEvent
-import com.component.person.model.ScoreDetailModel
-import com.component.person.view.*
-import com.module.feeds.IPersonFeedsWall
-import com.module.post.IPersonPostsWall
 import kotlin.math.abs
 
 class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
@@ -809,7 +787,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
     private fun delSpFollow(userInfoModel: UserInfoModel?) {
         mTipsDialogView?.dismiss(false)
         mTipsDialogView = TipsDialogView.Builder(context)
-                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收特关于ta的别提醒啦")
+                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
                 .setConfirmTip("取消")
                 .setCancelTip("关闭")
                 .setConfirmBtnClickListener(object : AnimateClickListener() {

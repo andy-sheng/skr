@@ -257,7 +257,7 @@ public class PersonInfoDialog {
 
     private void showCancelSpFollowDialog(int userID) {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
-                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收特关于ta的别提醒啦")
+                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
                 .setConfirmTip("取消")
                 .setCancelTip("关闭")
                 .setConfirmBtnClickListener(new DebounceViewClickListener() {
