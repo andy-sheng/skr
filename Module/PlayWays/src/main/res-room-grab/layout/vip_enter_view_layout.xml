@@ -112,8 +112,8 @@
 
         <com.common.view.ex.ExImageView
             android:id="@+id/honor_vip_iv"
-            android:layout_width="@dimen/view_34_dp"
-            android:layout_height="@dimen/view_36_dp"
+            android:layout_width="@dimen/view_54_dp"
+            android:layout_height="@dimen/view_60_dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
