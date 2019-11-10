@@ -79,6 +79,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                             ?: false
                     EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userID, isFriend, isFollow, isSpFollow))
                     view.refreshRelation(isFriend, isFollow, isSpFollow)
+                    U.getToastUtil().showShort("已开启对ta的特别关注哦")
                 } else {
                     when {
                         result.errno == 8302701 -> // 普通关注数量触上限
@@ -112,7 +113,7 @@ class OtherPersonPresenter(internal var view: IOtherPersonView) : RxLifeCyclePre
                             ?: false
                     EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.UN_SP_FOLLOW_TYPE, userID, isFriend, isFollow, isSpFollow))
                     view.refreshRelation(isFriend, isFollow, isSpFollow)
-                    U.getToastUtil().showShort("已开启特别关注")
+                    U.getToastUtil().showShort("取消特别关注成功")
                 } else {
                     U.getToastUtil().showShort(result.errmsg)
                 }
