@@ -398,13 +398,15 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
                 mPersonMoreOpView!!.setListener(object : PersonMoreOpView.Listener {
                     override fun onClickSpFollow() {
                         mPersonMoreOpView?.dismiss()
-                        if (mUserInfoModel.isSPFollow) {
-                            // 取消特别关注
-                            mClickListener?.showUnSpFollowDialog(mUserId)
-                        } else {
-                            // 新增特别关注
-                            addSpecialFollow(mUserId)
-                        }
+                        mClickListener?.showSpFollowDialog(mUserId, mUserInfoModel.isSPFollow)
+//                        if (mUserInfoModel.isSPFollow) {
+//                            // 取消特别关注
+//                            mClickListener?.showUnSpFollowDialog(mUserId)
+//                        } else {
+//                            // 新增特别关注
+//
+//                            addSpecialFollow(mUserId)
+//                        }
                     }
 
                     override fun onClickRemark() {
@@ -645,39 +647,6 @@ class PersonInfoDialogView2 internal constructor(val mContext: Context, userID: 
 
     private fun showQinMiTag(qinMiCntTotal: Int) {
         mPersonTagView.setQinMiTotal(qinMiCntTotal)
-    }
-
-    private fun addSpecialFollow(userId: Int) {
-        val map = HashMap<String, Any>()
-        map["toUserID"] = userId
-        val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-        ApiMethods.subscribe(mUserInfoServerApi.addSpecialFollow(body), object : ApiObserver<ApiResult>() {
-            override fun process(result: ApiResult) {
-                if (result.errno == 0) {
-                    val isFriend = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isFriend")
-                            ?: false
-                    val isFollow = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isFollow")
-                            ?: false
-                    val isSpFollow = result.data?.getJSONObject("relationInfo")?.getBooleanValue("isSPFollow")
-                            ?: false
-                    mUserInfoModel.isFollow = isFollow
-                    mUserInfoModel.isFriend = isFriend
-                    mUserInfoModel.isSPFollow = isSpFollow
-                    EventBus.getDefault().post(RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userId, isFriend, isFollow, isSpFollow))
-                    refreshFollow()
-                } else {
-                    when (result.errno) {
-                        8302701 -> {
-                            // 普通关注数量触上限
-                            mClickListener?.showOpenVipDialog()
-                        }
-                        8302702 -> // 特别关注数量触及vip上限
-                            U.getToastUtil().showShort(result.errmsg)
-                        else -> U.getToastUtil().showShort(result.errmsg)
-                    }
-                }
-            }
-        }, mContext as BaseActivity)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

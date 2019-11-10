@@ -290,7 +290,7 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
                             delSpFollow(mUserInfoModel)
                         } else {
                             // 特别关注去
-                            mPresenter.addSpFollow(mUserId)
+                            addSpFollow(mUserInfoModel)
                         }
                     }
 
@@ -784,12 +784,34 @@ class OtherPersonFragment4 : BaseFragment(), IOtherPersonView, RequestCallBack {
         mTipsDialogView?.showByDialog()
     }
 
+    private fun addSpFollow(userInfoModel: UserInfoModel?) {
+        mTipsDialogView?.dismiss(false)
+        mTipsDialogView = TipsDialogView.Builder(context)
+                .setMessageTip("是否对ta开启特别关注\n开启后，对方上线、发贴、聊天信息、上传照片等将有特别提醒")
+                .setConfirmTip("开启")
+                .setCancelTip("取消")
+                .setConfirmBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                        mPresenter.addSpFollow(mUserId)
+                    }
+                })
+                .setCancelBtnClickListener(object : AnimateClickListener() {
+                    override fun click(view: View) {
+                        mTipsDialogView?.dismiss()
+                    }
+                })
+                .build()
+
+        mTipsDialogView?.showByDialog()
+    }
+
     private fun delSpFollow(userInfoModel: UserInfoModel?) {
         mTipsDialogView?.dismiss(false)
         mTipsDialogView = TipsDialogView.Builder(context)
                 .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
-                .setConfirmTip("取消")
-                .setCancelTip("关闭")
+                .setConfirmTip("关闭")
+                .setCancelTip("取消")
                 .setConfirmBtnClickListener(object : AnimateClickListener() {
                     override fun click(view: View) {
                         mTipsDialogView?.dismiss()

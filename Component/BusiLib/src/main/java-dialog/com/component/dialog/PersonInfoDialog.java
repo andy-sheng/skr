@@ -152,19 +152,11 @@ public class PersonInfoDialog {
             }
 
             @Override
-            public void showUnSpFollowDialog(int userID) {
+            public void showSpFollowDialog(int userID, boolean isSpFollow) {
                 if (mDialogPlus != null) {
                     mDialogPlus.dismiss(false);
                 }
-                showCancelSpFollowDialog(userID);
-            }
-
-            @Override
-            public void showOpenVipDialog() {
-                if (mDialogPlus != null) {
-                    mDialogPlus.dismiss(false);
-                }
-                showVipOpenDialog();
+                showConfirmSpFollowDialog(userID, isSpFollow);
             }
         });
 
@@ -255,18 +247,22 @@ public class PersonInfoDialog {
         mDialogPlus.show();
     }
 
-    private void showCancelSpFollowDialog(int userID) {
+    private void showConfirmSpFollowDialog(int userID, boolean isSpFollow) {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(mActivity)
-                .setMessageTip("是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦")
-                .setConfirmTip("取消")
-                .setCancelTip("关闭")
+                .setMessageTip(isSpFollow ? "是否对ta关闭特别关注\n关闭后，你将无法收到关于ta的特别提醒啦" : "是否对ta开启特别关注\n开启后，对方上线、发贴、聊天信息、上传照片等将有特别提醒")
+                .setConfirmTip(isSpFollow ? "关闭" : "开启")
+                .setCancelTip("取消")
                 .setConfirmBtnClickListener(new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
                         if (mDialogPlus != null) {
                             mDialogPlus.dismiss();
                         }
-                        delSpecialFollow(userID);
+                        if (isSpFollow) {
+                            delSpecialFollow(userID);
+                        } else {
+                            addSpecialFollow(userID);
+                        }
                     }
                 })
                 .setCancelBtnClickListener(new DebounceViewClickListener() {
@@ -309,6 +305,43 @@ public class PersonInfoDialog {
                     U.getToastUtil().showShort("取消特别关注成功");
                 } else {
                     U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                U.getToastUtil().showShort("网络异常，请检查网络状态后重试");
+            }
+        }, (BaseActivity) mActivity);
+    }
+
+    private void addSpecialFollow(int userId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("toUserID", userId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        UserInfoServerApi mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(mUserInfoServerApi.addSpecialFollow(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    Boolean isFriend = obj.getData().getJSONObject("relationInfo").getBooleanValue("isFriend");
+                    Boolean isFollow = obj.getData().getJSONObject("relationInfo").getBooleanValue("isFollow");
+                    Boolean isSpFollow = obj.getData().getJSONObject("relationInfo").getBooleanValue("isSPFollow");
+                    EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.SP_FOLLOW_TYPE, userId, isFriend, isFollow, isSpFollow));
+                    U.getToastUtil().showShort("取消特别关注成功");
+                } else {
+                    if (obj.getErrno() == 8302701) {
+                        // 普通关注数量触上限
+                        showVipOpenDialog();
+                    } else if (obj.getErrno() == 8302702) {
+                        // 特别关注数量触及vip上限
+                        U.getToastUtil().showShort(obj.getErrmsg());
+                    } else {
+                        U.getToastUtil().showShort(obj.getErrmsg());
+                    }
                 }
             }
 
@@ -406,9 +439,7 @@ public class PersonInfoDialog {
 
         void onClickDoubleInvite(UserInfoModel userInfoModel);
 
-        void showUnSpFollowDialog(int userID);
-
-        void showOpenVipDialog();
+        void showSpFollowDialog(int userID, boolean isSpFollow);
     }
 
     public static final class Builder {
