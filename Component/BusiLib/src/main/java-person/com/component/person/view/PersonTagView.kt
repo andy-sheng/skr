@@ -107,8 +107,10 @@ class PersonTagView : ConstraintLayout {
     }
 
     fun setQinMiTotal(qinMiCntTotal: Int) {
-        mHashMap[QINMI_TAG] = "亲密度${StringFromatUtils.formatMillion(qinMiCntTotal)}"
-        refreshTag()
+        if (qinMiCntTotal > 0) {
+            mHashMap[QINMI_TAG] = "亲密度${StringFromatUtils.formatMillion(qinMiCntTotal)}"
+            refreshTag()
+        }
     }
 
     fun setUserID(userID: Int) {
