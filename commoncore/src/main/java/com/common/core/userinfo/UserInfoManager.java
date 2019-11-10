@@ -552,22 +552,27 @@ public class UserInfoManager {
                         Response<ApiResult> response = call.execute();
                         ApiResult obj = response.body();
                         if (obj != null && obj.getData() != null && obj.getErrno() == 0) {
-                            List<UserInfoModel> l3 = new ArrayList<>();
-                            List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
-                            List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
-                            if (userInfoModels2 != null) {
-                                l3.addAll(userInfoModels2);
-                            }
-                            if (userInfoModels3 != null) {
-                                l3.addAll(userInfoModels3);
-                            }
                             boolean hasUpdate = false;
-                            if (!l3.isEmpty()) {
-                                UserInfoLocalApi.insertOrUpdate(l3);
-                                // 更新最终表
-                                resutlSet.addAll(l3);
+                            // 新增逻辑
+                            List<UserInfoModel> userInfoModels2 = JSON.parseArray(obj.getData().getString("adds"), UserInfoModel.class);
+                            if (userInfoModels2 != null && !userInfoModels2.isEmpty()) {
+                                UserInfoLocalApi.insertOrUpdate(userInfoModels2);
+                                // 更新表
+                                resutlSet.addAll(userInfoModels2);
                                 hasUpdate = true;
                             }
+                            // 更新逻辑
+                            List<UserInfoModel> userInfoModels3 = JSON.parseArray(obj.getData().getString("updates"), UserInfoModel.class);
+                            if (userInfoModels3 != null && !userInfoModels3.isEmpty()) {
+                                UserInfoLocalApi.insertOrUpdate(userInfoModels3);
+                                // 更新表
+                                for (UserInfoModel model : userInfoModels3) {
+                                    resutlSet.remove(new UserInfoModel(model.getUserId()));
+                                }
+                                resutlSet.addAll(userInfoModels3);
+                                hasUpdate = true;
+                            }
+                            // 删除逻辑
                             List<Integer> delIds = JSON.parseArray(obj.getData().getString("dels"), Integer.class);
                             if (delIds != null && !delIds.isEmpty()) {
                                 //批量删除
