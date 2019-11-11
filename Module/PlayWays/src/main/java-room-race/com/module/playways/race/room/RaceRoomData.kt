@@ -6,10 +6,8 @@ import com.module.playways.BaseRoomData
 import com.module.playways.RoomDataUtils
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.room.event.RaceRoundChangeEvent
-import com.module.playways.race.room.model.RaceGamePlayInfo
 import com.module.playways.race.room.model.RacePlayerInfoModel
 import com.module.playways.race.room.model.RaceRoundInfoModel
-import com.module.playways.room.song.model.SongModel
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
 import org.greenrobot.eventbus.EventBus
@@ -56,7 +54,7 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次结束事件)
             this.realRoundInfo = this.expectRoundInfo
 //            (this.realRoundInfo as RaceRoundInfoModel).updateStatus(false,轮次开始事件)
-            if(larger) {
+            if (larger) {
                 this.runningRoundCount++
             }
             // TODO 发送轮次切换事件
@@ -81,6 +79,21 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return l
     }
 
+    fun getPlayerCount(): Int {
+        var count = 0
+        if (realRoundInfo != null) {
+            realRoundInfo?.let {
+                count = it.playUsers.size
+            }
+        } else {
+            expectRoundInfo?.let {
+                count = it.playUsers.size
+            }
+        }
+
+        return count
+    }
+
     fun getPlayerOrWaiterInfoModel(userID: Int?): RacePlayerInfoModel? {
         if (userID == null || userID == 0) {
             return null
@@ -103,11 +116,11 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
     /**
      * 该用户是否蒙面 对我来说
      */
-    fun isFakeForMe(uid:Int):Boolean{
+    fun isFakeForMe(uid: Int): Boolean {
         val m = getPlayerOrWaiterInfoModel(uid)
-        if(m!=null){
+        if (m != null) {
             return realRoundInfo?.unfakeSetForMe?.contains(uid) != true
-        }else{
+        } else {
             return false
         }
     }

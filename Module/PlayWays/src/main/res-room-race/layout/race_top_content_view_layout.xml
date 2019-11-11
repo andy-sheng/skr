@@ -1,6 +1,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
     tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <ImageView
@@ -32,8 +33,9 @@
         android:text="58号选手"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintBottom_toTopOf="@+id/real_nickName_tv"
         app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
-        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+        app:layout_goneMarginBottom="@dimen/view_5_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/real_nickName_tv"
@@ -44,8 +46,8 @@
         android:text="KTV酒彪子"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_8_dp"
-        app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
-        app:layout_constraintTop_toBottomOf="@+id/user_play_nickName_tv" />
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_iv"
+        app:layout_constraintLeft_toRightOf="@+id/avatar_iv" />
 
     <android.support.constraint.Barrier
         android:id="@+id/name_barrier"

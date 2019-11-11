@@ -5,8 +5,11 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
+import com.common.core.avatar.AvatarUtils
+import com.common.core.myinfo.MyUserInfoManager
 import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
+import com.common.utils.U
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
 import com.common.view.ex.ExTextView
@@ -69,6 +72,32 @@ class RaceTopContentView : ConstraintLayout {
                 mListener?.clickMore()
             }
         })
+
+        AvatarUtils.loadAvatarByUrl(avatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.avatar)
+                .setBorderColor(U.getColor(R.color.white))
+                .setBorderWidth(U.getDisplayUtils().dip2px(1f).toFloat())
+                .setCircle(true)
+                .build())
+    }
+
+    fun setName() {
+        mRoomData?.let {
+            if (it.audience) {
+                realNickNameTv.visibility = View.GONE
+                userPlayNickNameTv.text = MyUserInfoManager.nickName
+            } else {
+                realNickNameTv.visibility = View.VISIBLE
+                userPlayNickNameTv.text = it.getPlayerOrWaiterInfoModel(MyUserInfoManager.uid!!.toInt())?.fakeUserInfo?.nickName
+                realNickNameTv.text = MyUserInfoManager.nickName
+            }
+        }
+    }
+
+    private fun updateCount() {
+        mRoomData?.let {
+            playerCountTv.text = "选手${mRoomData?.getPlayerCount()}人"
+            audienceCountTv.text = "观众234人"
+        }
     }
 
     fun setArrowIcon(open: Boolean) {
@@ -88,18 +117,8 @@ class RaceTopContentView : ConstraintLayout {
         val list = mRoomData?.getPlayerAndWaiterInfoList()
         if (!list.isNullOrEmpty()) {
             MyLog.d(TAG, "initData list.size=${list.size} from=$from")
-//            adapter.mDataList.clear()
-//            adapter.mDataList.addAll(list)
-//            adapter.notifyDataSetChanged()
-//
-//            if (adapter.mDataList.size >= 7) {
-//                moreTv.text = "${adapter.mDataList.size}人"
-//                moreTv.visibility = View.VISIBLE
-//                maskIv.visibility = View.VISIBLE
-//            } else {
-//                moreTv.visibility = View.GONE
-//                maskIv.visibility = View.GONE
-//            }
+            setName()
+            updateCount()
         } else {
             MyLog.e(TAG, "initData 没人？？？？")
         }
