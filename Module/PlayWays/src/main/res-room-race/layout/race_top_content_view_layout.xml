@@ -71,6 +71,7 @@
         android:layout_width="@dimen/view_26_dp"
         android:layout_height="@dimen/view_26_dp"
         android:layout_marginLeft="@dimen/view_13_dp"
+        android:background="@drawable/player_top_icon"
         app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
         app:layout_constraintLeft_toRightOf="@+id/name_barrier"
         app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
