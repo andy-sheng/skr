@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/official_tag_tv"
+        app:layout_constraintRight_toLeftOf="@+id/honor_iv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
