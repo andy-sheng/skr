@@ -7,6 +7,8 @@ import com.zq.live.proto.RaceRoom.ROnlineInfo
 
 class RacePlayerInfoModel : PlayerInfoModel() {
     var role = ERUserRole.ERUR_UNKNOWN.value
+    var fakeUserInfo: FakeUserInfoModel? = null // 蒙面信息
+
     override fun toString(): String {
         return "${userInfo.toSimpleString()}"
     }
@@ -37,5 +39,6 @@ internal fun parseFromROnlineInfoPB(pb: ROnlineInfo): RacePlayerInfoModel {
     model.userID = model.userInfo.userId
     model.isOnline = pb.isOnline
     model.role = pb.role.value
+    model.fakeUserInfo = FakeUserInfoModel.parseFromPB(pb.fakeUserInfo)
     return model
 }

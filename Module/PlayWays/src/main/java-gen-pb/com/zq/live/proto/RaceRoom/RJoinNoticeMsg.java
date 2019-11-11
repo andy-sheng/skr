@@ -71,7 +71,7 @@ public final class RJoinNoticeMsg extends Message<RJoinNoticeMsg, RJoinNoticeMsg
    */
   @WireField(
       tag = 5,
-      adapter = "com.zq.live.proto.RaceRoom.FakeUserInfo#ADAPTER"
+      adapter = "com.zq.live.proto.RaceRoom.FakeUserInfoModel#ADAPTER"
   )
   private final FakeUserInfo fakeUserInfo;
 

@@ -303,26 +303,22 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
         }
     }
 
-    companion object {
-        /**
-         * 退出房间
-         */
-        fun ComExitRoom(from: String, gameID: Int, raceRoomServerApi: RaceRoomServerApi) {
-            MyLog.d("RaceCorePresenter", "exitRoom from = $from")
-            GlobalScope.launch {
-                val map = mutableMapOf(
-                        "roomID" to gameID
-                )
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                subscribe { raceRoomServerApi.exitRoom(body) }
-            }
-        }
-    }
-
     fun exitRoom(from: String) {
         MyLog.d("RaceCorePresenter", "exitRoom from = $from")
         mRoomData.hasExitGame = true
-        ComExitRoom(from, mRoomData.gameId, raceRoomServerApi)
+        GlobalScope.launch {
+            val map = mutableMapOf(
+                    "roomID" to mRoomData.gameId
+            )
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            subscribe {
+                if(mRoomData.audience){
+                    raceRoomServerApi.audienceExitRoom(body)
+                }else{
+                    raceRoomServerApi.exitRoom(body)
+                }
+            }
+        }
     }
 
     fun goResultPage(lastRound: RaceRoundInfoModel) {

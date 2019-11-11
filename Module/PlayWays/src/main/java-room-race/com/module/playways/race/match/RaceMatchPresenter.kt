@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCyclePresenter() {
+class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView,val audience:Boolean) : RxLifeCyclePresenter() {
     val mTag = "RaceMatchPresenter"
     val raceRoomServerApi = ApiManager.getInstance().createService(RaceRoomServerApi::class.java)
 
@@ -39,7 +39,13 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
             repeat(Int.MAX_VALUE) {
                 val map = mutableMapOf("platform" to 20)
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe { raceRoomServerApi.queryMatch(body) }
+                val result = subscribe {
+                    if(audience){
+                        raceRoomServerApi.audienceQueryMatch(body)
+                    }else{
+                        raceRoomServerApi.queryMatch(body)
+                    }
+                }
                 if (result.errno == 0) {
                     val model = JSON.parseObject(result.data.getString("mathedInfo"), LocalRJoinActionMsg::class.java)
                     if (model != null) {
@@ -71,9 +77,16 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
                         "roomID" to it.gameID
                 )
                 val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                val result = subscribe { raceRoomServerApi.joinRoom(body) }
+                val result = subscribe {
+                    if(audience){
+                        raceRoomServerApi.audienceJoinRoom(body)
+                    }else{
+                        raceRoomServerApi.joinRoom(body)
+                    }
+                }
                 if (result.errno == 0) {
                     val rsp = JSON.parseObject(result.data.toJSONString(), JoinRaceRoomRspModel::class.java)
+                    rsp.audience = audience
                     rsp.roomID = it.gameID
                     rsp.gameCreateTimeMs = it.createTimeMs
                     rsp.agoraToken = it.agoraToken
@@ -85,16 +98,17 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
     }
 
     fun cancelMatch() {
-        Companion.cancelMatch(raceRoomServerApi)
-    }
-
-    companion object {
-        fun cancelMatch(raceRoomServerApi: RaceRoomServerApi) {
-            GlobalScope.launch {
-                val map = mutableMapOf("platform" to 20)
-                val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
-                subscribe { raceRoomServerApi.cancelMatch(body) }
+        GlobalScope.launch {
+            val map = mutableMapOf("platform" to 20)
+            val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
+            subscribe {
+                if(audience){
+                    raceRoomServerApi.audienceCancelMatch(body)
+                }else{
+                    raceRoomServerApi.cancelMatch(body)
+                }
             }
         }
     }
+
 }

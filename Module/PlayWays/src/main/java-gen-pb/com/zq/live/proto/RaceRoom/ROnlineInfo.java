@@ -59,7 +59,7 @@ public final class ROnlineInfo extends Message<ROnlineInfo, ROnlineInfo.Builder>
    */
   @WireField(
       tag = 4,
-      adapter = "com.zq.live.proto.RaceRoom.FakeUserInfo#ADAPTER"
+      adapter = "com.zq.live.proto.RaceRoom.FakeUserInfoModel#ADAPTER"
   )
   private final FakeUserInfo fakeUserInfo;
 

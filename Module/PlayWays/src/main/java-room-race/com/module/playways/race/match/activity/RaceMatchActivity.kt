@@ -73,12 +73,8 @@ class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
             }
             activity.finish()
         }
-        //        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
-        //        if (prepareData == null) {
-        //            MyLog.e("GrabMatchActivity", "initData prepareData is null");
-        //            finish();
-        //            return;
-        //        }
+        // 是否是观众进来的
+        val audience = intent?.getBooleanExtra("audience",false) ?:false
 
         mTvMatchedTime = findViewById(R.id.tv_matched_time)
         mTvTip = findViewById(R.id.tv_tip)
@@ -97,7 +93,7 @@ class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
             }
         })
 
-        mMatchPresenter = RaceMatchPresenter(this)
+        mMatchPresenter = RaceMatchPresenter(this,audience)
         addPresent(mMatchPresenter)
         mMatchPresenter?.startLoopMatchTask()
 
@@ -109,7 +105,7 @@ class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
         U.getStatusBarUtil().setTransparentBar(this, false)
     }
 
-    fun showBackground() {
+    private fun showBackground() {
         mSvgaMatchBg?.visibility = View.VISIBLE
         mSvgaMatchBg?.loops = 1
 
@@ -159,7 +155,7 @@ class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
     /**
      * 更新已匹配时间
      */
-    fun startTimeTask() {
+    private fun startTimeTask() {
         mMatchTimeTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
                 .take(-1)
@@ -336,11 +332,4 @@ class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
         return true
     }
 
-    companion object {
-        fun open(activity: Activity, prepareData: PrepareData) {
-            val intent = Intent(activity, RaceMatchActivity::class.java)
-            intent.putExtra("prepare_data", prepareData)
-            activity.startActivity(intent)
-        }
-    }
 }
