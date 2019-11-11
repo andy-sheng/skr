@@ -250,6 +250,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             val result = subscribe { raceRoomServerApi.bLight(body) }
             if (result.errno == 0) {
                 callback?.invoke(true)
+                mRoomData?.realRoundInfo?.getSingerIdNow()?.let {
+                    mRoomData?.realRoundInfo?.unfakeSetForMe?.add(it)
+                }
             } else {
                 if (result.errno == 8412159) {
                     // 已经投过票
@@ -312,9 +315,9 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             )
             val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
             subscribe {
-                if(mRoomData.audience){
+                if (mRoomData.audience) {
                     raceRoomServerApi.audienceExitRoom(body)
-                }else{
+                } else {
                     raceRoomServerApi.exitRoom(body)
                 }
             }

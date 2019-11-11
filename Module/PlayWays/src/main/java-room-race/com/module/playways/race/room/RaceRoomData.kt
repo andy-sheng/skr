@@ -81,7 +81,6 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
         return l
     }
 
-
     fun getPlayerOrWaiterInfoModel(userID: Int?): RacePlayerInfoModel? {
         if (userID == null || userID == 0) {
             return null
@@ -99,6 +98,18 @@ class RaceRoomData : BaseRoomData<RaceRoundInfoModel>() {
             return playerInfoModel
         }
         return null
+    }
+
+    /**
+     * 该用户是否蒙面 对我来说
+     */
+    fun isFakeForMe(uid:Int):Boolean{
+        val m = getPlayerOrWaiterInfoModel(uid)
+        if(m!=null){
+            return realRoundInfo?.unfakeSetForMe?.contains(uid) != true
+        }else{
+            return false
+        }
     }
 
     override fun getInSeatPlayerInfoList(): List<RacePlayerInfoModel> {

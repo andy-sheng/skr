@@ -32,6 +32,8 @@ class RaceRoundInfoModel : BaseRoundInfoModel() {
     var enterSubRoundSeq: Int = 0 //中途加入时的子轮次 只在  enterStatus == ERaceRoundStatus.ERRS_ONGOINE 有意义
     var currentRoundChoiceUserCnt = 0 // 当前轮次报名人数
 
+    val unfakeSetForMe = HashSet<Int>() // 我已经投票的选手id，主要用于判断是否蒙面
+
     override fun getType(): Int {
         return TYPE_RACE
     }
