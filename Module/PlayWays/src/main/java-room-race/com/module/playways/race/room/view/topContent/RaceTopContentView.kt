@@ -2,15 +2,14 @@ package com.module.playways.race.room.view.topContent
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
+import com.common.image.fresco.BaseImageView
 import com.common.log.MyLog
 import com.common.view.DebounceViewClickListener
 import com.common.view.ex.ExImageView
+import com.common.view.ex.ExTextView
 import com.module.playways.R
 import com.module.playways.race.room.RaceRoomData
 import com.module.playways.race.room.event.RacePlaySeatUpdateEvent
@@ -23,13 +22,14 @@ import org.greenrobot.eventbus.ThreadMode
 class RaceTopContentView : ConstraintLayout {
     val TAG = "RaceTopContentView"
 
-    val arrowIv: ImageView
-    val backgroundIv: ExImageView
-    val recyclerView: RecyclerView
-    val maskIv: ExImageView
-    val moreTv: TextView
-
-    val adapter: RaceTopContentAdapter = RaceTopContentAdapter()
+    var arrowIv: ImageView
+    var avatarIv: BaseImageView
+    var userPlayNickNameTv: ExTextView
+    var realNickNameTv: ExTextView
+    var audienceIv: ImageView
+    var playerCountTv: ExTextView
+    var audienceCountTv: ExTextView
+    var playerBg: ExImageView
 
     internal var mIsOpen = true
     private var mRoomData: RaceRoomData? = null
@@ -46,17 +46,17 @@ class RaceTopContentView : ConstraintLayout {
         View.inflate(context, R.layout.race_top_content_view_layout, this)
 
         arrowIv = rootView.findViewById(R.id.arrow_iv)
-        backgroundIv = rootView.findViewById(R.id.background_iv)
-        recyclerView = rootView.findViewById(R.id.recycler_view)
-        maskIv = rootView.findViewById(R.id.mask_iv)
-        moreTv = rootView.findViewById(R.id.more_tv)
+        avatarIv = rootView.findViewById(R.id.avatar_iv)
+        userPlayNickNameTv = rootView.findViewById(R.id.user_play_nickName_tv)
+        realNickNameTv = rootView.findViewById(R.id.real_nickName_tv)
+        audienceIv = rootView.findViewById(R.id.audience_iv)
+        playerCountTv = rootView.findViewById(R.id.player_count_tv)
+        audienceCountTv = rootView.findViewById(R.id.audience_count_tv)
+        playerBg = rootView.findViewById(R.id.player_bg)
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
-
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = adapter
 
         arrowIv.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View) {
@@ -64,7 +64,7 @@ class RaceTopContentView : ConstraintLayout {
             }
         })
 
-        moreTv.setOnClickListener(object : DebounceViewClickListener() {
+        playerBg.setOnClickListener(object : DebounceViewClickListener() {
             override fun clickValid(v: View?) {
                 mListener?.clickMore()
             }
@@ -84,22 +84,22 @@ class RaceTopContentView : ConstraintLayout {
     }
 
     //只有轮次切换的时候调用
-    private fun initData(from:String) {
+    private fun initData(from: String) {
         val list = mRoomData?.getPlayerAndWaiterInfoList()
         if (!list.isNullOrEmpty()) {
             MyLog.d(TAG, "initData list.size=${list.size} from=$from")
-            adapter.mDataList.clear()
-            adapter.mDataList.addAll(list)
-            adapter.notifyDataSetChanged()
-
-            if (adapter.mDataList.size >= 7) {
-                moreTv.text = "${adapter.mDataList.size}人"
-                moreTv.visibility = View.VISIBLE
-                maskIv.visibility = View.VISIBLE
-            } else {
-                moreTv.visibility = View.GONE
-                maskIv.visibility = View.GONE
-            }
+//            adapter.mDataList.clear()
+//            adapter.mDataList.addAll(list)
+//            adapter.notifyDataSetChanged()
+//
+//            if (adapter.mDataList.size >= 7) {
+//                moreTv.text = "${adapter.mDataList.size}人"
+//                moreTv.visibility = View.VISIBLE
+//                maskIv.visibility = View.VISIBLE
+//            } else {
+//                moreTv.visibility = View.GONE
+//                maskIv.visibility = View.GONE
+//            }
         } else {
             MyLog.e(TAG, "initData 没人？？？？")
         }

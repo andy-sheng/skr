@@ -14,54 +14,109 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content_ll" />
 
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/background_iv"
-        android:layout_width="@dimen/view_0_dp"
-        android:layout_height="@dimen/view_32_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="@color/black_trans_20"
-        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
-        app:layout_constraintTop_toTopOf="@id/arrow_iv"
-        app:layout_constraintLeft_toLeftOf="@id/recycler_view"
-        app:layout_constraintRight_toRightOf="@id/more_tv" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_32_dp"
-        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        app:layout_constraintRight_toLeftOf="@id/arrow_iv"
-        app:layout_constraintTop_toTopOf="@id/arrow_iv" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/mask_iv"
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/avatar_iv"
         android:layout_width="@dimen/view_26_dp"
-        android:layout_height="@dimen/view_32_dp"
-        app:bl_gradient_angle="360"
-        app:bl_gradient_endColor="#0C043F"
-        app:bl_gradient_startColor="#00160742"
-        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
-        app:layout_constraintRight_toRightOf="@id/recycler_view"
-        app:layout_constraintTop_toTopOf="@id/arrow_iv"
-        android:visibility="gone"/>
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_marginLeft="@dimen/view_14_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
 
-    <TextView
-        android:id="@+id/more_tv"
-        android:layout_width="@dimen/view_54_dp"
-        android:layout_height="@dimen/view_32_dp"
-        android:gravity="center_vertical"
-        android:textColor="@color/white"
-        android:drawablePadding="@dimen/view_10_dp"
-        android:drawableRight="@drawable/race_more_actor_icon"
+    <com.common.view.ex.ExTextView
+        android:id="@+id/user_play_nickName_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_2_dp"
+        android:paddingRight="@dimen/view_11_dp"
+        android:text="58号选手"
+        android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
-        app:layout_constraintBottom_toBottomOf="@id/arrow_iv"
-        app:layout_constraintLeft_toRightOf="@id/recycler_view"
-        app:layout_constraintTop_toTopOf="@id/arrow_iv"
-        android:visibility="gone"/>
+        app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/real_nickName_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_2_dp"
+        android:paddingRight="@dimen/view_11_dp"
+        android:text="KTV酒彪子"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_8_dp"
+        app:layout_constraintLeft_toRightOf="@+id/avatar_iv"
+        app:layout_constraintTop_toBottomOf="@+id/user_play_nickName_tv" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/name_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="user_play_nickName_tv, real_nickName_tv" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/name_barrier"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
+
+    <ImageView
+        android:id="@+id/audience_iv"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_26_dp"
+        android:layout_marginLeft="@dimen/view_13_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintLeft_toRightOf="@+id/name_barrier"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/player_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_2_dp"
+        android:paddingRight="@dimen/view_11_dp"
+        android:text="选手16人"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp"
+        app:layout_constraintLeft_toRightOf="@+id/audience_iv"
+        app:layout_constraintTop_toTopOf="@+id/audience_iv" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/audience_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_2_dp"
+        android:paddingRight="@dimen/view_11_dp"
+        android:text="观众234人"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_8_dp"
+        app:layout_constraintLeft_toRightOf="@+id/audience_iv"
+        app:layout_constraintTop_toBottomOf="@+id/user_play_nickName_tv" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/count_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="player_count_tv, audience_count_tv" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/player_bg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_stroke_color="@color/white_trans_20"
+        app:bl_stroke_width="@dimen/view_1_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
+        app:layout_constraintLeft_toLeftOf="@+id/name_barrier"
+        app:layout_constraintRight_toRightOf="@+id/count_barrier"
+        app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
 
 </merge>
