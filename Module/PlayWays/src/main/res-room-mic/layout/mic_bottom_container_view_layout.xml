@@ -33,12 +33,22 @@
             app:src_unPressed_drawable="@drawable/yichangdaodi_liwu" />
 
         <com.common.view.ex.ExImageView
+            android:id="@+id/meigui_iv"
+            android:layout_width="@dimen/view_36_dp"
+            android:layout_height="@dimen/view_35_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_10_dp"
+            android:layout_toRightOf="@id/emoji2_btn"
+            android:background="@drawable/outer_flawer"
+            android:scaleType="fitXY" />
+
+        <com.common.view.ex.ExImageView
             android:id="@+id/iv_room_manage"
             android:layout_width="@dimen/view_40_dp"
             android:layout_height="@dimen/view_40_dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/view_10_dp"
-            android:layout_toRightOf="@id/emoji2_btn"
+            android:layout_toRightOf="@id/meigui_iv"
             android:scaleType="center"
             android:src="@drawable/ycdd_fangzhu"
             android:visibility="gone"

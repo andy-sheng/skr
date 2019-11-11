@@ -43,6 +43,7 @@ import com.module.playways.race.room.view.matchview.RaceMatchView
 import com.module.playways.race.room.view.topContent.RaceTopContentView
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
+import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -59,6 +60,7 @@ import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.RaceRoom.ERUserRole
 import com.zq.live.proto.RaceRoom.ERaceRoundOverReason
 import com.zq.live.proto.RaceRoom.ERaceRoundStatus
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -305,7 +307,21 @@ class RaceRoomFragment : BaseFragment(), IRaceRoomView, IGrabVipView {
                     mGiftPanelView.show(null)
                 }
             }
+
+            override fun onClickFlower() {
+                buyFlowerFromOuter()
+            }
         })
+    }
+
+    private fun buyFlowerFromOuter() {
+        if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_ONGOINE.value) {
+            RoomDataUtils.getPlayerInfoById(mRoomData!!, mRoomData!!.realRoundInfo!!.subRoundInfo[mRoomData!!.realRoundInfo!!.subRoundSeq - 1].userID)?.let {
+                EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+            }
+        } else {
+            U.getToastUtil().showShort("没有可以送礼的人")
+        }
     }
 
     private fun initTopView() {

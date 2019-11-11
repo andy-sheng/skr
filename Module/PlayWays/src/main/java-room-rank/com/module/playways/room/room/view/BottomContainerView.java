@@ -17,12 +17,12 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.BaseRoomData;
+import com.module.playways.R;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
-import com.module.playways.RoomDataUtils;
-import com.module.playways.R;
 import com.module.playways.room.room.event.InputBoardEvent;
-import com.module.playways.BaseRoomData;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.GrabRoom.EMsgPosType;
@@ -241,6 +241,10 @@ public abstract class BottomContainerView extends RelativeLayout {
         }
 
         public void showGiftPanel() {
+
+        }
+
+        public void onClickFlower() {
 
         }
     }

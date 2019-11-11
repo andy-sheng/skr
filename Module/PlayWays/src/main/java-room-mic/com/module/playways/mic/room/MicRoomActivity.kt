@@ -73,6 +73,7 @@ import com.module.playways.mic.room.view.control.MicSingBeginTipsCardView
 import com.module.playways.room.data.H
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
+import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -390,6 +391,10 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
                 mContinueSendView.setVisibility(View.GONE)
                 showPanelView()
             }
+
+            override fun onClickFlower() {
+                buyFlowerFromOuter()
+            }
         })
     }
 
@@ -412,6 +417,37 @@ class MicRoomActivity : BaseActivity(), IMicRoomView, IGrabVipView {
             }
         } else {
             mGiftPanelView?.show(null)
+        }
+    }
+
+    private fun buyFlowerFromOuter() {
+        if (mRoomData!!.realRoundInfo != null) {
+            val now = mRoomData!!.realRoundInfo
+            if (now != null) {
+                if (now.isPKRound && now.status == EMRoundStatus.MRS_SPK_SECOND_PEER_SING.value) {
+                    if (now.getsPkRoundInfoModels().size == 2) {
+                        val userId = now.getsPkRoundInfoModels()[1].userID
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, userId)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    } else {
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    }
+                } else {
+                    val micPlayerInfoMode = RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)
+                    if (micPlayerInfoMode != null) {
+                        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), micPlayerInfoMode.userInfo))
+                    } else {
+                        U.getToastUtil().showShort("没有可以送礼的人")
+                    }
+                }
+            } else {
+                U.getToastUtil().showShort("没有可以送礼的人")
+            }
+        } else {
+            U.getToastUtil().showShort("没有可以送礼的人")
         }
     }
 

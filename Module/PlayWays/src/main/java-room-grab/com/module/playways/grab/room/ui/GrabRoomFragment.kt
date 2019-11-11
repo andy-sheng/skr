@@ -77,6 +77,7 @@ import com.module.playways.listener.SVGAListener
 import com.module.playways.room.gift.event.BuyGiftEvent
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent
 import com.module.playways.room.gift.event.UpdateMeiGuiFreeCountEvent
+import com.module.playways.room.gift.model.NormalGift
 import com.module.playways.room.gift.view.ContinueSendView
 import com.module.playways.room.gift.view.GiftDisplayView
 import com.module.playways.room.gift.view.GiftPanelView
@@ -97,6 +98,7 @@ import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ViewHolder
 import com.zq.live.proto.Common.EMsgRoomMediaType
 import com.zq.live.proto.GrabRoom.EQRoundStatus
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
@@ -692,8 +694,43 @@ class GrabRoomFragment : BaseFragment(), IGrabRoomView, IRedPkgCountDownView, IU
 
                 mContinueSendView?.visibility = GONE
             }
+
+            override fun onClickFlower() {
+                buyFlowerFromOuter()
+            }
         })
         mBottomContainerView?.setRoomData(mRoomData!!)
+    }
+
+    private fun buyFlowerFromOuter() {
+        if (mRoomData!!.realRoundInfo != null) {
+            val now = mRoomData!!.realRoundInfo
+            if (now != null) {
+                if (now.isPKRound && now.status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.value) {
+                    if (now.getsPkRoundInfoModels().size == 2) {
+                        val userId = now.getsPkRoundInfoModels()[1].userID
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, userId)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    } else {
+                        RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)?.let {
+                            EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), it.userInfo))
+                        }
+                    }
+                } else {
+                    val grabPlayerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData!!, now.userID)
+                    if (grabPlayerInfoModel != null) {
+                        EventBus.getDefault().post(BuyGiftEvent(NormalGift.getFlower(), grabPlayerInfoModel.userInfo))
+                    } else {
+                        U.getToastUtil().showShort("没有可以送礼的人")
+                    }
+                }
+            } else {
+                U.getToastUtil().showShort("没有可以送礼的人")
+            }
+        } else {
+            U.getToastUtil().showShort("没有可以送礼的人")
+        }
     }
 
     private fun initCommentView() {
