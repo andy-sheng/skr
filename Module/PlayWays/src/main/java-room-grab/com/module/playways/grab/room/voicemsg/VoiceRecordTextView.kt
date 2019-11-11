@@ -308,7 +308,7 @@ class VoiceRecordTextView : ExTextView {
         map["gameID"] = mRoomData!!.gameId
         map["msgUrl"] = url
         map["duration"] = file.duration
-
+        map["mode"] = mRoomData!!.gameType
         val body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map))
         ApiMethods.subscribe(roomServerApi.sendAudioMsg(body), object : ApiObserver<ApiResult>() {
             override fun process(result: ApiResult) {

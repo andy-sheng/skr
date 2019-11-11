@@ -139,7 +139,7 @@ public class InputContainerView extends RelativeLayout implements EmotionKeyboar
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());
                 map.put("content", content);
-
+                map.put("mode",mRoomData.getGameType());
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
                     @Override
