@@ -9,7 +9,7 @@ import com.common.utils.U
 import com.module.playways.race.RaceRoomServerApi
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
 import com.module.playways.race.match.pbLocalModel.LocalRJoinActionMsg
-import com.module.playways.room.msg.event.raceroom.RJoinActionEvent
+import com.zq.live.proto.RaceRoom.RJoinActionMsg
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -56,9 +56,9 @@ class RaceMatchPresenter(val mIRaceMatchingView: IRaceMatchingView) : RxLifeCycl
 
     // 匹配到了
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(e: RJoinActionEvent) {
-        MyLog.d(mTag, "onEvent e = ${e.pb}")
-        joinRoom(LocalRJoinActionMsg.toLocalModel(e.pb))
+    fun onEvent(e: RJoinActionMsg) {
+        MyLog.d(mTag, "onEvent e = ${e}")
+        joinRoom(LocalRJoinActionMsg.toLocalModel(e))
     }
 
     // 进入房间

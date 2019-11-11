@@ -1,12 +1,16 @@
-package com.module.playways.race.match.fragment
+package com.module.playways.race.match.activity
 
 import android.animation.AnimatorSet
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.common.anim.svga.SvgaParserAdapter
-import com.common.base.BaseFragment
+import com.common.base.BaseActivity
 import com.common.log.MyLog
 import com.common.utils.ActivityUtils
 import com.common.utils.HandlerTaskTimer
@@ -21,6 +25,7 @@ import com.module.playways.R
 import com.module.playways.race.match.IRaceMatchingView
 import com.module.playways.race.match.RaceMatchPresenter
 import com.module.playways.race.match.model.JoinRaceRoomRspModel
+import com.module.playways.room.prepare.model.PrepareData
 import com.opensource.svgaplayer.SVGADrawable
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
@@ -32,8 +37,8 @@ import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.greendao.annotation.NotNull
 import java.util.*
 
-//这个是匹配界面，之前的FastMatchingSence
-class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
+@Route(path = RouterConstants.ACTIVITY_RACE_MATCH_ROOM)
+class RaceMatchActivity : BaseActivity(), IRaceMatchingView {
 
     val ANIMATION_DURATION: Long = 1800
     lateinit var mTvMatchedTime: ExTextView
@@ -51,16 +56,35 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
 
     private var mControlTask: HandlerTaskTimer? = null
 
-    override fun initView(): Int {
+    /**
+     * 存起该房间一些状态信息
+     */
+    override fun initView(savedInstanceState: Bundle?): Int {
         return R.layout.new_grab_match_fragment_layout
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        mTvMatchedTime = rootView.findViewById(R.id.tv_matched_time)
-        mTvTip = rootView.findViewById(R.id.tv_tip)
-        mIvCancelMatch = rootView.findViewById(R.id.iv_cancel_match)
+        for (activity in U.getActivityUtils().activityList) {
+            if (U.getActivityUtils().isHomeActivity(activity)) {
+                continue
+            }
+            if (activity === this) {
+                continue
+            }
+            activity.finish()
+        }
+        //        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
+        //        if (prepareData == null) {
+        //            MyLog.e("GrabMatchActivity", "initData prepareData is null");
+        //            finish();
+        //            return;
+        //        }
 
-        mSvgaMatchBg = rootView.findViewById(R.id.svga_match_bg)
+        mTvMatchedTime = findViewById(R.id.tv_matched_time)
+        mTvTip = findViewById(R.id.tv_tip)
+        mIvCancelMatch = findViewById(R.id.iv_cancel_match)
+
+        mSvgaMatchBg = findViewById(R.id.svga_match_bg)
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back, R.raw.normal_click)
 
@@ -82,6 +106,7 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
 
         showBackground()
         playBackgroundMusic()
+        U.getStatusBarUtil().setTransparentBar(this, false)
     }
 
     fun showBackground() {
@@ -147,9 +172,7 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
 //                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_GRAB) {
 //                                BgMusicManager.getInstance().destory()
 //                            }
-                            if (activity != null) {
-                                activity!!.finish()
-                            }
+                                finish()
 
 //                            if (mPrepareData!!.gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
 //                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
@@ -187,38 +210,9 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
 
     }
 
-    override fun destroy() {
-        super.destroy()
-        if (mExitDialog != null && mExitDialog!!.isShowing) {
-            mExitDialog!!.dismiss()
-        }
-        stopTimeTask()
-        if (mControlTask != null) {
-            mControlTask!!.dispose()
-        }
-        if (mSvgaMatchBg != null) {
-            mSvgaMatchBg!!.callback = null
-            mSvgaMatchBg!!.stopAnimation(true)
-        }
-        U.getSoundUtils().release(TAG)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        mMatchPresenter?.destroy()
-        stopTimeTask()
-
-        if (mControlTask != null) {
-            mControlTask!!.dispose()
-        }
-
-        if (mIconAnimatorSet != null && mIconAnimatorSet!!.isRunning) {
-            mIconAnimatorSet!!.cancel()
-        }
-    }
 
     internal fun goBack() {
-        val tipsDialogView = TipsDialogView.Builder(context)
+        val tipsDialogView = TipsDialogView.Builder(this)
                 .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
                 .setCancelTip("退出")
                 .setConfirmTip("继续匹配")
@@ -239,14 +233,12 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
 //                            BgMusicManager.getInstance().destory()
 //                        }
                         stopTimeTask()
-                        if (activity != null) {
-                            activity!!.finish()
-                        }
+                            finish()
                     }
                 })
                 .build()
 
-        mExitDialog = DialogPlus.newDialog(context!!)
+        mExitDialog = DialogPlus.newDialog(this)
                 .setContentHolder(ViewHolder(tipsDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
@@ -269,21 +261,10 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
                 .navigation()
 
         //结束当前Activity
-        if (activity != null) {
-            activity!!.finish()
-        }
+            finish()
     }
 
-    override fun onBackPressed(): Boolean {
-        goBack()
-        return true
-    }
 
-    override fun notifyToShow() {
-        MyLog.d(TAG, "toStaskTop")
-        playBackgroundMusic()
-        rootView.visibility = View.VISIBLE
-    }
 
     private fun playBackgroundMusic() {
 //        if (!BgMusicManager.getInstance().isPlaying && mPrepareData != null && this@NewRaceMatchFragment.fragmentVisible) {
@@ -312,18 +293,54 @@ class NewRaceMatchFragment : BaseFragment(), IRaceMatchingView {
 //        }
     }
 
-    /**
-     * MatchSuccessFragment add后，动画播放完再remove掉匹配中页面
-     */
-    override fun notifyToHide() {
-        if (mExitDialog != null && mExitDialog!!.isShowing) {
-            mExitDialog!!.dismiss(false)
+
+    override fun onResume() {
+        super.onResume()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+
+    override fun destroy() {
+        super.destroy()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        mMatchPresenter?.destroy()
+        if (mControlTask != null) {
+            mControlTask!!.dispose()
         }
-        rootView.visibility = View.GONE
-        //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-        //                .setPopFragment(this)
-        //                .setPopAbove(false)
-        //                .build()
-        //        );
+
+        if (mIconAnimatorSet != null && mIconAnimatorSet!!.isRunning) {
+            mIconAnimatorSet!!.cancel()
+        }
+
+        if (mExitDialog != null && mExitDialog!!.isShowing) {
+            mExitDialog!!.dismiss()
+        }
+        stopTimeTask()
+        if (mSvgaMatchBg != null) {
+            mSvgaMatchBg!!.callback = null
+            mSvgaMatchBg!!.stopAnimation(true)
+        }
+        U.getSoundUtils().release(TAG)
+    }
+
+    override fun canSlide(): Boolean {
+        return false
+    }
+
+    override fun resizeLayoutSelfWhenKeybordShow(): Boolean {
+        return true
+    }
+
+    override fun onBackPressedForActivity(): Boolean {
+        goBack()
+        return true
+    }
+
+    companion object {
+        fun open(activity: Activity, prepareData: PrepareData) {
+            val intent = Intent(activity, RaceMatchActivity::class.java)
+            intent.putExtra("prepare_data", prepareData)
+            activity.startActivity(intent)
+        }
     }
 }

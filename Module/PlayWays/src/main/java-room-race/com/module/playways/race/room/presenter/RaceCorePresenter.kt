@@ -38,7 +38,6 @@ import com.module.playways.room.gift.event.GiftBrushMsgEvent
 import com.module.playways.room.gift.event.UpdateCoinEvent
 import com.module.playways.room.gift.event.UpdateMeiliEvent
 import com.module.playways.room.msg.event.GiftPresentEvent
-import com.module.playways.room.msg.event.raceroom.*
 import com.module.playways.room.msg.filter.PushMsgFilter
 import com.module.playways.room.msg.manager.RaceRoomMsgManager
 import com.module.playways.room.room.comment.model.CommentModel
@@ -426,6 +425,7 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
 
     /**
      * 轮次切换事件
+
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RaceRoundChangeEvent) {
@@ -605,10 +605,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 用户选择了某个歌曲
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RWantSingChanceEvent) {
-        MyLog.d(TAG, "onEvent event = ${event.pb}")
+    fun onEvent(event: RWantSingChanceMsg) {
+        MyLog.d(TAG, "onEvent event = ${event}")
         ensureInRcRoom()
-        if (event.pb.roundSeq == mRoomData.realRoundSeq) {
+        if (event.roundSeq == mRoomData.realRoundSeq) {
             //mRoomData?.realRoundInfo?.addWantSingChange(event.pb.choiceID, event.pb.userID)
         }
     }
@@ -617,10 +617,10 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 用户得到了演唱机会
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RGetSingChanceEvent) {
-        DebugLogView.println(TAG, "RGetSingChanceEvent 确定演唱者 ${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID} pk ${event.pb.currentRound.subRoundInfoList.getOrNull(1)?.userID}")
+    fun onEvent(event: RGetSingChanceMsg) {
+        DebugLogView.println(TAG, "RGetSingChanceEvent 确定演唱者 ${event.currentRound.subRoundInfoList.getOrNull(0)?.userID} pk ${event.currentRound.subRoundInfoList.getOrNull(1)?.userID}")
         ensureInRcRoom()
-        val roundInfoModel = parseFromRoundInfoPB(event.pb.currentRound)
+        val roundInfoModel = parseFromRoundInfoPB(event.currentRound)
         if (roundInfoModel.roundSeq == mRoomData.realRoundSeq) {
             // 轮次符合，子轮次信息应该都有了
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(roundInfoModel, true)
@@ -631,47 +631,47 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 有人加入了房间
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RJoinNoticeEvent) {
-        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.pb.userInfo.userID} 加入房间 角色为${event.pb.role}")
+    fun onEvent(event: RJoinNoticeMsg) {
+        DebugLogView.println(TAG, "RJoinNoticeEvent ${event.userInfo.userID} 加入房间 角色为${event.role}")
         ensureInRcRoom()
         val racePlayerInfoModel = RacePlayerInfoModel()
-        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.pb.userInfo)
-        racePlayerInfoModel.role = event.pb.role.value
+        racePlayerInfoModel.userInfo = UserInfoModel.parseFromPB(event.userInfo)
+        racePlayerInfoModel.role = event.role.value
         mRoomData.realRoundInfo?.joinUser(racePlayerInfoModel)
 
-        if (event.pb.newRoundBegin) {
+        if (event.newRoundBegin) {
             // 游戏开始了
             if (mRoomData.realRoundInfo?.status == ERaceRoundStatus.ERRS_WAITING.value) {
                 mRoomData.realRoundInfo?.updateStatus(true, ERaceRoundStatus.ERRS_CHOCING.value)
             }
         }
-        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.pb.userInfo))
+        mIRaceRoomView.joinNotice(UserInfoModel.parseFromPB(event.userInfo))
     }
 
     /**
      * 有人退出了房间
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RExitGameEvent) {
-        DebugLogView.println(TAG, "RExitGameEvent ${event.pb.userID} 退出房间")
+    fun onEvent(event: RExitGameMsg) {
+        DebugLogView.println(TAG, "RExitGameEvent ${event.userID} 退出房间")
         ensureInRcRoom()
-        mRoomData.realRoundInfo?.exitUser(event.pb.userID)
+        mRoomData.realRoundInfo?.exitUser(event.userID)
     }
 
     /**
      * 用户爆灯投票
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RBLightEvent) {
-        DebugLogView.println(TAG, "RBLightEvent ${event.pb.userID} 爆灯")
+    fun onEvent(event: RBLightMsg) {
+        DebugLogView.println(TAG, "RBLightEvent ${event.userID} 爆灯")
         ensureInRcRoom()
         MyLog.d(TAG, "onEvent event = $event")
-        if (event.pb.roundSeq == mRoomData.realRoundSeq) {
-            mRoomData.realRoundInfo?.addBLightUser(true, event.pb.userID, event.pb.subRoundSeq, event.pb.bLightCnt)
-            if (event.pb.userID == UserAccountManager.SYSTEM_GRAB_ID ||
-                    event.pb.userID == UserAccountManager.SYSTEM_RANK_AI) {
+        if (event.roundSeq == mRoomData.realRoundSeq) {
+            mRoomData.realRoundInfo?.addBLightUser(true, event.userID, event.subRoundSeq, event.bLightCnt)
+            if (event.userID == UserAccountManager.SYSTEM_GRAB_ID ||
+                    event.userID == UserAccountManager.SYSTEM_RANK_AI) {
                 //TODO  投票打分提示
-                pretendVote(mRoomData.getPlayerOrWaiterInfo(event.pb.userID), mRoomData.getPlayerOrWaiterInfo(mRoomData.realRoundInfo?.getSingerIdNow()))
+                pretendVote(mRoomData.getPlayerOrWaiterInfo(event.userID), mRoomData.getPlayerOrWaiterInfo(mRoomData.realRoundInfo?.getSingerIdNow()))
             }
         }
     }
@@ -700,13 +700,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 轮次结束
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RRoundOverEvent) {
+    fun onEvent(event: RaceRoundOverMsg) {
         ensureInRcRoom()
-        if (event.pb.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
-            DebugLogView.println(TAG, "RRoundOverEvent 主轮次结束 reason=${event.pb.currentRound.overReason}")
+        if (event.overType == ERoundOverType.EROT_MAIN_ROUND_OVER) {
+            DebugLogView.println(TAG, "RRoundOverEvent 主轮次结束 reason=${event.currentRound.overReason}")
             // 主轮次结束
-            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
-            val nextRoundInfo = parseFromRoundInfoPB(event.pb.nextRound)
+            val curRoundInfo = parseFromRoundInfoPB(event.currentRound)
+            val nextRoundInfo = parseFromRoundInfoPB(event.nextRound)
 //            event.pb.gamesList.forEach {
 //                nextRoundInfo.games.add(parseFromGameInfoPB(it))
 //            }
@@ -723,13 +723,13 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
             if (curRoundInfo.subRoundInfo.getOrNull(1)?.overReason == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
                 pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(curRoundInfo.subRoundInfo.getOrNull(1)?.userID))
             }
-        } else if (event.pb.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
-            DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
-            val curRoundInfo = parseFromRoundInfoPB(event.pb.currentRound)
+        } else if (event.overType == ERoundOverType.EROT_SUB_ROUND_OVER) {
+            DebugLogView.println(TAG, "RRoundOverEvent 子轮次结束 reason=${event.currentRound.subRoundInfoList.getOrNull(0)?.overReason}")
+            val curRoundInfo = parseFromRoundInfoPB(event.currentRound)
             mRoomData.realRoundInfo?.tryUpdateRoundInfoModel(curRoundInfo, true)
             // 第一轮次结束原因
-            if (event.pb.currentRound.subRoundInfoList.getOrNull(0)?.overReason?.value == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
-                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.pb.currentRound.subRoundInfoList.getOrNull(0)?.userID))
+            if (event.currentRound.subRoundInfoList.getOrNull(0)?.overReason?.value == ESubRoundOverReason.ESROR_SELF_GIVE_UP.value) {
+                pretendGiveUp(mRoomData.getPlayerOrWaiterInfo(event.currentRound.subRoundInfoList.getOrNull(0)?.userID))
             }
         }
     }
@@ -786,14 +786,14 @@ class RaceCorePresenter(var mRoomData: RaceRoomData, var mIRaceRoomView: IRaceRo
      * 收到服务器的push sync
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEvent(event: RSyncStatusEvent) {
+    fun onEvent(event: RSyncStatusMsg) {
         DebugLogView.println(TAG, "RSyncStatusEvent")
         ensureInRcRoom()
         syncJob?.cancel()
         startSyncRaceStatus()
-        if (event.pb.syncStatusTimeMs > mRoomData.lastSyncTs) {
-            mRoomData.lastSyncTs = event.pb.syncStatusTimeMs
-            val raceRoundInfoModel = parseFromRoundInfoPB(event.pb.currentRound)
+        if (event.syncStatusTimeMs > mRoomData.lastSyncTs) {
+            mRoomData.lastSyncTs = event.syncStatusTimeMs
+            val raceRoundInfoModel = parseFromRoundInfoPB(event.currentRound)
             processSyncResult(raceRoundInfoModel)
         }
     }
