@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.fastjson.JSON
 import com.common.base.BaseActivity
 import com.common.core.myinfo.MyUserInfoManager
@@ -30,7 +31,7 @@ class GiftRecordActivity : BaseActivity() {
     lateinit var refreshLayout: SmartRefreshLayout
     lateinit var contentRv: RecyclerView
 
-    var adapter: GiftRecordAdapter? = null
+    var adapter: GiftRecordAdapter = GiftRecordAdapter()
 
     var offset: Int = 0
     var hasMore = true
@@ -68,9 +69,19 @@ class GiftRecordActivity : BaseActivity() {
             })
         }
 
-        adapter = GiftRecordAdapter()
         contentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         contentRv.adapter = adapter
+
+        adapter.onClickAvatarListener = { model, _ ->
+            model?.userInfo?.userId?.let {
+                val bundle = Bundle()
+                bundle.putInt("bundle_user_id", it)
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_OTHER_PERSON)
+                        .with(bundle)
+                        .navigation()
+            }
+        }
 
         getGiftRecordList(0, true)
     }

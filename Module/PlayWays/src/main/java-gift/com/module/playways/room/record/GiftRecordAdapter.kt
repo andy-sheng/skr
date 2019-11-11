@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.common.core.view.setDebounceViewClickListener
 import com.common.image.fresco.FrescoWorker
 import com.common.image.model.BaseImage
 import com.common.image.model.ImageFactory
@@ -19,6 +20,8 @@ import com.module.playways.R
 class GiftRecordAdapter : RecyclerView.Adapter<GiftRecordAdapter.GiftRecordViewHolder>() {
 
     var mDataList = ArrayList<GiftRecordModel>()
+
+    var onClickAvatarListener: ((model: GiftRecordModel?, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GiftRecordViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.gift_record_item_view_layout, parent, false)
@@ -43,6 +46,10 @@ class GiftRecordAdapter : RecyclerView.Adapter<GiftRecordAdapter.GiftRecordViewH
 
         var mModel: GiftRecordModel? = null
         var mPos: Int = -1
+
+        init {
+            avatarView.setDebounceViewClickListener { onClickAvatarListener?.invoke(mModel, mPos) }
+        }
 
         fun bindData(model: GiftRecordModel, position: Int) {
             this.mModel = model
