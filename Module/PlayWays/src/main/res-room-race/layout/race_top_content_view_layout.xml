@@ -72,7 +72,7 @@
         android:id="@+id/audience_iv"
         android:layout_width="@dimen/view_26_dp"
         android:layout_height="@dimen/view_26_dp"
-        android:layout_marginLeft="@dimen/view_13_dp"
+        android:layout_marginLeft="@dimen/view_14_dp"
         android:background="@drawable/player_top_icon"
         app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
         app:layout_constraintLeft_toRightOf="@+id/name_barrier"
@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_2_dp"
-        android:paddingRight="@dimen/view_11_dp"
+        android:paddingRight="@dimen/view_3_dp"
         android:text="选手16人"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp"
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_2_dp"
-        android:paddingRight="@dimen/view_11_dp"
+        android:paddingRight="@dimen/view_3_dp"
         android:text="观众234人"
         android:textColor="@color/white_trans_50"
         android:textSize="@dimen/textsize_8_dp"
@@ -110,6 +110,16 @@
         app:constraint_referenced_ids="player_count_tv, audience_count_tv" />
 
     <com.common.view.ex.ExImageView
+        android:id="@+id/more_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/view_6_dp"
+        android:src="@drawable/race_top_more"
+        app:layout_constraintBottom_toBottomOf="@+id/audience_iv"
+        app:layout_constraintLeft_toRightOf="@+id/count_barrier"
+        app:layout_constraintTop_toTopOf="@+id/audience_iv" />
+
+    <com.common.view.ex.ExImageView
         android:id="@+id/player_bg"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_32_dp"
@@ -119,7 +129,7 @@
         app:bl_stroke_width="@dimen/view_1_dp"
         app:layout_constraintBottom_toBottomOf="@+id/arrow_iv"
         app:layout_constraintLeft_toLeftOf="@+id/name_barrier"
-        app:layout_constraintRight_toRightOf="@+id/count_barrier"
+        app:layout_constraintRight_toRightOf="@+id/more_arrow"
         app:layout_constraintTop_toTopOf="@+id/arrow_iv" />
 
 </merge>
